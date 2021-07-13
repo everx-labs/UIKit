@@ -52,7 +52,7 @@ const Content: React.FC<ContentProps> = ({
     testID,
     visible,
     onDisappeared,
-    onTapUnderlay,
+    onRequestClose,
 }: ContentProps) => {
     const theme = useTheme();
     const styles = useStyles(theme);
@@ -130,15 +130,15 @@ const Content: React.FC<ContentProps> = ({
     });
 
     const onEnded = React.useCallback(() => {
-        if (onTapUnderlay) {
-            onTapUnderlay();
+        if (onRequestClose) {
+            onRequestClose();
         }
-    }, [onTapUnderlay]);
+    }, [onRequestClose]);
 
     return (
         <Portal absoluteFill>
             <TapGestureHandler
-                enabled={!!onTapUnderlay}
+                enabled={!!onRequestClose}
                 onEnded={onEnded}
                 maxDist={UIConstant.maxSlideDistanceOfTap}
             >
@@ -174,7 +174,7 @@ export type AlertBoxProps = {
     /**
      * The callback that is called when tapping on the underlay
      */
-    onTapUnderlay?: () => void;
+    onRequestClose?: () => void;
     /**
      * ID for usage in tests
      */

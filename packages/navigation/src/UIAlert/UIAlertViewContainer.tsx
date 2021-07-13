@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { BackHandler, Platform, StyleSheet, View } from 'react-native';
 import { UILabel, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 import { AlertBox } from './AlertBox';
 import { UIAlertViewAction } from './UIAlertViewAction';
@@ -53,19 +53,43 @@ const getAlertViewActions = (
     );
 };
 
+const useBackHandler = (onRequestClose?: () => void): void => {
+    React.useEffect(() => {
+        if (Platform.OS !== 'android') {
+            return undefined;
+        }
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            () => {
+                if (onRequestClose) {
+                    onRequestClose();
+                }
+                return true;
+            },
+        );
+        return () => {
+            if (backHandler) {
+                backHandler.remove();
+            }
+        };
+    }, [onRequestClose]);
+};
+
 export const UIAlertViewContainer: React.FC<UIAlertViewContainerProps> = (
     props: UIAlertViewContainerProps,
 ) => {
-    const { visible, title, note, onTapUnderlay, testID } = props;
+    const { visible, title, note, onRequestClose, testID } = props;
     const alertViewActions: React.ReactElement<
         UIAlertViewActionProps
     >[] = React.useMemo(() => getAlertViewActions(props.children), [
         props.children,
     ]);
+    useBackHandler(onRequestClose);
+
     return (
         <AlertBox
             visible={visible}
-            onTapUnderlay={onTapUnderlay}
+            onRequestClose={onRequestClose}
             testID={testID}
         >
             <View style={styles.container}>

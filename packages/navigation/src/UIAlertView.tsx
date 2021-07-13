@@ -38,8 +38,9 @@ export type UIAlertViewContainerProps = {
         | React.ReactElement<UIAlertViewActionProps>[];
     /**
      * The callback that is called when tapping on the underlay
+     * or on the `Back` button on Android
      */
-    onTapUnderlay?: () => void;
+    onRequestClose?: () => void;
     /**
      * ID for usage in tests
      */
@@ -56,5 +57,5 @@ export type UIAlertView = React.FC<UIAlertViewContainerProps> & {
 
 // @ts-expect-error
 // ts doesn't understand that we assign [Action] later, and want to see it right away
-export const UIAlertView: UIAlertView = UIAlertViewContainer
-UIAlertView.Action = UIAlertViewAction
+export const UIAlertView: UIAlertView = UIAlertViewContainer;
+UIAlertView.Action = UIAlertViewAction;

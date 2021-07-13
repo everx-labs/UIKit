@@ -8,7 +8,8 @@ import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
 export const Popups = () => {
-    const [isUIAlertViewVisible, setIsUIAlertViewVisible] = React.useState(false);
+    const [isUIAlertViewVisible, setIsUIAlertViewVisible] =
+        React.useState(false);
     const getCallback = React.useCallback(
         (message: string) => () => {
             console.log(message);
@@ -28,7 +29,7 @@ export const Popups = () => {
                         visible={isUIAlertViewVisible}
                         title="Please select your action"
                         note="You can select it later"
-                        onTapUnderlay={() => setIsUIAlertViewVisible(false)}
+                        onRequestClose={() => setIsUIAlertViewVisible(false)}
                     >
                         <UIAlertView.Action
                             title="First Action"
@@ -41,7 +42,7 @@ export const Popups = () => {
                             type="Neutral"
                         />
                         <UIAlertView.Action
-                            title="Destructive Action"
+                            title="Negative Action"
                             onPress={getCallback('Negative Action')}
                             type="Negative"
                         />
