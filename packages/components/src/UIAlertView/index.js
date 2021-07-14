@@ -1,4 +1,5 @@
 // @flow
+// @deprecated
 import React from 'react';
 import { StyleSheet, BackHandler, Platform } from 'react-native';
 import AwesomeAlert from 'react-native-awesome-alerts';

@@ -16,6 +16,7 @@ import {
     TabBar,
     TabView,
 } from 'react-native-tab-view';
+
 import {
     UILabel,
     UILabelColors,
@@ -23,12 +24,15 @@ import {
     useTheme,
     ColorVariants,
 } from '@tonlabs/uikit.hydrogen';
+
 import { UIConstant } from '../constants';
+
 import type {
     UIPagerViewContainerProps,
     UIPagerViewContainerType,
     UIPagerViewPageProps,
-} from '../UIPagerView';
+} from './types';
+
 import { UIPagerViewPage } from './UIPagerViewPage';
 
 type SceneProps = SceneRendererProps & {

@@ -1,6 +1,3 @@
-import { UIPagerViewContainer } from './UIPagerView/UIPagerViewContainer';
-import { UIPagerViewPage } from './UIPagerView/UIPagerViewPage';
-
 /** type of UIPagerViewContainer */
 export type UIPagerViewContainerType = 'Scrollable' | 'Fixed' | 'FixedPadded';
 
@@ -41,14 +38,9 @@ export type UIPagerViewPageProps = {
 /**
  * UIPagerView components
  */
-export type UIPagerView = {
+export type UIPagerViewComponents = {
     /** Parent component that contains the pages */
     Container: React.FC<UIPagerViewContainerProps>;
     /** Page component */
     Page: React.FC<UIPagerViewPageProps>;
-};
-
-export const UIPagerView: UIPagerView = {
-    Container: UIPagerViewContainer,
-    Page: UIPagerViewPage,
 };

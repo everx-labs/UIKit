@@ -1,8 +1,8 @@
 // @flow
 export * from './UIActionComponent';
 export { default as UIActionImage } from './UIActionImage';
-export { default as UIAlert } from './UIAlert';
-export { default as UIAlertView } from './UIAlertView';
+export { default as UIAlert } from './UIAlert'; // @deprecated
+export { default as UIAlertView } from './UIAlertView'; // @deprecated
 export { default as UIAmountInput } from './UIAmountInput';
 export { default as UIBadge } from './UIBadge';
 export { default as UIBankCardNumberInput } from './UIBankCardNumberInput';
