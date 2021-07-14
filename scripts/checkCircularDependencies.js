@@ -3,7 +3,9 @@ const path = require('path');
 
 const checkCircularDependencies = async () => {
     try {
-        const res = await madge(path.join(__dirname, '..'));
+        const res = await madge(path.join(__dirname, '..'), {
+            fileExtensions: ['js', 'jsx', 'ts', 'tsx'],
+        });
         const dependencies = res.circular() || [];
         if (dependencies.length > 0) {
             console.log(
