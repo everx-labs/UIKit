@@ -55,7 +55,6 @@
     "react-native-fast-image": "^8.3.4",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-image-picker": "git+https://github.com/FactorBench/react-native-image-picker.git#develop",
-    "react-native-qrcode-svg": "^6.0.6",
     "react-native-svg": "^12.1.0"
   },
   "peerDependencies": {
@@ -66,7 +65,6 @@
     "react-native-fast-image": "^8.3.4",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-image-picker": "*",
-    "react-native-qrcode-svg": "^6.0.6",
     "react-native-svg": "^12.1.0"
   },
   "@react-native-community/bob": {

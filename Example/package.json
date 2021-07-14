@@ -68,7 +68,6 @@
     "react-native-parsed-text": "git+https://github.com/FactorBench/react-native-parsed-text.git",
     "react-native-permissions": "3.0.0",
     "react-native-qrcode-scanner": "1.5.4",
-    "react-native-qrcode-svg": "^6.0.6",
     "react-native-reanimated": "^2.1.0",
     "react-native-safe-area": "^0.5.1",
     "react-native-safe-area-context": "^3.1.3",
