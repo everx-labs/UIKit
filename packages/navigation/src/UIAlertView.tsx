@@ -32,6 +32,7 @@ export type UIAlertViewContainerProps = {
     note: string;
     /**
      * List of UIAlertView.Action
+     * There can be no more than one child with the "Cancel" UIAlertViewActionType.
      */
     children:
         | React.ReactElement<UIAlertViewActionProps>
