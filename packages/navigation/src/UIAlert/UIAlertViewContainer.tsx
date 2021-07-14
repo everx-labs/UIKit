@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { BackHandler, Platform, StyleSheet, View } from 'react-native';
-import { UILabel, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { BackHandler, Platform, View } from 'react-native';
+import { UILabel, UILabelRoles, makeStyles } from '@tonlabs/uikit.hydrogen';
 import { AlertBox } from './AlertBox';
 import { UIAlertViewAction } from './UIAlertViewAction';
 import type {
@@ -20,15 +20,17 @@ const getAlertViewActions = (
             child: React.ReactNode,
         ): React.ReactElement<UIAlertViewActionProps>[] => {
             if (React.isValidElement(child)) {
-                const pages: React.ReactElement<UIAlertViewActionProps>[] = acc;
+                const actions: React.ReactElement<
+                    UIAlertViewActionProps
+                >[] = acc;
                 if (child.type === UIAlertViewAction) {
-                    pages.push(child);
-                    return pages;
+                    actions.push(child);
+                    return actions;
                 }
 
                 if (child.type === React.Fragment) {
-                    pages.push(...getAlertViewActions(child.props.children));
-                    return pages;
+                    actions.push(...getAlertViewActions(child.props.children));
+                    return actions;
                 }
             }
             if (__DEV__) {
@@ -51,6 +53,55 @@ const getAlertViewActions = (
         },
         [],
     );
+};
+
+const useSortedAlertViewActions = (
+    alertViewActions: React.ReactElement<UIAlertViewActionProps>[],
+): React.ReactElement<UIAlertViewActionProps>[] => {
+    return React.useMemo(() => {
+        let cancelAction:
+            | React.ReactElement<UIAlertViewActionProps>
+            | undefined;
+        const negativeActions: React.ReactElement<
+            UIAlertViewActionProps
+        >[] = [];
+        const neutralActions: React.ReactElement<UIAlertViewActionProps>[] = [];
+        alertViewActions.forEach(
+            (action: React.ReactElement<UIAlertViewActionProps>): void => {
+                if (action.props.type === 'Сancel') {
+                    cancelAction = action;
+                }
+                if (action.props.type === 'Negative') {
+                    negativeActions.push(action);
+                }
+                if (action.props.type === 'Neutral') {
+                    neutralActions.push(action);
+                }
+            },
+        );
+        const result: React.ReactElement<UIAlertViewActionProps>[] = [
+            ...neutralActions,
+            ...negativeActions,
+        ];
+        if (cancelAction) {
+            result.push(cancelAction);
+        }
+        return result;
+    }, [alertViewActions]);
+};
+
+const useOnRequestClose = (
+    alertViewActions: React.ReactElement<UIAlertViewActionProps>[],
+): (() => void) | undefined => {
+    return React.useMemo(() => {
+        const cancelAction:
+            | React.ReactElement<UIAlertViewActionProps>
+            | undefined = alertViewActions.find(
+            (action: React.ReactElement<UIAlertViewActionProps>): boolean =>
+                action.props.type === 'Сancel',
+        );
+        return cancelAction?.props.onPress;
+    }, [alertViewActions]);
 };
 
 const useBackHandler = (onRequestClose?: () => void): void => {
@@ -78,18 +129,30 @@ const useBackHandler = (onRequestClose?: () => void): void => {
 export const UIAlertViewContainer: React.FC<UIAlertViewContainerProps> = (
     props: UIAlertViewContainerProps,
 ) => {
-    const { visible, title, note, onRequestClose, testID } = props;
+    const { visible, title, note, testID } = props;
+
     const alertViewActions: React.ReactElement<
         UIAlertViewActionProps
     >[] = React.useMemo(() => getAlertViewActions(props.children), [
         props.children,
     ]);
+
+    const alertViewActionsSorted: React.ReactElement<
+        UIAlertViewActionProps
+    >[] = useSortedAlertViewActions(alertViewActions);
+
+    const onRequestClose: (() => void) | undefined = useOnRequestClose(
+        alertViewActions,
+    );
+
     useBackHandler(onRequestClose);
+
+    const styles = useStyles(alertViewActionsSorted.length);
 
     return (
         <AlertBox
             visible={visible}
-            onRequestClose={onRequestClose}
+            onTapUnderlay={onRequestClose}
             testID={testID}
         >
             <View style={styles.container}>
@@ -104,13 +167,15 @@ export const UIAlertViewContainer: React.FC<UIAlertViewContainerProps> = (
                         {note}
                     </UILabel>
                 </View>
-                <View style={styles.actionsContainer}>{alertViewActions}</View>
+                <View style={styles.actionsContainer}>
+                    {alertViewActionsSorted}
+                </View>
             </View>
         </AlertBox>
     );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((actionCount: number) => ({
     container: {
         paddingHorizontal: 24,
         paddingVertical: 12,
@@ -122,8 +187,8 @@ const styles = StyleSheet.create({
         paddingBottom: 4,
     },
     actionsContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
+        flexDirection: actionCount === 2 ? 'row-reverse' : 'column',
+        flexWrap: actionCount === 2 ? 'wrap' : 'nowrap',
         justifyContent: 'space-around',
     },
-});
+}));

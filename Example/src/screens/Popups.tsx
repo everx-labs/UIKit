@@ -13,7 +13,9 @@ export const Popups = () => {
     const getCallback = React.useCallback(
         (message: string) => () => {
             console.log(message);
-            setIsUIAlertViewVisible(false);
+            if (message.includes('Сancel')) {
+                setIsUIAlertViewVisible(false);
+            }
         },
         [],
     );
@@ -29,7 +31,6 @@ export const Popups = () => {
                         visible={isUIAlertViewVisible}
                         title="Please select your action"
                         note="You can select it later"
-                        onRequestClose={() => setIsUIAlertViewVisible(false)}
                     >
                         <UIAlertView.Action
                             title="Neutral Action"

@@ -37,11 +37,6 @@ export type UIAlertViewContainerProps = {
         | React.ReactElement<UIAlertViewActionProps>
         | React.ReactElement<UIAlertViewActionProps>[];
     /**
-     * The callback that is called when tapping on the underlay
-     * or on the `Back` button on Android
-     */
-    onRequestClose?: () => void;
-    /**
      * ID for usage in tests
      */
     testID?: string;
