@@ -1,6 +1,6 @@
 import { UIAlertViewContainer, UIAlertViewAction } from './UIAlert';
 
-export type UIAlertViewActionType = 'Neutral' | 'Negative';
+export type UIAlertViewActionType = 'Neutral' | 'Negative' | 'Сancel';
 
 export type UIAlertViewActionProps = {
     /**

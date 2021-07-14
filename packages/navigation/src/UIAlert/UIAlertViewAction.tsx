@@ -14,9 +14,21 @@ const getActionVariant = (type: UIAlertViewActionType): UIBoxButtonVariant => {
     switch (type) {
         case 'Negative':
             return UIBoxButtonVariant.Negative;
+        case 'Сancel':
         case 'Neutral':
         default:
             return UIBoxButtonVariant.Neutral;
+    }
+};
+
+const getBoxButtonType = (type: UIAlertViewActionType): UIBoxButtonType => {
+    switch (type) {
+        case 'Сancel':
+            return UIBoxButtonType.Nulled;
+        case 'Negative':
+        case 'Neutral':
+        default:
+            return UIBoxButtonType.Tertiary;
     }
 };
 
@@ -26,10 +38,11 @@ export const UIAlertViewAction: React.FC<UIAlertViewActionProps> = ({
     onPress,
 }: UIAlertViewActionProps) => {
     const variant: UIBoxButtonVariant = getActionVariant(type);
+    const boxButtonType: UIBoxButtonType = getBoxButtonType(type);
     return (
         <View key={title} style={styles.action}>
             <UIBoxButton
-                type={UIBoxButtonType.Tertiary}
+                type={boxButtonType}
                 variant={variant}
                 title={title}
                 onPress={onPress}

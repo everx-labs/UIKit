@@ -32,19 +32,19 @@ export const Popups = () => {
                         onRequestClose={() => setIsUIAlertViewVisible(false)}
                     >
                         <UIAlertView.Action
-                            title="First Action"
-                            onPress={getCallback('First Action')}
-                            type="Neutral"
-                        />
-                        <UIAlertView.Action
-                            title="Second Action"
-                            onPress={getCallback('Second Action')}
+                            title="Neutral Action"
+                            onPress={getCallback('Neutral Action')}
                             type="Neutral"
                         />
                         <UIAlertView.Action
                             title="Negative Action"
                             onPress={getCallback('Negative Action')}
                             type="Negative"
+                        />
+                        <UIAlertView.Action
+                            title="Сancel Action"
+                            onPress={getCallback('Сancel Action')}
+                            type="Сancel"
                         />
                     </UIAlertView>
                 </View>
