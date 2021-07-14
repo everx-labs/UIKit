@@ -131,7 +131,7 @@ function Key({ num, disabled }: { num: number; disabled: boolean }) {
     return (
         <RawButton
             testID={`pincode_digit_${num}`}
-            onGestureEvent={gestureHandler}
+            onGestureEvent={disabled ? undefined : gestureHandler}
             style={[styles.button, disabled ? { opacity: 0.5 } : null]}
         >
             <Animated.View
@@ -157,7 +157,8 @@ function BiometryKey({
     isBiometryEnabled,
     biometryType,
     getPasscodeWithBiometry,
-}: BiometryProps) {
+    disabled,
+}: BiometryProps & { disabled: boolean }) {
     const usePredefined =
         !isBiometryEnabled && process.env.NODE_ENV === 'development';
 
@@ -241,8 +242,8 @@ function BiometryKey({
     return (
         <RawButton
             testID="pincode_biometry"
-            onGestureEvent={gestureHandler}
-            style={styles.button}
+            onGestureEvent={disabled ? undefined : gestureHandler}
+            style={[styles.button, disabled ? { opacity: 0.5 } : null]}
         >
             <Animated.View
                 style={[styles.circleAbove, circleAboveButtonStyle]}
@@ -261,7 +262,7 @@ function BiometryKey({
     );
 }
 
-function DelKey() {
+function DelKey({ disabled }: { disabled: boolean }) {
     const { activeDotIndex, dotsValues, dotsAnims } = React.useContext(
         DotsContext,
     );
@@ -306,8 +307,12 @@ function DelKey() {
     return (
         <RawButton
             testID="pincode_digit_delete"
-            onGestureEvent={gestureHandlerDel}
-            style={[styles.button, delButtonStyle]}
+            onGestureEvent={disabled ? undefined : gestureHandlerDel}
+            style={[
+                styles.button,
+                delButtonStyle,
+                disabled ? { opacity: 0.5 } : null,
+            ]}
         >
             <Animated.View
                 style={[styles.circleAbove, circleAboveDelButtonStyle]}
@@ -589,9 +594,10 @@ export function UIPinCode({
                                 getPasscodeWithBiometry={
                                     getPasscodeWithBiometry
                                 }
+                                disabled={disabled}
                             />
                             <Key num={0} disabled={disabled} />
-                            <DelKey />
+                            <DelKey disabled={disabled} />
                         </View>
                     </View>
                 </DotsContext.Provider>
