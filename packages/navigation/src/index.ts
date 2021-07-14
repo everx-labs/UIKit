@@ -12,6 +12,7 @@ export { ScrollableContext } from './Scrollable/Context';
 export * from './UILargeTitleHeader';
 export * from './constants';
 export * from './Sheets';
+export * from './UIAlertView';
 
 export * from './SplitNavigator/createSplitNavigator';
 export {
