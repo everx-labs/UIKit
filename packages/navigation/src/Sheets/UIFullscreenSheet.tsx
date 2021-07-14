@@ -26,8 +26,15 @@ export function UIFullscreenSheet({
 }: UIFullscreenSheetProps) {
     const { height } = useWindowDimensions();
     const { top: topInset } = useSafeAreaInsets();
+    const flattenStyle = StyleSheet.flatten(style);
     const passedPaddingBottom =
-        (StyleSheet.flatten(style).paddingBottom as number) ?? 0;
+        (flattenStyle.paddingBottom as number) ??
+        (flattenStyle.padding as number) ??
+        0;
+    const passedPaddingTop =
+        (flattenStyle.paddingTop as number) ??
+        (flattenStyle.padding as number) ??
+        0;
 
     const sheetStyle = React.useMemo(
         () => ({
@@ -42,9 +49,10 @@ export function UIFullscreenSheet({
             height:
                 height -
                 Math.max(StatusBar.currentHeight ?? 0, topInset) -
-                passedPaddingBottom,
+                passedPaddingBottom -
+                passedPaddingTop,
         }),
-        [height, topInset, passedPaddingBottom],
+        [height, topInset, passedPaddingBottom, passedPaddingTop],
     );
 
     return (

@@ -473,7 +473,7 @@ export function UIPinCode({
                     if (isValid) {
                         onSuccess(pin);
                     }
-                }, 1000);
+                }, 300);
             });
         },
         [onEnter, validState, activeDotIndex, shakeAnim, onSuccess],
@@ -632,7 +632,7 @@ const styles = StyleSheet.create({
         width: dotSize / 2,
         height: dotSize / 2,
         borderRadius: dotSize / 4,
-        marginHorizontal: UIConstant.smallContentOffset(),
+        marginHorizontal: UIConstant.normalContentOffset(),
     },
     dotInner: {
         width: dotSize / 2,
