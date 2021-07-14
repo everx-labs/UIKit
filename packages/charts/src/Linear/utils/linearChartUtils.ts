@@ -52,7 +52,7 @@ export const getScaledData = (
     });
 
     if (xMin == null || xMax == null || yMin == null || yMax == null) {
-        // Data length seems to be empty
+        // Data array seems to be empty
         return null;
     }
 
