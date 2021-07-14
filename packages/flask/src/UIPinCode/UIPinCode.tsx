@@ -1,28 +1,13 @@
 import * as React from 'react';
-import {
-    View,
-    StyleSheet,
-    Vibration,
-    StyleProp,
-    ViewStyle,
-} from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Animated, {
     useSharedValue,
-    useAnimatedGestureHandler,
     useAnimatedStyle,
     useDerivedValue,
     runOnJS,
     withSpring,
 } from 'react-native-reanimated';
-import {
-    GestureEvent,
-    NativeViewGestureHandlerPayload,
-    NativeViewGestureHandlerProps,
-    RawButton as GHRawButton,
-    RawButtonProps,
-} from 'react-native-gesture-handler';
 
-import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIConstant } from '@tonlabs/uikit.core';
 import {
     UILabel,
@@ -30,307 +15,17 @@ import {
     UILabelRoles,
     useTheme,
     ColorVariants,
-    UIImage,
-    useColorParts,
 } from '@tonlabs/uikit.hydrogen';
-
-function hapticResponse() {
-    // TODO: think to use https://docs.expo.io/versions/latest/sdk/haptics/
-    Vibration.vibrate(40);
-}
-
-const DOT_WITH_SPRING_CONFIG: Animated.WithSpringConfig = {
-    damping: 100,
-    stiffness: 500,
-};
-
-// eslint-disable-next-line no-shadow
-export enum UIPinCodeBiometryType {
-    Fingerprint = 'Fingerprint',
-    Face = 'Face',
-}
-
-export const RawButton: React.FunctionComponent<Animated.AnimateProps<
-    RawButtonProps &
-        NativeViewGestureHandlerProps & {
-            testID?: string;
-            style?: StyleProp<ViewStyle>;
-        }
->> = Animated.createAnimatedComponent(GHRawButton);
-
-function useCircleAboveStyle(circleAnimProgress: Animated.SharedValue<number>) {
-    const { colorParts } = useColorParts(ColorVariants.BackgroundSecondary);
-
-    return useAnimatedStyle(() => {
-        return {
-            backgroundColor: Animated.interpolateColor(
-                circleAnimProgress.value,
-                [0, 1],
-                [`rgba(${colorParts},1)`, `rgba(${colorParts},0)`],
-            ),
-            transform: [
-                {
-                    scale: Animated.interpolate(
-                        circleAnimProgress.value,
-                        [0, 1],
-                        [0.8, 1],
-                    ),
-                },
-            ],
-        };
-    });
-}
-
-const DotsContext = React.createContext<{
-    activeDotIndex: Animated.SharedValue<number>;
-    dotsValues: { current: Animated.SharedValue<number>[] };
-    dotsAnims: { current: Animated.SharedValue<number>[] };
-}>(
-    // @ts-ignore
-    {},
-);
-
-function Key({ num, disabled }: { num: number; disabled: boolean }) {
-    const { activeDotIndex, dotsValues, dotsAnims } = React.useContext(
-        DotsContext,
-    );
-
-    const circleAnimProgress = useSharedValue(1);
-
-    const gestureHandler = useAnimatedGestureHandler<
-        GestureEvent<NativeViewGestureHandlerPayload>
-    >({
-        onActive: () => {
-            circleAnimProgress.value = 0;
-        },
-        onFinish: () => {
-            if (activeDotIndex.value > 5) {
-                return;
-            }
-
-            // A number was chosen
-            dotsValues.current[activeDotIndex.value].value = num;
-            dotsAnims.current[activeDotIndex.value].value = withSpring(
-                1,
-                DOT_WITH_SPRING_CONFIG,
-            );
-            activeDotIndex.value += 1;
-
-            runOnJS(hapticResponse)();
-        },
-        onCancel: () => {
-            circleAnimProgress.value = withSpring(1);
-        },
-        onEnd: () => {
-            circleAnimProgress.value = withSpring(1);
-        },
-    });
-
-    const circleAboveButtonStyle = useCircleAboveStyle(circleAnimProgress);
-
-    return (
-        <RawButton
-            testID={`pincode_digit_${num}`}
-            onGestureEvent={disabled ? undefined : gestureHandler}
-            style={[styles.button, disabled ? { opacity: 0.5 } : null]}
-        >
-            <Animated.View
-                style={[styles.circleAbove, circleAboveButtonStyle]}
-            />
-            <UILabel
-                color={UILabelColors.TextPrimary}
-                role={UILabelRoles.LightHuge}
-            >
-                {num}
-            </UILabel>
-        </RawButton>
-    );
-}
-
-type BiometryProps = {
-    isBiometryEnabled: boolean;
-    biometryType?: UIPinCodeBiometryType;
-    getPasscodeWithBiometry?: () => Promise<string | undefined>;
-};
-
-function BiometryKey({
-    isBiometryEnabled,
-    biometryType,
-    getPasscodeWithBiometry,
-    disabled,
-}: BiometryProps & { disabled: boolean }) {
-    const usePredefined =
-        !isBiometryEnabled && process.env.NODE_ENV === 'development';
-
-    let icon = null;
-    if (biometryType && getPasscodeWithBiometry != null) {
-        icon = (
-            <UIImage
-                source={
-                    biometryType === UIPinCodeBiometryType.Face
-                        ? UIAssets.icons.security.faceId
-                        : UIAssets.icons.security.touchId
-                }
-                tintColor={ColorVariants.TextPrimary}
-            />
-        );
-    }
-
-    const { activeDotIndex, dotsValues, dotsAnims } = React.useContext(
-        DotsContext,
-    );
-
-    const getPasscode = React.useCallback(async () => {
-        if (usePredefined) {
-            dotsValues.current.forEach((_dot, index) => {
-                dotsValues.current[index].value = 1;
-                dotsAnims.current[index].value = withSpring(
-                    1,
-                    DOT_WITH_SPRING_CONFIG,
-                );
-            });
-            activeDotIndex.value = 6;
-            return;
-        }
-        if (!isBiometryEnabled || getPasscodeWithBiometry == null) {
-            return;
-        }
-        const passcode = await getPasscodeWithBiometry();
-
-        if (passcode == null) {
-            return;
-        }
-
-        dotsValues.current.forEach((_dot, index) => {
-            dotsValues.current[index].value = Number(passcode[index]);
-            dotsAnims.current[index].value = withSpring(
-                1,
-                DOT_WITH_SPRING_CONFIG,
-            );
-        });
-        activeDotIndex.value = 6;
-    }, [
-        usePredefined,
-        isBiometryEnabled,
-        getPasscodeWithBiometry,
-        dotsValues,
-        dotsAnims,
-        activeDotIndex,
-    ]);
-
-    const circleAnimProgress = useSharedValue(1);
-    const gestureHandler = useAnimatedGestureHandler<
-        GestureEvent<NativeViewGestureHandlerPayload>
-    >({
-        onActive: () => {
-            circleAnimProgress.value = 0;
-        },
-        onFinish: () => {
-            runOnJS(getPasscode)();
-            runOnJS(hapticResponse)();
-        },
-        onCancel: () => {
-            circleAnimProgress.value = withSpring(1);
-        },
-        onEnd: () => {
-            circleAnimProgress.value = withSpring(1);
-        },
-    });
-
-    const circleAboveButtonStyle = useCircleAboveStyle(circleAnimProgress);
-
-    return (
-        <RawButton
-            testID="pincode_biometry"
-            onGestureEvent={disabled ? undefined : gestureHandler}
-            style={[styles.button, disabled ? { opacity: 0.5 } : null]}
-        >
-            <Animated.View
-                style={[styles.circleAbove, circleAboveButtonStyle]}
-            />
-            {usePredefined ? (
-                <UILabel
-                    color={UILabelColors.TextPrimary}
-                    role={UILabelRoles.ActionFootnote}
-                >
-                    DEV
-                </UILabel>
-            ) : (
-                icon
-            )}
-        </RawButton>
-    );
-}
-
-function DelKey({ disabled }: { disabled: boolean }) {
-    const { activeDotIndex, dotsValues, dotsAnims } = React.useContext(
-        DotsContext,
-    );
-
-    const circleAnimProgress = useSharedValue(1);
-    const circleAboveDelButtonStyle = useCircleAboveStyle(circleAnimProgress);
-    const gestureHandlerDel = useAnimatedGestureHandler<
-        GestureEvent<NativeViewGestureHandlerPayload>
-    >({
-        onActive: () => {
-            circleAnimProgress.value = 0;
-        },
-        onFinish: () => {
-            // Nothing to delete
-            if (activeDotIndex.value <= 0) {
-                return;
-            }
-
-            dotsValues.current[activeDotIndex.value - 1].value = -1;
-            dotsAnims.current[activeDotIndex.value - 1].value = withSpring(
-                0,
-                DOT_WITH_SPRING_CONFIG,
-            );
-            activeDotIndex.value -= 1;
-
-            runOnJS(hapticResponse)();
-        },
-        onCancel: () => {
-            circleAnimProgress.value = withSpring(1);
-        },
-        onEnd: () => {
-            circleAnimProgress.value = withSpring(1);
-        },
-    });
-
-    const delButtonStyle = useAnimatedStyle(() => {
-        return {
-            opacity: activeDotIndex.value > 0 ? 1 : 0.5,
-        };
-    });
-
-    return (
-        <RawButton
-            testID="pincode_digit_delete"
-            onGestureEvent={disabled ? undefined : gestureHandlerDel}
-            style={[
-                styles.button,
-                delButtonStyle,
-                disabled ? { opacity: 0.5 } : null,
-            ]}
-        >
-            <Animated.View
-                style={[styles.circleAbove, circleAboveDelButtonStyle]}
-            />
-            <UIImage
-                source={UIAssets.icons.ui.delete}
-                tintColor={ColorVariants.TextPrimary}
-            />
-        </RawButton>
-    );
-}
-
-// eslint-disable-next-line no-shadow
-enum ValidationState {
-    None = 0,
-    Success = 1,
-    Error = 2,
-}
+import { DotsContext } from './DotsContext';
+import { BiometryKey, BiometryProps, DelKey, Key } from './Keys';
+import {
+    DotAnimationStatus,
+    DOTS_COUNT,
+    DOTS_STATE_PRESENTATION_DURATION,
+    DOT_WITH_SPRING_CONFIG,
+    ShakeAnimationStatus,
+    ValidationState,
+} from './constants';
 
 function useAnimatedDot(
     index: number,
@@ -364,7 +59,7 @@ function useAnimatedDot(
         return {
             backgroundColor: Animated.interpolateColor(
                 dotsAnims.current[index].value,
-                [0, 1],
+                [DotAnimationStatus.NotActive, DotAnimationStatus.Active],
                 [
                     theme[ColorVariants.BackgroundNeutral] as string,
                     theme[color] as string,
@@ -405,12 +100,12 @@ export function UIPinCode({
         useSharedValue(-1),
     ]);
     const dotsAnims = React.useRef([
-        useSharedValue(0),
-        useSharedValue(0),
-        useSharedValue(0),
-        useSharedValue(0),
-        useSharedValue(0),
-        useSharedValue(0),
+        useSharedValue(DotAnimationStatus.NotActive),
+        useSharedValue(DotAnimationStatus.NotActive),
+        useSharedValue(DotAnimationStatus.NotActive),
+        useSharedValue(DotAnimationStatus.NotActive),
+        useSharedValue(DotAnimationStatus.NotActive),
+        useSharedValue(DotAnimationStatus.NotActive),
     ]);
     const activeDotIndex = useSharedValue(0);
     const validState = useSharedValue(ValidationState.None);
@@ -455,15 +150,18 @@ export function UIPinCode({
                     : ValidationState.Error;
 
                 if (!isValid) {
-                    shakeAnim.value = 0;
-                    shakeAnim.value = withSpring(1, DOT_WITH_SPRING_CONFIG);
+                    shakeAnim.value = ShakeAnimationStatus.NotActive;
+                    shakeAnim.value = withSpring(
+                        ShakeAnimationStatus.Active,
+                        DOT_WITH_SPRING_CONFIG,
+                    );
                 }
 
                 setTimeout(() => {
                     dotsValues.current.forEach((_dot, index) => {
                         dotsValues.current[index].value = -1;
                         dotsAnims.current[index].value = withSpring(
-                            0,
+                            DotAnimationStatus.NotActive,
                             DOT_WITH_SPRING_CONFIG,
                         );
                     });
@@ -473,7 +171,7 @@ export function UIPinCode({
                     if (isValid) {
                         onSuccess(pin);
                     }
-                }, 300);
+                }, DOTS_STATE_PRESENTATION_DURATION);
             });
         },
         [onEnter, validState, activeDotIndex, shakeAnim, onSuccess],
@@ -485,7 +183,7 @@ export function UIPinCode({
             .filter((val) => val !== -1)
             .join('');
 
-        if (pin.length === 6) {
+        if (pin.length === DOTS_COUNT) {
             runOnJS(validatePin)(pin);
         }
     }, [dotsValues]);
@@ -638,22 +336,6 @@ const styles = StyleSheet.create({
         width: dotSize / 2,
         height: dotSize / 2,
         borderRadius: dotSize / 4,
-    },
-    button: {
-        width: 90, // 1 + 88 + 1
-        height: 74, // 1 + 72 + 1
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'relative',
-    },
-    circleAbove: {
-        position: 'absolute',
-        left: (90 - 74) / 2,
-        top: 0,
-        width: 74,
-        height: 74,
-        borderRadius: 74 / 2,
-        zIndex: -1,
     },
     space: {
         flexGrow: 3,
