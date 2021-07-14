@@ -34,6 +34,7 @@ import {
     useTheme,
     ColorVariants,
     UIBoxButton,
+    UILinkButton,
     UILabel,
 } from '@tonlabs/uikit.hydrogen';
 import { UIPinCode, UIPinCodeBiometryType } from '@tonlabs/uikit.flask';
@@ -47,7 +48,7 @@ function PinCodeMenu() {
 
     return (
         <>
-            <UITextButton
+            <UILinkButton
                 testID="show_lockscreen"
                 title="Show LockScreen"
                 onPress={() => {
