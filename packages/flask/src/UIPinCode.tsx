@@ -483,7 +483,7 @@ export function UIPinCode({
         if (pin.length === 6) {
             runOnJS(validatePin)(pin);
         }
-    });
+    }, [dotsValues]);
 
     const dotsContextValue = React.useMemo(
         () => ({
