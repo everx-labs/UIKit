@@ -15,15 +15,15 @@ import {
 
 const useStyles = makeStyles((theme) => ({
     container: {
-        borderRadius: QR_CODE_SIZE,
-        height: QR_CODE_SIZE,
-        width: QR_CODE_SIZE,
+        borderRadius: QR_CODE_SIZE + CIRCLE_QR_CODE_BORDER_WIDTH * 2,
+        height: QR_CODE_SIZE + CIRCLE_QR_CODE_BORDER_WIDTH * 2,
+        width: QR_CODE_SIZE + CIRCLE_QR_CODE_BORDER_WIDTH * 2,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: theme[ColorVariants.BackgroundPrimary],
         borderColor: theme[ColorVariants.BackgroundPrimary],
         overflow: 'hidden',
-        borderWidth: CIRCLE_QR_CODE_BORDER_WIDTH,
+        borderWidth: CIRCLE_QR_CODE_BORDER_WIDTH
     },
     qrCodeContainer: {
         ...StyleSheet.absoluteFillObject,
@@ -137,8 +137,7 @@ export const QRCodeCircle: React.FC<QRCodeProps> = ({
 
     const qr = React.useMemo(() => QRCode.create(value, {}), [value]);
     const widthOfInnerQRCodeInSquares: number = qr.modules?.size || 2;
-    const diameterOfCircleQRCode =
-        QR_CODE_SIZE - CIRCLE_QR_CODE_BORDER_WIDTH * 2;
+    const diameterOfCircleQRCode = QR_CODE_SIZE;
     const sizeOfInnerQRCode = diameterOfCircleQRCode / Math.SQRT2;
     const sizeOfSquare = sizeOfInnerQRCode / widthOfInnerQRCodeInSquares;
     const isThereLogo = logo !== undefined;

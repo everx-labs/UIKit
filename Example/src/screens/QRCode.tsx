@@ -16,7 +16,7 @@ const logo = require('../../assets/icons/ico-crystal/crystal-fill-L.png');
 const QRCode = () => {
     const theme = useTheme();
     const [base64Image, setBase64Image] = React.useState<string>('');
-    const [type, setType] = React.useState<QRCodeType>('Circle');
+    const [type, setType] = React.useState<QRCodeType>(QRCodeType.Circle);
     const ref = React.useRef<QRCodeRef>(null);
     const onGetPng = () => {
         ref.current?.getPng().then((base64: string | null) => {
@@ -38,13 +38,13 @@ const QRCode = () => {
                 >
                     <UIBoxButton
                         title="Default"
-                        onPress={() => setType('Default')}
-                        disabled={type === 'Default'}
+                        onPress={() => setType(QRCodeType.Square)}
+                        disabled={type === QRCodeType.Square}
                     />
                     <UIBoxButton
                         title="Circle"
-                        onPress={() => setType('Circle')}
-                        disabled={type === 'Circle'}
+                        onPress={() => setType(QRCodeType.Circle)}
+                        disabled={type === QRCodeType.Circle}
                     />
                 </View>
                 <View
