@@ -1,6 +1,10 @@
-import { UIActionSheetContainer, UIActionSheetAction } from './ActionSheet';
-
-export type UIActionSheetActionType = 'Neutral' | 'Negative' | 'Сancel' | 'Disabled';
+// eslint-disable-next-line no-shadow
+export enum UIActionSheetActionType {
+    Neutral = 'Neutral',
+    Negative = 'Negative',
+    Сancel = 'Сancel',
+    Disabled = 'Disabled',
+}
 
 export type UIActionSheetActionProps = {
     /**
@@ -40,14 +44,9 @@ export type UIActionSheetContainerProps = {
 };
 
 /**
- * UIActionSheet components
+ * UIActionSheet components interface
  */
-export type UIActionSheet = React.FC<UIActionSheetContainerProps> & {
+export type IUIActionSheet = React.FC<UIActionSheetContainerProps> & {
     /** Action component */
     Action: React.FC<UIActionSheetActionProps>;
 };
-
-// @ts-expect-error
-// ts doesn't understand that we assign [Action] later, and want to see it right away
-export const UIActionSheet: UIActionSheet = UIActionSheetContainer;
-UIActionSheet.Action = UIActionSheetAction;

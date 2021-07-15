@@ -1,5 +1,5 @@
 // @flow
-export { default as UIActionSheet } from './UIActionSheet';
+export { default as UIActionSheet } from './UIActionSheet'; // @deprecated
 export { default as UIBottomBar } from './UIBottomBar';
 export { default as UIBreadCrumbs } from './UIBreadCrumbs';
 export { default as UIController } from './UIController';

@@ -52,7 +52,7 @@ import { Design } from './screens/Design';
 import { Chart } from './screens/Chart';
 import { Images } from './screens/Images';
 import { Layouts } from './screens/Layouts';
-import { actionSheet, Menus } from './screens/Menus';
+import { Menus } from './screens/Menus';
 import { Notifications } from './screens/Notifications';
 import { Popups } from './screens/Popups';
 import { Products } from './screens/Products';
@@ -341,7 +341,6 @@ const App = () => {
                         </Split.Navigator>
                     </NavigationContainer>
                     <UILayoutManager />
-                    <UIActionSheet ref={actionSheet} masterSheet={false} />
                     <UIActionSheet />
                     <UICountryPicker navigation={navRef.current} isShared />
                     <View

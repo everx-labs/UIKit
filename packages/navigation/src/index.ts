@@ -13,6 +13,7 @@ export * from './UILargeTitleHeader';
 export * from './constants';
 export * from './Sheets';
 export * from './UIAlertView';
+export * from './UIActionSheet';
 
 export * from './SplitNavigator/createSplitNavigator';
 export {

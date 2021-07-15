@@ -6,6 +6,7 @@ export const UIConstant = {
 
     scrollContentInsetHorizontal: 16,
     contentInsetVerticalX2: 2 * GRID_LINE_HEIGHT,
+    contentInsetVerticalX3: 3 * GRID_LINE_HEIGHT,
     contentInsetVerticalX4: 4 * GRID_LINE_HEIGHT,
 
     contentOffset: 16,
