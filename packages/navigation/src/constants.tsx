@@ -28,5 +28,4 @@ export const UIConstant = {
     alertWindowMaximumWidth: 350,
 
     maxSlideDistanceOfTap: 4,
-    mediumBorderRadius: 12,
 };

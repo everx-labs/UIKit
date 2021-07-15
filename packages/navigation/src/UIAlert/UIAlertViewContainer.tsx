@@ -3,10 +3,11 @@ import { BackHandler, Platform, View } from 'react-native';
 import { UILabel, UILabelRoles, makeStyles } from '@tonlabs/uikit.hydrogen';
 import { AlertBox } from './AlertBox';
 import { UIAlertViewAction } from './UIAlertViewAction';
-import type {
+import {
     UIAlertViewActionProps,
     UIAlertViewContainerProps,
-} from '../UIAlertView';
+    UIAlertViewActionType,
+} from './types';
 import { UIConstant } from '../constants';
 
 type AlertViewActions = {
@@ -19,13 +20,13 @@ const getAlertViewActions = (children: React.ReactNode): AlertViewActions => {
     const negativeActions: React.ReactElement<UIAlertViewActionProps>[] = [];
     const neutralActions: React.ReactElement<UIAlertViewActionProps>[] = [];
     const sortAction = (action: React.ReactElement<UIAlertViewActionProps>) => {
-        if (action.props.type === 'Сancel') {
+        if (action.props.type === UIAlertViewActionType.Сancel) {
             cancelAction = action;
         }
-        if (action.props.type === 'Negative') {
+        if (action.props.type === UIAlertViewActionType.Negative) {
             negativeActions.push(action);
         }
-        if (action.props.type === 'Neutral') {
+        if (action.props.type === UIAlertViewActionType.Neutral) {
             neutralActions.push(action);
         }
     };
