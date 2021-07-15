@@ -128,6 +128,7 @@ export function ButtonTitle({
             role={titleRole}
             numberOfLines={1}
             ellipsizeMode="tail"
+            selectable={false}
             style={titleAnimStyle}
         >
             {children}

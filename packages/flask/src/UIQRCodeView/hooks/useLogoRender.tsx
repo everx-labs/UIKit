@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { UIImage, makeStyles } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, UIImage, makeStyles } from '@tonlabs/uikit.hydrogen';
 import type { ImageSourcePropType, ImageStyle, View } from 'react-native';
 import { QR_CODE_LOGO_SIZE } from '../../constants';
 
@@ -15,7 +15,13 @@ export const useLogoRender = (
 ): React.ReactElement<View> | null => {
     const logoStyles = useLogoStyles();
     if (logo) {
-        return <UIImage source={logo} style={logoStyles.image as ImageStyle} />;
+        return (
+            <UIImage
+                source={logo}
+                style={logoStyles.image as ImageStyle}
+                tintColor={ColorVariants.BackgroundPrimaryInverted}
+            />
+        );
     }
     return null;
 };

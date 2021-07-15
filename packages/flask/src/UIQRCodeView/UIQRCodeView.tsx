@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { QRCodeCircle } from './QRCodeCircle';
 import { QRCodeSquare } from './QRCodeSquare';
+import { QRCodeType } from '../types';
 import type { QRCodeProps, QRCodeRef } from '../types';
 import { ScreenshotView } from '../ScreenshotView';
 
 const renderContent = (props: QRCodeProps) => {
     switch (props.type) {
-        case 'Circle':
+        case QRCodeType.Circle:
             return <QRCodeCircle {...props} />;
-        case 'Default':
+        case QRCodeType.Square:
         default:
             return <QRCodeSquare {...props} />;
     }
