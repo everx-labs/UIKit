@@ -15,7 +15,7 @@ import {
 
 const useStyles = makeStyles((theme) => ({
     container: {
-        borderRadius: QR_CODE_SIZE + CIRCLE_QR_CODE_BORDER_WIDTH * 2,
+        borderRadius: QR_CODE_SIZE / 2 + CIRCLE_QR_CODE_BORDER_WIDTH,
         height: QR_CODE_SIZE + CIRCLE_QR_CODE_BORDER_WIDTH * 2,
         width: QR_CODE_SIZE + CIRCLE_QR_CODE_BORDER_WIDTH * 2,
         alignItems: 'center',
