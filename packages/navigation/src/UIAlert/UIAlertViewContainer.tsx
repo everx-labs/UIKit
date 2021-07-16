@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { BackHandler, Platform, View } from 'react-native';
+import { View } from 'react-native';
 import { UILabel, UILabelRoles, makeStyles } from '@tonlabs/uikit.hydrogen';
+import { useBackHandler } from '@react-native-community/hooks';
 import { AlertBox } from './AlertBox';
 import { UIAlertViewAction } from './UIAlertViewAction';
 import {
@@ -71,28 +72,6 @@ const getAlertViewActions = (children: React.ReactNode): AlertViewActions => {
     };
 };
 
-const useBackHandler = (onRequestClose?: () => void): void => {
-    React.useEffect(() => {
-        if (Platform.OS !== 'android') {
-            return undefined;
-        }
-        const backHandler = BackHandler.addEventListener(
-            'hardwareBackPress',
-            () => {
-                if (onRequestClose) {
-                    onRequestClose();
-                }
-                return true;
-            },
-        );
-        return () => {
-            if (backHandler) {
-                backHandler.remove();
-            }
-        };
-    }, [onRequestClose]);
-};
-
 export const UIAlertViewContainer: React.FC<UIAlertViewContainerProps> = (
     props: UIAlertViewContainerProps,
 ) => {
@@ -103,8 +82,12 @@ export const UIAlertViewContainer: React.FC<UIAlertViewContainerProps> = (
         [props.children],
     );
 
-    const onRequestClose: (() => void) | undefined =
-        alertViewActions.cancelAction?.props.onPress;
+    const onRequestClose = React.useCallback((): boolean => {
+        if (alertViewActions.cancelAction) {
+            alertViewActions.cancelAction.props.onPress();
+        }
+        return true;
+    }, [alertViewActions]);
 
     useBackHandler(onRequestClose);
 
@@ -113,7 +96,7 @@ export const UIAlertViewContainer: React.FC<UIAlertViewContainerProps> = (
     return (
         <AlertBox
             visible={visible}
-            onTapUnderlay={onRequestClose}
+            onTapUnderlay={alertViewActions.cancelAction?.props.onPress}
             testID={testID}
         >
             <View style={styles.container}>

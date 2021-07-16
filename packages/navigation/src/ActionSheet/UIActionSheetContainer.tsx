@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BackHandler, Platform, View } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 import {
     UILabel,
     UILabelRoles,
@@ -7,6 +7,7 @@ import {
     ColorVariants,
     useTheme,
 } from '@tonlabs/uikit.hydrogen';
+import { useBackHandler } from '@react-native-community/hooks';
 import { UICardSheet } from '../Sheets';
 import { UIActionSheetAction } from './UIActionSheetAction';
 import {
@@ -84,41 +85,42 @@ const getActionSheetActions = (
     };
 };
 
-const useBackHandler = (onRequestClose?: () => void): void => {
-    React.useEffect(() => {
-        if (Platform.OS !== 'android') {
-            return undefined;
-        }
-        const backHandler = BackHandler.addEventListener(
-            'hardwareBackPress',
-            () => {
-                if (onRequestClose) {
-                    onRequestClose();
-                }
-                return true;
-            },
-        );
-        return () => {
-            if (backHandler) {
-                backHandler.remove();
-            }
-        };
-    }, [onRequestClose]);
+const renderHeader = (
+    note: string | undefined,
+    headerStyle: ViewStyle,
+): React.ReactElement<View> | null => {
+    if (!note) {
+        return null;
+    }
+    return (
+        <View style={headerStyle}>
+            <UILabel
+                role={UILabelRoles.ParagraphFootnote}
+                color={ColorVariants.TextSecondary}
+            >
+                {note}
+            </UILabel>
+        </View>
+    );
 };
 
-export const UIActionSheetContainer: React.FC<UIActionSheetContainerProps> = (
-    props: UIActionSheetContainerProps,
-) => {
-    const { note, visible, testID } = props;
-    visible;
-
+export const UIActionSheetContainer: React.FC<UIActionSheetContainerProps> = ({
+    note,
+    visible,
+    testID,
+    children,
+}: UIActionSheetContainerProps) => {
     const actionSheetActions: ActionSheetActions = React.useMemo(
-        () => getActionSheetActions(props.children),
-        [props.children],
+        () => getActionSheetActions(children),
+        [children],
     );
 
-    const onRequestClose: (() => void) | undefined =
-        actionSheetActions.cancelAction?.props.onPress;
+    const onRequestClose = React.useCallback((): boolean => {
+        if (actionSheetActions.cancelAction) {
+            actionSheetActions.cancelAction.props.onPress();
+        }
+        return true;
+    }, [actionSheetActions]);
 
     useBackHandler(onRequestClose);
 
@@ -126,16 +128,12 @@ export const UIActionSheetContainer: React.FC<UIActionSheetContainerProps> = (
     const styles = useStyles(theme);
 
     return (
-        <UICardSheet visible={visible} onClose={onRequestClose}>
+        <UICardSheet
+            visible={visible}
+            onClose={actionSheetActions.cancelAction?.props.onPress}
+        >
             <View style={styles.container} testID={testID}>
-                <View style={styles.header}>
-                    <UILabel
-                        role={UILabelRoles.ParagraphFootnote}
-                        color={ColorVariants.TextSecondary}
-                    >
-                        {note}
-                    </UILabel>
-                </View>
+                {renderHeader(note, styles.header as ViewStyle)}
                 <View style={styles.actionsContainer}>
                     {actionSheetActions.actionList}
                 </View>
@@ -154,9 +152,6 @@ const useStyles = makeStyles((theme) => ({
     header: {
         paddingVertical: UIConstant.contentInsetVerticalX3,
         paddingHorizontal: UIConstant.contentOffset,
-    },
-    headerTitle: {
-        paddingBottom: 4,
     },
     actionsContainer: {
         flexDirection: 'column',

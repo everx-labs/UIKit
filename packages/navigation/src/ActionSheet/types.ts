@@ -29,7 +29,7 @@ export type UIActionSheetContainerProps = {
     /**
      * Note of the ActionSheet
      */
-    note: string;
+    note?: string;
     /**
      * List of UIActionSheetAction
      * There can be no more than one child with the "Cancel" UIActionSheetActionType.
