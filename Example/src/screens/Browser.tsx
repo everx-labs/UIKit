@@ -71,7 +71,7 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
     const [encryptionBoxes, setEncryptionBoxes] = React.useState([
         {
             id: 1,
-            title: 'Encrypt / Decrypt with Surf',
+            title: 'Use Surf keys',
         },
         {
             id: 2,
