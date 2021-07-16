@@ -11,7 +11,6 @@ import {
 import { UIConstant } from '@tonlabs/uikit.core';
 import {
     UICountryPicker,
-    UIActionSheet,
     UIPopover,
     UIPopoverMenu,
 } from '@tonlabs/uikit.navigation_legacy';
@@ -20,6 +19,8 @@ import {
     UICardSheet,
     UIBottomSheet,
     UIQRCodeScannerSheet,
+    UIActionSheet,
+    UIActionSheetActionType,
 } from '@tonlabs/uikit.navigation';
 import {
     UISlider,
@@ -36,8 +37,6 @@ import {
 } from '@tonlabs/uikit.hydrogen';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
-
-export const actionSheet = React.createRef<typeof UIActionSheet>();
 
 function BigBottomSheet() {
     const theme = useTheme();
@@ -105,10 +104,18 @@ function BigBottomSheet() {
         </>
     );
 }
+const getCallback =
+    (message: string, setVisible: (visible: boolean) => void) => () => {
+        console.log(message);
+        if (message.includes('Сancel')) {
+            setVisible(false);
+        }
+    };
 
 export const Menus = () => {
     const theme = useTheme();
     const [activeIndex, setActiveIndex] = useState(0);
+    const [actionSheetVisible, setActionSheetVisible] = React.useState(false);
     const [cardSheetVisible, setCardSheetVisible] = React.useState(false);
     const [cardSheet2Visible, setCardSheet2Visible] = React.useState(false);
     const [bottomSheetVisible, setBottomSheetVisible] = React.useState(false);
@@ -121,26 +128,33 @@ export const Menus = () => {
                     <UILinkButton
                         testID="show_actionSheet"
                         title="Show ActionSheet"
-                        onPress={() => {
-                            if (actionSheet.current) {
-                                actionSheet.current.show(
-                                    [
-                                        {
-                                            title: 'Item 1',
-                                            onPress: () =>
-                                                alert('Action 1 was called'),
-                                        },
-                                        {
-                                            title: 'Item 2',
-                                            onPress: () =>
-                                                alert('Action 2 was called'),
-                                        },
-                                    ],
-                                    true,
-                                );
-                            }
-                        }}
+                        onPress={() => setActionSheetVisible(true)}
                     />
+                    <UIActionSheet
+                        visible={actionSheetVisible}
+                        note="A short description of the actions goes here."
+                    >
+                        <UIActionSheet.Action
+                            type={UIActionSheetActionType.Disabled}
+                            title="Disabled Action"
+                            onPress={getCallback('Disabled Action', setActionSheetVisible)}
+                        />
+                        <UIActionSheet.Action
+                            type={UIActionSheetActionType.Neutral}
+                            title="Neutral Action"
+                            onPress={getCallback('Neutral Action', setActionSheetVisible)}
+                        />
+                        <UIActionSheet.Action
+                            type={UIActionSheetActionType.Negative}
+                            title="Negative Action"
+                            onPress={getCallback('Negative Action', setActionSheetVisible)}
+                        />
+                        <UIActionSheet.Action
+                            type={UIActionSheetActionType.Сancel}
+                            title="Сancel Action"
+                            onPress={getCallback('Сancel Action', setActionSheetVisible)}
+                        />
+                    </UIActionSheet>
                 </View>
             </ExampleSection>
             <ExampleSection title="UICountryPicker">

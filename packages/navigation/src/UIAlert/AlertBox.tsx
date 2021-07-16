@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: UIConstant.alertWindowMaximumWidth,
         flex: 1,
         backgroundColor: theme[ColorVariants.BackgroundPrimary],
-        borderRadius: UIConstant.mediumBorderRadius,
+        borderRadius: UIConstant.alertBorderRadius,
         overflow: 'hidden',
     },
 }));

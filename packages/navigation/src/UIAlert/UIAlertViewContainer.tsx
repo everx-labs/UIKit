@@ -1,12 +1,14 @@
 import * as React from 'react';
-import { BackHandler, Platform, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { UILabel, UILabelRoles, makeStyles } from '@tonlabs/uikit.hydrogen';
+import { useBackHandler } from '@react-native-community/hooks';
 import { AlertBox } from './AlertBox';
 import { UIAlertViewAction } from './UIAlertViewAction';
-import type {
+import {
     UIAlertViewActionProps,
     UIAlertViewContainerProps,
-} from '../UIAlertView';
+    UIAlertViewActionType,
+} from './types';
 import { UIConstant } from '../constants';
 
 type AlertViewActions = {
@@ -19,13 +21,13 @@ const getAlertViewActions = (children: React.ReactNode): AlertViewActions => {
     const negativeActions: React.ReactElement<UIAlertViewActionProps>[] = [];
     const neutralActions: React.ReactElement<UIAlertViewActionProps>[] = [];
     const sortAction = (action: React.ReactElement<UIAlertViewActionProps>) => {
-        if (action.props.type === 'Сancel') {
+        if (action.props.type === UIAlertViewActionType.Сancel) {
             cancelAction = action;
         }
-        if (action.props.type === 'Negative') {
+        if (action.props.type === UIAlertViewActionType.Negative) {
             negativeActions.push(action);
         }
-        if (action.props.type === 'Neutral') {
+        if (action.props.type === UIAlertViewActionType.Neutral) {
             neutralActions.push(action);
         }
     };
@@ -70,26 +72,43 @@ const getAlertViewActions = (children: React.ReactNode): AlertViewActions => {
     };
 };
 
-const useBackHandler = (onRequestClose?: () => void): void => {
-    React.useEffect(() => {
-        if (Platform.OS !== 'android') {
-            return undefined;
-        }
-        const backHandler = BackHandler.addEventListener(
-            'hardwareBackPress',
-            () => {
-                if (onRequestClose) {
-                    onRequestClose();
-                }
-                return true;
-            },
-        );
-        return () => {
-            if (backHandler) {
-                backHandler.remove();
-            }
-        };
-    }, [onRequestClose]);
+const renderTitleLabel = (
+    title?: string,
+): React.ReactElement<typeof UILabel> | null => {
+    if (!title) {
+        return null;
+    }
+    return (
+        <UILabel
+            role={UILabelRoles.TitleSmall}
+            style={headerStyles.headerTitle}
+        >
+            {title}
+        </UILabel>
+    );
+};
+
+const renderNoteLabel = (
+    note?: string,
+): React.ReactElement<typeof UILabel> | null => {
+    if (!note) {
+        return null;
+    }
+    return <UILabel role={UILabelRoles.ParagraphFootnote}>{note}</UILabel>;
+};
+const renderHeader = (
+    title: string | undefined,
+    note: string | undefined,
+): React.ReactElement<View> | null => {
+    if (!title && !note) {
+        return null;
+    }
+    return (
+        <View style={headerStyles.header}>
+            {renderTitleLabel(title)}
+            {renderNoteLabel(note)}
+        </View>
+    );
 };
 
 export const UIAlertViewContainer: React.FC<UIAlertViewContainerProps> = (
@@ -102,8 +121,12 @@ export const UIAlertViewContainer: React.FC<UIAlertViewContainerProps> = (
         [props.children],
     );
 
-    const onRequestClose: (() => void) | undefined =
-        alertViewActions.cancelAction?.props.onPress;
+    const onRequestClose = React.useCallback((): boolean => {
+        if (alertViewActions.cancelAction) {
+            alertViewActions.cancelAction.props.onPress();
+        }
+        return true;
+    }, [alertViewActions]);
 
     useBackHandler(onRequestClose);
 
@@ -112,21 +135,11 @@ export const UIAlertViewContainer: React.FC<UIAlertViewContainerProps> = (
     return (
         <AlertBox
             visible={visible}
-            onTapUnderlay={onRequestClose}
+            onTapUnderlay={alertViewActions.cancelAction?.props.onPress}
             testID={testID}
         >
             <View style={styles.container}>
-                <View style={styles.header}>
-                    <UILabel
-                        role={UILabelRoles.TitleSmall}
-                        style={styles.headerTitle}
-                    >
-                        {title}
-                    </UILabel>
-                    <UILabel role={UILabelRoles.ParagraphFootnote}>
-                        {note}
-                    </UILabel>
-                </View>
+                {renderHeader(title, note)}
                 <View style={styles.actionsContainer}>
                     {alertViewActions.actionList}
                 </View>
@@ -140,15 +153,18 @@ const useStyles = makeStyles((actionCount: number) => ({
         paddingHorizontal: 24,
         paddingVertical: 12,
     },
-    header: {
-        paddingVertical: UIConstant.contentInsetVerticalX4,
-    },
-    headerTitle: {
-        paddingBottom: 4,
-    },
     actionsContainer: {
         flexDirection: actionCount === 2 ? 'row-reverse' : 'column',
         flexWrap: actionCount === 2 ? 'wrap' : 'nowrap',
         justifyContent: 'space-around',
     },
 }));
+
+const headerStyles = StyleSheet.create({
+    header: {
+        paddingVertical: UIConstant.contentInsetVerticalX4,
+    },
+    headerTitle: {
+        paddingBottom: 4,
+    },
+});
