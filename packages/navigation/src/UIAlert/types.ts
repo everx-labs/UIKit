@@ -28,11 +28,11 @@ export type UIAlertViewContainerProps = {
     /**
      * Title of the Alert
      */
-    title: string;
+    title?: string;
     /**
      * Note of the Alert
      */
-    note: string;
+    note?: string;
     /**
      * List of UIAlertView.Action
      * There can be no more than one child with the "Cancel" UIAlertViewActionType.

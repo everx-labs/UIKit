@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { UILabel, UILabelRoles, makeStyles } from '@tonlabs/uikit.hydrogen';
 import { useBackHandler } from '@react-native-community/hooks';
 import { AlertBox } from './AlertBox';
@@ -72,6 +72,45 @@ const getAlertViewActions = (children: React.ReactNode): AlertViewActions => {
     };
 };
 
+const renderTitleLabel = (
+    title?: string,
+): React.ReactElement<typeof UILabel> | null => {
+    if (!title) {
+        return null;
+    }
+    return (
+        <UILabel
+            role={UILabelRoles.TitleSmall}
+            style={headerStyles.headerTitle}
+        >
+            {title}
+        </UILabel>
+    );
+};
+
+const renderNoteLabel = (
+    note?: string,
+): React.ReactElement<typeof UILabel> | null => {
+    if (!note) {
+        return null;
+    }
+    return <UILabel role={UILabelRoles.ParagraphFootnote}>{note}</UILabel>;
+};
+const renderHeader = (
+    title: string | undefined,
+    note: string | undefined,
+): React.ReactElement<View> | null => {
+    if (!title && !note) {
+        return null;
+    }
+    return (
+        <View style={headerStyles.header}>
+            {renderTitleLabel(title)}
+            {renderNoteLabel(note)}
+        </View>
+    );
+};
+
 export const UIAlertViewContainer: React.FC<UIAlertViewContainerProps> = (
     props: UIAlertViewContainerProps,
 ) => {
@@ -100,17 +139,7 @@ export const UIAlertViewContainer: React.FC<UIAlertViewContainerProps> = (
             testID={testID}
         >
             <View style={styles.container}>
-                <View style={styles.header}>
-                    <UILabel
-                        role={UILabelRoles.TitleSmall}
-                        style={styles.headerTitle}
-                    >
-                        {title}
-                    </UILabel>
-                    <UILabel role={UILabelRoles.ParagraphFootnote}>
-                        {note}
-                    </UILabel>
-                </View>
+                {renderHeader(title, note)}
                 <View style={styles.actionsContainer}>
                     {alertViewActions.actionList}
                 </View>
@@ -124,15 +153,18 @@ const useStyles = makeStyles((actionCount: number) => ({
         paddingHorizontal: 24,
         paddingVertical: 12,
     },
-    header: {
-        paddingVertical: UIConstant.contentInsetVerticalX4,
-    },
-    headerTitle: {
-        paddingBottom: 4,
-    },
     actionsContainer: {
         flexDirection: actionCount === 2 ? 'row-reverse' : 'column',
         flexWrap: actionCount === 2 ? 'wrap' : 'nowrap',
         justifyContent: 'space-around',
     },
 }));
+
+const headerStyles = StyleSheet.create({
+    header: {
+        paddingVertical: UIConstant.contentInsetVerticalX4,
+    },
+    headerTitle: {
+        paddingBottom: 4,
+    },
+});
