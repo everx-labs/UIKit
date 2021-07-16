@@ -4,8 +4,7 @@
   "description": "Charts for Tonlabs's UIKit",
   "scripts": {
     "tsc": "tsc --noEmit --composite false",
-    "prepare": "bob build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepare": "bob build"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
