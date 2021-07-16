@@ -7,7 +7,7 @@ module.exports = {
     setupFilesAfterEnv: ['@testing-library/jest-native/extend-expect'],
     collectCoverage: true,
     collectCoverageFrom: [
-        'packages/**/*.{js}',
+        'packages/**/*.[jt]s',
         '!**/node_modules/**',
     ],
     roots: [

@@ -3,8 +3,6 @@ import React from 'react';
 import { render } from '@testing-library/react-native';
 import { UILabel } from '../src/UILabel'
 
-
-
 test('simple example', () => {
     const { queryByTestId } = render(
         <UILabel testID="label" />

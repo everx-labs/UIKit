@@ -54,7 +54,6 @@
     "@types/react": "16.14.8",
     "@types/react-native": "0.63.52",
     "jest": "26.4.0",
-    "metro-react-native-babel-preset": "^0.63.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-native": "^0.63.0",
