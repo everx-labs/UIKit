@@ -151,6 +151,8 @@ export const TouchableElement = ({
                         contentStyle,
                         hover?.overlayStyle,
                         press?.overlayStyle,
+                        // @ts-expect-error
+                        { cursor: disabled ? 'default' : 'pointer' }
                     ]}
                 >
                     {React.Children.only(children)}
