@@ -8,6 +8,8 @@ import {
     RawButtonProps,
 } from 'react-native-gesture-handler';
 import Animated, {
+    interpolate,
+    interpolateColor,
     runOnJS,
     useAnimatedGestureHandler,
     useAnimatedStyle,
@@ -29,7 +31,6 @@ import { DotsContext } from './DotsContext';
 import {
     CircleAnimationStatus,
     DotAnimationStatus,
-    DOTS_COUNT,
     DOT_WITH_SPRING_CONFIG,
     KEY_HAPTIC_VIBRATION_DURATION,
     KEY_HEIGHT,
@@ -47,14 +48,14 @@ function useCircleAboveStyle(circleAnimProgress: Animated.SharedValue<number>) {
 
     return useAnimatedStyle(() => {
         return {
-            backgroundColor: Animated.interpolateColor(
+            backgroundColor: interpolateColor(
                 circleAnimProgress.value,
                 [CircleAnimationStatus.Active, CircleAnimationStatus.NotActive],
                 [`rgba(${colorParts},1)`, `rgba(${colorParts},0)`],
             ),
             transform: [
                 {
-                    scale: Animated.interpolate(
+                    scale: interpolate(
                         circleAnimProgress.value,
                         [
                             CircleAnimationStatus.Active,
@@ -76,7 +77,15 @@ export const RawButton: React.FunctionComponent<Animated.AnimateProps<
         }
 >> = Animated.createAnimatedComponent(GHRawButton);
 
-export function Key({ num, disabled }: { num: number; disabled: boolean }) {
+export function Key({
+    num,
+    disabled,
+    dotsCount,
+}: {
+    num: number;
+    disabled: boolean;
+    dotsCount: number;
+}) {
     const { activeDotIndex, dotsValues, dotsAnims } = React.useContext(
         DotsContext,
     );
@@ -90,7 +99,7 @@ export function Key({ num, disabled }: { num: number; disabled: boolean }) {
             circleAnimProgress.value = CircleAnimationStatus.Active;
         },
         onFinish: () => {
-            if (activeDotIndex.value > 5) {
+            if (activeDotIndex.value > dotsCount - 1) {
                 return;
             }
 
@@ -148,7 +157,8 @@ export function BiometryKey({
     biometryType,
     getPasscodeWithBiometry,
     disabled,
-}: BiometryProps & { disabled: boolean }) {
+    dotsCount,
+}: BiometryProps & { disabled: boolean; dotsCount: number }) {
     const usePredefined =
         !isBiometryEnabled && process.env.NODE_ENV === 'development';
 
@@ -179,7 +189,7 @@ export function BiometryKey({
                     DOT_WITH_SPRING_CONFIG,
                 );
             });
-            activeDotIndex.value = DOTS_COUNT;
+            activeDotIndex.value = dotsCount;
             return;
         }
         if (!isBiometryEnabled || getPasscodeWithBiometry == null) {
@@ -198,7 +208,7 @@ export function BiometryKey({
                 DOT_WITH_SPRING_CONFIG,
             );
         });
-        activeDotIndex.value = DOTS_COUNT;
+        activeDotIndex.value = dotsCount;
     }, [
         usePredefined,
         isBiometryEnabled,
@@ -206,6 +216,7 @@ export function BiometryKey({
         dotsValues,
         dotsAnims,
         activeDotIndex,
+        dotsCount,
     ]);
 
     const circleAnimProgress = useSharedValue(CircleAnimationStatus.NotActive);
