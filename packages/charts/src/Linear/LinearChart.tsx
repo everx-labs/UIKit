@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { View, StyleSheet, LayoutChangeEvent } from 'react-native';
 import Svg, { Path as SvgPath } from 'react-native-svg';
-import Animated from 'react-native-reanimated';
+import Animated, {
+    useAnimatedProps,
+    useSharedValue,
+} from 'react-native-reanimated';
 import {
     TypographyVariants,
     ColorVariants,
@@ -106,7 +109,7 @@ type IProps = {
 export const LinearChart: React.FC<IProps> = (props: IProps) => {
     const theme = useTheme();
     const { data } = props;
-    const dimensions = Animated.useSharedValue<LinearChartDimensions>({
+    const dimensions = useSharedValue<LinearChartDimensions>({
         ...LINEAR_CHART_INITIAL_DIMENSIONS,
     });
 
@@ -140,7 +143,7 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
 
     const labelData: LinearChartLabelData = useLabelData(dimensions, data);
 
-    const animatedSvgProps = Animated.useAnimatedProps(() => {
+    const animatedSvgProps = useAnimatedProps(() => {
         return {
             width: dimensions.value.width + LINEAR_CHART_STROKE_WIDTH,
             height: dimensions.value.height + LINEAR_CHART_STROKE_WIDTH,

@@ -7,7 +7,15 @@ import {
     ViewStyle,
     StyleProp,
 } from 'react-native';
-import Animated from 'react-native-reanimated';
+import Animated, {
+    interpolate,
+    interpolateColor,
+    runOnJS,
+    useAnimatedStyle,
+    useDerivedValue,
+    useSharedValue,
+    withSpring,
+} from 'react-native-reanimated';
 
 import { ColorVariants, useTheme } from '../Colors';
 import { Typography, TypographyVariants } from '../Typography';
@@ -67,14 +75,14 @@ type LabelProps = {
 const Label: React.FC<LabelProps> = (props: LabelProps) => {
     const { children, animatedPosition, labelOpacity } = props;
     const theme = useTheme();
-    const labelContainerStyle = Animated.useAnimatedStyle(() => {
+    const labelContainerStyle = useAnimatedStyle(() => {
         return {
             opacity: labelOpacity.value,
         };
     });
-    const labelStyle = Animated.useAnimatedStyle(() => {
+    const labelStyle = useAnimatedStyle(() => {
         return {
-            color: Animated.interpolateColor(
+            color: interpolateColor(
                 animatedPosition.value,
                 [POSITION_FOLDED, POSITION_EXPANDED],
                 [
@@ -106,9 +114,9 @@ const useAnimatedPosition = (
     onFolded: () => void,
 ): Readonly<Animated.SharedValue<number>> => {
     /** Label position switcher (POSITION_FOLDED/POSITION_EXPANDED) */
-    const position: Animated.SharedValue<number> = Animated.useSharedValue<
-        number
-    >(getPosition(isFolded));
+    const position: Animated.SharedValue<number> = useSharedValue<number>(
+        getPosition(isFolded),
+    );
 
     React.useEffect(() => {
         position.value = getPosition(isFolded);
@@ -119,7 +127,7 @@ const useAnimatedPosition = (
             'worklet';
 
             if (isFinished && position.value === POSITION_FOLDED) {
-                Animated.runOnJS(onFolded)();
+                runOnJS(onFolded)();
             }
         },
         [position.value, onFolded],
@@ -127,12 +135,8 @@ const useAnimatedPosition = (
 
     const animatedPosition: Readonly<Animated.SharedValue<
         number
-    >> = Animated.useDerivedValue(() => {
-        return Animated.withSpring(
-            position.value,
-            withSpringConfig,
-            animationCallback,
-        );
+    >> = useDerivedValue(() => {
+        return withSpring(position.value, withSpringConfig, animationCallback);
     });
     return animatedPosition;
 };
@@ -179,10 +183,10 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (
     const { isFolded, onFolded, children } = props;
 
     /** Dimensions of label in the expanded state */
-    const expandedLabelWidth: Animated.SharedValue<number> = Animated.useSharedValue<
+    const expandedLabelWidth: Animated.SharedValue<number> = useSharedValue<
         number
     >(0);
-    const expandedLabelHeight: Animated.SharedValue<number> = Animated.useSharedValue<
+    const expandedLabelHeight: Animated.SharedValue<number> = useSharedValue<
         number
     >(0);
 
@@ -191,7 +195,7 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (
         expandedLabelHeight,
     );
 
-    const labelOpacity: Animated.SharedValue<number> = Animated.useDerivedValue<
+    const labelOpacity: Animated.SharedValue<number> = useDerivedValue<
         number
     >(() => {
         return expandedLabelWidth.value && expandedLabelHeight.value ? 1 : 0;
@@ -201,26 +205,26 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (
         number
     >> = useAnimatedPosition(isFolded, onFolded);
 
-    const labelContainerStyle: StyleProp<ViewStyle> = Animated.useAnimatedStyle(() => {
+    const labelContainerStyle: StyleProp<ViewStyle> = useAnimatedStyle(() => {
         const foldedX: number = getFoldedX(expandedLabelWidth.value);
         return {
             transform: [
                 {
-                    translateX: Animated.interpolate(
+                    translateX: interpolate(
                         animatedPosition.value,
                         [POSITION_FOLDED, POSITION_EXPANDED],
                         [-foldedX, 0],
                     ),
                 },
                 {
-                    translateY: Animated.interpolate(
+                    translateY: interpolate(
                         animatedPosition.value,
                         [POSITION_FOLDED, POSITION_EXPANDED],
                         [-expandedLabelHeight.value, 0],
                     ),
                 },
                 {
-                    scale: Animated.interpolate(
+                    scale: interpolate(
                         animatedPosition.value,
                         [POSITION_FOLDED, POSITION_EXPANDED],
                         [FOLDED_LABEL_SCALE, 1],
