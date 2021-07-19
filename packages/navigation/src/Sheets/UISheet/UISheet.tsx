@@ -11,7 +11,10 @@ import {
     PanGestureHandler,
     TapGestureHandler,
 } from 'react-native-gesture-handler';
-import Animated, { useAnimatedStyle } from 'react-native-reanimated';
+import Animated, {
+    interpolateColor,
+    useAnimatedStyle,
+} from 'react-native-reanimated';
 import { useBackHandler } from '@react-native-community/hooks';
 
 import {
@@ -103,7 +106,7 @@ function UISheetPortalContent({
             // to initialize before it's applied
             // and before it happen it shown provided background color
             // with default opacity (that is 1)
-            backgroundColor: Animated.interpolateColor(
+            backgroundColor: interpolateColor(
                 position.value,
                 [0, -height.value],
                 [

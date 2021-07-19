@@ -1,5 +1,11 @@
 import * as React from 'react';
-import Animated, { runOnUI } from 'react-native-reanimated';
+import Animated, {
+    runOnUI,
+    useAnimatedProps,
+    useDerivedValue,
+    useSharedValue,
+    withSpring,
+} from 'react-native-reanimated';
 import { Path, serialize } from 'react-native-redash';
 import type { LinearChartDimensions, LinearChartPoint } from '../../types';
 import {
@@ -18,16 +24,16 @@ export const useAnimatedPathProps = (
 ): Partial<{
     d: string;
 }> => {
-    const progress = Animated.useSharedValue<number>(0);
-    const progressTarget = Animated.useSharedValue<number>(0);
+    const progress = useSharedValue<number>(0);
+    const progressTarget = useSharedValue<number>(0);
 
     /** Used to avoid unwanted chart jumps.
      * We need it to save path state if the animation did not have time to end,
      * and the data changed again.
      */
-    const intermediatePath = Animated.useSharedValue<Path | null>(null);
+    const intermediatePath = useSharedValue<Path | null>(null);
 
-    const targetPath = Animated.useDerivedValue(() => {
+    const targetPath = useDerivedValue(() => {
         return convertDataToPath(
             data,
             dimensions.value,
@@ -35,7 +41,7 @@ export const useAnimatedPathProps = (
         );
     }, [data, dimensions]);
 
-    const currentPath = Animated.useDerivedValue<Path | null>(() => {
+    const currentPath = useDerivedValue<Path | null>(() => {
         if (targetPath.value === null) {
             return null;
         }
@@ -74,7 +80,7 @@ export const useAnimatedPathProps = (
             if (!dimensions.value.width || !dimensions.value.height) {
                 progress.value = progressTarget.value;
             } else {
-                progress.value = Animated.withSpring(
+                progress.value = withSpring(
                     progressTarget.value,
                     LINEAR_CHART_WITH_SPRING_CONFIG,
                 );
@@ -89,7 +95,7 @@ export const useAnimatedPathProps = (
         dimensions,
     ]);
 
-    const animatedPathProps = Animated.useAnimatedProps(() => {
+    const animatedPathProps = useAnimatedProps(() => {
         if (currentPath.value === null) {
             return {
                 d: '',

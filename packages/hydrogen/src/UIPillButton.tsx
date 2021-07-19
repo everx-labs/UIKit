@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { ColorValue, ImageSourcePropType, StyleSheet } from 'react-native';
-import Animated from 'react-native-reanimated';
+import {
+    interpolateColor,
+    useAnimatedStyle,
+    useSharedValue,
+} from 'react-native-reanimated';
 
 import { Button, ButtonAnimations, UILayout } from './Button';
 import { ColorVariants, useTheme } from './Colors';
@@ -76,10 +80,10 @@ function useButtonAnimations(
     const { hoverOverlayColor, pressOverlayColor, activeContentColor } = buttonStates;
     const theme = useTheme();
 
-    const hoverAnim = Animated.useSharedValue(0);
-    const hoverOverlayStyle = Animated.useAnimatedStyle(() => {
+    const hoverAnim = useSharedValue(0);
+    const hoverOverlayStyle = useAnimatedStyle(() => {
         return {
-            backgroundColor: Animated.interpolateColor(
+            backgroundColor: interpolateColor(
                 hoverAnim.value,
                 [0, 1],
                 [
@@ -90,10 +94,10 @@ function useButtonAnimations(
         };
     });
 
-    const pressAnim = Animated.useSharedValue(0);
-    const pressOverlayStyle = Animated.useAnimatedStyle(() => {
+    const pressAnim = useSharedValue(0);
+    const pressOverlayStyle = useAnimatedStyle(() => {
         return {
-            backgroundColor: Animated.interpolateColor(
+            backgroundColor: interpolateColor(
                 pressAnim.value,
                 [0, 1],
                 [
@@ -104,10 +108,10 @@ function useButtonAnimations(
         };
     });
 
-    const titleAnim = Animated.useSharedValue(0);
-    const titleAnimStyle = Animated.useAnimatedStyle(() => {
+    const titleAnim = useSharedValue(0);
+    const titleAnimStyle = useAnimatedStyle(() => {
         return {
-            color: Animated.interpolateColor(
+            color: interpolateColor(
                 titleAnim.value,
                 [0, 1],
                 [
@@ -118,8 +122,8 @@ function useButtonAnimations(
         };
     });
 
-    const iconAnim = Animated.useSharedValue(0);
-    const iconAnimStyle = Animated.useAnimatedStyle(() => {
+    const iconAnim = useSharedValue(0);
+    const iconAnimStyle = useAnimatedStyle(() => {
         return {
             opacity: iconAnim.value,
         };

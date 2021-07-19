@@ -1,4 +1,4 @@
-import Animated from 'react-native-reanimated';
+import Animated, { useDerivedValue } from 'react-native-reanimated';
 import type {
     LinearChartDimensions,
     LinearChartPoint,
@@ -15,13 +15,11 @@ export const useLabelData = (
     dimensions: Animated.SharedValue<LinearChartDimensions>,
     data: LinearChartPoint[],
 ): LinearChartLabelData => {
-    const scaledData = Animated.useDerivedValue<
-        LinearChartPoint[] | null
-    >(() => {
+    const scaledData = useDerivedValue<LinearChartPoint[] | null>(() => {
         return getScaledData(data, dimensions.value);
     }, [data]);
 
-    const controlPoints = Animated.useDerivedValue<LinearChartControlPoints | null>(() => {
+    const controlPoints = useDerivedValue<LinearChartControlPoints | null>(() => {
         return getControlPoints(
             data,
             scaledData.value,

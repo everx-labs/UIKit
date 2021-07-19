@@ -345,7 +345,7 @@ PODS:
     - React-Core
   - RNPermissions (3.0.0):
     - React-Core
-  - RNReanimated (2.1.0):
+  - RNReanimated (2.2.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec

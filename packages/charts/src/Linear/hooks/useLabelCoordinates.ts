@@ -1,4 +1,8 @@
-import Animated from 'react-native-reanimated';
+import Animated, {
+    useAnimatedReaction,
+    useSharedValue,
+    withSpring,
+} from 'react-native-reanimated';
 import type {
     LinearChartAnimatedState,
     LinearChartDimensions,
@@ -30,12 +34,12 @@ export const useLabelCoordinates = (
         Animated.SharedValue<LinearChartControlPoints | null>
     >,
 ) => {
-    const minimumLabelXCoordinate = Animated.useSharedValue<number>(0);
-    const maximumLabelXCoordinate = Animated.useSharedValue<number>(0);
-    const startLabelYCoordinate = Animated.useSharedValue<number>(0);
-    const endLabelYCoordinate = Animated.useSharedValue<number>(0);
+    const minimumLabelXCoordinate = useSharedValue<number>(0);
+    const maximumLabelXCoordinate = useSharedValue<number>(0);
+    const startLabelYCoordinate = useSharedValue<number>(0);
+    const endLabelYCoordinate = useSharedValue<number>(0);
 
-    Animated.useAnimatedReaction(
+    useAnimatedReaction(
         () => {
             return {
                 dimensions: dimensions.value,
@@ -64,19 +68,19 @@ export const useLabelCoordinates = (
                 endLabelYCoordinate.value =
                     currentAnimatedState.controlPoints.end.y;
             } else {
-                minimumLabelXCoordinate.value = Animated.withSpring(
+                minimumLabelXCoordinate.value = withSpring(
                     currentAnimatedState.controlPoints.minimum.x,
                     LINEAR_CHART_WITH_SPRING_CONFIG,
                 );
-                maximumLabelXCoordinate.value = Animated.withSpring(
+                maximumLabelXCoordinate.value = withSpring(
                     currentAnimatedState.controlPoints.maximum.x,
                     LINEAR_CHART_WITH_SPRING_CONFIG,
                 );
-                startLabelYCoordinate.value = Animated.withSpring(
+                startLabelYCoordinate.value = withSpring(
                     currentAnimatedState.controlPoints.start.y,
                     LINEAR_CHART_WITH_SPRING_CONFIG,
                 );
-                endLabelYCoordinate.value = Animated.withSpring(
+                endLabelYCoordinate.value = withSpring(
                     currentAnimatedState.controlPoints.end.y,
                     LINEAR_CHART_WITH_SPRING_CONFIG,
                 );

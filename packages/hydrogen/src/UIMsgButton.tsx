@@ -1,6 +1,16 @@
 import * as React from 'react';
-import { ColorValue, ImageSourcePropType, StyleProp, StyleSheet, ViewStyle } from 'react-native';
-import Animated from 'react-native-reanimated';
+import {
+    ColorValue,
+    ImageSourcePropType,
+    StyleProp,
+    StyleSheet,
+    ViewStyle,
+} from 'react-native';
+import {
+    interpolateColor,
+    useAnimatedStyle,
+    useSharedValue,
+} from 'react-native-reanimated';
 
 import { Button, ButtonAnimations, UILayout } from './Button';
 import { UIConstant } from './constants';
@@ -145,10 +155,10 @@ function useButtonAnimations(
         initialBorderColor = theme[ColorVariants[borderColor]] as string;
     }
 
-    const hoverAnim = Animated.useSharedValue(0);
-    const hoverStyle = Animated.useAnimatedStyle(() => {
+    const hoverAnim = useSharedValue(0);
+    const hoverStyle = useAnimatedStyle(() => {
         return {
-            backgroundColor: Animated.interpolateColor(
+            backgroundColor: interpolateColor(
                 hoverAnim.value,
                 [0, 1],
                 [
@@ -156,7 +166,7 @@ function useButtonAnimations(
                     theme[ColorVariants[hoverBackgroundColor]] as string,
                 ],
             ),
-            borderColor: Animated.interpolateColor(
+            borderColor: interpolateColor(
                 hoverAnim.value,
                 [0, 1],
                 [
@@ -167,10 +177,10 @@ function useButtonAnimations(
         };
     });
 
-    const pressAnim = Animated.useSharedValue(0);
-    const pressStyle = Animated.useAnimatedStyle(() => {
+    const pressAnim = useSharedValue(0);
+    const pressStyle = useAnimatedStyle(() => {
         return {
-            backgroundColor: Animated.interpolateColor(
+            backgroundColor: interpolateColor(
                 pressAnim.value,
                 [0, 1],
                 [
@@ -178,7 +188,7 @@ function useButtonAnimations(
                     theme[ColorVariants[pressBackgroundColor]] as string,
                 ],
             ),
-            borderColor: Animated.interpolateColor(
+            borderColor: interpolateColor(
                 pressAnim.value,
                 [0, 1],
                 [
@@ -189,10 +199,10 @@ function useButtonAnimations(
         };
     });
 
-    const titleAnim = Animated.useSharedValue(0);
-    const titleAnimStyle = Animated.useAnimatedStyle(() => {
+    const titleAnim = useSharedValue(0);
+    const titleAnimStyle = useAnimatedStyle(() => {
         return {
-            color: Animated.interpolateColor(
+            color: interpolateColor(
                 titleAnim.value,
                 [0, 1],
                 [
@@ -203,8 +213,8 @@ function useButtonAnimations(
         };
     });
 
-    const iconAnim = Animated.useSharedValue(0);
-    const iconAnimStyle = Animated.useAnimatedStyle(() => {
+    const iconAnim = useSharedValue(0);
+    const iconAnimStyle = useAnimatedStyle(() => {
         return {
             opacity: iconAnim.value,
         };
