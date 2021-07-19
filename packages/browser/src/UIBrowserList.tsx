@@ -19,6 +19,7 @@ import { SigningBox } from './Inputs/SigningBox';
 import { TransactionConfirmation } from './Inputs/TransactionConfirmation';
 import { QRCode } from './Inputs/qrCode';
 import { EncryptionBox } from './Inputs/EncryptionBox';
+import { DatePicker } from './Inputs/datePicker';
 
 type UIBrowserListProps = {
     messages: BrowserMessage[];
@@ -84,6 +85,9 @@ const renderBubble = () => (
     }
     if (item.type === InteractiveMessageType.QRCodeScanner) {
         return <QRCode {...item} onLayout={onLayout} />;
+    }
+    if (item.type === InteractiveMessageType.Date) {
+        return <DatePicker {...item} onLayout={onLayout} />;
     }
 
     return null;

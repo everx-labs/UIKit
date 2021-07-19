@@ -454,11 +454,11 @@ DEPENDENCIES:
   - rn-fetch-blob (from `../../node_modules/rn-fetch-blob`)
   - "RNCMaskedView (from `../../node_modules/@react-native-community/masked-view`)"
   - RNDeviceInfo (from `../../node_modules/react-native-device-info`)
-  - RNFastImage (from `../../node_modules/react-native-fast-image`)
+  - RNFastImage (from `../node_modules/react-native-fast-image`)
   - RNGestureHandler (from `../../node_modules/react-native-gesture-handler`)
   - RNPermissions (from `../../node_modules/react-native-permissions`)
   - RNReanimated (from `../../node_modules/react-native-reanimated`)
-  - RNScreens (from `../../node_modules/react-native-screens`)
+  - RNScreens (from `../node_modules/react-native-screens`)
   - RNShare (from `../../node_modules/react-native-share`)
   - RNSVG (from `../../node_modules/react-native-svg`)
   - UIKitKeyboard (from `../../packages/keyboard/UIKitKeyboard.podspec`)
@@ -562,7 +562,7 @@ EXTERNAL SOURCES:
   RNDeviceInfo:
     :path: "../../node_modules/react-native-device-info"
   RNFastImage:
-    :path: "../../node_modules/react-native-fast-image"
+    :path: "../node_modules/react-native-fast-image"
   RNGestureHandler:
     :path: "../../node_modules/react-native-gesture-handler"
   RNPermissions:
@@ -570,7 +570,7 @@ EXTERNAL SOURCES:
   RNReanimated:
     :path: "../../node_modules/react-native-reanimated"
   RNScreens:
-    :path: "../../node_modules/react-native-screens"
+    :path: "../node_modules/react-native-screens"
   RNShare:
     :path: "../../node_modules/react-native-share"
   RNSVG:
@@ -635,7 +635,7 @@ SPEC CHECKSUMS:
   RNFastImage: d4870d58f5936111c56218dbd7fcfc18e65b58ff
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNPermissions: 99dd8d4a30ff13509b949ca63cd1f69edc461775
-  RNReanimated: 70f662b5232dd5d19ccff581e919a54ea73df51c
+  RNReanimated: d9da990fc90123f4ffbfdda93d00fc15174863a8
   RNScreens: bf59f17fbf001f1025243eeed5f19419d3c11ef2
   RNShare: 7e22ba3bf66294ff7c122a1f2da8a8ec642091a0
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
