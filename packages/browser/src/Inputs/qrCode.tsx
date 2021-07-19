@@ -10,22 +10,17 @@ import {
 import { UIQRCodeScannerSheet } from '@tonlabs/uikit.navigation';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import type { QRCodeMessage } from '../types';
+import type { QRCodeScannerMessage } from '../types';
 
 type QRCodeInternalState = {
     qrCodeVisible: boolean;
 };
 
 type QRCodeAction = {
-    type:
-        | 'OPEN_QR_CODE'
-        | 'CLOSE_QR_CODE';
+    type: 'OPEN_QR_CODE' | 'CLOSE_QR_CODE';
 };
 
-function qrCodeReducer(
-    state: QRCodeInternalState,
-    action: QRCodeAction,
-) {
+function qrCodeReducer(state: QRCodeInternalState, action: QRCodeAction) {
     if (action.type === 'OPEN_QR_CODE') {
         return {
             ...state,
@@ -43,10 +38,7 @@ function qrCodeReducer(
     };
 }
 
-export function QRCode({
-    onLayout,
-    ...message
-}: QRCodeMessage) {
+export function QRCode({ onLayout, ...message }: QRCodeScannerMessage) {
     const [state, dispatch] = React.useReducer(qrCodeReducer, {
         qrCodeVisible: message.fastScan || false,
     });

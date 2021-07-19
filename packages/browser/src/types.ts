@@ -30,7 +30,9 @@ export enum InteractiveMessageType {
     SigningBox = 'SigningBox',
     EncryptionBox = 'EncryptionBox',
     TransactionConfirmation = 'TransactionConfirmation',
-    QRCode = 'QRCode',
+    QRCodeScanner = 'QRCodeScanner',
+    Date = 'Date',
+    Time = 'Time',
 }
 
 type PlainTextMessage = BubbleBaseT & {
@@ -46,6 +48,16 @@ type ActionButtonMessage = BubbleBaseT & {
     text: string;
     textMode?: 'ellipsize' | 'fit';
     onPress?: () => void | Promise<void>;
+};
+
+type QRCodeMessage = BubbleBaseT & {
+    type: ChatMessageType.QRCode;
+    data: string;
+};
+
+type MediaMessage = BubbleBaseT & {
+    type: ChatMessageType.Media;
+    data: string; // base64
 };
 
 type InteractiveMessage<
@@ -200,6 +212,39 @@ export type EncryptionBoxMessage = InteractiveMessage<
     EncryptionBoxExternalState
 >;
 
+export type DateExternalState = {
+    date?: Date;
+};
+
+export type DateMessage = InteractiveMessage<
+    InteractiveMessageType.Date,
+    {
+        prompt?: string;
+        minDate?: Date;
+        maxDate?: Date;
+        onSelect: (state: DateExternalState) => void;
+    },
+    DateExternalState
+>;
+
+export type TimeExternalState = {
+    time?: Date;
+    timeZoneOffsetInMinutes?: number;
+};
+
+export type TimeMessage = InteractiveMessage<
+    InteractiveMessageType.Time,
+    {
+        prompt?: string;
+        minTime?: Date;
+        maxTime?: Date;
+        interval?: number;
+        timeZoneOffsetInMinutes?: number;
+        onSelect: (state: TimeExternalState) => void;
+    },
+    TimeExternalState
+>;
+
 export type TransactionConfirmationExternalState = {
     status: 'approved' | 'cancelled';
 };
@@ -224,23 +269,25 @@ export type TransactionConfirmationMessage = InteractiveMessage<
     TransactionConfirmationExternalState
 >;
 
-export type QRCodeExternalState = {
+export type QRCodeScannerExternalState = {
     value: string;
 };
 
-export type QRCodeMessage = InteractiveMessage<
-    InteractiveMessageType.QRCode,
+export type QRCodeScannerMessage = InteractiveMessage<
+    InteractiveMessageType.QRCodeScanner,
     {
-        onScan: (state: QRCodeExternalState) => void;
+        onScan: (state: QRCodeScannerExternalState) => void;
         parseData: (data: any) => Promise<string>;
-        fastScan?: boolean,
+        fastScan?: boolean;
     },
-    QRCodeExternalState
+    QRCodeScannerExternalState
 >;
 
 export type BrowserMessage =
     | PlainTextMessage
     | ActionButtonMessage
+    | QRCodeMessage
+    | MediaMessage
     | TerminalMessage
     | AddressInputMessage
     | MenuMessage
@@ -249,7 +296,9 @@ export type BrowserMessage =
     | SigningBoxMessage
     | EncryptionBoxMessage
     | TransactionConfirmationMessage
-    | QRCodeMessage;
+    | QRCodeScannerMessage
+    | DateMessage
+    | TimeMessage;
 
 type WithExternalStateHelper<A> = A extends { externalState?: any } ? A : never;
 

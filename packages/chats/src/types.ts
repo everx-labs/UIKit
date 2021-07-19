@@ -38,6 +38,8 @@ export enum ChatMessageType {
     Document = 'doc',
     Sticker = 'stk',
     ActionButton = 'act',
+    QRCode = 'QRCode',
+    Media = 'Media',
 }
 
 export type PlainTextMessage = BubbleBaseT & {
@@ -123,6 +125,18 @@ export type StickerMessage = BubbleBaseT &
     };
 
 export type ChatActionButtonMessage = ChatMeta & ActionButtonMessage;
+
+export type QRCodeMessage = BubbleBaseT &
+    ChatMeta & {
+        type: ChatMessageType.QRCode;
+        data: string;
+    };
+
+export type MediaMessage = BubbleBaseT &
+    ChatMeta & {
+        type: ChatMessageType.Media;
+        data: string; // base64
+    };
 
 export type ChatMessage =
     | ChatPlainTextMessage
