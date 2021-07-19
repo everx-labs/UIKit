@@ -19,7 +19,13 @@ import {
     ColorVariants,
 } from '@tonlabs/uikit.hydrogen';
 import { DotsContext } from './DotsContext';
-import { BiometryKey, BiometryProps, DelKey, Key } from './Keys';
+import {
+    BiometryKey,
+    BiometryProps,
+    DelKey,
+    Key,
+    useBiometryPasscode,
+} from './Keys';
 import {
     DotAnimationStatus,
     DEFAULT_DOTS_COUNT,
@@ -110,7 +116,6 @@ function useAnimatedDots(
 ) {
     const animatedDots = React.useRef<ReturnType<typeof useAnimatedDot>[]>([]);
 
-    // ---
     const dotsConfigs: ReturnType<typeof useAnimatedDot>[] = new Array(
         length,
     ).fill(null);
@@ -137,6 +142,7 @@ export function UIPinCode({
     isBiometryEnabled = true,
     biometryType,
     getPasscodeWithBiometry,
+    autoUnlock = false,
 }: {
     label?: string;
     labelTestID?: string;
@@ -146,6 +152,7 @@ export function UIPinCode({
     length?: number;
     onEnter: (pin: string) => Promise<boolean>;
     onSuccess: (pin: string) => void;
+    autoUnlock?: boolean;
 } & BiometryProps) {
     const dotsValues = useDotsValues(length);
     const dotsAnims = useDotsAnims(length);
@@ -197,6 +204,26 @@ export function UIPinCode({
         ],
     );
 
+    const { getPasscode } = useBiometryPasscode({
+        isBiometryEnabled,
+        getPasscodeWithBiometry,
+        dotsValues,
+        dotsAnims,
+        dotsCount: length,
+        activeDotIndex,
+    });
+
+    React.useLayoutEffect(() => {
+        if (!autoUnlock) {
+            return;
+        }
+        // Do not open settings if cannot authenticate
+        getPasscode({
+            skipSettings: true,
+            skipPredefined: true,
+        });
+    }, [getPasscode, autoUnlock]);
+
     useDerivedValue(() => {
         const pin = dotsValues.current
             .map((d) => d.value)
@@ -213,8 +240,10 @@ export function UIPinCode({
             activeDotIndex,
             dotsValues,
             dotsAnims,
+            dotsCount: length,
+            disabled,
         }),
-        [activeDotIndex, dotsValues, dotsAnims],
+        [activeDotIndex, dotsValues, dotsAnims, length, disabled],
     );
 
     const shakeStyle = useAnimatedStyle(() => {
@@ -268,55 +297,19 @@ export function UIPinCode({
                 <DotsContext.Provider value={dotsContextValue}>
                     <View style={{ position: 'relative' }}>
                         <View style={{ flexDirection: 'row' }}>
-                            <Key
-                                num={1}
-                                disabled={disabled}
-                                dotsCount={length}
-                            />
-                            <Key
-                                num={2}
-                                disabled={disabled}
-                                dotsCount={length}
-                            />
-                            <Key
-                                num={3}
-                                disabled={disabled}
-                                dotsCount={length}
-                            />
+                            <Key num={1} />
+                            <Key num={2} />
+                            <Key num={3} />
                         </View>
                         <View style={{ flexDirection: 'row' }}>
-                            <Key
-                                num={4}
-                                disabled={disabled}
-                                dotsCount={length}
-                            />
-                            <Key
-                                num={5}
-                                disabled={disabled}
-                                dotsCount={length}
-                            />
-                            <Key
-                                num={6}
-                                disabled={disabled}
-                                dotsCount={length}
-                            />
+                            <Key num={4} />
+                            <Key num={5} />
+                            <Key num={6} />
                         </View>
                         <View style={{ flexDirection: 'row' }}>
-                            <Key
-                                num={7}
-                                disabled={disabled}
-                                dotsCount={length}
-                            />
-                            <Key
-                                num={8}
-                                disabled={disabled}
-                                dotsCount={length}
-                            />
-                            <Key
-                                num={9}
-                                disabled={disabled}
-                                dotsCount={length}
-                            />
+                            <Key num={7} />
+                            <Key num={8} />
+                            <Key num={9} />
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                             <BiometryKey
@@ -325,15 +318,9 @@ export function UIPinCode({
                                 getPasscodeWithBiometry={
                                     getPasscodeWithBiometry
                                 }
-                                disabled={disabled}
-                                dotsCount={length}
                             />
-                            <Key
-                                num={0}
-                                disabled={disabled}
-                                dotsCount={length}
-                            />
-                            <DelKey disabled={disabled} />
+                            <Key num={0} />
+                            <DelKey />
                         </View>
                     </View>
                 </DotsContext.Provider>

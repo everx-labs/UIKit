@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import * as React from 'react';
 import { StyleProp, Vibration, ViewStyle, StyleSheet } from 'react-native';
 import {
@@ -77,18 +78,14 @@ export const RawButton: React.FunctionComponent<Animated.AnimateProps<
         }
 >> = Animated.createAnimatedComponent(GHRawButton);
 
-export function Key({
-    num,
-    disabled,
-    dotsCount,
-}: {
-    num: number;
-    disabled: boolean;
-    dotsCount: number;
-}) {
-    const { activeDotIndex, dotsValues, dotsAnims } = React.useContext(
-        DotsContext,
-    );
+export function Key({ num }: { num: number }) {
+    const {
+        activeDotIndex,
+        dotsValues,
+        dotsAnims,
+        dotsCount,
+        disabled,
+    } = React.useContext(DotsContext);
 
     const circleAnimProgress = useSharedValue(CircleAnimationStatus.NotActive);
 
@@ -149,19 +146,88 @@ export function Key({
 export type BiometryProps = {
     isBiometryEnabled: boolean;
     biometryType?: UIPinCodeBiometryType;
-    getPasscodeWithBiometry?: () => Promise<string | undefined>;
+    getPasscodeWithBiometry?: (options?: {
+        skipSettings?: boolean;
+    }) => Promise<string | undefined>;
 };
+
+export function useBiometryPasscode({
+    isBiometryEnabled,
+    getPasscodeWithBiometry,
+    dotsValues,
+    dotsAnims,
+    activeDotIndex,
+    dotsCount,
+}: BiometryProps & {
+    dotsValues: { current: Animated.SharedValue<number>[] };
+    dotsAnims: { current: Animated.SharedValue<number>[] };
+    activeDotIndex: Animated.SharedValue<number>;
+    dotsCount: number;
+}) {
+    const usePredefined =
+        !isBiometryEnabled && process.env.NODE_ENV === 'development';
+
+    const getPasscode = React.useCallback(
+        async (options?: {
+            skipSettings?: boolean;
+            skipPredefined?: boolean;
+        }) => {
+            if (usePredefined) {
+                if (options?.skipPredefined) {
+                    return;
+                }
+
+                dotsValues.current.forEach((_dot, index) => {
+                    dotsValues.current[index].value = 1;
+                    dotsAnims.current[index].value = withSpring(
+                        DotAnimationStatus.Active,
+                        DOT_WITH_SPRING_CONFIG,
+                    );
+                });
+                activeDotIndex.value = dotsCount;
+                return;
+            }
+
+            if (!isBiometryEnabled || getPasscodeWithBiometry == null) {
+                return;
+            }
+            const passcode = await getPasscodeWithBiometry(options);
+
+            if (passcode == null) {
+                return;
+            }
+
+            dotsValues.current.forEach((_dot, index) => {
+                dotsValues.current[index].value = Number(passcode[index]);
+                dotsAnims.current[index].value = withSpring(
+                    DotAnimationStatus.Active,
+                    DOT_WITH_SPRING_CONFIG,
+                );
+            });
+            activeDotIndex.value = dotsCount;
+        },
+        [
+            usePredefined,
+            isBiometryEnabled,
+            getPasscodeWithBiometry,
+            dotsValues,
+            dotsAnims,
+            activeDotIndex,
+            dotsCount,
+        ],
+    );
+
+    return {
+        usePredefined,
+        getPasscode,
+    };
+}
 
 export function BiometryKey({
     isBiometryEnabled,
     biometryType,
     getPasscodeWithBiometry,
-    disabled,
-    dotsCount,
-}: BiometryProps & { disabled: boolean; dotsCount: number }) {
-    const usePredefined =
-        !isBiometryEnabled && process.env.NODE_ENV === 'development';
-
+}: BiometryProps) {
     let icon = null;
     if (biometryType && getPasscodeWithBiometry != null) {
         icon = (
@@ -176,48 +242,22 @@ export function BiometryKey({
         );
     }
 
-    const { activeDotIndex, dotsValues, dotsAnims } = React.useContext(
-        DotsContext,
-    );
+    const {
+        activeDotIndex,
+        dotsValues,
+        dotsAnims,
+        dotsCount,
+        disabled,
+    } = React.useContext(DotsContext);
 
-    const getPasscode = React.useCallback(async () => {
-        if (usePredefined) {
-            dotsValues.current.forEach((_dot, index) => {
-                dotsValues.current[index].value = 1;
-                dotsAnims.current[index].value = withSpring(
-                    DotAnimationStatus.Active,
-                    DOT_WITH_SPRING_CONFIG,
-                );
-            });
-            activeDotIndex.value = dotsCount;
-            return;
-        }
-        if (!isBiometryEnabled || getPasscodeWithBiometry == null) {
-            return;
-        }
-        const passcode = await getPasscodeWithBiometry();
-
-        if (passcode == null) {
-            return;
-        }
-
-        dotsValues.current.forEach((_dot, index) => {
-            dotsValues.current[index].value = Number(passcode[index]);
-            dotsAnims.current[index].value = withSpring(
-                DotAnimationStatus.Active,
-                DOT_WITH_SPRING_CONFIG,
-            );
-        });
-        activeDotIndex.value = dotsCount;
-    }, [
-        usePredefined,
+    const { usePredefined, getPasscode } = useBiometryPasscode({
         isBiometryEnabled,
         getPasscodeWithBiometry,
         dotsValues,
         dotsAnims,
         activeDotIndex,
         dotsCount,
-    ]);
+    });
 
     const circleAnimProgress = useSharedValue(CircleAnimationStatus.NotActive);
     const gestureHandler = useAnimatedGestureHandler<
@@ -267,10 +307,13 @@ export function BiometryKey({
     );
 }
 
-export function DelKey({ disabled }: { disabled: boolean }) {
-    const { activeDotIndex, dotsValues, dotsAnims } = React.useContext(
-        DotsContext,
-    );
+export function DelKey() {
+    const {
+        activeDotIndex,
+        dotsValues,
+        dotsAnims,
+        disabled,
+    } = React.useContext(DotsContext);
 
     const circleAnimProgress = useSharedValue(CircleAnimationStatus.NotActive);
     const circleAboveDelButtonStyle = useCircleAboveStyle(circleAnimProgress);
