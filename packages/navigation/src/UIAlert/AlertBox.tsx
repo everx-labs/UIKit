@@ -6,7 +6,15 @@ import {
     useTheme,
     makeStyles,
 } from '@tonlabs/uikit.hydrogen';
-import Animated from 'react-native-reanimated';
+import Animated, {
+    interpolate,
+    runOnJS,
+    useAnimatedStyle,
+    useDerivedValue,
+    useSharedValue,
+    withSpring,
+    withTiming,
+} from 'react-native-reanimated';
 import { TapGestureHandler } from 'react-native-gesture-handler';
 import { UIConstant } from '../constants';
 
@@ -38,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: UIConstant.alertWindowMaximumWidth,
         flex: 1,
         backgroundColor: theme[ColorVariants.BackgroundPrimary],
-        borderRadius: UIConstant.mediumBorderRadius,
+        borderRadius: UIConstant.alertBorderRadius,
         overflow: 'hidden',
     },
 }));
@@ -56,9 +64,7 @@ const Content: React.FC<ContentProps> = ({
 }: ContentProps) => {
     const theme = useTheme();
     const styles = useStyles(theme);
-    const displayState = Animated.useSharedValue<DisplayState>(
-        DisplayState.HIDDEN,
-    );
+    const displayState = useSharedValue<DisplayState>(DisplayState.HIDDEN);
 
     React.useEffect(() => {
         const newDisplayState = visible
@@ -75,31 +81,31 @@ const Content: React.FC<ContentProps> = ({
         }
     }, [visible, onDisappeared]);
 
-    const springAnimatedState = Animated.useDerivedValue<number>(() => {
-        return Animated.withSpring(displayState.value, springConfig);
+    const springAnimatedState = useDerivedValue<number>(() => {
+        return withSpring(displayState.value, springConfig);
     });
 
-    const linearAnimatedState = Animated.useDerivedValue<number>(() => {
+    const linearAnimatedState = useDerivedValue<number>(() => {
         /**
          * Used linear animation because there is no bouncing effect on transparency.
          * Linear animation in this case will be sufficient because there will be no animation interruption
          * */
-        return Animated.withTiming(
+        return withTiming(
             displayState.value,
             { duration: DURATION_OF_LINEAR_ANIMATION },
             (isFinished: boolean) => {
                 if (isFinished) {
-                    Animated.runOnJS(onAnimationEnd)();
+                    runOnJS(onAnimationEnd)();
                 }
             },
         );
     });
 
-    const windowAnimatedStyles = Animated.useAnimatedStyle(() => {
+    const windowAnimatedStyles = useAnimatedStyle(() => {
         return {
             transform: [
                 {
-                    scale: Animated.interpolate(
+                    scale: interpolate(
                         springAnimatedState.value,
                         [DisplayState.HIDDEN, DisplayState.VISIBLE],
                         [0.8, 1],
@@ -109,9 +115,9 @@ const Content: React.FC<ContentProps> = ({
         };
     });
 
-    const backgroundAnimatedStyle = Animated.useAnimatedStyle(() => {
+    const backgroundAnimatedStyle = useAnimatedStyle(() => {
         return {
-            opacity: Animated.interpolate(
+            opacity: interpolate(
                 linearAnimatedState.value,
                 [DisplayState.HIDDEN, DisplayState.VISIBLE],
                 [0, 1],
@@ -119,9 +125,9 @@ const Content: React.FC<ContentProps> = ({
         };
     });
 
-    const containerAnimatedStyle = Animated.useAnimatedStyle(() => {
+    const containerAnimatedStyle = useAnimatedStyle(() => {
         return {
-            opacity: Animated.interpolate(
+            opacity: interpolate(
                 linearAnimatedState.value,
                 [DisplayState.HIDDEN, DisplayState.VISIBLE],
                 [0, 1],

@@ -5,17 +5,14 @@ import {
     UIBoxButtonType,
     UIBoxButtonVariant,
 } from '@tonlabs/uikit.hydrogen';
-import type {
-    UIAlertViewActionProps,
-    UIAlertViewActionType,
-} from '../UIAlertView';
+import { UIAlertViewActionProps, UIAlertViewActionType } from './types';
 
 const getActionVariant = (type: UIAlertViewActionType): UIBoxButtonVariant => {
     switch (type) {
-        case 'Negative':
+        case UIAlertViewActionType.Negative:
             return UIBoxButtonVariant.Negative;
-        case 'Сancel':
-        case 'Neutral':
+        case UIAlertViewActionType.Сancel:
+        case UIAlertViewActionType.Neutral:
         default:
             return UIBoxButtonVariant.Neutral;
     }
@@ -23,10 +20,10 @@ const getActionVariant = (type: UIAlertViewActionType): UIBoxButtonVariant => {
 
 const getBoxButtonType = (type: UIAlertViewActionType): UIBoxButtonType => {
     switch (type) {
-        case 'Сancel':
+        case UIAlertViewActionType.Сancel:
             return UIBoxButtonType.Nulled;
-        case 'Negative':
-        case 'Neutral':
+        case UIAlertViewActionType.Negative:
+        case UIAlertViewActionType.Neutral:
         default:
             return UIBoxButtonType.Tertiary;
     }

@@ -1,5 +1,9 @@
 import * as React from 'react';
-import Animated from 'react-native-reanimated';
+import Animated, {
+    runOnJS,
+    useAnimatedReaction,
+    useDerivedValue,
+} from 'react-native-reanimated';
 import type { LinearChartControlPoints } from '../../types';
 
 export const useLabelText = (
@@ -7,13 +11,13 @@ export const useLabelText = (
         Animated.SharedValue<LinearChartControlPoints | null>
     >,
 ) => {
-    const maximum = Animated.useDerivedValue<number | null>(() => {
+    const maximum = useDerivedValue<number | null>(() => {
         if (controlPoints.value === null) {
             return null;
         }
         return controlPoints.value.maximum.value;
     });
-    const minimum = Animated.useDerivedValue<number | null>(() => {
+    const minimum = useDerivedValue<number | null>(() => {
         if (controlPoints.value === null) {
             return null;
         }
@@ -23,21 +27,21 @@ export const useLabelText = (
     const [minimumValue, setMinimumValue] = React.useState<number | null>(null);
     const [maximumValue, setMaximumValue] = React.useState<number | null>(null);
 
-    Animated.useAnimatedReaction(
+    useAnimatedReaction(
         () => {
             return minimum.value;
         },
         (text: number | null) => {
-            Animated.runOnJS(setMinimumValue)(text);
+            runOnJS(setMinimumValue)(text);
         },
     );
 
-    Animated.useAnimatedReaction(
+    useAnimatedReaction(
         () => {
             return maximum.value;
         },
         (text: number | null) => {
-            Animated.runOnJS(setMaximumValue)(text);
+            runOnJS(setMaximumValue)(text);
         },
     );
 

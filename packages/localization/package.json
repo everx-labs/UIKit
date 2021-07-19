@@ -5,8 +5,7 @@
   "scripts": {
     "tsc": "tsc --noEmit",
     "prepare": "bob build",
-    "postprepare": "cp -R src/languages/en.json lib/typescript/src/languages/",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postprepare": "cp -R src/languages/en.json lib/typescript/src/languages/"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"

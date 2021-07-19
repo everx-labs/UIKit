@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import { UIDropdownAlert } from '@tonlabs/uikit.components';
 import { UILinkButton } from '@tonlabs/uikit.hydrogen';
-import { UIAlertView } from '@tonlabs/uikit.navigation';
+import { UIAlertView, UIAlertViewActionType } from '@tonlabs/uikit.navigation';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -33,19 +33,19 @@ export const Popups = () => {
                         note="You can select it later"
                     >
                         <UIAlertView.Action
+                            type={UIAlertViewActionType.Neutral}
                             title="Neutral Action"
                             onPress={getCallback('Neutral Action')}
-                            type="Neutral"
                         />
                         <UIAlertView.Action
+                            type={UIAlertViewActionType.Negative}
                             title="Negative Action"
                             onPress={getCallback('Negative Action')}
-                            type="Negative"
                         />
                         <UIAlertView.Action
+                            type={UIAlertViewActionType.Сancel}
                             title="Сancel Action"
                             onPress={getCallback('Сancel Action')}
-                            type="Сancel"
                         />
                     </UIAlertView>
                 </View>

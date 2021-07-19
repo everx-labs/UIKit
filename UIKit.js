@@ -46,7 +46,6 @@ export {
     UIPhoneInput,
     UIPinCodeInput,
     UIPureComponent,
-    UIQRCode,
     UIRadioButtonList,
     UIScaleButton,
     UISectionHeader,

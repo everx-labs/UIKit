@@ -16,8 +16,8 @@ const useStyles = makeStyles((theme) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            height: QR_CODE_SIZE,
-            width: QR_CODE_SIZE,
+            height: QR_CODE_SIZE + SQUARE_QR_CODE_BORDER_WIDTH * 2,
+            width: QR_CODE_SIZE + SQUARE_QR_CODE_BORDER_WIDTH * 2,
         },
         qrContainer: {
             position: 'absolute',
@@ -34,7 +34,7 @@ export const QRCodeSquare = ({ value, logo }: QRCodeProps) => {
     const styles = useStyles(theme);
     const qr = React.useMemo(() => QRCode.create(value, {}), [value]);
     const isThereLogo = logo !== undefined;
-    const size = QR_CODE_SIZE - SQUARE_QR_CODE_BORDER_WIDTH * 2;
+    const size = QR_CODE_SIZE;
 
     const qrSvg = React.useMemo(() => getQRSvg(qr, size, isThereLogo), [
         qr,

@@ -30,15 +30,35 @@ export const getScaledData = (
         return null;
     }
 
+    // Find the min and max values for x, y
+    let xMin: number | undefined;
+    let xMax: number | undefined;
+    let yMin: number | undefined;
+    let yMax: number | undefined;
+
+    data.forEach(({ x, y }) => {
+        if (xMin == null || x < xMin) {
+            xMin = x;
+        }
+        if (xMax == null || x > xMax) {
+            xMax = x;
+        }
+        if (yMin == null || y < yMin) {
+            yMin = y;
+        }
+        if (yMax == null || y > yMax) {
+            yMax = y;
+        }
+    });
+
+    if (xMin == null || xMax == null || yMin == null || yMax == null) {
+        // Data array seems to be empty
+        return null;
+    }
+
     const domain = {
-        x: [
-            Math.min(...data.map(({ x }) => x)),
-            Math.max(...data.map(({ x }) => x)),
-        ],
-        y: [
-            Math.min(...data.map(({ y }) => y)),
-            Math.max(...data.map(({ y }) => y)),
-        ],
+        x: [xMin, xMax],
+        y: [yMin, yMax],
     };
     const range = {
         x: [0, dimensions.width],
@@ -197,14 +217,13 @@ const curveLines = (points: LinearChartPoint[]) => {
  * @worklet
  * used so that the curve is not clipped
  */
-const getMovedPointbyHalfCurveWidth = (curveWidth: number) => {
+const getMovedPointByHalfCurveWidth = (curveWidth: number) => {
     'worklet';
 
     return (point: LinearChartPoint): LinearChartPoint => {
         'worklet';
 
         return {
-            ...point,
             x: point.x + curveWidth / 2,
             y: point.y + curveWidth / 2,
         };
@@ -229,7 +248,7 @@ export const convertDataToPath = (
         return null;
     }
     const movedScaledData: LinearChartPoint[] = scaledData.map(
-        getMovedPointbyHalfCurveWidth(curveWidth),
+        getMovedPointByHalfCurveWidth(curveWidth),
     );
     return curveLines(movedScaledData);
 };

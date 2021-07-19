@@ -1,6 +1,10 @@
 import type { ImageSourcePropType } from 'react-native';
 
-export type QRCodeType = 'Default' | 'Circle';
+// eslint-disable-next-line no-shadow
+export enum QRCodeType {
+    Square = 'Square',
+    Circle = 'Circle',
+}
 
 export type QRCodeRef = {
     /** Returns a QR code image as a string in base64 format */

@@ -52,7 +52,7 @@ import { Design } from './screens/Design';
 import { Chart } from './screens/Chart';
 import { Images } from './screens/Images';
 import { Layouts } from './screens/Layouts';
-import { actionSheet, Menus } from './screens/Menus';
+import { Menus } from './screens/Menus';
 import { Notifications } from './screens/Notifications';
 import { Popups } from './screens/Popups';
 import { Products } from './screens/Products';
@@ -155,12 +155,6 @@ const Main = ({ navigation }: { navigation: any }) => {
                             layout={styles.button}
                         />
                         <UILinkButton
-                            title="QR code"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('qr-code')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
                             title="Buttons"
                             type={UILinkButtonType.Menu}
                             onPress={() => navigation.navigate('buttons')}
@@ -257,6 +251,12 @@ const Main = ({ navigation }: { navigation: any }) => {
                             layout={styles.button}
                         />
                         <UILinkButton
+                            title="QR code"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('qr-code')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
                             title="Text"
                             type={UILinkButtonType.Menu}
                             onPress={() => navigation.navigate('text')}
@@ -336,12 +336,11 @@ const App = () => {
                             <Split.Screen name="popups" component={Popups} />
                             <Split.Screen name="products" component={Products} />
                             <Split.Screen name="profile" component={Profile} />
-                            <Split.Screen name="text" component={TextScreen} />
                             <Split.Screen name="qr-code" component={QRCodeScreen} />
+                            <Split.Screen name="text" component={TextScreen} />
                         </Split.Navigator>
                     </NavigationContainer>
                     <UILayoutManager />
-                    <UIActionSheet ref={actionSheet} masterSheet={false} />
                     <UIActionSheet />
                     <UICountryPicker navigation={navRef.current} isShared />
                     <View

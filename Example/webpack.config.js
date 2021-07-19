@@ -93,10 +93,6 @@ module.exports = {
                     ),
                     path.resolve(
                         __dirname,
-                        '../node_modules/react-native-qrcode-svg/',
-                    ),
-                    path.resolve(
-                        __dirname,
                         '../node_modules/react-native-gesture-handler/',
                     ),
                     path.resolve(

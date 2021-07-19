@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { ColorValue, ImageSourcePropType, StyleSheet } from 'react-native';
-import Animated from 'react-native-reanimated';
+import {
+    interpolateColor,
+    useAnimatedStyle,
+    useDerivedValue,
+    useSharedValue,
+} from 'react-native-reanimated';
 
 import { Button, ButtonAnimations, UILayout } from './Button';
 import { UIConstant } from './constants';
@@ -117,9 +122,9 @@ function useButtonAnimations(
     const { hoverOverlayColor, pressOverlayColor, activeContentColor } = getButtonStates(type);
     const theme = useTheme();
 
-    const hoverAnim = Animated.useSharedValue(0);
-    const hoverOverlayValue = Animated.useDerivedValue(() => {
-        return Animated.interpolateColor(
+    const hoverAnim = useSharedValue(0);
+    const hoverOverlayValue = useDerivedValue(() => {
+        return interpolateColor(
             hoverAnim.value,
             [0, 1],
             [
@@ -128,15 +133,15 @@ function useButtonAnimations(
             ],
         );
     });
-    const hoverOverlayStyle = Animated.useAnimatedStyle(() => {
+    const hoverOverlayStyle = useAnimatedStyle(() => {
         return {
             backgroundColor: hoverOverlayValue.value,
         };
     });
 
-    const pressAnim = Animated.useSharedValue(0);
-    const pressOverlayValue = Animated.useDerivedValue(() => {
-        return Animated.interpolateColor(
+    const pressAnim = useSharedValue(0);
+    const pressOverlayValue = useDerivedValue(() => {
+        return interpolateColor(
             pressAnim.value,
             [0, 1],
             [
@@ -145,15 +150,15 @@ function useButtonAnimations(
             ],
         );
     });
-    const pressOverlayStyle = Animated.useAnimatedStyle(() => {
+    const pressOverlayStyle = useAnimatedStyle(() => {
         return {
             backgroundColor: pressOverlayValue.value,
         };
     });
 
-    const titleAnim = Animated.useSharedValue(0);
-    const titleAnimValue = Animated.useDerivedValue(() => {
-        return Animated.interpolateColor(
+    const titleAnim = useSharedValue(0);
+    const titleAnimValue = useDerivedValue(() => {
+        return interpolateColor(
             titleAnim.value,
             [0, 1],
             [
@@ -162,14 +167,14 @@ function useButtonAnimations(
             ],
         );
     });
-    const titleAnimStyle = Animated.useAnimatedStyle(() => {
+    const titleAnimStyle = useAnimatedStyle(() => {
         return {
             color: titleAnimValue.value,
         };
     });
 
-    const iconAnim = Animated.useSharedValue(0);
-    const iconAnimStyle = Animated.useAnimatedStyle(() => {
+    const iconAnim = useSharedValue(0);
+    const iconAnimStyle = useAnimatedStyle(() => {
         return {
             opacity: iconAnim.value,
         };

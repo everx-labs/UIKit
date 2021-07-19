@@ -3,8 +3,7 @@
   "version": "2.3.0",
   "description": "Navigation components for Tonlabs's UIKit",
   "scripts": {
-    "prepare": "bob build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepare": "bob build"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"

@@ -9,6 +9,7 @@ import Animated, {
     withTiming,
     Extrapolate,
     useAnimatedGestureHandler,
+    interpolate,
 } from 'react-native-reanimated';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
@@ -150,7 +151,7 @@ export function UILargeTitleHeader({
         return {
             transform: [
                 {
-                    scale: Animated.interpolate(
+                    scale: interpolate(
                         shift.value,
                         [0, RUBBER_BAND_EFFECT_DISTANCE],
                         [1, LARGE_TITLE_SCALE],
@@ -160,7 +161,7 @@ export function UILargeTitleHeader({
                     ),
                 },
                 {
-                    translateX: Animated.interpolate(
+                    translateX: interpolate(
                         shift.value,
                         [0, RUBBER_BAND_EFFECT_DISTANCE],
                         [

@@ -1,4 +1,4 @@
-import Animated from 'react-native-reanimated';
+import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import type {
     LinearChartDimensions,
     LinearChartControlPoints,
@@ -14,7 +14,7 @@ export const useLabelStyles = (
     startLabelYCoordinate: Animated.SharedValue<number>,
     endLabelYCoordinate: Animated.SharedValue<number>,
 ) => {
-    const leftLabelContainerStyle = Animated.useAnimatedStyle(() => {
+    const leftLabelContainerStyle = useAnimatedStyle(() => {
         return {
             transform: [
                 {
@@ -24,7 +24,7 @@ export const useLabelStyles = (
         };
     });
 
-    const rightLabelContainerStyle = Animated.useAnimatedStyle(() => {
+    const rightLabelContainerStyle = useAnimatedStyle(() => {
         return {
             transform: [
                 {
@@ -34,7 +34,7 @@ export const useLabelStyles = (
         };
     });
 
-    const maximumLabelContainerStyle = Animated.useAnimatedStyle(() => {
+    const maximumLabelContainerStyle = useAnimatedStyle(() => {
         return {
             transform: [
                 {
@@ -43,7 +43,7 @@ export const useLabelStyles = (
             ],
         };
     });
-    const maximumLabelStyle = Animated.useAnimatedStyle(() => {
+    const maximumLabelStyle = useAnimatedStyle(() => {
         return {
             opacity:
                 !controlPoints.value ||
@@ -54,7 +54,7 @@ export const useLabelStyles = (
         };
     });
 
-    const minimumLabelContainerStyle = Animated.useAnimatedStyle(() => {
+    const minimumLabelContainerStyle = useAnimatedStyle(() => {
         return {
             transform: [
                 {
@@ -63,7 +63,7 @@ export const useLabelStyles = (
             ],
         };
     });
-    const minimumLabelStyle = Animated.useAnimatedStyle(() => {
+    const minimumLabelStyle = useAnimatedStyle(() => {
         return {
             opacity:
                 minimumLabelXCoordinate.value === null ||

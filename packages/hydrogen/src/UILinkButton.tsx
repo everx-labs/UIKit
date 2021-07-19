@@ -1,6 +1,15 @@
 import * as React from 'react';
-import { ImageSourcePropType, StyleProp, StyleSheet, ViewStyle } from 'react-native';
-import Animated from 'react-native-reanimated';
+import {
+    ImageSourcePropType,
+    StyleProp,
+    StyleSheet,
+    ViewStyle,
+} from 'react-native';
+import {
+    interpolateColor,
+    useAnimatedStyle,
+    useSharedValue,
+} from 'react-native-reanimated';
 
 import { Button, ButtonAnimations, UILayout } from './Button';
 import { UIConstant } from './constants';
@@ -113,10 +122,10 @@ function useButtonAnimations(
     const { activeContentColor } = getButtonStates(type);
     const theme = useTheme();
 
-    const titleAnim = Animated.useSharedValue(0);
-    const titleAnimStyle = Animated.useAnimatedStyle(() => {
+    const titleAnim = useSharedValue(0);
+    const titleAnimStyle = useAnimatedStyle(() => {
         return {
-            color: Animated.interpolateColor(
+            color: interpolateColor(
                 titleAnim.value,
                 [0, 1],
                 [
@@ -127,7 +136,7 @@ function useButtonAnimations(
         };
     });
 
-    const iconAnimStyle = Animated.useAnimatedStyle(() => {
+    const iconAnimStyle = useAnimatedStyle(() => {
         return {
             opacity: titleAnim.value,
         };

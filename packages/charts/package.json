@@ -4,8 +4,7 @@
   "description": "Charts for Tonlabs's UIKit",
   "scripts": {
     "tsc": "tsc --noEmit --composite false",
-    "prepare": "bob build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepare": "bob build"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
@@ -49,7 +48,7 @@
     "react-dom": "^16.13.1",
     "react-native": "^0.63.0",
     "react-native-gesture-handler": "^1.10.3",
-    "react-native-reanimated": "^2.1.0",
+    "react-native-reanimated": "^2.2.0",
     "react-native-redash": "^16.0.11",
     "react-native-svg": "^12.1.1",
     "typescript": "^4.0.3"
@@ -59,7 +58,7 @@
     "react-dom": "^16.13.1",
     "react-native": "^0.63.0",
     "react-native-gesture-handler": "^1.10.3",
-    "react-native-reanimated": "^2.1.0",
+    "react-native-reanimated": "^2.2.0",
     "react-native-redash": "^16.0.11",
     "react-native-svg": "^12.1.1"
   },

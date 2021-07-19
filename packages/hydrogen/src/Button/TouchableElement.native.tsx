@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
-import Animated from 'react-native-reanimated';
+import Animated, { withSpring } from 'react-native-reanimated';
 
 import type { ButtonAnimations } from './Button';
 import { BUTTON_WITH_SPRING_CONFIG } from '../constants';
@@ -37,13 +37,22 @@ export const TouchableElement = ({
             return;
         }
         if (press) {
-            press.animationParam.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
+            press.animationParam.value = withSpring(
+                1,
+                BUTTON_WITH_SPRING_CONFIG,
+            );
         }
         if (title) {
-            title.animationParam.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
+            title.animationParam.value = withSpring(
+                1,
+                BUTTON_WITH_SPRING_CONFIG,
+            );
         }
         if (icon) {
-            icon.animationParam.value = Animated.withSpring(1, BUTTON_WITH_SPRING_CONFIG);
+            icon.animationParam.value = withSpring(
+                1,
+                BUTTON_WITH_SPRING_CONFIG,
+            );
         }
     };
 
@@ -52,13 +61,22 @@ export const TouchableElement = ({
             return;
         }
         if (press) {
-            press.animationParam.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
+            press.animationParam.value = withSpring(
+                0,
+                BUTTON_WITH_SPRING_CONFIG,
+            );
         }
         if (title) {
-            title.animationParam.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
+            title.animationParam.value = withSpring(
+                0,
+                BUTTON_WITH_SPRING_CONFIG,
+            );
         }
         if (icon) {
-            icon.animationParam.value = Animated.withSpring(0, BUTTON_WITH_SPRING_CONFIG);
+            icon.animationParam.value = withSpring(
+                0,
+                BUTTON_WITH_SPRING_CONFIG,
+            );
         }
     };
 
