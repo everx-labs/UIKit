@@ -208,83 +208,47 @@ export const UILinkButton = ({
 }: UILinkButtonProps) => {
     const { contentColor, containerHeight } = useButtonStyles(size, type, variant, disabled);
     const buttonAnimations = useButtonAnimations(type, contentColor);
-    const [content, containerStyle] = React.useMemo(() => {
-        const { title: titleAnim, icon: iconAnim } = buttonAnimations;
-        if (title != null && caption != null) {
-            return [
-                (
-                    <Button.Content direction={Button.ContentDirection.Column}>
-                        <Button.Title
-                            titleColor={contentColor}
-                            titleAnimStyle={titleAnim?.style}
-                        >
-                            {title}
-                        </Button.Title>
-                        <Button.Title
-                            titleColor={UILabelColors.TextSecondary}
-                            titleRole={UILabelRoles.ParagraphNote}
-                            style={styles.caption}
-                        >
-                            {caption}
-                        </Button.Title>
-                    </Button.Content>
-                ),
-                styles.doubleLineContent,
-            ];
-        }
+    const { title: titleAnim, icon: iconAnim } = buttonAnimations;
 
-        return [
-            (
-                <>
-                    <Button.Content>
-                        {
-                            iconPosition === UILinkButtonIconPosition.Left && icon != null &&
-                            <Button.Icon
-                                source={icon}
-                                style={styles.leftIcon}
-                                iconAnimStyle={iconAnim?.style}
-                                initialColor={iconAnim?.initialColor}
-                                activeColor={iconAnim?.activeColor}
-                            />
-                        }
-                        {
-                            title != null &&
-                            <Button.Title
-                                titleColor={contentColor}
-                                titleAnimStyle={titleAnim?.style}
-                            >
-                                {title}
-                            </Button.Title>
-                        }
-                        {
-                            iconPosition === UILinkButtonIconPosition.Middle && icon != null &&
-                            <Button.Icon
-                                source={icon}
-                                iconAnimStyle={iconAnim?.style}
-                                initialColor={iconAnim?.initialColor}
-                                activeColor={iconAnim?.activeColor}
-                            />
-                        }
-                    </Button.Content>
-                    {
-                        iconPosition === UILinkButtonIconPosition.Right && icon != null &&
-                        <Button.Icon
-                            source={icon}
-                            iconAnimStyle={iconAnim?.style}
-                            initialColor={iconAnim?.initialColor}
-                            activeColor={iconAnim?.activeColor}
-                        />
-                    }
-                </>
-            ),
-            containerHeight,
-        ];
-    }, [title, caption, icon, iconPosition, buttonAnimations, contentColor, containerHeight]);
+    if (title != null && caption != null) {
+        return (
+            <Button
+                containerStyle={[
+                    styles.doubleLineContent,
+                    layout,
+                ]}
+                contentStyle={styles.content}
+                animations={buttonAnimations}
+                disabled={disabled}
+                loading={loading}
+                onLongPress={onLongPress}
+                onPress={onPress}
+                testID={testID}
+            >
+                <Button.Content direction={Button.ContentDirection.Column}>
+                    <Button.Title
+                        titleColor={contentColor}
+                        titleAnimStyle={titleAnim?.style}
+                    >
+                        {title}
+                    </Button.Title>
+                    <Button.Title
+                        titleColor={UILabelColors.TextSecondary}
+                        titleRole={UILabelRoles.ParagraphNote}
+                        numberOfLines={5}
+                        style={styles.caption}
+                    >
+                        {caption}
+                    </Button.Title>
+                </Button.Content>
+            </Button>
+        );
+    }
 
     return (
         <Button
             containerStyle={[
-                containerStyle,
+                containerHeight,
                 layout,
             ]}
             contentStyle={styles.content}
@@ -295,7 +259,45 @@ export const UILinkButton = ({
             onPress={onPress}
             testID={testID}
         >
-            {content}
+            <Button.Content>
+                {
+                    iconPosition === UILinkButtonIconPosition.Left && icon != null &&
+                    <Button.Icon
+                        source={icon}
+                        style={styles.leftIcon}
+                        iconAnimStyle={iconAnim?.style}
+                        initialColor={iconAnim?.initialColor}
+                        activeColor={iconAnim?.activeColor}
+                    />
+                }
+                {
+                    title != null &&
+                    <Button.Title
+                        titleColor={contentColor}
+                        titleAnimStyle={titleAnim?.style}
+                    >
+                        {title}
+                    </Button.Title>
+                }
+                {
+                    iconPosition === UILinkButtonIconPosition.Middle && icon != null &&
+                    <Button.Icon
+                        source={icon}
+                        iconAnimStyle={iconAnim?.style}
+                        initialColor={iconAnim?.initialColor}
+                        activeColor={iconAnim?.activeColor}
+                    />
+                }
+            </Button.Content>
+            {
+                iconPosition === UILinkButtonIconPosition.Right && icon != null &&
+                <Button.Icon
+                    source={icon}
+                    iconAnimStyle={iconAnim?.style}
+                    initialColor={iconAnim?.initialColor}
+                    activeColor={iconAnim?.activeColor}
+                />
+            }
         </Button>
     );
 };

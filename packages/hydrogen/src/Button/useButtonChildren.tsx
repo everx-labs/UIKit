@@ -114,6 +114,7 @@ export function ButtonTitle({
     titleColor = UILabelColors.TextPrimaryInverted,
     titleRole = UILabelRoles.Action,
     titleAnimStyle,
+    numberOfLines = 1,
     style,
     ...props
 }: {
@@ -121,6 +122,7 @@ export function ButtonTitle({
     titleColor?: ColorVariants,
     titleRole?: TypographyVariants,
     titleAnimStyle?: any,
+    numberOfLines?: number,
     style?: StyleProp<TextStyle>,
 }) {
     return (
@@ -128,7 +130,7 @@ export function ButtonTitle({
             {...props}
             color={titleColor}
             role={titleRole}
-            numberOfLines={1}
+            numberOfLines={numberOfLines}
             ellipsizeMode="tail"
             selectable={false}
             style={[style, titleAnimStyle]}
