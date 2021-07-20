@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, StyleSheet, View, ViewProps, ImageProps } from 'react-native';
+import { Platform, StyleSheet, View, ViewProps, ImageProps, StyleProp, TextStyle } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
@@ -100,7 +100,7 @@ export function ButtonIcon({
                 />
             </View>
         );
-    }, [props, source, style, iconAnimStyle, initialColor, activeColor]);
+    }, [props, source, style, iconAnimStyle, initialColor, activeColor, theme]);
 
     return onPress ? (
         <TouchableOpacity onPress={onPress}>
@@ -114,12 +114,14 @@ export function ButtonTitle({
     titleColor = UILabelColors.TextPrimaryInverted,
     titleRole = UILabelRoles.Action,
     titleAnimStyle,
+    style,
     ...props
 }: {
     children: string,
     titleColor?: ColorVariants,
     titleRole?: TypographyVariants,
     titleAnimStyle?: any,
+    style?: StyleProp<TextStyle>,
 }) {
     return (
         <AnimatedUILabel
@@ -129,7 +131,7 @@ export function ButtonTitle({
             numberOfLines={1}
             ellipsizeMode="tail"
             selectable={false}
-            style={titleAnimStyle}
+            style={[style, titleAnimStyle]}
         >
             {children}
         </AnimatedUILabel>
