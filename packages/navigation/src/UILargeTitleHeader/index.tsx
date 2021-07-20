@@ -49,7 +49,11 @@ export const UILargeTitleContainerRefContext = React.createContext<React.RefObje
 
 const UILargeTitlePositionContext = React.createContext<{
     position?: Animated.SharedValue<number>;
-    forseChangePosition?: (position: number, duration?: number) => void;
+    forseChangePosition?: (
+        position: number,
+        duration?: number,
+        callback?: ((isFinished: boolean) => void) | undefined,
+    ) => void;
 }>({});
 
 export function useLargeTitlePosition() {
@@ -159,8 +163,8 @@ export function UILargeTitleHeader({
     const scrollHandler = useAnimatedScrollHandler({
         onScroll,
         onBeginDrag: () => {
-            yWithoutRubberBand.value = shift.value;
             shiftChangedForcibly.value = false;
+            yWithoutRubberBand.value = shift.value;
         },
         onEndDrag,
         onMomentumEnd: onEndDrag,
@@ -268,6 +272,7 @@ export function UILargeTitleHeader({
             }
         },
         onStart: () => {
+            shiftChangedForcibly.value = false;
             if (!hasScrollShared.value) {
                 yWithoutRubberBand.value = shift.value;
                 return;
@@ -275,7 +280,6 @@ export function UILargeTitleHeader({
             if (yIsNegative.value) {
                 yWithoutRubberBand.value = shift.value;
             }
-            shiftChangedForcibly.value = false;
         },
         onEnd: () => {
             if (!hasScrollShared.value) {
@@ -399,11 +403,19 @@ export function UILargeTitleHeader({
     const contentContainerRef = React.useRef<View>(null);
 
     const forseChangePosition = React.useCallback(
-        (position: number, duration?: number) => {
+        (
+            position: number,
+            duration?: number,
+            callback?: ((isFinished: boolean) => void) | undefined,
+        ) => {
             // If position is changed forcibly
             // no need to respond to scroll events anymore
             shiftChangedForcibly.value = true;
-            shift.value = withTiming(position, { duration: duration ?? 0 });
+            shift.value = withTiming(
+                position,
+                { duration: duration ?? 0 },
+                callback,
+            );
         },
         [shift, shiftChangedForcibly],
     );

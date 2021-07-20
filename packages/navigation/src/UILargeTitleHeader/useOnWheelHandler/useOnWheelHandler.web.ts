@@ -70,10 +70,10 @@ export default function useOnWheelHandler(
             [hasScrollShared, yIsNegative, onScroll],
         ),
         onStart: React.useCallback(() => {
+            shiftChangedForcibly.value = false;
             if (yIsNegative.value) {
                 yWithoutRubberBand.value = shift.value;
             }
-            shiftChangedForcibly.value = false;
         }, [yIsNegative, yWithoutRubberBand, shift, shiftChangedForcibly]),
         onEnd,
     });

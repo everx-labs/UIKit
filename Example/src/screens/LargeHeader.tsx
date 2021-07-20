@@ -74,24 +74,15 @@ function LargeHeaderExampleFlatList() {
 const LargeHeaderStack = createStackNavigator();
 
 function RefreshPageController() {
-    const [refreshing, setRefreshing] = React.useState(false);
     const turnOnRefreshing = React.useCallback(() => {
-        setRefreshing(true);
-
         return new Promise<void>((resolve) => {
             setTimeout(() => {
-                setRefreshing(false);
                 resolve(undefined);
             }, 1000);
         });
-    }, [setRefreshing]);
+    }, []);
 
-    return (
-        <UILargeHeaderRefreshControl
-            refreshing={refreshing}
-            onRefresh={turnOnRefreshing}
-        />
-    );
+    return <UILargeHeaderRefreshControl onRefresh={turnOnRefreshing} />;
 }
 
 export function LargeHeaderScreen() {
