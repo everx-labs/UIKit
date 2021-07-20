@@ -28,7 +28,7 @@ const OpenSpringConfig = {
     mass: 1,
     restSpeedThreshold: 0.001,
     restDisplacementThreshold: 0.001,
-    ...SpringConfig.fromBouncinessAndSpeed(8, 12),
+    ...SpringConfig.fromBouncinessAndSpeed(5, 12),
 };
 
 const CloseSpringConfig = {
@@ -36,7 +36,7 @@ const CloseSpringConfig = {
     mass: 1,
     restSpeedThreshold: 100,
     restDisplacementThreshold: 40,
-    ...SpringConfig.fromBouncinessAndSpeed(8, 12),
+    ...SpringConfig.fromBouncinessAndSpeed(1, 12),
 };
 
 // eslint-disable-next-line no-shadow
@@ -51,6 +51,8 @@ enum SHOW_STATES {
 export function usePosition(
     height: Animated.SharedValue<number>,
     keyboardHeight: Animated.SharedValue<number>,
+    hasOpenAnimation: boolean = true,
+    hasCloseAnimation: boolean = true,
     onCloseProp: OnClose | undefined,
     onCloseModal: OnClose,
 ) {
@@ -113,25 +115,35 @@ export function usePosition(
             }
 
             if (currentState.showState === SHOW_STATES.OPEN) {
-                position.value = withSpring(
-                    currentState.snapPointPosition,
-                    OpenSpringConfig,
-                );
+                if (hasOpenAnimation) {
+                    position.value = withSpring(
+                        currentState.snapPointPosition,
+                        OpenSpringConfig,
+                    );
+                } else {
+                    position.value = currentState.snapPointPosition;
+                }
+
                 showState.value = SHOW_STATES.OPENING;
 
                 return;
             }
 
             if (currentState.showState === SHOW_STATES.CLOSE) {
-                position.value = withSpring(
-                    0 - currentState.keyboardHeight,
-                    CloseSpringConfig,
-                    (isFinished) => {
-                        if (isFinished && onCloseModal) {
-                            runOnJS(onCloseModal)();
-                        }
-                    },
-                );
+                if (hasCloseAnimation) {
+                    position.value = withSpring(
+                        0 - currentState.keyboardHeight,
+                        CloseSpringConfig,
+                        (isFinished) => {
+                            if (isFinished && onCloseModal) {
+                                runOnJS(onCloseModal)();
+                            }
+                        },
+                    );
+                } else {
+                    position.value = 0 - currentState.keyboardHeight;
+                }
+
                 showState.value = SHOW_STATES.CLOSING;
             }
         },
