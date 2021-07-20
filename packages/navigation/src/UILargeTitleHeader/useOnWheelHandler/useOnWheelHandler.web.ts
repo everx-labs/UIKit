@@ -2,8 +2,6 @@
 import * as React from 'react';
 import type Animated from 'react-native-reanimated';
 
-import { resetPosition } from '../useResetPosition';
-
 const END_THRESHOLD = 100;
 
 function useCreateOnWheelHandler({
@@ -48,11 +46,12 @@ function useCreateOnWheelHandler({
 
 export default function useOnWheelHandler(
     shift: Animated.SharedValue<number>,
-    largeTitleHeight: Animated.SharedValue<number>,
+    shiftChangedForcibly: Animated.SharedValue<boolean>,
     yIsNegative: Animated.SharedValue<boolean>,
     yWithoutRubberBand: Animated.SharedValue<number>,
     hasScrollShared: Animated.SharedValue<boolean>,
     onScroll: (event: { contentOffset: { y: number } }) => void,
+    onEnd: () => void,
 ) {
     return useCreateOnWheelHandler({
         onActive: React.useCallback(
@@ -74,9 +73,8 @@ export default function useOnWheelHandler(
             if (yIsNegative.value) {
                 yWithoutRubberBand.value = shift.value;
             }
-        }, [yIsNegative, yWithoutRubberBand, shift]),
-        onEnd: React.useCallback(() => {
-            resetPosition(shift, largeTitleHeight);
-        }, [largeTitleHeight, shift]),
+            shiftChangedForcibly.value = false;
+        }, [yIsNegative, yWithoutRubberBand, shift, shiftChangedForcibly]),
+        onEnd,
     });
 }
