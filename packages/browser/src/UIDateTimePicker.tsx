@@ -12,7 +12,7 @@ export enum DateTimePickerMode {
     time = 'time',
 }
 
-interface DateTimePickerType {
+type DateTimePickerType = {
     visible: boolean;
     onClose: () => void;
     onValueRetrieved: (date: Date,  timezone?: number) => void;
