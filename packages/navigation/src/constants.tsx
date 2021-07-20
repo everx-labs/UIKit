@@ -28,4 +28,7 @@ export const UIConstant = {
     alertWindowMaximumWidth: 350,
 
     maxSlideDistanceOfTap: 4,
+
+    refreshControlHeight: 50,
+    refreshControlLoaderSize: 20,
 };

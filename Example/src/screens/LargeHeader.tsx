@@ -14,7 +14,7 @@ import {
     FlatList,
     createStackNavigator,
     RefreshControl,
-    REFRESH_CONTROL_HEIGHT,
+    UIConstant as UINavConstant,
 } from '@tonlabs/uikit.navigation';
 
 const CHECK_TITLE = false;
@@ -136,7 +136,7 @@ export function LargeHeaderScreen() {
                             </UIBackgroundView>
                         );
                     },
-                    defaultShift: -REFRESH_CONTROL_HEIGHT,
+                    defaultShift: -UINavConstant.refreshControlHeight,
                 }}
                 component={LargeHeaderExample}
             />

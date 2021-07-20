@@ -1,12 +1,17 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { runOnJS, useDerivedValue } from 'react-native-reanimated';
 
-import { UILabel } from '@tonlabs/uikit.hydrogen';
+import {
+    ColorVariants,
+    UIImage,
+    UILabel,
+    UIIndicator,
+} from '@tonlabs/uikit.hydrogen';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import { useLargeTitlePosition } from './index';
-
-export const REFRESH_CONTROL_HEIGHT = 50;
+import { UIConstant } from '../constants';
 
 export function RefreshControl({
     refreshing,
@@ -24,7 +29,7 @@ export function RefreshControl({
             return;
         }
 
-        forseChangePosition(-1 * REFRESH_CONTROL_HEIGHT, 200);
+        forseChangePosition(-1 * UIConstant.refreshControlHeight, 200);
     }, [onRefresh, position, forseChangePosition]);
 
     useDerivedValue(() => {
@@ -38,14 +43,26 @@ export function RefreshControl({
     }, [position, refreshing, onRefresh]);
 
     return (
-        <View
-            style={{
-                height: REFRESH_CONTROL_HEIGHT,
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}
-        >
-            <UILabel>{refreshing ? 'Refreshing...' : 'Refresh'}</UILabel>
+        <View style={styles.container}>
+            <UILabel>
+                {refreshing ? (
+                    <UIIndicator size={UIConstant.refreshControlLoaderSize} />
+                ) : (
+                    <UIImage
+                        source={UIAssets.icons.ui.arrowLeftBlack}
+                        tintColor={ColorVariants.IconAccent}
+                        style={{ transform: [{ rotate: '-90deg' }] }}
+                    />
+                )}
+            </UILabel>
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        height: UIConstant.refreshControlHeight,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+});
