@@ -13,7 +13,7 @@ import {
     ScrollView,
     FlatList,
     createStackNavigator,
-    RefreshControl,
+    UILargeHeaderRefreshControl,
     UIConstant as UINavConstant,
 } from '@tonlabs/uikit.navigation';
 
@@ -87,7 +87,10 @@ function RefreshPageController() {
     }, [setRefreshing]);
 
     return (
-        <RefreshControl refreshing={refreshing} onRefresh={turnOnRefreshing} />
+        <UILargeHeaderRefreshControl
+            refreshing={refreshing}
+            onRefresh={turnOnRefreshing}
+        />
     );
 }
 

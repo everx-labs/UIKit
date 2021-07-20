@@ -13,7 +13,7 @@ import { UIAssets } from '@tonlabs/uikit.assets';
 import { useLargeTitlePosition } from './index';
 import { UIConstant } from '../constants';
 
-export function RefreshControl({
+export function UILargeHeaderRefreshControl({
     refreshing,
     onRefresh,
 }: {
