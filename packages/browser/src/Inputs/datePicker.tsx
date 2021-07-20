@@ -43,16 +43,30 @@ function datePickerReducer(
     };
 }
 
-export function DatePicker({ onLayout }: DateMessage) {
+export function DatePicker({ onLayout, ...message }: DateMessage) {
     const [state, dispatch] = React.useReducer(datePickerReducer, {
         pickerVisible: false,
     });
+
+    if(message.externalState != null){
+        return (
+            <View onLayout={onLayout}>
+                {message.externalState.date != null && <BubbleSimplePlainText
+                    type={ChatMessageType.PlainText}
+                    key="date-picker-value-bubble-prompt"
+                    text={message.externalState.date.toString()}
+                    status={MessageStatus.Received}
+                    firstFromChain
+                    lastFromChain
+                />}
+            </View>)
+    }
 
     return (
         <View onLayout={onLayout}>
             <BubbleSimplePlainText
                 type={ChatMessageType.PlainText}
-                key="signing-box-bubble-prompt"
+                key="date-picker-box-bubble-prompt"
                 text="Do you want open date picker?"
                 status={MessageStatus.Received}
                 firstFromChain
@@ -71,13 +85,16 @@ export function DatePicker({ onLayout }: DateMessage) {
             />
             <UIDatePicker
                 visible={state.pickerVisible}
+
                 onClose={() => {
                     dispatch({
                         type: 'CLOSE_DATE_PICKER',
                     });
                 }}
-                onKeyRetrieved={ (date: Date) => {
-                    console.log(date);
+                onValueRetrieved={ (date: Date) => {
+                    message.onSelect({
+                        date
+                    });
                     dispatch({
                         type: 'CLOSE_DATE_PICKER',
                     });
