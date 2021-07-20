@@ -317,6 +317,7 @@ const styles = StyleSheet.create({
         height: UIConstant.linkButtonHeight / 2,
     },
     doubleLineContent: {
+        flexShrink: 1,
         paddingVertical: UIConstant.normalContentOffset,
     },
 });
