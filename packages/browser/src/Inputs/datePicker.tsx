@@ -9,7 +9,7 @@ import {
 } from '@tonlabs/uikit.chats';
 
 import type { DateMessage } from '../types';
-import { UIDatePicker } from '../UIDatePicker';
+import { UIDateTimePicker, DateTimePickerMode } from '../UIDateTimePicker';
 
 type DatePickerInternalState = {
     pickerVisible: boolean;
@@ -50,16 +50,18 @@ export function DatePicker({ onLayout, ...message }: DateMessage) {
 
     if(message.externalState != null){
         return (
-            <View onLayout={onLayout}>
-                {message.externalState.date != null && <BubbleSimplePlainText
-                    type={ChatMessageType.PlainText}
-                    key="date-picker-value-bubble-prompt"
-                    text={message.externalState.date.toString()}
-                    status={MessageStatus.Received}
-                    firstFromChain
-                    lastFromChain
-                />}
-            </View>)
+            <>
+                {message.externalState.date != null &&
+                <View onLayout={onLayout}>
+                    <BubbleSimplePlainText
+                        type={ChatMessageType.PlainText}
+                        key="date-picker-value-bubble-prompt"
+                        text={'You choose the date: ' + message.externalState.date.toString()}
+                        status={MessageStatus.Received}
+                    />
+                </View>}
+            </>
+            )
     }
 
     return (
@@ -67,7 +69,7 @@ export function DatePicker({ onLayout, ...message }: DateMessage) {
             <BubbleSimplePlainText
                 type={ChatMessageType.PlainText}
                 key="date-picker-box-bubble-prompt"
-                text="Do you want open date picker?"
+                text={message.prompt || "Do you want choose the date?"}
                 status={MessageStatus.Received}
                 firstFromChain
                 lastFromChain
@@ -76,16 +78,18 @@ export function DatePicker({ onLayout, ...message }: DateMessage) {
                 type={ChatMessageType.ActionButton}
                 key="date-picker-bubble-open-picker"
                 status={MessageStatus.Received}
-                text="Open date picker"
+                text="Open the date picker"
                 onPress={() => {
                     dispatch({
                         type: 'OPEN_DATE_PICKER',
                     });
                 }}
             />
-            <UIDatePicker
+            <UIDateTimePicker
                 visible={state.pickerVisible}
-
+                mode={DateTimePickerMode.calendar}
+                minDate={message.minDate}
+                maxDate={message.maxDate}
                 onClose={() => {
                     dispatch({
                         type: 'CLOSE_DATE_PICKER',

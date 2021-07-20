@@ -20,6 +20,7 @@ import { TransactionConfirmation } from './Inputs/TransactionConfirmation';
 import { QRCode } from './Inputs/qrCode';
 import { EncryptionBox } from './Inputs/EncryptionBox';
 import { DatePicker } from './Inputs/datePicker';
+import { TimePicker } from './Inputs/timePicker';
 
 type UIBrowserListProps = {
     messages: BrowserMessage[];
@@ -88,6 +89,9 @@ const renderBubble = () => (
     }
     if (item.type === InteractiveMessageType.Date) {
         return <DatePicker {...item} onLayout={onLayout} />;
+    }
+    if (item.type === InteractiveMessageType.Time) {
+        return <TimePicker {...item} onLayout={onLayout} />;
     }
 
     return null;

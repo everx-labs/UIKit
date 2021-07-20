@@ -10,7 +10,7 @@ import {
     ValidationResultStatus,
     QRCodeMessage,
     EncryptionBoxMessage,
-    DateMessage
+    DateMessage, TimeMessage
 } from '@tonlabs/uikit.browser';
 import type {
     AddressInputMessage,
@@ -568,7 +568,7 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                             }}
                         />
                         <UIBoxButton
-                            title="Add date"
+                            title="Choose date"
                             layout={{
                                 marginBottom: 10,
                             }}
@@ -577,6 +577,32 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                     key: `${Date.now()}-date-picker`,
                                     status: MessageStatus.Received,
                                     type: InteractiveMessageType.Date,
+                                    minDate: new Date(),
+                                    onSelect: (externalState: any) => {
+                                        setMessages([
+                                            {
+                                                ...message,
+                                                externalState,
+                                            },
+                                            ...messages,
+                                        ]);
+                                    },
+                                };
+                                setMessages([message, ...messages]);
+                                setMenuVisible(false);
+                            }}
+                        />
+                        <UIBoxButton
+                            title="Choose time"
+                            layout={{
+                                marginBottom: 10,
+                            }}
+                            onPress={() => {
+                                const message: TimeMessage = {
+                                    key: `${Date.now()}-time-picker`,
+                                    status: MessageStatus.Received,
+                                    type: InteractiveMessageType.Time,
+                                    minTime: new Date('12:00:00'),
                                     onSelect: (externalState: any) => {
                                         setMessages([
                                             {

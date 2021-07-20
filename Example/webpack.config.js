@@ -207,6 +207,7 @@ module.exports = {
             'react-native-camera': 'react', // Hack in order not to load
             'react-native-permissions': 'react', // Hack in order not to load
             'react-native-qrcode-scanner': 'react', // Hack in order not to load
+            'react-native-modern-datepicker': 'react', // Hack in order not to load
         },
     },
 };
