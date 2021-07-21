@@ -26,6 +26,14 @@ export function UILargeHeaderRefreshControl({
     const [refreshing, setRefreshing] = React.useState(false);
     const refreshingGuard = useSharedValue(false);
 
+    React.useEffect(() => {
+        if (forseChangePosition == null) {
+            return;
+        }
+
+        forseChangePosition(-1 * UIConstant.refreshControlHeight, 0);
+    }, [forseChangePosition]);
+
     const runOnRefresh = React.useCallback(async () => {
         setRefreshing(true);
         await onRefresh();
@@ -34,10 +42,14 @@ export function UILargeHeaderRefreshControl({
             return;
         }
 
-        forseChangePosition(-1 * UIConstant.refreshControlHeight, 200, () => {
-            refreshingGuard.value = false;
-            setRefreshing(false);
-        });
+        forseChangePosition(
+            -1 * UIConstant.refreshControlHeight,
+            UIConstant.refreshControlPositioningDuration,
+            () => {
+                refreshingGuard.value = false;
+                setRefreshing(false);
+            },
+        );
     }, [onRefresh, forseChangePosition, refreshingGuard]);
 
     useDerivedValue(() => {
@@ -45,6 +57,13 @@ export function UILargeHeaderRefreshControl({
             return;
         }
 
+        /**
+         * By the time of initial rendering refresh control is shown,
+         * like any other content that is rendered with `renderAboveContent` method
+         * So to hide it we adjust the position by the height of the RefreshControl.
+         * And that means that position 0 is when RefreshControl will be visible again
+         * and by our logic it's a point when refreshing should be done
+         */
         if (position.value > 0 && !refreshingGuard.value) {
             refreshingGuard.value = true;
             runOnJS(runOnRefresh)();
