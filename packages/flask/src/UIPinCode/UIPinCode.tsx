@@ -8,6 +8,7 @@ import Animated, {
     withSpring,
     interpolateColor,
     interpolate,
+    runOnUI,
 } from 'react-native-reanimated';
 
 import { UIConstant } from '@tonlabs/uikit.core';
@@ -17,6 +18,7 @@ import {
     UILabelRoles,
     useTheme,
     ColorVariants,
+    hapticNotification,
 } from '@tonlabs/uikit.hydrogen';
 import { DotsContext } from './DotsContext';
 import {
@@ -161,6 +163,21 @@ export function UIPinCode({
     const shakeAnim = useSharedValue(0);
     const animatedDots = useAnimatedDots(length, dotsAnims, validState);
 
+    const showValidationError = React.useCallback(
+        function showValidationErrorImpl() {
+            'worklet';
+
+            shakeAnim.value = ShakeAnimationStatus.NotActive;
+            shakeAnim.value = withSpring(
+                ShakeAnimationStatus.Active,
+                DOT_WITH_SPRING_CONFIG,
+            );
+
+            hapticNotification('error');
+        },
+        [shakeAnim],
+    );
+
     const validatePin = React.useCallback(
         (pin: string) => {
             onEnter(pin).then((isValid) => {
@@ -169,11 +186,7 @@ export function UIPinCode({
                     : ValidationState.Error;
 
                 if (!isValid) {
-                    shakeAnim.value = ShakeAnimationStatus.NotActive;
-                    shakeAnim.value = withSpring(
-                        ShakeAnimationStatus.Active,
-                        DOT_WITH_SPRING_CONFIG,
-                    );
+                    runOnUI(showValidationError)();
                 }
 
                 setTimeout(() => {
@@ -197,10 +210,10 @@ export function UIPinCode({
             onEnter,
             validState,
             activeDotIndex,
-            shakeAnim,
             onSuccess,
             dotsValues,
             dotsAnims,
+            showValidationError,
         ],
     );
 
@@ -276,13 +289,19 @@ export function UIPinCode({
                     </UILabel>
                 )}
                 <Animated.View style={[styles.dotsContainer, shakeStyle]}>
-                    {animatedDots.current.map(([outterStyles, innerStyles]) => (
-                        <Animated.View style={[styles.dot, outterStyles]}>
+                    {animatedDots.current.map(
+                        ([outterStyles, innerStyles], index) => (
                             <Animated.View
-                                style={[styles.dotInner, innerStyles]}
-                            />
-                        </Animated.View>
-                    ))}
+                                // eslint-disable-next-line react/no-array-index-key
+                                key={index}
+                                style={[styles.dot, outterStyles]}
+                            >
+                                <Animated.View
+                                    style={[styles.dotInner, innerStyles]}
+                                />
+                            </Animated.View>
+                        ),
+                    )}
                 </Animated.View>
                 <UILabel
                     testID={descriptionTestID}

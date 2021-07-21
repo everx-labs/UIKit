@@ -1,7 +1,6 @@
-/* global _hapticImpact */
 /* eslint-disable no-param-reassign */
 import * as React from 'react';
-import { StyleProp, Vibration, ViewStyle, StyleSheet } from 'react-native';
+import { StyleProp, ViewStyle, StyleSheet } from 'react-native';
 import {
     GestureEvent,
     NativeViewGestureHandlerPayload,
@@ -26,6 +25,7 @@ import {
     UILabelColors,
     UILabelRoles,
     useColorParts,
+    hapticSelection,
 } from '@tonlabs/uikit.hydrogen';
 import { UIAssets } from '@tonlabs/uikit.assets';
 
@@ -34,16 +34,10 @@ import {
     CircleAnimationStatus,
     DotAnimationStatus,
     DOT_WITH_SPRING_CONFIG,
-    KEY_HAPTIC_VIBRATION_DURATION,
     KEY_HEIGHT,
     KEY_WIDTH,
     UIPinCodeBiometryType,
 } from './constants';
-
-function hapticResponse() {
-    // TODO: think to use https://docs.expo.io/versions/latest/sdk/haptics/
-    Vibration.vibrate(KEY_HAPTIC_VIBRATION_DURATION);
-}
 
 function useCircleAboveStyle(circleAnimProgress: Animated.SharedValue<number>) {
     const { colorParts } = useColorParts(ColorVariants.BackgroundSecondary);
@@ -109,11 +103,7 @@ export function Key({ num }: { num: number }) {
             );
             activeDotIndex.value += 1;
 
-            if (_hapticImpact != null) {
-                _hapticImpact('sdfsdf');
-            }
-
-            runOnJS(hapticResponse)();
+            hapticSelection();
         },
         onCancel: () => {
             circleAnimProgress.value = withSpring(
@@ -272,8 +262,8 @@ export function BiometryKey({
             circleAnimProgress.value = CircleAnimationStatus.Active;
         },
         onFinish: () => {
+            hapticSelection();
             runOnJS(getPasscode)();
-            runOnJS(hapticResponse)();
         },
         onCancel: () => {
             circleAnimProgress.value = withSpring(
@@ -341,7 +331,7 @@ export function DelKey() {
             );
             activeDotIndex.value -= 1;
 
-            runOnJS(hapticResponse)();
+            hapticSelection();
         },
         onCancel: () => {
             circleAnimProgress.value = withSpring(

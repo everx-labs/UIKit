@@ -11,6 +11,7 @@ import {
     UIImage,
     UILabel,
     UIIndicator,
+    hapticImpact,
 } from '@tonlabs/uikit.hydrogen';
 import { UIAssets } from '@tonlabs/uikit.assets';
 
@@ -26,6 +27,10 @@ export function UILargeHeaderRefreshControl({
     const [refreshing, setRefreshing] = React.useState(false);
     const refreshingGuard = useSharedValue(false);
 
+    const stopRefreshing = React.useCallback(() => {
+        setRefreshing(false);
+    }, []);
+
     const runOnRefresh = React.useCallback(async () => {
         setRefreshing(true);
         await onRefresh();
@@ -35,10 +40,12 @@ export function UILargeHeaderRefreshControl({
         }
 
         forseChangePosition(-1 * UIConstant.refreshControlHeight, 200, () => {
+            'worklet';
+
             refreshingGuard.value = false;
-            setRefreshing(false);
+            runOnJS(stopRefreshing)();
         });
-    }, [onRefresh, forseChangePosition, refreshingGuard]);
+    }, [onRefresh, forseChangePosition, refreshingGuard, stopRefreshing]);
 
     useDerivedValue(() => {
         if (position == null) {
@@ -47,6 +54,7 @@ export function UILargeHeaderRefreshControl({
 
         if (position.value > 0 && !refreshingGuard.value) {
             refreshingGuard.value = true;
+            hapticImpact('medium');
             runOnJS(runOnRefresh)();
         }
     }, [position, refreshing, onRefresh]);
