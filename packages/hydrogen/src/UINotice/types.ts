@@ -1,4 +1,3 @@
-
 // eslint-disable-next-line no-shadow
 export enum UINoticeType {
     Toast = 'Toast',
@@ -19,7 +18,7 @@ export type NoticeProps = {
     title: string;
     onTap?: () => void;
     testID?: string;
-}
+};
 
 export type UINoticeProps = {
     type: UINoticeType;
@@ -29,4 +28,8 @@ export type UINoticeProps = {
     onClose?: () => void;
     onTap?: () => void;
     testID?: string;
+};
+
+export type ToastNoticeProps = UINoticeProps & {
+    onCloseAnimationEnd: () => void;
 };

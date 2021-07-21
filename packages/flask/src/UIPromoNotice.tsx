@@ -10,7 +10,7 @@ import {
     UILinkButton,
     UILinkButtonSize,
     UILinkButtonType,
-    UINotice,
+    UINoticeLegacy,
 } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
@@ -141,7 +141,7 @@ export function UIPromoNotice({
     return (
         Platform.OS === 'web'
             ? (
-                <UINotice
+                <UINoticeLegacy
                     folding={folding}
                     visible={visible}
                     onClose={onClose}
@@ -149,7 +149,7 @@ export function UIPromoNotice({
                     testID={testID}
                 >
                     {content}
-                </UINotice>
+                </UINoticeLegacy>
             ) : null
     );
 }

@@ -30,7 +30,7 @@ export type UINoticeCommonProps = {
     testID?: string;
 };
 
-export type UINoticeProps = UINoticeCommonProps & {
+export type UINoticeLegacyProps = UINoticeCommonProps & {
     /**
      * Whether to add folding behaviour or to use default notice
      */
@@ -378,10 +378,10 @@ function UIClosableNotice({
     );
 }
 
-export function UINotice({
+export function UINoticeLegacy({
     folding = false,
     ...props
-}: UINoticeProps) {
+}: UINoticeLegacyProps) {
     return (
         <Portal absoluteFill>
             {
