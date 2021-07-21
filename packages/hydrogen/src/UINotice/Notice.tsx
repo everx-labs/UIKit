@@ -34,7 +34,8 @@ const getBorderRadius = (type: UINoticeType): number => {
         case UINoticeType.Top:
         case UINoticeType.Bottom:
             return 0;
-        case UINoticeType.Toast:
+        case UINoticeType.BottomToast:
+        case UINoticeType.TopToast:
         default:
             return 12;
     }

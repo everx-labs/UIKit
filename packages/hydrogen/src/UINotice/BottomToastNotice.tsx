@@ -2,6 +2,7 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
+// @ts-ignore
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Portal } from '@tonlabs/uikit.hydrogen';
 import type { UINoticeProps } from './types';
@@ -9,7 +10,7 @@ import { Notice } from './Notice';
 import { useNoticeHeight } from './hooks/useNoticeHeight';
 import { useNoticePositionStyle } from './toastNoticeHooks/useNoticePositionStyle';
 
-export const ToastNotice: React.FC<UINoticeProps> = ({
+export const BottomToastNotice: React.FC<UINoticeProps> = ({
     type,
     color,
     visible,

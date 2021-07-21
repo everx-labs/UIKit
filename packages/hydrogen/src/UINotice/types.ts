@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-shadow
 export enum UINoticeType {
-    Toast = 'Toast',
+    TopToast = 'TopToast',
+    BottomToast = 'BottomToast',
     Top = 'Top',
     Bottom = 'Bottom',
 }

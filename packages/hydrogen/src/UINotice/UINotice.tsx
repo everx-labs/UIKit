@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { UINoticeProps, UINoticeType } from './types';
-import { ToastNotice } from './ToastNotice';
+import { BottomToastNotice } from './BottomToastNotice';
 
 // const ANIMATION_DURATION = 1000
 
@@ -23,11 +23,12 @@ export const UINotice: React.FC<UINoticeProps> = (props: UINoticeProps) => {
         return null;
     }
     switch (props.type) {
-        case UINoticeType.Toast:
-            return <ToastNotice {...props} onClose={onClose} />;
+        case UINoticeType.BottomToast:
+            return <BottomToastNotice {...props} onClose={onClose} />;
+        case UINoticeType.TopToast:
         case UINoticeType.Bottom:
         case UINoticeType.Top:
         default:
-            return <ToastNotice {...props} onClose={onClose} />;
+            return <BottomToastNotice {...props} onClose={onClose} />;
     }
 };

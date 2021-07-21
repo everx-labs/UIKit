@@ -14,12 +14,10 @@ import {
 } from '@tonlabs/uikit.hydrogen';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
+// import { UINotice } from '../../../packages/hydrogen/src'
 
 export const Notifications = () => {
     const [uiNoticeVisible, setUINoticeVisible] = React.useState<boolean>(false)
-    React.useEffect(() => {
-        console.log('uiNoticeVisible', uiNoticeVisible)
-    }, [uiNoticeVisible])
     return (
         <ExampleScreen>
             <ExampleSection title="UINotice">
@@ -35,7 +33,7 @@ export const Notifications = () => {
                         }
                     />
                     <UINotice
-                        type={UINoticeType.Toast}
+                        type={UINoticeType.BottomToast}
                         title="System is going down at midnight tonight. We’ll notify you when it’s back up."
                         visible={uiNoticeVisible}
                         onClose={() => setUINoticeVisible(false)}
