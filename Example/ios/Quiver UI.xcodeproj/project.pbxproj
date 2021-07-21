@@ -25,6 +25,7 @@
 		A63C5DF2252EF7F10024AA83 /* SFProText-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A63C5DEE252EF7F10024AA83 /* SFProText-Bold.ttf */; };
 		A63C5DF3252EF7F10024AA83 /* SFProText-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A63C5DEF252EF7F10024AA83 /* SFProText-Medium.ttf */; };
 		A63C5DF4252EF7F10024AA83 /* SFProText-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A63C5DF0252EF7F10024AA83 /* SFProText-Light.ttf */; };
+		A6E9C2A326A80FCB002C18F2 /* QUIHapticModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = A6E9C2A226A80FCB002C18F2 /* QUIHapticModule.mm */; };
 		A9F25BF479AD46690EDC59F7 /* libPods-Quiver UI-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC1E7B3792F6703709E9BE7A /* libPods-Quiver UI-tvOS.a */; };
 		DFE32877C0459E80C54C110A /* libPods-Quiver UI-Quiver UITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0955AE379B94AF246A75215 /* libPods-Quiver UI-Quiver UITests.a */; };
 /* End PBXBuildFile section */
@@ -73,6 +74,8 @@
 		A63C5DEE252EF7F10024AA83 /* SFProText-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Bold.ttf"; path = "../../assets/fonts/SFProText-Bold.ttf"; sourceTree = "<group>"; };
 		A63C5DEF252EF7F10024AA83 /* SFProText-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Medium.ttf"; path = "../../assets/fonts/SFProText-Medium.ttf"; sourceTree = "<group>"; };
 		A63C5DF0252EF7F10024AA83 /* SFProText-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Light.ttf"; path = "../../assets/fonts/SFProText-Light.ttf"; sourceTree = "<group>"; };
+		A6E9C2A226A80FCB002C18F2 /* QUIHapticModule.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = QUIHapticModule.mm; sourceTree = "<group>"; };
+		A6E9C2A426A80FD9002C18F2 /* QUIHapticModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QUIHapticModule.h; sourceTree = "<group>"; };
 		B0955AE379B94AF246A75215 /* libPods-Quiver UI-Quiver UITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Quiver UI-Quiver UITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7083FA2B9E71BE3A4E39210 /* Pods-Quiver UI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI.release.xcconfig"; path = "Target Support Files/Pods-Quiver UI/Pods-Quiver UI.release.xcconfig"; sourceTree = "<group>"; };
 		C37FD4F69612A9731C064BBD /* Pods-Quiver UI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI.debug.xcconfig"; path = "Target Support Files/Pods-Quiver UI/Pods-Quiver UI.debug.xcconfig"; sourceTree = "<group>"; };
@@ -146,6 +149,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				A6E9C2A226A80FCB002C18F2 /* QUIHapticModule.mm */,
+				A6E9C2A426A80FD9002C18F2 /* QUIHapticModule.h */,
 			);
 			path = "Quiver UI";
 			sourceTree = "<group>";
@@ -645,6 +650,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				A6E9C2A326A80FCB002C18F2 /* QUIHapticModule.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

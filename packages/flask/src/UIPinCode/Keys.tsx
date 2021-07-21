@@ -1,3 +1,4 @@
+/* global _hapticImpact */
 /* eslint-disable no-param-reassign */
 import * as React from 'react';
 import { StyleProp, Vibration, ViewStyle, StyleSheet } from 'react-native';
@@ -107,6 +108,10 @@ export function Key({ num }: { num: number }) {
                 DOT_WITH_SPRING_CONFIG,
             );
             activeDotIndex.value += 1;
+
+            if (_hapticImpact != null) {
+                _hapticImpact('sdfsdf');
+            }
 
             runOnJS(hapticResponse)();
         },
