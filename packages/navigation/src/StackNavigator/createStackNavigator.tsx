@@ -135,7 +135,6 @@ function ScreenWithHeaderContent({
                         renderBelowContent={
                             descriptor.options.renderBelowContent
                         }
-                        defaultShift={descriptor.options.defaultShift}
                         headerLeft={descriptor.options.headerLeft}
                         headerLeftItems={descriptor.options.headerLeftItems}
                         headerBackButton={descriptor.options.headerBackButton}
