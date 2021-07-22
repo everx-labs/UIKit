@@ -5,7 +5,7 @@ import Animated, { withSpring } from 'react-native-reanimated';
 export function resetPosition(
     shift: Animated.SharedValue<number>,
     largeTitleHeight: Animated.SharedValue<number>,
-    defaultShift: number,
+    defaultShift: Animated.SharedValue<number>,
 ) {
     'worklet';
 
@@ -13,8 +13,11 @@ export function resetPosition(
         shift.value = withSpring(0, {
             overshootClamping: true,
         });
-    } else if (shift.value > (0 - largeTitleHeight.value + defaultShift) / 2) {
-        shift.value = withSpring(defaultShift, {
+    } else if (
+        shift.value >
+        (0 - largeTitleHeight.value + defaultShift.value) / 2
+    ) {
+        shift.value = withSpring(defaultShift.value, {
             overshootClamping: true,
         });
     } else {
@@ -28,7 +31,7 @@ export function useResetPosition(
     shift: Animated.SharedValue<number>,
     shiftChangedForcibly: Animated.SharedValue<boolean>,
     largeTitleHeight: Animated.SharedValue<number>,
-    defaultShift: number,
+    defaultShift: Animated.SharedValue<number>,
 ) {
     const resetPositionRef = React.useRef<(() => void) | null>(null);
 

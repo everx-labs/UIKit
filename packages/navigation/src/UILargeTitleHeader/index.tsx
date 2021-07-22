@@ -51,7 +51,7 @@ const UILargeTitlePositionContext = React.createContext<{
     position?: Animated.SharedValue<number>;
     forseChangePosition?: (
         position: number,
-        duration?: number,
+        options: { duration?: number; changeDefaultShift?: boolean },
         callback?: ((isFinished: boolean) => void) | undefined,
     ) => void;
 }>({});
@@ -93,10 +93,6 @@ export type UILargeTitleHeaderProps = UINavigationBarProps & {
      * Header has a context provider for children to use in scrollables
      */
     children: React.ReactNode;
-    /**
-     * Shift to apply on default (usefull for things like pull to refresh)
-     */
-    defaultShift?: number;
 };
 
 export function UILargeTitleHeader({
@@ -107,11 +103,11 @@ export function UILargeTitleHeader({
     renderBelowContent,
     onHeaderLargeTitlePress,
     onHeaderLargeTitleLongPress,
-    defaultShift = 0,
     ...navigationBarProps
 }: UILargeTitleHeaderProps) {
-    const shift = useSharedValue(defaultShift);
+    const shift = useSharedValue(0);
     const shiftChangedForcibly = useSharedValue(false);
+    const defaultShift = useSharedValue(0);
     const scrollRef = useAnimatedRef<Animated.ScrollView>();
 
     const largeTitleViewRef = useAnimatedRef<Animated.View>();
@@ -405,7 +401,7 @@ export function UILargeTitleHeader({
     const forseChangePosition = React.useCallback(
         (
             position: number,
-            duration?: number,
+            options: { duration?: number; changeDefaultShift?: boolean } = {},
             callback?: ((isFinished: boolean) => void) | undefined,
         ) => {
             // If position is changed forcibly
@@ -413,12 +409,16 @@ export function UILargeTitleHeader({
             shiftChangedForcibly.value = true;
             shift.value = withTiming(
                 position,
-                { duration: duration ?? 0 },
+                { duration: options.duration ?? 0 },
                 callback,
             );
+            if (options.changeDefaultShift) {
+                defaultShift.value = position;
+            }
         },
-        [shift, shiftChangedForcibly],
+        [shift, shiftChangedForcibly, defaultShift],
     );
+
     const positionContext = React.useMemo(
         () => ({
             position: shift,
@@ -438,7 +438,6 @@ export function UILargeTitleHeader({
                 <Animated.View
                     ref={largeTitleViewRef}
                     onLayout={onLargeTitleLayout}
-                    style={styles.largeTitleHeaderContainer}
                 >
                     <UILargeTitlePositionContext.Provider
                         value={positionContext}
@@ -515,11 +514,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    largeTitleHeaderContainer: {
-        paddingHorizontal: UIConstant.scrollContentInsetHorizontal,
-    },
     largeTitleHeaderInner: {
-        paddingVertical: UIConstant.scrollContentInsetHorizontal,
+        padding: UIConstant.scrollContentInsetHorizontal,
     },
     sceneContainerWithoutScroll: {
         flex: 1,

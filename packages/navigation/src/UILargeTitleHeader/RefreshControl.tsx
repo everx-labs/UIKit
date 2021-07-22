@@ -11,13 +11,14 @@ import {
     UIImage,
     UILabel,
     UIIndicator,
+    hapticImpact,
 } from '@tonlabs/uikit.hydrogen';
 import { UIAssets } from '@tonlabs/uikit.assets';
 
 import { useLargeTitlePosition } from './index';
 import { UIConstant } from '../constants';
 
-export function UILargeHeaderRefreshControl({
+export function UILargeTitleHeaderRefreshControl({
     onRefresh,
 }: {
     onRefresh: () => Promise<void>;
@@ -31,8 +32,17 @@ export function UILargeHeaderRefreshControl({
             return;
         }
 
-        forseChangePosition(-1 * UIConstant.refreshControlHeight, 0);
+        requestAnimationFrame(() => {
+            forseChangePosition(-1 * UIConstant.refreshControlHeight, {
+                duration: 0,
+                changeDefaultShift: true,
+            });
+        });
     }, [forseChangePosition]);
+
+    const stopRefreshing = React.useCallback(() => {
+        setRefreshing(false);
+    }, []);
 
     const runOnRefresh = React.useCallback(async () => {
         setRefreshing(true);
@@ -44,13 +54,15 @@ export function UILargeHeaderRefreshControl({
 
         forseChangePosition(
             -1 * UIConstant.refreshControlHeight,
-            UIConstant.refreshControlPositioningDuration,
+            { duration: UIConstant.refreshControlPositioningDuration },
             () => {
+                'worklet';
+
                 refreshingGuard.value = false;
-                setRefreshing(false);
+                runOnJS(stopRefreshing)();
             },
         );
-    }, [onRefresh, forseChangePosition, refreshingGuard]);
+    }, [onRefresh, forseChangePosition, refreshingGuard, stopRefreshing]);
 
     useDerivedValue(() => {
         if (position == null) {
@@ -66,6 +78,7 @@ export function UILargeHeaderRefreshControl({
          */
         if (position.value > 0 && !refreshingGuard.value) {
             refreshingGuard.value = true;
+            hapticImpact('medium');
             runOnJS(runOnRefresh)();
         }
     }, [position, refreshing, onRefresh]);
