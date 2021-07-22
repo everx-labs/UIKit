@@ -96,9 +96,6 @@ export {
 } from './packages/navigation_legacy/src';
 
 export {
-    UINavigationBackButton,
-    UINavigationBar,
-    UINavigator,
     UIAccountPicker,
     UIBalanceView,
     UIAnimatedBalanceView,
@@ -113,15 +110,6 @@ export { UIAssets } from './packages/assets/src';
 
 // Types
 export type { UIAccountData } from './packages/legacy/src/UIAccountPicker/types/UIAccountData';
-export type {
-    CreateNavigationOptions,
-    ReactNavigation,
-} from './packages/legacy/src/UINavigationBar';
-export type {
-    NavigationProps,
-    UINavigationRoute,
-    UINavigationRouting,
-} from './packages/legacy/src/UINavigator';
 export type { PointerEvents, PositionObject } from './packages/core';
 export type {
     UIColorData,
