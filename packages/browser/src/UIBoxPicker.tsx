@@ -55,19 +55,23 @@ function UIBoxPickerItem<Box extends AbstractBox>({
                     style={styles.securityCard}
                 />
             }
+
             <UILabel style={styles.itemTitle} role={UILabelRoles.Action}>
                 {box.title}
             </UILabel>
-            {box.publicKey != null && (
-                <UILabel color={UILabelColors.TextSecondary}>
-                    {`${box.publicKey.slice(0, 2)} ·· `}
-                </UILabel>
-            )}
-            {box.publicKey != null && <UIImage
-                source={UIAssets.icons.ui.keyThin}
-                tintColor={ColorVariants.IconSecondary}
-                style={styles.itemKey}
-            />}
+            
+            {box.publicKey != null &&
+                <>
+                    <UILabel color={UILabelColors.TextSecondary}>
+                        {`${box.publicKey.slice(0, 2)} ·· `}
+                    </UILabel>
+                    <UIImage
+                        source={UIAssets.icons.ui.keyThin}
+                        tintColor={ColorVariants.IconSecondary}
+                        style={styles.itemKey}
+                    />
+                </>
+            }
         </Touchable>
     );
 }
