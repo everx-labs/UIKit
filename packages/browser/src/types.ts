@@ -51,7 +51,6 @@ type ActionButtonMessage = BubbleBaseT & {
 };
 
 type QRCodeMessage = BubbleBaseT & {
-    // @ts-ignore
     type: ChatMessageType.QRCode;
     data: string;
 };

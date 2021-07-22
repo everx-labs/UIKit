@@ -10,7 +10,8 @@ import {
     ValidationResultStatus,
     QRCodeMessage,
     EncryptionBoxMessage,
-    DateMessage, TimeMessage
+    DateMessage,
+    TimeMessage
 } from '@tonlabs/uikit.browser';
 import type {
     AddressInputMessage,
@@ -602,7 +603,8 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                     key: `${Date.now()}-time-picker`,
                                     status: MessageStatus.Received,
                                     type: InteractiveMessageType.Time,
-                                    minTime: new Date('12:00:00'),
+                                    minTime: new Date('1972-01-01 12:00'),
+                                    maxTime: new Date('1972-01-01 15:00'),
                                     onSelect: (externalState: any) => {
                                         setMessages([
                                             {

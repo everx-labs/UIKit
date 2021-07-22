@@ -1,19 +1,23 @@
 import * as React from 'react';
-import {View} from 'react-native';
+import { View } from 'react-native';
 
-import {BubbleActionButton, BubbleSimplePlainText, ChatMessageType, MessageStatus,} from '@tonlabs/uikit.chats';
+import {
+    BubbleActionButton,
+    BubbleSimplePlainText,
+    ChatMessageType,
+    MessageStatus,
+} from '@tonlabs/uikit.chats';
 
 import type { TimeMessage } from '../types';
-import {DateTimePickerMode, UIDateTimePicker} from '../UIDateTimePicker';
+import { DateTimePickerMode } from '@tonlabs/uikit.flask';
+import { UIDateTimePicker } from '../UIDateTimePicker';
 
 type TimePickerInternalState = {
     pickerVisible: boolean;
 };
 
 type TimePickerAction = {
-    type:
-        | 'OPEN_TIME_PICKER'
-        | 'CLOSE_TIME_PICKER'
+    type: 'OPEN_TIME_PICKER' | 'CLOSE_TIME_PICKER';
 };
 
 function timePickerReducer(
@@ -43,29 +47,33 @@ export function TimePicker({ onLayout, ...message }: TimeMessage) {
         pickerVisible: false,
     });
 
-
     // Messages for test
-    if(message.externalState != null){
+    if (message.externalState != null) {
         return (
             <>
                 <View onLayout={onLayout}>
-                    {message.externalState.time != null &&
+                    {message.externalState.time != null && (
                         <BubbleSimplePlainText
                             type={ChatMessageType.PlainText}
                             key="time-picker-value-bubble-chosen-time"
-                            text={'You choose the time: ' + message.externalState.time}
+                            text={`You choose the time: ${message.externalState.time}`}
                             status={MessageStatus.Received}
-                        />}
-                    {message.externalState.timeZoneOffsetInMinutes != null &&
+                        />
+                    )}
+                    {message.externalState.timeZoneOffsetInMinutes != null && (
                         <BubbleSimplePlainText
                             type={ChatMessageType.PlainText}
                             key="time-picker-value-bubble-timezone"
-                            text={'Your timezone offset: ' + (message.externalState.timeZoneOffsetInMinutes/60)}
+                            text={`Your timezone offset: ${
+                                message.externalState.timeZoneOffsetInMinutes /
+                                60
+                            }`}
                             status={MessageStatus.Received}
-                        />}
+                        />
+                    )}
                 </View>
             </>
-        )
+        );
     }
 
     return (
@@ -73,7 +81,7 @@ export function TimePicker({ onLayout, ...message }: TimeMessage) {
             <BubbleSimplePlainText
                 type={ChatMessageType.PlainText}
                 key="time-picker-box-bubble-prompt"
-                text={message.prompt || "Do you want choose the time?"}
+                text={message.prompt || 'Do you want choose the time?'}
                 status={MessageStatus.Received}
                 firstFromChain
                 lastFromChain
@@ -101,10 +109,13 @@ export function TimePicker({ onLayout, ...message }: TimeMessage) {
                         type: 'CLOSE_TIME_PICKER',
                     });
                 }}
-                onValueRetrieved={ (time: Date, timeZoneOffsetInMinutes?: number) => {
+                onValueRetrieved={(
+                    time: Date,
+                    timeZoneOffsetInMinutes?: number,
+                ) => {
                     message.onSelect({
                         time,
-                        timeZoneOffsetInMinutes
+                        timeZoneOffsetInMinutes,
                     });
                     dispatch({
                         type: 'CLOSE_TIME_PICKER',

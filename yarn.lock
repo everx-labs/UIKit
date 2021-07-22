@@ -13148,10 +13148,9 @@ react-native-localization@2.1.6:
   dependencies:
     react-localization "^1.0.14"
 
-react-native-modern-datepicker@^1.0.0-beta.91:
+"react-native-modern-datepicker@git+https://github.com/tonlabs/react-native-modern-datepicker.git":
   version "1.0.0-beta.91"
-  resolved "https://registry.yarnpkg.com/react-native-modern-datepicker/-/react-native-modern-datepicker-1.0.0-beta.91.tgz#11e65f9685743bda4e5af64388f39059adcaf110"
-  integrity sha512-tyyS6iswwxn/CWIgk9j82X5/9gkgAQuI4fiWa+TEWjOo1WIhBr0x7914mtagrVuVgJCMRnHCopCIWL78afakHw==
+  resolved "git+https://github.com/tonlabs/react-native-modern-datepicker.git#877b384f5d4c00971fdc79af819be6ac17d8d3ac"
   dependencies:
     moment-jalaali "^0.9.2"
     prop-types "^15.7.2"

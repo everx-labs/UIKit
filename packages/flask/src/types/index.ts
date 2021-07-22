@@ -54,3 +54,23 @@ export type ScreenshotViewProps = {
     ref: ForwardedRef<QRCodeRef>;
     children: React.ReactNode;
 };
+
+// eslint-disable-next-line no-shadow
+export enum DateTimePickerMode {
+    calendar = 'calendar',
+    time = 'time',
+}
+
+export type TimePickerType = {
+    minTime?: Date;
+    maxTime?: Date;
+    timeZoneOffset?: number;
+    interval?: number;
+    onValueRetrieved: (datetime: Date, timezone?: number) => void;
+}
+
+export type DateTimePickerType = TimePickerType & {
+    minDate?: Date;
+    maxDate?: Date;
+    mode: DateTimePickerMode;
+}

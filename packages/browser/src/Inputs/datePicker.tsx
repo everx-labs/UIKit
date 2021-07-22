@@ -9,16 +9,15 @@ import {
 } from '@tonlabs/uikit.chats';
 
 import type { DateMessage } from '../types';
-import { UIDateTimePicker, DateTimePickerMode } from '../UIDateTimePicker';
+import { DateTimePickerMode } from '@tonlabs/uikit.flask';
+import { UIDateTimePicker } from '../UIDateTimePicker';
 
 type DatePickerInternalState = {
     pickerVisible: boolean;
 };
 
 type DatePickerAction = {
-    type:
-        | 'OPEN_DATE_PICKER'
-        | 'CLOSE_DATE_PICKER'
+    type: 'OPEN_DATE_PICKER' | 'CLOSE_DATE_PICKER';
 };
 
 function datePickerReducer(
@@ -48,20 +47,21 @@ export function DatePicker({ onLayout, ...message }: DateMessage) {
         pickerVisible: false,
     });
 
-    if(message.externalState != null){
+    if (message.externalState != null) {
         return (
             <>
-                {message.externalState.date != null &&
-                <View onLayout={onLayout}>
-                    <BubbleSimplePlainText
-                        type={ChatMessageType.PlainText}
-                        key="date-picker-value-bubble-prompt"
-                        text={'You choose the date: ' + message.externalState.date.toString()}
-                        status={MessageStatus.Received}
-                    />
-                </View>}
+                {message.externalState.date != null && (
+                    <View onLayout={onLayout}>
+                        <BubbleSimplePlainText
+                            type={ChatMessageType.PlainText}
+                            key="date-picker-value-bubble-prompt"
+                            text={`You choose the date: ${message.externalState.date.toString()}`}
+                            status={MessageStatus.Received}
+                        />
+                    </View>
+                )}
             </>
-            )
+        );
     }
 
     return (
@@ -69,7 +69,7 @@ export function DatePicker({ onLayout, ...message }: DateMessage) {
             <BubbleSimplePlainText
                 type={ChatMessageType.PlainText}
                 key="date-picker-box-bubble-prompt"
-                text={message.prompt || "Do you want choose the date?"}
+                text={message.prompt || 'Do you want choose the date?'}
                 status={MessageStatus.Received}
                 firstFromChain
                 lastFromChain
@@ -95,9 +95,9 @@ export function DatePicker({ onLayout, ...message }: DateMessage) {
                         type: 'CLOSE_DATE_PICKER',
                     });
                 }}
-                onValueRetrieved={ (date: Date) => {
+                onValueRetrieved={(date: Date) => {
                     message.onSelect({
-                        date
+                        date,
                     });
                     dispatch({
                         type: 'CLOSE_DATE_PICKER',
