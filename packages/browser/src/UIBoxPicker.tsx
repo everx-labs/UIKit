@@ -17,7 +17,12 @@ import { UIAssets } from '@tonlabs/uikit.assets';
 
 import { UIPullerSheet } from './UIPullerSheet';
 
-type AbstractBox = { id: number; title: string; publicKey?: string };
+type AbstractBox = { 
+    id: number; 
+    title: string;
+    publicKey?: string;
+    serialNumber?: string;
+};
 type OnSelect<Box extends AbstractBox> = (box: Box) => void;
 
 const Touchable =
@@ -44,19 +49,29 @@ function UIBoxPickerItem<Box extends AbstractBox>({
                 onSelect(box);
             }}
         >
+            {box.serialNumber && // Draw a SC icon before the title if serialNumber is present
+                <UIImage
+                    source={UIAssets.icons.security.card}
+                    style={styles.securityCard}
+                />
+            }
+
             <UILabel style={styles.itemTitle} role={UILabelRoles.Action}>
                 {box.title}
             </UILabel>
-            {box.publicKey != null ? (
-                <UILabel color={UILabelColors.TextSecondary}>
-                    {`${box.publicKey.slice(0, 2)} ·· `}
-                </UILabel>
-            ) : null}
-            <UIImage
-                source={UIAssets.icons.ui.keyThin}
-                tintColor={ColorVariants.IconSecondary}
-                style={styles.itemKey}
-            />
+            
+            {box.publicKey != null &&
+                <>
+                    <UILabel color={UILabelColors.TextSecondary}>
+                        {`${box.publicKey.slice(0, 2)} ·· `}
+                    </UILabel>
+                    <UIImage
+                        source={UIAssets.icons.ui.keyThin}
+                        tintColor={ColorVariants.IconSecondary}
+                        style={styles.itemKey}
+                    />
+                </>
+            }
         </Touchable>
     );
 }
@@ -73,7 +88,7 @@ export function UIBoxPicker<Box extends AbstractBox>({
     visible: boolean;
     onClose: () => void;
     onSelect: OnSelect<Box>;
-    onAdd: () => void;
+    onAdd?: () => void;
     boxes: Box[];
     headerTitle: string;
     addTitle: string;
@@ -96,7 +111,7 @@ export function UIBoxPicker<Box extends AbstractBox>({
                 <UIBoxPickerItem key={box.id} box={box} onSelect={onSelect} />
             ))}
             {/* TODO: use UILinkButton instead once it's ready! */}
-            <View style={styles.addButtonContainer}>
+            {onAdd && <View style={styles.addButtonContainer}>
                 <UIBoxButton
                     testID="box-picker-add"
                     disabled
@@ -104,7 +119,7 @@ export function UIBoxPicker<Box extends AbstractBox>({
                     type={UIBoxButtonType.Nulled}
                     onPress={onAdd}
                 />
-            </View>
+            </View>}
         </UIPullerSheet>
     );
 }
@@ -126,6 +141,11 @@ const styles = StyleSheet.create({
     itemKey: {
         height: 30,
         aspectRatio: 1,
+    },
+    securityCard: {
+        height: 24,
+        aspectRatio: 1,
+        marginRight: 8,
     },
     addButtonContainer: {
         flexDirection: 'row',
