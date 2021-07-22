@@ -29,7 +29,6 @@ import {
     UIActionSheet,
     UIActionSheetActionType,
 } from '@tonlabs/uikit.navigation';
-import { UISlider, UIStepBar, UITabView } from '@tonlabs/uikit.components';
 import {
     UIMaterialTextView,
     useTheme,
@@ -376,84 +375,6 @@ export const Menus = () => {
                     >
                         <UILinkButton title="Show UIPopoverMenu" />
                     </UIPopoverMenu>
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UISlider">
-                <View style={{ paddingVertical: 20 }}>
-                    <UISlider
-                        testID="uiSlider_default"
-                        itemsList={[
-                            {
-                                title: 'Card 1',
-                                details: 'details',
-                            },
-                            {
-                                title: 'Card 2',
-                                details: 'details',
-                            },
-                            {
-                                title: 'Card 3',
-                                details: 'details',
-                            },
-                            {
-                                title: 'Card 4',
-                                details: 'details',
-                            },
-                            {
-                                title: 'Card 5',
-                                details: 'details',
-                            },
-                        ]}
-                        itemRenderer={({
-                            title,
-                            details,
-                        }: {
-                            title: string;
-                            details: string;
-                        }) => (
-                            <View
-                                testID={`uiSlider_item_${title}`}
-                                key={`slider-item-${title}-${details}`}
-                                style={{ width: 200, height: 200 }}
-                            >
-                                <Text>{title}</Text>
-                                <Text>{details}</Text>
-                            </View>
-                        )}
-                        itemWidth={256}
-                    />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UIStepBar">
-                <View style={{ paddingVertical: 20 }}>
-                    <UIStepBar
-                        testID="uiStepBar_default"
-                        itemsList={['Item 1', 'Item 2', 'Item 3', 'Item 4']}
-                        activeIndex={activeIndex}
-                        onPress={(i: number) => setActiveIndex(i)}
-                    />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UITabView">
-                <View style={{ paddingVertical: 20 }}>
-                    <UITabView
-                        testID="uiTabView_default"
-                        width={95}
-                        pages={[
-                            {
-                                title: 'Left',
-                                component: <Text>Some left content</Text>,
-                            },
-                            {
-                                title: 'Center',
-                                component: <Text>Some center content</Text>,
-                            },
-                            {
-                                title: 'Right',
-                                component: <Text>Some right content</Text>,
-                            },
-                        ]}
-                    />
                 </View>
             </ExampleSection>
         </ExampleScreen>
