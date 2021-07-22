@@ -129,6 +129,12 @@ function ScreenWithHeaderContent({
                         }
                         label={descriptor.options.label}
                         note={descriptor.options.note}
+                        renderAboveContent={
+                            descriptor.options.renderAboveContent
+                        }
+                        renderBelowContent={
+                            descriptor.options.renderBelowContent
+                        }
                         headerLeft={descriptor.options.headerLeft}
                         headerLeftItems={descriptor.options.headerLeftItems}
                         headerBackButton={descriptor.options.headerBackButton}
