@@ -2,6 +2,7 @@ import * as React from 'react';
 import { UINoticeProps, UINoticeType } from './types';
 import { BottomToastNotice } from './BottomToastNotice';
 import { useNoticeVisibility } from './hooks/useNoticeVisibility';
+import { useAnimatedKeyboard } from '../useAnimatedKeyboard';
 
 export const UINotice: React.FC<UINoticeProps> = (props: UINoticeProps) => {
     const { onClose, visible, type, duration } = props;
@@ -12,6 +13,8 @@ export const UINotice: React.FC<UINoticeProps> = (props: UINoticeProps) => {
         clearClosingTimer,
         onNoticeCloseAnimationFinished,
     } = useNoticeVisibility(onClose, visible, duration);
+
+    const keyboardHeight = useAnimatedKeyboard();
 
     if (!noticeVisible) {
         return null;
@@ -24,6 +27,7 @@ export const UINotice: React.FC<UINoticeProps> = (props: UINoticeProps) => {
                     onCloseAnimationEnd={onNoticeCloseAnimationFinished}
                     suspendClosingTimer={clearClosingTimer}
                     continueClosingTimer={startClosingTimer}
+                    keyboardHeight={keyboardHeight}
                 />
             );
         case UINoticeType.TopToast:
@@ -36,6 +40,7 @@ export const UINotice: React.FC<UINoticeProps> = (props: UINoticeProps) => {
                     onCloseAnimationEnd={onNoticeCloseAnimationFinished}
                     suspendClosingTimer={clearClosingTimer}
                     continueClosingTimer={startClosingTimer}
+                    keyboardHeight={keyboardHeight}
                 />
             );
     }

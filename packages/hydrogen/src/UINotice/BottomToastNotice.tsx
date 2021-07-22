@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { PanGestureHandler } from 'react-native-gesture-handler';
+import {
+    PanGestureHandler,
+    TouchableWithoutFeedback,
+} from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 // @ts-ignore
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -10,6 +13,9 @@ import { Notice } from './Notice';
 import { useNoticeHeight } from './hooks/useNoticeHeight';
 import { useNoticePositionStyle } from './toastNoticeHooks/useNoticePositionStyle';
 import { UIConstant } from '../constants';
+import { useHover } from '../useHover';
+
+const DELAY_LONG_PRESS = 200;
 
 export const BottomToastNotice: React.FC<ToastNoticeProps> = ({
     type,
@@ -18,33 +24,61 @@ export const BottomToastNotice: React.FC<ToastNoticeProps> = ({
     title,
     onTap,
     onCloseAnimationEnd,
+    suspendClosingTimer,
+    continueClosingTimer,
+    keyboardHeight,
     testID,
 }: ToastNoticeProps) => {
     const { noticeHeight, onLayoutNotice } = useNoticeHeight();
 
-    const { noticePositionStyle, gestureHandler } = useNoticePositionStyle(
+    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
+
+    const {
+        noticePositionStyle,
+        gestureHandler,
+        onPress,
+        onLongPress,
+        onPressOut,
+    } = useNoticePositionStyle(
         noticeHeight,
         visible,
+        isHovered,
         onCloseAnimationEnd,
+        suspendClosingTimer,
+        continueClosingTimer,
+        onTap,
+        keyboardHeight,
     );
 
     return (
         <Portal absoluteFill>
-            <View style={styles.container}>
-                <PanGestureHandler onGestureEvent={gestureHandler}>
-                    <Animated.View
-                        style={[noticePositionStyle, styles.notice]}
-                        onLayout={onLayoutNotice}
-                    >
-                        <Notice
-                            type={type}
-                            title={title}
-                            color={color}
-                            onTap={onTap}
-                            testID={testID}
-                        />
-                    </Animated.View>
-                </PanGestureHandler>
+            <View style={styles.container} pointerEvents="box-none">
+                <Animated.View>
+                    <PanGestureHandler onGestureEvent={gestureHandler}>
+                        <Animated.View
+                            style={[noticePositionStyle, styles.notice]}
+                            onLayout={onLayoutNotice}
+                            pointerEvents="box-none"
+                            // @ts-expect-error
+                            onMouseEnter={onMouseEnter}
+                            onMouseLeave={onMouseLeave}
+                        >
+                            <TouchableWithoutFeedback
+                                onPress={onPress}
+                                onLongPress={onLongPress}
+                                delayLongPress={DELAY_LONG_PRESS}
+                                onPressOut={onPressOut}
+                            >
+                                <Notice
+                                    type={type}
+                                    title={title}
+                                    color={color}
+                                    testID={testID}
+                                />
+                            </TouchableWithoutFeedback>
+                        </Animated.View>
+                    </PanGestureHandler>
+                </Animated.View>
             </View>
         </Portal>
     );

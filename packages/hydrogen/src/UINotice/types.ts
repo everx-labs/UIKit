@@ -1,3 +1,5 @@
+import type Animated from 'react-native-reanimated';
+
 // eslint-disable-next-line no-shadow
 export enum UINoticeType {
     TopToast = 'TopToast',
@@ -23,7 +25,6 @@ export type NoticeProps = {
     type: UINoticeType;
     color: UINoticeColor;
     title: string;
-    onTap?: () => void;
     testID?: string;
 };
 
@@ -42,4 +43,5 @@ export type ToastNoticeProps = UINoticeProps & {
     onCloseAnimationEnd: () => void;
     suspendClosingTimer: () => void;
     continueClosingTimer: () => void;
+    keyboardHeight: Animated.SharedValue<number>;
 };

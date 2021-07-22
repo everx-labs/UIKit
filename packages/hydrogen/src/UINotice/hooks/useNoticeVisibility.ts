@@ -28,35 +28,41 @@ export const useNoticeVisibility = (
     const timerId = React.useRef<NodeJS.Timeout | null>(null);
 
     const startClosingTimer = React.useCallback(() => {
+        if (timerId.current) {
+            /** Timer is already run */
+            return;
+        }
+
         timerId.current = setTimeout(() => {
-            if (onClose) {
+            if (visible && onClose) {
                 onClose();
             }
         }, getNotificationDuration(duration));
-    }, [onClose, duration]);
+    }, [onClose, duration, visible]);
 
     const clearClosingTimer = React.useCallback(() => {
-        if (timerId.current) {
-            clearTimeout(timerId.current);
+        if (!timerId.current) {
+            /** Timer is not exist */
+            return;
         }
+
+        clearTimeout(timerId.current);
+        timerId.current = null;
     }, []);
 
     const onNoticeCloseAnimationFinished = React.useCallback(() => {
         setNoticeVisible(false);
-        if (onClose) {
+        clearClosingTimer();
+        if (visible && onClose) {
             onClose();
         }
-    }, [onClose]);
+    }, [onClose, clearClosingTimer, visible]);
 
     React.useEffect(() => {
         if (visible) {
             setNoticeVisible(true);
-            startClosingTimer();
         }
-        return () => {
-            clearClosingTimer();
-        };
-    }, [visible, startClosingTimer, clearClosingTimer]);
+    }, [visible, startClosingTimer]);
 
     return {
         noticeVisible,
