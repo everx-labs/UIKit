@@ -10,7 +10,7 @@ import Animated, {
 } from 'react-native-reanimated';
 // @ts-expect-error
 import SpringConfig from 'react-native/Libraries/Animated/src/SpringConfig';
-import { useToastNoticeOpenedYSnapPointPosition } from './useToastNoticeOpenedYSnapPointPosition';
+import { useToastNoticeYSnapPoints } from './useToastNoticeYSnapPoints';
 
 const OPENED_X_POSITION = 0;
 const Y_THRESHOLD = 20;
@@ -71,10 +71,10 @@ export const useNoticePositionStyle = (
     onTap: (() => void) | undefined,
     keyboardHeight: Animated.SharedValue<number>,
 ) => {
-    const {
-        openedYSnapPointPosition,
-        closedYSnapPointPosition,
-    } = useToastNoticeOpenedYSnapPointPosition(noticeHeight, keyboardHeight);
+    const { openedYSnapPoint, closedYSnapPoint } = useToastNoticeYSnapPoints(
+        noticeHeight,
+        keyboardHeight,
+    );
 
     const screenWidth = useWindowDimensions().width;
 
@@ -114,22 +114,22 @@ export const useNoticePositionStyle = (
         () => {
             return {
                 toastNoticeState: toastNoticeState.value,
-                openedYSnapPointPosition: openedYSnapPointPosition.value,
-                closedYSnapPointPosition: closedYSnapPointPosition.value,
+                openedYSnapPoint: openedYSnapPoint.value,
+                closedYSnapPoint: closedYSnapPoint.value,
             };
         },
         (state) => {
             if (state.toastNoticeState === 'Opened') {
                 yPosition.value = moveWithSpring(
                     'Open',
-                    state.openedYSnapPointPosition,
+                    state.openedYSnapPoint,
                 );
                 xPosition.value = moveWithSpring('Open', OPENED_X_POSITION);
             }
             if (state.toastNoticeState === 'ClosedBottom') {
                 yPosition.value = moveWithSpring(
                     'Close',
-                    state.closedYSnapPointPosition,
+                    state.closedYSnapPoint,
                     onCloseAnimationEnd,
                 );
             }
@@ -170,7 +170,7 @@ export const useNoticePositionStyle = (
                     /** Swipe up is prohibited */
                     if (event.translationY >= 0) {
                         yPosition.value =
-                            openedYSnapPointPosition.value + event.translationY;
+                            openedYSnapPoint.value + event.translationY;
                     }
                 } else {
                     xPosition.value = event.translationX;

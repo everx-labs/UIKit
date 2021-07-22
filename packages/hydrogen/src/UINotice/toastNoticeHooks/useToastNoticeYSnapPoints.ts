@@ -2,23 +2,23 @@ import Animated, { useDerivedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { UIConstant } from '../../constants';
 
-export const useToastNoticeOpenedYSnapPointPosition = (
+export const useToastNoticeYSnapPoints = (
     noticeHeight: Animated.SharedValue<number>,
     keyboardHeight: Animated.SharedValue<number>,
 ) => {
     const { bottom } = useSafeAreaInsets();
     const paddingBottom = Math.max(bottom, UIConstant.contentOffset);
 
-    const openedYSnapPointPosition = useDerivedValue(() => {
+    const openedYSnapPoint = useDerivedValue(() => {
         console.log('keyboardHeight', keyboardHeight.value);
         return -noticeHeight.value - paddingBottom - keyboardHeight.value;
     });
-    const closedYSnapPointPosition = useDerivedValue(() => {
+    const closedYSnapPoint = useDerivedValue(() => {
         console.log('keyboardHeight', keyboardHeight.value);
         return -keyboardHeight.value;
     });
     return {
-        openedYSnapPointPosition,
-        closedYSnapPointPosition,
+        openedYSnapPoint,
+        closedYSnapPoint,
     };
 };
