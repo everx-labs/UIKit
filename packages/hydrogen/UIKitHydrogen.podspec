@@ -46,7 +46,7 @@ Pod::Spec.new do |s|
   }
   s.compiler_flags = folly_compiler_flags
   s.xcconfig = {
-    "CLANG_CXX_LANGUAGE_STANDARD" => "c++17",
+    "CLANG_CXX_LANGUAGE_STANDARD" => "c++14",
     "HEADER_SEARCH_PATHS" => "\"$(PODS_ROOT)/#{folly_prefix}Folly\" \"$(PODS_ROOT)/boost-for-react-native\" \"$(PODS_ROOT)/Headers/Private/React-Core\"",
     "OTHER_CFLAGS" => "$(inherited)" + " " + folly_flags
   }
