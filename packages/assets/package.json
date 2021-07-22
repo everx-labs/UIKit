@@ -27,9 +27,11 @@
   "main": "commonjs/index.js",
   "module": "module/index.js",
   "react-native": "src/index.ts",
+  "types": "typescript/src/index.d.ts",
   "files": [
     "commonjs/",
     "module/",
+    "typescript/",
     "src/",
     "404/",
     "bank-cards/",
