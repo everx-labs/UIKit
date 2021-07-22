@@ -217,32 +217,43 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
                     lastFromChain={!message.securityCardSupported}
                 />
             )}
-            {message.securityCardSupported && <BubbleActionButton
-                type={ChatMessageType.ActionButton}
-                key="signing-box-bubble-use-scard"
-                status={MessageStatus.Received}
-                text={uiLocalized.Browser.SigningBox.UseSecurityCard}
-                onPress={async () => {
-                    dispatch({
-                        type: 'OPEN_SECURITY_CARD_PICKER',
-                    });
-                    /** 
-                     * Comment the code bellow, we might want to return it later once we learn how
-                     * to deal with several security card related signing boxes on a single usage!
-                     * 
-                    const isSuccessful = await message.onUseSecurityCard();
+            {message.securityCardSupported 
+                && securityCards.length > 0 && <BubbleActionButton
+                    type={ChatMessageType.ActionButton}
+                    key="signing-box-bubble-use-scard"
+                    status={MessageStatus.Received}
+                    text={uiLocalized.Browser.SigningBox.UseSecurityCard}
+                    onPress={async () => {
+                        if (securityCards.length === 1) {
+                            // No need to show the picker, just select the first security card
+                            message.onSelect({
+                                chosenOption:
+                                    uiLocalized.Browser.SigningBox.UseSecurityCard,
+                                signingBox: securityCards[0],
+                            });
+                        } else {
+                            dispatch({
+                                type: 'OPEN_SECURITY_CARD_PICKER',
+                            });
+                        }
+                        
+                        /** 
+                         * Comment the code bellow, we might want to return it later once we learn how
+                         * to deal with several security card related signing boxes on a single usage!
+                         * 
+                        const isSuccessful = await message.onUseSecurityCard();
 
-                    if (!isSuccessful) {
-                        return;
-                    }
+                        if (!isSuccessful) {
+                            return;
+                        }
 
-                    message.onSelect({
-                        chosenOption:
-                            uiLocalized.Browser.SigningBox.UseSecurityCard,
-                    });
-                     */
-                }}
-                lastFromChain
+                        message.onSelect({
+                            chosenOption:
+                                uiLocalized.Browser.SigningBox.UseSecurityCard,
+                        });
+                        */
+                    }}
+                    lastFromChain
             />}
             <UIBoxPicker
                 visible={state.pickerVisible}
