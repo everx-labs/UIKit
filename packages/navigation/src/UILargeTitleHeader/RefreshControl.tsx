@@ -32,7 +32,12 @@ export function UILargeHeaderRefreshControl({
             return;
         }
 
-        forseChangePosition(-1 * UIConstant.refreshControlHeight, 0);
+        requestAnimationFrame(() => {
+            forseChangePosition(-1 * UIConstant.refreshControlHeight, {
+                duration: 0,
+                changeDefaultShift: true,
+            });
+        });
     }, [forseChangePosition]);
 
     const stopRefreshing = React.useCallback(() => {
@@ -47,12 +52,16 @@ export function UILargeHeaderRefreshControl({
             return;
         }
 
-        forseChangePosition(-1 * UIConstant.refreshControlHeight, 200, () => {
-            'worklet';
+        forseChangePosition(
+            -1 * UIConstant.refreshControlHeight,
+            { duration: UIConstant.refreshControlPositioningDuration },
+            () => {
+                'worklet';
 
-            refreshingGuard.value = false;
-            runOnJS(stopRefreshing)();
-        });
+                refreshingGuard.value = false;
+                runOnJS(stopRefreshing)();
+            },
+        );
     }, [onRefresh, forseChangePosition, refreshingGuard, stopRefreshing]);
 
     useDerivedValue(() => {
