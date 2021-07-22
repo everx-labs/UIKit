@@ -9,7 +9,7 @@ import {
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIConstant, UIColor, UIStyle } from '@tonlabs/uikit.core';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { UIComponent } from '@tonlabs/uikit.components';
 import {
     ColorVariants,
@@ -48,7 +48,6 @@ const commentWrapper = {
     maxWidth: '100%',
     borderRadius: UIConstant.borderRadius(),
     borderTopLeftRadius: 0,
-    backgroundColor: UIColor.backgroundTertiary(),
     paddingHorizontal: UIConstant.normalContentOffset(),
     paddingVertical: UIConstant.smallContentOffset(),
     alignItems: 'center',

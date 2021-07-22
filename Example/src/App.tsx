@@ -12,7 +12,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { UIColor } from '@tonlabs/uikit.core';
 import {
     UIAlert,
     UIAlertView,
@@ -375,11 +374,6 @@ const AppWrapper = () => {
                 value={{
                     isDarkTheme,
                     toggleTheme: () => {
-                        if (isDarkTheme) {
-                            UIColor.switchCurrentTheme('light');
-                        } else {
-                            UIColor.switchCurrentTheme('dark');
-                        }
                         setIsDarkTheme(!isDarkTheme);
                         setIsHidden(true);
                         setImmediate(() => setIsHidden(false));
