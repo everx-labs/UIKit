@@ -26,7 +26,7 @@
   "homepage": "https://github.com/tonlabs/UIKit/packages/assets#readme",
   "main": "commonjs/index.js",
   "module": "module/index.js",
-  "react-native": "src/index.js",
+  "react-native": "src/index.ts",
   "files": [
     "commonjs/",
     "module/",
@@ -100,6 +100,12 @@
         {
           "configFile": "../../babel.config.js",
           "copyFlow": true
+        }
+      ],
+      [
+        "typescript",
+        {
+          "project": "tsconfig.build.json"
         }
       ]
     ]

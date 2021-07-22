@@ -15,6 +15,3 @@ declare module 'react-native-indicators' {
         MaterialIndicatorProps
     > {}
 }
-
-declare module '@tonlabs/uikit.assets';
-declare module '@tonlabs/uikit.assets';

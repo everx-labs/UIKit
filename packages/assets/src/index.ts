@@ -1,4 +1,4 @@
-// @flow
+/* eslint-disable global-require */
 import image404 from '../404/404.png';
 
 import iconCardMaestro from '../bank-cards/ico-maestro/maestro.png';
@@ -265,6 +265,7 @@ export const UIAssets = {
         security: {
             touchId: iconTouchId,
             faceId: iconFaceId,
+            card: require('../ico-scard/ico-scard.png'),
         },
 
         addressInput: {
