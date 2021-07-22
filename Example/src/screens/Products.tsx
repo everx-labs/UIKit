@@ -5,7 +5,6 @@ import { View } from 'react-native';
 import { UIDetailsToggle } from '@tonlabs/uikit.components';
 import { UIPromoNotice } from '@tonlabs/uikit.flask';
 import { UIBottomBar } from '@tonlabs/uikit.navigation_legacy';
-import { UIFeedback, UIStubPage } from '@tonlabs/uikit.legacy';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -28,11 +27,6 @@ export const Products = () => {
                     />
                 </View>
             </ExampleSection>
-            <ExampleSection title="UIFeedback">
-                <View style={{ maxWidth: 500, paddingVertical: 20 }}>
-                    <UIFeedback testID="uiFeedback_default" />
-                </View>
-            </ExampleSection>
             <ExampleSection title="UIPromoNotice">
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIDetailsToggle
@@ -53,11 +47,6 @@ export const Products = () => {
                         />
                     )
                 }
-            </ExampleSection>
-            <ExampleSection title="UIStubPage">
-                <View style={{ maxWidth: 500, paddingVertical: 20 }}>
-                    <UIStubPage testID="uiStubPage_default" title="labs." needBottomIcon={false} />
-                </View>
             </ExampleSection>
         </ExampleScreen>
     );

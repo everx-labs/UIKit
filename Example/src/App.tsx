@@ -284,7 +284,7 @@ const App = () => {
                         linking={{ prefixes: ['/'] }}
                     >
                         <Split.Navigator
-                            initialRouteName="buttons"
+                            initialRouteName="browser"
                             screenOptions={{
                                 splitStyles: {
                                     body: [

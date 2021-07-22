@@ -96,24 +96,17 @@ export {
 } from './packages/navigation_legacy/src';
 
 export {
-    UISplitViewController,
     UINavigationBackButton,
     UINavigationBar,
-    UINavigationIconButton,
-    UINavigationTextButton,
     UINavigator,
     UIAccountPicker,
     UIBalanceView,
     UIAnimatedBalanceView,
-    UIFeedback,
-    UIFlashMessage,
     UIIdleDetector,
     UILandingView,
     UIProfileInitials,
     UISharedComponents,
-    UIStubPage,
     UITransactionView,
-    UITransitionView,
 } from './packages/legacy/src';
 
 export { UIAssets } from './packages/assets/src';
@@ -129,7 +122,6 @@ export type {
     UINavigationRoute,
     UINavigationRouting,
 } from './packages/legacy/src/UINavigator';
-export type { UIFeedbackSubmitFunc } from './packages/legacy/src/UIFeedback';
 export type { PointerEvents, PositionObject } from './packages/core';
 export type {
     UIColorData,
