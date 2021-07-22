@@ -64,6 +64,7 @@ const useStyles = makeStyles(
     (color: UINoticeColor, type: UINoticeType, theme: Theme) => ({
         container: {
             maxWidth: 382,
+            flex: 1,
             backgroundColor: getBackgroundColor(color, theme),
             borderRadius: getBorderRadius(type),
             padding: 16,

@@ -13,6 +13,12 @@ export enum UINoticeColor {
     Negative = 'Negative',
 }
 
+// eslint-disable-next-line no-shadow
+export enum UINoticeDuration {
+    Long = 'Long',
+    Short = 'Short',
+}
+
 export type NoticeProps = {
     type: UINoticeType;
     color: UINoticeColor;
@@ -26,6 +32,7 @@ export type UINoticeProps = {
     color: UINoticeColor;
     visible: boolean;
     title: string;
+    duration?: UINoticeDuration; // By default: UINoticeDuration.Long
     onClose?: () => void;
     onTap?: () => void;
     testID?: string;
@@ -33,4 +40,6 @@ export type UINoticeProps = {
 
 export type ToastNoticeProps = UINoticeProps & {
     onCloseAnimationEnd: () => void;
+    suspendClosingTimer: () => void;
+    continueClosingTimer: () => void;
 };

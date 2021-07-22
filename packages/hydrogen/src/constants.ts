@@ -52,6 +52,8 @@ export const UIConstant = {
         left: 24,
         right: 24,
     },
+
+    toastIndentFromScreenEdges: Platform.OS === 'web' ? 32 : 16,
 };
 
 export const BUTTON_WITH_SPRING_CONFIG: Animated.WithSpringConfig = {

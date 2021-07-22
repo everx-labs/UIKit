@@ -5,26 +5,27 @@ import Animated from 'react-native-reanimated';
 // @ts-ignore
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Portal } from '@tonlabs/uikit.hydrogen';
-import type { UINoticeProps } from './types';
+import type { ToastNoticeProps } from './types';
 import { Notice } from './Notice';
 import { useNoticeHeight } from './hooks/useNoticeHeight';
 import { useNoticePositionStyle } from './toastNoticeHooks/useNoticePositionStyle';
+import { UIConstant } from '../constants';
 
-export const BottomToastNotice: React.FC<UINoticeProps> = ({
+export const BottomToastNotice: React.FC<ToastNoticeProps> = ({
     type,
     color,
     visible,
     title,
     onTap,
-    onClose,
+    onCloseAnimationEnd,
     testID,
-}: UINoticeProps) => {
+}: ToastNoticeProps) => {
     const { noticeHeight, onLayoutNotice } = useNoticeHeight();
 
     const { noticePositionStyle, gestureHandler } = useNoticePositionStyle(
         noticeHeight,
         visible,
-        onClose,
+        onCloseAnimationEnd,
     );
 
     return (
@@ -54,11 +55,15 @@ const styles = StyleSheet.create({
         position: 'absolute',
         height: 0,
         bottom: 0,
-        left: 40,
-        right: 40,
-        alignItems: 'center',
+        left: 0,
+        right: 0,
     },
     notice: {
         position: 'absolute',
+        left: 0,
+        right: 0,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        paddingHorizontal: UIConstant.toastIndentFromScreenEdges,
     },
 });
