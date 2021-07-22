@@ -12,18 +12,18 @@ def find_nearest_app_rn_version(path, level = 0)
   if level == 10
     throw "You can't use uikit.hydrogen in not RN project"
   end
-  return find_nearest_app_rn_version(File.join('..', path));
+  return find_nearest_app_rn_version(File.join('..', path), level + 1);
 end
 
-react_native_version = find_nearest_app_rn_version('..')
+react_native_version = 63 # TODO: make it work find_nearest_app_rn_version('..', 0)
 
-if reactNativeVersion >= 64
+if react_native_version >= 64
   folly_prefix = "RCT-"
 else
   folly_prefix = ""
 end
 
-folly_flags = "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -DRNVERSION=" + reactNativeVersion.to_s
+folly_flags = "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -DRNVERSION=" + react_native_version.to_s
 folly_compiler_flags = folly_flags + " " + "-Wno-comma -Wno-shorten-64-to-32"
 
 Pod::Spec.new do |s|
