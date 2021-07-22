@@ -2,20 +2,22 @@ require "json"
 
 package = JSON.parse(File.read(File.join(__dir__, "package.json")))
 
-def find_nearest_app_rn_version(path, level = 0)
-  rnPackageJsonPath = File.join(__dir__, path, "node_modules", "react-native", "package.json")
-  if File.exist?(rnPackageJsonPath)
-    package = JSON.parse(File.read(rnPackageJsonPath))
-    return package["version"].split(".")[1].to_i
+class ReactNativeVersion
+  def find_nearest_app_rn_version(path, level = 0)
+    rnPackageJsonPath = File.join(__dir__, path, "node_modules", "react-native", "package.json")
+    if File.exist?(rnPackageJsonPath)
+      package = JSON.parse(File.read(rnPackageJsonPath))
+      return package["version"].split(".")[1].to_i
+    end
+    # If it more that 10 than we assume that it's not an RN project
+    if level == 10
+      throw "You can't use uikit.hydrogen in not RN project"
+    end
+    return find_nearest_app_rn_version(File.join('..', path), level + 1);
   end
-  # If it more that 10 than we assume that it's not an RN project
-  if level == 10
-    throw "You can't use uikit.hydrogen in not RN project"
-  end
-  return find_nearest_app_rn_version(File.join('..', path), level + 1);
 end
 
-react_native_version = 63 # TODO: make it work find_nearest_app_rn_version('..', 0)
+react_native_version = ReactNativeVersion.new.find_nearest_app_rn_version('..', 0)
 
 if react_native_version >= 64
   folly_prefix = "RCT-"
