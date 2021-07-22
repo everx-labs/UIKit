@@ -97,7 +97,6 @@ export {
 
 export {
     UIAccountPicker,
-    UIBalanceView,
     UIAnimatedBalanceView,
     UIIdleDetector,
     UILandingView,
