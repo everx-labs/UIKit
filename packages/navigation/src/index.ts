@@ -10,6 +10,7 @@ export * from './UIAndroidNavigationBar';
 export * from './Scrollable';
 export { ScrollableContext } from './Scrollable/Context';
 export * from './UILargeTitleHeader';
+export * from './UILargeTitleHeader/RefreshControl';
 export * from './constants';
 export * from './Sheets';
 export * from './UIAlertView';

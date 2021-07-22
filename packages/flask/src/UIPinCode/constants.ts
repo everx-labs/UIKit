@@ -34,6 +34,5 @@ export enum UIPinCodeBiometryType {
 
 export const DOTS_STATE_PRESENTATION_DURATION = 300;
 export const DEFAULT_DOTS_COUNT = 6;
-export const KEY_HAPTIC_VIBRATION_DURATION = 40;
 export const KEY_WIDTH = 90; // 1 + 88 + 1
 export const KEY_HEIGHT = 74; // 1 + 72 + 1

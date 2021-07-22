@@ -47,11 +47,11 @@ function UIBoxPickerItem<Box extends AbstractBox>({
             <UILabel style={styles.itemTitle} role={UILabelRoles.Action}>
                 {box.title}
             </UILabel>
-            {box.publicKey && (
+            {box.publicKey != null ? (
                 <UILabel color={UILabelColors.TextSecondary}>
                     {`${box.publicKey.slice(0, 2)} ·· `}
                 </UILabel>
-            )}
+            ) : null}
             <UIImage
                 source={UIAssets.icons.ui.keyThin}
                 tintColor={ColorVariants.IconSecondary}
