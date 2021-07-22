@@ -18,7 +18,7 @@ import { UIAssets } from '@tonlabs/uikit.assets';
 import { useLargeTitlePosition } from './index';
 import { UIConstant } from '../constants';
 
-export function UILargeHeaderRefreshControl({
+export function UILargeTitleHeaderRefreshControl({
     onRefresh,
 }: {
     onRefresh: () => Promise<void>;

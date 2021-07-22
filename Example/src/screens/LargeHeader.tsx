@@ -13,7 +13,7 @@ import {
     ScrollView,
     FlatList,
     createStackNavigator,
-    UILargeHeaderRefreshControl,
+    UILargeTitleHeaderRefreshControl,
 } from '@tonlabs/uikit.navigation';
 
 const CHECK_TITLE = false;
@@ -81,7 +81,7 @@ function RefreshPageController() {
         });
     }, []);
 
-    return <UILargeHeaderRefreshControl onRefresh={turnOnRefreshing} />;
+    return <UILargeTitleHeaderRefreshControl onRefresh={turnOnRefreshing} />;
 }
 
 export function LargeHeaderScreen() {
