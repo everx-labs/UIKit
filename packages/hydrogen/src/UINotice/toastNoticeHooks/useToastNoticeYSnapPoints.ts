@@ -10,11 +10,9 @@ export const useToastNoticeYSnapPoints = (
     const paddingBottom = Math.max(bottom, UIConstant.contentOffset);
 
     const openedYSnapPoint = useDerivedValue(() => {
-        console.log('keyboardHeight', keyboardHeight.value);
         return -noticeHeight.value - paddingBottom - keyboardHeight.value;
     });
     const closedYSnapPoint = useDerivedValue(() => {
-        console.log('keyboardHeight', keyboardHeight.value);
         return -keyboardHeight.value;
     });
     return {
