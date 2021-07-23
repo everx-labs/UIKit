@@ -1,11 +1,10 @@
 // @flow
 import React from 'react';
 import { View } from 'react-native';
-
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIStyle } from "@tonlabs/uikit.core";
-import { UIComponent } from "@tonlabs/uikit.components";
+import { UIComponent } from '@tonlabs/uikit.components';
+import { UIStyle } from '@tonlabs/uikit.core';
 import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import UIAccountPickerCell from './components/UIAccountPickerCell';

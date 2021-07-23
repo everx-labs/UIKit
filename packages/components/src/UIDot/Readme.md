@@ -1,5 +1,0 @@
-Example:
-
-```js
-<UIDot />
-```
