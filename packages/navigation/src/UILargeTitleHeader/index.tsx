@@ -47,6 +47,19 @@ export const UILargeTitleContainerRefContext = React.createContext<React.RefObje
     View
 > | null>(null);
 
+const UILargeTitlePositionContext = React.createContext<{
+    position?: Animated.SharedValue<number>;
+    forseChangePosition?: (
+        position: number,
+        options: { duration?: number; changeDefaultShift?: boolean },
+        callback?: ((isFinished: boolean) => void) | undefined,
+    ) => void;
+}>({});
+
+export function useLargeTitlePosition() {
+    return React.useContext(UILargeTitlePositionContext);
+}
+
 export type UILargeTitleHeaderProps = UINavigationBarProps & {
     /**
      * A title to use only for collapsible title
@@ -69,6 +82,14 @@ export type UILargeTitleHeaderProps = UINavigationBarProps & {
      */
     note?: string;
     /**
+     * What content to render above large title, if any
+     */
+    renderAboveContent?: () => React.ReactNode;
+    /**
+     * What content to render below large title, if any
+     */
+    renderBelowContent?: () => React.ReactNode;
+    /**
      * Header has a context provider for children to use in scrollables
      */
     children: React.ReactNode;
@@ -78,11 +99,15 @@ export function UILargeTitleHeader({
     label,
     note,
     children,
+    renderAboveContent,
+    renderBelowContent,
     onHeaderLargeTitlePress,
     onHeaderLargeTitleLongPress,
     ...navigationBarProps
 }: UILargeTitleHeaderProps) {
     const shift = useSharedValue(0);
+    const shiftChangedForcibly = useSharedValue(false);
+    const defaultShift = useSharedValue(0);
     const scrollRef = useAnimatedRef<Animated.ScrollView>();
 
     const largeTitleViewRef = useAnimatedRef<Animated.View>();
@@ -120,14 +145,21 @@ export function UILargeTitleHeader({
         yIsNegative,
         yWithoutRubberBand,
         shift,
+        shiftChangedForcibly,
         RUBBER_BAND_EFFECT_DISTANCE,
     );
 
-    const onEndDrag = useResetPosition(shift, largeTitleHeight);
+    const onEndDrag = useResetPosition(
+        shift,
+        shiftChangedForcibly,
+        largeTitleHeight,
+        defaultShift,
+    );
 
     const scrollHandler = useAnimatedScrollHandler({
         onScroll,
         onBeginDrag: () => {
+            shiftChangedForcibly.value = false;
             yWithoutRubberBand.value = shift.value;
         },
         onEndDrag,
@@ -236,6 +268,7 @@ export function UILargeTitleHeader({
             }
         },
         onStart: () => {
+            shiftChangedForcibly.value = false;
             if (!hasScrollShared.value) {
                 yWithoutRubberBand.value = shift.value;
                 return;
@@ -264,11 +297,12 @@ export function UILargeTitleHeader({
      */
     const onWheel = useOnWheelHandler(
         shift,
-        largeTitleHeight,
+        shiftChangedForcibly,
         yIsNegative,
         yWithoutRubberBand,
         hasScrollShared,
         onScroll,
+        onEndDrag,
     );
 
     const [scrollablesCount, setScrollablesCount] = React.useState(0);
@@ -364,6 +398,35 @@ export function UILargeTitleHeader({
 
     const contentContainerRef = React.useRef<View>(null);
 
+    const forseChangePosition = React.useCallback(
+        (
+            position: number,
+            options: { duration?: number; changeDefaultShift?: boolean } = {},
+            callback?: ((isFinished: boolean) => void) | undefined,
+        ) => {
+            // If position is changed forcibly
+            // no need to respond to scroll events anymore
+            shiftChangedForcibly.value = true;
+            shift.value = withTiming(
+                position,
+                { duration: options.duration ?? 0 },
+                callback,
+            );
+            if (options.changeDefaultShift) {
+                defaultShift.value = position;
+            }
+        },
+        [shift, shiftChangedForcibly, defaultShift],
+    );
+
+    const positionContext = React.useMemo(
+        () => ({
+            position: shift,
+            forseChangePosition,
+        }),
+        [shift, forseChangePosition],
+    );
+
     return (
         <UIBackgroundView
             style={styles.container}
@@ -374,21 +437,35 @@ export function UILargeTitleHeader({
             <Animated.View style={[{ flex: 1 }, style]}>
                 <Animated.View
                     ref={largeTitleViewRef}
-                    style={
-                        hasSomethingInHeader && styles.largeTitleHeaderContainer
-                    }
                     onLayout={onLargeTitleLayout}
                 >
-                    {onHeaderLargeTitlePress != null || onHeaderLargeTitleLongPress != null ? (
-                        <TouchableOpacity
-                            onPress={onHeaderLargeTitlePress}
-                            onLongPress={onHeaderLargeTitleLongPress}
-                        >
-                            {largeTitleInnerElement}
-                        </TouchableOpacity>
-                    ) : (
-                        largeTitleInnerElement
-                    )}
+                    <UILargeTitlePositionContext.Provider
+                        value={positionContext}
+                    >
+                        {renderAboveContent && renderAboveContent()}
+                    </UILargeTitlePositionContext.Provider>
+                    <View
+                        style={
+                            hasSomethingInHeader && styles.largeTitleHeaderInner
+                        }
+                    >
+                        {onHeaderLargeTitlePress != null ||
+                        onHeaderLargeTitleLongPress != null ? (
+                            <TouchableOpacity
+                                onPress={onHeaderLargeTitlePress}
+                                onLongPress={onHeaderLargeTitleLongPress}
+                            >
+                                {largeTitleInnerElement}
+                            </TouchableOpacity>
+                        ) : (
+                            largeTitleInnerElement
+                        )}
+                    </View>
+                    <UILargeTitlePositionContext.Provider
+                        value={positionContext}
+                    >
+                        {renderBelowContent && renderBelowContent()}
+                    </UILargeTitlePositionContext.Provider>
                 </Animated.View>
 
                 {/* TODO(savelichalex): This is a huge hack for UIController measurement mechanics
@@ -437,7 +514,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    largeTitleHeaderContainer: {
+    largeTitleHeaderInner: {
         padding: UIConstant.scrollContentInsetHorizontal,
     },
     sceneContainerWithoutScroll: {

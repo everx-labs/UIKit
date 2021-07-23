@@ -1,11 +1,12 @@
 module.exports = {
     presets: [
         [
-            "@babel/preset-env",
+            '@babel/preset-env',
             {
-                targets: { node: "10" },
+                targets: { node: '10' },
             },
         ],
-        "@babel/preset-typescript",
+        '@babel/preset-typescript',
     ],
+    plugins: ['react-native-reanimated/plugin'],
 };

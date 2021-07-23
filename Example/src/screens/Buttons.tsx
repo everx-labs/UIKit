@@ -252,7 +252,15 @@ const Buttons = () => (
                     testID="uiLinkButton_secondary"
                     title="Action"
                     type={UILinkButtonType.Menu}
-                    onPress={() => console.log('Pressed UILinkButton')}
+                    onPress={() => console.log('Pressed secondary UILinkButton')}
+                />
+            </View>
+            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <UILinkButton
+                    testID="uiLinkButton_withCaption"
+                    title="Action"
+                    caption="Caption"
+                    onPress={() => console.log('Pressed UILinkButton with caption')}
                 />
             </View>
         </ExampleSection>
