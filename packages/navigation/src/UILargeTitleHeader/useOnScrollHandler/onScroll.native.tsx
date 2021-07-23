@@ -15,6 +15,7 @@ export default function (
     yIsNegative: Animated.SharedValue<boolean>,
     yWithoutRubberBand: Animated.SharedValue<number>,
     shift: Animated.SharedValue<number>,
+    shiftChangedForcibly: Animated.SharedValue<boolean>,
     rubberBandDistance: number,
 ) {
     return (event: NativeScrollEvent) => {
@@ -29,6 +30,11 @@ export default function (
                 // nothing
             }
         }
+
+        if (shiftChangedForcibly.value) {
+            return;
+        }
+
         yIsNegative.value = y <= 0;
         if (y <= 0) {
             // scrollTo reset real y, so we need to count it ourselves

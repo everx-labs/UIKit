@@ -9,7 +9,16 @@ module.exports = function (api) {
         ['@babel/plugin-transform-flow-strip-types'],
         ['@babel/plugin-proposal-decorators', { legacy: true }],
         ['@babel/plugin-proposal-class-properties', { loose: true }],
-        'react-native-reanimated/plugin',
+        [
+            'react-native-reanimated/plugin',
+            {
+                globals: [
+                    '_hapticImpact',
+                    '_hapticSelection',
+                    '_hapticNotification',
+                ],
+            },
+        ],
     ];
 
     return {

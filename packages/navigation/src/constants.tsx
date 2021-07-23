@@ -31,6 +31,9 @@ export const UIConstant = {
 
     maxSlideDistanceOfTap: 4,
 
+    refreshControlHeight: 50,
+    refreshControlLoaderSize: 20,
+    refreshControlPositioningDuration: 200,
     notice: {
         toastIndentFromScreenEdges: Platform.OS === 'web' ? 32 : 16,
         notificationDurationsShort: Platform.OS === 'web' ? 1.5 * 1500 : 1500,

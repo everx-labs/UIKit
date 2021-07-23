@@ -2,7 +2,13 @@
 /* eslint-disable react/no-unused-prop-types */
 import * as React from 'react';
 import { useState } from 'react';
-import { StatusBar, Text, useWindowDimensions, View } from 'react-native';
+import {
+    Platform,
+    StatusBar,
+    Text,
+    useWindowDimensions,
+    View,
+} from 'react-native';
 import {
     SafeAreaInsetsContext,
     useSafeAreaInsets,
@@ -19,24 +25,74 @@ import {
     UICardSheet,
     UIBottomSheet,
     UIQRCodeScannerSheet,
+    UIFullscreenSheet,
     UIActionSheet,
     UIActionSheetActionType,
 } from '@tonlabs/uikit.navigation';
-import {
-    UISlider,
-    UIStepBar,
-    UITabView,
-} from '@tonlabs/uikit.components';
 import {
     UIMaterialTextView,
     useTheme,
     ColorVariants,
     UIBoxButton,
-    UILabel,
     UILinkButton,
+    UILabel,
 } from '@tonlabs/uikit.hydrogen';
+import { UIPinCode, UIPinCodeBiometryType } from '@tonlabs/uikit.flask';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
+
+function PinCodeMenu() {
+    const theme = useTheme();
+    const [isVisible, setVisible] = React.useState(false);
+    const insets = useSafeAreaInsets();
+
+    return (
+        <>
+            <UILinkButton
+                testID="show_lockscreen"
+                title="Show LockScreen"
+                onPress={() => {
+                    setVisible(true);
+                }}
+            />
+            <UIFullscreenSheet
+                visible={isVisible}
+                hasOpenAnimation={false}
+                forId="lockScreen"
+                style={{
+                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
+                    paddingBottom: Math.max(
+                        insets?.bottom || 0,
+                        UIConstant.contentOffset(),
+                    ),
+                    borderRadius: Platform.select({ web: 10, default: 0 }),
+                }}
+            >
+                <UIPinCode
+                    label="PIN code"
+                    description="Correct"
+                    isBiometryEnabled
+                    biometryType={UIPinCodeBiometryType.Face}
+                    getPasscodeWithBiometry={() => {
+                        return Promise.resolve('123123');
+                    }}
+                    onEnter={(pin: string) => {
+                        return new Promise((resolve) => {
+                            setTimeout(() => {
+                                resolve(pin === '123123');
+                            }, 500);
+                        });
+                    }}
+                    onSuccess={() => {
+                        setVisible(false);
+                    }}
+                />
+            </UIFullscreenSheet>
+        </>
+    );
+}
+
+export const actionSheet = React.createRef<typeof UIActionSheet>();
 
 function BigBottomSheet() {
     const theme = useTheme();
@@ -137,22 +193,34 @@ export const Menus = () => {
                         <UIActionSheet.Action
                             type={UIActionSheetActionType.Disabled}
                             title="Disabled Action"
-                            onPress={getCallback('Disabled Action', setActionSheetVisible)}
+                            onPress={getCallback(
+                                'Disabled Action',
+                                setActionSheetVisible,
+                            )}
                         />
                         <UIActionSheet.Action
                             type={UIActionSheetActionType.Neutral}
                             title="Neutral Action"
-                            onPress={getCallback('Neutral Action', setActionSheetVisible)}
+                            onPress={getCallback(
+                                'Neutral Action',
+                                setActionSheetVisible,
+                            )}
                         />
                         <UIActionSheet.Action
                             type={UIActionSheetActionType.Negative}
                             title="Negative Action"
-                            onPress={getCallback('Negative Action', setActionSheetVisible)}
+                            onPress={getCallback(
+                                'Negative Action',
+                                setActionSheetVisible,
+                            )}
                         />
                         <UIActionSheet.Action
                             type={UIActionSheetActionType.Сancel}
                             title="Сancel Action"
-                            onPress={getCallback('Сancel Action', setActionSheetVisible)}
+                            onPress={getCallback(
+                                'Сancel Action',
+                                setActionSheetVisible,
+                            )}
                         />
                     </UIActionSheet>
                 </View>
@@ -274,6 +342,7 @@ export const Menus = () => {
                             setQrVisible(false);
                         }}
                     />
+                    <PinCodeMenu />
                 </View>
             </ExampleSection>
             <ExampleSection title="UIPopover">
@@ -306,84 +375,6 @@ export const Menus = () => {
                     >
                         <UILinkButton title="Show UIPopoverMenu" />
                     </UIPopoverMenu>
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UISlider">
-                <View style={{ paddingVertical: 20 }}>
-                    <UISlider
-                        testID="uiSlider_default"
-                        itemsList={[
-                            {
-                                title: 'Card 1',
-                                details: 'details',
-                            },
-                            {
-                                title: 'Card 2',
-                                details: 'details',
-                            },
-                            {
-                                title: 'Card 3',
-                                details: 'details',
-                            },
-                            {
-                                title: 'Card 4',
-                                details: 'details',
-                            },
-                            {
-                                title: 'Card 5',
-                                details: 'details',
-                            },
-                        ]}
-                        itemRenderer={({
-                            title,
-                            details,
-                        }: {
-                            title: string;
-                            details: string;
-                        }) => (
-                            <View
-                                testID={`uiSlider_item_${title}`}
-                                key={`slider-item-${title}-${details}`}
-                                style={{ width: 200, height: 200 }}
-                            >
-                                <Text>{title}</Text>
-                                <Text>{details}</Text>
-                            </View>
-                        )}
-                        itemWidth={256}
-                    />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UIStepBar">
-                <View style={{ paddingVertical: 20 }}>
-                    <UIStepBar
-                        testID="uiStepBar_default"
-                        itemsList={['Item 1', 'Item 2', 'Item 3', 'Item 4']}
-                        activeIndex={activeIndex}
-                        onPress={(i: number) => setActiveIndex(i)}
-                    />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UITabView">
-                <View style={{ paddingVertical: 20 }}>
-                    <UITabView
-                        testID="uiTabView_default"
-                        width={95}
-                        pages={[
-                            {
-                                title: 'Left',
-                                component: <Text>Some left content</Text>,
-                            },
-                            {
-                                title: 'Center',
-                                component: <Text>Some center content</Text>,
-                            },
-                            {
-                                title: 'Right',
-                                component: <Text>Some right content</Text>,
-                            },
-                        ]}
-                    />
                 </View>
             </ExampleSection>
         </ExampleScreen>

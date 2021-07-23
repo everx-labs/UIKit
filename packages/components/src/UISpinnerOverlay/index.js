@@ -1,10 +1,11 @@
 // @flow
 import React from 'react';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
-import { Platform, StyleSheet, View, Text, Modal } from 'react-native';
+import { Platform, StyleSheet, View, Modal } from 'react-native';
 import { WaveIndicator } from 'react-native-indicators';
 
-import { UIStyle, UIColor } from '@tonlabs/uikit.core';
+import { UIColor } from '@tonlabs/uikit.core';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
 
@@ -152,9 +153,10 @@ export default class UISpinnerOverlay extends UIComponent<Props, State> {
     renderTitleContent() {
         const { titleContent } = this.props;
         return (
-            <Text
+            <UILabel
+                color={UILabelColors.TextPrimary}
+                role={UILabelRoles.ParagraphText}
                 style={[
-                    UIStyle.text.primaryBodyRegular(),
                     styles.titleContent,
                     this.props.titleStyle,
                     {
@@ -165,16 +167,17 @@ export default class UISpinnerOverlay extends UIComponent<Props, State> {
                 ]}
             >
                 {titleContent}
-            </Text>
+            </UILabel>
         );
     }
 
     renderTextContent() {
         const { textContent } = this.props;
         return (
-            <Text
+            <UILabel
+                color={UILabelColors.TextPrimary}
+                role={UILabelRoles.ParagraphText}
                 style={[
-                    UIStyle.text.primaryBodyRegular(),
                     styles.textContent,
                     this.props.textStyle,
                     {
@@ -185,7 +188,7 @@ export default class UISpinnerOverlay extends UIComponent<Props, State> {
                 ]}
             >
                 {textContent}
-            </Text>
+            </UILabel>
         );
     }
 

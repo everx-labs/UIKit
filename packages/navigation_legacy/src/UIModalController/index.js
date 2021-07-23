@@ -19,7 +19,6 @@ import {
 } from 'react-native-gesture-handler';
 
 import {
-    UIColor,
     UIConstant,
     UIDevice,
     UIFunction,
@@ -95,7 +94,6 @@ const styles = StyleSheet.create({
     },
     dialog: {
         borderRadius: UIConstant.mediumBorderRadius(),
-        backgroundColor: UIColor.backgroundPrimary(UIColor.Theme.Light),
     },
     dialogOverflow: {
         overflow: 'hidden',

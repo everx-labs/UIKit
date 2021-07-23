@@ -34,3 +34,5 @@ export * from './useHover';
 export * from './UIMaterialTextView/useClearButton';
 
 export * from './makeStyles';
+
+export * from './Haptics/Haptics';

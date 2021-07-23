@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
     ImageSourcePropType,
+    Platform,
     StyleProp,
     StyleSheet,
     ViewStyle,
@@ -14,6 +15,7 @@ import {
 import { Button, ButtonAnimations, UILayout } from './Button';
 import { UIConstant } from './constants';
 import { ColorVariants, useTheme } from './Colors';
+import { UILabelColors, UILabelRoles } from './UILabel';
 
 // eslint-disable-next-line no-shadow
 export enum UILinkButtonType {
@@ -42,6 +44,10 @@ export enum UILinkButtonIconPosition {
 }
 
 export type UILinkButtonProps = {
+    /**
+     * Auxiliary text displayed under the main title
+     */
+    caption?: string;
     /**
      * Whether the button is disabled or not; if true a button is grayed out and `onPress` does no response
      */
@@ -187,6 +193,7 @@ function useButtonStyles(
 }
 
 export const UILinkButton = ({
+    caption,
     disabled,
     icon,
     iconPosition = UILinkButtonIconPosition.Middle,
@@ -202,6 +209,39 @@ export const UILinkButton = ({
 }: UILinkButtonProps) => {
     const { contentColor, containerHeight } = useButtonStyles(size, type, variant, disabled);
     const buttonAnimations = useButtonAnimations(type, contentColor);
+    const { title: titleAnim, icon: iconAnim } = buttonAnimations;
+
+    if (title != null && caption != null) {
+        return (
+            <Button
+                containerStyle={[layout, styles.flexBasis]}
+                contentStyle={[styles.content, styles.doubleLineContent]}
+                animations={buttonAnimations}
+                disabled={disabled}
+                loading={loading}
+                onLongPress={onLongPress}
+                onPress={onPress}
+                testID={testID}
+            >
+                <Button.Content direction={Button.ContentDirection.Column}>
+                    <Button.Title
+                        titleColor={contentColor}
+                        titleAnimStyle={titleAnim?.style}
+                    >
+                        {title}
+                    </Button.Title>
+                    <Button.Title
+                        titleColor={UILabelColors.TextSecondary}
+                        titleRole={UILabelRoles.ParagraphNote}
+                        numberOfLines={5}
+                        style={styles.caption}
+                    >
+                        {caption}
+                    </Button.Title>
+                </Button.Content>
+            </Button>
+        );
+    }
 
     return (
         <Button
@@ -223,16 +263,16 @@ export const UILinkButton = ({
                     <Button.Icon
                         source={icon}
                         style={styles.leftIcon}
-                        iconAnimStyle={buttonAnimations.icon?.style}
-                        initialColor={buttonAnimations.icon?.initialColor}
-                        activeColor={buttonAnimations.icon?.activeColor}
+                        iconAnimStyle={iconAnim?.style}
+                        initialColor={iconAnim?.initialColor}
+                        activeColor={iconAnim?.activeColor}
                     />
                 }
                 {
                     title != null &&
                     <Button.Title
                         titleColor={contentColor}
-                        titleAnimStyle={buttonAnimations.title?.style}
+                        titleAnimStyle={titleAnim?.style}
                     >
                         {title}
                     </Button.Title>
@@ -241,9 +281,9 @@ export const UILinkButton = ({
                     iconPosition === UILinkButtonIconPosition.Middle && icon != null &&
                     <Button.Icon
                         source={icon}
-                        iconAnimStyle={buttonAnimations.icon?.style}
-                        initialColor={buttonAnimations.icon?.initialColor}
-                        activeColor={buttonAnimations.icon?.activeColor}
+                        iconAnimStyle={iconAnim?.style}
+                        initialColor={iconAnim?.initialColor}
+                        activeColor={iconAnim?.activeColor}
                     />
                 }
             </Button.Content>
@@ -251,9 +291,9 @@ export const UILinkButton = ({
                 iconPosition === UILinkButtonIconPosition.Right && icon != null &&
                 <Button.Icon
                     source={icon}
-                    iconAnimStyle={buttonAnimations.icon?.style}
-                    initialColor={buttonAnimations.icon?.initialColor}
-                    activeColor={buttonAnimations.icon?.activeColor}
+                    iconAnimStyle={iconAnim?.style}
+                    initialColor={iconAnim?.initialColor}
+                    activeColor={iconAnim?.activeColor}
                 />
             }
         </Button>
@@ -267,10 +307,26 @@ const styles = StyleSheet.create({
     leftIcon: {
         marginRight: UIConstant.smallContentOffset,
     },
+    caption: {
+        marginTop: UIConstant.tinyContentOffset,
+    },
     normalContainer: {
         height: UIConstant.linkButtonHeight,
     },
     smallContainer: {
         height: UIConstant.linkButtonHeight / 2,
+    },
+    doubleLineContent: {
+        paddingVertical: UIConstant.normalContentOffset,
+    },
+    flexBasis: {
+        ...Platform.select({
+            web: {
+                flexBasis: 'auto',
+            },
+            default: {
+                flexBasis: 1,
+            },
+        })
     },
 });
