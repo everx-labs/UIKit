@@ -214,7 +214,7 @@ export const UILinkButton = ({
     if (title != null && caption != null) {
         return (
             <Button
-                containerStyle={[layout, Platform.OS === 'web' ? null : styles.flexBasis]}
+                containerStyle={[layout, styles.flexBasis]}
                 contentStyle={[styles.content, styles.doubleLineContent]}
                 animations={buttonAnimations}
                 disabled={disabled}
@@ -320,6 +320,13 @@ const styles = StyleSheet.create({
         paddingVertical: UIConstant.normalContentOffset,
     },
     flexBasis: {
-        flexBasis: 1,
+        ...Platform.select({
+            web: {
+                flexBasis: 'auto',
+            },
+            default: {
+                flexBasis: 1,
+            },
+        })
     },
 });
