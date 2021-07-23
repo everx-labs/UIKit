@@ -337,7 +337,7 @@ PODS:
     - React
   - RNDeviceInfo (5.6.5):
     - React
-  - RNFastImage (8.3.4):
+  - RNFastImage (8.3.6):
     - React-Core
     - SDWebImage (~> 5.8)
     - SDWebImageWebPCoder (~> 0.6.1)
@@ -374,7 +374,7 @@ PODS:
     - React-RCTVibration
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.3.0):
+  - RNScreens (3.4.0):
     - React-Core
     - React-RCTImage
   - RNShare (3.8.5):
@@ -458,11 +458,11 @@ DEPENDENCIES:
   - rn-fetch-blob (from `../../node_modules/rn-fetch-blob`)
   - "RNCMaskedView (from `../../node_modules/@react-native-community/masked-view`)"
   - RNDeviceInfo (from `../../node_modules/react-native-device-info`)
-  - RNFastImage (from `../node_modules/react-native-fast-image`)
+  - RNFastImage (from `../../node_modules/react-native-fast-image`)
   - RNGestureHandler (from `../../node_modules/react-native-gesture-handler`)
   - RNPermissions (from `../../node_modules/react-native-permissions`)
   - RNReanimated (from `../../node_modules/react-native-reanimated`)
-  - RNScreens (from `../node_modules/react-native-screens`)
+  - RNScreens (from `../../node_modules/react-native-screens`)
   - RNShare (from `../../node_modules/react-native-share`)
   - RNSVG (from `../../node_modules/react-native-svg`)
   - UIKitHydrogen (from `../../packages/hydrogen/UIKitHydrogen.podspec`)
@@ -567,7 +567,7 @@ EXTERNAL SOURCES:
   RNDeviceInfo:
     :path: "../../node_modules/react-native-device-info"
   RNFastImage:
-    :path: "../node_modules/react-native-fast-image"
+    :path: "../../node_modules/react-native-fast-image"
   RNGestureHandler:
     :path: "../../node_modules/react-native-gesture-handler"
   RNPermissions:
@@ -575,7 +575,7 @@ EXTERNAL SOURCES:
   RNReanimated:
     :path: "../../node_modules/react-native-reanimated"
   RNScreens:
-    :path: "../node_modules/react-native-screens"
+    :path: "../../node_modules/react-native-screens"
   RNShare:
     :path: "../../node_modules/react-native-share"
   RNSVG:
@@ -639,20 +639,20 @@ SPEC CHECKSUMS:
   rn-fetch-blob: 651b8d076b43d0d7aa294a3d9ec16c00aab8bef9
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNDeviceInfo: c5f8f3a456adcbba405ace475254b08febc4c095
-  RNFastImage: d4870d58f5936111c56218dbd7fcfc18e65b58ff
+  RNFastImage: 044259b52d726b183fa401f3521b2e5a864afc0a
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNPermissions: 99dd8d4a30ff13509b949ca63cd1f69edc461775
   RNReanimated: d9da990fc90123f4ffbfdda93d00fc15174863a8
-  RNScreens: bf59f17fbf001f1025243eeed5f19419d3c11ef2
+  RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
   RNShare: 7e22ba3bf66294ff7c122a1f2da8a8ec642091a0
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: d0dac55073088d24b2ac1b191a71a8f8d0adac21
-  UIKitHydrogen: 1212b576a238121223766579b8c1c8ae5a97bf86
+  UIKitHydrogen: 954fa068d11b33507c7a720a5b22f48a9d8c5926
   UIKitKeyboard: fb4c39177a21cbb8b86801d0ff8280f555b04d6f
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 52d473682ecd90fb329723e6a655660d942bb9f8
+PODFILE CHECKSUM: 3776e0194a7d66894482f67aba839ca54fa8c5f1
 
 COCOAPODS: 1.10.1
