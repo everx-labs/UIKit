@@ -67,6 +67,20 @@ export default function (
                 const parentScrollWorkletEventHandler = (parentScrollHandler as any)
                     .current as ScrollWorkletEventHandler;
 
+                /**
+                 * Here we implement our own version of event propagation
+                 * as it doesn't have a way to bubble events for scrollables
+                 * because we use regular React context, to pass handlers
+                 *
+                 * So, UILargeTitleHeader provides his own handlers for ScrollableContext,
+                 * therefore any parent handlers won't be attached to ScrollView
+                 * But we have to bubble event in some situations if it's needed,
+                 * for example for UISheet, when it contains UILargeTitleHeader.
+                 *
+                 * Here we use the fact that useAnimatedScrollHandler uses WorkletEventHandler
+                 * https://github.com/software-mansion/react-native-reanimated/blob/0c2f66f9855a26efe24f52ecff927fe847f7a80e/src/reanimated2/WorkletEventHandler.ts#L11
+                 * under the hood
+                 */
                 parentScrollWorkletEventHandler.worklet(event as any);
                 return;
             }
