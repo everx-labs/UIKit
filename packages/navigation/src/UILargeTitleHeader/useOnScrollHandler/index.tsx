@@ -13,6 +13,7 @@ export function useOnScrollHandler(
     yIsNegative: Animated.SharedValue<boolean>,
     yWithoutRubberBand: Animated.SharedValue<number>,
     shift: Animated.SharedValue<number>,
+    shiftChangedForcibly: Animated.SharedValue<boolean>,
     rubberBandDistance: number,
 ) {
     const onScrollCbRef = React.useRef<
@@ -27,6 +28,7 @@ export function useOnScrollHandler(
             yIsNegative,
             yWithoutRubberBand,
             shift,
+            shiftChangedForcibly,
             rubberBandDistance,
         ) as (event: NativeScrollEvent) => void;
     }

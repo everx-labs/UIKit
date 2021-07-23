@@ -166,9 +166,22 @@ export type AmountInputMessage = InteractiveMessage<
 >;
 
 export type SigningBox = {
-    id: number; // e.g. may be equal to SigningBox handler
+    /**
+     * Id of the signature, e.g. may be equal to SigningBox handler
+     */
+    id: number;
+    /**
+     * Title of the signature
+     */
     title: string;
-    publicKey: string;
+    /**
+     * Optional public key of the signature (e.g. for the security card it might be unavailable)
+     */
+    publicKey?: string;
+    /**
+     * Optional serial number of the security card used for the signature
+     */
+    serialNumber?: string,
 };
 
 export type SigningBoxExternalState = {

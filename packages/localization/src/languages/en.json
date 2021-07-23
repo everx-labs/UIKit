@@ -64,6 +64,7 @@
             "EnterKey": "Enter Key",
             "PickSignature": "Pick a signature",
             "UseSecurityCard": "Use Security Card",
+            "SecurityCards": "Security cards",
             "Signatures": "Signatures",
             "AddSignature": "Add signature",
             "PrivateKey": "Private key"

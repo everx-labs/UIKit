@@ -2,7 +2,13 @@
 /* eslint-disable react/no-unused-prop-types */
 import * as React from 'react';
 import { useState } from 'react';
-import { StatusBar, Text, useWindowDimensions, View } from 'react-native';
+import {
+    Platform,
+    StatusBar,
+    Text,
+    useWindowDimensions,
+    View,
+} from 'react-native';
 import {
     SafeAreaInsetsContext,
     useSafeAreaInsets,
@@ -19,24 +25,75 @@ import {
     UICardSheet,
     UIBottomSheet,
     UIQRCodeScannerSheet,
+    UIFullscreenSheet,
     UIActionSheet,
     UIActionSheetActionType,
 } from '@tonlabs/uikit.navigation';
-import {
-    UISlider,
-    UIStepBar,
-    UITabView,
-} from '@tonlabs/uikit.components';
+import { UISlider, UIStepBar, UITabView } from '@tonlabs/uikit.components';
 import {
     UIMaterialTextView,
     useTheme,
     ColorVariants,
     UIBoxButton,
-    UILabel,
     UILinkButton,
+    UILabel,
 } from '@tonlabs/uikit.hydrogen';
+import { UIPinCode, UIPinCodeBiometryType } from '@tonlabs/uikit.flask';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
+
+function PinCodeMenu() {
+    const theme = useTheme();
+    const [isVisible, setVisible] = React.useState(false);
+    const insets = useSafeAreaInsets();
+
+    return (
+        <>
+            <UILinkButton
+                testID="show_lockscreen"
+                title="Show LockScreen"
+                onPress={() => {
+                    setVisible(true);
+                }}
+            />
+            <UIFullscreenSheet
+                visible={isVisible}
+                hasOpenAnimation={false}
+                forId="lockScreen"
+                style={{
+                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
+                    paddingBottom: Math.max(
+                        insets?.bottom || 0,
+                        UIConstant.contentOffset(),
+                    ),
+                    borderRadius: Platform.select({ web: 10, default: 0 }),
+                }}
+            >
+                <UIPinCode
+                    label="PIN code"
+                    description="Correct"
+                    isBiometryEnabled
+                    biometryType={UIPinCodeBiometryType.Face}
+                    getPasscodeWithBiometry={() => {
+                        return Promise.resolve('123123');
+                    }}
+                    onEnter={(pin: string) => {
+                        return new Promise((resolve) => {
+                            setTimeout(() => {
+                                resolve(pin === '123123');
+                            }, 500);
+                        });
+                    }}
+                    onSuccess={() => {
+                        setVisible(false);
+                    }}
+                />
+            </UIFullscreenSheet>
+        </>
+    );
+}
+
+export const actionSheet = React.createRef<typeof UIActionSheet>();
 
 function BigBottomSheet() {
     const theme = useTheme();
@@ -137,22 +194,34 @@ export const Menus = () => {
                         <UIActionSheet.Action
                             type={UIActionSheetActionType.Disabled}
                             title="Disabled Action"
-                            onPress={getCallback('Disabled Action', setActionSheetVisible)}
+                            onPress={getCallback(
+                                'Disabled Action',
+                                setActionSheetVisible,
+                            )}
                         />
                         <UIActionSheet.Action
                             type={UIActionSheetActionType.Neutral}
                             title="Neutral Action"
-                            onPress={getCallback('Neutral Action', setActionSheetVisible)}
+                            onPress={getCallback(
+                                'Neutral Action',
+                                setActionSheetVisible,
+                            )}
                         />
                         <UIActionSheet.Action
                             type={UIActionSheetActionType.Negative}
                             title="Negative Action"
-                            onPress={getCallback('Negative Action', setActionSheetVisible)}
+                            onPress={getCallback(
+                                'Negative Action',
+                                setActionSheetVisible,
+                            )}
                         />
                         <UIActionSheet.Action
                             type={UIActionSheetActionType.Сancel}
                             title="Сancel Action"
-                            onPress={getCallback('Сancel Action', setActionSheetVisible)}
+                            onPress={getCallback(
+                                'Сancel Action',
+                                setActionSheetVisible,
+                            )}
                         />
                     </UIActionSheet>
                 </View>
@@ -274,6 +343,7 @@ export const Menus = () => {
                             setQrVisible(false);
                         }}
                     />
+                    <PinCodeMenu />
                 </View>
             </ExampleSection>
             <ExampleSection title="UIPopover">
