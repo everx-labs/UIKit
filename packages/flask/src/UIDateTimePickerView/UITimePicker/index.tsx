@@ -48,8 +48,7 @@ const TimeInput = ({
         type: 'time',
         value: time,
         autoFocus: true,
-        // @ts-ignore
-        onChange: (e) => onChangeHandler(e.target.value),
+        onChange: (e: any /* or some SyntheticEvent<?> */) => onChangeHandler(e.target.value),
     };
 
     return React.createElement('input', inputOptions);
