@@ -28,6 +28,7 @@ import {
     UIFullscreenSheet,
     UIActionSheet,
     UIActionSheetActionType,
+    UILargeTitleHeader,
 } from '@tonlabs/uikit.navigation';
 import { UISlider, UIStepBar, UITabView } from '@tonlabs/uikit.components';
 import {
@@ -161,6 +162,57 @@ function BigBottomSheet() {
         </>
     );
 }
+
+function BigBottomLargeTitleSheet() {
+    const theme = useTheme();
+    const [bigBottomSheetVisible, setBigBottomSheetVisible] =
+        React.useState(false);
+    return (
+        <>
+            <UILinkButton
+                testID="show_big_uiBottomSheet_largeTitleHeader"
+                title="Show Big UIBottomSheet with UILargeTitleHeader"
+                onPress={() => {
+                    setBigBottomSheetVisible(true);
+                }}
+            />
+            <UIFullscreenSheet
+                visible={bigBottomSheetVisible}
+                onClose={() => {
+                    setBigBottomSheetVisible(false);
+                }}
+                style={{
+                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
+                    borderRadius: Platform.select({ web: 10, default: 10 }),
+                    overflow: 'hidden',
+                }}
+            >
+                <UILargeTitleHeader title="Very long title">
+                    <ScrollView
+                        style={{
+                            flex: 1,
+                        }}
+                    >
+                        <UILabel>Hello!</UILabel>
+                        {new Array(9)
+                            .fill(null)
+                            .map((_el, i) => (i + 1) / 10)
+                            .map((opacity) => (
+                                <View
+                                    key={opacity}
+                                    style={{
+                                        height: 100,
+                                        backgroundColor: `rgba(255,0,0,${opacity})`,
+                                    }}
+                                />
+                            ))}
+                    </ScrollView>
+                </UILargeTitleHeader>
+            </UIFullscreenSheet>
+        </>
+    );
+}
+
 const getCallback =
     (message: string, setVisible: (visible: boolean) => void) => () => {
         console.log(message);
@@ -344,6 +396,7 @@ export const Menus = () => {
                         }}
                     />
                     <PinCodeMenu />
+                    <BigBottomLargeTitleSheet />
                 </View>
             </ExampleSection>
             <ExampleSection title="UIPopover">

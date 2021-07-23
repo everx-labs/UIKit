@@ -1,6 +1,7 @@
 import * as React from 'react';
 import type { NativeScrollEvent } from 'react-native';
 import type Animated from 'react-native-reanimated';
+import type { ScrollableOnScrollHandler } from '../../Scrollable/Context';
 
 // @ts-ignore
 // eslint-disable-next-line import/no-unresolved, import/extensions
@@ -15,6 +16,7 @@ export function useOnScrollHandler(
     shift: Animated.SharedValue<number>,
     shiftChangedForcibly: Animated.SharedValue<boolean>,
     rubberBandDistance: number,
+    parentScrollHandler: ScrollableOnScrollHandler,
 ) {
     const onScrollCbRef = React.useRef<
         ((event: NativeScrollEvent) => void) | null
@@ -30,6 +32,7 @@ export function useOnScrollHandler(
             shift,
             shiftChangedForcibly,
             rubberBandDistance,
+            parentScrollHandler,
         ) as (event: NativeScrollEvent) => void;
     }
 
