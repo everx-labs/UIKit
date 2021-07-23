@@ -1,21 +1,14 @@
 import * as React from 'react';
-import { Platform } from 'react-native';
+import { UIConstant } from '../../constants';
 import { UINoticeDuration } from '../types';
-
-const PLATFORM_NOTIFICATION_DURATION_MULTIPLIER =
-    Platform.OS === 'web' ? 1.5 : 1;
-const NOTIFICATION_DURATION_SHORT =
-    1500 * PLATFORM_NOTIFICATION_DURATION_MULTIPLIER;
-const NOTIFICATION_DURATION_LONG =
-    3000 * PLATFORM_NOTIFICATION_DURATION_MULTIPLIER;
 
 const getNotificationDuration = (duration: UINoticeDuration | undefined) => {
     switch (duration) {
         case UINoticeDuration.Short:
-            return NOTIFICATION_DURATION_SHORT;
+            return UIConstant.notice.notificationDurationsShort;
         case UINoticeDuration.Long:
         default:
-            return NOTIFICATION_DURATION_LONG;
+            return UIConstant.notice.notificationDurationsLong;
     }
 };
 

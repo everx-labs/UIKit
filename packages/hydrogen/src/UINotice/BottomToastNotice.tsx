@@ -104,6 +104,6 @@ const styles = StyleSheet.create({
         right: 0,
         flexDirection: 'row',
         justifyContent: 'center',
-        paddingHorizontal: UIConstant.toastIndentFromScreenEdges,
+        paddingHorizontal: UIConstant.notice.toastIndentFromScreenEdges,
     },
 });
