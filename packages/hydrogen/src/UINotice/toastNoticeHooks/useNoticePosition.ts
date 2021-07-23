@@ -59,7 +59,7 @@ const moveWithSpring = (
     });
 };
 
-export const useNoticePositionStyle = (
+export const useNoticePosition = (
     xSnapPoints: SnapPoints,
     ySnapPoints: SnapPoints,
     visible: boolean,

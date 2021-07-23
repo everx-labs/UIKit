@@ -9,7 +9,7 @@ import { Portal } from '../Portal';
 import type { SnapPoints, ToastNoticeProps } from './types';
 import { Notice } from './Notice';
 import { useNoticeHeight } from './hooks/useNoticeHeight';
-import { useNoticePositionStyle } from './toastNoticeHooks/useNoticePositionStyle';
+import { useNoticePosition } from './toastNoticeHooks/useNoticePosition';
 import { UIConstant } from '../constants';
 import { useHover } from '../useHover';
 import { useBottomToastNoticeYSnapPoints } from './toastNoticeHooks/useBottomToastNoticeYSnapPoints';
@@ -45,7 +45,7 @@ export const BottomToastNotice: React.FC<ToastNoticeProps> = ({
         onPress,
         onLongPress,
         onPressOut,
-    } = useNoticePositionStyle(
+    } = useNoticePosition(
         xSnapPoints,
         ySnapPoints,
         visible,
