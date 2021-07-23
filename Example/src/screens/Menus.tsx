@@ -1,7 +1,6 @@
 /* eslint-disable no-alert */
 /* eslint-disable react/no-unused-prop-types */
 import * as React from 'react';
-import { useState } from 'react';
 import {
     Platform,
     StatusBar,
@@ -170,7 +169,6 @@ const getCallback =
 
 export const Menus = () => {
     const theme = useTheme();
-    const [activeIndex, setActiveIndex] = useState(0);
     const [actionSheetVisible, setActionSheetVisible] = React.useState(false);
     const [cardSheetVisible, setCardSheetVisible] = React.useState(false);
     const [cardSheet2Visible, setCardSheet2Visible] = React.useState(false);
