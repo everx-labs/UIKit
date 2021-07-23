@@ -45,3 +45,8 @@ export type ToastNoticeProps = UINoticeProps & {
     continueClosingTimer: () => void;
     keyboardHeight: Animated.SharedValue<number>;
 };
+
+export type SnapPoints = {
+    openedSnapPoint: Readonly<Animated.SharedValue<number>>;
+    closedSnapPoint: Readonly<Animated.SharedValue<number>>;
+};

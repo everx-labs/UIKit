@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { useWindowDimensions } from 'react-native';
-import Animated, {
+import {
     useSharedValue,
     useAnimatedStyle,
     useAnimatedReaction,
@@ -10,9 +9,8 @@ import Animated, {
 } from 'react-native-reanimated';
 // @ts-expect-error
 import SpringConfig from 'react-native/Libraries/Animated/src/SpringConfig';
-import { useToastNoticeYSnapPoints } from './useToastNoticeYSnapPoints';
+import type { SnapPoints } from '../types';
 
-const OPENED_X_POSITION = 0;
 const Y_THRESHOLD = 20;
 const X_THRESHOLD = 50;
 
@@ -62,22 +60,15 @@ const moveWithSpring = (
 };
 
 export const useNoticePositionStyle = (
-    noticeHeight: Animated.SharedValue<number>,
+    xSnapPoints: SnapPoints,
+    ySnapPoints: SnapPoints,
     visible: boolean,
     isHovered: boolean,
     onCloseAnimationEnd: (() => void) | undefined,
     suspendClosingTimer: () => void,
     continueClosingTimer: () => void,
     onTap: (() => void) | undefined,
-    keyboardHeight: Animated.SharedValue<number>,
 ) => {
-    const { openedYSnapPoint, closedYSnapPoint } = useToastNoticeYSnapPoints(
-        noticeHeight,
-        keyboardHeight,
-    );
-
-    const screenWidth = useWindowDimensions().width;
-
     /** Place of notice */
     const toastNoticeState = useSharedValue<ToastNoticeState>(
         getToastNoticeState(visible),
@@ -114,8 +105,10 @@ export const useNoticePositionStyle = (
         () => {
             return {
                 toastNoticeState: toastNoticeState.value,
-                openedYSnapPoint: openedYSnapPoint.value,
-                closedYSnapPoint: closedYSnapPoint.value,
+                openedYSnapPoint: ySnapPoints.openedSnapPoint.value,
+                closedYSnapPoint: ySnapPoints.closedSnapPoint.value,
+                openedXSnapPoint: xSnapPoints.openedSnapPoint.value,
+                closedXSnapPoint: xSnapPoints.closedSnapPoint.value,
             };
         },
         (state) => {
@@ -124,7 +117,10 @@ export const useNoticePositionStyle = (
                     'Open',
                     state.openedYSnapPoint,
                 );
-                xPosition.value = moveWithSpring('Open', OPENED_X_POSITION);
+                xPosition.value = moveWithSpring(
+                    'Open',
+                    state.openedXSnapPoint,
+                );
             }
             if (state.toastNoticeState === 'ClosedBottom') {
                 yPosition.value = moveWithSpring(
@@ -136,14 +132,14 @@ export const useNoticePositionStyle = (
             if (state.toastNoticeState === 'ClosedLeft') {
                 xPosition.value = moveWithSpring(
                     'Close',
-                    -screenWidth,
+                    -state.closedXSnapPoint,
                     onCloseAnimationEnd,
                 );
             }
             if (state.toastNoticeState === 'ClosedRight') {
                 xPosition.value = moveWithSpring(
                     'Close',
-                    screenWidth,
+                    state.closedXSnapPoint,
                     onCloseAnimationEnd,
                 );
             }
@@ -170,7 +166,8 @@ export const useNoticePositionStyle = (
                     /** Swipe up is prohibited */
                     if (event.translationY >= 0) {
                         yPosition.value =
-                            openedYSnapPoint.value + event.translationY;
+                            ySnapPoints.openedSnapPoint.value +
+                            event.translationY;
                     }
                 } else {
                     xPosition.value = event.translationX;

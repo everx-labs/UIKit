@@ -8,12 +8,14 @@ import Animated from 'react-native-reanimated';
 // @ts-ignore
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Portal } from '@tonlabs/uikit.hydrogen';
-import type { ToastNoticeProps } from './types';
+import type { SnapPoints, ToastNoticeProps } from './types';
 import { Notice } from './Notice';
 import { useNoticeHeight } from './hooks/useNoticeHeight';
 import { useNoticePositionStyle } from './toastNoticeHooks/useNoticePositionStyle';
 import { UIConstant } from '../constants';
 import { useHover } from '../useHover';
+import { useBottomToastNoticeYSnapPoints } from './toastNoticeHooks/useBottomToastNoticeYSnapPoints';
+import { useBottomToastNoticeXSnapPoints } from './toastNoticeHooks/useBottomToastNoticeXSnapPoints';
 
 const DELAY_LONG_PRESS = 200;
 
@@ -33,6 +35,12 @@ export const BottomToastNotice: React.FC<ToastNoticeProps> = ({
 
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
+    const xSnapPoints: SnapPoints = useBottomToastNoticeXSnapPoints();
+    const ySnapPoints: SnapPoints = useBottomToastNoticeYSnapPoints(
+        noticeHeight,
+        keyboardHeight,
+    );
+
     const {
         noticePositionStyle,
         gestureHandler,
@@ -40,14 +48,14 @@ export const BottomToastNotice: React.FC<ToastNoticeProps> = ({
         onLongPress,
         onPressOut,
     } = useNoticePositionStyle(
-        noticeHeight,
+        xSnapPoints,
+        ySnapPoints,
         visible,
         isHovered,
         onCloseAnimationEnd,
         suspendClosingTimer,
         continueClosingTimer,
         onTap,
-        keyboardHeight,
     );
 
     return (

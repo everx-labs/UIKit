@@ -11,32 +11,36 @@ import {
     UINotice,
     UINoticeType,
     UINoticeColor,
+    UINoticeDuration,
 } from '@tonlabs/uikit.hydrogen';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
-// import { UINotice } from '../../../packages/hydrogen/src'
 
 export const Notifications = () => {
-    const [uiNoticeVisible, setUINoticeVisible] = React.useState<boolean>(false)
+    const [uiNoticeVisible, setUINoticeVisible] =
+        React.useState<boolean>(false);
     return (
         <ExampleScreen>
             <ExampleSection title="UINotice">
                 <View style={{ maxWidth: 350, paddingVertical: 20 }}>
                     <UILinkButton
                         testID="show_default_uiNotice_message"
-                        title={`${uiNoticeVisible ? 'Hide' : 'Show'} default notice with message only`}
-                        onPress={() =>
-                            // UINotice.showMessage(
-                            //     'System is going down at midnight tonight. We’ll notify you when it’s back up.',
-                            // )
-                            setUINoticeVisible(!uiNoticeVisible)
-                        }
+                        title={`${
+                            uiNoticeVisible ? 'Hide' : 'Show'
+                        } default notice with message only`}
+                        onPress={() => setUINoticeVisible(!uiNoticeVisible)}
                     />
                     <UINotice
                         type={UINoticeType.BottomToast}
                         title="System is going down at midnight tonight. We’ll notify you when it’s back up."
                         visible={uiNoticeVisible}
-                        onClose={() => setUINoticeVisible(false)}
+                        onClose={() => {
+                            setUINoticeVisible(false);
+                        }}
+                        onTap={() => {
+                            setUINoticeVisible(false);
+                        }}
+                        duration={UINoticeDuration.Short}
                         color={UINoticeColor.PrimaryInverted}
                     />
                 </View>
