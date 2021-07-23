@@ -8,11 +8,12 @@ import onWheelHandler from './useOnWheelHandler';
 
 export const useOnWheelHandler: (
     shift: Animated.SharedValue<number>,
-    largeTitleHeight: Animated.SharedValue<number>,
+    shiftChangedForcibly: Animated.SharedValue<boolean>,
     yIsNegative: Animated.SharedValue<boolean>,
     yWithoutRubberBand: Animated.SharedValue<number>,
     hasScrollShared: Animated.SharedValue<boolean>,
     onScroll: (event: NativeScrollEvent) => void,
+    onEnd: () => void,
 ) =>
     | ((event: NativeSyntheticEvent<NativeScrollEvent>) => void)
     | null = onWheelHandler;

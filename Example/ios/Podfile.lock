@@ -387,6 +387,10 @@ PODS:
   - SDWebImageWebPCoder (0.6.1):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.7)
+  - UIKitHydrogen (2.3.0):
+    - Folly
+    - React-Core
+    - ReactCommon/turbomodule/core
   - UIKitKeyboard (2.3.0):
     - React-Core
   - Yoga (1.14.0)
@@ -461,6 +465,7 @@ DEPENDENCIES:
   - RNScreens (from `../../node_modules/react-native-screens`)
   - RNShare (from `../../node_modules/react-native-share`)
   - RNSVG (from `../../node_modules/react-native-svg`)
+  - UIKitHydrogen (from `../../packages/hydrogen/UIKitHydrogen.podspec`)
   - UIKitKeyboard (from `../../packages/keyboard/UIKitKeyboard.podspec`)
   - Yoga (from `../../node_modules/react-native/ReactCommon/yoga`)
 
@@ -575,6 +580,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/react-native-share"
   RNSVG:
     :path: "../../node_modules/react-native-svg"
+  UIKitHydrogen:
+    :path: "../../packages/hydrogen/UIKitHydrogen.podspec"
   UIKitKeyboard:
     :path: "../../packages/keyboard/UIKitKeyboard.podspec"
   Yoga:
@@ -641,6 +648,7 @@ SPEC CHECKSUMS:
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: d0dac55073088d24b2ac1b191a71a8f8d0adac21
+  UIKitHydrogen: 1212b576a238121223766579b8c1c8ae5a97bf86
   UIKitKeyboard: fb4c39177a21cbb8b86801d0ff8280f555b04d6f
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a

@@ -2,11 +2,18 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { UIMaterialTextView } from '@tonlabs/uikit.hydrogen';
+import {
+    UIMaterialTextView,
+    UILabel,
+    UIBackgroundView,
+    ColorVariants,
+    UILabelColors,
+} from '@tonlabs/uikit.hydrogen';
 import {
     ScrollView,
     FlatList,
     createStackNavigator,
+    UILargeTitleHeaderRefreshControl,
 } from '@tonlabs/uikit.navigation';
 
 const CHECK_TITLE = false;
@@ -65,6 +72,18 @@ function LargeHeaderExampleFlatList() {
 
 const LargeHeaderStack = createStackNavigator();
 
+function RefreshPageController() {
+    const turnOnRefreshing = React.useCallback(() => {
+        return new Promise<void>((resolve) => {
+            setTimeout(() => {
+                resolve(undefined);
+            }, 1000);
+        });
+    }, []);
+
+    return <UILargeTitleHeaderRefreshControl onRefresh={turnOnRefreshing} />;
+}
+
 export function LargeHeaderScreen() {
     return (
         <LargeHeaderStack.Navigator initialRouteName="scroll-view">
@@ -87,6 +106,29 @@ export function LargeHeaderScreen() {
                     //         onPress: () => {},
                     //     },
                     // ],
+                    renderAboveContent: () => {
+                        return <RefreshPageController />;
+                    },
+                    renderBelowContent: () => {
+                        return (
+                            <UIBackgroundView
+                                color={ColorVariants.BackgroundNegative}
+                                style={{
+                                    padding: 10,
+                                    borderRadius: 10,
+                                    marginVertical: 8,
+                                }}
+                            >
+                                <UILabel
+                                    color={UILabelColors.TextPrimaryInverted}
+                                >
+                                    A thing happened and it takes three whole
+                                    lines to explain that it happened. This
+                                    isn’t likely in English but maybe in German.
+                                </UILabel>
+                            </UIBackgroundView>
+                        );
+                    },
                 }}
                 component={LargeHeaderExample}
             />

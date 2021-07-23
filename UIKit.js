@@ -76,6 +76,7 @@ export {
     UISharedComponents,
 } from './packages/legacy/src';
 
+// $FlowExpectedError
 export { UIAssets } from './packages/assets/src';
 
 // Types
