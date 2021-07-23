@@ -201,7 +201,6 @@ export const useNoticePosition = (
                     /** Double assignment is hack to trigger useAnimatedReaction */
                     toastNoticeState.value = 'Closed';
                     toastNoticeState.value = 'Opened';
-                    console.log('Opened');
                 }
                 swipeDirection.value = 'None';
             }
