@@ -5,9 +5,7 @@ import {
     TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
-// @ts-ignore
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Portal } from '@tonlabs/uikit.hydrogen';
+import { Portal } from '../Portal';
 import type { SnapPoints, ToastNoticeProps } from './types';
 import { Notice } from './Notice';
 import { useNoticeHeight } from './hooks/useNoticeHeight';
