@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
     ImageSourcePropType,
+    Platform,
     StyleProp,
     StyleSheet,
     ViewStyle,
@@ -213,11 +214,8 @@ export const UILinkButton = ({
     if (title != null && caption != null) {
         return (
             <Button
-                containerStyle={[
-                    styles.doubleLineContent,
-                    layout,
-                ]}
-                contentStyle={styles.content}
+                containerStyle={[layout, Platform.OS === 'web' ? null : styles.flexBasis]}
+                contentStyle={[styles.content, styles.doubleLineContent]}
                 animations={buttonAnimations}
                 disabled={disabled}
                 loading={loading}
@@ -319,7 +317,9 @@ const styles = StyleSheet.create({
         height: UIConstant.linkButtonHeight / 2,
     },
     doubleLineContent: {
-        flexShrink: 1,
         paddingVertical: UIConstant.normalContentOffset,
+    },
+    flexBasis: {
+        flexBasis: 1,
     },
 });
