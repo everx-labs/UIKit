@@ -59,7 +59,7 @@ const countryPickerStyle = StyleSheet.create({
     },
     separator: {
         marginVertical: 1,
-        marginHorizontal: UIConstant.contentOffset(),	
+        marginHorizontal: UIConstant.contentOffset(),
         backgroundColor: UIColor.grey2(),
     },
 });
@@ -149,6 +149,12 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     static show(args: ModalControllerShowArgs) {
         if (shared) {
             shared.show(args);
+        }
+    }
+
+    static hide() {
+        if (shared) {
+            shared.hide();
         }
     }
 

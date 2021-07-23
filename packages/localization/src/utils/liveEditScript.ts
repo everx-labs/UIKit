@@ -1,6 +1,50 @@
 import { Clipboard, Platform } from 'react-native';
 
-function createHandlers() {
+const helperId = 'localization-helper';
+
+function createHandlers(event: MouseEvent) {
+    if (event.target) {
+        const target = event.target as HTMLDivElement;
+        const message = document.getElementById(helperId);
+
+        if (target.dataset.lokalise && message) {
+            const { color } = target.style;
+            const content = target.dataset.key as string;
+
+            target.style.color = 'yellow';
+            message.style.display = 'flex';
+            message.innerHTML = content;
+
+            const mouseoutHandler = () => {
+                target.style.color = color;
+                message.style.display = 'none';
+                message.innerHTML = '';
+
+                target.removeEventListener('mouseout', mouseoutHandler);
+                target.removeEventListener('mouseout', mouseClickHandler);
+            };
+
+            const mouseClickHandler = (e: MouseEvent) => {
+                if (e.altKey) {
+                    e.preventDefault();
+                    Clipboard.setString(content);
+
+                    // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
+                    const { uiLocalized } = require('../service');
+                    message.innerHTML = uiLocalized.CopiedToClipboard;
+                }
+            };
+
+            target.addEventListener('mouseout', mouseoutHandler);
+            target.addEventListener('click', mouseClickHandler);
+        }
+    }
+}
+export function localizationHintsIsEnabled() {
+    return !!document.getElementById(helperId);
+}
+
+export function enableLocalizationHints() {
     const message = document.createElement('div');
     message.setAttribute(
         'style',
@@ -21,43 +65,21 @@ function createHandlers() {
         font-weight: bold;
     `,
     );
+    message.setAttribute('id', helperId);
+
     document.body.appendChild(message);
 
-    document.addEventListener('mouseover', (event) => {
-        if (event.target) {
-            const target = event.target as HTMLDivElement;
-            if (target.dataset.lokalise) {
-                const { color } = target.style;
-                const content = target.dataset.key as string;
+    document.addEventListener('mouseover', createHandlers);
+}
 
-                target.style.color = 'yellow';
-                message.style.display = 'flex';
-                message.innerHTML = content;
+export function disableLocalizationHints() {
+    document.removeEventListener('mouseover', createHandlers);
 
-                const mouseoutHandler = () => {
-                    target.style.color = color;
-                    message.style.display = 'none';
-                    message.innerHTML = '';
+    const message = document.getElementById(helperId);
 
-                    target.removeEventListener('mouseout', mouseoutHandler);
-                };
-
-                const mouseClickHandler = (e: MouseEvent) => {
-                    if (e.altKey) {
-                        e.preventDefault();
-                        Clipboard.setString(content);
-
-                        // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
-                        const { uiLocalized } = require('../service');
-                        message.innerHTML = uiLocalized.CopiedToClipboard;
-                    }
-                };
-
-                target.addEventListener('mouseout', mouseoutHandler);
-                target.addEventListener('click', mouseClickHandler);
-            }
-        }
-    });
+    if (message) {
+        message.remove();
+    }
 }
 
 export function initLiveEditScript(projectId: string, language: string): void {
@@ -73,8 +95,6 @@ export function initLiveEditScript(projectId: string, language: string): void {
         element.type = 'text/javascript';
         element.async = true;
         element.src = `https://app.lokalise.com/live-js/script.min.js?${new Date().getTime()}`;
-        // document.body.appendChild(element);
-
-        createHandlers();
+        document.body.appendChild(element);
     }
 }
