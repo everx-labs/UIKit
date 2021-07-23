@@ -12,7 +12,7 @@ export const useBottomToastNoticeYSnapPoints = (
 
     const openedYSnapPoint = useDerivedValue(() => {
         return -noticeHeight.value - paddingBottom - keyboardHeight.value;
-    });
+    }, [paddingBottom]);
     const closedYSnapPoint = useDerivedValue(() => {
         return -keyboardHeight.value;
     });

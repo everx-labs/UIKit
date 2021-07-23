@@ -13,10 +13,14 @@ export const useTopToastNoticeYSnapPoints = (
 
     const openedYSnapPoint = useDerivedValue(() => {
         return -screenHeight + statusBarHeight + UIConstant.contentOffset;
-    });
+    }, [screenHeight, statusBarHeight]);
     const closedYSnapPoint = useDerivedValue(() => {
+        if (noticeHeight.value === 0) {
+            /** At first render we don't have noticeHeight.value, but we need some value */
+            return -screenHeight - UIConstant.notice.defaultNoticeHeight;
+        }
         return -screenHeight - noticeHeight.value;
-    });
+    }, [screenHeight]);
 
     return {
         openedSnapPoint: openedYSnapPoint,
