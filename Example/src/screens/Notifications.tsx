@@ -6,13 +6,13 @@ import {
     UIToastMessage,
     UITooltip,
 } from '@tonlabs/uikit.components';
+import { UILinkButton } from '@tonlabs/uikit.hydrogen';
 import {
-    UILinkButton,
     UINotice,
     UINoticeType,
     UINoticeColor,
     UINoticeDuration,
-} from '@tonlabs/uikit.hydrogen';
+} from '@tonlabs/uikit.navigation';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 

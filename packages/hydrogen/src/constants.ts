@@ -52,12 +52,6 @@ export const UIConstant = {
         left: 24,
         right: 24,
     },
-
-    notice: {
-        toastIndentFromScreenEdges: Platform.OS === 'web' ? 32 : 16,
-        notificationDurationsShort: Platform.OS === 'web' ? 1.5 * 1500 : 1500,
-        notificationDurationsLong: Platform.OS === 'web' ? 1.5 * 3000 : 3000,
-    },
 };
 
 export const BUTTON_WITH_SPRING_CONFIG: Animated.WithSpringConfig = {

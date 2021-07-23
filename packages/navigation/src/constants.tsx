@@ -1,3 +1,5 @@
+import { Platform } from 'react-native';
+
 const GRID_LINE_HEIGHT = 4;
 
 export const UIConstant = {
@@ -28,4 +30,10 @@ export const UIConstant = {
     alertWindowMaximumWidth: 350,
 
     maxSlideDistanceOfTap: 4,
+
+    notice: {
+        toastIndentFromScreenEdges: Platform.OS === 'web' ? 32 : 16,
+        notificationDurationsShort: Platform.OS === 'web' ? 1.5 * 1500 : 1500,
+        notificationDurationsLong: Platform.OS === 'web' ? 1.5 * 3000 : 3000,
+    },
 };

@@ -1,9 +1,13 @@
 import * as React from 'react';
 import { ColorValue, View, Platform } from 'react-native';
-import { useTheme, ColorVariants, Theme } from '../Colors';
-import { makeStyles } from '../makeStyles';
-import { TypographyVariants } from '../Typography';
-import { UILabel } from '../UILabel';
+import {
+    useTheme,
+    ColorVariants,
+    Theme,
+    makeStyles,
+    TypographyVariants,
+    UILabel,
+} from '@tonlabs/uikit.hydrogen';
 import { NoticeProps, UINoticeType, UINoticeColor } from './types';
 
 const getBackgroundColor = (color: UINoticeColor, theme: Theme): ColorValue => {

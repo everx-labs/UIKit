@@ -5,13 +5,12 @@ import {
     TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
-import { Portal } from '../Portal';
+import { useHover, Portal } from '@tonlabs/uikit.hydrogen';
 import type { SnapPoints, ToastNoticeProps } from './types';
 import { Notice } from './Notice';
 import { useNoticeHeight } from './hooks/useNoticeHeight';
 import { useNoticePosition } from './toastNoticeHooks/useNoticePosition';
 import { UIConstant } from '../constants';
-import { useHover } from '../useHover';
 import { useBottomToastNoticeYSnapPoints } from './toastNoticeHooks/useBottomToastNoticeYSnapPoints';
 import { useBottomToastNoticeXSnapPoints } from './toastNoticeHooks/useBottomToastNoticeXSnapPoints';
 
