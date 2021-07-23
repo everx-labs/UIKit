@@ -9,14 +9,16 @@ import { useHover, Portal } from '@tonlabs/uikit.hydrogen';
 import type { SnapPoints, ToastNoticeProps } from './types';
 import { Notice } from './Notice';
 import { useNoticeHeight } from './hooks/useNoticeHeight';
-import { useNoticePosition } from './toastNoticeHooks/useNoticePosition';
+import {
+    useToastNoticeXSnapPoints,
+    useNoticePosition,
+    useToastNoticeYSnapPoints,
+} from './toastNoticeHooks';
 import { UIConstant } from '../constants';
-import { useBottomToastNoticeYSnapPoints } from './toastNoticeHooks/useBottomToastNoticeYSnapPoints';
-import { useBottomToastNoticeXSnapPoints } from './toastNoticeHooks/useBottomToastNoticeXSnapPoints';
 
 const DELAY_LONG_PRESS = 200;
 
-export const BottomToastNotice: React.FC<ToastNoticeProps> = ({
+export const ToastNotice: React.FC<ToastNoticeProps> = ({
     type,
     color,
     visible,
@@ -32,8 +34,9 @@ export const BottomToastNotice: React.FC<ToastNoticeProps> = ({
 
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
-    const xSnapPoints: SnapPoints = useBottomToastNoticeXSnapPoints();
-    const ySnapPoints: SnapPoints = useBottomToastNoticeYSnapPoints(
+    const xSnapPoints: SnapPoints = useToastNoticeXSnapPoints();
+    const ySnapPoints: SnapPoints = useToastNoticeYSnapPoints(
+        type,
         noticeHeight,
         keyboardHeight,
     );

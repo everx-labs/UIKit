@@ -4,7 +4,7 @@ import type { SnapPoints } from '../types';
 
 const OPENED_X_POSITION = 0;
 
-export const useBottomToastNoticeXSnapPoints = (): SnapPoints => {
+export const useToastNoticeXSnapPoints = (): SnapPoints => {
     const screenWidth = useWindowDimensions().width;
 
     const openedSnapPoint = useSharedValue(OPENED_X_POSITION);

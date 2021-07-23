@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { UINoticeProps, UINoticeType } from './types';
-import { BottomToastNotice } from './BottomToastNotice';
+import { ToastNotice } from './ToastNotice';
 import { useNoticeVisibility } from './hooks/useNoticeVisibility';
 import { useAnimatedKeyboard } from '../useAnimatedKeyboard';
 
@@ -21,8 +21,9 @@ export const UINotice: React.FC<UINoticeProps> = (props: UINoticeProps) => {
     }
     switch (type) {
         case UINoticeType.BottomToast:
+        case UINoticeType.TopToast:
             return (
-                <BottomToastNotice
+                <ToastNotice
                     {...props}
                     onCloseAnimationEnd={onNoticeCloseAnimationFinished}
                     suspendClosingTimer={clearClosingTimer}
@@ -30,12 +31,11 @@ export const UINotice: React.FC<UINoticeProps> = (props: UINoticeProps) => {
                     keyboardHeight={keyboardHeight}
                 />
             );
-        case UINoticeType.TopToast:
         case UINoticeType.Bottom:
         case UINoticeType.Top:
         default:
             return (
-                <BottomToastNotice
+                <ToastNotice
                     {...props}
                     onCloseAnimationEnd={onNoticeCloseAnimationFinished}
                     suspendClosingTimer={clearClosingTimer}
