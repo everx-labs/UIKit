@@ -33,6 +33,8 @@ export const UIDateTimePickerView = React.memo(
                 mode={mode}
                 minimumDate={minDate?.toISOString()}
                 maximumDate={maxDate?.toISOString()}
+                minimumTime={minTime}
+                maximumTime={maxTime}
                 minuteInterval={interval}
             />
         );

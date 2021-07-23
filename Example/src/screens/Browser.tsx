@@ -603,8 +603,8 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                     key: `${Date.now()}-time-picker`,
                                     status: MessageStatus.Received,
                                     type: InteractiveMessageType.Time,
-                                    minTime: new Date('1972-01-01 12:00'),
-                                    maxTime: new Date('1972-01-01 15:00'),
+                                     minTime: new Date().setHours(12, 15),
+                                     maxTime: new Date().setHours(13, 0),
                                     onSelect: (externalState: any) => {
                                         setMessages([
                                             {
