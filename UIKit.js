@@ -74,7 +74,6 @@ export {
     UILandingView,
     UIProfileInitials,
     UISharedComponents,
-    UITransactionView,
 } from './packages/legacy/src';
 
 export { UIAssets } from './packages/assets/src';
