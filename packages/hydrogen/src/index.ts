@@ -15,7 +15,6 @@ export * from './UILabel';
 export * from './UILinkButton';
 export * from './UIMaterialTextView';
 export * from './UIMsgButton';
-export * from './UINoticeLegacy';
 export * from './UINumberTextView';
 export * from './UIPillButton';
 export * from './UISafeAreaView';
