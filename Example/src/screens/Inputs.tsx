@@ -96,14 +96,7 @@ const localeInfo = {
 
 export const Inputs = () => {
     const [amount, setAmount] = useState('');
-    const [bankCardNumber, setBankCardNumber] = useState('');
-    const [contractAddress, setContractAddress] = useState('');
-    const [date, setDate] = useState('');
     const [details, setDetails] = useState('');
-    const [email, setEmail] = useState('');
-    const [link, setLink] = useState('');
-    const [number, setNumber] = useState('');
-    const [phone, setPhone] = useState('');
     const [search] = useState('');
     const mnemonicWords = [
         'report',
