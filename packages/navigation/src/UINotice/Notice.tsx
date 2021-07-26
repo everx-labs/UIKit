@@ -35,9 +35,6 @@ const getTitleColorVariant = (color: UINoticeColor): ColorVariants => {
 
 const getBorderRadius = (type: UINoticeType): number => {
     switch (type) {
-        case UINoticeType.Top:
-        case UINoticeType.Bottom:
-            return 0;
         case UINoticeType.BottomToast:
         case UINoticeType.TopToast:
         default:

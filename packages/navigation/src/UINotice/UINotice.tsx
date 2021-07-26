@@ -31,8 +31,6 @@ export const UINotice: React.FC<UINoticeProps> = (props: UINoticeProps) => {
                     keyboardHeight={keyboardHeight}
                 />
             );
-        case UINoticeType.Bottom:
-        case UINoticeType.Top:
         default:
             return (
                 <ToastNotice

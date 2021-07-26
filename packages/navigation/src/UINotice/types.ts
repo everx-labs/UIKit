@@ -4,8 +4,6 @@ import type Animated from 'react-native-reanimated';
 export enum UINoticeType {
     TopToast = 'TopToast',
     BottomToast = 'BottomToast',
-    Top = 'Top',
-    Bottom = 'Bottom',
 }
 
 // eslint-disable-next-line no-shadow
