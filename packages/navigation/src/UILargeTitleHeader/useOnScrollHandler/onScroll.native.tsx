@@ -7,6 +7,10 @@ import type {
 } from 'react-native';
 
 import { getYWithRubberBandEffect } from '../../AnimationHelpers/getYWithRubberBandEffect';
+import type {
+    ScrollableOnScrollHandler,
+    ScrollWorkletEventHandler,
+} from '../../Scrollable/Context';
 
 export default function (
     scrollRef: React.RefObject<RNScrollView>,
@@ -17,6 +21,7 @@ export default function (
     shift: Animated.SharedValue<number>,
     shiftChangedForcibly: Animated.SharedValue<boolean>,
     rubberBandDistance: number,
+    parentScrollHandler: ScrollableOnScrollHandler,
 ) {
     return (event: NativeScrollEvent) => {
         'worklet';
@@ -36,6 +41,50 @@ export default function (
         }
 
         yIsNegative.value = y <= 0;
+
+        if (
+            parentScrollHandler &&
+            'current' in parentScrollHandler &&
+            (parentScrollHandler as any).current != null &&
+            'worklet' in (parentScrollHandler as any).current
+        ) {
+            if (
+                /**
+                 * Bubble the event when yWithoutRubberBand
+                 * is going to be bigger then 0 or when it's bigger now.
+                 * For example it can happen when one swipes up very fast
+                 * and after finger was released with big velocity
+                 * event with big shift happen, that gonna make shift bigger 0
+                 */
+                yWithoutRubberBand.value - y > 0 ||
+                yWithoutRubberBand.value > 0
+            ) {
+                yWithoutRubberBand.value = Math.max(
+                    0,
+                    yWithoutRubberBand.value - y,
+                );
+
+                const parentScrollWorkletEventHandler = (parentScrollHandler as any)
+                    .current as ScrollWorkletEventHandler;
+
+                /**
+                 * Here we implement our own version of event propagation
+                 * as it doesn't have a way to bubble events for scrollables
+                 * because we use regular React context, to pass handlers
+                 *
+                 * So, UILargeTitleHeader provides his own handlers for ScrollableContext,
+                 * therefore any parent handlers won't be attached to ScrollView
+                 * But we have to bubble event in some situations if it's needed,
+                 * for example for UISheet, when it contains UILargeTitleHeader.
+                 *
+                 * Here we use the fact that useAnimatedScrollHandler uses WorkletEventHandler
+                 * https://github.com/software-mansion/react-native-reanimated/blob/0c2f66f9855a26efe24f52ecff927fe847f7a80e/src/reanimated2/WorkletEventHandler.ts#L11
+                 * under the hood
+                 */
+                parentScrollWorkletEventHandler.worklet(event as any);
+                return;
+            }
+        }
         if (y <= 0) {
             // scrollTo reset real y, so we need to count it ourselves
             yWithoutRubberBand.value -= y;
@@ -48,7 +97,9 @@ export default function (
                 shift.value -= y;
             }
             scrollTo(scrollRef, 0, 0, false);
-        } else if (shift.value > 0 - largeTitleHeight.value) {
+            return;
+        }
+        if (shift.value > 0 - largeTitleHeight.value) {
             // scrollTo reset real y, so we need to count it ourselves
             yWithoutRubberBand.value -= y;
             shift.value = Math.max(shift.value - y, 0 - largeTitleHeight.value);

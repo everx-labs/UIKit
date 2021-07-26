@@ -1,6 +1,10 @@
 /* eslint-disable no-param-reassign */
 import * as React from 'react';
 import Animated, { withSpring } from 'react-native-reanimated';
+import type {
+    ScrollableOnScrollHandler,
+    ScrollWorkletEventHandler,
+} from '../Scrollable/Context';
 
 export function resetPosition(
     shift: Animated.SharedValue<number>,
@@ -32,15 +36,32 @@ export function useResetPosition(
     shiftChangedForcibly: Animated.SharedValue<boolean>,
     largeTitleHeight: Animated.SharedValue<number>,
     defaultShift: Animated.SharedValue<number>,
+    yWithoutRubberBand: Animated.SharedValue<number>,
+    parentScrollHandler: ScrollableOnScrollHandler,
 ) {
     const resetPositionRef = React.useRef<(() => void) | null>(null);
 
     if (resetPositionRef.current == null) {
-        resetPositionRef.current = () => {
+        resetPositionRef.current = (event?: any) => {
             'worklet';
 
             if (shiftChangedForcibly.value) {
                 return;
+            }
+
+            if (
+                parentScrollHandler &&
+                'current' in parentScrollHandler &&
+                (parentScrollHandler as any).current != null &&
+                'worklet' in (parentScrollHandler as any).current
+            ) {
+                if (yWithoutRubberBand.value > 0) {
+                    const parentScrollWorkletEventHandler = (parentScrollHandler as any)
+                        .current as ScrollWorkletEventHandler;
+
+                    parentScrollWorkletEventHandler.worklet(event as any);
+                    return;
+                }
             }
 
             resetPosition(shift, largeTitleHeight, defaultShift);

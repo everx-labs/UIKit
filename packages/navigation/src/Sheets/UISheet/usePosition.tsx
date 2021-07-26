@@ -222,9 +222,8 @@ export function usePosition(
         onBeginDrag: () => {
             positionWithoutRubberBand.value = 0;
         },
-        onEndDrag: () => {
-            resetPosition();
-        },
+        onEndDrag: resetPosition,
+        onMomentumEnd: resetPosition,
     });
 
     const { hasScroll, hasScrollShared, setHasScroll } = useHasScroll();

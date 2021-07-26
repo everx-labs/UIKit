@@ -38,8 +38,8 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
             };
         });
 
+        // @ts-ignore
         React.useImperativeHandle(forwardRef, () => {
-            // @ts-ignore
             return ref?.current;
         });
 

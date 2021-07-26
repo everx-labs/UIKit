@@ -47,8 +47,18 @@ export function useNavigationHeaderLeftItems(
     headerBackButton: HeaderItem | undefined,
     shouldShowCloseButton: boolean = true,
 ) {
-    const navigation = useNavigation();
+    let navigation: ReturnType<typeof useNavigation>;
     const closeModal = React.useContext(NestedInModalContext);
+
+    // If it's used not in a navigation context
+    // it might throw an error, to prevent a crash trying to catch it
+    try {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        navigation = useNavigation();
+    } catch (err) {
+        // no-op
+        return null;
+    }
 
     if (headerLeft != null) {
         return headerLeft();

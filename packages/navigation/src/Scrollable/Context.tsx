@@ -6,20 +6,33 @@ import type {
     PanGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
 
+export type ScrollWorkletEventHandler = WorkletEventHandler<
+    NativeSyntheticEvent<NativeScrollEvent>
+>;
+export type GestureWorkletEventHandler = WorkletEventHandler<
+    PanGestureHandlerGestureEvent
+>;
+
+export type ScrollableOnScrollHandler =
+    | ((event: NativeSyntheticEvent<NativeScrollEvent>) => void)
+    | undefined;
+
+export type ScrollableGestureHandler =
+    | ((event: PanGestureHandlerGestureEvent) => void)
+    | undefined;
+
+export type SetHasScroll = ((hasScroll: boolean) => void) | undefined;
+
 export const ScrollableContext = React.createContext<{
-    ref: React.Ref<Animated.ScrollView>;
+    ref: React.RefObject<Animated.ScrollView> | null;
     panGestureHandlerRef: React.Ref<PanGestureHandler>;
-    scrollHandler:
-        | ((event: NativeSyntheticEvent<NativeScrollEvent>) => void)
-        | undefined;
-    gestureHandler:
-        | ((event: PanGestureHandlerGestureEvent) => void)
-        | undefined;
+    scrollHandler: ScrollableOnScrollHandler;
+    gestureHandler: ScrollableGestureHandler;
     onWheel: ((event: any) => void) | null;
     registerScrollable: (() => void) | null;
     unregisterScrollable: (() => void) | null;
     hasScroll: boolean;
-    setHasScroll: ((hasScroll: boolean) => void) | undefined;
+    setHasScroll: SetHasScroll;
 }>({
     ref: null,
     panGestureHandlerRef: null,
