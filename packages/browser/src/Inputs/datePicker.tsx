@@ -8,9 +8,11 @@ import {
     MessageStatus,
 } from '@tonlabs/uikit.chats';
 
-import type { DateMessage } from '../types';
 import { DateTimePickerMode } from '@tonlabs/uikit.flask';
+
 import { UIDateTimePicker } from '../UIDateTimePicker';
+
+import type { DateMessage } from '../types';
 
 type DatePickerInternalState = {
     pickerVisible: boolean;
