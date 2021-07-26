@@ -93,9 +93,12 @@ export const useNoticePosition = (
                 continueClosingTimer();
             }
         }
-        /** It is necessary that this callback is executed only when the isHovered is changed */
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isHovered]);
+    }, [
+        isHovered,
+        suspendClosingTimer,
+        continueClosingTimer,
+        toastNoticeState,
+    ]);
 
     useAnimatedReaction(
         () => {
