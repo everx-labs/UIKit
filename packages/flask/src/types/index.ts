@@ -57,8 +57,9 @@ export type ScreenshotViewProps = {
 
 // eslint-disable-next-line no-shadow
 export enum UIDateTimePickerMode {
-    Calendar = 'calendar',
+    Date = 'calendar',
     Time = 'time',
+    DateTime = 'datepicker'
 }
 
 export type TimePickerType = {
