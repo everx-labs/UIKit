@@ -78,7 +78,7 @@ export const UITimePicker = ({
                 {`Please choose time from ${formatTime(minTime)} to ${formatTime(maxTime)}`}
             </UILabel>
             <TimeInput
-                onValueRetrieved={(newTime?: Date) => updateTime(newTime)}
+                onValueRetrieved={updateTime}
                 minTime={minTime}
                 maxTime={maxTime}
             />
