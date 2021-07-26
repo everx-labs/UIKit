@@ -43,7 +43,6 @@ const TimeInput = ({
 
     const inputOptions = {
         style: inputStyle,
-        maxLength: 5,
         name: 'time',
         type: 'time',
         value: time,

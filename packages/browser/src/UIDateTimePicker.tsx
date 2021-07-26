@@ -8,28 +8,14 @@ export type UIDateTimePickerType = DateTimePickerType & {
 };
 
 export const UIDateTimePicker = ({
-    onValueRetrieved,
-    minDate,
-    maxDate,
-    minTime,
-    maxTime,
-    mode,
-    interval,
-    visible,
-    onClose,
+        visible,
+        onClose,
+        ...dateTimePickerProps
 }: UIDateTimePickerType) => {
     return (
         <UIPullerSheet visible={visible} onClose={onClose}>
             <UIDateTimePickerView
-                {...{
-                    onValueRetrieved,
-                    minDate,
-                    maxDate,
-                    interval,
-                    mode,
-                    minTime,
-                    maxTime,
-                }}
+                {...dateTimePickerProps}
             />
         </UIPullerSheet>
     );

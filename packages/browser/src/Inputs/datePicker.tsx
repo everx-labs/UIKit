@@ -14,40 +14,8 @@ import { UIDateTimePicker } from '../UIDateTimePicker';
 
 import type { DateMessage } from '../types';
 
-type DatePickerInternalState = {
-    pickerVisible: boolean;
-};
-
-type DatePickerAction = {
-    type: 'OPEN_DATE_PICKER' | 'CLOSE_DATE_PICKER';
-};
-
-function datePickerReducer(
-    state: DatePickerInternalState,
-    action: DatePickerAction,
-) {
-    if (action.type === 'OPEN_DATE_PICKER') {
-        return {
-            ...state,
-            pickerVisible: true,
-        };
-    }
-    if (action.type === 'CLOSE_DATE_PICKER') {
-        return {
-            ...state,
-            pickerVisible: false,
-        };
-    }
-
-    return {
-        pickerVisible: false,
-    };
-}
-
 export function DatePicker({ onLayout, ...message }: DateMessage) {
-    const [state, dispatch] = React.useReducer(datePickerReducer, {
-        pickerVisible: false,
-    });
+    const [isPickerVisible, setPickerVisible] = React.useState(false);
 
     if (message.externalState != null) {
         return (
@@ -56,8 +24,14 @@ export function DatePicker({ onLayout, ...message }: DateMessage) {
                     <View onLayout={onLayout}>
                         <BubbleSimplePlainText
                             type={ChatMessageType.PlainText}
+                            key="date-picker-box-bubble-prompt"
+                            text={message.prompt || "Do you want choose the dates?"}
+                            status={MessageStatus.Received}
+                        />
+                        <BubbleSimplePlainText
+                            type={ChatMessageType.PlainText}
                             key="date-picker-value-bubble-prompt"
-                            text={`You choose the date: ${message.externalState.date.toString()}`}
+                            text={`You've chosen the date: ${message.externalState.date.toString()}`}
                             status={MessageStatus.Received}
                         />
                     </View>
@@ -82,28 +56,22 @@ export function DatePicker({ onLayout, ...message }: DateMessage) {
                 status={MessageStatus.Received}
                 text="Open the date picker"
                 onPress={() => {
-                    dispatch({
-                        type: 'OPEN_DATE_PICKER',
-                    });
+                    setPickerVisible(true)
                 }}
             />
             <UIDateTimePicker
-                visible={state.pickerVisible}
+                visible={isPickerVisible}
                 mode={DateTimePickerMode.calendar}
                 minDate={message.minDate}
                 maxDate={message.maxDate}
                 onClose={() => {
-                    dispatch({
-                        type: 'CLOSE_DATE_PICKER',
-                    });
+                    setPickerVisible(false)
                 }}
                 onValueRetrieved={(date: Date) => {
                     message.onSelect({
                         date,
                     });
-                    dispatch({
-                        type: 'CLOSE_DATE_PICKER',
-                    });
+                    setPickerVisible(false)
                 }}
             />
         </View>
