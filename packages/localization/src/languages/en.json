@@ -88,6 +88,14 @@
             "AttentionDesc": "This transaction is trying to change the contract and will not be performed",
             "Confirm": "Confirm",
             "Cancel": "Cancel"
+        },
+        "DateTimeInput": {
+            "DoYouWantChooseDate": "Do you want to choose a date?",
+            "DoYouWantChooseTime": "Do you want to choose a time?",
+            "ChooseDate": "Choose a date",
+            "ChooseTime": "Choose a time",
+            "YouHaveChosenTheDate": "You have chosen the date: ",
+            "YouHaveChosenTheTime": "You have chosen the time: "
         }
     },
     "Cancel": "Cancel",

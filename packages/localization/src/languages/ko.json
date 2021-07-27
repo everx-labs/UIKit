@@ -100,6 +100,14 @@
             "CipherKeys": "Encryption keys",
             "AddCipherKey": "Add an encryption key",
             "CipherKeyLabel": "Encryption key"
+        },
+        "DateTimeInput": {
+            "DoYouWantChooseDate": "Do you want to choose a date?",
+            "DoYouWantChooseTime": "Do you want to choose a time?",
+            "ChooseDate": "Choose a date",
+            "ChooseTime": "Choose a time",
+            "YouHaveChosenTheDate": "You have chosen the date: ",
+            "YouHaveChosenTheTime": "You have chosen the time: "
         }
     },
     "Cancel": "취소",

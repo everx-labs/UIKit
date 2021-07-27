@@ -181,7 +181,7 @@ export type SigningBox = {
     /**
      * Optional serial number of the security card used for the signature
      */
-    serialNumber?: string,
+    serialNumber?: string;
 };
 
 export type SigningBoxExternalState = {
@@ -235,6 +235,7 @@ export type DateMessage = InteractiveMessage<
         prompt?: string;
         minDate?: Date;
         maxDate?: Date;
+        currentDate?: Date;
         onSelect: (state: DateExternalState) => void;
     },
     DateExternalState
@@ -242,7 +243,6 @@ export type DateMessage = InteractiveMessage<
 
 export type TimeExternalState = {
     time?: Date;
-    timeZoneOffsetInMinutes?: number;
 };
 
 export type TimeMessage = InteractiveMessage<
@@ -251,8 +251,8 @@ export type TimeMessage = InteractiveMessage<
         prompt?: string;
         minTime?: Date;
         maxTime?: Date;
+        currentTime?: Date;
         interval?: number;
-        timeZoneOffsetInMinutes?: number;
         onSelect: (state: TimeExternalState) => void;
     },
     TimeExternalState

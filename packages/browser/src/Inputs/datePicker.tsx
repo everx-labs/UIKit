@@ -8,7 +8,8 @@ import {
     MessageStatus,
 } from '@tonlabs/uikit.chats';
 
-import { DateTimePickerMode } from '@tonlabs/uikit.flask';
+import { UIDateTimePickerMode } from '@tonlabs/uikit.flask';
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import { UIDateTimePicker } from '../UIDateTimePicker';
 
@@ -25,13 +26,23 @@ export function DatePicker({ onLayout, ...message }: DateMessage) {
                         <BubbleSimplePlainText
                             type={ChatMessageType.PlainText}
                             key="date-picker-box-bubble-prompt"
-                            text={message.prompt || "Do you want choose the dates?"}
+                            text={
+                                message.prompt ||
+                                uiLocalized.Browser.DateTimeInput
+                                    .DoYouWantChooseTheDate
+                            }
                             status={MessageStatus.Received}
                         />
                         <BubbleSimplePlainText
                             type={ChatMessageType.PlainText}
                             key="date-picker-value-bubble-prompt"
-                            text={`You've chosen the date: ${message.externalState.date.toString()}`}
+                            text={uiLocalized.formatString(
+                                uiLocalized.Browser.DateTimeInput
+                                    .YouHaveChosenTheDate,
+                                uiLocalized.formatDate(
+                                    message.externalState.date,
+                                ),
+                            )}
                             status={MessageStatus.Received}
                         />
                     </View>
@@ -45,7 +56,10 @@ export function DatePicker({ onLayout, ...message }: DateMessage) {
             <BubbleSimplePlainText
                 type={ChatMessageType.PlainText}
                 key="date-picker-box-bubble-prompt"
-                text={message.prompt || 'Do you want choose the date?'}
+                text={
+                    message.prompt ||
+                    uiLocalized.Browser.DateTimeInput.DoYouWantChooseTheDate
+                }
                 status={MessageStatus.Received}
                 firstFromChain
                 lastFromChain
@@ -54,24 +68,25 @@ export function DatePicker({ onLayout, ...message }: DateMessage) {
                 type={ChatMessageType.ActionButton}
                 key="date-picker-bubble-open-picker"
                 status={MessageStatus.Received}
-                text="Open the date picker"
+                text={uiLocalized.Browser.DateTimeInput.ChooseDate}
                 onPress={() => {
-                    setPickerVisible(true)
+                    setPickerVisible(true);
                 }}
             />
             <UIDateTimePicker
                 visible={isPickerVisible}
-                mode={DateTimePickerMode.calendar}
+                mode={UIDateTimePickerMode.Date}
                 minDate={message.minDate}
                 maxDate={message.maxDate}
+                currentDate={message.currentDate}
                 onClose={() => {
-                    setPickerVisible(false)
+                    setPickerVisible(false);
                 }}
                 onValueRetrieved={(date: Date) => {
                     message.onSelect({
                         date,
                     });
-                    setPickerVisible(false)
+                    setPickerVisible(false);
                 }}
             />
         </View>

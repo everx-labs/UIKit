@@ -8,9 +8,11 @@ import {
     MessageStatus,
 } from '@tonlabs/uikit.chats';
 
+import { UIDateTimePickerMode } from '@tonlabs/uikit.flask';
+
 import type { TimeMessage } from '../types';
-import { DateTimePickerMode } from '@tonlabs/uikit.flask';
 import { UIDateTimePicker } from '../UIDateTimePicker';
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 export function TimePicker({ onLayout, ...message }: TimeMessage) {
     const [isPickerVisible, setPickerVisible] = React.useState(false);
@@ -23,14 +25,24 @@ export function TimePicker({ onLayout, ...message }: TimeMessage) {
                     <BubbleSimplePlainText
                         type={ChatMessageType.PlainText}
                         key="date-picker-box-bubble-prompt"
-                        text={message.prompt || "Do you want choose the time?"}
+                        text={
+                            message.prompt ||
+                            uiLocalized.Browser.DateTimeInput
+                                .DoYouWantChooseTheTime
+                        }
                         status={MessageStatus.Received}
                     />
                     {message.externalState.time != null && (
                         <BubbleSimplePlainText
                             type={ChatMessageType.PlainText}
                             key="time-picker-value-bubble-chosen-time"
-                            text={`You've chosen the time: ${message.externalState.time}`}
+                            text={uiLocalized.formatString(
+                                uiLocalized.Browser.DateTimeInput
+                                    .YouHaveChosenTheTime,
+                                uiLocalized.formatTime(
+                                    message.externalState.time,
+                                ),
+                            )}
                             status={MessageStatus.Received}
                         />
                     )}
@@ -44,7 +56,10 @@ export function TimePicker({ onLayout, ...message }: TimeMessage) {
             <BubbleSimplePlainText
                 type={ChatMessageType.PlainText}
                 key="time-picker-box-bubble-prompt"
-                text={message.prompt || 'Do you want choose the time?'}
+                text={
+                    message.prompt ||
+                    uiLocalized.Browser.DateTimeInput.DoYouWantChooseTheTime
+                }
                 status={MessageStatus.Received}
                 firstFromChain
                 lastFromChain
@@ -53,30 +68,26 @@ export function TimePicker({ onLayout, ...message }: TimeMessage) {
                 type={ChatMessageType.ActionButton}
                 key="time-picker-bubble-open-picker"
                 status={MessageStatus.Received}
-                text="Open the time picker"
+                text={uiLocalized.Browser.DateTimeInput.ChooseTime}
                 onPress={() => {
-                    setPickerVisible(true)
+                    setPickerVisible(true);
                 }}
             />
             <UIDateTimePicker
                 visible={isPickerVisible}
-                mode={DateTimePickerMode.time}
+                mode={UIDateTimePickerMode.Time}
                 minTime={message.minTime}
                 maxTime={message.maxTime}
+                currentTime={message.currentTime}
                 interval={message.interval}
-                timeZoneOffset={message.timeZoneOffsetInMinutes}
                 onClose={() => {
-                    setPickerVisible(false)
+                    setPickerVisible(false);
                 }}
-                onValueRetrieved={(
-                    time: Date,
-                    timeZoneOffsetInMinutes?: number,
-                ) => {
+                onValueRetrieved={(time: Date) => {
                     message.onSelect({
                         time,
-                        timeZoneOffsetInMinutes,
                     });
-                    setPickerVisible(false)
+                    setPickerVisible(false);
                 }}
             />
         </View>

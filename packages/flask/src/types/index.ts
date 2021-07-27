@@ -48,7 +48,10 @@ export type QRItemSideData = {
 };
 
 // The following type is taken from @types/react@^17.0.0 which is not yet supported in UIKit
-type ForwardedRef<T> = ((instance: T | null) => void) | React.MutableRefObject<T | null> | null;
+type ForwardedRef<T> =
+    | ((instance: T | null) => void)
+    | React.MutableRefObject<T | null>
+    | null;
 
 export type ScreenshotViewProps = {
     ref: ForwardedRef<QRCodeRef>;
@@ -59,19 +62,18 @@ export type ScreenshotViewProps = {
 export enum UIDateTimePickerMode {
     Date = 'calendar',
     Time = 'time',
-    DateTime = 'datepicker'
+    DateTime = 'datepicker',
 }
 
-export type TimePickerType = {
+export type DateTimePickerType = {
+    mode: UIDateTimePickerMode;
+    minDate?: Date;
+    maxDate?: Date;
+    currentDate?: Date;
     minTime?: Date;
     maxTime?: Date;
+    currentTime?: Date;
     timeZoneOffset?: number;
     interval?: number;
     onValueRetrieved: (datetime: Date, timezone?: number) => void;
-}
-
-export type DateTimePickerType = TimePickerType & {
-    minDate?: Date;
-    maxDate?: Date;
-    mode: UIDateTimePickerMode;
-}
+};

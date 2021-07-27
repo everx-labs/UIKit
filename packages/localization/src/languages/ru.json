@@ -176,6 +176,14 @@
         "27": "октлн",
         "30": "нонлн"
     },
+    "DateTimeInput": {
+        "DoYouWantChooseTheDate": "Хотите выбрать дату?",
+        "DoYouWantChooseTheTime": "Хотите выбрать время?",
+        "ChooseDate": "Выбрать дату",
+        "ChooseTime": "Выбрать время",
+        "YouHaveChosenTheDate": "Вы выбрали дату: ",
+        "YouHaveChosenTheTime": "Вы выбрали время: "
+    },
     "DecryptingDocument": "Расшифровка документа...",
     "Delete": "Удалить",
     "DeleteChannel": "Удалить канал",
