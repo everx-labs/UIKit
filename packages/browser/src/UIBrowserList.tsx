@@ -7,6 +7,8 @@ import {
     ChatMessageType,
     CommonChatListProps,
     UICommonChatList,
+    OnPressUrl,
+    UrlPressHandlerContext,
 } from '@tonlabs/uikit.chats';
 import { BrowserMessage, InteractiveMessageType } from './types';
 import { getFormattedList } from './getFormattedList';
@@ -22,6 +24,7 @@ import { EncryptionBox } from './Inputs/EncryptionBox';
 
 type UIBrowserListProps = {
     messages: BrowserMessage[];
+    onPressUrl?: OnPressUrl;
     bottomInset?: number;
 };
 
@@ -83,33 +86,38 @@ const renderBubble = () => (
         return <TransactionConfirmation {...item} onLayout={onLayout} />;
     }
     if (item.type === InteractiveMessageType.QRCode) {
-        return <QRCode {...item} onLayout={onLayout} />
+        return <QRCode {...item} onLayout={onLayout} />;
     }
 
     return null;
 };
 
 export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
-    function UIBrowserListForwarded({ messages }: UIBrowserListProps, ref) {
+    function UIBrowserListForwarded(
+        { messages, onPressUrl }: UIBrowserListProps,
+        ref,
+    ) {
         const formattedMessages = React.useMemo(
             () => getFormattedList(messages),
             [messages],
         );
         return (
-            <UICommonChatList
-                forwardRef={ref}
-                nativeID="browserList"
-                renderBubble={renderBubble()}
-                getItemLayoutFabric={flatListGetItemLayoutFabric}
-            >
-                {(chatListProps: CommonChatListProps<BrowserMessage>) => (
-                    <FlatList
-                        testID="browser_container"
-                        data={formattedMessages}
-                        {...chatListProps}
-                    />
-                )}
-            </UICommonChatList>
+            <UrlPressHandlerContext.Provider value={onPressUrl}>
+                <UICommonChatList
+                    forwardRef={ref}
+                    nativeID="browserList"
+                    renderBubble={renderBubble()}
+                    getItemLayoutFabric={flatListGetItemLayoutFabric}
+                >
+                    {(chatListProps: CommonChatListProps<BrowserMessage>) => (
+                        <FlatList
+                            testID="browser_container"
+                            data={formattedMessages}
+                            {...chatListProps}
+                        />
+                    )}
+                </UICommonChatList>
+            </UrlPressHandlerContext.Provider>
         );
     },
 );

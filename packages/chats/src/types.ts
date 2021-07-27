@@ -39,13 +39,14 @@ export enum ChatMessageType {
     Sticker = 'stk',
     ActionButton = 'act',
 }
-
+export type OnPressUrl =
+    | ((url: string, index?: number) => void | Promise<void>)
+    | undefined;
 export type PlainTextMessage = BubbleBaseT & {
     type: ChatMessageType.PlainText;
     text: string;
     actionText?: string;
     onTouchText?: () => void | Promise<void>;
-    onPressUrl?: (url: string, index?: number) => void | Promise<void>;
 };
 
 export type ActionButtonMessage = BubbleBaseT & {
