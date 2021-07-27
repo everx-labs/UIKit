@@ -9,6 +9,8 @@ import {
     TextStyle,
 } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
+import { runOnUI } from 'react-native-reanimated';
+
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UIShareManager } from '@tonlabs/uikit.navigation_legacy';
@@ -18,6 +20,7 @@ import {
     UILabelRoles,
     ColorVariants,
     useTheme,
+    hapticImpact,
 } from '@tonlabs/uikit.hydrogen';
 
 import { MessageStatus } from './types';
@@ -196,6 +199,12 @@ function PlainTextContainer(
                 onPress={props.onTouchText}
                 onLongPress={() => {
                     bubbleScaleAnimation(true);
+                    /**
+                     * Maybe it's not the best place to run haptic
+                     * but I don't want to put it in legacy package
+                     * so left it here, until we make new share manager
+                     */
+                    runOnUI(hapticImpact)('medium');
                     UIShareManager.copyToClipboard(
                         props.text,
                         uiLocalized.MessageCopiedToClipboard,
