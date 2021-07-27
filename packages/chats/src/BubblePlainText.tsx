@@ -23,7 +23,7 @@ import {
     hapticImpact,
 } from '@tonlabs/uikit.hydrogen';
 
-import { MessageStatus } from './types';
+import { MessageStatus, OnPressUrl } from './types';
 import type { ChatPlainTextMessage, PlainTextMessage } from './types';
 import {
     useBubblePosition,
@@ -43,6 +43,14 @@ const useUrlStyle = (status: MessageStatus) => {
 
     return [{ color: theme[ColorVariants.StaticTextPrimaryLight] }, styles.urlSent];
 };
+
+export const UrlPressHandlerContext = React.createContext<OnPressUrl>(
+    undefined,
+);
+
+function useUrlPressHandler() {
+    return React.useContext(UrlPressHandlerContext);
+}
 
 const getFontColor = (message: PlainTextMessage) => {
     if (message.status === MessageStatus.Aborted) {
@@ -246,6 +254,8 @@ export function BubbleChatPlainText(props: ChatPlainTextMessage) {
         [props.time],
     );
 
+    const urlPressHandler = useUrlPressHandler();
+
     return (
         <PlainTextContainer {...props}>
             <UILabel
@@ -259,9 +269,7 @@ export function BubbleChatPlainText(props: ChatPlainTextMessage) {
                         {
                             type: 'url',
                             style: urlStyle,
-                            onPress: (url: string, index: number) =>
-                                props.onPressUrl &&
-                                props.onPressUrl(url, index),
+                            onPress: urlPressHandler,
                         },
                     ]}
                 >
@@ -295,6 +303,7 @@ export function BubbleChatPlainText(props: ChatPlainTextMessage) {
 
 export function BubbleSimplePlainText(props: PlainTextMessage) {
     const urlStyle = useUrlStyle(props.status);
+    const urlPressHandler = useUrlPressHandler();
 
     return (
         <PlainTextContainer {...props}>
@@ -309,9 +318,7 @@ export function BubbleSimplePlainText(props: PlainTextMessage) {
                         {
                             type: 'url',
                             style: urlStyle,
-                            onPress: (url: string, index: number) =>
-                                props.onPressUrl &&
-                                props.onPressUrl(url, index),
+                            onPress: urlPressHandler,
                         },
                     ]}
                 >

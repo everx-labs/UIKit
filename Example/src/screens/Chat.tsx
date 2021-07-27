@@ -309,6 +309,9 @@ const ChatStack = createStackNavigator();
 const ChatWindowScreen = () => {
     const [messages, setMessages] = React.useState(initialMessages);
     const onLoadEarlierMessages = React.useCallback(() => undefined, []);
+    const onPressUrl = React.useCallback(() => {
+        console.log('url handled');
+    }, []);
     const onSendMedia = React.useCallback(() => undefined, []);
     const onSendDocument = React.useCallback(() => undefined, []);
     const onItemSelected = React.useCallback(
@@ -338,6 +341,7 @@ const ChatWindowScreen = () => {
             <UIChatList
                 nativeID="chatSectionList"
                 onLoadEarlierMessages={onLoadEarlierMessages}
+                onPressUrl={onPressUrl}
                 canLoadMore
                 isLoadingMore={false}
                 messages={messages}
