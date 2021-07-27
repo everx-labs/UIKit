@@ -67,11 +67,11 @@ export const IconSwitcher: React.FC<UISwitcherProps> = (
 
     const switcherState = useSwitcherState(isHovered, pressed);
     const overlayStyle = useOverlayStyle(switcherState, theme);
-    const { imageOnStyle, imageOffStyle } = useImageStyle(
-        active,
-        switcherState,
-        theme,
-    );
+    const {
+        imageOnStyle,
+        imageOffOpacity,
+        imageOffBorderColor,
+    } = useImageStyle(active, switcherState, theme);
 
     return (
         <RawButton
@@ -89,7 +89,11 @@ export const IconSwitcher: React.FC<UISwitcherProps> = (
             onMouseLeave={onMouseLeave}
             testID={testID}
         >
-            <Animated.View style={[styles.offSwitcher, imageOffStyle]} />
+            <Animated.View style={imageOffOpacity}>
+                <Animated.View
+                    style={[styles.offSwitcher, imageOffBorderColor]}
+                />
+            </Animated.View>
 
             <Animated.View style={[styles.onSwitcher, imageOnStyle]}>
                 <Animated.View style={[styles.overlay, overlayStyle]}>
@@ -104,7 +108,6 @@ const useStyles = makeStyles((theme: Theme, variant: UISwitcherVariant) => ({
     offSwitcher: {
         ...getShape(variant),
         borderWidth: UIConstant.switcher.offBorderWidth,
-        borderColor: theme[ColorVariants.BackgroundTertiaryInverted],
     },
     onSwitcher: {
         position: 'absolute',

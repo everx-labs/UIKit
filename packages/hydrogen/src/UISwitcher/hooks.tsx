@@ -125,13 +125,18 @@ export const useImageStyle = (
         };
     });
 
-    const imageOffStyle = useAnimatedStyle(() => {
+    const imageOffOpacity = useAnimatedStyle(() => {
         return {
             opacity: interpolate(
                 animatedValue.value,
                 [IconSwitcherState.NotActive, IconSwitcherState.Active],
                 [1, 0],
             ),
+        };
+    });
+
+    const imageOffBorderColor = useAnimatedStyle(() => {
+        return {
             borderColor: interpolateColor(
                 switcherState.value,
                 [
@@ -150,7 +155,8 @@ export const useImageStyle = (
 
     return {
         imageOnStyle,
-        imageOffStyle,
+        imageOffOpacity,
+        imageOffBorderColor,
     };
 };
 
