@@ -52,6 +52,15 @@ export const UIConstant = {
         left: 24,
         right: 24,
     },
+
+    switcher: {
+        circlePadding: 2,
+        squarePadding: 3,
+        squareBorderRadius: 4,
+        thikIconSize: 12,
+        radioDotSize: 8,
+        offBorderWidth: 1.75,
+    },
 };
 
 export const BUTTON_WITH_SPRING_CONFIG: Animated.WithSpringConfig = {
