@@ -62,18 +62,16 @@ export type ScreenshotViewProps = {
 export enum UIDateTimePickerMode {
     Date = 'calendar',
     Time = 'time',
-    DateTime = 'datepicker',
 }
 
 export type UIDateTimePickerType = {
-    mode: UIDateTimePickerMode;
-    minDate?: Date;
-    maxDate?: Date;
-    currentDate?: Date;
-    minTime?: Date;
-    maxTime?: Date;
-    currentTime?: Date;
-    timeZoneOffset?: number;
-    interval?: number;
+    mode: UIDateTimePickerMode; // mode of date time picker can display the date and time in one view, or each separately ( Date, Time)
+    minDate?: Date; // minimal date to choose
+    maxDate?: Date; // maximum date to choose
+    currentDate?: Date; // current(default) date
+    minTime?: Date; // minimal time to choose
+    maxTime?: Date;  // maximum time to choose
+    currentTime?: Date; // current(default) time
+    interval?: number; // an interval of minutes in a time picker, for example 5 will look like 5, 10, 15, 20 ...
     onValueRetrieved: (datetime: Date, timezone?: number) => void;
 };
