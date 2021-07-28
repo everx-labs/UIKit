@@ -1,7 +1,7 @@
 import * as React from 'react';
 import DatePicker from 'react-native-modern-datepicker';
 
-import type { DateTimePickerType } from './types';
+import type { UIDateTimePickerType } from './types';
 
 export const UIDateTimePickerView = React.memo(
     ({
@@ -14,11 +14,11 @@ export const UIDateTimePickerView = React.memo(
         interval,
         currentDate,
         currentTime,
-    }: DateTimePickerType) => {
+    }: UIDateTimePickerType) => {
         return (
             <DatePicker
-                onDateChange={(date: Date) => onValueRetrieved(date)}
-                onTimeChange={(time: Date) => onValueRetrieved(time)}
+                onDateChange={onValueRetrieved}
+                onTimeChange={onValueRetrieved}
                 mode={mode}
                 minimumDate={minDate?.toISOString()}
                 maximumDate={maxDate?.toISOString()}

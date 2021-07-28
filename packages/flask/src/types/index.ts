@@ -65,7 +65,7 @@ export enum UIDateTimePickerMode {
     DateTime = 'datepicker',
 }
 
-export type DateTimePickerType = {
+export type UIDateTimePickerType = {
     mode: UIDateTimePickerMode;
     minDate?: Date;
     maxDate?: Date;

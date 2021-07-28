@@ -30,7 +30,7 @@ export enum InteractiveMessageType {
     SigningBox = 'SigningBox',
     EncryptionBox = 'EncryptionBox',
     TransactionConfirmation = 'TransactionConfirmation',
-    QRCodeScanner = 'QRCodeScanner',
+    QRCode = 'QRCode',
     Date = 'Date',
     Time = 'Time',
 }
@@ -48,16 +48,6 @@ type ActionButtonMessage = BubbleBaseT & {
     text: string;
     textMode?: 'ellipsize' | 'fit';
     onPress?: () => void | Promise<void>;
-};
-
-type QRCodeMessage = BubbleBaseT & {
-    type: ChatMessageType.QRCode;
-    data: string;
-};
-
-type MediaMessage = BubbleBaseT & {
-    type: ChatMessageType.Media;
-    data: string; // base64
 };
 
 type InteractiveMessage<
@@ -282,25 +272,23 @@ export type TransactionConfirmationMessage = InteractiveMessage<
     TransactionConfirmationExternalState
 >;
 
-export type QRCodeScannerExternalState = {
+export type QRCodeExternalState = {
     value: string;
 };
 
-export type QRCodeScannerMessage = InteractiveMessage<
-    InteractiveMessageType.QRCodeScanner,
+export type QRCodeMessage = InteractiveMessage<
+    InteractiveMessageType.QRCode,
     {
-        onScan: (state: QRCodeScannerExternalState) => void;
+        onScan: (state: QRCodeExternalState) => void;
         parseData: (data: any) => Promise<string>;
-        fastScan?: boolean;
+        fastScan?: boolean,
     },
-    QRCodeScannerExternalState
->;
+    QRCodeExternalState
+    >;
 
 export type BrowserMessage =
     | PlainTextMessage
     | ActionButtonMessage
-    | QRCodeMessage
-    | MediaMessage
     | TerminalMessage
     | AddressInputMessage
     | MenuMessage
@@ -309,7 +297,7 @@ export type BrowserMessage =
     | SigningBoxMessage
     | EncryptionBoxMessage
     | TransactionConfirmationMessage
-    | QRCodeScannerMessage
+    | QRCodeMessage
     | DateMessage
     | TimeMessage;
 

@@ -87,7 +87,7 @@ const renderBubble = () => (
     if (item.type === InteractiveMessageType.TransactionConfirmation) {
         return <TransactionConfirmation {...item} onLayout={onLayout} />;
     }
-    if (item.type === InteractiveMessageType.QRCodeScanner) {
+    if (item.type === InteractiveMessageType.QRCode) {
         return <QRCode {...item} onLayout={onLayout} />;
     }
     if (item.type === InteractiveMessageType.Date) {

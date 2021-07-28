@@ -17,7 +17,6 @@ import { uiLocalized } from '@tonlabs/uikit.localization';
 export function TimePicker({ onLayout, ...message }: TimeMessage) {
     const [isPickerVisible, setPickerVisible] = React.useState(false);
 
-    // Messages for test
     if (message.externalState != null) {
         return (
             <>
@@ -28,7 +27,7 @@ export function TimePicker({ onLayout, ...message }: TimeMessage) {
                         text={
                             message.prompt ||
                             uiLocalized.Browser.DateTimeInput
-                                .DoYouWantChooseTheTime
+                                .DoYouWantChooseTime
                         }
                         status={MessageStatus.Received}
                     />
@@ -36,7 +35,7 @@ export function TimePicker({ onLayout, ...message }: TimeMessage) {
                         <BubbleSimplePlainText
                             type={ChatMessageType.PlainText}
                             key="time-picker-value-bubble-chosen-time"
-                            text={uiLocalized.formatString(uiLocalized.Browser.DateTimeInput.YouHaveChosenTheTime + uiLocalized.formatDate(message.externalState.time))}
+                            text={uiLocalized.Browser.DateTimeInput.YouHaveChosenTheTime + uiLocalized.formatDate(message.externalState.time)}
                             status={MessageStatus.Received}
                         />
                     )}
@@ -52,7 +51,7 @@ export function TimePicker({ onLayout, ...message }: TimeMessage) {
                 key="time-picker-box-bubble-prompt"
                 text={
                     message.prompt ||
-                    uiLocalized.Browser.DateTimeInput.DoYouWantChooseTheTime
+                    uiLocalized.Browser.DateTimeInput.DoYouWantChooseTime
                 }
                 status={MessageStatus.Received}
                 firstFromChain
