@@ -22,7 +22,7 @@ export const useNoticeVisibility = (
 
     const startClosingTimer = React.useCallback(() => {
         if (timerId.current) {
-            /** Timer is already run */
+            /** Timer is already running */
             return;
         }
 
