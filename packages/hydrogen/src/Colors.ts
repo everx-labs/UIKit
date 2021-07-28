@@ -62,7 +62,7 @@ export enum ColorVariants {
     Shadow = 'Shadow',
 }
 
-type Theme = {
+export type Theme = {
     [variant in ColorVariants]: ColorValue;
 };
 

@@ -10,9 +10,9 @@ import {
     UILinkButton,
     UILinkButtonSize,
     UILinkButtonType,
-    UINotice,
 } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
+import { PromoNotice } from './PromoNotice/';
 
 type UIPromoNoticeProps = {
     appStoreUrl: string;
@@ -141,7 +141,7 @@ export function UIPromoNotice({
     return (
         Platform.OS === 'web'
             ? (
-                <UINotice
+                <PromoNotice
                     folding={folding}
                     visible={visible}
                     onClose={onClose}
@@ -149,7 +149,7 @@ export function UIPromoNotice({
                     testID={testID}
                 >
                     {content}
-                </UINotice>
+                </PromoNotice>
             ) : null
     );
 }
