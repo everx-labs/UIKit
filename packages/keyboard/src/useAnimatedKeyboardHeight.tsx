@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import { useKeyboard } from '@react-native-community/hooks';
 import { useSharedValue } from 'react-native-reanimated';
 
-export function useAnimatedKeyboard() {
+export function useAnimatedKeyboardHeight() {
     const keyboard = useKeyboard();
     const keyboardHeight = useSharedValue(keyboard.keyboardHeight);
 
