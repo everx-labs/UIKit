@@ -22,7 +22,7 @@ export const useNoticeVisibility = (
 
     const startClosingTimer = React.useCallback(() => {
         if (timerId.current) {
-            /** Timer is already run */
+            /** Timer is already running */
             return;
         }
 
@@ -35,7 +35,7 @@ export const useNoticeVisibility = (
 
     const clearClosingTimer = React.useCallback(() => {
         if (!timerId.current) {
-            /** Timer is not exist */
+            /** Timer does not exist */
             return;
         }
 
