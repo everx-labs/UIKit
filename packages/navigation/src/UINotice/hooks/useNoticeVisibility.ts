@@ -35,7 +35,7 @@ export const useNoticeVisibility = (
 
     const clearClosingTimer = React.useCallback(() => {
         if (!timerId.current) {
-            /** Timer is not exist */
+            /** Timer does not exist */
             return;
         }
 
