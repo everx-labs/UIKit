@@ -11,7 +11,7 @@ import {
     UIAlertView,
     UIComponent,
 } from '@tonlabs/uikit.components';
-import { UIImage } from '@tonlabs/uikit.hydrogen';
+import { UIImage, UILabelColors } from '@tonlabs/uikit.hydrogen';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
@@ -288,7 +288,7 @@ export default class UIImageView extends UIComponent<Props, State> {
             this.menuItemsList.push({
                 key: 'item 3',
                 title: uiLocalized.DeletePhoto,
-                textStyle: { color: UIColor.error() },
+                titleStyle: UILabelColors.TextNegative,
                 onPress: this.onDeletePhoto,
             });
         }

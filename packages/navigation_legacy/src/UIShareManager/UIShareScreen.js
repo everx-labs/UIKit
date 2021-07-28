@@ -1,18 +1,12 @@
 // @flow
 import React from 'react';
-import {
-    StyleSheet,
-    View,
-    Clipboard,
-    ScrollView,
-} from 'react-native';
+import { StyleSheet, View, Clipboard, ScrollView } from 'react-native';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIToastMessage } from '@tonlabs/uikit.components';
-import { UIColor, UIFont, UIStyle, UIConstant } from '@tonlabs/uikit.core';
+import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { UIBoxButton, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
-
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import UIModalController from '../UIModalController';
@@ -35,17 +29,9 @@ const styles = StyleSheet.create({
         flex: 1,
         margin: UIConstant.contentOffset(),
     },
-    titleText: {
-        // TODO: @vetkamak remove font & color
-        ...UIFont.subtitleBold(),
-        color: UIColor.black(),
-    },
     messageContainer: {
         marginTop: UIConstant.contentOffset(),
         flex: 1,
-    },
-    button: {
-        //
     },
 });
 

@@ -615,16 +615,11 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
     }
 
     textInputStyle() {
-        const { theme, inputStyle } = this.props;
-        const textColorStyle = UIColor.textPrimaryStyle(theme);
-        const fontStyle = UIStyle.text.bodyRegular();
-        delete fontStyle.lineHeight;
+        const { inputStyle } = this.props;
         // We remove the fontFamily for Android in oder to eliminate jumping input behaviour
         const androidFix = Platform.OS === 'android' ? { fontFamily: undefined } : {};
         return [
             styles.textInput,
-            fontStyle,
-            textColorStyle,
             UIStyle.common.flex(),
             inputStyle,
             androidFix,
@@ -791,9 +786,8 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
         const webStyle = Platform.OS === 'web' ? { overflow: 'hidden' } : null;
 
         return (
-            <TextInput
+            <UITextView
                 ref={this.auxTextInput}
-                style={[this.textInputStyle(), styles.textInputAux, webStyle]}
                 numberOfLines={1}
                 editable={false}
                 value={this.getValue()}
@@ -801,6 +795,7 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
                 autoCapitalize="none"
                 autoCorrect={false}
                 onKeyPress={this.onKeyPress}
+                style={[this.textInputStyle(), styles.textInputAux, webStyle]}
             />
         );
     }

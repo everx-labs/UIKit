@@ -9,6 +9,8 @@ import {
     TextStyle,
 } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
+import { runOnUI } from 'react-native-reanimated';
+
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UIShareManager } from '@tonlabs/uikit.navigation_legacy';
@@ -18,9 +20,10 @@ import {
     UILabelRoles,
     ColorVariants,
     useTheme,
+    hapticImpact,
 } from '@tonlabs/uikit.hydrogen';
 
-import { MessageStatus } from './types';
+import { MessageStatus, OnPressUrl } from './types';
 import type { ChatPlainTextMessage, PlainTextMessage } from './types';
 import {
     useBubblePosition,
@@ -40,6 +43,14 @@ const useUrlStyle = (status: MessageStatus) => {
 
     return [{ color: theme[ColorVariants.StaticTextPrimaryLight] }, styles.urlSent];
 };
+
+export const UrlPressHandlerContext = React.createContext<OnPressUrl>(
+    undefined,
+);
+
+function useUrlPressHandler() {
+    return React.useContext(UrlPressHandlerContext);
+}
 
 const getFontColor = (message: PlainTextMessage) => {
     if (message.status === MessageStatus.Aborted) {
@@ -196,6 +207,12 @@ function PlainTextContainer(
                 onPress={props.onTouchText}
                 onLongPress={() => {
                     bubbleScaleAnimation(true);
+                    /**
+                     * Maybe it's not the best place to run haptic
+                     * but I don't want to put it in legacy package
+                     * so left it here, until we make new share manager
+                     */
+                    runOnUI(hapticImpact)('medium');
                     UIShareManager.copyToClipboard(
                         props.text,
                         uiLocalized.MessageCopiedToClipboard,
@@ -237,6 +254,8 @@ export function BubbleChatPlainText(props: ChatPlainTextMessage) {
         [props.time],
     );
 
+    const urlPressHandler = useUrlPressHandler();
+
     return (
         <PlainTextContainer {...props}>
             <UILabel
@@ -250,9 +269,7 @@ export function BubbleChatPlainText(props: ChatPlainTextMessage) {
                         {
                             type: 'url',
                             style: urlStyle,
-                            onPress: (url: string, index: number) =>
-                                props.onPressUrl &&
-                                props.onPressUrl(url, index),
+                            onPress: urlPressHandler,
                         },
                     ]}
                 >
@@ -286,6 +303,7 @@ export function BubbleChatPlainText(props: ChatPlainTextMessage) {
 
 export function BubbleSimplePlainText(props: PlainTextMessage) {
     const urlStyle = useUrlStyle(props.status);
+    const urlPressHandler = useUrlPressHandler();
 
     return (
         <PlainTextContainer {...props}>
@@ -300,9 +318,7 @@ export function BubbleSimplePlainText(props: PlainTextMessage) {
                         {
                             type: 'url',
                             style: urlStyle,
-                            onPress: (url: string, index: number) =>
-                                props.onPressUrl &&
-                                props.onPressUrl(url, index),
+                            onPress: urlPressHandler,
                         },
                     ]}
                 >

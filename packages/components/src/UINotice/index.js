@@ -440,6 +440,9 @@ export default class UINotice
 
     render() {
         const component = this.getExternalMessageComponent() || this.renderMessageComponent();
+        // This is ugly and not very performant,
+        // but we're going to replace it soon anyway
+        const MessageComponent = React.forwardRef(() => component);
         return (
             <SafeAreaView style={UIStyle.Common.flex()} pointerEvents="box-none">
                 <View
@@ -450,9 +453,7 @@ export default class UINotice
                     onLayout={this.onFlashContainerLayout}
                     pointerEvents="box-none"
                 >
-                    <FlashMessage
-                        MessageComponent={() => component}
-                    />
+                    <FlashMessage MessageComponent={MessageComponent} />
                 </View>
             </SafeAreaView>
         );

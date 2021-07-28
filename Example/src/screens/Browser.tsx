@@ -89,9 +89,13 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
         },
     }));
 
+    const onPressUrl = React.useCallback(() => {
+        console.log('url handled');
+    }, []);
+
     return (
         <>
-            <UIBrowser messages={messages} />
+            <UIBrowser messages={messages} onPressUrl={onPressUrl} />
             <SafeAreaInsetsContext.Consumer>
                 {(insets) => (
                     <UIBottomSheet
@@ -120,7 +124,7 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                     key: `${Date.now()}-address-input`,
                                     status: MessageStatus.Received,
                                     type: InteractiveMessageType.AddressInput,
-                                    prompt: 'What wallet do you want to work with?',
+                                    prompt: 'What wallet do you want to work with? example url: https://google.com',
                                     mainAddress: '0:000',
                                     input: {
                                         validateAddress: (text: string) => {
@@ -391,6 +395,7 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                     type: InteractiveMessageType.EncryptionBox,
                                     encryptionBoxes,
                                     onAddEncryptionBox: (
+                                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
                                         _privateKey: string,
                                     ) => {
                                         const newEncryptionBox = {

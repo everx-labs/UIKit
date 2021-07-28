@@ -108,7 +108,7 @@ export function UILargeTitleHeader({
     const shift = useSharedValue(0);
     const shiftChangedForcibly = useSharedValue(false);
     const defaultShift = useSharedValue(0);
-    const scrollRef = useAnimatedRef<Animated.ScrollView>();
+    const localScrollRef = useAnimatedRef<Animated.ScrollView>();
 
     const largeTitleViewRef = useAnimatedRef<Animated.View>();
     const largeTitleHeight = useSharedValue(0);
@@ -138,6 +138,13 @@ export function UILargeTitleHeader({
     // see `useAnimatedGestureHandler`
     const yIsNegative = useSharedValue(true);
 
+    const {
+        ref: parentRef,
+        scrollHandler: parentScrollHandler,
+    } = React.useContext(ScrollableContext);
+
+    const scrollRef = parentRef || localScrollRef;
+
     const onScroll = useOnScrollHandler(
         scrollRef,
         largeTitleViewRef,
@@ -147,6 +154,7 @@ export function UILargeTitleHeader({
         shift,
         shiftChangedForcibly,
         RUBBER_BAND_EFFECT_DISTANCE,
+        parentScrollHandler,
     );
 
     const onEndDrag = useResetPosition(
@@ -154,6 +162,8 @@ export function UILargeTitleHeader({
         shiftChangedForcibly,
         largeTitleHeight,
         defaultShift,
+        yWithoutRubberBand,
+        parentScrollHandler,
     );
 
     const scrollHandler = useAnimatedScrollHandler({
@@ -257,14 +267,18 @@ export function UILargeTitleHeader({
             ghYPrev.value = event.translationY;
 
             if (!hasScrollShared.value) {
+                // eventName is needed to work properly with useEvent
+                // https://github.com/software-mansion/react-native-reanimated/blob/0c2f66f9855a26efe24f52ecff927fe847f7a80e/src/reanimated2/Hooks.ts#L836
                 // @ts-ignore
-                onScroll({ contentOffset: { y } });
+                onScroll({ contentOffset: { y }, eventName: 'onScroll' });
                 return;
             }
 
             if (yIsNegative.value && y < 0) {
+                // eventName is needed to work properly with useEvent
+                // https://github.com/software-mansion/react-native-reanimated/blob/0c2f66f9855a26efe24f52ecff927fe847f7a80e/src/reanimated2/Hooks.ts#L836
                 // @ts-ignore
-                onScroll({ contentOffset: { y } });
+                onScroll({ contentOffset: { y }, eventName: 'onScroll' });
             }
         },
         onStart: () => {

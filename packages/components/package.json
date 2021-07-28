@@ -42,7 +42,7 @@
     "prop-types": "15.6.2",
     "react-native-awesome-alerts": "1.3.2",
     "react-native-dropdownalert": "4.3.0",
-    "react-native-flash-message": "0.1.13",
+    "react-native-flash-message": "0.1.23",
     "react-native-indicators": "git+https://github.com/tonlabs/react-native-indicators.git",
     "react-style-proptype": "3.2.2"
   },

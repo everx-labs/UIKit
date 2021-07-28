@@ -1,7 +1,6 @@
 /* eslint-disable no-alert */
 /* eslint-disable react/no-unused-prop-types */
 import * as React from 'react';
-import { useState } from 'react';
 import {
     Platform,
     StatusBar,
@@ -28,8 +27,8 @@ import {
     UIFullscreenSheet,
     UIActionSheet,
     UIActionSheetActionType,
+    UILargeTitleHeader,
 } from '@tonlabs/uikit.navigation';
-import { UISlider, UIStepBar, UITabView } from '@tonlabs/uikit.components';
 import {
     UIMaterialTextView,
     useTheme,
@@ -161,6 +160,57 @@ function BigBottomSheet() {
         </>
     );
 }
+
+function BigBottomLargeTitleSheet() {
+    const theme = useTheme();
+    const [bigBottomSheetVisible, setBigBottomSheetVisible] =
+        React.useState(false);
+    return (
+        <>
+            <UILinkButton
+                testID="show_big_uiBottomSheet_largeTitleHeader"
+                title="Show Big UIBottomSheet with UILargeTitleHeader"
+                onPress={() => {
+                    setBigBottomSheetVisible(true);
+                }}
+            />
+            <UIFullscreenSheet
+                visible={bigBottomSheetVisible}
+                onClose={() => {
+                    setBigBottomSheetVisible(false);
+                }}
+                style={{
+                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
+                    borderRadius: Platform.select({ web: 10, default: 10 }),
+                    overflow: 'hidden',
+                }}
+            >
+                <UILargeTitleHeader title="Very long title">
+                    <ScrollView
+                        style={{
+                            flex: 1,
+                        }}
+                    >
+                        <UILabel>Hello!</UILabel>
+                        {new Array(9)
+                            .fill(null)
+                            .map((_el, i) => (i + 1) / 10)
+                            .map((opacity) => (
+                                <View
+                                    key={opacity}
+                                    style={{
+                                        height: 100,
+                                        backgroundColor: `rgba(255,0,0,${opacity})`,
+                                    }}
+                                />
+                            ))}
+                    </ScrollView>
+                </UILargeTitleHeader>
+            </UIFullscreenSheet>
+        </>
+    );
+}
+
 const getCallback =
     (message: string, setVisible: (visible: boolean) => void) => () => {
         console.log(message);
@@ -171,7 +221,6 @@ const getCallback =
 
 export const Menus = () => {
     const theme = useTheme();
-    const [activeIndex, setActiveIndex] = useState(0);
     const [actionSheetVisible, setActionSheetVisible] = React.useState(false);
     const [cardSheetVisible, setCardSheetVisible] = React.useState(false);
     const [cardSheet2Visible, setCardSheet2Visible] = React.useState(false);
@@ -344,6 +393,7 @@ export const Menus = () => {
                         }}
                     />
                     <PinCodeMenu />
+                    <BigBottomLargeTitleSheet />
                 </View>
             </ExampleSection>
             <ExampleSection title="UIPopover">
@@ -376,84 +426,6 @@ export const Menus = () => {
                     >
                         <UILinkButton title="Show UIPopoverMenu" />
                     </UIPopoverMenu>
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UISlider">
-                <View style={{ paddingVertical: 20 }}>
-                    <UISlider
-                        testID="uiSlider_default"
-                        itemsList={[
-                            {
-                                title: 'Card 1',
-                                details: 'details',
-                            },
-                            {
-                                title: 'Card 2',
-                                details: 'details',
-                            },
-                            {
-                                title: 'Card 3',
-                                details: 'details',
-                            },
-                            {
-                                title: 'Card 4',
-                                details: 'details',
-                            },
-                            {
-                                title: 'Card 5',
-                                details: 'details',
-                            },
-                        ]}
-                        itemRenderer={({
-                            title,
-                            details,
-                        }: {
-                            title: string;
-                            details: string;
-                        }) => (
-                            <View
-                                testID={`uiSlider_item_${title}`}
-                                key={`slider-item-${title}-${details}`}
-                                style={{ width: 200, height: 200 }}
-                            >
-                                <Text>{title}</Text>
-                                <Text>{details}</Text>
-                            </View>
-                        )}
-                        itemWidth={256}
-                    />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UIStepBar">
-                <View style={{ paddingVertical: 20 }}>
-                    <UIStepBar
-                        testID="uiStepBar_default"
-                        itemsList={['Item 1', 'Item 2', 'Item 3', 'Item 4']}
-                        activeIndex={activeIndex}
-                        onPress={(i: number) => setActiveIndex(i)}
-                    />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UITabView">
-                <View style={{ paddingVertical: 20 }}>
-                    <UITabView
-                        testID="uiTabView_default"
-                        width={95}
-                        pages={[
-                            {
-                                title: 'Left',
-                                component: <Text>Some left content</Text>,
-                            },
-                            {
-                                title: 'Center',
-                                component: <Text>Some center content</Text>,
-                            },
-                            {
-                                title: 'Right',
-                                component: <Text>Some right content</Text>,
-                            },
-                        ]}
-                    />
                 </View>
             </ExampleSection>
         </ExampleScreen>

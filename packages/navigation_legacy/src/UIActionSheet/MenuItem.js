@@ -1,23 +1,20 @@
 // @flow
 import React from 'react';
 import { View } from 'react-native';
-import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { UIStyle } from '@tonlabs/uikit.core';
 import { UIActionComponent } from '@tonlabs/uikit.components';
-import { TypographyVariants, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
-import type {
-    UIActionComponentProps,
-    UIActionComponentState,
-} from '@tonlabs/uikit.components';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import type { UIActionComponentProps, UIActionComponentState } from '@tonlabs/uikit.components';
 
 export type MenuItemType = UIActionComponentProps & {
     style?: ViewStyleProp,
     title: string,
-    titleStyle?: TextStyleProp,
-    titleRole?: TypographyVariants,
+    titleStyle?: UILabelColors,
+    titleRole?: UILabelRoles,
     details?: string,
-    detailsStyle?: TextStyleProp,
+    detailsStyle?: UILabelColors,
     chosen?: boolean,
     reversedColors?: boolean,
 };
@@ -51,7 +48,6 @@ export default class MenuItem extends UIActionComponent<
 
         const chosenStraight = reversedColors ? !chosen : chosen;
         const defaultTitleStyle = chosenStraight
-            // TODO: ex UIStyle.color.stateTextPrimary(UIColor.Theme.Light, disabled, this.isTapped(), this.isHover())
             ? UILabelColors.TextPrimary
             : UILabelColors.TextAccent;
         const defaultDetailsStyle = chosenStraight

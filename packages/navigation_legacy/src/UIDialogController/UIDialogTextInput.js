@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import StylePropType from 'react-style-proptype';
-import { StyleSheet, TextInput, Text, View, Platform } from 'react-native';
+import { StyleSheet, Text, View, Platform } from 'react-native';
 
-import { UIStyle, UITextStyle, UIColor } from '@tonlabs/uikit.core';
+import { UIStyle, UITextStyle } from '@tonlabs/uikit.core';
+import { UITextView } from '@tonlabs/uikit.hydrogen';
 
 import { UIComponent } from '@tonlabs/uikit.components';
 
@@ -143,7 +144,7 @@ export default class UIDialogTextInput extends UIComponent {
             ? null
             : { underlineColorAndroid: 'transparent' };
         const inputComponent = (
-            <TextInput
+            <UITextView
                 ref={this.textInputRef}
                 value={input}
                 placeholder={`${tagSeparator}${placeholder}${tagSeparator}`}
@@ -155,8 +156,6 @@ export default class UIDialogTextInput extends UIComponent {
                 autoCapitalize={autoCapitalize}
                 secureTextEntry={secureTextEntry}
                 autoCorrect={false}
-                placeholderTextColor={UIColor.textTertiary()}
-                selectionColor={UIColor.primary()}
                 editable={editable}
                 autoFocus={autoFocus}
                 maxLength={maxLength}

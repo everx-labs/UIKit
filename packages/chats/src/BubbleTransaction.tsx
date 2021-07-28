@@ -88,23 +88,11 @@ const getBubbleCornerStyle = (position: BubblePosition) => {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getAmountColor = (_message: TransactionMessage) => {
-    // TODO: what do with that types?
-    // const { type } = _message.info;
-
-    // if (type === TransactionType.Bill || type === TransactionType.Compliment) {
-    //     return { color: UIColor.grey() };
-    // }
     return UILabelColors.StaticTextPrimaryLight;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getCommentColor = (_message: TransactionMessage) => {
-    // TODO: what do with that types?
-    // const { type } = message.info;
-
-    // if (type === TransactionType.Bill || type === TransactionType.Compliment) {
-    //     return { color: UIColor.black(), };
-    // }
     return UILabelColors.StaticTextOverlayLight;
 };
 
