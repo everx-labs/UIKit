@@ -30,11 +30,12 @@ pipeline {
     stages {
         stage('Check the merge to development') {
             stages {
-                stage('Reinstall') {
+                stage('Init') {
                     steps{
                         script {
                             sshagent (credentials: [G_gitcred]) {
                                 sh """
+                                    npx lerna bootstrap && npx lerna run prepare
                                     cd Example
                                     npm run reinstall
                                 """
