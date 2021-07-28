@@ -6,11 +6,18 @@ export enum UISwitcherVariant {
 }
 
 export type UISwitcherProps = {
-    /** Variant of the switcher */
+    /**
+     * Variant of the switcher
+     */
     variant: UISwitcherVariant;
-    /** Is the switcher active */
+    /**
+     * Is the switcher active
+     * The component is controlled by this prop
+     */
     active: boolean;
-    /** The callback that is called by clicking/tapping on the switcher */
+    /**
+     * The callback that is called by clicking/tapping on the switcher
+     */
     onPress?: () => void;
     /**
      * ID for usage in tests
