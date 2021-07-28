@@ -9,6 +9,7 @@ import {
     UILabel,
 } from '@tonlabs/uikit.hydrogen';
 import { NoticeProps, UINoticeType, UINoticeColor } from './types';
+import { UIConstant } from '../constants';
 
 const getBackgroundColor = (color: UINoticeColor, theme: Theme): ColorValue => {
     switch (color) {
@@ -38,7 +39,7 @@ const getBorderRadius = (type: UINoticeType): number => {
         case UINoticeType.BottomToast:
         case UINoticeType.TopToast:
         default:
-            return 12;
+            return UIConstant.alertBorderRadius;
     }
 };
 
@@ -64,7 +65,7 @@ export const Notice: React.FC<NoticeProps> = ({
 const useStyles = makeStyles(
     (color: UINoticeColor, type: UINoticeType, theme: Theme) => ({
         container: {
-            maxWidth: 382,
+            maxWidth: UIConstant.notice.maxWidth,
             flex: 1,
             backgroundColor: getBackgroundColor(color, theme),
             borderRadius: getBorderRadius(type),

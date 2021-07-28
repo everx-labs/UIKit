@@ -27,13 +27,37 @@ export type NoticeProps = {
 };
 
 export type UINoticeProps = {
+    /**
+     * Type of notification
+     */
     type: UINoticeType;
+    /**
+     * Color of notification
+     */
     color: UINoticeColor;
+    /**
+     * Is the notification visible
+     */
     visible: boolean;
+    /**
+     * Title of notification
+     */
     title: string;
+    /**
+     * How long will the notification be displayed
+     */
     duration?: UINoticeDuration; // By default: UINoticeDuration.Long
+    /**
+     * The callback that is called when the notification is closed
+     */
     onClose?: () => void;
+    /**
+     * The callback that is called when the notification is tapped/clicked
+     */
     onTap?: () => void;
+    /**
+     * ID for usage in tests
+     */
     testID?: string;
 };
 

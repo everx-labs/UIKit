@@ -20,17 +20,9 @@ export const UINotice: React.FC<UINoticeProps> = (props: UINoticeProps) => {
         return null;
     }
     switch (type) {
+        // TODO Add UINoticeType.Top and UINoticeType.Bottom here
         case UINoticeType.BottomToast:
         case UINoticeType.TopToast:
-            return (
-                <ToastNotice
-                    {...props}
-                    onCloseAnimationEnd={onNoticeCloseAnimationFinished}
-                    suspendClosingTimer={clearClosingTimer}
-                    continueClosingTimer={startClosingTimer}
-                    keyboardHeight={keyboardHeight}
-                />
-            );
         default:
             return (
                 <ToastNotice

@@ -16,8 +16,6 @@ import {
 } from './toastNoticeHooks';
 import { UIConstant } from '../constants';
 
-const DELAY_LONG_PRESS = 200;
-
 export const ToastNotice: React.FC<ToastNoticeProps> = ({
     type,
     color,
@@ -74,7 +72,7 @@ export const ToastNotice: React.FC<ToastNoticeProps> = ({
                             <TouchableWithoutFeedback
                                 onPress={onPress}
                                 onLongPress={onLongPress}
-                                delayLongPress={DELAY_LONG_PRESS}
+                                delayLongPress={UIConstant.notice.longPressDelay}
                                 onPressOut={onPressOut}
                             >
                                 <Notice
