@@ -36,13 +36,7 @@ export function TimePicker({ onLayout, ...message }: TimeMessage) {
                         <BubbleSimplePlainText
                             type={ChatMessageType.PlainText}
                             key="time-picker-value-bubble-chosen-time"
-                            text={uiLocalized.formatString(
-                                uiLocalized.Browser.DateTimeInput
-                                    .YouHaveChosenTheTime,
-                                uiLocalized.formatTime(
-                                    message.externalState.time,
-                                ),
-                            )}
+                            text={uiLocalized.formatString(uiLocalized.Browser.DateTimeInput.YouHaveChosenTheTime + uiLocalized.formatDate(message.externalState.time))}
                             status={MessageStatus.Received}
                         />
                     )}

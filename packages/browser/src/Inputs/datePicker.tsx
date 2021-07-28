@@ -17,38 +17,29 @@ import type { DateMessage } from '../types';
 
 export function DatePicker({ onLayout, ...message }: DateMessage) {
     const [isPickerVisible, setPickerVisible] = React.useState(false);
-
     if (message.externalState != null) {
-        return (
-            <>
-                {message.externalState.date != null && (
-                    <View onLayout={onLayout}>
-                        <BubbleSimplePlainText
-                            type={ChatMessageType.PlainText}
-                            key="date-picker-box-bubble-prompt"
-                            text={
-                                message.prompt ||
-                                uiLocalized.Browser.DateTimeInput
-                                    .DoYouWantChooseTheDate
-                            }
-                            status={MessageStatus.Received}
+
+                if(message.externalState.date !== undefined){
+
+
+                    return(
+                        <View onLayout={onLayout}>
+                            <BubbleSimplePlainText
+                                type={ChatMessageType.PlainText}
+                                key="date-picker-box-bubble-prompt"
+                                text={
+                                    message.prompt || uiLocalized.Browser.DateTimeInput.DoYouWantChooseTheDate
+                                }
+                                status={MessageStatus.Received}
                         />
-                        <BubbleSimplePlainText
-                            type={ChatMessageType.PlainText}
-                            key="date-picker-value-bubble-prompt"
-                            text={uiLocalized.formatString(
-                                uiLocalized.Browser.DateTimeInput
-                                    .YouHaveChosenTheDate,
-                                uiLocalized.formatDate(
-                                    message.externalState.date,
-                                ),
-                            )}
-                            status={MessageStatus.Received}
+                            <BubbleSimplePlainText
+                                type={ChatMessageType.PlainText}
+                                key="date-picker-value-bubble-prompt"
+                                text={uiLocalized.formatString(uiLocalized.Browser.DateTimeInput.YouHaveChosenTheDate + uiLocalized.formatDate(message.externalState.date))}
+                                status={MessageStatus.Received}
                         />
-                    </View>
+                        </View>
                 )}
-            </>
-        );
     }
 
     return (
