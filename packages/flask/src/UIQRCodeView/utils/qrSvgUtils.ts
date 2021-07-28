@@ -6,7 +6,6 @@ import type {
     QRItemSideData,
 } from '../../types';
 import {
-    QR_CODE_LOGO_SIZE,
     QR_CODE_LOGO_MARGIN_IN_SQUARES,
     QR_CODE_ITEM_BORDER_RADIUS,
 } from '../../constants';
@@ -172,6 +171,7 @@ export const getEmptyAreaIndexRange = (
 export const getQRSvg = (
     qr: QRCode.QRCode,
     size: number,
+    logoSize: number,
     isThereLogo: boolean,
 ) => {
     const qrDataLength: number = qr.modules.size;
@@ -180,7 +180,7 @@ export const getQRSvg = (
 
     const emptyAreaIndexRange: QRItemRange = getEmptyAreaIndexRange(
         size,
-        QR_CODE_LOGO_SIZE,
+        logoSize,
         QR_CODE_LOGO_MARGIN_IN_SQUARES,
         sizeOfSquare,
         isThereLogo,
