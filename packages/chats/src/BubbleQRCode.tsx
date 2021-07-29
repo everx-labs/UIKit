@@ -13,7 +13,13 @@ import {
     useBubbleBackgroundColor,
     useBubbleRoundedCornerStyle,
 } from './useBubbleStyle';
-import type { QRCodeMessage } from './types';
+import type { QRCodeMessage, ChatQRCodeMessage } from './types';
+
+export const ChatBubbleQRCode: React.FC<ChatQRCodeMessage> = (
+    message: ChatQRCodeMessage,
+) => {
+    return <BubbleQRCode {...message} />;
+};
 
 export const BubbleQRCode: React.FC<QRCodeMessage> = (
     message: QRCodeMessage,
