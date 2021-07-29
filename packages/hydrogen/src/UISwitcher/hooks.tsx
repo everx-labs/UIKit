@@ -140,8 +140,9 @@ export const useImageStyle = (
                             ],
                             [
                                 0,
-                                UIConstant.iconSize -
-                                    UIConstant.switcher.toggleDotSize,
+                                UIConstant.switcher.toggleWidth -
+                                    UIConstant.switcher.toggleDotSize -
+                                    UIConstant.switcher.togglePadding*2,
                             ],
                         ),
                     },
@@ -157,7 +158,7 @@ export const useImageStyle = (
         };
     });
 
-    const backgroundOnStyle = useAnimatedStyle(() => {
+    const toggleBackgroundStyle = useAnimatedStyle(() => {
         return {
             backgroundColor: interpolateColor(
                 animatedValue.value,
@@ -169,6 +170,25 @@ export const useImageStyle = (
             ),
         };
     });
+
+    const toggleOverlayStyle = useAnimatedStyle(() => {
+        return {
+            backgroundColor: interpolateColor(
+                switcherState.value,
+                [
+                    SwitcherState.Active,
+                    SwitcherState.Hovered,
+                    SwitcherState.Pressed,
+                ],
+                [
+                    theme[ColorVariants.Transparent] as string,
+                    theme[ColorVariants.BackgroundOverlay] as string,
+                    theme[ColorVariants.Transparent] as string,
+                ],
+            ),
+        };
+    });
+
 
     const imageOffOpacity = useAnimatedStyle(() => {
         return {
@@ -202,7 +222,8 @@ export const useImageStyle = (
         imageOnStyle,
         imageOffOpacity,
         imageOffBorderColor,
-        backgroundOnStyle,
+        toggleBackgroundStyle,
+        toggleOverlayStyle
     };
 };
 
@@ -237,8 +258,8 @@ export const useOverlayStyle = (
                     SwitcherState.Pressed,
                 ],
                 [
-                    theme[ColorVariants.Transparent] as string,
-                    theme[ColorVariants.StaticHoverOverlay] as string,
+                    theme[ColorVariants.BackgroundAccent] as string,
+                    theme[ColorVariants.BackgroundAccent] as string,
                     theme[ColorVariants.StaticPressOverlay] as string,
                 ],
             ),

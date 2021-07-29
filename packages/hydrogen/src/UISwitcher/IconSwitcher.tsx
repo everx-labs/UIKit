@@ -39,13 +39,9 @@ const getShape = (variant: UISwitcherVariant) => {
             };
         case UISwitcherVariant.Toggle:
             return {
-                width:
-                    UIConstant.iconSize + UIConstant.switcher.circlePadding * 4,
-                height:
-                    UIConstant.iconSize - UIConstant.switcher.circlePadding * 3,
-                borderRadius:
-                    UIConstant.iconSize - UIConstant.switcher.circlePadding * 3,
-                padding: UIConstant.switcher.circlePadding * 2,
+                width: UIConstant.switcher.toggleWidth,
+                height: UIConstant.switcher.toggleHeight,
+                borderRadius: UIConstant.switcher.toggleHeight,
             };
         case UISwitcherVariant.Radio:
         case UISwitcherVariant.Select:
@@ -77,68 +73,69 @@ export const IconSwitcher: React.FC<UISwitcherProps> = (
 
     const switcherState = useSwitcherState(isHovered, pressed);
     const overlayStyle = useOverlayStyle(switcherState, theme);
+    const isToggleSwitch = variant === UISwitcherVariant.Toggle;
+
     const {
         imageOnStyle,
         imageOffOpacity,
         imageOffBorderColor,
-        backgroundOnStyle,
+        toggleBackgroundStyle,
+        toggleOverlayStyle,
     } = useImageStyle(active, switcherState, theme, variant);
 
-    if (variant === UISwitcherVariant.Toggle) {
+    const commonSwitcherIcon = () => {
         return (
             <RawButton
                 shouldCancelWhenOutside
                 onGestureEvent={onGestureEvent}
-                style={{
-                        width: getShape(variant).width,
-                        height: getShape(variant).height,
-                        alignItems: 'flex-start',
-                        justifyContent: 'flex-start',
-                        // @ts-expect-error
-                        cursor: 'pointer',
-                    }}
+                style={styles.buttonSwitcherStyle}
+                // @ts-expect-error
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
                 testID={testID}
             >
-                <Animated.View style={[styles.onToggle, backgroundOnStyle]}>
-                    <Animated.View style={imageOnStyle}>{image}</Animated.View>
+                <Animated.View style={imageOffOpacity}>
+                    <Animated.View
+                        style={[styles.offSwitcher, imageOffBorderColor]}
+                    />
+                </Animated.View>
+
+                <Animated.View style={[styles.onSwitcher, imageOnStyle]}>
+                    <Animated.View style={[styles.overlay, overlayStyle]}>
+                        {image}
+                    </Animated.View>
                 </Animated.View>
             </RawButton>
         );
-    }
+    };
 
-    return (
-        <RawButton
-            shouldCancelWhenOutside
-            onGestureEvent={onGestureEvent}
-            style={[
-                {
-                    width: UIConstant.iconSize,
-                    height: UIConstant.iconSize,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    // @ts-expect-error
-                    cursor: 'pointer',
-                },
-            ]}
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-            testID={testID}
-        >
-            <Animated.View style={imageOffOpacity}>
+    const toggleSwitcherIcon = () => {
+        return (
+            <RawButton
+                shouldCancelWhenOutside
+                onGestureEvent={onGestureEvent}
+                style={styles.buttonToggleStyle}
+                // @ts-expect-error
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
+                testID={testID}
+            >
                 <Animated.View
-                    style={[styles.offSwitcher, imageOffBorderColor]}
-                />
-            </Animated.View>
-
-            <Animated.View style={[styles.onSwitcher, imageOnStyle]}>
-                <Animated.View style={[styles.overlay, overlayStyle]}>
-                    {image}
+                    style={[styles.toggleOuterStyle, toggleBackgroundStyle]}
+                >
+                    <Animated.View
+                        style={[styles.toggleInnerStyle, toggleOverlayStyle]}
+                    >
+                        <Animated.View style={imageOnStyle}>
+                            {image}
+                        </Animated.View>
+                    </Animated.View>
                 </Animated.View>
-            </Animated.View>
-        </RawButton>
-    );
+            </RawButton>
+        );
+    };
+
+    return isToggleSwitch ? toggleSwitcherIcon() : commonSwitcherIcon();
 };
 
 const useStyles = makeStyles((theme: Theme, variant: UISwitcherVariant) => ({
@@ -152,12 +149,32 @@ const useStyles = makeStyles((theme: Theme, variant: UISwitcherVariant) => ({
         backgroundColor: theme[ColorVariants.BackgroundAccent],
         overflow: 'hidden',
     },
-    onToggle: {
-        ...getShape(variant),
-    },
     overlay: {
         ...StyleSheet.absoluteFillObject,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    toggleInnerStyle: {
+        position: 'absolute',
+        ...getShape(variant),
+        padding: UIConstant.switcher.togglePadding,
+    },
+    toggleOuterStyle: {
+        ...getShape(variant),
+        overflow: 'hidden',
+    },
+    buttonToggleStyle: {
+        width: getShape(variant).width,
+        height: getShape(variant).height,
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        cursor: 'pointer',
+    },
+    buttonSwitcherStyle: {
+        width: UIConstant.iconSize,
+        height: UIConstant.iconSize,
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: 'pointer',
     },
 }));

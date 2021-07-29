@@ -77,7 +77,7 @@ export const Checkbox = () => {
                         style={{
                             flexDirection: 'row',
                             justifyContent: 'space-between',
-                            alignItems: 'baseline',
+                            alignItems: 'center',
                         }}
                     >
                         <UILabel>Toggle:</UILabel>
