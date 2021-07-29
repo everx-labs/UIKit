@@ -113,6 +113,27 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                         }}
                     >
                         <UIBoxButton
+                            title="Add QRCode"
+                            layout={{
+                                marginBottom: 10,
+                            }}
+                            onPress={() => {
+                                const message: BrowserMessage = {
+                                    key: `${Date.now()}-qr-code`,
+                                    status: MessageStatus.Received,
+                                    type: ChatMessageType.QRCode,
+                                    data: 'You are reading a message received through a QR code',
+                                };
+                                setMessages([
+                                    {
+                                        ...message,
+                                    },
+                                    ...messages,
+                                ]);
+                                setMenuVisible(false);
+                            }}
+                        />
+                        <UIBoxButton
                             title="Add AddressInput"
                             layout={{
                                 marginBottom: 10,
@@ -516,6 +537,9 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                         />
                         <UIBoxButton
                             title="Add QRCodeScannerMessage"
+                            layout={{
+                                marginBottom: 10,
+                            }}
                             onPress={() => {
                                 const message: QRCodeScannerMessage = {
                                     key: `${Date.now()}-qr-code`,
