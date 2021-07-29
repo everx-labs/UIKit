@@ -11,6 +11,13 @@ const initialMessages = [
         type: ChatMessageType.QRCode,
         data: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore',
         time: Math.floor(Date.now() - 4 * 60 * 1000),
+        sender: '0:000',
+        status: 'received',
+    },
+    {
+        type: ChatMessageType.QRCode,
+        data: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore',
+        time: Math.floor(Date.now() - 4 * 60 * 1000),
         sender: '0:123',
         status: 'sent',
     },

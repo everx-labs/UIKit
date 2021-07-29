@@ -10,9 +10,9 @@ import {
     useBubblePosition,
 } from './useBubblePosition';
 import {
-    useNeutralBubbleBackgroundColor,
-    useNeutralBubbleRoundedCornerStyle,
-} from './useNeutralBubbleStyle';
+    useBubbleBackgroundColor,
+    useBubbleRoundedCornerStyle,
+} from './useBubbleStyle';
 import type { QRCodeMessage } from './types';
 
 export const BubbleQRCode: React.FC<QRCodeMessage> = (
@@ -21,8 +21,8 @@ export const BubbleQRCode: React.FC<QRCodeMessage> = (
     const { status, data } = message;
     const position = useBubblePosition(status);
     const containerStyle = useBubbleContainerStyle(message);
-    const bubbleBackgroundColor = useNeutralBubbleBackgroundColor(message);
-    const roundedCornerStyle = useNeutralBubbleRoundedCornerStyle(
+    const bubbleBackgroundColor = useBubbleBackgroundColor(message);
+    const roundedCornerStyle = useBubbleRoundedCornerStyle(
         message,
         position,
         UIConstant.mediumBorderRadius(),

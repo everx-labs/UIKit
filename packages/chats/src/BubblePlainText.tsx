@@ -30,9 +30,9 @@ import {
     useBubbleContainerStyle,
 } from './useBubblePosition';
 import {
-    useNeutralBubbleBackgroundColor,
-    useNeutralBubbleRoundedCornerStyle,
-} from './useNeutralBubbleStyle';
+    useBubbleBackgroundColor,
+    useBubbleRoundedCornerStyle,
+} from './useBubbleStyle';
 
 const useUrlStyle = (status: MessageStatus) => {
     const theme = useTheme();
@@ -149,11 +149,8 @@ function PlainTextContainer(
     };
     const position = useBubblePosition(props.status);
     const containerStyle = useBubbleContainerStyle(props);
-    const bubbleBackgroundColor = useNeutralBubbleBackgroundColor(props);
-    const roundedCornerStyle = useNeutralBubbleRoundedCornerStyle(
-        props,
-        position,
-    );
+    const bubbleBackgroundColor = useBubbleBackgroundColor(props);
+    const roundedCornerStyle = useBubbleRoundedCornerStyle(props, position);
     const actionString = getActionString(props);
 
     return (

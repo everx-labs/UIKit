@@ -3,7 +3,7 @@ import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 import { BubbleBaseT, MessageStatus } from './types';
 import { BubblePosition } from './useBubblePosition';
 
-export const useNeutralBubbleRoundedCornerStyle = (
+export const useBubbleRoundedCornerStyle = (
     message: BubbleBaseT,
     position: BubblePosition,
     borderRadius?: number, // @default UIConstant.borderRadius()
@@ -33,7 +33,7 @@ export const useNeutralBubbleRoundedCornerStyle = (
     };
 };
 
-export const useNeutralBubbleBackgroundColor = (message: BubbleBaseT) => {
+export const useBubbleBackgroundColor = (message: BubbleBaseT) => {
     const theme = useTheme();
 
     if (message.status === MessageStatus.Aborted) {
