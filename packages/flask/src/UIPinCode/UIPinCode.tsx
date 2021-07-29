@@ -3,12 +3,12 @@ import { View, StyleSheet, ViewStyle } from 'react-native';
 import Animated, {
     useSharedValue,
     useAnimatedStyle,
-    useDerivedValue,
     runOnJS,
     withSpring,
     interpolateColor,
     interpolate,
     runOnUI,
+    useAnimatedReaction,
 } from 'react-native-reanimated';
 
 import { UIConstant } from '@tonlabs/uikit.core';
@@ -237,16 +237,30 @@ export function UIPinCode({
         });
     }, [getPasscode, autoUnlock]);
 
-    useDerivedValue(() => {
-        const pin = dotsValues.current
-            .map((d) => d.value)
-            .filter((val) => val !== -1)
-            .join('');
+    useAnimatedReaction(
+        () => {
+            return dotsValues.current.map((d) => d.value);
+        },
+        (dotsCurrentValues, previous) => {
+            const pin = dotsCurrentValues.filter((val) => val !== -1).join('');
 
-        if (pin.length === length) {
-            runOnJS(validatePin)(pin);
-        }
-    }, [dotsValues, length]);
+            // To prevent a situation when the reaction was called
+            // because of deps changes (like validatePin was changed)
+            // and not because of actual changes in dots values
+            if (previous != null) {
+                const prevPin = previous.filter((val) => val !== -1).join('');
+
+                if (pin === prevPin) {
+                    return;
+                }
+            }
+
+            if (pin.length === length) {
+                runOnJS(validatePin)(pin);
+            }
+        },
+        [dotsValues, length, validatePin],
+    );
 
     const dotsContextValue = React.useMemo(
         () => ({
