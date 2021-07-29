@@ -3,6 +3,7 @@ export enum UISwitcherVariant {
     Select = 'Select',
     Radio = 'Radio',
     Check = 'Check',
+    Toggle = 'Toggle',
 }
 
 export type UISwitcherProps = {

@@ -60,6 +60,7 @@ export const UIConstant = {
         thikIconSize: 12,
         radioDotSize: 8,
         offBorderWidth: 1.75,
+        toggleDotSize: 10,
     },
 };
 
