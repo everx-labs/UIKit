@@ -7,34 +7,37 @@ import { useLogoRender } from './hooks';
 import { getEmptyAreaIndexRange, draw, getQRSvg } from './utils';
 import type { QRItemRange, QRCodeProps } from '../types';
 import {
-    QR_CODE_SIZE,
-    CIRCLE_QR_CODE_BORDER_WIDTH,
     QR_CODE_ITEM_BORDER_RADIUS,
     CIRCLE_QR_CODE_QUIET_ZONE_IN_SQUARES,
 } from '../constants';
+import { useQRCodeSize } from './hooks/useQRCodeSize';
+import { useQRCodeBorderWidth } from './hooks/useQRCodeBorderWidth';
+import { useQRCodeLogoSize } from './hooks/useQRCodeLogoSize';
 
-const useStyles = makeStyles((theme) => ({
-    container: {
-        borderRadius: QR_CODE_SIZE / 2 + CIRCLE_QR_CODE_BORDER_WIDTH,
-        height: QR_CODE_SIZE + CIRCLE_QR_CODE_BORDER_WIDTH * 2,
-        width: QR_CODE_SIZE + CIRCLE_QR_CODE_BORDER_WIDTH * 2,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: theme[ColorVariants.BackgroundPrimary],
-        borderColor: theme[ColorVariants.BackgroundPrimary],
-        overflow: 'hidden',
-        borderWidth: CIRCLE_QR_CODE_BORDER_WIDTH
-    },
-    qrCodeContainer: {
-        ...StyleSheet.absoluteFillObject,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    outerQrCodeContainer: {
-        ...StyleSheet.absoluteFillObject,
-        zIndex: -10,
-    },
-}));
+const useStyles = makeStyles(
+    (theme, qrCodeSize: number, qrCodeBorderWidth: number) => ({
+        container: {
+            borderRadius: qrCodeSize / 2 + qrCodeBorderWidth,
+            height: qrCodeSize + qrCodeBorderWidth * 2,
+            width: qrCodeSize + qrCodeBorderWidth * 2,
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: theme[ColorVariants.BackgroundPrimary],
+            borderColor: theme[ColorVariants.BackgroundPrimary],
+            overflow: 'hidden',
+            borderWidth: qrCodeBorderWidth,
+        },
+        qrCodeContainer: {
+            ...StyleSheet.absoluteFillObject,
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        outerQrCodeContainer: {
+            ...StyleSheet.absoluteFillObject,
+            zIndex: -10,
+        },
+    }),
+);
 
 const getQrDataLength = (
     diameterOfCircleQRCode: number,
@@ -131,20 +134,25 @@ export const getQRSvgCirlce = (
 export const QRCodeCircle: React.FC<QRCodeProps> = ({
     value,
     logo,
+    size,
 }: QRCodeProps) => {
     const theme = useTheme();
-    const styles = useStyles(theme);
+    const qrCodeSize = useQRCodeSize(size);
+    const qrCodeBorderWidth = useQRCodeBorderWidth(size);
+    const logoSize = useQRCodeLogoSize(size);
+
+    const styles = useStyles(theme, qrCodeSize, qrCodeBorderWidth);
 
     const qr = React.useMemo(() => QRCode.create(value, {}), [value]);
     const widthOfInnerQRCodeInSquares: number = qr.modules?.size || 2;
-    const diameterOfCircleQRCode = QR_CODE_SIZE;
+    const diameterOfCircleQRCode = qrCodeSize;
     const sizeOfInnerQRCode = diameterOfCircleQRCode / Math.SQRT2;
     const sizeOfSquare = sizeOfInnerQRCode / widthOfInnerQRCodeInSquares;
     const isThereLogo = logo !== undefined;
 
     const qrSvg = React.useMemo(
-        () => getQRSvg(qr, sizeOfInnerQRCode, isThereLogo),
-        [qr, sizeOfInnerQRCode, isThereLogo],
+        () => getQRSvg(qr, sizeOfInnerQRCode, logoSize, isThereLogo),
+        [qr, sizeOfInnerQRCode, logoSize, isThereLogo],
     );
 
     const qrSvgOuter = React.useMemo(
@@ -157,7 +165,7 @@ export const QRCodeCircle: React.FC<QRCodeProps> = ({
         [diameterOfCircleQRCode, sizeOfInnerQRCode, sizeOfSquare],
     );
 
-    const logoRender = useLogoRender(logo);
+    const logoRender = useLogoRender(logo, size);
 
     return (
         <View style={styles.container}>

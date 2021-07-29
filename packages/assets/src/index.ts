@@ -51,6 +51,7 @@ import iconBrandTonlabs from '../brand/tonlines/tonlabs.png';
 import iconBrandTonwalletOld from '../brand/tonlines/tonwallet-old.png';
 import iconBrandTonwallet from '../brand/tonlines/tonwallet.png';
 import iconBrandTonSymbol from '../brand/tonlines/surf.png';
+import iconBrandTonSymbolBlack from '../brand/tonlines/surf-black.png';
 
 import iconButtonClose from '../btn_close/btn_close.png';
 import iconButtonDots from '../btn_dots/btn_dots.png';
@@ -157,6 +158,7 @@ export const UIAssets = {
             tonwalletOld: iconBrandTonwalletOld,
             tonwallet: iconBrandTonwallet,
             tonSymbol: iconBrandTonSymbol,
+            tonSymbolBlack: iconBrandTonSymbolBlack,
         },
 
         payment: {

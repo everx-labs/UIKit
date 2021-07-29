@@ -5,48 +5,53 @@ import QRCode from 'qrcode';
 import Svg, { Path } from 'react-native-svg';
 import { useLogoRender } from './hooks';
 import type { QRCodeProps } from '../types';
-import { QR_CODE_SIZE, SQUARE_QR_CODE_BORDER_WIDTH } from '../constants';
 import { getQRSvg } from './utils';
+import { useQRCodeSize } from './hooks/useQRCodeSize';
+import { useQRCodeBorderWidth } from './hooks/useQRCodeBorderWidth';
+import { useQRCodeLogoSize } from './hooks/useQRCodeLogoSize';
 
-const useStyles = makeStyles((theme) => {
-    return {
-        container: {
-            backgroundColor: theme[ColorVariants.BackgroundPrimary],
-            padding: SQUARE_QR_CODE_BORDER_WIDTH,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: QR_CODE_SIZE + SQUARE_QR_CODE_BORDER_WIDTH * 2,
-            width: QR_CODE_SIZE + SQUARE_QR_CODE_BORDER_WIDTH * 2,
-        },
-        qrContainer: {
-            position: 'absolute',
-            top: SQUARE_QR_CODE_BORDER_WIDTH,
-            left: SQUARE_QR_CODE_BORDER_WIDTH,
-            right: SQUARE_QR_CODE_BORDER_WIDTH,
-            bottom: SQUARE_QR_CODE_BORDER_WIDTH,
-        },
-    };
-});
+const useStyles = makeStyles(
+    (theme, qrCodeSize: number, qrCodeBorderWidth: number) => {
+        return {
+            container: {
+                backgroundColor: theme[ColorVariants.BackgroundPrimary],
+                padding: qrCodeBorderWidth,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: qrCodeSize + qrCodeBorderWidth * 2,
+                width: qrCodeSize + qrCodeBorderWidth * 2,
+            },
+            qrContainer: {
+                position: 'absolute',
+                top: qrCodeBorderWidth,
+                left: qrCodeBorderWidth,
+                right: qrCodeBorderWidth,
+                bottom: qrCodeBorderWidth,
+            },
+        };
+    },
+);
 
-export const QRCodeSquare = ({ value, logo }: QRCodeProps) => {
+export const QRCodeSquare = ({ value, logo, size }: QRCodeProps) => {
     const theme = useTheme();
-    const styles = useStyles(theme);
+    const qrCodeSize = useQRCodeSize(size);
+    const qrCodeBorderWidth = useQRCodeBorderWidth(size);
+    const logoSize = useQRCodeLogoSize(size);
+    const styles = useStyles(theme, qrCodeSize, qrCodeBorderWidth);
     const qr = React.useMemo(() => QRCode.create(value, {}), [value]);
     const isThereLogo = logo !== undefined;
-    const size = QR_CODE_SIZE;
 
-    const qrSvg = React.useMemo(() => getQRSvg(qr, size, isThereLogo), [
-        qr,
-        size,
-        isThereLogo,
-    ]);
-    const logoRender = useLogoRender(logo);
+    const qrSvg = React.useMemo(
+        () => getQRSvg(qr, qrCodeSize, logoSize, isThereLogo),
+        [qr, qrCodeSize, logoSize, isThereLogo],
+    );
+    const logoRender = useLogoRender(logo, size);
 
     return (
         <View style={styles.container}>
             <View style={styles.qrContainer}>
-                <Svg width={size} height={size}>
+                <Svg width={qrCodeSize} height={qrCodeSize}>
                     <Path
                         fill={
                             theme[

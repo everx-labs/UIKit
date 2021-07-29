@@ -6,6 +6,12 @@ export enum QRCodeType {
     Circle = 'Circle',
 }
 
+// eslint-disable-next-line no-shadow
+export enum QRCodeSize {
+    Large = 'Large',
+    Medium = 'Medium',
+}
+
 export type QRCodeRef = {
     /** Returns a QR code image as a string in base64 format */
     getPng: () => Promise<string | null>;
@@ -19,6 +25,11 @@ export type QRCodeProps = {
     type: QRCodeType;
     /** String value to encode into the QR сode */
     value: string;
+    /**
+     * Size of the QR code image (without padding)
+     * @default QRCodeSize.Large
+     */
+    size?: QRCodeSize;
     /** Used to get an image of the QR code */
     ref?: QRCodeRef;
     /** Image for logo in the center of the QR code */
@@ -48,7 +59,10 @@ export type QRItemSideData = {
 };
 
 // The following type is taken from @types/react@^17.0.0 which is not yet supported in UIKit
-type ForwardedRef<T> = ((instance: T | null) => void) | React.MutableRefObject<T | null> | null;
+type ForwardedRef<T> =
+    | ((instance: T | null) => void)
+    | React.MutableRefObject<T | null>
+    | null;
 
 export type ScreenshotViewProps = {
     ref: ForwardedRef<QRCodeRef>;
