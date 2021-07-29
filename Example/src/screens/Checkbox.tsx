@@ -73,6 +73,23 @@ export const Checkbox = () => {
                             }}
                         />
                     </View>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'baseline',
+                        }}
+                    >
+                        <UILabel>Toggle:</UILabel>
+                        <UISwitcher
+                            variant={UISwitcherVariant.Toggle}
+                            active={switcherSelected}
+                            onPress={() => {
+                                console.log('onPress', switcherSelected);
+                                setSwitcherSelected((prev) => !prev);
+                            }}
+                        />
+                    </View>
                 </View>
             </ExampleSection>
             <ExampleSection title="UIDetailsToggle">
