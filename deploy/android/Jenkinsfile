@@ -15,7 +15,7 @@ pipeline {
         string(name: 'BRANCH', defaultValue: 'development', description: 'Branch for the build')
     }
     environment {
-       PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+       PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/.yarn/bin:$PATH"
        LC_ALL = "en_US.UTF-8"
        LANG = "en_US.UTF-8"
        userpass = credentials("${jen_pass}")
@@ -37,7 +37,7 @@ pipeline {
                                 sh """
                                     npx lerna bootstrap && npx lerna run prepare
                                     cd Example
-                                    npm run reinstall
+                                    yarn reinstall 
                                 """
                             }
                         }
