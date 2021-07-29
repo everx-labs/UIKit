@@ -61,6 +61,9 @@ const renderBubble = () => (
     if (item.type === ChatMessageType.ActionButton) {
         return <BubbleActionButton {...item} onLayout={onLayout} />;
     }
+    if (item.type === ChatMessageType.QRCode) {
+        return <BubbleQRCode {...item} onLayout={onLayout} />;
+    }
 
     if (item.type === InteractiveMessageType.AddressInput) {
         return <AddressInput {...item} onLayout={onLayout} />;
@@ -88,9 +91,6 @@ const renderBubble = () => (
     }
     if (item.type === InteractiveMessageType.QRCodeScanner) {
         return <QRCodeScanner {...item} onLayout={onLayout} />;
-    }
-    if (item.type === ChatMessageType.QRCode) {
-        return <BubbleQRCode {...item} onLayout={onLayout} />;
     }
 
     return null;
