@@ -15,9 +15,6 @@ import {
 } from './useNeutralBubbleStyle';
 import type { QRCodeMessage } from './types';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const logo = UIAssets.icons.brand.tonSymbolBlack;
-
 export const BubbleQRCode: React.FC<QRCodeMessage> = (
     message: QRCodeMessage,
 ) => {
@@ -47,7 +44,7 @@ export const BubbleQRCode: React.FC<QRCodeMessage> = (
                         size={QRCodeSize.Medium}
                         testID={`chat_qr_code_${data}`}
                         type={QRCodeType.Square}
-                        logo={logo}
+                        logo={UIAssets.icons.brand.tonSymbolBlack}
                         value={data}
                     />
                 </View>
