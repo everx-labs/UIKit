@@ -16,7 +16,7 @@ import { createStackNavigator } from '@tonlabs/uikit.navigation';
 const userId = '0:000';
 const companionId = '0:123';
 
-const messageList: ChatMessage[] = [
+const initialMessages: ChatMessage[] = [
     {
         type: ChatMessageType.QRCode,
         data: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore',
@@ -276,11 +276,13 @@ const messageList: ChatMessage[] = [
     },
 ];
 
-const initialMessages = messageList.map((m: ChatMessage, i: number) => {
-    // eslint-disable-next-line no-param-reassign
-    m.key = m.type + i;
-    return m;
-});
+const initialMessagesWithKeys = initialMessages.map(
+    (m: ChatMessage, i: number) => {
+        // eslint-disable-next-line no-param-reassign
+        m.key = m.type + i;
+        return m;
+    },
+);
 
 const stickers = new Array(10).fill(null).map((_a, i) => ({
     id: `test${i}`,
@@ -296,8 +298,9 @@ const stickers = new Array(10).fill(null).map((_a, i) => ({
 const ChatStack = createStackNavigator();
 
 const ChatWindowScreen = () => {
-    const [messages, setMessages] =
-        React.useState<ChatMessage[]>(initialMessages);
+    const [messages, setMessages] = React.useState<ChatMessage[]>(
+        initialMessagesWithKeys,
+    );
     const onLoadEarlierMessages = React.useCallback(() => undefined, []);
     const onPressUrl = React.useCallback(() => {
         console.log('url handled');
