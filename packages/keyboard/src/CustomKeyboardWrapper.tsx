@@ -4,6 +4,8 @@ import { Animated, LayoutAnimation } from 'react-native';
 import { UIConstant, UIDevice } from '@tonlabs/uikit.core';
 import { UIController } from '@tonlabs/uikit.navigation_legacy';
 
+import { getEasingFunction } from './getEasingFunction';
+
 const CustomKeyboardKeyboardHeight = UIDevice.isDesktop() ? 180 : 270;
 
 function useCustomKeyboardWrapperAnimations(customKeyboardVisible: boolean) {
@@ -16,17 +18,13 @@ function useCustomKeyboardWrapperAnimations(customKeyboardVisible: boolean) {
                 Animated.timing(opacity, {
                     toValue: show ? 1.0 : 0.0,
                     duration: UIConstant.animationDuration(),
-                    easing: UIController.getEasingFunction(
-                        LayoutAnimation.Types.keyboard,
-                    ),
+                    easing: getEasingFunction(LayoutAnimation.Types.keyboard),
                     useNativeDriver: true,
                 }),
                 Animated.timing(height, {
                     toValue: show ? CustomKeyboardKeyboardHeight : 0.0,
                     duration: UIConstant.animationDuration(),
-                    easing: UIController.getEasingFunction(
-                        LayoutAnimation.Types.keyboard,
-                    ),
+                    easing: getEasingFunction(LayoutAnimation.Types.keyboard),
                     useNativeDriver: false,
                 }),
             ]).start();
