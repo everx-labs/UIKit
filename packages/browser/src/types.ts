@@ -31,6 +31,8 @@ export enum InteractiveMessageType {
     EncryptionBox = 'EncryptionBox',
     TransactionConfirmation = 'TransactionConfirmation',
     QRCode = 'QRCode',
+    Date = 'Date',
+    Time = 'Time',
 }
 
 type PlainTextMessage = BubbleBaseT & {
@@ -169,7 +171,7 @@ export type SigningBox = {
     /**
      * Optional serial number of the security card used for the signature
      */
-    serialNumber?: string,
+    serialNumber?: string;
 };
 
 export type SigningBoxExternalState = {
@@ -213,6 +215,39 @@ export type EncryptionBoxMessage = InteractiveMessage<
     EncryptionBoxExternalState
 >;
 
+export type DateExternalState = {
+    date?: Date;
+};
+
+export type DateMessage = InteractiveMessage<
+    InteractiveMessageType.Date,
+    {
+        prompt?: string;
+        minDate?: Date;
+        maxDate?: Date;
+        currentDate?: Date;
+        onSelect: (state: DateExternalState) => void;
+    },
+    DateExternalState
+>;
+
+export type TimeExternalState = {
+    time?: Date;
+};
+
+export type TimeMessage = InteractiveMessage<
+    InteractiveMessageType.Time,
+    {
+        prompt?: string;
+        minTime?: Date;
+        maxTime?: Date;
+        currentTime?: Date;
+        interval?: number;
+        onSelect: (state: TimeExternalState) => void;
+    },
+    TimeExternalState
+>;
+
 export type TransactionConfirmationExternalState = {
     status: 'approved' | 'cancelled';
 };
@@ -246,7 +281,7 @@ export type QRCodeMessage = InteractiveMessage<
     {
         onScan: (state: QRCodeExternalState) => void;
         parseData: (data: any) => Promise<string>;
-        fastScan?: boolean,
+        fastScan?: boolean;
     },
     QRCodeExternalState
 >;
@@ -262,7 +297,9 @@ export type BrowserMessage =
     | SigningBoxMessage
     | EncryptionBoxMessage
     | TransactionConfirmationMessage
-    | QRCodeMessage;
+    | QRCodeMessage
+    | DateMessage
+    | TimeMessage;
 
 type WithExternalStateHelper<A> = A extends { externalState?: any } ? A : never;
 

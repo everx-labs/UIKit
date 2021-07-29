@@ -56,6 +56,14 @@
             "HintMin": "min.",
             "HintMax": "max."
         },
+        "DateTimeInput": {
+            "DoYouWantChooseDate": "Хотите выбрать дату?",
+            "DoYouWantChooseTime": "Хотите выбрать время?",
+            "ChooseDate": "Выбрать дату",
+            "ChooseTime": "Выбрать время",
+            "YouHaveChosenTheDate": "Вы выбрали дату: ",
+            "YouHaveChosenTheTime": "Вы выбрали время: "
+        },
         "SigningBox": {
             "Prompt": "How would you like to sign?",
             "EnterKey": "Enter Key",

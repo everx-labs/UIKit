@@ -10,6 +10,8 @@ import {
     ValidationResultStatus,
     QRCodeMessage,
     EncryptionBoxMessage,
+    DateMessage,
+    TimeMessage
 } from '@tonlabs/uikit.browser';
 import type {
     AddressInputMessage,
@@ -516,6 +518,9 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                         />
                         <UIBoxButton
                             title="Add QRCodeMessage"
+                            layout={{
+                                marginBottom: 10,
+                            }}
                             onPress={() => {
                                 const message: QRCodeMessage = {
                                     key: `${Date.now()}-qr-code`,
@@ -541,6 +546,9 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                         />
                         <UIBoxButton
                             title="Add QRCodeMessage with fast scan"
+                            layout={{
+                                marginBottom: 10,
+                            }}
                             onPress={() => {
                                 const message: QRCodeMessage = {
                                     key: `${Date.now()}-qr-code`,
@@ -559,6 +567,57 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
                                     parseData: (_data: any) => {
                                         return Promise.resolve('0:000');
+                                    },
+                                };
+                                setMessages([message, ...messages]);
+                                setMenuVisible(false);
+                            }}
+                        />
+                        <UIBoxButton
+                            title="Choose date"
+                            layout={{
+                                marginBottom: 10,
+                            }}
+                            onPress={() => {
+                                const message: DateMessage = {
+                                    key: `${Date.now()}-date-picker`,
+                                    status: MessageStatus.Received,
+                                    type: InteractiveMessageType.Date,
+                                    minDate: new Date(),
+                                    onSelect: (externalState: any) => {
+                                        setMessages([
+                                            {
+                                                ...message,
+                                                externalState,
+                                            },
+                                            ...messages,
+                                        ]);
+                                    },
+                                };
+                                setMessages([message, ...messages]);
+                                setMenuVisible(false);
+                            }}
+                        />
+                        <UIBoxButton
+                            title="Choose time"
+                            layout={{
+                                marginBottom: 10,
+                            }}
+                            onPress={() => {
+                                const message: TimeMessage = {
+                                    key: `${Date.now()}-time-picker`,
+                                    status: MessageStatus.Received,
+                                    type: InteractiveMessageType.Time,
+                                    minTime: new Date(0,0,0,12, 15),
+                                    maxTime: new Date(0,0,0,13, 0),
+                                    onSelect: (externalState: any) => {
+                                        setMessages([
+                                            {
+                                                ...message,
+                                                externalState,
+                                            },
+                                            ...messages,
+                                        ]);
                                     },
                                 };
                                 setMessages([message, ...messages]);

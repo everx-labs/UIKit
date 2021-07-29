@@ -132,11 +132,11 @@ export class LocalizationService<T> extends (LocalizedStringsService as Localize
         dayjs.locale(this.dayJSLocale);
     };
 
-    formatTime = (time: number, format: string = TIME_FORMAT): string => {
+    formatTime = (time: number | Date, format: string = TIME_FORMAT): string => {
         return dayjs(time).format(format);
-    }
+    };
 
-    formatDate = (time: number): string => {
+    formatDate = (time: number | Date): string => {
         const today = new Date();
         const date = new Date(time);
         today.setHours(0, 0, 0, 0);
@@ -155,7 +155,7 @@ export class LocalizationService<T> extends (LocalizedStringsService as Localize
         }
 
         return dayjs(time).format(`D MMM ${TIME_FORMAT}`);
-    }
+    };
 
     get decimalSeparator(): string {
         return this.localeInfo.numbers.decimal;

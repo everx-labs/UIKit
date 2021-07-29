@@ -68,3 +68,38 @@ export type ScreenshotViewProps = {
     ref: ForwardedRef<QRCodeRef>;
     children: React.ReactNode;
 };
+
+// eslint-disable-next-line no-shadow
+export enum UIDateTimePickerMode {
+    Date = 'calendar',
+    Time = 'time',
+}
+
+export type UIDateTimePickerType = {
+    /**
+     * We can display a calendar in Date view or a time picker in Time view.
+     * One of:
+     * - `Date`
+     * - `Time`
+     */
+    mode: UIDateTimePickerMode;
+    /* Specifies the minimum selectable date by user */
+    minDate?: Date;
+    /* Specifies the maximum selectable date by user */
+    maxDate?: Date;
+    /* Specifies the minimum selectable time by user */
+    minTime?: Date;
+    /* Specifies the maximum selectable time by user */
+    maxTime?: Date;
+    /* Initially visible month */
+    currentDate?: Date;
+    /* Initially visible time */
+    currentTime?: Date;
+    /** An interval of minutes in a time picker.
+     * For example:
+     * - 5 will look like 5, 10, 15, 20 ...
+     */
+    interval?: number;
+    /* Gets called when selected value changes */
+    onValueRetrieved: (datetime: Date, timezone?: number) => void;
+};
