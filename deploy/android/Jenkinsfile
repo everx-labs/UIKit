@@ -4,7 +4,6 @@ G_setup = "Not set"
 G_reinstall = "Not set"
 G_ApkBuild = "Not set"
 C_MacAgent = resources.getFreeLock(/ios[5-7]+/, 1)
-G_androidHome = "/Users/jenkins/Library/Android/sdk"
 
 pipeline {
     agent {label C_MacAgent}
@@ -22,7 +21,7 @@ pipeline {
        userpass = credentials("${jen_pass}")
        NODE_OPTIONS = "--max-old-space-size=4096"
        GITHUB_ACCESS_TOKEN = credentials("JenkinsPackagesRW")
-       ANDROID_HOME = getVar(G_androidHome)
+       ANDROID_HOME = ""
     }
     options {
         buildDiscarder logRotator(artifactDaysToKeepStr: '3', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10')
@@ -36,6 +35,8 @@ pipeline {
                     steps{
                         script {
                             sshagent (credentials: [G_gitcred]) {
+                                def userName = sh (script: 'echo $(whoami)',returnStdout: true).trim()
+                                env.ANDROID_HOME = "/Users/$userName/Library/Android/sdk"
                                 sh """
                                     npx lerna bootstrap && npx lerna run prepare
                                     cd Example
