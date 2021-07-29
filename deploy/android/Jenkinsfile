@@ -37,8 +37,6 @@ pipeline {
                             sshagent (credentials: [G_gitcred]) {
                                 sh """
                                     npx lerna bootstrap && npx lerna run prepare
-                                    cd Example
-                                    npx lerna bootstrap && npx lerna run prepare
                                 """
                             }
                         }
