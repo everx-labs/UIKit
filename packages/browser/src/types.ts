@@ -1,4 +1,8 @@
-import type { ChatMessageType, BubbleBaseT } from '@tonlabs/uikit.chats';
+import type {
+    ChatMessageType,
+    BubbleBaseT,
+    QRCodeMessage,
+} from '@tonlabs/uikit.chats';
 import type BigNumber from 'bignumber.js';
 import type React from 'react';
 
@@ -47,11 +51,6 @@ type ActionButtonMessage = BubbleBaseT & {
     text: string;
     textMode?: 'ellipsize' | 'fit';
     onPress?: () => void | Promise<void>;
-};
-
-type QRCodeMessage = BubbleBaseT & {
-    type: ChatMessageType.QRCode;
-    data: string;
 };
 
 type InteractiveMessage<
