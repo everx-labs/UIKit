@@ -37,7 +37,7 @@ pipeline {
                                 sh """
                                     npx lerna bootstrap && npx lerna run prepare
                                     cd Example
-                                    yarn reinstall 
+                                    npx lerna bootstrap && npx lerna run prepare
                                 """
                             }
                         }
