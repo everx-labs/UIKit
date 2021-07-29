@@ -89,16 +89,14 @@ export const IconSwitcher: React.FC<UISwitcherProps> = (
             <RawButton
                 shouldCancelWhenOutside
                 onGestureEvent={onGestureEvent}
-                style={[
-                    {
+                style={{
                         width: getShape(variant).width,
                         height: getShape(variant).height,
                         alignItems: 'flex-start',
                         justifyContent: 'flex-start',
                         // @ts-expect-error
                         cursor: 'pointer',
-                    },
-                ]}
+                    }}
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
                 testID={testID}
