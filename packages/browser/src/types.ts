@@ -30,6 +30,7 @@ export enum InteractiveMessageType {
     SigningBox = 'SigningBox',
     EncryptionBox = 'EncryptionBox',
     TransactionConfirmation = 'TransactionConfirmation',
+    QRCodeScanner = 'QRCodeScanner',
     QRCode = 'QRCode',
 }
 
@@ -46,6 +47,11 @@ type ActionButtonMessage = BubbleBaseT & {
     text: string;
     textMode?: 'ellipsize' | 'fit';
     onPress?: () => void | Promise<void>;
+};
+
+type QRCodeMessage = BubbleBaseT & {
+    type: ChatMessageType.QRCode;
+    data: string;
 };
 
 type InteractiveMessage<
@@ -169,7 +175,7 @@ export type SigningBox = {
     /**
      * Optional serial number of the security card used for the signature
      */
-    serialNumber?: string,
+    serialNumber?: string;
 };
 
 export type SigningBoxExternalState = {
@@ -237,18 +243,18 @@ export type TransactionConfirmationMessage = InteractiveMessage<
     TransactionConfirmationExternalState
 >;
 
-export type QRCodeExternalState = {
+export type QRCodeScannerExternalState = {
     value: string;
 };
 
-export type QRCodeMessage = InteractiveMessage<
-    InteractiveMessageType.QRCode,
+export type QRCodeScannerMessage = InteractiveMessage<
+    InteractiveMessageType.QRCodeScanner,
     {
-        onScan: (state: QRCodeExternalState) => void;
+        onScan: (state: QRCodeScannerExternalState) => void;
         parseData: (data: any) => Promise<string>;
-        fastScan?: boolean,
+        fastScan?: boolean;
     },
-    QRCodeExternalState
+    QRCodeScannerExternalState
 >;
 
 export type BrowserMessage =
@@ -262,6 +268,7 @@ export type BrowserMessage =
     | SigningBoxMessage
     | EncryptionBoxMessage
     | TransactionConfirmationMessage
+    | QRCodeScannerMessage
     | QRCodeMessage;
 
 type WithExternalStateHelper<A> = A extends { externalState?: any } ? A : never;

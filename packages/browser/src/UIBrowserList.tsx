@@ -19,7 +19,7 @@ import { ConfirmInput } from './Inputs/confirm';
 import { AmountInput } from './Inputs/amountInput';
 import { SigningBox } from './Inputs/SigningBox';
 import { TransactionConfirmation } from './Inputs/TransactionConfirmation';
-import { QRCode } from './Inputs/qrCode';
+import { QRCodeScanner } from './Inputs/qrCodeScanner';
 import { EncryptionBox } from './Inputs/EncryptionBox';
 
 type UIBrowserListProps = {
@@ -85,8 +85,8 @@ const renderBubble = () => (
     if (item.type === InteractiveMessageType.TransactionConfirmation) {
         return <TransactionConfirmation {...item} onLayout={onLayout} />;
     }
-    if (item.type === InteractiveMessageType.QRCode) {
-        return <QRCode {...item} onLayout={onLayout} />;
+    if (item.type === InteractiveMessageType.QRCodeScanner) {
+        return <QRCodeScanner {...item} onLayout={onLayout} />;
     }
 
     return null;

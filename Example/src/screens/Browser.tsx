@@ -8,7 +8,7 @@ import {
     UIBrowser,
     BrowserMessage,
     ValidationResultStatus,
-    QRCodeMessage,
+    QRCodeScannerMessage,
     EncryptionBoxMessage,
 } from '@tonlabs/uikit.browser';
 import type {
@@ -515,12 +515,12 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                             }}
                         />
                         <UIBoxButton
-                            title="Add QRCodeMessage"
+                            title="Add QRCodeScannerMessage"
                             onPress={() => {
-                                const message: QRCodeMessage = {
+                                const message: QRCodeScannerMessage = {
                                     key: `${Date.now()}-qr-code`,
                                     status: MessageStatus.Received,
-                                    type: InteractiveMessageType.QRCode,
+                                    type: InteractiveMessageType.QRCodeScanner,
                                     onScan: (externalState: any) => {
                                         setMessages([
                                             {
@@ -540,12 +540,12 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                             }}
                         />
                         <UIBoxButton
-                            title="Add QRCodeMessage with fast scan"
+                            title="Add QRCodeScannerMessage with fast scan"
                             onPress={() => {
-                                const message: QRCodeMessage = {
+                                const message: QRCodeScannerMessage = {
                                     key: `${Date.now()}-qr-code`,
                                     status: MessageStatus.Received,
-                                    type: InteractiveMessageType.QRCode,
+                                    type: InteractiveMessageType.QRCodeScanner,
                                     fastScan: true,
                                     onScan: (externalState: any) => {
                                         setMessages([
