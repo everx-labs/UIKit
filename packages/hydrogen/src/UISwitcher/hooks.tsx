@@ -33,6 +33,17 @@ const springConfig: Animated.WithSpringConfig = {
 
 export const useImage = (variant: UISwitcherVariant, theme: Theme) => {
     switch (variant) {
+        case UISwitcherVariant.Toggle:
+            return (
+                <View
+                    style={{
+                        width: UIConstant.switcher.toggleDotSize,
+                        height: UIConstant.switcher.toggleDotSize,
+                        borderRadius: UIConstant.switcher.toggleDotSize,
+                        backgroundColor: theme[ColorVariants.BackgroundPrimary],
+                    }}
+                />
+            );
         case UISwitcherVariant.Radio:
             return (
                 <View
@@ -95,6 +106,7 @@ export const useImageStyle = (
     active: boolean,
     switcherState: Readonly<Animated.SharedValue<SwitcherState>>,
     theme: Theme,
+    variant: UISwitcherVariant,
 ) => {
     const iconSwitcherState = useSharedValue<IconSwitcherState>(
         IconSwitcherState.NotActive,
@@ -116,11 +128,44 @@ export const useImageStyle = (
     });
 
     const imageOnStyle = useAnimatedStyle(() => {
+        if (variant === UISwitcherVariant.Toggle) {
+            return {
+                transform: [
+                    {
+                        translateX: interpolate(
+                            animatedValue.value,
+                            [
+                                IconSwitcherState.NotActive,
+                                IconSwitcherState.Active,
+                            ],
+                            [
+                                0,
+                                UIConstant.iconSize -
+                                    UIConstant.switcher.toggleDotSize,
+                            ],
+                        ),
+                    },
+                ],
+            };
+        }
         return {
             opacity: interpolate(
                 animatedValue.value,
                 [IconSwitcherState.NotActive, IconSwitcherState.Active],
                 [0, 1],
+            ),
+        };
+    });
+
+    const backgroundOnStyle = useAnimatedStyle(() => {
+        return {
+            backgroundColor: interpolateColor(
+                animatedValue.value,
+                [IconSwitcherState.NotActive, IconSwitcherState.Active],
+                [
+                    theme[ColorVariants.BackgroundTertiaryInverted] as string,
+                    theme[ColorVariants.BackgroundAccent] as string,
+                ],
             ),
         };
     });
@@ -157,6 +202,7 @@ export const useImageStyle = (
         imageOnStyle,
         imageOffOpacity,
         imageOffBorderColor,
+        backgroundOnStyle
     };
 };
 
