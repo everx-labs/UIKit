@@ -72,28 +72,41 @@ export const IconSwitcher: React.FC<UISwitcherProps> = (
     const { onGestureEvent, pressed } = useSwitcherGestureEvent(onPress);
 
     const switcherState = useSwitcherState(isHovered, pressed);
-    const overlayStyle = useOverlayStyle(switcherState, theme);
+    const overlayStyle = useOverlayStyle(switcherState, theme, variant);
+
     const isToggleSwitch = variant === UISwitcherVariant.Toggle;
+    const buttonStyles = isToggleSwitch
+        ? styles.buttonToggleStyle
+        : styles.buttonSwitcherStyle;
 
     const {
         imageOnStyle,
         imageOffOpacity,
         imageOffBorderColor,
         toggleBackgroundStyle,
-        toggleOverlayStyle,
     } = useImageStyle(active, switcherState, theme, variant);
+
+    const toggleSwitcherIcon = () => {
+        return (
+            <>
+                <Animated.View
+                    style={[styles.toggleOuterStyle, toggleBackgroundStyle]}
+                >
+                    <Animated.View
+                        style={[styles.toggleInnerStyle, overlayStyle]}
+                    >
+                        <Animated.View style={imageOnStyle}>
+                            {image}
+                        </Animated.View>
+                    </Animated.View>
+                </Animated.View>
+            </>
+        );
+    };
 
     const commonSwitcherIcon = () => {
         return (
-            <RawButton
-                shouldCancelWhenOutside
-                onGestureEvent={onGestureEvent}
-                style={styles.buttonSwitcherStyle}
-                // @ts-expect-error
-                onMouseEnter={onMouseEnter}
-                onMouseLeave={onMouseLeave}
-                testID={testID}
-            >
+            <>
                 <Animated.View style={imageOffOpacity}>
                     <Animated.View
                         style={[styles.offSwitcher, imageOffBorderColor]}
@@ -105,37 +118,23 @@ export const IconSwitcher: React.FC<UISwitcherProps> = (
                         {image}
                     </Animated.View>
                 </Animated.View>
-            </RawButton>
+            </>
         );
     };
 
-    const toggleSwitcherIcon = () => {
-        return (
-            <RawButton
-                shouldCancelWhenOutside
-                onGestureEvent={onGestureEvent}
-                style={styles.buttonToggleStyle}
-                // @ts-expect-error
-                onMouseEnter={onMouseEnter}
-                onMouseLeave={onMouseLeave}
-                testID={testID}
-            >
-                <Animated.View
-                    style={[styles.toggleOuterStyle, toggleBackgroundStyle]}
-                >
-                    <Animated.View
-                        style={[styles.toggleInnerStyle, toggleOverlayStyle]}
-                    >
-                        <Animated.View style={imageOnStyle}>
-                            {image}
-                        </Animated.View>
-                    </Animated.View>
-                </Animated.View>
-            </RawButton>
-        );
-    };
-
-    return isToggleSwitch ? toggleSwitcherIcon() : commonSwitcherIcon();
+    return (
+        <RawButton
+            shouldCancelWhenOutside
+            onGestureEvent={onGestureEvent}
+            style={buttonStyles}
+            // @ts-expect-error
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            testID={testID}
+        >
+            {isToggleSwitch ? toggleSwitcherIcon() : commonSwitcherIcon()}
+        </RawButton>
+    );
 };
 
 const useStyles = makeStyles((theme: Theme, variant: UISwitcherVariant) => ({

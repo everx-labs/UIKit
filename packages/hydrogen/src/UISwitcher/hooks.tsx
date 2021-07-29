@@ -142,7 +142,7 @@ export const useImageStyle = (
                                 0,
                                 UIConstant.switcher.toggleWidth -
                                     UIConstant.switcher.toggleDotSize -
-                                    UIConstant.switcher.togglePadding*2,
+                                    UIConstant.switcher.togglePadding * 2,
                             ],
                         ),
                     },
@@ -170,25 +170,6 @@ export const useImageStyle = (
             ),
         };
     });
-
-    const toggleOverlayStyle = useAnimatedStyle(() => {
-        return {
-            backgroundColor: interpolateColor(
-                switcherState.value,
-                [
-                    SwitcherState.Active,
-                    SwitcherState.Hovered,
-                    SwitcherState.Pressed,
-                ],
-                [
-                    theme[ColorVariants.Transparent] as string,
-                    theme[ColorVariants.BackgroundOverlay] as string,
-                    theme[ColorVariants.Transparent] as string,
-                ],
-            ),
-        };
-    });
-
 
     const imageOffOpacity = useAnimatedStyle(() => {
         return {
@@ -223,7 +204,6 @@ export const useImageStyle = (
         imageOffOpacity,
         imageOffBorderColor,
         toggleBackgroundStyle,
-        toggleOverlayStyle
     };
 };
 
@@ -247,6 +227,7 @@ export const useSwitcherState = (
 export const useOverlayStyle = (
     switcherState: Readonly<Animated.SharedValue<SwitcherState>>,
     theme: Theme,
+    variant: UISwitcherVariant,
 ) => {
     const overlayStyle = useAnimatedStyle(() => {
         return {
@@ -257,11 +238,17 @@ export const useOverlayStyle = (
                     SwitcherState.Hovered,
                     SwitcherState.Pressed,
                 ],
-                [
-                    theme[ColorVariants.BackgroundAccent] as string,
-                    theme[ColorVariants.BackgroundAccent] as string,
-                    theme[ColorVariants.StaticPressOverlay] as string,
-                ],
+                variant === UISwitcherVariant.Toggle
+                    ? [
+                          theme[ColorVariants.Transparent] as string,
+                          theme[ColorVariants.StaticHoverOverlay] as string,
+                          theme[ColorVariants.StaticPressOverlay] as string,
+                      ]
+                    : [
+                          theme[ColorVariants.BackgroundAccent] as string,
+                          theme[ColorVariants.BackgroundAccent] as string,
+                          theme[ColorVariants.StaticPressOverlay] as string,
+                      ],
             ),
         };
     });
