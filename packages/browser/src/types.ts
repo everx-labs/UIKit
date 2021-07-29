@@ -268,8 +268,8 @@ export type BrowserMessage =
     | SigningBoxMessage
     | EncryptionBoxMessage
     | TransactionConfirmationMessage
-    | QRCodeScannerMessage
-    | QRCodeMessage;
+    | QRCodeMessage
+    | QRCodeScannerMessage;
 
 type WithExternalStateHelper<A> = A extends { externalState?: any } ? A : never;
 

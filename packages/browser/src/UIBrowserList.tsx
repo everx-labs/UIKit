@@ -4,6 +4,7 @@ import { FlatList, FlatListProps, ViewProps } from 'react-native';
 import {
     BubbleActionButton,
     BubbleSimplePlainText,
+    BubbleQRCode,
     ChatMessageType,
     CommonChatListProps,
     UICommonChatList,
@@ -87,6 +88,9 @@ const renderBubble = () => (
     }
     if (item.type === InteractiveMessageType.QRCodeScanner) {
         return <QRCodeScanner {...item} onLayout={onLayout} />;
+    }
+    if (item.type === ChatMessageType.QRCode) {
+        return <BubbleQRCode {...item} onLayout={onLayout} />;
     }
 
     return null;
