@@ -65,13 +65,30 @@ export enum UIDateTimePickerMode {
 }
 
 export type UIDateTimePickerType = {
-    mode: UIDateTimePickerMode; // mode of date time picker can display the date and time in one view, or each separately ( Date, Time)
-    minDate?: Date; // minimal date to choose
-    maxDate?: Date; // maximum date to choose
-    currentDate?: Date; // current(default) date
-    minTime?: Date; // minimal time to choose
-    maxTime?: Date;  // maximum time to choose
-    currentTime?: Date; // current(default) time
-    interval?: number; // an interval of minutes in a time picker, for example 5 will look like 5, 10, 15, 20 ...
+    /**
+     * We can display a calendar in Date view or a time picker in Time view.
+     * One of:
+     * - `Date`
+     * - `Time`
+     */
+    mode: UIDateTimePickerMode;
+    /* Specifies the minimum selectable date by user */
+    minDate?: Date;
+    /* Specifies the maximum selectable date by user */
+    maxDate?: Date;
+    /* Specifies the minimum selectable time by user */
+    minTime?: Date;
+    /* Specifies the maximum selectable time by user */
+    maxTime?: Date;
+    /* Initially visible month */
+    currentDate?: Date;
+    /* Initially visible time */
+    currentTime?: Date;
+    /** An interval of minutes in a time picker.
+     * For example:
+     * - 5 will look like 5, 10, 15, 20 ...
+     */
+    interval?: number;
+    /* Gets called when selected value changes */
     onValueRetrieved: (datetime: Date, timezone?: number) => void;
 };

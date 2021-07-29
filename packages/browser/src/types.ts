@@ -281,10 +281,10 @@ export type QRCodeMessage = InteractiveMessage<
     {
         onScan: (state: QRCodeExternalState) => void;
         parseData: (data: any) => Promise<string>;
-        fastScan?: boolean,
+        fastScan?: boolean;
     },
     QRCodeExternalState
-    >;
+>;
 
 export type BrowserMessage =
     | PlainTextMessage
