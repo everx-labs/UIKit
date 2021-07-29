@@ -4,11 +4,12 @@ G_setup = "Not set"
 G_reinstall = "Not set"
 G_ApkBuild = "Not set"
 C_MacAgent = resources.getFreeLock(/ios[5-7]+/, 1)
+G_androidHome = "/Users/jenkins/Library/Android/sdk"
 
 pipeline {
     agent {label C_MacAgent}
     tools {
-        nodejs "Node12.8.0"
+        nodejs "Node14.3"
         jdk "JDK8u221"
     }
     parameters {
@@ -21,6 +22,7 @@ pipeline {
        userpass = credentials("${jen_pass}")
        NODE_OPTIONS = "--max-old-space-size=4096"
        GITHUB_ACCESS_TOKEN = credentials("JenkinsPackagesRW")
+       ANDROID_HOME = getVar(G_androidHome)
     }
     options {
         buildDiscarder logRotator(artifactDaysToKeepStr: '3', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10')
