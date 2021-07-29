@@ -202,7 +202,7 @@ export const useImageStyle = (
         imageOnStyle,
         imageOffOpacity,
         imageOffBorderColor,
-        backgroundOnStyle
+        backgroundOnStyle,
     };
 };
 
