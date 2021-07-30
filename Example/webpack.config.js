@@ -120,6 +120,7 @@ module.exports = {
                         __dirname,
                         '../node_modules/react-native-view-shot/',
                     ),
+                    path.resolve(__dirname, '../node_modules/react-native-modern-datepicker'),
                 ],
                 loader: 'babel-loader',
                 query: {

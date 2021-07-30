@@ -36,6 +36,8 @@ export enum InteractiveMessageType {
     TransactionConfirmation = 'TransactionConfirmation',
     QRCodeScanner = 'QRCodeScanner',
     QRCode = 'QRCode',
+    Date = 'Date',
+    Time = 'Time',
 }
 
 type PlainTextMessage = BubbleBaseT & {
@@ -218,6 +220,39 @@ export type EncryptionBoxMessage = InteractiveMessage<
     EncryptionBoxExternalState
 >;
 
+export type DateExternalState = {
+    date?: Date;
+};
+
+export type DateMessage = InteractiveMessage<
+    InteractiveMessageType.Date,
+    {
+        prompt?: string;
+        minDate?: Date;
+        maxDate?: Date;
+        currentDate?: Date;
+        onSelect: (state: DateExternalState) => void;
+    },
+    DateExternalState
+>;
+
+export type TimeExternalState = {
+    time?: Date;
+};
+
+export type TimeMessage = InteractiveMessage<
+    InteractiveMessageType.Time,
+    {
+        prompt?: string;
+        minTime?: Date;
+        maxTime?: Date;
+        currentTime?: Date;
+        interval?: number;
+        onSelect: (state: TimeExternalState) => void;
+    },
+    TimeExternalState
+>;
+
 export type TransactionConfirmationExternalState = {
     status: 'approved' | 'cancelled';
 };
@@ -268,7 +303,9 @@ export type BrowserMessage =
     | EncryptionBoxMessage
     | TransactionConfirmationMessage
     | QRCodeMessage
-    | QRCodeScannerMessage;
+    | QRCodeScannerMessage
+    | DateMessage
+    | TimeMessage;
 
 type WithExternalStateHelper<A> = A extends { externalState?: any } ? A : never;
 
