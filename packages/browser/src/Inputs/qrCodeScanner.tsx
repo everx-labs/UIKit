@@ -9,37 +9,46 @@ import {
 } from '@tonlabs/uikit.chats';
 import { UIQRCodeScannerSheet } from '@tonlabs/uikit.navigation';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import type { QRCodeMessage } from '../types';
 
-type QRCodeInternalState = {
-    qrCodeVisible: boolean;
+import type { QRCodeScannerMessage } from '../types';
+
+type QRCodeScannerInternalState = {
+    qrCodeScannerVisible: boolean;
 };
 
-type QRCodeAction = {
-    type: 'OPEN_QR_CODE' | 'CLOSE_QR_CODE';
+type QRCodeScannerAction = {
+    type:
+        | 'OPEN_QR_CODE'
+        | 'CLOSE_QR_CODE';
 };
 
-function qrCodeReducer(state: QRCodeInternalState, action: QRCodeAction) {
+function qrCodeScannerReducer(
+    state: QRCodeScannerInternalState,
+    action: QRCodeScannerAction,
+) {
     if (action.type === 'OPEN_QR_CODE') {
         return {
             ...state,
-            qrCodeVisible: true,
+            qrCodeScannerVisible: true,
         };
     }
     if (action.type === 'CLOSE_QR_CODE') {
         return {
             ...state,
-            qrCodeVisible: false,
+            qrCodeScannerVisible: false,
         };
     }
     return {
-        qrCodeVisible: false,
+        qrCodeScannerVisible: false,
     };
 }
 
-export function QRCode({ onLayout, ...message }: QRCodeMessage) {
-    const [state, dispatch] = React.useReducer(qrCodeReducer, {
-        qrCodeVisible: message.fastScan || false,
+export function QRCodeScanner({
+    onLayout,
+    ...message
+}: QRCodeScannerMessage) {
+    const [state, dispatch] = React.useReducer(qrCodeScannerReducer, {
+        qrCodeScannerVisible: message.fastScan || false,
     });
 
     if (message.externalState != null) {
@@ -72,7 +81,7 @@ export function QRCode({ onLayout, ...message }: QRCodeMessage) {
                 }}
             />
             <UIQRCodeScannerSheet
-                visible={state.qrCodeVisible}
+                visible={state.qrCodeScannerVisible}
                 onRead={async (e: any) => {
                     const value = await message.parseData(e.data);
                     message.onScan({

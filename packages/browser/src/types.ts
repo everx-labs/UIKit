@@ -1,4 +1,8 @@
-import type { ChatMessageType, BubbleBaseT } from '@tonlabs/uikit.chats';
+import type {
+    ChatMessageType,
+    BubbleBaseT,
+    QRCodeMessage,
+} from '@tonlabs/uikit.chats';
 import type BigNumber from 'bignumber.js';
 import type React from 'react';
 
@@ -30,7 +34,7 @@ export enum InteractiveMessageType {
     SigningBox = 'SigningBox',
     EncryptionBox = 'EncryptionBox',
     TransactionConfirmation = 'TransactionConfirmation',
-    QRCode = 'QRCode',
+    QRCodeScanner = 'QRCodeScanner',
     Date = 'Date',
     Time = 'Time',
 }
@@ -272,18 +276,18 @@ export type TransactionConfirmationMessage = InteractiveMessage<
     TransactionConfirmationExternalState
 >;
 
-export type QRCodeExternalState = {
+export type QRCodeScannerExternalState = {
     value: string;
 };
 
-export type QRCodeMessage = InteractiveMessage<
-    InteractiveMessageType.QRCode,
+export type QRCodeScannerMessage = InteractiveMessage<
+    InteractiveMessageType.QRCodeScanner,
     {
-        onScan: (state: QRCodeExternalState) => void;
+        onScan: (state: QRCodeScannerExternalState) => void;
         parseData: (data: any) => Promise<string>;
         fastScan?: boolean;
     },
-    QRCodeExternalState
+    QRCodeScannerExternalState
 >;
 
 export type BrowserMessage =
@@ -298,6 +302,7 @@ export type BrowserMessage =
     | EncryptionBoxMessage
     | TransactionConfirmationMessage
     | QRCodeMessage
+    | QRCodeScannerMessage
     | DateMessage
     | TimeMessage;
 

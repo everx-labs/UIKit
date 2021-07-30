@@ -8,7 +8,7 @@ import {
     UIBrowser,
     BrowserMessage,
     ValidationResultStatus,
-    QRCodeMessage,
+    QRCodeScannerMessage,
     EncryptionBoxMessage,
     DateMessage,
     TimeMessage
@@ -114,6 +114,27 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                             borderRadius: 10,
                         }}
                     >
+                        <UIBoxButton
+                            title="Add QRCode"
+                            layout={{
+                                marginBottom: 10,
+                            }}
+                            onPress={() => {
+                                const message: BrowserMessage = {
+                                    key: `${Date.now()}-qr-code`,
+                                    status: MessageStatus.Received,
+                                    type: ChatMessageType.QRCode,
+                                    data: 'You are reading a message received through a QR code',
+                                };
+                                setMessages([
+                                    {
+                                        ...message,
+                                    },
+                                    ...messages,
+                                ]);
+                                setMenuVisible(false);
+                            }}
+                        />
                         <UIBoxButton
                             title="Add AddressInput"
                             layout={{
@@ -517,15 +538,15 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                             }}
                         />
                         <UIBoxButton
-                            title="Add QRCodeMessage"
+                            title="Add QRCodeScannerMessage"
                             layout={{
                                 marginBottom: 10,
                             }}
                             onPress={() => {
-                                const message: QRCodeMessage = {
+                                const message: QRCodeScannerMessage = {
                                     key: `${Date.now()}-qr-code`,
                                     status: MessageStatus.Received,
-                                    type: InteractiveMessageType.QRCode,
+                                    type: InteractiveMessageType.QRCodeScanner,
                                     onScan: (externalState: any) => {
                                         setMessages([
                                             {
@@ -545,15 +566,15 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                             }}
                         />
                         <UIBoxButton
-                            title="Add QRCodeMessage with fast scan"
+                            title="Add QRCodeScannerMessage with fast scan"
                             layout={{
                                 marginBottom: 10,
                             }}
                             onPress={() => {
-                                const message: QRCodeMessage = {
+                                const message: QRCodeScannerMessage = {
                                     key: `${Date.now()}-qr-code`,
                                     status: MessageStatus.Received,
-                                    type: InteractiveMessageType.QRCode,
+                                    type: InteractiveMessageType.QRCodeScanner,
                                     fastScan: true,
                                     onScan: (externalState: any) => {
                                         setMessages([

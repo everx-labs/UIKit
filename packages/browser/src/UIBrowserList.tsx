@@ -4,6 +4,7 @@ import { FlatList, FlatListProps, ViewProps } from 'react-native';
 import {
     BubbleActionButton,
     BubbleSimplePlainText,
+    BubbleQRCode,
     ChatMessageType,
     CommonChatListProps,
     UICommonChatList,
@@ -19,7 +20,7 @@ import { ConfirmInput } from './Inputs/confirm';
 import { AmountInput } from './Inputs/amountInput';
 import { SigningBox } from './Inputs/SigningBox';
 import { TransactionConfirmation } from './Inputs/TransactionConfirmation';
-import { QRCode } from './Inputs/qrCode';
+import { QRCodeScanner } from './Inputs/qrCodeScanner';
 import { EncryptionBox } from './Inputs/EncryptionBox';
 import { DatePicker } from './Inputs/datePicker';
 import { TimePicker } from './Inputs/timePicker';
@@ -62,6 +63,9 @@ const renderBubble = () => (
     if (item.type === ChatMessageType.ActionButton) {
         return <BubbleActionButton {...item} onLayout={onLayout} />;
     }
+    if (item.type === ChatMessageType.QRCode) {
+        return <BubbleQRCode {...item} onLayout={onLayout} />;
+    }
 
     if (item.type === InteractiveMessageType.AddressInput) {
         return <AddressInput {...item} onLayout={onLayout} />;
@@ -87,8 +91,8 @@ const renderBubble = () => (
     if (item.type === InteractiveMessageType.TransactionConfirmation) {
         return <TransactionConfirmation {...item} onLayout={onLayout} />;
     }
-    if (item.type === InteractiveMessageType.QRCode) {
-        return <QRCode {...item} onLayout={onLayout} />;
+    if (item.type === InteractiveMessageType.QRCodeScanner) {
+        return <QRCodeScanner {...item} onLayout={onLayout} />;
     }
     if (item.type === InteractiveMessageType.Date) {
         return <DatePicker {...item} onLayout={onLayout} />;

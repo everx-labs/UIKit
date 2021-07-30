@@ -126,18 +126,19 @@ export type StickerMessage = BubbleBaseT &
 
 export type ChatActionButtonMessage = ChatMeta & ActionButtonMessage;
 
-export type QRCodeMessage = BubbleBaseT &
-    ChatMeta & {
-        type: ChatMessageType.QRCode;
-        data: string;
-    };
+export type QRCodeMessage = BubbleBaseT & {
+    type: ChatMessageType.QRCode;
+    data: string;
+};
+
+export type ChatQRCodeMessage = ChatMeta & QRCodeMessage;
 
 export type ChatMessage =
     | ChatPlainTextMessage
     | ChatActionButtonMessage
+    | ChatQRCodeMessage
     | SystemMessage
     | TransactionMessage
     | ImageMessage
     | DocumentMessage
-    | QRCodeMessage
     | StickerMessage;

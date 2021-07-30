@@ -15,7 +15,7 @@ import { BubbleImage } from './BubbleImage';
 import { BubbleDocument } from './BubbleDocument';
 import { BubbleSticker } from './BubbleSticker';
 import { BubbleActionButton } from './BubbleActionButton';
-import { BubbleQRCode } from './BubbleQRCode';
+import { ChatBubbleQRCode } from './BubbleQRCode';
 
 const renderSectionTitle = ({
     section,
@@ -80,7 +80,7 @@ const renderBubble = (
             );
         case ChatMessageType.QRCode:
             return (
-                <BubbleQRCode
+                <ChatBubbleQRCode
                     {...message}
                     key={message.key}
                     onLayout={onLayout}
