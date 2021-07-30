@@ -195,7 +195,7 @@ export function UINavigationBar({
 
 const styles = StyleSheet.create({
     container: {
-        minHeight: UINavConstant.headerHeight,
+        height: UINavConstant.headerHeight,
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: UINavConstant.contentInsetVerticalX2,

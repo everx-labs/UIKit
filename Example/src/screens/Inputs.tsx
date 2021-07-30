@@ -13,7 +13,6 @@ import { UIAddressTextView } from '@tonlabs/uikit.flask';
 import {
     UIAmountInput,
     UIDetailsInput,
-    UIPinCodeInput,
     UITextInput,
     UITransferInput,
 } from '@tonlabs/uikit.components';
@@ -312,17 +311,6 @@ export const Inputs = () => {
                         onChangeText={(newText: string) => setDetails(newText)}
                         maxLines={3}
                         containerStyle={{ marginTop: 16 }}
-                    />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UIPinCodeInput">
-                <View style={{ paddingVertical: 20 }}>
-                    <UIPinCodeInput
-                        testID="uiPinCodeInput_default"
-                        pinCodeLength={6}
-                        pinTitle="Pin title"
-                        pinDescription="Description"
-                        pinCodeEnter={() => undefined}
                     />
                 </View>
             </ExampleSection>
