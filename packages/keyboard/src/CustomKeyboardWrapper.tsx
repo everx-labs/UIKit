@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Animated, LayoutAnimation } from 'react-native';
 
 import { UIConstant, UIDevice } from '@tonlabs/uikit.core';
-import { UIController } from '@tonlabs/uikit.navigation_legacy';
 
 import { getEasingFunction } from './getEasingFunction';
 
