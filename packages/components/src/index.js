@@ -19,7 +19,6 @@ export { default as UILoadMoreButton } from './UILoadMoreButton';
 export { default as UILoopEffect } from './UILoopEffect';
 export { default as UINetworkStatus } from './UINetworkStatus';
 export { default as UINotice } from './UINotice';
-export { default as UIPinCodeInput } from './UIPinCodeInput';
 export { default as UIPureComponent } from './UIPureComponent';
 export { default as UIPushNotification } from './UIPushNotification';
 export { default as UIScaleButton } from './UIScaleButton';

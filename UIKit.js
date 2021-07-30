@@ -30,7 +30,6 @@ export {
     UILoopEffect,
     UINetworkStatus,
     UINotice,
-    UIPinCodeInput,
     UIPureComponent,
     UIScaleButton,
     UISectionHeader,
