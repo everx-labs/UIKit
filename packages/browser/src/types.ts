@@ -2,6 +2,7 @@ import type {
     ChatMessageType,
     BubbleBaseT,
     QRCodeMessage,
+    MediaMessage,
 } from '@tonlabs/uikit.chats';
 import type BigNumber from 'bignumber.js';
 import type React from 'react';
@@ -297,6 +298,7 @@ export type BrowserMessage =
     | TerminalMessage
     | AddressInputMessage
     | MenuMessage
+    | MediaMessage
     | ConfirmMessage
     | AmountInputMessage
     | SigningBoxMessage

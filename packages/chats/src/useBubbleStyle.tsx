@@ -1,5 +1,6 @@
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
+import type { StyleProp, ViewStyle } from 'react-native';
 import { BubbleBaseT, MessageStatus } from './types';
 import { BubblePosition } from './useBubblePosition';
 
@@ -33,7 +34,9 @@ export const useBubbleRoundedCornerStyle = (
     };
 };
 
-export const useBubbleBackgroundColor = (message: BubbleBaseT) => {
+export const useBubbleBackgroundColor = (
+    message: BubbleBaseT,
+): StyleProp<ViewStyle> => {
     const theme = useTheme();
 
     if (message.status === MessageStatus.Aborted) {

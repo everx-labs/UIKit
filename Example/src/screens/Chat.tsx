@@ -12,11 +12,20 @@ import {
 } from '@tonlabs/uikit.chats';
 import { useStickers } from '@tonlabs/uikit.stickers';
 import { createStackNavigator } from '@tonlabs/uikit.navigation';
+import image from '../../assets/icons/example-icon-base64';
 
 const userId = '0:000';
 const companionId = '0:123';
 
 const initialMessages: ChatMessage[] = [
+    {
+        type: ChatMessageType.Media,
+        data: image,
+        time: Math.floor(Date.now() - 4 * 60 * 1000),
+        sender: companionId,
+        status: MessageStatus.Sent,
+        key: '',
+    },
     {
         type: ChatMessageType.QRCode,
         data: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore',

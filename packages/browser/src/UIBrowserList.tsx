@@ -5,6 +5,7 @@ import {
     BubbleActionButton,
     BubbleSimplePlainText,
     BubbleQRCode,
+    BubbleMedia,
     ChatMessageType,
     CommonChatListProps,
     UICommonChatList,
@@ -65,6 +66,9 @@ const renderBubble = () => (
     }
     if (item.type === ChatMessageType.QRCode) {
         return <BubbleQRCode {...item} onLayout={onLayout} />;
+    }
+    if (item.type === ChatMessageType.Media) {
+        return <BubbleMedia {...item} onLayout={onLayout} />;
     }
 
     if (item.type === InteractiveMessageType.AddressInput) {
