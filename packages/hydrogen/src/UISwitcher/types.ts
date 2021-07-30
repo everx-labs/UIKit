@@ -17,6 +17,11 @@ export type UISwitcherProps = {
      */
     active: boolean;
     /**
+     * Disabled status of the switcher
+     * disable onPress if true and change styles
+     */
+    disabled?: boolean;
+    /**
      * The callback that is called by clicking/tapping on the switcher
      */
     onPress?: () => void;

@@ -129,6 +129,7 @@ export const Checkbox = () => {
                         containerStyle={{ marginLeft: 16 }}
                         active={selectedToggle}
                         onPress={() => setSelectedToggle(!selectedToggle)}
+                        disabled={true}
                     />
                 </View>
             </ExampleSection>
