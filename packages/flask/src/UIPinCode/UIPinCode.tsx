@@ -226,7 +226,7 @@ export function UIPinCode({
         activeDotIndex,
     });
 
-    React.useLayoutEffect(() => {
+    React.useEffect(() => {
         if (!autoUnlock) {
             return;
         }
