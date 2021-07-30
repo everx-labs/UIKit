@@ -1,11 +1,12 @@
 import React from 'react';
 import { Image, View } from 'react-native';
+import { UIBoxButton, UITextView, useTheme } from '@tonlabs/uikit.hydrogen';
 import {
-    UIBoxButton,
-    UITextView,
-    useTheme,
-} from '@tonlabs/uikit.hydrogen';
-import { UIQRCodeView, QRCodeType, QRCodeRef } from '@tonlabs/uikit.flask';
+    UIQRCodeView,
+    QRCodeType,
+    QRCodeRef,
+    QRCodeSize,
+} from '@tonlabs/uikit.flask';
 import { createStackNavigator } from '@tonlabs/uikit.navigation';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -17,6 +18,7 @@ const QRCode = () => {
     const theme = useTheme();
     const [base64Image, setBase64Image] = React.useState<string>('');
     const [type, setType] = React.useState<QRCodeType>(QRCodeType.Circle);
+    const [size, setSize] = React.useState<QRCodeSize>(QRCodeSize.Large);
     const ref = React.useRef<QRCodeRef>(null);
     const onGetPng = () => {
         ref.current?.getPng().then((base64: string | null) => {
@@ -49,6 +51,25 @@ const QRCode = () => {
                 </View>
                 <View
                     style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        width: 200,
+                    }}
+                >
+                    <UIBoxButton
+                        title="Large"
+                        onPress={() => setSize(QRCodeSize.Large)}
+                        disabled={size === QRCodeSize.Large}
+                    />
+                    <UIBoxButton
+                        title="Medium"
+                        onPress={() => setSize(QRCodeSize.Medium)}
+                        disabled={size === QRCodeSize.Medium}
+                    />
+                </View>
+                <View
+                    style={{
                         padding: 32,
                         backgroundColor: theme.BackgroundNeutral,
                         alignItems: 'center',
@@ -57,6 +78,7 @@ const QRCode = () => {
                 >
                     <UIQRCodeView
                         type={type}
+                        size={size}
                         value="QR code value QR value QR QR code value QR value QR QR code value QR value QR QR code value QR value QR "
                         logo={logo}
                         ref={ref}

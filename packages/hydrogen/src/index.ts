@@ -15,13 +15,13 @@ export * from './UILabel';
 export * from './UILinkButton';
 export * from './UIMaterialTextView';
 export * from './UIMsgButton';
-export * from './UINotice';
 export * from './UINumberTextView';
 export * from './UIPillButton';
 export * from './UISafeAreaView';
 export * from './UISeedPhraseTextView';
 export * from './UIStatusBar';
 export * from './UITextView';
+export * from './UISwitcher';
 
 // @ts-expect-error do not work with '.ios' and '.android' suffixes
 // eslint-disable-next-line import/no-unresolved

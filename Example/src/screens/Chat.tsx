@@ -2,11 +2,25 @@ import * as React from 'react';
 import BigNumber from 'bignumber.js';
 
 import { ColorVariants } from '@tonlabs/uikit.hydrogen';
-import { UIChatInput, UIChatList } from '@tonlabs/uikit.chats';
+import { UIChatInput, UIChatList, ChatMessageType } from '@tonlabs/uikit.chats';
 import { useStickers } from '@tonlabs/uikit.stickers';
 import { createStackNavigator } from '@tonlabs/uikit.navigation';
 
 const initialMessages = [
+    {
+        type: ChatMessageType.QRCode,
+        data: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore',
+        time: Math.floor(Date.now() - 4 * 60 * 1000),
+        sender: '0:000',
+        status: 'received',
+    },
+    {
+        type: ChatMessageType.QRCode,
+        data: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore',
+        time: Math.floor(Date.now() - 4 * 60 * 1000),
+        sender: '0:123',
+        status: 'sent',
+    },
     {
         type: 'stm',
         status: 'received',
