@@ -11,12 +11,16 @@ import { TapGestureHandler } from 'react-native-gesture-handler';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 
-import { ColorVariants } from './Colors';
-import { UIConstant } from './constants';
-import { UIBackgroundView, UIBackgroundViewColors } from './UIBackgroundView';
-import { UIImage } from './UIImage';
-import { Portal } from './Portal';
-import { useHover } from './useHover';
+import {
+    ColorVariants,
+    UIImage,
+    Portal,
+    useHover,
+    UIBackgroundView,
+    UIBackgroundViewColors,
+} from '@tonlabs/uikit.hydrogen';
+
+import { UIConstant } from '../constants'
 
 const AnimatedWithColor = Animated.createAnimatedComponent(UIBackgroundView);
 
@@ -30,7 +34,7 @@ export type UINoticeCommonProps = {
     testID?: string;
 };
 
-export type UINoticeProps = UINoticeCommonProps & {
+export type PromoNoticeProps = UINoticeCommonProps & {
     /**
      * Whether to add folding behaviour or to use default notice
      */
@@ -46,10 +50,15 @@ function UIFoldingNotice({
     const [folded, setFolded] = React.useState(false);
     const [containerWidth, setContainerWidth] = React.useState(0);
     const [contentWidth, setContentWidth] = React.useState(0);
-    const visibleAnim = React.useRef(new Animated.Value(-containerWidth)).current;
+    const visibleAnim = React.useRef(new Animated.Value(-containerWidth))
+        .current;
     const foldingAnim = React.useRef(new Animated.Value(0)).current;
-    const iconPaddingAnim = React.useRef(new Animated.Value(UIConstant.normalContentOffset)).current;
-    const iconHoverAnim = React.useRef(new Animated.Value(UIConstant.minNoticeIconSize)).current;
+    const iconPaddingAnim = React.useRef(
+        new Animated.Value(UIConstant.normalContentOffset),
+    ).current;
+    const iconHoverAnim = React.useRef(
+        new Animated.Value(UIConstant.minNoticeIconSize),
+    ).current;
     const windowWidth = useWindowDimensions().width;
 
     const {
@@ -65,14 +74,14 @@ function UIFoldingNotice({
 
     const show = React.useCallback(() => {
         Animated.spring(visibleAnim, {
-            toValue: (UIConstant.contentOffset * 2),
+            toValue: UIConstant.contentOffset * 2,
             useNativeDriver: false,
         }).start();
     }, [visibleAnim]);
 
     const hide = React.useCallback(() => {
         Animated.spring(visibleAnim, {
-            toValue: -containerWidth - (UIConstant.contentOffset * 2),
+            toValue: -containerWidth - UIConstant.contentOffset * 2,
             useNativeDriver: false,
         }).start();
     }, [visibleAnim, containerWidth]);
@@ -121,16 +130,13 @@ function UIFoldingNotice({
         ]).start();
     }, [iconHoverAnim, iconPaddingAnim]);
 
-    React.useEffect(
-        () => {
-            if (visible) {
-                show();
-            } else {
-                hide();
-            }
-        },
-        [visible, show, hide],
-    );
+    React.useEffect(() => {
+        if (visible) {
+            show();
+        } else {
+            hide();
+        }
+    }, [visible, show, hide]);
 
     // TODO: think whether it should be implemented somehow else
     //  or min screen width should be moved to a prop
@@ -142,34 +148,28 @@ function UIFoldingNotice({
         }
     }, [windowWidth, show, hide]);
 
-    React.useEffect(
-        () => {
-            if (folded) {
-                foldNotice();
-            } else {
-                unfoldNotice();
-            }
-        },
-        [folded, foldNotice, unfoldNotice],
-    );
+    React.useEffect(() => {
+        if (folded) {
+            foldNotice();
+        } else {
+            unfoldNotice();
+        }
+    }, [folded, foldNotice, unfoldNotice]);
 
-    React.useEffect(
-        () => {
-            if (folded && isIconHovered) {
-                expandNoticeIcon();
-            } else {
-                foldNoticeIcon();
-            }
-        },
-        [folded, isIconHovered, foldNoticeIcon, expandNoticeIcon],
-    );
+    React.useEffect(() => {
+        if (folded && isIconHovered) {
+            expandNoticeIcon();
+        } else {
+            foldNoticeIcon();
+        }
+    }, [folded, isIconHovered, foldNoticeIcon, expandNoticeIcon]);
 
     const containerStyle = React.useMemo(
         () => [
             styles.container,
             {
                 right: visibleAnim,
-            }
+            },
         ],
         [visibleAnim],
     );
@@ -181,14 +181,14 @@ function UIFoldingNotice({
                 width: foldingAnim,
             },
         ],
-        [foldingAnim]
+        [foldingAnim],
     );
 
     const noticeIconContainerStyle = React.useMemo(
         () => [
             {
                 padding: iconPaddingAnim,
-            }
+            },
         ],
         [iconPaddingAnim],
     );
@@ -206,10 +206,10 @@ function UIFoldingNotice({
 
     const onContainerLayout = React.useCallback(
         ({
-             nativeEvent: {
-                 layout: { width: lWidth },
-             },
-         }) => {
+            nativeEvent: {
+                layout: { width: lWidth },
+            },
+        }) => {
             setContainerWidth(lWidth);
         },
         [],
@@ -217,31 +217,23 @@ function UIFoldingNotice({
 
     const onContentLayout = React.useCallback(
         ({
-             nativeEvent: {
-                 layout: { width: lWidth },
-             },
-         }) => {
+            nativeEvent: {
+                layout: { width: lWidth },
+            },
+        }) => {
             setContentWidth(lWidth);
         },
         [],
     );
 
     return (
-        <Animated.View
-            style={containerStyle}
-            onLayout={onContainerLayout}
-        >
-            <TapGestureHandler
-                enabled={folded}
-                onGestureEvent={onFold}
-            >
+        <Animated.View style={containerStyle} onLayout={onContainerLayout}>
+            <TapGestureHandler enabled={folded} onGestureEvent={onFold}>
                 <AnimatedWithColor
                     color={ColorVariants.BackgroundPrimary}
                     style={noticeStyle}
                 >
-                    <Animated.View
-                        style={noticeIconContainerStyle}
-                    >
+                    <Animated.View style={noticeIconContainerStyle}>
                         <AnimatedWithColor
                             // @ts-expect-error
                             onMouseEnter={onIconMouseEnter}
@@ -252,14 +244,12 @@ function UIFoldingNotice({
                             <UIImage source={icon} />
                         </AnimatedWithColor>
                     </Animated.View>
-                    <View 
+                    <View
                         style={styles.content}
                         onLayout={onContentLayout}
                         testID={testID}
                     >
-                        <View style={styles.contentContainer}>
-                            {children}
-                        </View>
+                        <View style={styles.contentContainer}>{children}</View>
                         <TouchableOpacity
                             // @ts-expect-error
                             onMouseEnter={onMouseEnter}
@@ -269,9 +259,11 @@ function UIFoldingNotice({
                         >
                             <UIImage
                                 source={UIAssets.icons.ui.buttonMinimize}
-                                tintColor={isHovered
-                                    ? ColorVariants.TextAccent
-                                    : ColorVariants.TextPrimary}
+                                tintColor={
+                                    isHovered
+                                        ? ColorVariants.TextAccent
+                                        : ColorVariants.TextPrimary
+                                }
                             />
                         </TouchableOpacity>
                     </View>
@@ -289,49 +281,47 @@ function UIClosableNotice({
     testID,
 }: UINoticeCommonProps) {
     const [containerWidth, setContainerWidth] = React.useState(0);
-    const visibleAnim = React.useRef(new Animated.Value(-containerWidth)).current;
+    const visibleAnim = React.useRef(new Animated.Value(-containerWidth))
+        .current;
 
     const show = React.useCallback(() => {
         Animated.spring(visibleAnim, {
-            toValue: (UIConstant.contentOffset * 2),
+            toValue: UIConstant.contentOffset * 2,
             useNativeDriver: false,
         }).start();
     }, [visibleAnim]);
 
     const hide = React.useCallback(() => {
         Animated.spring(visibleAnim, {
-            toValue: -containerWidth - (UIConstant.contentOffset * 2),
+            toValue: -containerWidth - UIConstant.contentOffset * 2,
             useNativeDriver: false,
         }).start();
     }, [visibleAnim, containerWidth]);
 
-    React.useEffect(
-        () => {
-            if (visible) {
-                show();
-            } else {
-                hide();
-            }
-        },
-        [visible, show, hide],
-    );
+    React.useEffect(() => {
+        if (visible) {
+            show();
+        } else {
+            hide();
+        }
+    }, [visible, show, hide]);
 
     const containerStyle = React.useMemo(
         () => [
             styles.container,
             {
                 right: visibleAnim,
-            }
+            },
         ],
         [visibleAnim],
     );
 
     const onContainerLayout = React.useCallback(
         ({
-             nativeEvent: {
-                 layout: { width: lWidth },
-             },
-         }) => {
+            nativeEvent: {
+                layout: { width: lWidth },
+            },
+        }) => {
             setContainerWidth(lWidth);
         },
         [],
@@ -344,10 +334,7 @@ function UIClosableNotice({
     }, [onClose]);
 
     return (
-        <Animated.View
-            style={containerStyle}
-            onLayout={onContainerLayout}
-        >
+        <Animated.View style={containerStyle} onLayout={onContainerLayout}>
             <UIBackgroundView
                 color={ColorVariants.BackgroundPrimary}
                 style={styles.notice}
@@ -360,9 +347,7 @@ function UIClosableNotice({
                     <UIImage source={icon} />
                 </UIBackgroundView>
                 <View style={styles.content}>
-                    <View style={styles.contentContainer}>
-                        {children}
-                    </View>
+                    <View style={styles.contentContainer}>{children}</View>
                     <TouchableOpacity
                         onPress={onClosePress}
                         style={styles.noticeButton}
@@ -378,19 +363,14 @@ function UIClosableNotice({
     );
 }
 
-export function UINotice({
-    folding = false,
-    ...props
-}: UINoticeProps) {
+export function PromoNotice({ folding = false, ...props }: PromoNoticeProps) {
     return (
         <Portal absoluteFill>
-            {
-                folding ? (
-                    <UIFoldingNotice {...props} />
-                ) : (
-                    <UIClosableNotice {...props} />
-                )
-            }
+            {folding ? (
+                <UIFoldingNotice {...props} />
+            ) : (
+                <UIClosableNotice {...props} />
+            )}
         </Portal>
     );
 }

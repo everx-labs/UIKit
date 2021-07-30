@@ -51,6 +51,7 @@ import iconBrandTonlabs from '../brand/tonlines/tonlabs.png';
 import iconBrandTonwalletOld from '../brand/tonlines/tonwallet-old.png';
 import iconBrandTonwallet from '../brand/tonlines/tonwallet.png';
 import iconBrandTonSymbol from '../brand/tonlines/surf.png';
+import iconBrandTonSymbolBlack from '../brand/tonlines/surf-black.png';
 
 import iconButtonClose from '../btn_close/btn_close.png';
 import iconButtonDots from '../btn_dots/btn_dots.png';
@@ -98,6 +99,7 @@ import iconProgress from '../ico-progress/progress.png';
 import iconRadioButtonActive from '../ico-radiobutton-active/ico-radiobutton-active.png';
 import iconRadioButtonInactive from '../ico-radiobutton-inactive/ico-radiobutton-inactive.png';
 import iconSearch from '../ico-search/ico-search.png';
+import iconTickWhite from '../ico-tick/ico-tick-white.png';
 import iconToggleActive from '../ico-toggle-active/ico-toggle-active.png';
 import iconToggleInactive from '../ico-toggle-inactive/ico-toggle-inactive.png';
 import iconToggleOn from '../ico-toggle-on/ico-toggle-on.png';
@@ -156,6 +158,7 @@ export const UIAssets = {
             tonwalletOld: iconBrandTonwalletOld,
             tonwallet: iconBrandTonwallet,
             tonSymbol: iconBrandTonSymbol,
+            tonSymbolBlack: iconBrandTonSymbolBlack,
         },
 
         payment: {
@@ -240,6 +243,7 @@ export const UIAssets = {
             radioButtonActive: iconRadioButtonActive,
             radioButtonInactive: iconRadioButtonInactive,
             search: iconSearch,
+            tickWhite: iconTickWhite,
             toggleActive: iconToggleActive,
             toggleInactive: iconToggleInactive,
             toggleOn: iconToggleOn,

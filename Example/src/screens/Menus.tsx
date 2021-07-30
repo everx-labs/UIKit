@@ -45,6 +45,7 @@ function PinCodeMenu() {
     const theme = useTheme();
     const [isVisible, setVisible] = React.useState(false);
     const insets = useSafeAreaInsets();
+    const [attempts, setAttempts] = React.useState(5);
 
     return (
         <>
@@ -71,6 +72,7 @@ function PinCodeMenu() {
                 <UIPinCode
                     label="PIN code"
                     description="Correct"
+                    disabled={attempts === 0}
                     isBiometryEnabled
                     biometryType={UIPinCodeBiometryType.Face}
                     getPasscodeWithBiometry={() => {
@@ -79,7 +81,13 @@ function PinCodeMenu() {
                     onEnter={(pin: string) => {
                         return new Promise((resolve) => {
                             setTimeout(() => {
-                                resolve(pin === '123123');
+                                if (pin === '123123') {
+                                    setAttempts(5);
+                                    resolve(true);
+                                } else {
+                                    setAttempts(attempts - 1);
+                                    resolve(false);
+                                }
                             }, 500);
                         });
                     }}

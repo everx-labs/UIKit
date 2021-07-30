@@ -610,6 +610,7 @@ export default class UIModalController<Props, State> extends UIController<
 
         this.closeAnimation.start(({ finished }) => {
             if (!finished) {
+                this.closeAnimation = null;
                 return;
             }
 

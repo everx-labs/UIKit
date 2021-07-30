@@ -23,11 +23,11 @@ import {
     useColorParts,
     useStatusBar,
 } from '@tonlabs/uikit.hydrogen';
+import { useAnimatedKeyboardHeight } from '@tonlabs/uikit.keyboard'
 
 import { UIConstant } from '../../constants';
 import { ScrollableContext } from '../../Scrollable/Context';
 import { useSheetHeight } from './useSheetHeight';
-import { useAnimatedKeyboard } from './useAnimatedKeyboard';
 import type { OnClose } from './types';
 import { usePosition } from './usePosition';
 
@@ -65,7 +65,7 @@ function UISheetPortalContent({
         UIConstant.rubberBandEffectDistance,
         countRubberBandDistance,
     );
-    const keyboardHeight = useAnimatedKeyboard();
+    const keyboardHeight = useAnimatedKeyboardHeight();
 
     const {
         animate,

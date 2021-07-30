@@ -38,6 +38,7 @@ export enum ChatMessageType {
     Document = 'doc',
     Sticker = 'stk',
     ActionButton = 'act',
+    QRCode = 'QRCode',
 }
 export type OnPressUrl =
     | ((url: string, index?: number) => void | Promise<void>)
@@ -125,6 +126,12 @@ export type StickerMessage = BubbleBaseT &
 
 export type ChatActionButtonMessage = ChatMeta & ActionButtonMessage;
 
+export type QRCodeMessage = BubbleBaseT &
+    ChatMeta & {
+        type: ChatMessageType.QRCode;
+        data: string;
+    };
+
 export type ChatMessage =
     | ChatPlainTextMessage
     | ChatActionButtonMessage
@@ -132,4 +139,5 @@ export type ChatMessage =
     | TransactionMessage
     | ImageMessage
     | DocumentMessage
+    | QRCodeMessage
     | StickerMessage;
