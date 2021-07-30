@@ -157,6 +157,10 @@ export class LocalizationService<T> extends (LocalizedStringsService as Localize
         return dayjs(time).format(`D MMM ${TIME_FORMAT}`);
     };
 
+    formatDateOnly = (date: number | Date): string => {
+        return dayjs(date).format(`D MMM`);
+    };
+
     get decimalSeparator(): string {
         return this.localeInfo.numbers.decimal;
     }
