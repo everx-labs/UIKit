@@ -375,8 +375,8 @@ const AppWrapper = () => {
                     isDarkTheme,
                     toggleTheme: () => {
                         setIsDarkTheme(!isDarkTheme);
-                        setIsHidden(true);
-                        setImmediate(() => setIsHidden(false));
+                        // setIsHidden(true);
+                        // setImmediate(() => setIsHidden(false));
                     },
                 }}
             >
