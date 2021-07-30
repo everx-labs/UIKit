@@ -41,7 +41,7 @@
     "@tonlabs/uikit.navigation": "^2.3.0",
     "html2canvas": "^1.0.0-rc.7",
     "qrcode": "^1.4.4",
-    "react-native-modern-datepicker": "git+https://github.com/tonlabs/react-native-modern-datepicker.git#46d3814"
+    "react-native-modern-datepicker": "git+https://github.com/tonlabs/react-native-modern-datepicker.git#60ae2a672d3b7b6e38e14ae128f265a42dc91b20"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.12.1",
