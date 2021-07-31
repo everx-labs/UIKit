@@ -161,6 +161,8 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
         release {
             // Caution! In production, you need to generate your own keystore file.

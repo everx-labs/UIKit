@@ -1,0 +1,82 @@
+G_giturl = "git@github.com:tonlabs/TON-Surf.git"
+G_gitcred = 'TonJenSSH'
+G_setup = "Not set"
+G_reinstall = "Not set"
+G_ApkBuild = "Not set"
+C_MacAgent = resources.getFreeLock(/ios[5-7]+/, 1)
+
+pipeline {
+    agent {label C_MacAgent}
+    tools {
+        nodejs "Node14.3"
+        jdk "JDK8u221"
+    }
+    parameters {
+        string(name: 'BRANCH', defaultValue: 'development', description: 'Branch for the build')
+    }
+    environment {
+       PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/.yarn/bin:$PATH"
+       LC_ALL = "en_US.UTF-8"
+       LANG = "en_US.UTF-8"
+       userpass = credentials("${jen_pass}")
+       NODE_OPTIONS = "--max-old-space-size=4096"
+       GITHUB_ACCESS_TOKEN = credentials("JenkinsPackagesRW")
+       ANDROID_HOME = "/Users/jenkins/Library/Android/sdk"
+    }
+    options {
+        buildDiscarder logRotator(artifactDaysToKeepStr: '3', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10')
+        disableConcurrentBuilds()
+        lock(label: C_MacAgent, quantity: 1)
+    }
+    stages {
+        stage('Check the merge to development') {
+            stages {
+                stage('Init') {
+                    steps{
+                        script {
+                            sshagent (credentials: [G_gitcred]) {
+                                sh """
+                                    npx lerna bootstrap && npx lerna run prepare
+                                """
+                            }
+                        }
+                    }
+                    post {
+                        success {
+                            script{G_reinstall = "success"}
+                        }
+                        failure {
+                            script{G_reinstall = "failure"}
+                        }
+                    }
+                }
+                stage('APK build'){
+                    steps {
+                        script {
+                            sh """
+                                cd Example/android
+                                ./gradlew assembleDebug
+                            """
+                        }
+                    }
+                    post {
+                        success {
+                            script{G_ApkBuild = "success"}
+                        }
+                        failure {
+                            script{G_ApkBuild = "failure"}
+                        }
+                    }
+                }
+            }
+        }
+    }
+    post {
+        always {
+            script {
+                archiveArtifacts artifacts: 'Example/android/app/build/outputs/apk/debug/app-debug.apk', fingerprint: true
+                cleanWs notFailBuild: true
+            }
+        }
+    }
+}
