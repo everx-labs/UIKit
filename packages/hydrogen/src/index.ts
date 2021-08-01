@@ -36,3 +36,4 @@ export * from './UIMaterialTextView/useClearButton';
 export * from './makeStyles';
 
 export * from './Haptics/Haptics';
+export * from './TouchableOpacity';
