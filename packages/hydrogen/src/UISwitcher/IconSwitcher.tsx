@@ -75,9 +75,14 @@ export const IconSwitcher: React.FC<UISwitcherProps> = (
     const overlayStyle = useOverlayStyle(switcherState, theme, variant);
 
     const isToggleSwitch = variant === UISwitcherVariant.Toggle;
-    const buttonStyles = isToggleSwitch
-        ? styles.buttonToggleStyle
-        : styles.buttonSwitcherStyle;
+    const cursorStyle = disabled
+        ? styles.showDefaultCursor
+        : styles.showPointerCursor;
+
+    const buttonStyles = [
+        isToggleSwitch ? styles.buttonToggleStyle : styles.buttonSwitcherStyle,
+        cursorStyle,
+    ];
 
     const {
         imageOnStyle,
@@ -93,12 +98,15 @@ export const IconSwitcher: React.FC<UISwitcherProps> = (
                     style={[
                         styles.toggleOuterStyle,
                         disabled
-                            ? styles.disabledBackgroundStyle
+                            ? styles.disabledSwitcherStyle
                             : toggleBackgroundStyle,
                     ]}
                 >
                     <Animated.View
-                        style={[styles.toggleInnerStyle, overlayStyle]}
+                        style={[
+                            styles.toggleInnerStyle,
+                            !disabled && overlayStyle,
+                        ]}
                     >
                         <Animated.View style={imageOnStyle}>
                             {image}
@@ -117,7 +125,7 @@ export const IconSwitcher: React.FC<UISwitcherProps> = (
                         style={[
                             styles.offSwitcher,
                             disabled
-                                ? styles.disabledBordersStyle
+                                ? styles.disabledSwitcherBordersStyle
                                 : imageOffBorderColor,
                         ]}
                     />
@@ -128,7 +136,7 @@ export const IconSwitcher: React.FC<UISwitcherProps> = (
                         style={[
                             styles.overlay,
                             disabled
-                                ? styles.disabledBackgroundStyle
+                                ? styles.disabledSwitcherStyle
                                 : overlayStyle,
                         ]}
                     >
@@ -155,6 +163,7 @@ export const IconSwitcher: React.FC<UISwitcherProps> = (
     );
 };
 
+// @ts-expect-error
 const useStyles = makeStyles((theme: Theme, variant: UISwitcherVariant) => ({
     offSwitcher: {
         ...getShape(variant),
@@ -185,19 +194,23 @@ const useStyles = makeStyles((theme: Theme, variant: UISwitcherVariant) => ({
         height: getShape(variant).height,
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
-        cursor: 'pointer',
     },
     buttonSwitcherStyle: {
         width: UIConstant.iconSize,
         height: UIConstant.iconSize,
         alignItems: 'center',
         justifyContent: 'center',
-        cursor: 'pointer',
     },
-    disabledBackgroundStyle: {
+    disabledSwitcherStyle: {
         backgroundColor: theme[ColorVariants.BackgroundNeutral],
     },
-    disabledBordersStyle: {
+    disabledSwitcherBordersStyle: {
         borderColor: theme[ColorVariants.BackgroundNeutral],
+    },
+    showPointerCursor: {
+        cursor: 'pointer',
+    },
+    showDefaultCursor: {
+        cursor: 'default',
     },
 }));
