@@ -60,7 +60,7 @@ const getShape = (variant: UISwitcherVariant) => {
 export const IconSwitcher: React.FC<UISwitcherProps> = (
     props: UISwitcherProps,
 ) => {
-    const { active, onPress, variant, testID } = props;
+    const { active, disabled, onPress, variant, testID } = props;
 
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
@@ -90,7 +90,12 @@ export const IconSwitcher: React.FC<UISwitcherProps> = (
         return (
             <>
                 <Animated.View
-                    style={[styles.toggleOuterStyle, toggleBackgroundStyle]}
+                    style={[
+                        styles.toggleOuterStyle,
+                        disabled
+                            ? styles.disabledBackgroundStyle
+                            : toggleBackgroundStyle,
+                    ]}
                 >
                     <Animated.View
                         style={[styles.toggleInnerStyle, overlayStyle]}
@@ -109,12 +114,24 @@ export const IconSwitcher: React.FC<UISwitcherProps> = (
             <>
                 <Animated.View style={imageOffOpacity}>
                     <Animated.View
-                        style={[styles.offSwitcher, imageOffBorderColor]}
+                        style={[
+                            styles.offSwitcher,
+                            disabled
+                                ? styles.disabledBordersStyle
+                                : imageOffBorderColor,
+                        ]}
                     />
                 </Animated.View>
 
                 <Animated.View style={[styles.onSwitcher, imageOnStyle]}>
-                    <Animated.View style={[styles.overlay, overlayStyle]}>
+                    <Animated.View
+                        style={[
+                            styles.overlay,
+                            disabled
+                                ? styles.disabledBackgroundStyle
+                                : overlayStyle,
+                        ]}
+                    >
                         {image}
                     </Animated.View>
                 </Animated.View>
@@ -131,6 +148,7 @@ export const IconSwitcher: React.FC<UISwitcherProps> = (
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             testID={testID}
+            enabled={!disabled}
         >
             {isToggleSwitch ? toggleSwitcherIcon() : commonSwitcherIcon()}
         </RawButton>
@@ -175,5 +193,11 @@ const useStyles = makeStyles((theme: Theme, variant: UISwitcherVariant) => ({
         alignItems: 'center',
         justifyContent: 'center',
         cursor: 'pointer',
+    },
+    disabledBackgroundStyle: {
+        backgroundColor: theme[ColorVariants.BackgroundNeutral],
+    },
+    disabledBordersStyle: {
+        borderColor: theme[ColorVariants.BackgroundNeutral],
     },
 }));
