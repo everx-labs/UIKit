@@ -21,7 +21,7 @@ import Animated, {
 import { UIConstant } from '../../constants';
 import { getYWithRubberBandEffect } from '../../AnimationHelpers/getYWithRubberBandEffect';
 import { useHasScroll } from '../../Scrollable';
-import type { OnClose } from './types';
+import type { OnOpen, OnClose } from './types';
 
 const OpenSpringConfig = {
     overshootClamping: false,
@@ -55,6 +55,8 @@ export function usePosition(
     hasCloseAnimation: boolean = true,
     onCloseProp: OnClose | undefined,
     onCloseModal: OnClose,
+    onOpenEndProp: OnOpen | undefined,
+    onCloseEndProp: OnClose | undefined,
 ) {
     const showState = useSharedValue<SHOW_STATES>(SHOW_STATES.CLOSING);
 
@@ -119,9 +121,17 @@ export function usePosition(
                     position.value = withSpring(
                         currentState.snapPointPosition,
                         OpenSpringConfig,
+                        (isFinished) => {
+                            if (isFinished && onOpenEndProp) {
+                                runOnJS(onOpenEndProp)();
+                            }
+                        },
                     );
                 } else {
                     position.value = currentState.snapPointPosition;
+                    if (onOpenEndProp) {
+                        runOnJS(onOpenEndProp)();
+                    }
                 }
 
                 showState.value = SHOW_STATES.OPENING;
@@ -135,13 +145,20 @@ export function usePosition(
                         0 - currentState.keyboardHeight,
                         CloseSpringConfig,
                         (isFinished) => {
-                            if (isFinished && onCloseModal) {
+                            if (isFinished) {
+                                if (onCloseEndProp) {
+                                    runOnJS(onCloseEndProp)();
+                                }
                                 runOnJS(onCloseModal)();
                             }
                         },
                     );
                 } else {
                     position.value = 0 - currentState.keyboardHeight;
+                    if (onCloseEndProp) {
+                        runOnJS(onCloseEndProp)();
+                    }
+                    runOnJS(onCloseModal)();
                 }
 
                 showState.value = SHOW_STATES.CLOSING;

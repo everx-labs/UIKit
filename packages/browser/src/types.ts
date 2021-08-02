@@ -36,7 +36,6 @@ export enum InteractiveMessageType {
     EncryptionBox = 'EncryptionBox',
     TransactionConfirmation = 'TransactionConfirmation',
     QRCodeScanner = 'QRCodeScanner',
-    QRCode = 'QRCode',
     Date = 'Date',
     Time = 'Time',
 }

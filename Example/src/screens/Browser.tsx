@@ -585,6 +585,31 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                 }}
                             />
                             <UIBoxButton
+                                title="Choose date"
+                                layout={{
+                                    marginBottom: 10,
+                                }}
+                                onPress={() => {
+                                    const message: DateMessage = {
+                                        key: `${Date.now()}-date-picker`,
+                                        status: MessageStatus.Received,
+                                        type: InteractiveMessageType.Date,
+                                        minDate: new Date('07/01/2021'),
+                                        onSelect: (externalState: any) => {
+                                            setMessages([
+                                                {
+                                                    ...message,
+                                                    externalState,
+                                                },
+                                                ...messages,
+                                            ]);
+                                        },
+                                    };
+                                    setMessages([message, ...messages]);
+                                    setMenuVisible(false);
+                                }}
+                            />
+                            <UIBoxButton
                                 title="Add QRCodeScannerMessage"
                                 layout={{
                                     marginBottom: 10,

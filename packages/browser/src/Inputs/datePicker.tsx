@@ -32,11 +32,8 @@ export function DatePicker({ onLayout, ...message }: DateMessage) {
                 <BubbleSimplePlainText
                     type={ChatMessageType.PlainText}
                     key="date-picker-value-bubble-prompt"
-                    text={
-                        uiLocalized.Browser.DateTimeInput.YouHaveChosenTheDate +
-                        uiLocalized.formatDate(message.externalState.date)
-                    }
-                    status={MessageStatus.Received}
+                    text={uiLocalized.formatDateOnly(message.externalState.date)}
+                    status={MessageStatus.Sent}
                 />
             </View>
         );
