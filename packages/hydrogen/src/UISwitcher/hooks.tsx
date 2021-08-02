@@ -4,6 +4,7 @@ import { UIAssets } from '@tonlabs/uikit.assets';
 import type {
     GestureEvent,
     NativeViewGestureHandlerPayload,
+    PanGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
 import Animated, {
     interpolate,
@@ -15,6 +16,7 @@ import Animated, {
     useSharedValue,
     withSpring,
 } from 'react-native-reanimated';
+import { clamp, snapPoint } from 'react-native-redash';
 import {
     IconSwitcherState,
     PressSwitcherState,
@@ -33,17 +35,6 @@ const springConfig: Animated.WithSpringConfig = {
 
 export const useImage = (variant: UISwitcherVariant, theme: Theme) => {
     switch (variant) {
-        case UISwitcherVariant.Toggle:
-            return (
-                <View
-                    style={{
-                        width: UIConstant.switcher.toggleDotSize,
-                        height: UIConstant.switcher.toggleDotSize,
-                        borderRadius: UIConstant.switcher.toggleDotSize,
-                        backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                    }}
-                />
-            );
         case UISwitcherVariant.Radio:
             return (
                 <View
@@ -106,6 +97,7 @@ export const useImageStyle = (
     active: boolean,
     switcherState: Readonly<Animated.SharedValue<SwitcherState>>,
     theme: Theme,
+    onPress?: (() => void) | undefined,
 ) => {
     const iconSwitcherState = useSharedValue<IconSwitcherState>(
         IconSwitcherState.NotActive,
@@ -196,12 +188,39 @@ export const useImageStyle = (
         };
     });
 
+    const panGestureHandler = useAnimatedGestureHandler<
+        PanGestureHandlerGestureEvent,
+        { x: number }
+    >({
+        onStart: (_e, ctx) => {
+            ctx.x = iconSwitcherState.value;
+        },
+        onActive: ({ translationX }) => {
+            iconSwitcherState.value = clamp(translationX, 0, 1);
+        },
+        onEnd: ({ velocityX }) => {
+            const selectedSnapPoint = snapPoint(
+                iconSwitcherState.value,
+                velocityX,
+                [0, 1],
+            );
+            iconSwitcherState.value = withSpring(selectedSnapPoint);
+        },
+        onFinish: (_e, _, isCanceledOrFailed: boolean) => {
+            if (!isCanceledOrFailed && onPress) {
+                hapticSelection();
+                runOnJS(onPress)();
+            }
+        },
+    });
+
     return {
         imageOnStyle,
         imageOffOpacity,
         imageOffBorderColor,
         toggleBackgroundStyle,
         toggleImageOnStyle,
+        panGestureHandler,
     };
 };
 

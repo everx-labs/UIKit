@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Animated from 'react-native-reanimated';
+import { PanGestureHandler } from 'react-native-gesture-handler';
 import type { UISwitcherProps } from './types';
 import { ColorVariants, Theme, useTheme } from '../Colors';
 import { makeStyles } from '../makeStyles';
 import { useHover } from '../useHover';
 import {
-    useImage,
     useImageStyle,
     useOverlayStyle,
     useSwitcherGestureEvent,
@@ -30,22 +30,19 @@ export const ToggleSwitcher: React.FC<UISwitcherProps> = (
     const theme = useTheme();
     const styles = useStyles(theme);
 
-    const image = useImage(variant, theme);
-
     const { onGestureEvent, pressed } = useSwitcherGestureEvent(onPress);
-
     const switcherState = useSwitcherState(isHovered, pressed);
     const overlayStyle = useOverlayStyle(switcherState, theme, variant);
 
     const cursorStyle = React.useMemo(() => {
-        return { cursor: disabled ? 'default' : 'pointer' };
+        return disabled ? styles.showDefault : styles.showPointer;
     }, [disabled]);
 
-    const { toggleImageOnStyle, toggleBackgroundStyle } = useImageStyle(
-        active,
-        switcherState,
-        theme,
-    );
+    const {
+        toggleBackgroundStyle,
+        panGestureHandler,
+        toggleImageOnStyle,
+    } = useImageStyle(active, switcherState, theme, onPress);
 
     return (
         <RawButton
@@ -53,9 +50,9 @@ export const ToggleSwitcher: React.FC<UISwitcherProps> = (
             onGestureEvent={onGestureEvent}
             style={[
                 styles.buttonToggleStyle,
-                // @ts-expect-error
                 cursorStyle,
             ]}
+            // @ts-expect-error
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             testID={testID}
@@ -72,9 +69,9 @@ export const ToggleSwitcher: React.FC<UISwitcherProps> = (
                 <Animated.View
                     style={[styles.toggleInnerStyle, !disabled && overlayStyle]}
                 >
-                    <Animated.View style={toggleImageOnStyle}>
-                        {image}
-                    </Animated.View>
+                    <PanGestureHandler onGestureEvent={panGestureHandler}>
+                        <Animated.View style={[styles.toggleDotStyle, toggleImageOnStyle]} />
+                    </PanGestureHandler>
                 </Animated.View>
             </Animated.View>
         </RawButton>
@@ -91,6 +88,12 @@ const useStyles = makeStyles((theme: Theme) => ({
         ...getToggleShape,
         overflow: 'hidden',
     },
+    toggleDotStyle: {
+        width: UIConstant.switcher.toggleDotSize,
+        height: UIConstant.switcher.toggleDotSize,
+        borderRadius: UIConstant.switcher.toggleDotSize,
+        backgroundColor: theme[ColorVariants.BackgroundPrimary],
+    },
     buttonToggleStyle: {
         width: getToggleShape.width,
         height: getToggleShape.height,
@@ -99,5 +102,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     disabledSwitcherStyle: {
         backgroundColor: theme[ColorVariants.BackgroundNeutral],
+    },
+    showPointer: {
+        margin: 0,
+        cursor: 'pointer',
+    },
+    showDefault: {
+        margin: 0,
+        cursor: 'default',
     },
 }));
