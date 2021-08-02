@@ -232,24 +232,29 @@ function UIMaterialTextViewBorder(
     props: UIMaterialTextViewCommonProps & {
         isFocused: boolean;
         children: React.ReactNode;
+        onMouseEnter: () => void;
+        onMouseLeave: () => void;
+        isHovered: boolean;
     },
 ) {
     const theme = useTheme();
-
-    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
     return (
         <View
             ref={props.borderViewRef}
             // @ts-expect-error
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
+            onMouseEnter={props.onMouseEnter}
+            onMouseLeave={props.onMouseLeave}
             style={[
                 styles.inputWrapper,
                 {
                     borderBottomColor:
                         theme[
-                            getBorderColor(props, props.isFocused, isHovered)
+                            getBorderColor(
+                                props,
+                                props.isFocused,
+                                props.isHovered,
+                            )
                         ],
                 },
             ]}
@@ -339,9 +344,12 @@ const UIMaterialTextViewFloating = React.forwardRef<
         clearInput();
         resetInputHeight();
     }, [clearInput, resetInputHeight]);
+    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
     const processedChildren = useMaterialTextViewChildren(
         children,
         inputHasValue,
+        isFocused,
+        isHovered,
         clear,
     );
 
@@ -356,7 +364,13 @@ const UIMaterialTextViewFloating = React.forwardRef<
                 ]}
                 onLayout={onLayout}
             >
-                <UIMaterialTextViewBorder {...props} isFocused={isFocused}>
+                <UIMaterialTextViewBorder
+                    {...props}
+                    isFocused={isFocused}
+                    onMouseEnter={onMouseEnter}
+                    onMouseLeave={onMouseLeave}
+                    isHovered={isHovered}
+                >
                     <UITextView
                         ref={ref}
                         {...rest}
@@ -416,16 +430,25 @@ const UIMaterialTextViewSimple = React.forwardRef<
         clearInput();
         resetInputHeight();
     }, [clearInput, resetInputHeight]);
+    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
     const processedChildren = useMaterialTextViewChildren(
         children,
         inputHasValue,
+        isFocused,
+        isHovered,
         clear,
     );
 
     return (
         <UIMaterialTextViewComment {...props}>
             <View style={styles.container} onLayout={onLayout}>
-                <UIMaterialTextViewBorder {...props} isFocused={isFocused}>
+                <UIMaterialTextViewBorder
+                    {...props}
+                    isFocused={isFocused}
+                    onMouseEnter={onMouseEnter}
+                    onMouseLeave={onMouseLeave}
+                    isHovered={isHovered}
+                >
                     <UITextView
                         ref={ref}
                         {...rest}
