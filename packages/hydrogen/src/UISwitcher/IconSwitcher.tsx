@@ -69,7 +69,7 @@ export const IconSwitcher: React.FC<UISwitcherProps> = (
     const overlayStyle = useOverlayStyle(switcherState, theme, variant);
 
     const cursorStyle = React.useMemo(() => {
-        return { cursor: disabled ? 'default' : 'pointer' };
+        return disabled ? styles.showDefault : styles.showPointer;
     }, [disabled]);
 
     const {
@@ -84,9 +84,9 @@ export const IconSwitcher: React.FC<UISwitcherProps> = (
             onGestureEvent={onGestureEvent}
             style={[
                 styles.buttonSwitcherStyle,
-                // @ts-expect-error
                 cursorStyle,
             ]}
+            // @ts-expect-error
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             testID={testID}
@@ -144,5 +144,13 @@ const useStyles = makeStyles((theme: Theme, variant: UISwitcherVariant) => ({
     },
     disabledSwitcherBordersStyle: {
         borderColor: theme[ColorVariants.BackgroundNeutral],
+    },
+    showPointer: {
+        margin: 0,
+        cursor: 'pointer',
+    },
+    showDefault: {
+        margin: 0,
+        cursor: 'default',
     },
 }));
