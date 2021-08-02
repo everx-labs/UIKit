@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useMemo } from 'react';
 import { View } from 'react-native';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import type {
@@ -106,7 +107,6 @@ export const useImageStyle = (
     active: boolean,
     switcherState: Readonly<Animated.SharedValue<SwitcherState>>,
     theme: Theme,
-    variant: UISwitcherVariant,
 ) => {
     const iconSwitcherState = useSharedValue<IconSwitcherState>(
         IconSwitcherState.NotActive,
@@ -128,33 +128,31 @@ export const useImageStyle = (
     });
 
     const imageOnStyle = useAnimatedStyle(() => {
-        if (variant === UISwitcherVariant.Toggle) {
-            return {
-                transform: [
-                    {
-                        translateX: interpolate(
-                            animatedValue.value,
-                            [
-                                IconSwitcherState.NotActive,
-                                IconSwitcherState.Active,
-                            ],
-                            [
-                                0,
-                                UIConstant.switcher.toggleWidth -
-                                    UIConstant.switcher.toggleDotSize -
-                                    UIConstant.switcher.togglePadding * 2,
-                            ],
-                        ),
-                    },
-                ],
-            };
-        }
         return {
             opacity: interpolate(
                 animatedValue.value,
                 [IconSwitcherState.NotActive, IconSwitcherState.Active],
                 [0, 1],
             ),
+        };
+    });
+
+    const toggleImageOnStyle = useAnimatedStyle(() => {
+        return {
+            transform: [
+                {
+                    translateX: interpolate(
+                        animatedValue.value,
+                        [IconSwitcherState.NotActive, IconSwitcherState.Active],
+                        [
+                            0,
+                            UIConstant.switcher.toggleWidth -
+                                UIConstant.switcher.toggleDotSize -
+                                UIConstant.switcher.togglePadding * 2,
+                        ],
+                    ),
+                },
+            ],
         };
     });
 
@@ -204,6 +202,7 @@ export const useImageStyle = (
         imageOffOpacity,
         imageOffBorderColor,
         toggleBackgroundStyle,
+        toggleImageOnStyle,
     };
 };
 
@@ -229,6 +228,24 @@ export const useOverlayStyle = (
     theme: Theme,
     variant: UISwitcherVariant,
 ) => {
+    const returnBackgroundTransitions = useMemo(() => {
+        const toggleBackgrounds = [
+            theme[ColorVariants.Transparent] as string,
+            theme[ColorVariants.StaticHoverOverlay] as string,
+            theme[ColorVariants.StaticPressOverlay] as string,
+        ];
+
+        const switcherBackgrounds = [
+            theme[ColorVariants.BackgroundAccent] as string,
+            theme[ColorVariants.BackgroundAccent] as string,
+            theme[ColorVariants.StaticPressOverlay] as string,
+        ];
+
+        return variant === UISwitcherVariant.Toggle
+            ? toggleBackgrounds
+            : switcherBackgrounds;
+    }, [variant]);
+
     const overlayStyle = useAnimatedStyle(() => {
         return {
             backgroundColor: interpolateColor(
@@ -238,17 +255,7 @@ export const useOverlayStyle = (
                     SwitcherState.Hovered,
                     SwitcherState.Pressed,
                 ],
-                variant === UISwitcherVariant.Toggle
-                    ? [
-                          theme[ColorVariants.Transparent] as string,
-                          theme[ColorVariants.StaticHoverOverlay] as string,
-                          theme[ColorVariants.StaticPressOverlay] as string,
-                      ]
-                    : [
-                          theme[ColorVariants.BackgroundAccent] as string,
-                          theme[ColorVariants.BackgroundAccent] as string,
-                          theme[ColorVariants.StaticPressOverlay] as string,
-                      ],
+                returnBackgroundTransitions,
             ),
         };
     });
