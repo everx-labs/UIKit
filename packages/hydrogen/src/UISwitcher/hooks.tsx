@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useMemo } from 'react';
 import { View } from 'react-native';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import type {
@@ -228,7 +227,7 @@ export const useOverlayStyle = (
     theme: Theme,
     variant: UISwitcherVariant,
 ) => {
-    const returnBackgroundTransitions = useMemo(() => {
+    const returnBackgroundTransitions = React.useMemo(() => {
         const toggleBackgrounds = [
             theme[ColorVariants.Transparent] as string,
             theme[ColorVariants.StaticHoverOverlay] as string,
