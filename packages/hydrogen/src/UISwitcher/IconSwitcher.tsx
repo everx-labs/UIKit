@@ -37,12 +37,6 @@ const getShape = (variant: UISwitcherVariant) => {
                     UIConstant.iconSize - UIConstant.switcher.squarePadding * 2,
                 borderRadius: UIConstant.switcher.squareBorderRadius,
             };
-        case UISwitcherVariant.Toggle:
-            return {
-                width: UIConstant.switcher.toggleWidth,
-                height: UIConstant.switcher.toggleHeight,
-                borderRadius: UIConstant.switcher.toggleHeight,
-            };
         case UISwitcherVariant.Radio:
         case UISwitcherVariant.Select:
         default:
@@ -74,96 +68,55 @@ export const IconSwitcher: React.FC<UISwitcherProps> = (
     const switcherState = useSwitcherState(isHovered, pressed);
     const overlayStyle = useOverlayStyle(switcherState, theme, variant);
 
-    const isToggleSwitch = variant === UISwitcherVariant.Toggle;
-    const cursorStyle = disabled
-        ? styles.showDefaultCursor
-        : styles.showPointerCursor;
-
-    const buttonStyles = [
-        isToggleSwitch ? styles.buttonToggleStyle : styles.buttonSwitcherStyle,
-        cursorStyle,
-    ];
+    const cursorStyle = React.useMemo(() => {
+        return { cursor: disabled ? 'default' : 'pointer' };
+    }, [disabled]);
 
     const {
         imageOnStyle,
         imageOffOpacity,
         imageOffBorderColor,
-        toggleBackgroundStyle,
-    } = useImageStyle(active, switcherState, theme, variant);
-
-    const toggleSwitcherIcon = () => {
-        return (
-            <>
-                <Animated.View
-                    style={[
-                        styles.toggleOuterStyle,
-                        disabled
-                            ? styles.disabledSwitcherStyle
-                            : toggleBackgroundStyle,
-                    ]}
-                >
-                    <Animated.View
-                        style={[
-                            styles.toggleInnerStyle,
-                            !disabled && overlayStyle,
-                        ]}
-                    >
-                        <Animated.View style={imageOnStyle}>
-                            {image}
-                        </Animated.View>
-                    </Animated.View>
-                </Animated.View>
-            </>
-        );
-    };
-
-    const commonSwitcherIcon = () => {
-        return (
-            <>
-                <Animated.View style={imageOffOpacity}>
-                    <Animated.View
-                        style={[
-                            styles.offSwitcher,
-                            disabled
-                                ? styles.disabledSwitcherBordersStyle
-                                : imageOffBorderColor,
-                        ]}
-                    />
-                </Animated.View>
-
-                <Animated.View style={[styles.onSwitcher, imageOnStyle]}>
-                    <Animated.View
-                        style={[
-                            styles.overlay,
-                            disabled
-                                ? styles.disabledSwitcherStyle
-                                : overlayStyle,
-                        ]}
-                    >
-                        {image}
-                    </Animated.View>
-                </Animated.View>
-            </>
-        );
-    };
+    } = useImageStyle(active, switcherState, theme);
 
     return (
         <RawButton
             shouldCancelWhenOutside
             onGestureEvent={onGestureEvent}
-            style={buttonStyles}
-            // @ts-expect-error
+            style={[
+                styles.buttonSwitcherStyle,
+                // @ts-expect-error
+                cursorStyle,
+            ]}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             testID={testID}
             enabled={!disabled}
         >
-            {isToggleSwitch ? toggleSwitcherIcon() : commonSwitcherIcon()}
+            <Animated.View style={imageOffOpacity}>
+                <Animated.View
+                    style={[
+                        styles.offSwitcher,
+                        disabled
+                            ? styles.disabledSwitcherBordersStyle
+                            : imageOffBorderColor,
+                    ]}
+                />
+            </Animated.View>
+
+            <Animated.View style={[styles.onSwitcher, imageOnStyle]}>
+                <Animated.View
+                    style={[
+                        styles.overlay,
+                        disabled ? styles.disabledSwitcherStyle : overlayStyle,
+                    ]}
+                >
+                    {image}
+                </Animated.View>
+            </Animated.View>
         </RawButton>
     );
 };
 
-// @ts-expect-error
 const useStyles = makeStyles((theme: Theme, variant: UISwitcherVariant) => ({
     offSwitcher: {
         ...getShape(variant),
@@ -180,21 +133,6 @@ const useStyles = makeStyles((theme: Theme, variant: UISwitcherVariant) => ({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    toggleInnerStyle: {
-        position: 'absolute',
-        ...getShape(variant),
-        padding: UIConstant.switcher.togglePadding,
-    },
-    toggleOuterStyle: {
-        ...getShape(variant),
-        overflow: 'hidden',
-    },
-    buttonToggleStyle: {
-        width: getShape(variant).width,
-        height: getShape(variant).height,
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
-    },
     buttonSwitcherStyle: {
         width: UIConstant.iconSize,
         height: UIConstant.iconSize,
@@ -206,11 +144,5 @@ const useStyles = makeStyles((theme: Theme, variant: UISwitcherVariant) => ({
     },
     disabledSwitcherBordersStyle: {
         borderColor: theme[ColorVariants.BackgroundNeutral],
-    },
-    showPointerCursor: {
-        cursor: 'pointer',
-    },
-    showDefaultCursor: {
-        cursor: 'default',
     },
 }));
