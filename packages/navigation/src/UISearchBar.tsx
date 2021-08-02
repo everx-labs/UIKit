@@ -13,6 +13,8 @@ import {
     UITextViewProps,
     useUITextViewValue,
     useClearButton,
+    useHover,
+    useFocused,
 } from '@tonlabs/uikit.hydrogen';
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
@@ -70,10 +72,12 @@ function renderRightAction({
 
 function useInnerRightAction(
     inputHasValue: boolean,
+    isFocused: boolean,
+    isHovered: boolean,
     searching: boolean | undefined,
     clear: () => void,
 ) {
-    const clearButton = useClearButton(inputHasValue, clear);
+    const clearButton = useClearButton(inputHasValue, isFocused, isHovered, clear);
 
     if (searching) {
         return (
@@ -151,14 +155,26 @@ export function UISearchBar({
         clear();
     }, [onChangeTextProp, setSearchText, clear]);
 
+    const { isFocused, onFocus, onBlur } = useFocused(
+        inputProps.onFocus,
+        inputProps.onBlur,
+    );
+    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
+
     const innerRightAction = useInnerRightAction(
         inputHasValue,
+        isFocused,
+        isHovered,
         searching,
         onClear,
     );
 
     return (
-        <UIBackgroundView style={styles.container}>
+        <UIBackgroundView style={styles.container}
+            // @ts-expect-error
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+        >
             <UIBackgroundView
                 style={styles.searchContainer}
                 color={ColorVariants.BackgroundSecondary}
@@ -172,6 +188,8 @@ export function UISearchBar({
                     ref={ref}
                     placeholder={placeholder || uiLocalized.Search}
                     onChangeText={onChangeText}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
                     {...inputProps}
                 />
                 {innerRightAction}
