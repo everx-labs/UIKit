@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { StyleSheet, TouchableOpacity, Platform } from 'react-native';
-import { TouchableOpacity as RNGHTouchableOpacity } from 'react-native-gesture-handler';
+import { StyleSheet } from 'react-native';
 
 import {
+    TouchableOpacity,
     UILabel,
     UILabelColors,
     UILabelRoles,
@@ -25,11 +25,9 @@ function UIAccountPickerItem({
     onSelect: OnSelect;
 }) {
     const theme = useTheme();
-    const Touchable =
-        Platform.OS === 'web' ? TouchableOpacity : RNGHTouchableOpacity;
 
     return (
-        <Touchable
+        <TouchableOpacity
             style={[
                 styles.item,
                 {
@@ -49,7 +47,7 @@ function UIAccountPickerItem({
                     {description}
                 </UILabel>
             ) : null}
-        </Touchable>
+        </TouchableOpacity>
     );
 }
 

@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { StyleSheet, TouchableOpacity, Platform, View } from 'react-native';
-import { TouchableOpacity as RNGHTouchableOpacity } from 'react-native-gesture-handler';
+import { StyleSheet, View } from 'react-native';
 
 import {
+    TouchableOpacity,
     UILabel,
     UILabelColors,
     UILabelRoles,
@@ -17,16 +17,13 @@ import { UIAssets } from '@tonlabs/uikit.assets';
 
 import { UIPullerSheet } from './UIPullerSheet';
 
-type AbstractBox = { 
-    id: number; 
+type AbstractBox = {
+    id: number;
     title: string;
     publicKey?: string;
     serialNumber?: string;
 };
 type OnSelect<Box extends AbstractBox> = (box: Box) => void;
-
-const Touchable =
-    Platform.OS === 'web' ? TouchableOpacity : RNGHTouchableOpacity;
 
 function UIBoxPickerItem<Box extends AbstractBox>({
     onSelect,
@@ -38,7 +35,7 @@ function UIBoxPickerItem<Box extends AbstractBox>({
     const theme = useTheme();
 
     return (
-        <Touchable
+        <TouchableOpacity
             style={[
                 styles.item,
                 {
@@ -59,7 +56,7 @@ function UIBoxPickerItem<Box extends AbstractBox>({
             <UILabel style={styles.itemTitle} role={UILabelRoles.Action}>
                 {box.title}
             </UILabel>
-            
+
             {box.publicKey != null &&
                 <>
                     <UILabel color={UILabelColors.TextSecondary}>
@@ -72,7 +69,7 @@ function UIBoxPickerItem<Box extends AbstractBox>({
                     />
                 </>
             }
-        </Touchable>
+        </TouchableOpacity>
     );
 }
 
