@@ -93,9 +93,16 @@ const getChilds = (children: React.ReactNode) => {
 export function useMaterialTextViewChildren(
     children: React.ReactNode,
     inputHasValue: boolean,
+    isFocused: boolean,
+    isHovered: boolean,
     clear: () => void,
 ) {
-    const clearButton = useClearButton(inputHasValue, clear);
+    const clearButton = useClearButton(
+        inputHasValue,
+        isFocused,
+        isHovered,
+        clear,
+    );
 
     if (clearButton) {
         /**
