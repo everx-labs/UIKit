@@ -21,9 +21,8 @@ const getToggleShape = {
 };
 
 export const ToggleSwitcher: React.FC<UISwitcherProps> = (
-    props: UISwitcherProps,
+    { active, disabled, onPress, testID }: UISwitcherProps,
 ) => {
-    const { active, disabled, onPress, testID } = props;
 
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
