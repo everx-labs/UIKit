@@ -1,15 +1,11 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
-import {
-    NativeViewGestureHandlerProps,
-    RawButton as GHRawButton,
-    RawButtonProps,
-} from 'react-native-gesture-handler';
+import { StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { UISwitcherProps, UISwitcherVariant } from './types';
-import { ColorVariants, Theme, useTheme } from '../Colors';
-import { makeStyles } from '../makeStyles';
-import { useHover } from '../useHover';
+import { RawButton } from '../RawButton';
+import { UISwitcherProps, UISwitcherVariant } from '../types';
+import { ColorVariants, Theme, useTheme } from '../../Colors';
+import { makeStyles } from '../../makeStyles';
+import { useHover } from '../../useHover';
 import {
     useImage,
     useImageStyle,
@@ -17,15 +13,7 @@ import {
     useSwitcherGestureEvent,
     useSwitcherState,
 } from './hooks';
-import { UIConstant } from '../constants';
-
-export const RawButton: React.FunctionComponent<Animated.AnimateProps<
-    RawButtonProps &
-        NativeViewGestureHandlerProps & {
-            testID?: string;
-            style?: StyleProp<ViewStyle>;
-        }
->> = Animated.createAnimatedComponent(GHRawButton);
+import { UIConstant } from '../../constants';
 
 const getShape = (variant: UISwitcherVariant) => {
     switch (variant) {
@@ -66,7 +54,7 @@ export const IconSwitcher: React.FC<UISwitcherProps> = (
     const { onGestureEvent, pressed } = useSwitcherGestureEvent(onPress);
 
     const switcherState = useSwitcherState(isHovered, pressed);
-    const overlayStyle = useOverlayStyle(switcherState, theme, variant);
+    const overlayStyle = useOverlayStyle(switcherState, theme);
 
     const cursorStyle = React.useMemo(() => {
         return disabled ? styles.showDefault : styles.showPointer;

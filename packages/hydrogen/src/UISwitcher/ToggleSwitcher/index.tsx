@@ -1,18 +1,18 @@
 import * as React from 'react';
 import Animated from 'react-native-reanimated';
 import { PanGestureHandler } from 'react-native-gesture-handler';
-import type { UISwitcherProps } from './types';
-import { ColorVariants, Theme, useTheme } from '../Colors';
-import { makeStyles } from '../makeStyles';
-import { useHover } from '../useHover';
+import { RawButton } from '../RawButton';
+import type { UISwitcherProps } from '../types';
+import { ColorVariants, Theme, useTheme } from '../../Colors';
+import { makeStyles } from '../../makeStyles';
+import { useHover } from '../../useHover';
 import {
     useImageStyle,
     useOverlayStyle,
     useSwitcherGestureEvent,
     useSwitcherState,
 } from './hooks';
-import { UIConstant } from '../constants';
-import { RawButton } from './IconSwitcher';
+import { UIConstant } from '../../constants';
 
 const getToggleShape = {
     width: UIConstant.switcher.toggleWidth,
@@ -23,7 +23,7 @@ const getToggleShape = {
 export const ToggleSwitcher: React.FC<UISwitcherProps> = (
     props: UISwitcherProps,
 ) => {
-    const { active, disabled, onPress, variant, testID } = props;
+    const { active, disabled, onPress, testID } = props;
 
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
@@ -32,7 +32,7 @@ export const ToggleSwitcher: React.FC<UISwitcherProps> = (
 
     const { onGestureEvent, pressed } = useSwitcherGestureEvent(onPress);
     const switcherState = useSwitcherState(isHovered, pressed);
-    const overlayStyle = useOverlayStyle(switcherState, theme, variant);
+    const overlayStyle = useOverlayStyle(switcherState, theme);
 
     const cursorStyle = React.useMemo(() => {
         return disabled ? styles.showDefault : styles.showPointer;
@@ -42,7 +42,7 @@ export const ToggleSwitcher: React.FC<UISwitcherProps> = (
         toggleBackgroundStyle,
         panGestureHandler,
         toggleImageOnStyle,
-    } = useImageStyle(active, switcherState, theme, onPress);
+    } = useImageStyle(active, theme, onPress);
 
     return (
         <RawButton
