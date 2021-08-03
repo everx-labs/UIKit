@@ -7,9 +7,14 @@ import { UIImage } from '../UIImage';
 import { ColorVariants } from '../Colors';
 import { UIConstant } from '../constants';
 
-export function useClearButton(inputHasValue: boolean, clear: () => void) {
+export function useClearButton(
+    inputHasValue: boolean,
+    isFocused: boolean,
+    isHovered: boolean,
+    clear: () => void,
+) {
     return React.useMemo(() => {
-        if (inputHasValue) {
+        if (inputHasValue && (isFocused || isHovered)) {
             return (
                 <TouchableOpacity
                     testID="clear_btn"
@@ -26,7 +31,7 @@ export function useClearButton(inputHasValue: boolean, clear: () => void) {
         }
 
         return null;
-    }, [inputHasValue, clear]);
+    }, [inputHasValue, isFocused, isHovered, clear]);
 }
 
 const styles = StyleSheet.create({
