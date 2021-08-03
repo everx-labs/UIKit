@@ -226,6 +226,7 @@ export function UIQRCodeScannerSheet({
                     right: UIConstant.contentOffset,
                     bottom: UIConstant.contentOffset,
                 }}
+                containerStyle={[styles.closeButtonContainer]}
                 style={[
                     styles.closeButton,
                     {
@@ -260,15 +261,19 @@ const styles = StyleSheet.create({
         borderRadius: UIConstant.alertBorderRadius,
         overflow: 'hidden',
     },
-    closeButton: {
+    closeButtonContainer: {
         position: 'absolute',
         top: UIConstant.contentOffset,
         left: UIConstant.contentOffset,
-        alignItems: 'center',
-        justifyContent: 'center',
+        width: 22,
+        height: 22,
+    },
+    closeButton: {
         width: 22,
         height: 22,
         borderRadius: UIConstant.alertBorderRadius,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     closeIcon: {
         width: 16,

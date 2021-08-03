@@ -43,7 +43,11 @@ export function UISearchBarButton({
     return (
         <>
             <UIBackgroundView style={styles.container}>
-                <TouchableOpacity style={styles.touchable} onPress={onOpen}>
+                <TouchableOpacity
+                    containerStyle={styles.touchable}
+                    style={styles.touchable}
+                    onPress={onOpen}
+                >
                     <UIBackgroundView
                         style={styles.searchContainer}
                         color={ColorVariants.BackgroundSecondary}
