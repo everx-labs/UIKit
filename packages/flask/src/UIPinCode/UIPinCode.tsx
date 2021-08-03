@@ -41,6 +41,11 @@ import {
     UIPinCodeDescriptionRef,
 } from './UIPinCodeDescription';
 
+export type UIPinCodeEnterValidationResult = {
+    valid: boolean;
+    description: string;
+};
+
 function useAnimatedDot(
     index: number,
     dotsAnims: { current: Animated.SharedValue<number>[] },
@@ -156,9 +161,7 @@ export function UIPinCode({
     descriptionTestID?: string;
     disabled?: boolean;
     length?: number;
-    onEnter: (
-        pin: string,
-    ) => Promise<boolean | { valid: boolean; description: string }>;
+    onEnter: (pin: string) => Promise<boolean | UIPinCodeEnterValidationResult>;
     onSuccess: (pin: string) => void;
     autoUnlock?: boolean;
 } & BiometryProps) {
