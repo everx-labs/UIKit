@@ -1,6 +1,7 @@
 import * as React from 'react';
 import type {
-    GestureEvent, NativeViewGestureHandlerPayload,
+    GestureEvent,
+    NativeViewGestureHandlerPayload,
     PanGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
 import Animated, {
@@ -14,11 +15,7 @@ import Animated, {
     withSpring,
 } from 'react-native-reanimated';
 import { clamp, snapPoint } from 'react-native-redash';
-import {
-    IconSwitcherState,
-    PressSwitcherState,
-    SwitcherState,
-} from '../types';
+import { IconSwitcherState, PressSwitcherState, SwitcherState } from '../types';
 import { hapticSelection } from '../../Haptics/Haptics';
 import { ColorVariants, Theme } from '../../Colors';
 import { UIConstant } from '../../constants';
@@ -28,7 +25,6 @@ const springConfig: Animated.WithSpringConfig = {
     stiffness: 500,
 };
 
-
 export const useSwitcherGestureEvent = (onPress: (() => void) | undefined) => {
     const pressed = useSharedValue<PressSwitcherState>(
         PressSwitcherState.NotPressed,
@@ -36,7 +32,7 @@ export const useSwitcherGestureEvent = (onPress: (() => void) | undefined) => {
 
     const onGestureEvent = useAnimatedGestureHandler<
         GestureEvent<NativeViewGestureHandlerPayload>
-        >({
+    >({
         onStart: () => {
             if (pressed.value !== PressSwitcherState.Pressed) {
                 pressed.value = PressSwitcherState.Pressed;
@@ -60,7 +56,6 @@ export const useSwitcherGestureEvent = (onPress: (() => void) | undefined) => {
         pressed,
     };
 };
-
 
 export const useImageStyle = (
     active: boolean,
@@ -96,8 +91,8 @@ export const useImageStyle = (
                         [
                             0,
                             UIConstant.switcher.toggleWidth -
-                            UIConstant.switcher.toggleDotSize -
-                            UIConstant.switcher.togglePadding * 2,
+                                UIConstant.switcher.toggleDotSize -
+                                UIConstant.switcher.togglePadding * 2,
                         ],
                     ),
                 },
@@ -121,7 +116,7 @@ export const useImageStyle = (
     const panGestureHandler = useAnimatedGestureHandler<
         PanGestureHandlerGestureEvent,
         { x: number }
-        >({
+    >({
         onStart: (_e, ctx) => {
             ctx.x = iconSwitcherState.value;
         },
@@ -168,12 +163,10 @@ export const useSwitcherState = (
     return switcherState;
 };
 
-
 export const useOverlayStyle = (
     switcherState: Readonly<Animated.SharedValue<SwitcherState>>,
     theme: Theme,
 ) => {
-
     const overlayStyle = useAnimatedStyle(() => {
         return {
             backgroundColor: interpolateColor(
@@ -187,7 +180,7 @@ export const useOverlayStyle = (
                     theme[ColorVariants.BackgroundAccent] as string,
                     theme[ColorVariants.BackgroundAccent] as string,
                     theme[ColorVariants.StaticPressOverlay] as string,
-                ]
+                ],
             ),
         };
     });

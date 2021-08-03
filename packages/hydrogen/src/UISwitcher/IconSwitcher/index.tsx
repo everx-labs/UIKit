@@ -39,11 +39,13 @@ const getShape = (variant: UISwitcherVariant) => {
     }
 };
 
-export const IconSwitcher: React.FC<UISwitcherProps> = (
-    props: UISwitcherProps,
-) => {
-    const { active, disabled, onPress, variant, testID } = props;
-
+export const IconSwitcher: React.FC<UISwitcherProps> = ({
+    active,
+    disabled,
+    onPress,
+    variant,
+    testID,
+}: UISwitcherProps) => {
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
     const theme = useTheme();
@@ -70,10 +72,7 @@ export const IconSwitcher: React.FC<UISwitcherProps> = (
         <RawButton
             shouldCancelWhenOutside
             onGestureEvent={onGestureEvent}
-            style={[
-                styles.buttonSwitcherStyle,
-                cursorStyle,
-            ]}
+            style={[styles.buttonSwitcherStyle, cursorStyle]}
             // @ts-expect-error
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
