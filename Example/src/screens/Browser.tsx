@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useWindowDimensions, StatusBar, Platform } from 'react-native';
+import { useWindowDimensions, StatusBar } from 'react-native';
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
 import BigNumber from 'bignumber.js';
 
@@ -38,14 +38,7 @@ import {
     createStackNavigator,
     ScrollView,
 } from '@tonlabs/uikit.navigation';
-import RNFetchBlob from 'rn-fetch-blob';
 import dataBase64 from '../../assets/icons/example-icon-base64';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-// const image = require('../../assets/icons/loon-image-original.jpeg');
-let image = 'file:///assets/icons/loon-image-original.jpeg';
-// const image = require('../../assets/icons/example-icon-base64.txt');
-// const image = 'file:///Example/assets/icons/example-icon-base64.txt'
 
 const BrowserStack = createStackNavigator();
 
@@ -53,28 +46,6 @@ type BrowserScreenRef = { toggleMenu(): void };
 
 const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
     const theme = useTheme();
-
-    const [imageEncoded, setImageEncoded] = React.useState<string | null>(null)
-    imageEncoded
-
-    React.useEffect(() => {
-        if (Platform.OS === 'ios') {
-            // const appleId = image.substring(5, 41);
-            const appleId = 'loon-image-original.jpeg';
-            const ext = 'JPEG';
-            image = `assets-library://asset/asset.${ext}?id=${appleId}&ext=${ext}`;
-        }
-        console.log(image)
-        RNFetchBlob.fs.readFile(image, 'base64').then((result) => {
-            if (typeof result === 'string') {
-                console.log()
-                console.log(image.slice(30))
-                console.log()
-                setImageEncoded(result)
-            }
-        });
-
-    }, [])
 
     const [messages, setMessages] = React.useState<BrowserMessage[]>([
         {
