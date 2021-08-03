@@ -4,7 +4,6 @@ import { UIAssets } from '@tonlabs/uikit.assets';
 import type {
     GestureEvent,
     NativeViewGestureHandlerPayload,
-    PanGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
 import Animated, {
     interpolate,
@@ -16,17 +15,16 @@ import Animated, {
     useSharedValue,
     withSpring,
 } from 'react-native-reanimated';
-import { clamp, snapPoint } from 'react-native-redash';
 import {
     IconSwitcherState,
     PressSwitcherState,
     SwitcherState,
     UISwitcherVariant,
-} from './types';
-import { UIImage } from '../UIImage';
-import { hapticSelection } from '../Haptics/Haptics';
-import { ColorVariants, Theme } from '../Colors';
-import { UIConstant } from '../constants';
+} from '../types';
+import { UIImage } from '../../UIImage';
+import { hapticSelection } from '../../Haptics/Haptics';
+import { ColorVariants, Theme } from '../../Colors';
+import { UIConstant } from '../../constants';
 
 const springConfig: Animated.WithSpringConfig = {
     damping: 100,
@@ -97,7 +95,6 @@ export const useImageStyle = (
     active: boolean,
     switcherState: Readonly<Animated.SharedValue<SwitcherState>>,
     theme: Theme,
-    onPress?: (() => void) | undefined,
 ) => {
     const iconSwitcherState = useSharedValue<IconSwitcherState>(
         IconSwitcherState.NotActive,
@@ -124,38 +121,6 @@ export const useImageStyle = (
                 animatedValue.value,
                 [IconSwitcherState.NotActive, IconSwitcherState.Active],
                 [0, 1],
-            ),
-        };
-    });
-
-    const toggleImageOnStyle = useAnimatedStyle(() => {
-        return {
-            transform: [
-                {
-                    translateX: interpolate(
-                        animatedValue.value,
-                        [IconSwitcherState.NotActive, IconSwitcherState.Active],
-                        [
-                            0,
-                            UIConstant.switcher.toggleWidth -
-                                UIConstant.switcher.toggleDotSize -
-                                UIConstant.switcher.togglePadding * 2,
-                        ],
-                    ),
-                },
-            ],
-        };
-    });
-
-    const toggleBackgroundStyle = useAnimatedStyle(() => {
-        return {
-            backgroundColor: interpolateColor(
-                animatedValue.value,
-                [IconSwitcherState.NotActive, IconSwitcherState.Active],
-                [
-                    theme[ColorVariants.BackgroundTertiaryInverted] as string,
-                    theme[ColorVariants.BackgroundAccent] as string,
-                ],
             ),
         };
     });
@@ -188,39 +153,10 @@ export const useImageStyle = (
         };
     });
 
-    const panGestureHandler = useAnimatedGestureHandler<
-        PanGestureHandlerGestureEvent,
-        { x: number }
-    >({
-        onStart: (_e, ctx) => {
-            ctx.x = iconSwitcherState.value;
-        },
-        onActive: ({ translationX }) => {
-            iconSwitcherState.value = clamp(translationX, 0, 1);
-        },
-        onEnd: ({ velocityX }) => {
-            const selectedSnapPoint = snapPoint(
-                iconSwitcherState.value,
-                velocityX,
-                [0, 1],
-            );
-            iconSwitcherState.value = withSpring(selectedSnapPoint);
-        },
-        onFinish: (_e, _, isCanceledOrFailed: boolean) => {
-            if (!isCanceledOrFailed && onPress) {
-                hapticSelection();
-                runOnJS(onPress)();
-            }
-        },
-    });
-
     return {
         imageOnStyle,
         imageOffOpacity,
         imageOffBorderColor,
-        toggleBackgroundStyle,
-        toggleImageOnStyle,
-        panGestureHandler,
     };
 };
 
@@ -244,26 +180,7 @@ export const useSwitcherState = (
 export const useOverlayStyle = (
     switcherState: Readonly<Animated.SharedValue<SwitcherState>>,
     theme: Theme,
-    variant: UISwitcherVariant,
 ) => {
-    const returnBackgroundTransitions = React.useMemo(() => {
-        const toggleBackgrounds = [
-            theme[ColorVariants.Transparent] as string,
-            theme[ColorVariants.StaticHoverOverlay] as string,
-            theme[ColorVariants.StaticPressOverlay] as string,
-        ];
-
-        const switcherBackgrounds = [
-            theme[ColorVariants.BackgroundAccent] as string,
-            theme[ColorVariants.BackgroundAccent] as string,
-            theme[ColorVariants.StaticPressOverlay] as string,
-        ];
-
-        return variant === UISwitcherVariant.Toggle
-            ? toggleBackgrounds
-            : switcherBackgrounds;
-    }, [variant]);
-
     const overlayStyle = useAnimatedStyle(() => {
         return {
             backgroundColor: interpolateColor(
@@ -273,7 +190,11 @@ export const useOverlayStyle = (
                     SwitcherState.Hovered,
                     SwitcherState.Pressed,
                 ],
-                returnBackgroundTransitions,
+                [
+                    theme[ColorVariants.BackgroundAccent] as string,
+                    theme[ColorVariants.BackgroundAccent] as string,
+                    theme[ColorVariants.StaticPressOverlay] as string,
+                ],
             ),
         };
     });
