@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IconSwitcher } from './IconSwitcher';
-import { ToggleSwitcher } from './ToggleSwitcher'
+import { ToggleSwitcher } from './ToggleSwitcher';
 import { UISwitcherProps, UISwitcherVariant } from './types';
 
 export const UISwitcher: React.FC<UISwitcherProps> = (
