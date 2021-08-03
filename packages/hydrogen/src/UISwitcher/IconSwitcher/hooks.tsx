@@ -191,8 +191,9 @@ export const useOverlayStyle = (
                     SwitcherState.Pressed,
                 ],
                 [
-                    theme[ColorVariants.BackgroundAccent] as string,
-                    theme[ColorVariants.BackgroundAccent] as string,
+
+                    theme[ColorVariants.Transparent] as string,
+                    theme[ColorVariants.StaticHoverOverlay] as string,
                     theme[ColorVariants.StaticPressOverlay] as string,
                 ],
             ),
