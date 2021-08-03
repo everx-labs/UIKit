@@ -3,11 +3,8 @@ import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import {
-    UIConstant,
-    UIStyle,
-} from '@tonlabs/uikit.core';
 import { UIComponent } from '@tonlabs/uikit.components';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 

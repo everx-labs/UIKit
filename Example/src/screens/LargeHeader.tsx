@@ -84,6 +84,30 @@ function RefreshPageController() {
     return <UILargeTitleHeaderRefreshControl onRefresh={turnOnRefreshing} />;
 }
 
+// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const renderBelowContent = () => {
+    return (
+        <UIBackgroundView
+            color={ColorVariants.BackgroundNegative}
+            style={{
+                padding: 10,
+                borderRadius: 10,
+                marginVertical: 8,
+            }}
+        >
+            <UILabel color={UILabelColors.TextPrimaryInverted}>
+                A thing happened and it takes three whole lines to explain that
+                it happened. This isn’t likely in English but maybe in German. A
+                thing happened and it takes three whole lines to explain that it
+                happened. This isn’t likely in English but maybe in German. A
+                thing happened and it takes three whole lines to explain that it
+                happened. This isn’t likely in English but maybe in German.
+            </UILabel>
+        </UIBackgroundView>
+    );
+};
+
 export function LargeHeaderScreen() {
     return (
         <LargeHeaderStack.Navigator initialRouteName="scroll-view">
@@ -109,26 +133,7 @@ export function LargeHeaderScreen() {
                     renderAboveContent: () => {
                         return <RefreshPageController />;
                     },
-                    renderBelowContent: () => {
-                        return (
-                            <UIBackgroundView
-                                color={ColorVariants.BackgroundNegative}
-                                style={{
-                                    padding: 10,
-                                    borderRadius: 10,
-                                    marginVertical: 8,
-                                }}
-                            >
-                                <UILabel
-                                    color={UILabelColors.TextPrimaryInverted}
-                                >
-                                    A thing happened and it takes three whole
-                                    lines to explain that it happened. This
-                                    isn’t likely in English but maybe in German.
-                                </UILabel>
-                            </UIBackgroundView>
-                        );
-                    },
+                    // renderBelowContent,
                 }}
                 component={LargeHeaderExample}
             />

@@ -9,6 +9,8 @@ import {
     TextStyle,
 } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
+import { runOnUI } from 'react-native-reanimated';
+
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UIShareManager } from '@tonlabs/uikit.navigation_legacy';
@@ -18,15 +20,19 @@ import {
     UILabelRoles,
     ColorVariants,
     useTheme,
+    hapticImpact,
 } from '@tonlabs/uikit.hydrogen';
 
-import { MessageStatus } from './types';
+import { MessageStatus, OnPressUrl } from './types';
 import type { ChatPlainTextMessage, PlainTextMessage } from './types';
 import {
     useBubblePosition,
-    BubblePosition,
     useBubbleContainerStyle,
 } from './useBubblePosition';
+import {
+    useBubbleBackgroundColor,
+    useBubbleRoundedCornerStyle,
+} from './useBubbleStyle';
 
 const useUrlStyle = (status: MessageStatus) => {
     const theme = useTheme();
@@ -38,8 +44,19 @@ const useUrlStyle = (status: MessageStatus) => {
         ];
     }
 
-    return [{ color: theme[ColorVariants.StaticTextPrimaryLight] }, styles.urlSent];
+    return [
+        { color: theme[ColorVariants.StaticTextPrimaryLight] },
+        styles.urlSent,
+    ];
 };
+
+export const UrlPressHandlerContext = React.createContext<OnPressUrl>(
+    undefined,
+);
+
+function useUrlPressHandler() {
+    return React.useContext(UrlPressHandlerContext);
+}
 
 const getFontColor = (message: PlainTextMessage) => {
     if (message.status === MessageStatus.Aborted) {
@@ -63,60 +80,6 @@ const getTimeFontColor = (message: PlainTextMessage) => {
     }
 
     return UILabelColors.StaticTextOverlayLight;
-};
-
-const getRoundedCornerStyle = (
-    options: PlainTextMessage,
-    position: BubblePosition,
-) => {
-    if (position === BubblePosition.left && options.firstFromChain) {
-        return styles.leftTopCorner;
-    }
-
-    if (position === BubblePosition.right && options.lastFromChain) {
-        return styles.rightBottomCorner;
-    }
-
-    return null;
-};
-
-const useBubbleStyle = (message: PlainTextMessage) => {
-    const theme = useTheme();
-
-    if (message.status === MessageStatus.Aborted) {
-        return [
-            UIStyle.color.getBackgroundColorStyle(
-                theme[ColorVariants.BackgroundNegative],
-            ),
-        ];
-    }
-
-    if (message.status === MessageStatus.Received) {
-        return [
-            UIStyle.color.getBackgroundColorStyle(
-                theme[ColorVariants.BackgroundSecondary],
-            ),
-        ];
-    }
-
-    if (message.status === MessageStatus.Sent) {
-        return [
-            UIStyle.color.getBackgroundColorStyle(
-                theme[ColorVariants.BackgroundAccent],
-            ),
-        ];
-    }
-
-    if (message.status === MessageStatus.Pending) {
-        return [
-            UIStyle.color.getBackgroundColorStyle(
-                theme[ColorVariants.BackgroundAccent],
-            ),
-            UIStyle.common.opacity70(),
-        ];
-    }
-
-    return null;
 };
 
 const getActionString = (message: PlainTextMessage) => {
@@ -186,7 +149,8 @@ function PlainTextContainer(
     };
     const position = useBubblePosition(props.status);
     const containerStyle = useBubbleContainerStyle(props);
-    const bubbleStyle = useBubbleStyle(props);
+    const bubbleBackgroundColor = useBubbleBackgroundColor(props);
+    const roundedCornerStyle = useBubbleRoundedCornerStyle(props, position);
     const actionString = getActionString(props);
 
     return (
@@ -196,6 +160,12 @@ function PlainTextContainer(
                 onPress={props.onTouchText}
                 onLongPress={() => {
                     bubbleScaleAnimation(true);
+                    /**
+                     * Maybe it's not the best place to run haptic
+                     * but I don't want to put it in legacy package
+                     * so left it here, until we make new share manager
+                     */
+                    runOnUI(hapticImpact)('medium');
                     UIShareManager.copyToClipboard(
                         props.text,
                         uiLocalized.MessageCopiedToClipboard,
@@ -208,8 +178,8 @@ function PlainTextContainer(
                             UIStyle.padding.verticalSmall(),
                             UIStyle.padding.horizontalNormal(),
                             styles.msgContainer,
-                            bubbleStyle,
-                            getRoundedCornerStyle(props, position),
+                            bubbleBackgroundColor,
+                            roundedCornerStyle,
                             { transform: [{ scale }] },
                         ]}
                     >
@@ -237,6 +207,8 @@ export function BubbleChatPlainText(props: ChatPlainTextMessage) {
         [props.time],
     );
 
+    const urlPressHandler = useUrlPressHandler();
+
     return (
         <PlainTextContainer {...props}>
             <UILabel
@@ -250,9 +222,7 @@ export function BubbleChatPlainText(props: ChatPlainTextMessage) {
                         {
                             type: 'url',
                             style: urlStyle,
-                            onPress: (url: string, index: number) =>
-                                props.onPressUrl &&
-                                props.onPressUrl(url, index),
+                            onPress: urlPressHandler,
                         },
                     ]}
                 >
@@ -286,6 +256,7 @@ export function BubbleChatPlainText(props: ChatPlainTextMessage) {
 
 export function BubbleSimplePlainText(props: PlainTextMessage) {
     const urlStyle = useUrlStyle(props.status);
+    const urlPressHandler = useUrlPressHandler();
 
     return (
         <PlainTextContainer {...props}>
@@ -300,9 +271,7 @@ export function BubbleSimplePlainText(props: PlainTextMessage) {
                         {
                             type: 'url',
                             style: urlStyle,
-                            onPress: (url: string, index: number) =>
-                                props.onPressUrl &&
-                                props.onPressUrl(url, index),
+                            onPress: urlPressHandler,
                         },
                     ]}
                 >
@@ -348,13 +317,6 @@ const styles = StyleSheet.create({
     },
     msgContainer: {
         position: 'relative',
-        borderRadius: UIConstant.borderRadius(),
-    },
-    rightBottomCorner: {
-        borderBottomRightRadius: 0,
-    },
-    leftTopCorner: {
-        borderTopLeftRadius: 0,
     },
     actionString: {
         textAlign: 'right',

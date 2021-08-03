@@ -122,7 +122,8 @@ export function Key({ num }: { num: number }) {
     return (
         <RawButton
             testID={`pincode_digit_${num}`}
-            onGestureEvent={disabled ? undefined : gestureHandler}
+            enabled={!disabled}
+            onGestureEvent={gestureHandler}
             style={[styles.button, disabled ? styles.disabledKey : null]}
         >
             <Animated.View
@@ -282,7 +283,8 @@ export function BiometryKey({
     return (
         <RawButton
             testID="pincode_biometry"
-            onGestureEvent={disabled ? undefined : gestureHandler}
+            enabled={!disabled}
+            onGestureEvent={gestureHandler}
             style={[styles.button, disabled ? styles.disabledKey : null]}
         >
             <Animated.View
@@ -354,7 +356,8 @@ export function DelKey() {
     return (
         <RawButton
             testID="pincode_digit_delete"
-            onGestureEvent={disabled ? undefined : gestureHandlerDel}
+            enabled={!disabled}
+            onGestureEvent={gestureHandlerDel}
             style={[
                 styles.button,
                 delButtonStyle,

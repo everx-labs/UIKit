@@ -23,7 +23,7 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
     ) {
         const nativeGestureRef = React.useRef<NativeViewGestureHandler>(null);
 
-        const { hasScroll, onLayout, onContentSizeChange } = useHasScroll();
+        const { onLayout, onContentSizeChange } = useHasScroll();
 
         const {
             ref,
@@ -46,8 +46,8 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
             };
         });
 
+        // @ts-ignore
         React.useImperativeHandle(forwardRef, () => {
-            // @ts-ignore
             return ref?.current;
         });
 
@@ -56,26 +56,24 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
                 ref={panGestureHandlerRef}
                 shouldCancelWhenOutside={false}
                 onGestureEvent={gestureHandler}
-                {...(hasScroll ? { waitFor: nativeGestureRef } : null)}
+                simultaneousHandlers={nativeGestureRef}
             >
                 <Animated.View style={{ flex: 1 }}>
-                    <NativeViewGestureHandler ref={nativeGestureRef}>
-                        <Animated.View
-                            style={{
-                                height: '100%',
-                            }}
-                        >
-                            {/* @ts-ignore */}
-                            <AnimatedScrollable
-                                {...props}
-                                ref={ref}
-                                overScrollMode="never"
-                                onScrollBeginDrag={scrollHandler}
-                                scrollEventThrottle={16}
-                                onLayout={onLayout}
-                                onContentSizeChange={onContentSizeChange}
-                            />
-                        </Animated.View>
+                    <NativeViewGestureHandler
+                        ref={nativeGestureRef}
+                        disallowInterruption={false}
+                        shouldCancelWhenOutside={false}
+                    >
+                        {/* @ts-ignore */}
+                        <AnimatedScrollable
+                            {...props}
+                            ref={ref}
+                            overScrollMode="never"
+                            onScrollBeginDrag={scrollHandler}
+                            scrollEventThrottle={16}
+                            onLayout={onLayout}
+                            onContentSizeChange={onContentSizeChange}
+                        />
                     </NativeViewGestureHandler>
                 </Animated.View>
             </PanGestureHandler>

@@ -2,93 +2,77 @@ import * as React from 'react';
 import { useState } from 'react';
 import { View } from 'react-native';
 
+import { UIDetailsToggle, UIToggle } from '@tonlabs/uikit.components';
 import {
-    UICheckboxItem,
-    UIDetailsCheckbox,
-    UIDetailsRadio,
-    UIDetailsToggle,
-    UIRadioButtonList,
-    UIToggle,
-} from '@tonlabs/uikit.components';
+    UILabel,
+    UISwitcher,
+    UISwitcherVariant,
+} from '@tonlabs/uikit.hydrogen';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
 export const Checkbox = () => {
     const [selected, setSelected] = useState(false);
-    const [selected2, setSelected2] = useState(false);
-    const [selected3, setSelected3] = useState(false);
-    const [selected4, setSelected4] = useState(false);
-    const [selectedRadio, setSelectedRadio] = useState(0);
     const [selectedToggle, setSelectedToggle] = useState(false);
+    const [switcherSelected, setSwitcherSelected] = useState(false);
     return (
         <ExampleScreen>
-            <ExampleSection title="UICheckboxItem">
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                    <UICheckboxItem
-                        testID="uiCheckboxItem_editable"
-                        editable
-                        onPress={() => {
-                            setSelected(!selected);
+            <ExampleSection title="UISwitcher">
+                <View
+                    style={{
+                        width: 100,
+                        paddingVertical: 20,
+                        alignItems: 'stretch',
+                    }}
+                >
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
                         }}
-                        selected={selected}
-                    />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                    <UICheckboxItem
-                        testID="uiCheckboxItem_selected_state"
-                        editable
-                        onPress={() => undefined}
-                        selected
-                    />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                    <UICheckboxItem
-                        testID="uiCheckboxItem_disabled_state"
-                        onPress={() => undefined}
-                        editable={false}
-                    />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UIDetailsCheckbox">
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                    <UIDetailsCheckbox
-                        testID="uiDetailsCheckbox_comment_left"
-                        details="Example checkbox"
-                        comments="with comment"
-                        active={selected2}
-                        onPress={() => setSelected2(!selected2)}
-                    />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                    <UIDetailsCheckbox
-                        testID="uiDetailsCheckbox_comment_right"
-                        details="Example checkbox"
-                        comments="with comment"
-                        active={selected2}
-                        onPress={() => setSelected2(!selected2)}
-                        switcherPosition={UIDetailsCheckbox.Position.Left}
-                    />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UIDetailsRadio">
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                    <UIDetailsRadio
-                        testID="uiDetailsRadio_comment_left"
-                        details="Example radio"
-                        comments="with comment"
-                        active={selected3}
-                        onPress={() => setSelected3(!selected3)}
-                    />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                    <UIDetailsRadio
-                        testID="uiDetailsRadio_comment_right"
-                        details="Example radio"
-                        comments="with comment"
-                        active={selected3}
-                        onPress={() => setSelected3(!selected3)}
-                        switcherPosition={UIDetailsRadio.Position.Left}
-                    />
+                    >
+                        <UILabel>Radio:</UILabel>
+                        <UISwitcher
+                            variant={UISwitcherVariant.Radio}
+                            active={switcherSelected}
+                            onPress={() => {
+                                console.log('onPress', switcherSelected);
+                                setSwitcherSelected((prev) => !prev);
+                            }}
+                        />
+                    </View>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <UILabel>Check:</UILabel>
+                        <UISwitcher
+                            variant={UISwitcherVariant.Check}
+                            active={switcherSelected}
+                            onPress={() => {
+                                console.log('onPress', switcherSelected);
+                                setSwitcherSelected((prev) => !prev);
+                            }}
+                        />
+                    </View>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <UILabel>Select:</UILabel>
+                        <UISwitcher
+                            variant={UISwitcherVariant.Select}
+                            active={switcherSelected}
+                            onPress={() => {
+                                console.log('onPress', switcherSelected);
+                                setSwitcherSelected((prev) => !prev);
+                            }}
+                        />
+                    </View>
                 </View>
             </ExampleSection>
             <ExampleSection title="UIDetailsToggle">
@@ -97,8 +81,8 @@ export const Checkbox = () => {
                         testID="uiDetailsToggle_comment_left"
                         details="Example toggle"
                         comments="with comment"
-                        active={selected4}
-                        onPress={() => setSelected4(!selected4)}
+                        active={selected}
+                        onPress={() => setSelected(!selected)}
                     />
                 </View>
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
@@ -106,26 +90,10 @@ export const Checkbox = () => {
                         testID="uiDetailsToggle_comment_right"
                         details="Example toggle"
                         comments="with comment"
-                        active={selected4}
-                        onPress={() => setSelected4(!selected4)}
+                        active={selected}
+                        onPress={() => setSelected(!selected)}
                         colored
                         switcherPosition={UIDetailsToggle.Position.Left}
-                    />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UIRadioButtonList">
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                    <UIRadioButtonList
-                        testID="uiRadioButtonList_default"
-                        onSelect={(index: number) => setSelectedRadio(index)}
-                        state={{
-                            selected: selectedRadio,
-                            radiobuttonList: [
-                                { title: 'first' },
-                                { title: 'second' },
-                                { title: 'third' },
-                            ],
-                        }}
                     />
                 </View>
             </ExampleSection>

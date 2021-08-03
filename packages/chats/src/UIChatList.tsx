@@ -6,15 +6,16 @@ import { SectionExtra, UIChatListFormatter } from './UIChatListFormatter';
 import { UILoadMoreButton } from './UILoadMoreButton';
 import { UICommonChatList } from './UICommonChatList';
 import { DateSeparator } from './DateSeparator';
-import { ChatMessage, ChatMessageType } from './types';
+import { ChatMessage, ChatMessageType, OnPressUrl } from './types';
 import { sectionListGetItemLayout } from './UIChatListLayout';
-import { BubbleChatPlainText } from './BubblePlainText';
+import { BubbleChatPlainText, UrlPressHandlerContext } from './BubblePlainText';
 import { BubbleSystem } from './BubbleSystem';
 import { BubbleTransaction } from './BubbleTransaction';
 import { BubbleImage } from './BubbleImage';
 import { BubbleDocument } from './BubbleDocument';
 import { BubbleSticker } from './BubbleSticker';
 import { BubbleActionButton } from './BubbleActionButton';
+import { ChatBubbleQRCode } from './BubbleQRCode';
 
 const renderSectionTitle = ({
     section,
@@ -77,6 +78,14 @@ const renderBubble = (
                     onLayout={onLayout}
                 />
             );
+        case ChatMessageType.QRCode:
+            return (
+                <ChatBubbleQRCode
+                    {...message}
+                    key={message.key}
+                    onLayout={onLayout}
+                />
+            );
         default:
             return null;
     }
@@ -88,6 +97,7 @@ type UIChatListProps = {
     canLoadMore: boolean;
     isLoadingMore: boolean;
     onLoadEarlierMessages: () => void;
+    onPressUrl?: OnPressUrl;
     bottomInset?: number;
 };
 
@@ -99,6 +109,7 @@ export const UIChatList = React.forwardRef<SectionList, UIChatListProps>(
             canLoadMore,
             isLoadingMore,
             onLoadEarlierMessages,
+            onPressUrl,
         }: UIChatListProps,
         ref,
     ) {
@@ -121,27 +132,29 @@ export const UIChatList = React.forwardRef<SectionList, UIChatListProps>(
         );
 
         return (
-            <UICommonChatList
-                forwardRef={ref}
-                nativeID={nativeID}
-                renderBubble={renderBubble}
-                getItemLayoutFabric={sectionListGetItemLayout}
-                canLoadMore={canLoadMore}
-            >
-                {(chatListProps) => (
-                    <SectionList
-                        testID="chat_container"
-                        sections={sections}
-                        // Because the List is inverted in order to render from the bottom,
-                        // the title (date) for each section becomes the footer instead of header.
-                        renderSectionFooter={renderSectionTitle}
-                        // renderSectionHeader={section => this.renderSectionStatus(section)}
-                        onEndReached={onLoadEarlierMessages}
-                        ListFooterComponent={renderLoadMore}
-                        {...chatListProps}
-                    />
-                )}
-            </UICommonChatList>
+            <UrlPressHandlerContext.Provider value={onPressUrl}>
+                <UICommonChatList
+                    forwardRef={ref}
+                    nativeID={nativeID}
+                    renderBubble={renderBubble}
+                    getItemLayoutFabric={sectionListGetItemLayout}
+                    canLoadMore={canLoadMore}
+                >
+                    {(chatListProps) => (
+                        <SectionList
+                            testID="chat_container"
+                            sections={sections}
+                            // Because the List is inverted in order to render from the bottom,
+                            // the title (date) for each section becomes the footer instead of header.
+                            renderSectionFooter={renderSectionTitle}
+                            // renderSectionHeader={section => this.renderSectionStatus(section)}
+                            onEndReached={onLoadEarlierMessages}
+                            ListFooterComponent={renderLoadMore}
+                            {...chatListProps}
+                        />
+                    )}
+                </UICommonChatList>
+            </UrlPressHandlerContext.Provider>
         );
     },
 );

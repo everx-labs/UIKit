@@ -15,6 +15,7 @@ export * from './constants';
 export * from './Sheets';
 export * from './UIAlertView';
 export * from './UIActionSheet';
+export * from './UINotice';
 
 export * from './SplitNavigator/createSplitNavigator';
 export {

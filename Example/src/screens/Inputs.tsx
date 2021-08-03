@@ -12,18 +12,9 @@ import {
 import { UIAddressTextView } from '@tonlabs/uikit.flask';
 import {
     UIAmountInput,
-    UIBankCardNumberInput,
-    UIContractAddressInput,
-    UIDateInput,
     UIDetailsInput,
-    UIEmailInput,
-    UILinkInput,
-    UINumberInput,
-    UIPhoneInput,
-    UIPinCodeInput,
     UITextInput,
     UITransferInput,
-    UIUploadFileInput,
 } from '@tonlabs/uikit.components';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { ExampleSection } from '../components/ExampleSection';
@@ -104,14 +95,7 @@ const localeInfo = {
 
 export const Inputs = () => {
     const [amount, setAmount] = useState('');
-    const [bankCardNumber, setBankCardNumber] = useState('');
-    const [contractAddress, setContractAddress] = useState('');
-    const [date, setDate] = useState('');
     const [details, setDetails] = useState('');
-    const [email, setEmail] = useState('');
-    const [link, setLink] = useState('');
-    const [number, setNumber] = useState('');
-    const [phone, setPhone] = useState('');
     const [search] = useState('');
     const mnemonicWords = [
         'report',
@@ -308,38 +292,6 @@ export const Inputs = () => {
                     />
                 </View>
             </ExampleSection>
-            <ExampleSection title="UIBankCardNumberInput">
-                <View style={{ paddingVertical: 20 }}>
-                    {/* $FlowFixMe */}
-                    <UIBankCardNumberInput
-                        testID="uiBankCardNumberInput_default"
-                        value={bankCardNumber}
-                        onChangeText={(newText: string) =>
-                            setBankCardNumber(newText)
-                        }
-                    />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UIContractAddressInput">
-                <View style={{ paddingVertical: 20 }}>
-                    <UIContractAddressInput
-                        testID="uiContractAddressInput_default"
-                        value={contractAddress}
-                        onChangeText={(newText: string) =>
-                            setContractAddress(newText)
-                        }
-                    />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UIDateInput">
-                <View style={{ paddingVertical: 20 }}>
-                    <UIDateInput
-                        testId="uiDateInput_default"
-                        value={date}
-                        onChangeText={(newText: string) => setDate(newText)}
-                    />
-                </View>
-            </ExampleSection>
             <ExampleSection title="UIDetailsInput">
                 <View style={{ paddingVertical: 20 }}>
                     <UIDetailsInput
@@ -359,61 +311,6 @@ export const Inputs = () => {
                         onChangeText={(newText: string) => setDetails(newText)}
                         maxLines={3}
                         containerStyle={{ marginTop: 16 }}
-                    />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UIEmailInput">
-                <View style={{ paddingVertical: 20 }}>
-                    <UIEmailInput
-                        testID="uiEmailInput_default"
-                        placeholder="Email"
-                        comment="Some comment here"
-                        value={email}
-                        onChangeText={(newText: string) => setEmail(newText)}
-                    />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UILinkInput">
-                <View style={{ paddingVertical: 20 }}>
-                    <UILinkInput
-                        testID="uiLinkInput_default"
-                        placeholder="Link"
-                        comment="Some comment here"
-                        value={link}
-                        onChangeText={(newText: string) => setLink(newText)}
-                    />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UINumberInput">
-                <View style={{ paddingVertical: 20 }}>
-                    <UINumberInput
-                        testID="uiNumberInput_default"
-                        placeholder="Number"
-                        comment="Some comment here"
-                        value={number}
-                        onChangeText={(newText: string) => setNumber(newText)}
-                    />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UIPhoneInput">
-                <View style={{ paddingVertical: 20 }}>
-                    <UIPhoneInput
-                        testID="uiPhoneInput_default"
-                        placeholder="Phone"
-                        comment="Some comment here"
-                        value={phone}
-                        onChangeText={(newText: string) => setPhone(newText)}
-                    />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UIPinCodeInput">
-                <View style={{ paddingVertical: 20 }}>
-                    <UIPinCodeInput
-                        testID="uiPinCodeInput_default"
-                        pinCodeLength={6}
-                        pinTitle="Pin title"
-                        pinDescription="Description"
-                        pinCodeEnter={() => undefined}
                     />
                 </View>
             </ExampleSection>
@@ -438,14 +335,6 @@ export const Inputs = () => {
                         minDecimals={3}
                         onValueChange={(num: BigNumber) => setTransfer(num)}
                         localeInfo={localeInfo}
-                    />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UIUploadFileInput">
-                <View style={{ paddingVertical: 20 }}>
-                    <UIUploadFileInput
-                        testID="uiUploadFileInput_default"
-                        uploadText="Upload file"
                     />
                 </View>
             </ExampleSection>

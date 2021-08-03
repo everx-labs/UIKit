@@ -15,55 +15,30 @@ export {
     UIAlert,
     UIAlertView,
     UIAmountInput,
-    UIBadge,
-    UIBullet,
-    UIBankCardNumberInput,
-    UICheckboxItem,
     UICompatibilityView,
     UIComponent,
-    UIDateInput,
     UIDetailsInput,
-    UIDetailsCheckbox,
     UIDetailsToggle,
-    UIDetailsRadio,
     UIDetailsSwitcher,
     UIDetailsView,
     UIDetailsTable,
-    UIDot,
     UIDropdownAlert,
-    UIEmailInput,
-    UIGrid,
-    UIGridColumn,
     UILayoutManager,
     UILink,
-    UILinkInput,
     UIListHeader,
     UILoadMoreButton,
+    UILoopEffect,
     UINetworkStatus,
     UINotice,
-    UINotificationBadge,
-    UINumberInput,
-    UIPhoneInput,
-    UIPinCodeInput,
     UIPureComponent,
-    UIRadioButtonList,
     UIScaleButton,
     UISectionHeader,
-    UIContractAddressInput,
     UIPushNotification,
-    UISeparator,
-    UISlider,
     UISpinnerOverlay,
-    UIStepBar,
-    UITabView,
-    UITag,
     UITextInput,
     UIToastMessage,
     UIToggle,
-    UITooltip,
     UITransferInput,
-    UIUploadFileInput,
-    UIUserAgent,
 } from './packages/components/src';
 
 export {
@@ -80,40 +55,24 @@ export {
 
 export {
     UIActionSheet,
-    UIBottomBar,
     UIController,
     UICountryPicker,
     UIModalController,
     UIDialogController,
     UIImageView,
-    UIErrorScreen,
-    UIBreadCrumbs,
     UIPopover,
     UIScreen,
     UIShareManager,
     UIShareScreen,
-    UIUnfold,
 } from './packages/navigation_legacy/src';
 
 export {
-    UISplitViewController,
-    UINavigationBackButton,
-    UINavigationBar,
-    UINavigationIconButton,
-    UINavigationTextButton,
-    UINavigator,
     UIAccountPicker,
-    UIBalanceView,
     UIAnimatedBalanceView,
-    UIFeedback,
-    UIFlashMessage,
     UIIdleDetector,
     UILandingView,
     UIProfileInitials,
     UISharedComponents,
-    UIStubPage,
-    UITransactionView,
-    UITransitionView,
 } from './packages/legacy/src';
 
 // $FlowExpectedError
@@ -121,16 +80,6 @@ export { UIAssets } from './packages/assets/src';
 
 // Types
 export type { UIAccountData } from './packages/legacy/src/UIAccountPicker/types/UIAccountData';
-export type {
-    CreateNavigationOptions,
-    ReactNavigation,
-} from './packages/legacy/src/UINavigationBar';
-export type {
-    NavigationProps,
-    UINavigationRoute,
-    UINavigationRouting,
-} from './packages/legacy/src/UINavigator';
-export type { UIFeedbackSubmitFunc } from './packages/legacy/src/UIFeedback';
 export type { PointerEvents, PositionObject } from './packages/core';
 export type {
     UIColorData,

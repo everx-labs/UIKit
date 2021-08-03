@@ -1,4 +1,8 @@
-import type { ChatMessageType, BubbleBaseT } from '@tonlabs/uikit.chats';
+import type {
+    ChatMessageType,
+    BubbleBaseT,
+    QRCodeMessage,
+} from '@tonlabs/uikit.chats';
 import type BigNumber from 'bignumber.js';
 import type React from 'react';
 
@@ -30,7 +34,9 @@ export enum InteractiveMessageType {
     SigningBox = 'SigningBox',
     EncryptionBox = 'EncryptionBox',
     TransactionConfirmation = 'TransactionConfirmation',
-    QRCode = 'QRCode',
+    QRCodeScanner = 'QRCodeScanner',
+    Date = 'Date',
+    Time = 'Time',
 }
 
 type PlainTextMessage = BubbleBaseT & {
@@ -169,7 +175,7 @@ export type SigningBox = {
     /**
      * Optional serial number of the security card used for the signature
      */
-    serialNumber?: string,
+    serialNumber?: string;
 };
 
 export type SigningBoxExternalState = {
@@ -213,6 +219,39 @@ export type EncryptionBoxMessage = InteractiveMessage<
     EncryptionBoxExternalState
 >;
 
+export type DateExternalState = {
+    date?: Date;
+};
+
+export type DateMessage = InteractiveMessage<
+    InteractiveMessageType.Date,
+    {
+        prompt?: string;
+        minDate?: Date;
+        maxDate?: Date;
+        currentDate?: Date;
+        onSelect: (state: DateExternalState) => void;
+    },
+    DateExternalState
+>;
+
+export type TimeExternalState = {
+    time?: Date;
+};
+
+export type TimeMessage = InteractiveMessage<
+    InteractiveMessageType.Time,
+    {
+        prompt?: string;
+        minTime?: Date;
+        maxTime?: Date;
+        currentTime?: Date;
+        interval?: number;
+        onSelect: (state: TimeExternalState) => void;
+    },
+    TimeExternalState
+>;
+
 export type TransactionConfirmationExternalState = {
     status: 'approved' | 'cancelled';
 };
@@ -237,18 +276,18 @@ export type TransactionConfirmationMessage = InteractiveMessage<
     TransactionConfirmationExternalState
 >;
 
-export type QRCodeExternalState = {
+export type QRCodeScannerExternalState = {
     value: string;
 };
 
-export type QRCodeMessage = InteractiveMessage<
-    InteractiveMessageType.QRCode,
+export type QRCodeScannerMessage = InteractiveMessage<
+    InteractiveMessageType.QRCodeScanner,
     {
-        onScan: (state: QRCodeExternalState) => void;
+        onScan: (state: QRCodeScannerExternalState) => void;
         parseData: (data: any) => Promise<string>;
-        fastScan?: boolean,
+        fastScan?: boolean;
     },
-    QRCodeExternalState
+    QRCodeScannerExternalState
 >;
 
 export type BrowserMessage =
@@ -262,7 +301,10 @@ export type BrowserMessage =
     | SigningBoxMessage
     | EncryptionBoxMessage
     | TransactionConfirmationMessage
-    | QRCodeMessage;
+    | QRCodeMessage
+    | QRCodeScannerMessage
+    | DateMessage
+    | TimeMessage;
 
 type WithExternalStateHelper<A> = A extends { externalState?: any } ? A : never;
 

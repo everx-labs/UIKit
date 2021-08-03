@@ -5,7 +5,7 @@ import CountryPicker, { getAllCountries } from 'react-native-country-picker-moda
 import { ScrollView } from 'react-native-gesture-handler';
 
 
-import { UIConstant, UIColor, UIStyle } from '@tonlabs/uikit.core';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { UISearchBar } from '@tonlabs/uikit.navigation';
 import {
     ColorVariants,
@@ -60,7 +60,6 @@ const countryPickerStyle = StyleSheet.create({
     separator: {
         marginVertical: 1,
         marginHorizontal: UIConstant.contentOffset(),
-        backgroundColor: UIColor.grey2(),
     },
 });
 
@@ -149,12 +148,6 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     static show(args: ModalControllerShowArgs) {
         if (shared) {
             shared.show(args);
-        }
-    }
-
-    static hide() {
-        if (shared) {
-            shared.hide();
         }
     }
 

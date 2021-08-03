@@ -48,6 +48,7 @@
     "@babel/preset-typescript": "^7.12.1",
     "@react-native-community/blur": "3.6.0",
     "@react-native-community/bob": "^0.16.2",
+    "@react-native-community/hooks": "2.6.0",
     "@testing-library/jest-native": "4.0.1",
     "@testing-library/react-native": "7.2.0",
     "@types/jest": "26.0.24",
@@ -68,6 +69,7 @@
   },
   "peerDependencies": {
     "@react-native-community/blur": "^3.6.0",
+    "@react-native-community/hooks": "2.6.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-native": "^0.63.0",

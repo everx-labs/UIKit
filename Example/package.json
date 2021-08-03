@@ -57,7 +57,7 @@
     "react-native-document-picker": "3.2.4",
     "react-native-dropdownalert": "4.3.0",
     "react-native-fast-image": "8.3.4",
-    "react-native-flash-message": "0.1.13",
+    "react-native-flash-message": "0.1.23",
     "react-native-gesture-handler": "1.10.3",
     "react-native-image-picker": "git+https://github.com/FactorBench/react-native-image-picker.git#develop",
     "react-native-indicators": "git+https://github.com/tonlabs/react-native-indicators.git",

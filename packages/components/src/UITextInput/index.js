@@ -2,7 +2,6 @@
 import * as React from 'react';
 import StylePropType from 'react-style-proptype';
 import {
-    TextInput,
     View,
     StyleSheet,
     TouchableOpacity,
@@ -13,12 +12,10 @@ import type {
     KeyboardType,
 } from 'react-native/Libraries/Components/TextInput/TextInput';
 
-import { UIColor, UIStyle, UIConstant } from '@tonlabs/uikit.core';
+import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import type { PointerEvents } from '@tonlabs/uikit.core';
 import {
     ColorVariants,
-    Typography,
-    TypographyVariants,
     UILabel,
     UILabelColors,
     UILabelRoles,
@@ -51,7 +48,7 @@ const styles = StyleSheet.create({
 type TextInputTransitProps = {
     value: string,
     placeholder?: string,
-    placeholderTextColor?: $Values<ColorVariants>,
+    placeholderTextColor?: ColorVariants,
     editable?: boolean,
     multiline?: boolean,
     secureTextEntry?: boolean,
@@ -219,7 +216,7 @@ class UITextInput extends UIComponent<Props, State> {
         containerStyle: {},
         value: '',
         placeholder: '',
-        placeholderTextColor: UIColor.textTertiary(),
+        placeholderTextColor: ColorVariants.TextTertiary,
         beginningTag: '',
         needBorderBottom: false,
         disabled: false,

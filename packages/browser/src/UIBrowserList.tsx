@@ -4,9 +4,12 @@ import { FlatList, FlatListProps, ViewProps } from 'react-native';
 import {
     BubbleActionButton,
     BubbleSimplePlainText,
+    BubbleQRCode,
     ChatMessageType,
     CommonChatListProps,
     UICommonChatList,
+    OnPressUrl,
+    UrlPressHandlerContext,
 } from '@tonlabs/uikit.chats';
 import { BrowserMessage, InteractiveMessageType } from './types';
 import { getFormattedList } from './getFormattedList';
@@ -17,11 +20,14 @@ import { ConfirmInput } from './Inputs/confirm';
 import { AmountInput } from './Inputs/amountInput';
 import { SigningBox } from './Inputs/SigningBox';
 import { TransactionConfirmation } from './Inputs/TransactionConfirmation';
-import { QRCode } from './Inputs/qrCode';
+import { QRCodeScanner } from './Inputs/qrCodeScanner';
 import { EncryptionBox } from './Inputs/EncryptionBox';
+import { DatePicker } from './Inputs/datePicker';
+import { TimePicker } from './Inputs/timePicker';
 
 type UIBrowserListProps = {
     messages: BrowserMessage[];
+    onPressUrl?: OnPressUrl;
     bottomInset?: number;
 };
 
@@ -57,6 +63,9 @@ const renderBubble = () => (
     if (item.type === ChatMessageType.ActionButton) {
         return <BubbleActionButton {...item} onLayout={onLayout} />;
     }
+    if (item.type === ChatMessageType.QRCode) {
+        return <BubbleQRCode {...item} onLayout={onLayout} />;
+    }
 
     if (item.type === InteractiveMessageType.AddressInput) {
         return <AddressInput {...item} onLayout={onLayout} />;
@@ -82,34 +91,45 @@ const renderBubble = () => (
     if (item.type === InteractiveMessageType.TransactionConfirmation) {
         return <TransactionConfirmation {...item} onLayout={onLayout} />;
     }
-    if (item.type === InteractiveMessageType.QRCode) {
-        return <QRCode {...item} onLayout={onLayout} />
+    if (item.type === InteractiveMessageType.QRCodeScanner) {
+        return <QRCodeScanner {...item} onLayout={onLayout} />;
+    }
+    if (item.type === InteractiveMessageType.Date) {
+        return <DatePicker {...item} onLayout={onLayout} />;
+    }
+    if (item.type === InteractiveMessageType.Time) {
+        return <TimePicker {...item} onLayout={onLayout} />;
     }
 
     return null;
 };
 
 export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
-    function UIBrowserListForwarded({ messages }: UIBrowserListProps, ref) {
+    function UIBrowserListForwarded(
+        { messages, onPressUrl }: UIBrowserListProps,
+        ref,
+    ) {
         const formattedMessages = React.useMemo(
             () => getFormattedList(messages),
             [messages],
         );
         return (
-            <UICommonChatList
-                forwardRef={ref}
-                nativeID="browserList"
-                renderBubble={renderBubble()}
-                getItemLayoutFabric={flatListGetItemLayoutFabric}
-            >
-                {(chatListProps: CommonChatListProps<BrowserMessage>) => (
-                    <FlatList
-                        testID="browser_container"
-                        data={formattedMessages}
-                        {...chatListProps}
-                    />
-                )}
-            </UICommonChatList>
+            <UrlPressHandlerContext.Provider value={onPressUrl}>
+                <UICommonChatList
+                    forwardRef={ref}
+                    nativeID="browserList"
+                    renderBubble={renderBubble()}
+                    getItemLayoutFabric={flatListGetItemLayoutFabric}
+                >
+                    {(chatListProps: CommonChatListProps<BrowserMessage>) => (
+                        <FlatList
+                            testID="browser_container"
+                            data={formattedMessages}
+                            {...chatListProps}
+                        />
+                    )}
+                </UICommonChatList>
+            </UrlPressHandlerContext.Provider>
         );
     },
 );

@@ -8,8 +8,10 @@ import {
     UIBrowser,
     BrowserMessage,
     ValidationResultStatus,
-    QRCodeMessage,
+    QRCodeScannerMessage,
     EncryptionBoxMessage,
+    DateMessage,
+    TimeMessage
 } from '@tonlabs/uikit.browser';
 import type {
     AddressInputMessage,
@@ -87,9 +89,13 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
         },
     }));
 
+    const onPressUrl = React.useCallback(() => {
+        console.log('url handled');
+    }, []);
+
     return (
         <>
-            <UIBrowser messages={messages} />
+            <UIBrowser messages={messages} onPressUrl={onPressUrl} />
             <SafeAreaInsetsContext.Consumer>
                 {(insets) => (
                     <UIBottomSheet
@@ -109,6 +115,27 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                         }}
                     >
                         <UIBoxButton
+                            title="Add QRCode"
+                            layout={{
+                                marginBottom: 10,
+                            }}
+                            onPress={() => {
+                                const message: BrowserMessage = {
+                                    key: `${Date.now()}-qr-code`,
+                                    status: MessageStatus.Received,
+                                    type: ChatMessageType.QRCode,
+                                    data: 'You are reading a message received through a QR code',
+                                };
+                                setMessages([
+                                    {
+                                        ...message,
+                                    },
+                                    ...messages,
+                                ]);
+                                setMenuVisible(false);
+                            }}
+                        />
+                        <UIBoxButton
                             title="Add AddressInput"
                             layout={{
                                 marginBottom: 10,
@@ -118,7 +145,7 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                     key: `${Date.now()}-address-input`,
                                     status: MessageStatus.Received,
                                     type: InteractiveMessageType.AddressInput,
-                                    prompt: 'What wallet do you want to work with?',
+                                    prompt: 'What wallet do you want to work with? example url: https://google.com',
                                     mainAddress: '0:000',
                                     input: {
                                         validateAddress: (text: string) => {
@@ -389,6 +416,7 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                     type: InteractiveMessageType.EncryptionBox,
                                     encryptionBoxes,
                                     onAddEncryptionBox: (
+                                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
                                         _privateKey: string,
                                     ) => {
                                         const newEncryptionBox = {
@@ -510,12 +538,15 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                             }}
                         />
                         <UIBoxButton
-                            title="Add QRCodeMessage"
+                            title="Add QRCodeScannerMessage"
+                            layout={{
+                                marginBottom: 10,
+                            }}
                             onPress={() => {
-                                const message: QRCodeMessage = {
+                                const message: QRCodeScannerMessage = {
                                     key: `${Date.now()}-qr-code`,
                                     status: MessageStatus.Received,
-                                    type: InteractiveMessageType.QRCode,
+                                    type: InteractiveMessageType.QRCodeScanner,
                                     onScan: (externalState: any) => {
                                         setMessages([
                                             {
@@ -535,12 +566,15 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                             }}
                         />
                         <UIBoxButton
-                            title="Add QRCodeMessage with fast scan"
+                            title="Add QRCodeScannerMessage with fast scan"
+                            layout={{
+                                marginBottom: 10,
+                            }}
                             onPress={() => {
-                                const message: QRCodeMessage = {
+                                const message: QRCodeScannerMessage = {
                                     key: `${Date.now()}-qr-code`,
                                     status: MessageStatus.Received,
-                                    type: InteractiveMessageType.QRCode,
+                                    type: InteractiveMessageType.QRCodeScanner,
                                     fastScan: true,
                                     onScan: (externalState: any) => {
                                         setMessages([
@@ -554,6 +588,57 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
                                     parseData: (_data: any) => {
                                         return Promise.resolve('0:000');
+                                    },
+                                };
+                                setMessages([message, ...messages]);
+                                setMenuVisible(false);
+                            }}
+                        />
+                        <UIBoxButton
+                            title="Choose date"
+                            layout={{
+                                marginBottom: 10,
+                            }}
+                            onPress={() => {
+                                const message: DateMessage = {
+                                    key: `${Date.now()}-date-picker`,
+                                    status: MessageStatus.Received,
+                                    type: InteractiveMessageType.Date,
+                                    minDate: new Date('07/01/2021'),
+                                    onSelect: (externalState: any) => {
+                                        setMessages([
+                                            {
+                                                ...message,
+                                                externalState,
+                                            },
+                                            ...messages,
+                                        ]);
+                                    },
+                                };
+                                setMessages([message, ...messages]);
+                                setMenuVisible(false);
+                            }}
+                        />
+                        <UIBoxButton
+                            title="Choose time"
+                            layout={{
+                                marginBottom: 10,
+                            }}
+                            onPress={() => {
+                                const message: TimeMessage = {
+                                    key: `${Date.now()}-time-picker`,
+                                    status: MessageStatus.Received,
+                                    type: InteractiveMessageType.Time,
+                                    minTime: new Date(0,0,0,12, 15),
+                                    maxTime: new Date(0,0,0,13, 0),
+                                    onSelect: (externalState: any) => {
+                                        setMessages([
+                                            {
+                                                ...message,
+                                                externalState,
+                                            },
+                                            ...messages,
+                                        ]);
                                     },
                                 };
                                 setMessages([message, ...messages]);

@@ -2,135 +2,166 @@ import * as React from 'react';
 import BigNumber from 'bignumber.js';
 
 import { ColorVariants } from '@tonlabs/uikit.hydrogen';
-import { UIChatInput, UIChatList } from '@tonlabs/uikit.chats';
+import {
+    UIChatInput,
+    UIChatList,
+    ChatMessageType,
+    ChatMessage,
+    MessageStatus,
+    TransactionType,
+} from '@tonlabs/uikit.chats';
 import { useStickers } from '@tonlabs/uikit.stickers';
 import { createStackNavigator } from '@tonlabs/uikit.navigation';
 
-const initialMessages = [
+const userId = '0:000';
+const companionId = '0:123';
+
+const initialMessages: ChatMessage[] = [
     {
-        type: 'stm',
-        status: 'received',
+        type: ChatMessageType.QRCode,
+        data: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore',
         time: Math.floor(Date.now() - 4 * 60 * 1000),
-        sender: '0:000',
-        text: 'This one is from me',
+        sender: companionId,
+        status: MessageStatus.Received,
+        key: '',
     },
     {
-        type: 'stm',
-        status: 'received',
-        time: Math.floor(Date.now() - 5 * 60 * 1000),
-        sender: '0:123',
-        text:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    },
-    {
-        type: 'stm',
-        status: 'sent',
+        type: ChatMessageType.QRCode,
+        data: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore',
         time: Math.floor(Date.now() - 4 * 60 * 1000),
-        sender: '0:000',
+        sender: userId,
+        status: MessageStatus.Sent,
+        key: '',
+    },
+    {
+        type: ChatMessageType.PlainText,
+        status: MessageStatus.Received,
+        time: Math.floor(Date.now() - 4 * 60 * 1000),
+        sender: companionId,
         text: 'This one is from me',
+        key: '',
     },
     {
-        type: 'stm',
-        status: 'sent',
+        type: ChatMessageType.PlainText,
+        status: MessageStatus.Received,
         time: Math.floor(Date.now() - 5 * 60 * 1000),
-        sender: '0:123',
-        text:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        sender: companionId,
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        key: '',
     },
     {
-        type: 'act',
-        status: 'sent',
+        type: ChatMessageType.PlainText,
+        status: MessageStatus.Sent,
+        time: Math.floor(Date.now() - 4 * 60 * 1000),
+        sender: userId,
+        text: 'This one is from me',
+        key: '',
+    },
+    {
+        type: ChatMessageType.PlainText,
+        status: MessageStatus.Sent,
+        time: Math.floor(Date.now() - 5 * 60 * 1000),
+        sender: userId,
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        key: '',
+    },
+    {
+        type: ChatMessageType.ActionButton,
+        status: MessageStatus.Sent,
         time: Math.floor(Date.now() - 1 * 60 * 1000),
-        sender: '0:000',
-        text:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        sender: userId,
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         textMode: 'fit',
+        key: '',
     },
     {
-        type: 'act',
-        status: 'received',
+        type: ChatMessageType.ActionButton,
+        status: MessageStatus.Received,
         time: Math.floor(Date.now() - 1 * 60 * 1000),
-        sender: '0:000',
-        text:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        sender: companionId,
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         textMode: 'fit',
+        key: '',
     },
     {
-        type: 'act',
-        status: 'sent',
+        type: ChatMessageType.ActionButton,
+        status: MessageStatus.Sent,
         time: Math.floor(Date.now() - 1 * 60 * 1000),
-        sender: '0:000',
-        text:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        sender: userId,
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         textMode: 'ellipsize',
+        key: '',
     },
     {
-        type: 'act',
-        status: 'received',
+        type: ChatMessageType.ActionButton,
+        status: MessageStatus.Received,
         time: Math.floor(Date.now() - 1 * 60 * 1000),
-        sender: '0:000',
-        text:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        sender: companionId,
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         textMode: 'ellipsize',
+        key: '',
     },
     {
-        type: 'act',
-        status: 'sent',
+        type: ChatMessageType.ActionButton,
+        status: MessageStatus.Sent,
         time: Math.floor(Date.now() - 1 * 60 * 1000),
-        sender: '0:000',
+        sender: userId,
         text: 'This is action',
+        key: '',
     },
     {
-        type: 'act',
-        status: 'received',
+        type: ChatMessageType.ActionButton,
+        status: MessageStatus.Received,
         time: Math.floor(Date.now() - 1 * 60 * 1000),
-        sender: '0:000',
+        sender: companionId,
         text: 'This is action',
+        key: '',
     },
     {
-        type: 'stk',
-        status: 'pending',
+        type: ChatMessageType.Sticker,
+        status: MessageStatus.Pending,
         time: Math.floor(Date.now() - 1 * 60 * 1000),
-        sender: '0:000',
+        sender: userId,
         source: {
-            uri:
-                'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
+            uri: 'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
         },
+        key: '',
     },
     {
-        type: 'stk',
-        status: 'sent',
+        type: ChatMessageType.Sticker,
+        status: MessageStatus.Sent,
         time: Math.floor(Date.now() - 1 * 60 * 1000),
-        sender: '0:000',
+        sender: userId,
         source: {
-            uri:
-                'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
+            uri: 'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
         },
+        key: '',
     },
     {
-        type: 'stk',
-        status: 'received',
+        type: ChatMessageType.Sticker,
+        status: MessageStatus.Received,
         time: Math.floor(Date.now() - 1 * 60 * 1000),
-        sender: '0:123',
+        sender: companionId,
         source: {
-            uri:
-                'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
+            uri: 'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
         },
+        key: '',
     },
     {
-        type: 'sys',
-        status: 'sent',
+        type: ChatMessageType.System,
+        status: MessageStatus.Sent,
         time: Math.floor(Date.now() - 1 * 60 * 1000), // TODO: is this mandatory field for system message?
-        sender: '0:000', // TODO: is this mandatory field for system message?
+        sender: userId, // TODO: is this mandatory field for system message?
         text: 'This is a system message',
+        key: '',
     },
     {
-        type: 'trx',
-        status: 'received',
+        type: ChatMessageType.Transaction,
+        status: MessageStatus.Received,
         time: Math.floor(Date.now() - 1 * 60 * 1000),
-        sender: '0:000',
+        sender: companionId,
         info: {
-            type: 'income',
+            type: TransactionType.Income,
             amount: new BigNumber(1),
             balanceChange: '1.000',
         },
@@ -142,143 +173,116 @@ const initialMessages = [
         onPress() {
             console.log('hey');
         },
+        key: '',
     },
     {
-        type: 'trx',
-        status: 'aborted',
+        type: ChatMessageType.Transaction,
+        status: MessageStatus.Aborted,
         time: Math.floor(Date.now() - 1 * 60 * 1000),
-        sender: '0:000',
+        sender: userId,
         info: {
-            type: 'expense',
+            balanceChange: '1.000',
+            type: TransactionType.Expense,
             amount: new BigNumber(1),
         },
         comment: {
             text: 'Pocket money',
+            encrypted: false,
         },
         onPress() {
             console.log('hey');
         },
+        key: '',
     },
     {
-        type: 'trx',
-        status: 'aborted',
+        type: ChatMessageType.Transaction,
+        status: MessageStatus.Aborted,
         time: Math.floor(Date.now() - 1 * 60 * 1000),
-        sender: '0:000',
+        sender: userId,
         info: {
-            type: 'income',
+            balanceChange: '1.000',
+            type: TransactionType.Income,
             amount: new BigNumber(1),
         },
+        key: '',
     },
     {
-        type: 'trx',
-        status: 'sent',
+        type: ChatMessageType.Transaction,
+        status: MessageStatus.Sent,
         time: Math.floor(Date.now() - 1 * 60 * 1000),
-        sender: '0:000',
+        sender: userId,
         info: {
-            type: 'expense',
+            balanceChange: '1.000',
+            type: TransactionType.Expense,
             amount: new BigNumber(1),
-            text: 'Sent',
+            text: MessageStatus.Sent,
         },
         comment: {
             text: 'Some money',
             encrypted: true,
         },
+        key: '',
     },
     {
-        type: 'trx',
-        status: 'received',
+        type: ChatMessageType.Transaction,
+        status: MessageStatus.Received,
         time: Math.floor(Date.now() - 1 * 60 * 1000),
-        sender: '0:000',
+        sender: companionId,
         info: {
-            type: 'expense',
+            balanceChange: '1.000',
+            type: TransactionType.Expense,
             amount: new BigNumber(1),
-            text: 'Sent',
+            text: MessageStatus.Sent,
         },
+        key: '',
     },
     {
-        type: 'trx',
-        status: 'sent',
+        type: ChatMessageType.Transaction,
+        status: MessageStatus.Sent,
         time: Math.floor(Date.now() - 1 * 60 * 1000),
-        sender: '0:000',
+        sender: userId,
         info: {
-            type: 'income',
+            balanceChange: '1.000',
+            type: TransactionType.Income,
             amount: new BigNumber(9999.123456789),
-            text: 'Received',
+            text: MessageStatus.Received,
         },
+        key: '',
     },
     {
-        type: 'trx',
-        status: 'received',
+        type: ChatMessageType.Transaction,
+        status: MessageStatus.Received,
         time: Math.floor(Date.now() - 1 * 60 * 1000),
-        sender: '0:000',
+        sender: companionId,
         info: {
-            type: 'income',
+            balanceChange: '1.000',
+            type: TransactionType.Income,
             amount: new BigNumber(1),
-            text: 'Received',
+            text: MessageStatus.Received,
         },
         comment: {
             text: 'Take it',
             encrypted: true,
         },
+        key: '',
     },
     {
-        type: 'stm',
-        status: 'aborted',
+        type: ChatMessageType.PlainText,
+        status: MessageStatus.Aborted,
         time: Math.floor(Date.now() - 5 * 60 * 1000),
-        sender: '0:123',
+        sender: userId,
         text: "I'm aborted one!",
+        key: '',
     },
-    // ...new Array(100).fill(null).reduce((acc, n, i) => {
-    //     acc.push({
-    //         type: 'stm',
-    //         status: 'pending',
-    //         time: Math.floor(Date.now() - 1 * 60 * 1000),
-    //         sender: '0:000',
-    //         text: 'This one is in process of sending...',
-    //     });
-    //     acc.push({
-    //         type: 'stm',
-    //         status: 'received',
-    //         time: Math.floor(Date.now() - 2 * 60 * 1000),
-    //         sender: '0:123',
-    //         text: 'How r u?',
-    //     });
-    //     acc.push({
-    //         type: 'stm',
-    //         status: 'sent',
-    //         time: Math.floor(Date.now() - 4 * 60 * 1000),
-    //         sender: '0:000',
-    //         text: 'This one is from me',
-    //     });
-    //     acc.push({
-    //         type: 'stm',
-    //         status: 'received',
-    //         time: Math.floor(Date.now() - 5 * 60 * 1000),
-    //         sender: '0:123',
-    //         text:
-    //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    //     });
-    //     acc.push({
-    //         type: 'stm',
-    //         status: 'received',
-    //         time: Math.floor(Date.now() - 5 * 60 * 1000),
-    //         sender: '0:123',
-    //         text: 'Hi there!',
-    //     });
-    //     acc.push({
-    //         type: 'stm',
-    //         status: 'received',
-    //         time: new Date('10 06 2020 10:00').getTime(),
-    //         sender: '0:123',
-    //         text: 'Hi from past!',
-    //     });
-    //     return acc;
-    // }, []),
-].map((m: any, i: number) => {
-    // eslint-disable-next-line no-param-reassign
-    m.key = i;
-    return m;
-});
+];
+
+const initialMessagesWithKeys = initialMessages.map(
+    (m: ChatMessage, i: number) => {
+        // eslint-disable-next-line no-param-reassign
+        m.key = m.type + i;
+        return m;
+    },
+);
 
 const stickers = new Array(10).fill(null).map((_a, i) => ({
     id: `test${i}`,
@@ -287,28 +291,20 @@ const stickers = new Array(10).fill(null).map((_a, i) => ({
     name: 'test',
     stickers: new Array(4).fill(null).map((_b, j) => ({
         name: `crown${j}`,
-        url:
-            'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
+        url: 'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
     })),
 }));
-
-// const shortcuts = [
-//     {
-//         title: "I'm a danger shortcut!",
-//         onPress: () => console.log('shortcut pressed!'),
-//         isDanger: true,
-//     },
-//     {
-//         title: "I'm a shortcut!",
-//         onPress: () => console.log('shortcut pressed!'),
-//     },
-// ];
 
 const ChatStack = createStackNavigator();
 
 const ChatWindowScreen = () => {
-    const [messages, setMessages] = React.useState(initialMessages);
+    const [messages, setMessages] = React.useState<ChatMessage[]>(
+        initialMessagesWithKeys,
+    );
     const onLoadEarlierMessages = React.useCallback(() => undefined, []);
+    const onPressUrl = React.useCallback(() => {
+        console.log('url handled');
+    }, []);
     const onSendMedia = React.useCallback(() => undefined, []);
     const onSendDocument = React.useCallback(() => undefined, []);
     const onItemSelected = React.useCallback(
@@ -316,10 +312,10 @@ const ChatWindowScreen = () => {
             setMessages([
                 {
                     key: `${Date.now()}stk`,
-                    type: 'stk',
-                    status: 'sent',
+                    type: ChatMessageType.Sticker,
+                    status: MessageStatus.Sent,
                     time: Date.now(),
-                    sender: '0:000',
+                    sender: userId,
                     source: {
                         uri: stk.url,
                     },
@@ -338,6 +334,7 @@ const ChatWindowScreen = () => {
             <UIChatList
                 nativeID="chatSectionList"
                 onLoadEarlierMessages={onLoadEarlierMessages}
+                onPressUrl={onPressUrl}
                 canLoadMore
                 isLoadingMore={false}
                 messages={messages}
@@ -349,28 +346,12 @@ const ChatWindowScreen = () => {
                     setMessages([
                         {
                             key: `${Date.now()}1`,
-                            type: 'stm',
-                            status: 'sent',
+                            type: ChatMessageType.PlainText,
+                            status: MessageStatus.Sent,
                             time: Date.now(),
-                            sender: '0:000',
+                            sender: userId,
                             text,
                         },
-                        // {
-                        //     key: `${Date.now()}2`,
-                        //     type: 'stm',
-                        //     status: 'sent',
-                        //     time: Date.now(),
-                        //     sender: '0:000',
-                        //     text,
-                        // },
-                        // {
-                        //     key: `${Date.now()}3`,
-                        //     type: 'stm',
-                        //     status: 'sent',
-                        //     time: Date.now(),
-                        //     sender: '0:000',
-                        //     text,
-                        // },
                         ...messages,
                     ]);
                 }}

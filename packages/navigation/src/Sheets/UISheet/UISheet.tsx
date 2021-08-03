@@ -23,23 +23,52 @@ import {
     useColorParts,
     useStatusBar,
 } from '@tonlabs/uikit.hydrogen';
+import { useAnimatedKeyboardHeight } from '@tonlabs/uikit.keyboard';
 
 import { UIConstant } from '../../constants';
 import { ScrollableContext } from '../../Scrollable/Context';
 import { useSheetHeight } from './useSheetHeight';
-import { useAnimatedKeyboard } from './useAnimatedKeyboard';
-import type { OnClose } from './types';
+import type { OnOpen, OnClose } from './types';
 import { usePosition } from './usePosition';
 
 export type UISheetProps = {
+    /**
+     * UISheet is controlled component,
+     * use this props to control it's visibility
+     */
     visible: boolean;
+    /**
+     * Callback that fires when there is a request to close UISheet
+     */
     onClose?: OnClose;
+    /**
+     * Callback that fires when open animation is finished
+     */
+    onOpenEnd?: OnOpen;
+    /**
+     * Callback that fires when close animation is finished
+     */
+    onCloseEnd?: OnClose;
+    /**
+     * Content of a sheet
+     * UISheet is abstract component, that basically can show
+     * any content from the bottom of the screen
+     */
     children: React.ReactNode;
+    /**
+     * Styles for container
+     */
     style?: StyleProp<ViewStyle>;
     // advanced
     // not for public use
     countRubberBandDistance?: boolean;
+    /**
+     * Whether UISheet has open animation or not
+     */
     hasOpenAnimation?: boolean;
+    /**
+     * Whether UISheet has close animation or not
+     */
     hasCloseAnimation?: boolean;
     /**
      * See Portal
@@ -54,6 +83,8 @@ type UISheetPortalContentProps = UISheetProps & {
 function UISheetPortalContent({
     visible,
     onClose,
+    onOpenEnd,
+    onCloseEnd,
     children,
     onClosePortalRequest,
     style,
@@ -65,7 +96,7 @@ function UISheetPortalContent({
         UIConstant.rubberBandEffectDistance,
         countRubberBandDistance,
     );
-    const keyboardHeight = useAnimatedKeyboard();
+    const keyboardHeight = useAnimatedKeyboardHeight();
 
     const {
         animate,
@@ -84,6 +115,8 @@ function UISheetPortalContent({
         hasCloseAnimation,
         onClose,
         onClosePortalRequest,
+        onOpenEnd,
+        onCloseEnd,
     );
 
     React.useEffect(() => {
