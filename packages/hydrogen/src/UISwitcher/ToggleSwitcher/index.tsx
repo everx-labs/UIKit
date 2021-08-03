@@ -14,16 +14,12 @@ import {
 } from './hooks';
 import { UIConstant } from '../../constants';
 
-const getToggleShape = {
-    width: UIConstant.switcher.toggleWidth,
-    height: UIConstant.switcher.toggleHeight,
-    borderRadius: UIConstant.switcher.toggleHeight,
-};
-
-export const ToggleSwitcher: React.FC<UISwitcherProps> = (
-    { active, disabled, onPress, testID }: UISwitcherProps,
-) => {
-
+export const ToggleSwitcher: React.FC<UISwitcherProps> = ({
+    active,
+    disabled,
+    onPress,
+    testID,
+}: UISwitcherProps) => {
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
     const theme = useTheme();
@@ -47,10 +43,7 @@ export const ToggleSwitcher: React.FC<UISwitcherProps> = (
         <RawButton
             shouldCancelWhenOutside
             onGestureEvent={onGestureEvent}
-            style={[
-                styles.buttonToggleStyle,
-                cursorStyle,
-            ]}
+            style={[styles.buttonToggleStyle, cursorStyle]}
             // @ts-expect-error
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
@@ -69,7 +62,9 @@ export const ToggleSwitcher: React.FC<UISwitcherProps> = (
                     style={[styles.toggleInnerStyle, !disabled && overlayStyle]}
                 >
                     <PanGestureHandler onGestureEvent={panGestureHandler}>
-                        <Animated.View style={[styles.toggleDotStyle, toggleImageOnStyle]} />
+                        <Animated.View
+                            style={[styles.toggleDotStyle, toggleImageOnStyle]}
+                        />
                     </PanGestureHandler>
                 </Animated.View>
             </Animated.View>
@@ -77,14 +72,21 @@ export const ToggleSwitcher: React.FC<UISwitcherProps> = (
     );
 };
 
+
+const toggleShapeStyles = {
+    width: UIConstant.switcher.toggleWidth,
+    height: UIConstant.switcher.toggleHeight,
+    borderRadius: UIConstant.switcher.toggleHeight,
+};
+
 const useStyles = makeStyles((theme: Theme) => ({
     toggleInnerStyle: {
         position: 'absolute',
-        ...getToggleShape,
+        ...toggleShapeStyles,
         padding: UIConstant.switcher.togglePadding,
     },
     toggleOuterStyle: {
-        ...getToggleShape,
+        ...toggleShapeStyles,
         overflow: 'hidden',
     },
     toggleDotStyle: {
@@ -94,8 +96,8 @@ const useStyles = makeStyles((theme: Theme) => ({
         backgroundColor: theme[ColorVariants.BackgroundPrimary],
     },
     buttonToggleStyle: {
-        width: getToggleShape.width,
-        height: getToggleShape.height,
+        width: toggleShapeStyles.width,
+        height: toggleShapeStyles.height,
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
     },
