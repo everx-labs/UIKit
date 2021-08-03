@@ -16,6 +16,7 @@ import { BubbleDocument } from './BubbleDocument';
 import { BubbleSticker } from './BubbleSticker';
 import { BubbleActionButton } from './BubbleActionButton';
 import { ChatBubbleQRCode } from './BubbleQRCode';
+import { ChatBubbleMedia } from './BubbleMedia/BubbleMedia';
 
 const renderSectionTitle = ({
     section,
@@ -35,57 +36,23 @@ const renderBubble = (
 ) => {
     switch (message.type) {
         case ChatMessageType.PlainText:
-            return (
-                <BubbleChatPlainText
-                    {...message}
-                    key={message.key}
-                    onLayout={onLayout}
-                />
-            );
+            return <BubbleChatPlainText {...message} onLayout={onLayout} />;
         case ChatMessageType.System:
-            return (
-                <BubbleSystem
-                    {...message}
-                    key={message.key}
-                    onLayout={onLayout}
-                />
-            );
+            return <BubbleSystem {...message} onLayout={onLayout} />;
         case ChatMessageType.Transaction:
-            return (
-                <BubbleTransaction
-                    {...message}
-                    key={message.key}
-                    onLayout={onLayout}
-                />
-            );
+            return <BubbleTransaction {...message} onLayout={onLayout} />;
         case ChatMessageType.Image:
-            return <BubbleImage {...message} key={message.key} />;
+            return <BubbleImage {...message} />;
         case ChatMessageType.Document:
-            return <BubbleDocument {...message} key={message.key} />;
+            return <BubbleDocument {...message} />;
         case ChatMessageType.Sticker:
-            return (
-                <BubbleSticker
-                    {...message}
-                    key={message.key}
-                    onLayout={onLayout}
-                />
-            );
+            return <BubbleSticker {...message} onLayout={onLayout} />;
         case ChatMessageType.ActionButton:
-            return (
-                <BubbleActionButton
-                    {...message}
-                    key={message.key}
-                    onLayout={onLayout}
-                />
-            );
+            return <BubbleActionButton {...message} onLayout={onLayout} />;
         case ChatMessageType.QRCode:
-            return (
-                <ChatBubbleQRCode
-                    {...message}
-                    key={message.key}
-                    onLayout={onLayout}
-                />
-            );
+            return <ChatBubbleQRCode {...message} onLayout={onLayout} />;
+        case ChatMessageType.Media:
+            return <ChatBubbleMedia {...message} onLayout={onLayout} />;
         default:
             return null;
     }
