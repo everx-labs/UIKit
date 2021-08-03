@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { TouchableOpacity, StyleSheet, Vibration } from 'react-native';
+import { StyleSheet, Vibration } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
@@ -12,6 +12,7 @@ import {
     UILabel,
     UILabelColors,
     UILabelRoles,
+    TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
 
 // @ts-ignore

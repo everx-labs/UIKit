@@ -11,12 +11,12 @@ import Animated, {
     useAnimatedGestureHandler,
     interpolate,
 } from 'react-native-reanimated';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
     UILabel,
     UILabelColors,
     UILabelRoles,
     UIBackgroundView,
+    TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
 
 import { useOnScrollHandler } from './useOnScrollHandler';

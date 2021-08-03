@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { MaterialIndicator } from 'react-native-indicators';
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
@@ -10,6 +10,7 @@ import {
     UILabelColors,
     UILabelRoles,
     useTheme,
+    TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
 
 type Props = {

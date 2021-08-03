@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, TextInput } from 'react-native';
 
 import {
     ColorVariants,
@@ -13,6 +13,7 @@ import {
     UITextViewProps,
     useUITextViewValue,
     useClearButton,
+    TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';

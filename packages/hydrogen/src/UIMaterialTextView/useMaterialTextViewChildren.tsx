@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { TouchableOpacity } from '../TouchableOpacity';
 
 import { UIImage, UIImageProps } from '../UIImage';
 import { UILabel, UILabelColors, UILabelRoles } from '../UILabel';
