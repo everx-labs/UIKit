@@ -12,6 +12,9 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
     const containerStyle = useBubbleContainerStyle(message);
     const bubbleBackgroundColor = useBubbleBackgroundColor(message);
     const styles = useStyles();
+    if (!message.data) {
+        return null;
+    }
     return (
         <View style={containerStyle} onLayout={message.onLayout}>
             <View style={[bubbleBackgroundColor, styles.bubble]}>
