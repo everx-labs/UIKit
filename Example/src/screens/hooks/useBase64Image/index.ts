@@ -4,9 +4,8 @@ import { useBase64Image as useBase64ImageImpl } from './useBase64Image';
 
 /**
  * Converts an image to a base64 string
- * @param imageUri the source file received via require (e.g. `require('./some/path/image.png')`)
- * @param name the name of file (in this case `'image.png'`)
+ * @param imageUrl the source of file
  * @returns base64 string or null
  */
-export const useBase64Image: (imageUri: any, name: string) => string | null =
+export const useBase64Image: (imageUrl: string) => string | null =
     useBase64ImageImpl;

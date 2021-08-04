@@ -16,7 +16,6 @@
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* ReactNavigationSurfTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ReactNavigationSurfTests.m */; };
-		9C49256526B924FC00D8037B /* loon-image-original.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 9C49256426B924FC00D8037B /* loon-image-original.jpeg */; };
 		A60D4178253DCC370046B610 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A60D4177253DCC370046B610 /* Images.xcassets */; };
 		A622D2B3257E818B00AAB081 /* Inter-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A622D2AF257E818B00AAB081 /* Inter-Light.ttf */; };
 		A622D2B4257E818B00AAB081 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A622D2B0257E818B00AAB081 /* Inter-Regular.ttf */; };
@@ -65,7 +64,6 @@
 		6514A8C6CC5A82913914A6D6 /* libPods-Quiver UI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Quiver UI.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F4C5F87858C1A722DD4EFBA /* Pods-Quiver UI-Quiver UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI-Quiver UITests.release.xcconfig"; path = "Target Support Files/Pods-Quiver UI-Quiver UITests/Pods-Quiver UI-Quiver UITests.release.xcconfig"; sourceTree = "<group>"; };
 		920B7E7862E0BC2B9C24DE6A /* libPods-Quiver UI-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Quiver UI-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9C49256426B924FC00D8037B /* loon-image-original.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "loon-image-original.jpeg"; path = "../../assets/icons/loon-image-original.jpeg"; sourceTree = "<group>"; };
 		A60D4177253DCC370046B610 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A622D2AF257E818B00AAB081 /* Inter-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-Light.ttf"; path = "../../../packages/hydrogen/assets/fonts/Inter-Light.ttf"; sourceTree = "<group>"; };
 		A622D2B0257E818B00AAB081 /* Inter-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-Regular.ttf"; path = "../../../packages/hydrogen/assets/fonts/Inter-Regular.ttf"; sourceTree = "<group>"; };
@@ -203,7 +201,6 @@
 		A63C5DEC252EF7CF0024AA83 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				9C49256426B924FC00D8037B /* loon-image-original.jpeg */,
 				A63C5DEE252EF7F10024AA83 /* SFProText-Bold.ttf */,
 				A63C5DF0252EF7F10024AA83 /* SFProText-Light.ttf */,
 				A63C5DEF252EF7F10024AA83 /* SFProText-Medium.ttf */,
@@ -376,7 +373,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C49256526B924FC00D8037B /* loon-image-original.jpeg in Resources */,
 				A63C5DF1252EF7F10024AA83 /* SFProText-Regular.ttf in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				A63C5DF4252EF7F10024AA83 /* SFProText-Light.ttf in Resources */,

@@ -40,9 +40,8 @@ import {
 } from '@tonlabs/uikit.navigation';
 import { useBase64Image } from './hooks/useBase64Image';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const imageUri = require(`../../assets/icons/loon-image-original.jpeg`);
-const imageName = 'loon-image-original.jpeg';
+const IMAGE_URL =
+    'https://firebasestorage.googleapis.com/v0/b/ton-uikit-example-7e797.appspot.com/o/loon-image-original.jpeg?alt=media&token=8907ad38-4d43-47c1-8f80-fd272e617440';
 
 const BrowserStack = createStackNavigator();
 
@@ -51,7 +50,7 @@ type BrowserScreenRef = { toggleMenu(): void };
 const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
     const theme = useTheme();
 
-    const base64Image = useBase64Image(imageUri, imageName);
+    const base64Image = useBase64Image(IMAGE_URL);
 
     const [messages, setMessages] = React.useState<BrowserMessage[]>([
         {

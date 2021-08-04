@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export const useBase64Image = (imageUri: any): string | null => {
+export const useBase64Image = (imageUrl: string): string | null => {
     const [imageEncoded, setImageEncoded] = React.useState<string | null>(null);
     const readerRef = React.useRef(new FileReader());
     React.useEffect(() => {
@@ -14,12 +14,15 @@ export const useBase64Image = (imageUri: any): string | null => {
     }, []);
 
     React.useEffect(() => {
-        fetch(imageUri)
-            .then((response) => response.blob())
+        console.log({ imageUrl });
+        fetch(imageUrl)
+            .then((response) => {
+                return response.blob();
+            })
             .then((blob) => {
                 readerRef.current.readAsDataURL(blob);
             });
-    }, [imageUri]);
+    }, [imageUrl]);
 
     return imageEncoded;
 };
