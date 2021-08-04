@@ -6,7 +6,11 @@ import {
     UIMsgButtonType,
     UIMsgButtonCornerPosition,
 } from '@tonlabs/uikit.hydrogen';
-import { BubblePosition, useBubbleContainerStyle, useBubblePosition } from './useBubblePosition';
+import {
+    BubblePosition,
+    useBubbleContainerStyle,
+    useBubblePosition,
+} from './useBubblePosition';
 import type { ActionButtonMessage } from './types';
 
 const getButtonRadius = (
@@ -38,16 +42,4 @@ export function BubbleActionButton(message: ActionButtonMessage) {
             />
         </View>
     );
-    // TODO: add textMode processing to UIMsgButton if needed
-    // <TouchableOpacity
-    //     style={[
-    //         textMode !== 'fit' && styles.buttonFixedHeight,
-    //     ]}
-    // >
-    //     <UILabel
-    //         numberOfLines={textMode === 'ellipsize' ? 1 : undefined}
-    //     >
-    //         {text}
-    //     </UILabel>
-    // </TouchableOpacity>
 }

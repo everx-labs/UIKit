@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
@@ -9,6 +9,7 @@ import {
     UILabel,
     UILabelColors,
     UILabelRoles,
+    TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
 
 import { UIConstant as UINavConstant } from './constants';

@@ -1,9 +1,15 @@
 import * as React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIStyle } from '@tonlabs/uikit.core';
-import { UIImage, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import {
+    UIImage,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    TouchableOpacity,
+} from '@tonlabs/uikit.hydrogen';
 
 import type { QuickActionItem } from './types';
 import { commonStyles } from './styles';
