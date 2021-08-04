@@ -136,7 +136,7 @@ export type ChatQRCodeMessage = ChatMeta & QRCodeMessage;
 
 export type MediaMessage = BubbleBaseT & {
     type: ChatMessageType.Media;
-    data: string; // base64
+    data: string | null; // base64
 };
 
 export type ChatMediaMessage = ChatMeta & MediaMessage;
