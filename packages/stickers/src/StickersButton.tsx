@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {
-    TouchableOpacity,
     Image, // TODO: use UIImage?
     StyleSheet,
 } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIConstant } from '@tonlabs/uikit.core';
+import { TouchableOpacity } from '@tonlabs/uikit.hydrogen';
 
 export type OnStickersPress = () => void | Promise<void>;
 

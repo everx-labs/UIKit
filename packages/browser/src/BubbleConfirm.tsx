@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import {
@@ -9,6 +9,7 @@ import {
     UILabelRoles,
     useTheme,
     UIBackgroundView,
+    TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
 import { UIConstant } from '@tonlabs/uikit.core';
 

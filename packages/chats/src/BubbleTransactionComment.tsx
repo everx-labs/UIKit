@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-// import { TouchableOpacity } from "react-native-gesture-handler"; // TODO: think how to use it
+import { View, StyleSheet, Image } from 'react-native';
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
@@ -10,6 +9,7 @@ import {
     UILabelColors,
     useTheme,
     ColorVariants,
+    TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
 
 import { MessageStatus, TransactionType } from './types';

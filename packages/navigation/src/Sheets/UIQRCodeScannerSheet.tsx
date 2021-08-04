@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { TouchableOpacity, StyleSheet, Vibration } from 'react-native';
+import { StyleSheet, Vibration } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
@@ -12,6 +12,7 @@ import {
     UILabel,
     UILabelColors,
     UILabelRoles,
+    TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
 
 // @ts-ignore
@@ -225,6 +226,7 @@ export function UIQRCodeScannerSheet({
                     right: UIConstant.contentOffset,
                     bottom: UIConstant.contentOffset,
                 }}
+                containerStyle={[styles.closeButtonContainer]}
                 style={[
                     styles.closeButton,
                     {
@@ -259,15 +261,19 @@ const styles = StyleSheet.create({
         borderRadius: UIConstant.alertBorderRadius,
         overflow: 'hidden',
     },
-    closeButton: {
+    closeButtonContainer: {
         position: 'absolute',
         top: UIConstant.contentOffset,
         left: UIConstant.contentOffset,
-        alignItems: 'center',
-        justifyContent: 'center',
+        width: 22,
+        height: 22,
+    },
+    closeButton: {
         width: 22,
         height: 22,
         borderRadius: UIConstant.alertBorderRadius,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     closeIcon: {
         width: 16,

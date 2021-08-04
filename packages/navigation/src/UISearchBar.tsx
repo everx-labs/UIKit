@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, TextInput } from 'react-native';
 
 import {
     ColorVariants,
@@ -15,6 +15,7 @@ import {
     useClearButton,
     useHover,
     useFocused,
+    TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
@@ -77,7 +78,12 @@ function useInnerRightAction(
     searching: boolean | undefined,
     clear: () => void,
 ) {
-    const clearButton = useClearButton(inputHasValue, isFocused, isHovered, clear);
+    const clearButton = useClearButton(
+        inputHasValue,
+        isFocused,
+        isHovered,
+        clear,
+    );
 
     if (searching) {
         return (
@@ -131,10 +137,10 @@ export function UISearchBar({
 }: UISearchBarProps) {
     const [searchText, setSearchText] = React.useState('');
     const ref = React.useRef<TextInput>(null);
-    const {
-        inputHasValue,
-        clear,
-    } = useUITextViewValue(ref, false, { value: searchText, ...inputProps });
+    const { inputHasValue, clear } = useUITextViewValue(ref, false, {
+        value: searchText,
+        ...inputProps,
+    });
 
     const onChangeText = React.useCallback(
         (text: string) => {
@@ -170,7 +176,8 @@ export function UISearchBar({
     );
 
     return (
-        <UIBackgroundView style={styles.container}
+        <UIBackgroundView
+            style={styles.container}
             // @ts-expect-error
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}

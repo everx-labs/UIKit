@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {
-    TouchableOpacity,
     Image, // TODO: use UIImage?
     View,
 } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIPopoverMenu } from '@tonlabs/uikit.navigation_legacy';
+import { TouchableOpacity } from '@tonlabs/uikit.hydrogen';
 
 import { commonStyles } from './styles';
 import type { MenuItem } from './types';
