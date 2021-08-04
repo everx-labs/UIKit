@@ -7,7 +7,8 @@ export const useBase64Image = (imageUrl: string): string | null => {
     React.useEffect(() => {
         RNFetchBlob.fetch('GET', imageUrl).then((result) => {
             const contentType: string | undefined =
-                result?.respInfo?.headers['Content-Type'];
+                result?.respInfo?.headers['Content-Type'] ||
+                result?.respInfo?.headers['content-type'];
 
             const base64: string | undefined = result?.base64();
 
