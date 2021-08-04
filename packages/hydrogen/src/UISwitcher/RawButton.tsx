@@ -5,7 +5,7 @@ import type {
     RawButtonProps,
 } from 'react-native-gesture-handler';
 import type { StyleProp, ViewStyle } from 'react-native';
-import { RawButton as GHRawButton } from 'react-native-gesture-handler/lib/typescript/components/GestureButtons';
+import { RawButton as GHRawButton } from 'react-native-gesture-handler';
 
 export const RawButton: React.FunctionComponent<Animated.AnimateProps<
     RawButtonProps &
