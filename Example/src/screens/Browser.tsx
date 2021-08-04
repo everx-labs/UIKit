@@ -38,7 +38,11 @@ import {
     createStackNavigator,
     ScrollView,
 } from '@tonlabs/uikit.navigation';
-import dataBase64 from '../../assets/icons/example-icon-base64';
+
+import { useBase64Image } from './hooks/useBase64Image';
+
+const IMAGE_URL =
+    'https://firebasestorage.googleapis.com/v0/b/ton-uikit-example-7e797.appspot.com/o/loon-image-original.jpeg?alt=media&token=8907ad38-4d43-47c1-8f80-fd272e617440';
 
 const BrowserStack = createStackNavigator();
 
@@ -46,6 +50,8 @@ type BrowserScreenRef = { toggleMenu(): void };
 
 const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
     const theme = useTheme();
+
+    const base64Image = useBase64Image(IMAGE_URL);
 
     const [messages, setMessages] = React.useState<BrowserMessage[]>([
         {
@@ -136,7 +142,7 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                         key: `${Date.now()}-media-image`,
                                         status: MessageStatus.Received,
                                         type: ChatMessageType.Media,
-                                        data: dataBase64,
+                                        data: base64Image,
                                     };
                                     setMessages([
                                         {

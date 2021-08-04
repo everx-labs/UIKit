@@ -11,12 +11,16 @@ export const ChatBubbleMedia: React.FC<ChatMediaMessage> = (
 
 // eslint-disable-next-line no-shadow
 enum DataType {
-    Image = 'Image',
-    Unknown = 'Unknown',
+    Image,
+    Unknown,
+    Empty,
 }
 
-const useDataType = (data: string): DataType => {
+const useDataType = (data: string | null): DataType => {
     return React.useMemo(() => {
+        if (!data) {
+            return DataType.Empty;
+        }
         if (data.startsWith('data:image')) {
             return DataType.Image;
         }
@@ -31,6 +35,10 @@ export const BubbleMedia: React.FC<MediaMessage> = (message: MediaMessage) => {
     switch (dataType) {
         case DataType.Image:
             return <MediaImage {...message} />;
+        case DataType.Empty:
+            // Add preloader here if it's necessary
+            return null;
+        case DataType.Unknown:
         default:
             console.error(`BubbleMedia: Unknown data format`);
             return null;
