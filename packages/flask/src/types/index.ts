@@ -1,4 +1,4 @@
-import type { ImageSourcePropType } from 'react-native';
+import type { ColorValue, ImageSourcePropType } from 'react-native';
 
 // eslint-disable-next-line no-shadow
 export enum QRCodeType {
@@ -75,7 +75,47 @@ export enum UIDateTimePickerMode {
     Time = 'time',
 }
 
+export type PickerOptionsType = {
+    backgroundColor: ColorValue,
+    textHeaderColor: ColorValue,
+    textDefaultColor: ColorValue,
+    selectedTextColor: ColorValue,
+    mainColor: ColorValue,
+    textSecondaryColor: ColorValue,
+    borderColor: ColorValue,
+    textFontSize: number,
+    textHeaderFontSize: number,
+    headerAnimationDistance: number,
+    daysAnimationDistance: number,
+}
+
+export type PickerPropsType  = {
+    value: any,
+    onTimeChange: (datetime: Date) => void,
+    onDateChange: (datetime: Date) => void,
+    onSelectedChange: (datetime: Date) => void,
+    selected?: Date,
+    minimumDate?: Date,
+    maximumDate?: Date,
+    minimumTime?: Date,
+    maximumTime?: Date,
+    currentTime?: Date,
+    currentDate?: Date,
+    selectorStartingYear?: number,
+    selectorEndingYear?: number,
+    disableDateChange?: boolean,
+    isGregorian?: boolean,
+    configs: string, // Object
+    reverse: true | false | 'unset',
+    mode: 'datepicker' | 'calendar' | 'monthYear' | 'time',
+    minuteInterval?: number, // fix type
+    options: PickerOptionsType,
+    state: any,
+    utils: any
+};
+
 export type UIDateTimePickerType = {
+    selected?: Date;
     /**
      * We can display a calendar in Date view or a time picker in Time view.
      * One of:
