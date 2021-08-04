@@ -36,6 +36,15 @@ import {
     ShakeAnimationStatus,
     ValidationState,
 } from './constants';
+import {
+    UIPinCodeDescription,
+    UIPinCodeDescriptionRef,
+} from './UIPinCodeDescription';
+
+export type UIPinCodeEnterValidationResult = {
+    valid: boolean;
+    description: string;
+};
 
 function useAnimatedDot(
     index: number,
@@ -152,7 +161,7 @@ export function UIPinCode({
     descriptionTestID?: string;
     disabled?: boolean;
     length?: number;
-    onEnter: (pin: string) => Promise<boolean>;
+    onEnter: (pin: string) => Promise<boolean | UIPinCodeEnterValidationResult>;
     onSuccess: (pin: string) => void;
     autoUnlock?: boolean;
 } & BiometryProps) {
@@ -178,14 +187,43 @@ export function UIPinCode({
         [shakeAnim],
     );
 
+    const descriptionRef = React.useRef<UIPinCodeDescriptionRef>(null);
+
     const validatePin = React.useCallback(
         (pin: string) => {
-            onEnter(pin).then((isValid) => {
+            onEnter(pin).then((result) => {
+                let isValid: boolean;
+                let validationDescription: string | null = null;
+                if (typeof result === 'object') {
+                    isValid = result.valid;
+                    validationDescription = result.description;
+                } else {
+                    isValid = result;
+                }
+
                 validState.value = isValid
                     ? ValidationState.Success
                     : ValidationState.Error;
 
-                if (!isValid) {
+                if (isValid) {
+                    validState.value = ValidationState.Success;
+
+                    if (
+                        validationDescription != null &&
+                        descriptionRef.current != null
+                    ) {
+                        descriptionRef.current.showValid(validationDescription);
+                    }
+                } else {
+                    validState.value = ValidationState.Error;
+
+                    if (
+                        validationDescription != null &&
+                        descriptionRef.current != null
+                    ) {
+                        descriptionRef.current.showError(validationDescription);
+                    }
+
                     runOnUI(showValidationError)();
                 }
 
@@ -317,15 +355,11 @@ export function UIPinCode({
                         ),
                     )}
                 </Animated.View>
-                <UILabel
-                    testID={descriptionTestID}
-                    numberOfLines={1}
-                    color={UILabelColors.TextSecondary}
-                    role={UILabelRoles.ParagraphFootnote}
-                    selectable={false}
-                >
-                    {description || ' '}
-                </UILabel>
+                <UIPinCodeDescription
+                    ref={descriptionRef}
+                    description={description}
+                    descriptionTestID={descriptionTestID}
+                />
                 <View style={styles.space} />
                 <DotsContext.Provider value={dotsContextValue}>
                     <View style={{ position: 'relative' }}>

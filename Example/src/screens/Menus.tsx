@@ -83,10 +83,16 @@ function PinCodeMenu() {
                             setTimeout(() => {
                                 if (pin === '123123') {
                                     setAttempts(5);
-                                    resolve(true);
+                                    resolve({
+                                        valid: true,
+                                        description: 'Looks good!',
+                                    });
                                 } else {
                                     setAttempts(attempts - 1);
-                                    resolve(false);
+                                    resolve({
+                                        valid: false,
+                                        description: 'Sth wrong!',
+                                    });
                                 }
                             }, 500);
                         });
