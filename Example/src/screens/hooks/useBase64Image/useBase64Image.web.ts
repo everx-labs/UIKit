@@ -14,7 +14,6 @@ export const useBase64Image = (imageUrl: string): string | null => {
     }, []);
 
     React.useEffect(() => {
-        console.log({ imageUrl });
         fetch(imageUrl)
             .then((response) => {
                 return response.blob();
