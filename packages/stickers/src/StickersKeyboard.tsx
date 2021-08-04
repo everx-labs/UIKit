@@ -1,15 +1,14 @@
 import * as React from 'react';
-import {
-    FlatList,
-    StyleSheet,
-    TouchableOpacity,
-    Platform,
-    ViewStyle,
-} from 'react-native';
+import { FlatList, StyleSheet, Platform, ViewStyle } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { UIConstant, UIDevice } from '@tonlabs/uikit.core';
-import { ColorVariants, useTheme, UIImage } from '@tonlabs/uikit.hydrogen';
+import {
+    ColorVariants,
+    useTheme,
+    UIImage,
+    TouchableOpacity,
+} from '@tonlabs/uikit.hydrogen';
 import { registerKeyboardComponent } from '@tonlabs/uikit.keyboard';
 
 // Unfortunately we have to import it as UICustomKeyboard doesn't accept functional props :(

@@ -4,7 +4,6 @@ import {
     findNodeHandle,
     UIManager,
     View,
-    TouchableOpacity,
     Platform,
     StyleSheet,
     FlatList,
@@ -13,6 +12,7 @@ import {
 import { ColorVariants, useTheme } from '../Colors';
 import { UIConstant } from '../constants';
 import { Portal } from '../Portal';
+import { TouchableOpacity } from '../TouchableOpacity';
 import { UILabel, UILabelColors, UILabelRoles } from '../UILabel';
 
 const MAX_CELLS = 3;

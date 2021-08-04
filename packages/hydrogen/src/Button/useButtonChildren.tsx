@@ -1,12 +1,20 @@
 import * as React from 'react';
-import { Platform, StyleSheet, View, ViewProps, ImageProps, StyleProp, TextStyle } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {
+    Platform,
+    StyleSheet,
+    View,
+    ViewProps,
+    ImageProps,
+    StyleProp,
+    TextStyle,
+} from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { ColorVariants, useTheme } from '../Colors';
 import { UIConstant } from '../constants';
 import { UILabel, UILabelColors, UILabelRoles } from '../UILabel';
 import type { TypographyVariants } from '../Typography';
+import { TouchableOpacity } from '../TouchableOpacity';
 
 // eslint-disable-next-line no-shadow
 export enum ButtonContentDirection {

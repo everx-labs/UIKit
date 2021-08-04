@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import {
@@ -9,6 +9,7 @@ import {
     ColorVariants,
     UILabelColors,
     UILabelRoles,
+    TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { uiLocalized } from '@tonlabs/uikit.localization';
@@ -42,7 +43,11 @@ export function UISearchBarButton({
     return (
         <>
             <UIBackgroundView style={styles.container}>
-                <TouchableOpacity style={styles.touchable} onPress={onOpen}>
+                <TouchableOpacity
+                    containerStyle={styles.touchable}
+                    style={styles.touchable}
+                    onPress={onOpen}
+                >
                     <UIBackgroundView
                         style={styles.searchContainer}
                         color={ColorVariants.BackgroundSecondary}
