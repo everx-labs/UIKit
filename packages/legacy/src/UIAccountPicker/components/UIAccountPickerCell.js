@@ -60,10 +60,6 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
         return this.props.right;
     }
 
-    get hideRight(): boolean {
-        return !this.props.right;
-    }
-
     // Render
     renderAccount() {
         const { notActive } = this.props;
@@ -93,7 +89,7 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
                 >
                     {name}
                 </UILabel>
-                {!this.hideRight && this.getRight()}
+                {this.getRight()}
             </View>
         );
     }
