@@ -64,7 +64,9 @@
     "react-native-gesture-handler": "^1.10.3",
     "react-native-reanimated": "^2.2.0",
     "react-native-svg": "^12.1.1",
-    "react-native-view-shot": "^3.1.2"
+    "react-native-view-shot": "^3.1.2",
+    "dayjs":  "1.9.1",
+    "prop-types": "15.6.2"
   },
   "@react-native-community/bob": {
     "source": "src",

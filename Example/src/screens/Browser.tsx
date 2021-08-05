@@ -658,7 +658,7 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                         status: MessageStatus.Received,
                                         type: InteractiveMessageType.Date,
                                         minDate: new Date('07/22/2021'),
-                                        maxDate: new Date('08/25/2021'),
+                                        maxDate: new Date('09/25/2021'),
                                         onSelect: (externalState: any) => {
                                             setMessages([
                                                 {
@@ -685,6 +685,7 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                         type: InteractiveMessageType.Time,
                                         minTime: new Date(0, 0, 0, 12, 15),
                                         maxTime: new Date(0, 0, 0, 13, 0),
+                                        currentTime: new Date(),
                                         onSelect: (externalState: any) => {
                                             setMessages([
                                                 {

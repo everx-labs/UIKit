@@ -295,7 +295,7 @@ const SelectTime = () => {
 
     function getMinutesArray(min = 0, max = 59) {
         if (interval) {
-            return numberRange(min, max).filter((n) => !(n % interval));
+            return numberRange(min, max).filter((n) => !(n % Number(interval)));
         }
         return numberRange(min, max);
     }

@@ -1,11 +1,10 @@
 import * as React from 'react';
 import type { UIDateTimePickerType } from './types';
-// @ts-ignore
 import DatePicker from './UIDateTimePicker';
 
 export const UIDateTimePickerView = React.memo(
     ({
-         onValueRetrieved,
+        onValueRetrieved,
         minimum,
         maximum,
         mode,

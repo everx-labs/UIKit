@@ -1,13 +1,7 @@
 import { useRef, useState } from 'react';
-import { Animated, Easing, I18nManager } from 'react-native';
-// @ts-ignore
-// eslint-disable-next-line import/no-extraneous-dependencies
-import moment from 'moment-jalaali';
-// eslint-disable-next-line import/no-extraneous-dependencies
+import { Animated, Easing } from 'react-native';
 import dayjs from 'dayjs';
 import type { PickerPropsType, UIDateTimePickerType } from '../types';
-
-const m = moment();
 
 const gregorianConfigs = {
     dayNames: [
@@ -45,13 +39,13 @@ const gregorianConfigs = {
 };
 
 class utils {
-    private data: {
+    private readonly data: {
         isGregorian: boolean | undefined;
         maximum: Date | undefined;
         reverse: boolean | undefined;
         minimum: Date | undefined;
     };
-    private config: {
+    private readonly config: {
         selectedFormat: string;
         monthYearFormat: string;
         hour: string;
@@ -79,7 +73,7 @@ class utils {
             reverse: reverse === 'unset' ? !isGregorian : reverse,
         };
         this.config = gregorianConfigs;
-        // @ts-ignore
+        // @ts-expect-error
         this.config = { ...this.config, ...configs };
         if (mode === 'time' || mode === 'datepicker') {
             this.config.selectedFormat = `${this.config.dateFormat} ${this.config.timeFormat}`;
@@ -88,12 +82,7 @@ class utils {
 
     get flexDirection() {
         return {
-            // eslint-disable-next-line no-nested-ternary
-            flexDirection: this.data.reverse
-                ? I18nManager.isRTL
-                    ? 'row'
-                    : 'row-reverse'
-                : 'row',
+            flexDirection: 'row'
         };
     }
 
@@ -102,11 +91,11 @@ class utils {
         date.format(this.config[formatName]);
 
     getFormattedDate = (date = new Date(), format = 'YYYY/MM/DD') =>
-        moment(date).format(format);
+        dayjs(date).format(format);
 
     getTime = (time: Date) => this.getDate(time).format(this.config.timeFormat);
 
-    getToday = () => this.getFormatted(m, 'dateFormat');
+    getToday = () => this.getFormatted(new Date(), 'dateFormat');
 
     getMonthName = (month: number) => this.config.monthNames[month];
 

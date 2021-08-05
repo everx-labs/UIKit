@@ -7,7 +7,7 @@ export const TimeInput = ({
     onChange: any;
     current: any;
 }) => {
-    const inputRef = React.useRef(null);
+    const inputRef = React.useRef<HTMLElement>(null);
 
     const [time, setTime] = React.useState('');
 
@@ -16,8 +16,7 @@ export const TimeInput = ({
             /**
              * fast autofocus on load affects the height of the parent element, so we have to use a timeout to wait for the parent animation
              */
-            // @ts-expect-error
-            inputRef.current.focus();
+            inputRef.current?.focus();
         }, 500);
     }, []);
 

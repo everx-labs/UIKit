@@ -6,45 +6,26 @@ import { Calendar, SelectMonth, SelectTime } from './components';
 import { CalendarContext, useCalendar } from './calendarContext';
 import { utils } from '../utils';
 import {
+    PickerAction,
+    PickerActionName,
     PickerOptionsType,
-    PickerPropsType,
+    PickerPropsType, PickerStateType,
     UIDateTimePickerMode,
     UIDateTimePickerType,
 } from '../../types';
 
-// eslint-disable-next-line no-shadow
-enum ActionKind {
-    Set = 'set',
-    ToggleTime = 'toggleTime',
-    ToggleMonth = 'toggleMonth',
-}
-
-type Action = {
-    value: any;
-    type: ActionKind;
-    state: PickerStateType;
-};
-interface PickerStateType {
-    activeDate?: Date;
-    selectedDate?: Date;
-    timeOpen?: boolean;
-    monthOpen?: boolean;
-}
-
-const reducer = (state: PickerStateType, action: Action) => {
+const reducer = (state: PickerStateType, action: PickerAction) => {
     switch (action.type) {
-        case ActionKind.Set:
+        case PickerActionName.Set:
             return { ...state, ...action };
-        case ActionKind.ToggleTime:
+        case PickerActionName.ToggleTime:
             return { ...state, timeOpen: !state.timeOpen };
-        case ActionKind.ToggleMonth:
+        case PickerActionName.ToggleMonth:
             return { ...state, monthOpen: !state.monthOpen };
         default:
             throw new Error('Unexpected action');
     }
 };
-
-// const minuteIntervalArray = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60];
 
 const DatePicker = (props: UIDateTimePickerType) => {
     const theme = useTheme();
