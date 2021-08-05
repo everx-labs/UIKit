@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Image, useWindowDimensions } from 'react-native';
+import { View, Image, Dimensions } from 'react-native';
 import { UIConstant as UICoreConstant } from '@tonlabs/uikit.core';
 import { makeStyles, UIImage } from '@tonlabs/uikit.hydrogen';
 
@@ -12,6 +12,8 @@ type ImageSize = {
     width: number;
     height: number;
 };
+
+const windowWidth = Dimensions.get('window').width;
 
 const getImageSize = (
     width: number,
@@ -38,7 +40,7 @@ const getImageSize = (
     };
 };
 
-const useMaxImageSize = (windowWidth: number): ImageSize => {
+const useMaxImageSize = (): ImageSize => {
     return React.useMemo(() => {
         return {
             width: windowWidth * UIConstant.mediaImagePartOfScreen,
@@ -46,7 +48,7 @@ const useMaxImageSize = (windowWidth: number): ImageSize => {
                 (windowWidth * UIConstant.mediaImagePartOfScreen) /
                 UIConstant.mediaImageMaxSizesAspectRatio,
         };
-    }, [windowWidth]);
+    }, []);
 };
 
 export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
@@ -54,8 +56,7 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
     const bubbleBackgroundColor = useBubbleBackgroundColor(message);
     const styles = useStyles();
     const [imageSize, setImageSize] = React.useState<ImageSize | null>(null);
-    const windowDimensions = useWindowDimensions();
-    const maxImageSize = useMaxImageSize(windowDimensions.width);
+    const maxImageSize = useMaxImageSize();
 
     const saveImageSize = React.useCallback(
         (width: number, height: number) => {
