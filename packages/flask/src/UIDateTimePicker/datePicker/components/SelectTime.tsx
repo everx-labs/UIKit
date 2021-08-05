@@ -192,8 +192,8 @@ const SelectTime = () => {
         state,
         utils,
         interval,
-        minimum,
-        maximum,
+        min,
+        max,
         mode,
         onChange,
         current,
@@ -204,13 +204,13 @@ const SelectTime = () => {
     const [time, setTime] = useState(new Date());
     const style = styles(options);
     const openAnimation = useRef(new Animated.Value(0)).current;
-    const minHour = minimum ? new Date(minimum).getHours() : 0;
-    const maxHour = maximum ? new Date(maximum).getHours() : 23;
-    const minMinute = minimum ? new Date(minimum).getMinutes() : 0;
-    const maxMinute = maximum ? new Date(maximum).getMinutes() : 0;
+    const minHour = min ? new Date(min).getHours() : 0;
+    const maxHour = max ? new Date(max).getHours() : 23;
+    const minMinute = min ? new Date(min).getMinutes() : 0;
+    const maxMinute = max ? new Date(max).getMinutes() : 0;
     const defaultTimeWeb = current
         ? utils.formatTime(current)
-        : utils.formatTime(minimum);
+        : utils.formatTime(min);
     const currentHour = current ? new Date(current).getHours() : null;
     const currentMinute = current ? new Date(current).getMinutes() : null;
 
@@ -290,14 +290,14 @@ const SelectTime = () => {
         },
     ];
 
-    const minMinutes = minimum ? new Date(minimum).getMinutes() : 0;
-    const maxMinutes = maximum ? new Date(maximum).getMinutes() : 0;
+    const minMinutes = min ? new Date(min).getMinutes() : 0;
+    const maxMinutes = max ? new Date(max).getMinutes() : 0;
 
-    function getMinutesArray(min = 0, max = 59) {
+    function getMinutesArray(minimum = 0, maximum = 59) {
         if (interval) {
-            return numberRange(min, max).filter((n) => !(n % Number(interval)));
+            return numberRange(minimum, maximum).filter((n) => !(n % Number(interval)));
         }
-        return numberRange(min, max);
+        return numberRange(minimum, maximum);
     }
 
     function returnMinutes() {
@@ -331,8 +331,8 @@ const SelectTime = () => {
         }
         const isValidated = utils.validateTimeMinMax(
             new Date(newTime),
-            minimum,
-            maximum,
+            min,
+            max,
         );
         setValidTime(isValidated);
         setTime(new Date(newTime));
@@ -343,8 +343,8 @@ const SelectTime = () => {
             {Platform.OS === 'web' ? (
                 <View style={style.row}>
                     <UILabel>{`Please choose time from ${utils.formatTime(
-                        minimum,
-                    )} to ${utils.formatTime(maximum)}`}</UILabel>
+                        min,
+                    )} to ${utils.formatTime(max)}`}</UILabel>
                     <TimeInput current={defaultTimeWeb} onChange={updateTime} />
                 </View>
             ) : (

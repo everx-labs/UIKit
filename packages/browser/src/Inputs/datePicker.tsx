@@ -64,8 +64,8 @@ export function DatePicker({ onLayout, ...message }: DateMessage) {
             <UIDateTimePicker
                 visible={isPickerVisible}
                 mode={UIDateTimePickerMode.Date}
-                minimum={message.minDate}
-                maximum={message.maxDate}
+                min={message.minDate}
+                max={message.maxDate}
                 current={message.currentDate}
                 onClose={() => {
                     setPickerVisible(false);

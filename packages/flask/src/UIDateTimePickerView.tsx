@@ -5,8 +5,8 @@ import DatePicker from './UIDateTimePicker';
 export const UIDateTimePickerView = React.memo(
     ({
         onValueRetrieved,
-        minimum,
-        maximum,
+        min,
+        max,
         mode,
         interval,
         current,
@@ -15,8 +15,8 @@ export const UIDateTimePickerView = React.memo(
             <DatePicker
                 onValueRetrieved={onValueRetrieved}
                 mode={mode}
-                minimum={minimum}
-                maximum={maximum}
+                min={min}
+                max={max}
                 current={current}
                 interval={interval}
             />

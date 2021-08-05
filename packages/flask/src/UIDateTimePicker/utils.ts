@@ -41,9 +41,9 @@ const gregorianConfigs = {
 class utils {
     private readonly data: {
         isGregorian: boolean | undefined;
-        maximum: Date | undefined;
+        max: Date | undefined;
         reverse: boolean | undefined;
-        minimum: Date | undefined;
+        min: Date | undefined;
     };
     private readonly config: {
         selectedFormat: string;
@@ -59,16 +59,16 @@ class utils {
         minute: string;
     };
     constructor({
-        minimum,
-        maximum,
+        min,
+        max,
         isGregorian,
         mode,
         reverse,
         configs,
     }: UIDateTimePickerType & PickerPropsType) {
         this.data = {
-            minimum,
-            maximum,
+            min,
+            max,
             isGregorian,
             reverse: reverse === 'unset' ? !isGregorian : reverse,
         };
@@ -124,19 +124,19 @@ class utils {
     };
 
     checkMonthDisabled = (time: dayjs.ConfigType | undefined) => {
-        const { minimum, maximum } = this.data;
+        const { min, max } = this.data;
         const date = dayjs(time);
         let disabled = false;
-        if (minimum) {
+        if (min) {
             const lastDayInMonth = date.date(date.daysInMonth());
             disabled =
-                lastDayInMonth.startOf('hour') < dayjs(minimum).startOf('hour');
+                lastDayInMonth.startOf('hour') < dayjs(min).startOf('hour');
         }
-        if (maximum && !disabled) {
+        if (max && !disabled) {
             const firstDayInMonth = date.date(1);
             disabled =
                 firstDayInMonth.startOf('hour') >
-                dayjs(maximum).startOf('hour');
+                dayjs(max).startOf('hour');
         }
         return disabled;
     };
@@ -150,8 +150,8 @@ class utils {
     };
 
     checkYearDisabled = (year: number, next: any) => {
-        const { minimum, maximum } = this.data;
-        const y = dayjs(next ? maximum : minimum).year();
+        const { min, max } = this.data;
+        const y = dayjs(next ? max : min).year();
         return next ? year >= y : year <= y;
     };
 
@@ -165,20 +165,20 @@ class utils {
     };
 
     validYear = (time: dayjs.ConfigType | undefined, year: number) => {
-        const { minimum, maximum } = this.data;
+        const { min, max } = this.data;
         const date = dayjs(time).year(year);
         let validDate = this.getDate(date);
-        if (minimum && date < dayjs(minimum)) {
-            validDate = dayjs(minimum);
+        if (min && date < dayjs(min)) {
+            validDate = dayjs(min);
         }
-        if (maximum && date > dayjs(maximum)) {
-            validDate = dayjs(maximum);
+        if (max && date > dayjs(max)) {
+            validDate = dayjs(max);
         }
         return validDate;
     };
 
     getMonthDays = (time: dayjs.ConfigType | undefined) => {
-        const { minimum, maximum } = this.data;
+        const { min, max } = this.data;
         let date = dayjs(time);
         const currentMonthDays = date.daysInMonth();
         const firstDay = date.date(1);
@@ -188,15 +188,15 @@ class utils {
             ...[...new Array(currentMonthDays)].map((_, n) => {
                 let disabled = false;
                 const thisDay = date.date(n + 1);
-                if (minimum) {
+                if (min) {
                     disabled =
                         thisDay.startOf('hour') <
-                        this.getDate(minimum).startOf('hour');
+                        this.getDate(min).startOf('hour');
                 }
-                if (maximum && !disabled) {
+                if (max && !disabled) {
                     disabled =
                         thisDay.startOf('hour') >
-                        this.getDate(maximum).startOf('hour');
+                        this.getDate(max).startOf('hour');
                 }
                 date = dayjs(time);
                 return {

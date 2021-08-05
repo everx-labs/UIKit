@@ -21,8 +21,8 @@ const SelectMonth = () => {
         selectorStartingYear,
         selectorEndingYear,
         mode,
-        minimum,
-        maximum,
+        min,
+        max,
         onMonthYearChange,
     } = useCalendar();
     const [mainState, setMainState] = state;
@@ -34,10 +34,10 @@ const SelectMonth = () => {
     const openAnimation = useRef(new Animated.Value(0)).current;
     const currentMonth = new Date(mainState.activeDate).getMonth();
     const prevDisable =
-        maximum &&
+        max &&
         utils.checkYearDisabled(Number(utils.toEnglish(year)), true);
     const nextDisable =
-        minimum &&
+        min &&
         utils.checkYearDisabled(Number(utils.toEnglish(year)), false);
 
     useEffect(() => {

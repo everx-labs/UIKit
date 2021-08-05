@@ -69,8 +69,8 @@ export function TimePicker({ onLayout, ...message }: TimeMessage) {
             <UIDateTimePicker
                 visible={isPickerVisible}
                 mode={UIDateTimePickerMode.Time}
-                minimum={message.minTime}
-                maximum={message.maxTime}
+                min={message.minTime}
+                max={message.maxTime}
                 current={message.currentTime}
                 interval={message.interval}
                 onClose={() => {

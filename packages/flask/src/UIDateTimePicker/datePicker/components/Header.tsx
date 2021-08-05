@@ -18,8 +18,8 @@ const Header = ({ changeMonth }: any) => {
         disableDateChange,
         state,
         utils,
-        minimum,
-        maximum,
+        min,
+        max,
         isGregorian,
         mode,
     } = useCalendar();
@@ -36,11 +36,11 @@ const Header = ({ changeMonth }: any) => {
     );
     const prevDisable =
         disableDateChange ||
-        (minimum &&
+        (min &&
             utils.checkArrowMonthDisabled(mainState.activeDate, true));
     const nextDisable =
         disableDateChange ||
-        (maximum &&
+        (max &&
             utils.checkArrowMonthDisabled(mainState.activeDate, false));
 
     const onChangeMonth = (type: string) => {

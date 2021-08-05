@@ -106,9 +106,9 @@ export type UIDateTimePickerType = {
      */
     mode?: UIDateTimePickerMode;
     /* Specifies the minimum selectable date/time by user */
-    minimum?: Date;
+    min?: Date;
     /* Specifies the maximum selectable date/time by user */
-    maximum?: Date;
+    max?: Date;
     /* Initially visible month/time */
     current?: Date;
     /** An interval of minutes in a time picker.
