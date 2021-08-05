@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { IconSwitcher } from './IconSwitcher';
+import { ToggleSwitcher } from './ToggleSwitcher';
 import { UISwitcherProps, UISwitcherVariant } from './types';
 
 export const UISwitcher: React.FC<UISwitcherProps> = (
     props: UISwitcherProps,
 ) => {
     switch (props.variant) {
-        // TODO add UISwitcherVariant.Toggle here
+        case UISwitcherVariant.Toggle:
+            return <ToggleSwitcher {...props} />;
         case UISwitcherVariant.Select:
         case UISwitcherVariant.Radio:
         case UISwitcherVariant.Check:

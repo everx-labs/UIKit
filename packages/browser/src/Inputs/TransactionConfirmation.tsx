@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 
 import {
     ColorVariants,
@@ -12,6 +12,7 @@ import {
     UIMsgButtonType,
     useShadow,
     useTheme,
+    TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
 import { UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';

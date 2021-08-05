@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 
@@ -36,7 +36,7 @@ function getBubbleContainerPositionStyle(position: BubblePosition) {
 export function useBubbleContainerStyle({
     status,
     firstFromChain,
-}: BubbleBaseT) {
+}: BubbleBaseT): StyleProp<ViewStyle> {
     const position = useBubblePosition(status);
 
     return React.useMemo(

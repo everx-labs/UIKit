@@ -3,6 +3,7 @@ export enum UISwitcherVariant {
     Select = 'Select',
     Radio = 'Radio',
     Check = 'Check',
+    Toggle = 'Toggle',
 }
 
 export type UISwitcherProps = {
@@ -15,6 +16,11 @@ export type UISwitcherProps = {
      * The component is controlled by this prop
      */
     active: boolean;
+    /**
+     * Disabled status of the switcher
+     * disable onPress if true and change styles
+     */
+    disabled?: boolean;
     /**
      * The callback that is called by clicking/tapping on the switcher
      */

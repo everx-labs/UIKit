@@ -1,15 +1,11 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
-import {
-    RawButton as GHRawButton,
-    RawButtonProps,
-    NativeViewGestureHandlerProps,
-} from 'react-native-gesture-handler';
+import { StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { UISwitcherProps, UISwitcherVariant } from './types';
-import { useTheme, ColorVariants, Theme } from '../Colors';
-import { makeStyles } from '../makeStyles';
-import { useHover } from '../useHover';
+import { RawButton } from '../RawButton';
+import { UISwitcherProps, UISwitcherVariant } from '../types';
+import { ColorVariants, Theme, useTheme } from '../../Colors';
+import { makeStyles } from '../../makeStyles';
+import { useHover } from '../../useHover';
 import {
     useImage,
     useImageStyle,
@@ -17,15 +13,7 @@ import {
     useSwitcherGestureEvent,
     useSwitcherState,
 } from './hooks';
-import { UIConstant } from '../constants';
-
-export const RawButton: React.FunctionComponent<Animated.AnimateProps<
-    RawButtonProps &
-        NativeViewGestureHandlerProps & {
-            testID?: string;
-            style?: StyleProp<ViewStyle>;
-        }
->> = Animated.createAnimatedComponent(GHRawButton);
+import { UIConstant } from '../../constants';
 
 const getShape = (variant: UISwitcherVariant) => {
     switch (variant) {
@@ -51,11 +39,13 @@ const getShape = (variant: UISwitcherVariant) => {
     }
 };
 
-export const IconSwitcher: React.FC<UISwitcherProps> = (
-    props: UISwitcherProps,
-) => {
-    const { active, onPress, variant, testID } = props;
-
+export const IconSwitcher: React.FC<UISwitcherProps> = ({
+    active,
+    disabled,
+    onPress,
+    variant,
+    testID,
+}: UISwitcherProps) => {
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
     const theme = useTheme();
@@ -67,6 +57,11 @@ export const IconSwitcher: React.FC<UISwitcherProps> = (
 
     const switcherState = useSwitcherState(isHovered, pressed);
     const overlayStyle = useOverlayStyle(switcherState, theme);
+
+    const cursorStyle = React.useMemo(() => {
+        return disabled ? styles.showDefault : styles.showPointer;
+    }, [disabled]);
+
     const {
         imageOnStyle,
         imageOffOpacity,
@@ -77,26 +72,31 @@ export const IconSwitcher: React.FC<UISwitcherProps> = (
         <RawButton
             shouldCancelWhenOutside
             onGestureEvent={onGestureEvent}
-            style={{
-                width: UIConstant.iconSize,
-                height: UIConstant.iconSize,
-                alignItems: 'center',
-                justifyContent: 'center',
-                // @ts-expect-error
-                cursor: 'pointer',
-            }}
+            style={[styles.buttonSwitcherStyle, cursorStyle]}
+            // @ts-expect-error
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             testID={testID}
+            enabled={!disabled}
         >
             <Animated.View style={imageOffOpacity}>
                 <Animated.View
-                    style={[styles.offSwitcher, imageOffBorderColor]}
+                    style={[
+                        styles.offSwitcher,
+                        disabled
+                            ? styles.disabledSwitcherBordersStyle
+                            : imageOffBorderColor,
+                    ]}
                 />
             </Animated.View>
 
             <Animated.View style={[styles.onSwitcher, imageOnStyle]}>
-                <Animated.View style={[styles.overlay, overlayStyle]}>
+                <Animated.View
+                    style={[
+                        styles.overlay,
+                        disabled ? styles.disabledSwitcherStyle : overlayStyle,
+                    ]}
+                >
                     {image}
                 </Animated.View>
             </Animated.View>
@@ -119,5 +119,25 @@ const useStyles = makeStyles((theme: Theme, variant: UISwitcherVariant) => ({
         ...StyleSheet.absoluteFillObject,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    buttonSwitcherStyle: {
+        width: UIConstant.iconSize,
+        height: UIConstant.iconSize,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    disabledSwitcherStyle: {
+        backgroundColor: theme[ColorVariants.BackgroundNeutral],
+    },
+    disabledSwitcherBordersStyle: {
+        borderColor: theme[ColorVariants.BackgroundNeutral],
+    },
+    showPointer: {
+        margin: 0,
+        cursor: 'pointer',
+    },
+    showDefault: {
+        margin: 0,
+        cursor: 'default',
     },
 }));

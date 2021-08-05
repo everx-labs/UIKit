@@ -3,7 +3,6 @@ import {
     Animated,
     ImageProps,
     StyleSheet,
-    TouchableOpacity,
     View,
     useWindowDimensions,
 } from 'react-native';
@@ -18,9 +17,10 @@ import {
     useHover,
     UIBackgroundView,
     UIBackgroundViewColors,
+    TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
 
-import { UIConstant } from '../constants'
+import { UIConstant } from '../constants';
 
 const AnimatedWithColor = Animated.createAnimatedComponent(UIBackgroundView);
 

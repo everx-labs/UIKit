@@ -173,6 +173,7 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                     <UILabel
                         role={TypographyVariants.ParagraphLabel}
                         color={ColorVariants.TextPrimary}
+                        testID="left-chart-label"
                     >
                         {formatLabelText(data[0].y)}
                     </UILabel>
@@ -189,6 +190,7 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                         role={TypographyVariants.ParagraphLabel}
                         color={ColorVariants.TextPrimary}
                         numberOfLines={1}
+                        testID="right-chart-label"
                     >
                         {formatLabelText(data[data.length - 1].y)}
                     </UILabel>
@@ -206,6 +208,7 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                             role={TypographyVariants.ParagraphLabel}
                             color={ColorVariants.TextTertiary}
                             numberOfLines={1}
+                            testID="maximum-chart-label"
                         >
                             {formatLabelText(labelData.maximumValue)}
                         </UILabel>
@@ -224,6 +227,7 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                             role={TypographyVariants.ParagraphLabel}
                             color={ColorVariants.TextTertiary}
                             numberOfLines={1}
+                            testID="minimum-chart-label"
                         >
                             {formatLabelText(labelData.minimumValue)}
                         </UILabel>
