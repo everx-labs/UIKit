@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ImageProps, ImageStyle, StyleProp, StyleSheet } from 'react-native';
+import { ImageProps, ImageStyle, View, StyleProp, StyleSheet } from 'react-native';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import {
@@ -111,20 +111,22 @@ function UIHeaderItemPressable({
     applyMargin: boolean;
 }) {
     return (
-        <TouchableOpacity
-            testID={testID}
-            hitSlop={{
-                top: UIConstant.smallContentOffset(),
-                bottom: UIConstant.smallContentOffset(),
-                left: UIConstant.contentOffset(),
-                right: UIConstant.contentOffset(),
-            }}
-            disabled={disabled}
-            onPress={onPress}
-            style={applyMargin ? styles.headerItemMargin : null}
-        >
-            {children}
-        </TouchableOpacity>
+        <>
+            <View style={applyMargin ? styles.headerItemMargin : null} />
+            <TouchableOpacity
+                testID={testID}
+                hitSlop={{
+                    top: UIConstant.smallContentOffset(),
+                    bottom: UIConstant.smallContentOffset(),
+                    left: UIConstant.contentOffset(),
+                    right: UIConstant.contentOffset(),
+                }}
+                disabled={disabled}
+                onPress={onPress}
+            >
+                {children}
+            </TouchableOpacity>
+        </>
     );
 }
 
