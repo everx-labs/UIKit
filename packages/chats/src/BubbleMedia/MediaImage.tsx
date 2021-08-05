@@ -35,8 +35,8 @@ const getImageSize = (
     }
 
     return {
-        width: newWidth,
-        height: newHeight,
+        width: Math.round(newWidth),
+        height: Math.round(newHeight),
     };
 };
 
