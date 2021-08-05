@@ -1,6 +1,6 @@
 import * as React from 'react';
+import type { FlexStyle, StyleProp, TextProps, TextStyle } from 'react-native';
 import { ColorValue, Text, TransformsStyle, ViewStyle } from 'react-native';
-import type { TextProps, TextStyle, StyleProp, FlexStyle } from 'react-native';
 
 // @ts-expect-error
 import TextAncestorContext from 'react-native/Libraries/Text/TextAncestor';
@@ -8,7 +8,7 @@ import TextAncestorContext from 'react-native/Libraries/Text/TextAncestor';
 import { LocalizationString } from '@tonlabs/uikit.localization';
 
 import { Typography, TypographyVariants } from './Typography';
-import { useTheme, ColorVariants } from './Colors';
+import { ColorVariants, useTheme } from './Colors';
 
 /**
  * Only those `behavioral` styles from Text are accepted!
@@ -96,7 +96,14 @@ export const UILabel = React.forwardRef<Text, Props>(function UILabelForwarded(
             // @ts-expect-error
             ref={ref}
             {...rest}
-            {...(isLocalizedString ? { dataSet: { lokalise: true, key: rest.children.path } } : {})}
+            {...(isLocalizedString
+                ? {
+                      dataSet: {
+                          lokalise: true,
+                          key: (rest.children as LocalizationString).path,
+                      },
+                  }
+                : {})}
             style={[
                 style,
                 // Override font and color styles
