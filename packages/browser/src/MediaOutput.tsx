@@ -56,6 +56,7 @@ export const MediaOutput = ({
                 onLayout={onLayout}
                 onError={onError}
                 onLoad={onLoad}
+                firstFromChain
                 key="media-bubble"
             />
             {!!prompt && (
