@@ -71,8 +71,10 @@ export type ScreenshotViewProps = {
 
 // eslint-disable-next-line no-shadow
 export enum UIDateTimePickerMode {
+    DateTime = 'datepicker',
     Date = 'calendar',
     Time = 'time',
+    MonthYear = 'monthYear',
 }
 
 export type PickerOptionsType = {
@@ -89,29 +91,19 @@ export type PickerOptionsType = {
     daysAnimationDistance: number,
 }
 
-export type PickerPropsType  = {
-    value: any,
-    onTimeChange: (datetime: Date) => void,
-    onDateChange: (datetime: Date) => void,
-    onSelectedChange: (datetime: Date) => void,
-    selected?: Date,
-    minimumDate?: Date,
-    maximumDate?: Date,
-    minimumTime?: Date,
-    maximumTime?: Date,
-    currentTime?: Date,
-    currentDate?: Date,
+export type PickerPropsType  = UIDateTimePickerType & {
+    onChange?: (datetime: Date) => void,
+    onMonthYearChange?: (datetime: Date) => void,
+    value?: any,
     selectorStartingYear?: number,
     selectorEndingYear?: number,
     disableDateChange?: boolean,
     isGregorian?: boolean,
-    configs: string, // Object
-    reverse: true | false | 'unset',
-    mode: 'datepicker' | 'calendar' | 'monthYear' | 'time',
-    minuteInterval?: number, // fix type
+    configs?: string, // Object
+    reverse?: true | false | 'unset',
     options: PickerOptionsType,
-    state: any,
-    utils: any
+    state?: any,
+    utils?: any
 };
 
 export type UIDateTimePickerType = {
@@ -122,24 +114,18 @@ export type UIDateTimePickerType = {
      * - `Date`
      * - `Time`
      */
-    mode: UIDateTimePickerMode;
-    /* Specifies the minimum selectable date by user */
-    minDate?: Date;
-    /* Specifies the maximum selectable date by user */
-    maxDate?: Date;
-    /* Specifies the minimum selectable time by user */
-    minTime?: Date;
-    /* Specifies the maximum selectable time by user */
-    maxTime?: Date;
-    /* Initially visible month */
-    currentDate?: Date;
-    /* Initially visible time */
-    currentTime?: Date;
+    mode?: UIDateTimePickerMode;
+    /* Specifies the minimum selectable date/time by user */
+    minimum?: Date;
+    /* Specifies the maximum selectable date/time by user */
+    maximum?: Date;
+    /* Initially visible month/time */
+    current?: Date;
     /** An interval of minutes in a time picker.
      * For example:
      * - 5 will look like 5, 10, 15, 20 ...
      */
     interval?: number;
     /* Gets called when selected value changes */
-    onValueRetrieved: (datetime: Date, timezone?: number) => void;
+    onValueRetrieved: (datetime: Date) => void;
 };

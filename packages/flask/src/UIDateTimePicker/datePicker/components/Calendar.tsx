@@ -5,7 +5,7 @@ import { Header, Days } from '.';
 import { useCalendar } from '../calendarContext';
 
 const Calendar = () => {
-    const { options, state, utils, onSelectedChange } = useCalendar();
+    const { options, state, utils, onChange } = useCalendar();
     const style = styles(options);
     const [{ shownAnimation }, changeMonthAnimation] = utils.useMonthAnimation(
         state.activeDate,
@@ -13,8 +13,8 @@ const Calendar = () => {
     );
 
     useEffect(() => {
-        state.selectedDate && onSelectedChange(state.selectedDate);
-    }, [state.selectedDate, onSelectedChange]);
+        state.selectedDate && onChange && onChange(state.selectedDate);
+    }, [state.selectedDate, onChange]);
 
     return (
         <View style={style.container}>

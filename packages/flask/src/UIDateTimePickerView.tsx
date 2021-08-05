@@ -5,31 +5,21 @@ import DatePicker from './UIDateTimePicker';
 
 export const UIDateTimePickerView = React.memo(
     ({
-        onValueRetrieved,
-        minTime,
-        maxTime,
-        minDate,
-        maxDate,
+         onValueRetrieved,
+        minimum,
+        maximum,
         mode,
         interval,
-        currentDate,
-        currentTime,
+        current,
     }: UIDateTimePickerType) => {
-
         return (
-            // @ts-ignore
             <DatePicker
-                onDateChange={onValueRetrieved}
-                onTimeChange={onValueRetrieved}
+                onValueRetrieved={onValueRetrieved}
                 mode={mode}
-                minimumDate={minDate}
-                maximumDate={maxDate}
-                minimumTime={minTime}
-                maximumTime={maxTime}
-                currentDate={currentDate}
-                currentTime={currentTime}
-                minuteInterval={interval}
-                // todo: reduce the number of props
+                minimum={minimum}
+                maximum={maximum}
+                current={current}
+                interval={interval}
             />
         );
     },

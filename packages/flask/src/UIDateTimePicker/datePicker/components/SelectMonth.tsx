@@ -21,9 +21,8 @@ const SelectMonth = () => {
         selectorStartingYear,
         selectorEndingYear,
         mode,
-        minimumDate,
-        maximumDate,
-        // @ts-ignore
+        minimum,
+        maximum,
         onMonthYearChange,
     } = useCalendar();
     const [mainState, setMainState] = state;
@@ -35,10 +34,10 @@ const SelectMonth = () => {
     const openAnimation = useRef(new Animated.Value(0)).current;
     const currentMonth = new Date(mainState.activeDate).getMonth();
     const prevDisable =
-        maximumDate &&
+        maximum &&
         utils.checkYearDisabled(Number(utils.toEnglish(year)), true);
     const nextDisable =
-        minimumDate &&
+        minimum &&
         utils.checkYearDisabled(Number(utils.toEnglish(year)), false);
 
     useEffect(() => {
@@ -58,21 +57,21 @@ const SelectMonth = () => {
             setYear(utils.getMonthYearText(mainState.activeDate).split(' ')[1]);
     }, [mainState.activeDate, utils, show]);
 
-    const onSelectMonth = (month: number | null) => {
+    const onSelectMonth = (month: any) => {
         if (show) {
             const y = Number(utils.toEnglish(year));
             const date = utils.getDate(
                 utils.validYear(mainState.activeDate, y),
             );
-            const activeDate = month !== null ? date.month(month) : date;
+            const activeDate =
+                month !== null
+                    ? date.month(month)
+                    : date;
             setMainState({
                 type: 'set',
-                activeDate: utils.getFormated(activeDate),
+                activeDate: utils.getFormatted(activeDate),
             });
-            month !== null &&
-                onMonthYearChange(
-                    utils.getFormated(activeDate, 'monthYearFormat'),
-                );
+            month !== null && onMonthYearChange?.(utils.getFormatted(activeDate, 'monthYearFormat'));
             month !== null &&
                 mode !== 'monthYear' &&
                 setMainState({
@@ -94,15 +93,10 @@ const SelectMonth = () => {
 
     const onSelectYear = (number: number) => {
         let y = Number(utils.toEnglish(year)) + number;
-        if (selectorEndingYear) {
-            if (y > selectorEndingYear) {
-                y = selectorEndingYear;
-            }
-        }
-        if (selectorStartingYear) {
-            if (y < selectorStartingYear) {
-                y = selectorStartingYear;
-            }
+        if (selectorEndingYear && y > selectorEndingYear) {
+            y = selectorEndingYear;
+        } else if (selectorStartingYear && y < selectorStartingYear) {
+            y = selectorStartingYear;
         }
         setYear(utils.toPersianNumber(y));
     };
@@ -180,14 +174,14 @@ const SelectMonth = () => {
                             activeOpacity={0.8}
                             style={[
                                 style.item,
-                                currentMonth === item + 1 && style.selectedItem,
+                                currentMonth === item && style.selectedItem,
                             ]}
                             onPress={() => !disabled && onSelectMonth(item)}
                         >
                             <Text
                                 style={[
                                     style.itemText,
-                                    currentMonth === item + 1 &&
+                                    currentMonth === item &&
                                         style.selectedItemText,
                                     disabled && style.disabledItemText,
                                 ]}

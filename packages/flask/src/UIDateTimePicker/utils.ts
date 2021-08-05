@@ -5,7 +5,7 @@ import { Animated, Easing, I18nManager } from 'react-native';
 import moment from 'moment-jalaali';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import dayjs from 'dayjs';
-import type { PickerPropsType } from '../types';
+import type { PickerPropsType, UIDateTimePickerType } from '../types';
 
 const m = moment();
 
@@ -47,9 +47,9 @@ const gregorianConfigs = {
 class utils {
     private data: {
         isGregorian: boolean | undefined;
-        maximumDate: Date | undefined;
-        reverse: boolean;
-        minimumDate: Date | undefined;
+        maximum: Date | undefined;
+        reverse: boolean | undefined;
+        minimum: Date | undefined;
     };
     private config: {
         selectedFormat: string;
@@ -65,25 +65,24 @@ class utils {
         minute: string;
     };
     constructor({
-        minimumDate,
-        maximumDate,
+        minimum,
+        maximum,
         isGregorian,
         mode,
         reverse,
         configs,
-    }: PickerPropsType) {
+    }: UIDateTimePickerType & PickerPropsType) {
         this.data = {
-            minimumDate,
-            maximumDate,
+            minimum,
+            maximum,
             isGregorian,
             reverse: reverse === 'unset' ? !isGregorian : reverse,
         };
         this.config = gregorianConfigs;
-        // @ts-expect-error
+        // @ts-ignore
         this.config = { ...this.config, ...configs };
         if (mode === 'time' || mode === 'datepicker') {
-            this.config.selectedFormat =
-                `${this.config.dateFormat  } ${  this.config.timeFormat}`;
+            this.config.selectedFormat = `${this.config.dateFormat} ${this.config.timeFormat}`;
         }
     }
 
@@ -98,16 +97,16 @@ class utils {
         };
     }
 
-    getFormated = (date: any, formatName: string = 'selectedFormat') =>
+    getFormatted = (date: any, formatName: string = 'selectedFormat') =>
         // @ts-expect-error
         date.format(this.config[formatName]);
 
-    getFormatedDate = (date = new Date(), format = 'YYYY/MM/DD') =>
+    getFormattedDate = (date = new Date(), format = 'YYYY/MM/DD') =>
         moment(date).format(format);
 
     getTime = (time: Date) => this.getDate(time).format(this.config.timeFormat);
 
-    getToday = () => this.getFormated(m, 'dateFormat');
+    getToday = () => this.getFormatted(m, 'dateFormat');
 
     getMonthName = (month: number) => this.config.monthNames[month];
 
@@ -136,20 +135,19 @@ class utils {
     };
 
     checkMonthDisabled = (time: dayjs.ConfigType | undefined) => {
-        const { minimumDate, maximumDate } = this.data;
+        const { minimum, maximum } = this.data;
         const date = dayjs(time);
         let disabled = false;
-        if (minimumDate) {
+        if (minimum) {
             const lastDayInMonth = date.date(date.daysInMonth());
             disabled =
-                lastDayInMonth.startOf('hour') <
-                dayjs(minimumDate).startOf('hour');
+                lastDayInMonth.startOf('hour') < dayjs(minimum).startOf('hour');
         }
-        if (maximumDate && !disabled) {
+        if (maximum && !disabled) {
             const firstDayInMonth = date.date(1);
             disabled =
                 firstDayInMonth.startOf('hour') >
-                dayjs(minimumDate).startOf('hour');
+                dayjs(maximum).startOf('hour');
         }
         return disabled;
     };
@@ -163,8 +161,8 @@ class utils {
     };
 
     checkYearDisabled = (year: number, next: any) => {
-        const { minimumDate, maximumDate } = this.data;
-        const y = dayjs(next ? maximumDate : minimumDate).year();
+        const { minimum, maximum } = this.data;
+        const y = dayjs(next ? maximum : minimum).year();
         return next ? year >= y : year <= y;
     };
 
@@ -174,24 +172,24 @@ class utils {
     ) => {
         const date = dayjs(time);
         const dateWithNewMonth = date.month(month);
-        return this.checkMonthDisabled(this.getFormated(dateWithNewMonth));
+        return this.checkMonthDisabled(dateWithNewMonth);
     };
 
     validYear = (time: dayjs.ConfigType | undefined, year: number) => {
-        const { minimumDate, maximumDate } = this.data;
+        const { minimum, maximum } = this.data;
         const date = dayjs(time).year(year);
-        let validDate = this.getFormated(date);
-        if (minimumDate && date < dayjs(minimumDate)) {
-            validDate = minimumDate;
+        let validDate = this.getDate(date);
+        if (minimum && date < dayjs(minimum)) {
+            validDate = dayjs(minimum);
         }
-        if (maximumDate && date > dayjs(maximumDate)) {
-            validDate = maximumDate;
+        if (maximum && date > dayjs(maximum)) {
+            validDate = dayjs(maximum);
         }
         return validDate;
     };
 
     getMonthDays = (time: dayjs.ConfigType | undefined) => {
-        const { minimumDate, maximumDate } = this.data;
+        const { minimum, maximum } = this.data;
         let date = dayjs(time);
         const currentMonthDays = date.daysInMonth();
         const firstDay = date.date(1);
@@ -201,22 +199,21 @@ class utils {
             ...[...new Array(currentMonthDays)].map((_, n) => {
                 let disabled = false;
                 const thisDay = date.date(n + 1);
-                if (minimumDate) {
+                if (minimum) {
                     disabled =
                         thisDay.startOf('hour') <
-                        this.getDate(minimumDate).startOf('hour');
+                        this.getDate(minimum).startOf('hour');
                 }
-                if (maximumDate && !disabled) {
+                if (maximum && !disabled) {
                     disabled =
                         thisDay.startOf('hour') >
-                        this.getDate(maximumDate).startOf('hour');
+                        this.getDate(maximum).startOf('hour');
                 }
-
                 date = dayjs(time);
                 return {
                     dayString: this.toPersianNumber(n + 1),
                     day: n + 1,
-                    date: this.getFormated(date.date(n + 1)),
+                    date: this.getFormatted(date.date(n + 1)),
                     disabled,
                 };
             }),

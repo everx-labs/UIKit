@@ -651,7 +651,7 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                         key: `${Date.now()}-date-picker`,
                                         status: MessageStatus.Received,
                                         type: InteractiveMessageType.Date,
-                                        minDate: new Date('07/25/2021'),
+                                        minDate: new Date('07/22/2021'),
                                         maxDate: new Date('08/25/2021'),
                                         onSelect: (externalState: any) => {
                                             setMessages([

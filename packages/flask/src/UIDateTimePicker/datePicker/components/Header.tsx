@@ -19,8 +19,8 @@ const Header = ({ changeMonth }: any) => {
         disableDateChange,
         state,
         utils,
-        minimumDate,
-        maximumDate,
+        minimum,
+        maximum,
         isGregorian,
         mode,
     } = useCalendar();
@@ -32,16 +32,16 @@ const Header = ({ changeMonth }: any) => {
         changeMonthAnimation,
     ] = utils.useMonthAnimation(
         mainState.activeDate,
-        options.headerAnimationDistance,
+        options && options.headerAnimationDistance,
         () => setDisableChange(false),
     );
     const prevDisable =
         disableDateChange ||
-        (minimumDate &&
+        (minimum &&
             utils.checkArrowMonthDisabled(mainState.activeDate, true));
     const nextDisable =
         disableDateChange ||
-        (maximumDate &&
+        (maximum &&
             utils.checkArrowMonthDisabled(mainState.activeDate, false));
 
     const onChangeMonth = (type: string) => {
@@ -54,7 +54,7 @@ const Header = ({ changeMonth }: any) => {
             .add(modificationNumber, isGregorian ? 'month' : 'jMonth');
         setMainState({
             type: 'set',
-            activeDate: utils.getFormated(newDate),
+            activeDate: utils.getFormatted(newDate),
         });
         changeMonth(type);
     };

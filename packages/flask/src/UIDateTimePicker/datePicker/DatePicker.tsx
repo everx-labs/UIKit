@@ -2,30 +2,33 @@ import React, { useReducer, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTheme, ColorVariants } from '@tonlabs/uikit.hydrogen';
 
-// @ts-ignore
 import { Calendar, SelectMonth, SelectTime } from './components';
-// @ts-ignore
 import { CalendarContext, useCalendar } from './calendarContext';
-// @ts-ignore
 import { utils } from '../utils';
-import { PickerOptionsType, PickerPropsType, UIDateTimePickerMode } from '../../types';
-
+import {
+    PickerOptionsType,
+    PickerPropsType,
+    UIDateTimePickerMode,
+    UIDateTimePickerType,
+} from '../../types';
 
 // eslint-disable-next-line no-shadow
 enum ActionKind {
     Set = 'set',
     ToggleTime = 'toggleTime',
+    ToggleMonth = 'toggleMonth',
 }
 
 type Action = {
-    value: any,
-    type: ActionKind,
-    state: PickerStateType
-}
+    value: any;
+    type: ActionKind;
+    state: PickerStateType;
+};
 interface PickerStateType {
-    activeDate?: Date, // Date in calendar also save time
-    selectedDate?: Date,
-    timeOpen?: boolean,
+    activeDate?: Date;
+    selectedDate?: Date;
+    timeOpen?: boolean;
+    monthOpen?: boolean;
 }
 
 const reducer = (state: PickerStateType, action: Action) => {
@@ -34,6 +37,8 @@ const reducer = (state: PickerStateType, action: Action) => {
             return { ...state, ...action };
         case ActionKind.ToggleTime:
             return { ...state, timeOpen: !state.timeOpen };
+        case ActionKind.ToggleMonth:
+            return { ...state, monthOpen: !state.monthOpen };
         default:
             throw new Error('Unexpected action');
     }
@@ -41,7 +46,7 @@ const reducer = (state: PickerStateType, action: Action) => {
 
 // const minuteIntervalArray = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60];
 
-const DatePicker = (props: PickerPropsType) => {
+const DatePicker = (props: UIDateTimePickerType) => {
     const theme = useTheme();
 
     const options: PickerOptionsType = {
@@ -59,20 +64,24 @@ const DatePicker = (props: PickerPropsType) => {
     };
 
     // eslint-disable-next-line new-cap
-    const calendarUtils = new utils(props);
+    const calendarUtils = new utils(
+        props as UIDateTimePickerType & PickerPropsType,
+    );
 
     const contextValue = {
         ...props,
+        onChange: props.onValueRetrieved,
         reverse: false,
-        options: {...options},
+        options: { ...options },
         utils: calendarUtils,
         state: useReducer(reducer, {
-            activeDate: props.currentDate, // Date in calendar also save time
+            activeDate: props.current, // Date in calendar also save time
             selectedDate: props.selected
-                ? calendarUtils.getFormated(
+                ? calendarUtils.getFormatted(
                       calendarUtils.getDate(props.selected),
                   )
                 : '',
+            monthOpen: props.mode === UIDateTimePickerMode.MonthYear,
             timeOpen: props.mode === UIDateTimePickerMode.Time,
         }),
     };
@@ -109,26 +118,19 @@ const DatePicker = (props: PickerPropsType) => {
 };
 
 DatePicker.defaultProps = {
-    onTimeChange: () => null,
-    onDateChange: () => null,
-    currentDate: new Date(),
-    currentTime: new Date(),
-    selected: undefined,
-    minimumDate: undefined,
-    maximumDate: undefined,
-    minimumTime: undefined,
-    maximumTime: undefined,
+    onChange: () => null,
+    onMonthYearChange: () => null,
+    current: new Date(),
     selectorStartingYear: 0,
     selectorEndingYear: 3000,
     disableDateChange: false,
     isGregorian: true,
     reverse: 'unset',
     mode: 'datepicker',
-    minuteInterval: 5,
+    interval: 5,
 };
 
-
-const styles = (theme: { backgroundColor: any; }) =>
+const styles = (theme: { backgroundColor: any }) =>
     StyleSheet.create({
         container: {
             backgroundColor: theme.backgroundColor,

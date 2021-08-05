@@ -5,18 +5,18 @@ import { useCalendar } from '../calendarContext';
 import type { PickerOptionsType } from '../../../types';
 
 const Days = () => {
-    const { options, state, utils, onDateChange } = useCalendar();
+    const { options, state, utils, onChange } = useCalendar();
     const [mainState, setMainState] = state;
     const [itemSize, setItemSize] = useState(0);
     const style = styles(options);
-    const days = useMemo(() => utils.getMonthDays(mainState.activeDate),[]);
+    const days = useMemo(() => utils.getMonthDays(mainState.activeDate),[utils, mainState.activeDate]);
 
     const onSelectDay = (date: Date) => {
         setMainState({
             type: 'set',
             selectedDate: date,
         });
-        onDateChange(utils.getFormated(utils.getDate(date), 'dateFormat'));
+        onChange && onChange(utils.getFormatted(utils.getDate(date), 'dateFormat'));
     };
 
     // @ts-ignore
