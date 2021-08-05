@@ -40,7 +40,7 @@ function createHandlers(event: MouseEvent) {
         }
     }
 }
-export function localizationHintsIsEnabled() {
+export function areLocalizationHintsEnabled() {
     return !!document.getElementById(helperId);
 }
 
