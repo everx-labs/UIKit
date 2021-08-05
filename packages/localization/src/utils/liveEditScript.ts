@@ -7,7 +7,7 @@ function createHandlers(event: MouseEvent) {
         const target = event.target as HTMLDivElement;
         const message = document.getElementById(helperId);
 
-        if (target.dataset.lokalise && message) {
+        if (target.dataset?.lokalise && message) {
             const { color } = target.style;
             const content = target.dataset.key as string;
 
