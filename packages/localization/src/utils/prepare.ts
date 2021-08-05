@@ -3,26 +3,45 @@ import type {
     LanguageConstants,
     LanguageItem,
     LanguageOptions,
-    Languages, LanguagesOptions,
-    LanguageValue
+    Languages,
+    LanguagesOptions,
+    LanguageValue,
 } from '../types';
 import type { Language } from '../constants';
+
+export class LocalizationString extends String {
+    public readonly path: string;
+
+    constructor(value: string, path: string) {
+        super(value);
+
+        this.path = path;
+    }
+}
 
 function prepareArray(
     array: LanguageValue[],
     options: LanguageOptions,
+    path: string,
 ): LanguageValue[] {
-    return array.map((item) => prepareValue(item, options)) as LanguageValue[];
+    return array.map((item) =>
+        prepareValue(item, options, `${path}[]`),
+    ) as LanguageValue[];
 }
 
 function prepareObject<T = LanguageItem>(
     object: LanguageItem,
     options: LanguageOptions,
+    path?: string,
 ): T {
     const result: any = {} as T;
 
     Object.keys(object).forEach((key) => {
-        result[key] = prepareValue(object[key], options);
+        result[key] = prepareValue(
+            object[key],
+            options,
+            `${path ? path.concat('.') : ''}${key}`,
+        );
     });
 
     return result as T;
@@ -31,13 +50,19 @@ function prepareObject<T = LanguageItem>(
 function prepareValue(
     value: LanguageValue | LanguageItem,
     options: LanguageOptions,
+    path: string,
 ): LanguageItem | LanguageItem[] | LanguageValue | LanguageValue[] {
+    if (typeof value === 'boolean') {
+        return value;
+    }
+
     if (Array.isArray(value)) {
-        return prepareArray(value, options);
+        return prepareArray(value, options, path);
     }
 
     if (typeof value === 'string' || value instanceof String) {
         const { images, constants } = options;
+        let result = value;
 
         if (images && /^{IMG_[A-Z_0-9]*}$/.test(value as string)) {
             const key = value.replace(/[{}]/g, '');
@@ -48,32 +73,24 @@ function prepareValue(
             const foundConstants = value.match(/{([A-Z_0-9]*)}/g);
 
             if (foundConstants) {
-                let modifiedValue = value;
-
                 foundConstants.forEach((constant) => {
                     const key = constant.replace(/[{}]/g, '');
                     // Filtering numerals
                     if (/[A-Z]/.test(constant)) {
-                        modifiedValue = modifiedValue.replace(
+                        result = result.replace(
                             new RegExp(constant, 'g'),
                             constants[key],
                         );
                     }
                 });
-
-                return modifiedValue as string;
             }
         }
 
-        return value as string;
+        return new LocalizationString(result as string, path);
     }
 
     if (typeof value === 'object') {
-        return prepareObject(value as LanguageItem, options);
-    }
-
-    if (typeof value === 'boolean') {
-        return value;
+        return prepareObject(value as LanguageItem, options, path);
     }
 
     throw new Error('Value of a wrong type was passed');
@@ -118,11 +135,14 @@ export function prepareLocales<T = LanguageItem>(
  *
  * @param {Languages} langs
  * @param {Languages<LanguageOptions>} options
+ * @param {string} project - Name of project
+ *
  * @returns {Languages}
  */
 export function prepare<T>(
     langs: Languages<T>,
     options: LanguagesOptions,
+    project?: string,
 ): Languages<T> {
     const preparedLanguages: Languages<T> = {} as Languages<T>;
     const languages: Language[] = Object.keys(langs) as Language[];
@@ -132,6 +152,7 @@ export function prepare<T>(
         preparedLanguages[lang] = prepareObject(
             (value as unknown) as LanguageItem,
             options[lang] as LanguageOptions,
+            project,
         );
     });
 

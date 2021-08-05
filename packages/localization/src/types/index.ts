@@ -1,10 +1,17 @@
 import type BigNumber from 'bignumber.js';
 
 import type { Language } from '../constants';
+import type { LocalizationString } from '../utils';
 
-export type LanguageSimpleValue = string[] | string | boolean;
-export type LanguageValue = Record<string, LanguageSimpleValue> | Record<string, LanguageSimpleValue>[] | LanguageSimpleValue
-export type LanguageItem = Record<string, LanguageValue>
+declare global {
+    interface String {
+        path?: string;
+    }
+}
+
+export type LanguageSimpleValue = LocalizationString | LocalizationString[] | string[] | string | boolean;
+export type LanguageValue<T = LanguageSimpleValue> = Record<string, T> | Record<string, T>[] | T
+export type LanguageItem<T = LanguageValue> = Record<string, T>
 
 export interface LanguageOptions {
     constants?: Record<string, string>;

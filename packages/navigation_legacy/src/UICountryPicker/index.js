@@ -151,6 +151,12 @@ export default class UICountryPicker extends UIModalController<Props, State> {
         }
     }
 
+    static hide() {
+        if (shared) {
+            shared.hide();
+        }
+    }
+
     static focus() {
         if (shared) {
             shared.focus();
