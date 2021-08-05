@@ -15,15 +15,6 @@ function createHandlers(event: MouseEvent) {
             message.style.display = 'flex';
             message.innerHTML = content;
 
-            const mouseoutHandler = () => {
-                target.style.color = color;
-                message.style.display = 'none';
-                message.innerHTML = '';
-
-                target.removeEventListener('mouseout', mouseoutHandler);
-                target.removeEventListener('mouseout', mouseClickHandler);
-            };
-
             const mouseClickHandler = (e: MouseEvent) => {
                 if (e.altKey) {
                     e.preventDefault();
@@ -33,6 +24,15 @@ function createHandlers(event: MouseEvent) {
                     const { uiLocalized } = require('../service');
                     message.innerHTML = uiLocalized.CopiedToClipboard;
                 }
+            };
+
+            const mouseoutHandler = () => {
+                target.style.color = color;
+                message.style.display = 'none';
+                message.innerHTML = '';
+
+                target.removeEventListener('mouseout', mouseoutHandler);
+                target.removeEventListener('mouseout', mouseClickHandler);
             };
 
             target.addEventListener('mouseout', mouseoutHandler);
