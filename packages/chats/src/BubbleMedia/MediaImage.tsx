@@ -5,7 +5,7 @@ import { makeStyles, UIImage } from '@tonlabs/uikit.hydrogen';
 
 import { useBubbleContainerStyle } from '../useBubblePosition';
 import { useBubbleBackgroundColor } from '../useBubbleStyle';
-import { MediaMessage, MediaMessageStatus } from '../types';
+import { MediaMessage, MediaMessageError } from '../types';
 import { UIConstant } from '../constants';
 
 type ImageSize = {
@@ -58,7 +58,7 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
     const [imageSize, setImageSize] = React.useState<ImageSize | null>(null);
     const maxImageSize = useMaxImageSize();
 
-    const saveImageSize = React.useCallback(
+    const calculateImageSize = React.useCallback(
         (width: number, height: number) => {
             const newImageSize = getImageSize(
                 width,
@@ -73,9 +73,9 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
 
     React.useEffect(() => {
         if (message.data) {
-            Image.getSize(message.data, saveImageSize);
+            Image.getSize(message.data, calculateImageSize);
         }
-    }, [message.data, saveImageSize]);
+    }, [message.data, calculateImageSize]);
 
     if (!message.data) {
         return null;
@@ -91,15 +91,11 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
                     style={imageSize}
                     resizeMode="contain"
                     onError={() => {
-                        if (message.onOutput) {
-                            message.onOutput(MediaMessageStatus.InvalidData);
+                        if (message.onError) {
+                            message.onError(MediaMessageError.InvalidData);
                         }
                     }}
-                    onLoad={() => {
-                        if (message.onOutput) {
-                            message.onOutput(MediaMessageStatus.Success);
-                        }
-                    }}
+                    onLoad={message.onLoad}
                 />
             </View>
         </View>

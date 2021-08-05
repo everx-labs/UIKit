@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ChatMediaMessage, MediaMessageStatus, MediaMessage } from '../types';
+import { ChatMediaMessage, MediaMessageError, MediaMessage } from '../types';
 import { MediaImage } from './MediaImage';
 
 export const ChatBubbleMedia: React.FC<ChatMediaMessage> = (
@@ -29,21 +29,21 @@ const useDataType = (data: string | null): DataType => {
 };
 
 export const BubbleMedia: React.FC<MediaMessage> = (message: MediaMessage) => {
-    const { data, onOutput } = message;
+    const { data, onError } = message;
     const dataType = useDataType(data);
 
     switch (dataType) {
         case DataType.Image:
             return <MediaImage {...message} />;
         case DataType.Empty:
-            if (onOutput) {
-                onOutput(MediaMessageStatus.DataIsEmpty);
+            if (onError) {
+                onError(MediaMessageError.DataIsEmpty);
             }
             return null;
         case DataType.Unknown:
         default:
-            if (onOutput) {
-                onOutput(MediaMessageStatus.NotSupportedDataFormat);
+            if (onError) {
+                onError(MediaMessageError.NotSupportedDataFormat);
             }
             return null;
     }

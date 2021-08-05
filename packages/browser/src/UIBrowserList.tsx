@@ -24,7 +24,7 @@ import { QRCodeScanner } from './Inputs/qrCodeScanner';
 import { EncryptionBox } from './Inputs/EncryptionBox';
 import { DatePicker } from './Inputs/datePicker';
 import { TimePicker } from './Inputs/timePicker';
-import { Media } from './Media';
+import { MediaOutput } from './MediaOutput';
 
 type UIBrowserListProps = {
     messages: BrowserMessage[];
@@ -101,8 +101,8 @@ const renderBubble = () => (
     if (item.type === InteractiveMessageType.Time) {
         return <TimePicker {...item} onLayout={onLayout} />;
     }
-    if (item.type === InteractiveMessageType.Media) {
-        return <Media {...item} onLayout={onLayout} />;
+    if (item.type === InteractiveMessageType.MediaOutput) {
+        return <MediaOutput {...item} onLayout={onLayout} />;
     }
 
     return null;

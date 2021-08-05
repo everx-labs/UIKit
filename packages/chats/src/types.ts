@@ -134,8 +134,7 @@ export type QRCodeMessage = BubbleBaseT & {
 
 export type ChatQRCodeMessage = ChatMeta & QRCodeMessage;
 
-export enum MediaMessageStatus {
-    Success,
+export enum MediaMessageError {
     DataIsEmpty,
     NotSupportedDataFormat,
     InvalidData,
@@ -144,7 +143,8 @@ export enum MediaMessageStatus {
 export type MediaMessage = BubbleBaseT & {
     type: ChatMessageType.Media;
     data: string | null; // base64
-    onOutput?: (status: MediaMessageStatus) => void;
+    onLoad?: () => void;
+    onError?: (error: MediaMessageError) => void;
 };
 
 export type ChatMediaMessage = ChatMeta & MediaMessage;
