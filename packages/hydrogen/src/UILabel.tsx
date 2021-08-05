@@ -96,7 +96,7 @@ export const UILabel = React.forwardRef<Text, Props>(function UILabelForwarded(
             // @ts-expect-error
             ref={ref}
             {...rest}
-            {...isLocalizedString && { dataSet: { lokalise: true, key: rest.children.path } }}
+            {...(isLocalizedString ? { dataSet: { lokalise: true, key: rest.children.path } } : {})}
             style={[
                 style,
                 // Override font and color styles
