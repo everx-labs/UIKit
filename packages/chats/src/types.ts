@@ -134,9 +134,17 @@ export type QRCodeMessage = BubbleBaseT & {
 
 export type ChatQRCodeMessage = ChatMeta & QRCodeMessage;
 
+export enum MediaMessageStatus {
+    Success,
+    DataIsEmpty,
+    NotSupportedDataFormat,
+    InvalidData,
+}
+
 export type MediaMessage = BubbleBaseT & {
     type: ChatMessageType.Media;
     data: string | null; // base64
+    onOutput?: (status: MediaMessageStatus) => void;
 };
 
 export type ChatMediaMessage = ChatMeta & MediaMessage;

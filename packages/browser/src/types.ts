@@ -2,7 +2,7 @@ import type {
     ChatMessageType,
     BubbleBaseT,
     QRCodeMessage,
-    MediaMessage,
+    MediaMessageStatus,
 } from '@tonlabs/uikit.chats';
 import type BigNumber from 'bignumber.js';
 import type React from 'react';
@@ -36,6 +36,7 @@ export enum InteractiveMessageType {
     EncryptionBox = 'EncryptionBox',
     TransactionConfirmation = 'TransactionConfirmation',
     QRCodeScanner = 'QRCodeScanner',
+    Media = 'Media',
     Date = 'Date',
     Time = 'Time',
 }
@@ -289,6 +290,15 @@ export type QRCodeScannerMessage = InteractiveMessage<
         fastScan?: boolean;
     },
     QRCodeScannerExternalState
+>;
+
+export type MediaMessage = InteractiveMessage<
+    InteractiveMessageType.Media,
+    {
+        data: string | null; // base64
+        prompt?: string;
+        onOutput?: (status: MediaMessageStatus) => void;
+    }
 >;
 
 export type BrowserMessage =

@@ -141,8 +141,12 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                     const message: BrowserMessage = {
                                         key: `${Date.now()}-media-image`,
                                         status: MessageStatus.Received,
-                                        type: ChatMessageType.Media,
+                                        type: InteractiveMessageType.Media,
                                         data: base64Image,
+                                        prompt: 'Look at this cool picture!',
+                                        onOutput: (status) => {
+                                            console.log({ status });
+                                        },
                                     };
                                     setMessages([
                                         {

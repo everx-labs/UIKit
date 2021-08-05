@@ -5,7 +5,7 @@ import { makeStyles, UIImage } from '@tonlabs/uikit.hydrogen';
 
 import { useBubbleContainerStyle } from '../useBubblePosition';
 import { useBubbleBackgroundColor } from '../useBubbleStyle';
-import type { MediaMessage } from '../types';
+import { MediaMessage, MediaMessageStatus } from '../types';
 import { UIConstant } from '../constants';
 
 type ImageSize = {
@@ -89,6 +89,16 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
                     source={{ uri: message.data }}
                     style={imageSize}
                     resizeMode="contain"
+                    onError={() => {
+                        if (message.onOutput) {
+                            message.onOutput(MediaMessageStatus.InvalidData);
+                        }
+                    }}
+                    onLoad={() => {
+                        if (message.onOutput) {
+                            message.onOutput(MediaMessageStatus.Success);
+                        }
+                    }}
                 />
             </View>
         </View>
