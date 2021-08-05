@@ -17,8 +17,7 @@ type Props = {
     containerStyle: ViewStyleProp,
     displayNameOnly?: boolean,
     notActive?: boolean,
-    hideBalance?: boolean,
-    balancePart: React$Element<any>,
+    right?: React$Element<any>,
 };
 type State = {
     // Empty
@@ -30,8 +29,6 @@ export default class UIAccountPicker extends UIComponent<Props, State> {
         account: null,
         onPressAccount: () => {},
         displayNameOnly: false,
-        hideBalance: false,
-        balancePart: null,
     };
 
     renderTitle() {
@@ -51,8 +48,7 @@ export default class UIAccountPicker extends UIComponent<Props, State> {
             account,
             onPressAccount,
             displayNameOnly,
-            hideBalance,
-            balancePart,
+            right,
             notActive,
         } = this.props;
 
@@ -66,8 +62,7 @@ export default class UIAccountPicker extends UIComponent<Props, State> {
                 onPress={onPressAccount}
                 displayNameOnly={displayNameOnly}
                 notActive={notActive}
-                hideBalance={hideBalance}
-                balancePart={balancePart}
+                right={right}
             />
         );
     }

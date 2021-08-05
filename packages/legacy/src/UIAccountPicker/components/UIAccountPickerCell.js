@@ -14,9 +14,8 @@ type Props = {
     account: ?UIAccountData,
     onPress?: () => void,
     displayNameOnly?: boolean,
-    hideBalance?: boolean,
     notActive?: boolean,
-    balancePart: string | React$Element<any>, // string added for flow, u can not use strings here
+    right?: React$Element<any>,
 };
 
 type State = {
@@ -30,8 +29,6 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
         onPress: () => {},
         displayNameOnly: false,
         notActive: false,
-        balancePart: '',
-        hideBalance: false,
     };
 
     // constructor
@@ -59,13 +56,17 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
         return account.address || '';
     }
 
-    getBalancePart(): React$Element<any> | string {
-        return this.props.balancePart || '';
+    getRight(): ?React$Element<any> {
+        return this.props.right;
+    }
+
+    get hideRight(): boolean {
+        return !this.props.right;
     }
 
     // Render
     renderAccount() {
-        const { notActive, hideBalance } = this.props;
+        const { notActive } = this.props;
         const account = this.getAccount();
 
         if (!account) {
@@ -92,7 +93,7 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
                 >
                     {name}
                 </UILabel>
-                {!hideBalance && this.getBalancePart()}
+                {!this.hideRight && this.getRight()}
             </View>
         );
     }
