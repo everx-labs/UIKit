@@ -1,22 +1,37 @@
 import React, { useState, useMemo } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, LayoutChangeEvent } from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    LayoutChangeEvent,
+} from 'react-native';
 
 import { useCalendar } from '../calendarContext';
-import type { PickerOptionsType } from '../../../types';
+import { PickerOptionsType, UIDateTimePickerMode } from '../../../types';
 
 const Days = () => {
-    const { options, state, utils, onChange } = useCalendar();
+    const { options, state, utils, onChange, mode } = useCalendar();
     const [mainState, setMainState] = state;
     const [itemSize, setItemSize] = useState(0);
     const style = styles(options);
-    const days = useMemo(() => utils.getMonthDays(mainState.activeDate),[utils, mainState.activeDate]);
+    const days = useMemo(() => utils.getMonthDays(mainState.activeDate), [
+        utils,
+        mainState.activeDate,
+    ]);
 
     const onSelectDay = (date: Date) => {
         setMainState({
             type: 'set',
             selectedDate: date,
         });
-        onChange && onChange(utils.getFormatted(utils.getDate(date), 'dateFormat'));
+        if(mode === UIDateTimePickerMode.DateTime){
+            const timezone = new Date().getTimezoneOffset();
+            onChange && onChange(date, timezone);
+        } else {
+            onChange && onChange(date);
+        }
+
     };
 
     const changeItemHeight = ({ nativeEvent }: LayoutChangeEvent) => {

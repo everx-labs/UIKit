@@ -12,7 +12,7 @@ import {
     QRCodeScannerMessage,
     EncryptionBoxMessage,
     DateMessage,
-    TimeMessage,
+    TimeMessage, DateTimeMessage,
 } from '@tonlabs/uikit.browser';
 import type {
     AddressInputMessage,
@@ -641,6 +641,32 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                         // eslint-disable-next-line @typescript-eslint/no-unused-vars
                                         parseData: (_data: any) => {
                                             return Promise.resolve('0:000');
+                                        },
+                                    };
+                                    setMessages([message, ...messages]);
+                                    setMenuVisible(false);
+                                }}
+                            />
+                            <UIBoxButton
+                                title="Choose date and time"
+                                layout={{
+                                    marginBottom: 10,
+                                }}
+                                onPress={() => {
+                                    const message: DateTimeMessage = {
+                                        key: `${Date.now()}-datetime-picker`,
+                                        status: MessageStatus.Received,
+                                        type: InteractiveMessageType.DateTime,
+                                        minDateTime: new Date(new Date('07/22/2021').setHours(13,12,0)),
+                                        maxDateTime: new Date(new Date('09/25/2021').setHours(17,0,0)),
+                                        onSelect: (externalState: any) => {
+                                            setMessages([
+                                                {
+                                                    ...message,
+                                                    externalState,
+                                                },
+                                                ...messages,
+                                            ]);
                                         },
                                     };
                                     setMessages([message, ...messages]);

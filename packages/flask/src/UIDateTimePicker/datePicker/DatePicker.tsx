@@ -9,7 +9,8 @@ import {
     PickerAction,
     PickerActionName,
     PickerOptionsType,
-    PickerPropsType, PickerStateType,
+    PickerPropsType,
+    PickerStateType,
     UIDateTimePickerMode,
     UIDateTimePickerType,
 } from '../../types';
@@ -55,12 +56,8 @@ const DatePicker = (props: UIDateTimePickerType) => {
         options: { ...options },
         utils: calendarUtils,
         state: useReducer(reducer, {
-            activeDate: props.current, // Date in calendar also save time
-            selectedDate: props.selected
-                ? calendarUtils.getFormatted(
-                      calendarUtils.getDate(props.selected),
-                  )
-                : '',
+            activeDate:  props.current ? new Date(props.current) : new Date(), // Date in calendar also save time
+            selectedDate:  props.selected ? new Date(props.selected) : new Date(),
             monthOpen: props.mode === UIDateTimePickerMode.MonthYear,
             timeOpen: props.mode === UIDateTimePickerMode.Time,
         }),
@@ -71,6 +68,16 @@ const DatePicker = (props: UIDateTimePickerType) => {
     const renderBody = () => {
         switch (contextValue.mode) {
             default:
+            case 'datepicker':
+                return (
+                    <React.Fragment>
+                        <Calendar />
+                        <SelectMonth />
+                        <SelectTime />
+                    </React.Fragment>
+                );
+            case 'monthYear':
+                return <SelectMonth />;
             case 'calendar':
                 return (
                     <React.Fragment>

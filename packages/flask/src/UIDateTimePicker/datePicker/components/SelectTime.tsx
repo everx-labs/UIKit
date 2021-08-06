@@ -1,17 +1,17 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
-    View,
-    StyleSheet,
-    Text,
     Animated,
     Easing,
     I18nManager,
     Platform,
+    StyleSheet,
+    View,
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { UIBoxButton, UILabel } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, UIBoxButton, UIBoxButtonType, UILabel } from '@tonlabs/uikit.hydrogen';
 import { useCalendar } from '../calendarContext';
 import { TimeInput } from './TimeInput';
+import { UIDateTimePickerMode } from '../../../types';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
@@ -21,7 +21,7 @@ const TimeScroller = ({ title, data, onChange, current }: any) => {
     const [nativeEventWidth, setNativeEventWidth] = useState(0);
     const style = styles(options);
     const scrollAnimatedValue = useRef(new Animated.Value(0)).current;
-    const scrollListener = useRef(null);
+    const scrollListener = useRef();
     const active = useRef(0);
     const flatListRef = useRef();
 
@@ -40,21 +40,19 @@ const TimeScroller = ({ title, data, onChange, current }: any) => {
     useEffect(() => {
         setTimeout(() => {
             getOffsetOfCurrent();
-        }, 200);
+        }, 400);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [nativeEventWidth]);
 
     useEffect(() => {
-        // @ts-ignore
         scrollListener.current && clearInterval(scrollListener.current);
-        // @ts-ignore
+        // @ts-expect-error
         scrollListener.current = scrollAnimatedValue.addListener(
             // eslint-disable-next-line no-return-assign
             ({ value }) => (active.current = value),
         );
 
         return () => {
-            // @ts-ignore
             clearInterval(scrollListener.current);
         };
     }, [scrollAnimatedValue]);
@@ -133,18 +131,18 @@ const TimeScroller = ({ title, data, onChange, current }: any) => {
                     style.listItem,
                 ]}
             >
-                <Text style={style.listItemText}>
+                <UILabel>
                     {utils.toPersianNumber(
                         String(item).length === 1 ? `0${item}` : item,
                     )}
-                </Text>
+                </UILabel>
             </Animated.View>
         );
     };
 
     return (
         <View style={style.row} onLayout={changeItemWidth}>
-            <Text style={style.title}>{title}</Text>
+            <UILabel color={ColorVariants.TextAccent}>{title}</UILabel>
             <AnimatedFlatList
                 ref={flatListRef}
                 pagingEnabled
@@ -211,12 +209,19 @@ const SelectTime = () => {
     const defaultTimeWeb = current
         ? utils.formatTime(current)
         : utils.formatTime(min);
-    const currentHour = current ? new Date(current).getHours() : null;
-    const currentMinute = current ? new Date(current).getMinutes() : null;
+    const currentHour = current
+        ? new Date(current).getHours()
+        : new Date().getHours();
+    const currentMinute = current
+        ? new Date(current).getMinutes()
+        : new Date().getMinutes();
 
     useEffect(() => {
-        show && setTime(new Date(new Date().setHours(minHour, minMinute, 0)));
-    }, [minHour, show, minMinute]);
+        show &&
+            setTime(
+                new Date(new Date().setHours(currentHour, currentMinute, 0)),
+            );
+    }, [show, currentHour, currentMinute]);
 
     useEffect(() => {
         mainState.timeOpen && setShow(true);
@@ -257,7 +262,7 @@ const SelectTime = () => {
         );
         setMainState({
             type: 'set',
-            activeDate: utils.formatTime(newTimeForActiveDate),
+            activeDate: newTimeForActiveDate,
             selectedDate: mainState.selectedDate
                 ? new Date(
                       new Date(mainState.selectedDate).setHours(
@@ -268,11 +273,14 @@ const SelectTime = () => {
                   )
                 : '',
         });
-        onChange && onChange(newTime);
-        mode !== 'time' &&
+        console.log(newTime);
+        if (mode !== UIDateTimePickerMode.Time) {
             setMainState({
                 type: 'toggleTime',
             });
+        } else if (onChange) {
+            onChange(newTime);
+        }
     };
 
     const containerStyle = [
@@ -295,7 +303,9 @@ const SelectTime = () => {
 
     function getMinutesArray(minimum = 0, maximum = 59) {
         if (interval) {
-            return numberRange(minimum, maximum).filter((n) => !(n % Number(interval)));
+            return numberRange(minimum, maximum).filter(
+                (n) => !(n % Number(interval)),
+            );
         }
         return numberRange(minimum, maximum);
     }
@@ -319,12 +329,12 @@ const SelectTime = () => {
             const newHour = new Date(time).getHours();
             if (newHour === minHour) {
                 // @ts-ignore
-                if (curMinutes < new Date(minimum).getMinutes()) {
+                if (curMinutes < new Date(min).getMinutes()) {
                     newTime = new Date(newTime.setHours(newHour, minMinute));
                 }
             } else if (newHour === maxHour) {
                 // @ts-ignore
-                if (curMinutes > new Date(maximum).getMinutes()) {
+                if (curMinutes > new Date(max).getMinutes()) {
                     newTime = new Date(newTime.setHours(newHour, maxMinute));
                 }
             }
@@ -340,11 +350,13 @@ const SelectTime = () => {
 
     return show ? (
         <Animated.View style={containerStyle}>
+            <View style={style.header}>
+                <UILabel>{`Please choose time from ${utils.formatTime(
+                    min,
+                )} to ${utils.formatTime(max)}`}</UILabel>
+            </View>
             {Platform.OS === 'web' ? (
                 <View style={style.row}>
-                    <UILabel>{`Please choose time from ${utils.formatTime(
-                        min,
-                    )} to ${utils.formatTime(max)}`}</UILabel>
                     <TimeInput current={defaultTimeWeb} onChange={updateTime} />
                 </View>
             ) : (
@@ -368,21 +380,26 @@ const SelectTime = () => {
                 </>
             )}
             <View style={style.footer}>
-                <UIBoxButton
-                    disabled={Platform.OS === 'web' ? !isValidTime : false}
-                    onPress={selectTime}
-                    title={utils.config.timeSelect}
-                />
-                {mode !== 'time' && (
-                    <UIBoxButton
-                        onPress={() =>
-                            setMainState({
-                                type: 'toggleTime',
-                            })
-                        }
-                        title={utils.config.timeClose}
-                    />
+                {mode !== UIDateTimePickerMode.Time && (
+                    <View style={style.button}>
+                        <UIBoxButton
+                            type={UIBoxButtonType.Secondary}
+                            onPress={() =>
+                                setMainState({
+                                    type: 'toggleTime',
+                                })
+                            }
+                            title={utils.config.timeClose}
+                        />
+                    </View>
                 )}
+                <View style={style.button}>
+                    <UIBoxButton
+                        disabled={Platform.OS === 'web' ? !isValidTime : false}
+                        onPress={selectTime}
+                        title={utils.config.timeSelect}
+                    />
+                </View>
             </View>
         </Animated.View>
     ) : null;
@@ -407,37 +424,21 @@ const styles = (theme: any) =>
             alignItems: 'center',
             marginVertical: 5,
         },
-        title: {
-            fontSize: theme.textHeaderFontSize,
-            color: theme.mainColor,
-        },
         listItem: {
             height: 60,
             alignItems: 'center',
             justifyContent: 'center',
         },
-        listItemText: {
-            fontSize: theme.textHeaderFontSize,
-            color: theme.textDefaultColor,
+        header: {
+            marginBottom: 30,
+            alignItems: 'center',
         },
         footer: {
             flexDirection: 'row',
-            justifyContent: 'center',
-            marginTop: 15,
         },
         button: {
-            paddingVertical: 10,
-            paddingHorizontal: 25,
-            borderRadius: 8,
-            backgroundColor: theme.mainColor,
-            margin: 8,
-        },
-        btnText: {
-            fontSize: theme.textFontSize,
-            color: theme.selectedTextColor,
-        },
-        cancelButton: {
-            backgroundColor: theme.textSecondaryColor,
+            flex: 1,
+            margin: 15,
         },
     });
 

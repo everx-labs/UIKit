@@ -91,8 +91,6 @@ export type PickerOptionsType = {
     daysAnimationDistance: number;
 };
 
-const minuteIntervalArray = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60] as const;
-
 export type UIDateTimePickerType = {
     /**
      * Current selected time or month of year
@@ -115,13 +113,17 @@ export type UIDateTimePickerType = {
      * For example:
      * - 5 will look like 5, 10, 15, 20 ...
      */
-    interval?: typeof minuteIntervalArray;
+    interval?: number;
+    /**
+     * Timezone offset for datetime mode
+     */
+    timeZoneOffset?: number;
     /* Gets called when selected value changes */
-    onValueRetrieved: (datetime: Date) => void;
+    onValueRetrieved: (datetime: Date, timeZoneOffset?: number) => void;
 };
 
 export type PickerPropsType = UIDateTimePickerType & {
-    onChange?: (datetime: Date) => void;
+    onChange?: (datetime: Date, timezone?: number) => void;
     onMonthYearChange?: (datetime: Date) => void;
     value?: any;
     selectorStartingYear?: number;

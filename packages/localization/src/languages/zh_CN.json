@@ -62,7 +62,10 @@
             "ChooseDate": "Choose a date",
             "ChooseTime": "Choose a time",
             "YouHaveChosenTheDate": "You have chosen the date: ",
-            "YouHaveChosenTheTime": "You have chosen the time: "
+            "YouHaveChosenTheTime": "You have chosen the time: ",
+            "DoYouWantChooseDateTime": "Do you want to choose date and time?",
+            "ChooseDateTime": "Choose date and time",
+            "YouHaveChosenTheDateTime": "You have chosen date and time: "
         },
         "SigningBox": {
             "Prompt": "How would you like to sign?",

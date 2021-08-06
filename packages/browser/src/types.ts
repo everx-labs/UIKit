@@ -38,6 +38,7 @@ export enum InteractiveMessageType {
     QRCodeScanner = 'QRCodeScanner',
     Date = 'Date',
     Time = 'Time',
+    DateTime = 'DateTime'
 }
 
 type PlainTextMessage = BubbleBaseT & {
@@ -235,6 +236,24 @@ export type DateMessage = InteractiveMessage<
     },
     DateExternalState
 >;
+export type DateTimeExternalState = {
+    datetime?: Date;
+    timeZoneOffset?: number;
+};
+
+export type DateTimeMessage = InteractiveMessage<
+    InteractiveMessageType.DateTime,
+    {
+        prompt?: string;
+        minDateTime?: Date;
+        maxDateTime?: Date;
+        current?: Date;
+        interval?: number;
+        onSelect: (state: DateTimeExternalState) => void;
+        inTimeZoneOffset?: number;
+    },
+    DateTimeExternalState
+    >;
 
 export type TimeExternalState = {
     time?: Date;
@@ -306,7 +325,8 @@ export type BrowserMessage =
     | QRCodeMessage
     | QRCodeScannerMessage
     | DateMessage
-    | TimeMessage;
+    | TimeMessage
+    | DateTimeMessage;
 
 type WithExternalStateHelper<A> = A extends { externalState?: any } ? A : never;
 
