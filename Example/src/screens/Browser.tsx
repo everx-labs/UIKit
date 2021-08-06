@@ -606,6 +606,7 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                         key: `${Date.now()}-qr-code`,
                                         status: MessageStatus.Received,
                                         type: InteractiveMessageType.QRCodeScanner,
+                                        prompt: 'You can scan any QR code',
                                         onScan: (externalState: any) => {
                                             setMessages([
                                                 {

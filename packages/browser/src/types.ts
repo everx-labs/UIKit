@@ -1,7 +1,4 @@
-import type {
-    ChatMessageType,
-    BubbleBaseT,
-} from '@tonlabs/uikit.chats';
+import type { ChatMessageType, BubbleBaseT } from '@tonlabs/uikit.chats';
 import type BigNumber from 'bignumber.js';
 import type React from 'react';
 
@@ -284,6 +281,7 @@ export type QRCodeScannerExternalState = {
 export type QRCodeScannerMessage = InteractiveMessage<
     InteractiveMessageType.QRCodeScanner,
     {
+        prompt?: string;
         onScan: (state: QRCodeScannerExternalState) => void;
         parseData: (data: any) => Promise<string>;
         fastScan?: boolean;
