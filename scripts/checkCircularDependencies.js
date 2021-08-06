@@ -5,7 +5,25 @@ const { parseDependencyTree, parseCircular, prettyCircular } = require('dpdm');
 const checkCircularDependencies = async () => {
     try {
         console.log('Testing for circular dependencies using "DPDM"...');
-        const tree = await parseDependencyTree('index.js', { /* default options */ });
+        const sources = [
+            'index.js',
+            'Example/index.js',
+            'packages/assets/src/index.ts',
+            'packages/browser/src/index.ts',
+            'packages/charts/src/index.ts',
+            'packages/chats/src/index.ts',
+            'packages/components/src/index.js',
+            'packages/core/src/index.js',
+            'packages/flask/src/index.ts',
+            'packages/hydrogen/src/index.ts',
+            'packages/keyboard/src/index.ts',
+            'packages/legacy/src/index.js',
+            'packages/localization/src/index.ts',
+            'packages/navigation/src/index.ts',
+            'packages/navigation_legacy/src/index.js',
+            'packages/stickers/src/index.ts',
+        ];
+        const tree = await parseDependencyTree(sources, { /* default options */ });
         const circulars = parseCircular(tree);
         if (circulars.length > 0) {
             console.log(
