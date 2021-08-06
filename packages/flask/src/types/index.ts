@@ -17,6 +17,11 @@ export type QRCodeRef = {
     getPng: () => Promise<string | null>;
 };
 
+// eslint-disable-next-line no-shadow
+export enum QRCodeError {
+    DataTooLong,
+}
+
 /**
  * QRCodeView props
  */
@@ -25,6 +30,10 @@ export type QRCodeProps = {
     type: QRCodeType;
     /** String value to encode into the QR сode */
     value: string;
+    /** Called if it is impossible to draw a QR code */
+    onError?: (error: QRCodeError) => void;
+    /** Called if the QR code is successfully drawn */
+    onSuccess?: () => void;
     /**
      * Size of the QR code image (without padding)
      * @default QRCodeSize.Large

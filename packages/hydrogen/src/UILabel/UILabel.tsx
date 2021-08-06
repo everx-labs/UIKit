@@ -1,42 +1,14 @@
 import * as React from 'react';
-import { ColorValue, Text, TransformsStyle, ViewStyle } from 'react-native';
-import type { TextProps, TextStyle, StyleProp, FlexStyle } from 'react-native';
+import { ColorValue, Text } from 'react-native';
 
 // @ts-expect-error
 import TextAncestorContext from 'react-native/Libraries/Text/TextAncestor';
 
-import { Typography, TypographyVariants } from './Typography';
-import { useTheme, ColorVariants } from './Colors';
-
-/**
- * Only those `behavioral` styles from Text are accepted!
- */
-type UILabelStyle = Pick<
-    TextStyle,
-    | 'textAlign'
-    | 'textAlignVertical'
-    | 'textDecorationLine'
-    | 'textDecorationStyle' // TODO: think if should expose it
-    | 'textDecorationColor' // TODO: think if should expose it
-    | 'textShadowColor' // TODO: think if should expose it
-    | 'textShadowOffset'
-    | 'textShadowRadius'
-    | 'textTransform'
-    | 'fontVariant'
-    | 'writingDirection'
-    | 'includeFontPadding'
-> &
-    Pick<ViewStyle, 'backfaceVisibility' | 'opacity' | 'elevation'> &
-    FlexStyle &
-    TransformsStyle;
-
-type Props = Omit<TextProps, 'style'> & {
-    role?: TypographyVariants;
-    color?: ColorVariants;
-    style?: StyleProp<UILabelStyle>;
-    children?: React.ReactNode;
-    textComponent?: React.ComponentType<any>;
-};
+import { Typography, TypographyVariants } from '../Typography';
+import { ColorVariants, useTheme } from '../Colors';
+import type { Props } from './types';
+// @ts-expect-error
+import { useLabelDataSet } from './useLabelDataSet';
 
 /**
  * https://reactnative.dev/docs/text
@@ -87,9 +59,10 @@ export const UILabel = React.forwardRef<Text, Props>(function UILabelForwarded(
 
     const TextComponent = textComponent || Text;
 
+    const dataSet = useLabelDataSet(rest.children);
+
     return (
         <TextComponent
-            // @ts-expect-error
             ref={ref}
             {...rest}
             style={[
@@ -99,9 +72,8 @@ export const UILabel = React.forwardRef<Text, Props>(function UILabelForwarded(
                 fontStyle,
                 colorStyle,
             ]}
+            // @ts-expect-error
+            dataSet={dataSet}
         />
     );
 });
-
-export const UILabelRoles = TypographyVariants;
-export const UILabelColors = ColorVariants;
