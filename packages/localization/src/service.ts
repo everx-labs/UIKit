@@ -33,8 +33,23 @@ const langsOptions: LanguagesOptions = Object.values(Language).reduce(
 const preparedLanguages = prepare<UILocalizedData>(
     availableLanguages,
     langsOptions,
-    'UIKit'
 );
+
+export function getExtendedLanguages() {
+    const extendedOptions: LanguagesOptions = Object.values(Language).reduce(
+        (result, lang) => ({
+            ...result,
+            [lang]: { constants: predefinedConstants, useExtendedString: true },
+        }),
+        {},
+    );
+
+    return prepare<UILocalizedData>(
+        availableLanguages,
+        extendedOptions,
+        'UIKit',
+    );
+}
 
 const defaultLocaleInfo: StringLocaleInfo = {
     name: '',

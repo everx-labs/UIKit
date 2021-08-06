@@ -16,6 +16,7 @@ export type LanguageItem<T = LanguageValue> = Record<string, T>
 export interface LanguageOptions {
     constants?: Record<string, string>;
     images?: Record<string, string>;
+    useExtendedString?: boolean;
 }
 
 export type Languages<T = LanguageItem> = Partial<Record<Language, T>>;
