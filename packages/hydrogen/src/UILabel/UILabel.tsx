@@ -4,11 +4,11 @@ import { ColorValue, Text } from 'react-native';
 // @ts-expect-error
 import TextAncestorContext from 'react-native/Libraries/Text/TextAncestor';
 
-import { LocalizationString } from '@tonlabs/uikit.localization';
-
 import { Typography, TypographyVariants } from '../Typography';
 import { ColorVariants, useTheme } from '../Colors';
 import type { Props } from './types';
+// @ts-expect-error
+import { useLabelDataSet } from './useLabelDataSet';
 
 /**
  * https://reactnative.dev/docs/text
@@ -59,24 +59,12 @@ export const UILabel = React.forwardRef<Text, Props>(function UILabelForwarded(
 
     const TextComponent = textComponent || Text;
 
-    const isLocalizedString = React.useMemo(
-        () => rest.children instanceof LocalizationString,
-        [rest.children],
-    );
+    const dataSet = useLabelDataSet(rest.children);
 
     return (
         <TextComponent
-            // @ts-expect-error
             ref={ref}
             {...rest}
-            {...(isLocalizedString
-                ? {
-                      dataSet: {
-                          lokalise: true,
-                          key: (rest.children as LocalizationString).path,
-                      },
-                  }
-                : {})}
             style={[
                 style,
                 // Override font and color styles
@@ -84,6 +72,8 @@ export const UILabel = React.forwardRef<Text, Props>(function UILabelForwarded(
                 fontStyle,
                 colorStyle,
             ]}
+            // @ts-expect-error
+            dataSet={dataSet}
         />
     );
 });
