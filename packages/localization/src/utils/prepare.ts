@@ -86,7 +86,11 @@ function prepareValue(
             }
         }
 
-        return new LocalizationString(result as string, path);
+        if (options.useExtendedString) {
+            return new LocalizationString(result as string, path);
+        }
+
+        return result;
     }
 
     if (typeof value === 'object') {
