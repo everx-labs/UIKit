@@ -38,7 +38,7 @@ const gregorianConfigs = {
     timeClose: 'Close',
 };
 
-class utils {
+class Utils {
     private readonly data: {
         isGregorian: boolean | undefined;
         max: Date | undefined;
@@ -321,4 +321,4 @@ class utils {
     };
 }
 
-export { utils };
+export { Utils };

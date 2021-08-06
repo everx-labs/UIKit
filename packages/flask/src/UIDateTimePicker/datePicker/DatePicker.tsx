@@ -4,7 +4,7 @@ import { useTheme, ColorVariants } from '@tonlabs/uikit.hydrogen';
 
 import { Calendar, SelectMonth, SelectTime } from './components';
 import { CalendarContext, useCalendar } from './calendarContext';
-import { utils } from '../utils';
+import { Utils } from '../utils';
 import {
     PickerAction,
     PickerActionName,
@@ -44,8 +44,7 @@ const DatePicker = (props: UIDateTimePickerType) => {
         daysAnimationDistance: 200,
     };
 
-    // eslint-disable-next-line new-cap
-    const calendarUtils = new utils(
+    const calendarUtils = new Utils(
         props as UIDateTimePickerType & PickerPropsType,
     );
 
