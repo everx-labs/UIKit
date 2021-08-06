@@ -17,7 +17,8 @@
         "language:check": "babel-node --config-file ./babel.config.js scripts/checkLanguageFiles.js",
         "language:sync": "babel-node --config-file ./babel.config.js scripts/syncLanguageFiles.js",
         "web": "webpack-dev-server -d --config Example/webpack.config.js --progress --colors --host 0.0.0.0 --display-cached",
-        "cycles:check": "node scripts/checkCircularDependencies.js"
+        "cycles:check": "node scripts/checkCircularDependencies.js",
+        "postinstall": "./postinstall.sh"
     },
     "pre-commit": [
         "flow",
