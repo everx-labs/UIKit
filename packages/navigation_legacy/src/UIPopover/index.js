@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { View, TouchableOpacity, Platform, StyleSheet } from 'react-native';
+import { View, Platform, StyleSheet } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type { ViewLayoutEvent } from 'react-native/Libraries/Components/View/ViewPropTypes';
 import { Popover } from 'react-native-simple-popover';
@@ -11,7 +11,7 @@ import {
     UIConstant,
 } from '@tonlabs/uikit.core';
 import { UIComponent } from '@tonlabs/uikit.components';
-import { UIBackgroundView } from '@tonlabs/uikit.hydrogen';
+import { UIBackgroundView, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
 import { UICardSheet } from '@tonlabs/uikit.navigation';
 
 import UIPopoverBackground from '../UIPopoverBackground';

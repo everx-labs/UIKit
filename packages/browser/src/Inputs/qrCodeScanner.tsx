@@ -68,8 +68,16 @@ export function QRCodeScanner({
 
     return (
         <View onLayout={onLayout}>
+            {!!message.prompt && (
+                <BubbleSimplePlainText
+                    type={ChatMessageType.PlainText}
+                    key="qr-code-message-prompt"
+                    text={message.prompt}
+                    status={MessageStatus.Received}
+                    firstFromChain
+                />
+            )}
             <BubbleActionButton
-                firstFromChain
                 key="qr-code-message-bubble"
                 type={ChatMessageType.ActionButton}
                 status={MessageStatus.Received}

@@ -1,9 +1,4 @@
-import type {
-    ChatMessageType,
-    BubbleBaseT,
-    QRCodeMessage,
-    MediaMessage,
-} from '@tonlabs/uikit.chats';
+import type { ChatMessageType, BubbleBaseT } from '@tonlabs/uikit.chats';
 import type BigNumber from 'bignumber.js';
 import type React from 'react';
 
@@ -36,6 +31,8 @@ export enum InteractiveMessageType {
     EncryptionBox = 'EncryptionBox',
     TransactionConfirmation = 'TransactionConfirmation',
     QRCodeScanner = 'QRCodeScanner',
+    QRCodeDraw = 'QRCodeDraw',
+    MediaOutput = 'MediaOutput',
     Date = 'Date',
     Time = 'Time',
     DateTime = 'DateTime'
@@ -303,11 +300,44 @@ export type QRCodeScannerExternalState = {
 export type QRCodeScannerMessage = InteractiveMessage<
     InteractiveMessageType.QRCodeScanner,
     {
+        prompt?: string;
         onScan: (state: QRCodeScannerExternalState) => void;
         parseData: (data: any) => Promise<string>;
         fastScan?: boolean;
     },
     QRCodeScannerExternalState
+>;
+
+// eslint-disable-next-line no-shadow
+export enum MediaOutputMessageStatus {
+    Success,
+    DataIsEmpty,
+    NotSupportedDataFormat,
+    InvalidData,
+}
+
+export type MediaOutputMessage = InteractiveMessage<
+    InteractiveMessageType.MediaOutput,
+    {
+        data: string | null; // base64
+        prompt?: string;
+        onOutput?: (status: MediaOutputMessageStatus) => void;
+    }
+>;
+
+// eslint-disable-next-line no-shadow
+export enum QRCodeDrawMessageStatus {
+    Success,
+    DataTooLong,
+}
+
+export type QRCodeDrawMessage = InteractiveMessage<
+    InteractiveMessageType.QRCodeDraw,
+    {
+        data: string;
+        prompt?: string;
+        onDraw?: (status: QRCodeDrawMessageStatus) => void;
+    }
 >;
 
 export type BrowserMessage =
@@ -316,13 +346,13 @@ export type BrowserMessage =
     | TerminalMessage
     | AddressInputMessage
     | MenuMessage
-    | MediaMessage
+    | MediaOutputMessage
     | ConfirmMessage
     | AmountInputMessage
     | SigningBoxMessage
     | EncryptionBoxMessage
     | TransactionConfirmationMessage
-    | QRCodeMessage
+    | QRCodeDrawMessage
     | QRCodeScannerMessage
     | DateMessage
     | TimeMessage

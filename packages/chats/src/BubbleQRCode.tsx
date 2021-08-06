@@ -51,6 +51,8 @@ export const BubbleQRCode: React.FC<QRCodeMessage> = (
                         testID={`chat_qr_code_${data}`}
                         type={QRCodeType.Square}
                         logo={UIAssets.icons.brand.tonSymbolBlack}
+                        onError={message.onError}
+                        onSuccess={message.onSuccess}
                         value={data}
                     />
                 </View>

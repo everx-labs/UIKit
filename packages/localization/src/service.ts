@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import LocalizedStringsService, { LocalizedStrings } from 'react-native-localization';
 import BigNumber from 'bignumber.js';
+
 import availableLanguages, { UILocalizedData } from './languages';
 import {
     getDateFormatInfo,
@@ -15,6 +16,7 @@ import type {
     NumberPartsOptions,
     StringLocaleInfo,
     ShortenAmount,
+    LanguagesOptions,
 } from './types';
 import {
     Language,
@@ -22,7 +24,6 @@ import {
     predefinedConstants,
     UIConstant,
 } from './constants';
-import type { LanguagesOptions } from './types';
 
 const langsOptions: LanguagesOptions = Object.values(Language).reduce(
     (result, lang) => ({ ...result, [lang]: { constants: predefinedConstants } }),
@@ -33,6 +34,22 @@ const preparedLanguages = prepare<UILocalizedData>(
     availableLanguages,
     langsOptions,
 );
+
+export function getExtendedLanguages() {
+    const extendedOptions: LanguagesOptions = Object.values(Language).reduce(
+        (result, lang) => ({
+            ...result,
+            [lang]: { constants: predefinedConstants, useExtendedString: true },
+        }),
+        {},
+    );
+
+    return prepare<UILocalizedData>(
+        availableLanguages,
+        extendedOptions,
+        'UIKit',
+    );
+}
 
 const defaultLocaleInfo: StringLocaleInfo = {
     name: '',
