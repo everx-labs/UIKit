@@ -41,6 +41,7 @@ import {
 
 import { useBase64Image } from './hooks/useBase64Image';
 
+/** There should be a link to a medium-sized image here */
 const IMAGE_URL =
     'https://firebasestorage.googleapis.com/v0/b/ton-uikit-example-7e797.appspot.com/o/loon-image-medium.jpeg?alt=media&token=8a2f5747-495e-4aae-a9d0-460f34b12717';
 

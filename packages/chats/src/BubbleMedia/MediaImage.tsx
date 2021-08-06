@@ -13,8 +13,6 @@ type ImageSize = {
     height: number;
 };
 
-// const windowWidth = Dimensions.get('window').width;
-
 const getImageSize = (
     width: number,
     height: number,
