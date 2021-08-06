@@ -1,8 +1,26 @@
 const madge = require('madge');
 const path = require('path');
+const { parseDependencyTree, parseCircular, prettyCircular } = require('dpdm');
 
 const checkCircularDependencies = async () => {
     try {
+        console.log('Testing for circular dependencies using "DPDM"...');
+        const tree = await parseDependencyTree('index.js');
+        const circulars = parseCircular(tree);
+        if (circulars.length > 0) {
+            console.log(
+                '\x1b[33m%s\x1b[0m', // yellow
+                `Circular dependencies were found by "DPDM" (${circulars.length}): TODO: Fix it!!!\n`, prettyCircular(circulars),
+            );
+            // process.exit(1); Uncomment once ready!!!
+        } else {
+            console.info(
+                '\x1b[32m%s\x1b[0m', // green
+                'Congratulations! "DPDM" haven\'t found any circular dependencies in your code!',
+            );
+        }
+
+        console.log('Testing for circular dependencies using "Madge"...');
         const res = await madge(path.join(__dirname, '..'), {
             fileExtensions: ['js', 'jsx', 'ts', 'tsx'],
         });
@@ -10,13 +28,13 @@ const checkCircularDependencies = async () => {
         if (dependencies.length > 0) {
             console.log(
                 '\x1b[33m%s\x1b[0m', // yellow
-                `Circular dependencies were found (${dependencies.length}):\n`, dependencies,
+                `Circular dependencies were found by "Madge" (${dependencies.length}):\n`, dependencies,
             );
             process.exit(1);
         } else {
             console.info(
-                '\x1b[34m%s\x1b[0m', // blue
-                'Congratulations! Your code doesn\'t have any circular dependencies!',
+                '\x1b[32m%s\x1b[0m', // green
+                'Congratulations! "Madge" haven\'t found any circular dependencies in your code!',
             );
         }
     } catch (error) {
