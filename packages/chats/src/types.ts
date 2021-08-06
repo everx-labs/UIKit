@@ -5,6 +5,7 @@ import type {
     ViewProps,
 } from 'react-native';
 import type BigNumber from 'bignumber.js';
+import type { QRCodeError } from '@tonlabs/uikit.flask';
 
 // Semantically describe a bubble position
 // By default:
@@ -130,6 +131,8 @@ export type ChatActionButtonMessage = ChatMeta & ActionButtonMessage;
 export type QRCodeMessage = BubbleBaseT & {
     type: ChatMessageType.QRCode;
     data: string;
+    onError?: (error: QRCodeError) => void;
+    onSuccess?: () => void;
 };
 
 export type ChatQRCodeMessage = ChatMeta & QRCodeMessage;

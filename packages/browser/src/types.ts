@@ -1,7 +1,6 @@
 import type {
     ChatMessageType,
     BubbleBaseT,
-    QRCodeMessage,
 } from '@tonlabs/uikit.chats';
 import type BigNumber from 'bignumber.js';
 import type React from 'react';
@@ -35,6 +34,7 @@ export enum InteractiveMessageType {
     EncryptionBox = 'EncryptionBox',
     TransactionConfirmation = 'TransactionConfirmation',
     QRCodeScanner = 'QRCodeScanner',
+    QRCodeDraw = 'QRCodeDraw',
     MediaOutput = 'MediaOutput',
     Date = 'Date',
     Time = 'Time',
@@ -308,6 +308,21 @@ export type MediaOutputMessage = InteractiveMessage<
     }
 >;
 
+// eslint-disable-next-line no-shadow
+export enum QRCodeDrawMessageStatus {
+    Success,
+    DataTooLong,
+}
+
+export type QRCodeDrawMessage = InteractiveMessage<
+    InteractiveMessageType.QRCodeDraw,
+    {
+        data: string;
+        prompt?: string;
+        onDraw?: (status: QRCodeDrawMessageStatus) => void;
+    }
+>;
+
 export type BrowserMessage =
     | PlainTextMessage
     | ActionButtonMessage
@@ -320,7 +335,7 @@ export type BrowserMessage =
     | SigningBoxMessage
     | EncryptionBoxMessage
     | TransactionConfirmationMessage
-    | QRCodeMessage
+    | QRCodeDrawMessage
     | QRCodeScannerMessage
     | DateMessage
     | TimeMessage;
