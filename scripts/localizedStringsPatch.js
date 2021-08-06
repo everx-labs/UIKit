@@ -12,8 +12,6 @@ try {
         '} else if (typeof strings[key] !== "string" && typeof strings[key].valueOf() !== "string") {',
     );
 
-    console.log(localizedStringsFileData);
-
     fs.writeFileSync(localizedStringsFile, result, 'utf8');
 } catch (error) {
     console.error('Failed to apply localized-strings fixes with error:', error);
