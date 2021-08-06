@@ -4,8 +4,6 @@ import { FlatList, FlatListProps, ViewProps } from 'react-native';
 import {
     BubbleActionButton,
     BubbleSimplePlainText,
-    BubbleQRCode,
-    BubbleMedia,
     ChatMessageType,
     CommonChatListProps,
     UICommonChatList,
@@ -26,6 +24,8 @@ import { EncryptionBox } from './Inputs/EncryptionBox';
 import { DatePicker } from './Inputs/datePicker';
 import { TimePicker } from './Inputs/timePicker';
 import { DateTimePicker } from './Inputs/dateTimePicker';
+import { MediaOutput } from './MediaOutput';
+import { QRCodeDraw } from './QRCodeDraw';
 
 type UIBrowserListProps = {
     messages: BrowserMessage[];
@@ -65,12 +65,6 @@ const renderBubble = () => (
     if (item.type === ChatMessageType.ActionButton) {
         return <BubbleActionButton {...item} onLayout={onLayout} />;
     }
-    if (item.type === ChatMessageType.QRCode) {
-        return <BubbleQRCode {...item} onLayout={onLayout} />;
-    }
-    if (item.type === ChatMessageType.Media) {
-        return <BubbleMedia {...item} onLayout={onLayout} />;
-    }
 
     if (item.type === InteractiveMessageType.AddressInput) {
         return <AddressInput {...item} onLayout={onLayout} />;
@@ -107,6 +101,12 @@ const renderBubble = () => (
     }
     if (item.type === InteractiveMessageType.DateTime) {
         return <DateTimePicker {...item} onLayout={onLayout} />;
+    if (item.type === InteractiveMessageType.MediaOutput) {
+        return <MediaOutput {...item} onLayout={onLayout} />;
+    }
+    if (item.type === InteractiveMessageType.QRCodeDraw) {
+        return <QRCodeDraw {...item} onLayout={onLayout} />;
+
     }
 
     return null;

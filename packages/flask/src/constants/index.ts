@@ -41,5 +41,6 @@ export const UIConstant = {
         mediumBorderWidth: 12,
         largeLogoSize: 40,
         mediumLogoSize: 27,
+        maxValueLength: 4296,
     },
 };
