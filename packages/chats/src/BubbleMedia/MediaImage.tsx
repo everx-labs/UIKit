@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Image, Dimensions } from 'react-native';
+import { View, Image, useWindowDimensions } from 'react-native';
 import { UIConstant as UICoreConstant } from '@tonlabs/uikit.core';
 import { makeStyles, UIImage } from '@tonlabs/uikit.hydrogen';
 
@@ -13,7 +13,7 @@ type ImageSize = {
     height: number;
 };
 
-const windowWidth = Dimensions.get('window').width;
+// const windowWidth = Dimensions.get('window').width;
 
 const getImageSize = (
     width: number,
@@ -40,7 +40,7 @@ const getImageSize = (
     };
 };
 
-const useMaxImageSize = (): ImageSize => {
+const useMaxImageSize = (windowWidth: number): ImageSize => {
     return React.useMemo(() => {
         return {
             width: windowWidth * UIConstant.mediaImagePartOfScreen,
@@ -48,34 +48,50 @@ const useMaxImageSize = (): ImageSize => {
                 (windowWidth * UIConstant.mediaImagePartOfScreen) /
                 UIConstant.mediaImageMaxSizesAspectRatio,
         };
-    }, []);
+    }, [windowWidth]);
 };
 
 export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
     const containerStyle = useBubbleContainerStyle(message);
     const bubbleBackgroundColor = useBubbleBackgroundColor(message);
     const styles = useStyles();
+    const [
+        imageOriginalSize,
+        setImageOriginalSize,
+    ] = React.useState<ImageSize | null>(null);
     const [imageSize, setImageSize] = React.useState<ImageSize | null>(null);
-    const maxImageSize = useMaxImageSize();
+    const windowWidth = useWindowDimensions().width;
 
-    const calculateImageSize = React.useCallback(
-        (width: number, height: number) => {
+    const maxImageSize = useMaxImageSize(windowWidth);
+
+    React.useEffect(() => {
+        if (imageOriginalSize) {
             const newImageSize = getImageSize(
-                width,
-                height,
+                imageOriginalSize?.width,
+                imageOriginalSize?.height,
                 maxImageSize.width,
                 maxImageSize.height,
             );
             setImageSize(newImageSize);
-        },
-        [maxImageSize.width, maxImageSize.height],
-    );
+        }
+    }, [
+        imageOriginalSize,
+        imageOriginalSize?.width,
+        imageOriginalSize?.height,
+        maxImageSize.width,
+        maxImageSize.height,
+    ]);
 
     React.useEffect(() => {
         if (message.data) {
-            Image.getSize(message.data, calculateImageSize);
+            Image.getSize(message.data, (width, height) =>
+                setImageOriginalSize({
+                    width,
+                    height,
+                }),
+            );
         }
-    }, [message.data, calculateImageSize]);
+    }, [message.data]);
 
     if (!message.data) {
         return null;
@@ -89,7 +105,6 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
                 <UIImage
                     source={{ uri: message.data }}
                     style={imageSize}
-                    resizeMode="contain"
                     onError={() => {
                         if (message.onError) {
                             message.onError(MediaMessageError.InvalidData);
