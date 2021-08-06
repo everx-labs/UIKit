@@ -56,7 +56,7 @@ export const QRCodeDraw = ({
             {!!prompt && (
                 <BubbleSimplePlainText
                     type={ChatMessageType.PlainText}
-                    key="media-bubble-prompt"
+                    key="qrcode-draw-bubble-prompt"
                     text={prompt}
                     status={MessageStatus.Received}
                 />
