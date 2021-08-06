@@ -3,4 +3,3 @@ export * from './getters';
 export * from './UIFunction';
 export * from './consistency';
 export * from './shortenAmount';
-export * from './liveEditScript';
