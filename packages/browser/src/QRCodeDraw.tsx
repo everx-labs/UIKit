@@ -51,7 +51,7 @@ export const QRCodeDraw = ({
                 onError={onError}
                 onSuccess={onSuccess}
                 firstFromChain
-                key="media-bubble"
+                key="qrcode-draw-bubble"
             />
             {!!prompt && (
                 <BubbleSimplePlainText
