@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 try {
-    const localizedStringsFile = `${process.cwd()}/node_modules/localized-strings/lib/LocalizedStrings.js`;
+    const localizedStringsFile = `${__dirname}/../node_modules/localized-strings/lib/LocalizedStrings.js`;
     const localizedStringsFileData = fs.readFileSync(
         localizedStringsFile,
         'utf8',
