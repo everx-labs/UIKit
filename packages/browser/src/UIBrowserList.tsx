@@ -100,7 +100,8 @@ const renderBubble = () => (
         return <TimePicker {...item} onLayout={onLayout} />;
     }
     if (item.type === InteractiveMessageType.DateTime) {
-        return <DateTimePicker {...item} onLayout={onLayout} />;
+        return <DateTimePicker {...item} onLayout={onLayout}/>;
+    }
     if (item.type === InteractiveMessageType.MediaOutput) {
         return <MediaOutput {...item} onLayout={onLayout} />;
     }
