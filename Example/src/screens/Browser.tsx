@@ -42,7 +42,7 @@ import {
 import { useBase64Image } from './hooks/useBase64Image';
 
 const IMAGE_URL =
-    'https://firebasestorage.googleapis.com/v0/b/ton-uikit-example-7e797.appspot.com/o/loon-image-original.jpeg?alt=media&token=8907ad38-4d43-47c1-8f80-fd272e617440';
+    'https://firebasestorage.googleapis.com/v0/b/ton-uikit-example-7e797.appspot.com/o/loon-image-medium.jpeg?alt=media&token=8a2f5747-495e-4aae-a9d0-460f34b12717';
 
 const BrowserStack = createStackNavigator();
 
