@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "postinstall": "./node_modules/.bin/jetify",
+    "postinstall": "./postinstall.sh",
     "reinstall": "./reinstall.sh",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
