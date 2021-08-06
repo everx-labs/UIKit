@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, LayoutChangeEvent } from 'react-native';
 
 import { useCalendar } from '../calendarContext';
 import type { PickerOptionsType } from '../../../types';
@@ -19,10 +19,9 @@ const Days = () => {
         onChange && onChange(utils.getFormatted(utils.getDate(date), 'dateFormat'));
     };
 
-    // @ts-ignore
-    const changeItemHeight = ({ nativeEvent }) => {
+    const changeItemHeight = ({ nativeEvent }: LayoutChangeEvent) => {
         const { width } = nativeEvent.layout;
-        // @ts-ignore
+        // @ts-expect-error
         !itemSize && setItemSize((width / 7).toFixed(2) * 1 - 0.5);
     };
 
