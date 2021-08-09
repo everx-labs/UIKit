@@ -6208,7 +6208,7 @@ dot-prop@^5.1.0:
   dependencies:
     is-obj "^2.0.0"
 
-dpdm@^3.7.1:
+dpdm@3.7.1:
   version "3.7.1"
   resolved "https://registry.yarnpkg.com/dpdm/-/dpdm-3.7.1.tgz#a870a6b8b0a0f486bfa7f5e1671afe655150d700"
   integrity sha512-jgJwgo43C/AyzT37JlQUjPLS0jye42ODOSe/nEBcfahFetkjkWclz5LGyr1Nq9rUNn3F+CtqbvJrZfgSIwA2rg==
