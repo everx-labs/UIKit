@@ -1,5 +1,5 @@
 import type { LanguageConstants, LanguageInfo } from './types';
-import { Language } from './types'
+import { Language } from './language';
 
 export const predefinedConstants: LanguageConstants = {
     CURRENT_YEAR: new Date().getFullYear(),

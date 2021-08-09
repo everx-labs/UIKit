@@ -115,7 +115,9 @@ const shortenBigNumber = (
 };
 
 export const shortenAmount = (
-    shortenedNumberSuffixLocalized: ShortenedNumberSuffixLocalization | undefined,
+    shortenedNumberSuffixLocalized:
+        | ShortenedNumberSuffixLocalization
+        | undefined,
     value: number | BigNumber | null,
     settings?: ShortenAmountSettings,
 ): string => {
@@ -124,9 +126,10 @@ export const shortenAmount = (
     }
 
     const isLocalized: boolean = getIsLocalized(settings);
-    const shortenedNumberSuffixLocalization: ShortenedNumberSuffixLocalization = isLocalized && shortenedNumberSuffixLocalized
-        ? shortenedNumberSuffixLocalized
-        : ShortenedNumberSuffixEnglish;
+    const shortenedNumberSuffixLocalization: ShortenedNumberSuffixLocalization =
+        isLocalized && shortenedNumberSuffixLocalized
+            ? shortenedNumberSuffixLocalized
+            : ShortenedNumberSuffixEnglish;
 
     const fractionalDigits: number = getFractionalDigits(settings);
     let bigNumberValue: BigNumber;

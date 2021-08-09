@@ -19,13 +19,11 @@ import type {
     LanguagesOptions,
 } from './types';
 import {
-    Language,
-} from './types'
-import {
     languagesInfo,
     predefinedConstants,
     UIConstant,
 } from './constants';
+import { Language } from './language';
 
 const langsOptions: LanguagesOptions = Object.values(Language).reduce(
     (result, lang) => ({ ...result, [lang]: { constants: predefinedConstants } }),
