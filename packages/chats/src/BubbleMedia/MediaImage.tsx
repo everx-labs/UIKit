@@ -49,7 +49,42 @@ const useMaxImageSize = (windowWidth: number): ImageSize => {
     }, [windowWidth]);
 };
 
+/**
+ * It is necessary in order not to call callbacks `onError` and `onLoad` at each re-render
+ */
+const useImageCallback = (
+    data: string | null,
+    onError: ((error: MediaMessageError) => void) | undefined,
+    onLoad: (() => void) | undefined,
+) => {
+    const isFirstRenderRef = React.useRef<boolean>(false);
+
+    const onErrorCallback = React.useCallback(() => {
+        if (onError && isFirstRenderRef.current) {
+            onError(MediaMessageError.InvalidData);
+            isFirstRenderRef.current = false;
+        }
+    }, [onError]);
+
+    const onLoadCallback = React.useCallback(() => {
+        if (onLoad && isFirstRenderRef.current) {
+            onLoad();
+            isFirstRenderRef.current = false;
+        }
+    }, [onLoad]);
+
+    React.useEffect(() => {
+        isFirstRenderRef.current = true;
+    }, [data]);
+
+    return {
+        onErrorCallback,
+        onLoadCallback,
+    };
+};
+
 export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
+    const { onError, onLoad } = message;
     const containerStyle = useBubbleContainerStyle(message);
     const bubbleBackgroundColor = useBubbleBackgroundColor(message);
     const styles = useStyles();
@@ -91,6 +126,12 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
         }
     }, [message.data]);
 
+    const { onErrorCallback, onLoadCallback } = useImageCallback(
+        message.data,
+        onError,
+        onLoad,
+    );
+
     if (!message.data) {
         return null;
     }
@@ -103,12 +144,8 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
                 <UIImage
                     source={{ uri: message.data }}
                     style={imageSize}
-                    onError={() => {
-                        if (message.onError) {
-                            message.onError(MediaMessageError.InvalidData);
-                        }
-                    }}
-                    onLoad={message.onLoad}
+                    onError={onErrorCallback}
+                    onLoad={onLoadCallback}
                 />
             </View>
         </View>
