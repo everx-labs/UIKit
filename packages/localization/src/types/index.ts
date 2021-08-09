@@ -1,7 +1,21 @@
 import type BigNumber from 'bignumber.js';
 
-import type { Language } from '../constants';
 import type { LocalizationString } from '../utils';
+
+// eslint-disable-next-line no-shadow
+export enum Language {
+    En = 'en',
+    Ru = 'ru',
+    Fr = 'fr',
+    PtBR = 'pt_BR',
+    De = 'de',
+    ZhCN = 'zh_CN',
+    Es = 'es',
+    Ja = 'ja',
+    Tr = 'tr',
+    It = 'it',
+    Ko = 'ko',
+}
 
 declare global {
     interface String {

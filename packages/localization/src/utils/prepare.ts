@@ -6,8 +6,8 @@ import type {
     Languages,
     LanguagesOptions,
     LanguageValue,
+    Language,
 } from '../types';
-import type { Language } from '../constants';
 
 export class LocalizationString extends String {
     public readonly path: string;

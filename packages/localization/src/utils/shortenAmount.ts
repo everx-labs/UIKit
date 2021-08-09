@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js';
-import type { LocalizationService } from '../service';
 import type {
     ShortenedNumberSuffix,
     ShortenedNumberSuffixLocalization,
@@ -115,8 +114,8 @@ const shortenBigNumber = (
     return `${shortenedAmountAttributes.value} ${shortenedAmountAttributes.suffix}`;
 };
 
-export const shortenAmount = <T>(
-    uiLocalized: LocalizationService<T>,
+export const shortenAmount = (
+    shortenedNumberSuffixLocalized: ShortenedNumberSuffixLocalization | undefined,
     value: number | BigNumber | null,
     settings?: ShortenAmountSettings,
 ): string => {
@@ -125,8 +124,8 @@ export const shortenAmount = <T>(
     }
 
     const isLocalized: boolean = getIsLocalized(settings);
-    const shortenedNumberSuffixLocalization: ShortenedNumberSuffixLocalization = isLocalized
-        ? uiLocalized.ShortenedNumberSuffix
+    const shortenedNumberSuffixLocalization: ShortenedNumberSuffixLocalization = isLocalized && shortenedNumberSuffixLocalized
+        ? shortenedNumberSuffixLocalized
         : ShortenedNumberSuffixEnglish;
 
     const fractionalDigits: number = getFractionalDigits(settings);

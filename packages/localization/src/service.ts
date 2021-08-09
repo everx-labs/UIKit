@@ -20,6 +20,8 @@ import type {
 } from './types';
 import {
     Language,
+} from './types'
+import {
     languagesInfo,
     predefinedConstants,
     UIConstant,
@@ -206,7 +208,7 @@ export class LocalizationService<T> extends (LocalizedStringsService as Localize
         return Language.En;
     }
 
-    shortenAmount: ShortenAmount = shortenAmount.bind(this, this)
+    shortenAmount: ShortenAmount = shortenAmount.bind(this, this.ShortenedNumberSuffix)
 }
 
 export const uiLocalized: LocalizedInstance<UILocalizedData> =
