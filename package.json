@@ -26,6 +26,7 @@
         "cycles:check"
     ],
     "peerDependencies": {
+        "@react-native-clipboard/clipboard": "^1.8.4",
         "@react-native-community/netinfo": "^5.9.6",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",

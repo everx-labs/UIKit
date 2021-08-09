@@ -1,7 +1,9 @@
 // @flow
 import React from 'react';
-import { StyleSheet, View, Clipboard, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
+
+import Clipboard from '@react-native-clipboard/clipboard';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIToastMessage } from '@tonlabs/uikit.components';

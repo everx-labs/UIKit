@@ -1,5 +1,7 @@
 // @flow
-import { Platform, Share, Clipboard } from 'react-native';
+import { Platform, Share } from 'react-native';
+
+import Clipboard from '@react-native-clipboard/clipboard';
 
 import { UIToastMessage } from '@tonlabs/uikit.components';
 
