@@ -7,17 +7,8 @@ import type {
     LanguagesOptions,
     LanguageValue,
 } from '../types';
-import type { Language } from '../constants';
-
-export class LocalizationString extends String {
-    public readonly path: string;
-
-    constructor(value: string, path: string) {
-        super(value);
-
-        this.path = path;
-    }
-}
+import type { Language } from '../language';
+import { LocalizationString } from '../LocalizationString';
 
 function prepareArray(
     array: LanguageValue[],

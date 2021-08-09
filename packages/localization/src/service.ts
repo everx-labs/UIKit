@@ -19,11 +19,11 @@ import type {
     LanguagesOptions,
 } from './types';
 import {
-    Language,
     languagesInfo,
     predefinedConstants,
     UIConstant,
 } from './constants';
+import { Language } from './language';
 
 const langsOptions: LanguagesOptions = Object.values(Language).reduce(
     (result, lang) => ({ ...result, [lang]: { constants: predefinedConstants } }),
@@ -206,7 +206,7 @@ export class LocalizationService<T> extends (LocalizedStringsService as Localize
         return Language.En;
     }
 
-    shortenAmount: ShortenAmount = shortenAmount.bind(this, this)
+    shortenAmount: ShortenAmount = shortenAmount.bind(this, this.ShortenedNumberSuffix)
 }
 
 export const uiLocalized: LocalizedInstance<UILocalizedData> =
