@@ -1,6 +1,6 @@
 import type BigNumber from 'bignumber.js';
 
-import type { LocalizationString } from '../utils';
+import type { LocalizationString } from '../LocalizationString';
 import type { Language } from '../language';
 
 declare global {
