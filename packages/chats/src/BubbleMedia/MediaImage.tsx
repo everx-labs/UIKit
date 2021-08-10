@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { View, Image, useWindowDimensions } from 'react-native';
 import { UIConstant as UICoreConstant } from '@tonlabs/uikit.core';
-import { makeStyles, UIImage } from '@tonlabs/uikit.hydrogen';
+import { makeStyles, UIImage, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
 
 import { useBubbleContainerStyle } from '../useBubblePosition';
 import { useBubbleBackgroundColor } from '../useBubbleStyle';
 import { MediaMessage, MediaMessageError } from '../types';
 import { UIConstant } from '../constants';
+import { Demonstrator } from '../Demonstrator/Demonstrator';
 
 type ImageSize = {
     width: number;
@@ -132,6 +133,8 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
         onLoad,
     );
 
+    const [isOpen, setIsOpen] = React.useState<boolean>(false);
+
     if (!message.data) {
         return null;
     }
@@ -140,14 +143,27 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
             style={[containerStyle, styles.container]}
             onLayout={message.onLayout}
         >
-            <View style={[bubbleBackgroundColor, styles.bubble]}>
-                <UIImage
-                    source={{ uri: message.data }}
-                    style={imageSize}
-                    onError={onErrorCallback}
-                    onLoad={onLoadCallback}
-                />
-            </View>
+            <TouchableOpacity
+                activeOpacity={1}
+                onPress={() => setIsOpen((prev) => !prev)}
+            >
+                <Demonstrator
+                    isOpen={isOpen}
+                    onClose={() => {
+                        console.log('onClose')
+                        setIsOpen(false);
+                    }}
+                >
+                    <View style={[bubbleBackgroundColor, styles.bubble]}>
+                        <UIImage
+                            source={{ uri: message.data }}
+                            style={imageSize}
+                            onError={onErrorCallback}
+                            onLoad={onLoadCallback}
+                        />
+                    </View>
+                </Demonstrator>
+            </TouchableOpacity>
         </View>
     );
 };
