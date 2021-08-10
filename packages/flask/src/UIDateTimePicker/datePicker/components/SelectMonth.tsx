@@ -13,7 +13,7 @@ import {
 
 import { useCalendar } from '../calendarContext';
 
-const SelectMonth = () => {
+export const SelectMonth = () => {
     const {
         options,
         state,
@@ -280,5 +280,3 @@ const styles = (theme: any) =>
             textAlign: 'center',
         },
     });
-
-export { SelectMonth };

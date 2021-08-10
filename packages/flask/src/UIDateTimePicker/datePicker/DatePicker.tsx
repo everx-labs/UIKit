@@ -2,7 +2,9 @@ import React, { useReducer, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTheme, ColorVariants } from '@tonlabs/uikit.hydrogen';
 
-import { Calendar, SelectMonth, SelectTime } from './components';
+import { Calendar } from './components/Calendar';
+import { SelectMonth } from './components/SelectMonth';
+import { SelectTime } from './components/SelectTime';
 import { CalendarContext, useCalendar } from './calendarContext';
 import { Utils } from '../utils';
 import {
@@ -48,8 +50,6 @@ const DatePicker = (props: UIDateTimePickerType) => {
     const calendarUtils = new Utils(
         props as UIDateTimePickerType & PickerPropsType,
     );
-
-
 
     const contextValue = {
         ...props,

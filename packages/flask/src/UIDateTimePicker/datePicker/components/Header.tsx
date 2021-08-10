@@ -12,7 +12,7 @@ import {
 
 import { useCalendar } from '../calendarContext';
 
-const Header = ({ changeMonth }: any) => {
+export const Header = ({ changeMonth }: any) => {
     const {
         options,
         disableDateChange,
@@ -246,5 +246,3 @@ const styles = (theme: any) =>
             marginRight: 5,
         },
     });
-
-export { Header };

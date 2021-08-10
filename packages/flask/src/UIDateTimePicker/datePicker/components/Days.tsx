@@ -10,7 +10,7 @@ import {
 import { useCalendar } from '../calendarContext';
 import type { PickerOptionsType } from '../../../types';
 
-const Days = () => {
+export const Days = () => {
     const { options, state, utils, onChange } = useCalendar();
     const [mainState, setMainState] = state;
     const [itemSize, setItemSize] = useState(0);
@@ -110,5 +110,3 @@ const styles = (theme: PickerOptionsType) =>
             opacity: 0.2,
         },
     });
-
-export { Days };
