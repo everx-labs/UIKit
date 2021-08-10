@@ -11,7 +11,6 @@ function createHandlers(event: MouseEvent) {
             const { color } = target.style;
             const content = target.dataset.key as string;
             if (content) {
-
                 target.style.color = 'yellow';
                 message.style.display = 'flex';
                 message.innerHTML = content;
