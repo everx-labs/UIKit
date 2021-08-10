@@ -28,10 +28,10 @@ const checkCircularDependencies = async () => {
         if (circulars.length > 0) {
             console.log(
                 '\x1b[33m%s\x1b[0m', // yellow
-                `Circular dependencies were found by "DPDM" (${circulars.length})[TODO: fix them!!!]:\n`,
+                `Circular dependencies were found by "DPDM" (${circulars.length}):\n`,
                 prettyCircular(circulars),
             );
-            // process.exit(1); Uncomment once ready!!!
+            process.exit(1);
         } else {
             console.info(
                 '\x1b[32m%s\x1b[0m', // green

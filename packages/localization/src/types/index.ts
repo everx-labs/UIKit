@@ -1,7 +1,7 @@
 import type BigNumber from 'bignumber.js';
 
-import type { Language } from '../constants';
-import type { LocalizationString } from '../utils';
+import type { LocalizationString } from '../LocalizationString';
+import type { Language } from '../language';
 
 declare global {
     interface String {
@@ -9,9 +9,17 @@ declare global {
     }
 }
 
-export type LanguageSimpleValue = LocalizationString | LocalizationString[] | string[] | string | boolean;
-export type LanguageValue<T = LanguageSimpleValue> = Record<string, T> | Record<string, T>[] | T
-export type LanguageItem<T = LanguageValue> = Record<string, T>
+export type LanguageSimpleValue =
+    | LocalizationString
+    | LocalizationString[]
+    | string[]
+    | string
+    | boolean;
+export type LanguageValue<T = LanguageSimpleValue> =
+    | Record<string, T>
+    | Record<string, T>[]
+    | T;
+export type LanguageItem<T = LanguageValue> = Record<string, T>;
 
 export interface LanguageOptions {
     constants?: Record<string, string>;
@@ -22,7 +30,7 @@ export interface LanguageOptions {
 export type Languages<T = LanguageItem> = Partial<Record<Language, T>>;
 export type LanguagesOptions = Languages<LanguageOptions>;
 
-export type LanguageConstants = Record<string, any>
+export type LanguageConstants = Record<string, any>;
 
 export type NumberFormatInfo = {
     grouping: string;
@@ -32,15 +40,15 @@ export type NumberFormatInfo = {
 };
 
 export type NumberParts = {
-    value: BigNumber,
-    integer: string,
-    decimal: string,
-    valueString: string,
+    value: BigNumber;
+    integer: string;
+    decimal: string;
+    valueString: string;
 };
 
 export type NumberPartsOptions = {
-    minimumFractionDigits: number,
-    maximumFractionDigits: number,
+    minimumFractionDigits: number;
+    maximumFractionDigits: number;
 };
 
 // This stores the order of the date and the separator character
@@ -48,15 +56,15 @@ export type NumberPartsOptions = {
 // the position for each part is: day = 0, month = 1, year = 2
 // and the separator is: '.'
 export type DateFormatInfo = {
-    separator: string,
-    localePattern: string,
-    components: string[],
+    separator: string;
+    localePattern: string;
+    components: string[];
 };
 
 export type StringLocaleInfo = {
-    name: string,
-    numbers: NumberFormatInfo,
-    dates: DateFormatInfo,
+    name: string;
+    numbers: NumberFormatInfo;
+    dates: DateFormatInfo;
 };
 
 export type LocalizedStringsMethods = {
@@ -87,10 +95,10 @@ export type LocalizedStringsMethods = {
 };
 
 export type LanguageInfo = {
-    name: string,
-    country: string, // Works with UICountryPicker
-    dayJS: string, // Works with DayJS
-}
+    name: string;
+    country: string; // Works with UICountryPicker
+    dayJS: string; // Works with DayJS
+};
 
 export type ShortenAmountSettings = {
     /** The number of digits in the fractional part of the number */

@@ -1,23 +1,9 @@
 import type { LanguageConstants, LanguageInfo } from './types';
+import { Language } from './language';
 
 export const predefinedConstants: LanguageConstants = {
     CURRENT_YEAR: new Date().getFullYear(),
 };
-
-// eslint-disable-next-line no-shadow
-export enum Language {
-    En = 'en',
-    Ru = 'ru',
-    Fr = 'fr',
-    PtBR = 'pt_BR',
-    De = 'de',
-    ZhCN = 'zh_CN',
-    Es = 'es',
-    Ja = 'ja',
-    Tr = 'tr',
-    It = 'it',
-    Ko = 'ko',
-}
 
 export const languagesInfo: Record<Language, LanguageInfo> = {
     [Language.En]: {
