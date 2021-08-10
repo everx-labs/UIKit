@@ -141,7 +141,7 @@ function useAnimatedDots(
     return animatedDots;
 }
 
-export function UIPinCode({
+export const UIPinCode = React.memo(function UIPinCodeImpl({
     label,
     labelTestID,
     description,
@@ -395,7 +395,7 @@ export function UIPinCode({
             <View style={styles.bottomSpacer} />
         </View>
     );
-}
+});
 
 const dotSize = UIConstant.tinyCellHeight();
 
