@@ -350,6 +350,7 @@ export function UIPinCode({
                             >
                                 <Animated.View
                                     style={[styles.dotInner, innerStyles]}
+                                    testID="pin_code_circle"
                                 />
                             </Animated.View>
                         ),
