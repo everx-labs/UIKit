@@ -246,7 +246,6 @@ export type DateTimeMessage = InteractiveMessage<
         current?: Date;
         interval?: number;
         onSelect: (state: DateTimeExternalState) => void;
-        inTimeZoneOffset?: number;
     },
     DateTimeExternalState
     >;

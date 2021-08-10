@@ -123,10 +123,6 @@ export type UIDateTimePickerType = {
      * - 5 will look like 5, 10, 15, 20 ...
      */
     interval?: number;
-    /**
-     * Timezone offset for datetime mode
-     */
-    timeZoneOffset?: number;
     /* Gets called when selected value changes */
     onValueRetrieved: (datetime: Date) => void;
 };
