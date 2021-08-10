@@ -45,18 +45,18 @@
     "bignumber.js": "9.0.0"
   },
   "devDependencies": {
-    "@babel/preset-typescript": "^7.12.1",
-    "@react-native-community/bob": "^0.16.2",
-    "@types/react": "16.14.8",
-    "@types/react-native": "0.63.52",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-native": "^0.63.0"
+    "@babel/preset-typescript": "7.12.1",
+    "@react-native-community/bob": "0.16.2",
+    "@types/react": "17.0.6",
+    "@types/react-native": "0.64.12",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "react-native": "0.64.2"
   },
   "peerDependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-native": "^0.63.0"
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-native": "^0.64.2"
   },
   "@react-native-community/bob": {
     "source": "src",

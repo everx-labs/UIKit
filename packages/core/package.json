@@ -44,18 +44,18 @@
     "validator": "10.11.0"
   },
   "devDependencies": {
-    "@react-native-community/bob": "^0.16.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-native": "^0.63.0",
+    "@react-native-community/bob": "0.16.2",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "react-native": "0.64.2",
     "react-native-device-info": "^5.6.3",
     "react-native-safe-area": "^0.5.1",
     "react-native-svg": "^12.1.0"
   },
   "peerDependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-native": "^0.63.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-native": "^0.64.2",
     "react-native-device-info": "^5.6.3",
     "react-native-safe-area": "^0.5.1",
     "react-native-svg": "^12.1.0"
