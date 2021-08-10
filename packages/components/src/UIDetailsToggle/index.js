@@ -1,7 +1,7 @@
 import React from 'react';
 import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import UIToggle from '../UIToggle';
+import { UISwitcher, UISwitcherVariant } from '@tonlabs/uikit.hydrogen';
 import UIDetailsSwitcher from '../UIDetailsSwitcher';
 
 type State = {};
@@ -69,16 +69,13 @@ export default class UIDetailsToggle extends UIDetailsSwitcher<Props, State> {
 
     renderSwitcher(): React$Node {
         const {
-            active, colored, disabled, iconActive, iconInactive,
+            active, disabled
         } = this.props;
 
         return (
-            <UIToggle
-                iconActive={iconActive}
-                iconInactive={iconInactive}
-                containerStyle={this.getSwitcherStyle()}
+            <UISwitcher
+                variant={UISwitcherVariant.Toggle}
                 active={active}
-                colored={colored}
                 disabled={disabled}
             />
         );

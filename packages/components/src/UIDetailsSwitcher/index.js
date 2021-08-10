@@ -169,7 +169,6 @@ export default class UIDetailsSwitcher<Props, State>
                     UIStyle.common.alignCenter(),
                     disabled ? style : null,
                 ]}
-                pointerEvents="box-only"
             >
                 {left}
                 {right}
