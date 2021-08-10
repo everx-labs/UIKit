@@ -128,18 +128,17 @@ export type UIDateTimePickerType = {
      */
     timeZoneOffset?: number;
     /* Gets called when selected value changes */
-    onValueRetrieved: (datetime: Date, timeZoneOffset?: number) => void;
+    onValueRetrieved: (datetime: Date) => void;
 };
 
 export type PickerPropsType = UIDateTimePickerType & {
-    onChange?: (datetime: Date, timezone?: number) => void;
+    onChange?: (datetime: Date) => void;
     onMonthYearChange?: (datetime: Date) => void;
     value?: any;
     selectorStartingYear?: number;
     selectorEndingYear?: number;
     disableDateChange?: boolean;
     isGregorian?: boolean;
-    configs?: string; // Object
     reverse?: true | false | 'unset';
     options: PickerOptionsType;
     state?: any;

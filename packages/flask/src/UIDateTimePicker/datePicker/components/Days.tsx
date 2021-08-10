@@ -8,10 +8,10 @@ import {
 } from 'react-native';
 
 import { useCalendar } from '../calendarContext';
-import { PickerOptionsType, UIDateTimePickerMode } from '../../../types';
+import type { PickerOptionsType } from '../../../types';
 
 const Days = () => {
-    const { options, state, utils, onChange, mode } = useCalendar();
+    const { options, state, utils, onChange } = useCalendar();
     const [mainState, setMainState] = state;
     const [itemSize, setItemSize] = useState(0);
     const style = styles(options);
@@ -25,13 +25,7 @@ const Days = () => {
             type: 'set',
             selectedDate: date,
         });
-        if(mode === UIDateTimePickerMode.DateTime){
-            const timezone = new Date().getTimezoneOffset();
-            onChange && onChange(date, timezone);
-        } else {
-            onChange && onChange(date);
-        }
-
+        onChange && onChange(date);
     };
 
     const changeItemHeight = ({ nativeEvent }: LayoutChangeEvent) => {

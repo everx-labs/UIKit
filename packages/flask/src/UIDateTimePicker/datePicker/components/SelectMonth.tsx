@@ -33,12 +33,8 @@ const SelectMonth = () => {
     );
     const openAnimation = useRef(new Animated.Value(0)).current;
     const currentMonth = new Date(mainState.activeDate).getMonth();
-    const prevDisable =
-        max &&
-        utils.checkYearDisabled(Number(utils.toEnglish(year)), true);
-    const nextDisable =
-        min &&
-        utils.checkYearDisabled(Number(utils.toEnglish(year)), false);
+    const prevDisable = max && utils.checkYearDisabled(Number(year), true);
+    const nextDisable = min && utils.checkYearDisabled(Number(year), false);
 
     useEffect(() => {
         mainState.monthOpen && setShow(true);
@@ -59,19 +55,19 @@ const SelectMonth = () => {
 
     const onSelectMonth = (month: any) => {
         if (show) {
-            const y = Number(utils.toEnglish(year));
+            const y = Number(year);
             const date = utils.getDate(
                 utils.validYear(mainState.activeDate, y),
             );
-            const activeDate =
-                month !== null
-                    ? date.month(month)
-                    : date;
+            const activeDate = month !== null ? date.month(month) : date;
             setMainState({
                 type: 'set',
                 activeDate: utils.getFormatted(activeDate),
             });
-            month !== null && onMonthYearChange?.(utils.getFormatted(activeDate, 'monthYearFormat'));
+            month !== null &&
+                onMonthYearChange?.(
+                    utils.getFormatted(activeDate, 'monthYearFormat'),
+                );
             month !== null &&
                 mode !== 'monthYear' &&
                 setMainState({
@@ -86,19 +82,19 @@ const SelectMonth = () => {
     }, [prevDisable, nextDisable]);
 
     const onChangeYear = (text: string) => {
-        if (Number(utils.toEnglish(text))) {
-            setYear(utils.toPersianNumber(text));
+        if (Number(text)) {
+            setYear(text);
         }
     };
 
     const onSelectYear = (number: number) => {
-        let y = Number(utils.toEnglish(year)) + number;
+        let y = Number(year) + number;
         if (selectorEndingYear && y > selectorEndingYear) {
             y = selectorEndingYear;
         } else if (selectorStartingYear && y < selectorStartingYear) {
             y = selectorStartingYear;
         }
-        setYear(utils.toPersianNumber(y));
+        setYear(y);
     };
 
     const containerStyle = [

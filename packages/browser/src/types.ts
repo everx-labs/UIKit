@@ -235,7 +235,6 @@ export type DateMessage = InteractiveMessage<
 >;
 export type DateTimeExternalState = {
     datetime?: Date;
-    timeZoneOffset?: number;
 };
 
 export type DateTimeMessage = InteractiveMessage<

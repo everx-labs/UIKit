@@ -76,10 +76,9 @@ export function DateTimePicker({ onLayout, ...message }: DateTimeMessage) {
                 onClose={() => {
                     setPickerVisible(false);
                 }}
-                onValueRetrieved={(datetime: Date, timeZoneOffset?: number) => {
+                onValueRetrieved={(datetime: Date) => {
                     message.onSelect({
                         datetime,
-                        timeZoneOffset
                     });
                     setPickerVisible(false);
                 }}

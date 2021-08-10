@@ -49,6 +49,8 @@ const DatePicker = (props: UIDateTimePickerType) => {
         props as UIDateTimePickerType & PickerPropsType,
     );
 
+
+
     const contextValue = {
         ...props,
         onChange: props.onValueRetrieved,
@@ -56,8 +58,10 @@ const DatePicker = (props: UIDateTimePickerType) => {
         options: { ...options },
         utils: calendarUtils,
         state: useReducer(reducer, {
-            activeDate:  props.current ? new Date(props.current) : new Date(), // Date in calendar also save time
-            selectedDate:  props.selected ? new Date(props.selected) : new Date(),
+            activeDate: props.current ? new Date(props.current) : new Date(), // Date in calendar also save time
+            selectedDate: props.selected
+                ? new Date(props.selected)
+                : new Date(),
             monthOpen: props.mode === UIDateTimePickerMode.MonthYear,
             timeOpen: props.mode === UIDateTimePickerMode.Time,
         }),
@@ -102,19 +106,6 @@ const DatePicker = (props: UIDateTimePickerType) => {
             </View>
         </CalendarContext.Provider>
     );
-};
-
-DatePicker.defaultProps = {
-    onChange: () => null,
-    onMonthYearChange: () => null,
-    current: new Date(),
-    selectorStartingYear: 0,
-    selectorEndingYear: 3000,
-    disableDateChange: false,
-    isGregorian: true,
-    reverse: 'unset',
-    mode: 'datepicker',
-    interval: 5,
 };
 
 const styles = (theme: { backgroundColor: any }) =>

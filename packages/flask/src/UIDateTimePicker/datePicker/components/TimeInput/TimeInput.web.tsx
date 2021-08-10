@@ -1,23 +1,25 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { useCalendar } from '../../calendarContext';
 
-export const TimeInput = ({
-    onChange,
-    current,
-}: {
-    onChange: any;
-    current: any;
-}) => {
+export const TimeInput = ({ onChange, current }: any) => {
+    const { utils } = useCalendar();
     const inputRef = React.useRef<HTMLElement>(null);
 
     const [time, setTime] = React.useState('');
 
-    useEffect(() => {
+    React.useEffect(() => {
         setTimeout(() => {
             /**
              * fast autofocus on load affects the height of the parent element, so we have to use a timeout to wait for the parent animation
              */
             inputRef.current?.focus();
         }, 500);
+
+        const newTime = utils.returnValidTime(current);
+        setTime(utils.formatTime(newTime));
+        onChange(newTime);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onChangeHandler = React.useCallback(
@@ -51,14 +53,15 @@ export const TimeInput = ({
         style: inputStyle,
         name: 'time',
         type: 'time',
-        value: time || current, // current time or empty on mount
+        value: time,
         autoFocus: false,
         onChange: (e: { target: { value: string } }) =>
             onChangeHandler(e.target.value), // its can return value only on end input, '' or '00:00'
     };
-
-    // We are have to use React element input here because of broken timepicker flatlist in web.
-    // Also web input have useful props like type: 'time' that use mask 00:00, dropdown lists for hours and minutes.
-    // So it was useful element for faster develop of TimePicker ???
+    /**
+     * We  are have to use React element input here because of broken timepicker flatlist in web.
+     * Also web input have useful props like type: 'time' that use mask 00:00, dropdown lists for hours and minutes.
+     * So it was useful element for faster develop of TimePicker ???
+     */
     return React.createElement('input', inputOptions);
 };

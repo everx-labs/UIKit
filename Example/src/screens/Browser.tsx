@@ -664,8 +664,8 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                         key: `${Date.now()}-datetime-picker`,
                                         status: MessageStatus.Received,
                                         type: InteractiveMessageType.DateTime,
-                                        minDateTime: new Date(new Date('07/22/2021').setHours(13,12,0)),
-                                        maxDateTime: new Date(new Date('09/25/2021').setHours(17,0,0)),
+                                        minDateTime: new Date(new Date('07/22/2021').setHours(12,4,0)),
+                                        maxDateTime: new Date(new Date('09/25/2021').setHours(19,1,0)),
                                         onSelect: (externalState: any) => {
                                             setMessages([
                                                 {
@@ -719,6 +719,7 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                         minTime: new Date(0, 0, 0, 12, 15),
                                         maxTime: new Date(0, 0, 0, 13, 0),
                                         currentTime: new Date(),
+                                        interval: 5,
                                         onSelect: (externalState: any) => {
                                             setMessages([
                                                 {

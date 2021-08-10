@@ -1,48 +1,12 @@
 import { useRef, useState } from 'react';
 import { Animated, Easing } from 'react-native';
 import dayjs from 'dayjs';
+import { uiLocalized } from '@tonlabs/uikit.localization';
 import type { PickerPropsType, UIDateTimePickerType } from '../types';
-
-const gregorianConfigs = {
-    dayNames: [
-        'Sunday',
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-    ],
-    dayNamesShort: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-    monthNames: [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December',
-    ],
-    selectedFormat: 'YYYY/MM/DD',
-    dateFormat: 'YYYY/MM/DD',
-    monthYearFormat: 'YYYY MM',
-    timeFormat: 'HH:mm',
-    hour: 'Hour',
-    minute: 'Minute',
-    timeSelect: 'Select',
-    timeClose: 'Close',
-};
 
 class Utils {
     private readonly data: {
-        isGregorian: boolean | undefined;
         max: Date | undefined;
-        reverse: boolean | undefined;
         min: Date | undefined;
     };
     private readonly config: {
@@ -61,20 +25,25 @@ class Utils {
     constructor({
         min,
         max,
-        isGregorian,
         mode,
-        reverse,
-        configs,
     }: UIDateTimePickerType & PickerPropsType) {
         this.data = {
             min,
             max,
-            isGregorian,
-            reverse: reverse === 'unset' ? !isGregorian : reverse,
         };
-        this.config = gregorianConfigs;
-        // @ts-expect-error
-        this.config = { ...this.config, ...configs };
+        this.config = {
+            dayNames: Object.values(uiLocalized.DateTimePicker.dayNames),
+            dayNamesShort: Object.values(uiLocalized.DateTimePicker.dayNamesShort),
+            monthNames: Object.values(uiLocalized.DateTimePicker.monthNames),
+            selectedFormat: 'YYYY/MM/DD',
+            dateFormat: 'YYYY/MM/DD',
+            monthYearFormat: 'YYYY MM',
+            timeFormat: 'HH:mm',
+            hour: uiLocalized.DateTimePicker.hour,
+            minute: uiLocalized.DateTimePicker.minute,
+            timeSelect: uiLocalized.DateTimePicker.select,
+            timeClose: uiLocalized.DateTimePicker.close,
+        };
         if (mode === 'time' || mode === 'datepicker') {
             this.config.selectedFormat = `${this.config.dateFormat} ${this.config.timeFormat}`;
         }
@@ -82,7 +51,7 @@ class Utils {
 
     get flexDirection() {
         return {
-            flexDirection: 'row'
+            flexDirection: 'row',
         };
     }
 
@@ -99,26 +68,11 @@ class Utils {
 
     getMonthName = (month: number) => this.config.monthNames[month];
 
-    toPersianNumber = (value: number) => {
-        const { isGregorian } = this.data;
-        return isGregorian
-            ? this.toEnglish(String(value))
-            : String(value).replace(/[0-9]/g, (w) =>
-                  String.fromCharCode(w.charCodeAt(0) + '۰'.charCodeAt(0) - 48),
-              );
-    };
-
-    toEnglish = (value: string) => {
-        const charCodeZero = '۰'.charCodeAt(0);
-        // @ts-expect-error
-        return value.replace(/[۰-۹]/g, (w) => w.charCodeAt(0) - charCodeZero);
-    };
-
     getDate = (time: dayjs.ConfigType | undefined) => dayjs(time);
 
     getMonthYearText = (time: dayjs.ConfigType | undefined) => {
         const date = dayjs(time);
-        const year = this.toPersianNumber(date.year());
+        const year = date.year();
         const month = this.getMonthName(date.month());
         return `${month} ${year}`;
     };
@@ -135,8 +89,7 @@ class Utils {
         if (max && !disabled) {
             const firstDayInMonth = date.date(1);
             disabled =
-                firstDayInMonth.startOf('hour') >
-                dayjs(max).startOf('hour');
+                firstDayInMonth.startOf('hour') > dayjs(max).startOf('hour');
         }
         return disabled;
     };
@@ -200,7 +153,7 @@ class Utils {
                 }
                 date = dayjs(time);
                 return {
-                    dayString: this.toPersianNumber(n + 1),
+                    dayString: n + 1,
                     day: n + 1,
                     date: this.getFormatted(date.date(n + 1)),
                     disabled,
@@ -303,6 +256,33 @@ class Utils {
         }
 
         return true;
+    };
+
+    returnValidTime = (current: Date) => {
+        const { min, max } = this.data;
+        const currentTime = new Date(current).getTime();
+        let newTime = current;
+        if (min) {
+            const minTime = new Date(current).setHours(
+                min.getHours(),
+                min.getMinutes(),
+                0,
+            );
+            if (currentTime < minTime) {
+                newTime = min;
+            }
+        }
+        if (max) {
+            const maxTime = new Date(current).setHours(
+                max.getHours(),
+                max.getMinutes(),
+                0,
+            );
+            if (currentTime > maxTime) {
+                newTime = max;
+            }
+        }
+        return newTime;
     };
 
     // Format time: Date to time: string like 00:00

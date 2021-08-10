@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { UIAssets } from '@tonlabs/uikit.assets';
 import {
     View,
     TouchableOpacity,
@@ -36,12 +36,10 @@ const Header = ({ changeMonth }: any) => {
     );
     const prevDisable =
         disableDateChange ||
-        (min &&
-            utils.checkArrowMonthDisabled(mainState.activeDate, true));
+        (min && utils.checkArrowMonthDisabled(mainState.activeDate, true));
     const nextDisable =
         disableDateChange ||
-        (max &&
-            utils.checkArrowMonthDisabled(mainState.activeDate, false));
+        (max && utils.checkArrowMonthDisabled(mainState.activeDate, false));
 
     const onChangeMonth = (type: string) => {
         if (disableChange) return;
@@ -71,9 +69,12 @@ const Header = ({ changeMonth }: any) => {
                 style={style.arrowWrapper}
             >
                 <Image
-                    // eslint-disable-next-line global-require
-                    source={require('../../assets/arrow.png')}
-                    style={[style.arrow, nextDisable && style.disableArrow]}
+                    source={UIAssets.icons.ui.arrowLeft}
+                    style={[
+                        style.arrow,
+                        style.rightArrow,
+                        nextDisable && style.disableArrow,
+                    ]}
                 />
             </TouchableOpacity>
             <View style={style.monthYearContainer}>
@@ -131,9 +132,7 @@ const Header = ({ changeMonth }: any) => {
                             }
                         >
                             <Text style={style.headerText}>
-                                {utils.toPersianNumber(
-                                    utils.getTime(mainState.activeDate),
-                                )}
+                                {utils.getTime(utils.returnValidTime(mainState.activeDate), min, max)}
                             </Text>
                         </TouchableOpacity>
                     )}
@@ -154,9 +153,7 @@ const Header = ({ changeMonth }: any) => {
                     </Text>
                     {mode === 'datepicker' && (
                         <Text style={style.headerText}>
-                            {utils.toPersianNumber(
-                                utils.getTime(mainState.activeDate),
-                            )}
+                            {utils.getTime(utils.returnValidTime(mainState.activeDate), min, max)}
                         </Text>
                     )}
                 </Animated.View>
@@ -167,13 +164,8 @@ const Header = ({ changeMonth }: any) => {
                 style={style.arrowWrapper}
             >
                 <Image
-                    // eslint-disable-next-line global-require
-                    source={require('../../assets/arrow.png')}
-                    style={[
-                        style.arrow,
-                        style.leftArrow,
-                        prevDisable && style.disableArrow,
-                    ]}
+                    source={UIAssets.icons.ui.arrowLeft}
+                    style={[style.arrow, prevDisable && style.disableArrow]}
                 />
             </TouchableOpacity>
         </View>
@@ -202,7 +194,7 @@ const styles = (theme: any) =>
             tintColor: theme.mainColor,
             margin: 2,
         },
-        leftArrow: {
+        rightArrow: {
             transform: [
                 {
                     rotate: '180deg',
@@ -254,13 +246,5 @@ const styles = (theme: any) =>
             marginRight: 5,
         },
     });
-
-Header.defaultProps = {
-    changeMonth: () => null,
-};
-
-Header.propTypes = {
-    changeMonth: PropTypes.func,
-};
 
 export { Header };
