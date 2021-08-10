@@ -30,7 +30,7 @@ const langsOptions: LanguagesOptions = Object.values(Language).reduce(
     {},
 );
 
-const preparedLanguages = prepare<UILocalizedData>(
+export const preparedLanguages = prepare<UILocalizedData>(
     availableLanguages,
     langsOptions,
 );
