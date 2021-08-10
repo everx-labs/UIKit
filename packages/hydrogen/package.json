@@ -51,7 +51,7 @@
     "@react-native-community/hooks": "2.6.0",
     "@testing-library/jest-native": "4.0.1",
     "@testing-library/react-native": "7.2.0",
-    "@types/jest": "26.0.15",
+    "@types/jest": "26.0.24",
     "@types/react": "17.0.16",
     "@types/react-native": "0.64.12",
     "jest": "26.4.0",

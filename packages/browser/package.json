@@ -47,7 +47,7 @@
   "devDependencies": {
     "@babel/preset-typescript": "7.12.1",
     "@react-native-community/bob": "0.16.2",
-    "@types/react": "17.0.6",
+    "@types/react": "17.0.16",
     "@types/react-native": "0.64.12",
     "react": "17.0.1",
     "react-dom": "17.0.1",
