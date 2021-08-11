@@ -48,12 +48,11 @@ export const MediaOutput = ({
         }
     }, [onOutput]);
     return (
-        <View>
+        <View onLayout={onLayout}>
             <BubbleMedia
                 data={data}
                 status={status}
                 type={ChatMessageType.Media}
-                onLayout={onLayout}
                 onError={onError}
                 onLoad={onLoad}
                 firstFromChain

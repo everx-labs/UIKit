@@ -42,12 +42,11 @@ export const QRCodeDraw = ({
         }
     }, [onDraw]);
     return (
-        <View>
+        <View onLayout={onLayout}>
             <BubbleQRCode
                 data={data}
                 status={status}
                 type={ChatMessageType.QRCode}
-                onLayout={onLayout}
                 onError={onError}
                 onSuccess={onSuccess}
                 firstFromChain
