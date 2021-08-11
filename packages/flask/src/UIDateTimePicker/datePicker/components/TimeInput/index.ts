@@ -4,6 +4,6 @@ import * as React from 'react';
 import { TimeInput } from './TimeInput';
 import type { TimeInputProps } from './types';
 
-export function UITimeInput({onChange, current}: TimeInputProps) {
-    return React.createElement(TimeInput, {onChange, current});
+export function UITimeInput(props: TimeInputProps) {
+    return React.createElement(TimeInput, props);
 }
