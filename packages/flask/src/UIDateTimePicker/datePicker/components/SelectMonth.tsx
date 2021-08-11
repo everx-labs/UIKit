@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { UIAssets } from '@tonlabs/uikit.assets';
 import {
     View,
     StyleSheet,
@@ -123,13 +124,8 @@ export const SelectMonth = () => {
                     onPress={() => !nextDisable && onSelectYear(-1)}
                 >
                     <Image
-                        // eslint-disable-next-line global-require
-                        source={require('../../assets/arrow.png')}
-                        style={[
-                            style.arrow,
-                            style.leftArrow,
-                            nextDisable && style.disableArrow,
-                        ]}
+                        source={UIAssets.icons.ui.arrowLeft}
+                        style={[style.arrow, nextDisable && style.disableArrow]}
                     />
                 </TouchableOpacity>
                 <TextInput
@@ -151,9 +147,12 @@ export const SelectMonth = () => {
                     onPress={() => !prevDisable && onSelectYear(+1)}
                 >
                     <Image
-                        // eslint-disable-next-line global-require
-                        source={require('../../assets/arrow.png')}
-                        style={[style.arrow, prevDisable && style.disableArrow]}
+                        source={UIAssets.icons.ui.arrowLeft}
+                        style={[
+                            style.arrow,
+                            style.rightArrow,
+                            prevDisable && style.disableArrow,
+                        ]}
                     />
                 </TouchableOpacity>
             </View>
@@ -259,7 +258,7 @@ const styles = (theme: any) =>
             tintColor: theme.mainColor,
             margin: 2,
         },
-        leftArrow: {
+        rightArrow: {
             transform: [
                 {
                     rotate: '180deg',

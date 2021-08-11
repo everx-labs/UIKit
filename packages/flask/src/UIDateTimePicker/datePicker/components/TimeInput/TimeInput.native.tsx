@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Animated, I18nManager, StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { ColorVariants, UILabel } from '@tonlabs/uikit.hydrogen';
-import type { TimeInputProps } from '../../../../types';
+import type { TimeInputProps } from './types';
 import { useCalendar } from '../../calendarContext';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);

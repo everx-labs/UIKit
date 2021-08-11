@@ -159,8 +159,3 @@ export type PickerStateType = {
     timeOpen?: boolean;
     monthOpen?: boolean;
 };
-
-export type TimeInputProps = {
-    onChange: (date: Date, isHour?: boolean) => void;
-    current: Date;
-};

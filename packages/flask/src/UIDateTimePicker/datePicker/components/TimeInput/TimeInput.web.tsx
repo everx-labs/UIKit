@@ -1,6 +1,6 @@
 import React from 'react';
 import { useCalendar } from '../../calendarContext';
-import type { TimeInputProps } from '../../../../types';
+import type { TimeInputProps } from './types';
 
 export function TimeInput({ onChange, current }: TimeInputProps){
 const { utils } = useCalendar();
