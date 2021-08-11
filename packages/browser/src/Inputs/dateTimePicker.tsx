@@ -10,11 +10,11 @@ import {
 
 import { UIDateTimePickerMode } from '@tonlabs/uikit.flask';
 
-import type { TimeMessage } from '../types';
+import type { DateTimeMessage } from '../types';
 import { UIDateTimePicker } from '../UIDateTimePicker';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-export function TimePicker({ onLayout, ...message }: TimeMessage) {
+export function DateTimePicker({ onLayout, ...message }: DateTimeMessage) {
     const [isPickerVisible, setPickerVisible] = React.useState(false);
 
     if (message.externalState != null) {
@@ -27,15 +27,15 @@ export function TimePicker({ onLayout, ...message }: TimeMessage) {
                         text={
                             message.prompt ||
                             uiLocalized.Browser.DateTimeInput
-                                .DoYouWantChooseTime
+                                .DoYouWantChooseDateTime
                         }
                         status={MessageStatus.Received}
                     />
-                    {message.externalState.time != null && (
+                    {message.externalState.datetime != null && (
                         <BubbleSimplePlainText
                             type={ChatMessageType.PlainText}
                             key="time-picker-value-bubble-chosen-time"
-                            text={uiLocalized.formatTime(message.externalState.time)}
+                            text={uiLocalized.formatDate(message.externalState.datetime)}
                             status={MessageStatus.Sent}
                         />
                     )}
@@ -51,7 +51,7 @@ export function TimePicker({ onLayout, ...message }: TimeMessage) {
                 key="time-picker-box-bubble-prompt"
                 text={
                     message.prompt ||
-                    uiLocalized.Browser.DateTimeInput.DoYouWantChooseTime
+                    uiLocalized.Browser.DateTimeInput.DoYouWantChooseDateTime
                 }
                 status={MessageStatus.Received}
                 firstFromChain
@@ -61,24 +61,24 @@ export function TimePicker({ onLayout, ...message }: TimeMessage) {
                 type={ChatMessageType.ActionButton}
                 key="time-picker-bubble-open-picker"
                 status={MessageStatus.Received}
-                text={uiLocalized.Browser.DateTimeInput.ChooseTime}
+                text={uiLocalized.Browser.DateTimeInput.ChooseDateTime}
                 onPress={() => {
                     setPickerVisible(true);
                 }}
             />
             <UIDateTimePicker
                 visible={isPickerVisible}
-                mode={UIDateTimePickerMode.Time}
-                min={message.minTime}
-                max={message.maxTime}
-                current={message.currentTime}
+                mode={UIDateTimePickerMode.DateTime}
+                min={message.minDateTime}
+                max={message.maxDateTime}
+                current={message.current}
                 interval={message.interval}
                 onClose={() => {
                     setPickerVisible(false);
                 }}
-                onValueRetrieved={(time: Date) => {
+                onValueRetrieved={(datetime: Date) => {
                     message.onSelect({
-                        time,
+                        datetime,
                     });
                     setPickerVisible(false);
                 }}
