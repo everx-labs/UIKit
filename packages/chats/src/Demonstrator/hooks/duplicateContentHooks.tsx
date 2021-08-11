@@ -8,9 +8,16 @@ import Animated, {
     runOnJS,
     measure,
     withTiming,
+    withDelay,
 } from 'react-native-reanimated';
 import type { Dimensions } from '../types';
 import { VisibilityState } from '../constants';
+
+const runUISetWithDelay = (toValue: number): number => {
+    'worklet';
+
+    return withDelay(50, withTiming(toValue, { duration: 0 }));
+};
 
 export const useDimensions = (
     originalRef: React.RefObject<Animated.View>,
@@ -25,26 +32,27 @@ export const useDimensions = (
         try {
             if (visibilityState.value === VisibilityState.Measurement) {
                 const measurements = measure(originalRef);
+
                 /**
                  * There is an unknown problem when the `View`
-                 * does not change its appearance if the value is assigned directly.
+                 * does not change its appearance if the value is assigned immediately.
                  * This problem is not permanent, but it sometimes happens without clear logic.
                  * This hack allows to avoid this problem.
                  */
-                width.value = withTiming(measurements.width, { duration: 10 });
-                height.value = withTiming(measurements.height, {
-                    duration: 10,
-                });
-                pageY.value = withTiming(measurements.pageY, { duration: 10 });
-                pageX.value = withTiming(measurements.pageX, { duration: 10 });
+                width.value = runUISetWithDelay(measurements.width);
+                height.value = runUISetWithDelay(measurements.height);
+                pageY.value = runUISetWithDelay(measurements.pageY);
+                pageX.value = runUISetWithDelay(measurements.pageX);
 
                 // eslint-disable-next-line no-param-reassign
-                visibilityState.value = VisibilityState.Opened;
+                visibilityState.value = runUISetWithDelay(
+                    VisibilityState.Opened,
+                );
             }
         } catch (e) {
-            console.log(e);
+            console.error(`duplicateContentHooks: Measuring is failed: ${e}`);
         }
-    });
+    }, []);
 
     return {
         width,

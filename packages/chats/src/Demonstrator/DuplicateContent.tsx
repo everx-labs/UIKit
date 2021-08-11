@@ -23,14 +23,8 @@ export const DuplicateContent = ({
 
     const duplicateContainerDimensionsStyle = useAnimatedStyle(() => {
         return {
-            transform: [
-                {
-                    translateY: pageY.value,
-                },
-                {
-                    translateX: pageX.value,
-                },
-            ],
+            top: pageY.value,
+            left: pageX.value,
             width: width.value,
             height: height.value,
         };
@@ -52,9 +46,7 @@ export const DuplicateContent = ({
                         duplicateContainerDimensionsStyle,
                     ]}
                 >
-                    <Animated.View style={[scaleStyle]}>
-                        {children}
-                    </Animated.View>
+                    <Animated.View style={scaleStyle}>{children}</Animated.View>
                 </Animated.View>
             </Animated.View>
         </Portal>
