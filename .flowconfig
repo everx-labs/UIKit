@@ -23,7 +23,7 @@ node_modules/react-native/Libraries/polyfills/.*
 .*/node_modules/react-native-share/.*
 .*/node_modules/@react-native-clipboard/.*
 
-; TODO: remove the following packages, besides they are not properly flow annotated after an update
+; TODO: migrate the following packages on TS or remove as the current flow annotation is not actual; TODO: migrate the following packages on TS or remove as the current flow annotation is not actual
 .*/packages/core/.*
 .*/packages/components/.*
 .*/packages/legacy/.*
