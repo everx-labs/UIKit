@@ -138,12 +138,14 @@ export default class UIDetailsSwitcher<Props, State>
         }
 
         return (
-            <UIDetailsView
-                value={details}
-                comments={comments}
-                onPress={() => {}}
-                containerStyle={UIStyle.common.flex()}
-            />
+            <View pointerEvents="box-only">
+                <UIDetailsView
+                    value={details}
+                    comments={comments}
+                    onPress={() => {}}
+                    containerStyle={UIStyle.common.flex()}
+                />
+            </View>
         );
     }
 
@@ -169,8 +171,8 @@ export default class UIDetailsSwitcher<Props, State>
                     UIStyle.common.alignCenter(),
                     disabled ? style : null,
                 ]}
-                pointerEvents="box-only"
             >
+            
                 {left}
                 {right}
             </View>

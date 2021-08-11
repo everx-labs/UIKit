@@ -37,7 +37,6 @@ export {
     UISpinnerOverlay,
     UITextInput,
     UIToastMessage,
-    UIToggle,
     UITransferInput,
 } from './packages/components/src';
 
