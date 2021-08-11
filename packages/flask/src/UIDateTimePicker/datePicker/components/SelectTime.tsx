@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Easing, Platform, StyleSheet, View } from 'react-native';
 import { UIBoxButton, UIBoxButtonType, UILabel } from '@tonlabs/uikit.hydrogen';
 import { useCalendar } from '../calendarContext';
-import { TimeInput } from './TimeInput';
+import { UITimeInput } from './TimeInput';
 import { UIDateTimePickerMode } from '../../../types';
 
 const SelectTime = () => {
@@ -113,9 +113,9 @@ const SelectTime = () => {
                     min,
                 )} to ${utils.formatTime(max)}`}</UILabel>
             </View>
-            <TimeInput
+            <UITimeInput
                 current={time}
-                onChange={(newTime: Date, isHour: boolean) =>
+                onChange={(newTime: Date, isHour?: boolean) =>
                     updateTime(newTime, isHour)
                 }
             />

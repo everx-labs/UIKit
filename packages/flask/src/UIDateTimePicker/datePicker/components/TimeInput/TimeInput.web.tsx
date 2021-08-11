@@ -1,8 +1,9 @@
 import React from 'react';
 import { useCalendar } from '../../calendarContext';
+import type { TimeInputProps } from '../../../../types';
 
-export const TimeInput = ({ onChange, current }: any) => {
-    const { utils } = useCalendar();
+export function TimeInput({ onChange, current }: TimeInputProps){
+const { utils } = useCalendar();
     const inputRef = React.useRef<HTMLElement>(null);
 
     const [time, setTime] = React.useState('');
