@@ -78,7 +78,7 @@ export function DateTimePicker({ onLayout, ...message }: DateTimeMessage) {
                 }}
                 onValueRetrieved={(datetime: Date) => {
                     message.onSelect({
-                        datetime: new Date(datetime),
+                        datetime,
                     });
                     setPickerVisible(false);
                 }}
