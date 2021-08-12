@@ -1,3 +1,4 @@
+import type { View } from 'react-native';
 import type Animated from 'react-native-reanimated';
 
 export type Dimensions = {
@@ -11,5 +12,5 @@ export type DuplicateProps = {
     isOpen: boolean;
     onClose: () => void;
     children: React.ReactNode;
-    originalRef: React.RefObject<Animated.View>;
+    originalRef: React.RefObject<View>;
 };

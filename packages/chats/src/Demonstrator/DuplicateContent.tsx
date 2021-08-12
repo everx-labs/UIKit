@@ -3,11 +3,7 @@ import { StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import { makeStyles, Portal } from '@tonlabs/uikit.hydrogen';
 import type { DuplicateProps } from './types';
-import {
-    useVisibilityState,
-    useDimensions,
-    useScaleStyle,
-} from './hooks/duplicateContentHooks';
+import { useVisibilityState, useDimensions, useScaleStyle } from './hooks';
 
 export const DuplicateContent = ({
     children,
