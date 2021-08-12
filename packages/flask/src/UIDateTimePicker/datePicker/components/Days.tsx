@@ -22,6 +22,9 @@ export const Days = () => {
 
     const onSelectDay = (date: Date) => {
         const newDate = new Date(
+            /**
+             * In case the user did not select the time in datetime mode, but immediately clicked on the date, we must set the most probable time within the minimum and maximum time by taking the time from the mainState.activeDate.
+             */
             new Date(date).setTime(utils.returnValidTime(mainState.activeDate)),
         );
         setMainState({
