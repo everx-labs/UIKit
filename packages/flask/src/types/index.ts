@@ -134,7 +134,6 @@ export type PickerPropsType = UIDateTimePickerType & {
     selectorStartingYear?: number;
     selectorEndingYear?: number;
     disableDateChange?: boolean;
-    isGregorian?: boolean;
     reverse?: true | false | 'unset';
     options: PickerOptionsType;
     state?: any;
