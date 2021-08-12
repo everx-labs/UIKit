@@ -21,11 +21,14 @@ export const Days = () => {
     ]);
 
     const onSelectDay = (date: Date) => {
+        const newDate = new Date(
+            new Date(date).setTime(utils.returnValidTime(mainState.activeDate)),
+        );
         setMainState({
             type: 'set',
-            selectedDate: date,
+            selectedDate: newDate,
         });
-        onChange && onChange(date);
+        onChange && onChange(newDate);
     };
 
     const changeItemHeight = ({ nativeEvent }: LayoutChangeEvent) => {
