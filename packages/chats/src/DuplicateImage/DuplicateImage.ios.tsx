@@ -1,22 +1,22 @@
 /* eslint-disable no-underscore-dangle */
 import * as React from 'react';
-import { Image, ImageProps, requireNativeComponent } from 'react-native';
+import { requireNativeComponent } from 'react-native';
+import type { DuplicateImageProps } from './types';
 
 const DuplicateImageNative = requireNativeComponent('HDuplicateImageView');
 
-export const DuplicateImage = ({
+export const DuplicateImage: React.FC<DuplicateImageProps> = ({
     source,
+    children,
     ...rest
-}: Omit<ImageProps, 'source'> & {
-    source: React.RefObject<Image>;
-}) => {
+}: DuplicateImageProps) => {
     if (source.current == null) {
-        return null;
+        return children;
     }
 
     // @ts-ignore
     if (source.current._nativeTag == null) {
-        return null;
+        return children;
     }
 
     return (

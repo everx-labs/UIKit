@@ -1,13 +1,21 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, Image } from 'react-native';
 import { useAnimatedRef } from 'react-native-reanimated';
 import { makeStyles } from '@tonlabs/uikit.hydrogen';
 import { Duplicate } from './Duplicate';
+import { DuplicateImage } from '../DuplicateImage';
+
+type ImageSize = {
+    width: number;
+    height: number;
+};
 
 type DemonstratorProps = {
     isOpen: boolean;
     onClose: () => void;
-    children: React.ReactNode;
+    imageRef: React.RefObject<Image>;
+    imageSize: ImageSize | null;
+    children: React.ReactElement;
 };
 
 export const Demonstrator = (props: DemonstratorProps) => {
@@ -23,7 +31,9 @@ export const Demonstrator = (props: DemonstratorProps) => {
             </View>
 
             <Duplicate {...props} originalRef={ref} onClose={onClose}>
-                {children}
+                <DuplicateImage source={props.imageRef} style={props.imageSize}>
+                    {children}
+                </DuplicateImage>
             </Duplicate>
         </>
     );

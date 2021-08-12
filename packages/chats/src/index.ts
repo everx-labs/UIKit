@@ -6,6 +6,7 @@ export * from './UIChatInput/useChatInputValue';
 export * from './UIChatInput/useChatMaxLengthAlert';
 export * from './BubbleQRCode';
 export * from './BubbleMedia';
+export * from './DuplicateImage';
 
 export {
     BubbleSimplePlainText,

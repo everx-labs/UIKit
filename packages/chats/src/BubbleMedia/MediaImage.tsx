@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Image, useWindowDimensions } from 'react-native';
 import { UIConstant as UICoreConstant } from '@tonlabs/uikit.core';
-import { makeStyles, UIImage, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import { makeStyles, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
 
 import { useBubbleContainerStyle } from '../useBubblePosition';
 import { useBubbleBackgroundColor } from '../useBubbleStyle';
@@ -85,6 +85,7 @@ const useImageCallback = (
 };
 
 export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
+    const imageRef = React.useRef<Image>(null);
     const { onError, onLoad } = message;
     const containerStyle = useBubbleContainerStyle(message);
     const bubbleBackgroundColor = useBubbleBackgroundColor(message);
@@ -148,14 +149,17 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
                 onPress={() => setIsOpen((prev) => !prev)}
             >
                 <Demonstrator
+                    imageRef={imageRef}
                     isOpen={isOpen}
                     onClose={() => {
                         console.log('onClose')
                         setIsOpen(false);
                     }}
+                    imageSize={imageSize}
                 >
                     <View style={[bubbleBackgroundColor, styles.bubble]}>
-                        <UIImage
+                        <Image
+                            ref={imageRef}
                             source={{ uri: message.data }}
                             style={imageSize}
                             onError={onErrorCallback}

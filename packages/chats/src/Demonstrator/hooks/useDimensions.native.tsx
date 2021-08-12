@@ -1,4 +1,4 @@
-import type { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import Animated, {
     useSharedValue,
     useDerivedValue,
@@ -30,21 +30,31 @@ export const useDimensions = (
                 const measurements = measure(originalRef);
 
                 /**
-                 * There is an unknown problem when the `View`
+                 * There is an unknown problem on Android platform when the `View`
                  * does not change its appearance if the value is assigned immediately.
                  * This problem is not permanent, but it sometimes happens without clear logic.
                  * This hack allows to avoid this problem.
                  * TODO: It is necessary to find a solution to the problem
                  */
-                width.value = runUISetWithDelay(measurements.width);
-                height.value = runUISetWithDelay(measurements.height);
-                pageY.value = runUISetWithDelay(measurements.pageY);
-                pageX.value = runUISetWithDelay(measurements.pageX);
+                if (Platform.OS === 'android') {
+                    width.value = runUISetWithDelay(measurements.width);
+                    height.value = runUISetWithDelay(measurements.height);
+                    pageY.value = runUISetWithDelay(measurements.pageY);
+                    pageX.value = runUISetWithDelay(measurements.pageX);
 
-                // eslint-disable-next-line no-param-reassign
-                visibilityState.value = runUISetWithDelay(
-                    VisibilityState.Opened,
-                );
+                    // eslint-disable-next-line no-param-reassign
+                    visibilityState.value = runUISetWithDelay(
+                        VisibilityState.Opened,
+                    );
+                } else {
+                    width.value = measurements.width;
+                    height.value = measurements.height;
+                    pageY.value = measurements.pageY;
+                    pageX.value = measurements.pageX;
+
+                    // eslint-disable-next-line no-param-reassign
+                    visibilityState.value = VisibilityState.Opened;
+                }
             }
         } catch (e) {
             console.error(`duplicateContentHooks: Measuring is failed: ${e}`);
