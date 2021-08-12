@@ -78,7 +78,7 @@ export function TimePicker({ onLayout, ...message }: TimeMessage) {
                 }}
                 onValueRetrieved={(time: Date) => {
                     message.onSelect({
-                        time,
+                        time: new Date(time),
                     });
                     setPickerVisible(false);
                 }}

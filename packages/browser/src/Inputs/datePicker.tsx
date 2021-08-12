@@ -72,7 +72,7 @@ export function DatePicker({ onLayout, ...message }: DateMessage) {
                 }}
                 onValueRetrieved={(date: Date) => {
                     message.onSelect({
-                        date,
+                        date: new Date(date),
                     });
                     setPickerVisible(false);
                 }}
