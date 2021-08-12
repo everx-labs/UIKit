@@ -201,7 +201,7 @@ module.exports = {
                 'react-native-web/dist/exports/Text/TextAncestorContext',
             'react-native/Libraries/Components/View/ReactNativeStyleAttributes':
                 'react',
-            'react-native/Libraries/Animated/src/SpringConfig':
+            'react-native/Libraries/Animated/SpringConfig':
                 'react-native-web/dist/vendor/react-native/Animated/SpringConfig',
             'react-native$': 'react-native-web',
             'react-native-safe-area': 'react', // Hack in order not to load

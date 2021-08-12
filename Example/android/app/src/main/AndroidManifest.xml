@@ -29,7 +29,9 @@
             <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
         </intent-filter>
       </activity>
-      <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-    </application>
+      
+      <!-- Activity that display developers settings. Should be added to the debug manifest of the app. -->
+      <!-- <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" /> -->
 
+    </application>
 </manifest>
