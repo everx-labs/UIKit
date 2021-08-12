@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useState } from 'react';
 import { View } from 'react-native';
 
-import { UIDetailsToggle } from '@tonlabs/uikit.components';
 import {
     UILabel,
     UISwitcher,
@@ -12,7 +11,6 @@ import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
 export const Checkbox = () => {
-    const [selected, setSelected] = useState(false);
     const [switcherSelected, setSwitcherSelected] = useState(false);
     return (
         <ExampleScreen>
@@ -168,28 +166,6 @@ export const Checkbox = () => {
                             }}
                         />
                     </View>
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UIDetailsToggle">
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                    <UIDetailsToggle
-                        testID="uiDetailsToggle_comment_left"
-                        details="Example toggle"
-                        comments="with comment"
-                        active={selected}
-                        onPress={() => setSelected(!selected)}
-                    />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                    <UIDetailsToggle
-                        testID="uiDetailsToggle_comment_right"
-                        details="Example toggle"
-                        comments="with comment"
-                        active={selected}
-                        onPress={() => setSelected(!selected)}
-                        colored
-                        switcherPosition={UIDetailsToggle.Position.Left}
-                    />
                 </View>
             </ExampleSection>
         </ExampleScreen>
