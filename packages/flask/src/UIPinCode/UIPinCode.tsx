@@ -141,7 +141,7 @@ function useAnimatedDots(
     return animatedDots;
 }
 
-export function UIPinCode({
+export const UIPinCode = React.memo(function UIPinCodeImpl({
     label,
     labelTestID,
     description,
@@ -350,6 +350,7 @@ export function UIPinCode({
                             >
                                 <Animated.View
                                     style={[styles.dotInner, innerStyles]}
+                                    testID="pin_code_circle"
                                 />
                             </Animated.View>
                         ),
@@ -395,7 +396,7 @@ export function UIPinCode({
             <View style={styles.bottomSpacer} />
         </View>
     );
-}
+});
 
 const dotSize = UIConstant.tinyCellHeight();
 

@@ -8,7 +8,7 @@ import {
     runOnJS,
 } from 'react-native-reanimated';
 // @ts-expect-error
-import SpringConfig from 'react-native/Libraries/Animated/src/SpringConfig';
+import SpringConfig from 'react-native/Libraries/Animated/SpringConfig';
 import type { SnapPoints } from '../types';
 
 const Y_THRESHOLD = 20;

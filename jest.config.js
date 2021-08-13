@@ -14,6 +14,6 @@ module.exports = {
         'packages/',
     ],
     transformIgnorePatterns: [
-        '<rootDir>/node_modules/(?!react-native|@react-navigation|rn-fetch-blob|jest|)',
+        '<rootDir>/node_modules/(?!@react-native|react-native|@react-navigation|rn-fetch-blob|jest|)',
     ],
 };

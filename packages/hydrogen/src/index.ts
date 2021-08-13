@@ -7,7 +7,6 @@ export * from './UIBackgroundView';
 export * from './UIBanner';
 export * from './UIBlurView';
 export * from './UIBoxButton';
-export * from './UICheckbox';
 export * from './UIImage';
 export * from './UIIndicator';
 export * from './UIKeyTextView';

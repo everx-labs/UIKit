@@ -1,6 +1,6 @@
 import * as React from 'react';
 // @ts-expect-error
-import SpringConfig from 'react-native/Libraries/Animated/src/SpringConfig';
+import SpringConfig from 'react-native/Libraries/Animated/SpringConfig';
 import type {
     PanGestureHandlerGestureEvent,
     TapGestureHandlerGestureEvent,

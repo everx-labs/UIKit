@@ -43,17 +43,17 @@
     "react-style-proptype": "3.2.2"
   },
   "devDependencies": {
-    "@react-native-community/bob": "^0.16.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-native": "^0.63.0",
+    "@react-native-community/bob": "0.16.2",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "react-native": "0.64.2",
     "react-native-fast-image": "^8.3.4",
     "react-native-svg": "^12.1.0"
   },
   "peerDependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-native": "^0.63.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-native": "^0.64.2",
     "react-native-fast-image": "^8.3.4",
     "react-native-svg": "^12.1.0"
   },

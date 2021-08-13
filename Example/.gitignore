@@ -61,3 +61,6 @@ buck-out/
 # Web build
 web/assets/
 .firebase
+
+# Locks
+/ios/Podfile.lock

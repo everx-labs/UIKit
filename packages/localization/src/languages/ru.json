@@ -62,7 +62,10 @@
             "ChooseDate": "Выбрать дату",
             "ChooseTime": "Выбрать время",
             "YouHaveChosenTheDate": "Вы выбрали дату: ",
-            "YouHaveChosenTheTime": "Вы выбрали время: "
+            "YouHaveChosenTheTime": "Вы выбрали время: ",
+            "DoYouWantChooseDateTime": "Do you want to choose date and time?",
+            "ChooseDateTime": "Choose date and time",
+            "YouHaveChosenTheDateTime": "You have chosen date and time: "
         },
         "SigningBox": {
             "Prompt": "How would you like to sign?",
@@ -574,5 +577,43 @@
         "InvalidChars": "The key isn't in HEX format",
         "InproperLength": "The key should be 64 symbols long",
         "Valid": "Looks good"
+    },
+    "DateTimePicker": {
+        "dayNames": {
+            "Sunday": "Sunday",
+            "Monday": "Monday",
+            "Tuesday": "Tuesday",
+            "Wednesday": "Wednesday",
+            "Thursday": "Thursday",
+            "Friday": "Friday",
+            "Saturday": "Saturday"
+        },
+        "dayNamesShort": {
+            "Sunday": "Su",
+            "Monday": "Mo",
+            "Tuesday": "Tu",
+            "Wednesday": "We",
+            "Thursday": "Th",
+            "Friday": "Fr",
+            "Saturday": "Sa"
+        },
+        "monthNames": {
+            "January": "January",
+            "February": "February",
+            "March": "March",
+            "April": "April",
+            "May": "May",
+            "June": "June",
+            "July": "July",
+            "August": "August",
+            "September": "September",
+            "October": "October",
+            "November": "November",
+            "December": "December"
+        },
+        "hour": "Hour",
+        "minute": "Minute",
+        "select": "Select",
+        "close": "Close"
     }
 }

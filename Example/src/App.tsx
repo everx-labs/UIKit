@@ -18,7 +18,6 @@ import {
     UIDropdownAlert,
     UILayoutManager,
     UINotice,
-    UIToggle,
 } from '@tonlabs/uikit.components';
 import { UIActionSheet, UICountryPicker, UIPopoverBackground } from '@tonlabs/uikit.navigation_legacy';
 import {
@@ -35,6 +34,8 @@ import {
     useTheme,
     // @ts-ignore
     useWebFonts,
+    UISwitcher,
+    UISwitcherVariant,
 } from '@tonlabs/uikit.hydrogen';
 import {
     createSplitNavigator,
@@ -86,7 +87,8 @@ const Main = ({ navigation }: { navigation: any }) => {
                 <UILargeTitleHeader
                     title="Main"
                     headerRight={() => (
-                        <UIToggle
+                        <UISwitcher
+                            variant={UISwitcherVariant.Toggle}
                             testID="theme_switcher"
                             active={themeSwitcher.isDarkTheme}
                             onPress={() => themeSwitcher.toggleTheme()}
