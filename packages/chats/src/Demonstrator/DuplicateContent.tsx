@@ -3,30 +3,34 @@ import { StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import { makeStyles, Portal } from '@tonlabs/uikit.hydrogen';
 import type { DuplicateProps } from './types';
-import { useVisibilityState, useDimensions, useScaleStyle } from './hooks';
+import {
+    useVisibilityState,
+    useDimensions,
+    useAnimatedContainerStyle,
+    useAnimationProgress,
+} from './hooks';
+import { VisibilityState } from './constants';
 
-export const DuplicateContent = ({
-    children,
-    onClose,
-    originalRef,
-}: DuplicateProps) => {
+export const DuplicateContent = ({ children, onClose, originalRef }: DuplicateProps) => {
     const { visibilityState, onPressUnderlay } = useVisibilityState();
 
-    const { pageY, pageX, width, height } = useDimensions(
-        originalRef,
-        visibilityState,
+    const { pageY, pageX, width, height } = useDimensions(originalRef, visibilityState);
+
+    const animationProgress = useAnimationProgress(visibilityState, onClose);
+
+    const animatedContainerStyle = useAnimatedContainerStyle(
+        animationProgress,
+        pageY,
+        pageX,
+        width,
+        height,
     );
 
-    const duplicateContainerDimensionsStyle = useAnimatedStyle(() => {
+    const opacityStyle = useAnimatedStyle(() => {
         return {
-            top: pageY.value,
-            left: pageX.value,
-            width: width.value,
-            height: height.value,
+            opacity: visibilityState.value === VisibilityState.Measurement ? 0 : 1,
         };
     });
-
-    const { scaleStyle } = useScaleStyle(visibilityState, onClose);
 
     const styles = useStyles();
 
@@ -36,13 +40,8 @@ export const DuplicateContent = ({
                 <TouchableWithoutFeedback onPress={onPressUnderlay}>
                     <Animated.View style={styles.overlay} />
                 </TouchableWithoutFeedback>
-                <Animated.View
-                    style={[
-                        styles.duplicateContent,
-                        duplicateContainerDimensionsStyle,
-                    ]}
-                >
-                    <Animated.View style={scaleStyle}>{children}</Animated.View>
+                <Animated.View style={[styles.duplicateContent, animatedContainerStyle]}>
+                    <Animated.View style={opacityStyle}>{children}</Animated.View>
                 </Animated.View>
             </Animated.View>
         </Portal>

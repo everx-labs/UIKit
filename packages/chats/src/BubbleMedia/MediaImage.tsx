@@ -90,10 +90,7 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
     const containerStyle = useBubbleContainerStyle(message);
     const bubbleBackgroundColor = useBubbleBackgroundColor(message);
     const styles = useStyles();
-    const [
-        imageOriginalSize,
-        setImageOriginalSize,
-    ] = React.useState<ImageSize | null>(null);
+    const [imageOriginalSize, setImageOriginalSize] = React.useState<ImageSize | null>(null);
     const [imageSize, setImageSize] = React.useState<ImageSize | null>(null);
     const windowWidth = useWindowDimensions().width;
 
@@ -128,11 +125,7 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
         }
     }, [message.data]);
 
-    const { onErrorCallback, onLoadCallback } = useImageCallback(
-        message.data,
-        onError,
-        onLoad,
-    );
+    const { onErrorCallback, onLoadCallback } = useImageCallback(message.data, onError, onLoad);
 
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
@@ -140,24 +133,18 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
         return null;
     }
     return (
-        <View
-            style={[containerStyle, styles.container]}
-            onLayout={message.onLayout}
-        >
-            <TouchableOpacity
-                activeOpacity={1}
-                onPress={() => setIsOpen((prev) => !prev)}
-            >
-                <Demonstrator
-                    imageRef={imageRef}
-                    isOpen={isOpen}
-                    onClose={() => {
-                        console.log('onClose')
-                        setIsOpen(false);
-                    }}
-                    imageSize={imageSize}
-                >
-                    <View style={[bubbleBackgroundColor, styles.bubble]}>
+        <View style={[containerStyle, styles.container]} onLayout={message.onLayout}>
+            <TouchableOpacity activeOpacity={1} onPress={() => setIsOpen(prev => !prev)}>
+                <View style={[bubbleBackgroundColor, styles.bubble]}>
+                    <Demonstrator
+                        imageRef={imageRef}
+                        isOpen={isOpen}
+                        onClose={() => {
+                            console.log('onClose');
+                            setIsOpen(false);
+                        }}
+                        imageSize={imageSize}
+                    >
                         <Image
                             ref={imageRef}
                             source={{ uri: message.data }}
@@ -165,8 +152,8 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
                             onError={onErrorCallback}
                             onLoad={onLoadCallback}
                         />
-                    </View>
-                </Demonstrator>
+                    </Demonstrator>
+                </View>
             </TouchableOpacity>
         </View>
     );
