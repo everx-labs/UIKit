@@ -7,7 +7,7 @@ import {
     UILabel,
     UISwitcher,
     UISwitcherVariant,
-} from '@tonlabs/uikit.hydrogen/src';
+} from '@tonlabs/uikit.hydrogen';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
