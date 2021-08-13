@@ -271,8 +271,7 @@ class Utils {
             if (currentTime < minTime) {
                 newTime = min;
             }
-        }
-        if (max) {
+        } else if (max) {
             const maxTime = new Date(current).setHours(
                 max.getHours(),
                 max.getMinutes(),
