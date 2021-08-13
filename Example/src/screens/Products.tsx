@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 
 import { UIPromoNotice } from '@tonlabs/uikit.flask';
 import {
     UILabel,
     UISwitcher,
     UISwitcherVariant,
+    TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
