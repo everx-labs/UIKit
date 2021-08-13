@@ -318,6 +318,7 @@ export type MediaOutputMessage = InteractiveMessage<
     InteractiveMessageType.MediaOutput,
     {
         data: string | null; // base64
+        preview: string | null; // base64
         prompt?: string;
         onOutput?: (status: MediaOutputMessageStatus) => void;
     }

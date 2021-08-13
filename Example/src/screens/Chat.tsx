@@ -37,6 +37,7 @@ const initialMessages: ChatMessage[] = [
     {
         type: ChatMessageType.Media,
         data: image,
+        preview: image,
         time: Math.floor(Date.now() - 4 * 60 * 1000),
         sender: companionId,
         status: MessageStatus.Sent,

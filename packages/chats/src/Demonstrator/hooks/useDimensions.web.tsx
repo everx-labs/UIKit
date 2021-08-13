@@ -1,10 +1,7 @@
 import type { View } from 'react-native';
-import Animated, {
-    useSharedValue,
-    useDerivedValue,
-} from 'react-native-reanimated';
+import Animated, { useSharedValue, useDerivedValue } from 'react-native-reanimated';
 import type { Dimensions } from '../types';
-import { VisibilityState } from '../constants';
+import { DuplicateContentState } from '../constants';
 
 type Measurements = {
     x: number;
@@ -29,7 +26,7 @@ const measure = (originalRef: React.RefObject<View>): Promise<Measurements> => {
 
 export const useDimensions = (
     originalRef: React.RefObject<View>,
-    visibilityState: Animated.SharedValue<VisibilityState>,
+    duplicateContentState: Animated.SharedValue<DuplicateContentState>,
 ): Dimensions => {
     const width = useSharedValue<number>(0);
     const height = useSharedValue<number>(0);
@@ -37,15 +34,15 @@ export const useDimensions = (
     const pageY = useSharedValue<number>(0);
 
     useDerivedValue(() => {
-        if (visibilityState.value === VisibilityState.Measurement) {
-            measure(originalRef).then((measurements) => {
+        if (duplicateContentState.value === DuplicateContentState.Measurement) {
+            measure(originalRef).then(measurements => {
                 width.value = measurements.width;
                 height.value = measurements.height;
                 pageX.value = measurements.pageX;
                 pageY.value = measurements.pageY;
 
                 // eslint-disable-next-line no-param-reassign
-                visibilityState.value = VisibilityState.Opened;
+                duplicateContentState.value = DuplicateContentState.Opened;
             });
         }
     }, []);

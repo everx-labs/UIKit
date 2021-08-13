@@ -11,6 +11,7 @@ export type Dimensions = {
 export type DuplicateProps = {
     isOpen: boolean;
     onClose: () => void;
-    children: React.ReactNode;
     originalRef: React.RefObject<View>;
+    fullSizeImage: React.ReactElement | null;
+    previewImage: React.ReactElement;
 };

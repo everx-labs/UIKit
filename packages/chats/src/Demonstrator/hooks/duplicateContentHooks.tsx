@@ -8,22 +8,27 @@ import Animated, {
     useSharedValue,
     runOnJS,
 } from 'react-native-reanimated';
-import { AnimationProgress, VisibilityState } from '../constants';
+import { VisibilityState, DuplicateContentState } from '../constants';
 
-export const useAnimationProgress = (
-    visibilityState: Animated.SharedValue<VisibilityState>,
-    onClose: () => void,
+export const useVisibilityState = (
+    duplicateContentState: Animated.SharedValue<DuplicateContentState>,
+    onAnimationEnd: (visibilityState: VisibilityState) => void,
 ) => {
     return useDerivedValue(() => {
         const callback = (isFinished: boolean) => {
-            if (isFinished && visibilityState.value === VisibilityState.Closed) {
-                runOnJS(onClose)();
+            if (isFinished) {
+                if (duplicateContentState.value === DuplicateContentState.Closed) {
+                    runOnJS(onAnimationEnd)(VisibilityState.Closed);
+                }
+                if (duplicateContentState.value === DuplicateContentState.Opened) {
+                    runOnJS(onAnimationEnd)(VisibilityState.Opened);
+                }
             }
         };
         const toValue =
-            visibilityState.value === VisibilityState.Opened
-                ? AnimationProgress.Opened
-                : AnimationProgress.Closed;
+            duplicateContentState.value === DuplicateContentState.Opened
+                ? VisibilityState.Opened
+                : VisibilityState.Closed;
         return withSpring(
             toValue,
             {
@@ -35,7 +40,7 @@ export const useAnimationProgress = (
 };
 
 export const useAnimatedContainerStyle = (
-    animationProgress: Readonly<Animated.SharedValue<number>>,
+    visibilityState: Readonly<Animated.SharedValue<number>>,
     pageY: Animated.SharedValue<number>,
     pageX: Animated.SharedValue<number>,
     width: Animated.SharedValue<number>,
@@ -67,22 +72,22 @@ export const useAnimatedContainerStyle = (
             transform: [
                 {
                     translateX: interpolate(
-                        animationProgress.value,
-                        [AnimationProgress.Closed, AnimationProgress.Opened],
+                        visibilityState.value,
+                        [VisibilityState.Closed, VisibilityState.Opened],
                         [pageX.value, centeredImageX.value],
                     ),
                 },
                 {
                     translateY: interpolate(
-                        animationProgress.value,
-                        [AnimationProgress.Closed, AnimationProgress.Opened],
+                        visibilityState.value,
+                        [VisibilityState.Closed, VisibilityState.Opened],
                         [pageY.value, centeredImageY.value],
                     ),
                 },
                 {
                     scale: interpolate(
-                        animationProgress.value,
-                        [AnimationProgress.Closed, AnimationProgress.Opened],
+                        visibilityState.value,
+                        [VisibilityState.Closed, VisibilityState.Opened],
                         [1, openedImageScale.value],
                     ),
                 },
@@ -93,19 +98,21 @@ export const useAnimatedContainerStyle = (
     return animatedContainerStyle;
 };
 
-export const useVisibilityState = () => {
-    const visibilityState = useSharedValue<VisibilityState>(VisibilityState.Closed);
+export const useDuplicateContentState = () => {
+    const duplicateContentState = useSharedValue<DuplicateContentState>(
+        DuplicateContentState.Closed,
+    );
 
     React.useEffect(() => {
-        visibilityState.value = VisibilityState.Measurement;
-    }, [visibilityState]);
+        duplicateContentState.value = DuplicateContentState.Measurement;
+    }, [duplicateContentState]);
 
     const onPressUnderlay = React.useCallback(() => {
-        visibilityState.value = VisibilityState.Closed;
-    }, [visibilityState]);
+        duplicateContentState.value = DuplicateContentState.Closed;
+    }, [duplicateContentState]);
 
     return {
-        visibilityState,
+        duplicateContentState,
         onPressUnderlay,
     };
 };

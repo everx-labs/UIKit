@@ -1,9 +1,5 @@
 /* eslint-disable no-shadow */
-import type {
-    ImageSourcePropType,
-    LayoutChangeEvent,
-    ViewProps,
-} from 'react-native';
+import type { ImageSourcePropType, LayoutChangeEvent, ViewProps } from 'react-native';
 import type BigNumber from 'bignumber.js';
 import type { QRCodeError } from '@tonlabs/uikit.flask';
 
@@ -42,9 +38,7 @@ export enum ChatMessageType {
     QRCode = 'QRCode',
     Media = 'Media',
 }
-export type OnPressUrl =
-    | ((url: string, index?: number) => void | Promise<void>)
-    | undefined;
+export type OnPressUrl = ((url: string, index?: number) => void | Promise<void>) | undefined;
 export type PlainTextMessage = BubbleBaseT & {
     type: ChatMessageType.PlainText;
     text: string;
@@ -146,6 +140,7 @@ export enum MediaMessageError {
 export type MediaMessage = BubbleBaseT & {
     type: ChatMessageType.Media;
     data: string | null; // base64
+    preview: string | null; // base64
     onLoad?: () => void;
     onError?: (error: MediaMessageError) => void;
 };

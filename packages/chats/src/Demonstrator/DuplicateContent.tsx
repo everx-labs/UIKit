@@ -4,22 +4,33 @@ import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import { makeStyles, Portal } from '@tonlabs/uikit.hydrogen';
 import type { DuplicateProps } from './types';
 import {
-    useVisibilityState,
+    useDuplicateContentState,
     useDimensions,
     useAnimatedContainerStyle,
-    useAnimationProgress,
+    useVisibilityState,
 } from './hooks';
-import { VisibilityState } from './constants';
+import { VisibilityState, DuplicateContentState } from './constants';
 
-export const DuplicateContent = ({ children, onClose, originalRef }: DuplicateProps) => {
-    const { visibilityState, onPressUnderlay } = useVisibilityState();
+export const DuplicateContent = ({ previewImage, onClose, originalRef }: DuplicateProps) => {
+    const { duplicateContentState, onPressUnderlay } = useDuplicateContentState();
 
-    const { pageY, pageX, width, height } = useDimensions(originalRef, visibilityState);
+    const { pageY, pageX, width, height } = useDimensions(originalRef, duplicateContentState);
 
-    const animationProgress = useAnimationProgress(visibilityState, onClose);
+    // const [isFullSizeDisplayed, setIsFullSizeDisplayed] = React.useState<boolean>(false);
+
+    const onAnimationEnd = React.useCallback(
+        (visibilityState: VisibilityState) => {
+            if (visibilityState === VisibilityState.Closed) {
+                onClose();
+            }
+        },
+        [onClose],
+    );
+
+    const visibilityState = useVisibilityState(duplicateContentState, onAnimationEnd);
 
     const animatedContainerStyle = useAnimatedContainerStyle(
-        animationProgress,
+        visibilityState,
         pageY,
         pageX,
         width,
@@ -28,7 +39,7 @@ export const DuplicateContent = ({ children, onClose, originalRef }: DuplicatePr
 
     const opacityStyle = useAnimatedStyle(() => {
         return {
-            opacity: visibilityState.value === VisibilityState.Measurement ? 0 : 1,
+            opacity: duplicateContentState.value === DuplicateContentState.Measurement ? 0 : 1,
         };
     });
 
@@ -41,7 +52,7 @@ export const DuplicateContent = ({ children, onClose, originalRef }: DuplicatePr
                     <Animated.View style={styles.overlay} />
                 </TouchableWithoutFeedback>
                 <Animated.View style={[styles.duplicateContent, animatedContainerStyle]}>
-                    <Animated.View style={opacityStyle}>{children}</Animated.View>
+                    <Animated.View style={opacityStyle}>{previewImage}</Animated.View>
                 </Animated.View>
             </Animated.View>
         </Portal>

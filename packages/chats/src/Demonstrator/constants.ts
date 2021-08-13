@@ -1,11 +1,11 @@
 // eslint-disable-next-line no-shadow
-export enum VisibilityState {
+export enum DuplicateContentState {
     Closed = 0,
     Measurement = 1,
     Opened = 2,
 }
 // eslint-disable-next-line no-shadow
-export enum AnimationProgress {
+export enum VisibilityState {
     Closed = 0,
     Opened = 1,
 }

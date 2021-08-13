@@ -86,7 +86,7 @@ const useImageCallback = (
 
 export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
     const imageRef = React.useRef<Image>(null);
-    const { onError, onLoad } = message;
+    const { onError, onLoad, preview, data, onLayout } = message;
     const containerStyle = useBubbleContainerStyle(message);
     const bubbleBackgroundColor = useBubbleBackgroundColor(message);
     const styles = useStyles();
@@ -115,25 +115,59 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
     ]);
 
     React.useEffect(() => {
-        if (message.data) {
-            Image.getSize(message.data, (width, height) =>
+        if (data) {
+            Image.getSize(data, (width, height) =>
                 setImageOriginalSize({
                     width,
                     height,
                 }),
             );
         }
-    }, [message.data]);
+    }, [data]);
 
-    const { onErrorCallback, onLoadCallback } = useImageCallback(message.data, onError, onLoad);
+    const { onErrorCallback, onLoadCallback } = useImageCallback(data, onError, onLoad);
 
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
-    if (!message.data) {
+    const fullSizeImage = React.useMemo(() => {
+        if (!data) {
+            return null;
+        }
+        return (
+            <Image
+                ref={imageRef}
+                source={{ uri: data }}
+                style={imageSize}
+                onError={onErrorCallback}
+                onLoad={onLoadCallback}
+            />
+        );
+    }, [data, imageRef, imageSize, onErrorCallback, onLoadCallback]);
+
+    const previewImage = React.useMemo(() => {
+        if (!preview) {
+            if (!data) {
+                return null;
+            }
+            return fullSizeImage;
+        }
+        return (
+            <Image
+                ref={imageRef}
+                source={{ uri: preview }}
+                style={imageSize}
+                onError={onErrorCallback}
+                onLoad={onLoadCallback}
+            />
+        );
+    }, [preview, imageRef, imageSize, onErrorCallback, onLoadCallback, fullSizeImage, data]);
+
+    if (!previewImage) {
         return null;
     }
+
     return (
-        <View style={[containerStyle, styles.container]} onLayout={message.onLayout}>
+        <View style={[containerStyle, styles.container]} onLayout={onLayout}>
             <TouchableOpacity activeOpacity={1} onPress={() => setIsOpen(prev => !prev)}>
                 <View style={[bubbleBackgroundColor, styles.bubble]}>
                     <Demonstrator
@@ -144,15 +178,9 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
                             setIsOpen(false);
                         }}
                         imageSize={imageSize}
-                    >
-                        <Image
-                            ref={imageRef}
-                            source={{ uri: message.data }}
-                            style={imageSize}
-                            onError={onErrorCallback}
-                            onLoad={onLoadCallback}
-                        />
-                    </Demonstrator>
+                        fullSizeImage={fullSizeImage}
+                        previewImage={previewImage}
+                    />
                 </View>
             </TouchableOpacity>
         </View>

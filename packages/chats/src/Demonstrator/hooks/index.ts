@@ -4,10 +4,10 @@ import type Animated from 'react-native-reanimated';
 // eslint-disable-next-line import/extensions, import/no-unresolved
 import { useDimensions as useDimensionsImpl } from './useDimensions';
 import type { Dimensions } from '../types';
-import type { VisibilityState } from '../constants';
+import type { DuplicateContentState } from '../constants';
 
 export * from './duplicateContentHooks';
 export const useDimensions: (
     originalRef: React.RefObject<View>,
-    visibilityState: Animated.SharedValue<VisibilityState>,
+    duplicateContentState: Animated.SharedValue<DuplicateContentState>,
 ) => Dimensions = useDimensionsImpl;

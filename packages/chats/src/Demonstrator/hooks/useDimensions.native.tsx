@@ -7,7 +7,7 @@ import Animated, {
     withTiming,
 } from 'react-native-reanimated';
 import type { Dimensions } from '../types';
-import { VisibilityState } from '../constants';
+import { DuplicateContentState } from '../constants';
 
 const runUISetWithDelay = (toValue: number): number => {
     'worklet';
@@ -17,7 +17,7 @@ const runUISetWithDelay = (toValue: number): number => {
 
 export const useDimensions = (
     originalRef: React.RefObject<View>,
-    visibilityState: Animated.SharedValue<VisibilityState>,
+    duplicateContentState: Animated.SharedValue<DuplicateContentState>,
 ): Dimensions => {
     const width = useSharedValue<number>(0);
     const height = useSharedValue<number>(0);
@@ -26,7 +26,7 @@ export const useDimensions = (
 
     useDerivedValue(() => {
         try {
-            if (visibilityState.value === VisibilityState.Measurement) {
+            if (duplicateContentState.value === DuplicateContentState.Measurement) {
                 const measurements = measure(originalRef);
 
                 /**
@@ -43,9 +43,7 @@ export const useDimensions = (
                     pageX.value = runUISetWithDelay(measurements.pageX);
 
                     // eslint-disable-next-line no-param-reassign
-                    visibilityState.value = runUISetWithDelay(
-                        VisibilityState.Opened,
-                    );
+                    duplicateContentState.value = runUISetWithDelay(DuplicateContentState.Opened);
                 } else {
                     width.value = measurements.width;
                     height.value = measurements.height;
@@ -53,7 +51,7 @@ export const useDimensions = (
                     pageX.value = measurements.pageX;
 
                     // eslint-disable-next-line no-param-reassign
-                    visibilityState.value = VisibilityState.Opened;
+                    duplicateContentState.value = DuplicateContentState.Opened;
                 }
             }
         } catch (e) {

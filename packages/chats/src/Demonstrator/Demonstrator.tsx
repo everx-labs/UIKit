@@ -15,26 +15,37 @@ type DemonstratorProps = {
     onClose: () => void;
     imageRef: React.RefObject<Image>;
     imageSize: ImageSize | null;
-    children: React.ReactElement;
+    fullSizeImage: React.ReactElement | null;
+    previewImage: React.ReactElement;
 };
 
 export const Demonstrator = (props: DemonstratorProps) => {
-    const { onClose, children } = props;
+    const { onClose, previewImage, imageRef, imageSize } = props;
     const ref = useAnimatedRef<View>();
+
+    const copyOfPreviewImage = React.useMemo(
+        () => (
+            <DuplicateImage source={imageRef} style={imageSize}>
+                {previewImage}
+            </DuplicateImage>
+        ),
+        [previewImage, imageRef, imageSize],
+    );
 
     const styles = useStyles();
 
     return (
         <>
             <View ref={ref} style={styles.originalContainer}>
-                {children}
+                {previewImage}
             </View>
 
-            <Duplicate {...props} originalRef={ref} onClose={onClose}>
-                <DuplicateImage source={props.imageRef} style={props.imageSize}>
-                    {children}
-                </DuplicateImage>
-            </Duplicate>
+            <Duplicate
+                {...props}
+                originalRef={ref}
+                onClose={onClose}
+                previewImage={copyOfPreviewImage}
+            />
         </>
     );
 };
