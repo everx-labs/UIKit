@@ -31,32 +31,37 @@ import { UIAssets } from '@tonlabs/uikit.assets';
 
 import { DotsContext } from './DotsContext';
 import {
-    CircleAnimationStatus,
-    DotAnimationStatus,
     DOT_WITH_SPRING_CONFIG,
     KEY_HEIGHT,
     KEY_WIDTH,
     UIPinCodeBiometryType,
 } from './constants';
 
-function useCircleAboveStyle(circleAnimProgress: Animated.SharedValue<number>) {
+type CircleAnimationStatus =
+    | /** Active */ 0
+    | /** NotActive */ 1
+    | /** Filler (just to put it in column) */ -100
+    | number;
+
+function useCircleAboveStyle(
+    circleAnimProgress: Animated.SharedValue<CircleAnimationStatus>,
+) {
     const { colorParts } = useColorParts(ColorVariants.BackgroundSecondary);
+    const circleColorTransparent = `rgba(${colorParts},1)`;
+    const circleColorOpaque = `rgba(${colorParts},0)`;
 
     return useAnimatedStyle(() => {
         return {
             backgroundColor: interpolateColor(
                 circleAnimProgress.value,
-                [CircleAnimationStatus.Active, CircleAnimationStatus.NotActive],
-                [`rgba(${colorParts},1)`, `rgba(${colorParts},0)`],
+                [/** Active */ 0, /** NotActive */ 1],
+                [circleColorTransparent, circleColorOpaque],
             ),
             transform: [
                 {
                     scale: interpolate(
                         circleAnimProgress.value,
-                        [
-                            CircleAnimationStatus.Active,
-                            CircleAnimationStatus.NotActive,
-                        ],
+                        [/** Active */ 0, /** NotActive */ 1],
                         [0.8, 1],
                     ),
                 },
@@ -82,13 +87,13 @@ export function Key({ num }: { num: number }) {
         disabled,
     } = React.useContext(DotsContext);
 
-    const circleAnimProgress = useSharedValue(CircleAnimationStatus.NotActive);
+    const circleAnimProgress = useSharedValue(/** NotActive */ 1);
 
     const gestureHandler = useAnimatedGestureHandler<
         GestureEvent<NativeViewGestureHandlerPayload>
     >({
         onActive: () => {
-            circleAnimProgress.value = CircleAnimationStatus.Active;
+            circleAnimProgress.value = /** Active */ 0;
         },
         onFinish: () => {
             if (activeDotIndex.value > dotsCount - 1) {
@@ -96,9 +101,9 @@ export function Key({ num }: { num: number }) {
             }
 
             // A number was chosen
-            dotsValues.current[activeDotIndex.value].value = num;
-            dotsAnims.current[activeDotIndex.value].value = withSpring(
-                DotAnimationStatus.Active,
+            dotsValues[activeDotIndex.value].value = num;
+            dotsAnims[activeDotIndex.value].value = withSpring(
+                /** Active */ 1,
                 DOT_WITH_SPRING_CONFIG,
             );
             activeDotIndex.value += 1;
@@ -106,14 +111,10 @@ export function Key({ num }: { num: number }) {
             hapticSelection();
         },
         onCancel: () => {
-            circleAnimProgress.value = withSpring(
-                CircleAnimationStatus.NotActive,
-            );
+            circleAnimProgress.value = withSpring(/** NotActive */ 1);
         },
         onEnd: () => {
-            circleAnimProgress.value = withSpring(
-                CircleAnimationStatus.NotActive,
-            );
+            circleAnimProgress.value = withSpring(/** NotActive */ 1);
         },
     });
 
@@ -155,8 +156,8 @@ export function useBiometryPasscode({
     activeDotIndex,
     dotsCount,
 }: BiometryProps & {
-    dotsValues: { current: Animated.SharedValue<number>[] };
-    dotsAnims: { current: Animated.SharedValue<number>[] };
+    dotsValues: Animated.SharedValue<number>[];
+    dotsAnims: Animated.SharedValue<number>[];
     activeDotIndex: Animated.SharedValue<number>;
     dotsCount: number;
 }) {
@@ -173,10 +174,10 @@ export function useBiometryPasscode({
                     return;
                 }
 
-                dotsValues.current.forEach((_dot, index) => {
-                    dotsValues.current[index].value = 1;
-                    dotsAnims.current[index].value = withSpring(
-                        DotAnimationStatus.Active,
+                dotsValues.forEach((_dot, index) => {
+                    dotsValues[index].value = 1;
+                    dotsAnims[index].value = withSpring(
+                        /** Active */ 1,
                         DOT_WITH_SPRING_CONFIG,
                     );
                 });
@@ -193,10 +194,10 @@ export function useBiometryPasscode({
                 return;
             }
 
-            dotsValues.current.forEach((_dot, index) => {
-                dotsValues.current[index].value = Number(passcode[index]);
-                dotsAnims.current[index].value = withSpring(
-                    DotAnimationStatus.Active,
+            dotsValues.forEach((_dot, index) => {
+                dotsValues[index].value = Number(passcode[index]);
+                dotsAnims[index].value = withSpring(
+                    /** Active */ 1,
                     DOT_WITH_SPRING_CONFIG,
                 );
             });
@@ -255,26 +256,22 @@ export function BiometryKey({
         dotsCount,
     });
 
-    const circleAnimProgress = useSharedValue(CircleAnimationStatus.NotActive);
+    const circleAnimProgress = useSharedValue(/** NotActive */ 1);
     const gestureHandler = useAnimatedGestureHandler<
         GestureEvent<NativeViewGestureHandlerPayload>
     >({
         onActive: () => {
-            circleAnimProgress.value = CircleAnimationStatus.Active;
+            circleAnimProgress.value = /** Active */ 0;
         },
         onFinish: () => {
             hapticSelection();
             runOnJS(getPasscode)();
         },
         onCancel: () => {
-            circleAnimProgress.value = withSpring(
-                CircleAnimationStatus.NotActive,
-            );
+            circleAnimProgress.value = withSpring(/** NotActive */ 1);
         },
         onEnd: () => {
-            circleAnimProgress.value = withSpring(
-                CircleAnimationStatus.NotActive,
-            );
+            circleAnimProgress.value = withSpring(/** NotActive */ 1);
         },
     });
 
@@ -312,13 +309,13 @@ export function DelKey() {
         disabled,
     } = React.useContext(DotsContext);
 
-    const circleAnimProgress = useSharedValue(CircleAnimationStatus.NotActive);
+    const circleAnimProgress = useSharedValue(/** NotActive */ 1);
     const circleAboveDelButtonStyle = useCircleAboveStyle(circleAnimProgress);
     const gestureHandlerDel = useAnimatedGestureHandler<
         GestureEvent<NativeViewGestureHandlerPayload>
     >({
         onActive: () => {
-            circleAnimProgress.value = CircleAnimationStatus.Active;
+            circleAnimProgress.value = /** Active */ 0;
         },
         onFinish: () => {
             // Nothing to delete
@@ -326,9 +323,9 @@ export function DelKey() {
                 return;
             }
 
-            dotsValues.current[activeDotIndex.value - 1].value = -1;
-            dotsAnims.current[activeDotIndex.value - 1].value = withSpring(
-                DotAnimationStatus.NotActive,
+            dotsValues[activeDotIndex.value - 1].value = -1;
+            dotsAnims[activeDotIndex.value - 1].value = withSpring(
+                /** NotActive */ 0,
                 DOT_WITH_SPRING_CONFIG,
             );
             activeDotIndex.value -= 1;
@@ -336,14 +333,10 @@ export function DelKey() {
             hapticSelection();
         },
         onCancel: () => {
-            circleAnimProgress.value = withSpring(
-                CircleAnimationStatus.NotActive,
-            );
+            circleAnimProgress.value = withSpring(/** NotActive */ 1);
         },
         onEnd: () => {
-            circleAnimProgress.value = withSpring(
-                CircleAnimationStatus.NotActive,
-            );
+            circleAnimProgress.value = withSpring(/** NotActive */ 1);
         },
     });
 

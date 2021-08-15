@@ -29,12 +29,10 @@ import {
     useBiometryPasscode,
 } from './Keys';
 import {
-    DotAnimationStatus,
     DEFAULT_DOTS_COUNT,
+    DotAnimationStatus,
     DOTS_STATE_PRESENTATION_DURATION,
     DOT_WITH_SPRING_CONFIG,
-    ShakeAnimationStatus,
-    ValidationState,
 } from './constants';
 import {
     UIPinCodeDescription,
@@ -46,12 +44,26 @@ export type UIPinCodeEnterValidationResult = {
     description: string;
 };
 
+type ShakeAnimationStatus =
+    | /** NotActive */ 0
+    | /** Active */ 1
+    | /** Filler (just to put it in column) */ -100
+    | number;
+
+type ValidationState =
+    | /** None */ 0
+    | /** Success */ 1
+    | /** Error */ 2
+    | number;
+
 function useAnimatedDot(
     index: number,
-    dotsAnims: { current: Animated.SharedValue<number>[] },
+    dotsAnims: Animated.SharedValue<DotAnimationStatus>[],
     validState: Animated.SharedValue<ValidationState>,
 ): ViewStyle[] {
     const theme = useTheme();
+
+    const dotAnim = dotsAnims[index];
 
     /**
      * Styles has to be separated and applied to different views
@@ -61,28 +73,31 @@ function useAnimatedDot(
         return {
             transform: [
                 {
-                    scale: dotsAnims.current[index].value + 1,
+                    scale: dotAnim.value + 1,
                 },
             ],
         };
     });
 
+    const bgNeutral = theme[ColorVariants.BackgroundNeutral] as string;
+
+    const colorBgAccent = theme[ColorVariants.BackgroundAccent] as string;
+    const colorBgPositive = theme[ColorVariants.BackgroundPositive] as string;
+    const colorBgNegative = theme[ColorVariants.BackgroundNegative] as string;
+
     const innerStyle: ViewStyle = useAnimatedStyle(() => {
-        let color = ColorVariants.BackgroundAccent;
-        if (validState.value === ValidationState.Success) {
-            color = ColorVariants.BackgroundPositive;
-        } else if (validState.value === ValidationState.Error) {
-            color = ColorVariants.BackgroundNegative;
+        let color = colorBgAccent;
+        if (validState.value === 1 /** Success */) {
+            color = colorBgPositive;
+        } else if (validState.value === 2 /** Error */) {
+            color = colorBgNegative;
         }
 
         return {
             backgroundColor: interpolateColor(
-                dotsAnims.current[index].value,
-                [DotAnimationStatus.NotActive, DotAnimationStatus.Active],
-                [
-                    theme[ColorVariants.BackgroundNeutral] as string,
-                    theme[color] as string,
-                ],
+                dotAnim.value,
+                [0 /** NotActive */, 1 /** Active */],
+                [bgNeutral, color],
             ) as string,
         };
     });
@@ -102,27 +117,45 @@ function useDotsValues(length: number) {
 
     dotsValues.current = values;
 
-    return dotsValues;
+    React.useEffect(() => {
+        return () => {
+            // @ts-ignore
+            dotsValues.current = null;
+        };
+    }, []);
+
+    return dotsValues.current;
 }
 
 function useDotsAnims(length: number) {
-    const dotsValues = React.useRef<Animated.SharedValue<number>[]>([]);
+    const dotsValues = React.useRef<Animated.SharedValue<DotAnimationStatus>[]>(
+        [],
+    );
 
-    const values: Animated.SharedValue<number>[] = new Array(length).fill(null);
+    const values: Animated.SharedValue<DotAnimationStatus>[] = new Array(
+        length,
+    ).fill(null);
 
     for (let i = 0; i < length; i += 1) {
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        values[i] = useSharedValue(DotAnimationStatus.NotActive);
+        values[i] = useSharedValue(0 /** NotActive */);
     }
 
     dotsValues.current = values;
 
-    return dotsValues;
+    React.useEffect(() => {
+        return () => {
+            // @ts-ignore
+            dotsValues.current = null;
+        };
+    }, []);
+
+    return dotsValues.current;
 }
 
 function useAnimatedDots(
     length: number,
-    dotsAnims: { current: Animated.SharedValue<number>[] },
+    dotsAnims: Animated.SharedValue<DotAnimationStatus>[],
     validState: Animated.SharedValue<ValidationState>,
 ) {
     const animatedDots = React.useRef<ReturnType<typeof useAnimatedDot>[]>([]);
@@ -138,7 +171,14 @@ function useAnimatedDots(
 
     animatedDots.current = dotsConfigs;
 
-    return animatedDots;
+    React.useEffect(() => {
+        return () => {
+            // @ts-ignore
+            animatedDots.current = null;
+        };
+    }, []);
+
+    return animatedDots.current;
 }
 
 export function UIPinCode({
@@ -168,17 +208,17 @@ export function UIPinCode({
     const dotsValues = useDotsValues(length);
     const dotsAnims = useDotsAnims(length);
     const activeDotIndex = useSharedValue(0);
-    const validState = useSharedValue(ValidationState.None);
-    const shakeAnim = useSharedValue(0);
+    const validState = useSharedValue<ValidationState>(0 /** None */);
+    const shakeAnim = useSharedValue<ShakeAnimationStatus>(0);
     const animatedDots = useAnimatedDots(length, dotsAnims, validState);
 
     const showValidationError = React.useCallback(
         function showValidationErrorImpl() {
             'worklet';
 
-            shakeAnim.value = ShakeAnimationStatus.NotActive;
+            shakeAnim.value = 0 /** NotActive */;
             shakeAnim.value = withSpring(
-                ShakeAnimationStatus.Active,
+                1 /** Active */,
                 DOT_WITH_SPRING_CONFIG,
             );
 
@@ -201,12 +241,10 @@ export function UIPinCode({
                     isValid = result;
                 }
 
-                validState.value = isValid
-                    ? ValidationState.Success
-                    : ValidationState.Error;
+                validState.value = isValid ? /** Success */ 1 : /** Error */ 2;
 
                 if (isValid) {
-                    validState.value = ValidationState.Success;
+                    validState.value = /** Success */ 1;
 
                     if (
                         validationDescription != null &&
@@ -215,7 +253,7 @@ export function UIPinCode({
                         descriptionRef.current.showValid(validationDescription);
                     }
                 } else {
-                    validState.value = ValidationState.Error;
+                    validState.value = /** Error */ 2;
 
                     if (
                         validationDescription != null &&
@@ -228,15 +266,15 @@ export function UIPinCode({
                 }
 
                 setTimeout(() => {
-                    dotsValues.current.forEach((_dot, index) => {
-                        dotsValues.current[index].value = -1;
-                        dotsAnims.current[index].value = withSpring(
-                            DotAnimationStatus.NotActive,
+                    dotsValues.forEach((_dot, index) => {
+                        dotsValues[index].value = -1;
+                        dotsAnims[index].value = withSpring(
+                            /** NotActive */ 0,
                             DOT_WITH_SPRING_CONFIG,
                         );
                     });
                     activeDotIndex.value = 0;
-                    validState.value = ValidationState.None;
+                    validState.value = /** None */ 0;
 
                     if (isValid) {
                         onSuccess(pin);
@@ -246,11 +284,11 @@ export function UIPinCode({
         },
         [
             onEnter,
-            validState,
-            activeDotIndex,
+            // validState,
+            // activeDotIndex,
             onSuccess,
-            dotsValues,
-            dotsAnims,
+            // dotsValues,
+            // dotsAnims,
             showValidationError,
         ],
     );
@@ -277,7 +315,7 @@ export function UIPinCode({
 
     useAnimatedReaction(
         () => {
-            return dotsValues.current.map((d) => d.value);
+            return dotsValues.map((d) => d.value);
         },
         (dotsCurrentValues, previous) => {
             const pin = dotsCurrentValues.filter((val) => val !== -1).join('');
@@ -341,20 +379,18 @@ export function UIPinCode({
                     </UILabel>
                 )}
                 <Animated.View style={[styles.dotsContainer, shakeStyle]}>
-                    {animatedDots.current.map(
-                        ([outterStyles, innerStyles], index) => (
+                    {animatedDots.map(([outterStyles, innerStyles], index) => (
+                        <Animated.View
+                            // eslint-disable-next-line react/no-array-index-key
+                            key={index}
+                            style={[styles.dot, outterStyles]}
+                        >
                             <Animated.View
-                                // eslint-disable-next-line react/no-array-index-key
-                                key={index}
-                                style={[styles.dot, outterStyles]}
-                            >
-                                <Animated.View
-                                    style={[styles.dotInner, innerStyles]}
-                                    testID="pin_code_circle"
-                                />
-                            </Animated.View>
-                        ),
-                    )}
+                                style={[styles.dotInner, innerStyles]}
+                                testID="pin_code_circle"
+                            />
+                        </Animated.View>
+                    ))}
                 </Animated.View>
                 <UIPinCodeDescription
                     ref={descriptionRef}
