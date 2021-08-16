@@ -171,21 +171,26 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
         );
     }, [data, preview, imageRef, imageSize, onErrorCallback, onLoadCallback]);
 
+    const onPress = React.useCallback(() => {
+        setIsOpen(prevIsOpen => !prevIsOpen);
+    }, []);
+
+    const onClose = React.useCallback(() => {
+        setIsOpen(false);
+    }, []);
+
     if (!previewImage || !fullSizeImage) {
         return null;
     }
 
     return (
         <View style={[containerStyle, styles.container]} onLayout={onLayout}>
-            <TouchableOpacity activeOpacity={1} onPress={() => setIsOpen(prev => !prev)}>
+            <TouchableOpacity activeOpacity={1} onPress={onPress}>
                 <View style={[bubbleBackgroundColor, styles.bubble]}>
                     <Demonstrator
                         imageRef={imageRef}
                         isOpen={isOpen}
-                        onClose={() => {
-                            console.log('onClose');
-                            setIsOpen(false);
-                        }}
+                        onClose={onClose}
                         imageSize={imageSize}
                         fullSizeImage={fullSizeImage}
                         previewImage={previewImage}

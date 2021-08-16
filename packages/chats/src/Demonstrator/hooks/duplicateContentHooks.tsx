@@ -14,7 +14,6 @@ import { VisibilityState, DuplicateContentState } from '../constants';
 export const useVisibilityState = (
     duplicateContentState: Animated.SharedValue<DuplicateContentState>,
     onAnimationEnd: (visibilityState: VisibilityState) => void,
-    fullSizeImageState: Animated.SharedValue<VisibilityState>,
 ) => {
     const runUIAnimationEndCallback = useWorkletCallback(
         (isFinished: boolean) => {
@@ -23,8 +22,6 @@ export const useVisibilityState = (
                     runOnJS(onAnimationEnd)(VisibilityState.Closed);
                 }
                 if (duplicateContentState.value === DuplicateContentState.Opened) {
-                    // eslint-disable-next-line no-param-reassign
-                    fullSizeImageState.value = VisibilityState.Opened;
                     runOnJS(onAnimationEnd)(VisibilityState.Opened);
                 }
             }

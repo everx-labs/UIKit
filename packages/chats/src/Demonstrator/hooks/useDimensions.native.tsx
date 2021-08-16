@@ -55,7 +55,7 @@ export const useDimensions = (
                 }
             }
         } catch (e) {
-            console.error(`duplicateContentHooks: Measuring is failed: ${e}`);
+            console.error(`useDimensions.native.tsx: Measuring is failed - ${e}`);
         }
     }, []);
 

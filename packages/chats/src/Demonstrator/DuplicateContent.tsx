@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, TouchableWithoutFeedback } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
-import { makeStyles, Portal } from '@tonlabs/uikit.hydrogen';
+import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
+import { makeStyles, Portal, useTheme, ColorVariants, Theme } from '@tonlabs/uikit.hydrogen';
 import type { DuplicateContentProps } from './types';
 import {
     useDuplicateContentState,
@@ -17,6 +17,7 @@ export const DuplicateContent = ({
     onClose,
     originalRef,
 }: DuplicateContentProps) => {
+    const theme = useTheme();
     const [isFullSizeDisplayed, setIsFullSizeDisplayed] = React.useState<boolean>(false);
     const { duplicateContentState, onPressUnderlay } = useDuplicateContentState(
         isFullSizeDisplayed,
@@ -25,28 +26,26 @@ export const DuplicateContent = ({
 
     const { pageY, pageX, width, height } = useDimensions(originalRef, duplicateContentState);
 
-    const fullSizeImageState = useSharedValue<VisibilityState>(VisibilityState.Closed);
-
     const onAnimationEnd = React.useCallback(
         (state: VisibilityState) => {
             if (state === VisibilityState.Closed) {
                 onClose();
             }
             if (state === VisibilityState.Opened) {
+                /**
+                 * The timeout is in order to give time for the animation of the image
+                 * unfolding to end and after that the fullSizeImage render starts.
+                 * This will allow not to interrupt the animation with a heavy render.
+                 */
                 setTimeout(() => {
-                    console.log('Opened');
                     setIsFullSizeDisplayed(true);
-                }, 20);
+                }, 50);
             }
         },
         [onClose],
     );
 
-    const visibilityState = useVisibilityState(
-        duplicateContentState,
-        onAnimationEnd,
-        fullSizeImageState,
-    );
+    const visibilityState = useVisibilityState(duplicateContentState, onAnimationEnd);
 
     const animatedContainerStyle = useAnimatedContainerStyle(
         visibilityState,
@@ -62,13 +61,23 @@ export const DuplicateContent = ({
         };
     });
 
-    const styles = useStyles();
+    const overlayStyle = useAnimatedStyle(() => {
+        return {
+            opacity: interpolate(
+                visibilityState.value,
+                [VisibilityState.Closed, VisibilityState.Opened],
+                [0, 1],
+            ),
+        };
+    });
+
+    const styles = useStyles(theme);
 
     return (
         <Portal absoluteFill>
             <Animated.View style={styles.duplicateContainer}>
                 <TouchableWithoutFeedback onPress={onPressUnderlay}>
-                    <Animated.View style={styles.overlay} />
+                    <Animated.View style={[styles.overlay, overlayStyle]} />
                 </TouchableWithoutFeedback>
                 <Animated.View style={[styles.duplicateContent, animatedContainerStyle]}>
                     <Animated.View style={opacityStyle}>{previewImage}</Animated.View>
@@ -83,7 +92,7 @@ export const DuplicateContent = ({
     );
 };
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
     duplicateContainer: {
         ...StyleSheet.absoluteFillObject,
     },
@@ -92,7 +101,7 @@ const useStyles = makeStyles(() => ({
     },
     overlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: '#00000099',
+        backgroundColor: theme[ColorVariants.BackgroundOverlay],
         zIndex: -10,
     },
     fullSizeImage: {
