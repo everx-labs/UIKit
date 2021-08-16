@@ -9,6 +9,7 @@
         "Example"
     ],
     "scripts": {
+        "postinstall": "./postinstall.sh",
         "test": "jest",
         "flow": "flow check",
         "tsc": "lerna run tsc",
