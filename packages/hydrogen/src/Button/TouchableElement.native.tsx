@@ -3,8 +3,9 @@ import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 import Animated, { withSpring } from 'react-native-reanimated';
 
-import type { ButtonAnimations } from './Button';
 import { BUTTON_WITH_SPRING_CONFIG } from '../constants';
+
+import type { ButtonAnimations } from './types';
 
 type TouchableElementProps = {
     animations: ButtonAnimations;
