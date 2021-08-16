@@ -9,6 +9,7 @@ import Animated, {
     runOnJS,
     useWorkletCallback,
 } from 'react-native-reanimated';
+import { UIConstant } from '../../constants';
 import { VisibilityState, DuplicateContentState } from '../constants';
 
 export const useVisibilityState = (
@@ -97,7 +98,7 @@ export const useAnimatedContainerStyle = (
                 },
             ],
         };
-    });
+    }, []);
 
     return animatedContainerStyle;
 };
@@ -132,4 +133,33 @@ export const useDuplicateContentState = (
         duplicateContentState,
         onPressUnderlay,
     };
+};
+
+export const useOnAnimationEnd = (
+    onClose: () => void,
+    setIsFullSizeDisplayed: React.Dispatch<React.SetStateAction<boolean>>,
+) => {
+    return React.useCallback(
+        (state: VisibilityState) => {
+            if (state === VisibilityState.Closed) {
+                /**
+                 * The timeout is in order to give time for the animation of the image to complete.
+                 */
+                setTimeout(() => {
+                    onClose();
+                }, UIConstant.demonstrator.animationDisplayDelay);
+            }
+            if (state === VisibilityState.Opened) {
+                /**
+                 * The timeout is in order to give time for the animation of the image
+                 * unfolding to end and after that the fullSizeImage render starts.
+                 * This will allow not to interrupt the animation with a heavy render.
+                 */
+                setTimeout(() => {
+                    setIsFullSizeDisplayed(true);
+                }, UIConstant.demonstrator.animationDisplayDelay);
+            }
+        },
+        [onClose, setIsFullSizeDisplayed],
+    );
 };

@@ -8,6 +8,7 @@ import {
     useDimensions,
     useAnimatedContainerStyle,
     useVisibilityState,
+    useOnAnimationEnd,
 } from './hooks';
 import { VisibilityState, DuplicateContentState } from './constants';
 
@@ -18,7 +19,9 @@ export const DuplicateContent = ({
     originalRef,
 }: DuplicateContentProps) => {
     const theme = useTheme();
+
     const [isFullSizeDisplayed, setIsFullSizeDisplayed] = React.useState<boolean>(false);
+
     const { duplicateContentState, onPressUnderlay } = useDuplicateContentState(
         isFullSizeDisplayed,
         setIsFullSizeDisplayed,
@@ -26,24 +29,7 @@ export const DuplicateContent = ({
 
     const { pageY, pageX, width, height } = useDimensions(originalRef, duplicateContentState);
 
-    const onAnimationEnd = React.useCallback(
-        (state: VisibilityState) => {
-            if (state === VisibilityState.Closed) {
-                onClose();
-            }
-            if (state === VisibilityState.Opened) {
-                /**
-                 * The timeout is in order to give time for the animation of the image
-                 * unfolding to end and after that the fullSizeImage render starts.
-                 * This will allow not to interrupt the animation with a heavy render.
-                 */
-                setTimeout(() => {
-                    setIsFullSizeDisplayed(true);
-                }, 50);
-            }
-        },
-        [onClose],
-    );
+    const onAnimationEnd = useOnAnimationEnd(onClose, setIsFullSizeDisplayed)
 
     const visibilityState = useVisibilityState(duplicateContentState, onAnimationEnd);
 
@@ -55,11 +41,11 @@ export const DuplicateContent = ({
         height,
     );
 
-    const opacityStyle = useAnimatedStyle(() => {
+    const previewImageStyle = useAnimatedStyle(() => {
         return {
             opacity: duplicateContentState.value === DuplicateContentState.Measurement ? 0 : 1,
         };
-    });
+    }, []);
 
     const overlayStyle = useAnimatedStyle(() => {
         return {
@@ -69,7 +55,7 @@ export const DuplicateContent = ({
                 [0, 1],
             ),
         };
-    });
+    }, []);
 
     const styles = useStyles(theme);
 
@@ -80,7 +66,7 @@ export const DuplicateContent = ({
                     <Animated.View style={[styles.overlay, overlayStyle]} />
                 </TouchableWithoutFeedback>
                 <Animated.View style={[styles.duplicateContent, animatedContainerStyle]}>
-                    <Animated.View style={opacityStyle}>{previewImage}</Animated.View>
+                    <Animated.View style={previewImageStyle}>{previewImage}</Animated.View>
                     {isFullSizeDisplayed ? (
                         <Animated.View style={[styles.fullSizeImage]}>
                             {fullSizeImage}
