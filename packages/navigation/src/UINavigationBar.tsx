@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
@@ -10,6 +10,7 @@ import {
     UILabelColors,
     UILabelRoles,
     TouchableOpacity,
+    useBackgroundColorStyle,
 } from '@tonlabs/uikit.hydrogen';
 
 import { UIConstant as UINavConstant } from './constants';
@@ -26,6 +27,7 @@ function UINavigationBarAnimatedTitle({
     children,
     headerTitleOpacity,
 }: UINavigationBarAnimatedTitleProps) {
+    const colorStyle = useBackgroundColorStyle();
     const headerTitleStyle = useAnimatedStyle(() => {
         return {
             opacity: headerTitleOpacity.value,
@@ -33,11 +35,9 @@ function UINavigationBarAnimatedTitle({
     });
 
     return (
-        <UIBackgroundView>
-            <Animated.View style={[styles.titleInner, headerTitleStyle]}>
-                {children}
-            </Animated.View>
-        </UIBackgroundView>
+        <Animated.View style={[styles.titleInner, colorStyle, headerTitleStyle]}>
+            {children}
+        </Animated.View>
     );
 }
 
@@ -179,9 +179,7 @@ export function UINavigationBar({
             <View style={styles.headerRightItems}>{headerRightElement}</View>
             <View style={styles.titleContainer} pointerEvents="box-none">
                 {headerTitleOpacity != null ? (
-                    <UINavigationBarAnimatedTitle
-                        headerTitleOpacity={headerTitleOpacity}
-                    >
+                    <UINavigationBarAnimatedTitle headerTitleOpacity={headerTitleOpacity}>
                         {titleInnerElement}
                     </UINavigationBarAnimatedTitle>
                 ) : (
@@ -222,6 +220,12 @@ const styles = StyleSheet.create({
     titleInner: {
         flexDirection: 'column',
         alignItems: 'center',
+        ...Platform.select({
+            web: {
+                maxWidth: '100%',
+            },
+            default: null,
+        }),
     },
     headerLeftItems: {
         flex: 1,

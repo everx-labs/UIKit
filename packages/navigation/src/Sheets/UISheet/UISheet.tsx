@@ -131,11 +131,10 @@ function UISheetPortalContent({
     useBackHandler(() => {
         if (onClose) {
             onClose();
-        } else {
-            animate(false);
+            return true;
         }
 
-        return true;
+        return false;
     });
 
     const {

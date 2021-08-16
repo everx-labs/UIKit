@@ -24,7 +24,8 @@ export const Days = () => {
         /**
          * In case the user did not select the time in datetime mode, but immediately clicked on the date, we must set the most probable time within the minimum and maximum time by taking the time from the mainState.activeDate.
          */
-        const validTime = utils.returnValidTime(mainState.activeDate);
+        // TODO: fix the fact that `activeDate` might be a string
+        const validTime = utils.returnValidTime(new Date(mainState.activeDate));
         const newDate = new Date(
             new Date(date).setHours(
                 validTime.getHours(),

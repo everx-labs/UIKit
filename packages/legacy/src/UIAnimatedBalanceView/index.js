@@ -92,7 +92,13 @@ export default class UIAnimatedBalanceView extends React.Component<Props, State>
                     onAnimationStart={this.onAnimationStart}
                     onAnimationEnd={this.onAnimationEnd}
                 />
-                {icon}
+                {icon != null 
+                    ? (
+                        <View style={UIStyle.margin.leftSmall()}>
+                            {icon}
+                        </View>
+                    )
+                    : null}
             </View>
         );
     }

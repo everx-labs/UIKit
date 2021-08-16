@@ -18,7 +18,6 @@ export {
     UICompatibilityView,
     UIComponent,
     UIDetailsInput,
-    UIDetailsToggle,
     UIDetailsSwitcher,
     UIDetailsView,
     UIDetailsTable,

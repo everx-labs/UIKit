@@ -186,7 +186,7 @@ export function TimeInput({ onChange, current }: TimeInputProps) {
     function numberRange(start: number | any, end: number) {
         if (start > end) {
             // eslint-disable-next-line no-param-reassign
-            start = [end, start];
+            [start, end] = [end, start];
         }
 
         return (
