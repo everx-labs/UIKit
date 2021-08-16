@@ -5,36 +5,29 @@ import type { StyleProp, ViewProps } from 'react-native';
 import { ColorVariants, useTheme } from './Colors';
 
 type Props = Omit<ViewProps, 'style'> & {
-    color?: ColorVariants,
+    color?: ColorVariants;
     style?: StyleProp<ViewStyle>;
-    children?: React.ReactNode,
+    children?: React.ReactNode;
 };
 
-export const UIBackgroundView = React.forwardRef<View, Props>(
-    function UIBackgroundViewForwarded(
-        {
-            color: colorProp = ColorVariants.BackgroundPrimary,
-            style,
-            ...rest
-        }: Props, ref) {
-        const theme = useTheme();
-        const colorStyle: { backgroundColor: ColorValue } = React.useMemo(
-            () => ({
-                backgroundColor: theme[colorProp],
-            }),
-            [theme, colorProp],
-        );
-        return (
-            <View
-                ref={ref}
-                {...rest}
-                style={[
-                    style,
-                    colorStyle,
-                ]}
-            />
-        );
-    },
-);
+export function useBackgroundColorStyle(colorProp = ColorVariants.BackgroundPrimary) {
+    const theme = useTheme();
+    const colorStyle: { backgroundColor: ColorValue } = React.useMemo(
+        () => ({
+            backgroundColor: theme[colorProp] as string,
+        }),
+        [theme, colorProp],
+    );
+
+    return colorStyle;
+}
+
+export const UIBackgroundView = React.forwardRef<View, Props>(function UIBackgroundViewForwarded(
+    { color: colorProp = ColorVariants.BackgroundPrimary, style, ...rest }: Props,
+    ref,
+) {
+    const colorStyle = useBackgroundColorStyle(colorProp);
+    return <View ref={ref} {...rest} style={[style, colorStyle]} />;
+});
 
 export const UIBackgroundViewColors = ColorVariants;
