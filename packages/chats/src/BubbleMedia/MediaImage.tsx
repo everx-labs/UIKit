@@ -130,39 +130,48 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
     const fullSizeImage = React.useMemo(() => {
-        if (!data) {
+        let sourceUri: string | null = null;
+        if (data) {
+            sourceUri = data;
+        } else if (preview) {
+            sourceUri = preview;
+        }
+        if (!sourceUri) {
             return null;
         }
         return (
             <Image
                 ref={imageRef}
-                source={{ uri: data }}
+                source={{ uri: sourceUri }}
                 style={imageSize}
                 onError={onErrorCallback}
                 onLoad={onLoadCallback}
             />
         );
-    }, [data, imageRef, imageSize, onErrorCallback, onLoadCallback]);
+    }, [data, preview, imageRef, imageSize, onErrorCallback, onLoadCallback]);
 
     const previewImage = React.useMemo(() => {
-        if (!preview) {
-            if (!data) {
-                return null;
-            }
-            return fullSizeImage;
+        let sourceUri: string | null = null;
+        if (preview) {
+            sourceUri = preview;
+        } else if (data) {
+            sourceUri = data;
+        }
+        if (!sourceUri) {
+            return null;
         }
         return (
             <Image
                 ref={imageRef}
-                source={{ uri: preview }}
+                source={{ uri: sourceUri }}
                 style={imageSize}
                 onError={onErrorCallback}
                 onLoad={onLoadCallback}
             />
         );
-    }, [preview, imageRef, imageSize, onErrorCallback, onLoadCallback, fullSizeImage, data]);
+    }, [data, preview, imageRef, imageSize, onErrorCallback, onLoadCallback]);
 
-    if (!previewImage) {
+    if (!previewImage || !fullSizeImage) {
         return null;
     }
 

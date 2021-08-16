@@ -9,5 +9,12 @@ export const Duplicate = (props: DuplicateProps) => {
         return null;
     }
 
-    return <DuplicateContent {...props} />;
+    return (
+        <DuplicateContent
+            onClose={props.onClose}
+            originalRef={props.originalRef}
+            fullSizeImage={props.fullSizeImage}
+            previewImage={props.previewImage}
+        />
+    );
 };

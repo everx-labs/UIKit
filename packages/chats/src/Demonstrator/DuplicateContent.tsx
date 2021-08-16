@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { StyleSheet, TouchableWithoutFeedback } from 'react-native';
-import Animated, { useAnimatedStyle } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { makeStyles, Portal } from '@tonlabs/uikit.hydrogen';
-import type { DuplicateProps } from './types';
+import type { DuplicateContentProps } from './types';
 import {
     useDuplicateContentState,
     useDimensions,
@@ -11,23 +11,42 @@ import {
 } from './hooks';
 import { VisibilityState, DuplicateContentState } from './constants';
 
-export const DuplicateContent = ({ previewImage, onClose, originalRef }: DuplicateProps) => {
-    const { duplicateContentState, onPressUnderlay } = useDuplicateContentState();
+export const DuplicateContent = ({
+    fullSizeImage,
+    previewImage,
+    onClose,
+    originalRef,
+}: DuplicateContentProps) => {
+    const [isFullSizeDisplayed, setIsFullSizeDisplayed] = React.useState<boolean>(false);
+    const { duplicateContentState, onPressUnderlay } = useDuplicateContentState(
+        isFullSizeDisplayed,
+        setIsFullSizeDisplayed,
+    );
 
     const { pageY, pageX, width, height } = useDimensions(originalRef, duplicateContentState);
 
-    // const [isFullSizeDisplayed, setIsFullSizeDisplayed] = React.useState<boolean>(false);
+    const fullSizeImageState = useSharedValue<VisibilityState>(VisibilityState.Closed);
 
     const onAnimationEnd = React.useCallback(
-        (visibilityState: VisibilityState) => {
-            if (visibilityState === VisibilityState.Closed) {
+        (state: VisibilityState) => {
+            if (state === VisibilityState.Closed) {
                 onClose();
+            }
+            if (state === VisibilityState.Opened) {
+                setTimeout(() => {
+                    console.log('Opened');
+                    setIsFullSizeDisplayed(true);
+                }, 20);
             }
         },
         [onClose],
     );
 
-    const visibilityState = useVisibilityState(duplicateContentState, onAnimationEnd);
+    const visibilityState = useVisibilityState(
+        duplicateContentState,
+        onAnimationEnd,
+        fullSizeImageState,
+    );
 
     const animatedContainerStyle = useAnimatedContainerStyle(
         visibilityState,
@@ -53,6 +72,11 @@ export const DuplicateContent = ({ previewImage, onClose, originalRef }: Duplica
                 </TouchableWithoutFeedback>
                 <Animated.View style={[styles.duplicateContent, animatedContainerStyle]}>
                     <Animated.View style={opacityStyle}>{previewImage}</Animated.View>
+                    {isFullSizeDisplayed ? (
+                        <Animated.View style={[styles.fullSizeImage]}>
+                            {fullSizeImage}
+                        </Animated.View>
+                    ) : null}
                 </Animated.View>
             </Animated.View>
         </Portal>
@@ -70,5 +94,8 @@ const useStyles = makeStyles(() => ({
         ...StyleSheet.absoluteFillObject,
         backgroundColor: '#00000099',
         zIndex: -10,
+    },
+    fullSizeImage: {
+        ...StyleSheet.absoluteFillObject,
     },
 }));

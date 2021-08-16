@@ -7,24 +7,31 @@ import Animated, {
     interpolate,
     useSharedValue,
     runOnJS,
+    useWorkletCallback,
 } from 'react-native-reanimated';
 import { VisibilityState, DuplicateContentState } from '../constants';
 
 export const useVisibilityState = (
     duplicateContentState: Animated.SharedValue<DuplicateContentState>,
     onAnimationEnd: (visibilityState: VisibilityState) => void,
+    fullSizeImageState: Animated.SharedValue<VisibilityState>,
 ) => {
-    return useDerivedValue(() => {
-        const callback = (isFinished: boolean) => {
+    const runUIAnimationEndCallback = useWorkletCallback(
+        (isFinished: boolean) => {
             if (isFinished) {
                 if (duplicateContentState.value === DuplicateContentState.Closed) {
                     runOnJS(onAnimationEnd)(VisibilityState.Closed);
                 }
                 if (duplicateContentState.value === DuplicateContentState.Opened) {
+                    // eslint-disable-next-line no-param-reassign
+                    fullSizeImageState.value = VisibilityState.Opened;
                     runOnJS(onAnimationEnd)(VisibilityState.Opened);
                 }
             }
-        };
+        },
+        [onAnimationEnd],
+    );
+    return useDerivedValue(() => {
         const toValue =
             duplicateContentState.value === DuplicateContentState.Opened
                 ? VisibilityState.Opened
@@ -34,9 +41,9 @@ export const useVisibilityState = (
             {
                 overshootClamping: true,
             },
-            callback,
+            runUIAnimationEndCallback,
         );
-    });
+    }, []);
 };
 
 export const useAnimatedContainerStyle = (
@@ -98,7 +105,10 @@ export const useAnimatedContainerStyle = (
     return animatedContainerStyle;
 };
 
-export const useDuplicateContentState = () => {
+export const useDuplicateContentState = (
+    isFullSizeDisplayed: boolean,
+    setIsFullSizeDisplayed: React.Dispatch<React.SetStateAction<boolean>>,
+) => {
     const duplicateContentState = useSharedValue<DuplicateContentState>(
         DuplicateContentState.Closed,
     );
@@ -107,9 +117,19 @@ export const useDuplicateContentState = () => {
         duplicateContentState.value = DuplicateContentState.Measurement;
     }, [duplicateContentState]);
 
-    const onPressUnderlay = React.useCallback(() => {
+    const closeDuplicateContentState = React.useCallback(() => {
         duplicateContentState.value = DuplicateContentState.Closed;
     }, [duplicateContentState]);
+
+    const onPressUnderlay = React.useCallback(() => {
+        setIsFullSizeDisplayed(false);
+    }, [setIsFullSizeDisplayed]);
+
+    React.useEffect(() => {
+        if (!isFullSizeDisplayed && duplicateContentState.value === DuplicateContentState.Opened) {
+            closeDuplicateContentState();
+        }
+    }, [isFullSizeDisplayed, duplicateContentState, closeDuplicateContentState]);
 
     return {
         duplicateContentState,

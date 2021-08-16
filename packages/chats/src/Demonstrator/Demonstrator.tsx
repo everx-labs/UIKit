@@ -15,7 +15,7 @@ type DemonstratorProps = {
     onClose: () => void;
     imageRef: React.RefObject<Image>;
     imageSize: ImageSize | null;
-    fullSizeImage: React.ReactElement | null;
+    fullSizeImage: React.ReactElement;
     previewImage: React.ReactElement;
 };
 

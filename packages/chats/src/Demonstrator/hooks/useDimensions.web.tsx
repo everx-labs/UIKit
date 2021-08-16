@@ -1,5 +1,5 @@
 import type { View } from 'react-native';
-import Animated, { useSharedValue, useDerivedValue } from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedReaction } from 'react-native-reanimated';
 import type { Dimensions } from '../types';
 import { DuplicateContentState } from '../constants';
 
@@ -33,19 +33,31 @@ export const useDimensions = (
     const pageX = useSharedValue<number>(0);
     const pageY = useSharedValue<number>(0);
 
-    useDerivedValue(() => {
-        if (duplicateContentState.value === DuplicateContentState.Measurement) {
-            measure(originalRef).then(measurements => {
-                width.value = measurements.width;
-                height.value = measurements.height;
-                pageX.value = measurements.pageX;
-                pageY.value = measurements.pageY;
+    useAnimatedReaction(
+        () => {
+            return {
+                duplicateContentState: duplicateContentState.value,
+            };
+        },
+        (state, prevState) => {
+            if (
+                !prevState ||
+                (prevState?.duplicateContentState === DuplicateContentState.Closed &&
+                    state.duplicateContentState === DuplicateContentState.Measurement)
+            ) {
+                measure(originalRef).then(measurements => {
+                    width.value = measurements.width;
+                    height.value = measurements.height;
+                    pageX.value = measurements.pageX;
+                    pageY.value = measurements.pageY;
 
-                // eslint-disable-next-line no-param-reassign
-                duplicateContentState.value = DuplicateContentState.Opened;
-            });
-        }
-    }, []);
+                    // eslint-disable-next-line no-param-reassign
+                    duplicateContentState.value = DuplicateContentState.Opened;
+                });
+            }
+        },
+        [],
+    );
 
     return {
         width,

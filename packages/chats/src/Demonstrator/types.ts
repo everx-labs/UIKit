@@ -12,6 +12,13 @@ export type DuplicateProps = {
     isOpen: boolean;
     onClose: () => void;
     originalRef: React.RefObject<View>;
-    fullSizeImage: React.ReactElement | null;
+    fullSizeImage: React.ReactElement;
+    previewImage: React.ReactElement;
+};
+
+export type DuplicateContentProps = {
+    onClose: () => void;
+    originalRef: React.RefObject<View>;
+    fullSizeImage: React.ReactElement;
     previewImage: React.ReactElement;
 };
