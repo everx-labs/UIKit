@@ -25,10 +25,9 @@ import {
     UIBottomSheet,
     UIQRCodeScannerSheet,
     UIFullscreenSheet,
-    UIActionSheet,
-    UIActionSheetActionType,
     UILargeTitleHeader,
 } from '@tonlabs/uikit.navigation';
+import { UIPopup } from '@tonlabs/uikit.popups';
 import {
     UIMaterialTextView,
     useTheme,
@@ -106,7 +105,7 @@ function PinCodeMenu() {
     );
 }
 
-export const actionSheet = React.createRef<typeof UIActionSheet>();
+export const actionSheet = React.createRef<typeof UIPopup.ActionSheet>();
 
 function BigBottomSheet() {
     const theme = useTheme();
@@ -250,43 +249,43 @@ export const Menus = () => {
                         title="Show ActionSheet"
                         onPress={() => setActionSheetVisible(true)}
                     />
-                    <UIActionSheet
+                    <UIPopup.ActionSheet
                         visible={actionSheetVisible}
                         note="A short description of the actions goes here."
                     >
-                        <UIActionSheet.Action
-                            type={UIActionSheetActionType.Disabled}
+                        <UIPopup.ActionSheet.Action
+                            type={UIPopup.ActionSheet.Action.Type.Disabled}
                             title="Disabled Action"
                             onPress={getCallback(
                                 'Disabled Action',
                                 setActionSheetVisible,
                             )}
                         />
-                        <UIActionSheet.Action
-                            type={UIActionSheetActionType.Neutral}
+                        <UIPopup.ActionSheet.Action
+                            type={UIPopup.ActionSheet.Action.Type.Neutral}
                             title="Neutral Action"
                             onPress={getCallback(
                                 'Neutral Action',
                                 setActionSheetVisible,
                             )}
                         />
-                        <UIActionSheet.Action
-                            type={UIActionSheetActionType.Negative}
+                        <UIPopup.ActionSheet.Action
+                            type={UIPopup.ActionSheet.Action.Type.Negative}
                             title="Negative Action"
                             onPress={getCallback(
                                 'Negative Action',
                                 setActionSheetVisible,
                             )}
                         />
-                        <UIActionSheet.Action
-                            type={UIActionSheetActionType.Сancel}
-                            title="Сancel Action"
+                        <UIPopup.ActionSheet.Action
+                            type={UIPopup.ActionSheet.Action.Type.Cancel}
+                            title="Cancel Action"
                             onPress={getCallback(
-                                'Сancel Action',
+                                'Cancel Action',
                                 setActionSheetVisible,
                             )}
                         />
-                    </UIActionSheet>
+                    </UIPopup.ActionSheet>
                 </View>
             </ExampleSection>
             <ExampleSection title="UICountryPicker">

@@ -37,6 +37,7 @@
     "@tonlabs/uikit.legacy": "*",
     "@tonlabs/uikit.navigation": "*",
     "@tonlabs/uikit.navigation_legacy": "*",
+    "@tonlabs/uikit.popups": "*",
     "@tonlabs/uikit.stickers": "*",
     "@types/qrcode": "1.4.0",
     "bignumber.js": "9.0.0",
