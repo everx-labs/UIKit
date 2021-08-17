@@ -20,6 +20,7 @@ export type QRCodeRef = {
 // eslint-disable-next-line no-shadow
 export enum QRCodeError {
     DataTooLong,
+    DataIsEmpty,
 }
 
 /**
