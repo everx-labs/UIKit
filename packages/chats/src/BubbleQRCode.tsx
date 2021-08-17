@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import { UIQRCodeView, QRCodeType, QRCodeSize, QRCodeError } from '@tonlabs/uikit.flask';
+import { UIQRCodeView, QRCodeType, QRCodeSize, useQRCodeValueError } from '@tonlabs/uikit.flask';
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { makeStyles } from '@tonlabs/uikit.hydrogen';
@@ -13,26 +13,8 @@ export const ChatBubbleQRCode: React.FC<ChatQRCodeMessage> = (message: ChatQRCod
     return <BubbleQRCode {...message} />;
 };
 
-const useOnErrorCallback = (onError: ((error: QRCodeError) => void) | undefined) => {
-    const [qrCodeViewError, setQrCodeViewError] = React.useState<QRCodeError | null>(null);
-    const onErrorCallback = React.useCallback(
-        (error: QRCodeError): void => {
-            setQrCodeViewError(error);
-            if (onError) {
-                onError(error);
-            }
-        },
-        [onError],
-    );
-
-    return {
-        qrCodeViewError,
-        onErrorCallback,
-    };
-};
-
 export const BubbleQRCode: React.FC<QRCodeMessage> = (message: QRCodeMessage) => {
-    const { status, data, onError } = message;
+    const { status, data } = message;
     const position = useBubblePosition(status);
     const containerStyle = useBubbleContainerStyle(message);
     const bubbleBackgroundColor = useBubbleBackgroundColor(message);
@@ -43,9 +25,9 @@ export const BubbleQRCode: React.FC<QRCodeMessage> = (message: QRCodeMessage) =>
     );
     const styles = useStyles();
 
-    const { qrCodeViewError, onErrorCallback } = useOnErrorCallback(onError);
+    const error = useQRCodeValueError(message.data);
 
-    if (qrCodeViewError !== null) {
+    if (error !== null) {
         return null;
     }
 
@@ -65,7 +47,7 @@ export const BubbleQRCode: React.FC<QRCodeMessage> = (message: QRCodeMessage) =>
                         testID={`chat_qr_code_${data}`}
                         type={QRCodeType.Square}
                         logo={UIAssets.icons.brand.tonSymbolBlack}
-                        onError={onErrorCallback}
+                        onError={message.onError}
                         onSuccess={message.onSuccess}
                         value={data}
                     />

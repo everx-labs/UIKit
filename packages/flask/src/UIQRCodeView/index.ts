@@ -1,1 +1,1 @@
-export { UIQRCodeView } from './UIQRCodeView';
+export { UIQRCodeView, useQRCodeValueError } from './UIQRCodeView';
