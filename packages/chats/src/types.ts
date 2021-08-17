@@ -3,6 +3,8 @@ import type { ImageSourcePropType, LayoutChangeEvent, ViewProps } from 'react-na
 import type BigNumber from 'bignumber.js';
 import type { QRCodeError } from '@tonlabs/uikit.flask';
 
+export type DataUrl = string
+
 // Semantically describe a bubble position
 // By default:
 // Sent is places on the right side
@@ -139,8 +141,8 @@ export enum MediaMessageError {
 
 export type MediaMessage = BubbleBaseT & {
     type: ChatMessageType.Media;
-    data: string | null; // base64
-    preview: string | null; // base64
+    data: DataUrl | null;
+    preview: DataUrl | null;
     onLoad?: () => void;
     onError?: (error: MediaMessageError) => void;
 };

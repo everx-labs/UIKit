@@ -7,7 +7,7 @@ import { useBubbleContainerStyle } from '../useBubblePosition';
 import { useBubbleBackgroundColor } from '../useBubbleStyle';
 import { MediaMessage, MediaMessageError } from '../types';
 import { UIConstant } from '../constants';
-import { Demonstrator } from '../Demonstrator/Demonstrator';
+import { Lightbox } from '../Lightbox/Lightbox';
 
 type ImageSize = {
     width: number;
@@ -187,7 +187,7 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
         <View style={[containerStyle, styles.container]} onLayout={onLayout}>
             <TouchableOpacity activeOpacity={1} onPress={onPress}>
                 <View style={[bubbleBackgroundColor, styles.bubble]}>
-                    <Demonstrator
+                    <Lightbox
                         imageRef={imageRef}
                         isOpen={isOpen}
                         onClose={onClose}

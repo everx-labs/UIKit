@@ -29,7 +29,7 @@ export const DuplicateContent = ({
 
     const { pageY, pageX, width, height } = useDimensions(originalRef, duplicateContentState);
 
-    const onAnimationEnd = useOnAnimationEnd(onClose, setIsFullSizeDisplayed)
+    const onAnimationEnd = useOnAnimationEnd(onClose, setIsFullSizeDisplayed);
 
     const visibilityState = useVisibilityState(duplicateContentState, onAnimationEnd);
 

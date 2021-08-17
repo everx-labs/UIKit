@@ -10,7 +10,7 @@ type ImageSize = {
     height: number;
 };
 
-type DemonstratorProps = {
+type LightboxProps = {
     isOpen: boolean;
     onClose: () => void;
     imageRef: React.RefObject<Image>;
@@ -19,7 +19,7 @@ type DemonstratorProps = {
     previewImage: React.ReactElement;
 };
 
-export const Demonstrator = (props: DemonstratorProps) => {
+export const Lightbox = (props: LightboxProps) => {
     const { onClose, previewImage, imageRef, imageSize } = props;
     const ref = useAnimatedRef<View>();
 

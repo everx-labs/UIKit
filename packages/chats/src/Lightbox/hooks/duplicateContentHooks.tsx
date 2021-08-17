@@ -147,7 +147,7 @@ export const useOnAnimationEnd = (
                  */
                 setTimeout(() => {
                     onClose();
-                }, UIConstant.demonstrator.animationDisplayDelay);
+                }, UIConstant.lightbox.animationDisplayDelay);
             }
             if (state === VisibilityState.Opened) {
                 /**
@@ -157,7 +157,7 @@ export const useOnAnimationEnd = (
                  */
                 setTimeout(() => {
                     setIsFullSizeDisplayed(true);
-                }, UIConstant.demonstrator.animationDisplayDelay);
+                }, UIConstant.lightbox.animationDisplayDelay);
             }
         },
         [onClose, setIsFullSizeDisplayed],

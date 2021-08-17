@@ -6,7 +6,7 @@ export const UIConstant = {
         default: 3 / 4,
     }),
     mediaImageMaxSizesAspectRatio: 9 / 16,
-    demonstrator: {
+    lightbox: {
         animationDisplayDelay: 50,
     }
 };
