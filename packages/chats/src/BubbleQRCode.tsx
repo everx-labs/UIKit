@@ -14,7 +14,7 @@ export const ChatBubbleQRCode: React.FC<ChatQRCodeMessage> = (message: ChatQRCod
 };
 
 export const BubbleQRCode: React.FC<QRCodeMessage> = (message: QRCodeMessage) => {
-    const { status, data } = message;
+    const { status, data, onError, onSuccess } = message;
     const position = useBubblePosition(status);
     const containerStyle = useBubbleContainerStyle(message);
     const bubbleBackgroundColor = useBubbleBackgroundColor(message);
@@ -25,7 +25,7 @@ export const BubbleQRCode: React.FC<QRCodeMessage> = (message: QRCodeMessage) =>
     );
     const styles = useStyles();
 
-    const error = useQRCodeValueError(message.data);
+    const error = useQRCodeValueError(data, onError, onSuccess);
 
     if (error !== null) {
         return null;
@@ -47,8 +47,6 @@ export const BubbleQRCode: React.FC<QRCodeMessage> = (message: QRCodeMessage) =>
                         testID={`chat_qr_code_${data}`}
                         type={QRCodeType.Square}
                         logo={UIAssets.icons.brand.tonSymbolBlack}
-                        onError={message.onError}
-                        onSuccess={message.onSuccess}
                         value={data}
                     />
                 </View>

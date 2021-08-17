@@ -16,8 +16,12 @@ const renderContent = (props: QRCodeProps) => {
     }
 };
 
-export const useQRCodeValueError = (value: string): QRCodeError | null => {
-    return React.useMemo(() => {
+export const useQRCodeValueError = (
+    value: string,
+    onError: ((error: QRCodeError) => void) | undefined,
+    onSuccess: (() => void) | undefined,
+): QRCodeError | null => {
+    const error: QRCodeError | null = React.useMemo(() => {
         if (value.length === 0) {
             return QRCodeError.DataIsEmpty;
         }
@@ -26,23 +30,26 @@ export const useQRCodeValueError = (value: string): QRCodeError | null => {
         }
         return null;
     }, [value]);
+
+    React.useEffect(() => {
+        if (error) {
+            onError && onError(error);
+        } else {
+            onSuccess && onSuccess();
+        }
+    }, [error, onError, onSuccess]);
+
+    return error;
 };
 
 export const UIQRCodeViewImpl: React.ForwardRefRenderFunction<QRCodeRef, QRCodeProps> = (
     props: QRCodeProps,
-    ref,
+    ref: React.ForwardedRef<QRCodeRef>,
 ) => {
     const { onError, onSuccess } = props;
-    const valueError = useQRCodeValueError(props.value);
-    React.useEffect(() => {
-        if (valueError) {
-            onError && onError(valueError);
-        } else {
-            onSuccess && onSuccess();
-        }
-    }, [valueError, onError, onSuccess]);
+    const error = useQRCodeValueError(props.value, onError, onSuccess);
 
-    if (valueError !== null) {
+    if (error !== null) {
         return null;
     }
     return <ScreenshotView ref={ref}>{renderContent(props)}</ScreenshotView>;

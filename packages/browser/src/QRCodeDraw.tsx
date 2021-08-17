@@ -36,7 +36,7 @@ export const QRCodeDraw = ({ data, status, onLayout, prompt, onDraw }: QRCodeDra
         }
     }, [onDraw]);
 
-    const error = useQRCodeValueError(data);
+    const error = useQRCodeValueError(data, onError, onSuccess);
 
     if (error !== null) {
         return null;
@@ -49,8 +49,6 @@ export const QRCodeDraw = ({ data, status, onLayout, prompt, onDraw }: QRCodeDra
                 status={status}
                 type={ChatMessageType.QRCode}
                 onLayout={onLayout}
-                onError={onError}
-                onSuccess={onSuccess}
                 firstFromChain
                 key="qrcode-draw-bubble"
             />
