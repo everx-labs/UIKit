@@ -45,8 +45,8 @@ export const useDimensions = (
                 (prevState?.duplicateContentState === DuplicateContentState.Closed &&
                     state.duplicateContentState === DuplicateContentState.Measurement)
             ) {
-                try {
-                    measure(originalRef).then(measurements => {
+                measure(originalRef)
+                    .then(measurements => {
                         width.value = measurements.width;
                         height.value = measurements.height;
                         pageX.value = measurements.pageX;
@@ -54,10 +54,10 @@ export const useDimensions = (
 
                         // eslint-disable-next-line no-param-reassign
                         duplicateContentState.value = DuplicateContentState.Opened;
+                    })
+                    .catch(reason => {
+                        console.error(`useDimensions.web.tsx: Measuring is failed - ${reason}`);
                     });
-                } catch (e) {
-                    console.error(`useDimensions.web.tsx: Measuring is failed - ${e}`);
-                }
             }
         },
         [],

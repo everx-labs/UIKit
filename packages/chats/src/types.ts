@@ -3,6 +3,9 @@ import type { ImageSourcePropType, LayoutChangeEvent, ViewProps } from 'react-na
 import type BigNumber from 'bignumber.js';
 import type { QRCodeError } from '@tonlabs/uikit.flask';
 
+/**
+ * A string of the form: `data:[<data type>][;base64],<data in base64>`
+ */
 export type DataUrl = string
 
 // Semantically describe a bubble position
