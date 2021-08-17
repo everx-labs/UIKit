@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { ImageStyle, Platform, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
-import type Animated from 'react-native-reanimated';
+import { Platform, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 // @ts-ignore
 // eslint-disable-next-line import/no-unresolved
@@ -16,6 +15,7 @@ import {
 } from './useButtonChildren';
 import { ColorVariants } from '../Colors';
 import { UIConstant } from '../constants';
+import type { ButtonAnimations } from './types';
 
 export type UILayout = {
     marginTop?: number;
@@ -23,26 +23,6 @@ export type UILayout = {
     marginBottom?: number;
     marginLeft?: number;
 }
-
-type BackgroundParams = {
-    animationParam: Animated.SharedValue<number>;
-    backgroundStyle?: Animated.AnimatedStyleProp<ViewStyle>;
-    overlayStyle?: Animated.AnimatedStyleProp<ViewStyle>;
-};
-
-type ContentParams = {
-    animationParam: Animated.SharedValue<number>;
-    style: Animated.AnimatedStyleProp<TextStyle | ImageStyle>;
-    initialColor?: ColorVariants;
-    activeColor?: ColorVariants;
-};
-
-export type ButtonAnimations = {
-    hover?: BackgroundParams,
-    press?: BackgroundParams,
-    title?: ContentParams,
-    icon?: ContentParams,
-};
 
 type ButtonProps = {
     animations: ButtonAnimations;

@@ -6,7 +6,9 @@ import {
     useSharedValue,
 } from 'react-native-reanimated';
 
-import { Button, ButtonAnimations, UILayout } from './Button';
+import { Button, UILayout } from './Button';
+import type { ButtonAnimations } from './Button/types';
+
 import { ColorVariants, useTheme } from './Colors';
 import { UIConstant } from './constants';
 import { UILabelRoles } from './UILabel';

@@ -9,7 +9,8 @@ import Animated, { withSpring } from 'react-native-reanimated';
 
 import { useHover } from '../useHover';
 import { BUTTON_WITH_SPRING_CONFIG } from '../constants';
-import type { ButtonAnimations } from './Button';
+
+import type { ButtonAnimations } from './types';
 
 type TouchableElementProps = {
     animations: ButtonAnimations;
