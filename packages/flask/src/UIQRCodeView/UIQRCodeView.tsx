@@ -18,6 +18,9 @@ const renderContent = (props: QRCodeProps) => {
 
 const useValueError = (value: string): QRCodeError | null => {
     return React.useMemo(() => {
+        if (value.length === 0) {
+            return QRCodeError.DataIsEmpty;
+        }
         if (value.length > UIConstant.qrCode.maxValueLength) {
             return QRCodeError.DataTooLong;
         }
@@ -25,10 +28,10 @@ const useValueError = (value: string): QRCodeError | null => {
     }, [value]);
 };
 
-export const UIQRCodeViewImpl: React.ForwardRefRenderFunction<
-    QRCodeRef,
-    QRCodeProps
-> = (props: QRCodeProps, ref) => {
+export const UIQRCodeViewImpl: React.ForwardRefRenderFunction<QRCodeRef, QRCodeProps> = (
+    props: QRCodeProps,
+    ref,
+) => {
     const { onError, onSuccess } = props;
     const valueError = useValueError(props.value);
     React.useEffect(() => {

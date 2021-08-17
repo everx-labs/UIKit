@@ -21,13 +21,25 @@ const convertQRCodeErrorToQRCodeDrawMessageStatus = (
     }
 };
 
-export const QRCodeDraw = ({
-    data,
-    status,
-    onLayout,
-    prompt,
-    onDraw,
-}: QRCodeDrawMessage) => {
+const useOnErrorCallback = (onError: ((error: QRCodeError) => void) | undefined) => {
+    const [bubbleQrCodeError, setQrCodeViewError] = React.useState<QRCodeError | null>(null);
+    const onErrorCallback = React.useCallback(
+        (error: QRCodeError): void => {
+            setQrCodeViewError(error);
+            if (onError) {
+                onError(error);
+            }
+        },
+        [onError],
+    );
+
+    return {
+        bubbleQrCodeError,
+        onErrorCallback,
+    };
+};
+
+export const QRCodeDraw = ({ data, status, onLayout, prompt, onDraw }: QRCodeDrawMessage) => {
     const onError = React.useCallback(
         (error: QRCodeError) => {
             if (onDraw) {
@@ -41,6 +53,13 @@ export const QRCodeDraw = ({
             onDraw(QRCodeDrawMessageStatus.Success);
         }
     }, [onDraw]);
+
+    const { bubbleQrCodeError, onErrorCallback } = useOnErrorCallback(onError);
+
+    if (bubbleQrCodeError !== null) {
+        return null;
+    }
+
     return (
         <View>
             <BubbleQRCode
@@ -48,7 +67,7 @@ export const QRCodeDraw = ({
                 status={status}
                 type={ChatMessageType.QRCode}
                 onLayout={onLayout}
-                onError={onError}
+                onError={onErrorCallback}
                 onSuccess={onSuccess}
                 firstFromChain
                 key="qrcode-draw-bubble"
