@@ -22,12 +22,16 @@ export const DuplicateContent = ({
 
     const [isFullSizeDisplayed, setIsFullSizeDisplayed] = React.useState<boolean>(false);
 
-    const { duplicateContentState, onPressUnderlay } = useDuplicateContentState(
+    const { duplicateContentState, onPressUnderlay, onMeasureEnd } = useDuplicateContentState(
         isFullSizeDisplayed,
         setIsFullSizeDisplayed,
     );
 
-    const { pageY, pageX, width, height } = useDimensions(originalRef, duplicateContentState);
+    const { pageY, pageX, width, height } = useDimensions(
+        originalRef,
+        duplicateContentState,
+        onMeasureEnd,
+    );
 
     const onAnimationEnd = useOnAnimationEnd(onClose, setIsFullSizeDisplayed);
 
@@ -43,7 +47,12 @@ export const DuplicateContent = ({
 
     const previewImageStyle = useAnimatedStyle(() => {
         return {
-            opacity: duplicateContentState.value === DuplicateContentState.Measurement ? 0 : 1,
+            opacity:
+                duplicateContentState.value === DuplicateContentState.Initial ||
+                duplicateContentState.value === DuplicateContentState.Measurement ||
+                visibilityState.value === VisibilityState.Closed
+                    ? 0
+                    : 1,
         };
     }, []);
 

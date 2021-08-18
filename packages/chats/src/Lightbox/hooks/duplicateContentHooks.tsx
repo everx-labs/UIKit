@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useWindowDimensions } from 'react-native';
+import { Platform, useWindowDimensions } from 'react-native';
 import Animated, {
     useDerivedValue,
     withSpring,
@@ -8,6 +8,8 @@ import Animated, {
     useSharedValue,
     runOnJS,
     useWorkletCallback,
+    withDelay,
+    withTiming,
 } from 'react-native-reanimated';
 import { UIConstant } from '../../constants';
 import { VisibilityState, DuplicateContentState } from '../constants';
@@ -103,35 +105,56 @@ export const useAnimatedContainerStyle = (
     return animatedContainerStyle;
 };
 
+const runUISetWithDelay = (toValue: number): number => {
+    'worklet';
+
+    return withDelay(100, withTiming(toValue, { duration: 0 }));
+};
+
 export const useDuplicateContentState = (
     isFullSizeDisplayed: boolean,
     setIsFullSizeDisplayed: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
     const duplicateContentState = useSharedValue<DuplicateContentState>(
-        DuplicateContentState.Closed,
+        DuplicateContentState.Initial,
     );
 
     React.useEffect(() => {
         duplicateContentState.value = DuplicateContentState.Measurement;
     }, [duplicateContentState]);
 
-    const closeDuplicateContentState = React.useCallback(() => {
-        duplicateContentState.value = DuplicateContentState.Closed;
-    }, [duplicateContentState]);
-
     const onPressUnderlay = React.useCallback(() => {
+        /**
+         * First we hide the heavy FullSizeImage for performance needs
+         */
         setIsFullSizeDisplayed(false);
     }, [setIsFullSizeDisplayed]);
 
-    React.useEffect(() => {
-        if (!isFullSizeDisplayed && duplicateContentState.value === DuplicateContentState.Opened) {
-            closeDuplicateContentState();
+    const onMeasureEnd = useWorkletCallback(() => {
+        if (Platform.OS === 'android') {
+            /**
+             * On android, it takes time to render the image.
+             * You should add a mechanism for copying the image without a heavy mounting mechanism
+             */
+            duplicateContentState.value = runUISetWithDelay(DuplicateContentState.Opened);
+        } else {
+            duplicateContentState.value = DuplicateContentState.Opened;
         }
-    }, [isFullSizeDisplayed, duplicateContentState, closeDuplicateContentState]);
+    });
+
+    React.useEffect(() => {
+        /**
+         * We collapse the container only after we have removed the heavy fullSizeImage
+         */
+        if (!isFullSizeDisplayed && duplicateContentState.value === DuplicateContentState.Opened) {
+            duplicateContentState.value = DuplicateContentState.Closed;
+        }
+    }, [isFullSizeDisplayed, duplicateContentState]);
 
     return {
         duplicateContentState,
         onPressUnderlay,
+        onMeasureEnd,
     };
 };
 

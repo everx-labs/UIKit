@@ -10,4 +10,5 @@ export * from './duplicateContentHooks';
 export const useDimensions: (
     originalRef: React.RefObject<View>,
     duplicateContentState: Animated.SharedValue<DuplicateContentState>,
+    onMeasureEnd: () => void,
 ) => Dimensions = useDimensionsImpl;

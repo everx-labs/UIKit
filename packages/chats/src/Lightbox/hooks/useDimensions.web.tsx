@@ -27,6 +27,7 @@ const measure = (originalRef: React.RefObject<View>): Promise<Measurements> => {
 export const useDimensions = (
     originalRef: React.RefObject<View>,
     duplicateContentState: Animated.SharedValue<DuplicateContentState>,
+    onMeasureEnd: () => void,
 ): Dimensions => {
     const width = useSharedValue<number>(0);
     const height = useSharedValue<number>(0);
@@ -52,8 +53,7 @@ export const useDimensions = (
                         pageX.value = measurements.pageX;
                         pageY.value = measurements.pageY;
 
-                        // eslint-disable-next-line no-param-reassign
-                        duplicateContentState.value = DuplicateContentState.Opened;
+                        onMeasureEnd();
                     })
                     .catch(reason => {
                         console.error(`useDimensions.web.tsx: Measuring is failed - ${reason}`);
