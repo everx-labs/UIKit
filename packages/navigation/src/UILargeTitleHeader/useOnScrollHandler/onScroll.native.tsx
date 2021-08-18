@@ -1,10 +1,7 @@
 /* eslint-disable no-param-reassign */
 import type * as React from 'react';
 import Animated, { measure, scrollTo } from 'react-native-reanimated';
-import type {
-    ScrollView as RNScrollView,
-    NativeScrollEvent,
-} from 'react-native';
+import type { ScrollView as RNScrollView, NativeScrollEvent } from 'react-native';
 
 import { getYWithRubberBandEffect } from '../../AnimationHelpers/getYWithRubberBandEffect';
 import type {
@@ -13,6 +10,7 @@ import type {
 } from '../../Scrollable/Context';
 import type { ScrollHandlerContext } from '../types';
 
+// eslint-disable-next-line func-names
 export default function (
     scrollRef: React.RefObject<RNScrollView>,
     largeTitleViewRef: React.RefObject<Animated.View>,
@@ -44,7 +42,7 @@ export default function (
         /**
          * It can be undefined on Android and this is fine
          * since the guard is needed only for iOS
-         * 
+         *
          * On iOS `onScroll` event could fire on mount sometimes,
          * that's likely a bug in RN or iOS itself.
          * To prevent changes when there wasn't onBeginDrag event
@@ -73,10 +71,7 @@ export default function (
                 yWithoutRubberBand.value - y > 0 ||
                 yWithoutRubberBand.value > 0
             ) {
-                yWithoutRubberBand.value = Math.max(
-                    0,
-                    yWithoutRubberBand.value - y,
-                );
+                yWithoutRubberBand.value = Math.max(0, yWithoutRubberBand.value - y);
 
                 const parentScrollWorkletEventHandler = (parentScrollHandler as any)
                     .current as ScrollWorkletEventHandler;

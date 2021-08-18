@@ -136,9 +136,8 @@ export function UILargeTitleHeader({
     // see `useAnimatedGestureHandler`
     const yIsNegative = useSharedValue(true);
 
-    const { ref: parentRef, scrollHandler: parentScrollHandler } = React.useContext(
-        ScrollableContext,
-    );
+    const { ref: parentRef, scrollHandler: parentScrollHandler } =
+        React.useContext(ScrollableContext);
 
     const scrollRef = parentRef || localScrollRef;
 
@@ -222,7 +221,7 @@ export function UILargeTitleHeader({
             largeTitleHeight: largeTitleHeight.value,
             shift: shift.value,
         }),
-        (state) => {
+        state => {
             if (state.largeTitleHeight === 0) {
                 return;
             }
@@ -376,11 +375,7 @@ export function UILargeTitleHeader({
             // If position is changed forcibly
             // no need to respond to scroll events anymore
             shiftChangedForcibly.value = true;
-            shift.value = withTiming(
-                position,
-                { duration: options.duration ?? 0 },
-                callback,
-            );
+            shift.value = withTiming(position, { duration: options.duration ?? 0 }, callback);
             if (options.changeDefaultShift) {
                 defaultShift.value = position;
             }
