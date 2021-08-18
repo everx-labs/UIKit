@@ -41,9 +41,16 @@ export default function (
             return;
         }
 
-        // It can be undefined on Android and this is fine
-        // since the guard is needed only for iOS
-        if (ctx != null && ctx.scrollTouchGuard === false) {
+        /**
+         * It can be undefined on Android and this is fine
+         * since the guard is needed only for iOS
+         * 
+         * On iOS `onScroll` event could fire on mount sometimes,
+         * that's likely a bug in RN or iOS itself.
+         * To prevent changes when there wasn't onBeginDrag event
+         * (so it's likely not an actual scroll) using a guard
+         */
+        if (ctx != null && !ctx.scrollTouchGuard) {
             return;
         }
 

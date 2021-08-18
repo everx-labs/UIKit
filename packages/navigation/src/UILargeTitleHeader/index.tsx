@@ -166,12 +166,6 @@ export function UILargeTitleHeader({
     const scrollHandler = useAnimatedScrollHandler<ScrollHandlerContext>({
         onScroll,
         onBeginDrag: (_event: NativeScrollEvent, ctx: ScrollHandlerContext) => {
-            /**
-             * On iOS `onScroll` event could fire on mount sometimes,
-             * that's likely a bug in RN or iOS itself.
-             * To prevent changes when there wasn't onBeginDrag event
-             * (so it's likely not an actual scroll) using a guard
-             */
             ctx.scrollTouchGuard = true;
             shiftChangedForcibly.value = false;
             yWithoutRubberBand.value = shift.value;
