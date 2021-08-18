@@ -109,6 +109,13 @@ export function UILargeTitleHeader({
     const shiftChangedForcibly = useSharedValue(false);
     const defaultShift = useSharedValue(0);
     const localScrollRef = useAnimatedRef<Animated.ScrollView>();
+    /**
+     * On iOS `onScroll` event could fire on mount sometimes,
+     * that's likely a bug in RN or iOS itself.
+     * To prevent changes when there wasn't onBeginDrag event
+     * (so it's likely not an actual scroll) using a guard
+     */
+    const scrollTouchGuard = useSharedValue(false);
 
     const largeTitleViewRef = useAnimatedRef<Animated.View>();
     const largeTitleHeight = useSharedValue(0);
@@ -155,6 +162,7 @@ export function UILargeTitleHeader({
         shiftChangedForcibly,
         RUBBER_BAND_EFFECT_DISTANCE,
         parentScrollHandler,
+        scrollTouchGuard,
     );
 
     const onEndDrag = useResetPosition(
@@ -164,11 +172,13 @@ export function UILargeTitleHeader({
         defaultShift,
         yWithoutRubberBand,
         parentScrollHandler,
+        scrollTouchGuard,
     );
 
     const scrollHandler = useAnimatedScrollHandler({
         onScroll,
         onBeginDrag: () => {
+            scrollTouchGuard.value = true;
             shiftChangedForcibly.value = false;
             yWithoutRubberBand.value = shift.value;
         },

@@ -38,6 +38,7 @@ export function useResetPosition(
     defaultShift: Animated.SharedValue<number>,
     yWithoutRubberBand: Animated.SharedValue<number>,
     parentScrollHandler: ScrollableOnScrollHandler,
+    scrollTouchGuard: Animated.SharedValue<boolean>,
 ) {
     const resetPositionRef = React.useRef<(() => void) | null>(null);
 
@@ -48,6 +49,8 @@ export function useResetPosition(
             if (shiftChangedForcibly.value) {
                 return;
             }
+
+            scrollTouchGuard.value = false;
 
             if (
                 parentScrollHandler &&

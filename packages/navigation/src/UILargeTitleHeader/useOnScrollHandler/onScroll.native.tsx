@@ -22,6 +22,7 @@ export default function (
     shiftChangedForcibly: Animated.SharedValue<boolean>,
     rubberBandDistance: number,
     parentScrollHandler: ScrollableOnScrollHandler,
+    scrollTouchGuard: Animated.SharedValue<boolean>,
 ) {
     return (event: NativeScrollEvent) => {
         'worklet';
@@ -37,6 +38,10 @@ export default function (
         }
 
         if (shiftChangedForcibly.value) {
+            return;
+        }
+
+        if (!scrollTouchGuard.value) {
             return;
         }
 

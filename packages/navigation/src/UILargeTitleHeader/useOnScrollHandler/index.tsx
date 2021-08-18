@@ -17,6 +17,7 @@ export function useOnScrollHandler(
     shiftChangedForcibly: Animated.SharedValue<boolean>,
     rubberBandDistance: number,
     parentScrollHandler: ScrollableOnScrollHandler,
+    scrollTouchGuard: Animated.SharedValue<boolean>,
 ) {
     const onScrollCbRef = React.useRef<
         ((event: NativeScrollEvent) => void) | null
@@ -33,6 +34,7 @@ export function useOnScrollHandler(
             shiftChangedForcibly,
             rubberBandDistance,
             parentScrollHandler,
+            scrollTouchGuard,
         ) as (event: NativeScrollEvent) => void;
     }
 
