@@ -106,10 +106,6 @@ module.exports = {
                     ),
                     path.resolve(
                         __dirname,
-                        '../node_modules/react-navigation-surf/',
-                    ),
-                    path.resolve(
-                        __dirname,
                         '../node_modules/react-native-document-picker/',
                     ),
                     path.resolve(__dirname, '../node_modules/rn-fetch-blob/'),
