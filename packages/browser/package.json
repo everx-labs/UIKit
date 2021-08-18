@@ -45,7 +45,7 @@
     "bignumber.js": "9.0.0"
   },
   "devDependencies": {
-    "@babel/preset-typescript": "7.12.1",
+    "@babel/preset-typescript": "7.15.0",
     "@react-native-community/bob": "0.16.2",
     "@types/react": "17.0.16",
     "@types/react-native": "0.64.12",
