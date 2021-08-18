@@ -132,14 +132,7 @@ module.exports = {
                     presets: [
                         '@babel/preset-flow',
                         '@babel/preset-react',
-                        [
-                            '@babel/preset-env',
-                            {
-                                loose: false,
-                                exclude: ['transform-typeof-symbol'],
-                                targets: '> 0.25%, not dead',
-                            },
-                        ],
+                        'module:metro-react-native-babel-preset',
                     ],
                     plugins: [
                         'babel-plugin-react-native-web',
