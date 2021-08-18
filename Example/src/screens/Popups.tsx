@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import { UIDropdownAlert } from '@tonlabs/uikit.components';
 import { UILinkButton } from '@tonlabs/uikit.hydrogen';
-import { UIAlertView, UIAlertViewActionType } from '@tonlabs/uikit.navigation';
+import { UIPopup } from '@tonlabs/uikit.popups';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -13,7 +13,7 @@ export const Popups = () => {
     const getCallback = React.useCallback(
         (message: string) => () => {
             console.log(message);
-            if (message.includes('Сancel')) {
+            if (message.includes('Cancel')) {
                 setIsUIAlertViewVisible(false);
             }
         },
@@ -27,27 +27,27 @@ export const Popups = () => {
                         title="Show UIAlertView"
                         onPress={() => setIsUIAlertViewVisible(true)}
                     />
-                    <UIAlertView
+                    <UIPopup.AlertView
                         visible={isUIAlertViewVisible}
                         title="Please select your action"
                         note="You can select it later"
                     >
-                        <UIAlertView.Action
-                            type={UIAlertViewActionType.Neutral}
+                        <UIPopup.AlertView.Action
+                            type={UIPopup.AlertView.Action.Type.Neutral}
                             title="Neutral Action"
                             onPress={getCallback('Neutral Action')}
                         />
-                        <UIAlertView.Action
-                            type={UIAlertViewActionType.Negative}
+                        <UIPopup.AlertView.Action
+                            type={UIPopup.AlertView.Action.Type.Negative}
                             title="Negative Action"
                             onPress={getCallback('Negative Action')}
                         />
-                        <UIAlertView.Action
-                            type={UIAlertViewActionType.Сancel}
-                            title="Сancel Action"
-                            onPress={getCallback('Сancel Action')}
+                        <UIPopup.AlertView.Action
+                            type={UIPopup.AlertView.Action.Type.Cancel}
+                            title="Cancel Action"
+                            onPress={getCallback('Cancel Action')}
                         />
-                    </UIAlertView>
+                    </UIPopup.AlertView>
                 </View>
             </ExampleSection>
             <ExampleSection title="UIDropdownAlert">

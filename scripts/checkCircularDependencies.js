@@ -21,6 +21,7 @@ const checkCircularDependencies = async () => {
             'packages/localization/src/index.ts',
             'packages/navigation/src/index.ts',
             'packages/navigation_legacy/src/index.js',
+            'packages/popups/src/index.js',
             'packages/stickers/src/index.ts',
         ];
         const tree = await parseDependencyTree(sources, { 
