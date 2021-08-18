@@ -79,7 +79,7 @@ export default class UIAnimatedBalanceView extends React.Component<Props, State>
     render(): React$Element<any> {
         const { testID, icon, containerStyle, ...rest } = this.props;
 
-        // Add margin for mobile platforms as space between value and symbol sometimes is too small
+        // Add margin as space between value and symbol sometimes is too small
         const iconStyle = Platform.OS === 'web' ? UIStyle.margin.leftTiny() : UIStyle.margin.leftSmall();
 
         return (
