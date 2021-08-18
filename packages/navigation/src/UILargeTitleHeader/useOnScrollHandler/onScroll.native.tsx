@@ -11,6 +11,7 @@ import type {
     ScrollableOnScrollHandler,
     ScrollWorkletEventHandler,
 } from '../../Scrollable/Context';
+import type { ScrollHandlerContext } from '../types';
 
 export default function (
     scrollRef: React.RefObject<RNScrollView>,
@@ -22,9 +23,8 @@ export default function (
     shiftChangedForcibly: Animated.SharedValue<boolean>,
     rubberBandDistance: number,
     parentScrollHandler: ScrollableOnScrollHandler,
-    scrollTouchGuard: Animated.SharedValue<boolean>,
 ) {
-    return (event: NativeScrollEvent) => {
+    return (event: NativeScrollEvent, ctx: ScrollHandlerContext) => {
         'worklet';
 
         const { y } = event.contentOffset;
@@ -41,7 +41,9 @@ export default function (
             return;
         }
 
-        if (!scrollTouchGuard.value) {
+        // It can be undefined on Android and this is fine
+        // since the guard is needed only for iOS
+        if (ctx != null && ctx.scrollTouchGuard === false) {
             return;
         }
 

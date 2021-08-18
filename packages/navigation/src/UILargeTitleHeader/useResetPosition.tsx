@@ -3,8 +3,9 @@ import * as React from 'react';
 import Animated, { withSpring } from 'react-native-reanimated';
 import type {
     ScrollableOnScrollHandler,
-    ScrollWorkletEventHandler,
+    ScrollWorkletEventHandler
 } from '../Scrollable/Context';
+import type { ScrollHandlerContext } from './types';
 
 export function resetPosition(
     shift: Animated.SharedValue<number>,
@@ -38,19 +39,20 @@ export function useResetPosition(
     defaultShift: Animated.SharedValue<number>,
     yWithoutRubberBand: Animated.SharedValue<number>,
     parentScrollHandler: ScrollableOnScrollHandler,
-    scrollTouchGuard: Animated.SharedValue<boolean>,
 ) {
     const resetPositionRef = React.useRef<(() => void) | null>(null);
 
     if (resetPositionRef.current == null) {
-        resetPositionRef.current = (event?: any) => {
+        resetPositionRef.current = (event?: any, ctx?: ScrollHandlerContext) => {
             'worklet';
 
             if (shiftChangedForcibly.value) {
                 return;
             }
 
-            scrollTouchGuard.value = false;
+            if (ctx != null) {
+                ctx.scrollTouchGuard = false;
+            }
 
             if (
                 parentScrollHandler &&
