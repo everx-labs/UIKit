@@ -13,7 +13,6 @@ export * from './UILargeTitleHeader';
 export * from './UILargeTitleHeader/RefreshControl';
 export * from './constants';
 export * from './Sheets';
-export * from './UIAlertView';
 export * from './UIActionSheet';
 export * from './UINotice';
 
