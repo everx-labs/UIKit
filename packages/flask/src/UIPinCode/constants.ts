@@ -11,12 +11,6 @@ export enum UIPinCodeBiometryType {
     Face = 'Face',
 }
 
-export type DotAnimationStatus =
-    | /** NotActive */ 0
-    | /** Active */ 1
-    | /** Filler (just to put it in column) */ -100
-    | number;
-
 export const DOTS_STATE_PRESENTATION_DURATION = 300;
 export const DEFAULT_DOTS_COUNT = 6;
 export const KEY_WIDTH = 90; // 1 + 88 + 1

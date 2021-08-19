@@ -21,39 +21,47 @@ import {
     hapticNotification,
 } from '@tonlabs/uikit.hydrogen';
 import { DotsContext } from './DotsContext';
-import {
-    BiometryKey,
-    BiometryProps,
-    DelKey,
-    Key,
-    useBiometryPasscode,
-} from './Keys';
+import { BiometryKey, BiometryProps, DelKey, Key, useBiometryPasscode } from './Keys';
 import {
     DEFAULT_DOTS_COUNT,
-    DotAnimationStatus,
     DOTS_STATE_PRESENTATION_DURATION,
     DOT_WITH_SPRING_CONFIG,
 } from './constants';
-import {
-    UIPinCodeDescription,
-    UIPinCodeDescriptionRef,
-} from './UIPinCodeDescription';
+import { UIPinCodeDescription, UIPinCodeDescriptionRef } from './UIPinCodeDescription';
 
 export type UIPinCodeEnterValidationResult = {
     valid: boolean;
     description: string;
 };
 
-type ShakeAnimationStatus =
-    | /** NotActive */ 0
-    | /** Active */ 1
-    | /** Filler (just to put it in column) */ -100
+// @inline
+const DOT_ANIMATION_NOT_ACTIVE = 0;
+// @inline
+const DOT_ANIMATION_ACTIVE = 1;
+export type DotAnimationStatus =
+    | typeof DOT_ANIMATION_NOT_ACTIVE
+    | typeof DOT_ANIMATION_ACTIVE
     | number;
 
+// @inline
+const SHAKE_ANIMATION_NOT_ACTIVE = 0;
+// @inline
+const SHAKE_ANIMATION_ACTIVE = 1;
+type ShakeAnimationStatus =
+    | typeof SHAKE_ANIMATION_NOT_ACTIVE
+    | typeof SHAKE_ANIMATION_ACTIVE
+    | number;
+
+// @inline
+const VALIDATION_STATE_NONE = 0;
+// @inline
+const VALIDATION_STATE_SUCCESS = 1;
+// @inline
+const VALIDATION_STATE_ERROR = 2;
 type ValidationState =
-    | /** None */ 0
-    | /** Success */ 1
-    | /** Error */ 2
+    | typeof VALIDATION_STATE_NONE
+    | typeof VALIDATION_STATE_SUCCESS
+    | typeof VALIDATION_STATE_ERROR
     | number;
 
 function useAnimatedDot(
@@ -87,16 +95,16 @@ function useAnimatedDot(
 
     const innerStyle: ViewStyle = useAnimatedStyle(() => {
         let color = colorBgAccent;
-        if (validState.value === 1 /** Success */) {
+        if (validState.value === VALIDATION_STATE_SUCCESS) {
             color = colorBgPositive;
-        } else if (validState.value === 2 /** Error */) {
+        } else if (validState.value === VALIDATION_STATE_ERROR) {
             color = colorBgNegative;
         }
 
         return {
             backgroundColor: interpolateColor(
                 dotAnim.value,
-                [0 /** NotActive */, 1 /** Active */],
+                [DOT_ANIMATION_NOT_ACTIVE, DOT_ANIMATION_ACTIVE],
                 [bgNeutral, color],
             ) as string,
         };
@@ -128,17 +136,13 @@ function useDotsValues(length: number) {
 }
 
 function useDotsAnims(length: number) {
-    const dotsValues = React.useRef<Animated.SharedValue<DotAnimationStatus>[]>(
-        [],
-    );
+    const dotsValues = React.useRef<Animated.SharedValue<DotAnimationStatus>[]>([]);
 
-    const values: Animated.SharedValue<DotAnimationStatus>[] = new Array(
-        length,
-    ).fill(null);
+    const values: Animated.SharedValue<DotAnimationStatus>[] = new Array(length).fill(null);
 
     for (let i = 0; i < length; i += 1) {
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        values[i] = useSharedValue(0 /** NotActive */);
+        values[i] = useSharedValue(DOT_ANIMATION_NOT_ACTIVE);
     }
 
     dotsValues.current = values;
@@ -160,9 +164,7 @@ function useAnimatedDots(
 ) {
     const animatedDots = React.useRef<ReturnType<typeof useAnimatedDot>[]>([]);
 
-    const dotsConfigs: ReturnType<typeof useAnimatedDot>[] = new Array(
-        length,
-    ).fill(null);
+    const dotsConfigs: ReturnType<typeof useAnimatedDot>[] = new Array(length).fill(null);
 
     for (let i = 0; i < length; i += 1) {
         // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -216,11 +218,8 @@ export const UIPinCode = React.memo(function UIPinCodeImpl({
         function showValidationErrorImpl() {
             'worklet';
 
-            shakeAnim.value = 0 /** NotActive */;
-            shakeAnim.value = withSpring(
-                1 /** Active */,
-                DOT_WITH_SPRING_CONFIG,
-            );
+            shakeAnim.value = SHAKE_ANIMATION_NOT_ACTIVE;
+            shakeAnim.value = withSpring(SHAKE_ANIMATION_ACTIVE, DOT_WITH_SPRING_CONFIG);
 
             hapticNotification('error');
         },
@@ -231,7 +230,7 @@ export const UIPinCode = React.memo(function UIPinCodeImpl({
 
     const validatePin = React.useCallback(
         (pin: string) => {
-            onEnter(pin).then((result) => {
+            onEnter(pin).then(result => {
                 let isValid: boolean;
                 let validationDescription: string | null = null;
                 if (typeof result === 'object') {
@@ -241,24 +240,16 @@ export const UIPinCode = React.memo(function UIPinCodeImpl({
                     isValid = result;
                 }
 
-                validState.value = isValid ? /** Success */ 1 : /** Error */ 2;
-
                 if (isValid) {
-                    validState.value = /** Success */ 1;
+                    validState.value = VALIDATION_STATE_SUCCESS;
 
-                    if (
-                        validationDescription != null &&
-                        descriptionRef.current != null
-                    ) {
+                    if (validationDescription != null && descriptionRef.current != null) {
                         descriptionRef.current.showValid(validationDescription);
                     }
                 } else {
-                    validState.value = /** Error */ 2;
+                    validState.value = VALIDATION_STATE_ERROR;
 
-                    if (
-                        validationDescription != null &&
-                        descriptionRef.current != null
-                    ) {
+                    if (validationDescription != null && descriptionRef.current != null) {
                         descriptionRef.current.showError(validationDescription);
                     }
 
@@ -269,12 +260,12 @@ export const UIPinCode = React.memo(function UIPinCodeImpl({
                     dotsValues.forEach((_dot, index) => {
                         dotsValues[index].value = -1;
                         dotsAnims[index].value = withSpring(
-                            /** NotActive */ 0,
+                            DOT_ANIMATION_NOT_ACTIVE,
                             DOT_WITH_SPRING_CONFIG,
                         );
                     });
                     activeDotIndex.value = 0;
-                    validState.value = /** None */ 0;
+                    validState.value = VALIDATION_STATE_NONE;
 
                     if (isValid) {
                         onSuccess(pin);
@@ -315,16 +306,16 @@ export const UIPinCode = React.memo(function UIPinCodeImpl({
 
     useAnimatedReaction(
         () => {
-            return dotsValues.map((d) => d.value);
+            return dotsValues.map(d => d.value);
         },
         (dotsCurrentValues, previous) => {
-            const pin = dotsCurrentValues.filter((val) => val !== -1).join('');
+            const pin = dotsCurrentValues.filter(val => val !== -1).join('');
 
             // To prevent a situation when the reaction was called
             // because of deps changes (like validatePin was changed)
             // and not because of actual changes in dots values
             if (previous != null) {
-                const prevPin = previous.filter((val) => val !== -1).join('');
+                const prevPin = previous.filter(val => val !== -1).join('');
 
                 if (pin === prevPin) {
                     return;
@@ -419,9 +410,7 @@ export const UIPinCode = React.memo(function UIPinCodeImpl({
                             <BiometryKey
                                 isBiometryEnabled={isBiometryEnabled}
                                 biometryType={biometryType}
-                                getPasscodeWithBiometry={
-                                    getPasscodeWithBiometry
-                                }
+                                getPasscodeWithBiometry={getPasscodeWithBiometry}
                             />
                             <Key num={0} />
                             <DelKey />

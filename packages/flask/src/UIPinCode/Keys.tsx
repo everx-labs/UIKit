@@ -30,22 +30,23 @@ import {
 import { UIAssets } from '@tonlabs/uikit.assets';
 
 import { DotsContext } from './DotsContext';
-import {
-    DOT_WITH_SPRING_CONFIG,
-    KEY_HEIGHT,
-    KEY_WIDTH,
-    UIPinCodeBiometryType,
-} from './constants';
+import { DOT_WITH_SPRING_CONFIG, KEY_HEIGHT, KEY_WIDTH, UIPinCodeBiometryType } from './constants';
 
+// @inline
+const CIRCLE_ANIMATION_ACTIVE = 0;
+// @inline
+const CIRCLE_ANIMATION_NOT_ACTIVE = 1;
 type CircleAnimationStatus =
-    | /** Active */ 0
-    | /** NotActive */ 1
-    | /** Filler (just to put it in column) */ -100
+    | typeof CIRCLE_ANIMATION_ACTIVE
+    | typeof CIRCLE_ANIMATION_NOT_ACTIVE
     | number;
 
-function useCircleAboveStyle(
-    circleAnimProgress: Animated.SharedValue<CircleAnimationStatus>,
-) {
+// @inline
+const DOT_ANIMATION_ACTIVE = 1;
+// @inline
+const DOT_ANIMATION_NOT_ACTIVE = 0;
+
+function useCircleAboveStyle(circleAnimProgress: Animated.SharedValue<CircleAnimationStatus>) {
     const { colorParts } = useColorParts(ColorVariants.BackgroundSecondary);
     const circleColorTransparent = `rgba(${colorParts},1)`;
     const circleColorOpaque = `rgba(${colorParts},0)`;
@@ -54,14 +55,14 @@ function useCircleAboveStyle(
         return {
             backgroundColor: interpolateColor(
                 circleAnimProgress.value,
-                [/** Active */ 0, /** NotActive */ 1],
+                [CIRCLE_ANIMATION_ACTIVE, CIRCLE_ANIMATION_NOT_ACTIVE],
                 [circleColorTransparent, circleColorOpaque],
             ),
             transform: [
                 {
                     scale: interpolate(
                         circleAnimProgress.value,
-                        [/** Active */ 0, /** NotActive */ 1],
+                        [CIRCLE_ANIMATION_ACTIVE, CIRCLE_ANIMATION_NOT_ACTIVE],
                         [0.8, 1],
                     ),
                 },
@@ -70,53 +71,50 @@ function useCircleAboveStyle(
     });
 }
 
-export const RawButton: React.FunctionComponent<Animated.AnimateProps<
-    RawButtonProps &
-        NativeViewGestureHandlerProps & {
-            testID?: string;
-            style?: StyleProp<ViewStyle>;
-        }
->> = Animated.createAnimatedComponent(GHRawButton);
+export const RawButton: React.FunctionComponent<
+    Animated.AnimateProps<
+        RawButtonProps &
+            NativeViewGestureHandlerProps & {
+                testID?: string;
+                style?: StyleProp<ViewStyle>;
+            }
+    >
+> = Animated.createAnimatedComponent(GHRawButton);
 
 export function Key({ num }: { num: number }) {
-    const {
-        activeDotIndex,
-        dotsValues,
-        dotsAnims,
-        dotsCount,
-        disabled,
-    } = React.useContext(DotsContext);
+    const { activeDotIndex, dotsValues, dotsAnims, dotsCount, disabled } =
+        React.useContext(DotsContext);
 
-    const circleAnimProgress = useSharedValue(/** NotActive */ 1);
+    const circleAnimProgress = useSharedValue(CIRCLE_ANIMATION_NOT_ACTIVE);
 
-    const gestureHandler = useAnimatedGestureHandler<
-        GestureEvent<NativeViewGestureHandlerPayload>
-    >({
-        onActive: () => {
-            circleAnimProgress.value = /** Active */ 0;
-        },
-        onFinish: () => {
-            if (activeDotIndex.value > dotsCount - 1) {
-                return;
-            }
+    const gestureHandler = useAnimatedGestureHandler<GestureEvent<NativeViewGestureHandlerPayload>>(
+        {
+            onActive: () => {
+                circleAnimProgress.value = CIRCLE_ANIMATION_ACTIVE;
+            },
+            onFinish: () => {
+                if (activeDotIndex.value > dotsCount - 1) {
+                    return;
+                }
 
-            // A number was chosen
-            dotsValues[activeDotIndex.value].value = num;
-            dotsAnims[activeDotIndex.value].value = withSpring(
-                /** Active */ 1,
-                DOT_WITH_SPRING_CONFIG,
-            );
-            activeDotIndex.value += 1;
+                // A number was chosen
+                dotsValues[activeDotIndex.value].value = num;
+                dotsAnims[activeDotIndex.value].value = withSpring(
+                    DOT_ANIMATION_ACTIVE,
+                    DOT_WITH_SPRING_CONFIG,
+                );
+                activeDotIndex.value += 1;
 
-            hapticSelection();
+                hapticSelection();
+            },
+            onCancel: () => {
+                circleAnimProgress.value = withSpring(CIRCLE_ANIMATION_NOT_ACTIVE);
+            },
+            onEnd: () => {
+                circleAnimProgress.value = withSpring(CIRCLE_ANIMATION_NOT_ACTIVE);
+            },
         },
-        onCancel: () => {
-            circleAnimProgress.value = withSpring(/** NotActive */ 1);
-        },
-        onEnd: () => {
-            circleAnimProgress.value = withSpring(/** NotActive */ 1);
-        },
-    });
+    );
 
     const circleAboveButtonStyle = useCircleAboveStyle(circleAnimProgress);
 
@@ -127,13 +125,8 @@ export function Key({ num }: { num: number }) {
             onGestureEvent={gestureHandler}
             style={[styles.button, disabled ? styles.disabledKey : null]}
         >
-            <Animated.View
-                style={[styles.circleAbove, circleAboveButtonStyle]}
-            />
-            <UILabel
-                color={UILabelColors.TextPrimary}
-                role={UILabelRoles.LightHuge}
-            >
+            <Animated.View style={[styles.circleAbove, circleAboveButtonStyle]} />
+            <UILabel color={UILabelColors.TextPrimary} role={UILabelRoles.LightHuge}>
                 {num}
             </UILabel>
         </RawButton>
@@ -143,9 +136,7 @@ export function Key({ num }: { num: number }) {
 export type BiometryProps = {
     isBiometryEnabled: boolean;
     biometryType?: UIPinCodeBiometryType;
-    getPasscodeWithBiometry?: (options?: {
-        skipSettings?: boolean;
-    }) => Promise<string | undefined>;
+    getPasscodeWithBiometry?: (options?: { skipSettings?: boolean }) => Promise<string | undefined>;
 };
 
 export function useBiometryPasscode({
@@ -161,14 +152,10 @@ export function useBiometryPasscode({
     activeDotIndex: Animated.SharedValue<number>;
     dotsCount: number;
 }) {
-    const usePredefined =
-        !isBiometryEnabled && process.env.NODE_ENV === 'development';
+    const usePredefined = !isBiometryEnabled && process.env.NODE_ENV === 'development';
 
     const getPasscode = React.useCallback(
-        async (options?: {
-            skipSettings?: boolean;
-            skipPredefined?: boolean;
-        }) => {
+        async (options?: { skipSettings?: boolean; skipPredefined?: boolean }) => {
             if (usePredefined) {
                 if (options?.skipPredefined) {
                     return;
@@ -177,7 +164,7 @@ export function useBiometryPasscode({
                 dotsValues.forEach((_dot, index) => {
                     dotsValues[index].value = 1;
                     dotsAnims[index].value = withSpring(
-                        /** Active */ 1,
+                        DOT_ANIMATION_ACTIVE,
                         DOT_WITH_SPRING_CONFIG,
                     );
                 });
@@ -196,10 +183,7 @@ export function useBiometryPasscode({
 
             dotsValues.forEach((_dot, index) => {
                 dotsValues[index].value = Number(passcode[index]);
-                dotsAnims[index].value = withSpring(
-                    /** Active */ 1,
-                    DOT_WITH_SPRING_CONFIG,
-                );
+                dotsAnims[index].value = withSpring(DOT_ANIMATION_ACTIVE, DOT_WITH_SPRING_CONFIG);
             });
             activeDotIndex.value = dotsCount;
         },
@@ -239,13 +223,8 @@ export function BiometryKey({
         );
     }
 
-    const {
-        activeDotIndex,
-        dotsValues,
-        dotsAnims,
-        dotsCount,
-        disabled,
-    } = React.useContext(DotsContext);
+    const { activeDotIndex, dotsValues, dotsAnims, dotsCount, disabled } =
+        React.useContext(DotsContext);
 
     const { usePredefined, getPasscode } = useBiometryPasscode({
         isBiometryEnabled,
@@ -256,24 +235,24 @@ export function BiometryKey({
         dotsCount,
     });
 
-    const circleAnimProgress = useSharedValue(/** NotActive */ 1);
-    const gestureHandler = useAnimatedGestureHandler<
-        GestureEvent<NativeViewGestureHandlerPayload>
-    >({
-        onActive: () => {
-            circleAnimProgress.value = /** Active */ 0;
+    const circleAnimProgress = useSharedValue(CIRCLE_ANIMATION_NOT_ACTIVE);
+    const gestureHandler = useAnimatedGestureHandler<GestureEvent<NativeViewGestureHandlerPayload>>(
+        {
+            onActive: () => {
+                circleAnimProgress.value = CIRCLE_ANIMATION_ACTIVE;
+            },
+            onFinish: () => {
+                hapticSelection();
+                runOnJS(getPasscode)();
+            },
+            onCancel: () => {
+                circleAnimProgress.value = withSpring(CIRCLE_ANIMATION_NOT_ACTIVE);
+            },
+            onEnd: () => {
+                circleAnimProgress.value = withSpring(CIRCLE_ANIMATION_NOT_ACTIVE);
+            },
         },
-        onFinish: () => {
-            hapticSelection();
-            runOnJS(getPasscode)();
-        },
-        onCancel: () => {
-            circleAnimProgress.value = withSpring(/** NotActive */ 1);
-        },
-        onEnd: () => {
-            circleAnimProgress.value = withSpring(/** NotActive */ 1);
-        },
-    });
+    );
 
     const circleAboveButtonStyle = useCircleAboveStyle(circleAnimProgress);
 
@@ -284,14 +263,9 @@ export function BiometryKey({
             onGestureEvent={gestureHandler}
             style={[styles.button, disabled ? styles.disabledKey : null]}
         >
-            <Animated.View
-                style={[styles.circleAbove, circleAboveButtonStyle]}
-            />
+            <Animated.View style={[styles.circleAbove, circleAboveButtonStyle]} />
             {usePredefined ? (
-                <UILabel
-                    color={UILabelColors.TextPrimary}
-                    role={UILabelRoles.ActionFootnote}
-                >
+                <UILabel color={UILabelColors.TextPrimary} role={UILabelRoles.ActionFootnote}>
                     DEV
                 </UILabel>
             ) : (
@@ -302,20 +276,15 @@ export function BiometryKey({
 }
 
 export function DelKey() {
-    const {
-        activeDotIndex,
-        dotsValues,
-        dotsAnims,
-        disabled,
-    } = React.useContext(DotsContext);
+    const { activeDotIndex, dotsValues, dotsAnims, disabled } = React.useContext(DotsContext);
 
-    const circleAnimProgress = useSharedValue(/** NotActive */ 1);
+    const circleAnimProgress = useSharedValue(CIRCLE_ANIMATION_NOT_ACTIVE);
     const circleAboveDelButtonStyle = useCircleAboveStyle(circleAnimProgress);
     const gestureHandlerDel = useAnimatedGestureHandler<
         GestureEvent<NativeViewGestureHandlerPayload>
     >({
         onActive: () => {
-            circleAnimProgress.value = /** Active */ 0;
+            circleAnimProgress.value = CIRCLE_ANIMATION_ACTIVE;
         },
         onFinish: () => {
             // Nothing to delete
@@ -325,7 +294,7 @@ export function DelKey() {
 
             dotsValues[activeDotIndex.value - 1].value = -1;
             dotsAnims[activeDotIndex.value - 1].value = withSpring(
-                /** NotActive */ 0,
+                DOT_ANIMATION_NOT_ACTIVE,
                 DOT_WITH_SPRING_CONFIG,
             );
             activeDotIndex.value -= 1;
@@ -333,10 +302,10 @@ export function DelKey() {
             hapticSelection();
         },
         onCancel: () => {
-            circleAnimProgress.value = withSpring(/** NotActive */ 1);
+            circleAnimProgress.value = withSpring(CIRCLE_ANIMATION_NOT_ACTIVE);
         },
         onEnd: () => {
-            circleAnimProgress.value = withSpring(/** NotActive */ 1);
+            circleAnimProgress.value = withSpring(CIRCLE_ANIMATION_NOT_ACTIVE);
         },
     });
 
@@ -351,19 +320,10 @@ export function DelKey() {
             testID="pincode_digit_delete"
             enabled={!disabled}
             onGestureEvent={gestureHandlerDel}
-            style={[
-                styles.button,
-                delButtonStyle,
-                disabled ? styles.disabledKey : null,
-            ]}
+            style={[styles.button, delButtonStyle, disabled ? styles.disabledKey : null]}
         >
-            <Animated.View
-                style={[styles.circleAbove, circleAboveDelButtonStyle]}
-            />
-            <UIImage
-                source={UIAssets.icons.ui.delete}
-                tintColor={ColorVariants.TextPrimary}
-            />
+            <Animated.View style={[styles.circleAbove, circleAboveDelButtonStyle]} />
+            <UIImage source={UIAssets.icons.ui.delete} tintColor={ColorVariants.TextPrimary} />
         </RawButton>
     );
 }
