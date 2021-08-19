@@ -275,12 +275,12 @@ export const UIPinCode = React.memo(function UIPinCodeImpl({
         },
         [
             onEnter,
-            // validState,
-            // activeDotIndex,
             onSuccess,
-            // dotsValues,
-            // dotsAnims,
             showValidationError,
+            validState,
+            activeDotIndex,
+            dotsValues,
+            dotsAnims,
         ],
     );
 
