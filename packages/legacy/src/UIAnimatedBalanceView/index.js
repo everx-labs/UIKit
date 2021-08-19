@@ -1,7 +1,7 @@
 /* eslint-disable react/no-multi-comp */
 // @flow
 import React from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { UIStyle } from '@tonlabs/uikit.core';
@@ -77,9 +77,11 @@ export default class UIAnimatedBalanceView extends React.Component<Props, State>
     }
 
     render(): React$Element<any> {
-        const {
-            testID, icon, containerStyle, ...rest
-        } = this.props;
+        const { testID, icon, containerStyle, ...rest } = this.props;
+
+        // Add margin as space between value and symbol sometimes is too small
+        const iconStyle = Platform.OS === 'web' ? UIStyle.margin.leftTiny() : UIStyle.margin.leftSmall();
+
         return (
             <View
                 pointerEvents="none"
@@ -92,9 +94,9 @@ export default class UIAnimatedBalanceView extends React.Component<Props, State>
                     onAnimationStart={this.onAnimationStart}
                     onAnimationEnd={this.onAnimationEnd}
                 />
-                {icon != null 
+                {icon != null
                     ? (
-                        <View style={UIStyle.margin.leftSmall()}>
+                        <View style={iconStyle}>
                             {icon}
                         </View>
                     )
