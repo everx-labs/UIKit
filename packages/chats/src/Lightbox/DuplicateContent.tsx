@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, TouchableWithoutFeedback } from 'react-native';
-import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
+import Animated, { interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated';
 import { makeStyles, Portal, useTheme, ColorVariants, Theme } from '@tonlabs/uikit.hydrogen';
 import type { DuplicateContentProps } from './types';
 import {
@@ -11,6 +11,7 @@ import {
     useOnAnimationEnd,
 } from './hooks';
 import { VisibilityState, DuplicateContentState } from './constants';
+import { Zoom } from './Zoom';
 
 export const DuplicateContent = ({
     fullSizeImage,
@@ -37,13 +38,20 @@ export const DuplicateContent = ({
 
     const visibilityState = useVisibilityState(duplicateContentState, onAnimationEnd);
 
-    const animatedContainerStyle = useAnimatedContainerStyle(
+    const { animatedContainerStyle, openedImageScale } = useAnimatedContainerStyle(
         visibilityState,
         pageY,
         pageX,
         width,
         height,
     );
+
+    const fullSizeImageWidth = useDerivedValue(() => {
+        return width.value * openedImageScale.value;
+    });
+    const fullSizeImageHeight = useDerivedValue(() => {
+        return height.value * openedImageScale.value;
+    });
 
     const previewImageStyle = useAnimatedStyle(() => {
         return {
@@ -74,13 +82,22 @@ export const DuplicateContent = ({
                 <TouchableWithoutFeedback onPress={onPressUnderlay}>
                     <Animated.View style={[styles.overlay, overlayStyle]} />
                 </TouchableWithoutFeedback>
-                <Animated.View style={[styles.duplicateContent, animatedContainerStyle]}>
-                    <Animated.View style={previewImageStyle}>{previewImage}</Animated.View>
-                    {isFullSizeDisplayed ? (
-                        <Animated.View style={[styles.fullSizeImage]}>
-                            {fullSizeImage}
-                        </Animated.View>
-                    ) : null}
+                <Animated.View
+                    style={[styles.duplicateContent, animatedContainerStyle]}
+                    pointerEvents="box-none"
+                >
+                    <Zoom
+                        initialWidth={fullSizeImageWidth}
+                        initialHeight={fullSizeImageHeight}
+                        openedImageScale={openedImageScale}
+                    >
+                        <Animated.View style={previewImageStyle}>{previewImage}</Animated.View>
+                        {isFullSizeDisplayed ? (
+                            <Animated.View style={styles.fullSizeImage}>
+                                {fullSizeImage}
+                            </Animated.View>
+                        ) : null}
+                    </Zoom>
                 </Animated.View>
             </Animated.View>
         </Portal>

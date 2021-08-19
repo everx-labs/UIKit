@@ -102,7 +102,10 @@ export const useAnimatedContainerStyle = (
         };
     }, []);
 
-    return animatedContainerStyle;
+    return {
+        animatedContainerStyle,
+        openedImageScale,
+    };
 };
 
 const runUISetWithDelay = (toValue: number): number => {
