@@ -7,7 +7,7 @@ import {
     MessageStatus,
     BubbleQRCode,
 } from '@tonlabs/uikit.chats';
-import { QRCodeError } from '@tonlabs/uikit.flask';
+import { QRCodeError, useQRCodeValueError } from '@tonlabs/uikit.flask';
 
 import { QRCodeDrawMessage, QRCodeDrawMessageStatus } from './types';
 
@@ -21,13 +21,7 @@ const convertQRCodeErrorToQRCodeDrawMessageStatus = (
     }
 };
 
-export const QRCodeDraw = ({
-    data,
-    status,
-    onLayout,
-    prompt,
-    onDraw,
-}: QRCodeDrawMessage) => {
+export const QRCodeDraw = ({ data, status, onLayout, prompt, onDraw }: QRCodeDrawMessage) => {
     const onError = React.useCallback(
         (error: QRCodeError) => {
             if (onDraw) {
@@ -41,6 +35,13 @@ export const QRCodeDraw = ({
             onDraw(QRCodeDrawMessageStatus.Success);
         }
     }, [onDraw]);
+
+    const error = useQRCodeValueError(data, onError, onSuccess);
+
+    if (error !== null) {
+        return null;
+    }
+
     return (
         <View>
             <BubbleQRCode
@@ -48,8 +49,6 @@ export const QRCodeDraw = ({
                 status={status}
                 type={ChatMessageType.QRCode}
                 onLayout={onLayout}
-                onError={onError}
-                onSuccess={onSuccess}
                 firstFromChain
                 key="qrcode-draw-bubble"
             />

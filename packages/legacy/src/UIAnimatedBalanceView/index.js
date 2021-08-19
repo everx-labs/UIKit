@@ -1,7 +1,7 @@
 /* eslint-disable react/no-multi-comp */
 // @flow
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { Platform, View } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { UIStyle } from '@tonlabs/uikit.core';
@@ -13,7 +13,6 @@ type Props = InnerProps & {
     containerStyle?: ViewStyleProp,
     testID?: string,
     icon?: React$Node,
-    onPress: ?() => void,
 };
 
 type State = {
@@ -48,13 +47,13 @@ export default class UIAnimatedBalanceView extends React.Component<Props, State>
         };
     }
 
-    onAnimationStart = () => {
+    onAnimationStart: (() => void) = () => {
         this.setState({
             isAnimationInProgress: true,
         });
     };
 
-    onAnimationEnd = () => {
+    onAnimationEnd: (() => void) = () => {
         const newState = {};
         // To prevent updates of balance during animation, we not pass balance with props
         // but rather keep it in state, and if a new update come when animation is still going,
@@ -71,22 +70,23 @@ export default class UIAnimatedBalanceView extends React.Component<Props, State>
         this.setState(newState);
     };
 
-    onPress = () => {
+    onPress: (() => void) = () => {
         if (this.props.onPress) {
             this.props.onPress();
         }
     }
 
-    render() {
-        const {
-            testID, icon, containerStyle, ...rest
-        } = this.props;
+    render(): React$Element<any> {
+        const { testID, icon, containerStyle, ...rest } = this.props;
+
+        // Add margin as space between value and symbol sometimes is too small
+        const iconStyle = Platform.OS === 'web' ? UIStyle.margin.leftTiny() : UIStyle.margin.leftSmall();
+
         return (
-            <TouchableOpacity
-                testID={testID}
+            <View
+                pointerEvents="none"
                 style={[UIStyle.common.flexRow(), UIStyle.common.alignCenter(), containerStyle]}
-                disabled={!this.props.onPress}
-                onPress={this.onPress}
+                testID={testID}
             >
                 <UIAnimatedBalanceOpacity
                     {...rest}
@@ -94,8 +94,14 @@ export default class UIAnimatedBalanceView extends React.Component<Props, State>
                     onAnimationStart={this.onAnimationStart}
                     onAnimationEnd={this.onAnimationEnd}
                 />
-                {icon}
-            </TouchableOpacity>
+                {icon != null
+                    ? (
+                        <View style={iconStyle}>
+                            {icon}
+                        </View>
+                    )
+                    : null}
+            </View>
         );
     }
 }

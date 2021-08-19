@@ -12,33 +12,34 @@ function createHandlers(event: MouseEvent) {
         if (target.dataset?.lokalise && message) {
             const { color } = target.style;
             const content = target.dataset.key as string;
+            if (content) {
+                target.style.color = 'yellow';
+                message.style.display = 'flex';
+                message.innerHTML = content;
 
-            target.style.color = 'yellow';
-            message.style.display = 'flex';
-            message.innerHTML = content;
+                const mouseClickHandler = (e: MouseEvent) => {
+                    if (e.altKey) {
+                        e.preventDefault();
+                        Clipboard.setString(content);
 
-            const mouseClickHandler = (e: MouseEvent) => {
-                if (e.altKey) {
-                    e.preventDefault();
-                    Clipboard.setString(content);
+                        // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
+                        const { uiLocalized } = require('../service');
+                        message.innerHTML = uiLocalized.CopiedToClipboard;
+                    }
+                };
 
-                    // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
-                    const { uiLocalized } = require('../service');
-                    message.innerHTML = uiLocalized.CopiedToClipboard;
-                }
-            };
+                const mouseoutHandler = () => {
+                    target.style.color = color;
+                    message.style.display = 'none';
+                    message.innerHTML = '';
 
-            const mouseoutHandler = () => {
-                target.style.color = color;
-                message.style.display = 'none';
-                message.innerHTML = '';
+                    target.removeEventListener('mouseout', mouseoutHandler);
+                    target.removeEventListener('mouseout', mouseClickHandler);
+                };
 
-                target.removeEventListener('mouseout', mouseoutHandler);
-                target.removeEventListener('mouseout', mouseClickHandler);
-            };
-
-            target.addEventListener('mouseout', mouseoutHandler);
-            target.addEventListener('click', mouseClickHandler);
+                target.addEventListener('mouseout', mouseoutHandler);
+                target.addEventListener('click', mouseClickHandler);
+            }
         }
     }
 }

@@ -18,8 +18,6 @@ export {
     UICompatibilityView,
     UIComponent,
     UIDetailsInput,
-    UIDetailsToggle,
-    UIDetailsSwitcher,
     UIDetailsView,
     UIDetailsTable,
     UIDropdownAlert,
@@ -37,7 +35,6 @@ export {
     UISpinnerOverlay,
     UITextInput,
     UIToastMessage,
-    UIToggle,
     UITransferInput,
 } from './packages/components/src';
 
@@ -95,12 +92,4 @@ export type { DetailsList } from './packages/components/src/UIDetailsTable';
 export type { MenuItemType } from './packages/navigation_legacy/src/UIActionSheet/MenuItem';
 export type { ShareOptions } from './packages/navigation_legacy/src/UIShareManager';
 export type { Country } from './packages/navigation_legacy/src/UICountryPicker';
-export type {
-    ContentInset,
-    ControllerProps,
-} from './packages/navigation_legacy/src/UIController';
-export type {
-    ModalControllerProps,
-    ModalControllerState,
-} from './packages/navigation_legacy/src/UIModalController';
-export type { ContentOffset } from './packages/navigation_legacy/src/UIScreen';
+export type { ContentInset } from './packages/navigation_legacy/src/UIController';

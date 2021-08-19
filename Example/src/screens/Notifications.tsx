@@ -2,12 +2,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 
 import { UILinkButton } from '@tonlabs/uikit.hydrogen';
-import {
-    UINotice,
-    UINoticeType,
-    UINoticeColor,
-    UINoticeDuration,
-} from '@tonlabs/uikit.navigation';
+import { UIPopup } from '@tonlabs/uikit.popups';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -46,9 +41,8 @@ export const Notifications = () => {
                         } TopToast notice`}
                         onPress={() => setVisibleTopToastNotice(!visibleTopToastNotice)}
                     />
-
-                    <UINotice
-                        type={UINoticeType.BottomToast}
+                    <UIPopup.Notice
+                        type={UIPopup.Notice.Type.BottomToast}
                         title="System is going down at midnight tonight. We’ll notify you when it’s back up."
                         visible={visibleBottomToastNotice}
                         onClose={() => {
@@ -57,11 +51,11 @@ export const Notifications = () => {
                         onTap={() => {
                             setVisibleBottomToastNotice(false);
                         }}
-                        duration={UINoticeDuration.Short}
-                        color={UINoticeColor.PrimaryInverted}
+                        duration={UIPopup.Notice.Duration.Short}
+                        color={UIPopup.Notice.Color.PrimaryInverted}
                     />
-                    <UINotice
-                        type={UINoticeType.TopToast}
+                    <UIPopup.Notice
+                        type={UIPopup.Notice.Type.TopToast}
                         title="System is going down at midnight tonight. We’ll notify you when it’s back up."
                         visible={visibleTopToastNotice}
                         onClose={() => {
@@ -70,8 +64,8 @@ export const Notifications = () => {
                         onTap={() => {
                             setVisibleTopToastNotice(false);
                         }}
-                        duration={UINoticeDuration.Short}
-                        color={UINoticeColor.PrimaryInverted}
+                        duration={UIPopup.Notice.Duration.Short}
+                        color={UIPopup.Notice.Color.PrimaryInverted}
                     />
                 </View>
             </ExampleSection>

@@ -21,9 +21,35 @@ const checkCircularDependencies = async () => {
             'packages/localization/src/index.ts',
             'packages/navigation/src/index.ts',
             'packages/navigation_legacy/src/index.js',
+            'packages/popups/src/index.js',
             'packages/stickers/src/index.ts',
         ];
-        const tree = await parseDependencyTree(sources, { /* default options */ });
+        const tree = await parseDependencyTree(sources, { 
+            extensions: [
+                '.ts',
+                '.tsx',
+                '.js',
+                '.jsx',
+                '.native.ts',
+                '.native.tsx',
+                '.native.js',
+                '.native.jsx',
+                '.web.ts',
+                '.web.tsx',
+                '.web.js',
+                '.web.jsx',
+                '.ios.ts',
+                '.ios.tsx',
+                '.ios.js',
+                '.ios.jsx',
+                '.android.ts',
+                '.android.tsx',
+                '.android.js',
+                '.android.jsx',
+                '.mjs',
+                '.json',
+            ],
+        });
         const circulars = parseCircular(tree);
         if (circulars.length > 0) {
             console.log(

@@ -12,7 +12,7 @@ import {
     QRCodeScannerMessage,
     EncryptionBoxMessage,
     DateMessage,
-    TimeMessage,
+    TimeMessage, DateTimeMessage,
 } from '@tonlabs/uikit.browser';
 import type {
     AddressInputMessage,
@@ -655,6 +655,32 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                 }}
                             />
                             <UIBoxButton
+                                title="Choose date and time"
+                                layout={{
+                                    marginBottom: 10,
+                                }}
+                                onPress={() => {
+                                    const message: DateTimeMessage = {
+                                        key: `${Date.now()}-datetime-picker`,
+                                        status: MessageStatus.Received,
+                                        type: InteractiveMessageType.DateTime,
+                                        minDateTime: new Date(new Date('07/22/2021').setHours(12,4,0)),
+                                        maxDateTime: new Date(new Date('09/25/2021').setHours(19,1,0)),
+                                        onSelect: (externalState: any) => {
+                                            setMessages([
+                                                {
+                                                    ...message,
+                                                    externalState,
+                                                },
+                                                ...messages,
+                                            ]);
+                                        },
+                                    };
+                                    setMessages([message, ...messages]);
+                                    setMenuVisible(false);
+                                }}
+                            />
+                            <UIBoxButton
                                 title="Choose date"
                                 layout={{
                                     marginBottom: 10,
@@ -664,7 +690,8 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                         key: `${Date.now()}-date-picker`,
                                         status: MessageStatus.Received,
                                         type: InteractiveMessageType.Date,
-                                        minDate: new Date('07/01/2021'),
+                                        minDate: new Date('07/22/2021'),
+                                        maxDate: new Date('09/25/2021'),
                                         onSelect: (externalState: any) => {
                                             setMessages([
                                                 {
@@ -691,6 +718,8 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                         type: InteractiveMessageType.Time,
                                         minTime: new Date(0, 0, 0, 12, 15),
                                         maxTime: new Date(0, 0, 0, 13, 0),
+                                        currentTime: new Date(),
+                                        interval: 5,
                                         onSelect: (externalState: any) => {
                                             setMessages([
                                                 {
