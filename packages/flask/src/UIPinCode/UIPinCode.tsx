@@ -210,7 +210,7 @@ export const UIPinCode = React.memo(function UIPinCodeImpl({
     const dotsValues = useDotsValues(length);
     const dotsAnims = useDotsAnims(length);
     const activeDotIndex = useSharedValue(0);
-    const validState = useSharedValue<ValidationState>(0 /** None */);
+    const validState = useSharedValue<ValidationState>(VALIDATION_STATE_NONE);
     const shakeAnim = useSharedValue<ShakeAnimationStatus>(0);
     const animatedDots = useAnimatedDots(length, dotsAnims, validState);
 
