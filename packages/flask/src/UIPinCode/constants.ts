@@ -6,27 +6,6 @@ export const DOT_WITH_SPRING_CONFIG: Animated.WithSpringConfig = {
     stiffness: 500,
 };
 
-export enum DotAnimationStatus {
-    NotActive = 0,
-    Active = 1,
-}
-
-export enum ShakeAnimationStatus {
-    NotActive = 0,
-    Active = 1,
-}
-
-export enum CircleAnimationStatus {
-    Active = 0,
-    NotActive = 1,
-}
-
-export enum ValidationState {
-    None = 0,
-    Success = 1,
-    Error = 2,
-}
-
 export enum UIPinCodeBiometryType {
     Fingerprint = 'Fingerprint',
     Face = 'Face',

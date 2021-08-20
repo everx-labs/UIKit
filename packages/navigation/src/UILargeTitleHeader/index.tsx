@@ -217,10 +217,12 @@ export function UILargeTitleHeader({
     const headerTitleOpacity = useSharedValue(0);
 
     useAnimatedReaction(
-        () => ({
-            largeTitleHeight: largeTitleHeight.value,
-            shift: shift.value,
-        }),
+        () => {
+            return {
+                largeTitleHeight: largeTitleHeight.value,
+                shift: shift.value,
+            };
+        },
         state => {
             if (state.largeTitleHeight === 0) {
                 return;
