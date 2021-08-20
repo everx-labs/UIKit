@@ -13,13 +13,11 @@ import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import {
-    UIAlert,
-    UIAlertView,
     UIDropdownAlert,
     UILayoutManager,
     UINotice,
 } from '@tonlabs/uikit.components';
-import { UIActionSheet, UICountryPicker, UIPopoverBackground } from '@tonlabs/uikit.navigation_legacy';
+import { UICountryPicker, UIPopoverBackground } from '@tonlabs/uikit.navigation_legacy';
 import {
     ColorVariants,
     DarkTheme,
@@ -342,7 +340,6 @@ const App = () => {
                         </Split.Navigator>
                     </NavigationContainer>
                     <UILayoutManager />
-                    <UIActionSheet />
                     <UICountryPicker navigation={navRef.current} isShared />
                     <View
                         style={StyleSheet.absoluteFill}
@@ -350,8 +347,6 @@ const App = () => {
                     >
                         <UINotice />
                     </View>
-                    <UIAlert />
-                    <UIAlertView />
                     <UIDropdownAlert />
                     <UIAndroidNavigationBar />
                 </PortalManager>
