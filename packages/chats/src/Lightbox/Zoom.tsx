@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import * as React from 'react';
-import { Platform } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import Animated, {
     useAnimatedGestureHandler,
     useAnimatedRef,
@@ -24,28 +24,6 @@ type PanGestureEventContext = {
     startX: number;
     startY: number;
 };
-type PinchGestureEventContext = {
-    startScale: number;
-};
-
-const runUIGetTranslate = (
-    translationX: number,
-    translationY: number,
-    scale: number,
-    openedImageScale: number,
-) => {
-    'worklet';
-
-    switch (platform) {
-        case 'android':
-            return [
-                { translateX: translationX / openedImageScale / scale },
-                { translateY: translationY / openedImageScale / scale },
-            ];
-        default:
-            return [{ translateX: translationX }, { translateY: translationY }];
-    }
-};
 
 const runUIGetMaxTranslation = (
     initialWidth: number,
@@ -61,19 +39,10 @@ const runUIGetMaxTranslation = (
             y: 0,
         };
     }
-
-    switch (platform) {
-        case 'android':
-            return {
-                x: (initialWidth * (scale - 1)) / 2,
-                y: (initialHeight * (scale - 1)) / 2,
-            };
-        default:
-            return {
-                x: (initialWidth * (scale - 1)) / 2 / scale / openedImageScale,
-                y: (initialHeight * (scale - 1)) / 2 / scale / openedImageScale,
-            };
-    }
+    return {
+        x: (initialWidth * (scale - 1)) / 2 / scale / openedImageScale,
+        y: (initialHeight * (scale - 1)) / 2 / scale / openedImageScale,
+    };
 };
 
 export const Zoom: React.FC<ZoomProps> = ({
@@ -85,6 +54,7 @@ export const Zoom: React.FC<ZoomProps> = ({
     const pinchRef = useAnimatedRef();
     const panRef = useAnimatedRef();
 
+    const baseScale = useSharedValue<number>(1);
     const scale = useSharedValue<number>(1);
     const isZooming = useSharedValue<boolean>(false);
     const focalX = useSharedValue<number>(0);
@@ -92,16 +62,12 @@ export const Zoom: React.FC<ZoomProps> = ({
     const translationX = useSharedValue<number>(0);
     const translationY = useSharedValue<number>(0);
 
-    const onPinchGestureEvent = useAnimatedGestureHandler<
-        PinchGestureHandlerGestureEvent,
-        PinchGestureEventContext
-    >({
-        onStart: (_event, context) => {
-            context.startScale = scale.value;
-            isZooming.value = true;
-        },
-        onActive: (event, context) => {
-            scale.value = context.startScale * event.scale;
+    const onPinchGestureEvent = useAnimatedGestureHandler<PinchGestureHandlerGestureEvent>({
+        onActive: event => {
+            if (!isZooming.value) {
+                isZooming.value = true;
+            }
+            scale.value = event.scale;
             if (!focalX.value) {
                 focalX.value = event.focalX;
             }
@@ -109,34 +75,22 @@ export const Zoom: React.FC<ZoomProps> = ({
                 focalY.value = event.focalY;
             }
         },
-        onEnd: () => {
-            // const targetX = context.startX + event.translationX;
-            // const targetY = context.startY + event.translationY;
-
-            switch (platform) {
-                case 'android':
-                    translationX.value +=
-                        focalX.value * (1 - scale.value) * openedImageScale.value * scale.value;
-                    translationY.value +=
-                        focalY.value * (1 - scale.value) * openedImageScale.value * scale.value;
-                    break;
-                default:
-                    translationX.value +=
-                        focalX.value *
-                        (1 - scale.value) *
-                        openedImageScale.value *
-                        openedImageScale.value *
-                        (1 - scale.value);
-                    translationY.value +=
-                        focalY.value *
-                        (1 - scale.value) *
-                        openedImageScale.value *
-                        openedImageScale.value *
-                        (1 - scale.value);
-                    break;
-            }
+        onEnd: event => {
+            translationX.value -=
+                ((initialWidth.value / 2 - focalX.value * openedImageScale.value) *
+                    (1 - scale.value)) /
+                scale.value /
+                baseScale.value /
+                openedImageScale.value;
+            translationY.value -=
+                ((initialHeight.value / 2 - focalY.value * openedImageScale.value) *
+                    (1 - scale.value)) /
+                scale.value /
+                baseScale.value /
+                openedImageScale.value;
 
             isZooming.value = false;
+            baseScale.value *= event.scale;
             focalX.value = 0;
             focalY.value = 0;
         },
@@ -151,12 +105,20 @@ export const Zoom: React.FC<ZoomProps> = ({
             context.startY = translationY.value;
         },
         onActive: (event, context) => {
-            const targetX = context.startX + event.translationX;
-            const targetY = context.startY + event.translationY;
+            const transX =
+                platform === 'android'
+                    ? event.translationX / openedImageScale.value / baseScale.value
+                    : event.translationX;
+            const transY =
+                platform === 'android'
+                    ? event.translationY / openedImageScale.value / baseScale.value
+                    : event.translationY;
+            const targetX = context.startX + transX;
+            const targetY = context.startY + transY;
             const maxTranslation = runUIGetMaxTranslation(
                 initialWidth.value,
                 initialHeight.value,
-                scale.value,
+                baseScale.value,
                 openedImageScale.value,
             );
 
@@ -180,16 +142,16 @@ export const Zoom: React.FC<ZoomProps> = ({
             const maxTranslation = runUIGetMaxTranslation(
                 initialWidth.value,
                 initialHeight.value,
-                scale.value,
+                baseScale.value,
                 openedImageScale.value,
             );
             translationX.value = withDecay({
-                velocity: event.velocityX / scale.value,
+                velocity: event.velocityX / baseScale.value,
                 deceleration,
                 clamp: [-maxTranslation.x, maxTranslation.x],
             });
             translationY.value = withDecay({
-                velocity: event.velocityY / scale.value,
+                velocity: event.velocityY / baseScale.value,
                 deceleration,
                 clamp: [-maxTranslation.y, maxTranslation.y],
             });
@@ -197,74 +159,29 @@ export const Zoom: React.FC<ZoomProps> = ({
     });
 
     const animatedStyle = useAnimatedStyle(() => {
-        const translate = runUIGetTranslate(
-            translationX.value,
-            translationY.value,
-            scale.value,
-            openedImageScale.value,
-        );
-        if (isZooming.value) {
-            return {
-                transform: [
-                    { translateX: focalX.value },
-                    { translateY: focalY.value },
-                    { translateX: -initialWidth.value / openedImageScale.value / 2 },
-                    { translateY: -initialHeight.value / openedImageScale.value / 2 },
-                    { scale: scale.value },
-                    { translateX: -focalX.value },
-                    { translateY: -focalY.value },
-                    { translateX: initialWidth.value / openedImageScale.value / 2 },
-                    { translateY: initialHeight.value / openedImageScale.value / 2 },
+        const translate = [
+            { scale: baseScale.value },
+            { translateX: translationX.value },
+            { translateY: translationY.value },
+        ];
 
-                    ...translate,
-                ],
-            };
-        }
+        const zoom = isZooming.value
+            ? [
+                  { translateX: focalX.value },
+                  { translateY: focalY.value },
+                  { translateX: -initialWidth.value / openedImageScale.value / 2 },
+                  { translateY: -initialHeight.value / openedImageScale.value / 2 },
+                  { scale: scale.value },
+                  { translateX: -focalX.value },
+                  { translateY: -focalY.value },
+                  { translateX: initialWidth.value / openedImageScale.value / 2 },
+                  { translateY: initialHeight.value / openedImageScale.value / 2 },
+              ]
+            : [];
+
         return {
-            transform: [{ scale: scale.value }, ...translate],
+            transform: [...zoom, ...translate],
         };
-        // switch (platform) {
-        //     case 'android':
-        //         if (isZooming.value) {
-        //             return {
-        //                 transform: [
-        //                     { translateX: focalX.value },
-        //                     { translateY: focalY.value },
-        //                     { translateX: -initialWidth.value / openedImageScale.value / 2 },
-        //                     { translateY: -initialHeight.value / openedImageScale.value / 2 },
-        //                     { scale: scale.value },
-        //                     { translateX: -focalX.value },
-        //                     { translateY: -focalY.value },
-        //                     { translateX: initialWidth.value / openedImageScale.value / 2 },
-        //                     { translateY: initialHeight.value / openedImageScale.value / 2 },
-
-        //                     ...translate,
-        //                 ],
-        //             };
-        //         }
-        //         return {
-        //             transform: [
-        //                 { scale: scale.value },
-        //                 ...translate,
-        //             ],
-        //         };
-        //     default:
-        //         return {
-        //             transform: [
-        //                 { translateX: focalX.value },
-        //                 { translateY: focalY.value },
-        //                 { translateX: -initialWidth.value / openedImageScale.value / 2 },
-        //                 { translateY: -initialHeight.value / openedImageScale.value / 2 },
-        //                 { scale: scale.value },
-        //                 { translateX: -focalX.value },
-        //                 { translateY: -focalY.value },
-        //                 { translateX: initialWidth.value / openedImageScale.value / 2 },
-        //                 { translateY: initialHeight.value / openedImageScale.value / 2 },
-
-        //                 ...translate,
-        //             ],
-        //         };
-        // }
     });
 
     const dot = useAnimatedStyle(() => {
@@ -281,14 +198,14 @@ export const Zoom: React.FC<ZoomProps> = ({
     });
 
     return (
-        <Animated.View>
+        <Animated.View style={styles.pinchContainer}>
             <PinchGestureHandler
                 ref={pinchRef}
                 onGestureEvent={onPinchGestureEvent}
                 simultaneousHandlers={panRef}
                 minPointers={2}
             >
-                <Animated.View style={{ flex: 1 }}>
+                <Animated.View style={styles.panContainer}>
                     <PanGestureHandler
                         ref={panRef}
                         onGestureEvent={onPanGestureEvent}
@@ -296,7 +213,9 @@ export const Zoom: React.FC<ZoomProps> = ({
                         enableTrackpadTwoFingerGesture={false}
                         maxPointers={1}
                     >
-                        <Animated.View style={[animatedStyle]}>{children}</Animated.View>
+                        <Animated.View style={[styles.content, animatedStyle]}>
+                            {children}
+                        </Animated.View>
                     </PanGestureHandler>
                     <Animated.View style={dot} />
                 </Animated.View>
@@ -305,8 +224,12 @@ export const Zoom: React.FC<ZoomProps> = ({
     );
 };
 
-// const styles = StyleSheet.create({
-//     container: {
-
-//     }
-// })
+const styles = StyleSheet.create({
+    pinchContainer: {},
+    panContainer: {
+        // borderWidth: 1,
+    },
+    content: {
+        // borderWidth: 1,
+    },
+});
