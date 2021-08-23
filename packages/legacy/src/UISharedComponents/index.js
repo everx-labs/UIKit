@@ -16,7 +16,6 @@ export default class UISharedComponents extends UIComponent {
                 <UISpinnerOverlay masterSpinner />
                 <UINotice />
                 <UIDropdownAlert />
-                <UIAlertView />
                 <UICompatibilityView />
                 <UILayoutManager />
             </React.Fragment>
