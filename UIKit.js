@@ -12,8 +12,6 @@ export { UIPopoverMenu, UIPopoverBackground, UIMenuBackground, UIMenuView };
 export {
     UIActionComponent,
     UIActionImage,
-    UIAlert,
-    UIAlertView,
     UIAmountInput,
     UICompatibilityView,
     UIComponent,
