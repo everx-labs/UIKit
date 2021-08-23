@@ -49,7 +49,7 @@ export default function (
          * To prevent changes when there wasn't onBeginDrag event
          * (so it's likely not an actual scroll) using a guard
          */
-        if (isIOS && !ctx != null && !ctx.scrollTouchGuard) {
+        if (isIOS && ctx != null && !ctx.scrollTouchGuard) {
             return;
         }
 
