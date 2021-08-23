@@ -1,12 +1,12 @@
-/* eslint-disable no-param-reassign */
 import * as React from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform } from 'react-native';
 import Animated, {
     useAnimatedGestureHandler,
     useAnimatedRef,
     useAnimatedStyle,
     useSharedValue,
     withDecay,
+    withSpring,
 } from 'react-native-reanimated';
 import {
     PanGestureHandler,
@@ -18,7 +18,13 @@ import type { ZoomProps } from './types';
 
 const platform = Platform.OS;
 
-const deceleration = 0.995;
+const DECELERATION = 0.995;
+const INITIAL_VALUE = -1;
+
+const springConfig: Animated.WithSpringConfig = {
+    overshootClamping: true,
+    stiffness: 500,
+};
 
 type PanGestureEventContext = {
     startX: number;
@@ -45,6 +51,24 @@ const runUIGetMaxTranslation = (
     };
 };
 
+const runUIGetScaleResultOffset = (
+    focalCoordinate: Readonly<Animated.SharedValue<number>>,
+    initialSize: Readonly<Animated.SharedValue<number>>,
+    scale: Readonly<Animated.SharedValue<number>>,
+    baseScale: Readonly<Animated.SharedValue<number>>,
+    openedImageScale: Readonly<Animated.SharedValue<number>>,
+) => {
+    'worklet';
+
+    return (
+        ((focalCoordinate.value * openedImageScale.value - initialSize.value / 2) *
+            (1 - scale.value)) /
+        scale.value /
+        baseScale.value /
+        openedImageScale.value
+    );
+};
+
 export const Zoom: React.FC<ZoomProps> = ({
     children,
     initialWidth,
@@ -54,67 +78,80 @@ export const Zoom: React.FC<ZoomProps> = ({
     const pinchRef = useAnimatedRef();
     const panRef = useAnimatedRef();
 
+    /**
+     * Last scale
+     */
     const baseScale = useSharedValue<number>(1);
+    /**
+     * Scale of current pinch
+     */
     const scale = useSharedValue<number>(1);
+    /**
+     * Is pinch active
+     */
     const isZooming = useSharedValue<boolean>(false);
-    const focalX = useSharedValue<number>(0);
-    const focalY = useSharedValue<number>(0);
+    /**
+     * X coordinate of current pinch focus
+     */
+    const focalX = useSharedValue<number>(INITIAL_VALUE);
+    /**
+     * Y coordinate of current pinch focus
+     */
+    const focalY = useSharedValue<number>(INITIAL_VALUE);
+    /**
+     * Current X offset from the center position
+     */
     const translationX = useSharedValue<number>(0);
+    /**
+     * Current Y offset from the center position
+     */
     const translationY = useSharedValue<number>(0);
 
-    const onPinchGestureEvent = useAnimatedGestureHandler<PinchGestureHandlerGestureEvent>({
+    const onZoom = useAnimatedGestureHandler<PinchGestureHandlerGestureEvent>({
         onActive: event => {
             if (!isZooming.value) {
                 isZooming.value = true;
             }
-            if (!focalX.value) {
+            if (focalX.value === INITIAL_VALUE) {
                 focalX.value = event.focalX;
             }
-            if (!focalY.value) {
+            if (focalY.value === INITIAL_VALUE) {
                 focalY.value = event.focalY;
             }
             scale.value = event.scale;
         },
         onEnd: event => {
-            translationX.value +=
-                ((focalX.value * openedImageScale.value - initialWidth.value / 2) *
-                    (1 - scale.value)) /
-                scale.value /
-                baseScale.value /
-                openedImageScale.value;
-            translationY.value +=
-                ((focalY.value * openedImageScale.value - initialHeight.value / 2) *
-                    (1 - scale.value)) /
-                scale.value /
-                baseScale.value /
-                openedImageScale.value;
+            /**
+             * Save the translation after the zoom
+             */
+            const resultOffsetX = runUIGetScaleResultOffset(
+                focalX,
+                initialWidth,
+                scale,
+                baseScale,
+                openedImageScale,
+            );
+            const resultOffsetY = runUIGetScaleResultOffset(
+                focalY,
+                initialHeight,
+                scale,
+                baseScale,
+                openedImageScale,
+            );
+            translationX.value += resultOffsetX;
+            translationY.value += resultOffsetY;
 
+            /**
+             * Reset zooming values
+             */
             isZooming.value = false;
             baseScale.value *= event.scale;
-            focalX.value = 0;
-            focalY.value = 0;
-        },
-    });
+            focalX.value = INITIAL_VALUE;
+            focalY.value = INITIAL_VALUE;
 
-    const onPanGestureEvent = useAnimatedGestureHandler<
-        PanGestureHandlerGestureEvent,
-        PanGestureEventContext
-    >({
-        onStart: (_, context) => {
-            context.startX = translationX.value;
-            context.startY = translationY.value;
-        },
-        onActive: (event, context) => {
-            const transX =
-                platform === 'android'
-                    ? event.translationX / openedImageScale.value / baseScale.value
-                    : event.translationX;
-            const transY =
-                platform === 'android'
-                    ? event.translationY / openedImageScale.value / baseScale.value
-                    : event.translationY;
-            const targetX = context.startX + transX;
-            const targetY = context.startY + transY;
+            /**
+             * Fill the screen with a picture
+             */
             const maxTranslation = runUIGetMaxTranslation(
                 initialWidth.value,
                 initialHeight.value,
@@ -122,41 +159,82 @@ export const Zoom: React.FC<ZoomProps> = ({
                 openedImageScale.value,
             );
 
-            if (targetX < -maxTranslation.x) {
-                translationX.value = -maxTranslation.x;
-            } else if (targetX > maxTranslation.x) {
-                translationX.value = maxTranslation.x;
-            } else {
-                translationX.value = targetX;
+            if (translationX.value < -maxTranslation.x) {
+                translationX.value = withSpring(-maxTranslation.x, springConfig);
+            } else if (translationX.value > maxTranslation.x) {
+                translationX.value = withSpring(maxTranslation.x, springConfig);
             }
 
-            if (targetY < -maxTranslation.y) {
-                translationY.value = -maxTranslation.y;
-            } else if (targetY > maxTranslation.y) {
-                translationY.value = maxTranslation.y;
-            } else {
-                translationY.value = targetY;
+            if (translationY.value < -maxTranslation.y) {
+                translationY.value = withSpring(-maxTranslation.y, springConfig);
+            } else if (translationY.value > maxTranslation.y) {
+                translationY.value = withSpring(maxTranslation.y, springConfig);
             }
         },
-        onEnd: event => {
-            const maxTranslation = runUIGetMaxTranslation(
-                initialWidth.value,
-                initialHeight.value,
-                baseScale.value,
-                openedImageScale.value,
-            );
-            translationX.value = withDecay({
-                velocity: event.velocityX / baseScale.value,
-                deceleration,
-                clamp: [-maxTranslation.x, maxTranslation.x],
-            });
-            translationY.value = withDecay({
-                velocity: event.velocityY / baseScale.value,
-                deceleration,
-                clamp: [-maxTranslation.y, maxTranslation.y],
-            });
-        },
     });
+
+    const onMove = useAnimatedGestureHandler<PanGestureHandlerGestureEvent, PanGestureEventContext>(
+        {
+            onStart: (_, context) => {
+                // eslint-disable-next-line no-param-reassign
+                context.startX = translationX.value;
+                // eslint-disable-next-line no-param-reassign
+                context.startY = translationY.value;
+            },
+            onActive: (event, context) => {
+                const transX =
+                    platform === 'android'
+                        ? event.translationX / openedImageScale.value / baseScale.value
+                        : event.translationX;
+                const transY =
+                    platform === 'android'
+                        ? event.translationY / openedImageScale.value / baseScale.value
+                        : event.translationY;
+                const targetX = context.startX + transX;
+                const targetY = context.startY + transY;
+                const maxTranslation = runUIGetMaxTranslation(
+                    initialWidth.value,
+                    initialHeight.value,
+                    baseScale.value,
+                    openedImageScale.value,
+                );
+
+                if (targetX < -maxTranslation.x) {
+                    translationX.value = -maxTranslation.x;
+                } else if (targetX > maxTranslation.x) {
+                    translationX.value = maxTranslation.x;
+                } else {
+                    translationX.value = targetX;
+                }
+
+                if (targetY < -maxTranslation.y) {
+                    translationY.value = -maxTranslation.y;
+                } else if (targetY > maxTranslation.y) {
+                    translationY.value = maxTranslation.y;
+                } else {
+                    translationY.value = targetY;
+                }
+            },
+            onEnd: event => {
+                const maxTranslation = runUIGetMaxTranslation(
+                    initialWidth.value,
+                    initialHeight.value,
+                    baseScale.value,
+                    openedImageScale.value,
+                );
+                translationX.value = withDecay({
+                    velocity: event.velocityX / baseScale.value,
+                    deceleration: DECELERATION,
+                    clamp: [-maxTranslation.x, maxTranslation.x],
+                });
+                translationY.value = withDecay({
+                    velocity: event.velocityY / baseScale.value,
+                    deceleration: DECELERATION,
+                    clamp: [-maxTranslation.y, maxTranslation.y],
+                });
+            },
+        },
+    );
 
     const animatedStyle = useAnimatedStyle(() => {
         const translate = [
@@ -184,54 +262,26 @@ export const Zoom: React.FC<ZoomProps> = ({
         };
     });
 
-    const dot = useAnimatedStyle(() => {
-        return {
-            position: 'absolute',
-            height: 10,
-            width: 10,
-            borderRadius: 5,
-            backgroundColor: 'blue',
-            top: -5,
-            left: -5,
-            transform: [{ translateX: focalX.value }, { translateY: focalY.value }],
-        };
-    });
-
     return (
-        <Animated.View style={styles.pinchContainer}>
+        <Animated.View>
             <PinchGestureHandler
                 ref={pinchRef}
-                onGestureEvent={onPinchGestureEvent}
+                onGestureEvent={onZoom}
                 simultaneousHandlers={panRef}
                 minPointers={2}
             >
-                <Animated.View style={styles.panContainer}>
+                <Animated.View>
                     <PanGestureHandler
                         ref={panRef}
-                        onGestureEvent={onPanGestureEvent}
+                        onGestureEvent={onMove}
                         simultaneousHandlers={pinchRef}
                         enableTrackpadTwoFingerGesture={false}
                         maxPointers={1}
                     >
-                        <Animated.View style={[styles.content, animatedStyle]}>
-                            {children}
-                        </Animated.View>
+                        <Animated.View style={animatedStyle}>{children}</Animated.View>
                     </PanGestureHandler>
-                    <Animated.View style={dot} />
                 </Animated.View>
             </PinchGestureHandler>
         </Animated.View>
     );
 };
-
-const styles = StyleSheet.create({
-    pinchContainer: {
-        // borderWidth: 1,
-    },
-    panContainer: {
-        // borderWidth: 1,
-    },
-    content: {
-        // borderWidth: 1,
-    },
-});
