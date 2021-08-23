@@ -7,7 +7,6 @@ import {
     ColorVariants,
     useTheme,
 } from '@tonlabs/uikit.hydrogen';
-import { useBackHandler } from '@react-native-community/hooks';
 import { UICardSheet } from '../Sheets';
 import { UIActionSheetAction } from './UIActionSheetAction';
 import {
@@ -114,15 +113,6 @@ export const UIActionSheetContainer: React.FC<UIActionSheetContainerProps> = ({
         () => getActionSheetActions(children),
         [children],
     );
-
-    const onRequestClose = React.useCallback((): boolean => {
-        if (actionSheetActions.cancelAction) {
-            actionSheetActions.cancelAction.props.onPress();
-        }
-        return true;
-    }, [actionSheetActions]);
-
-    useBackHandler(onRequestClose);
 
     const theme = useTheme();
     const styles = useStyles(theme);
