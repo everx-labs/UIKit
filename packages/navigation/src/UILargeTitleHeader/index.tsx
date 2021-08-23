@@ -169,7 +169,6 @@ export function UILargeTitleHeader({
             shiftChangedForcibly.value = false;
             yWithoutRubberBand.value = shift.value;
         },
-        onEndDrag,
         onMomentumEnd: onEndDrag,
     });
 
