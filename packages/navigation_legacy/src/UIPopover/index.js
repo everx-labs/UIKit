@@ -15,7 +15,6 @@ import { UIBackgroundView, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
 import { UICardSheet } from '@tonlabs/uikit.navigation';
 
 import UIPopoverBackground from '../UIPopoverBackground';
-import UIActionSheet from '../UIActionSheet';
 
 let masterRef = null;
 
