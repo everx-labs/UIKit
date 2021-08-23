@@ -15,6 +15,7 @@ import { UIBackgroundView, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
 import { UICardSheet } from '@tonlabs/uikit.navigation';
 
 import UIPopoverBackground from '../UIPopoverBackground';
+import UIActionSheet from '../UIActionSheet';
 
 let masterRef = null;
 
@@ -245,6 +246,10 @@ export default class UIPopover<Props, State>
     renderMenu(): ?(React$Node[]) {
         return null;
     }
+    // Render
+    renderActionSheet(): ?(React$Node[]) {
+        return null;
+    }
 
     renderPopover = () => {
         const menuStyle = this.isMenu
@@ -306,6 +311,7 @@ export default class UIPopover<Props, State>
                         {this.props.component}
                     </UIBackgroundView>
                 </UICardSheet>
+                {this.renderActionSheet()}
             </>
         );
     }
