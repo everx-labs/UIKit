@@ -84,6 +84,73 @@ const useImageCallback = (
     };
 };
 
+const getImage = (
+    imageRef: React.RefObject<Image>,
+    sourceUri: string | null,
+    imageSize: ImageSize | null,
+    onErrorCallback: () => void,
+    onLoadCallback: () => void,
+) => {
+    if (!sourceUri) {
+        return null;
+    }
+    return (
+        <Image
+            ref={imageRef}
+            source={{ uri: sourceUri }}
+            style={imageSize}
+            onError={onErrorCallback}
+            onLoad={onLoadCallback}
+        />
+    );
+};
+
+const useImages = (
+    data: string | null,
+    preview: string | null,
+    imageRef: React.RefObject<Image>,
+    imageSize: ImageSize | null,
+    onErrorCallback: () => void,
+    onLoadCallback: () => void,
+) => {
+    return React.useMemo(() => {
+        let fullSizeSourceUri: string | null = null;
+        let previewSourceUri: string | null = null;
+
+        if (data) {
+            fullSizeSourceUri = data;
+        } else if (preview) {
+            fullSizeSourceUri = preview;
+        }
+
+        if (preview) {
+            previewSourceUri = preview;
+        } else if (data) {
+            previewSourceUri = data;
+        }
+
+        const fullSizeComponent = getImage(
+            imageRef,
+            fullSizeSourceUri,
+            imageSize,
+            onErrorCallback,
+            onLoadCallback,
+        );
+        const previewComponent = getImage(
+            imageRef,
+            previewSourceUri,
+            imageSize,
+            onErrorCallback,
+            onLoadCallback,
+        );
+
+        return {
+            fullSizeImage: fullSizeComponent,
+            previewImage: previewComponent,
+        };
+    }, [data, preview, imageRef, imageSize, onErrorCallback, onLoadCallback]);
+};
+
 export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
     const imageRef = React.useRef<Image>(null);
     const { onError, onLoad, preview, data, onLayout } = message;
@@ -129,47 +196,14 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
 
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
-    const fullSizeImage = React.useMemo(() => {
-        let sourceUri: string | null = null;
-        if (data) {
-            sourceUri = data;
-        } else if (preview) {
-            sourceUri = preview;
-        }
-        if (!sourceUri) {
-            return null;
-        }
-        return (
-            <Image
-                ref={imageRef}
-                source={{ uri: sourceUri }}
-                style={imageSize}
-                onError={onErrorCallback}
-                onLoad={onLoadCallback}
-            />
-        );
-    }, [data, preview, imageRef, imageSize, onErrorCallback, onLoadCallback]);
-
-    const previewImage = React.useMemo(() => {
-        let sourceUri: string | null = null;
-        if (preview) {
-            sourceUri = preview;
-        } else if (data) {
-            sourceUri = data;
-        }
-        if (!sourceUri) {
-            return null;
-        }
-        return (
-            <Image
-                ref={imageRef}
-                source={{ uri: sourceUri }}
-                style={imageSize}
-                onError={onErrorCallback}
-                onLoad={onLoadCallback}
-            />
-        );
-    }, [data, preview, imageRef, imageSize, onErrorCallback, onLoadCallback]);
+    const { fullSizeImage, previewImage } = useImages(
+        data,
+        preview,
+        imageRef,
+        imageSize,
+        onErrorCallback,
+        onLoadCallback,
+    );
 
     const onPress = React.useCallback(() => {
         setIsOpen(prevIsOpen => !prevIsOpen);
