@@ -67,23 +67,23 @@ export const Zoom: React.FC<ZoomProps> = ({
             if (!isZooming.value) {
                 isZooming.value = true;
             }
-            scale.value = event.scale;
             if (!focalX.value) {
                 focalX.value = event.focalX;
             }
             if (!focalY.value) {
                 focalY.value = event.focalY;
             }
+            scale.value = event.scale;
         },
         onEnd: event => {
-            translationX.value -=
-                ((initialWidth.value / 2 - focalX.value * openedImageScale.value) *
+            translationX.value +=
+                ((focalX.value * openedImageScale.value - initialWidth.value / 2) *
                     (1 - scale.value)) /
                 scale.value /
                 baseScale.value /
                 openedImageScale.value;
-            translationY.value -=
-                ((initialHeight.value / 2 - focalY.value * openedImageScale.value) *
+            translationY.value +=
+                ((focalY.value * openedImageScale.value - initialHeight.value / 2) *
                     (1 - scale.value)) /
                 scale.value /
                 baseScale.value /
@@ -225,7 +225,9 @@ export const Zoom: React.FC<ZoomProps> = ({
 };
 
 const styles = StyleSheet.create({
-    pinchContainer: {},
+    pinchContainer: {
+        // borderWidth: 1,
+    },
     panContainer: {
         // borderWidth: 1,
     },
