@@ -151,6 +151,7 @@ const useStyles = makeStyles((theme) => ({
     header: {
         paddingVertical: UIConstant.contentInsetVerticalX3,
         paddingHorizontal: UIConstant.contentOffset,
+        alignItems: 'center'
     },
     actionsContainer: {
         flexDirection: 'column',
