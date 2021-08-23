@@ -2,11 +2,12 @@
 import React from 'react';
 
 import { UIPopup } from  '@tonlabs/uikit.popups'
+import { uiLocalized } from '@tonlabs/uikit.localization';
+import { UIStyle } from '@kits/UIKit';
 import MenuItem from '../UIActionSheet/MenuItem';
 import type { MenuItemType } from '../UIActionSheet/MenuItem';
 import UIPopover from '../UIPopover';
 import type { PopoverProps, PopoverState } from '../UIPopover';
-import { uiLocalized } from '@tonlabs/uikit.localization';
 
 type Props = PopoverProps & {
     menuItemsList: MenuItemType[],
@@ -25,6 +26,7 @@ export default class UIPopoverMenu extends UIPopover<Props, PopoverState> {
         needCancelItem: true, // for iOS and Android only
         onCancelCallback: () => {}, // for iOS and Android only
         actionSheetIsVisible: false,
+        title: '',
     };
 
     // deprecated, use hide(), inherited from UIPopover
@@ -79,7 +81,7 @@ export default class UIPopoverMenu extends UIPopover<Props, PopoverState> {
 
     renderActionSheet(): ?React$Node[] {
         return (
-            <UIPopup.ActionSheet visible={this.state.actionSheetIsVisible}>
+            <UIPopup.ActionSheet note={this.props.title} visible={this.state.actionSheetIsVisible}>
             {this.getMenuItems().map<React$Node>(item => !!item && (
                     <UIPopup.ActionSheet.Action
                         title={item.title}
