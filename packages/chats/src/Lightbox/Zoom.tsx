@@ -10,7 +10,7 @@ import { useOnMove, useOnZoom, useZoomStyle } from './hooks/zoomHooks';
 
 const INITIAL_VALUE = -1;
 
-export const Zoom: React.FC<ZoomProps> = ({ children }: ZoomProps) => {
+export const Zoom: React.FC<ZoomProps> = ({ children, contentWidth, contentHeight }: ZoomProps) => {
     const pinchRef = useAnimatedRef();
     const panRef = useAnimatedRef();
 
@@ -56,9 +56,19 @@ export const Zoom: React.FC<ZoomProps> = ({ children }: ZoomProps) => {
         baseScale,
         translationX,
         translationY,
+        contentWidth,
+        contentHeight,
     );
 
-    const onMove = useOnMove(windowWidth, windowHeight, baseScale, translationX, translationY);
+    const onMove = useOnMove(
+        windowWidth,
+        windowHeight,
+        baseScale,
+        translationX,
+        translationY,
+        contentWidth,
+        contentHeight,
+    );
 
     const animatedStyle = useZoomStyle(
         isZooming,

@@ -106,7 +106,10 @@ export const useAnimatedContainerStyle = (
         };
     }, []);
 
-    return animatedContainerStyle;
+    return {
+        animatedContainerStyle,
+        openedImageScale,
+    };
 };
 
 export const useDuplicateContentState = (

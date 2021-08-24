@@ -36,19 +36,32 @@ const runUIGetScaleResultOffset = (
     );
 };
 
-const runUIGetMaxTranslation = (windowWidth: number, windowHeight: number, scale: number) => {
+const runUIGetMaxTranslation = (
+    windowWidth: number,
+    windowHeight: number,
+    contentWidth: Readonly<Animated.SharedValue<number>>,
+    contentHeight: Readonly<Animated.SharedValue<number>>,
+    scale: number,
+) => {
     'worklet';
 
-    if (scale <= 1) {
-        return {
-            x: 0,
-            y: 0,
-        };
+    let x = 0;
+    const currentWidth = contentWidth.value * scale;
+    if (currentWidth > windowWidth) {
+        x = (currentWidth - windowWidth) / 2 / scale;
+    } else {
+        x = 0;
     }
-    return {
-        x: (windowWidth * (scale - 1)) / 2 / scale,
-        y: (windowHeight * (scale - 1)) / 2 / scale,
-    };
+
+    let y = 0;
+    const currentHeight = contentHeight.value * scale;
+    if (currentHeight > windowHeight) {
+        y = (currentHeight - windowHeight) / 2 / scale;
+    } else {
+        y = 0;
+    }
+
+    return { x, y };
 };
 
 export const useOnZoom = (
@@ -62,6 +75,8 @@ export const useOnZoom = (
     baseScale: Animated.SharedValue<number>,
     translationX: Animated.SharedValue<number>,
     translationY: Animated.SharedValue<number>,
+    contentWidth: Readonly<Animated.SharedValue<number>>,
+    contentHeight: Readonly<Animated.SharedValue<number>>,
 ) => {
     return useAnimatedGestureHandler<PinchGestureHandlerGestureEvent>(
         {
@@ -110,6 +125,8 @@ export const useOnZoom = (
                 const maxTranslation = runUIGetMaxTranslation(
                     windowWidth,
                     windowHeight,
+                    contentWidth,
+                    contentHeight,
                     baseScale.value,
                 );
 
@@ -136,6 +153,8 @@ export const useOnMove = (
     baseScale: Animated.SharedValue<number>,
     translationX: Animated.SharedValue<number>,
     translationY: Animated.SharedValue<number>,
+    contentWidth: Readonly<Animated.SharedValue<number>>,
+    contentHeight: Readonly<Animated.SharedValue<number>>,
 ) => {
     return useAnimatedGestureHandler<PanGestureHandlerGestureEvent, PanGestureEventContext>(
         {
@@ -159,6 +178,8 @@ export const useOnMove = (
                 const maxTranslation = runUIGetMaxTranslation(
                     windowWidth,
                     windowHeight,
+                    contentWidth,
+                    contentHeight,
                     baseScale.value,
                 );
 
@@ -182,6 +203,8 @@ export const useOnMove = (
                 const maxTranslation = runUIGetMaxTranslation(
                     windowWidth,
                     windowHeight,
+                    contentWidth,
+                    contentHeight,
                     baseScale.value,
                 );
                 translationX.value = withDecay({

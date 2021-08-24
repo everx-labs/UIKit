@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
-import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
+import Animated, { interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated';
 import {
     makeStyles,
     Portal,
@@ -53,7 +53,7 @@ export const DuplicateContent = ({
 
     const visibilityState = useVisibilityState(duplicateContentState, onAnimationEnd);
 
-    const animatedContainerStyle = useAnimatedContainerStyle(
+    const { animatedContainerStyle, openedImageScale } = useAnimatedContainerStyle(
         visibilityState,
         pageY,
         pageX,
@@ -61,10 +61,14 @@ export const DuplicateContent = ({
         height,
     );
 
+    const contentWidth = useDerivedValue(() => {
+        return width.value * openedImageScale.value;
+    });
+    const contentHeight = useDerivedValue(() => {
+        return height.value * openedImageScale.value;
+    });
+
     const previewImageStyle = useAnimatedStyle(() => {
-        console.log({
-            duplicateContentState: duplicateContentState.value,
-        });
         return {
             opacity:
                 duplicateContentState.value === DuplicateContentState.Initial ||
@@ -104,7 +108,7 @@ export const DuplicateContent = ({
                     <UIBoxButton title="Close" onPress={onPressClose} />
                 </View>
                 <Animated.View style={[styles.duplicateContent]} pointerEvents="box-none">
-                    <Zoom>
+                    <Zoom contentWidth={contentWidth} contentHeight={contentHeight}>
                         <Animated.View
                             style={[styles.zoomContent, animatedContainerStyle]}
                             pointerEvents="box-none"
