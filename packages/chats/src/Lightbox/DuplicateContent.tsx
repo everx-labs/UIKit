@@ -9,6 +9,7 @@ import {
     Theme,
     UIBoxButton,
 } from '@tonlabs/uikit.hydrogen';
+import { useBackHandler } from '@react-native-community/hooks';
 import type { DuplicateContentProps } from './types';
 import {
     useDuplicateContentState,
@@ -30,10 +31,15 @@ export const DuplicateContent = ({
 
     const [isFullSizeDisplayed, setIsFullSizeDisplayed] = React.useState<boolean>(false);
 
-    const { duplicateContentState, onPressUnderlay, onMeasureEnd } = useDuplicateContentState(
+    const { duplicateContentState, onPressClose, onMeasureEnd } = useDuplicateContentState(
         isFullSizeDisplayed,
         setIsFullSizeDisplayed,
     );
+
+    useBackHandler(() => {
+        onPressClose();
+        return true;
+    });
 
     const { pageY, pageX, width, height } = useDimensions(
         originalRef,
@@ -79,7 +85,7 @@ export const DuplicateContent = ({
     return (
         <Portal absoluteFill>
             <Animated.View style={styles.duplicateContainer}>
-                <TouchableWithoutFeedback onPress={onPressUnderlay}>
+                <TouchableWithoutFeedback onPress={onPressClose}>
                     <Animated.View style={[styles.overlay, overlayStyle]} />
                 </TouchableWithoutFeedback>
                 <View
@@ -90,7 +96,7 @@ export const DuplicateContent = ({
                         paddingTop: 30,
                     }}
                 >
-                    <UIBoxButton title="Close" onPress={onPressUnderlay} />
+                    <UIBoxButton title="Close" onPress={onPressClose} />
                 </View>
                 <Animated.View style={[styles.duplicateContent]} pointerEvents="box-none">
                     <Zoom>

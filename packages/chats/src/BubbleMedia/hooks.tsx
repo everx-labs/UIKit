@@ -75,11 +75,11 @@ export const useImageCallback = (
 };
 
 export const getImage = (
-    imageRef: React.RefObject<Image>,
     sourceUri: string | null,
     imageSize: ImageSize | null,
     onErrorCallback: () => void,
     onLoadCallback: () => void,
+    imageRef: React.RefObject<Image> | null,
 ) => {
     if (!sourceUri) {
         return null;
@@ -119,24 +119,24 @@ export const useImages = (
             previewSourceUri = data;
         }
 
-        const fullSizeComponent = getImage(
-            imageRef,
+        const fullSizeImage = getImage(
             fullSizeSourceUri,
             imageSize,
             onErrorCallback,
             onLoadCallback,
+            null,
         );
-        const previewComponent = getImage(
-            imageRef,
+        const previewImage = getImage(
             previewSourceUri,
             imageSize,
             onErrorCallback,
             onLoadCallback,
+            imageRef,
         );
 
         return {
-            fullSizeImage: fullSizeComponent,
-            previewImage: previewComponent,
+            fullSizeImage,
+            previewImage,
         };
     }, [data, preview, imageRef, imageSize, onErrorCallback, onLoadCallback]);
 };

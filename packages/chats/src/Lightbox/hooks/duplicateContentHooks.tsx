@@ -129,7 +129,7 @@ export const useDuplicateContentState = (
         duplicateContentState.value = DuplicateContentState.Measurement;
     }, [duplicateContentState]);
 
-    const onPressUnderlay = React.useCallback(() => {
+    const onPressClose = React.useCallback(() => {
         /**
          * First we hide the heavy FullSizeImage for performance needs
          */
@@ -159,7 +159,7 @@ export const useDuplicateContentState = (
 
     return {
         duplicateContentState,
-        onPressUnderlay,
+        onPressClose,
         onMeasureEnd,
     };
 };
