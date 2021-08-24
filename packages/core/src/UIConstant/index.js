@@ -74,7 +74,7 @@ const UI_NAVIGATION_BAR_HEIGHT = 80;
 
 const UI_SMALL_AVATAR_SIZE = 20;
 const UI_MEDIUM_AVATAR_SIZE = 40;
-const UI_DETAILS_AVATAR_SIZE = 44;
+const UI_DETAILS_AVATAR_SIZE = 48;
 const UI_LARGE_AVATAR_SIZE = 64;
 
 const UI_TINY_ICON_SIZE = 4;
@@ -463,7 +463,7 @@ export default class UIConstant {
     static iconSize() {
         return UI_DEFAULT_ICON_SIZE;
     }
-    
+
     static mediumIconSize() {
         return UI_MEDIUM_ICON_SIZE;
     }

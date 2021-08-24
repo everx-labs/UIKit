@@ -121,14 +121,13 @@ export const UIAlertViewContainer: React.FC<UIAlertViewContainerProps> = (
         [props.children],
     );
 
-    const onRequestClose = React.useCallback((): boolean => {
-        if (alertViewActions.cancelAction) {
+    useBackHandler(() => {
+        if (visible && alertViewActions.cancelAction) {
             alertViewActions.cancelAction.props.onPress();
+            return true;
         }
-        return true;
-    }, [alertViewActions]);
-
-    useBackHandler(onRequestClose);
+        return false;
+    });
 
     const styles = useStyles(alertViewActions.actionList.length);
 

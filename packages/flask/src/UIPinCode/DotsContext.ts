@@ -3,8 +3,8 @@ import type Animated from 'react-native-reanimated';
 
 export const DotsContext = React.createContext<{
     activeDotIndex: Animated.SharedValue<number>;
-    dotsValues: { current: Animated.SharedValue<number>[] };
-    dotsAnims: { current: Animated.SharedValue<number>[] };
+    dotsValues: Animated.SharedValue<number>[];
+    dotsAnims: Animated.SharedValue<number>[];
     dotsCount: number;
     disabled: boolean;
 }>(

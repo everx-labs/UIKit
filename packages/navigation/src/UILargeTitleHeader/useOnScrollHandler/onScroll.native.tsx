@@ -1,17 +1,19 @@
 /* eslint-disable no-param-reassign */
 import type * as React from 'react';
 import Animated, { measure, scrollTo } from 'react-native-reanimated';
-import type {
-    ScrollView as RNScrollView,
-    NativeScrollEvent,
-} from 'react-native';
+import { Platform } from 'react-native';
+import type { ScrollView as RNScrollView, NativeScrollEvent } from 'react-native';
 
 import { getYWithRubberBandEffect } from '../../AnimationHelpers/getYWithRubberBandEffect';
 import type {
     ScrollableOnScrollHandler,
     ScrollWorkletEventHandler,
 } from '../../Scrollable/Context';
+import type { ScrollHandlerContext } from '../types';
 
+const isIOS = Platform.OS === 'ios';
+
+// eslint-disable-next-line func-names
 export default function (
     scrollRef: React.RefObject<RNScrollView>,
     largeTitleViewRef: React.RefObject<Animated.View>,
@@ -23,7 +25,7 @@ export default function (
     rubberBandDistance: number,
     parentScrollHandler: ScrollableOnScrollHandler,
 ) {
-    return (event: NativeScrollEvent) => {
+    return (event: NativeScrollEvent, ctx: ScrollHandlerContext) => {
         'worklet';
 
         const { y } = event.contentOffset;
@@ -37,6 +39,18 @@ export default function (
         }
 
         if (shiftChangedForcibly.value) {
+            return;
+        }
+
+        /**
+         * The fix is needed only for iOS
+         *
+         * On iOS `onScroll` event could fire on mount sometimes,
+         * that's likely a bug in RN or iOS itself.
+         * To prevent changes when there wasn't onBeginDrag event
+         * (so it's likely not an actual scroll) using a guard
+         */
+        if (isIOS && ctx != null && !ctx.scrollTouchGuard) {
             return;
         }
 
@@ -59,10 +73,7 @@ export default function (
                 yWithoutRubberBand.value - y > 0 ||
                 yWithoutRubberBand.value > 0
             ) {
-                yWithoutRubberBand.value = Math.max(
-                    0,
-                    yWithoutRubberBand.value - y,
-                );
+                yWithoutRubberBand.value = Math.max(0, yWithoutRubberBand.value - y);
 
                 const parentScrollWorkletEventHandler = (parentScrollHandler as any)
                     .current as ScrollWorkletEventHandler;

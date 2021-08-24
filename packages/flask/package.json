@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "@react-native-community/bob": "0.16.2",
+    "@tonlabs/babel-plugin-transform-inline-consts": "*",
     "@types/react": "17.0.16",
     "@types/react-native": "0.64.12",
     "react": "17.0.2",

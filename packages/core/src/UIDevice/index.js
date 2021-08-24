@@ -1,16 +1,8 @@
 // @flow
 import { Platform, PixelRatio } from 'react-native';
-import SafeArea from 'react-native-safe-area';
 import MobileDetect from 'mobile-detect';
 import DeviceInfo from 'react-native-device-info';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-
-export type SafeAreaInsets = {
-    top: number,
-    left: number,
-    right: number,
-    bottom: number,
-};
 
 const UI_STATUS_BAR_HEIGHT = Platform.OS === 'ios' ? getStatusBarHeight() : 0;
 const UI_NAVIGATION_BAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
@@ -54,23 +46,6 @@ export default class UIDevice {
 
     static navigationBarHeight(): number {
         return UI_NAVIGATION_BAR_HEIGHT;
-    }
-
-    static async safeAreaInsets(): Promise<SafeAreaInsets> {
-        if (SafeArea.getSafeAreaInsetsForRootView) {
-            try {
-                const { safeAreaInsets } = await SafeArea.getSafeAreaInsetsForRootView();
-                return safeAreaInsets;
-            } catch (error) {
-                console.warn('Failed to get safe area insets with error:', error);
-            }
-        }
-        return {
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-        };
     }
 
     static isDesktopWeb(): boolean {
