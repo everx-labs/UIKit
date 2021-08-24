@@ -67,7 +67,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         paddingHorizontal: UIConstant.smallContentOffset(),
         alignSelf: 'flex-end',
+        justifyContent: 'flex-end',
         flexDirection: 'row',
+        flexWrap: 'wrap',
         zIndex: 1,
     },
     shortcut: {
