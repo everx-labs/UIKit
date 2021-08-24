@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import type * as React from 'react';
 import Animated, { measure, scrollTo } from 'react-native-reanimated';
-import type { ScrollView as RNScrollView, NativeScrollEvent } from 'react-native';
+import { ScrollView as RNScrollView, NativeScrollEvent, Platform } from 'react-native';
 
 import { getYWithRubberBandEffect } from '../../AnimationHelpers/getYWithRubberBandEffect';
 import type {
@@ -9,6 +9,8 @@ import type {
     ScrollWorkletEventHandler,
 } from '../../Scrollable/Context';
 import type { ScrollHandlerContext } from '../types';
+
+const isIOS = Platform.OS === 'ios';
 
 // eslint-disable-next-line func-names
 export default function (
@@ -40,15 +42,14 @@ export default function (
         }
 
         /**
-         * It can be undefined on Android and this is fine
-         * since the guard is needed only for iOS
+         * The fix is needed only for iOS
          *
          * On iOS `onScroll` event could fire on mount sometimes,
          * that's likely a bug in RN or iOS itself.
          * To prevent changes when there wasn't onBeginDrag event
          * (so it's likely not an actual scroll) using a guard
          */
-        if (ctx != null && !ctx.scrollTouchGuard) {
+        if (isIOS && ctx != null && !ctx.scrollTouchGuard) {
             return;
         }
 

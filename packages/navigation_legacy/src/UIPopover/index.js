@@ -245,6 +245,10 @@ export default class UIPopover<Props, State>
     renderMenu(): ?(React$Node[]) {
         return null;
     }
+    // Render
+    renderActionSheet(): ?(React$Node[]) {
+        return null;
+    }
 
     renderPopover = () => {
         const menuStyle = this.isMenu
@@ -306,6 +310,7 @@ export default class UIPopover<Props, State>
                         {this.props.component}
                     </UIBackgroundView>
                 </UICardSheet>
+                {this.renderActionSheet()}
             </>
         );
     }

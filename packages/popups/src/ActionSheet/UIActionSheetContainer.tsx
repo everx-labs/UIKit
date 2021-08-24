@@ -8,7 +8,6 @@ import {
     useTheme,
 } from '@tonlabs/uikit.hydrogen';
 import { UICardSheet, UIConstant } from '@tonlabs/uikit.navigation';
-import { useBackHandler } from '@react-native-community/hooks';
 import { UIActionSheetAction } from './UIActionSheetAction';
 import {
     UIActionSheetActionProps,
@@ -114,15 +113,6 @@ export const UIActionSheetContainer: React.FC<UIActionSheetContainerProps> = ({
         [children],
     );
 
-    const onRequestClose = React.useCallback((): boolean => {
-        if (actionSheetActions.cancelAction) {
-            actionSheetActions.cancelAction.props.onPress();
-        }
-        return true;
-    }, [actionSheetActions]);
-
-    useBackHandler(onRequestClose);
-
     const theme = useTheme();
     const styles = useStyles(theme);
 
@@ -151,6 +141,7 @@ const useStyles = makeStyles((theme) => ({
     header: {
         paddingVertical: UIConstant.contentInsetVerticalX3,
         paddingHorizontal: UIConstant.contentOffset,
+        alignItems: 'center'
     },
     actionsContainer: {
         flexDirection: 'column',
