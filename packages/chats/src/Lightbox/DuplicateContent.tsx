@@ -8,6 +8,7 @@ import {
     ColorVariants,
     Theme,
     UIBoxButton,
+    useStatusBar,
 } from '@tonlabs/uikit.hydrogen';
 import { useBackHandler } from '@react-native-community/hooks';
 import type { DuplicateContentProps } from './types';
@@ -28,6 +29,10 @@ export const DuplicateContent = ({
     originalRef,
 }: DuplicateContentProps) => {
     const theme = useTheme();
+
+    useStatusBar({
+        backgroundColor: ColorVariants.BackgroundOverlay,
+    });
 
     const [isFullSizeDisplayed, setIsFullSizeDisplayed] = React.useState<boolean>(false);
 
