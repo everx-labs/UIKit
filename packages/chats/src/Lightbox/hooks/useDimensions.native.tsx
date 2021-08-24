@@ -23,9 +23,9 @@ export const useDimensions = (
         (state, prevState) => {
             try {
                 if (
-                    !prevState ||
-                    (prevState.duplicateContentState !== DuplicateContentState.Measurement &&
-                        state.duplicateContentState === DuplicateContentState.Measurement)
+                    (!prevState ||
+                        prevState.duplicateContentState !== DuplicateContentState.Measurement) &&
+                    state.duplicateContentState === DuplicateContentState.Measurement
                 ) {
                     const measurements = measure(state.originalRef);
 

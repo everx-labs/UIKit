@@ -31,10 +31,12 @@ export const DuplicateContent = ({
 
     const [isFullSizeDisplayed, setIsFullSizeDisplayed] = React.useState<boolean>(false);
 
-    const { duplicateContentState, onPressClose, onMeasureEnd } = useDuplicateContentState(
-        isFullSizeDisplayed,
-        setIsFullSizeDisplayed,
-    );
+    const {
+        duplicateContentState,
+        onPressClose,
+        onMeasureEnd,
+        onLayout,
+    } = useDuplicateContentState(isFullSizeDisplayed, setIsFullSizeDisplayed);
 
     useBackHandler(() => {
         onPressClose();
@@ -60,6 +62,9 @@ export const DuplicateContent = ({
     );
 
     const previewImageStyle = useAnimatedStyle(() => {
+        console.log({
+            duplicateContentState: duplicateContentState.value,
+        });
         return {
             opacity:
                 duplicateContentState.value === DuplicateContentState.Initial ||
@@ -104,7 +109,9 @@ export const DuplicateContent = ({
                             style={[styles.zoomContent, animatedContainerStyle]}
                             pointerEvents="box-none"
                         >
-                            <Animated.View style={previewImageStyle}>{previewImage}</Animated.View>
+                            <Animated.View style={previewImageStyle}>
+                                <View onLayout={onLayout}>{previewImage}</View>
+                            </Animated.View>
                             {isFullSizeDisplayed ? (
                                 <Animated.View style={styles.fullSizeImage}>
                                     {fullSizeImage}

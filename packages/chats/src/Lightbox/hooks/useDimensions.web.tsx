@@ -42,9 +42,9 @@ export const useDimensions = (
         },
         (state, prevState) => {
             if (
-                !prevState ||
-                (prevState?.duplicateContentState === DuplicateContentState.Closed &&
-                    state.duplicateContentState === DuplicateContentState.Measurement)
+                (!prevState ||
+                    prevState.duplicateContentState !== DuplicateContentState.Measurement) &&
+                state.duplicateContentState === DuplicateContentState.Measurement
             ) {
                 measure(originalRef)
                     .then(measurements => {

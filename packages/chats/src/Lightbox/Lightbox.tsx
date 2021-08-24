@@ -23,14 +23,13 @@ export const Lightbox = (props: LightboxProps) => {
     const { onClose, previewImage, imageRef, imageSize } = props;
     const ref = useAnimatedRef<View>();
 
-    const copyOfPreviewImage = React.useMemo(
-        () => (
+    const copyOfPreviewImage = React.useMemo(() => {
+        return (
             <DuplicateImage source={imageRef} style={imageSize}>
                 {previewImage}
             </DuplicateImage>
-        ),
-        [previewImage, imageRef, imageSize],
-    );
+        );
+    }, [previewImage, imageRef, imageSize]);
 
     const styles = useStyles();
 

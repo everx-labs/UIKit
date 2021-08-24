@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, useWindowDimensions } from 'react-native';
+import { useWindowDimensions } from 'react-native';
 import Animated, {
     useDerivedValue,
     withSpring,
@@ -8,8 +8,6 @@ import Animated, {
     useSharedValue,
     runOnJS,
     useWorkletCallback,
-    withDelay,
-    withTiming,
 } from 'react-native-reanimated';
 import { UIConstant } from '../../constants';
 import { VisibilityState, DuplicateContentState } from '../constants';
@@ -111,12 +109,6 @@ export const useAnimatedContainerStyle = (
     return animatedContainerStyle;
 };
 
-const runUISetWithDelay = (toValue: number): number => {
-    'worklet';
-
-    return withDelay(100, withTiming(toValue, { duration: 0 }));
-};
-
 export const useDuplicateContentState = (
     isFullSizeDisplayed: boolean,
     setIsFullSizeDisplayed: React.Dispatch<React.SetStateAction<boolean>>,
@@ -125,7 +117,7 @@ export const useDuplicateContentState = (
         DuplicateContentState.Initial,
     );
 
-    React.useEffect(() => {
+    const onLayout = React.useCallback(() => {
         duplicateContentState.value = DuplicateContentState.Measurement;
     }, [duplicateContentState]);
 
@@ -137,15 +129,7 @@ export const useDuplicateContentState = (
     }, [setIsFullSizeDisplayed]);
 
     const onMeasureEnd = useWorkletCallback(() => {
-        if (Platform.OS === 'android') {
-            /**
-             * On android, it takes time to render the image.
-             * You should add a mechanism for copying the image without a heavy mounting mechanism
-             */
-            duplicateContentState.value = runUISetWithDelay(DuplicateContentState.Opened);
-        } else {
-            duplicateContentState.value = DuplicateContentState.Opened;
-        }
+        duplicateContentState.value = DuplicateContentState.Opened;
     });
 
     React.useEffect(() => {
@@ -161,6 +145,7 @@ export const useDuplicateContentState = (
         duplicateContentState,
         onPressClose,
         onMeasureEnd,
+        onLayout,
     };
 };
 
