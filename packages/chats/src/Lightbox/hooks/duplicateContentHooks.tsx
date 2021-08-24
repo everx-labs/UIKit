@@ -171,6 +171,7 @@ export const useOnAnimationEnd = (
                 /**
                  * The real animation goes with a slight delay, relative to the change in values.
                  * The timeout is in order to give time for the animation of the image to complete.
+                 * TODO investigate how to fix it 
                  */
                 setTimeout(() => {
                     onClose();
