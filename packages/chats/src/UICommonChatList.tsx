@@ -233,8 +233,14 @@ function useContentInset(
         function scrollToTop() {
             const scrollResponder = ref?.current?.getScrollResponder();
             if (scrollResponder) {
+                // -1000 is a dirty hack
+                // Since we don't know the exact size of a keyboard inset
+                // (and we can't use the bottomInset, as with a keyboard it would be incorrect)
+                // but we know that it should be more then 0,
+                // trying to scroll to a big enough offset,
+                // ScrollView will stop on a correct offset anyway
                 scrollResponder.scrollTo({
-                    y: -bottomInset,
+                    y: -1000,
                     animated: true,
                 });
                 return;
@@ -243,9 +249,23 @@ function useContentInset(
         }
         scrollToTop();
         /**
-         * We should adjust position on a first render (bottomInset set)
+         * We should adjust position on mount
          * and if the list completely rerendered
          * (hasScrollOverflow going to be changed since a data would be [] for a sec)
+         *
+         * Breadcrumbs:
+         *  - In chats we have UIChatInput, that on iOS manages insets themself
+         *    (actually it's UIInputAccessoryView does it in native)
+         *    but in debots there could be a situation when we don't have input there
+         *    (not a rare situation because actually it starts without any input presented).
+         *    So when it's mounted `contentInset` is applied,
+         *    but for some reason it's required to "touch" a ScrollView, to put it
+         *    in a correct position, and exactly that we emulate here with a `scrollTo` method.
+         *
+         * Test scenarios:
+         *  - Open any chat, messages should be above quick actions
+         *  - Open a debot, messages should be in a correct position.
+         *  - Open a debot, do few actions, restart the debot, tap back, and open it again.
          */
     }, [bottomInset, ref, hasScrollOverflow]);
 
