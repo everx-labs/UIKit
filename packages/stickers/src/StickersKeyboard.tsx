@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { FlatList, StyleSheet, Platform, ViewStyle } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant, UIDevice } from '@tonlabs/uikit.core';
 import {
@@ -58,14 +59,10 @@ export function StickersList(props: Props) {
     // Unfortunately we can't use react-native-safe-area-context
     // coz we show the picker in UICustomKeyboard and it can't find
     // SafeAreaContextProvider during a render
-    const [safeAreaBottomInset, setSafeAreaBottomInset] = React.useState(0);
-    React.useEffect(() => {
-        UIDevice.safeAreaInsets().then((insets: { bottom: number }) => {
-            setSafeAreaBottomInset(insets.bottom);
-        });
-    });
+    const insets = useSafeAreaInsets();
 
-    // theme is passed as a prop here in order to have its actual values, because context is missed for the native keyboard
+    // theme is passed as a prop here in order to have its actual values,
+    // because context is missed for the native keyboard
     const theme = useTheme();
     const { stickers, theme: themeProp } = props;
     const backgroundColor: ViewStyle = React.useMemo(
@@ -104,7 +101,7 @@ export function StickersList(props: Props) {
                 backgroundColor,
             ]}
             contentContainerStyle={{
-                paddingBottom: safeAreaBottomInset,
+                paddingBottom: insets?.bottom ?? 0,
             }}
         />
     );

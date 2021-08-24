@@ -13,6 +13,7 @@ import {
     StatusBar,
 } from 'react-native';
 import type { KeyboardEvent } from 'react-native/Libraries/Components/Keyboard/Keyboard';
+import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
 
 import {
     UIConstant,
@@ -201,6 +202,8 @@ export default class UIController<Props, State> extends UIComponent<
         }
     }
 
+    static contextType: typeof SafeAreaInsetsContext = SafeAreaInsetsContext;
+
     // constructor
     hasSpinnerOverlay: boolean;
     trackKeyboard: boolean;
@@ -266,7 +269,7 @@ export default class UIController<Props, State> extends UIComponent<
     }
 
     async loadSafeAreaInsets(): Promise<SafeAreaInsets> {
-        const safeArea = await UIDevice.safeAreaInsets();
+        const safeArea = this.context;
         this.setStateSafely({ safeArea });
         return safeArea;
     }
