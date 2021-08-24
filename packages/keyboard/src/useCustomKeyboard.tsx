@@ -1,11 +1,6 @@
 import * as React from 'react';
-import {
-    Keyboard,
-    TextInput,
-    KeyboardEvent,
-    Platform,
-    AppRegistry,
-} from 'react-native';
+import { Keyboard, TextInput, KeyboardEvent, Platform, AppRegistry } from 'react-native';
+import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 import type { OnEvent, UICustomKeyboardView } from './types';
 
 export type OnCustomKeyboardVisible = (
@@ -19,19 +14,20 @@ export function registerKeyboardComponent<KeyboardProps>(
     moduleName: string,
     keyboardComponent: React.ComponentType<KeyboardProps>,
 ) {
-    function UIKeyboard({
-        keyboardID,
-        ...props
-    }: KeyboardProps & { keyboardID: number }) {
-        return React.createElement(keyboardComponent, {
-            ...props,
-            onEvent: (...args: any[]) => {
-                const cb = callbacks[`${moduleName}:${keyboardID}`];
-                if (cb != null) {
-                    cb(...args);
-                }
-            },
-        } as any);
+    function UIKeyboard({ keyboardID, ...props }: KeyboardProps & { keyboardID: number }) {
+        return (
+            <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+                {React.createElement(keyboardComponent, {
+                    ...props,
+                    onEvent: (...args: any[]) => {
+                        const cb = callbacks[`${moduleName}:${keyboardID}`];
+                        if (cb != null) {
+                            cb(...args);
+                        }
+                    },
+                } as any)}
+            </SafeAreaProvider>
+        );
     }
 
     UIKeyboard.displayName = `UIKeyboard(${moduleName})`;
@@ -91,7 +87,7 @@ export function useCustomKeyboard(
         };
     }, []);
 
-    // eslint-disable-next-line no-shadow
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     const dismiss = React.useCallback(() => {
         setCustomKeyboard(undefined);
         customKeyboardRef.current = undefined;
