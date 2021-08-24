@@ -1,7 +1,14 @@
 import * as React from 'react';
-import { StyleSheet, TouchableWithoutFeedback } from 'react-native';
-import Animated, { interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated';
-import { makeStyles, Portal, useTheme, ColorVariants, Theme } from '@tonlabs/uikit.hydrogen';
+import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
+import {
+    makeStyles,
+    Portal,
+    useTheme,
+    ColorVariants,
+    Theme,
+    UIBoxButton,
+} from '@tonlabs/uikit.hydrogen';
 import type { DuplicateContentProps } from './types';
 import {
     useDuplicateContentState,
@@ -38,20 +45,13 @@ export const DuplicateContent = ({
 
     const visibilityState = useVisibilityState(duplicateContentState, onAnimationEnd);
 
-    const { animatedContainerStyle, openedImageScale } = useAnimatedContainerStyle(
+    const animatedContainerStyle = useAnimatedContainerStyle(
         visibilityState,
         pageY,
         pageX,
         width,
         height,
     );
-
-    const fullSizeImageWidth = useDerivedValue(() => {
-        return width.value * openedImageScale.value;
-    });
-    const fullSizeImageHeight = useDerivedValue(() => {
-        return height.value * openedImageScale.value;
-    });
 
     const previewImageStyle = useAnimatedStyle(() => {
         return {
@@ -82,21 +82,29 @@ export const DuplicateContent = ({
                 <TouchableWithoutFeedback onPress={onPressUnderlay}>
                     <Animated.View style={[styles.overlay, overlayStyle]} />
                 </TouchableWithoutFeedback>
-                <Animated.View
-                    style={[styles.duplicateContent, animatedContainerStyle]}
-                    pointerEvents="box-none"
+                <View
+                    style={{
+                        zIndex: 10,
+                        justifyContent: 'flex-start',
+                        alignItems: 'flex-start',
+                        paddingTop: 30,
+                    }}
                 >
-                    <Zoom
-                        initialWidth={fullSizeImageWidth}
-                        initialHeight={fullSizeImageHeight}
-                        openedImageScale={openedImageScale}
-                    >
-                        <Animated.View style={previewImageStyle}>{previewImage}</Animated.View>
-                        {isFullSizeDisplayed ? (
-                            <Animated.View style={styles.fullSizeImage}>
-                                {fullSizeImage}
-                            </Animated.View>
-                        ) : null}
+                    <UIBoxButton title="Close" onPress={onPressUnderlay} />
+                </View>
+                <Animated.View style={[styles.duplicateContent]} pointerEvents="box-none">
+                    <Zoom>
+                        <Animated.View
+                            style={[styles.zoomContent, animatedContainerStyle]}
+                            pointerEvents="box-none"
+                        >
+                            <Animated.View style={previewImageStyle}>{previewImage}</Animated.View>
+                            {isFullSizeDisplayed ? (
+                                <Animated.View style={styles.fullSizeImage}>
+                                    {fullSizeImage}
+                                </Animated.View>
+                            ) : null}
+                        </Animated.View>
                     </Zoom>
                 </Animated.View>
             </Animated.View>
@@ -109,7 +117,10 @@ const useStyles = makeStyles((theme: Theme) => ({
         ...StyleSheet.absoluteFillObject,
     },
     duplicateContent: {
-        position: 'absolute',
+        ...StyleSheet.absoluteFillObject,
+    },
+    zoomContent: {
+        ...StyleSheet.absoluteFillObject,
     },
     overlay: {
         ...StyleSheet.absoluteFillObject,

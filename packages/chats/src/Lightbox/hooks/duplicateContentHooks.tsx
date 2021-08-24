@@ -58,14 +58,6 @@ export const useAnimatedContainerStyle = (
     const maxHeight = React.useMemo(() => windowDimensions.height * 0.8, [windowDimensions.height]);
     const fieldAspectRatio = React.useMemo(() => maxWidth / maxHeight, [maxWidth, maxHeight]);
 
-    const centeredImageX = useDerivedValue(() => {
-        return (windowDimensions.width - width.value) / 2;
-    }, [windowDimensions.width]);
-
-    const centeredImageY = useDerivedValue(() => {
-        return (windowDimensions.height - height.value) / 2;
-    }, [windowDimensions.height]);
-
     const openedImageScale = useDerivedValue(() => {
         const aspectRatio = width.value / height.value;
         if (aspectRatio > fieldAspectRatio) {
@@ -73,6 +65,20 @@ export const useAnimatedContainerStyle = (
         }
         return maxHeight && height.value ? maxHeight / height.value : 1;
     }, [maxWidth, maxHeight, fieldAspectRatio]);
+
+    const centeredImageX = useDerivedValue(() => {
+        return (
+            (windowDimensions.width * (openedImageScale.value - 1)) / 2 +
+            (windowDimensions.width - width.value * openedImageScale.value) / 2
+        );
+    }, [windowDimensions.width]);
+
+    const centeredImageY = useDerivedValue(() => {
+        return (
+            (windowDimensions.height * (openedImageScale.value - 1)) / 2 +
+            (windowDimensions.height - height.value * openedImageScale.value) / 2
+        );
+    }, [windowDimensions.height]);
 
     const animatedContainerStyle = useAnimatedStyle(() => {
         return {
@@ -102,10 +108,7 @@ export const useAnimatedContainerStyle = (
         };
     }, []);
 
-    return {
-        animatedContainerStyle,
-        openedImageScale,
-    };
+    return animatedContainerStyle;
 };
 
 const runUISetWithDelay = (toValue: number): number => {
@@ -171,7 +174,7 @@ export const useOnAnimationEnd = (
                 /**
                  * The real animation goes with a slight delay, relative to the change in values.
                  * The timeout is in order to give time for the animation of the image to complete.
-                 * TODO investigate how to fix it 
+                 * TODO investigate how to fix it
                  */
                 setTimeout(() => {
                     onClose();

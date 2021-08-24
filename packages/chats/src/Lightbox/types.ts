@@ -24,8 +24,10 @@ export type DuplicateContentProps = {
 };
 
 export type ZoomProps = {
-    initialWidth: Readonly<Animated.SharedValue<number>>;
-    initialHeight: Readonly<Animated.SharedValue<number>>;
-    openedImageScale: Readonly<Animated.SharedValue<number>>;
     children: (React.ReactElement | null)[] | React.ReactElement;
+};
+
+export type PanGestureEventContext = {
+    startX: number;
+    startY: number;
 };
