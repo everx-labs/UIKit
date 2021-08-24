@@ -7,7 +7,6 @@ module.exports = {
             },
         ],
         'module:metro-react-native-babel-preset',
-        '@babel/preset-react',
     ],
     plugins: ['@tonlabs/babel-plugin-transform-inline-consts', 'react-native-reanimated/plugin'],
 };
