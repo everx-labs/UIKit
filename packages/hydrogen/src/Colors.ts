@@ -59,6 +59,7 @@ export enum ColorVariants {
     StaticIconPrimaryLight = 'StaticIconPrimaryLight',
     StaticHoverOverlay = 'StaticHoverOverlay',
     StaticPressOverlay = 'StaticPressOverlay',
+    StaticBlack = 'StaticBlack',
     Shadow = 'Shadow',
 }
 
@@ -77,6 +78,7 @@ const StaticTheme = {
     [ColorVariants.StaticIconPrimaryLight]: '#FDFDFD',
     [ColorVariants.StaticHoverOverlay]: 'rgba(32, 38, 42, 0.2)',
     [ColorVariants.StaticPressOverlay]: 'rgba(32, 38, 42, 0.4)',
+    [ColorVariants.StaticBlack]: '#000000',
 };
 
 export const LightTheme: Theme = {
