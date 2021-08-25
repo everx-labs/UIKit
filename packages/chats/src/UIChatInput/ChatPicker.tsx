@@ -104,7 +104,7 @@ const onPickDocumentWeb = (e: any, onSendDocument?: OnSendDocument) => {
         // in decimal
         const msg = uiLocalized.formatString(
             uiLocalized.FileIsTooBig,
-            UIConstant.maxFileSize() / 1000000,
+            (UIConstant.maxFileSize() / 1000000).toFixed(),
         );
         UIAlertView.showAlert(uiLocalized.Error, msg, [
             {
