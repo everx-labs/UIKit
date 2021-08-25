@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
-import type { ViewStyle} from 'react-native';
-import type { StyleProp, ViewProps } from 'react-native';
+import type { ViewStyle, StyleProp, ViewProps } from 'react-native';
+
 import { ColorVariants, useTheme } from '../Colors';
 import { UIConstant } from '../constants';
 

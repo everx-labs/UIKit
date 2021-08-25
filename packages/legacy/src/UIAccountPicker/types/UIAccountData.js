@@ -4,5 +4,5 @@ export type UIAccountData = {
     name: string,
     hdIndex: number,
     balance: number,
-    public: Boolean,
+    public: boolean,
 };

@@ -108,7 +108,7 @@ export class PortalManager extends React.PureComponent<
             return Number(maxMountedKey + 1);
         }
 
-        this.counter = this.counter + 1;
+        this.counter += 1;
         return this.counter;
     }
 
