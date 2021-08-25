@@ -8,5 +8,6 @@ module.exports = {
                 globals: ['_hapticImpact', '_hapticSelection', '_hapticNotification'],
             },
         ],
+        ['transform-react-remove-prop-types', { mode: 'wrap' }],
     ],
 };

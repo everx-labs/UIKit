@@ -15,8 +15,6 @@
         "tsc": "lerna run tsc",
         "tsc-example": "cd ./Example && yarn run tsc",
         "test:coverage": "jest --coverage",
-        "language:check": "babel-node --config-file ./babel.config.js scripts/checkLanguageFiles.js",
-        "language:sync": "babel-node --config-file ./babel.config.js scripts/syncLanguageFiles.js",
         "web": "webpack-dev-server -d --config Example/webpack.config.js --progress --colors --host 0.0.0.0 --display-cached",
         "cycles:check": "node scripts/checkCircularDependencies.js"
     },
@@ -84,7 +82,6 @@
     },
     "devDependencies": {
         "@babel/core": "7.15.0",
-        "@babel/node": "7.14.9",
         "@babel/plugin-proposal-decorators": "7.14.5",
         "@testing-library/react-native": "5.0.3",
         "@types/qrcode": "1.4.0",

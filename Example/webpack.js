@@ -37,13 +37,8 @@ module.exports = {
                 loader: 'babel-loader',
                 query: {
                     // cacheDirectory: true,
-                    presets: [
-                        'module:metro-react-native-babel-preset',
-                    ],
                     plugins: [
                         'babel-plugin-react-native-web',
-                        ['babel-plugin-transform-react-remove-prop-types', { mode: 'wrap' }],
-                        'react-native-reanimated/plugin',
                     ],
                 },
             },
