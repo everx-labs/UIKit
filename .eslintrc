@@ -29,6 +29,7 @@
     "@typescript-eslint/no-inferrable-types": "off",
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/no-use-before-define": ["error", { "variables": false }],
+    "@typescript-eslint/no-shadow": ["error"], // to deal with Enums properly
 
     "flowtype/space-after-type-colon": "off",
     "flowtype/no-types-missing-file-annotation": "off",
@@ -43,7 +44,7 @@
           "jsx": "never",
           "ts": "never",
           "tsx": "never"
-      }
+        }
     ],
     "import/prefer-default-export": "off",
     "import/no-cycle": [2, { "maxDepth": 1 }],
@@ -60,19 +61,22 @@
     ],
     "react/jsx-indent-props": [1, 4],
     "react/jsx-indent": ["error", 4],
+    "react/prop-types": ["warn", { "skipUndeclared": true }],
     "react/require-default-props": "off",
 
     "arrow-body-style": "off",
+    "arrow-parens": ["error", "as-needed"],
+    "quote-props": "off",
     "no-console": "off",
     "no-continue": "off",
     "no-confusing-arrow": ["error", { "allowParens": false }],
     "no-unused-expressions": "off",
     "no-unused-vars": "off",
     "no-use-before-define": "off",
+    "no-restricted-globals": "off", // works oddly with TS
+    "no-shadow": "off", // to deal with Enums properly
     "object-curly-newline": "off",
-    "quote-props": "off",
-    // Works oddly with TS
-    "no-restricted-globals": "off"
+    "prefer-arrow-callback": [ "error", { "allowNamedFunctions": true } ]
   },
   "settings": {
     "import/resolver": {
