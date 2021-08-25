@@ -75,7 +75,6 @@ module.exports = {
                 query: {
                     // cacheDirectory: true,
                     presets: [
-                        '@babel/preset-flow',
                         'module:metro-react-native-babel-preset',
                     ],
                     plugins: [
