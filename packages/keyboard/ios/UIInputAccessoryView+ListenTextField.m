@@ -58,17 +58,20 @@
 - (void)didBeginEditing:(NSNotification *)note {
     UITextField *currentTextField = note.object;
     
-    if ([currentTextField isDescendantOfView:self]) {
-        if ([currentTextField.delegate isKindOfClass:[TextFieldDelegateWrapper class]]) {
-            return;
-        }
-        TextFieldDelegateWrapper *delegateWrapper = [[TextFieldDelegateWrapper alloc] init];
-        delegateWrapper.originalDelegate = currentTextField.delegate;
-        delegateWrapper.interceptorDelegate = self;
-        
-        self.delegateWrapper = delegateWrapper;
-        currentTextField.delegate = delegateWrapper;
+    if (![currentTextField isDescendantOfView:self]) {
+        return;
     }
+    if ([currentTextField.delegate isKindOfClass:[TextFieldDelegateWrapper class]]) {
+        return;
+    }
+    
+    TextFieldDelegateWrapper *delegateWrapper = [[TextFieldDelegateWrapper alloc] init];
+    delegateWrapper.originalDelegate = currentTextField.delegate;
+    delegateWrapper.interceptorDelegate = self;
+    
+    self.delegateWrapper = delegateWrapper;
+    // Can't set it usual way because of https://github.com/facebook/react-native/blob/1465c8f3874cdee8c325ab4a4916fda0b3e43bdb/Libraries/Text/TextInput/Multiline/RCTUITextView.m#L64-L66
+    [currentTextField setValue:delegateWrapper forKey:@"_delegate"];
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
