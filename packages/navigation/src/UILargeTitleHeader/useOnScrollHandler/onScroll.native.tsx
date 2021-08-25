@@ -29,6 +29,12 @@ export default function (
 
         const { y } = event.contentOffset;
 
+        // On Android when a content is less than scrollable area
+        // onScroll event can return NaN y, that we can't process.
+        if (Number.isNaN(y)) {
+            return;
+        }
+
         if (largeTitleHeight.value === 0) {
             try {
                 largeTitleHeight.value = measure(largeTitleViewRef).height || 0;
