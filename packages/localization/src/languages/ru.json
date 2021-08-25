@@ -400,7 +400,7 @@
     "promoDownload": {
         "appStore": "App Store",
         "googlePlay": "Google Play",
-        "notice": "Download application"
+        "notice": "Установить приложение"
     },
     "Public": "Публичный",
     "PublicAccount": "Публичный аккаунт",
