@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import {
+    ImageStyle,
+    StyleSheet,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View,
+} from 'react-native';
 import Animated, { interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated';
 import {
     makeStyles,
@@ -7,10 +13,13 @@ import {
     useTheme,
     ColorVariants,
     Theme,
-    UIBoxButton,
     useStatusBar,
+    UIImage,
 } from '@tonlabs/uikit.hydrogen';
+import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIConstant as UICoreConstant } from '@tonlabs/uikit.core';
 import { useBackHandler } from '@react-native-community/hooks';
+import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { DuplicateContentProps } from './types';
 import {
     useDuplicateContentState,
@@ -21,6 +30,7 @@ import {
 } from './hooks';
 import { VisibilityState, DuplicateContentState } from './constants';
 import { Zoom } from './Zoom';
+import { UIConstant } from '../constants';
 
 export const DuplicateContent = ({
     fullSizeImage,
@@ -29,9 +39,10 @@ export const DuplicateContent = ({
     originalRef,
 }: DuplicateContentProps) => {
     const theme = useTheme();
+    const insets = useSafeAreaInsets();
 
     useStatusBar({
-        backgroundColor: ColorVariants.BackgroundOverlay,
+        backgroundColor: ColorVariants.StaticBackgroundBlack,
     });
 
     const [isFullSizeDisplayed, setIsFullSizeDisplayed] = React.useState<boolean>(false);
@@ -84,7 +95,7 @@ export const DuplicateContent = ({
         };
     }, []);
 
-    const overlayStyle = useAnimatedStyle(() => {
+    const underlayStyle = useAnimatedStyle(() => {
         return {
             opacity: interpolate(
                 visibilityState.value,
@@ -94,25 +105,38 @@ export const DuplicateContent = ({
         };
     }, []);
 
-    const styles = useStyles(theme);
+    const headerStyle = useAnimatedStyle(() => {
+        return {
+            opacity: interpolate(
+                visibilityState.value,
+                [VisibilityState.Closed, VisibilityState.Opened],
+                [0, 1],
+            ),
+        };
+    }, []);
+
+    const styles = useStyles(theme, insets);
 
     return (
         <Portal absoluteFill>
             <Animated.View style={styles.duplicateContainer}>
                 <TouchableWithoutFeedback onPress={onPressClose}>
-                    <Animated.View style={[styles.overlay, overlayStyle]} />
+                    <Animated.View style={[styles.underlay, underlayStyle]} />
                 </TouchableWithoutFeedback>
-                <View
-                    style={{
-                        zIndex: 10,
-                        justifyContent: 'flex-start',
-                        alignItems: 'flex-start',
-                        paddingTop: 30,
-                    }}
-                >
-                    <UIBoxButton title="Close" onPress={onPressClose} />
-                </View>
-                <Animated.View style={[styles.duplicateContent]} pointerEvents="box-none">
+                <Animated.View style={[styles.header, headerStyle]}>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={onPressClose}
+                        hitSlop={UIConstant.lightbox.hitSlop}
+                    >
+                        <UIImage
+                            source={UIAssets.icons.ui.arrowLeftBlack}
+                            style={styles.backButton as ImageStyle}
+                            tintColor={ColorVariants.StaticIconPrimaryLight}
+                        />
+                    </TouchableOpacity>
+                </Animated.View>
+                <Animated.View style={styles.duplicateContent} pointerEvents="box-none">
                     <Zoom contentWidth={contentWidth} contentHeight={contentHeight}>
                         <Animated.View
                             style={[styles.zoomContent, animatedContainerStyle]}
@@ -134,7 +158,7 @@ export const DuplicateContent = ({
     );
 };
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme: Theme, insets: EdgeInsets) => ({
     duplicateContainer: {
         ...StyleSheet.absoluteFillObject,
     },
@@ -144,12 +168,25 @@ const useStyles = makeStyles((theme: Theme) => ({
     zoomContent: {
         ...StyleSheet.absoluteFillObject,
     },
-    overlay: {
+    underlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: theme[ColorVariants.BackgroundOverlay],
         zIndex: -10,
+        backgroundColor: theme[ColorVariants.StaticBackgroundBlack],
     },
     fullSizeImage: {
         ...StyleSheet.absoluteFillObject,
+    },
+    header: {
+        zIndex: 10,
+        minHeight: UIConstant.lightbox.headerMinHeight,
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        marginTop: insets.top,
+        paddingVertical: UIConstant.lightbox.verticalHeaderPadding,
+        paddingHorizontal: UIConstant.contentOffset,
+    },
+    backButton: {
+        width: UICoreConstant.iconSize(),
+        height: UICoreConstant.iconSize(),
     },
 }));
