@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import LocalizedStringsService  from 'react-native-localization';
+import LocalizedStringsService from 'react-native-localization';
 import BigNumber from 'bignumber.js';
 
 import availableLanguages, { UILocalizedData } from './languages';
