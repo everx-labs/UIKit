@@ -1,5 +1,7 @@
 import type BigNumber from 'bignumber.js';
 
+import type { LocalizedStringsMethods } from 'react-native-localization';
+
 import type { LocalizationString } from '../LocalizationString';
 import type { Language } from '../language';
 
@@ -67,32 +69,9 @@ export type StringLocaleInfo = {
     dates: DateFormatInfo;
 };
 
-export type LocalizedStringsMethods = {
-    setLanguage(language?: string): void;
-    getInterfaceLanguage(): string;
-    getAvailableLanguages(): string[];
-    formatString(str: string, ...values: any[]): string;
-    getString(key: string, language: string): string | null;
-    getLanguage(): string;
-    getLanguageFromString(language: string): Language;
-    amountToLocale(
-        number: BigNumber | string | number,
-        options?: NumberPartsOptions,
-        localeInfo?: StringLocaleInfo,
-    ): string;
-    localizedStringForValue(value: number, base: string): string;
-
-    changeLocaleInfo: (localeInfo: StringLocaleInfo) => void;
-    changeLanguage: (language: Language) => void;
-    setLanguages: (languages: Language[]) => void;
-    formatTime: (time: number, format?: string) => string;
-    formatDate: (time: number) => string;
-
-    dayJSLocale: string;
-    decimalSeparator: string;
-    languageName: string;
-    readonly localeInfo: StringLocaleInfo;
-};
+export type LocalizationServiceMethods = Omit<LocalizedStringsMethods, 'formatString'> & {
+    formatString(str: string, ...values: string[]): string;
+}
 
 export type LanguageInfo = {
     name: string;

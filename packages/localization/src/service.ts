@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import LocalizedStringsService, { LocalizedStrings } from 'react-native-localization';
+import LocalizedStringsService  from 'react-native-localization';
 import BigNumber from 'bignumber.js';
 
 import availableLanguages, { UILocalizedData } from './languages';
@@ -17,6 +17,7 @@ import type {
     StringLocaleInfo,
     ShortenAmount,
     LanguagesOptions,
+    LocalizationServiceMethods
 } from './types';
 import {
     languagesInfo,
@@ -61,6 +62,8 @@ type LanguageServiceOptions<T> = {
     languages: Languages<T>,
     localeInfo?: StringLocaleInfo
 }
+
+export type LocalizedStrings<T> = LocalizationServiceMethods & T
 
 export type LocalizedInstance<T> = LocalizedStrings<T> & LocalizationService<T>
 
