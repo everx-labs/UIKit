@@ -12,7 +12,7 @@ export function useChatMaxLengthAlert(maxLength: number) {
             UIDropdownAlert.showNotification(
                 uiLocalized.formatString(
                     uiLocalized.Chats.Alerts.MessageTooLong,
-                    maxLength,
+                    maxLength.toString(),
                 ),
                 undefined,
                 () => {
