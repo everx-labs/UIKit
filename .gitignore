@@ -20,5 +20,3 @@ package-lock.json
 coverage/
 
 lib/
-
-.vscode/
