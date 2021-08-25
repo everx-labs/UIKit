@@ -26,6 +26,8 @@ export type DuplicateContentProps = {
 export type ZoomProps = {
     contentWidth: Readonly<Animated.SharedValue<number>>;
     contentHeight: Readonly<Animated.SharedValue<number>>;
+    onClose: () => void;
+    underlayOpacity: Animated.SharedValue<number>;
     children: (React.ReactElement | null)[] | React.ReactElement;
 };
 

@@ -12,6 +12,11 @@ import Animated, {
 import { UIConstant } from '../../constants';
 import { VisibilityState, DuplicateContentState } from '../constants';
 
+const springConfig: Animated.WithSpringConfig = {
+    overshootClamping: true,
+    stiffness: 100,
+};
+
 export const useVisibilityState = (
     duplicateContentState: Animated.SharedValue<DuplicateContentState>,
     onAnimationEnd: (visibilityState: VisibilityState) => void,
@@ -34,13 +39,7 @@ export const useVisibilityState = (
             duplicateContentState.value === DuplicateContentState.Opened
                 ? VisibilityState.Opened
                 : VisibilityState.Closed;
-        return withSpring(
-            toValue,
-            {
-                overshootClamping: true,
-            },
-            runUIAnimationEndCallback,
-        );
+        return withSpring(toValue, springConfig, runUIAnimationEndCallback);
     }, []);
 };
 

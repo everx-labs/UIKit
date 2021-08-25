@@ -15,5 +15,7 @@ export const UIConstant = {
             bottom: 16,
             right: 16,
         },
+        swipeToCloseThreshold: 1 / 5,
+        moveDeceleration: 0.995,
     },
 };

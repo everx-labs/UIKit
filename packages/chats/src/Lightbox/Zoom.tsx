@@ -1,16 +1,24 @@
 import * as React from 'react';
 import { StyleSheet, useWindowDimensions } from 'react-native';
-import Animated, {
-    useAnimatedRef,
-    useSharedValue,
-} from 'react-native-reanimated';
+import Animated, { useAnimatedRef, useSharedValue } from 'react-native-reanimated';
 import { PanGestureHandler, PinchGestureHandler } from 'react-native-gesture-handler';
 import type { ZoomProps } from './types';
-import { useOnMove, useOnZoom, useZoomStyle } from './hooks/zoomHooks';
+import {
+    useOnMove,
+    useOnZoom,
+    useUnderlayOpacityTransitions,
+    useZoomStyle,
+} from './hooks/zoomHooks';
 
 const INITIAL_VALUE = -1;
 
-export const Zoom: React.FC<ZoomProps> = ({ children, contentWidth, contentHeight }: ZoomProps) => {
+export const Zoom: React.FC<ZoomProps> = ({
+    children,
+    contentWidth,
+    contentHeight,
+    onClose,
+    underlayOpacity,
+}: ZoomProps) => {
     const pinchRef = useAnimatedRef();
     const panRef = useAnimatedRef();
 
@@ -45,6 +53,8 @@ export const Zoom: React.FC<ZoomProps> = ({ children, contentWidth, contentHeigh
      */
     const translationY = useSharedValue<number>(0);
 
+    useUnderlayOpacityTransitions(translationY, baseScale, underlayOpacity, windowHeight);
+
     const onZoom = useOnZoom(
         isZooming,
         focalX,
@@ -68,6 +78,7 @@ export const Zoom: React.FC<ZoomProps> = ({ children, contentWidth, contentHeigh
         translationY,
         contentWidth,
         contentHeight,
+        onClose,
     );
 
     const animatedStyle = useZoomStyle(

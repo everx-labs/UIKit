@@ -6,7 +6,12 @@ import {
     TouchableWithoutFeedback,
     View,
 } from 'react-native';
-import Animated, { interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated';
+import Animated, {
+    interpolate,
+    useAnimatedStyle,
+    useDerivedValue,
+    useSharedValue,
+} from 'react-native-reanimated';
 import {
     makeStyles,
     Portal,
@@ -47,6 +52,11 @@ export const DuplicateContent = ({
     });
 
     const [isFullSizeDisplayed, setIsFullSizeDisplayed] = React.useState<boolean>(false);
+
+    /**
+     * This state is used to create transparency during the "swipeToClose" event
+     */
+    const underlayOpacity = useSharedValue<number>(VisibilityState.Opened);
 
     const {
         duplicateContentState,
@@ -97,9 +107,10 @@ export const DuplicateContent = ({
     }, []);
 
     const underlayStyle = useAnimatedStyle(() => {
+        const resultVisibilityState = underlayOpacity.value * visibilityState.value;
         return {
             opacity: interpolate(
-                visibilityState.value,
+                resultVisibilityState,
                 [VisibilityState.Closed, VisibilityState.Opened],
                 [0, 1],
             ),
@@ -107,9 +118,10 @@ export const DuplicateContent = ({
     }, []);
 
     const headerStyle = useAnimatedStyle(() => {
+        const resultVisibilityState = underlayOpacity.value * visibilityState.value;
         return {
             opacity: interpolate(
-                visibilityState.value,
+                resultVisibilityState,
                 [VisibilityState.Closed, VisibilityState.Opened],
                 [0, 1],
             ),
@@ -140,7 +152,12 @@ export const DuplicateContent = ({
                     </Animated.View>
                 </Animated.View>
                 <Animated.View style={styles.duplicateContent} pointerEvents="box-none">
-                    <Zoom contentWidth={contentWidth} contentHeight={contentHeight}>
+                    <Zoom
+                        contentWidth={contentWidth}
+                        contentHeight={contentHeight}
+                        onClose={onPressClose}
+                        underlayOpacity={underlayOpacity}
+                    >
                         <Animated.View
                             style={[styles.zoomContent, animatedContainerStyle]}
                             pointerEvents="box-none"
