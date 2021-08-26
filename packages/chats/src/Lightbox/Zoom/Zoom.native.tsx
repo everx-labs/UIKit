@@ -6,6 +6,7 @@ import type { ZoomProps } from '../types';
 import {
     useOnMove,
     useOnZoom,
+    useReactionOnVisibilityStateChange,
     useUnderlayOpacityTransitions,
     useZoomStyle,
 } from '../hooks/zoomHooks';
@@ -18,6 +19,7 @@ export const Zoom: React.FC<ZoomProps> = ({
     contentHeight,
     onClose,
     underlayOpacity,
+    visibilityState,
 }: ZoomProps) => {
     const pinchRef = useAnimatedRef();
     const panRef = useAnimatedRef();
@@ -58,6 +60,8 @@ export const Zoom: React.FC<ZoomProps> = ({
     const translationY = useSharedValue<number>(0);
 
     useUnderlayOpacityTransitions(translationY, baseScale, underlayOpacity, windowHeight, isMoving);
+
+    useReactionOnVisibilityStateChange(visibilityState, baseScale, translationX, translationY);
 
     const onZoom = useOnZoom(
         isZooming,

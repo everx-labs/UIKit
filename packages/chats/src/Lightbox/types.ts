@@ -28,6 +28,7 @@ export type ZoomProps = {
     contentHeight: Readonly<Animated.SharedValue<number>>;
     onClose: () => void;
     underlayOpacity: Animated.SharedValue<number>;
+    visibilityState: Readonly<Animated.SharedValue<number>>;
     children: (React.ReactElement | null)[] | React.ReactElement;
 };
 

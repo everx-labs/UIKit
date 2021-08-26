@@ -149,6 +149,7 @@ export const DuplicateContent = ({
                         contentHeight={contentHeight}
                         onClose={onPressClose}
                         underlayOpacity={underlayOpacity}
+                        visibilityState={visibilityState}
                     >
                         <Animated.View
                             style={[styles.zoomContent, animatedContainerStyle]}

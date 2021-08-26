@@ -379,3 +379,26 @@ export const useUnderlayOpacityTransitions = (
         [windowHeight],
     );
 };
+
+export const useReactionOnVisibilityStateChange = (
+    visibilityState: Readonly<Animated.SharedValue<number>>,
+    baseScale: Animated.SharedValue<number>,
+    translationX: Animated.SharedValue<number>,
+    translationY: Animated.SharedValue<number>,
+) => {
+    useAnimatedReaction(
+        () => {
+            return { visibilityState: visibilityState.value };
+        },
+        state => {
+            /**
+             * If visibilityState === 0,
+             * then baseScale should be changed to 1
+             * and translationX/translationY should be changed to 0
+             */
+            baseScale.value = state.visibilityState * (baseScale.value - 1) + 1;
+            translationX.value *= state.visibilityState;
+            translationY.value *= state.visibilityState;
+        },
+    );
+};
