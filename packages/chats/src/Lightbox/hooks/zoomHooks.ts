@@ -1,39 +1,37 @@
 /* eslint-disable no-param-reassign */
+import * as React from 'react';
 import { Platform } from 'react-native';
 import type {
     PanGestureHandlerGestureEvent,
     PinchGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
 import Animated, {
+    runOnJS,
     useAnimatedGestureHandler,
+    useAnimatedReaction,
     useAnimatedStyle,
     withDecay,
     withSpring,
 } from 'react-native-reanimated';
 import type { PanGestureEventContext } from '../types';
+import { UIConstant } from '../../constants';
 
 const platform = Platform.OS;
 
-const DECELERATION = 0.995;
-
 const springConfig: Animated.WithSpringConfig = {
     overshootClamping: true,
-    stiffness: 500,
+    stiffness: 100,
 };
 
 const runUIGetScaleResultOffset = (
     focalCoordinate: Readonly<Animated.SharedValue<number>>,
     initialSize: number,
-    scale: Readonly<Animated.SharedValue<number>>,
+    scale: number,
     baseScale: Readonly<Animated.SharedValue<number>>,
 ) => {
     'worklet';
 
-    return (
-        ((focalCoordinate.value - initialSize / 2) * (1 - scale.value)) /
-        scale.value /
-        baseScale.value
-    );
+    return ((focalCoordinate.value - initialSize / 2) * (1 - scale)) / scale / baseScale.value;
 };
 
 const runUIGetMaxTranslation = (
@@ -64,8 +62,21 @@ const runUIGetMaxTranslation = (
     return { x, y };
 };
 
+const applyAnimationEndCallback = (callback: () => void) => {
+    'worklet';
+
+    return (isFinished: boolean) => {
+        'worklet';
+
+        if (isFinished) {
+            runOnJS(callback)();
+        }
+    };
+};
+
 export const useOnZoom = (
     isZooming: Animated.SharedValue<boolean>,
+    isMoving: Animated.SharedValue<boolean>,
     focalX: Animated.SharedValue<number>,
     focalY: Animated.SharedValue<number>,
     scale: Animated.SharedValue<number>,
@@ -78,11 +89,20 @@ export const useOnZoom = (
     contentWidth: Readonly<Animated.SharedValue<number>>,
     contentHeight: Readonly<Animated.SharedValue<number>>,
 ) => {
+    const onAnimationEnd = React.useCallback(() => {
+        if (isZooming.value) {
+            isZooming.value = false;
+        }
+    }, [isZooming]);
+
     return useAnimatedGestureHandler<PinchGestureHandlerGestureEvent>(
         {
             onActive: event => {
                 if (!isZooming.value) {
                     isZooming.value = true;
+                }
+                if (isMoving.value) {
+                    isMoving.value = false;
                 }
                 if (focalX.value === initialValue) {
                     focalX.value = event.focalX;
@@ -93,19 +113,21 @@ export const useOnZoom = (
                 scale.value = event.scale;
             },
             onEnd: event => {
+                scale.value = event.scale;
+
                 /**
                  * Save the translation after the zoom
                  */
                 const resultOffsetX = runUIGetScaleResultOffset(
                     focalX,
                     windowWidth,
-                    scale,
+                    event.scale,
                     baseScale,
                 );
                 const resultOffsetY = runUIGetScaleResultOffset(
                     focalY,
                     windowHeight,
-                    scale,
+                    event.scale,
                     baseScale,
                 );
                 translationX.value += resultOffsetX;
@@ -118,6 +140,13 @@ export const useOnZoom = (
                 baseScale.value *= event.scale;
                 focalX.value = initialValue;
                 focalY.value = initialValue;
+
+                /**
+                 * If the scale is less than one, then we make it equal to one
+                 */
+                if (baseScale.value < 1) {
+                    baseScale.value = withSpring(1, springConfig);
+                }
 
                 /**
                  * Fill the screen with a picture
@@ -137,9 +166,26 @@ export const useOnZoom = (
                 }
 
                 if (translationY.value < -maxTranslation.y) {
-                    translationY.value = withSpring(-maxTranslation.y, springConfig);
+                    translationY.value = withSpring(
+                        -maxTranslation.y,
+                        springConfig,
+                        applyAnimationEndCallback(onAnimationEnd),
+                    );
                 } else if (translationY.value > maxTranslation.y) {
-                    translationY.value = withSpring(maxTranslation.y, springConfig);
+                    translationY.value = withSpring(
+                        maxTranslation.y,
+                        springConfig,
+                        applyAnimationEndCallback(onAnimationEnd),
+                    );
+                }
+
+                if (
+                    translationX.value >= -maxTranslation.x &&
+                    translationX.value <= maxTranslation.x &&
+                    translationY.value >= -maxTranslation.y &&
+                    translationY.value <= maxTranslation.y
+                ) {
+                    runOnJS(onAnimationEnd)();
                 }
             },
         },
@@ -155,16 +201,34 @@ export const useOnMove = (
     translationY: Animated.SharedValue<number>,
     contentWidth: Readonly<Animated.SharedValue<number>>,
     contentHeight: Readonly<Animated.SharedValue<number>>,
+    onClose: () => void,
+    isZooming: Animated.SharedValue<boolean>,
+    isMoving: Animated.SharedValue<boolean>,
 ) => {
+    const onAnimationEnd = React.useCallback(() => {
+        if (isMoving.value) {
+            isMoving.value = false;
+        }
+    }, [isMoving]);
+
     return useAnimatedGestureHandler<PanGestureHandlerGestureEvent, PanGestureEventContext>(
         {
             onStart: (_, context) => {
-                // eslint-disable-next-line no-param-reassign
+                if (isZooming.value) {
+                    return;
+                }
+
                 context.startX = translationX.value;
-                // eslint-disable-next-line no-param-reassign
                 context.startY = translationY.value;
             },
             onActive: (event, context) => {
+                if (isZooming.value) {
+                    return;
+                }
+                if (!isMoving.value) {
+                    isMoving.value = true;
+                }
+
                 const transX =
                     platform === 'android'
                         ? event.translationX / baseScale.value
@@ -183,20 +247,24 @@ export const useOnMove = (
                     baseScale.value,
                 );
 
-                if (targetX < -maxTranslation.x) {
-                    translationX.value = -maxTranslation.x;
-                } else if (targetX > maxTranslation.x) {
-                    translationX.value = maxTranslation.x;
-                } else {
-                    translationX.value = targetX;
-                }
-
-                if (targetY < -maxTranslation.y) {
-                    translationY.value = -maxTranslation.y;
-                } else if (targetY > maxTranslation.y) {
-                    translationY.value = maxTranslation.y;
-                } else {
+                if (baseScale.value <= 1) {
                     translationY.value = targetY;
+                } else {
+                    if (targetX < -maxTranslation.x) {
+                        translationX.value = -maxTranslation.x;
+                    } else if (targetX > maxTranslation.x) {
+                        translationX.value = maxTranslation.x;
+                    } else {
+                        translationX.value = targetX;
+                    }
+
+                    if (targetY < -maxTranslation.y) {
+                        translationY.value = -maxTranslation.y;
+                    } else if (targetY > maxTranslation.y) {
+                        translationY.value = maxTranslation.y;
+                    } else {
+                        translationY.value = targetY;
+                    }
                 }
             },
             onEnd: event => {
@@ -207,16 +275,40 @@ export const useOnMove = (
                     contentHeight,
                     baseScale.value,
                 );
-                translationX.value = withDecay({
-                    velocity: event.velocityX / baseScale.value,
-                    deceleration: DECELERATION,
-                    clamp: [-maxTranslation.x, maxTranslation.x],
-                });
-                translationY.value = withDecay({
-                    velocity: event.velocityY / baseScale.value,
-                    deceleration: DECELERATION,
-                    clamp: [-maxTranslation.y, maxTranslation.y],
-                });
+                if (baseScale.value <= 1) {
+                    translationX.value = withSpring(0, springConfig);
+                    translationY.value = withSpring(
+                        0,
+                        springConfig,
+                        applyAnimationEndCallback(onAnimationEnd),
+                    );
+
+                    const absoluteTranslationX =
+                        platform === 'android'
+                            ? Math.abs(event.translationY)
+                            : Math.abs(event.translationY) * baseScale.value;
+
+                    if (
+                        absoluteTranslationX >
+                        windowHeight * UIConstant.lightbox.swipeToCloseThreshold
+                    ) {
+                        runOnJS(onClose)();
+                    }
+                } else {
+                    translationX.value = withDecay({
+                        velocity: event.velocityX / baseScale.value,
+                        deceleration: UIConstant.lightbox.moveDeceleration,
+                        clamp: [-maxTranslation.x, maxTranslation.x],
+                    });
+                    translationY.value = withDecay(
+                        {
+                            velocity: event.velocityY / baseScale.value,
+                            deceleration: UIConstant.lightbox.moveDeceleration,
+                            clamp: [-maxTranslation.y, maxTranslation.y],
+                        },
+                        applyAnimationEndCallback(onAnimationEnd),
+                    );
+                }
             },
         },
         [windowWidth, windowHeight],
@@ -259,4 +351,31 @@ export const useZoomStyle = (
             transform: zoom.concat(translate),
         };
     }, [windowWidth, windowHeight]);
+};
+
+export const useUnderlayOpacityTransitions = (
+    translationY: Animated.SharedValue<number>,
+    baseScale: Animated.SharedValue<number>,
+    underlayOpacity: Animated.SharedValue<number>,
+    windowHeight: number,
+    isMoving: Animated.SharedValue<boolean>,
+) => {
+    useAnimatedReaction(
+        () => {
+            return {
+                translationY: translationY.value,
+                baseScale: baseScale.value,
+                isMoving: isMoving.value,
+            };
+        },
+        state => {
+            if (state.baseScale <= 1 && state.isMoving) {
+                underlayOpacity.value =
+                    1 - (Math.abs(translationY.value) * baseScale.value) / (windowHeight / 2);
+            } else if (underlayOpacity.value !== 1) {
+                underlayOpacity.value = withSpring(1, springConfig);
+            }
+        },
+        [windowHeight],
+    );
 };

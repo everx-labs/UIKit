@@ -33,9 +33,13 @@ export const Zoom: React.FC<ZoomProps> = ({
      */
     const scale = useSharedValue<number>(1);
     /**
-     * Is pinch active
+     * Is pinch gesture active
      */
     const isZooming = useSharedValue<boolean>(false);
+    /**
+     * Is pan gesture active
+     */
+    const isMoving = useSharedValue<boolean>(false);
     /**
      * X coordinate of current pinch focus
      */
@@ -53,10 +57,11 @@ export const Zoom: React.FC<ZoomProps> = ({
      */
     const translationY = useSharedValue<number>(0);
 
-    useUnderlayOpacityTransitions(translationY, baseScale, underlayOpacity, windowHeight);
+    useUnderlayOpacityTransitions(translationY, baseScale, underlayOpacity, windowHeight, isMoving);
 
     const onZoom = useOnZoom(
         isZooming,
+        isMoving,
         focalX,
         focalY,
         scale,
@@ -79,6 +84,8 @@ export const Zoom: React.FC<ZoomProps> = ({
         contentWidth,
         contentHeight,
         onClose,
+        isZooming,
+        isMoving,
     );
 
     const animatedStyle = useZoomStyle(
