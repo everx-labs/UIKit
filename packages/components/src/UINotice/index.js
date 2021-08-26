@@ -25,7 +25,6 @@ import type { PositionObject } from '@tonlabs/uikit.core';
 import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
-import UIAlertView from '../UIAlertView';
 
 const cardShadowWidth = UIConstant.cardShadowWidth();
 const doubleOffset = 2 * cardShadowWidth;
@@ -442,13 +441,15 @@ export default class UINotice
         const component = this.getExternalMessageComponent() || this.renderMessageComponent();
         // This is ugly and not very performant,
         // but we're going to replace it soon anyway
+        // Pick `zIndex` for UINotice thus to overlap all components  http://softwareas.com/whats-the-maximum-z-index/ (as per Safari 0-3 threshold)
+        const zIndex = 16777271;
         const MessageComponent = React.forwardRef(() => component);
         return (
             <SafeAreaView style={UIStyle.Common.flex()} pointerEvents="box-none">
                 <View
                     style={[
                         UIStyle.Common.flex(),
-                        this.showOnTop && { zIndex: UIAlertView.zIndex },
+                        this.showOnTop && { zIndex },
                     ]}
                     onLayout={this.onFlashContainerLayout}
                     pointerEvents="box-none"

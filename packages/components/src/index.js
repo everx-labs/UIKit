@@ -1,8 +1,6 @@
 // @flow
 export * from './UIActionComponent';
 export { default as UIActionImage } from './UIActionImage';
-export { default as UIAlert } from './UIAlert'; // @deprecated
-export { default as UIAlertView } from './UIAlertView'; // @deprecated
 export { default as UIAmountInput } from './UIAmountInput';
 export { default as UICompatibilityView } from './UICompatibilityView';
 export { default as UIComponent } from './UIComponent';

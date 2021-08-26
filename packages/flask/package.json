@@ -47,6 +47,7 @@
     "@react-native-community/bob": "0.16.2",
     "@types/react": "17.0.16",
     "@types/react-native": "0.64.12",
+    "@tonlabs/babel-plugin-transform-inline-consts": "*",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.2",

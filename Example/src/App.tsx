@@ -13,8 +13,6 @@ import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import {
-    UIAlert,
-    UIAlertView,
     UIDropdownAlert,
     UILayoutManager,
     UINotice,
@@ -350,8 +348,6 @@ const App = () => {
                     >
                         <UINotice />
                     </View>
-                    <UIAlert />
-                    <UIAlertView />
                     <UIDropdownAlert />
                     <UIAndroidNavigationBar />
                 </PortalManager>

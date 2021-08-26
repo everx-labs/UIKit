@@ -7,7 +7,7 @@ module.exports = {
             },
         ],
         '@babel/preset-typescript',
-        "@babel/preset-react"
+        '@babel/preset-react',
     ],
-    plugins: ['react-native-reanimated/plugin'],
+    plugins: ['@tonlabs/babel-plugin-transform-inline-consts', 'react-native-reanimated/plugin'],
 };
