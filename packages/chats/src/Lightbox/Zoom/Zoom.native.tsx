@@ -2,13 +2,13 @@ import * as React from 'react';
 import { StyleSheet, useWindowDimensions } from 'react-native';
 import Animated, { useAnimatedRef, useSharedValue } from 'react-native-reanimated';
 import { PanGestureHandler, PinchGestureHandler } from 'react-native-gesture-handler';
-import type { ZoomProps } from './types';
+import type { ZoomProps } from '../types';
 import {
     useOnMove,
     useOnZoom,
     useUnderlayOpacityTransitions,
     useZoomStyle,
-} from './hooks/zoomHooks';
+} from '../hooks/zoomHooks';
 
 const INITIAL_VALUE = -1;
 

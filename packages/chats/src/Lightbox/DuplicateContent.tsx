@@ -1,11 +1,5 @@
 import * as React from 'react';
-import {
-    ImageStyle,
-    StyleSheet,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    View,
-} from 'react-native';
+import { ImageStyle, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Animated, {
     interpolate,
     useAnimatedStyle,
@@ -133,9 +127,7 @@ export const DuplicateContent = ({
     return (
         <Portal absoluteFill>
             <Animated.View style={styles.duplicateContainer}>
-                <TouchableWithoutFeedback onPress={onPressClose}>
-                    <Animated.View style={[styles.underlay, underlayStyle]} />
-                </TouchableWithoutFeedback>
+                <Animated.View style={[styles.underlay, underlayStyle]} />
                 <Animated.View style={[styles.headerContainer, headerStyle]}>
                     <Animated.View style={styles.header}>
                         <TouchableOpacity
@@ -186,7 +178,9 @@ const useStyles = makeStyles((theme: Theme, insets: EdgeInsets) => ({
         ...StyleSheet.absoluteFillObject,
     },
     zoomContent: {
-        ...StyleSheet.absoluteFillObject,
+        position: 'absolute',
+        top: 0,
+        left: 0,
     },
     underlay: {
         ...StyleSheet.absoluteFillObject,

@@ -50,9 +50,9 @@ export const useAnimatedContainerStyle = (
     width: Animated.SharedValue<number>,
     height: Animated.SharedValue<number>,
 ) => {
-    const windowDimensions = useWindowDimensions();
-    const maxWidth = React.useMemo(() => windowDimensions.width, [windowDimensions.width]);
-    const maxHeight = React.useMemo(() => windowDimensions.height * 0.8, [windowDimensions.height]);
+    const { width: windowWidth, height: windowHeight } = useWindowDimensions();
+    const maxWidth = React.useMemo(() => windowWidth, [windowWidth]);
+    const maxHeight = React.useMemo(() => windowHeight * 0.8, [windowHeight]);
     const fieldAspectRatio = React.useMemo(() => maxWidth / maxHeight, [maxWidth, maxHeight]);
 
     const openedImageScale = useDerivedValue(() => {
@@ -65,17 +65,17 @@ export const useAnimatedContainerStyle = (
 
     const centeredImageX = useDerivedValue(() => {
         return (
-            (windowDimensions.width * (openedImageScale.value - 1)) / 2 +
-            (windowDimensions.width - width.value * openedImageScale.value) / 2
+            (width.value * (openedImageScale.value - 1)) / 2 +
+            (windowWidth - width.value * openedImageScale.value) / 2
         );
-    }, [windowDimensions.width]);
+    }, [windowWidth]);
 
     const centeredImageY = useDerivedValue(() => {
         return (
-            (windowDimensions.height * (openedImageScale.value - 1)) / 2 +
-            (windowDimensions.height - height.value * openedImageScale.value) / 2
+            (height.value * (openedImageScale.value - 1)) / 2 +
+            (windowHeight - height.value * openedImageScale.value) / 2
         );
-    }, [windowDimensions.height]);
+    }, [windowHeight]);
 
     const animatedContainerStyle = useAnimatedStyle(() => {
         return {
