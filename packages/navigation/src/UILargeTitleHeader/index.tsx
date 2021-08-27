@@ -165,10 +165,13 @@ export function UILargeTitleHeader({
     const scrollHandler = useAnimatedScrollHandler<ScrollHandlerContext>({
         onScroll,
         onBeginDrag: (_event: NativeScrollEvent, ctx: ScrollHandlerContext) => {
+            'worklet';
+
             ctx.scrollTouchGuard = true;
             shiftChangedForcibly.value = false;
             yWithoutRubberBand.value = shift.value;
         },
+        ...(Platform.OS === 'ios' ? { onEndDrag } : null),
         onMomentumEnd: onEndDrag,
     });
 
