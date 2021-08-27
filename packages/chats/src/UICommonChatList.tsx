@@ -24,6 +24,7 @@ import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 import type { BubbleBaseT, ChatMessage, OnLongPressText } from './types';
 
 import { callChatOnScrollListener } from './useChatOnScrollListener';
+import { TextLongPressHandlerContext } from './BubblePlainText';
 
 // Apply overflowY style for web to make the scrollbar appear as an overlay
 // thus not affecting the content width of SectionList to prevent layout issues
@@ -405,7 +406,6 @@ export type CommonChatListProps<ItemT extends BubbleBaseT> = {
     onScrollToIndexFailed: VirtualizedListProps<ItemT>['onScrollToIndexFailed'];
     scrollEventThrottle: number;
     style: StyleProp<ViewStyle>;
-    textLongPressHandler: OnLongPressText;
     contentContainerStyle: StyleProp<ViewStyle>;
     onViewableItemsChanged: VirtualizedListProps<
         ItemT
@@ -423,17 +423,8 @@ type UICommonChatListProps<ItemT extends BubbleBaseT> = {
     getItemLayoutFabric: GetItemLayoutFabric;
     children: (props: CommonChatListProps<ItemT>) => React.ReactNode;
     canLoadMore?: boolean;
+    onLongPressText: OnLongPressText;
 };
-
-
-export const TextLongPressHandlerContext = React.createContext
-    <OnLongPressText>(
-        undefined,
-    );
-
-function useTextLongPressPressHandler() {
-    return React.useContext(TextLongPressHandlerContext);
-}
 
 export function UICommonChatList<ItemT extends BubbleBaseT>({
     forwardRef,
@@ -442,6 +433,7 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
     getItemLayoutFabric,
     canLoadMore = false,
     children,
+    onLongPressText
 }: UICommonChatListProps<ItemT>) {
     const keyboardDismissProp: ScrollViewProps['keyboardDismissMode'] = React.useMemo(() => {
         if (Platform.OS !== 'ios') {
@@ -489,8 +481,6 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
     const contentInset = useContentInset(localRef, hasScroll);
     const handlers = useCloseKeyboardOnTap();
 
-    const textLongPressHandler = useTextLongPressPressHandler();
-
     const onLayout = React.useCallback(
         (e) => {
             onLayoutMeasureScroll(e);
@@ -508,8 +498,9 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
 
     return (
         <>
-            <Animated.View style={lineStyle} />
-            {children({
+            <TextLongPressHandlerContext.Provider value={onLongPressText}>
+                <Animated.View style={lineStyle} />
+                {children({
                 ref: localRef,
                 nativeID,
                 keyboardDismissMode: keyboardDismissProp,
@@ -524,7 +515,6 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
                 onScrollToIndexFailed,
                 scrollEventThrottle: UIConstant.maxScrollEventThrottle(),
                 style,
-                textLongPressHandler,
                 contentContainerStyle: styles.messagesList,
                 onViewableItemsChanged,
                 keyExtractor,
@@ -533,6 +523,7 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
                 renderScrollComponent,
                 ...handlers,
             })}
+            </TextLongPressHandlerContext.Provider>
         </>
     );
 }

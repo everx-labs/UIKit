@@ -8,9 +8,8 @@ import {
     CommonChatListProps,
     UICommonChatList,
     OnPressUrl,
+    OnLongPressText,
     UrlPressHandlerContext,
-    TextLongPressHandlerContext,
-    OnLongPressText
 } from '@tonlabs/uikit.chats';
 import { BrowserMessage, InteractiveMessageType } from './types';
 import { getFormattedList } from './getFormattedList';
@@ -126,24 +125,23 @@ export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
             [messages],
         );
         return (
-            <TextLongPressHandlerContext.Provider value={onLongPressText}>
-                <UrlPressHandlerContext.Provider value={onPressUrl}>
-                    <UICommonChatList
-                        forwardRef={ref}
-                        nativeID="browserList"
-                        renderBubble={renderBubble()}
-                        getItemLayoutFabric={flatListGetItemLayoutFabric}
+            <UrlPressHandlerContext.Provider value={onPressUrl}>
+                <UICommonChatList
+                    forwardRef={ref}
+                    nativeID="browserList"
+                    renderBubble={renderBubble()}
+                    getItemLayoutFabric={flatListGetItemLayoutFabric}
+                    onLongPressText={onLongPressText}
                 >
-                        {(chatListProps: CommonChatListProps<BrowserMessage>) => (
-                            <FlatList
-                                testID="browser_container"
-                                data={formattedMessages}
-                                {...chatListProps}
+                    {(chatListProps: CommonChatListProps<BrowserMessage>) => (
+                        <FlatList
+                            testID="browser_container"
+                            data={formattedMessages}
+                            {...chatListProps}
                         />
                     )}
-                    </UICommonChatList>
-                </UrlPressHandlerContext.Provider>
-            </TextLongPressHandlerContext.Provider>
+                </UICommonChatList>
+            </UrlPressHandlerContext.Provider>
         );
     },
 );
