@@ -14,7 +14,6 @@ import Clipboard from '@react-native-clipboard/clipboard';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-
 import {
     UILabel,
     UILabelColors,
