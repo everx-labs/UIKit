@@ -21,7 +21,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 
-import type { BubbleBaseT, ChatMessage } from './types';
+import type { BubbleBaseT, ChatMessage, OnLongPressText } from './types';
 
 import { callChatOnScrollListener } from './useChatOnScrollListener';
 
@@ -405,6 +405,7 @@ export type CommonChatListProps<ItemT extends BubbleBaseT> = {
     onScrollToIndexFailed: VirtualizedListProps<ItemT>['onScrollToIndexFailed'];
     scrollEventThrottle: number;
     style: StyleProp<ViewStyle>;
+    textLongPressHandler: OnLongPressText;
     contentContainerStyle: StyleProp<ViewStyle>;
     onViewableItemsChanged: VirtualizedListProps<
         ItemT
@@ -423,6 +424,16 @@ type UICommonChatListProps<ItemT extends BubbleBaseT> = {
     children: (props: CommonChatListProps<ItemT>) => React.ReactNode;
     canLoadMore?: boolean;
 };
+
+
+export const TextLongPressHandlerContext = React.createContext
+    <OnLongPressText>(
+        undefined,
+    );
+
+function useTextLongPressPressHandler() {
+    return React.useContext(TextLongPressHandlerContext);
+}
 
 export function UICommonChatList<ItemT extends BubbleBaseT>({
     forwardRef,
@@ -478,6 +489,8 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
     const contentInset = useContentInset(localRef, hasScroll);
     const handlers = useCloseKeyboardOnTap();
 
+    const textLongPressHandler = useTextLongPressPressHandler();
+
     const onLayout = React.useCallback(
         (e) => {
             onLayoutMeasureScroll(e);
@@ -511,6 +524,7 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
                 onScrollToIndexFailed,
                 scrollEventThrottle: UIConstant.maxScrollEventThrottle(),
                 style,
+                textLongPressHandler,
                 contentContainerStyle: styles.messagesList,
                 onViewableItemsChanged,
                 keyExtractor,

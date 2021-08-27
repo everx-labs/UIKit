@@ -45,6 +45,11 @@ export enum ChatMessageType {
 export type OnPressUrl =
     | ((url: string, index?: number) => void | Promise<void>)
     | undefined;
+
+export type OnLongPressText =
+    | (() => void | Promise<void>)
+    | undefined;
+    
 export type PlainTextMessage = BubbleBaseT & {
     type: ChatMessageType.PlainText;
     text: string;

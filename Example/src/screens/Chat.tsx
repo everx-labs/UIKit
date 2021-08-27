@@ -10,6 +10,8 @@ import {
     MessageStatus,
     TransactionType,
 } from '@tonlabs/uikit.chats';
+import { UIPopup } from '@tonlabs/uikit.popups';
+import { uiLocalized } from '@tonlabs/uikit.localization';
 import { useStickers } from '@tonlabs/uikit.stickers';
 import { createStackNavigator } from '@tonlabs/uikit.navigation';
 import image from '../../assets/icons/example-icon-base64';
@@ -307,6 +309,7 @@ const stickers = new Array(10).fill(null).map((_a, i) => ({
 const ChatStack = createStackNavigator();
 
 const ChatWindowScreen = () => {
+    const [isNoticeVisible,setNoticeVisible] = React.useState(false);
     const [messages, setMessages] = React.useState<ChatMessage[]>(
         initialMessagesWithKeys,
     );
@@ -314,6 +317,16 @@ const ChatWindowScreen = () => {
     const onPressUrl = React.useCallback(() => {
         console.log('url handled');
     }, []);
+    
+    const onLongPressText = React.useCallback(() => {
+        console.log('long press handled');
+        setNoticeVisible(true)
+    }, []);
+
+    const hideNotice = React.useCallback(() => {
+        setNoticeVisible(false)
+    }, [])
+
     const onSendMedia = React.useCallback(() => undefined, []);
     const onSendDocument = React.useCallback(() => undefined, []);
     const onItemSelected = React.useCallback(
@@ -344,6 +357,7 @@ const ChatWindowScreen = () => {
                 nativeID="chatSectionList"
                 onLoadEarlierMessages={onLoadEarlierMessages}
                 onPressUrl={onPressUrl}
+                onLongPressText={onLongPressText}
                 canLoadMore
                 isLoadingMore={false}
                 messages={messages}
@@ -367,6 +381,13 @@ const ChatWindowScreen = () => {
                 onSendMedia={onSendMedia}
                 onSendDocument={onSendDocument}
                 customKeyboard={stickersKeyboard}
+            />
+            <UIPopup.Notice
+                visible={isNoticeVisible}
+                title={uiLocalized.MessageCopiedToClipboard}
+                type={UIPopup.Notice.Type.BottomToast}
+                color={UIPopup.Notice.Color.PrimaryInverted}
+                onClose={hideNotice}
             />
         </>
     );

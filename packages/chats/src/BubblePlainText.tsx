@@ -23,7 +23,7 @@ import {
     hapticImpact,
 } from '@tonlabs/uikit.hydrogen';
 
-import { MessageStatus, OnPressUrl } from './types';
+import { MessageStatus, OnLongPressText, OnPressUrl } from './types';
 import type { ChatPlainTextMessage, PlainTextMessage } from './types';
 import {
     useBubblePosition,
@@ -54,8 +54,16 @@ export const UrlPressHandlerContext = React.createContext<OnPressUrl>(
     undefined,
 );
 
+export const TextLongPressHandlerContext = React.createContext<OnLongPressText>(
+    undefined,
+);
+
 function useUrlPressHandler() {
     return React.useContext(UrlPressHandlerContext);
+}
+
+function useTextLongPressHandler() {
+    return React.useContext(TextLongPressHandlerContext);
 }
 
 const getFontColor = (message: PlainTextMessage) => {
@@ -153,6 +161,8 @@ function PlainTextContainer(
     const roundedCornerStyle = useBubbleRoundedCornerStyle(props, position);
     const actionString = getActionString(props);
 
+    const textLongPressHandler = useTextLongPressHandler()
+    
     return (
         <View style={containerStyle} onLayout={props.onLayout}>
             <TouchableWithoutFeedback
@@ -170,6 +180,7 @@ function PlainTextContainer(
                         props.text,
                         uiLocalized.MessageCopiedToClipboard,
                     );
+                    textLongPressHandler && textLongPressHandler()
                 }}
             >
                 <View>
@@ -271,8 +282,8 @@ export function BubbleSimplePlainText(props: PlainTextMessage) {
                         {
                             type: 'url',
                             style: urlStyle,
-                            onPress: urlPressHandler,
-                        },
+                            onPress: urlPressHandler
+                        }
                     ]}
                 >
                     {props.text}

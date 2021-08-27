@@ -6,9 +6,9 @@ import { SectionExtra, UIChatListFormatter } from './UIChatListFormatter';
 import { UILoadMoreButton } from './UILoadMoreButton';
 import { UICommonChatList } from './UICommonChatList';
 import { DateSeparator } from './DateSeparator';
-import { ChatMessage, ChatMessageType, OnPressUrl } from './types';
+import { ChatMessage, ChatMessageType, OnLongPressText, OnPressUrl } from './types';
 import { sectionListGetItemLayout } from './UIChatListLayout';
-import { BubbleChatPlainText, UrlPressHandlerContext } from './BubblePlainText';
+import { BubbleChatPlainText, TextLongPressHandlerContext, UrlPressHandlerContext } from './BubblePlainText';
 import { BubbleSystem } from './BubbleSystem';
 import { BubbleTransaction } from './BubbleTransaction';
 import { BubbleImage } from './BubbleImage';
@@ -65,6 +65,7 @@ type UIChatListProps = {
     isLoadingMore: boolean;
     onLoadEarlierMessages: () => void;
     onPressUrl?: OnPressUrl;
+    onLongPressText?: OnLongPressText;
     bottomInset?: number;
 };
 
@@ -77,6 +78,7 @@ export const UIChatList = React.forwardRef<SectionList, UIChatListProps>(
             isLoadingMore,
             onLoadEarlierMessages,
             onPressUrl,
+            onLongPressText,
         }: UIChatListProps,
         ref,
     ) {
@@ -99,29 +101,31 @@ export const UIChatList = React.forwardRef<SectionList, UIChatListProps>(
         );
 
         return (
-            <UrlPressHandlerContext.Provider value={onPressUrl}>
-                <UICommonChatList
-                    forwardRef={ref}
-                    nativeID={nativeID}
-                    renderBubble={renderBubble}
-                    getItemLayoutFabric={sectionListGetItemLayout}
-                    canLoadMore={canLoadMore}
+            <TextLongPressHandlerContext.Provider value={onLongPressText}>
+                <UrlPressHandlerContext.Provider value={onPressUrl}>
+                    <UICommonChatList
+                        forwardRef={ref}
+                        nativeID={nativeID}
+                        renderBubble={renderBubble}
+                        getItemLayoutFabric={sectionListGetItemLayout}
+                        canLoadMore={canLoadMore}
                 >
-                    {(chatListProps) => (
-                        <SectionList
-                            testID="chat_container"
-                            sections={sections}
+                        {(chatListProps) => (
+                            <SectionList
+                                testID="chat_container"
+                                sections={sections}
                             // Because the List is inverted in order to render from the bottom,
                             // the title (date) for each section becomes the footer instead of header.
-                            renderSectionFooter={renderSectionTitle}
+                                renderSectionFooter={renderSectionTitle}
                             // renderSectionHeader={section => this.renderSectionStatus(section)}
-                            onEndReached={onLoadEarlierMessages}
-                            ListFooterComponent={renderLoadMore}
-                            {...chatListProps}
+                                onEndReached={onLoadEarlierMessages}
+                                ListFooterComponent={renderLoadMore}
+                                {...chatListProps}
                         />
                     )}
-                </UICommonChatList>
-            </UrlPressHandlerContext.Provider>
+                    </UICommonChatList>
+                </UrlPressHandlerContext.Provider>
+            </TextLongPressHandlerContext.Provider>
         );
     },
 );
