@@ -8,7 +8,12 @@ export * from './UIDialogBar';
 export * from './UISlideBar';
 export * from './UIAndroidNavigationBar';
 export * from './Scrollable';
-export { ScrollableContext } from './Scrollable/Context';
+export {
+    ScrollableContext,
+    useScrollable,
+    useScrollableParentScrollHandler,
+    useScrollableParentGestureHandlerHandler,
+} from './Scrollable/Context';
 export * from './UILargeTitleHeader';
 export * from './UILargeTitleHeader/RefreshControl';
 export * from './constants';

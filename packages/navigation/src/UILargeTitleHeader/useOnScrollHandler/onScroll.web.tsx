@@ -5,11 +5,7 @@ import Animated, {
     measure as measureNative,
     scrollTo as scrollToNative,
 } from 'react-native-reanimated';
-import type {
-    View,
-    ScrollView as RNScrollView,
-    NativeScrollEvent,
-} from 'react-native';
+import type { View, ScrollView as RNScrollView, NativeScrollEvent } from 'react-native';
 
 import { getYWithRubberBandEffect } from '../../AnimationHelpers/getYWithRubberBandEffect';
 
@@ -21,20 +17,16 @@ const measure: (
     return new Promise((resolve, reject) => {
         const [aref] = args;
         if (aref && aref.current) {
-            (aref.current as View).measure(
-                (x, y, width, height, pageX, pageY) => {
-                    resolve({ x, y, width, height, pageX, pageY });
-                },
-            );
+            (aref.current as View).measure((x, y, width, height, pageX, pageY) => {
+                resolve({ x, y, width, height, pageX, pageY });
+            });
         } else {
             reject(new Error('measure: animated ref not ready'));
         }
     });
 };
 
-const scrollTo: (
-    ...args: Parameters<typeof scrollToNative>
-) => Promise<void> = (...args) => {
+const scrollTo: (...args: Parameters<typeof scrollToNative>) => Promise<void> = (...args) => {
     'worklet';
 
     return new Promise((resolve, reject) => {
@@ -48,7 +40,7 @@ const scrollTo: (
     });
 };
 
-export default function (
+export default function onScroll(
     scrollRef: React.RefObject<RNScrollView>,
     largeTitleViewRef: React.RefObject<Animated.View>,
     largeTitleHeight: Animated.SharedValue<number>,
@@ -63,8 +55,7 @@ export default function (
 
         if (largeTitleHeight.value === 0) {
             try {
-                largeTitleHeight.value =
-                    (await measure(largeTitleViewRef)).height || 0;
+                largeTitleHeight.value = (await measure(largeTitleViewRef)).height || 0;
             } catch (e) {
                 // nothing
             }
