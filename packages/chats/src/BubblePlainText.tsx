@@ -10,10 +10,11 @@ import {
 } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
 import { runOnUI } from 'react-native-reanimated';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import { UIShareManager } from '@tonlabs/uikit.navigation_legacy';
+
 import {
     UILabel,
     UILabelColors,
@@ -162,26 +163,25 @@ function PlainTextContainer(
     const actionString = getActionString(props);
 
     const textLongPressHandler = useTextLongPressHandler()
+
+    const copyToClipboard = React.useCallback(()=>{
+        bubbleScaleAnimation(true);
+        props.text && Clipboard.setString(props.text);
+        textLongPressHandler && textLongPressHandler()
+        /**
+         * Maybe it's not the best place to run haptic
+         * but I don't want to put it in legacy package
+         * so left it here, until we make new share manager
+         */
+        runOnUI(hapticImpact)('medium');
+    },[props.text, textLongPressHandler, bubbleScaleAnimation])
     
     return (
         <View style={containerStyle} onLayout={props.onLayout}>
             <TouchableWithoutFeedback
                 onPressOut={() => bubbleScaleAnimation()}
                 onPress={props.onTouchText}
-                onLongPress={() => {
-                    bubbleScaleAnimation(true);
-                    /**
-                     * Maybe it's not the best place to run haptic
-                     * but I don't want to put it in legacy package
-                     * so left it here, until we make new share manager
-                     */
-                    runOnUI(hapticImpact)('medium');
-                    UIShareManager.copyToClipboard(
-                        props.text,
-                        uiLocalized.MessageCopiedToClipboard,
-                    );
-                    textLongPressHandler && textLongPressHandler()
-                }}
+                onLongPress={copyToClipboard}
             >
                 <View>
                     <Animated.View

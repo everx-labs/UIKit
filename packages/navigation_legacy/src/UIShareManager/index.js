@@ -17,13 +17,6 @@ export type ShareOptions = {
 };
 
 export default class UIShareManager {
-    // Private
-    static copyToClipboard(message: string, success?: string) {
-        if (!message) {
-            return;
-        }
-        Clipboard.setString(message);
-    }
 
     static async shareMessage(message: string, success: string) {
         if (!message) {
