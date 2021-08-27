@@ -21,10 +21,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 
-import type { BubbleBaseT, ChatMessage, OnLongPressText } from './types';
+import type { BubbleBaseT, ChatMessage, OnLongPressText, OnPressUrl } from './types';
 
 import { callChatOnScrollListener } from './useChatOnScrollListener';
-import { TextLongPressHandlerContext } from './BubblePlainText';
+import { TextLongPressHandlerContext, UrlPressHandlerContext } from './BubblePlainText';
 
 // Apply overflowY style for web to make the scrollbar appear as an overlay
 // thus not affecting the content width of SectionList to prevent layout issues
@@ -423,7 +423,8 @@ type UICommonChatListProps<ItemT extends BubbleBaseT> = {
     getItemLayoutFabric: GetItemLayoutFabric;
     children: (props: CommonChatListProps<ItemT>) => React.ReactNode;
     canLoadMore?: boolean;
-    onLongPressText: OnLongPressText;
+    onLongPressText?: OnLongPressText;
+    onPressUrl?: OnPressUrl;
 };
 
 export function UICommonChatList<ItemT extends BubbleBaseT>({
@@ -433,7 +434,8 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
     getItemLayoutFabric,
     canLoadMore = false,
     children,
-    onLongPressText
+    onLongPressText,
+    onPressUrl
 }: UICommonChatListProps<ItemT>) {
     const keyboardDismissProp: ScrollViewProps['keyboardDismissMode'] = React.useMemo(() => {
         if (Platform.OS !== 'ios') {
@@ -498,32 +500,34 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
 
     return (
         <>
-            <TextLongPressHandlerContext.Provider value={onLongPressText}>
-                <Animated.View style={lineStyle} />
-                {children({
-                ref: localRef,
-                nativeID,
-                keyboardDismissMode: keyboardDismissProp,
-                keyboardShouldPersistTaps: 'handled',
-                automaticallyAdjustContentInsets: false,
-                contentInset,
-                inverted: true,
-                getItemLayout,
-                onLayout,
-                onContentSizeChange,
-                onScroll: onScrollMessages,
-                onScrollToIndexFailed,
-                scrollEventThrottle: UIConstant.maxScrollEventThrottle(),
-                style,
-                contentContainerStyle: styles.messagesList,
-                onViewableItemsChanged,
-                keyExtractor,
-                renderItem,
-                onEndReachedThreshold: 0.6,
-                renderScrollComponent,
-                ...handlers,
-            })}
-            </TextLongPressHandlerContext.Provider>
+            <UrlPressHandlerContext.Provider value={onPressUrl}>
+                <TextLongPressHandlerContext.Provider value={onLongPressText}>
+                    <Animated.View style={lineStyle} />
+                    {children({
+                        ref: localRef,
+                        nativeID,
+                        keyboardDismissMode: keyboardDismissProp,
+                        keyboardShouldPersistTaps: 'handled',
+                        automaticallyAdjustContentInsets: false,
+                        contentInset,
+                        inverted: true,
+                        getItemLayout,
+                        onLayout,
+                        onContentSizeChange,
+                        onScroll: onScrollMessages,
+                        onScrollToIndexFailed,
+                        scrollEventThrottle: UIConstant.maxScrollEventThrottle(),
+                        style,
+                        contentContainerStyle: styles.messagesList,
+                        onViewableItemsChanged,
+                        keyExtractor,
+                        renderItem,
+                        onEndReachedThreshold: 0.6,
+                        renderScrollComponent,
+                        ...handlers,
+                    })}
+                </TextLongPressHandlerContext.Provider>
+            </UrlPressHandlerContext.Provider>
         </>
     );
 }

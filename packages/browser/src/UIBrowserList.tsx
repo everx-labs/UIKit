@@ -9,7 +9,6 @@ import {
     UICommonChatList,
     OnPressUrl,
     OnLongPressText,
-    UrlPressHandlerContext,
 } from '@tonlabs/uikit.chats';
 import { BrowserMessage, InteractiveMessageType } from './types';
 import { getFormattedList } from './getFormattedList';
@@ -125,23 +124,22 @@ export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
             [messages],
         );
         return (
-            <UrlPressHandlerContext.Provider value={onPressUrl}>
-                <UICommonChatList
-                    forwardRef={ref}
-                    nativeID="browserList"
-                    renderBubble={renderBubble()}
-                    getItemLayoutFabric={flatListGetItemLayoutFabric}
-                    onLongPressText={onLongPressText}
+            <UICommonChatList
+                forwardRef={ref}
+                nativeID="browserList"
+                renderBubble={renderBubble()}
+                getItemLayoutFabric={flatListGetItemLayoutFabric}
+                onLongPressText={onLongPressText}
+                onPressUrl={onPressUrl}
                 >
-                    {(chatListProps: CommonChatListProps<BrowserMessage>) => (
-                        <FlatList
-                            testID="browser_container"
-                            data={formattedMessages}
-                            {...chatListProps}
+                {(chatListProps: CommonChatListProps<BrowserMessage>) => (
+                    <FlatList
+                        testID="browser_container"
+                        data={formattedMessages}
+                        {...chatListProps}
                         />
                     )}
-                </UICommonChatList>
-            </UrlPressHandlerContext.Provider>
+            </UICommonChatList>
         );
     },
 );
