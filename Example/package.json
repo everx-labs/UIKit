@@ -4,9 +4,9 @@
     "private": true,
     "scripts": {
         "reinstall": "./reinstall.sh",
-        "android": "react-native run-android",
-        "ios": "react-native run-ios",
-        "start": "react-native start",
+        "android": "npx react-native run-android",
+        "ios": "npx react-native run-ios",
+        "start": "npx react-native start",
         "test": "jest",
         "tsc": "tsc --noEmit --composite false",
         "lint": "eslint .",
