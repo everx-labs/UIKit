@@ -1,92 +1,87 @@
 {
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaFeatures": {
-      "legacyDecorators": true
-    }
-  },
-  "extends": [
-    "airbnb",
-    "plugin:flowtype/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "prettier/react",
-    "prettier/flowtype",
-    "prettier/@typescript-eslint",
-    "plugin:react-hooks/recommended"
-  ],
-  "plugins": [
-    "@babel",
-    "@typescript-eslint",
-    "flowtype",
-    "module-resolver",
-    "import"
-  ],
-  "rules": {
-    "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/ban-ts-comment": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-inferrable-types": "off",
-    "@typescript-eslint/no-unused-vars": "error",
-    "@typescript-eslint/no-use-before-define": ["error", { "variables": false }],
-    "@typescript-eslint/no-shadow": ["error"], // to deal with Enums properly
-
-    "flowtype/space-after-type-colon": "off",
-    "flowtype/no-types-missing-file-annotation": "off",
-
-    "module-resolver/use-alias": 0,
-
-    "import/extensions": [
-        "error",
-        "ignorePackages",
-        {
-          "js": "never",
-          "jsx": "never",
-          "ts": "never",
-          "tsx": "never"
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "legacyDecorators": true
         }
+    },
+    "extends": [
+        "airbnb",
+        "plugin:flowtype/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "prettier",
+        "prettier/react",
+        "prettier/flowtype",
+        "prettier/@typescript-eslint",
+        "plugin:react-hooks/recommended"
     ],
-    "import/prefer-default-export": "off",
-    "import/no-cycle": [2, { "maxDepth": 1 }],
+    "plugins": ["@babel", "@typescript-eslint", "flowtype", "module-resolver", "import"],
+    "rules": {
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-inferrable-types": "off",
+        "@typescript-eslint/no-unused-vars": "error",
+        "@typescript-eslint/no-use-before-define": ["error", { "variables": false }],
+        "@typescript-eslint/no-shadow": ["error"], // to deal with Enums properly
 
-    "jsx-a11y/anchor-is-valid": ["warn", { "aspects": ["invalidHref"] }],
-    "jsx-a11y/href-no-hash": "off",
-    "jsx-a11y/accessible-emoji": "off",
+        "flowtype/space-after-type-colon": "off",
+        "flowtype/no-types-missing-file-annotation": "off",
 
-    "react/jsx-filename-extension": [
-      1,
-      {
-        "extensions": [".js", ".jsx", ".tsx"]
-      }
-    ],
-    "react/jsx-indent-props": [1, 4],
-    "react/jsx-indent": ["error", 4],
-    "react/prop-types": ["warn", { "skipUndeclared": true }],
-    "react/require-default-props": "off",
+        "module-resolver/use-alias": 0,
 
-    "arrow-body-style": "off",
-    "arrow-parens": ["error", "as-needed"],
-    "quote-props": "off",
-    "no-console": "off",
-    "no-continue": "off",
-    "no-confusing-arrow": ["error", { "allowParens": false }],
-    "no-unused-expressions": "off",
-    "no-unused-vars": "off",
-    "no-use-before-define": "off",
-    "no-restricted-globals": "off", // works oddly with TS
-    "no-shadow": "off", // to deal with Enums properly
-    "object-curly-newline": "off",
-    "prefer-arrow-callback": [ "error", { "allowNamedFunctions": true } ]
-  },
-  "settings": {
-    "import/resolver": {
-      "babel-module": {},
-      "typescript": {}
+        "import/extensions": [
+            "error",
+            "ignorePackages",
+            {
+                "js": "never",
+                "jsx": "never",
+                "ts": "never",
+                "tsx": "never"
+            }
+        ],
+        "import/prefer-default-export": "off",
+        "import/no-cycle": [2, { "maxDepth": 1 }],
+
+        "jsx-a11y/anchor-is-valid": ["warn", { "aspects": ["invalidHref"] }],
+        "jsx-a11y/href-no-hash": "off",
+        "jsx-a11y/accessible-emoji": "off",
+
+        "react/jsx-filename-extension": [
+            1,
+            {
+                "extensions": [".js", ".jsx", ".tsx"]
+            }
+        ],
+        "react/jsx-indent-props": [1, 4],
+        "react/jsx-indent": ["error", 4],
+        "react/prop-types": ["warn", { "skipUndeclared": true }],
+        "react/require-default-props": "off",
+
+        "arrow-body-style": "off",
+        "arrow-parens": ["error", "as-needed"],
+        "quote-props": "off",
+        "no-console": "off",
+        "no-continue": "off",
+        "no-confusing-arrow": ["error", { "allowParens": false }],
+        "no-mixed-operators": "off", // to avoid conflicts with with Prettier
+        "no-restricted-globals": "off", // works oddly with TypeScript
+        "no-unused-expressions": "off",
+        "no-unused-vars": "off",
+        "no-use-before-define": "off",
+        "no-shadow": "off", // to deal with enums properly
+        "object-curly-newline": "off",
+        "prefer-arrow-callback": ["error", { "allowNamedFunctions": true }]
+    },
+    "settings": {
+        "import/resolver": {
+            "babel-module": {},
+            "typescript": {}
+        }
+    },
+    "env": {
+        "browser": true,
+        "node": true,
+        "jest": true
     }
-  },
-  "env": {
-    "browser": true,
-    "node": true,
-    "jest": true
-  }
 }
