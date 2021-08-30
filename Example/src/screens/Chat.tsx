@@ -319,7 +319,7 @@ const ChatWindowScreen = () => {
         console.log('url handled');
     }, []);
     
-    const onLongPressText = React.useCallback(() => {
+    const onLongPressText = React.useCallback((text) => {
         Clipboard.setString(text);
         console.log('long press handled', text);
         setNoticeVisible(true)
