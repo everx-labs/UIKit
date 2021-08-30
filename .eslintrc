@@ -71,6 +71,7 @@
         "no-use-before-define": "off",
         "no-shadow": "off", // to deal with enums properly
         "object-curly-newline": "off",
+        "operator-linebreak": "off",
         "prefer-arrow-callback": ["error", { "allowNamedFunctions": true }]
     },
     "settings": {
