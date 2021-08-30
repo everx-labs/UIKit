@@ -22,7 +22,11 @@ export type Dimensions = {
     pageY: Animated.SharedValue<number>;
 };
 
-export type DuplicateProps = {
+export type DuplicateProps = DuplicateContentProps & {
+    isOpen: boolean;
+};
+
+export type DuplicateContentProps = {
     onClose: () => void;
     forwardedRef: React.RefObject<View>;
     fullSizeImage: React.ReactElement;

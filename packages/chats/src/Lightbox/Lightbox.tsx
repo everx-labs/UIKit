@@ -6,29 +6,14 @@ import { Duplicate } from './Duplicate';
 import { DuplicateImage } from '../DuplicateImage';
 import type { LightboxProps } from './types';
 
-const renderDuplicate = (
-    isOpen: boolean,
-    onClose: () => void,
-    forwardedRef: React.RefObject<View>,
-    fullSizeImage: React.ReactElement,
-    previewImage: React.ReactElement,
-) => {
-    if (!isOpen) {
-        return null;
-    }
-
-    return (
-        <Duplicate
-            onClose={onClose}
-            forwardedRef={forwardedRef}
-            fullSizeImage={fullSizeImage}
-            previewImage={previewImage}
-        />
-    );
-};
-
-export const Lightbox = (props: LightboxProps) => {
-    const { onClose, previewImage, imageRef, imageSize } = props;
+export const Lightbox = ({
+    onClose,
+    previewImage,
+    imageRef,
+    imageSize,
+    isOpen,
+    fullSizeImage,
+}: LightboxProps) => {
     const ref = useAnimatedRef<View>();
 
     const copyOfPreviewImage = React.useMemo(() => {
@@ -46,7 +31,13 @@ export const Lightbox = (props: LightboxProps) => {
             <View ref={ref} style={styles.originalContainer}>
                 {previewImage}
             </View>
-            {renderDuplicate(props.isOpen, onClose, ref, props.fullSizeImage, copyOfPreviewImage)}
+            <Duplicate
+                isOpen={isOpen}
+                onClose={onClose}
+                forwardedRef={ref}
+                fullSizeImage={fullSizeImage}
+                previewImage={copyOfPreviewImage}
+            />
         </>
     );
 };
