@@ -1,5 +1,6 @@
 import * as React from 'react';
 import BigNumber from 'bignumber.js';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 import { ColorVariants } from '@tonlabs/uikit.hydrogen';
 import {
@@ -319,7 +320,8 @@ const ChatWindowScreen = () => {
     }, []);
     
     const onLongPressText = React.useCallback(() => {
-        console.log('long press handled');
+        Clipboard.setString(text);
+        console.log('long press handled', text);
         setNoticeVisible(true)
     }, []);
 
