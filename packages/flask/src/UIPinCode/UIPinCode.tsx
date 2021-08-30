@@ -28,6 +28,7 @@ import {
     DOT_WITH_SPRING_CONFIG,
 } from './constants';
 import { UIPinCodeDescription, UIPinCodeDescriptionRef } from './UIPinCodeDescription';
+import { useKeyboardListener } from './UIPinCodeKeyboardListener';
 
 export type UIPinCodeEnterValidationResult = {
     valid: boolean;
@@ -213,6 +214,8 @@ export const UIPinCode = React.memo(function UIPinCodeImpl({
     const validState = useSharedValue<ValidationState>(VALIDATION_STATE_NONE);
     const shakeAnim = useSharedValue<ShakeAnimationStatus>(0);
     const animatedDots = useAnimatedDots(length, dotsAnims, validState);
+
+    useKeyboardListener(activeDotIndex, dotsValues, dotsAnims, length);
 
     const showValidationError = React.useCallback(
         function showValidationErrorImpl() {

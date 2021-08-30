@@ -24,6 +24,7 @@ type State = {
     //
 }
 
+// @deprecated
 class UIListHeader extends UIComponent<Props, State> {
     static defaultProps = {
         title: '',

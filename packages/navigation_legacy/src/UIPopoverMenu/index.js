@@ -108,7 +108,9 @@ export default class UIPopoverMenu extends UIPopover<Props, PopoverState> {
                                     this.hideNarrowMenu();
                                     if (item.onPress) item.onPress();
                                 }}
-                                type={UIPopup.ActionSheet.Action.Type.Neutral}
+                                type={item.disabled
+                                    ? UIPopup.ActionSheet.Action.Type.Disabled
+                                    : UIPopup.ActionSheet.Action.Type.Neutral}
                             />
                         ),
                 )}

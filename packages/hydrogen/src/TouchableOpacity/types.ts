@@ -6,4 +6,5 @@ import type {
 
 export interface TouchableOpacityProps extends RNTouchableOpacityProps {
     containerStyle?: StyleProp<ViewStyle>;
+    waitFor?: React.RefObject<any> | null;
 }
