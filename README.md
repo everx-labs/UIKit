@@ -1,12 +1,12 @@
 UI components for react-native
 
-# Installation
+# Install UIKit packages
 
 ```
 npx lerna bootstrap && npx lerna run prepare
 ```
 
-# Run web
+# Run Quiver UI application on web
 
 ```
 npm run web
@@ -18,7 +18,7 @@ or
 yarn web
 ```
 
-# Run Mobile
+# Run Quiver UI application on mobile
 
 Move to the `Example` folder `cd Example`
 
@@ -42,13 +42,13 @@ Open `Example/ios` folder in XCode, build and run.
 
 Open `Example/android` folder in Android Studio, build and run.
 
-# Publish packages
+# Publish UIKit packages
 
 ```sh
 npx lerna publish --no-private
 ```
 
-# Releasing QuiverUI application
+# Releasing Quiver UI application
 
 It might be necessary to install `npx` globally, if you still haven't just run:
 
