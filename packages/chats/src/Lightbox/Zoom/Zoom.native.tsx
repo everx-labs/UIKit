@@ -120,8 +120,10 @@ export const Zoom: React.FC<ZoomProps> = ({
                         enableTrackpadTwoFingerGesture={false}
                         maxPointers={1}
                     >
-                        <Animated.View style={[styles.fullScreen, animatedStyle]}>
-                            {children}
+                        <Animated.View style={styles.fullScreen}>
+                            <Animated.View style={[StyleSheet.absoluteFill, animatedStyle]}>
+                                {children}
+                            </Animated.View>
                         </Animated.View>
                     </PanGestureHandler>
                 </Animated.View>

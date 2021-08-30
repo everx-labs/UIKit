@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import * as React from 'react';
-import { Platform } from 'react-native';
 import type {
     PanGestureHandlerGestureEvent,
     PinchGestureHandlerGestureEvent,
@@ -15,8 +14,6 @@ import Animated, {
 } from 'react-native-reanimated';
 import type { PanGestureEventContext } from '../types';
 import { UIConstant } from '../../constants';
-
-const platform = Platform.OS;
 
 const springConfig: Animated.WithSpringConfig = {
     overshootClamping: true,
@@ -229,16 +226,9 @@ export const useOnMove = (
                     isMoving.value = true;
                 }
 
-                const transX =
-                    platform === 'android'
-                        ? event.translationX / baseScale.value
-                        : event.translationX;
-                const transY =
-                    platform === 'android'
-                        ? event.translationY / baseScale.value
-                        : event.translationY;
-                const targetX = context.startX + transX;
-                const targetY = context.startY + transY;
+                const targetX = context.startX + event.translationX / baseScale.value;
+                const targetY = context.startY + event.translationY / baseScale.value;
+
                 const maxTranslation = runUIGetMaxTranslation(
                     windowWidth,
                     windowHeight,
@@ -283,10 +273,7 @@ export const useOnMove = (
                         applyAnimationEndCallback(onAnimationEnd),
                     );
 
-                    const absoluteTranslationX =
-                        platform === 'android'
-                            ? Math.abs(event.translationY)
-                            : Math.abs(event.translationY) * baseScale.value;
+                    const absoluteTranslationX = Math.abs(event.translationY);
 
                     if (
                         absoluteTranslationX >
