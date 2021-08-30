@@ -1,29 +1,45 @@
-UI components for react-native-web
+UI components for react-native
 
-# Flow types
-We use `@react-navigation` as dependency and use typings for it from `flow-typed`. Please ensure that your project has it installed. You can use following command to install it:
+# Installation
 
-```sh
-npx flow-typed install @react-navigation/core@5.x.x @react-navigation/native@5.x.x @react-navigation/bottom-tabs@5.x.x @react-navigation/stack@5.x.x
+```
+npx lerna bootstrap && npx lerna run prepare
 ```
 
 # Run web
 
-First run command `npx lerna bootstrap && npx lerna run prepare`
+```
+npm run web
+```
 
-Second run `npm run web` or `yarn web`
+or
+
+```
+yarn web
+```
 
 # Run Mobile
 
 Move to the `Example` folder `cd Example`
 
-Run `npm run reinstall` or `yarn reinstall`
+Install pods for iOS or run `npm run reinstall` or `yarn reinstall` to do it automatically
 
-Run `npm run start` or `yarn start`
+```
+npm run start
+```
+
+or
+
+```
+yarn start
+```
 
 ## iOS
+
 Open `Example/ios` folder in XCode, build and run.
+
 ## Android
+
 Open `Example/android` folder in Android Studio, build and run.
 
 # Publish packages
@@ -32,5 +48,26 @@ Open `Example/android` folder in Android Studio, build and run.
 npx lerna publish --no-private
 ```
 
+# Releasing QuiverUI application
+
+It might be necessary to install `npx` globally, if you still haven't just run:
+
+```
+npm install -g npx
+```
+
+This project has some sensitive data including configuration keys and keystore object. To encrypt it we use [git-secret](https://git-secret.io). A recommended way to install it on Mac is using **Homebrew**:
+
+```
+brew install git-secret
+```
+
+_N.B. Before making a release build, please ensure you have an access to encrypted data by giving your GPG public key and a USER_ID (such as a key ID, a full fingerprint, an email address, or anything else that uniquely identifies that key to GPG) to any project contributor who can provide such an access._
+
 ## Troubleshooting
-If pod install failure with Flipper-Glog dependency try `sudo xcode-select --switch /Applications/Xcode.app`
+
+If pod install fails with Flipper-Glog dependency try
+
+```
+sudo xcode-select --switch /Applications/Xcode.app
+```
