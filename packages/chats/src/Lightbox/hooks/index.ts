@@ -8,7 +8,7 @@ import type { DuplicateState } from '../constants';
 
 export * from './duplicateHooks';
 export const useDimensions: (
-    originalRef: React.RefObject<View>,
+    forwardedRef: React.RefObject<View>,
     duplicateState: Animated.SharedValue<DuplicateState>,
     onMeasureEnd: () => void,
 ) => Dimensions = useDimensionsImpl;

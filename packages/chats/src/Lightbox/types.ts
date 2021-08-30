@@ -24,7 +24,7 @@ export type Dimensions = {
 
 export type DuplicateProps = {
     onClose: () => void;
-    originalRef: React.RefObject<View>;
+    forwardedRef: React.RefObject<View>;
     fullSizeImage: React.ReactElement;
     previewImage: React.ReactElement;
 };

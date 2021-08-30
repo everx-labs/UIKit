@@ -9,7 +9,7 @@ import type { LightboxProps } from './types';
 const renderDuplicate = (
     isOpen: boolean,
     onClose: () => void,
-    originalRef: React.RefObject<View>,
+    forwardedRef: React.RefObject<View>,
     fullSizeImage: React.ReactElement,
     previewImage: React.ReactElement,
 ) => {
@@ -20,7 +20,7 @@ const renderDuplicate = (
     return (
         <Duplicate
             onClose={onClose}
-            originalRef={originalRef}
+            forwardedRef={forwardedRef}
             fullSizeImage={fullSizeImage}
             previewImage={previewImage}
         />

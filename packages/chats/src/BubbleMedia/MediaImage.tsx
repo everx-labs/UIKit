@@ -45,17 +45,19 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
 
     return (
         <View style={[containerStyle, styles.container]} onLayout={onLayout}>
-            <TouchableOpacity activeOpacity={1} onPress={onPress}>
-                <View style={[bubbleBackgroundColor, styles.bubble]}>
-                    <Lightbox
-                        imageRef={imageRef}
-                        isOpen={isOpen}
-                        onClose={onClose}
-                        imageSize={imageSize}
-                        fullSizeImage={fullSizeImage}
-                        previewImage={previewImage}
-                    />
-                </View>
+            <TouchableOpacity
+                activeOpacity={1}
+                style={[bubbleBackgroundColor, styles.bubble]}
+                onPress={onPress}
+            >
+                <Lightbox
+                    imageRef={imageRef}
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    imageSize={imageSize}
+                    fullSizeImage={fullSizeImage}
+                    previewImage={previewImage}
+                />
             </TouchableOpacity>
         </View>
     );

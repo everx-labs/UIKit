@@ -4,7 +4,7 @@ import type { Dimensions } from '../types';
 import { DuplicateState } from '../constants';
 
 export const useDimensions = (
-    originalRef: React.RefObject<View>,
+    forwardedRef: React.RefObject<View>,
     duplicateState: Animated.SharedValue<DuplicateState>,
     onMeasureEnd: () => void,
 ): Dimensions => {
@@ -17,7 +17,7 @@ export const useDimensions = (
         () => {
             return {
                 duplicateState: duplicateState.value,
-                originalRef,
+                forwardedRef,
             };
         },
         (state, prevState) => {
@@ -26,7 +26,7 @@ export const useDimensions = (
                     (!prevState || prevState.duplicateState !== DuplicateState.Measurement) &&
                     state.duplicateState === DuplicateState.Measurement
                 ) {
-                    const measurements = measure(state.originalRef);
+                    const measurements = measure(state.forwardedRef);
 
                     width.value = measurements.width;
                     height.value = measurements.height;
@@ -39,7 +39,7 @@ export const useDimensions = (
                 console.error(`useDimensions.native.tsx: Measuring is failed - ${e}`);
             }
         },
-        [originalRef],
+        [forwardedRef],
     );
 
     return {

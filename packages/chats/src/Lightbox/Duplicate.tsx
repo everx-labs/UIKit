@@ -36,7 +36,7 @@ export const Duplicate = ({
     fullSizeImage,
     previewImage,
     onClose,
-    originalRef,
+    forwardedRef,
 }: DuplicateProps) => {
     const theme = useTheme();
     const insets = useSafeAreaInsets();
@@ -63,7 +63,7 @@ export const Duplicate = ({
     });
 
     const { pageY, pageX, width, height } = useDimensions(
-        originalRef,
+        forwardedRef,
         duplicateState,
         onMeasureEnd,
     );

@@ -12,10 +12,10 @@ type Measurements = {
     pageY: number;
 };
 
-const measure = (originalRef: React.RefObject<View>): Promise<Measurements> => {
+const measure = (forwardedRef: React.RefObject<View>): Promise<Measurements> => {
     return new Promise((resolve, reject) => {
-        if (originalRef && originalRef.current) {
-            originalRef.current.measure((x, y, width, height, pageX, pageY) => {
+        if (forwardedRef && forwardedRef.current) {
+            forwardedRef.current.measure((x, y, width, height, pageX, pageY) => {
                 resolve({ x, y, width, height, pageX, pageY });
             });
         } else {
@@ -25,7 +25,7 @@ const measure = (originalRef: React.RefObject<View>): Promise<Measurements> => {
 };
 
 export const useDimensions = (
-    originalRef: React.RefObject<View>,
+    forwardedRef: React.RefObject<View>,
     duplicateState: Animated.SharedValue<DuplicateState>,
     onMeasureEnd: () => void,
 ): Dimensions => {
@@ -51,7 +51,7 @@ export const useDimensions = (
                 prevState.windowHeight !== state.windowHeight ||
                 prevState.windowWidth !== state.windowWidth
             ) {
-                measure(originalRef)
+                measure(forwardedRef)
                     .then(measurements => {
                         width.value = measurements.width;
                         height.value = measurements.height;
