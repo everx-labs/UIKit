@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-shadow
-export enum DuplicateContentState {
+export enum DuplicateState {
     Initial = 0,
     Measurement = 1,
     Opened = 2,

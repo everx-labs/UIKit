@@ -1,11 +1,11 @@
 import type { View } from 'react-native';
 import Animated, { useSharedValue, useAnimatedReaction, measure } from 'react-native-reanimated';
 import type { Dimensions } from '../types';
-import { DuplicateContentState } from '../constants';
+import { DuplicateState } from '../constants';
 
 export const useDimensions = (
     originalRef: React.RefObject<View>,
-    duplicateContentState: Animated.SharedValue<DuplicateContentState>,
+    duplicateState: Animated.SharedValue<DuplicateState>,
     onMeasureEnd: () => void,
 ): Dimensions => {
     const width = useSharedValue<number>(0);
@@ -16,16 +16,15 @@ export const useDimensions = (
     useAnimatedReaction(
         () => {
             return {
-                duplicateContentState: duplicateContentState.value,
+                duplicateState: duplicateState.value,
                 originalRef,
             };
         },
         (state, prevState) => {
             try {
                 if (
-                    (!prevState ||
-                        prevState.duplicateContentState !== DuplicateContentState.Measurement) &&
-                    state.duplicateContentState === DuplicateContentState.Measurement
+                    (!prevState || prevState.duplicateState !== DuplicateState.Measurement) &&
+                    state.duplicateState === DuplicateState.Measurement
                 ) {
                     const measurements = measure(state.originalRef);
 

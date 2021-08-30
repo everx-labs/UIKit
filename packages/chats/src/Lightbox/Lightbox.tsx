@@ -1,22 +1,30 @@
 import * as React from 'react';
-import { View, Image } from 'react-native';
+import { View } from 'react-native';
 import { useAnimatedRef } from 'react-native-reanimated';
 import { makeStyles } from '@tonlabs/uikit.hydrogen';
 import { Duplicate } from './Duplicate';
 import { DuplicateImage } from '../DuplicateImage';
+import type { LightboxProps } from './types';
 
-type ImageSize = {
-    width: number;
-    height: number;
-};
+const renderDuplicate = (
+    isOpen: boolean,
+    onClose: () => void,
+    originalRef: React.RefObject<View>,
+    fullSizeImage: React.ReactElement,
+    previewImage: React.ReactElement,
+) => {
+    if (!isOpen) {
+        return null;
+    }
 
-type LightboxProps = {
-    isOpen: boolean;
-    onClose: () => void;
-    imageRef: React.RefObject<Image>;
-    imageSize: ImageSize | null;
-    fullSizeImage: React.ReactElement;
-    previewImage: React.ReactElement;
+    return (
+        <Duplicate
+            onClose={onClose}
+            originalRef={originalRef}
+            fullSizeImage={fullSizeImage}
+            previewImage={previewImage}
+        />
+    );
 };
 
 export const Lightbox = (props: LightboxProps) => {
@@ -38,13 +46,7 @@ export const Lightbox = (props: LightboxProps) => {
             <View ref={ref} style={styles.originalContainer}>
                 {previewImage}
             </View>
-
-            <Duplicate
-                {...props}
-                originalRef={ref}
-                onClose={onClose}
-                previewImage={copyOfPreviewImage}
-            />
+            {renderDuplicate(props.isOpen, onClose, ref, props.fullSizeImage, copyOfPreviewImage)}
         </>
     );
 };

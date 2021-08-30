@@ -1,5 +1,19 @@
-import type { View } from 'react-native';
+import type { Image, View } from 'react-native';
 import type Animated from 'react-native-reanimated';
+
+export type ImageSize = {
+    width: number;
+    height: number;
+};
+
+export type LightboxProps = {
+    isOpen: boolean;
+    onClose: () => void;
+    imageRef: React.RefObject<Image>;
+    imageSize: ImageSize | null;
+    fullSizeImage: React.ReactElement;
+    previewImage: React.ReactElement;
+};
 
 export type Dimensions = {
     width: Animated.SharedValue<number>;
@@ -9,14 +23,6 @@ export type Dimensions = {
 };
 
 export type DuplicateProps = {
-    isOpen: boolean;
-    onClose: () => void;
-    originalRef: React.RefObject<View>;
-    fullSizeImage: React.ReactElement;
-    previewImage: React.ReactElement;
-};
-
-export type DuplicateContentProps = {
     onClose: () => void;
     originalRef: React.RefObject<View>;
     fullSizeImage: React.ReactElement;

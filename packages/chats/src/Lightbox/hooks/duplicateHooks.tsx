@@ -10,7 +10,7 @@ import Animated, {
     useWorkletCallback,
 } from 'react-native-reanimated';
 import { UIConstant } from '../../constants';
-import { VisibilityState, DuplicateContentState } from '../constants';
+import { VisibilityState, DuplicateState } from '../constants';
 
 const springConfig: Animated.WithSpringConfig = {
     overshootClamping: true,
@@ -18,16 +18,16 @@ const springConfig: Animated.WithSpringConfig = {
 };
 
 export const useVisibilityState = (
-    duplicateContentState: Animated.SharedValue<DuplicateContentState>,
+    duplicateState: Animated.SharedValue<DuplicateState>,
     onAnimationEnd: (visibilityState: VisibilityState) => void,
 ) => {
     const runUIAnimationEndCallback = useWorkletCallback(
         (isFinished: boolean) => {
             if (isFinished) {
-                if (duplicateContentState.value === DuplicateContentState.Closed) {
+                if (duplicateState.value === DuplicateState.Closed) {
                     runOnJS(onAnimationEnd)(VisibilityState.Closed);
                 }
-                if (duplicateContentState.value === DuplicateContentState.Opened) {
+                if (duplicateState.value === DuplicateState.Opened) {
                     runOnJS(onAnimationEnd)(VisibilityState.Opened);
                 }
             }
@@ -36,7 +36,7 @@ export const useVisibilityState = (
     );
     return useDerivedValue(() => {
         const toValue =
-            duplicateContentState.value === DuplicateContentState.Opened
+            duplicateState.value === DuplicateState.Opened
                 ? VisibilityState.Opened
                 : VisibilityState.Closed;
         return withSpring(toValue, springConfig, runUIAnimationEndCallback);
@@ -111,19 +111,17 @@ export const useAnimatedContainerStyle = (
     };
 };
 
-export const useDuplicateContentState = (
+export const useDuplicateState = (
     isFullSizeDisplayed: boolean,
     setIsFullSizeDisplayed: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
-    const duplicateContentState = useSharedValue<DuplicateContentState>(
-        DuplicateContentState.Initial,
-    );
+    const duplicateState = useSharedValue<DuplicateState>(DuplicateState.Initial);
 
     const onLayout = React.useCallback(() => {
-        if (duplicateContentState.value === DuplicateContentState.Initial) {
-            duplicateContentState.value = DuplicateContentState.Measurement;
+        if (duplicateState.value === DuplicateState.Initial) {
+            duplicateState.value = DuplicateState.Measurement;
         }
-    }, [duplicateContentState]);
+    }, [duplicateState]);
 
     const onPressClose = React.useCallback(() => {
         /**
@@ -133,20 +131,20 @@ export const useDuplicateContentState = (
     }, [setIsFullSizeDisplayed]);
 
     const onMeasureEnd = useWorkletCallback(() => {
-        duplicateContentState.value = DuplicateContentState.Opened;
+        duplicateState.value = DuplicateState.Opened;
     });
 
     React.useEffect(() => {
         /**
          * We collapse the container only after we have removed the heavy fullSizeImage
          */
-        if (!isFullSizeDisplayed && duplicateContentState.value === DuplicateContentState.Opened) {
-            duplicateContentState.value = DuplicateContentState.Closed;
+        if (!isFullSizeDisplayed && duplicateState.value === DuplicateState.Opened) {
+            duplicateState.value = DuplicateState.Closed;
         }
-    }, [isFullSizeDisplayed, duplicateContentState]);
+    }, [isFullSizeDisplayed, duplicateState]);
 
     return {
-        duplicateContentState,
+        duplicateState,
         onPressClose,
         onMeasureEnd,
         onLayout,
