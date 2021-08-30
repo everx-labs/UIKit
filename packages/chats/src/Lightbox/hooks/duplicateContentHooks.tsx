@@ -120,7 +120,9 @@ export const useDuplicateContentState = (
     );
 
     const onLayout = React.useCallback(() => {
-        duplicateContentState.value = DuplicateContentState.Measurement;
+        if (duplicateContentState.value === DuplicateContentState.Initial) {
+            duplicateContentState.value = DuplicateContentState.Measurement;
+        }
     }, [duplicateContentState]);
 
     const onPressClose = React.useCallback(() => {

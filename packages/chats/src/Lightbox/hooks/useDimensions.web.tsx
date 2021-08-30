@@ -1,4 +1,4 @@
-import type { View } from 'react-native';
+import { useWindowDimensions, View } from 'react-native';
 import Animated, { useSharedValue, useAnimatedReaction } from 'react-native-reanimated';
 import type { Dimensions } from '../types';
 import { DuplicateContentState } from '../constants';
@@ -29,6 +29,7 @@ export const useDimensions = (
     duplicateContentState: Animated.SharedValue<DuplicateContentState>,
     onMeasureEnd: () => void,
 ): Dimensions => {
+    const { width: windowWidth, height: windowHeight } = useWindowDimensions();
     const width = useSharedValue<number>(0);
     const height = useSharedValue<number>(0);
     const pageX = useSharedValue<number>(0);
@@ -38,13 +39,17 @@ export const useDimensions = (
         () => {
             return {
                 duplicateContentState: duplicateContentState.value,
+                windowWidth,
+                windowHeight,
             };
         },
         (state, prevState) => {
             if (
-                (!prevState ||
-                    prevState.duplicateContentState !== DuplicateContentState.Measurement) &&
-                state.duplicateContentState === DuplicateContentState.Measurement
+                !prevState ||
+                (prevState.duplicateContentState !== DuplicateContentState.Measurement &&
+                    state.duplicateContentState === DuplicateContentState.Measurement) ||
+                prevState.windowHeight !== state.windowHeight ||
+                prevState.windowWidth !== state.windowWidth
             ) {
                 measure(originalRef)
                     .then(measurements => {
@@ -60,7 +65,7 @@ export const useDimensions = (
                     });
             }
         },
-        [],
+        [windowWidth, windowHeight],
     );
 
     return {
