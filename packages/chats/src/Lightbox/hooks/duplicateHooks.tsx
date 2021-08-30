@@ -10,7 +10,21 @@ import Animated, {
     useWorkletCallback,
 } from 'react-native-reanimated';
 import { UIConstant } from '../../constants';
-import { VisibilityState, DuplicateState } from '../constants';
+import type { VisibilityState, DuplicateState } from '../constants';
+
+// @inline
+const DUPLICATE_STATE_INITIAL: DuplicateState = 0;
+// @inline
+const DUPLICATE_STATE_MEASUREMENT: DuplicateState = 1;
+// @inline
+const DUPLICATE_STATE_OPENED: DuplicateState = 2;
+// @inline
+const DUPLICATE_STATE_CLOSED: DuplicateState = 3;
+
+// @inline
+const VISIBILITY_STATE_CLOSED: VisibilityState = 0;
+// @inline
+const VISIBILITY_STATE_OPENED: VisibilityState = 1;
 
 const springConfig: Animated.WithSpringConfig = {
     overshootClamping: true,
@@ -24,11 +38,11 @@ export const useVisibilityState = (
     const runUIAnimationEndCallback = useWorkletCallback(
         (isFinished: boolean) => {
             if (isFinished) {
-                if (duplicateState.value === DuplicateState.Closed) {
-                    runOnJS(onAnimationEnd)(VisibilityState.Closed);
+                if (duplicateState.value === DUPLICATE_STATE_CLOSED) {
+                    runOnJS(onAnimationEnd)(VISIBILITY_STATE_CLOSED);
                 }
-                if (duplicateState.value === DuplicateState.Opened) {
-                    runOnJS(onAnimationEnd)(VisibilityState.Opened);
+                if (duplicateState.value === DUPLICATE_STATE_OPENED) {
+                    runOnJS(onAnimationEnd)(VISIBILITY_STATE_OPENED);
                 }
             }
         },
@@ -36,9 +50,9 @@ export const useVisibilityState = (
     );
     return useDerivedValue(() => {
         const toValue =
-            duplicateState.value === DuplicateState.Opened
-                ? VisibilityState.Opened
-                : VisibilityState.Closed;
+            duplicateState.value === DUPLICATE_STATE_OPENED
+                ? VISIBILITY_STATE_OPENED
+                : VISIBILITY_STATE_CLOSED;
         return withSpring(toValue, springConfig, runUIAnimationEndCallback);
     }, []);
 };
@@ -83,21 +97,21 @@ export const useAnimatedContainerStyle = (
                 {
                     translateX: interpolate(
                         visibilityState.value,
-                        [VisibilityState.Closed, VisibilityState.Opened],
+                        [VISIBILITY_STATE_CLOSED, VISIBILITY_STATE_OPENED],
                         [pageX.value, centeredImageX.value],
                     ),
                 },
                 {
                     translateY: interpolate(
                         visibilityState.value,
-                        [VisibilityState.Closed, VisibilityState.Opened],
+                        [VISIBILITY_STATE_CLOSED, VISIBILITY_STATE_OPENED],
                         [pageY.value, centeredImageY.value],
                     ),
                 },
                 {
                     scale: interpolate(
                         visibilityState.value,
-                        [VisibilityState.Closed, VisibilityState.Opened],
+                        [VISIBILITY_STATE_CLOSED, VISIBILITY_STATE_OPENED],
                         [1, openedImageScale.value],
                     ),
                 },
@@ -115,11 +129,11 @@ export const useDuplicateState = (
     isFullSizeDisplayed: boolean,
     setIsFullSizeDisplayed: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
-    const duplicateState = useSharedValue<DuplicateState>(DuplicateState.Initial);
+    const duplicateState = useSharedValue<DuplicateState>(DUPLICATE_STATE_INITIAL);
 
     const onLayout = React.useCallback(() => {
-        if (duplicateState.value === DuplicateState.Initial) {
-            duplicateState.value = DuplicateState.Measurement;
+        if (duplicateState.value === DUPLICATE_STATE_INITIAL) {
+            duplicateState.value = DUPLICATE_STATE_MEASUREMENT;
         }
     }, [duplicateState]);
 
@@ -131,15 +145,15 @@ export const useDuplicateState = (
     }, [setIsFullSizeDisplayed]);
 
     const onMeasureEnd = useWorkletCallback(() => {
-        duplicateState.value = DuplicateState.Opened;
+        duplicateState.value = DUPLICATE_STATE_OPENED;
     });
 
     React.useEffect(() => {
         /**
          * We collapse the container only after we have removed the heavy fullSizeImage
          */
-        if (!isFullSizeDisplayed && duplicateState.value === DuplicateState.Opened) {
-            duplicateState.value = DuplicateState.Closed;
+        if (!isFullSizeDisplayed && duplicateState.value === DUPLICATE_STATE_OPENED) {
+            duplicateState.value = DUPLICATE_STATE_CLOSED;
         }
     }, [isFullSizeDisplayed, duplicateState]);
 
@@ -157,7 +171,7 @@ export const useOnAnimationEnd = (
 ) => {
     return React.useCallback(
         (state: VisibilityState) => {
-            if (state === VisibilityState.Closed) {
+            if (state === VISIBILITY_STATE_CLOSED) {
                 /**
                  * The real animation goes with a slight delay, relative to the change in values.
                  * The timeout is in order to give time for the animation of the image to complete.
@@ -167,7 +181,7 @@ export const useOnAnimationEnd = (
                     onClose();
                 }, UIConstant.lightbox.animationDisplayDelay);
             }
-            if (state === VisibilityState.Opened) {
+            if (state === VISIBILITY_STATE_OPENED) {
                 /**
                  * The timeout is in order to give time for the animation of the image
                  * unfolding to end and after that the fullSizeImage render starts.

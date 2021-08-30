@@ -27,9 +27,19 @@ import {
     useVisibilityState,
     useOnAnimationEnd,
 } from './hooks';
-import { VisibilityState, DuplicateState } from './constants';
+import type { DuplicateState, VisibilityState } from './constants';
 import { Zoom } from './Zoom';
 import { UIConstant } from '../constants';
+
+// @inline
+const DUPLICATE_STATE_INITIAL: DuplicateState = 0;
+// @inline
+const DUPLICATE_STATE_MEASUREMENT: DuplicateState = 1;
+
+// @inline
+const VISIBILITY_STATE_CLOSED: VisibilityState = 0;
+// @inline
+const VISIBILITY_STATE_OPENED: VisibilityState = 1;
 
 export const DuplicateContent = ({
     fullSizeImage,
@@ -49,7 +59,7 @@ export const DuplicateContent = ({
     /**
      * This state is used to create transparency during the "swipeToClose" event
      */
-    const underlayOpacity = useSharedValue<number>(VisibilityState.Opened);
+    const underlayOpacity = useSharedValue<number>(VISIBILITY_STATE_OPENED);
 
     const { duplicateState, onPressClose, onMeasureEnd, onLayout } = useDuplicateState(
         isFullSizeDisplayed,
@@ -89,9 +99,9 @@ export const DuplicateContent = ({
     const previewImageStyle = useAnimatedStyle(() => {
         return {
             opacity:
-                duplicateState.value === DuplicateState.Initial ||
-                duplicateState.value === DuplicateState.Measurement ||
-                visibilityState.value === VisibilityState.Closed
+                duplicateState.value === DUPLICATE_STATE_INITIAL ||
+                duplicateState.value === DUPLICATE_STATE_MEASUREMENT ||
+                visibilityState.value === VISIBILITY_STATE_CLOSED
                     ? 0
                     : 1,
         };
@@ -102,7 +112,7 @@ export const DuplicateContent = ({
         return {
             opacity: interpolate(
                 resultVisibilityState,
-                [VisibilityState.Closed, VisibilityState.Opened],
+                [VISIBILITY_STATE_CLOSED, VISIBILITY_STATE_OPENED],
                 [0, 1],
             ),
         };
@@ -113,7 +123,7 @@ export const DuplicateContent = ({
         return {
             opacity: interpolate(
                 resultVisibilityState,
-                [VisibilityState.Closed, VisibilityState.Opened],
+                [VISIBILITY_STATE_CLOSED, VISIBILITY_STATE_OPENED],
                 [0, 1],
             ),
         };

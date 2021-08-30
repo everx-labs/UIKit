@@ -1,7 +1,10 @@
 import type { View } from 'react-native';
 import Animated, { useSharedValue, useAnimatedReaction, measure } from 'react-native-reanimated';
 import type { Dimensions } from '../types';
-import { DuplicateState } from '../constants';
+import type { DuplicateState } from '../constants';
+
+// @inline
+const DUPLICATE_STATE_MEASUREMENT: DuplicateState = 1;
 
 export const useDimensions = (
     forwardedRef: React.RefObject<View>,
@@ -23,8 +26,8 @@ export const useDimensions = (
         (state, prevState) => {
             try {
                 if (
-                    (!prevState || prevState.duplicateState !== DuplicateState.Measurement) &&
-                    state.duplicateState === DuplicateState.Measurement
+                    (!prevState || prevState.duplicateState !== DUPLICATE_STATE_MEASUREMENT) &&
+                    state.duplicateState === DUPLICATE_STATE_MEASUREMENT
                 ) {
                     const measurements = measure(state.forwardedRef);
 

@@ -1,7 +1,10 @@
 import { useWindowDimensions, View } from 'react-native';
 import Animated, { useSharedValue, useAnimatedReaction } from 'react-native-reanimated';
 import type { Dimensions } from '../types';
-import { DuplicateState } from '../constants';
+import type { DuplicateState } from '../constants';
+
+// @inline
+const DUPLICATE_STATE_MEASUREMENT: DuplicateState = 1;
 
 type Measurements = {
     x: number;
@@ -46,8 +49,8 @@ export const useDimensions = (
         (state, prevState) => {
             if (
                 !prevState ||
-                (prevState.duplicateState !== DuplicateState.Measurement &&
-                    state.duplicateState === DuplicateState.Measurement) ||
+                (prevState.duplicateState !== DUPLICATE_STATE_MEASUREMENT &&
+                    state.duplicateState === DUPLICATE_STATE_MEASUREMENT) ||
                 prevState.windowHeight !== state.windowHeight ||
                 prevState.windowWidth !== state.windowWidth
             ) {
