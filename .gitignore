@@ -22,3 +22,5 @@ coverage/
 lib/
 
 .vscode/
+.gitsecret/keys/random_seed
+!*.secret
