@@ -32,7 +32,7 @@ import { VisibilityState, DuplicateState } from './constants';
 import { Zoom } from './Zoom';
 import { UIConstant } from '../constants';
 
-export const Duplicate = ({
+const DuplicatePortalContent = ({
     fullSizeImage,
     previewImage,
     onClose,
@@ -123,48 +123,54 @@ export const Duplicate = ({
     const styles = useStyles(theme, insets);
 
     return (
-        <Portal absoluteFill>
-            <Animated.View style={styles.duplicateContainer}>
-                <Animated.View style={[styles.underlay, underlayStyle]} />
-                <Animated.View style={[styles.headerContainer, headerStyle]}>
-                    <Animated.View style={styles.header}>
-                        <TouchableOpacity
-                            activeOpacity={0.7}
-                            onPress={onPressClose}
-                            hitSlop={UIConstant.lightbox.hitSlop}
-                        >
-                            <UIImage
-                                source={UIAssets.icons.ui.arrowLeftBlack}
-                                style={styles.backButton as ImageStyle}
-                                tintColor={ColorVariants.StaticIconPrimaryLight}
-                            />
-                        </TouchableOpacity>
-                    </Animated.View>
-                </Animated.View>
-                <Animated.View style={styles.duplicate} pointerEvents="box-none">
-                    <Zoom
-                        contentWidth={contentWidth}
-                        contentHeight={contentHeight}
-                        onClose={onPressClose}
-                        underlayOpacity={underlayOpacity}
-                        visibilityState={visibilityState}
+        <Animated.View style={styles.duplicateContainer}>
+            <Animated.View style={[styles.underlay, underlayStyle]} />
+            <Animated.View style={[styles.headerContainer, headerStyle]}>
+                <Animated.View style={styles.header}>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={onPressClose}
+                        hitSlop={UIConstant.lightbox.hitSlop}
                     >
-                        <Animated.View
-                            style={[styles.zoomContent, animatedContainerStyle]}
-                            pointerEvents="box-none"
-                        >
-                            <Animated.View style={previewImageStyle}>
-                                <View onLayout={onLayout}>{previewImage}</View>
-                            </Animated.View>
-                            {isFullSizeDisplayed ? (
-                                <Animated.View style={styles.fullSizeImage}>
-                                    {fullSizeImage}
-                                </Animated.View>
-                            ) : null}
-                        </Animated.View>
-                    </Zoom>
+                        <UIImage
+                            source={UIAssets.icons.ui.arrowLeftBlack}
+                            style={styles.backButton as ImageStyle}
+                            tintColor={ColorVariants.StaticIconPrimaryLight}
+                        />
+                    </TouchableOpacity>
                 </Animated.View>
             </Animated.View>
+            <Animated.View style={styles.duplicate} pointerEvents="box-none">
+                <Zoom
+                    contentWidth={contentWidth}
+                    contentHeight={contentHeight}
+                    onClose={onPressClose}
+                    underlayOpacity={underlayOpacity}
+                    visibilityState={visibilityState}
+                >
+                    <Animated.View
+                        style={[styles.zoomContent, animatedContainerStyle]}
+                        pointerEvents="box-none"
+                    >
+                        <Animated.View style={previewImageStyle}>
+                            <View onLayout={onLayout}>{previewImage}</View>
+                        </Animated.View>
+                        {isFullSizeDisplayed ? (
+                            <Animated.View style={styles.fullSizeImage}>
+                                {fullSizeImage}
+                            </Animated.View>
+                        ) : null}
+                    </Animated.View>
+                </Zoom>
+            </Animated.View>
+        </Animated.View>
+    );
+};
+
+export const Duplicate = (props: DuplicateProps) => {
+    return (
+        <Portal absoluteFill>
+            <DuplicatePortalContent {...props} />
         </Portal>
     );
 };
