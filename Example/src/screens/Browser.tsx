@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useWindowDimensions, StatusBar } from 'react-native';
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
+import Clipboard from '@react-native-clipboard/clipboard';
 import BigNumber from 'bignumber.js';
 
 import { UIConstant } from '@tonlabs/uikit.core';
@@ -102,12 +103,13 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
         },
     }));
 
-    const onPressUrl = React.useCallback(() => {
-        console.log('url handled');
+    const onPressUrl = React.useCallback((url) => {
+        console.log('url handled', url);
     }, []);
 
-    const onLongPressText = React.useCallback(() => {
-        console.log('long press handled');
+    const onLongPressText = React.useCallback((text) => {
+        Clipboard.setString(text);
+        console.log('long press handled', text);
         setNoticeVisible(true)
     }, []);
 

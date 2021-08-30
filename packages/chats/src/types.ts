@@ -47,7 +47,7 @@ export type OnPressUrl =
     | undefined;
 
 export type OnLongPressText =
-    | (() => void | Promise<void>)
+    | ((text: string) => void | Promise<void>)
     | undefined;
     
 export type PlainTextMessage = BubbleBaseT & {

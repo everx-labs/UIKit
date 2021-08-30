@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
 import { runOnUI } from 'react-native-reanimated';
-import Clipboard from '@react-native-clipboard/clipboard';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
@@ -163,10 +162,9 @@ function PlainTextContainer(
 
     const textLongPressHandler = useTextLongPressHandler()
 
-    const copyToClipboard = React.useCallback(()=>{
+    const longPressHandle = React.useCallback(()=>{
         bubbleScaleAnimation(true);
-        props.text && Clipboard.setString(props.text);
-        textLongPressHandler && textLongPressHandler()
+        props.text && textLongPressHandler && textLongPressHandler(props.text)
         /**
          * Maybe it's not the best place to run haptic
          * but I don't want to put it in legacy package
@@ -180,7 +178,7 @@ function PlainTextContainer(
             <TouchableWithoutFeedback
                 onPressOut={() => bubbleScaleAnimation()}
                 onPress={props.onTouchText}
-                onLongPress={copyToClipboard}
+                onLongPress={longPressHandle}
             >
                 <View>
                     <Animated.View
