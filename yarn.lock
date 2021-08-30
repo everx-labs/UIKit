@@ -3074,15 +3074,6 @@
     "@types/scheduler" "*"
     csstype "^3.0.2"
 
-"@types/react@^16.8.8":
-  version "16.14.12"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.14.12.tgz#1e38e2114e568f6541f88628a207f72630ee161f"
-  integrity sha512-7nOJgNsRbARhZhvwPm7cnzahtzEi5VJ9OvcQk8ExEEb1t+zaFklwLVkJz7G1kfxX4X/mDa/icTmzE0vTmqsqBg==
-  dependencies:
-    "@types/prop-types" "*"
-    "@types/scheduler" "*"
-    csstype "^3.0.2"
-
 "@types/scheduler@*":
   version "0.16.2"
   resolved "https://registry.yarnpkg.com/@types/scheduler/-/scheduler-0.16.2.tgz#1a62f89525723dde24ba1b01b092bf5df8ad4d39"
@@ -12445,13 +12436,6 @@ react-native-safe-area-context@^3.1.3:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-3.3.0.tgz#6e0b45baa031589ec9c54f8359ace166a36aa5e5"
   integrity sha512-IrCNx56LO9RJ75yCf2CSSO1ceLj3mvxTAF+HWnehaeRIfF4pIcIn3WEUlXulFiha641OKS5X0+1XZCbbQ7pITA==
-
-react-native-safe-area@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/react-native-safe-area/-/react-native-safe-area-0.5.1.tgz#b0263f5fcd1341c74dee0e5f0b296da965242a14"
-  integrity sha512-gBLv93P90sM6hk5HzUwTXzFuSDazTpg2ONi5iL9pnUsUfwdw2L9SKgjgVroxX10leGB9+0zz6/ycV+mItqr8OQ==
-  dependencies:
-    "@types/react" "^16.8.8"
 
 react-native-screens@3.3.0:
   version "3.3.0"
