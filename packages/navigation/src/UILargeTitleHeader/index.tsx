@@ -20,7 +20,7 @@ import {
 
 import { useOnScrollHandler } from './useOnScrollHandler';
 import { useHasScroll } from '../Scrollable';
-import { ScrollableContext } from '../Scrollable/Context';
+import { ScrollableContext, useScrollableParentScrollHandler } from '../Scrollable/Context';
 import { useOnWheelHandler } from './useOnWheelHandler';
 import { useResetPosition } from './useResetPosition';
 import { UIConstant } from '../constants';
@@ -136,10 +136,12 @@ export function UILargeTitleHeader({
     // see `useAnimatedGestureHandler`
     const yIsNegative = useSharedValue(true);
 
-    const { ref: parentRef, scrollHandler: parentScrollHandler } =
-        React.useContext(ScrollableContext);
+    const { ref: parentRef } = React.useContext(ScrollableContext);
 
     const scrollRef = parentRef || localScrollRef;
+
+    const { parentHandler: parentScrollHandler, parentHandlerActive: parentScrollHandlerActive } =
+        useScrollableParentScrollHandler();
 
     const onScroll = useOnScrollHandler(
         scrollRef,
@@ -151,6 +153,7 @@ export function UILargeTitleHeader({
         shiftChangedForcibly,
         RUBBER_BAND_EFFECT_DISTANCE,
         parentScrollHandler,
+        parentScrollHandlerActive,
     );
 
     const onEndDrag = useResetPosition(
@@ -160,15 +163,21 @@ export function UILargeTitleHeader({
         defaultShift,
         yWithoutRubberBand,
         parentScrollHandler,
+        parentScrollHandlerActive,
     );
 
     const scrollHandler = useAnimatedScrollHandler<ScrollHandlerContext>({
         onScroll,
         onBeginDrag: (_event: NativeScrollEvent, ctx: ScrollHandlerContext) => {
+            'worklet';
+
             ctx.scrollTouchGuard = true;
             shiftChangedForcibly.value = false;
             yWithoutRubberBand.value = shift.value;
+
+            parentScrollHandler(_event);
         },
+        ...(Platform.OS === 'ios' ? { onEndDrag } : null),
         onMomentumEnd: onEndDrag,
     });
 

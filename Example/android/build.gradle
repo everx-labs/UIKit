@@ -38,3 +38,14 @@ allprojects {
         }
     }
 }
+
+subprojects {
+    afterEvaluate {project ->
+        if (project.hasProperty("android")) {
+            android {
+                compileSdkVersion 30 // same as project's compileSdkVersion
+                buildToolsVersion "30.0.2" // same as project's buildToolsVersion
+            }
+        }
+    }
+}

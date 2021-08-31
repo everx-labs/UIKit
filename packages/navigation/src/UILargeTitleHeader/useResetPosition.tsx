@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import * as React from 'react';
 import Animated, { withSpring } from 'react-native-reanimated';
-import type { ScrollableOnScrollHandler, ScrollWorkletEventHandler } from '../Scrollable/Context';
+import type { ScrollableParentScrollHandler } from '../Scrollable/Context';
 import type { ScrollHandlerContext } from './types';
 
 export function resetPosition(
@@ -32,7 +32,8 @@ export function useResetPosition(
     largeTitleHeight: Animated.SharedValue<number>,
     defaultShift: Animated.SharedValue<number>,
     yWithoutRubberBand: Animated.SharedValue<number>,
-    parentScrollHandler: ScrollableOnScrollHandler,
+    parentScrollHandler: ScrollableParentScrollHandler,
+    parentScrollHandlerActive: boolean,
 ) {
     const resetPositionRef = React.useRef<(() => void) | null>(null);
 
@@ -48,17 +49,9 @@ export function useResetPosition(
                 ctx.scrollTouchGuard = false;
             }
 
-            if (
-                parentScrollHandler &&
-                'current' in parentScrollHandler &&
-                (parentScrollHandler as any).current != null &&
-                'worklet' in (parentScrollHandler as any).current
-            ) {
+            if (parentScrollHandlerActive) {
                 if (yWithoutRubberBand.value > 0) {
-                    const parentScrollWorkletEventHandler = (parentScrollHandler as any)
-                        .current as ScrollWorkletEventHandler;
-
-                    parentScrollWorkletEventHandler.worklet(event as any);
+                    parentScrollHandler(event);
                     return;
                 }
             }
