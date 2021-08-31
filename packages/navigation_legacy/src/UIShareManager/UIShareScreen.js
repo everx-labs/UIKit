@@ -6,7 +6,6 @@ import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIToastMessage } from '@tonlabs/uikit.components';
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { UIBoxButton, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
@@ -90,9 +89,6 @@ export default class UIShareScreen extends UIModalController<Props, State> {
 
         // Copy the message into Clipboard
         Clipboard.setString(this.getMessage());
-
-        // Show the toast message about it
-        UIToastMessage.showMessage(uiLocalized.MessageCopiedToClipboard);
     };
 
     // Setters
