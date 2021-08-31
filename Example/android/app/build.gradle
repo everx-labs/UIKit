@@ -78,8 +78,11 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-    cliPath: "../../../node_modules/react-native/cli.js",
+    cliPath: "../node_modules/react-native/cli.js", // path is relative to `process.cwd`
+    composeSourceMapsPath: "../node_modules/react-native/scripts/compose-source-maps.js", // path is relative to `process.cwd`
     enableHermes: true,  // clean and rebuild if changing
+    entryFile: "index.js", // path is relative to `process.cwd`
+    hermesCommand: "../../../node_modules/hermes-engine/osx-bin/hermesc",
 ]
 
 project.ext.hydrogen = [
@@ -126,6 +129,23 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  */
 def enableHermes = project.ext.react.get("enableHermes", false);
 
+/**
+ * Keep the release signing key in Keychain
+ */
+def getPassword(String currentUser, String key, String keyChain) {
+    def stdout = new ByteArrayOutputStream()
+    def stderr = new ByteArrayOutputStream()
+    exec {
+        commandLine 'security', '-q', 'find-generic-password', '-a', currentUser, '-s', key, '-w', '-g', keyChain
+        standardOutput = stdout
+        errorOutput = stderr
+        ignoreExitValue true
+    }
+    stdout.toString().trim()
+}
+
+def pass = getPassword("tonlabs.uikit", "android_keystore", "login.keychain")
+
 android {
     ndkVersion rootProject.ext.ndkVersion
 
@@ -155,6 +175,14 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            if (project.hasProperty('APP_RELEASE_STORE_FILE')) {
+                storeFile file(APP_RELEASE_STORE_FILE)
+                storePassword pass
+                keyAlias APP_RELEASE_KEY_ALIAS
+                keyPassword pass
+            }
+        }
     }
     buildTypes {
         debug {
@@ -163,9 +191,7 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
         release {
-            // Caution! In production, you need to generate your own keystore file.
-            // see https://facebook.github.io/react-native/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
