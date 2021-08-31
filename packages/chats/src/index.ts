@@ -9,7 +9,7 @@ export * from './BubbleMedia';
 export * from './UILoadMoreButton';
 export { sectionListGetItemLayout } from './UIChatListLayout';
 
-export { BubbleSimplePlainText, UrlPressHandlerContext } from './BubblePlainText';
+export { BubbleSimplePlainText, UrlPressHandlerContext, TextLongPressHandlerContext } from './BubblePlainText';
 export { BubbleActionButton } from './BubbleActionButton';
 
 export * from './types';

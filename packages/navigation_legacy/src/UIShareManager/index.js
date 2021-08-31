@@ -3,8 +3,6 @@ import { Platform, Share } from 'react-native';
 
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import { UIToastMessage } from '@tonlabs/uikit.components';
-
 import UIShareScreen from './UIShareScreen';
 
 const RNShare = Platform.OS === 'web' ? undefined : require('react-native-share').default;
@@ -19,14 +17,6 @@ export type ShareOptions = {
 };
 
 export default class UIShareManager {
-    // Private
-    static copyToClipboard(message: string, success: string) {
-        if (!message) {
-            return;
-        }
-        Clipboard.setString(message);
-        UIToastMessage.showMessage(success);
-    }
 
     static async shareMessage(message: string, success: string) {
         if (!message) {

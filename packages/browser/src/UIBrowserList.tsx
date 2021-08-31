@@ -8,7 +8,7 @@ import {
     CommonChatListProps,
     UICommonChatList,
     OnPressUrl,
-    UrlPressHandlerContext,
+    OnLongPressText,
 } from '@tonlabs/uikit.chats';
 import { BrowserMessage, InteractiveMessageType } from './types';
 import { getFormattedList } from './getFormattedList';
@@ -30,6 +30,7 @@ import { QRCodeDraw } from './QRCodeDraw';
 type UIBrowserListProps = {
     messages: BrowserMessage[];
     onPressUrl?: OnPressUrl;
+    onLongPressText?: OnLongPressText;
     bottomInset?: number;
 };
 
@@ -115,7 +116,7 @@ const renderBubble = () => (
 
 export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
     function UIBrowserListForwarded(
-        { messages, onPressUrl }: UIBrowserListProps,
+        { messages, onPressUrl, onLongPressText }: UIBrowserListProps,
         ref,
     ) {
         const formattedMessages = React.useMemo(
@@ -123,22 +124,22 @@ export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
             [messages],
         );
         return (
-            <UrlPressHandlerContext.Provider value={onPressUrl}>
-                <UICommonChatList
-                    forwardRef={ref}
-                    nativeID="browserList"
-                    renderBubble={renderBubble()}
-                    getItemLayoutFabric={flatListGetItemLayoutFabric}
+            <UICommonChatList
+                forwardRef={ref}
+                nativeID="browserList"
+                renderBubble={renderBubble()}
+                getItemLayoutFabric={flatListGetItemLayoutFabric}
+                onLongPressText={onLongPressText}
+                onPressUrl={onPressUrl}
                 >
-                    {(chatListProps: CommonChatListProps<BrowserMessage>) => (
-                        <FlatList
-                            testID="browser_container"
-                            data={formattedMessages}
-                            {...chatListProps}
+                {(chatListProps: CommonChatListProps<BrowserMessage>) => (
+                    <FlatList
+                        testID="browser_container"
+                        data={formattedMessages}
+                        {...chatListProps}
                         />
                     )}
-                </UICommonChatList>
-            </UrlPressHandlerContext.Provider>
+            </UICommonChatList>
         );
     },
 );

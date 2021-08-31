@@ -21,5 +21,4 @@ export { default as UIScaleButton } from './UIScaleButton';
 export { default as UISectionHeader } from './UISectionHeader';
 export { default as UISpinnerOverlay } from './UISpinnerOverlay';
 export { default as UITextInput } from './UITextInput';
-export { default as UIToastMessage } from './UIToastMessage';
 export { default as UITransferInput } from './UITransferInput';
