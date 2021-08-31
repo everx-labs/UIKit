@@ -78,6 +78,9 @@ export default function (
                 return;
             }
         }
+        if (y !== 0) {
+            ctx.lastApproximateVelocity = y;
+        }
         if (y <= 0) {
             // scrollTo reset real y, so we need to count it ourselves
             yWithoutRubberBand.value -= y;

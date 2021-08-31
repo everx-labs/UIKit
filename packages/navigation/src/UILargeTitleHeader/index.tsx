@@ -9,6 +9,8 @@ import Animated, {
     Extrapolate,
     interpolate,
     useAnimatedReaction,
+    scrollTo,
+    cancelAnimation,
 } from 'react-native-reanimated';
 import {
     UILabel,
@@ -22,7 +24,7 @@ import { useOnScrollHandler } from './useOnScrollHandler';
 import { useHasScroll } from '../Scrollable';
 import { ScrollableContext, useScrollableParentScrollHandler } from '../Scrollable/Context';
 import { useOnWheelHandler } from './useOnWheelHandler';
-import { useResetPosition } from './useResetPosition';
+import { onMomentumEndCreate, useResetPosition } from './useResetPosition';
 import { UIConstant } from '../constants';
 import type { UINavigationBarProps } from '../UINavigationBar';
 import { UIStackNavigationBar } from '../UIStackNavigationBar';
@@ -31,7 +33,7 @@ import type { ScrollHandlerContext } from './types';
 
 const AnimatedUILabel = Animated.createAnimatedComponent(UILabel);
 
-const RUBBER_BAND_EFFECT_DISTANCE = Platform.select({ web: 50, default: 150 });
+const RUBBER_BAND_EFFECT_DISTANCE = Platform.select({ web: 50, default: 100 });
 const HEADER_TITLE_OPACITY_ANIM_DURATION = 100;
 /**
  * This was introduced to match a behaviour of large title on iOS
@@ -156,7 +158,8 @@ export function UILargeTitleHeader({
         parentScrollHandlerActive,
     );
 
-    const onEndDrag = useResetPosition(
+    const resetPosition = useResetPosition(
+        scrollRef,
         shift,
         shiftChangedForcibly,
         largeTitleHeight,
@@ -166,26 +169,39 @@ export function UILargeTitleHeader({
         parentScrollHandlerActive,
     );
 
+    const onMomentumEnd = onMomentumEndCreate(
+        shift,
+        shiftChangedForcibly,
+        largeTitleHeight,
+        defaultShift,
+        yWithoutRubberBand,
+        resetPosition,
+    );
+
     const scrollHandler = useAnimatedScrollHandler<ScrollHandlerContext>({
         onScroll,
         onBeginDrag: (_event: NativeScrollEvent, ctx: ScrollHandlerContext) => {
             'worklet';
 
+            cancelAnimation(shift);
+
             ctx.scrollTouchGuard = true;
+            ctx.continueResetOnMomentumEnd = false;
             shiftChangedForcibly.value = false;
             yWithoutRubberBand.value = shift.value;
 
             parentScrollHandler(_event);
         },
-        ...(Platform.OS === 'ios' ? { onEndDrag } : null),
-        onMomentumEnd: onEndDrag,
+        // ...(Platform.OS === 'ios' ? { onEndDrag } : null),
+        onEndDrag: resetPosition,
+        onMomentumEnd,
     });
 
     const style = useAnimatedStyle(() => {
         return {
             transform: [
                 {
-                    translateY: shift.value,
+                    translateY: Math.max(shift.value, -largeTitleHeight.value),
                 },
             ],
         };
@@ -263,7 +279,7 @@ export function UILargeTitleHeader({
         yIsNegative,
         yWithoutRubberBand,
         onScroll,
-        onEndDrag,
+        resetPosition,
     );
 
     /**
@@ -283,7 +299,7 @@ export function UILargeTitleHeader({
         yWithoutRubberBand,
         hasScrollShared,
         onScroll,
-        onEndDrag,
+        resetPosition,
     );
 
     const [scrollablesCount, setScrollablesCount] = React.useState(0);
@@ -386,11 +402,12 @@ export function UILargeTitleHeader({
             // no need to respond to scroll events anymore
             shiftChangedForcibly.value = true;
             shift.value = withTiming(position, { duration: options.duration ?? 0 }, callback);
+            scrollTo(scrollRef, 0, 0, false);
             if (options.changeDefaultShift) {
                 defaultShift.value = position;
             }
         },
-        [shift, shiftChangedForcibly, defaultShift],
+        [shift, shiftChangedForcibly, defaultShift, scrollRef],
     );
 
     const positionContext = React.useMemo(
