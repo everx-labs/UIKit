@@ -38,11 +38,7 @@ const getToastNoticeState = (visible: boolean): ToastNoticeState => {
 };
 
 type MoveType = 'Open' | 'Close';
-const moveWithSpring = (
-    moveType: MoveType,
-    toValue: number,
-    onClose?: () => void,
-): number => {
+const moveWithSpring = (moveType: MoveType, toValue: number, onClose?: () => void): number => {
     'worklet';
 
     if (moveType === 'Open') {
@@ -66,9 +62,7 @@ export const useNoticePosition = (
     onTap: (() => void) | undefined,
 ) => {
     /** Place of notice */
-    const toastNoticeState = useSharedValue<ToastNoticeState>(
-        getToastNoticeState(visible),
-    );
+    const toastNoticeState = useSharedValue<ToastNoticeState>(getToastNoticeState(visible));
     /** Еhe direction in which the user swipes the notification */
     const swipeDirection = useSharedValue<SwipeDirection>('None');
     /** Dynamic X position */
@@ -93,12 +87,7 @@ export const useNoticePosition = (
                 continueClosingTimer();
             }
         }
-    }, [
-        isHovered,
-        suspendClosingTimer,
-        continueClosingTimer,
-        toastNoticeState,
-    ]);
+    }, [isHovered, suspendClosingTimer, continueClosingTimer, toastNoticeState]);
 
     useAnimatedReaction(
         () => {
@@ -110,16 +99,10 @@ export const useNoticePosition = (
                 closedXSnapPoint: xSnapPoints.closedSnapPoint.value,
             };
         },
-        (state) => {
+        state => {
             if (state.toastNoticeState === 'Opened') {
-                yPosition.value = moveWithSpring(
-                    'Open',
-                    state.openedYSnapPoint,
-                );
-                xPosition.value = moveWithSpring(
-                    'Open',
-                    state.openedXSnapPoint,
-                );
+                yPosition.value = moveWithSpring('Open', state.openedYSnapPoint);
+                xPosition.value = moveWithSpring('Open', state.openedXSnapPoint);
             }
             if (state.toastNoticeState === 'Closed') {
                 yPosition.value = moveWithSpring(
@@ -146,21 +129,21 @@ export const useNoticePosition = (
     );
 
     const isBottomNotice =
-        ySnapPoints.openedSnapPoint.value - ySnapPoints.closedSnapPoint.value <
-        0;
+        ySnapPoints.openedSnapPoint.value - ySnapPoints.closedSnapPoint.value < 0;
     const gestureHandler = useAnimatedGestureHandler({
-        onStart: (event) => {
+        onActive: event => {
             if (toastNoticeState.value === 'Opened') {
-                isNoticeHeld.value = true;
-                if (Math.abs(event.velocityX) >= Math.abs(event.velocityY)) {
-                    swipeDirection.value = 'Horizontal';
-                } else {
-                    swipeDirection.value = 'Vertical';
+                if (!isNoticeHeld.value) {
+                    isNoticeHeld.value = true;
                 }
-            }
-        },
-        onActive: (event) => {
-            if (toastNoticeState.value === 'Opened') {
+                if (swipeDirection.value === 'None') {
+                    if (Math.abs(event.velocityX) >= Math.abs(event.velocityY)) {
+                        swipeDirection.value = 'Horizontal';
+                    } else {
+                        swipeDirection.value = 'Vertical';
+                    }
+                }
+
                 if (!isNoticeHeld.value) {
                     isNoticeHeld.value = true;
                 }
@@ -170,35 +153,27 @@ export const useNoticePosition = (
                         ? event.translationY >= 0
                         : event.translationY <= 0;
                     if (isMovingAllowed) {
-                        yPosition.value =
-                            ySnapPoints.openedSnapPoint.value +
-                            event.translationY;
+                        yPosition.value = ySnapPoints.openedSnapPoint.value + event.translationY;
                     }
                 } else {
                     xPosition.value = event.translationX;
                 }
             }
         },
-        onEnd: (event) => {
+        onEnd: event => {
             if (toastNoticeState.value === 'Opened') {
                 isNoticeHeld.value = false;
                 const isTranslationYExceededThreshold = isBottomNotice
                     ? event.translationY > Y_THRESHOLD
                     : event.translationY < -Y_THRESHOLD;
-                if (
-                    swipeDirection.value === 'Horizontal' &&
-                    event.translationX < -X_THRESHOLD
-                ) {
+                if (swipeDirection.value === 'Horizontal' && event.translationX < -X_THRESHOLD) {
                     toastNoticeState.value = 'ClosedLeft';
                 } else if (
                     swipeDirection.value === 'Horizontal' &&
                     event.translationX > X_THRESHOLD
                 ) {
                     toastNoticeState.value = 'ClosedRight';
-                } else if (
-                    swipeDirection.value === 'Vertical' &&
-                    isTranslationYExceededThreshold
-                ) {
+                } else if (swipeDirection.value === 'Vertical' && isTranslationYExceededThreshold) {
                     toastNoticeState.value = 'Closed';
                 } else {
                     /** Double assignment is hack to trigger useAnimatedReaction */
