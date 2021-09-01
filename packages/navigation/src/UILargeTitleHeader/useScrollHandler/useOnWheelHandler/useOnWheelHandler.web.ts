@@ -1,8 +1,13 @@
 /* eslint-disable no-param-reassign */
 import * as React from 'react';
 import type Animated from 'react-native-reanimated';
+import {
+    getWorkletFromParentHandler,
+    ScrollableParentScrollHandler,
+} from '../../../Scrollable/Context';
 
 const END_THRESHOLD = 100;
+const ON_WHEEL_MIN_DELTA = 10;
 
 function useCreateOnWheelHandler({
     onActive,
@@ -10,8 +15,8 @@ function useCreateOnWheelHandler({
     onEnd,
 }: {
     onActive: (event: React.WheelEvent) => void;
-    onStart: () => void;
-    onEnd: () => void;
+    onStart: (event: React.WheelEvent) => void;
+    onEnd: (event?: React.WheelEvent) => void;
 }) {
     const onWheelEndTimeout = React.useRef<number | null>(null);
     const onWheelEndCbRef = React.useRef<(() => void) | null>(null);
@@ -24,17 +29,18 @@ function useCreateOnWheelHandler({
     }
 
     const onWheel = React.useCallback(
-        (event) => {
+        (event: React.WheelEvent) => {
+            if (Math.abs(event.deltaY || 0) < ON_WHEEL_MIN_DELTA) {
+                return;
+            }
+
             if (onWheelEndTimeout.current != null) {
                 clearTimeout(onWheelEndTimeout.current);
             } else {
-                onStart();
+                onStart(event);
             }
 
-            onWheelEndTimeout.current = setTimeout(
-                onWheelEndCbRef.current,
-                END_THRESHOLD,
-            );
+            onWheelEndTimeout.current = setTimeout(onWheelEndCbRef.current, END_THRESHOLD);
 
             onActive(event);
         },
@@ -45,36 +51,36 @@ function useCreateOnWheelHandler({
 }
 
 export default function useOnWheelHandler(
-    shift: Animated.SharedValue<number>,
-    shiftChangedForcibly: Animated.SharedValue<boolean>,
     yIsNegative: Animated.SharedValue<boolean>,
-    yWithoutRubberBand: Animated.SharedValue<number>,
     hasScrollShared: Animated.SharedValue<boolean>,
-    onScroll: (event: { contentOffset: { y: number } }) => void,
-    onEnd: () => void,
+    scrollHandler: ScrollableParentScrollHandler,
 ) {
+    const scrollWorklet = getWorkletFromParentHandler(scrollHandler);
     return useCreateOnWheelHandler({
         onActive: React.useCallback(
-            (event: React.WheelEvent) => {
+            event => {
                 const { deltaY } = event.nativeEvent;
 
                 if (!hasScrollShared.value) {
-                    onScroll({ contentOffset: { y: deltaY } });
+                    scrollWorklet({ contentOffset: { y: deltaY }, eventName: 'onScroll' });
                     return;
                 }
 
                 if (yIsNegative.value && deltaY < 0) {
-                    onScroll({ contentOffset: { y: deltaY } });
+                    scrollWorklet({ contentOffset: { y: deltaY }, eventName: 'onScroll' });
                 }
             },
-            [hasScrollShared, yIsNegative, onScroll],
+            [hasScrollShared, yIsNegative, scrollWorklet],
         ),
         onStart: React.useCallback(() => {
-            shiftChangedForcibly.value = false;
-            if (yIsNegative.value) {
-                yWithoutRubberBand.value = shift.value;
-            }
-        }, [yIsNegative, yWithoutRubberBand, shift, shiftChangedForcibly]),
-        onEnd,
+            scrollWorklet({
+                eventName: 'onScrollBeginDrag',
+            });
+        }, [scrollWorklet]),
+        onEnd: React.useCallback(() => {
+            scrollWorklet({
+                eventName: 'onScrollEndDrag',
+            });
+        }, [scrollWorklet]),
     });
 }

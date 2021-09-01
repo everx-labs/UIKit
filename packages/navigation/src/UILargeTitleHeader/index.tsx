@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { View, StyleSheet, Platform, LayoutChangeEvent, NativeScrollEvent } from 'react-native';
+import { View, StyleSheet, Platform, LayoutChangeEvent } from 'react-native';
 import Animated, {
-    useAnimatedScrollHandler,
     useAnimatedStyle,
     useSharedValue,
     useAnimatedRef,
@@ -10,7 +9,6 @@ import Animated, {
     interpolate,
     useAnimatedReaction,
     scrollTo,
-    cancelAnimation,
 } from 'react-native-reanimated';
 import {
     UILabel,
@@ -20,16 +18,12 @@ import {
     TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
 
-import { useOnScrollHandler } from './useOnScrollHandler';
 import { useHasScroll } from '../Scrollable';
-import { ScrollableContext, useScrollableParentScrollHandler } from '../Scrollable/Context';
-import { useOnWheelHandler } from './useOnWheelHandler';
-import { onMomentumEndCreate, useResetPosition } from './useResetPosition';
+import { ScrollableContext } from '../Scrollable/Context';
 import { UIConstant } from '../constants';
 import type { UINavigationBarProps } from '../UINavigationBar';
 import { UIStackNavigationBar } from '../UIStackNavigationBar';
-import { useScrollFallbackGestureHandler } from './useScrollFallbackGestureHandler';
-import type { ScrollHandlerContext } from './types';
+import { useScrollHandler } from './useScrollHandler';
 
 const AnimatedUILabel = Animated.createAnimatedComponent(UILabel);
 
@@ -132,70 +126,22 @@ export function UILargeTitleHeader({
         [largeTitleHeight],
     );
 
-    // when we use `rubber band` effect, we need to know
-    // actual y, that's why we need to store it separately
-    const yWithoutRubberBand = useSharedValue(0);
-    // see `useAnimatedGestureHandler`
-    const yIsNegative = useSharedValue(true);
-
     const { ref: parentRef } = React.useContext(ScrollableContext);
 
     const scrollRef = parentRef || localScrollRef;
 
-    const { parentHandler: parentScrollHandler, parentHandlerActive: parentScrollHandlerActive } =
-        useScrollableParentScrollHandler();
+    const { hasScroll, hasScrollShared, setHasScroll } = useHasScroll();
 
-    const onScroll = useOnScrollHandler(
+    const { scrollHandler, gestureHandler, onWheel } = useScrollHandler(
         scrollRef,
         largeTitleViewRef,
-        largeTitleHeight,
-        yIsNegative,
-        yWithoutRubberBand,
         shift,
+        defaultShift,
         shiftChangedForcibly,
+        largeTitleHeight,
+        hasScrollShared,
         RUBBER_BAND_EFFECT_DISTANCE,
-        parentScrollHandler,
-        parentScrollHandlerActive,
     );
-
-    const resetPosition = useResetPosition(
-        scrollRef,
-        shift,
-        shiftChangedForcibly,
-        largeTitleHeight,
-        defaultShift,
-        yWithoutRubberBand,
-        parentScrollHandler,
-        parentScrollHandlerActive,
-    );
-
-    const onMomentumEnd = onMomentumEndCreate(
-        shift,
-        shiftChangedForcibly,
-        largeTitleHeight,
-        defaultShift,
-        yWithoutRubberBand,
-        resetPosition,
-    );
-
-    const scrollHandler = useAnimatedScrollHandler<ScrollHandlerContext>({
-        onScroll,
-        onBeginDrag: (_event: NativeScrollEvent, ctx: ScrollHandlerContext) => {
-            'worklet';
-
-            cancelAnimation(shift);
-
-            ctx.scrollTouchGuard = true;
-            ctx.continueResetOnMomentumEnd = false;
-            shiftChangedForcibly.value = false;
-            yWithoutRubberBand.value = shift.value;
-
-            parentScrollHandler(_event);
-        },
-        // ...(Platform.OS === 'ios' ? { onEndDrag } : null),
-        onEndDrag: resetPosition,
-        onMomentumEnd,
-    });
 
     const style = useAnimatedStyle(() => {
         return {
@@ -268,38 +214,6 @@ export function UILargeTitleHeader({
             }
         },
         [largeTitleHeight, shift],
-    );
-
-    const { hasScroll, hasScrollShared, setHasScroll } = useHasScroll();
-
-    const gestureHandler = useScrollFallbackGestureHandler(
-        shift,
-        shiftChangedForcibly,
-        hasScrollShared,
-        yIsNegative,
-        yWithoutRubberBand,
-        onScroll,
-        resetPosition,
-    );
-
-    /**
-     * On web listening to `scroll` events is not enough,
-     * because when it reaches the end (y is 0)
-     * it stops to fire new events.
-     *
-     * But to understand that user still scrolling at the moment
-     * we can listen for `wheel` events.
-     *
-     * That's kinda the same what we did for Android with RNGH
-     */
-    const onWheel = useOnWheelHandler(
-        shift,
-        shiftChangedForcibly,
-        yIsNegative,
-        yWithoutRubberBand,
-        hasScrollShared,
-        onScroll,
-        resetPosition,
     );
 
     const [scrollablesCount, setScrollablesCount] = React.useState(0);
@@ -401,7 +315,11 @@ export function UILargeTitleHeader({
             // If position is changed forcibly
             // no need to respond to scroll events anymore
             shiftChangedForcibly.value = true;
-            shift.value = withTiming(position, { duration: options.duration ?? 0 }, callback);
+            if (position === 0) {
+                shift.value = 0;
+            } else {
+                shift.value = withTiming(position, { duration: options.duration ?? 0 }, callback);
+            }
             scrollTo(scrollRef, 0, 0, false);
             if (options.changeDefaultShift) {
                 defaultShift.value = position;

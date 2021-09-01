@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { NativeScrollEvent } from 'react-native';
 import type Animated from 'react-native-reanimated';
-import type { ScrollableParentScrollHandler } from '../../Scrollable/Context';
+import type { ScrollableParentScrollHandler } from '../../../Scrollable/Context';
 
 // @ts-ignore
 // eslint-disable-next-line import/no-unresolved, import/extensions

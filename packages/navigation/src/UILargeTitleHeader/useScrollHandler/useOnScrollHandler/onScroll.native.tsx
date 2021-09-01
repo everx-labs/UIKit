@@ -4,9 +4,9 @@ import Animated, { measure, scrollTo } from 'react-native-reanimated';
 import { Platform } from 'react-native';
 import type { ScrollView as RNScrollView, NativeScrollEvent } from 'react-native';
 
-import { getYWithRubberBandEffect } from '../../AnimationHelpers/getYWithRubberBandEffect';
-import type { ScrollableParentScrollHandler } from '../../Scrollable/Context';
-import type { ScrollHandlerContext } from '../types';
+import { getYWithRubberBandEffect } from '../../../AnimationHelpers/getYWithRubberBandEffect';
+import type { ScrollableParentScrollHandler } from '../../../Scrollable/Context';
+import type { ScrollHandlerContext } from '../../types';
 
 const isIOS = Platform.OS === 'ios';
 
@@ -79,7 +79,19 @@ export default function (
             }
         }
         if (y !== 0) {
-            ctx.lastApproximateVelocity = y;
+            if (ctx != null) {
+                ctx.lastApproximateVelocity = y;
+            }
+        } else {
+            /**
+             * Basically there is nothing to do, and we could
+             * omit the check, BUT sometimes after `onEnd` the scroll event
+             * can be fired with 0 and when it's set to `shift`
+             * it can stop current animation
+             * (i.e. there is a decay animation in progress)
+             * I catched it on Android
+             */
+            return;
         }
         if (y <= 0) {
             // scrollTo reset real y, so we need to count it ourselves

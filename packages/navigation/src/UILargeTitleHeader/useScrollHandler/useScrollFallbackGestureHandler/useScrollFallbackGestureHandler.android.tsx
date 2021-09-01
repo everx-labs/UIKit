@@ -4,6 +4,10 @@ import * as React from 'react';
 import type { NativeScrollEvent } from 'react-native';
 import type { PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
 import Animated, { useAnimatedGestureHandler } from 'react-native-reanimated';
+import {
+    getWorkletFromParentHandler,
+    ScrollableParentScrollHandler,
+} from '../../../Scrollable/Context';
 
 type ScrollFallbackCtx = {
     yPrev: number;
@@ -38,64 +42,66 @@ function createOnActive(
 }
 
 function createOnStart(
-    shift: Animated.SharedValue<number>,
-    shiftChangedForcibly: Animated.SharedValue<boolean>,
     hasScrollShared: Animated.SharedValue<boolean>,
     yIsNegative: Animated.SharedValue<boolean>,
-    yWithoutRubberBand: Animated.SharedValue<number>,
+    onStartDrag: (event: NativeScrollEvent) => void,
 ) {
     return () => {
         'worklet';
 
-        shiftChangedForcibly.value = false;
         if (!hasScrollShared.value) {
-            yWithoutRubberBand.value = shift.value;
+            // @ts-ignore
+            onStartDrag({ eventName: 'onScrollBeginDrag' });
             return;
         }
         if (yIsNegative.value) {
-            yWithoutRubberBand.value = shift.value;
+            // @ts-ignore
+            onStartDrag({ eventName: 'onScrollBeginDrag' });
         }
     };
 }
 
-function createOnEnd(hasScrollShared: Animated.SharedValue<boolean>, onEndDrag: () => void) {
-    return (_event: PanGestureHandlerGestureEvent['nativeEvent'], ctx: ScrollFallbackCtx) => {
+function createOnEnd(
+    hasScrollShared: Animated.SharedValue<boolean>,
+    onEndDrag: (event: NativeScrollEvent) => void,
+) {
+    return (event: PanGestureHandlerGestureEvent['nativeEvent'], ctx: ScrollFallbackCtx) => {
         'worklet';
 
+        const y = ctx.yPrev - event.translationY;
+        ctx.yPrev = event.translationY;
+
         if (!hasScrollShared.value) {
-            onEndDrag();
+            onEndDrag({
+                contentOffset: { x: 0, y },
+                velocity: { x: event.velocityX, y: event.velocityY },
+                // @ts-ignore
+                eventName: 'onScrollEndDrag',
+            });
         }
         ctx.yPrev = 0;
     };
 }
 
 export function useScrollFallbackGestureHandler(
-    shift: Animated.SharedValue<number>,
-    shiftChangedForcibly: Animated.SharedValue<boolean>,
     hasScrollShared: Animated.SharedValue<boolean>,
     yIsNegative: Animated.SharedValue<boolean>,
-    yWithoutRubberBand: Animated.SharedValue<number>,
-    onScroll: (event: NativeScrollEvent) => void,
-    onEndDrag: () => void,
+    scrollHandler: ScrollableParentScrollHandler,
 ) {
     const onActiveRef = React.useRef<ReturnType<typeof createOnActive>>();
     const onStartRef = React.useRef<ReturnType<typeof createOnStart>>();
     const onEndRef = React.useRef<ReturnType<typeof createOnEnd>>();
 
+    const scrollWorklet = getWorkletFromParentHandler(scrollHandler);
+
     if (onActiveRef.current == null) {
-        onActiveRef.current = createOnActive(hasScrollShared, yIsNegative, onScroll);
+        onActiveRef.current = createOnActive(hasScrollShared, yIsNegative, scrollWorklet);
     }
     if (onStartRef.current == null) {
-        onStartRef.current = createOnStart(
-            shift,
-            shiftChangedForcibly,
-            hasScrollShared,
-            yIsNegative,
-            yWithoutRubberBand,
-        );
+        onStartRef.current = createOnStart(hasScrollShared, yIsNegative, scrollWorklet);
     }
     if (onEndRef.current == null) {
-        onEndRef.current = createOnEnd(hasScrollShared, onEndDrag);
+        onEndRef.current = createOnEnd(hasScrollShared, scrollWorklet);
     }
 
     return useAnimatedGestureHandler<PanGestureHandlerGestureEvent, ScrollFallbackCtx>({

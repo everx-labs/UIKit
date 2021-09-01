@@ -45,7 +45,7 @@ export function useScrollable() {
     return React.useContext(ScrollableContext);
 }
 
-function getWorkletFromParentHandler(parentHandler: any) {
+export function getWorkletFromParentHandler(parentHandler: any) {
     if (
         parentHandler &&
         'current' in parentHandler &&
