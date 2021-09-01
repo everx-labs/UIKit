@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useWindowDimensions, StatusBar } from 'react-native';
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
+import Clipboard from '@react-native-clipboard/clipboard';
 import BigNumber from 'bignumber.js';
 
 import { UIConstant } from '@tonlabs/uikit.core';
@@ -23,6 +24,8 @@ import type {
     SigningBoxMessage,
     TransactionConfirmationMessage,
 } from '@tonlabs/uikit.browser';
+import { UIPopup } from '@tonlabs/uikit.popups';
+import { uiLocalized } from '@tonlabs/uikit.localization';
 import { ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';
 import {
     useTheme,
@@ -58,6 +61,7 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
     const base64Image = useBase64Image(imageUrl.original);
     const base64PreviewImage = useBase64Image(imageUrl.small);
 
+    const [isNoticeVisible, setNoticeVisible] = React.useState(false);
     const [messages, setMessages] = React.useState<BrowserMessage[]>([
         {
             key: `${Date.now()}-initial`,
@@ -103,14 +107,25 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
         },
     }));
 
-    const onPressUrl = React.useCallback(() => {
-        console.log('url handled');
+    const onPressUrl = React.useCallback((url) => {
+        console.log('url handled', url);
     }, []);
+
+    const onLongPressText = React.useCallback((text) => {
+        Clipboard.setString(text);
+        console.log('long press handled', text);
+        setNoticeVisible(true)
+    }, []);
+
+    const hideNotice = React.useCallback(() => {
+        setNoticeVisible(false)
+    }, [])
+
     const { height } = useWindowDimensions();
 
     return (
         <>
-            <UIBrowser messages={messages} onPressUrl={onPressUrl} />
+            <UIBrowser messages={messages} onPressUrl={onPressUrl} onLongPressText={onLongPressText} />
             <SafeAreaInsetsContext.Consumer>
                 {(insets) => (
                     <UIBottomSheet
@@ -755,6 +770,13 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
             >
                 <UILabel>Pretending to using a security card...</UILabel>
             </UICardSheet>
+            <UIPopup.Notice
+                visible={isNoticeVisible}
+                title={uiLocalized.MessageCopiedToClipboard}
+                type={UIPopup.Notice.Type.BottomToast}
+                color={UIPopup.Notice.Color.PrimaryInverted}
+                onClose={hideNotice}
+            />
         </>
     );
 });

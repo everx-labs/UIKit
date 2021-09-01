@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import {
-    PanGestureHandler,
-    TouchableWithoutFeedback,
-} from 'react-native-gesture-handler';
+import { PanGestureHandler, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import { useHover, Portal } from '@tonlabs/uikit.hydrogen';
 import { UIConstant } from '@tonlabs/uikit.navigation';
@@ -33,11 +30,7 @@ export const ToastNotice: React.FC<ToastNoticeProps> = ({
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
     const xSnapPoints: SnapPoints = useToastNoticeXSnapPoints();
-    const ySnapPoints: SnapPoints = useToastNoticeYSnapPoints(
-        type,
-        noticeHeight,
-        keyboardHeight,
-    );
+    const ySnapPoints: SnapPoints = useToastNoticeYSnapPoints(type, noticeHeight, keyboardHeight);
 
     const {
         noticePositionStyle,
@@ -59,32 +52,24 @@ export const ToastNotice: React.FC<ToastNoticeProps> = ({
     return (
         <Portal absoluteFill>
             <View style={styles.container} pointerEvents="box-none">
-                <Animated.View>
-                    <PanGestureHandler onGestureEvent={gestureHandler}>
-                        <Animated.View
-                            style={[noticePositionStyle, styles.notice]}
-                            onLayout={onLayoutNotice}
-                            pointerEvents="box-none"
-                            // @ts-expect-error
-                            onMouseEnter={onMouseEnter}
-                            onMouseLeave={onMouseLeave}
+                <PanGestureHandler onGestureEvent={gestureHandler}>
+                    <Animated.View
+                        style={[noticePositionStyle, styles.notice]}
+                        onLayout={onLayoutNotice}
+                        // @ts-expect-error
+                        onMouseEnter={onMouseEnter}
+                        onMouseLeave={onMouseLeave}
+                    >
+                        <TouchableWithoutFeedback
+                            onPress={onPress}
+                            onLongPress={onLongPress}
+                            delayLongPress={UIConstant.notice.longPressDelay}
+                            onPressOut={onPressOut}
                         >
-                            <TouchableWithoutFeedback
-                                onPress={onPress}
-                                onLongPress={onLongPress}
-                                delayLongPress={UIConstant.notice.longPressDelay}
-                                onPressOut={onPressOut}
-                            >
-                                <Notice
-                                    type={type}
-                                    title={title}
-                                    color={color}
-                                    testID={testID}
-                                />
-                            </TouchableWithoutFeedback>
-                        </Animated.View>
-                    </PanGestureHandler>
-                </Animated.View>
+                            <Notice type={type} title={title} color={color} testID={testID} />
+                        </TouchableWithoutFeedback>
+                    </Animated.View>
+                </PanGestureHandler>
             </View>
         </Portal>
     );

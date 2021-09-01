@@ -43,7 +43,15 @@ export enum ChatMessageType {
     QRCode = 'QRCode',
     Media = 'Media',
 }
-export type OnPressUrl = ((url: string, index?: number) => void | Promise<void>) | undefined;
+
+export type OnPressUrl =
+    | ((url: string, index?: number) => void | Promise<void>)
+    | undefined;
+
+export type OnLongPressText =
+    | ((text: string) => void | Promise<void>)
+    | undefined;
+
 export type PlainTextMessage = BubbleBaseT & {
     type: ChatMessageType.PlainText;
     text: string;

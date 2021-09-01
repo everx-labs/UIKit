@@ -10,7 +10,7 @@ export * from './UILoadMoreButton';
 export * from './DuplicateImage';
 export { sectionListGetItemLayout } from './UIChatListLayout';
 
-export { BubbleSimplePlainText, UrlPressHandlerContext } from './BubblePlainText';
+export { BubbleSimplePlainText, UrlPressHandlerContext, TextLongPressHandlerContext } from './BubblePlainText';
 export { BubbleActionButton } from './BubbleActionButton';
 
 export * from './types';
