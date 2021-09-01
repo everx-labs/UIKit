@@ -9,14 +9,11 @@ const circleSize = 6;
 type CircleProps = { active: boolean; onPress: (event: any) => void };
 
 const Circle: React.FC<CircleProps> = React.memo(({ active, onPress }: CircleProps) => {
-    const [color, setColor] = React.useState(UIBackgroundViewColors.BackgroundNeutral);
     
-    React.useEffect(()=>{
-        if(active){
-            setColor(UIBackgroundViewColors.BackgroundAccent)
-        } else {
-            setColor(UIBackgroundViewColors.BackgroundNeutral)
-        }
+    const color = React.useMemo(()=>{
+        return active
+                ? UIBackgroundViewColors.BackgroundAccent
+                : UIBackgroundViewColors.BackgroundNeutral
     }, [active])
 
     return (

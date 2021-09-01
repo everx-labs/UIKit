@@ -2,7 +2,7 @@ import React from "react"
 
 import { View, StyleSheet } from "react-native"
 
-import PagerView from 'react-native-pager-view';
+import PagerView, { PagerViewOnPageSelectedEvent } from 'react-native-pager-view';
 
 import { UICarouselViewPage } from "./CarouselViewPage";
 import { Pagination } from "./CarouselViewPagination";
@@ -69,9 +69,8 @@ const usePages = (
 const renderComponent = (props: UICarouselViewPageProps, index: number) => {
     const ChildView = props.component;
     const childTestID = props.testID ?? `UICarouselPage_${index}`;
-    console.log(childTestID)
     return (
-        <View testID={childTestID}>
+        <View key={childTestID} testID={childTestID}>
             <ChildView />
         </View>
     )
@@ -83,24 +82,62 @@ const returnPages = (pages:  React.ReactElement<UICarouselViewPageProps>[]) => {
     })
 }
 
+type ScrollState = {
+    isScrolling: boolean
+}
+
+const useStateCallback = (initialState: any, callback: any) => {
+    const [state, setState] = React.useState(initialState);
+
+    React.useEffect(() => callback(state), [state, callback]);
+
+    return [state, setState];
+}
+
 export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = ({
-    initialPageIndex = 0,
+    activeIndex = 0,
+    onPageIndexChange,
     children,
     testID,
 }: UICarouselViewContainerProps) => {
 
-    const pagerRef = React.useRef<PagerView | null>(null);
+    const pagerRef = React.useRef<PagerView>(null);
+    const scrollState = React.useRef<ScrollState>({isScrolling: false})
+    const pages: React.ReactElement<UICarouselViewPageProps>[] = usePages(children);
 
-    // @ts-ignore
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [currentIndex, setCurrentIndex] = React.useState(initialPageIndex);
+    const setIsScrolling = () => { scrollState.current.isScrolling = false}
 
-    const pages: React.ReactElement<UICarouselViewPageProps>[] = usePages(
-        children
-    );
-    
-    const setPage = (index: number) => {
+    const [currentIndex, setCurrentIndex] = useStateCallback(activeIndex, setIsScrolling);
+
+    const isScrolling = React.useMemo(() => scrollState.current.isScrolling,[scrollState])
+
+    const setPage = React.useCallback(async (index: number) => {
+        scrollState.current.isScrolling = true
+        setCurrentIndex(index)
         pagerRef.current?.setPage(index)
+    },[setCurrentIndex])
+
+    const onPageSelected = React.useCallback(({nativeEvent}: PagerViewOnPageSelectedEvent) => {
+        setCurrentIndex(nativeEvent.position)
+    },[setCurrentIndex])
+
+    React.useEffect(() => {
+        console.log(scrollState.current.isScrolling)
+    }, [scrollState])
+
+    React.useEffect(() => {
+        !isScrolling && setPage(activeIndex)
+    }, [activeIndex, setPage, isScrolling])
+
+    React.useEffect(() => {
+        if (onPageIndexChange) {
+            onPageIndexChange(currentIndex);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentIndex]);
+
+    const moveShouldSetResponderCapture = () => {
+        return isScrolling
     }
 
     if (pages.length === 0) {
@@ -109,13 +146,15 @@ export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = (
         );
         return null;
     }
-
+    
     return(
-        <View testID={testID} style={{width: '100%', height: '100%'}}>
+        <View testID={testID} style={styles.carouselViewContainer}>
             <PagerView 
-                ref={ref => {pagerRef.current = ref}}
-                style={styles.CarouselView} 
-                initialPage={currentIndex} 
+                ref={pagerRef}
+                style={styles.carouselView} 
+                initialPage={currentIndex}
+                onPageSelected={onPageSelected}
+                onMoveShouldSetResponderCapture={moveShouldSetResponderCapture}
             >
                 {returnPages(pages)}
             </PagerView>
@@ -128,30 +167,14 @@ export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = (
     )
 }
 
-const iconSize = 192;
-const circleSize = 6;
-
 const styles = StyleSheet.create({
-    CarouselView: {
+    carouselViewContainer:{
+        width: '100%', 
+        height: '100%'
+    },
+    carouselView: {
       flex: 1,
       width: '100%',
       height: '100%',
-    },
-    icon: {
-        width: iconSize,
-        height: iconSize,
-    },
-    description: {
-        letterSpacing: 0,
-    },
-    circle: {
-        width: circleSize,
-        height: circleSize,
-        borderRadius: circleSize / 2,
-    },
-    pagination: {
-        flexDirection: 'row', 
-        justifyContent: 'space-between', 
-        alignSelf: 'center', 
     }
   });
