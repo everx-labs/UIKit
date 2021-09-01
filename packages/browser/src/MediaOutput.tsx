@@ -27,6 +27,7 @@ const convertMediaMessageErrorToMediaOutputMessageStatus = (
 
 export const MediaOutput = ({
     data,
+    preview,
     status,
     onLayout,
     prompt,
@@ -35,9 +36,7 @@ export const MediaOutput = ({
     const onError = React.useCallback(
         (error: MediaMessageError) => {
             if (onOutput) {
-                onOutput(
-                    convertMediaMessageErrorToMediaOutputMessageStatus(error),
-                );
+                onOutput(convertMediaMessageErrorToMediaOutputMessageStatus(error));
             }
         },
         [onOutput],
@@ -48,12 +47,12 @@ export const MediaOutput = ({
         }
     }, [onOutput]);
     return (
-        <View>
+        <View onLayout={onLayout}>
             <BubbleMedia
                 data={data}
+                preview={preview}
                 status={status}
                 type={ChatMessageType.Media}
-                onLayout={onLayout}
                 onError={onError}
                 onLoad={onLoad}
                 firstFromChain

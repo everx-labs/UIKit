@@ -22,14 +22,6 @@ const companionId = '0:123';
 
 const initialMessages: ChatMessage[] = [
     {
-        type: ChatMessageType.Media,
-        data: image,
-        time: Math.floor(Date.now() - 4 * 60 * 1000),
-        sender: companionId,
-        status: MessageStatus.Sent,
-        key: '',
-    },
-    {
         type: ChatMessageType.QRCode,
         data: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore',
         time: Math.floor(Date.now() - 4 * 60 * 1000),
@@ -42,6 +34,15 @@ const initialMessages: ChatMessage[] = [
         data: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore',
         time: Math.floor(Date.now() - 4 * 60 * 1000),
         sender: userId,
+        status: MessageStatus.Sent,
+        key: '',
+    },
+    {
+        type: ChatMessageType.Media,
+        data: image,
+        preview: image,
+        time: Math.floor(Date.now() - 4 * 60 * 1000),
+        sender: companionId,
         status: MessageStatus.Sent,
         key: '',
     },

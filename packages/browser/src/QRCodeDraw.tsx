@@ -43,7 +43,7 @@ export const QRCodeDraw = ({ data, status, onLayout, prompt, onDraw }: QRCodeDra
     }
 
     return (
-        <View>
+        <View onLayout={onLayout}>
             <BubbleQRCode
                 data={data}
                 status={status}
