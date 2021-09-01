@@ -4,4 +4,5 @@ export type ScrollHandlerContext = {
     lastApproximateVelocity: number;
     lastEndTimestamp: number;
     lastMomentumTimestamp: number;
+    yWithoutRubberBand: number;
 };

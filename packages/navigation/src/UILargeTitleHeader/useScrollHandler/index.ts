@@ -23,29 +23,21 @@ export function useScrollHandler(
     hasScrollShared: Animated.SharedValue<boolean>,
     rubberBandDistance: number,
 ) {
-    // TODO: maybe move it to ctx?
-    // when we use `rubber band` effect, we need to know
-    // actual y, that's why we need to store it separately
-    const yWithoutRubberBand = useSharedValue(0);
     // see `useAnimatedGestureHandler`
     const yIsNegative = useSharedValue(true);
 
-    const { parentHandler: parentScrollHandler, parentHandlerActive: parentScrollHandlerActive } =
-        useScrollableParentScrollHandler();
+    const {
+        parentHandler: parentScrollHandler,
+        parentHandlerActive: parentScrollHandlerActive,
+    } = useScrollableParentScrollHandler();
 
-    const onBeginDrag = useOnBeginDrag(
-        shift,
-        shiftChangedForcibly,
-        yWithoutRubberBand,
-        parentScrollHandler,
-    );
+    const onBeginDrag = useOnBeginDrag(shift, shiftChangedForcibly, parentScrollHandler);
 
     const onScroll = useOnScrollHandler(
         scrollRef,
         largeTitleViewRef,
         largeTitleHeight,
         yIsNegative,
-        yWithoutRubberBand,
         shift,
         shiftChangedForcibly,
         rubberBandDistance,
@@ -77,7 +69,6 @@ export function useScrollHandler(
         shiftChangedForcibly,
         largeTitleHeight,
         defaultShift,
-        yWithoutRubberBand,
         mightApplyShiftToScrollView,
         parentScrollHandler,
         parentScrollHandlerActive,

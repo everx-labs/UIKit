@@ -9,7 +9,6 @@ import { runOnUIPlatformSelect } from './runOnUIPlatformSelect';
 function normalizedEnd(
     shift: Animated.SharedValue<number>,
     shiftChangedForcibly: Animated.SharedValue<boolean>,
-    yWithoutRubberBand: Animated.SharedValue<number>,
     parentScrollHandler: ScrollableParentScrollHandler,
     parentScrollHandlerActive: boolean,
 ) {
@@ -35,7 +34,7 @@ function normalizedEnd(
                 }
 
                 if (event && parentScrollHandlerActive) {
-                    if (yWithoutRubberBand.value > 0) {
+                    if (ctx.yWithoutRubberBand > 0) {
                         parentScrollHandler(event);
                         return;
                     }
@@ -135,7 +134,6 @@ export function useOnEndDrag(
     shiftChangedForcibly: Animated.SharedValue<boolean>,
     largeTitleHeight: Animated.SharedValue<number>,
     defaultShift: Animated.SharedValue<number>,
-    yWithoutRubberBand: Animated.SharedValue<number>,
     mightApplyShiftToScrollView: Animated.SharedValue<boolean>,
     parentScrollHandler: ScrollableParentScrollHandler,
     parentScrollHandlerActive: boolean,
@@ -148,7 +146,6 @@ export function useOnEndDrag(
         onEndHandlerRef.current = normalizedEnd(
             shift,
             shiftChangedForcibly,
-            yWithoutRubberBand,
             parentScrollHandler,
             parentScrollHandlerActive,
         ).with({

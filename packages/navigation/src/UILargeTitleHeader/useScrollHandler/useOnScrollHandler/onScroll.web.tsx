@@ -8,6 +8,7 @@ import Animated, {
 import type { View, ScrollView as RNScrollView, NativeScrollEvent } from 'react-native';
 
 import { getYWithRubberBandEffect } from '../../../AnimationHelpers/getYWithRubberBandEffect';
+import type { ScrollHandlerContext } from '../../types';
 
 const measure: (
     ...args: Parameters<typeof measureNative>
@@ -45,12 +46,11 @@ export default function onScroll(
     largeTitleViewRef: React.RefObject<Animated.View>,
     largeTitleHeight: Animated.SharedValue<number>,
     yIsNegative: Animated.SharedValue<boolean>,
-    yWithoutRubberBand: Animated.SharedValue<number>,
     shift: Animated.SharedValue<number>,
     shiftChangedForcibly: Animated.SharedValue<boolean>,
     rubberBandDistance: number,
 ) {
-    return async (event: NativeScrollEvent) => {
+    return async (event: NativeScrollEvent, ctx: ScrollHandlerContext) => {
         const { y } = event.contentOffset;
 
         if (largeTitleHeight.value === 0) {
@@ -68,12 +68,9 @@ export default function onScroll(
         yIsNegative.value = y <= 0;
         if (y <= 0) {
             // scrollTo reset real y, so we need to count it ourselves
-            yWithoutRubberBand.value -= y;
+            ctx.yWithoutRubberBand -= y;
             if (shift.value > 0) {
-                shift.value = getYWithRubberBandEffect(
-                    yWithoutRubberBand.value,
-                    rubberBandDistance,
-                );
+                shift.value = getYWithRubberBandEffect(ctx.yWithoutRubberBand, rubberBandDistance);
             } else {
                 shift.value -= y;
             }
@@ -84,7 +81,7 @@ export default function onScroll(
             }
         } else if (shift.value > 0 - largeTitleHeight.value) {
             // scrollTo reset real y, so we need to count it ourselves
-            yWithoutRubberBand.value -= y;
+            ctx.yWithoutRubberBand -= y;
             shift.value = Math.max(shift.value - y, 0 - largeTitleHeight.value);
             try {
                 await scrollTo(scrollRef, 0, 0, false);

@@ -16,7 +16,6 @@ export default function (
     largeTitleViewRef: React.RefObject<Animated.View>,
     largeTitleHeight: Animated.SharedValue<number>,
     yIsNegative: Animated.SharedValue<boolean>,
-    yWithoutRubberBand: Animated.SharedValue<number>,
     shift: Animated.SharedValue<number>,
     shiftChangedForcibly: Animated.SharedValue<boolean>,
     rubberBandDistance: number,
@@ -63,16 +62,16 @@ export default function (
         if (parentScrollHandlerActive) {
             if (
                 /**
-                 * Bubble the event when yWithoutRubberBand
+                 * Bubble the event when `yWithoutRubberBand`
                  * is going to be bigger then 0 or when it's bigger now.
                  * For example it can happen when one swipes up very fast
                  * and after finger was released with big velocity
                  * event with big shift happen, that gonna make shift bigger 0
                  */
-                yWithoutRubberBand.value - y > 0 ||
-                yWithoutRubberBand.value > 0
+                ctx.yWithoutRubberBand - y > 0 ||
+                ctx.yWithoutRubberBand > 0
             ) {
-                yWithoutRubberBand.value = Math.max(0, yWithoutRubberBand.value - y);
+                ctx.yWithoutRubberBand = Math.max(0, ctx.yWithoutRubberBand - y);
 
                 parentScrollHandler(event);
                 return;
@@ -95,12 +94,9 @@ export default function (
         }
         if (y <= 0) {
             // scrollTo reset real y, so we need to count it ourselves
-            yWithoutRubberBand.value -= y;
+            ctx.yWithoutRubberBand -= y;
             if (shift.value > 0) {
-                shift.value = getYWithRubberBandEffect(
-                    yWithoutRubberBand.value,
-                    rubberBandDistance,
-                );
+                shift.value = getYWithRubberBandEffect(ctx.yWithoutRubberBand, rubberBandDistance);
             } else {
                 shift.value -= y;
             }
@@ -109,7 +105,7 @@ export default function (
         }
         if (shift.value > 0 - largeTitleHeight.value) {
             // scrollTo reset real y, so we need to count it ourselves
-            yWithoutRubberBand.value -= y;
+            ctx.yWithoutRubberBand -= y;
             shift.value = Math.max(shift.value - y, 0 - largeTitleHeight.value);
             scrollTo(scrollRef, 0, 0, false);
         }
