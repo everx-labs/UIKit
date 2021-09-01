@@ -53,6 +53,7 @@ export const Notice: React.FC<NoticeProps> = ({
     return (
         <View style={styles.container}>
             <UILabel
+                testID="message_default"
                 role={TypographyVariants.ParagraphFootnote}
                 color={getTitleColorVariant(color)}
             >

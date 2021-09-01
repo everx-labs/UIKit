@@ -34,6 +34,7 @@
     "src/"
   ],
   "dependencies": {
+    "@react-native-community/hooks": "^2.6.0",
     "@tonlabs/uikit.assets": "^2.3.0",
     "@tonlabs/uikit.components": "^2.3.0",
     "@tonlabs/uikit.core": "^2.3.0",
@@ -42,6 +43,7 @@
     "@tonlabs/uikit.keyboard": "^2.3.0",
     "@tonlabs/uikit.localization": "^2.3.0",
     "@tonlabs/uikit.navigation_legacy": "^2.3.0",
+    "@tonlabs/uikit.navigation": "^2.3.0",
     "bignumber.js": "9.0.0",
     "dayjs": "1.9.1",
     "lodash": "4.17.21",
