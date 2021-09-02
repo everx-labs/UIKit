@@ -20,7 +20,7 @@ public class HDuplicateImageViewPackage implements ReactPackage {
     @Nonnull
     @Override
     public List<ViewManager> createViewManagers(@Nonnull ReactApplicationContext reactContext) {
-        return Collections.<ViewManager>singletonList(
+        return Collections.singletonList(
             new HDuplicateImageViewManager()
         );
     }
