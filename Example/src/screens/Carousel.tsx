@@ -5,7 +5,6 @@ import { UICarouselView } from '@tonlabs/uikit.flask';
 import { UIAssets }  from '@tonlabs/uikit.assets';
 import {
     UIImage,
-    UIBoxButton,
     TouchableOpacity
 } from '@tonlabs/uikit.hydrogen';
 import { ExampleSection } from '../components/ExampleSection';
@@ -32,9 +31,8 @@ export const Carousel = () => {
     const component = (title: string, index: number) => (): React.ReactElement<View> => {
         return (
             <TouchableOpacity
-                
                 onPress={() => onChange(index)} 
-                style={{height: '100%', justifyContent: 'center', padding: 20}}
+                style={{height: '100%', justifyContent: 'space-between', padding: 20}}
             >
                 <UIImage style={{height: 100}} source={UIAssets.images[404]}/>
                 <Text style={{textAlign: 'center', fontSize: 30, color: '#000'}}>

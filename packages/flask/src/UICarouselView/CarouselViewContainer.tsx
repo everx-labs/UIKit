@@ -109,8 +109,6 @@ export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = (
 
     const [currentIndex, setCurrentIndex] = useStateCallback(activeIndex, setIsScrolling);
 
-    const isScrolling = React.useMemo(() => scrollState.current.isScrolling,[scrollState])
-
     const setPage = React.useCallback(async (index: number) => {
         scrollState.current.isScrolling = true
         setCurrentIndex(index)
