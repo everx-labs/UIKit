@@ -2,10 +2,10 @@ import React from "react"
 
 import { View, StyleSheet } from "react-native"
 
-import PagerView, { PagerViewOnPageSelectedEvent } from 'react-native-pager-view';
+import PagerView, { PagerViewOnPageSelectedEvent, PageScrollStateChangedNativeEvent } from 'react-native-pager-view';
 
 import { UICarouselViewPage } from "./CarouselViewPage";
-import { Pagination } from "./CarouselViewPagination";
+import { Pagination } from "./Pagination";
 import type { UICarouselViewContainerProps, UICarouselViewPageProps } from "./types";
 
 const getPages = (
@@ -120,14 +120,14 @@ export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = (
     const onPageSelected = React.useCallback(({nativeEvent}: PagerViewOnPageSelectedEvent) => {
         setCurrentIndex(nativeEvent.position)
     },[setCurrentIndex])
+    
+    const onPageScrollStateChanged = (e: PageScrollStateChangedNativeEvent) => {
+        console.log(e.nativeEvent.pageScrollState)
+    };
 
     React.useEffect(() => {
-        console.log(scrollState.current.isScrolling)
-    }, [scrollState])
-
-    React.useEffect(() => {
-        !isScrolling && setPage(activeIndex)
-    }, [activeIndex, setPage, isScrolling])
+        !scrollState.current.isScrolling && setPage(activeIndex)
+    }, [activeIndex, setPage, scrollState])
 
     React.useEffect(() => {
         if (onPageIndexChange) {
@@ -137,7 +137,7 @@ export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = (
     }, [currentIndex]);
 
     const moveShouldSetResponderCapture = () => {
-        return isScrolling
+        return scrollState.current.isScrolling
     }
 
     if (pages.length === 0) {
@@ -154,6 +154,7 @@ export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = (
                 style={styles.carouselView} 
                 initialPage={currentIndex}
                 onPageSelected={onPageSelected}
+                onPageScrollStateChanged={onPageScrollStateChanged}
                 onMoveShouldSetResponderCapture={moveShouldSetResponderCapture}
             >
                 {returnPages(pages)}

@@ -31,15 +31,15 @@ export const Carousel = () => {
 
     const component = (title: string, index: number) => (): React.ReactElement<View> => {
         return (
-            <TouchableOpacity 
+            <TouchableOpacity
+                
                 onPress={() => onChange(index)} 
-                style={{height: '100%', justifyContent: 'space-between', padding: 20}}
+                style={{height: '100%', justifyContent: 'center', padding: 20}}
             >
                 <UIImage style={{height: 100}} source={UIAssets.images[404]}/>
                 <Text style={{textAlign: 'center', fontSize: 30, color: '#000'}}>
                     {title}
                 </Text>
-                <UIBoxButton title='Click' onPress={() => console.log('click!')}/>
             </TouchableOpacity>
         );
     };
