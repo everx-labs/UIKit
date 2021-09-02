@@ -17,7 +17,6 @@ export default function (
     largeTitleHeight: Animated.SharedValue<number>,
     yIsNegative: Animated.SharedValue<boolean>,
     shift: Animated.SharedValue<number>,
-    shiftChangedForcibly: Animated.SharedValue<boolean>,
     rubberBandDistance: number,
     parentScrollHandler: ScrollableParentScrollHandler,
     parentScrollHandlerActive: boolean,
@@ -39,10 +38,6 @@ export default function (
             } catch (e) {
                 // nothing
             }
-        }
-
-        if (shiftChangedForcibly.value) {
-            return;
         }
 
         /**

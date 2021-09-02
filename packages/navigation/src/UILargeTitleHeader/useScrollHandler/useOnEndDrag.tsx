@@ -8,7 +8,7 @@ import { runOnUIPlatformSelect } from './runOnUIPlatformSelect';
 
 function normalizedEnd(
     shift: Animated.SharedValue<number>,
-    shiftChangedForcibly: Animated.SharedValue<boolean>,
+    scrollInProgress: Animated.SharedValue<boolean>,
     parentScrollHandler: ScrollableParentScrollHandler,
     parentScrollHandlerActive: boolean,
 ) {
@@ -28,10 +28,6 @@ function normalizedEnd(
         }) {
             return (event: NativeScrollEvent, ctx: ScrollHandlerContext) => {
                 'worklet';
-
-                if (shiftChangedForcibly.value) {
-                    return;
-                }
 
                 if (event && parentScrollHandlerActive) {
                     if (ctx.yWithoutRubberBand > 0) {
@@ -60,6 +56,7 @@ function normalizedEnd(
                             shift.value = withSpring(0, {
                                 overshootClamping: true,
                             });
+                            scrollInProgress.value = false;
                             return;
                         }
                         /**
@@ -76,6 +73,23 @@ function normalizedEnd(
                             return;
                         }
 
+                        /**
+                         * Velocity for iOS is reverted due to incostistensy between
+                         * how we calculate the shift and how a platform see it.
+                         *
+                         * On Android velocity is very low and decay animation ends very fast,
+                         * (partly because `withDecay` ends animation when velocity is lesser then 1)
+                         * so to prolong it multiply by 5 (I just chose a random number).
+                         * (The same thing for iOS but it's put for velocityFactor,
+                         * it just felt better there, no specific technical reason).
+                         *
+                         * Velocity factor is choosen with an eye test:
+                         *  - on iOS 500 should be read as 5 * 100, where:
+                         *     * 100 is a multiplier of velocity as iOS gives very little
+                         *       velocity value, that results to a very fast decoy animation ending;
+                         *     * 5 was choosen with eye test, just to make it feel
+                         *       like a continuation of the original scroll view movement.
+                         */
                         movementHandlers.onUpwardDeceleration(
                             runOnUIPlatformSelect({
                                 ios: -1 * event.velocity.y,
@@ -131,7 +145,7 @@ function normalizedEnd(
 
 export function useOnEndDrag(
     shift: Animated.SharedValue<number>,
-    shiftChangedForcibly: Animated.SharedValue<boolean>,
+    scrollInProgress: Animated.SharedValue<boolean>,
     largeTitleHeight: Animated.SharedValue<number>,
     defaultShift: Animated.SharedValue<number>,
     mightApplyShiftToScrollView: Animated.SharedValue<boolean>,
@@ -145,7 +159,7 @@ export function useOnEndDrag(
     if (onEndHandlerRef.current == null) {
         onEndHandlerRef.current = normalizedEnd(
             shift,
-            shiftChangedForcibly,
+            scrollInProgress,
             parentScrollHandler,
             parentScrollHandlerActive,
         ).with({
@@ -158,18 +172,6 @@ export function useOnEndDrag(
              * we can just specify `clamp` options to prevent over-extenstion cases.
              * (In that cases we should apply rubber band effect, easier to just clamp it).
              * When it's stopped just adjust it to default shift position.
-             *
-             * Velocity is reverted due to incostistensy between
-             * how we calculate a shift and how a platform see it.
-             *
-             * Velocity factor is choosen with an eye test:
-             *  1) on iOS 500 should be read as 5 * 100, where:
-             *     - 100 is a multiplier of velocity as iOS gives very little
-             *       velocity value, that results to a very fast decoy animation ending;
-             *     - 5 was choosen with eye test, just to make it feel
-             *       like a continuation of the original scroll view movement.
-             *  2) TODO: Android
-             *  3) TODO: Web
              */
             onUpwardDeceleration(velocity, velocityFactor) {
                 'worklet';
@@ -187,6 +189,7 @@ export function useOnEndDrag(
                                 overshootClamping: true,
                             });
                         }
+                        scrollInProgress.value = false;
                     },
                 );
             },
@@ -225,6 +228,7 @@ export function useOnEndDrag(
                                 overshootClamping: true,
                             });
                         }
+                        scrollInProgress.value = false;
                     },
                 );
             },
@@ -237,7 +241,11 @@ export function useOnEndDrag(
             onWithoutDeceleration() {
                 'worklet';
 
-                console.log('onWithoutDeceleration');
+                function onSpringEnd() {
+                    'worklet';
+
+                    scrollInProgress.value = false;
+                }
 
                 /**
                  * If it's more then 0 then we have over-extension
@@ -248,9 +256,13 @@ export function useOnEndDrag(
                  * a RefreshControll presented, we don't want to hide it.
                  */
                 if (shift.value > 0) {
-                    shift.value = withSpring(0, {
-                        overshootClamping: true,
-                    });
+                    shift.value = withSpring(
+                        0,
+                        {
+                            overshootClamping: true,
+                        },
+                        onSpringEnd,
+                    );
 
                     return;
                 }
@@ -258,14 +270,22 @@ export function useOnEndDrag(
                  * If we are somewhere in between of a large title header
                  * trying to find a nearest edge and move there
                  */
-                if (shift.value > (0 - largeTitleHeight.value + defaultShift.value) / 2) {
-                    shift.value = withSpring(defaultShift.value, {
-                        overshootClamping: true,
-                    });
+                if (shift.value > (defaultShift.value - largeTitleHeight.value) / 2) {
+                    shift.value = withSpring(
+                        defaultShift.value,
+                        {
+                            overshootClamping: true,
+                        },
+                        onSpringEnd,
+                    );
                 } else {
-                    shift.value = withSpring(0 - largeTitleHeight.value, {
-                        overshootClamping: true,
-                    });
+                    shift.value = withSpring(
+                        0 - largeTitleHeight.value,
+                        {
+                            overshootClamping: true,
+                        },
+                        onSpringEnd,
+                    );
                 }
             },
         });

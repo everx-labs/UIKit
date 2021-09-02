@@ -47,7 +47,6 @@ export default function onScroll(
     largeTitleHeight: Animated.SharedValue<number>,
     yIsNegative: Animated.SharedValue<boolean>,
     shift: Animated.SharedValue<number>,
-    shiftChangedForcibly: Animated.SharedValue<boolean>,
     rubberBandDistance: number,
 ) {
     return async (event: NativeScrollEvent, ctx: ScrollHandlerContext) => {
@@ -59,10 +58,6 @@ export default function onScroll(
             } catch (e) {
                 // nothing
             }
-        }
-
-        if (shiftChangedForcibly.value) {
-            return;
         }
 
         yIsNegative.value = y <= 0;

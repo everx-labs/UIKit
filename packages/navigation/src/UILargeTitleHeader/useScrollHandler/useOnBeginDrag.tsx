@@ -7,7 +7,7 @@ import type { ScrollHandlerContext } from '../types';
 
 export function useOnBeginDrag(
     shift: Animated.SharedValue<number>,
-    shiftChangedForcibly: Animated.SharedValue<boolean>,
+    scrollInProgress: Animated.SharedValue<boolean>,
     parentScrollHandler: ScrollableParentScrollHandler,
 ) {
     const onBeginHandlerRef = React.useRef<
@@ -23,7 +23,7 @@ export function useOnBeginDrag(
             ctx.scrollTouchGuard = true;
             ctx.continueResetOnMomentumEnd = false;
             ctx.yWithoutRubberBand = shift.value;
-            shiftChangedForcibly.value = false;
+            scrollInProgress.value = true;
 
             parentScrollHandler(_event);
         };

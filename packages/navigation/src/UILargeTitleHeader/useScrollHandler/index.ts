@@ -18,20 +18,18 @@ export function useScrollHandler(
     largeTitleViewRef: React.RefObject<Animated.View>,
     shift: Animated.SharedValue<number>,
     defaultShift: Animated.SharedValue<number>,
-    shiftChangedForcibly: Animated.SharedValue<boolean>,
     largeTitleHeight: Animated.SharedValue<number>,
     hasScrollShared: Animated.SharedValue<boolean>,
     rubberBandDistance: number,
 ) {
-    // see `useAnimatedGestureHandler`
+    const scrollInProgress = useSharedValue(false);
+    // see `useAnimatedGestureHandler` and `onWheel`
     const yIsNegative = useSharedValue(true);
 
-    const {
-        parentHandler: parentScrollHandler,
-        parentHandlerActive: parentScrollHandlerActive,
-    } = useScrollableParentScrollHandler();
+    const { parentHandler: parentScrollHandler, parentHandlerActive: parentScrollHandlerActive } =
+        useScrollableParentScrollHandler();
 
-    const onBeginDrag = useOnBeginDrag(shift, shiftChangedForcibly, parentScrollHandler);
+    const onBeginDrag = useOnBeginDrag(shift, scrollInProgress, parentScrollHandler);
 
     const onScroll = useOnScrollHandler(
         scrollRef,
@@ -39,7 +37,6 @@ export function useScrollHandler(
         largeTitleHeight,
         yIsNegative,
         shift,
-        shiftChangedForcibly,
         rubberBandDistance,
         parentScrollHandler,
         parentScrollHandlerActive,
@@ -66,7 +63,7 @@ export function useScrollHandler(
 
     const onEndDrag = useOnEndDrag(
         shift,
-        shiftChangedForcibly,
+        scrollInProgress,
         largeTitleHeight,
         defaultShift,
         mightApplyShiftToScrollView,
@@ -74,7 +71,7 @@ export function useScrollHandler(
         parentScrollHandlerActive,
     );
 
-    const onMomentumEnd = useOnMomentumEnd(shift, defaultShift, largeTitleHeight);
+    const onMomentumEnd = useOnMomentumEnd(shift, scrollInProgress, defaultShift, largeTitleHeight);
 
     const scrollHandler = useAnimatedScrollHandler<ScrollHandlerContext>({
         onBeginDrag,
@@ -102,6 +99,7 @@ export function useScrollHandler(
     const onWheel = useOnWheelHandler(yIsNegative, hasScrollShared, scrollHandler as any);
 
     return {
+        scrollInProgress,
         scrollHandler,
         gestureHandler,
         onWheel,

@@ -103,8 +103,8 @@ export function UILargeTitleHeader({
     ...navigationBarProps
 }: UILargeTitleHeaderProps) {
     const shift = useSharedValue(0);
-    const shiftChangedForcibly = useSharedValue(false);
     const defaultShift = useSharedValue(0);
+
     const localScrollRef = useAnimatedRef<Animated.ScrollView>();
 
     const largeTitleViewRef = useAnimatedRef<Animated.View>();
@@ -132,12 +132,11 @@ export function UILargeTitleHeader({
 
     const { hasScroll, hasScrollShared, setHasScroll } = useHasScroll();
 
-    const { scrollHandler, gestureHandler, onWheel } = useScrollHandler(
+    const { scrollInProgress, scrollHandler, gestureHandler, onWheel } = useScrollHandler(
         scrollRef,
         largeTitleViewRef,
         shift,
         defaultShift,
-        shiftChangedForcibly,
         largeTitleHeight,
         hasScrollShared,
         RUBBER_BAND_EFFECT_DISTANCE,
@@ -147,7 +146,10 @@ export function UILargeTitleHeader({
         return {
             transform: [
                 {
-                    translateY: Math.max(shift.value, -largeTitleHeight.value),
+                    translateY:
+                        largeTitleHeight.value > 0
+                            ? Math.max(shift.value, -largeTitleHeight.value)
+                            : shift.value,
                 },
             ],
         };
@@ -312,20 +314,16 @@ export function UILargeTitleHeader({
             options: { duration?: number; changeDefaultShift?: boolean } = {},
             callback?: ((isFinished: boolean) => void) | undefined,
         ) => {
-            // If position is changed forcibly
-            // no need to respond to scroll events anymore
-            shiftChangedForcibly.value = true;
-            if (position === 0) {
-                shift.value = 0;
-            } else {
+            // Do not interupt active scroll
+            if (!scrollInProgress.value) {
                 shift.value = withTiming(position, { duration: options.duration ?? 0 }, callback);
+                scrollTo(scrollRef, 0, 0, false);
             }
-            scrollTo(scrollRef, 0, 0, false);
             if (options.changeDefaultShift) {
                 defaultShift.value = position;
             }
         },
-        [shift, shiftChangedForcibly, defaultShift, scrollRef],
+        [shift, defaultShift, scrollInProgress, scrollRef],
     );
 
     const positionContext = React.useMemo(

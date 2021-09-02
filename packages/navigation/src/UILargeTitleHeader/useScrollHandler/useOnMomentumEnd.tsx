@@ -5,7 +5,10 @@ import Animated, { withSpring, withDecay } from 'react-native-reanimated';
 import type { ScrollHandlerContext } from '../types';
 import { runOnUIPlatformSelect } from './runOnUIPlatformSelect';
 
-function withNormalizedMomentumEnd(cb: (velocity: number, velocityFactor: number) => void) {
+function withNormalizedMomentumEnd(
+    scrollInProgress: Animated.SharedValue<boolean>,
+    cb: (velocity: number, velocityFactor: number) => void,
+) {
     return (event: NativeScrollEvent, ctx: ScrollHandlerContext) => {
         'worklet';
 
@@ -21,6 +24,7 @@ function withNormalizedMomentumEnd(cb: (velocity: number, velocityFactor: number
              * ScrollView already did all the necessary work.
              */
             if (event.contentOffset.y > 0) {
+                scrollInProgress.value = false;
                 return;
             }
             /**
@@ -61,6 +65,7 @@ function withNormalizedMomentumEnd(cb: (velocity: number, velocityFactor: number
 
 export function useOnMomentumEnd(
     shift: Animated.SharedValue<number>,
+    scrollInProgress: Animated.SharedValue<boolean>,
     defaultShift: Animated.SharedValue<number>,
     largeTitleHeight: Animated.SharedValue<number>,
 ) {
@@ -69,35 +74,39 @@ export function useOnMomentumEnd(
     >(null);
 
     if (onMomentumEndRef.current == null) {
-        onMomentumEndRef.current = withNormalizedMomentumEnd((velocity, velocityFactor) => {
-            'worklet';
+        onMomentumEndRef.current = withNormalizedMomentumEnd(
+            scrollInProgress,
+            (velocity, velocityFactor) => {
+                'worklet';
 
-            /**
-             * At the point `shift` might be not synced with actual position,
-             * but fortunately we can sync it right now.
-             * We know that `onMomuntumEnd` was fired
-             * when scroll view had reached 0 y coordinate.
-             * Hence the shift should be the size of largeTitleHeader.
-             * Since animation will be fired only on the next frame, to not skip frame
-             * and make it smoother also applying current velocity now.
-             */
-            shift.value = -largeTitleHeight.value + velocity;
-            shift.value = withDecay(
-                {
-                    velocity,
-                    velocityFactor,
-                    clamp: [0 - largeTitleHeight.value, 0],
-                },
-                isFinished => {
-                    if (isFinished) {
-                        shift.value = withSpring(defaultShift.value, {
-                            velocity: 1,
-                            overshootClamping: true,
-                        });
-                    }
-                },
-            );
-        });
+                /**
+                 * At the point `shift` might be not synced with actual position,
+                 * but fortunately we can sync it right now.
+                 * We know that `onMomuntumEnd` was fired
+                 * when scroll view had reached 0 y coordinate.
+                 * Hence the shift should be the size of largeTitleHeader.
+                 * Since animation will be fired only on the next frame, to not skip frame
+                 * and make it smoother also applying current velocity now.
+                 */
+                shift.value = -largeTitleHeight.value + velocity;
+                shift.value = withDecay(
+                    {
+                        velocity,
+                        velocityFactor,
+                        clamp: [0 - largeTitleHeight.value, 0],
+                    },
+                    isFinished => {
+                        if (isFinished) {
+                            shift.value = withSpring(defaultShift.value, {
+                                velocity: 1,
+                                overshootClamping: true,
+                            });
+                        }
+                        scrollInProgress.value = false;
+                    },
+                );
+            },
+        );
     }
 
     return onMomentumEndRef.current || undefined;
