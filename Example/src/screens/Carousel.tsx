@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 
 import { UICarouselView } from '@tonlabs/uikit.flask';
 import { UIAssets }  from '@tonlabs/uikit.assets';
 import {
     UIImage,
-    TouchableOpacity
 } from '@tonlabs/uikit.hydrogen';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -31,6 +30,7 @@ export const Carousel = () => {
     const component = (title: string, index: number) => (): React.ReactElement<View> => {
         return (
             <TouchableOpacity
+                
                 onPress={() => onChange(index)} 
                 style={{height: '100%', justifyContent: 'space-between', padding: 20}}
             >

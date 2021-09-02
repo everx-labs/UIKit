@@ -3,6 +3,7 @@ import React from "react"
 import { View, StyleSheet } from "react-native"
 
 import PagerView, { PagerViewOnPageSelectedEvent, PageScrollStateChangedNativeEvent } from 'react-native-pager-view';
+import Animated from "react-native-reanimated";
 
 import { UICarouselViewPage } from "./CarouselViewPage";
 import { Pagination } from "./Pagination";
@@ -86,13 +87,8 @@ type ScrollState = {
     isScrolling: boolean
 }
 
-const useStateCallback = (initialState: any, callback: any) => {
-    const [state, setState] = React.useState(initialState);
 
-    React.useEffect(() => callback(state), [state, callback]);
-
-    return [state, setState];
-}
+const AnimatedPagerView = Animated.createAnimatedComponent(PagerView);
 
 export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = ({
     activeIndex = 0,
@@ -105,12 +101,9 @@ export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = (
     const scrollState = React.useRef<ScrollState>({isScrolling: false})
     const pages: React.ReactElement<UICarouselViewPageProps>[] = usePages(children);
 
-    const setIsScrolling = () => { scrollState.current.isScrolling = false}
-
-    const [currentIndex, setCurrentIndex] = useStateCallback(activeIndex, setIsScrolling);
+    const [currentIndex, setCurrentIndex] = React.useState(activeIndex);
 
     const setPage = React.useCallback(async (index: number) => {
-        scrollState.current.isScrolling = true
         setCurrentIndex(index)
         pagerRef.current?.setPage(index)
     },[setCurrentIndex])
@@ -147,7 +140,7 @@ export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = (
     
     return(
         <View testID={testID} style={styles.carouselViewContainer}>
-            <PagerView 
+            <AnimatedPagerView 
                 ref={pagerRef}
                 style={styles.carouselView} 
                 initialPage={currentIndex}
@@ -156,7 +149,7 @@ export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = (
                 onMoveShouldSetResponderCapture={moveShouldSetResponderCapture}
             >
                 {returnPages(pages)}
-            </PagerView>
+            </AnimatedPagerView>
             <Pagination
                 pages={pages}
                 activeIndex={currentIndex}
