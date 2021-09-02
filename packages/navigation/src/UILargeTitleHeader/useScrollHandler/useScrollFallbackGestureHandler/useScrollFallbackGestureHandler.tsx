@@ -1,8 +1,8 @@
 /* eslint-disable import/no-duplicates */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type { NativeScrollEvent } from 'react-native';
 import type Animated from 'react-native-reanimated';
 import type { useAnimatedGestureHandler } from 'react-native-reanimated';
+import type { ScrollableParentScrollHandler } from '../../../Scrollable/Context';
 
 /**
  * On Android ScrollView stops to fire events when it reaches the end (y is 0).
@@ -17,13 +17,9 @@ import type { useAnimatedGestureHandler } from 'react-native-reanimated';
  * Is doesn't return anything for iOS and web to not create unnecessary objects in memory
  */
 export function useScrollFallbackGestureHandler(
-    _shift: Animated.SharedValue<number>,
-    _shiftChangedForcibly: Animated.SharedValue<boolean>,
     _hasScrollShared: Animated.SharedValue<boolean>,
     _yIsNegative: Animated.SharedValue<boolean>,
-    _yWithoutRubberBand: Animated.SharedValue<number>,
-    _onScroll: (event: NativeScrollEvent) => void,
-    _onEndDrag: () => void,
+    _scrollHandler: ScrollableParentScrollHandler,
 ): ReturnType<typeof useAnimatedGestureHandler> | undefined {
     return undefined;
 }

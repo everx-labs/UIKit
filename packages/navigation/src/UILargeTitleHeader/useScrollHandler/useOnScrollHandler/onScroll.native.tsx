@@ -4,9 +4,9 @@ import Animated, { measure, scrollTo } from 'react-native-reanimated';
 import { Platform } from 'react-native';
 import type { ScrollView as RNScrollView, NativeScrollEvent } from 'react-native';
 
-import { getYWithRubberBandEffect } from '../../AnimationHelpers/getYWithRubberBandEffect';
-import type { ScrollableParentScrollHandler } from '../../Scrollable/Context';
-import type { ScrollHandlerContext } from '../types';
+import { getYWithRubberBandEffect } from '../../../AnimationHelpers/getYWithRubberBandEffect';
+import type { ScrollableParentScrollHandler } from '../../../Scrollable/Context';
+import type { ScrollHandlerContext } from '../../types';
 
 const isIOS = Platform.OS === 'ios';
 
@@ -16,9 +16,7 @@ export default function (
     largeTitleViewRef: React.RefObject<Animated.View>,
     largeTitleHeight: Animated.SharedValue<number>,
     yIsNegative: Animated.SharedValue<boolean>,
-    yWithoutRubberBand: Animated.SharedValue<number>,
     shift: Animated.SharedValue<number>,
-    shiftChangedForcibly: Animated.SharedValue<boolean>,
     rubberBandDistance: number,
     parentScrollHandler: ScrollableParentScrollHandler,
     parentScrollHandlerActive: boolean,
@@ -42,10 +40,6 @@ export default function (
             }
         }
 
-        if (shiftChangedForcibly.value) {
-            return;
-        }
-
         /**
          * The fix is needed only for iOS
          *
@@ -63,29 +57,41 @@ export default function (
         if (parentScrollHandlerActive) {
             if (
                 /**
-                 * Bubble the event when yWithoutRubberBand
+                 * Bubble the event when `yWithoutRubberBand`
                  * is going to be bigger then 0 or when it's bigger now.
                  * For example it can happen when one swipes up very fast
                  * and after finger was released with big velocity
                  * event with big shift happen, that gonna make shift bigger 0
                  */
-                yWithoutRubberBand.value - y > 0 ||
-                yWithoutRubberBand.value > 0
+                ctx.yWithoutRubberBand - y > 0 ||
+                ctx.yWithoutRubberBand > 0
             ) {
-                yWithoutRubberBand.value = Math.max(0, yWithoutRubberBand.value - y);
+                ctx.yWithoutRubberBand = Math.max(0, ctx.yWithoutRubberBand - y);
 
                 parentScrollHandler(event);
                 return;
             }
         }
+        if (y !== 0) {
+            if (ctx != null) {
+                ctx.lastApproximateVelocity = y;
+            }
+        } else {
+            /**
+             * Basically there is nothing to do, and we could
+             * omit the check, BUT sometimes after `onEnd` the scroll event
+             * can be fired with 0 and when it's set to `shift`
+             * it can stop current animation
+             * (i.e. there is a decay animation in progress)
+             * I catched it on Android
+             */
+            return;
+        }
         if (y <= 0) {
             // scrollTo reset real y, so we need to count it ourselves
-            yWithoutRubberBand.value -= y;
+            ctx.yWithoutRubberBand -= y;
             if (shift.value > 0) {
-                shift.value = getYWithRubberBandEffect(
-                    yWithoutRubberBand.value,
-                    rubberBandDistance,
-                );
+                shift.value = getYWithRubberBandEffect(ctx.yWithoutRubberBand, rubberBandDistance);
             } else {
                 shift.value -= y;
             }
@@ -94,7 +100,7 @@ export default function (
         }
         if (shift.value > 0 - largeTitleHeight.value) {
             // scrollTo reset real y, so we need to count it ourselves
-            yWithoutRubberBand.value -= y;
+            ctx.yWithoutRubberBand -= y;
             shift.value = Math.max(shift.value - y, 0 - largeTitleHeight.value);
             scrollTo(scrollRef, 0, 0, false);
         }

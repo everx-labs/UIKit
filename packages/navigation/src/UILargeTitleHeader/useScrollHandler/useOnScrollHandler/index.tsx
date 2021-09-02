@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { NativeScrollEvent } from 'react-native';
 import type Animated from 'react-native-reanimated';
-import type { ScrollableParentScrollHandler } from '../../Scrollable/Context';
+import type { ScrollableParentScrollHandler } from '../../../Scrollable/Context';
 
 // @ts-ignore
 // eslint-disable-next-line import/no-unresolved, import/extensions
@@ -12,9 +12,7 @@ export function useOnScrollHandler(
     largeTitleViewRef: React.RefObject<Animated.View>,
     largeTitleHeight: Animated.SharedValue<number>,
     yIsNegative: Animated.SharedValue<boolean>,
-    yWithoutRubberBand: Animated.SharedValue<number>,
     shift: Animated.SharedValue<number>,
-    shiftChangedForcibly: Animated.SharedValue<boolean>,
     rubberBandDistance: number,
     parentScrollHandler: ScrollableParentScrollHandler,
     parentScrollHandlerActive: boolean,
@@ -27,9 +25,7 @@ export function useOnScrollHandler(
             largeTitleViewRef,
             largeTitleHeight,
             yIsNegative,
-            yWithoutRubberBand,
             shift,
-            shiftChangedForcibly,
             rubberBandDistance,
             parentScrollHandler,
             parentScrollHandlerActive,
