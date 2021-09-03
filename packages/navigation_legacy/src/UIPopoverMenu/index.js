@@ -68,7 +68,7 @@ export default class UIPopoverMenu extends UIPopover<Props, PopoverState> {
     renderMenu(): ?(React$Node[]) {
         return (
             <>
-                {this.props.title && (
+                {!!this.props.title && (
                     <MenuItem
                         title={this.props.title}
                         key={`${Math.random()}~MenuItem~title`}
@@ -108,9 +108,11 @@ export default class UIPopoverMenu extends UIPopover<Props, PopoverState> {
                                     this.hideNarrowMenu();
                                     if (item.onPress) item.onPress();
                                 }}
-                                type={item.disabled
-                                    ? UIPopup.ActionSheet.Action.Type.Disabled
-                                    : UIPopup.ActionSheet.Action.Type.Neutral}
+                                type={
+                                    item.disabled
+                                        ? UIPopup.ActionSheet.Action.Type.Disabled
+                                        : UIPopup.ActionSheet.Action.Type.Neutral
+                                }
                             />
                         ),
                 )}
