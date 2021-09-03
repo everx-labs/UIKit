@@ -1,28 +1,41 @@
 package tonlabs.uikit.hydrogen;
 
-import android.content.Context;
-import android.util.Log;
-import com.facebook.drawee.controller.AbstractDraweeControllerBuilder;
-import com.facebook.react.views.image.GlobalImageLoadListener;
+import android.annotation.SuppressLint;
+import android.widget.ImageView;
+
+import com.facebook.drawee.generic.RootDrawable;
+import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.views.image.ReactImageView;
 
-public class HDuplicateImageView extends ReactImageView {
-    public HDuplicateImageView(
-            Context context,
-            AbstractDraweeControllerBuilder draweeControllerBuilder,
-            @androidx.annotation.Nullable GlobalImageLoadListener globalImageLoadListener,
-            @androidx.annotation.Nullable Object callerContext
-    ) {
-        super(context, draweeControllerBuilder, globalImageLoadListener, callerContext);
+@SuppressLint("AppCompatCustomView")
+public class HDuplicateImageView extends ImageView {
+    private ThemedReactContext context;
+
+    public HDuplicateImageView(ThemedReactContext context, HDuplicateImageViewManager hDuplicateImageViewManager) {
+        super(context);
+        this.context = context;
     }
 
     void setOriginalViewRef(int originalViewRef) {
-        // TODO some logic
-        Log.i("setOriginalViewRef", String.valueOf(originalViewRef));
-    }
+        UIManagerModule uIManagerModule = context.getNativeModule(UIManagerModule.class);
+        context.runOnUiQueueThread(new Runnable() {
+            @Override
+            public void run() {
+                ReactImageView view = (ReactImageView) uIManagerModule.resolveView(originalViewRef);
+                RootDrawable drawable = (RootDrawable) view.getDrawable();
+                setImageDrawable(drawable);
 
-//    @Override
-//    public void setImageDrawable(@Nullable Drawable drawable) {
-//        Log.i("setImageDrawable", "asd");
-//    }
-}
+//                DraweeController draweeController = view.getController();
+//                setController(draweeController);
+//                FadeDrawable drawable2 = (FadeDrawable) drawable.getDrawable();
+//                Drawable drawable3 = drawable2.getDrawable(0);
+
+//                view.get
+//                new BitmapDrawable()
+//                setImageBitmap();
+//                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), view.getSourceLayoutResId());
+            }
+        });
+    }
+};

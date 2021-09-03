@@ -1,17 +1,18 @@
 package tonlabs.uikit.hydrogen;
 
+import android.widget.ImageView;
+
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.module.annotations.ReactModule;
+import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.facebook.react.views.image.ReactImageManager;
-import com.facebook.react.views.image.ReactImageView;
 
 import androidx.annotation.Nullable;
 
 @ReactModule(name = HDuplicateImageViewManager.REACT_CLASS)
-public class HDuplicateImageViewManager extends ReactImageManager {
+public class HDuplicateImageViewManager extends SimpleViewManager<ImageView> {
     protected static final String REACT_CLASS = "HDuplicateImageView";
     ReactApplicationContext mCallerContext;
 
@@ -21,13 +22,8 @@ public class HDuplicateImageViewManager extends ReactImageManager {
     }
 
     @Override
-    public ReactImageView createViewInstance(ThemedReactContext context) {
-        HDuplicateImageView duplicateImageView = new HDuplicateImageView(
-                context,
-                Fresco.newDraweeControllerBuilder(),
-                null,
-                mCallerContext
-        );
+    public ImageView createViewInstance(ThemedReactContext context) {
+        HDuplicateImageView duplicateImageView = new HDuplicateImageView(context, this);
         return duplicateImageView;
     }
 
