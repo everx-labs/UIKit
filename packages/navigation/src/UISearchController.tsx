@@ -9,6 +9,7 @@ import Animated, {
     runOnJS,
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useBackHandler } from '@react-native-community/hooks';
 
 import { Portal, ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
@@ -107,6 +108,14 @@ function UISearchControllerContent({
 }: UISearchControllerContentProps) {
     const [searchText, setSearchText] = React.useState('');
     const theme = useTheme();
+
+    useBackHandler(() => {
+        if (onCancel) {
+            onCancel();
+            return true;
+        }
+        return false;
+    });
 
     const animatedStyle = useAnimatedStyle(() => {
         return {
