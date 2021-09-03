@@ -5,7 +5,7 @@ export type UICarouselViewContainerProps = {
     /** callback that is called when the page changes */
     onPageIndexChange?: (newPageIndex: number) => void;
     /** index of first shown page */
-    activeIndex?: number;
+    initialIndex?: number;
     /** only UICarouselViewPage can be passed to children */
     children:
         | React.ReactElement<UICarouselViewPageProps>

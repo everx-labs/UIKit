@@ -13,8 +13,8 @@ export const Carousel = () => {
 
     const component = (title: string) => (): React.ReactElement<View> => {
         return (
-            <View style={{height: '100%', justifyContent: 'center'}}>
-                <UIImage style={{height: 100}} source={UIAssets.images[404]}/>
+            <View style={{height: '100%', justifyContent: 'center', alignItems:'center'}}>
+                <UIImage style={{height: 100, resizeMode: 'contain'}} source={UIAssets.images[404]}/>
                 <Text style={{textAlign: 'center', fontSize: 30, color: '#000'}}>
                     {title}
                 </Text>
@@ -27,7 +27,7 @@ export const Carousel = () => {
             <ExampleSection title="UICarouselView">
                 <View style={{ width: '100%', height: 400, paddingVertical: 20}}>
                     <UICarouselView.Container
-                        activeIndex={0}
+                        initialIndex={2}
                     >   
                         {DATA.map(text => {
                             return <UICarouselView.Page

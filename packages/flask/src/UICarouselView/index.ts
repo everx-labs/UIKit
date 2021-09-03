@@ -1,6 +1,4 @@
-import { UICarouselViewContainer } from './CarouselViewContainer';
-import { UICarouselViewPage } from './CarouselViewPage';
-
+import { UICarouselViewPage, UICarouselViewContainer } from './CarouselView'
 import type { UICarouselViewComponents } from './types'
 
 export * from './types';
