@@ -5,11 +5,7 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import type { ViewLayoutEvent } from 'react-native/Libraries/Components/View/ViewPropTypes';
 import { Popover } from 'react-native-simple-popover';
 
-import {
-    UIDevice,
-    UIStyle,
-    UIConstant,
-} from '@tonlabs/uikit.core';
+import { UIDevice, UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { UIComponent } from '@tonlabs/uikit.components';
 import { UIBackgroundView, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
 import { UICardSheet } from '@tonlabs/uikit.navigation';
@@ -51,8 +47,10 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UIPopover<Props, State>
-    extends UIComponent<any & PopoverProps, any & PopoverState> {
+export default class UIPopover<Props, State> extends UIComponent<
+    any & PopoverProps,
+    any & PopoverState,
+> {
     static defaultProps: any & PopoverProps = {
         placement: 'bottom',
         narrow: false,
@@ -100,7 +98,7 @@ export default class UIPopover<Props, State>
 
     // Setters
     setIsVisible(isVisible: boolean = true) {
-        return new Promise<void>((resolve) => {
+        return new Promise<void>(resolve => {
             this.setStateSafely({ isVisible }, resolve);
         });
     }
@@ -272,13 +270,7 @@ export default class UIPopover<Props, State>
     };
 
     render() {
-        const {
-            placement,
-            testID,
-            children,
-            containerStyle,
-            style,
-        } = this.props;
+        const { placement, testID, children, containerStyle, style } = this.props;
         const testIDProp = testID ? { testID } : null;
 
         return (
