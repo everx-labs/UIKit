@@ -26,10 +26,14 @@ import java.lang.reflect.Method;
 public class HDuplicateImageView extends ImageView {
 
     private final ThemedReactContext context;
+    private final UIManagerModule uiManagerModule;
+    private final FrescoModule frescoModule;
 
     public HDuplicateImageView(Context context) {
         super(context);
         this.context = (ThemedReactContext) context;
+        uiManagerModule = this.context.getNativeModule(UIManagerModule.class);
+        frescoModule = this.context.getNativeModule(FrescoModule.class);
     }
 
     void setOriginalViewRef(int originalViewRef) {
@@ -37,9 +41,6 @@ public class HDuplicateImageView extends ImageView {
     }
 
     void setWithBitmapOriginalViewRef(int originalViewRef) {
-        UIManagerModule uiManagerModule = context.getNativeModule(UIManagerModule.class);
-        FrescoModule frescoModule = context.getNativeModule(FrescoModule.class);
-
         context.runOnUiQueueThread(
             () -> {
                 if (uiManagerModule == null) {
