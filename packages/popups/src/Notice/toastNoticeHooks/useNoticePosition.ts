@@ -213,7 +213,7 @@ export const useNoticePosition = (
         isNoticeHeld.value = true;
     };
 
-    const onPressOut = () => {
+    const onPressOut = (): void => {
         isNoticeHeld.value = false;
     };
 
