@@ -37,10 +37,6 @@ public class HDuplicateImageView extends ImageView {
     }
 
     void setOriginalViewRef(int originalViewRef) {
-        setWithBitmapOriginalViewRef(originalViewRef);
-    }
-
-    void setWithBitmapOriginalViewRef(int originalViewRef) {
         context.runOnUiQueueThread(
             () -> {
                 if (uiManagerModule == null) {
