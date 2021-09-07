@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ColorValue, View, Platform } from 'react-native';
+import { ColorValue, View, Platform, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 import {
     useTheme,
     ColorVariants,
@@ -47,6 +47,9 @@ export const Notice: React.FC<NoticeProps> = ({
     type,
     title,
     color,
+    onPress,
+    onLongPress,
+    onPressOut,
 }: NoticeProps) => {
     const theme = useTheme();
     const styles = useStyles(color, type, theme);
@@ -59,26 +62,32 @@ export const Notice: React.FC<NoticeProps> = ({
             >
                 {title}
             </UILabel>
+            <TouchableWithoutFeedback
+                onPress={onPress}
+                onLongPress={onLongPress}
+                delayLongPress={UIConstant.notice.longPressDelay}
+                onPressOut={onPressOut}
+            >
+                <View style={StyleSheet.absoluteFill} />
+            </TouchableWithoutFeedback>
         </View>
     );
 };
 
-const useStyles = makeStyles(
-    (color: UINoticeColor, type: UINoticeType, theme: Theme) => ({
-        container: {
-            maxWidth: UIConstant.notice.maxWidth,
-            flex: 1,
-            backgroundColor: getBackgroundColor(color, theme),
-            borderRadius: getBorderRadius(type),
-            padding: 16,
-            ...Platform.select({
-                web: {
-                    cursor: 'pointer',
-                    touchAction: 'manipulation',
-                    userSelect: 'none',
-                },
-                default: null,
-            }),
-        },
-    }),
-);
+const useStyles = makeStyles((color: UINoticeColor, type: UINoticeType, theme: Theme) => ({
+    container: {
+        maxWidth: UIConstant.notice.maxWidth,
+        flex: 1,
+        backgroundColor: getBackgroundColor(color, theme),
+        borderRadius: getBorderRadius(type),
+        padding: 16,
+        ...Platform.select({
+            web: {
+                cursor: 'pointer',
+                touchAction: 'manipulation',
+                userSelect: 'none',
+            },
+            default: null,
+        }),
+    },
+}));
