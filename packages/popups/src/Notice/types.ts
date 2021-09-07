@@ -23,6 +23,9 @@ export type NoticeProps = {
     type: UINoticeType;
     color: UINoticeColor;
     title: string;
+    onPress: () => void;
+    onLongPress: () => void;
+    onPressOut: () => void;
     testID?: string;
 };
 
@@ -77,7 +80,7 @@ export type SnapPoints = {
  * UIPopup.Notice interface
  */
 export type IUINotice = React.FC<UINoticeProps> & {
-    Type: typeof UINoticeType,
-    Color: typeof UINoticeColor,
-    Duration: typeof UINoticeDuration
+    Type: typeof UINoticeType;
+    Color: typeof UINoticeColor;
+    Duration: typeof UINoticeDuration;
 };
