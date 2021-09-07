@@ -5,87 +5,92 @@ import {
     StyleSheet,
     GestureResponderEvent,
     PanResponderGestureState,
-    I18nManager,
     View,
-    LayoutChangeEvent
+    LayoutChangeEvent,
+    Pressable
 } from "react-native"
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
-import type { UICarouselViewContainerProps, UICarouselViewPageProps } from "../../types";
-import { usePages } from "../CarouselViewPage";
-
-function useAnimatedValue(initialValue: number) {
-    const lazyRef = React.useRef<Animated.Value>();
-
-    if (lazyRef.current === undefined) {
-        lazyRef.current = new Animated.Value(initialValue);
-    }
-
-    return lazyRef.current as Animated.Value;
+import type  { UICarouselViewContainerProps, UICarouselViewPageProps } from "../../types";
+import { useAnimatedValue } from "../hooks";
+import { AnimationConfig } from "./constants";
+ 
+type Props = UICarouselViewContainerProps & {
+    pages: React.ReactElement<UICarouselViewPageProps>[]
 }
 
-const DefaultTransitionSpec = {
-    timing: Animated.spring,
-    stiffness: 5000,
-    damping: 500,
-    mass: 3,
-    overshootClamping: false,
-};
-
-export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = ({
-    children,
+export const CarouselViewContainer: React.FC<Props> = ({
+    pages,
     initialIndex = 0,
-    // testID,
-}: UICarouselViewContainerProps) => {
+    testID,
+    isPageMovesOnPress = true,
+    onPageIndexChange,
+}: Props) => {
 
     const [layout, setLayout] = React.useState({ width: 0, height: 0 });
 
     const panX = useAnimatedValue(0)
-    const pages: React.ReactElement<UICarouselViewPageProps>[] = usePages(children);
+    const localPanX =  useAnimatedValue(0)
+
     const layoutRef = React.useRef(layout);
+    const onPageChangedRef = React.useRef(onPageIndexChange);
 
     const currentIndexRef = React.useRef(0);
     const pendingIndexRef = React.useRef<number>();
 
     const swipeVelocityThreshold = 0.15;
-    const swipeDistanceThreshold = layout.width / 2.5;
+    const swipeDistanceThreshold = layout.width / 2;
+
+    const [isMoving, setIsMoving] = React.useState(false);
 
     const jumpToIndex = React.useCallback(
         (index: number) => {
             const offset = -index * layout.width;
-            console.log(offset)
-            const { timing, ...transitionConfig } = DefaultTransitionSpec;
-
+            const { timing, ...transitionConfig } = AnimationConfig;
             Animated.parallel([
                 timing(panX, {
                     ...transitionConfig,
                     toValue: offset,
                     useNativeDriver: false,
                 }),
+                Animated.sequence([
+                    timing(localPanX, {
+                        ...transitionConfig,
+                        toValue: -layout.width/2,
+                        useNativeDriver: false,
+                        duration: transitionConfig.duration/2
+                    }),
+                    timing(localPanX, {
+                        ...transitionConfig,
+                        toValue: 0,
+                        useNativeDriver: false,
+                        duration: transitionConfig.duration/2
+                    })
+                ])
             ]).start(({ finished }) => {
                 if (finished) {
-                    // onIndexChangeRef.current(index);
                     pendingIndexRef.current = undefined;
                 }
             });
-
+            setIsMoving(false)
+            onPageChangedRef.current && onPageChangedRef.current(index);
             pendingIndexRef.current = index;
-        },[panX, layout.width]);
+        },[panX, localPanX, layout.width]);
 
-    const jumpToNext = React.useCallback((index: number) => {
-        const nextIndex = (index + 1) % pages.length;
-        jumpToIndex(nextIndex)
-    },[jumpToIndex, pages.length])
+    const jumpToNext = React.useCallback(() => {
+        if(!isMoving){
+            const nextIndex = (currentIndexRef.current + 1) % pages.length;
+            jumpToIndex(nextIndex)
+        }
+    },[jumpToIndex, isMoving, pages])
 
     React.useEffect(() => {
         layoutRef.current = layout;
-    });
-
-    React.useEffect(() => {
         const offset = -currentIndexRef.current * layoutRef.current.width;
-
+        if(onPageIndexChange){
+            onPageChangedRef.current = onPageIndexChange;
+        }
         panX.setValue(offset);
-    }, [layoutRef.current.width, panX]);
+    }, [layoutRef, panX, onPageIndexChange, layout]);
 
     React.useEffect(() => {
         if (layoutRef.current.width && currentIndexRef.current !== initialIndex) {
@@ -95,7 +100,7 @@ export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = (
     }, [jumpToIndex, layoutRef.current.width, initialIndex]);
 
     const startGesture = () => {
-        // onSwipeStart?.();
+        setIsMoving(true)
         panX.stopAnimation();
         // @ts-expect-error: _value is private, but docs use it as well
         // eslint-disable-next-line no-underscore-dangle
@@ -106,8 +111,7 @@ export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = (
         _: GestureResponderEvent,
         gestureState: PanResponderGestureState
     ) => {
-        const diffX = I18nManager.isRTL ? -gestureState.dx : gestureState.dx;
-
+        const diffX = gestureState.dx
         if (
             // swiping left
             (diffX > 0 && currentIndexRef.current <= 0) ||
@@ -116,7 +120,7 @@ export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = (
         ) {
             return;
         }
-
+        localPanX.setValue(diffX);
         panX.setValue(diffX);
     };
 
@@ -125,16 +129,13 @@ export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = (
         gestureState: PanResponderGestureState
     ) => {
         panX.flattenOffset();
-
-        // onSwipeEnd?.();
-
+        localPanX.setValue(0)
         const currentIndex =
             typeof pendingIndexRef.current === 'number'
                 ? pendingIndexRef.current
                 : currentIndexRef.current;
 
         let nextIndex = currentIndex;
-
         if (
             Math.abs(gestureState.dx) > Math.abs(gestureState.dy) &&
             Math.abs(gestureState.vx) > Math.abs(gestureState.vy) &&
@@ -145,27 +146,46 @@ export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = (
                 Math.min(
                     Math.max(
                         0,
-                        I18nManager.isRTL
-                            ? currentIndex + gestureState.dx / Math.abs(gestureState.dx)
-                            : currentIndex - gestureState.dx / Math.abs(gestureState.dx)
+                        currentIndex - gestureState.dx / Math.abs(gestureState.dx)
                     ),
-                    pages.length - 1
+                    pages.length
                 )
             );
-
             currentIndexRef.current = nextIndex;
         }
 
         if (!isFinite(nextIndex)) {
             nextIndex = currentIndex;
         }
-
         jumpToIndex(nextIndex);
     };
 
+    const isMovingHorizontally = (
+        _: GestureResponderEvent,
+        gestureState: PanResponderGestureState
+      ) => {
+        return (
+          Math.abs(gestureState.dx) > Math.abs(gestureState.dy * 2) &&
+          Math.abs(gestureState.vx) > Math.abs(gestureState.vy * 2)
+        );
+      };
+    
+      const canMoveScreen = (
+        event: GestureResponderEvent,
+        gestureState: PanResponderGestureState
+      ) => {
+        const diffX = gestureState.dx;
+    
+        return (
+          isMovingHorizontally(event, gestureState) &&
+          ((diffX >= 20 && currentIndexRef.current > 0) ||
+            (diffX <= -20 && currentIndexRef.current < pages.length - 1))
+        );
+      };
+
     const panResponder = PanResponder.create({
-        onMoveShouldSetPanResponder: () => true,
-        onMoveShouldSetPanResponderCapture: () => true,
+        onMoveShouldSetPanResponder: canMoveScreen,
+        onMoveShouldSetPanResponderCapture:  canMoveScreen,
         onPanResponderGrant: startGesture,
         onPanResponderMove: respondToGesture,
         onPanResponderTerminate: finishGesture,
@@ -173,27 +193,54 @@ export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = (
         onPanResponderTerminationRequest: () => true,
     });
 
-    const maxTranslate = layout.width * (pages.length - 1);
-    const translateX = Animated.multiply(
-        panX.interpolate({
-            inputRange: [-maxTranslate, 0],
-            outputRange: [-maxTranslate, 0],
-            extrapolate: 'clamp',
-        }),
-        I18nManager.isRTL ? -1 : 1
-    );
+    const maxWidthTranslate = layout.width * (pages.length - 1);
+    const translateX = panX.interpolate({
+        inputRange: [-maxWidthTranslate, 0],
+        outputRange: [-maxWidthTranslate, 0],
+    })
+    
+    const maxOpacityTranslate = layout.width/2
+    const opacity = localPanX.interpolate({
+        inputRange: [-maxOpacityTranslate, 0, maxOpacityTranslate], 
+        outputRange: [.5, 1, .5],
+    })
 
-    const handleLayout = (e: LayoutChangeEvent) => {
+    const scale = localPanX.interpolate({
+        inputRange: [-maxOpacityTranslate, 0, maxOpacityTranslate], 
+        outputRange: [.9, 1, .9],
+    })
+
+    const handleLayout = React.useCallback((e: LayoutChangeEvent) => {
         const { height, width } = e.nativeEvent.layout;
-
         setLayout(prevLayout => {
             if (prevLayout.width === width && prevLayout.height === height) {
                 return prevLayout;
             }
-
             return { height, width };
         });
-    };
+    },[]);
+
+    const renderPage = React.useCallback((page, index) => {
+        const focused = index === currentIndexRef.current
+        const PageComponent= page.props.component
+        return(
+            <Pressable
+                disabled={!isPageMovesOnPress}
+                onPress={jumpToNext}
+                key={`UICarouselPage_${index}`}
+                testID={page.props.testID}
+            >
+                <Animated.View
+                    style={[{ transform: [{scale}], opacity},
+                         // eslint-disable-next-line no-nested-ternary
+                        layout.width ? { width: layout.width } : focused ? StyleSheet.absoluteFill : null,
+                    ]}
+                >
+                    {layout.width ? <PageComponent /> : null}
+                </Animated.View>
+            </Pressable>
+        )
+    },[isPageMovesOnPress, jumpToNext, layout.width, scale, opacity])
 
     if (pages.length === 0) {
         console.error(
@@ -203,38 +250,20 @@ export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = (
     }
 
     return (
-        <View onLayout={handleLayout} style={[styles.pager]}>
+        <View testID={testID} onLayout={handleLayout} style={[styles.pager]}>
             <Animated.View
                 style={[styles.sheet,
-                layout.width
-                    ? {
-                        width: pages.length * layout.width,
-                        transform: [{ translateX }],
-                    }
-                    : null
-                ]}
-                {...panResponder.panHandlers}
-            >
-                {pages.map((page, index) => {
-                    const focused = index === currentIndexRef.current;
-                    const Page = page.props.component
-                    const onPress = () => jumpToNext(index)
-                    return (
-                        <TouchableWithoutFeedback
-                            onPress={onPress}
-                            // eslint-disable-next-line react/no-array-index-key
-                            key={index}
-                            // eslint-disable-next-line no-nested-ternary
-                            style={layout.width
-                                ? { width: layout.width }
-                                : focused
-                                    ? StyleSheet.absoluteFill
-                                    : null
+                        layout.width
+                            ? {
+                                width: pages.length * layout.width,
+                                transform: [{ translateX }],
                             }
-                        >
-                            {focused || layout.width ? <Page /> : null}
-                        </TouchableWithoutFeedback>
-                    );
+                            : null,
+                        ]}
+                {...panResponder.panHandlers}
+                >
+                {pages.map((page, index) => {
+                    return renderPage( page, index )
                 })}
             </Animated.View>
         </View>
@@ -243,11 +272,12 @@ export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = (
 
 const styles = StyleSheet.create({
     pager: {
-        flex: 1,
         overflow: 'hidden',
+        flex: 1,
     },
     sheet: {
         flex: 1,
+        width: '100%',
         flexDirection: 'row',
     },
 });

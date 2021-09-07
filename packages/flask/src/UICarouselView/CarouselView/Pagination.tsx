@@ -1,20 +1,21 @@
 import React from "react"
 import { View, StyleSheet } from "react-native"
+import Animated from "react-native-reanimated";
 
 import { UIConstant } from "@tonlabs/uikit.core";
-import { TouchableOpacity, UIBackgroundView, UIBackgroundViewColors} from '@tonlabs/uikit.hydrogen';
+import { Theme, TouchableOpacity, useTheme } from '@tonlabs/uikit.hydrogen';
+import { usePaginationStyle } from "./hooks";
 
 const circleSize = 6;
 
-type CircleProps = { active: boolean; onPress: (event: any) => void };
+type CircleProps = { 
+    active: boolean; 
+    onPress: (event: any) => void;
+    theme: Theme
+ };
 
-const Circle: React.FC<CircleProps> = React.memo(({ active, onPress }: CircleProps) => {
-    
-    const color = React.useMemo(()=>{
-        return active
-                ? UIBackgroundViewColors.BackgroundAccent
-                : UIBackgroundViewColors.BackgroundNeutral
-    }, [active])
+const Circle: React.FC<CircleProps> = ({ active, onPress, theme }: CircleProps) => {
+    const { animatedStyles } = usePaginationStyle(active, theme)
 
     return (
         <TouchableOpacity
@@ -27,13 +28,12 @@ const Circle: React.FC<CircleProps> = React.memo(({ active, onPress }: CirclePro
             onPress={onPress}
             style={{alignItems: 'center'}}
         >
-            <UIBackgroundView
-                color={color}
-                style={styles.circle}
+            <Animated.View
+                style={[styles.circle, animatedStyles]}
             />
         </TouchableOpacity>
     );
-});
+};
 
 function getPaginationWidth(amount: number) {
     return UIConstant.contentOffset() + amount * (circleSize + UIConstant.contentOffset());
@@ -46,6 +46,8 @@ type PaginationProps = {
 }
 
 export const Pagination: React.FC<PaginationProps> = React.memo(({pages, setPage, activeIndex}: PaginationProps ) => {
+
+    const theme = useTheme();
 
     const onHandlePress = React.useCallback((index: number)=>{
         setPage(index)
@@ -60,6 +62,7 @@ export const Pagination: React.FC<PaginationProps> = React.memo(({pages, setPage
                             key={`Circles_${index}`}
                             active={index === activeIndex}
                             onPress={() => onHandlePress(index)}
+                            theme={theme}
                         />)
                     })}
         </View>

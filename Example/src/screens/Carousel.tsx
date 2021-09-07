@@ -11,10 +11,14 @@ const DATA = ['Hello', 'this', 'is', 'UICarouselView']
 
 export const Carousel = () => {
 
+    const onPageIndexChange = (index: number) => {
+        console.log('page changed', index)
+    }
+
     const component = (title: string) => (): React.ReactElement<View> => {
         return (
-            <View style={{height: '100%', justifyContent: 'center', alignItems:'center'}}>
-                <UIImage style={{height: 100, resizeMode: 'contain'}} source={UIAssets.images[404]}/>
+            <View style={{height: 300, justifyContent: 'center', alignItems:'center'}}>
+                <UIImage style={{height: 100, width: '100%', resizeMode: 'contain'}} source={UIAssets.images[404]}/>
                 <Text style={{textAlign: 'center', fontSize: 30, color: '#000'}}>
                     {title}
                 </Text>
@@ -25,9 +29,10 @@ export const Carousel = () => {
     return (
         <ExampleScreen>
             <ExampleSection title="UICarouselView">
-                <View style={{ width: '100%', height: 400, paddingVertical: 20}}>
+                <View style={{ width: 300, height: 400, paddingVertical: 20}}>
                     <UICarouselView.Container
-                        initialIndex={2}
+                        initialIndex={0}
+                        onPageIndexChange={onPageIndexChange}
                     >   
                         {DATA.map(text => {
                             return <UICarouselView.Page

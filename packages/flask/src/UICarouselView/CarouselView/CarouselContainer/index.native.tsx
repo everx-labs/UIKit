@@ -1,48 +1,46 @@
 import React from "react"
 import { throttle } from "lodash";
-import { View, StyleSheet } from "react-native"
+import { View, StyleSheet, Pressable } from "react-native"
 import Animated from "react-native-reanimated";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import PagerView from "react-native-pager-view";
 
-import { Pagination } from "../Pagination";
 import type { UICarouselViewContainerProps, UICarouselViewPageProps } from "../../types";
-import { usePageStyle } from "../utils/animations";
-import { usePages } from "../CarouselViewPage";
+import { usePageStyle } from "../hooks";
 
-const renderComponent = (props: UICarouselViewPageProps, index: number, nextPage: any) => {
-    const ChildView = props.component;
-    const childTestID = props.testID ?? `UICarouselPage_${index}`;
-    return (
-        <TouchableWithoutFeedback
-            key={childTestID} 
-            testID={childTestID} 
-            onPress={throttle(() => 
-                        nextPage(index), 250, { leading: false, trailing: true}
-                    )}
-        >
-            <ChildView />
-        </TouchableWithoutFeedback>
-    )
-}
-
-const returnPages = (pages:  React.ReactElement<UICarouselViewPageProps>[], nextPage: any) => {
+const returnPages = (pages:  React.ReactElement<UICarouselViewPageProps>[], isPageMovesOnPress: boolean,  nextPage: any) => {
     return pages.map((item, index) => {
-        return renderComponent(item.props, index, nextPage)
+        const ChildView = item.props.component;
+        const key = `UICarouselPage_${index}`;
+        return (
+            <Pressable
+                disabled={!isPageMovesOnPress}
+                key={key} 
+                testID={item.props.testID} 
+                onPress={throttle(() => 
+                            nextPage(index), 250, { leading: false, trailing: true}
+                        )}
+            >
+                <ChildView />
+            </Pressable>
+        )
     })
 }
 
 const AnimatedPagerView = Animated.createAnimatedComponent(PagerView);
 
-export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = function  UICarouselViewContainerF({
+type Props = UICarouselViewContainerProps & {
+    pages: React.ReactElement<UICarouselViewPageProps>[]
+}
+
+export const CarouselViewContainer: React.FC<Props> = function  UICarouselViewContainerF({
     initialIndex = 0,
-    children,
+    pages,
     testID,
-}: UICarouselViewContainerProps){
+    isPageMovesOnPress = true,
+    onPageIndexChange,
+}: Props){
 
     const pagerRef = React.useRef<PagerView>(null);
-    const pages: React.ReactElement<UICarouselViewPageProps>[] = usePages(children);
-    const [currentIndex, setCurrentIndex] = React.useState(initialIndex);
     const [offset, setOffset] = React.useState(0)
     const pageStyles = usePageStyle(offset)
     
@@ -57,9 +55,9 @@ export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = f
     },[setOffset])
 
     const onPageSelected = React.useCallback(({nativeEvent}: any) => {
-        setCurrentIndex(nativeEvent.position)
         pagerRef.current?.setScrollEnabled(true)
-    },[setCurrentIndex])
+        onPageIndexChange && onPageIndexChange(nativeEvent.position)
+    },[onPageIndexChange])
     
     const nextPage = React.useCallback((index: number) => {
         pagerRef.current?.setScrollEnabled(false)
@@ -70,11 +68,8 @@ export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = f
     },[setPage, pages])
 
     React.useEffect(()=>{
-        if(pagerRef.current !== null){
-            console.log('fired')
-            setPage(initialIndex)
-        }
-    },[pagerRef, initialIndex, setPage])
+        setPage(initialIndex)
+    },[setPage, initialIndex])
 
     if (pages.length === 0) {
         console.error(
@@ -88,17 +83,12 @@ export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = f
             <AnimatedPagerView 
                 ref={pagerRef}
                 style={[styles.carouselView, pageStyles]}
-                initialPage={0}
+                initialPage={initialIndex}
                 onPageSelected={onPageSelected}
                 onPageScroll={onPageScroll}
             >
-                {returnPages(pages, nextPage)}
+                {returnPages(pages, isPageMovesOnPress, nextPage)}
             </AnimatedPagerView>
-            <Pagination
-                pages={pages}
-                activeIndex={currentIndex}
-                setPage={setPage}
-            />
         </View>
     )
 }
