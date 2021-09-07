@@ -119,7 +119,7 @@ export function UILargeTitleHeader({
             /**
              * Sometimes it's needed to invalidate a height of large title
              */
-            if (largeTitleHeight.value > 0 && largeTitleHeight.value !== height) {
+            if (/*largeTitleHeight.value > 0 && */ largeTitleHeight.value !== height) {
                 largeTitleHeight.value = height;
             }
         },

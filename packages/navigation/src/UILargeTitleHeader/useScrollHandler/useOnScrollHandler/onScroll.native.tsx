@@ -32,13 +32,14 @@ export default function (
             return;
         }
 
-        if (largeTitleHeight.value === 0) {
-            try {
-                largeTitleHeight.value = measure(largeTitleViewRef).height || 0;
-            } catch (e) {
-                // nothing
-            }
-        }
+        // The `measure` function crashes iOS app in `onScroll` event
+        // if (largeTitleHeight.value === 0) {
+        //     try {
+        //         largeTitleHeight.value = measure(largeTitleViewRef).height || 0;
+        //     } catch (e) {
+        //         // nothing
+        //     }
+        // }
 
         /**
          * The fix is needed only for iOS
