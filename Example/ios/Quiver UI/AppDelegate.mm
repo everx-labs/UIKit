@@ -3,6 +3,26 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import <React/RCTCxxBridgeDelegate.h>
+
+#if __has_include(<reacthermes/HermesExecutorFactory.h>)
+#import <reacthermes/HermesExecutorFactory.h>
+typedef facebook::react::HermesExecutorFactory ExecutorFactory;
+#elif __has_include(<React/HermesExecutorFactory.h>)
+#import <React/HermesExecutorFactory.h>
+typedef HermesExecutorFactory ExecutorFactory;
+#else
+#import <React/JSCExecutorFactory.h>
+typedef JSCExecutorFactory ExecutorFactory;
+#endif
+
+#if __has_include(<React/RCTJSIExecutorRuntimeInstaller.h>)
+#import <React/RCTJSIExecutorRuntimeInstaller.h>
+#endif
+
+#import <RNReanimated/REAInitializer.h>
+
+#import <UIKitHydrogen/HHapticJSIExecutorInitializer.h>
 
 #if DEBUG
 #import <FlipperKit/FlipperClient.h>
@@ -22,6 +42,10 @@ static void InitializeFlipper(UIApplication *application) {
   [client start];
 }
 #endif
+
+@interface AppDelegate () <RCTCxxBridgeDelegate>
+
+@end
 
 @implementation AppDelegate
 
@@ -57,6 +81,18 @@ static void InitializeFlipper(UIApplication *application) {
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
+}
+
+- (std::unique_ptr<facebook::react::JSExecutorFactory>)jsExecutorFactoryForBridge:(RCTBridge *)bridge {
+  const auto withHHapticInstaller = tonlabs::uikit::HHapticJSIExecutorRuntimeInstaller(bridge, NULL);
+  const auto withReanimatedInstaller = reanimated::REAJSIExecutorRuntimeInstaller(bridge, withHHapticInstaller);
+
+  #if __has_include(<React/RCTJSIExecutorRuntimeInstaller.h>)
+    // installs globals such as console, nativePerformanceNow, etc.
+    return std::make_unique<ExecutorFactory>(RCTJSIExecutorRuntimeInstaller(withReanimatedInstaller));
+  #else
+    return std::make_unique<ExecutorFactory>(withReanimatedInstaller);
+  #endif
 }
 
 @end
