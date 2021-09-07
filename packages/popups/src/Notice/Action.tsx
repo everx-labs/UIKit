@@ -1,4 +1,5 @@
 import { UILinkButton } from '@tonlabs/uikit.hydrogen';
+import { UIConstant } from '@tonlabs/uikit.navigation';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import type { ActionProps } from './types';
@@ -22,6 +23,6 @@ export const Action = ({ action }: ActionProps) => {
 
 const styles = StyleSheet.create({
     container: {
-        paddingLeft: 8,
+        paddingLeft: UIConstant.contentInsetVerticalX2,
     },
 });
