@@ -22,8 +22,8 @@ type ToastNoticeState = 'Opened' | 'Closed' | 'ClosedLeft' | 'ClosedRight';
 const OpenSpringConfig = {
     overshootClamping: false,
     mass: 1,
-    restSpeedThreshold: 0.001,
-    restDisplacementThreshold: 0.001,
+    restSpeedThreshold: 0.1,
+    restDisplacementThreshold: 0.1,
     ...SpringConfig.fromBouncinessAndSpeed(8, 12),
 };
 
@@ -87,7 +87,7 @@ export const useNoticePosition = (
     }, [visible, toastNoticeState, suspendClosingTimer]);
 
     const onAnimationEnd = useWorkletCallback((isFinished: boolean) => {
-        if (isFinished) {
+        if (isFinished && swipeDirection.value !== 'None') {
             swipeDirection.value = 'None';
         }
     });

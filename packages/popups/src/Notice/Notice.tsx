@@ -10,6 +10,7 @@ import {
 } from '@tonlabs/uikit.hydrogen';
 import { UIConstant } from '@tonlabs/uikit.navigation';
 import { NoticeProps, UINoticeType, UINoticeColor } from './types';
+import { Action } from './Action';
 
 const getBackgroundColor = (color: UINoticeColor, theme: Theme): ColorValue => {
     switch (color) {
@@ -50,18 +51,12 @@ export const Notice: React.FC<NoticeProps> = ({
     onPress,
     onLongPress,
     onPressOut,
+    action,
 }: NoticeProps) => {
     const theme = useTheme();
     const styles = useStyles(color, type, theme);
     return (
         <View style={styles.container}>
-            <UILabel
-                testID="message_default"
-                role={TypographyVariants.ParagraphFootnote}
-                color={getTitleColorVariant(color)}
-            >
-                {title}
-            </UILabel>
             <TouchableWithoutFeedback
                 onPress={onPress}
                 onLongPress={onLongPress}
@@ -70,6 +65,16 @@ export const Notice: React.FC<NoticeProps> = ({
             >
                 <View style={StyleSheet.absoluteFill} />
             </TouchableWithoutFeedback>
+            <View style={styles.labelContainer} pointerEvents="none">
+                <UILabel
+                    testID="message_default"
+                    role={TypographyVariants.ParagraphNote}
+                    color={getTitleColorVariant(color)}
+                >
+                    {title}
+                </UILabel>
+            </View>
+            <Action action={action} />
         </View>
     );
 };
@@ -78,9 +83,11 @@ const useStyles = makeStyles((color: UINoticeColor, type: UINoticeType, theme: T
     container: {
         maxWidth: UIConstant.notice.maxWidth,
         flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
         backgroundColor: getBackgroundColor(color, theme),
         borderRadius: getBorderRadius(type),
-        padding: 16,
+        paddingHorizontal: UIConstant.contentOffset,
         ...Platform.select({
             web: {
                 cursor: 'pointer',
@@ -89,5 +96,9 @@ const useStyles = makeStyles((color: UINoticeColor, type: UINoticeType, theme: T
             },
             default: null,
         }),
+    },
+    labelContainer: {
+        flex: 1,
+        paddingVertical: UIConstant.contentInsetVerticalX3,
     },
 }));

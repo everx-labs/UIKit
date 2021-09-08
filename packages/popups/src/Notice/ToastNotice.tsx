@@ -18,6 +18,7 @@ export const ToastNotice: React.FC<ToastNoticeProps> = ({
     color,
     visible,
     title,
+    action,
     onTap,
     onCloseAnimationEnd,
     suspendClosingTimer,
@@ -64,6 +65,7 @@ export const ToastNotice: React.FC<ToastNoticeProps> = ({
                                 onPress={onPress}
                                 onLongPress={onLongPress}
                                 onPressOut={onPressOut}
+                                action={action}
                             />
                         </Animated.View>
                     </PanGestureHandler>
