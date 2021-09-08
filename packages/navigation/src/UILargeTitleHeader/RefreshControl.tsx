@@ -19,22 +19,22 @@ export function UILargeTitleHeaderRefreshControl({
 }: {
     onRefresh: () => Promise<void>;
 }) {
-    const { position, forseChangePosition } = useLargeTitlePosition();
+    const { position, forceChangePosition } = useLargeTitlePosition();
     const [refreshing, setRefreshing] = React.useState(false);
     const refreshingGuard = useSharedValue(false);
 
     React.useLayoutEffect(() => {
-        if (forseChangePosition == null) {
+        if (forceChangePosition == null) {
             return;
         }
 
         requestAnimationFrame(() => {
-            forseChangePosition(-1 * UIConstant.refreshControlHeight, {
+            forceChangePosition(-1 * UIConstant.refreshControlHeight, {
                 duration: 0,
                 changeDefaultShift: true,
             });
         });
-    }, [forseChangePosition]);
+    }, [forceChangePosition]);
 
     const stopRefreshing = React.useCallback(() => {
         setRefreshing(false);
@@ -44,11 +44,11 @@ export function UILargeTitleHeaderRefreshControl({
         setRefreshing(true);
         await onRefresh();
 
-        if (forseChangePosition == null) {
+        if (forceChangePosition == null) {
             return;
         }
 
-        forseChangePosition(
+        forceChangePosition(
             -1 * UIConstant.refreshControlHeight,
             { duration: UIConstant.refreshControlPositioningDuration },
             () => {
@@ -58,7 +58,7 @@ export function UILargeTitleHeaderRefreshControl({
                 runOnJS(stopRefreshing)();
             },
         );
-    }, [onRefresh, forseChangePosition, refreshingGuard, stopRefreshing]);
+    }, [onRefresh, forceChangePosition, refreshingGuard, stopRefreshing]);
 
     useAnimatedReaction(
         () => {

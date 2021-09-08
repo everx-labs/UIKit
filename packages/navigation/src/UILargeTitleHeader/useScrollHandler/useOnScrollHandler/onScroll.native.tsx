@@ -32,14 +32,19 @@ export default function (
             return;
         }
 
-        // The `measure` function crashes iOS app in `onScroll` event
-        // if (largeTitleHeight.value === 0) {
-        //     try {
-        //         largeTitleHeight.value = measure(largeTitleViewRef).height || 0;
-        //     } catch (e) {
-        //         // nothing
-        //     }
-        // }
+        if (largeTitleHeight.value === 0) {
+            try {
+                // Comment the next line as `try - catch` can't handle errors from another `worklet`:
+                // largeTitleHeight.value = measure(largeTitleViewRef).height || 0;
+
+                // That's why let's run it by our own as per `measure` implementation in Reanimated:
+                // https://github.com/software-mansion/react-native-reanimated/blob/1d698d83c6f041603d548bf10d47eab992e50840/src/reanimated2/NativeMethods.ts#L20
+                // @ts-ignore
+                largeTitleHeight.value = _measure(largeTitleViewRef()).height || 0;
+            } catch (e) {
+                // nothing
+            }
+        }
 
         /**
          * The fix is needed only for iOS
