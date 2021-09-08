@@ -1,3 +1,4 @@
+import type { UILinkButtonVariant } from '@tonlabs/uikit.hydrogen';
 import type Animated from 'react-native-reanimated';
 
 // eslint-disable-next-line no-shadow
@@ -19,11 +20,25 @@ export enum UINoticeDuration {
     Short = 'Short',
 }
 
+export type UINoticeActionAttributes = {
+    title: string;
+    onTap: () => void;
+    variant?: UILinkButtonVariant;
+};
+
 export type NoticeProps = {
     type: UINoticeType;
     color: UINoticeColor;
     title: string;
+    onPress: () => void;
+    onLongPress: () => void;
+    onPressOut: () => void;
+    action?: UINoticeActionAttributes;
     testID?: string;
+};
+
+export type ActionProps = {
+    action?: UINoticeActionAttributes;
 };
 
 export type UINoticeProps = {
@@ -43,6 +58,10 @@ export type UINoticeProps = {
      * Title of notification
      */
     title: string;
+    /**
+     * Action attributes
+     */
+    action?: UINoticeActionAttributes;
     /**
      * How long will the notification be displayed
      */
@@ -77,7 +96,7 @@ export type SnapPoints = {
  * UIPopup.Notice interface
  */
 export type IUINotice = React.FC<UINoticeProps> & {
-    Type: typeof UINoticeType,
-    Color: typeof UINoticeColor,
-    Duration: typeof UINoticeDuration
+    Type: typeof UINoticeType;
+    Color: typeof UINoticeColor;
+    Duration: typeof UINoticeDuration;
 };

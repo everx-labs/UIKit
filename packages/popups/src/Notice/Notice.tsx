@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ColorValue, View, Platform } from 'react-native';
+import { ColorValue, View, Platform, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 import {
     useTheme,
     ColorVariants,
@@ -10,6 +10,7 @@ import {
 } from '@tonlabs/uikit.hydrogen';
 import { UIConstant } from '@tonlabs/uikit.navigation';
 import { NoticeProps, UINoticeType, UINoticeColor } from './types';
+import { Action } from './Action';
 
 const getBackgroundColor = (color: UINoticeColor, theme: Theme): ColorValue => {
     switch (color) {
@@ -47,38 +48,57 @@ export const Notice: React.FC<NoticeProps> = ({
     type,
     title,
     color,
+    onPress,
+    onLongPress,
+    onPressOut,
+    action,
 }: NoticeProps) => {
     const theme = useTheme();
     const styles = useStyles(color, type, theme);
     return (
         <View style={styles.container}>
-            <UILabel
-                testID="message_default"
-                role={TypographyVariants.ParagraphFootnote}
-                color={getTitleColorVariant(color)}
+            <TouchableWithoutFeedback
+                onPress={onPress}
+                onLongPress={onLongPress}
+                delayLongPress={UIConstant.notice.longPressDelay}
+                onPressOut={onPressOut}
             >
-                {title}
-            </UILabel>
+                <View style={StyleSheet.absoluteFill} />
+            </TouchableWithoutFeedback>
+            <View style={styles.labelContainer} pointerEvents="none">
+                <UILabel
+                    testID="message_default"
+                    role={TypographyVariants.ParagraphNote}
+                    color={getTitleColorVariant(color)}
+                >
+                    {title}
+                </UILabel>
+            </View>
+            <Action action={action} />
         </View>
     );
 };
 
-const useStyles = makeStyles(
-    (color: UINoticeColor, type: UINoticeType, theme: Theme) => ({
-        container: {
-            maxWidth: UIConstant.notice.maxWidth,
-            flex: 1,
-            backgroundColor: getBackgroundColor(color, theme),
-            borderRadius: getBorderRadius(type),
-            padding: 16,
-            ...Platform.select({
-                web: {
-                    cursor: 'pointer',
-                    touchAction: 'manipulation',
-                    userSelect: 'none',
-                },
-                default: null,
-            }),
-        },
-    }),
-);
+const useStyles = makeStyles((color: UINoticeColor, type: UINoticeType, theme: Theme) => ({
+    container: {
+        maxWidth: UIConstant.notice.maxWidth,
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: getBackgroundColor(color, theme),
+        borderRadius: getBorderRadius(type),
+        paddingHorizontal: UIConstant.contentOffset,
+        ...Platform.select({
+            web: {
+                cursor: 'pointer',
+                touchAction: 'manipulation',
+                userSelect: 'none',
+            },
+            default: null,
+        }),
+    },
+    labelContainer: {
+        flex: 1,
+        paddingVertical: UIConstant.contentInsetVerticalX3,
+    },
+}));
