@@ -1,80 +1,80 @@
 {
-  "name": "@tonlabs/uikit.legacy",
-  "version": "2.3.0",
-  "description": "Legacy components of Tonlabs's UIKit",
-  "scripts": {
-    "prepare": "bob build"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/tonlabs/UIKit.git",
-    "directory": "packages/legacy"
-  },
-  "keywords": [
-    "tonlabs",
-    "design-system",
-    "react-native"
-  ],
-  "author": "tonlabs.io",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/tonlabs/UIKit/issues"
-  },
-  "homepage": "https://github.com/tonlabs/UIKit/packages/legacy#readme",
-  "main": "lib/commonjs/index.js",
-  "module": "lib/module/index.js",
-  "react-native": "src/index.js",
-  "files": [
-    "lib/",
-    "src/"
-  ],
-  "dependencies": {
-    "@tonlabs/uikit.assets": "^2.3.0",
-    "@tonlabs/uikit.components": "^2.3.0",
-    "@tonlabs/uikit.core": "^2.3.0",
-    "@tonlabs/uikit.navigation_legacy": "^2.3.0",
-    "bignumber.js": "9.0.0",
-    "lodash": "4.17.21",
-    "prop-types": "15.6.2",
-    "react-native-flash-message": "0.1.23",
-    "react-style-proptype": "3.2.2"
-  },
-  "devDependencies": {
-    "@react-native-community/bob": "0.16.2",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "react-native": "0.65.1",
-    "react-native-fast-image": "^8.3.4",
-    "react-native-svg": "^12.1.0"
-  },
-  "peerDependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-native": "^0.65.0",
-    "react-native-fast-image": "^8.3.4",
-    "react-native-svg": "^12.1.0"
-  },
-  "@react-native-community/bob": {
-    "source": "src",
-    "output": "lib",
-    "targets": [
-      [
-        "commonjs",
-        {
-          "configFile": "../../babel.config.js",
-          "copyFlow": true
-        }
-      ],
-      [
-        "module",
-        {
-          "configFile": "../../babel.config.js",
-          "copyFlow": true
-        }
-      ]
-    ]
-  }
+    "name": "@tonlabs/uikit.legacy",
+    "version": "2.3.0",
+    "description": "Legacy components of Tonlabs's UIKit",
+    "scripts": {
+        "prepare": "bob build"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tonlabs/UIKit.git",
+        "directory": "packages/legacy"
+    },
+    "keywords": [
+        "tonlabs",
+        "design-system",
+        "react-native"
+    ],
+    "author": "tonlabs.io",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/tonlabs/UIKit/issues"
+    },
+    "homepage": "https://github.com/tonlabs/UIKit/packages/legacy#readme",
+    "main": "lib/commonjs/index.js",
+    "module": "lib/module/index.js",
+    "react-native": "src/index.js",
+    "files": [
+        "lib/",
+        "src/"
+    ],
+    "dependencies": {
+        "@tonlabs/uikit.assets": "^2.3.0",
+        "@tonlabs/uikit.components": "^2.3.0",
+        "@tonlabs/uikit.core": "^2.3.0",
+        "@tonlabs/uikit.navigation_legacy": "^2.3.0",
+        "bignumber.js": "9.0.0",
+        "lodash": "4.17.21",
+        "prop-types": "15.6.2",
+        "react-native-flash-message": "0.1.23",
+        "react-style-proptype": "3.2.2"
+    },
+    "devDependencies": {
+        "@react-native-community/bob": "0.16.2",
+        "react": "17.0.2",
+        "react-dom": "17.0.2",
+        "react-native": "0.65.1",
+        "react-native-fast-image": "^8.3.4",
+        "react-native-svg": "^12.1.0"
+    },
+    "peerDependencies": {
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
+        "react-native": "^0.65.0",
+        "react-native-fast-image": "^8.3.4",
+        "react-native-svg": "^12.1.0"
+    },
+    "@react-native-community/bob": {
+        "source": "src",
+        "output": "lib",
+        "targets": [
+            [
+                "commonjs",
+                {
+                    "configFile": "../../babel.config.js",
+                    "copyFlow": true
+                }
+            ],
+            [
+                "module",
+                {
+                    "configFile": "../../babel.config.js",
+                    "copyFlow": true
+                }
+            ]
+        ]
+    }
 }

@@ -40,6 +40,7 @@ export function UIBlurView({ children, style, testID }: Props) {
 
     // BlurView is broken for Android in pair with `react-native-reanimated` (as per logs)
     // That's why we can blur it only once the screen transition is fully finished
+
     const [blurBackground, setBlurBackground] = React.useState(Platform.OS !== 'android');
     React.useEffect(() => {
         if (Platform.OS === 'android') {
@@ -52,14 +53,15 @@ export function UIBlurView({ children, style, testID }: Props) {
     // TODO: get rid of abandoned (not maintained) BlurView for Android which crashes the app!!!
     return (
         <View style={[styles.container, style]} testID={testID}>
-            {blurBackground && (
+            {
+                blurBackground &&
                 <BlurView
                     style={styles.blur}
                     blurType="light"
                     blurAmount={16}
                     reducedTransparencyFallbackColor={color}
                 />
-            )}
+            }
             {children}
         </View>
     );

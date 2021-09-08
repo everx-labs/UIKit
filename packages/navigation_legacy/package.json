@@ -1,90 +1,90 @@
 {
-  "name": "@tonlabs/uikit.navigation_legacy",
-  "version": "2.3.0",
-  "description": "Navigation components for Tonlabs's UIKit",
-  "scripts": {
-    "prepare": "bob build"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/tonlabs/UIKit.git",
-    "directory": "packages/navigation_legacy"
-  },
-  "keywords": [
-    "tonlabs",
-    "design-system",
-    "react-native"
-  ],
-  "author": "tonlabs.io",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/tonlabs/UIKit/issues"
-  },
-  "homepage": "https://github.com/tonlabs/UIKit/packages/navigation_legacy#readme",
-  "main": "lib/commonjs/index.js",
-  "module": "lib/module/index.js",
-  "react-native": "src/index.js",
-  "files": [
-    "lib/",
-    "src/",
-    "types/"
-  ],
-  "dependencies": {
-    "@tonlabs/uikit.assets": "^2.3.0",
-    "@tonlabs/uikit.components": "^2.3.0",
-    "@tonlabs/uikit.core": "^2.3.0",
-    "@tonlabs/uikit.hydrogen": "^2.3.0",
-    "prop-types": "15.6.2",
-    "react-image-lightbox": "5.1.1",
-    "react-native-country-picker-modal": "git+https://github.com/tonlabs/react-native-country-picker-modal.git",
-    "react-native-lightbox": "0.7.0",
-    "react-native-simple-popover": "git+https://github.com/tonlabs/react-native-simple-popover.git",
-    "react-style-proptype": "3.2.2"
-  },
-  "devDependencies": {
-    "@react-native-clipboard/clipboard": "^1.8.4",
-    "@react-native-community/bob": "0.16.2",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "react-native": "0.65.1",
-    "react-native-android-keyboard-adjust": "^1.2.0",
-    "react-native-gesture-handler": "^1.10.3",
-    "react-native-image-picker": "git+https://github.com/FactorBench/react-native-image-picker.git#develop",
-    "react-native-share": "^3.8.3",
-    "react-native-svg": "^12.1.0"
-  },
-  "peerDependencies": {
-    "@react-native-clipboard/clipboard": "^1.8.4",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-native": "^0.65.0",
-    "react-native-android-keyboard-adjust": "^1.2.0",
-    "react-native-gesture-handler": "^1.10.3",
-    "react-native-image-picker": "*",
-    "react-native-share": "^3.8.3",
-    "react-native-svg": "^12.1.0"
-  },
-  "@react-native-community/bob": {
-    "source": "src",
-    "output": "lib",
-    "targets": [
-      [
-        "commonjs",
-        {
-          "configFile": "../../babel.config.js",
-          "copyFlow": true
-        }
-      ],
-      [
-        "module",
-        {
-          "configFile": "../../babel.config.js",
-          "copyFlow": true
-        }
-      ]
-    ]
-  }
+    "name": "@tonlabs/uikit.navigation_legacy",
+    "version": "2.3.0",
+    "description": "Navigation components for Tonlabs's UIKit",
+    "scripts": {
+        "prepare": "bob build"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tonlabs/UIKit.git",
+        "directory": "packages/navigation_legacy"
+    },
+    "keywords": [
+        "tonlabs",
+        "design-system",
+        "react-native"
+    ],
+    "author": "tonlabs.io",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/tonlabs/UIKit/issues"
+    },
+    "homepage": "https://github.com/tonlabs/UIKit/packages/navigation_legacy#readme",
+    "main": "lib/commonjs/index.js",
+    "module": "lib/module/index.js",
+    "react-native": "src/index.js",
+    "files": [
+        "lib/",
+        "src/",
+        "types/"
+    ],
+    "dependencies": {
+        "@tonlabs/uikit.assets": "^2.3.0",
+        "@tonlabs/uikit.components": "^2.3.0",
+        "@tonlabs/uikit.core": "^2.3.0",
+        "@tonlabs/uikit.hydrogen": "^2.3.0",
+        "prop-types": "15.6.2",
+        "react-image-lightbox": "5.1.1",
+        "react-native-country-picker-modal": "git+https://github.com/tonlabs/react-native-country-picker-modal.git",
+        "react-native-lightbox": "0.7.0",
+        "react-native-simple-popover": "git+https://github.com/tonlabs/react-native-simple-popover.git",
+        "react-style-proptype": "3.2.2"
+    },
+    "devDependencies": {
+        "@react-native-clipboard/clipboard": "^1.8.4",
+        "@react-native-community/bob": "0.16.2",
+        "react": "17.0.2",
+        "react-dom": "17.0.2",
+        "react-native": "0.65.1",
+        "react-native-android-keyboard-adjust": "^1.2.0",
+        "react-native-gesture-handler": "^1.10.3",
+        "react-native-image-picker": "git+https://github.com/FactorBench/react-native-image-picker.git#develop",
+        "react-native-share": "^3.8.3",
+        "react-native-svg": "^12.1.0"
+    },
+    "peerDependencies": {
+        "@react-native-clipboard/clipboard": "^1.8.4",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
+        "react-native": "^0.65.0",
+        "react-native-android-keyboard-adjust": "^1.2.0",
+        "react-native-gesture-handler": "^1.10.3",
+        "react-native-image-picker": "*",
+        "react-native-share": "^3.8.3",
+        "react-native-svg": "^12.1.0"
+    },
+    "@react-native-community/bob": {
+        "source": "src",
+        "output": "lib",
+        "targets": [
+            [
+                "commonjs",
+                {
+                    "configFile": "../../babel.config.js",
+                    "copyFlow": true
+                }
+            ],
+            [
+                "module",
+                {
+                    "configFile": "../../babel.config.js",
+                    "copyFlow": true
+                }
+            ]
+        ]
+    }
 }
