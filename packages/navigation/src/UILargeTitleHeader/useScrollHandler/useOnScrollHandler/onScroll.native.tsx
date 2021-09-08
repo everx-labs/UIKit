@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import type * as React from 'react';
-import Animated, { measure, scrollTo } from 'react-native-reanimated';
+import Animated, { /* measure, */ scrollTo } from 'react-native-reanimated';
 import { Platform } from 'react-native';
 import type { ScrollView as RNScrollView, NativeScrollEvent } from 'react-native';
 

@@ -58,7 +58,7 @@
         "@types/react-native": "0.64.12",
         "react": "17.0.2",
         "react-dom": "17.0.2",
-        "react-native": "0.65.1",
+        "react-native": "0.64.2",
         "react-native-document-picker": "3.2.4",
         "react-native-image-picker": "git+https://github.com/FactorBench/react-native-image-picker.git#develop",
         "react-native-reanimated": "git+ssh://git@github.com/tonlabs/react-native-reanimated-surf.git",
@@ -70,7 +70,7 @@
     "peerDependencies": {
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
-        "react-native": "^0.65.0",
+        "react-native": "^0.64.2",
         "react-native-document-picker": "^3.2.4",
         "react-native-gesture-handler": "^1.10.3",
         "react-native-image-picker": "*",
