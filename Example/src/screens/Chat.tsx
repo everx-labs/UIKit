@@ -289,13 +289,11 @@ const initialMessages: ChatMessage[] = [
     },
 ];
 
-const initialMessagesWithKeys = initialMessages.map(
-    (m: ChatMessage, i: number) => {
-        // eslint-disable-next-line no-param-reassign
-        m.key = m.type + i;
-        return m;
-    },
-);
+const initialMessagesWithKeys = initialMessages.map((m: ChatMessage, i: number) => {
+    // eslint-disable-next-line no-param-reassign
+    m.key = m.type + i;
+    return m;
+});
 
 const stickers = new Array(10).fill(null).map((_a, i) => ({
     id: `test${i}`,
@@ -311,29 +309,27 @@ const stickers = new Array(10).fill(null).map((_a, i) => ({
 const ChatStack = createStackNavigator();
 
 const ChatWindowScreen = () => {
-    const [isNoticeVisible,setNoticeVisible] = React.useState(false);
-    const [messages, setMessages] = React.useState<ChatMessage[]>(
-        initialMessagesWithKeys,
-    );
+    const [isNoticeVisible, setNoticeVisible] = React.useState(false);
+    const [messages, setMessages] = React.useState<ChatMessage[]>(initialMessagesWithKeys);
     const onLoadEarlierMessages = React.useCallback(() => undefined, []);
     const onPressUrl = React.useCallback(() => {
         console.log('url handled');
     }, []);
-    
-    const onLongPressText = React.useCallback((text) => {
+
+    const onLongPressText = React.useCallback(text => {
         Clipboard.setString(text);
         console.log('long press handled', text);
-        setNoticeVisible(true)
+        setNoticeVisible(true);
     }, []);
 
     const hideNotice = React.useCallback(() => {
-        setNoticeVisible(false)
-    }, [])
+        setNoticeVisible(false);
+    }, []);
 
     const onSendMedia = React.useCallback(() => undefined, []);
     const onSendDocument = React.useCallback(() => undefined, []);
     const onItemSelected = React.useCallback(
-        (stk) => {
+        stk => {
             setMessages([
                 {
                     key: `${Date.now()}stk`,

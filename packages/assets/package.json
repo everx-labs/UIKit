@@ -84,7 +84,7 @@
     "logo/"
   ],
   "devDependencies": {
-    "@react-native-community/bob": "^0.16.2"
+    "@react-native-community/bob": "0.16.2"
   },
   "@react-native-community/bob": {
     "source": "src",

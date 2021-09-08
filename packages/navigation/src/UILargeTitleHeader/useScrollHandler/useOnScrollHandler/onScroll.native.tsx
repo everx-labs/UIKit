@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import type * as React from 'react';
-import Animated, { measure, scrollTo } from 'react-native-reanimated';
+import Animated, { /* measure, */ scrollTo } from 'react-native-reanimated';
 import { Platform } from 'react-native';
 import type { ScrollView as RNScrollView, NativeScrollEvent } from 'react-native';
 
@@ -34,7 +34,13 @@ export default function (
 
         if (largeTitleHeight.value === 0) {
             try {
-                largeTitleHeight.value = measure(largeTitleViewRef).height || 0;
+                // Comment the next line as `try - catch` can't handle errors from another `worklet`:
+                // largeTitleHeight.value = measure(largeTitleViewRef).height || 0;
+
+                // That's why let's run it by our own as per `measure` implementation in Reanimated:
+                // https://github.com/software-mansion/react-native-reanimated/blob/1d698d83c6f041603d548bf10d47eab992e50840/src/reanimated2/NativeMethods.ts#L20
+                // @ts-ignore
+                largeTitleHeight.value = _measure(largeTitleViewRef()).height || 0;
             } catch (e) {
                 // nothing
             }

@@ -1,0 +1,22 @@
+// The list of settings to be applied in VSCode to make Prettier & ESlint format on save.
+// N.B. Make these settings shared in the project since most of our developers use VSCode.
+{
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.rulers": [100],
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "eslint.options": { "configFile": ".eslintrc" },
+    "eslint.validate": ["typescript", "typescriptreact", "javascript", "javascriptreact"],
+    "javascript.validate.enable": false
+}
