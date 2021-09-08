@@ -1,66 +1,90 @@
 import * as React from 'react';
+import {
+    useSharedValue,
+    withTiming,
+    cancelAnimation,
+    useAnimatedReaction,
+    runOnJS,
+    useDerivedValue,
+    Easing,
+} from 'react-native-reanimated';
 import { UIConstant } from '@tonlabs/uikit.navigation';
 import { UINoticeDuration } from '../types';
 
-const getNotificationDuration = (duration: UINoticeDuration | undefined) => {
-    switch (duration) {
-        case UINoticeDuration.Short:
-            return UIConstant.notice.notificationDurationsShort;
-        case UINoticeDuration.Long:
-        default:
-            return UIConstant.notice.notificationDurationsLong;
-    }
+const useNotificationDuration = (duration: UINoticeDuration | undefined) => {
+    return React.useMemo(() => {
+        switch (duration) {
+            case UINoticeDuration.Short:
+                return UIConstant.notice.notificationDurationsShort;
+            case UINoticeDuration.Long:
+            default:
+                return UIConstant.notice.notificationDurationsLong;
+        }
+    }, [duration]);
 };
 
-export const useNoticeVisibility = (
+export const useNoticeVisibility2 = (
     onClose: (() => void) | undefined,
     visible: boolean,
     duration: UINoticeDuration | undefined,
 ) => {
     const [noticeVisible, setNoticeVisible] = React.useState(visible);
-    const timerId = React.useRef<NodeJS.Timeout | null>(null);
+    const countdownValue = useSharedValue<number>(-1);
 
-    const startClosingTimer = React.useCallback(() => {
-        if (timerId.current) {
-            /** Timer is already running */
-            return;
-        }
+    const notificationDuration = useNotificationDuration(duration);
 
-        timerId.current = setTimeout(() => {
-            if (visible && onClose) {
-                onClose();
+    const countdownProgress = useDerivedValue(() => {
+        return countdownValue.value / notificationDuration;
+    }, [notificationDuration]);
+
+    useAnimatedReaction(
+        () => {
+            return {
+                countdownValue: countdownValue.value,
+                visible,
+                onClose,
+            };
+        },
+        state => {
+            if (state.countdownValue === 0 && state.visible && state.onClose) {
+                runOnJS(state.onClose)();
             }
-        }, getNotificationDuration(duration));
-    }, [onClose, duration, visible]);
-
-    const clearClosingTimer = React.useCallback(() => {
-        if (!timerId.current) {
-            /** Timer does not exist */
-            return;
-        }
-
-        clearTimeout(timerId.current);
-        timerId.current = null;
-    }, []);
+        },
+        [visible, onClose],
+    );
 
     const onNoticeCloseAnimationFinished = React.useCallback(() => {
         setNoticeVisible(false);
-        clearClosingTimer();
+        countdownValue.value = -1;
         if (visible && onClose) {
             onClose();
         }
-    }, [onClose, clearClosingTimer, visible]);
+    }, [onClose, countdownValue, visible]);
+
+    const startCountdown = React.useCallback(() => {
+        countdownValue.value = notificationDuration;
+        countdownValue.value = withTiming(0, {
+            duration: notificationDuration,
+            easing: Easing.linear,
+        });
+    }, [countdownValue, notificationDuration]);
+
+    const pauseCountdown = React.useCallback(() => {
+        cancelAnimation(countdownValue);
+    }, [countdownValue]);
 
     React.useEffect(() => {
         if (visible) {
             setNoticeVisible(true);
         }
-    }, [visible, startClosingTimer]);
+    }, [visible]);
 
     return {
         noticeVisible,
-        startClosingTimer,
-        clearClosingTimer,
+        countdownValue,
+        countdownProgress,
+        startClosingTimer: startCountdown,
+        clearClosingTimer: pauseCountdown,
         onNoticeCloseAnimationFinished,
     };
 };

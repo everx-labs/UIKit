@@ -1,4 +1,4 @@
-import type { UILinkButtonVariant } from '@tonlabs/uikit.hydrogen';
+import type { UILinkButtonVariant, ColorVariants } from '@tonlabs/uikit.hydrogen';
 import type Animated from 'react-native-reanimated';
 
 // eslint-disable-next-line no-shadow
@@ -34,6 +34,8 @@ export type NoticeProps = {
     onLongPress: () => void;
     onPressOut: () => void;
     action?: UINoticeActionAttributes;
+    countdownValue: Animated.SharedValue<number>;
+    countdownProgress: Animated.SharedValue<number>;
     testID?: string;
 };
 
@@ -85,6 +87,8 @@ export type ToastNoticeProps = UINoticeProps & {
     suspendClosingTimer: () => void;
     continueClosingTimer: () => void;
     keyboardHeight: Animated.SharedValue<number>;
+    countdownValue: Animated.SharedValue<number>;
+    countdownProgress: Animated.SharedValue<number>;
 };
 
 export type SnapPoints = {
@@ -99,4 +103,10 @@ export type IUINotice = React.FC<UINoticeProps> & {
     Type: typeof UINoticeType;
     Color: typeof UINoticeColor;
     Duration: typeof UINoticeDuration;
+};
+
+export type CountdownCirlceProps = {
+    countdownValue: Animated.SharedValue<number>;
+    countdownProgress: Animated.SharedValue<number>;
+    color: ColorVariants;
 };

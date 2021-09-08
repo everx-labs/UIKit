@@ -11,6 +11,7 @@ import {
 import { UIConstant } from '@tonlabs/uikit.navigation';
 import { NoticeProps, UINoticeType, UINoticeColor } from './types';
 import { Action } from './Action';
+import { CountdownCirlce } from './CountdownCircle';
 
 const getBackgroundColor = (color: UINoticeColor, theme: Theme): ColorValue => {
     switch (color) {
@@ -24,7 +25,7 @@ const getBackgroundColor = (color: UINoticeColor, theme: Theme): ColorValue => {
     }
 };
 
-const getTitleColorVariant = (color: UINoticeColor): ColorVariants => {
+export const getTitleColorVariant = (color: UINoticeColor): ColorVariants => {
     switch (color) {
         case UINoticeColor.Secondary:
             return ColorVariants.TextPrimary;
@@ -52,6 +53,8 @@ export const Notice: React.FC<NoticeProps> = ({
     onLongPress,
     onPressOut,
     action,
+    countdownValue,
+    countdownProgress,
 }: NoticeProps) => {
     const theme = useTheme();
     const styles = useStyles(color, type, theme);
@@ -65,6 +68,13 @@ export const Notice: React.FC<NoticeProps> = ({
             >
                 <View style={StyleSheet.absoluteFill} />
             </TouchableWithoutFeedback>
+            <View style={styles.countdown}>
+                <CountdownCirlce
+                    countdownValue={countdownValue}
+                    countdownProgress={countdownProgress}
+                    color={getTitleColorVariant(color)}
+                />
+            </View>
             <View style={styles.labelContainer} pointerEvents="none">
                 <UILabel
                     testID="message_default"
@@ -100,5 +110,9 @@ const useStyles = makeStyles((color: UINoticeColor, type: UINoticeType, theme: T
     labelContainer: {
         flex: 1,
         paddingVertical: UIConstant.contentInsetVerticalX3,
+    },
+    countdown: {
+        paddingRight: UIConstant.contentInsetVerticalX2,
+        zIndex: -10,
     },
 }));

@@ -1,18 +1,20 @@
 import * as React from 'react';
-import { useAnimatedKeyboardHeight } from '@tonlabs/uikit.keyboard'
+import { useAnimatedKeyboardHeight } from '@tonlabs/uikit.keyboard';
 import { UINoticeProps, UINoticeType } from './types';
 import { ToastNotice } from './ToastNotice';
-import { useNoticeVisibility } from './hooks/useNoticeVisibility';
+import { useNoticeVisibility2 } from './hooks/useNoticeVisibility';
 
 export const UINotice: React.FC<UINoticeProps> = (props: UINoticeProps) => {
     const { onClose, visible, type, duration } = props;
 
     const {
         noticeVisible,
+        countdownValue,
+        countdownProgress,
         startClosingTimer,
         clearClosingTimer,
         onNoticeCloseAnimationFinished,
-    } = useNoticeVisibility(onClose, visible, duration);
+    } = useNoticeVisibility2(onClose, visible, duration);
 
     const keyboardHeight = useAnimatedKeyboardHeight();
 
@@ -31,6 +33,8 @@ export const UINotice: React.FC<UINoticeProps> = (props: UINoticeProps) => {
                     suspendClosingTimer={clearClosingTimer}
                     continueClosingTimer={startClosingTimer}
                     keyboardHeight={keyboardHeight}
+                    countdownValue={countdownValue}
+                    countdownProgress={countdownProgress}
                 />
             );
     }
