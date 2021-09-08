@@ -1,5 +1,5 @@
 import React from "react"
-import { throttle } from "lodash";
+import throttle from "lodash/lodash";
 import { View, StyleSheet, Pressable } from "react-native"
 import Animated from "react-native-reanimated";
 import PagerView from "react-native-pager-view";
