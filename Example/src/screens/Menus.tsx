@@ -292,13 +292,12 @@ export const Menus = () => {
             <ExampleSection title="UICountryPicker">
                 <View style={{ paddingVertical: 20 }}>
                     <UIBoxButton
-                        title="tap"
+                        title='tap'
                         onPress={() => setCountryPickerVisible(true)}
                     />
                     <UICountryPicker
                         visible={countryPickerVisible}
-                        permitted={['RU']}
-                        banned={['AD']}
+                        permitted={['RU', 'AQ']}
                         onSelect={(countryCode: Country) => console.log(countryCode)}
                         onClose={() => setCountryPickerVisible(false)}
                     />

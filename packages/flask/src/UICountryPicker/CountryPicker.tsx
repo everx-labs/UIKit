@@ -10,19 +10,20 @@ import {
     useTheme,
 } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import { UIConstant, FlatList, UIBottomSheet  } from '@tonlabs/uikit.navigation';
-import { View, Dimensions } from 'react-native';
+import { FlatList, UIConstant, UISearchBar } from '@tonlabs/uikit.navigation';
+import { View } from 'react-native';
 import type { Country, CountryPickerProps } from './types';
-
+// @ts-ignore
 import countriesListJSON from './countries.json';
 
-export function CountryPicker({
-    onSelect,
-    onClose,
-    visible,
-    permitted = [],
-    banned = [],
-}: CountryPickerProps) {
+export function CountryPicker(
+    {
+        onSelect,
+        onClose,
+        permitted = [],
+        banned = [],
+    }: CountryPickerProps) {
+
     const theme = useTheme();
     const styles = useStyles(theme);
 
@@ -34,7 +35,17 @@ export function CountryPicker({
     };
 
     const filterCountries = React.useCallback(() => {
-        const check = (code: string) => permitted.includes(code) && !banned.includes(code);
+        const check = (code: string) => {
+            let isPermitted = true;
+            let isBanned = false;
+            if (permitted.length) {
+                isPermitted = permitted.includes(code);
+            }
+            if (banned.length) {
+                isBanned = banned.includes(code);
+            }
+            return isPermitted && !isBanned;
+        };
         const permittedCountries = countriesListJSON.filter((country: any) => check(country.code));
         setCountriesList(permittedCountries);
     }, [banned, permitted]);
@@ -43,18 +54,22 @@ export function CountryPicker({
         if (permitted.length || banned.length) {
             filterCountries();
         }
-    }, [permitted, banned, filterCountries]);
+    }, []);
 
     const renderSearchHeader = () => {
         return (
             <View style={styles.headerContainer}>
                 <View style={styles.headerTitleContainer}>
-                    <View style={styles.cancelContainer}>
+                    <View style={styles.sideHeaderView}>
                         <UILinkButton onPress={onClose} title={uiLocalized.Cancel} />
                     </View>
-                    <UILabel role={TypographyVariants.HeadlineHead} style={styles.headerTitle}>
+                    <UILabel
+                        role={TypographyVariants.HeadlineHead}
+                        style={styles.headerTitle}
+                    >
                         Choose a Country
                     </UILabel>
+                    <View style={styles.sideHeaderView} />
                 </View>
                 <UISearchBar />
             </View>
@@ -73,25 +88,34 @@ export function CountryPicker({
         );
     };
 
+    const ListEmptyComponent = () => {
+        return (
+            <View style={styles.emptyContainer}>
+                <UILabel
+                    role={TypographyVariants.TitleMedium}
+                    color={ColorVariants.TextSecondary}
+                >
+                    We didn't find your country
+                </UILabel>
+                <UILabel
+                    role={TypographyVariants.Action}
+                    color={ColorVariants.TextSecondary}
+                >
+                    Try again or select from the list
+                </UILabel>
+            </View>
+        );
+    };
+
     return (
-        <UIBottomSheet
-            onClose={onClose}
-            visible={visible}
-            style={{
-                backgroundColor: '#fff',
-                borderRadius: 10,
-                height: Dimensions.get('window').height,
-            }}
-        >
-            <FlatList
-                data={countriesList}
-                ListHeaderComponent={renderSearchHeader}
-                renderItem={renderCountryRow}
-                keyExtractor={item => item.code}
-                stickyHeaderIndices={[0]}
-                contentContainerStyle={{ overflow: 'hidden' }}
-            />
-        </UIBottomSheet>
+        <FlatList
+            data={countriesList}
+            ListHeaderComponent={renderSearchHeader}
+            renderItem={renderCountryRow}
+            keyExtractor={(item: Country) => item.code}
+            stickyHeaderIndices={[0]}
+            ListEmptyComponent={ListEmptyComponent}
+        />
     );
 }
 
@@ -109,12 +133,13 @@ const useStyles = makeStyles((theme: Theme) => ({
         flexDirection: 'row',
         flex: 1,
     },
-    cancelContainer: {
+    sideHeaderView: {
         flex: 1,
     },
     headerTitle: {
-        flex: 2.5,
+        flex: 2,
         alignSelf: 'center',
+        textAlign: 'center',
     },
     rowContainerInner: {
         paddingVertical: UIConstant.contentOffset,
@@ -128,5 +153,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     emojiContainer: {
         paddingRight: 16,
+    },
+    emptyContainer: {
+        paddingTop: 48,
     },
 }));

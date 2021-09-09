@@ -1,13 +1,7 @@
-import React from 'react';
-import type { CountryPickerProps } from './types';
-import { CountryPicker } from './CountryPicker'
+import type React from 'react';
+import type { WrappedCountryPickerProps } from './types';
+import { WrappedCountryPicker } from './CountryPickerWrapper';
 
-export  * from './types'
+export * from './types';
 
-export function UICountryPicker(props:CountryPickerProps) {
-    return (
-        <CountryPicker
-            {...props}
-        />
-    )   
-}
+export const UICountryPicker: React.FC<WrappedCountryPickerProps> = WrappedCountryPicker;
