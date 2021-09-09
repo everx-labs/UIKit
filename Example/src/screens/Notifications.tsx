@@ -47,6 +47,10 @@ export const Notifications = () => {
                                     : UIBoxButtonVariant.Neutral
                             }
                             onPress={() => setNoticeColor(UINoticeColor.PrimaryInverted)}
+                            layout={{
+                                marginRight: 8,
+                                marginBottom: 4,
+                            }}
                         />
                         <UIBoxButton
                             title={'Negative'}
@@ -56,6 +60,10 @@ export const Notifications = () => {
                                     : UIBoxButtonVariant.Neutral
                             }
                             onPress={() => setNoticeColor(UINoticeColor.Negative)}
+                            layout={{
+                                marginRight: 8,
+                                marginBottom: 4,
+                            }}
                         />
                         <UIBoxButton
                             title={'Secondary'}
@@ -65,6 +73,10 @@ export const Notifications = () => {
                                     : UIBoxButtonVariant.Neutral
                             }
                             onPress={() => setNoticeColor(UINoticeColor.Secondary)}
+                            layout={{
+                                marginRight: 8,
+                                marginBottom: 4,
+                            }}
                         />
                     </View>
                     <UIPopup.Notice
