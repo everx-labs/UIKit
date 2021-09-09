@@ -8,8 +8,11 @@ import type { CountdownCirlceProps } from './types';
 
 const AnimatedCircle = Animated.createAnimatedComponent(
     addNativeProps(Circle, {
-        r: true,
         strokeDashoffset: true,
+        /**
+         * Used for web
+         */
+        'stroke-dashoffset': true,
     }),
 );
 
@@ -20,18 +23,7 @@ const strokeWidth = 1.2;
 const radius = (size - strokeWidth - circleOffset) / 2;
 const circumference = radius * 2 * Math.PI;
 
-export const CountdownCirlce = ({
-    countdownValue,
-    countdownProgress,
-    color,
-}: CountdownCirlceProps) => {
-    const theme = useTheme();
-    const animatedProps = useAnimatedProps(() => {
-        return {
-            strokeDashoffset: -circumference * countdownProgress.value,
-        };
-    });
-
+const useCounter = (countdownValue: Animated.SharedValue<number>) => {
     const [count, setCount] = React.useState<number>(0);
     useAnimatedReaction(
         () => {
@@ -46,6 +38,27 @@ export const CountdownCirlce = ({
             }
         },
     );
+    return count;
+};
+
+export const CountdownCirlce = ({
+    countdownValue,
+    countdownProgress,
+    color,
+}: CountdownCirlceProps) => {
+    const theme = useTheme();
+    const animatedProps = useAnimatedProps(() => {
+        const strokeDashoffset = -circumference * countdownProgress.value;
+        return {
+            /** Native */
+            strokeDashoffset,
+            /** Web */
+            'stroke-dashoffset': strokeDashoffset,
+        };
+    });
+
+    const count = useCounter(countdownValue);
+
     return (
         <View>
             <View style={styles.counter}>

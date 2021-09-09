@@ -39,7 +39,7 @@ export const Notifications = () => {
                         onTap={() => {
                             setVisibleBottomToastNotice(false);
                         }}
-                        duration={UIPopup.Notice.Duration.Short}
+                        duration={UIPopup.Notice.Duration.Long}
                         color={UIPopup.Notice.Color.PrimaryInverted}
                         action={{
                             title: 'Undo',
@@ -62,7 +62,7 @@ export const Notifications = () => {
                             console.log('onTap');
                             setVisibleTopToastNotice(false);
                         }}
-                        duration={UIPopup.Notice.Duration.Short}
+                        duration={UIPopup.Notice.Duration.Long}
                         color={UIPopup.Notice.Color.PrimaryInverted}
                         action={{
                             title: 'Undo',
