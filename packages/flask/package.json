@@ -45,11 +45,11 @@
     "devDependencies": {
         "@react-native-community/bob": "0.16.2",
         "@tonlabs/babel-plugin-transform-inline-consts": "*",
-        "@types/react": "17.0.16",
-        "@types/react-native": "0.64.12",
+        "@types/react": "17.0.20",
+        "@types/react-native": "0.65.0",
         "react": "17.0.2",
         "react-dom": "17.0.2",
-        "react-native": "0.64.2",
+        "react-native": "0.65.1",
         "react-native-gesture-handler": "^1.10.3",
         "react-native-reanimated": "git+ssh://git@github.com/tonlabs/react-native-reanimated-surf.git",
         "react-native-svg": "^12.1.1",
@@ -60,7 +60,7 @@
     "peerDependencies": {
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
-        "react-native": "^0.64.2",
+        "react-native": "^0.65.0",
         "react-native-gesture-handler": "^1.10.3",
         "react-native-reanimated": "^2.2.1",
         "react-native-svg": "^12.1.1",

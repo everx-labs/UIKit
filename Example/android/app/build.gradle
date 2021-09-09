@@ -228,13 +228,6 @@ dependencies {
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
-    /**
-     * TODO: by default it's 3.12.12 that has a crash on Android 11
-     * that was fixed in https://square.github.io/okhttp/changelog_3x/#version-3147
-     * It's fixed in RN 0.65, so remove it after upgrade
-     */
-    implementation("com.squareup.okhttp3:okhttp:3.14.9")
-
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
     }
