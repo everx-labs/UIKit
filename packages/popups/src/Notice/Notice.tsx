@@ -18,7 +18,7 @@ import {
     UIBoxButtonVariant,
 } from '@tonlabs/uikit.hydrogen';
 import { UIConstant } from '@tonlabs/uikit.navigation';
-import { NoticeProps, UINoticeType, UINoticeColor } from './types';
+import { NoticeProps, UINoticeType, UINoticeColor, UINoticeActionAttributes } from './types';
 import { Action } from './Action';
 import { CountdownCirlce } from './CountdownCircle';
 
@@ -89,6 +89,21 @@ const renderCountdown = (
     return null;
 };
 
+const renderAction = (
+    action: UINoticeActionAttributes | undefined,
+    color: UINoticeColor,
+    styles: ViewStyle,
+): React.ReactElement | null => {
+    if (!action) {
+        return null;
+    }
+    return (
+        <View style={styles}>
+            <Action action={action} variant={getActionVariant(color)} />
+        </View>
+    );
+};
+
 export const Notice: React.FC<NoticeProps> = ({
     type,
     title,
@@ -130,7 +145,7 @@ export const Notice: React.FC<NoticeProps> = ({
                         {title}
                     </UILabel>
                 </View>
-                <Action action={action} variant={getActionVariant(color)} />
+                {renderAction(action, color, styles.action)}
             </View>
         </View>
     );
@@ -166,5 +181,8 @@ const useStyles = makeStyles((color: UINoticeColor, type: UINoticeType, theme: T
     countdown: {
         paddingRight: UIConstant.contentInsetVerticalX2,
         zIndex: -10,
+    },
+    action: {
+        marginHorizontal: -UIConstant.contentInsetVerticalX3,
     },
 }));
