@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import Animated, {
-    useDerivedValue,
-    interpolate,
-    useAnimatedProps,
-    useAnimatedReaction,
-    runOnJS,
-} from 'react-native-reanimated';
+import Animated, { useAnimatedProps, useAnimatedReaction, runOnJS } from 'react-native-reanimated';
 import Svg, { Circle } from 'react-native-svg';
 import { useTheme, ColorVariants, UILabel, TypographyVariants } from '@tonlabs/uikit.hydrogen';
+import { addNativeProps } from '@tonlabs/uikit.charts';
 import type { CountdownCirlceProps } from './types';
 
-const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+const AnimatedCircle = Animated.createAnimatedComponent(
+    addNativeProps(Circle, {
+        r: true,
+        strokeDashoffset: true,
+    }),
+);
 
 const circleOffset = 0.5;
 
@@ -26,15 +26,9 @@ export const CountdownCirlce = ({
     color,
 }: CountdownCirlceProps) => {
     const theme = useTheme();
-    const angle = useDerivedValue(() => {
-        return interpolate(countdownProgress.value, [0, 1], [0, Math.PI * 2]);
-    });
-    const strokeDashoffset = useDerivedValue(() => {
-        return angle.value * radius;
-    });
     const animatedProps = useAnimatedProps(() => {
         return {
-            strokeDashoffset: circumference + strokeDashoffset.value,
+            strokeDashoffset: circumference + countdownProgress.value * circumference,
         };
     });
 
@@ -47,9 +41,8 @@ export const CountdownCirlce = ({
         },
         state => {
             const currentCount = Math.ceil(state.countdownValue / 1000);
-            const visibleCount = currentCount > 9 ? 9 : currentCount;
-            if (visibleCount !== count) {
-                runOnJS(setCount)(visibleCount);
+            if (currentCount !== count) {
+                runOnJS(setCount)(currentCount);
             }
         },
     );
