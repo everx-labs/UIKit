@@ -18,17 +18,23 @@ export const Design = () => (
     <ExampleScreen>
         <ExampleSection title="UIBlurView">
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <View style={{ width: 300, height: 200, padding: 16, alignItems: 'center', justifyContent: 'center' }}>
-                    {
-                        Platform.OS === 'web' ? (
-                            <UIImage source={UIAssets.images[404]} />
-                        ) : (
-                            <UIImage
-                                source={UIAssets.icons.ui.camera}
-                                tintColor={ColorVariants.TextAccent}
-                            />
-                        )
-                    }
+                <View
+                    style={{
+                        width: 300,
+                        height: 200,
+                        padding: 16,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    {Platform.OS === 'web' ? (
+                        <UIImage source={UIAssets.images[404]} />
+                    ) : (
+                        <UIImage
+                            source={UIAssets.icons.ui.camera}
+                            tintColor={ColorVariants.TextAccent}
+                        />
+                    )}
                     <UIBlurView
                         testID="uiBlurView"
                         style={{
@@ -38,11 +44,9 @@ export const Design = () => (
                             position: 'absolute',
                             justifyContent: 'center',
                             alignItems: 'center',
-                        }}>
-                        <UILabel
-                            color={UILabelColors.TextPrimary}
-                            role={UILabelRoles.TitleMedium}
-                        >
+                        }}
+                    >
+                        <UILabel color={UILabelColors.TextPrimary} role={UILabelRoles.TitleMedium}>
                             Earn 5.0 % a year just for holding crystals
                         </UILabel>
                         <UILabel

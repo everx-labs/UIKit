@@ -1,85 +1,84 @@
 {
-  "name": "@tonlabs/uikit.stickers",
-  "version": "2.3.0",
-  "description": "Stickers components for Tonlabs's UIKit",
-  "scripts": {
-    "tsc": "tsc --noEmit",
-    "prepare": "bob build"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/tonlabs/UIKit.git",
-    "directory": "packages/stickers"
-  },
-  "keywords": [
-    "tonlabs",
-    "design-system",
-    "react-native"
-  ],
-  "author": "tonlabs.io",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/tonlabs/UIKit/issues"
-  },
-  "homepage": "https://github.com/tonlabs/UIKit/packages/stickers#readme",
-  "main": "lib/commonjs/index.js",
-  "module": "lib/module/index.js",
-  "react-native": "src/index.ts",
-  "types": "lib/typescript/src/index.d.ts",
-  "files": [
-    "lib/",
-    "src/"
-  ],
-  "dependencies": {
-    "@tonlabs/uikit.assets": "^2.3.0",
-    "@tonlabs/uikit.components": "^2.3.0",
-    "@tonlabs/uikit.core": "^2.3.0",
-    "@tonlabs/uikit.hydrogen": "^2.3.0",
-    "@tonlabs/uikit.keyboard": "^2.3.0"
-  },
-  "devDependencies": {
-    "@babel/preset-typescript": "^7.12.1",
-    "@react-native-community/bob": "0.16.2",
-    "@types/react": "17.0.16",
-    "@types/react-native": "0.64.12",
-    "react": "17.0.1",
-    "react-dom": "17.0.1",
-    "react-native": "0.64.2",
-    "react-native-safe-area-context": "^3.1.3",
-    "typescript": "4.2.4"
-  },
-  "peerDependencies": {
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-native": "^0.64.2",
-    "react-native-gesture-handler": "^1.10.3",
-    "react-native-safe-area-context": "^3.1.3"
-  },
-  "@react-native-community/bob": {
-    "source": "src",
-    "output": "lib",
-    "targets": [
-      [
-        "commonjs",
-        {
-          "configFile": "./babel.config.js"
-        }
-      ],
-      [
-        "module",
-        {
-          "configFile": "./babel.config.js"
-        }
-      ],
-      [
-        "typescript",
-        {
-          "project": "tsconfig.build.json"
-        }
-      ]
-    ]
-  }
+    "name": "@tonlabs/uikit.stickers",
+    "version": "2.3.0",
+    "description": "Stickers components for Tonlabs's UIKit",
+    "scripts": {
+        "tsc": "tsc --noEmit",
+        "prepare": "bob build"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tonlabs/UIKit.git",
+        "directory": "packages/stickers"
+    },
+    "keywords": [
+        "tonlabs",
+        "design-system",
+        "react-native"
+    ],
+    "author": "tonlabs.io",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/tonlabs/UIKit/issues"
+    },
+    "homepage": "https://github.com/tonlabs/UIKit/packages/stickers#readme",
+    "main": "lib/commonjs/index.js",
+    "module": "lib/module/index.js",
+    "react-native": "src/index.ts",
+    "types": "lib/typescript/src/index.d.ts",
+    "files": [
+        "lib/",
+        "src/"
+    ],
+    "dependencies": {
+        "@tonlabs/uikit.assets": "^2.3.0",
+        "@tonlabs/uikit.components": "^2.3.0",
+        "@tonlabs/uikit.core": "^2.3.0",
+        "@tonlabs/uikit.hydrogen": "^2.3.0",
+        "@tonlabs/uikit.keyboard": "^2.3.0"
+    },
+    "devDependencies": {
+        "@react-native-community/bob": "0.16.2",
+        "@types/react": "17.0.16",
+        "@types/react-native": "0.64.12",
+        "react": "17.0.2",
+        "react-dom": "17.0.2",
+        "react-native": "0.64.2",
+        "react-native-safe-area-context": "^3.1.3",
+        "typescript": "4.2.4"
+    },
+    "peerDependencies": {
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
+        "react-native": "^0.64.2",
+        "react-native-gesture-handler": "^1.10.3",
+        "react-native-safe-area-context": "^3.1.3"
+    },
+    "@react-native-community/bob": {
+        "source": "src",
+        "output": "lib",
+        "targets": [
+            [
+                "commonjs",
+                {
+                    "configFile": "./babel.config.js"
+                }
+            ],
+            [
+                "module",
+                {
+                    "configFile": "./babel.config.js"
+                }
+            ],
+            [
+                "typescript",
+                {
+                    "project": "tsconfig.build.json"
+                }
+            ]
+        ]
+    }
 }

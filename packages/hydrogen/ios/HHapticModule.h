@@ -10,4 +10,8 @@
 
 @interface HHapticModule : NSObject<RCTBridgeModule>
 
+- (void)hapticImpact:(NSString *)inputStyle;
+- (void)hapticSelection;
+- (void)hapticNotification:(NSString *)inputType;
+
 @end

@@ -1,90 +1,90 @@
 {
-  "name": "@tonlabs/uikit.components",
-  "version": "2.3.0",
-  "description": "Base components for Tonlabs's UIKit",
-  "scripts": {
-    "prepare": "bob build",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/tonlabs/UIKit.git",
-    "directory": "packages/components"
-  },
-  "keywords": [
-    "tonlabs",
-    "design-system",
-    "react-native"
-  ],
-  "author": "tonlabs.io",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/tonlabs/UIKit/issues"
-  },
-  "homepage": "https://github.com/tonlabs/UIKit/packages/components#readme",
-  "main": "lib/commonjs/index.js",
-  "module": "lib/module/index.js",
-  "react-native": "src/index.js",
-  "files": [
-    "lib/",
-    "src/"
-  ],
-  "dependencies": {
-    "@tonlabs/uikit.assets": "^2.3.0",
-    "@tonlabs/uikit.core": "^2.3.0",
-    "bignumber.js": "9.0.0",
-    "bowser": "1.9.4",
-    "dayjs": "1.9.1",
-    "lodash": "4.17.21",
-    "prop-types": "15.6.2",
-    "react-native-awesome-alerts": "1.3.2",
-    "react-native-dropdownalert": "4.3.0",
-    "react-native-flash-message": "0.1.23",
-    "react-native-indicators": "git+https://github.com/tonlabs/react-native-indicators.git",
-    "react-style-proptype": "3.2.2"
-  },
-  "devDependencies": {
-    "@react-native-community/bob": "0.16.2",
-    "@react-native-community/netinfo": "^5.9.6",
-    "react": "17.0.1",
-    "react-dom": "17.0.1",
-    "react-native": "0.64.2",
-    "react-native-fast-image": "^8.3.4",
-    "react-native-gesture-handler": "^1.10.3",
-    "react-native-image-picker": "git+https://github.com/FactorBench/react-native-image-picker.git#develop",
-    "react-native-svg": "^12.1.0"
-  },
-  "peerDependencies": {
-    "@react-native-community/netinfo": "^5.9.6",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-native": "^0.64.2",
-    "react-native-fast-image": "^8.3.4",
-    "react-native-gesture-handler": "^1.10.3",
-    "react-native-image-picker": "*",
-    "react-native-svg": "^12.1.0"
-  },
-  "@react-native-community/bob": {
-    "source": "src",
-    "output": "lib",
-    "targets": [
-      [
-        "commonjs",
-        {
-          "configFile": "../../babel.config.js",
-          "copyFlow": true
-        }
-      ],
-      [
-        "module",
-        {
-          "configFile": "../../babel.config.js",
-          "copyFlow": true
-        }
-      ]
-    ]
-  }
+    "name": "@tonlabs/uikit.components",
+    "version": "2.3.0",
+    "description": "Base components for Tonlabs's UIKit",
+    "scripts": {
+        "prepare": "bob build",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tonlabs/UIKit.git",
+        "directory": "packages/components"
+    },
+    "keywords": [
+        "tonlabs",
+        "design-system",
+        "react-native"
+    ],
+    "author": "tonlabs.io",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/tonlabs/UIKit/issues"
+    },
+    "homepage": "https://github.com/tonlabs/UIKit/packages/components#readme",
+    "main": "lib/commonjs/index.js",
+    "module": "lib/module/index.js",
+    "react-native": "src/index.js",
+    "files": [
+        "lib/",
+        "src/"
+    ],
+    "dependencies": {
+        "@tonlabs/uikit.assets": "^2.3.0",
+        "@tonlabs/uikit.core": "^2.3.0",
+        "bignumber.js": "9.0.0",
+        "bowser": "1.9.4",
+        "dayjs": "1.9.1",
+        "lodash": "4.17.21",
+        "prop-types": "15.6.2",
+        "react-native-awesome-alerts": "1.3.2",
+        "react-native-dropdownalert": "4.3.0",
+        "react-native-flash-message": "0.1.23",
+        "react-native-indicators": "git+https://github.com/tonlabs/react-native-indicators.git",
+        "react-style-proptype": "3.2.2"
+    },
+    "devDependencies": {
+        "@react-native-community/bob": "0.16.2",
+        "@react-native-community/netinfo": "^5.9.6",
+        "react": "17.0.2",
+        "react-dom": "17.0.2",
+        "react-native": "0.64.2",
+        "react-native-fast-image": "^8.3.4",
+        "react-native-gesture-handler": "^1.10.3",
+        "react-native-image-picker": "git+https://github.com/FactorBench/react-native-image-picker.git#develop",
+        "react-native-svg": "^12.1.0"
+    },
+    "peerDependencies": {
+        "@react-native-community/netinfo": "^5.9.6",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
+        "react-native": "^0.64.2",
+        "react-native-fast-image": "^8.3.4",
+        "react-native-gesture-handler": "^1.10.3",
+        "react-native-image-picker": "*",
+        "react-native-svg": "^12.1.0"
+    },
+    "@react-native-community/bob": {
+        "source": "src",
+        "output": "lib",
+        "targets": [
+            [
+                "commonjs",
+                {
+                    "configFile": "../../babel.config.js",
+                    "copyFlow": true
+                }
+            ],
+            [
+                "module",
+                {
+                    "configFile": "../../babel.config.js",
+                    "copyFlow": true
+                }
+            ]
+        ]
+    }
 }
