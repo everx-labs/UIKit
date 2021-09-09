@@ -23,7 +23,7 @@ const useNotificationDuration = (duration: UINoticeDuration | undefined) => {
     }, [duration]);
 };
 
-export const useNoticeVisibility2 = (
+export const useNoticeVisibility = (
     onClose: (() => void) | undefined,
     visible: boolean,
     duration: UINoticeDuration | undefined,
@@ -34,7 +34,7 @@ export const useNoticeVisibility2 = (
     const notificationDuration = useNotificationDuration(duration);
 
     const countdownProgress = useDerivedValue(() => {
-        return countdownValue.value / notificationDuration;
+        return 1 - countdownValue.value / notificationDuration;
     }, [notificationDuration]);
 
     useAnimatedReaction(

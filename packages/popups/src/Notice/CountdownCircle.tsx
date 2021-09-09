@@ -28,7 +28,7 @@ export const CountdownCirlce = ({
     const theme = useTheme();
     const animatedProps = useAnimatedProps(() => {
         return {
-            strokeDashoffset: circumference + countdownProgress.value * circumference,
+            strokeDashoffset: -circumference * countdownProgress.value,
         };
     });
 
