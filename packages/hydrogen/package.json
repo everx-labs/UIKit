@@ -51,7 +51,7 @@
         "@testing-library/jest-native": "4.0.1",
         "@testing-library/react-native": "7.2.0",
         "@types/jest": "26.0.24",
-        "@types/react": "17.0.16",
+        "@types/react": "17.0.20",
         "@types/react-native": "0.65.0",
         "jest": "26.4.0",
         "react": "17.0.2",
