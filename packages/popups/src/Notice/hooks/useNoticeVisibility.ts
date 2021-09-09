@@ -29,9 +29,8 @@ export const useNoticeVisibility = (
     duration: UINoticeDuration | undefined,
 ) => {
     const [noticeVisible, setNoticeVisible] = React.useState(visible);
-    const countdownValue = useSharedValue<number>(-1);
-
     const notificationDuration = useNotificationDuration(duration);
+    const countdownValue = useSharedValue<number>(notificationDuration);
 
     const countdownProgress = useDerivedValue(() => {
         return 1 - countdownValue.value / notificationDuration;
@@ -55,16 +54,16 @@ export const useNoticeVisibility = (
 
     const onNoticeCloseAnimationFinished = React.useCallback(() => {
         setNoticeVisible(false);
-        countdownValue.value = -1;
+        countdownValue.value = notificationDuration;
         if (visible && onClose) {
             onClose();
         }
     }, [onClose, countdownValue, visible]);
 
     const startCountdown = React.useCallback(() => {
-        countdownValue.value = notificationDuration;
+        const duration = notificationDuration * (1 - countdownProgress.value);
         countdownValue.value = withTiming(0, {
-            duration: notificationDuration,
+            duration,
             easing: Easing.linear,
         });
     }, [countdownValue, notificationDuration]);

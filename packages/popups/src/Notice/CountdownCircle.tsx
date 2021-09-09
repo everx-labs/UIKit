@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedProps, useAnimatedReaction, runOnJS } from 'react-native-reanimated';
 import Svg, { Circle } from 'react-native-svg';
-import { useTheme, ColorVariants, UILabel, TypographyVariants } from '@tonlabs/uikit.hydrogen';
+import { useTheme, UILabel, TypographyVariants } from '@tonlabs/uikit.hydrogen';
 import { addNativeProps } from '@tonlabs/uikit.charts';
 import type { CountdownCirlceProps } from './types';
 
@@ -84,7 +84,7 @@ export const CountdownCirlce = ({
                 <Svg width={size} height={size}>
                     <AnimatedCircle
                         animatedProps={animatedProps}
-                        stroke={theme[ColorVariants.TextPrimaryInverted] as string}
+                        stroke={theme[color] as string}
                         fill="none"
                         cx={size / 2 + circleOffset / 2}
                         cy={size / 2 - circleOffset / 2}

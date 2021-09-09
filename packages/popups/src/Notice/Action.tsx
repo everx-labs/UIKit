@@ -4,11 +4,11 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import type { ActionProps } from './types';
 
-export const Action = ({ action }: ActionProps) => {
+export const Action = ({ action, variant }: ActionProps) => {
     if (!action) {
         return null;
     }
-    const { title, onTap, variant } = action;
+    const { title, onTap } = action;
     return (
         <View style={styles.container}>
             <UILinkButton

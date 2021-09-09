@@ -23,7 +23,6 @@ export enum UINoticeDuration {
 export type UINoticeActionAttributes = {
     title: string;
     onTap: () => void;
-    variant?: UILinkButtonVariant;
 };
 
 export type NoticeProps = {
@@ -41,6 +40,7 @@ export type NoticeProps = {
 
 export type ActionProps = {
     action?: UINoticeActionAttributes;
+    variant?: UILinkButtonVariant;
 };
 
 export type UINoticeProps = {

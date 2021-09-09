@@ -7,6 +7,7 @@ import {
     makeStyles,
     TypographyVariants,
     UILabel,
+    UILinkButtonVariant,
 } from '@tonlabs/uikit.hydrogen';
 import { UIConstant } from '@tonlabs/uikit.navigation';
 import { NoticeProps, UINoticeType, UINoticeColor } from './types';
@@ -18,7 +19,10 @@ const getBackgroundColor = (color: UINoticeColor, theme: Theme): ColorValue => {
         case UINoticeColor.Secondary:
             return theme[ColorVariants.BackgroundSecondary];
         case UINoticeColor.Negative:
-            return theme[ColorVariants.BackgroundNegative];
+            /**
+             * TODO Add new color to ColorVariants
+             */
+            return (theme[ColorVariants.BackgroundNegative] as string) + '14';
         case UINoticeColor.PrimaryInverted:
         default:
             return theme[ColorVariants.BackgroundPrimaryInverted];
@@ -28,11 +32,22 @@ const getBackgroundColor = (color: UINoticeColor, theme: Theme): ColorValue => {
 export const getTitleColorVariant = (color: UINoticeColor): ColorVariants => {
     switch (color) {
         case UINoticeColor.Secondary:
+        case UINoticeColor.Negative:
             return ColorVariants.TextPrimary;
         case UINoticeColor.PrimaryInverted:
-        case UINoticeColor.Negative:
         default:
             return ColorVariants.TextPrimaryInverted;
+    }
+};
+
+export const getActionVariant = (color: UINoticeColor): UILinkButtonVariant => {
+    switch (color) {
+        case UINoticeColor.Negative:
+            return UILinkButtonVariant.Negative;
+        case UINoticeColor.Secondary:
+        case UINoticeColor.PrimaryInverted:
+        default:
+            return UILinkButtonVariant.Neutral;
     }
 };
 
@@ -59,45 +74,45 @@ export const Notice: React.FC<NoticeProps> = ({
     const theme = useTheme();
     const styles = useStyles(color, type, theme);
     return (
-        <View style={styles.container}>
-            <TouchableWithoutFeedback
-                onPress={onPress}
-                onLongPress={onLongPress}
-                delayLongPress={UIConstant.notice.longPressDelay}
-                onPressOut={onPressOut}
-            >
-                <View style={StyleSheet.absoluteFill} />
-            </TouchableWithoutFeedback>
-            <View style={styles.countdown}>
-                <CountdownCirlce
-                    countdownValue={countdownValue}
-                    countdownProgress={countdownProgress}
-                    color={getTitleColorVariant(color)}
-                />
-            </View>
-            <View style={styles.labelContainer} pointerEvents="none">
-                <UILabel
-                    testID="message_default"
-                    role={TypographyVariants.ParagraphNote}
-                    color={getTitleColorVariant(color)}
+        <View style={styles.underlay}>
+            <View style={styles.container}>
+                <TouchableWithoutFeedback
+                    onPress={onPress}
+                    onLongPress={onLongPress}
+                    delayLongPress={UIConstant.notice.longPressDelay}
+                    onPressOut={onPressOut}
                 >
-                    {title}
-                </UILabel>
+                    <View style={StyleSheet.absoluteFill} />
+                </TouchableWithoutFeedback>
+                <View style={styles.countdown}>
+                    <CountdownCirlce
+                        countdownValue={countdownValue}
+                        countdownProgress={countdownProgress}
+                        color={getTitleColorVariant(color)}
+                    />
+                </View>
+                <View style={styles.labelContainer} pointerEvents="none">
+                    <UILabel
+                        testID="message_default"
+                        role={TypographyVariants.ParagraphNote}
+                        color={getTitleColorVariant(color)}
+                    >
+                        {title}
+                    </UILabel>
+                </View>
+                <Action action={action} variant={getActionVariant(color)} />
             </View>
-            <Action action={action} />
         </View>
     );
 };
 
 const useStyles = makeStyles((color: UINoticeColor, type: UINoticeType, theme: Theme) => ({
-    container: {
+    underlay: {
         maxWidth: UIConstant.notice.maxWidth,
         flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: getBackgroundColor(color, theme),
+        backgroundColor: 'white',
         borderRadius: getBorderRadius(type),
-        paddingHorizontal: UIConstant.contentOffset,
+        overflow: 'hidden',
         ...Platform.select({
             web: {
                 cursor: 'pointer',
@@ -106,6 +121,13 @@ const useStyles = makeStyles((color: UINoticeColor, type: UINoticeType, theme: T
             },
             default: null,
         }),
+    },
+    container: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: getBackgroundColor(color, theme),
+        paddingHorizontal: UIConstant.contentOffset,
     },
     labelContainer: {
         flex: 1,
