@@ -1,4 +1,4 @@
-import type { UILinkButtonVariant, ColorVariants } from '@tonlabs/uikit.hydrogen';
+import type { UIBoxButtonVariant, ColorVariants } from '@tonlabs/uikit.hydrogen';
 import type Animated from 'react-native-reanimated';
 
 // eslint-disable-next-line no-shadow
@@ -40,7 +40,7 @@ export type NoticeProps = {
 
 export type ActionProps = {
     action?: UINoticeActionAttributes;
-    variant?: UILinkButtonVariant;
+    variant?: UIBoxButtonVariant;
 };
 
 export type UINoticeProps = {

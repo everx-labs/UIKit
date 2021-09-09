@@ -7,7 +7,7 @@ import {
     makeStyles,
     TypographyVariants,
     UILabel,
-    UILinkButtonVariant,
+    UIBoxButtonVariant,
 } from '@tonlabs/uikit.hydrogen';
 import { UIConstant } from '@tonlabs/uikit.navigation';
 import { NoticeProps, UINoticeType, UINoticeColor } from './types';
@@ -40,14 +40,14 @@ export const getTitleColorVariant = (color: UINoticeColor): ColorVariants => {
     }
 };
 
-export const getActionVariant = (color: UINoticeColor): UILinkButtonVariant => {
+export const getActionVariant = (color: UINoticeColor): UIBoxButtonVariant => {
     switch (color) {
         case UINoticeColor.Negative:
-            return UILinkButtonVariant.Negative;
+            return UIBoxButtonVariant.Negative;
         case UINoticeColor.Secondary:
         case UINoticeColor.PrimaryInverted:
         default:
-            return UILinkButtonVariant.Neutral;
+            return UIBoxButtonVariant.Neutral;
     }
 };
 
