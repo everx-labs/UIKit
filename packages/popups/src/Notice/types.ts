@@ -35,6 +35,7 @@ export type NoticeProps = {
     action?: UINoticeActionAttributes;
     countdownValue: Animated.SharedValue<number>;
     countdownProgress: Animated.SharedValue<number>;
+    isCountdownVisible?: boolean;
     testID?: string;
 };
 
@@ -60,6 +61,10 @@ export type UINoticeProps = {
      * Title of notification
      */
     title: string;
+    /**
+     * Is the countdown displayed (default: false)
+     */
+    isCountdownVisible?: boolean;
     /**
      * Action attributes
      */
@@ -89,6 +94,7 @@ export type ToastNoticeProps = UINoticeProps & {
     keyboardHeight: Animated.SharedValue<number>;
     countdownValue: Animated.SharedValue<number>;
     countdownProgress: Animated.SharedValue<number>;
+    isCountdownVisible?: boolean;
 };
 
 export type SnapPoints = {

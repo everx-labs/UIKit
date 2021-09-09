@@ -10,6 +10,7 @@ export const Notifications = () => {
     const [noticeColor, setNoticeColor] = React.useState<UINoticeColor>(
         UINoticeColor.PrimaryInverted,
     );
+    const [isCountdownVisible, setIsCountdownVisible] = React.useState<boolean>(false);
     const [visibleBottomToastNotice, setVisibleBottomToastNotice] = React.useState<boolean>(false);
     const [visibleTopToastNotice, setVisibleTopToastNotice] = React.useState<boolean>(false);
     return (
@@ -37,6 +38,7 @@ export const Notifications = () => {
                         style={{
                             flexDirection: 'row',
                             flexWrap: 'wrap',
+                            paddingBottom: 30,
                         }}
                     >
                         <UIBoxButton
@@ -79,6 +81,16 @@ export const Notifications = () => {
                             }}
                         />
                     </View>
+                    <UIBoxButton
+                        title={'Countdown visible'}
+                        variant={
+                            isCountdownVisible
+                                ? UIBoxButtonVariant.Positive
+                                : UIBoxButtonVariant.Neutral
+                        }
+                        onPress={() => setIsCountdownVisible(prev => !prev)}
+                    />
+
                     <UIPopup.Notice
                         type={UIPopup.Notice.Type.TopToast}
                         title="Your account was deleted"
@@ -100,6 +112,7 @@ export const Notifications = () => {
                                 setVisibleTopToastNotice(false);
                             },
                         }}
+                        isCountdownVisible={isCountdownVisible}
                     />
                     <UIPopup.Notice
                         type={UIPopup.Notice.Type.BottomToast}
@@ -120,6 +133,7 @@ export const Notifications = () => {
                                 setVisibleBottomToastNotice(false);
                             },
                         }}
+                        isCountdownVisible={isCountdownVisible}
                     />
                 </View>
             </ExampleSection>

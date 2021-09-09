@@ -1,5 +1,13 @@
 import * as React from 'react';
-import { ColorValue, View, Platform, TouchableWithoutFeedback, StyleSheet } from 'react-native';
+import {
+    ColorValue,
+    View,
+    Platform,
+    TouchableWithoutFeedback,
+    StyleSheet,
+    ViewStyle,
+} from 'react-native';
+import type Animated from 'react-native-reanimated';
 import {
     useTheme,
     ColorVariants,
@@ -60,6 +68,27 @@ const getBorderRadius = (type: UINoticeType): number => {
     }
 };
 
+const renderCountdown = (
+    countdownValue: Animated.SharedValue<number>,
+    countdownProgress: Animated.SharedValue<number>,
+    color: UINoticeColor,
+    styles: ViewStyle,
+    isCountdownVisible: boolean | undefined,
+): React.ReactElement | null => {
+    if (isCountdownVisible) {
+        return (
+            <View style={styles}>
+                <CountdownCirlce
+                    countdownValue={countdownValue}
+                    countdownProgress={countdownProgress}
+                    color={getTitleColorVariant(color)}
+                />
+            </View>
+        );
+    }
+    return null;
+};
+
 export const Notice: React.FC<NoticeProps> = ({
     type,
     title,
@@ -70,6 +99,7 @@ export const Notice: React.FC<NoticeProps> = ({
     action,
     countdownValue,
     countdownProgress,
+    isCountdownVisible,
 }: NoticeProps) => {
     const theme = useTheme();
     const styles = useStyles(color, type, theme);
@@ -84,13 +114,13 @@ export const Notice: React.FC<NoticeProps> = ({
                 >
                     <View style={StyleSheet.absoluteFill} />
                 </TouchableWithoutFeedback>
-                <View style={styles.countdown}>
-                    <CountdownCirlce
-                        countdownValue={countdownValue}
-                        countdownProgress={countdownProgress}
-                        color={getTitleColorVariant(color)}
-                    />
-                </View>
+                {renderCountdown(
+                    countdownValue,
+                    countdownProgress,
+                    color,
+                    styles.countdown,
+                    isCountdownVisible,
+                )}
                 <View style={styles.labelContainer} pointerEvents="none">
                     <UILabel
                         testID="message_default"
