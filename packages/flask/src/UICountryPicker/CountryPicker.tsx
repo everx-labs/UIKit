@@ -1,38 +1,53 @@
 import React from 'react';
+import Fuse from 'fuse.js';
+import { Dimensions, StatusBar, View } from 'react-native';
+import { uiLocalized } from '@tonlabs/uikit.localization';
+import { FlatList, ScrollView, UIBottomSheet, UIConstant, UISearchBar } from '@tonlabs/uikit.navigation';
 import {
     ColorVariants,
     makeStyles,
-    Theme,
-    TouchableOpacity,
+    Theme, TouchableOpacity,
     TypographyVariants,
     UILabel,
     UILinkButton,
     useTheme,
 } from '@tonlabs/uikit.hydrogen';
-import { uiLocalized } from '@tonlabs/uikit.localization';
-import { FlatList, UIConstant, UISearchBar } from '@tonlabs/uikit.navigation';
-import { View } from 'react-native';
-import type { Country, CountryPickerProps } from './types';
-// @ts-ignore
+import type { Country, WrappedCountryPickerProps } from './types';
+
+// @ts-ignore TODO: replace with fetched json
 import countriesListJSON from './countries.json';
 
+const fuseOptions = {
+    shouldSort: true,
+    threshold: 0.3,
+    location: 0,
+    distance: 100,
+    maxPatternLength: 32,
+    minMatchCharLength: 1,
+    keys: ['name'],
+};
+
+// TODO: add wrapper web version(modal) when gotovo
 export function CountryPicker(
     {
-        onSelect,
         onClose,
-        permitted = [],
+        onSelect,
+        visible,
         banned = [],
-    }: CountryPickerProps) {
+        permitted = [],
+    }: WrappedCountryPickerProps) {
 
     const theme = useTheme();
     const styles = useStyles(theme);
 
+    const [search, setSearch] = React.useState('');
     const [countriesList, setCountriesList] = React.useState<Country[]>(countriesListJSON);
+    const [filteredList, setFilteredList] = React.useState(countriesList);
+    const fuse = React.useMemo(() => new Fuse(countriesList, fuseOptions), [countriesList]);
 
-    const onSelectCountry = (item: Country) => {
-        onClose();
+    const onSelectCountry = React.useCallback((item: Country) => {
         onSelect && onSelect(item.code);
-    };
+    }, [onSelect]);
 
     const filterCountries = React.useCallback(() => {
         const check = (code: string) => {
@@ -50,12 +65,6 @@ export function CountryPicker(
         setCountriesList(permittedCountries);
     }, [banned, permitted]);
 
-    React.useEffect(() => {
-        if (permitted.length || banned.length) {
-            filterCountries();
-        }
-    }, []);
-
     const renderSearchHeader = () => {
         return (
             <View style={styles.headerContainer}>
@@ -67,11 +76,11 @@ export function CountryPicker(
                         role={TypographyVariants.HeadlineHead}
                         style={styles.headerTitle}
                     >
-                        Choose a Country
+                        {uiLocalized.CountryPicker.Title}
                     </UILabel>
                     <View style={styles.sideHeaderView} />
                 </View>
-                <UISearchBar />
+                <UISearchBar returnKeyType='done' value={search} onChangeText={setSearch} />
             </View>
         );
     };
@@ -95,38 +104,68 @@ export function CountryPicker(
                     role={TypographyVariants.TitleMedium}
                     color={ColorVariants.TextSecondary}
                 >
-                    We didn't find your country
+                    {uiLocalized.CountryPicker.CountryNotFindTitle}
                 </UILabel>
                 <UILabel
                     role={TypographyVariants.Action}
                     color={ColorVariants.TextSecondary}
                 >
-                    Try again or select from the list
+                    {uiLocalized.CountryPicker.CountryNotFindDetails}
                 </UILabel>
             </View>
         );
     };
 
+    React.useEffect(() => {
+        if (permitted.length || banned.length) {
+            filterCountries();
+        }
+    }, []);
+
+    React.useEffect(() => {
+        const result = search ? fuse.search(search) : countriesList;
+        setFilteredList(result as Country[]);
+    }, [search]);
+
+    const keyExtractor = React.useCallback((item: Country) => item.code, []);
+
     return (
-        <FlatList
-            data={countriesList}
-            ListHeaderComponent={renderSearchHeader}
-            renderItem={renderCountryRow}
-            keyExtractor={(item: Country) => item.code}
-            stickyHeaderIndices={[0]}
-            ListEmptyComponent={ListEmptyComponent}
-        />
+        <UIBottomSheet
+            onClose={onClose}
+            visible={visible}
+            style={styles.sheet}>
+            <ScrollView
+                stickyHeaderIndices={[0]}
+            >
+                {renderSearchHeader()}
+                <FlatList
+                    data={filteredList}
+                    renderItem={renderCountryRow}
+                    keyExtractor={keyExtractor}
+                    ListEmptyComponent={ListEmptyComponent}
+                    keyboardDismissMode='on-drag'
+                />
+            </ScrollView>
+        </UIBottomSheet>
     );
 }
 
+const { height } = Dimensions.get('screen');
+
 const useStyles = makeStyles((theme: Theme) => ({
+    sheet: {
+        backgroundColor: theme[ColorVariants.BackgroundPrimary] as string,
+        borderRadius: 10,
+        height: height - (StatusBar.currentHeight ?? 0),
+    },
     headerContainer: {
-        backgroundColor: theme[ColorVariants.BackgroundPrimary],
-        borderBottomColor: '#eee',
+        backgroundColor: theme[ColorVariants.BackgroundPrimary] as string,
+        borderBottomColor: theme[ColorVariants.LineTertiary] as string,
         borderBottomWidth: 1,
         borderTopLeftRadius: 12,
         borderTopRightRadius: 12,
         paddingBottom: 12,
+        height: 120,
     },
     headerTitleContainer: {
         paddingHorizontal: 16,
@@ -145,7 +184,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         paddingVertical: UIConstant.contentOffset,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        borderBottomColor: '#eee',
+        borderBottomColor: theme[ColorVariants.LineTertiary] as string,
         borderBottomWidth: 1,
     },
     rowContainer: {
@@ -154,7 +193,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     emojiContainer: {
         paddingRight: 16,
     },
-    emptyContainer: {
-        paddingTop: 48,
-    },
+    emptyContainer:
+        {
+            paddingTop: 48,
+            alignItems: 'center',
+        },
 }));

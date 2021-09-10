@@ -5,7 +5,7 @@ import {
     ViewStyle,
     StyleProp,
     Platform,
-    Keyboard,
+    Keyboard, KeyboardAvoidingView,
 } from 'react-native';
 import {
     PanGestureHandler,
@@ -217,11 +217,10 @@ function UISheetPortalContent({
                     </PanGestureHandler>
                 </Animated.View>
             </TapGestureHandler>
-
             <Animated.View
                 style={[styles.sheet, cardStyle]}
                 onLayout={onSheetLayout}
-                pointerEvents="box-none"
+                pointerEvents='box-none'
             >
                 <PanGestureHandler
                     maxPointers={1}
@@ -231,13 +230,21 @@ function UISheetPortalContent({
                         ? { waitFor: scrollPanGestureHandlerRef }
                         : null)}
                 >
-                    <Animated.View style={style}>
-                        <ScrollableContext.Provider
-                            value={scrollableContextValue}
-                        >
-                            {children}
-                        </ScrollableContext.Provider>
-                    </Animated.View>
+                    {/** todo: write the correct keyboard interaction. So far this is the only solution that has helped for the UICountryPicker (flask) and it does not work well. */}
+                    <KeyboardAvoidingView
+                        behavior='height'
+                        keyboardVerticalOffset={0}
+                    >
+                        <Animated.View style={style}>
+
+                            <ScrollableContext.Provider
+                                value={scrollableContextValue}
+                            >
+                                {children}
+                            </ScrollableContext.Provider>
+
+                        </Animated.View>
+                    </KeyboardAvoidingView>
                 </PanGestureHandler>
             </Animated.View>
         </View>

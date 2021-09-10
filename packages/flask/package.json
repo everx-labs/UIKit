@@ -41,7 +41,8 @@
         "@tonlabs/uikit.navigation": "^2.3.0",
         "@tonlabs/uikit.navigation_legacy": "^2.3.0",
         "html2canvas": "^1.0.0-rc.7",
-        "qrcode": "^1.4.4"
+        "qrcode": "^1.4.4",
+        "fuse.js": "^3.4.6"
     },
     "devDependencies": {
         "@react-native-community/bob": "0.16.2",

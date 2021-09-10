@@ -164,6 +164,11 @@
     "CopyRight": "2018– {CURRENT_YEAR} © TON 랩스",
     "CopyToClipboard": "클립보드에 복사하기",
     "Country": "국가",
+    "CountryPicker": {
+        "Title": "Choose a Country",
+        "CountryNotFindTitle": "We didn't find your country",
+        "CountryNotFindDetails": "Try again or select from the list"
+    },
     "Create": "만들기",
     "CreateChannel": "채널 만들기",
     "CreateNewAccount": "새 계정 만들기",

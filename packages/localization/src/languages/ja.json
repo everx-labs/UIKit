@@ -164,6 +164,11 @@
     "CopyRight": "2018–{CURRENT_YEAR} © TON Labs",
     "CopyToClipboard": "クリップボードにコピー",
     "Country": "国",
+    "CountryPicker": {
+        "Title": "Choose a Country",
+        "CountryNotFindTitle": "We didn't find your country",
+        "CountryNotFindDetails": "Try again or select from the list"
+    },
     "Create": "作成する",
     "CreateChannel": "チャンネルを作成する",
     "CreateNewAccount": "新しいアカウントを作成する",

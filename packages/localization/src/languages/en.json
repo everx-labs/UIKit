@@ -152,6 +152,11 @@
     "CopyRight": "2018–{CURRENT_YEAR} © TON Labs",
     "CopyToClipboard": "Copy to clipboard",
     "Country": "Country",
+    "CountryPicker": {
+        "Title": "Choose a Country",
+        "CountryNotFindTitle": "We didn't find your country",
+        "CountryNotFindDetails": "Try again or select from the list"
+    },
     "Create": "Create",
     "CreateChannel": "Create Channel",
     "CreateNewAccount": "Create new account",

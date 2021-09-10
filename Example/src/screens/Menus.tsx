@@ -297,8 +297,10 @@ export const Menus = () => {
                     />
                     <UICountryPicker
                         visible={countryPickerVisible}
-                        permitted={['RU', 'AQ']}
-                        onSelect={(countryCode: Country) => console.log(countryCode)}
+                        onSelect={(countryCode: Country) => {
+                            console.log(countryCode);
+                            setCountryPickerVisible(false);
+                        }}
                         onClose={() => setCountryPickerVisible(false)}
                     />
                 </View>
