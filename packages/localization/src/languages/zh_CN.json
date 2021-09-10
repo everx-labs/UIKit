@@ -137,7 +137,7 @@
         },
         "QRCode": {
             "errorReceived": "QR-code was not generated",
-            "errorSended": "QR-code was not generated.\nTry again"
+            "errorSent": "QR-code was not generated.\nTry again"
         }
     },
     "ChatWith": "聊天",
