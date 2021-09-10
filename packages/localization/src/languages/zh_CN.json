@@ -134,6 +134,10 @@
         "DateSeparators": {
             "Today": "今天",
             "Yesterday": "昨天"
+        },
+        "QRCode": {
+            "errorReceived": "QR-code was not generated",
+            "errorSended": "QR-code was not generated.\nTry again"
         }
     },
     "ChatWith": "聊天",
@@ -371,14 +375,7 @@
     "PassportRequestReview": "您的文件正在接受验证。我们会在2个工作小时内回复您",
     "PassportSaveError": "更新护照时发生了错误",
     "PassportSaveSuccess": "您的护照已更新",
-    "PassportStatus": [
-        "全无",
-        "坏的",
-        "可疑的",
-        "未知",
-        "在等待",
-        "可信的"
-    ],
+    "PassportStatus": ["全无", "坏的", "可疑的", "未知", "在等待", "可信的"],
     "Password": "密码",
     "Pay": "支付",
     "Period": "时]期",
@@ -488,12 +485,7 @@
     "TONLabel": "TON",
     "TotalBalance": "总余额",
     "Transaction": "交易",
-    "TransactionError": [
-        "-",
-        "转移限制已达到",
-        "拒绝访问",
-        "未知错误"
-    ],
+    "TransactionError": ["-", "转移限制已达到", "拒绝访问", "未知错误"],
     "TransactionFrom": "你已经收到了交易从",
     "Transactions": "交易次数",
     "TransactionStatus": {

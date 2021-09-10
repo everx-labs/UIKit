@@ -134,6 +134,10 @@
         "DateSeparators": {
             "Today": "Bugün",
             "Yesterday": "Dün"
+        },
+        "QRCode": {
+            "errorReceived": "QR-code was not generated",
+            "errorSended": "QR-code was not generated.\nTry again"
         }
     },
     "ChatWith": "ile sohbet",
@@ -371,14 +375,7 @@
     "PassportRequestReview": "Belgeleriniz şimdi doğrulanıyor. 2 iş saati içinde size geri döneceğiz",
     "PassportSaveError": "Pasaportunuzu güncellerken bir hata oluştu",
     "PassportSaveSuccess": "Pasaportunuz güncellendi",
-    "PassportStatus": [
-        "None",
-        "Kötü",
-        "Şüpheli",
-        "Bilinmeyen",
-        "Bekleyen",
-        "Güvenilir"
-    ],
+    "PassportStatus": ["None", "Kötü", "Şüpheli", "Bilinmeyen", "Bekleyen", "Güvenilir"],
     "Password": "Şifre",
     "Pay": "Öde",
     "Period": "Periyot",
@@ -488,12 +485,7 @@
     "TONLabel": "TON",
     "TotalBalance": "Toplam Bakiye",
     "Transaction": "İşlem",
-    "TransactionError": [
-        "-",
-        "Aktarım sınırına ulaşıldı",
-        "Erişim reddedildi",
-        "Bilinmeyen hata"
-    ],
+    "TransactionError": ["-", "Aktarım sınırına ulaşıldı", "Erişim reddedildi", "Bilinmeyen hata"],
     "TransactionFrom": "tarafından bir işlem aldınız",
     "Transactions": "İşlemler",
     "TransactionStatus": {

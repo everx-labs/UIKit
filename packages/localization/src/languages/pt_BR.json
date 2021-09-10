@@ -134,6 +134,10 @@
         "DateSeparators": {
             "Today": "Hoje",
             "Yesterday": "Ontem"
+        },
+        "QRCode": {
+            "errorReceived": "QR-code was not generated",
+            "errorSended": "QR-code was not generated.\nTry again"
         }
     },
     "ChatWith": "Conversar com",
@@ -371,14 +375,7 @@
     "PassportRequestReview": "Seus documentos estão sendo verificados agora. Entraremos em contato com você em 2 horas úteis",
     "PassportSaveError": "Ocorreu um erro ao atualizar seu passaporte",
     "PassportSaveSuccess": "Seu passaporte foi atualizado",
-    "PassportStatus": [
-        "Nenhum",
-        "Ruim",
-        "Suspeito",
-        "Desconhecido",
-        "Pendente",
-        "Confiável"
-    ],
+    "PassportStatus": ["Nenhum", "Ruim", "Suspeito", "Desconhecido", "Pendente", "Confiável"],
     "Password": "Senha",
     "Pay": "Pagar",
     "Period": "Período",

@@ -134,6 +134,10 @@
         "DateSeparators": {
             "Today": "今日",
             "Yesterday": "昨日"
+        },
+        "QRCode": {
+            "errorReceived": "QR-code was not generated",
+            "errorSended": "QR-code was not generated.\nTry again"
         }
     },
     "ChatWith": "…とチャット",
@@ -371,14 +375,7 @@
     "PassportRequestReview": "現在ドキュメントが検証中です。2営業時間以内にご連絡いたします。",
     "PassportSaveError": "パスポートの更新中エラーが発生しました。",
     "PassportSaveSuccess": "パスポートの更新が完了です。",
-    "PassportStatus": [
-        "なし",
-        "悪い",
-        "疑わしい",
-        "未知",
-        "保留中",
-        "信頼"
-    ],
+    "PassportStatus": ["なし", "悪い", "疑わしい", "未知", "保留中", "信頼"],
     "Password": "パスワード",
     "Pay": "支払う",
     "Period": "期間",
@@ -488,12 +485,7 @@
     "TONLabel": "TON",
     "TotalBalance": "合計残高",
     "Transaction": "トランザクション",
-    "TransactionError": [
-        "-",
-        "転送制限に達しました",
-        "アクセスが拒否されました",
-        "不明なエラー"
-    ],
+    "TransactionError": ["-", "転送制限に達しました", "アクセスが拒否されました", "不明なエラー"],
     "TransactionFrom": "…からトランザクションを受け取りました。",
     "Transactions": "トランザクション",
     "TransactionStatus": {

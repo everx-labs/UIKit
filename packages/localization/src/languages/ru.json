@@ -134,6 +134,10 @@
         "DateSeparators": {
             "Today": "Сегодня",
             "Yesterday": "Вчера"
+        },
+        "QRCode": {
+            "errorReceived": "Не удалось сгенерировать QR код",
+            "errorSended": "Не удалось сгенерировать QR код.\nПопробуйте ещё раз"
         }
     },
     "ChatWith": "Чат с",
@@ -371,14 +375,7 @@
     "PassportRequestReview": "Your documents are being verified now. We will get back to you within 2 business hours",
     "PassportSaveError": "Произошла ошибка при обновлении паспорта",
     "PassportSaveSuccess": "Ваш паспорт был обновлен",
-    "PassportStatus": [
-        "None",
-        "Bad",
-        "Suspicious",
-        "Unknown",
-        "Pending",
-        "Trusted"
-    ],
+    "PassportStatus": ["None", "Bad", "Suspicious", "Unknown", "Pending", "Trusted"],
     "Password": "Пароль",
     "Pay": "Заплатить",
     "Period": "Период",
@@ -488,12 +485,7 @@
     "TONLabel": "TON",
     "TotalBalance": "Общий Баланс",
     "Transaction": "Транзакция",
-    "TransactionError": [
-        "-",
-        "Превышен лимит операции",
-        "Доступ запрещен",
-        "Неизвестная ошибка"
-    ],
+    "TransactionError": ["-", "Превышен лимит операции", "Доступ запрещен", "Неизвестная ошибка"],
     "TransactionFrom": "You have received a transaction from",
     "Transactions": "Транзакции",
     "TransactionStatus": {
