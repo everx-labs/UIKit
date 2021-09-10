@@ -61,7 +61,7 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
                 <Animated.View style={{ flex: 1 }}>
                     <NativeViewGestureHandler
                         ref={nativeGestureRef}
-                        disallowInterruption={false}
+                        disallowInterruption={true}
                         shouldCancelWhenOutside={false}
                     >
                         {/* @ts-ignore */}
