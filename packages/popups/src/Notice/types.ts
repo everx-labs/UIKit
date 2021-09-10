@@ -35,7 +35,7 @@ export type NoticeProps = {
     action?: UINoticeActionAttributes;
     countdownValue: Animated.SharedValue<number>;
     countdownProgress: Animated.SharedValue<number>;
-    isCountdownVisible?: boolean;
+    hasCountdown?: boolean;
     testID?: string;
 };
 
@@ -64,7 +64,7 @@ export type UINoticeProps = {
     /**
      * Is the countdown displayed (default: false)
      */
-    isCountdownVisible?: boolean;
+    hasCountdown?: boolean;
     /**
      * Action attributes
      */
@@ -94,7 +94,7 @@ export type ToastNoticeProps = UINoticeProps & {
     keyboardHeight: Animated.SharedValue<number>;
     countdownValue: Animated.SharedValue<number>;
     countdownProgress: Animated.SharedValue<number>;
-    isCountdownVisible?: boolean;
+    hasCountdown?: boolean;
 };
 
 export type SnapPoints = {

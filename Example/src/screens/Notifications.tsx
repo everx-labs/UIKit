@@ -1,13 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import {
-    UILinkButton,
-    UIBoxButton,
-    UIBoxButtonVariant,
-    UILabel,
-    UILinkButtonSize,
-} from '@tonlabs/uikit.hydrogen';
+import { UILinkButton, UIBoxButton, UIBoxButtonVariant, UILabel } from '@tonlabs/uikit.hydrogen';
 import { UIPopup, UINoticeColor } from '@tonlabs/uikit.popups';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -16,7 +10,7 @@ export const Notifications = () => {
     const [noticeColor, setNoticeColor] = React.useState<UINoticeColor>(
         UINoticeColor.PrimaryInverted,
     );
-    const [isCountdownVisible, setIsCountdownVisible] = React.useState<boolean>(false);
+    const [hasCountdown, setHasCountdown] = React.useState<boolean>(false);
     const [visibleBottomToastNotice, setVisibleBottomToastNotice] = React.useState<boolean>(false);
     const [visibleTopToastNotice, setVisibleTopToastNotice] = React.useState<boolean>(false);
     return (
@@ -31,13 +25,11 @@ export const Notifications = () => {
                     <UILinkButton
                         testID="show_TopToast_uiNotice"
                         title={`${visibleTopToastNotice ? 'Hide' : 'Show'} TopToast notice`}
-                        size={UILinkButtonSize.Small}
                         onPress={() => setVisibleTopToastNotice(!visibleTopToastNotice)}
                     />
                     <UILinkButton
                         testID="show_BottomToast_uiNotice"
                         title={`${visibleBottomToastNotice ? 'Hide' : 'Show'} BottomToast notice`}
-                        size={UILinkButtonSize.Small}
                         onPress={() => setVisibleBottomToastNotice(!visibleBottomToastNotice)}
                     />
                     <UILabel style={{ paddingTop: 30 }}>Select UINoticeColor:</UILabel>
@@ -45,7 +37,7 @@ export const Notifications = () => {
                         style={{
                             flexDirection: 'column',
                             paddingBottom: 30,
-                            width: 200,
+                            width: 250,
                         }}
                     >
                         <UIBoxButton
@@ -87,17 +79,17 @@ export const Notifications = () => {
                     </View>
                     <View
                         style={{
-                            width: 200,
+                            width: 250,
                         }}
                     >
                         <UIBoxButton
-                            title={`Countdown ${isCountdownVisible ? 'visible' : 'invisible'}`}
+                            title={`Countdown ${hasCountdown ? 'visible' : 'invisible'}`}
                             variant={
-                                isCountdownVisible
+                                hasCountdown
                                     ? UIBoxButtonVariant.Positive
                                     : UIBoxButtonVariant.Neutral
                             }
-                            onPress={() => setIsCountdownVisible(prev => !prev)}
+                            onPress={() => setHasCountdown(prev => !prev)}
                         />
                     </View>
 
@@ -122,7 +114,7 @@ export const Notifications = () => {
                                 setVisibleTopToastNotice(false);
                             },
                         }}
-                        isCountdownVisible={isCountdownVisible}
+                        hasCountdown={hasCountdown}
                     />
                     <UIPopup.Notice
                         type={UIPopup.Notice.Type.BottomToast}
@@ -143,7 +135,7 @@ export const Notifications = () => {
                                 setVisibleBottomToastNotice(false);
                             },
                         }}
-                        isCountdownVisible={isCountdownVisible}
+                        hasCountdown={hasCountdown}
                     />
                 </View>
             </ExampleSection>

@@ -70,9 +70,9 @@ const renderCountdown = (
     countdownProgress: Animated.SharedValue<number>,
     color: UINoticeColor,
     styles: ViewStyle,
-    isCountdownVisible: boolean | undefined,
+    hasCountdown: boolean | undefined,
 ): React.ReactElement | null => {
-    if (isCountdownVisible) {
+    if (hasCountdown) {
         return (
             <View style={styles}>
                 <CountdownCirlce
@@ -111,7 +111,7 @@ export const Notice: React.FC<NoticeProps> = ({
     action,
     countdownValue,
     countdownProgress,
-    isCountdownVisible,
+    hasCountdown,
 }: NoticeProps) => {
     const theme = useTheme();
     const styles = useStyles(color, type, theme);
@@ -131,7 +131,7 @@ export const Notice: React.FC<NoticeProps> = ({
                     countdownProgress,
                     color,
                     styles.countdown,
-                    isCountdownVisible,
+                    hasCountdown,
                 )}
                 <View style={styles.labelContainer} pointerEvents="none">
                     <UILabel
