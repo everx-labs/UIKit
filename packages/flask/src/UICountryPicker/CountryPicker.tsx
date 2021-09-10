@@ -155,6 +155,7 @@ export function CountryPicker(
             </View>
         );
     }, [loading]);
+    
     const keyExtractor = React.useCallback((item: Country) => item.code, []);
 
     return (
@@ -219,9 +220,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     emojiContainer: {
         paddingRight: 16,
     },
-    emptyContainer:
-        {
-            paddingTop: 48,
-            alignItems: 'center',
-        },
+    emptyContainer: {
+        paddingTop: 48,
+        alignItems: 'center',
+    },
 }));
