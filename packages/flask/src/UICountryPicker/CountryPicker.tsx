@@ -1,33 +1,36 @@
 import React from 'react';
 import Fuse from 'fuse.js';
-import { Dimensions, StatusBar, View } from 'react-native';
+import { ActivityIndicator, Dimensions, StatusBar, View } from 'react-native';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import { FlatList, ScrollView, UIBottomSheet, UIConstant, UISearchBar } from '@tonlabs/uikit.navigation';
 import {
     ColorVariants,
     makeStyles,
-    Theme, TouchableOpacity,
+    Theme,
+    TouchableOpacity,
     TypographyVariants,
     UILabel,
     UILinkButton,
     useTheme,
 } from '@tonlabs/uikit.hydrogen';
-import type { Country, WrappedCountryPickerProps } from './types';
+import type { CountriesArray, Country, WrappedCountryPickerProps } from '../types';
 
-// @ts-ignore TODO: replace with fetched json
-import countriesListJSON from './countries.json';
+const COUNTRIES_URL = 'https://uikit.tonlabs.io/countries.json';
+
+const fetchJSON = async () => {
+    const response = await fetch(COUNTRIES_URL);
+    return response.json();
+};
 
 const fuseOptions = {
+    findAllMatches: true,
     shouldSort: true,
-    threshold: 0.3,
-    location: 0,
     distance: 100,
     maxPatternLength: 32,
     minMatchCharLength: 1,
     keys: ['name'],
 };
 
-// TODO: add wrapper web version(modal) when gotovo
 export function CountryPicker(
     {
         onClose,
@@ -40,30 +43,55 @@ export function CountryPicker(
     const theme = useTheme();
     const styles = useStyles(theme);
 
+    const [loading, setLoading] = React.useState(true);
     const [search, setSearch] = React.useState('');
-    const [countriesList, setCountriesList] = React.useState<Country[]>(countriesListJSON);
+    const [countriesList, setCountriesList] = React.useState<CountriesArray>([]);
     const [filteredList, setFilteredList] = React.useState(countriesList);
-    const fuse = React.useMemo(() => new Fuse(countriesList, fuseOptions), [countriesList]);
+    const fuse = React.useMemo(() => new Fuse(filteredList, fuseOptions), [filteredList]);
 
     const onSelectCountry = React.useCallback((item: Country) => {
         onSelect && onSelect(item.code);
     }, [onSelect]);
 
-    const filterCountries = React.useCallback(() => {
-        const check = (code: string) => {
-            let isPermitted = true;
-            let isBanned = false;
-            if (permitted.length) {
-                isPermitted = permitted.includes(code);
-            }
-            if (banned.length) {
-                isBanned = banned.includes(code);
-            }
-            return isPermitted && !isBanned;
-        };
-        const permittedCountries = countriesListJSON.filter((country: any) => check(country.code));
-        setCountriesList(permittedCountries);
+    const checkIncludes = React.useCallback((code: string) => {
+        let isPermitted = true;
+        let isBanned = false;
+        if (permitted.length) {
+            isPermitted = permitted.includes(code);
+        }
+        if (banned.length) {
+            isBanned = banned.includes(code);
+        }
+        return isPermitted && !isBanned;
+    }, []);
+
+    const filterCountries = React.useCallback(list => {
+        const permittedCountries = list.filter((country: any) => checkIncludes(country.code));
+        setFilteredList(permittedCountries);
     }, [banned, permitted]);
+
+    React.useEffect(() => {
+        setFilteredList(countriesList);
+    }, [countriesList]);
+
+    React.useEffect(() => {
+        const result = search ? fuse.search(search) : countriesList;
+        setFilteredList(result as CountriesArray);
+    }, [search]);
+
+    React.useEffect(() => {
+        fetchJSON().then((r: CountriesArray) => {
+            if (permitted.length || banned.length) {
+                filterCountries(r);
+            } else {
+                setCountriesList(r);
+            }
+        }).catch((e: Error) => {
+            console.error(e);
+        }).finally(() => {
+            setLoading(false);
+        });
+    }, []);
 
     const renderSearchHeader = () => {
         return (
@@ -97,9 +125,13 @@ export function CountryPicker(
         );
     };
 
-    const ListEmptyComponent = () => {
+    const renderLoading = () => {
+        return <ActivityIndicator />;
+    };
+
+    const renderEmptyList = () => {
         return (
-            <View style={styles.emptyContainer}>
+            <>
                 <UILabel
                     role={TypographyVariants.TitleMedium}
                     color={ColorVariants.TextSecondary}
@@ -112,21 +144,17 @@ export function CountryPicker(
                 >
                     {uiLocalized.CountryPicker.CountryNotFindDetails}
                 </UILabel>
-            </View>
+            </>
         );
     };
 
-    React.useEffect(() => {
-        if (permitted.length || banned.length) {
-            filterCountries();
-        }
-    }, []);
-
-    React.useEffect(() => {
-        const result = search ? fuse.search(search) : countriesList;
-        setFilteredList(result as Country[]);
-    }, [search]);
-
+    const ListEmptyComponent = React.useMemo(() => {
+        return (
+            <View style={styles.emptyContainer}>
+                {loading ? renderLoading() : renderEmptyList()}
+            </View>
+        );
+    }, [loading]);
     const keyExtractor = React.useCallback((item: Country) => item.code, []);
 
     return (
@@ -134,9 +162,7 @@ export function CountryPicker(
             onClose={onClose}
             visible={visible}
             style={styles.sheet}>
-            <ScrollView
-                stickyHeaderIndices={[0]}
-            >
+            <ScrollView stickyHeaderIndices={[0]}>
                 {renderSearchHeader()}
                 <FlatList
                     data={filteredList}
