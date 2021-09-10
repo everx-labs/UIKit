@@ -25,7 +25,6 @@ import {
     UIQRCodeScannerSheet,
     UIFullscreenSheet,
     UILargeTitleHeader,
-    Country
 } from '@tonlabs/uikit.navigation';
 import { UIPopup } from '@tonlabs/uikit.popups';
 import {
@@ -297,7 +296,7 @@ export const Menus = () => {
                     />
                     <UICountryPicker
                         visible={countryPickerVisible}
-                        onSelect={(countryCode: Country) => {
+                        onSelect={(countryCode) => {
                             console.log(countryCode);
                             setCountryPickerVisible(false);
                         }}
