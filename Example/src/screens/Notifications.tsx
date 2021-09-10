@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import { UILinkButton, UIBoxButton, UIBoxButtonVariant, UILabel } from '@tonlabs/uikit.hydrogen';
+import {
+    UILinkButton,
+    UIBoxButton,
+    UIBoxButtonVariant,
+    UILabel,
+    UILinkButtonSize,
+} from '@tonlabs/uikit.hydrogen';
 import { UIPopup, UINoticeColor } from '@tonlabs/uikit.popups';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -18,27 +24,28 @@ export const Notifications = () => {
             <ExampleSection title="UINotice">
                 <View
                     style={{
-                        maxWidth: 350,
                         paddingVertical: 20,
-                        alignItems: 'flex-start',
+                        paddingHorizontal: 16,
                     }}
                 >
                     <UILinkButton
                         testID="show_TopToast_uiNotice"
                         title={`${visibleTopToastNotice ? 'Hide' : 'Show'} TopToast notice`}
+                        size={UILinkButtonSize.Small}
                         onPress={() => setVisibleTopToastNotice(!visibleTopToastNotice)}
                     />
                     <UILinkButton
                         testID="show_BottomToast_uiNotice"
                         title={`${visibleBottomToastNotice ? 'Hide' : 'Show'} BottomToast notice`}
+                        size={UILinkButtonSize.Small}
                         onPress={() => setVisibleBottomToastNotice(!visibleBottomToastNotice)}
                     />
                     <UILabel style={{ paddingTop: 30 }}>Select UINoticeColor:</UILabel>
                     <View
                         style={{
-                            flexDirection: 'row',
-                            flexWrap: 'wrap',
+                            flexDirection: 'column',
                             paddingBottom: 30,
+                            width: 200,
                         }}
                     >
                         <UIBoxButton
@@ -50,7 +57,6 @@ export const Notifications = () => {
                             }
                             onPress={() => setNoticeColor(UINoticeColor.PrimaryInverted)}
                             layout={{
-                                marginRight: 8,
                                 marginBottom: 4,
                             }}
                         />
@@ -63,7 +69,6 @@ export const Notifications = () => {
                             }
                             onPress={() => setNoticeColor(UINoticeColor.Negative)}
                             layout={{
-                                marginRight: 8,
                                 marginBottom: 4,
                             }}
                         />
@@ -76,20 +81,25 @@ export const Notifications = () => {
                             }
                             onPress={() => setNoticeColor(UINoticeColor.Secondary)}
                             layout={{
-                                marginRight: 8,
                                 marginBottom: 4,
                             }}
                         />
                     </View>
-                    <UIBoxButton
-                        title={'Countdown visible'}
-                        variant={
-                            isCountdownVisible
-                                ? UIBoxButtonVariant.Positive
-                                : UIBoxButtonVariant.Neutral
-                        }
-                        onPress={() => setIsCountdownVisible(prev => !prev)}
-                    />
+                    <View
+                        style={{
+                            width: 200,
+                        }}
+                    >
+                        <UIBoxButton
+                            title={`Countdown ${isCountdownVisible ? 'visible' : 'invisible'}`}
+                            variant={
+                                isCountdownVisible
+                                    ? UIBoxButtonVariant.Positive
+                                    : UIBoxButtonVariant.Neutral
+                            }
+                            onPress={() => setIsCountdownVisible(prev => !prev)}
+                        />
+                    </View>
 
                     <UIPopup.Notice
                         type={UIPopup.Notice.Type.TopToast}

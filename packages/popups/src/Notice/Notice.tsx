@@ -27,10 +27,7 @@ const getBackgroundColor = (color: UINoticeColor, theme: Theme): ColorValue => {
         case UINoticeColor.Secondary:
             return theme[ColorVariants.BackgroundSecondary];
         case UINoticeColor.Negative:
-            /**
-             * TODO Add new color to ColorVariants
-             */
-            return (theme[ColorVariants.BackgroundNegative] as string) + '14';
+            return theme[ColorVariants.StaticBackgroundNegative];
         case UINoticeColor.PrimaryInverted:
         default:
             return theme[ColorVariants.BackgroundPrimaryInverted];
