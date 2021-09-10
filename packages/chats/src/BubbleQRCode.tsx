@@ -27,7 +27,7 @@ const getErrorMessage = (messageStatus: MessageStatus): string => {
         case MessageStatus.Received:
             return uiLocalized.Chats.QRCode.errorReceived;
         default:
-            return uiLocalized.Chats.QRCode.errorSended;
+            return uiLocalized.Chats.QRCode.errorSent;
     }
 };
 
