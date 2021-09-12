@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Animated, StyleSheet, Text, View } from 'react-native';
+import { Animated, StyleSheet, Text, View, I18nManager } from 'react-native';
 
 import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 import type AnimatedInterpolation from 'react-native/Libraries/Animated/src/nodes/AnimatedInterpolation';
@@ -223,7 +223,7 @@ export default class UIAnimatedBalanceOpacity extends React.Component<
                     {this.props.balance}
                 </Text>
                 <View
-                    style={[StyleSheet.absoluteFill, UIStyle.common.flexRow()]}
+                    style={[StyleSheet.absoluteFill, I18nManager.isRTL ? UIStyle.common.flexRowReverse() : UIStyle.common.flexRow()}]}
                     onLayout={this.onBalanceLayout}
                 >
                     {this.state.nextBalance.map((symbol, index) => (
@@ -244,7 +244,7 @@ export default class UIAnimatedBalanceOpacity extends React.Component<
                     <View
                         style={[
                             StyleSheet.absoluteFill,
-                            UIStyle.common.flexRow(),
+                            I18nManager.isRTL ? UIStyle.common.flexRowReverse() : UIStyle.common.flexRow()},
                         ]}
                     >
                         {this.state.prevBalance.map((symbol, index) => (

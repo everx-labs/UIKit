@@ -15,6 +15,9 @@ export const flexStyles = {
     flexRow: {
         flexDirection: 'row',
     },
+    flexRowReverse: {
+        flexDirection: 'row-reverse',
+    },
     flexColumn: {
         flexDirection: 'column',
     },
@@ -95,6 +98,10 @@ export default class UIStyleFlex {
 
     static row() {
         return styles.flexRow;
+    }
+
+    static rowReverse() {
+        return styles.flexRowReverse;
     }
 
     static rowWrap() {

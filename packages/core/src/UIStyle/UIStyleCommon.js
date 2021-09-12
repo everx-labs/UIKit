@@ -98,6 +98,9 @@ export default class UIStyleCommon {
     static flexRow() {
         return styles.flexRow;
     }
+    static flexRowReverse() {
+        return styles.flexRowReverse;
+    }
     static flexRowWrap() {
         return styles.flexRowWrap;
     }
