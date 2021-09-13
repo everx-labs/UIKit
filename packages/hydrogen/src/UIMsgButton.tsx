@@ -373,20 +373,19 @@ export const UIMsgButton = ({
             ];
         }
 
-        const hasTitle = !!title;
         return [
             <>
                 <Button.Content>
                     {iconPosition === UIMsgButtonIconPosition.Left && icon != null && (
                         <Button.Icon
                             source={icon}
-                            style={hasTitle ? styles.leftIcon : null}
+                            style={!!title ? styles.leftIcon : null}
                             iconAnimStyle={iconAnim?.style}
                             initialColor={iconAnim?.initialColor}
                             activeColor={iconAnim?.activeColor}
                         />
                     )}
-                    {hasTitle && (
+                    {!!title && (
                         <Button.Title titleColor={contentColor} titleAnimStyle={titleAnim?.style}>
                             {title}
                         </Button.Title>
