@@ -1,18 +1,19 @@
-import { UILinkButton } from '@tonlabs/uikit.hydrogen';
+import { UIBoxButton, UIBoxButtonType } from '@tonlabs/uikit.hydrogen';
 import { UIConstant } from '@tonlabs/uikit.navigation';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import type { ActionProps } from './types';
 
-export const Action = ({ action }: ActionProps) => {
+export const Action = ({ action, variant }: ActionProps) => {
     if (!action) {
         return null;
     }
-    const { title, onTap, variant } = action;
+    const { title, onTap } = action;
     return (
         <View style={styles.container}>
-            <UILinkButton
+            <UIBoxButton
                 testID="uiNotice_action"
+                type={UIBoxButtonType.Tertiary}
                 variant={variant}
                 title={title}
                 onPress={onTap}

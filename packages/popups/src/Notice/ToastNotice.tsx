@@ -24,6 +24,9 @@ export const ToastNotice: React.FC<ToastNoticeProps> = ({
     suspendClosingTimer,
     continueClosingTimer,
     keyboardHeight,
+    countdownValue,
+    countdownProgress,
+    hasCountdown,
     testID,
 }: ToastNoticeProps) => {
     const { noticeHeight, onLayoutNotice } = useNoticeHeight();
@@ -66,6 +69,9 @@ export const ToastNotice: React.FC<ToastNoticeProps> = ({
                                 onLongPress={onLongPress}
                                 onPressOut={onPressOut}
                                 action={action}
+                                countdownValue={countdownValue}
+                                countdownProgress={countdownProgress}
+                                hasCountdown={hasCountdown}
                             />
                         </Animated.View>
                     </PanGestureHandler>
