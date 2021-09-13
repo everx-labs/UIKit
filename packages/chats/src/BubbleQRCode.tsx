@@ -31,7 +31,7 @@ const getErrorMessage = (messageStatus: MessageStatus): string => {
     }
 };
 
-const renderIcon = (
+const renderErrorIcon = (
     messageStatus: MessageStatus,
     iconStyles: StyleProp<ImageStyle>,
 ): React.ReactElement | null => {
@@ -73,7 +73,7 @@ const renderError = (
                     {getErrorMessage(messageStatus)}
                 </UILabel>
             </View>
-            {renderIcon(messageStatus, iconStyles)}
+            {renderErrorIcon(messageStatus, iconStyles)}
         </View>
     );
 };
