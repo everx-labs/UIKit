@@ -10,7 +10,7 @@ export const Notifications = () => {
     const [noticeColor, setNoticeColor] = React.useState<UINoticeColor>(
         UINoticeColor.PrimaryInverted,
     );
-    const [hasCountdown, setHasCountdown] = React.useState<boolean>(false);
+    const [hasCountdown, setHasCountdown] = React.useState<boolean>(true);
     const [visibleBottomToastNotice, setVisibleBottomToastNotice] = React.useState<boolean>(false);
     const [visibleTopToastNotice, setVisibleTopToastNotice] = React.useState<boolean>(false);
     return (
