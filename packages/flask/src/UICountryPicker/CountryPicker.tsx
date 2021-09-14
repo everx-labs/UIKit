@@ -1,8 +1,16 @@
 import React from 'react';
 import Fuse from 'fuse.js';
-import { ActivityIndicator, Dimensions, StatusBar, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ActivityIndicator, View, useWindowDimensions } from 'react-native';
+
+import { UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import { FlatList, UIBottomSheet, UIConstant, UISearchBar } from '@tonlabs/uikit.navigation';
+import {
+    FlatList,
+    UIBottomSheet,
+    UISearchBar,
+    UIConstant as NavigationConstants,
+} from '@tonlabs/uikit.navigation';
 import {
     ColorVariants,
     makeStyles,
@@ -18,14 +26,14 @@ import type { CountriesArray, Country, WrappedCountryPickerProps } from '../type
 const COUNTRIES_URL = 'https://uikit.tonlabs.io/countries.json';
 
 const fetchJSON = async () => {
-    const response = await fetch(COUNTRIES_URL);
-    return response.json();
+    const results = await fetch(COUNTRIES_URL);
+    return results.json();
 };
 
 const fuseOptions = {
+    ignoreLocation: true,
+    threshold: 0.4,
     findAllMatches: true,
-    shouldSort: true,
-    distance: 100,
     maxPatternLength: 32,
     minMatchCharLength: 1,
     keys: ['name'],
@@ -38,14 +46,25 @@ export function CountryPicker({
     banned = [],
     permitted = [],
 }: WrappedCountryPickerProps) {
+    const height = useWindowDimensions().height;
+
     const theme = useTheme();
-    const styles = useStyles(theme);
+    const styles = useStyles(theme, height);
 
     const [loading, setLoading] = React.useState(true);
     const [search, setSearch] = React.useState('');
     const [countriesList, setCountriesList] = React.useState<CountriesArray>([]);
     const [filteredList, setFilteredList] = React.useState(countriesList);
     const fuse = React.useMemo(() => new Fuse(filteredList, fuseOptions), [filteredList]);
+
+    const insets = useSafeAreaInsets();
+    const contentInset = React.useMemo(
+        () => ({
+            top: 0, // without it adds some additional space on iOS
+            bottom: insets.bottom + UIConstant.contentOffset() + UIConstant.buttonHeight(),
+        }),
+        [insets?.bottom],
+    );
 
     const onSelectCountry = React.useCallback(
         (item: Country) => {
@@ -86,6 +105,7 @@ export function CountryPicker({
     React.useEffect(() => {
         fetchJSON()
             .then((r: CountriesArray) => {
+                console.log(r);
                 if (permitted.length || banned.length) {
                     filterCountries(r);
                 } else {
@@ -165,18 +185,17 @@ export function CountryPicker({
                 keyExtractor={keyExtractor}
                 ListEmptyComponent={ListEmptyComponent}
                 keyboardDismissMode="on-drag"
+                contentInset={contentInset}
             />
         </UIBottomSheet>
     );
 }
 
-const { height } = Dimensions.get('screen');
-
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme: Theme, height) => ({
     sheet: {
         backgroundColor: theme[ColorVariants.BackgroundPrimary] as string,
         borderRadius: 10,
-        height: height - (StatusBar.currentHeight ?? 0),
+        height: height,
     },
     headerContainer: {
         backgroundColor: theme[ColorVariants.BackgroundPrimary] as string,
@@ -201,7 +220,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         textAlign: 'center',
     },
     rowContainerInner: {
-        paddingVertical: UIConstant.contentOffset,
+        paddingVertical: NavigationConstants.contentOffset,
         flexDirection: 'row',
         justifyContent: 'space-between',
         borderBottomColor: theme[ColorVariants.LineTertiary] as string,
