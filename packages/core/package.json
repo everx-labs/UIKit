@@ -1,81 +1,81 @@
 {
-  "name": "@tonlabs/uikit.core",
-  "version": "2.3.0",
-  "description": "Core utilities for Tonlabs's UIKit",
-  "scripts": {
-    "prepare": "bob build"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/tonlabs/UIKit.git",
-    "directory": "packages/core"
-  },
-  "keywords": [
-    "tonlabs",
-    "design-system",
-    "react-native"
-  ],
-  "author": "tonlabs.io",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/tonlabs/UIKit/issues"
-  },
-  "homepage": "https://github.com/tonlabs/UIKit/packages/core#readme",
-  "main": "lib/commonjs/index.js",
-  "module": "lib/module/index.js",
-  "react-native": "src/index.js",
-  "files": [
-    "lib/",
-    "src/",
-    "types/"
-  ],
-  "dependencies": {
-    "@quentin-sommer/react-useragent": "2.0.0",
-    "@tonlabs/uikit.hydrogen": "^2.3.0",
-    "bignumber.js": "9.0.0",
-    "currency-formatter": "1.5.4",
-    "dayjs": "1.9.1",
-    "libphonenumber-js": "1.7.14",
-    "mobile-detect": "1.4.3",
-    "react-native-status-bar-height": "1.0.1",
-    "validator": "10.11.0"
-  },
-  "devDependencies": {
-    "@react-native-community/bob": "0.16.2",
-    "react": "17.0.1",
-    "react-dom": "17.0.1",
-    "react-native": "0.64.2",
-    "react-native-device-info": "^5.6.3",
-    "react-native-svg": "^12.1.0"
-  },
-  "peerDependencies": {
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-native": "^0.64.2",
-    "react-native-device-info": "^5.6.3",
-    "react-native-svg": "^12.1.0"
-  },
-  "@react-native-community/bob": {
-    "source": "src",
-    "output": "lib",
-    "targets": [
-      [
-        "commonjs",
-        {
-          "configFile": "../../babel.config.js",
-          "copyFlow": true
-        }
-      ],
-      [
-        "module",
-        {
-          "configFile": "../../babel.config.js",
-          "copyFlow": true
-        }
-      ]
-    ]
-  }
+    "name": "@tonlabs/uikit.core",
+    "version": "2.3.0",
+    "description": "Core utilities for Tonlabs's UIKit",
+    "scripts": {
+        "prepare": "bob build"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tonlabs/UIKit.git",
+        "directory": "packages/core"
+    },
+    "keywords": [
+        "tonlabs",
+        "design-system",
+        "react-native"
+    ],
+    "author": "tonlabs.io",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/tonlabs/UIKit/issues"
+    },
+    "homepage": "https://github.com/tonlabs/UIKit/packages/core#readme",
+    "main": "lib/commonjs/index.js",
+    "module": "lib/module/index.js",
+    "react-native": "src/index.js",
+    "files": [
+        "lib/",
+        "src/",
+        "types/"
+    ],
+    "dependencies": {
+        "@quentin-sommer/react-useragent": "2.0.0",
+        "@tonlabs/uikit.hydrogen": "^2.3.0",
+        "bignumber.js": "9.0.0",
+        "currency-formatter": "1.5.4",
+        "dayjs": "1.9.1",
+        "libphonenumber-js": "1.7.14",
+        "mobile-detect": "1.4.3",
+        "react-native-status-bar-height": "1.0.1",
+        "validator": "10.11.0"
+    },
+    "devDependencies": {
+        "@react-native-community/bob": "0.16.2",
+        "react": "17.0.2",
+        "react-dom": "17.0.2",
+        "react-native": "0.65.1",
+        "react-native-device-info": "^5.6.3",
+        "react-native-svg": "^12.1.0"
+    },
+    "peerDependencies": {
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
+        "react-native": "^0.65.0",
+        "react-native-device-info": "^5.6.3",
+        "react-native-svg": "^12.1.0"
+    },
+    "@react-native-community/bob": {
+        "source": "src",
+        "output": "lib",
+        "targets": [
+            [
+                "commonjs",
+                {
+                    "configFile": "../../babel.config.js",
+                    "copyFlow": true
+                }
+            ],
+            [
+                "module",
+                {
+                    "configFile": "../../babel.config.js",
+                    "copyFlow": true
+                }
+            ]
+        ]
+    }
 }

@@ -93,6 +93,7 @@ import iconDocWhite from '../ico-doc-white/ico-doc-white.png';
 import iconFileIncomeBlue from '../ico-file-income-blue/fileBlue.png';
 import iconFileIncomeWhite from '../ico-file-income-white/fileWhite.png';
 import iconGlass from '../ico-glass/search-thin.png';
+import iconInfo from '../ico-info/ico-info.png';
 import iconMenuContained from '../ico-menu-contained/menu.png';
 import iconOpenMenu from '../ico-open-menu/open-menu.png';
 import iconProgress from '../ico-progress/progress.png';
@@ -237,6 +238,7 @@ export const UIAssets = {
             fileIncomeBlue: iconFileIncomeBlue,
             fileIncomeWhite: iconFileIncomeWhite,
             glass: iconGlass,
+            info: iconInfo,
             menuContained: iconMenuContained,
             openMenu: iconOpenMenu,
             progress: iconProgress,

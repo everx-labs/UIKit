@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import {
-    PanGestureHandler,
-    TouchableWithoutFeedback,
-} from 'react-native-gesture-handler';
+import { PanGestureHandler } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import { useHover, Portal } from '@tonlabs/uikit.hydrogen';
 import { UIConstant } from '@tonlabs/uikit.navigation';
@@ -21,11 +18,15 @@ export const ToastNotice: React.FC<ToastNoticeProps> = ({
     color,
     visible,
     title,
+    action,
     onTap,
     onCloseAnimationEnd,
     suspendClosingTimer,
     continueClosingTimer,
     keyboardHeight,
+    countdownValue,
+    countdownProgress,
+    hasCountdown,
     testID,
 }: ToastNoticeProps) => {
     const { noticeHeight, onLayoutNotice } = useNoticeHeight();
@@ -33,58 +34,48 @@ export const ToastNotice: React.FC<ToastNoticeProps> = ({
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
     const xSnapPoints: SnapPoints = useToastNoticeXSnapPoints();
-    const ySnapPoints: SnapPoints = useToastNoticeYSnapPoints(
-        type,
-        noticeHeight,
-        keyboardHeight,
-    );
+    const ySnapPoints: SnapPoints = useToastNoticeYSnapPoints(type, noticeHeight, keyboardHeight);
 
-    const {
-        noticePositionStyle,
-        gestureHandler,
-        onPress,
-        onLongPress,
-        onPressOut,
-    } = useNoticePosition(
-        xSnapPoints,
-        ySnapPoints,
-        visible,
-        isHovered,
-        onCloseAnimationEnd,
-        suspendClosingTimer,
-        continueClosingTimer,
-        onTap,
-    );
+    const { noticePositionStyle, gestureHandler, onPress, onLongPress, onPressOut } =
+        useNoticePosition(
+            xSnapPoints,
+            ySnapPoints,
+            visible,
+            isHovered,
+            onCloseAnimationEnd,
+            suspendClosingTimer,
+            continueClosingTimer,
+            onTap,
+        );
 
     return (
         <Portal absoluteFill>
             <View style={styles.container} pointerEvents="box-none">
-                <Animated.View>
+                <View style={styles.content} pointerEvents="box-none">
                     <PanGestureHandler onGestureEvent={gestureHandler}>
                         <Animated.View
                             style={[noticePositionStyle, styles.notice]}
                             onLayout={onLayoutNotice}
-                            pointerEvents="box-none"
                             // @ts-expect-error
                             onMouseEnter={onMouseEnter}
                             onMouseLeave={onMouseLeave}
                         >
-                            <TouchableWithoutFeedback
+                            <Notice
+                                type={type}
+                                title={title}
+                                color={color}
+                                testID={testID}
                                 onPress={onPress}
                                 onLongPress={onLongPress}
-                                delayLongPress={UIConstant.notice.longPressDelay}
                                 onPressOut={onPressOut}
-                            >
-                                <Notice
-                                    type={type}
-                                    title={title}
-                                    color={color}
-                                    testID={testID}
-                                />
-                            </TouchableWithoutFeedback>
+                                action={action}
+                                countdownValue={countdownValue}
+                                countdownProgress={countdownProgress}
+                                hasCountdown={hasCountdown}
+                            />
                         </Animated.View>
                     </PanGestureHandler>
-                </Animated.View>
+                </View>
             </View>
         </Portal>
     );
@@ -97,13 +88,18 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
+        paddingHorizontal: UIConstant.notice.toastIndentFromScreenEdges,
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
+    content: {
+        flex: 1,
+        maxWidth: UIConstant.notice.maxWidth,
     },
     notice: {
         position: 'absolute',
         left: 0,
         right: 0,
         flexDirection: 'row',
-        justifyContent: 'center',
-        paddingHorizontal: UIConstant.notice.toastIndentFromScreenEdges,
     },
 });

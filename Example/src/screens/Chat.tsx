@@ -1,5 +1,6 @@
 import * as React from 'react';
 import BigNumber from 'bignumber.js';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 import { ColorVariants } from '@tonlabs/uikit.hydrogen';
 import {
@@ -10,6 +11,8 @@ import {
     MessageStatus,
     TransactionType,
 } from '@tonlabs/uikit.chats';
+import { UIPopup } from '@tonlabs/uikit.popups';
+import { uiLocalized } from '@tonlabs/uikit.localization';
 import { useStickers } from '@tonlabs/uikit.stickers';
 import { createStackNavigator } from '@tonlabs/uikit.navigation';
 import image from '../../assets/icons/example-icon-base64';
@@ -19,10 +22,18 @@ const companionId = '0:123';
 
 const initialMessages: ChatMessage[] = [
     {
-        type: ChatMessageType.Media,
-        data: image,
+        type: ChatMessageType.QRCode,
+        data: '',
         time: Math.floor(Date.now() - 4 * 60 * 1000),
         sender: companionId,
+        status: MessageStatus.Received,
+        key: '',
+    },
+    {
+        type: ChatMessageType.QRCode,
+        data: '',
+        time: Math.floor(Date.now() - 4 * 60 * 1000),
+        sender: userId,
         status: MessageStatus.Sent,
         key: '',
     },
@@ -39,6 +50,15 @@ const initialMessages: ChatMessage[] = [
         data: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore',
         time: Math.floor(Date.now() - 4 * 60 * 1000),
         sender: userId,
+        status: MessageStatus.Sent,
+        key: '',
+    },
+    {
+        type: ChatMessageType.Media,
+        data: image,
+        preview: image,
+        time: Math.floor(Date.now() - 4 * 60 * 1000),
+        sender: companionId,
         status: MessageStatus.Sent,
         key: '',
     },
@@ -285,13 +305,11 @@ const initialMessages: ChatMessage[] = [
     },
 ];
 
-const initialMessagesWithKeys = initialMessages.map(
-    (m: ChatMessage, i: number) => {
-        // eslint-disable-next-line no-param-reassign
-        m.key = m.type + i;
-        return m;
-    },
-);
+const initialMessagesWithKeys = initialMessages.map((m: ChatMessage, i: number) => {
+    // eslint-disable-next-line no-param-reassign
+    m.key = m.type + i;
+    return m;
+});
 
 const stickers = new Array(10).fill(null).map((_a, i) => ({
     id: `test${i}`,
@@ -307,17 +325,27 @@ const stickers = new Array(10).fill(null).map((_a, i) => ({
 const ChatStack = createStackNavigator();
 
 const ChatWindowScreen = () => {
-    const [messages, setMessages] = React.useState<ChatMessage[]>(
-        initialMessagesWithKeys,
-    );
+    const [isNoticeVisible, setNoticeVisible] = React.useState(false);
+    const [messages, setMessages] = React.useState<ChatMessage[]>(initialMessagesWithKeys);
     const onLoadEarlierMessages = React.useCallback(() => undefined, []);
     const onPressUrl = React.useCallback(() => {
         console.log('url handled');
     }, []);
+
+    const onLongPressText = React.useCallback(text => {
+        Clipboard.setString(text);
+        console.log('long press handled', text);
+        setNoticeVisible(true);
+    }, []);
+
+    const hideNotice = React.useCallback(() => {
+        setNoticeVisible(false);
+    }, []);
+
     const onSendMedia = React.useCallback(() => undefined, []);
     const onSendDocument = React.useCallback(() => undefined, []);
     const onItemSelected = React.useCallback(
-        (stk) => {
+        stk => {
             setMessages([
                 {
                     key: `${Date.now()}stk`,
@@ -344,6 +372,7 @@ const ChatWindowScreen = () => {
                 nativeID="chatSectionList"
                 onLoadEarlierMessages={onLoadEarlierMessages}
                 onPressUrl={onPressUrl}
+                onLongPressText={onLongPressText}
                 canLoadMore
                 isLoadingMore={false}
                 messages={messages}
@@ -367,6 +396,13 @@ const ChatWindowScreen = () => {
                 onSendMedia={onSendMedia}
                 onSendDocument={onSendDocument}
                 customKeyboard={stickersKeyboard}
+            />
+            <UIPopup.Notice
+                visible={isNoticeVisible}
+                title={uiLocalized.MessageCopiedToClipboard}
+                type={UIPopup.Notice.Type.BottomToast}
+                color={UIPopup.Notice.Color.PrimaryInverted}
+                onClose={hideNotice}
             />
         </>
     );

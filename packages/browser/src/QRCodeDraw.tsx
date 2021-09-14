@@ -38,12 +38,8 @@ export const QRCodeDraw = ({ data, status, onLayout, prompt, onDraw }: QRCodeDra
 
     const error = useQRCodeValueError(data, onError, onSuccess);
 
-    if (error !== null) {
-        return null;
-    }
-
     return (
-        <View>
+        <View onLayout={onLayout}>
             <BubbleQRCode
                 data={data}
                 status={status}
@@ -52,7 +48,7 @@ export const QRCodeDraw = ({ data, status, onLayout, prompt, onDraw }: QRCodeDra
                 firstFromChain
                 key="qrcode-draw-bubble"
             />
-            {!!prompt && (
+            {!!prompt && !error && (
                 <BubbleSimplePlainText
                     type={ChatMessageType.PlainText}
                     key="qrcode-draw-bubble-prompt"

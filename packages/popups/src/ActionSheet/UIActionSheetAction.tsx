@@ -43,6 +43,7 @@ export const UIActionSheetAction: React.FC<UIActionSheetActionProps> = ({
     return (
         <View key={title}>
             <UIBoxButton
+                testID={`${title}_action_button`}
                 type={boxButtonType}
                 variant={variant}
                 disabled={type === 'Disabled'}

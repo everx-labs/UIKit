@@ -134,6 +134,10 @@
         "DateSeparators": {
             "Today": "Heute",
             "Yesterday": "Gestern"
+        },
+        "QRCode": {
+            "errorReceived": "QR-code was not generated",
+            "errorSent": "QR-code was not generated.\nTry again"
         }
     },
     "ChatWith": "Chat mit",
