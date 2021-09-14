@@ -18,10 +18,20 @@ type PageProps = {
     offset: { value: number };
     onPress: () => void;
     shouldPageMoveOnPress: boolean;
+    key: any;
 };
 
 const PageView: React.FC<PageProps> = React.memo(
-    ({ page, index, currentIndex, width, offset, onPress, shouldPageMoveOnPress }: PageProps) => {
+    ({
+        page,
+        index,
+        currentIndex,
+        width,
+        offset,
+        onPress,
+        shouldPageMoveOnPress,
+        key,
+    }: PageProps) => {
         const PageComponent = page.props.component;
 
         const animatedStyles = useAnimatedStyle(() => {
@@ -44,7 +54,7 @@ const PageView: React.FC<PageProps> = React.memo(
             <Pressable
                 disabled={!shouldPageMoveOnPress}
                 onPress={onPress}
-                key={`UICarouselPage_${index}`}
+                key={key}
                 testID={page.props.testID}
             >
                 <Animated.View style={[animatedStyles, pageWidthStyle]}>
@@ -150,6 +160,7 @@ export const CarouselViewContainer: React.FC<Props> = ({
                 {pages.map((page, index) => {
                     return (
                         <PageView
+                            key={index}
                             page={page}
                             index={index}
                             currentIndex={currentIndexRef}

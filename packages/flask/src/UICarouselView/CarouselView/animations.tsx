@@ -6,7 +6,6 @@ import Animated, {
     useAnimatedStyle,
     useSharedValue,
     interpolateColor,
-    withTiming,
 } from 'react-native-reanimated';
 import { Theme, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
 
@@ -23,10 +22,12 @@ export const duration = 400;
 const springConfig: Animated.WithSpringConfig = {
     damping: 100,
     stiffness: 500,
+    mass: 3,
+    overshootClamping: false,
 };
 
 /**
- * Hook for page animation (opacity and scale)
+ * Hook for page animation (opacity and scale), mobile only
  */
 export const usePageStyle = (initialOffset: any) => {
     const offset = useSharedValue(initialOffset);
@@ -36,14 +37,19 @@ export const usePageStyle = (initialOffset: any) => {
     }, [offset, initialOffset]);
 
     const animatedValue = useDerivedValue(() => {
-        return withTiming(offset.value, { duration });
+        return withSpring(offset.value, springConfig);
     });
 
     const animatedStyles = useAnimatedStyle(() => {
-        const opacity = interpolate(animatedValue.value, [1, 0], [animatedValue.value, 1]);
-        // todo: scale
+        const opacity = interpolate(animatedValue.value, [1, 0], [0.5, 1]);
+        const transform = [
+            {
+                scale: interpolate(animatedValue.value, [1, 0], [0.9, 1]),
+            },
+        ];
         return {
             opacity,
+            transform,
         };
     });
 

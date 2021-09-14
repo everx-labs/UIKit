@@ -12,9 +12,10 @@ const returnPages = (
     shouldPageMoveOnPress: boolean,
     nextPage: (index: number) => void,
 ) => {
-    const onPress = React.useCallback((index: number) => {
-        throttle(() => nextPage(index), 250, { leading: false, trailing: true });
-    }, []);
+    const onPress = React.useCallback(
+        throttle((index: number) => nextPage(index), 250, { leading: false, trailing: true }),
+        [],
+    );
 
     return pages.map((page, index) => {
         const onPressPage = () => onPress(index);

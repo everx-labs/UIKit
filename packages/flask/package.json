@@ -42,7 +42,7 @@
         "html2canvas": "^1.0.0-rc.7",
         "lodash": "^4.17.21",
         "qrcode": "^1.4.4",
-        "react-native-pager-view": "^5.4.1"
+        "react-native-pager-view": "^5.4.4"
     },
     "devDependencies": {
         "@babel/preset-typescript": "7.12.1",
@@ -68,7 +68,7 @@
         "react-native-reanimated": "^2.2.0",
         "react-native-svg": "^12.1.1",
         "react-native-view-shot": "^3.1.2",
-        "react-native-pager-view": "^5.4.1"
+        "react-native-pager-view": "^5.4.4"
     },
     "@react-native-community/bob": {
         "source": "src",
