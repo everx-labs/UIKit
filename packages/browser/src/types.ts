@@ -2,6 +2,11 @@ import type { ChatMessageType, BubbleBaseT } from '@tonlabs/uikit.chats';
 import type BigNumber from 'bignumber.js';
 import type React from 'react';
 
+/**
+ * A string of the form: `data:[<data type>][;base64],<data in base64>`
+ */
+export type DataUrl = string
+
 export type OnSendText = (text: string) => void;
 export type OnSendAmount = (amount: BigNumber) => void;
 export type OnHeightChange = (height: number) => void;
@@ -317,7 +322,8 @@ export enum MediaOutputMessageStatus {
 export type MediaOutputMessage = InteractiveMessage<
     InteractiveMessageType.MediaOutput,
     {
-        data: string | null; // base64
+        data: DataUrl | null;
+        preview: DataUrl | null;
         prompt?: string;
         onOutput?: (status: MediaOutputMessageStatus) => void;
     }

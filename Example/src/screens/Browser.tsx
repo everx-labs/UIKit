@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useWindowDimensions, StatusBar } from 'react-native';
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
+import Clipboard from '@react-native-clipboard/clipboard';
 import BigNumber from 'bignumber.js';
 
 import { UIConstant } from '@tonlabs/uikit.core';
@@ -23,6 +24,8 @@ import type {
     SigningBoxMessage,
     TransactionConfirmationMessage,
 } from '@tonlabs/uikit.browser';
+import { UIPopup } from '@tonlabs/uikit.popups';
+import { uiLocalized } from '@tonlabs/uikit.localization';
 import { ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';
 import {
     useTheme,
@@ -41,9 +44,12 @@ import {
 
 import { useBase64Image } from './hooks/useBase64Image';
 
-/** There should be a link to a medium-sized image here */
-const IMAGE_URL =
-    'https://firebasestorage.googleapis.com/v0/b/ton-uikit-example-7e797.appspot.com/o/loon-image-medium.jpeg?alt=media&token=8a2f5747-495e-4aae-a9d0-460f34b12717';
+const imageUrl = {
+    original:
+        'https://firebasestorage.googleapis.com/v0/b/ton-uikit-example-7e797.appspot.com/o/loon-image-original.jpeg?alt=media&token=8907ad38-4d43-47c1-8f80-fd272e617440',
+    medium: 'https://firebasestorage.googleapis.com/v0/b/ton-uikit-example-7e797.appspot.com/o/loon-image-medium.jpeg?alt=media&token=8a2f5747-495e-4aae-a9d0-460f34b12717',
+    small: 'https://firebasestorage.googleapis.com/v0/b/ton-uikit-example-7e797.appspot.com/o/loon-image-small.jpeg?alt=media&token=022bc391-19ec-4e7f-94c6-66349f2e212e',
+};
 
 const BrowserStack = createStackNavigator();
 
@@ -52,8 +58,10 @@ type BrowserScreenRef = { toggleMenu(): void };
 const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
     const theme = useTheme();
 
-    const base64Image = useBase64Image(IMAGE_URL);
+    const base64Image = useBase64Image(imageUrl.original);
+    const base64PreviewImage = useBase64Image(imageUrl.small);
 
+    const [isNoticeVisible, setNoticeVisible] = React.useState(false);
     const [messages, setMessages] = React.useState<BrowserMessage[]>([
         {
             key: `${Date.now()}-initial`,
@@ -99,14 +107,25 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
         },
     }));
 
-    const onPressUrl = React.useCallback(() => {
-        console.log('url handled');
+    const onPressUrl = React.useCallback((url) => {
+        console.log('url handled', url);
     }, []);
+
+    const onLongPressText = React.useCallback((text) => {
+        Clipboard.setString(text);
+        console.log('long press handled', text);
+        setNoticeVisible(true)
+    }, []);
+
+    const hideNotice = React.useCallback(() => {
+        setNoticeVisible(false)
+    }, [])
+
     const { height } = useWindowDimensions();
 
     return (
         <>
-            <UIBrowser messages={messages} onPressUrl={onPressUrl} />
+            <UIBrowser messages={messages} onPressUrl={onPressUrl} onLongPressText={onLongPressText} />
             <SafeAreaInsetsContext.Consumer>
                 {(insets) => (
                     <UIBottomSheet
@@ -144,6 +163,7 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                         status: MessageStatus.Received,
                                         type: InteractiveMessageType.MediaOutput,
                                         data: base64Image,
+                                        preview: base64PreviewImage,
                                         prompt: 'Look at this cool picture!',
                                         onOutput: (status) => {
                                             console.log({ status });
@@ -750,6 +770,13 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
             >
                 <UILabel>Pretending to using a security card...</UILabel>
             </UICardSheet>
+            <UIPopup.Notice
+                visible={isNoticeVisible}
+                title={uiLocalized.MessageCopiedToClipboard}
+                type={UIPopup.Notice.Type.BottomToast}
+                color={UIPopup.Notice.Color.PrimaryInverted}
+                onClose={hideNotice}
+            />
         </>
     );
 });

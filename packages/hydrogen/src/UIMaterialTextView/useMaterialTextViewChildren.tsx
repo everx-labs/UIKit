@@ -11,7 +11,7 @@ export function UIMaterialTextViewIcon({
     style,
     ...rest
 }: UIImageProps & {
-    onPress?: React.ComponentProps<typeof TouchableOpacity>['onPress'];
+    onPress?: () => void;
 }) {
     return (
         <TouchableOpacity onPress={onPress}>
@@ -25,7 +25,7 @@ export function UIMaterialTextViewAction({
     onPress,
 }: {
     children: string;
-    onPress?: React.ComponentProps<typeof TouchableOpacity>['onPress'];
+    onPress?: () => void;
 }) {
     return (
         <TouchableOpacity onPress={onPress}>

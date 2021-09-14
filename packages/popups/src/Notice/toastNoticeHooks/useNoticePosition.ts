@@ -6,6 +6,7 @@ import {
     useAnimatedGestureHandler,
     withSpring,
     runOnJS,
+    useWorkletCallback,
 } from 'react-native-reanimated';
 // @ts-expect-error
 import SpringConfig from 'react-native/Libraries/Animated/SpringConfig';
@@ -21,8 +22,8 @@ type ToastNoticeState = 'Opened' | 'Closed' | 'ClosedLeft' | 'ClosedRight';
 const OpenSpringConfig = {
     overshootClamping: false,
     mass: 1,
-    restSpeedThreshold: 0.001,
-    restDisplacementThreshold: 0.001,
+    restSpeedThreshold: 0.1,
+    restDisplacementThreshold: 0.1,
     ...SpringConfig.fromBouncinessAndSpeed(8, 12),
 };
 
@@ -41,14 +42,16 @@ type MoveType = 'Open' | 'Close';
 const moveWithSpring = (
     moveType: MoveType,
     toValue: number,
+    onAnimationEnd: (isFinished: boolean) => void,
     onClose?: () => void,
 ): number => {
     'worklet';
 
     if (moveType === 'Open') {
-        return withSpring(toValue, OpenSpringConfig);
+        return withSpring(toValue, OpenSpringConfig, onAnimationEnd);
     }
     return withSpring(toValue, CloseSpringConfig, (isFinished: boolean) => {
+        onAnimationEnd(isFinished);
         if (isFinished && onClose) {
             runOnJS(onClose)();
         }
@@ -66,9 +69,7 @@ export const useNoticePosition = (
     onTap: (() => void) | undefined,
 ) => {
     /** Place of notice */
-    const toastNoticeState = useSharedValue<ToastNoticeState>(
-        getToastNoticeState(visible),
-    );
+    const toastNoticeState = useSharedValue<ToastNoticeState>(getToastNoticeState(visible));
     /** Еhe direction in which the user swipes the notification */
     const swipeDirection = useSharedValue<SwipeDirection>('None');
     /** Dynamic X position */
@@ -85,20 +86,11 @@ export const useNoticePosition = (
         }
     }, [visible, toastNoticeState, suspendClosingTimer]);
 
-    React.useEffect(() => {
-        if (toastNoticeState.value === 'Opened') {
-            if (isHovered) {
-                suspendClosingTimer();
-            } else {
-                continueClosingTimer();
-            }
+    const onAnimationEnd = useWorkletCallback((isFinished: boolean) => {
+        if (isFinished && swipeDirection.value !== 'None') {
+            swipeDirection.value = 'None';
         }
-    }, [
-        isHovered,
-        suspendClosingTimer,
-        continueClosingTimer,
-        toastNoticeState,
-    ]);
+    });
 
     useAnimatedReaction(
         () => {
@@ -110,21 +102,16 @@ export const useNoticePosition = (
                 closedXSnapPoint: xSnapPoints.closedSnapPoint.value,
             };
         },
-        (state) => {
+        state => {
             if (state.toastNoticeState === 'Opened') {
-                yPosition.value = moveWithSpring(
-                    'Open',
-                    state.openedYSnapPoint,
-                );
-                xPosition.value = moveWithSpring(
-                    'Open',
-                    state.openedXSnapPoint,
-                );
+                yPosition.value = moveWithSpring('Open', state.openedYSnapPoint, onAnimationEnd);
+                xPosition.value = moveWithSpring('Open', state.openedXSnapPoint, onAnimationEnd);
             }
             if (state.toastNoticeState === 'Closed') {
                 yPosition.value = moveWithSpring(
                     'Close',
                     state.closedYSnapPoint,
+                    onAnimationEnd,
                     onCloseAnimationEnd,
                 );
             }
@@ -132,6 +119,7 @@ export const useNoticePosition = (
                 xPosition.value = moveWithSpring(
                     'Close',
                     -state.closedXSnapPoint,
+                    onAnimationEnd,
                     onCloseAnimationEnd,
                 );
             }
@@ -139,6 +127,7 @@ export const useNoticePosition = (
                 xPosition.value = moveWithSpring(
                     'Close',
                     state.closedXSnapPoint,
+                    onAnimationEnd,
                     onCloseAnimationEnd,
                 );
             }
@@ -146,66 +135,54 @@ export const useNoticePosition = (
     );
 
     const isBottomNotice =
-        ySnapPoints.openedSnapPoint.value - ySnapPoints.closedSnapPoint.value <
-        0;
+        ySnapPoints.openedSnapPoint.value - ySnapPoints.closedSnapPoint.value < 0;
     const gestureHandler = useAnimatedGestureHandler({
-        onStart: (event) => {
-            if (toastNoticeState.value === 'Opened') {
-                isNoticeHeld.value = true;
-                if (Math.abs(event.velocityX) >= Math.abs(event.velocityY)) {
-                    swipeDirection.value = 'Horizontal';
-                } else {
-                    swipeDirection.value = 'Vertical';
-                }
-            }
-        },
-        onActive: (event) => {
+        onActive: event => {
             if (toastNoticeState.value === 'Opened') {
                 if (!isNoticeHeld.value) {
                     isNoticeHeld.value = true;
                 }
+                if (swipeDirection.value === 'None') {
+                    if (Math.abs(event.velocityX) >= Math.abs(event.velocityY)) {
+                        swipeDirection.value = 'Horizontal';
+                    } else {
+                        swipeDirection.value = 'Vertical';
+                    }
+                }
+
                 if (swipeDirection.value === 'Vertical') {
                     /** Swipe up is prohibited */
                     const isMovingAllowed = isBottomNotice
                         ? event.translationY >= 0
                         : event.translationY <= 0;
                     if (isMovingAllowed) {
-                        yPosition.value =
-                            ySnapPoints.openedSnapPoint.value +
-                            event.translationY;
+                        yPosition.value = ySnapPoints.openedSnapPoint.value + event.translationY;
                     }
                 } else {
                     xPosition.value = event.translationX;
                 }
             }
         },
-        onEnd: (event) => {
+        onEnd: event => {
             if (toastNoticeState.value === 'Opened') {
                 isNoticeHeld.value = false;
                 const isTranslationYExceededThreshold = isBottomNotice
                     ? event.translationY > Y_THRESHOLD
                     : event.translationY < -Y_THRESHOLD;
-                if (
-                    swipeDirection.value === 'Horizontal' &&
-                    event.translationX < -X_THRESHOLD
-                ) {
+                if (swipeDirection.value === 'Horizontal' && event.translationX < -X_THRESHOLD) {
                     toastNoticeState.value = 'ClosedLeft';
                 } else if (
                     swipeDirection.value === 'Horizontal' &&
                     event.translationX > X_THRESHOLD
                 ) {
                     toastNoticeState.value = 'ClosedRight';
-                } else if (
-                    swipeDirection.value === 'Vertical' &&
-                    isTranslationYExceededThreshold
-                ) {
+                } else if (swipeDirection.value === 'Vertical' && isTranslationYExceededThreshold) {
                     toastNoticeState.value = 'Closed';
                 } else {
                     /** Double assignment is hack to trigger useAnimatedReaction */
                     toastNoticeState.value = 'Closed';
                     toastNoticeState.value = 'Opened';
                 }
-                swipeDirection.value = 'None';
             }
         },
     });
@@ -214,22 +191,27 @@ export const useNoticePosition = (
         () => {
             return {
                 isNoticeHeld: isNoticeHeld.value,
+                isHovered,
             };
         },
         (state, previousState) => {
-            if (state.isNoticeHeld === previousState?.isNoticeHeld) {
+            if (
+                state.isNoticeHeld === previousState?.isNoticeHeld &&
+                state.isHovered === previousState?.isHovered
+            ) {
                 return;
             }
-            if (state.isNoticeHeld) {
+            if (state.isNoticeHeld || state.isHovered) {
                 runOnJS(suspendClosingTimer)();
             } else {
                 runOnJS(continueClosingTimer)();
             }
         },
+        [isHovered],
     );
 
     const onPress = (): void => {
-        if (swipeDirection.value === 'None' && onTap) {
+        if (swipeDirection.value === 'None' && toastNoticeState.value === 'Opened' && onTap) {
             onTap();
         }
     };
@@ -238,7 +220,7 @@ export const useNoticePosition = (
         isNoticeHeld.value = true;
     };
 
-    const onPressOut = () => {
+    const onPressOut = (): void => {
         isNoticeHeld.value = false;
     };
 

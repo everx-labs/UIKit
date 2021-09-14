@@ -13,7 +13,6 @@ import { runOnUI } from 'react-native-reanimated';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import { UIShareManager } from '@tonlabs/uikit.navigation_legacy';
 import {
     UILabel,
     UILabelColors,
@@ -23,7 +22,7 @@ import {
     hapticImpact,
 } from '@tonlabs/uikit.hydrogen';
 
-import { MessageStatus, OnPressUrl } from './types';
+import { MessageStatus, OnLongPressText, OnPressUrl } from './types';
 import type { ChatPlainTextMessage, PlainTextMessage } from './types';
 import {
     useBubblePosition,
@@ -54,8 +53,16 @@ export const UrlPressHandlerContext = React.createContext<OnPressUrl>(
     undefined,
 );
 
+export const TextLongPressHandlerContext = React.createContext<OnLongPressText>(
+    undefined,
+);
+
 function useUrlPressHandler() {
     return React.useContext(UrlPressHandlerContext);
+}
+
+function useTextLongPressHandler() {
+    return React.useContext(TextLongPressHandlerContext);
 }
 
 const getFontColor = (message: PlainTextMessage) => {
@@ -153,24 +160,25 @@ function PlainTextContainer(
     const roundedCornerStyle = useBubbleRoundedCornerStyle(props, position);
     const actionString = getActionString(props);
 
+    const textLongPressHandler = useTextLongPressHandler()
+
+    const longPressHandle = React.useCallback(()=>{
+        bubbleScaleAnimation(true);
+        props.text && textLongPressHandler && textLongPressHandler(props.text)
+        /**
+         * Maybe it's not the best place to run haptic
+         * but I don't want to put it in legacy package
+         * so left it here, until we make new share manager
+         */
+        runOnUI(hapticImpact)('medium');
+    },[props.text, textLongPressHandler, bubbleScaleAnimation])
+    
     return (
         <View style={containerStyle} onLayout={props.onLayout}>
             <TouchableWithoutFeedback
                 onPressOut={() => bubbleScaleAnimation()}
                 onPress={props.onTouchText}
-                onLongPress={() => {
-                    bubbleScaleAnimation(true);
-                    /**
-                     * Maybe it's not the best place to run haptic
-                     * but I don't want to put it in legacy package
-                     * so left it here, until we make new share manager
-                     */
-                    runOnUI(hapticImpact)('medium');
-                    UIShareManager.copyToClipboard(
-                        props.text,
-                        uiLocalized.MessageCopiedToClipboard,
-                    );
-                }}
+                onLongPress={longPressHandle}
             >
                 <View>
                     <Animated.View
@@ -271,8 +279,8 @@ export function BubbleSimplePlainText(props: PlainTextMessage) {
                         {
                             type: 'url',
                             style: urlStyle,
-                            onPress: urlPressHandler,
-                        },
+                            onPress: urlPressHandler
+                        }
                     ]}
                 >
                     {props.text}
