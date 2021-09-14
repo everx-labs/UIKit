@@ -53,6 +53,7 @@ export function usePosition(
     keyboardHeight: Animated.SharedValue<number>,
     hasOpenAnimation: boolean = true,
     hasCloseAnimation: boolean = true,
+    shouldHandleKeyboard: boolean = true,
     onCloseProp: OnClose | undefined,
     onCloseModal: OnClose,
     onOpenEndProp: OnOpen | undefined,
@@ -74,7 +75,11 @@ export function usePosition(
     const position = useSharedValue(0);
 
     const snapPointPosition = useDerivedValue(() => {
-        return 0 - height.value - keyboardHeight.value;
+        let snapPoint = 0 - height.value;
+        if (shouldHandleKeyboard) {
+            snapPoint - keyboardHeight.value;
+        }
+        return snapPoint;
     });
 
     useAnimatedReaction(
