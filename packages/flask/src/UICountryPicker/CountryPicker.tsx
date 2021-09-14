@@ -2,7 +2,7 @@ import React from 'react';
 import Fuse from 'fuse.js';
 import { ActivityIndicator, Dimensions, StatusBar, View } from 'react-native';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import { FlatList, ScrollView, UIBottomSheet, UIConstant, UISearchBar } from '@tonlabs/uikit.navigation';
+import { FlatList, UIBottomSheet, UIConstant, UISearchBar } from '@tonlabs/uikit.navigation';
 import {
     ColorVariants,
     makeStyles,
@@ -31,15 +31,13 @@ const fuseOptions = {
     keys: ['name'],
 };
 
-export function CountryPicker(
-    {
-        onClose,
-        onSelect,
-        visible,
-        banned = [],
-        permitted = [],
-    }: WrappedCountryPickerProps) {
-
+export function CountryPicker({
+    onClose,
+    onSelect,
+    visible,
+    banned = [],
+    permitted = [],
+}: WrappedCountryPickerProps) {
     const theme = useTheme();
     const styles = useStyles(theme);
 
@@ -49,9 +47,12 @@ export function CountryPicker(
     const [filteredList, setFilteredList] = React.useState(countriesList);
     const fuse = React.useMemo(() => new Fuse(filteredList, fuseOptions), [filteredList]);
 
-    const onSelectCountry = React.useCallback((item: Country) => {
-        onSelect && onSelect(item.code);
-    }, [onSelect]);
+    const onSelectCountry = React.useCallback(
+        (item: Country) => {
+            onSelect && onSelect(item.code);
+        },
+        [onSelect],
+    );
 
     const checkIncludes = React.useCallback((code: string) => {
         let isPermitted = true;
@@ -65,10 +66,13 @@ export function CountryPicker(
         return isPermitted && !isBanned;
     }, []);
 
-    const filterCountries = React.useCallback(list => {
-        const permittedCountries = list.filter((country: any) => checkIncludes(country.code));
-        setFilteredList(permittedCountries);
-    }, [banned, permitted]);
+    const filterCountries = React.useCallback(
+        list => {
+            const permittedCountries = list.filter((country: any) => checkIncludes(country.code));
+            setFilteredList(permittedCountries);
+        },
+        [banned, permitted],
+    );
 
     React.useEffect(() => {
         setFilteredList(countriesList);
@@ -80,17 +84,20 @@ export function CountryPicker(
     }, [search]);
 
     React.useEffect(() => {
-        fetchJSON().then((r: CountriesArray) => {
-            if (permitted.length || banned.length) {
-                filterCountries(r);
-            } else {
-                setCountriesList(r);
-            }
-        }).catch((e: Error) => {
-            console.error(e);
-        }).finally(() => {
-            setLoading(false);
-        });
+        fetchJSON()
+            .then((r: CountriesArray) => {
+                if (permitted.length || banned.length) {
+                    filterCountries(r);
+                } else {
+                    setCountriesList(r);
+                }
+            })
+            .catch((e: Error) => {
+                console.error(e);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
     }, []);
 
     const renderSearchHeader = () => {
@@ -100,15 +107,12 @@ export function CountryPicker(
                     <View style={styles.sideHeaderView}>
                         <UILinkButton onPress={onClose} title={uiLocalized.Cancel} />
                     </View>
-                    <UILabel
-                        role={TypographyVariants.HeadlineHead}
-                        style={styles.headerTitle}
-                    >
+                    <UILabel role={TypographyVariants.HeadlineHead} style={styles.headerTitle}>
                         {uiLocalized.CountryPicker.Title}
                     </UILabel>
                     <View style={styles.sideHeaderView} />
                 </View>
-                <UISearchBar returnKeyType='done' value={search} onChangeText={setSearch} />
+                <UISearchBar returnKeyType="done" value={search} onChangeText={setSearch} />
             </View>
         );
     };
@@ -132,16 +136,10 @@ export function CountryPicker(
     const renderEmptyList = () => {
         return (
             <>
-                <UILabel
-                    role={TypographyVariants.TitleMedium}
-                    color={ColorVariants.TextSecondary}
-                >
+                <UILabel role={TypographyVariants.TitleMedium} color={ColorVariants.TextSecondary}>
                     {uiLocalized.CountryPicker.CountryNotFindTitle}
                 </UILabel>
-                <UILabel
-                    role={TypographyVariants.Action}
-                    color={ColorVariants.TextSecondary}
-                >
+                <UILabel role={TypographyVariants.Action} color={ColorVariants.TextSecondary}>
                     {uiLocalized.CountryPicker.CountryNotFindDetails}
                 </UILabel>
             </>
@@ -155,24 +153,19 @@ export function CountryPicker(
             </View>
         );
     }, [loading]);
-    
+
     const keyExtractor = React.useCallback((item: Country) => item.code, []);
 
     return (
-        <UIBottomSheet
-            onClose={onClose}
-            visible={visible}
-            style={styles.sheet}>
-            <ScrollView stickyHeaderIndices={[0]}>
-                {renderSearchHeader()}
-                <FlatList
-                    data={filteredList}
-                    renderItem={renderCountryRow}
-                    keyExtractor={keyExtractor}
-                    ListEmptyComponent={ListEmptyComponent}
-                    keyboardDismissMode='on-drag'
-                />
-            </ScrollView>
+        <UIBottomSheet onClose={onClose} visible={visible} style={styles.sheet}>
+            {renderSearchHeader()}
+            <FlatList
+                data={filteredList}
+                renderItem={renderCountryRow}
+                keyExtractor={keyExtractor}
+                ListEmptyComponent={ListEmptyComponent}
+                keyboardDismissMode="on-drag"
+            />
         </UIBottomSheet>
     );
 }
