@@ -1,28 +1,10 @@
 import * as React from 'react';
-import {
-    View,
-    StyleSheet,
-    ViewStyle,
-    StyleProp,
-    Platform,
-    Keyboard, KeyboardAvoidingView,
-} from 'react-native';
-import {
-    PanGestureHandler,
-    TapGestureHandler,
-} from 'react-native-gesture-handler';
-import Animated, {
-    interpolateColor,
-    useAnimatedStyle,
-} from 'react-native-reanimated';
+import { View, StyleSheet, ViewStyle, StyleProp, Platform, Keyboard } from 'react-native';
+import { PanGestureHandler, TapGestureHandler } from 'react-native-gesture-handler';
+import Animated, { interpolateColor, useAnimatedStyle } from 'react-native-reanimated';
 import { useBackHandler } from '@react-native-community/hooks';
 
-import {
-    ColorVariants,
-    Portal,
-    useColorParts,
-    useStatusBar,
-} from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, Portal, useColorParts, useStatusBar } from '@tonlabs/uikit.hydrogen';
 import { useAnimatedKeyboardHeight } from '@tonlabs/uikit.keyboard';
 
 import { UIConstant } from '../../constants';
@@ -137,10 +119,9 @@ function UISheetPortalContent({
         return false;
     });
 
-    const {
-        colorParts: overlayColorParts,
-        opacity: overlayOpacity,
-    } = useColorParts(ColorVariants.BackgroundOverlay);
+    const { colorParts: overlayColorParts, opacity: overlayOpacity } = useColorParts(
+        ColorVariants.BackgroundOverlay,
+    );
 
     useStatusBar({
         backgroundColor: ColorVariants.BackgroundOverlay,
@@ -158,10 +139,7 @@ function UISheetPortalContent({
             backgroundColor: interpolateColor(
                 position.value,
                 [0, -height.value],
-                [
-                    `rgba(${overlayColorParts}, 0)`,
-                    `rgba(${overlayColorParts}, ${overlayOpacity})`,
-                ],
+                [`rgba(${overlayColorParts}, 0)`, `rgba(${overlayColorParts}, ${overlayOpacity})`],
             ),
         };
     }, [overlayColorParts, overlayOpacity, height, position]);
@@ -202,10 +180,7 @@ function UISheetPortalContent({
 
     return (
         <View style={styles.container}>
-            <TapGestureHandler
-                enabled={onClose != null}
-                onGestureEvent={onTapGestureHandler}
-            >
+            <TapGestureHandler enabled={onClose != null} onGestureEvent={onTapGestureHandler}>
                 {/* https://github.com/software-mansion/react-native-gesture-handler/issues/71 */}
                 <Animated.View style={styles.interlayer}>
                     <PanGestureHandler
@@ -220,7 +195,7 @@ function UISheetPortalContent({
             <Animated.View
                 style={[styles.sheet, cardStyle]}
                 onLayout={onSheetLayout}
-                pointerEvents='box-none'
+                pointerEvents="box-none"
             >
                 <PanGestureHandler
                     maxPointers={1}
@@ -230,21 +205,11 @@ function UISheetPortalContent({
                         ? { waitFor: scrollPanGestureHandlerRef }
                         : null)}
                 >
-                    {/** todo: write the correct keyboard interaction. So far this is the only solution that has helped for the UICountryPicker (flask) and it does not work well. */}
-                    <KeyboardAvoidingView
-                        behavior='height'
-                        keyboardVerticalOffset={0}
-                    >
-                        <Animated.View style={style}>
-
-                            <ScrollableContext.Provider
-                                value={scrollableContextValue}
-                            >
-                                {children}
-                            </ScrollableContext.Provider>
-
-                        </Animated.View>
-                    </KeyboardAvoidingView>
+                    <Animated.View style={style}>
+                        <ScrollableContext.Provider value={scrollableContextValue}>
+                            {children}
+                        </ScrollableContext.Provider>
+                    </Animated.View>
                 </PanGestureHandler>
             </Animated.View>
         </View>
@@ -276,10 +241,7 @@ export function UISheet(props: UISheetProps) {
 
     return (
         <Portal absoluteFill forId={forId}>
-            <UISheetPortalContent
-                {...props}
-                onClosePortalRequest={onClosePortalRequest}
-            />
+            <UISheetPortalContent {...props} onClosePortalRequest={onClosePortalRequest} />
         </Portal>
     );
 }
