@@ -1,5 +1,13 @@
 import * as React from 'react';
-import { ColorValue, View, Platform, TouchableWithoutFeedback, StyleSheet } from 'react-native';
+import {
+    ColorValue,
+    View,
+    Platform,
+    TouchableWithoutFeedback,
+    StyleSheet,
+    ViewStyle,
+} from 'react-native';
+import type Animated from 'react-native-reanimated';
 import {
     useTheme,
     ColorVariants,
@@ -7,31 +15,44 @@ import {
     makeStyles,
     TypographyVariants,
     UILabel,
+    UIBoxButtonVariant,
 } from '@tonlabs/uikit.hydrogen';
 import { UIConstant } from '@tonlabs/uikit.navigation';
-import { NoticeProps, UINoticeType, UINoticeColor } from './types';
+import { NoticeProps, UINoticeType, UINoticeColor, UINoticeActionAttributes } from './types';
 import { Action } from './Action';
+import { CountdownCirlce } from './CountdownCircle';
 
 const getBackgroundColor = (color: UINoticeColor, theme: Theme): ColorValue => {
     switch (color) {
         case UINoticeColor.Secondary:
             return theme[ColorVariants.BackgroundSecondary];
         case UINoticeColor.Negative:
-            return theme[ColorVariants.BackgroundNegative];
+            return theme[ColorVariants.StaticBackgroundNegative];
         case UINoticeColor.PrimaryInverted:
         default:
             return theme[ColorVariants.BackgroundPrimaryInverted];
     }
 };
 
-const getTitleColorVariant = (color: UINoticeColor): ColorVariants => {
+export const getTitleColorVariant = (color: UINoticeColor): ColorVariants => {
     switch (color) {
         case UINoticeColor.Secondary:
+        case UINoticeColor.Negative:
             return ColorVariants.TextPrimary;
         case UINoticeColor.PrimaryInverted:
-        case UINoticeColor.Negative:
         default:
             return ColorVariants.TextPrimaryInverted;
+    }
+};
+
+export const getActionVariant = (color: UINoticeColor): UIBoxButtonVariant => {
+    switch (color) {
+        case UINoticeColor.Negative:
+            return UIBoxButtonVariant.Negative;
+        case UINoticeColor.Secondary:
+        case UINoticeColor.PrimaryInverted:
+        default:
+            return UIBoxButtonVariant.Neutral;
     }
 };
 
@@ -44,6 +65,42 @@ const getBorderRadius = (type: UINoticeType): number => {
     }
 };
 
+const renderCountdown = (
+    countdownValue: Animated.SharedValue<number>,
+    countdownProgress: Animated.SharedValue<number>,
+    color: UINoticeColor,
+    styles: ViewStyle,
+    hasCountdown: boolean | undefined,
+): React.ReactElement | null => {
+    if (hasCountdown) {
+        return (
+            <View style={styles}>
+                <CountdownCirlce
+                    countdownValue={countdownValue}
+                    countdownProgress={countdownProgress}
+                    color={getTitleColorVariant(color)}
+                />
+            </View>
+        );
+    }
+    return null;
+};
+
+const renderAction = (
+    action: UINoticeActionAttributes | undefined,
+    color: UINoticeColor,
+    styles: ViewStyle,
+): React.ReactElement | null => {
+    if (!action) {
+        return null;
+    }
+    return (
+        <View style={styles}>
+            <Action action={action} variant={getActionVariant(color)} />
+        </View>
+    );
+};
+
 export const Notice: React.FC<NoticeProps> = ({
     type,
     title,
@@ -52,42 +109,52 @@ export const Notice: React.FC<NoticeProps> = ({
     onLongPress,
     onPressOut,
     action,
+    countdownValue,
+    countdownProgress,
+    hasCountdown,
 }: NoticeProps) => {
     const theme = useTheme();
     const styles = useStyles(color, type, theme);
     return (
-        <View style={styles.container}>
-            <TouchableWithoutFeedback
-                onPress={onPress}
-                onLongPress={onLongPress}
-                delayLongPress={UIConstant.notice.longPressDelay}
-                onPressOut={onPressOut}
-            >
-                <View style={StyleSheet.absoluteFill} />
-            </TouchableWithoutFeedback>
-            <View style={styles.labelContainer} pointerEvents="none">
-                <UILabel
-                    testID="message_default"
-                    role={TypographyVariants.ParagraphNote}
-                    color={getTitleColorVariant(color)}
+        <View style={styles.underlay}>
+            <View style={styles.container}>
+                <TouchableWithoutFeedback
+                    onPress={onPress}
+                    onLongPress={onLongPress}
+                    delayLongPress={UIConstant.notice.longPressDelay}
+                    onPressOut={onPressOut}
                 >
-                    {title}
-                </UILabel>
+                    <View style={StyleSheet.absoluteFill} />
+                </TouchableWithoutFeedback>
+                {renderCountdown(
+                    countdownValue,
+                    countdownProgress,
+                    color,
+                    styles.countdown,
+                    hasCountdown,
+                )}
+                <View style={styles.labelContainer} pointerEvents="none">
+                    <UILabel
+                        testID="message_default"
+                        role={TypographyVariants.ParagraphNote}
+                        color={getTitleColorVariant(color)}
+                    >
+                        {title}
+                    </UILabel>
+                </View>
+                {renderAction(action, color, styles.action)}
             </View>
-            <Action action={action} />
         </View>
     );
 };
 
 const useStyles = makeStyles((color: UINoticeColor, type: UINoticeType, theme: Theme) => ({
-    container: {
+    underlay: {
         maxWidth: UIConstant.notice.maxWidth,
         flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: getBackgroundColor(color, theme),
+        backgroundColor: 'white',
         borderRadius: getBorderRadius(type),
-        paddingHorizontal: UIConstant.contentOffset,
+        overflow: 'hidden',
         ...Platform.select({
             web: {
                 cursor: 'pointer',
@@ -97,8 +164,22 @@ const useStyles = makeStyles((color: UINoticeColor, type: UINoticeType, theme: T
             default: null,
         }),
     },
+    container: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: getBackgroundColor(color, theme),
+        paddingHorizontal: UIConstant.contentOffset,
+    },
     labelContainer: {
         flex: 1,
         paddingVertical: UIConstant.contentInsetVerticalX3,
+    },
+    countdown: {
+        paddingRight: UIConstant.contentInsetVerticalX2,
+        zIndex: -10,
+    },
+    action: {
+        marginHorizontal: -UIConstant.contentInsetVerticalX3,
     },
 }));

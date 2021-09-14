@@ -60,6 +60,9 @@ export enum ColorVariants {
     StaticHoverOverlay = 'StaticHoverOverlay',
     StaticPressOverlay = 'StaticPressOverlay',
     StaticBlack = 'StaticBlack',
+    StaticBackgroundAccent = 'StaticBackgroundAccent',
+    StaticBackgroundNegative = 'StaticBackgroundNegative',
+    StaticBackgroundPositive = 'StaticBackgroundPositive',
     Shadow = 'Shadow',
 }
 
@@ -79,6 +82,9 @@ const StaticTheme = {
     [ColorVariants.StaticHoverOverlay]: 'rgba(32, 38, 42, 0.2)',
     [ColorVariants.StaticPressOverlay]: 'rgba(32, 38, 42, 0.4)',
     [ColorVariants.StaticBlack]: '#000000',
+    [ColorVariants.StaticBackgroundAccent]: 'rgba(0, 131, 224, 0.12)',
+    [ColorVariants.StaticBackgroundNegative]: 'rgba(231, 23, 23, 0.12)',
+    [ColorVariants.StaticBackgroundPositive]: 'rgba(54, 192, 92, 0.12)',
 };
 
 export const LightTheme: Theme = {

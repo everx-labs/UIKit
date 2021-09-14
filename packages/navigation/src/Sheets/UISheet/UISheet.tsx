@@ -53,6 +53,18 @@ export type UISheetProps = {
      */
     hasCloseAnimation?: boolean;
     /**
+     * Whether UISheet should react on keyboard opening
+     *
+     * TODO(savelichalex): I was thinking maybe do it a bit smarter,
+     * but for now left it simple. So the idea was:
+     * Maybe measure the size of the container somehow and see if it
+     * can fit into the area between top safe area edge and bottom when
+     * keyboard is opened, and if it can't fit, disable reacting on keyboard.
+     * But it actually produces new question, like what if the conditions are met
+     * but I want the container to be shrinked instead and still react on keyboard?
+     */
+    shouldHandleKeyboard?: boolean;
+    /**
      * See Portal
      */
     forId?: string;
@@ -73,6 +85,7 @@ function UISheetPortalContent({
     countRubberBandDistance,
     hasOpenAnimation,
     hasCloseAnimation,
+    shouldHandleKeyboard,
 }: UISheetPortalContentProps) {
     const { height, onSheetLayout } = useSheetHeight(
         UIConstant.rubberBandEffectDistance,
@@ -95,6 +108,7 @@ function UISheetPortalContent({
         keyboardHeight,
         hasOpenAnimation,
         hasCloseAnimation,
+        shouldHandleKeyboard,
         onClose,
         onClosePortalRequest,
         onOpenEnd,

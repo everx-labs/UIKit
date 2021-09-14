@@ -123,6 +123,10 @@
         "DateSeparators": {
             "Today": "오늘",
             "Yesterday": "어제"
+        },
+        "QRCode": {
+            "errorReceived": "QR-code was not generated",
+            "errorSent": "QR-code was not generated.\nTry again"
         }
     },
     "ChooseDepositToken": "입금 토큰 선택",
@@ -487,12 +491,7 @@
     "Tokens": "토큰",
     "TotalBalance": "총 잔액",
     "Transaction": "트랜잭션",
-    "TransactionError": [
-        "-",
-        "전송 한도에 도달했습니다",
-        "접근 거부",
-        "알 수 없는 오류"
-    ],
+    "TransactionError": ["-", "전송 한도에 도달했습니다", "접근 거부", "알 수 없는 오류"],
     "TransactionFrom": "트랜잭션을 받았습니다",
     "TransactionStatus": {
         "aborted": "{0}에 중단됨",

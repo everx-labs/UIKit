@@ -134,6 +134,10 @@
         "DateSeparators": {
             "Today": "Aujourd'hui",
             "Yesterday": "Hier"
+        },
+        "QRCode": {
+            "errorReceived": "QR-code was not generated",
+            "errorSent": "QR-code was not generated.\nTry again"
         }
     },
     "ChatWith": "Chatter avec",
@@ -376,14 +380,7 @@
     "PassportRequestReview": "Vos documents sont en cours de vérification. Nous vous répondrons dans les 2 heures ouvrables",
     "PassportSaveError": "Une erreur s'est produite lors de la mise à jour de votre passeport",
     "PassportSaveSuccess": "Votre passeport a été mis à jour",
-    "PassportStatus": [
-        "Aucun",
-        "Mauvais",
-        "Susceptible",
-        "Inconnu",
-        "En attente",
-        "De confiance"
-    ],
+    "PassportStatus": ["Aucun", "Mauvais", "Susceptible", "Inconnu", "En attente", "De confiance"],
     "Password": "Mot de passe",
     "Pay": "Payer",
     "Period": "Période",
