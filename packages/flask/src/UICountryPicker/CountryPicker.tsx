@@ -105,7 +105,6 @@ export function CountryPicker({
     React.useEffect(() => {
         fetchJSON()
             .then((r: CountriesArray) => {
-                console.log(r);
                 if (permitted.length || banned.length) {
                     filterCountries(r);
                 } else {
