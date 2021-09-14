@@ -1,24 +1,26 @@
 /**
  * Type of UICarouselContainer children
  */
-export type CarouselChildren = React.ReactElement<UICarouselViewPageProps>[] | React.ReactElement<UICarouselViewPageProps>
-| React.ReactElement<UICarouselViewPageProps>[];
+export type CarouselChildren =
+    | React.ReactElement<UICarouselViewPageProps>[]
+    | React.ReactElement<UICarouselViewPageProps>
+    | React.ReactElement<UICarouselViewPageProps>[];
 /**
  * Container properties.
  */
 export type UICarouselViewContainerProps = {
-   /** callback that is called when the page changes */
-   onPageIndexChange?: (newPageIndex: number) => void;
-   /** determines whether pages should move when clicked */
-   isPageMovesOnPress?: boolean
-   /** determines whether paginaton should be shown  */
-   showPagination?: boolean
-   /** index of first shown page */
-   initialIndex?: number;
-   /** used for autotests */
-   testID?: string;
-   /** only UICarouselViewPage can be passed to children */
-   children: CarouselChildren;
+    /** callback that is called when the page changes */
+    onPageIndexChange?: (newPageIndex: number) => void;
+    /** determines whether pages should move when clicked */
+    shouldPageMoveOnPress?: boolean;
+    /** determines whether paginaton should be shown  */
+    showPagination?: boolean;
+    /** index of first shown page */
+    initialIndex?: number;
+    /** used for autotests */
+    testID?: string;
+    /** only UICarouselViewPage can be passed to children */
+    children: CarouselChildren;
 };
 
 /**
@@ -34,7 +36,7 @@ export type UICarouselViewPageProps = {
 /**
  * UICarouselView components
  */
- export type UICarouselViewComponents = {
+export type UICarouselViewComponents = {
     /** Parent component that contains the pages */
     Container: React.FC<UICarouselViewContainerProps>;
     /** Page component */

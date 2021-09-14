@@ -1,21 +1,21 @@
-import React from "react"
-import { View, StyleSheet } from "react-native"
-import Animated from "react-native-reanimated";
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import Animated from 'react-native-reanimated';
 
-import { UIConstant } from "@tonlabs/uikit.core";
+import { UIConstant } from '@tonlabs/uikit.core';
 import { Theme, TouchableOpacity, useTheme } from '@tonlabs/uikit.hydrogen';
-import { usePaginationStyle } from "./hooks";
+import { usePaginationStyle } from './animations';
 
 const circleSize = 6;
 
-type CircleProps = { 
-    active: boolean; 
+type CircleProps = {
+    active: boolean;
     onPress: (event: any) => void;
-    theme: Theme
- };
+    theme: Theme;
+};
 
 const Circle: React.FC<CircleProps> = ({ active, onPress, theme }: CircleProps) => {
-    const { animatedStyles } = usePaginationStyle(active, theme)
+    const { animatedStyles } = usePaginationStyle(active, theme);
 
     return (
         <TouchableOpacity
@@ -26,11 +26,9 @@ const Circle: React.FC<CircleProps> = ({ active, onPress, theme }: CircleProps) 
                 bottom: 8,
             }}
             onPress={onPress}
-            style={{alignItems: 'center'}}
+            style={{ alignItems: 'center' }}
         >
-            <Animated.View
-                style={[styles.circle, animatedStyles]}
-            />
+            <Animated.View style={[styles.circle, animatedStyles]} />
         </TouchableOpacity>
     );
 };
@@ -43,19 +41,22 @@ type PaginationProps = {
     pages: React.ReactElement[];
     setPage: (index: number) => void;
     activeIndex: number;
-}
+};
 
-export const Pagination: React.FC<PaginationProps> = React.memo(({pages, setPage, activeIndex}: PaginationProps ) => {
+export const Pagination: React.FC<PaginationProps> = React.memo(
+    ({ pages, setPage, activeIndex }: PaginationProps) => {
+        const theme = useTheme();
 
-    const theme = useTheme();
+        const onHandlePress = React.useCallback(
+            (index: number) => {
+                setPage(index);
+            },
+            [setPage],
+        );
 
-    const onHandlePress = React.useCallback((index: number)=>{
-        setPage(index)
-    },[setPage])
-
-    return (
-        <View style={[{width: getPaginationWidth(pages.length)}, styles.pagination]}>
-            {pages.map((_, index) => {
+        return (
+            <View style={[{ width: getPaginationWidth(pages.length) }, styles.pagination]}>
+                {pages.map((_, index) => {
                     return (
                         <Circle
                             // eslint-disable-next-line react/no-array-index-key
@@ -63,11 +64,13 @@ export const Pagination: React.FC<PaginationProps> = React.memo(({pages, setPage
                             active={index === activeIndex}
                             onPress={() => onHandlePress(index)}
                             theme={theme}
-                        />)
-                    })}
-        </View>
-    )
-})
+                        />
+                    );
+                })}
+            </View>
+        );
+    },
+);
 
 const styles = StyleSheet.create({
     circle: {
@@ -76,8 +79,8 @@ const styles = StyleSheet.create({
         borderRadius: circleSize / 2,
     },
     pagination: {
-        flexDirection: 'row', 
-        justifyContent: 'space-between', 
-        alignSelf: 'center', 
-    }
-  });
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignSelf: 'center',
+    },
+});

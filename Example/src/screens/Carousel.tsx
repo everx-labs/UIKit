@@ -29,7 +29,7 @@ export const Carousel = () => {
     return (
         <ExampleScreen>
             <ExampleSection title="UICarouselView">
-                <View style={{ width: 300, height: 400, paddingVertical: 20}}>
+                <View style={{ width: 500, height: 400, paddingVertical: 20}}>
                     <UICarouselView.Container
                         initialIndex={0}
                         onPageIndexChange={onPageIndexChange}
