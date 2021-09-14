@@ -10,17 +10,23 @@ import { usePageStyle } from '../animations';
 const returnPages = (
     pages: React.ReactElement<UICarouselViewPageProps>[],
     shouldPageMoveOnPress: boolean,
-    nextPage: any,
+    nextPage: (index: number) => void,
 ) => {
-    return pages.map((item, index) => {
-        const ChildView = item.props.component;
+    const onPress = React.useCallback((index: number) => {
+        throttle(() => nextPage(index), 250, { leading: false, trailing: true });
+    }, []);
+
+    return pages.map((page, index) => {
+        const onPressPage = () => onPress(index);
+        const ChildView = page.props.component;
         const key = `UICarouselPage_${index}`;
+
         return (
             <Pressable
                 disabled={!shouldPageMoveOnPress}
                 key={key}
-                testID={item.props.testID}
-                onPress={throttle(() => nextPage(index), 250, { leading: false, trailing: true })}
+                testID={page.props.testID}
+                onPress={onPressPage}
             >
                 <ChildView />
             </Pressable>
@@ -43,7 +49,7 @@ export const CarouselViewContainer: React.FC<Props> = function UICarouselViewCon
 }: Props) {
     const pagerRef = React.useRef<PagerView>(null);
     const [offset, setOffset] = React.useState(0);
-    const pageStyles = usePageStyle(offset);
+    const pagerStyle = usePageStyle(offset);
 
     const setPage = React.useCallback((index: number) => {
         requestAnimationFrame(() => {
@@ -85,7 +91,7 @@ export const CarouselViewContainer: React.FC<Props> = function UICarouselViewCon
         <View testID={testID} style={styles.carouselViewContainer}>
             <AnimatedPagerView
                 ref={pagerRef}
-                style={[styles.carouselView, pageStyles]}
+                style={[styles.carouselView, pagerStyle]}
                 initialPage={initialIndex}
                 onPageSelected={onPageSelected}
                 onPageScroll={onPageScroll}
