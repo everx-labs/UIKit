@@ -1,7 +1,37 @@
+/**
+ * Delete this file when the issue is fixed:
+ * https://github.com/necolas/react-native-web/issues/1914
+ */
 import * as React from 'react';
+import { nanoid } from 'nanoid';
 
 import { ColorValue, Image as RNImage, ImageProps, StyleSheet, View } from 'react-native';
 import { ColorVariants, useTheme } from './Colors';
+
+const useImageDimensions = (style: any, source: any) => {
+    return React.useMemo(() => {
+        let width = 0;
+        let height = 0;
+        if (style) {
+            if (style.width) {
+                width = style.width;
+            }
+            if (style.height) {
+                height = style.height;
+            }
+        }
+        if (!width && source && source.width) {
+            width = source.width;
+        }
+        if (!height && source && source.height) {
+            height = source.height;
+        }
+        return {
+            width,
+            height,
+        };
+    }, [style, source && source.uri]);
+};
 
 export type UIImageProps = ImageProps & {
     /**
@@ -17,16 +47,17 @@ export type UIImageProps = ImageProps & {
  */
 const scale = 2;
 
-const TintUIImage = ({ tintColor, ...rest }: UIImageProps) => {
+const TintUIImage = ({ tintColor, style, onLoadEnd, onError, ...rest }: UIImageProps) => {
     const theme = useTheme();
     const tintColorValue: ColorValue | null = tintColor != null ? theme[tintColor] : null;
 
-    const idRef = React.useRef(Math.random());
+    const idRef = React.useRef(nanoid());
     const [hasError, setHasError] = React.useState<boolean>(false);
 
     const source = rest.source as any;
 
-    const { width, height, uri } = source;
+    const { uri } = source;
+    const { width, height } = useImageDimensions(style, source);
 
     React.useEffect(() => {
         if (!tintColorValue || !width || !height || !uri) {
@@ -56,20 +87,36 @@ const TintUIImage = ({ tintColor, ...rest }: UIImageProps) => {
             // draw color
             ctx.fillStyle = tintColorValue as string;
             ctx.fillRect(0, 0, width, height);
+
+            if (onLoadEnd) {
+                onLoadEnd();
+            }
         };
         img.src = uri;
     }, [uri]);
 
     if (hasError || !tintColorValue || !width || !height || !uri) {
+        if (__DEV__) {
+            console.error(
+                `UIImage.web.tsx: canvas rendering error, tintcolor will not be applied.${
+                    rest.testID ? `TestID: ${rest.testID}` : ''
+                }`,
+            );
+        }
         return React.createElement(RNImage, rest);
     }
 
     return (
         <View
-            style={{
-                width,
-                height,
-            }}
+            testID={rest.testID}
+            onLayout={rest.onLayout}
+            style={[
+                style,
+                {
+                    width,
+                    height,
+                },
+            ]}
         >
             <View
                 style={[
@@ -89,7 +136,7 @@ const TintUIImage = ({ tintColor, ...rest }: UIImageProps) => {
     );
 };
 
-export function UIImage(props: UIImageProps) {
+const UIImageImpl = (props: UIImageProps) => {
     const { tintColor, ...rest } = props;
 
     if (tintColor) {
@@ -97,7 +144,13 @@ export function UIImage(props: UIImageProps) {
     }
 
     return React.createElement(RNImage, rest);
-}
+};
+
+/**
+ * Delete this file when the issue is fixed:
+ * https://github.com/necolas/react-native-web/issues/1914
+ */
+export const UIImage = React.memo(UIImageImpl);
 
 const styles = StyleSheet.create({
     tintImageContent: {
