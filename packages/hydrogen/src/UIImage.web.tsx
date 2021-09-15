@@ -12,31 +12,10 @@ export type UIImageProps = ImageProps & {
     tintColor?: ColorVariants | null;
 };
 
-const DEFAULT_SCALE = 2;
-
-const useScale = (source: any): number => {
-    return React.useMemo(() => {
-        if (
-            !source ||
-            !source.data ||
-            !source.uri ||
-            !!source.data ||
-            !source.data.uri ||
-            !source.data['uri@2x'] ||
-            !source.data['uri@3x']
-        ) {
-            return DEFAULT_SCALE;
-        }
-        if (source.uri === source.data.uri) {
-            return 1;
-        } else if (source.uri === source.data['uri@2x']) {
-            return 2;
-        } else if (source.uri === source.data['uri@3x']) {
-            return 3;
-        }
-        return DEFAULT_SCALE;
-    }, [source.uri]);
-};
+/**
+ * Scaling is necessary in order to keep the image quality at the same level
+ */
+const scale = 2;
 
 const TintUIImage = ({ tintColor, ...rest }: UIImageProps) => {
     const theme = useTheme();
@@ -46,11 +25,6 @@ const TintUIImage = ({ tintColor, ...rest }: UIImageProps) => {
     const [hasError, setHasError] = React.useState<boolean>(false);
 
     const source = rest.source as any;
-
-    /**
-     * Scaling is necessary in order to keep the image quality at the same level
-     */
-    const scale = useScale(source);
 
     const { width, height, uri } = source;
 
