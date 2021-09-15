@@ -1,27 +1,23 @@
 import React from 'react';
 import Fuse from 'fuse.js';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ActivityIndicator, View, useWindowDimensions } from 'react-native';
+import { View, useWindowDimensions } from 'react-native';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import {
-    FlatList,
-    UIBottomSheet,
-    UISearchBar,
-    UIConstant as NavigationConstants,
-} from '@tonlabs/uikit.navigation';
+import { FlatList, UIBottomSheet, UISearchBar } from '@tonlabs/uikit.navigation';
 import {
     ColorVariants,
     makeStyles,
     Theme,
-    TouchableOpacity,
     TypographyVariants,
     UILabel,
     UILinkButton,
     useTheme,
 } from '@tonlabs/uikit.hydrogen';
 import type { CountriesArray, Country, WrappedCountryPickerProps } from '../types';
+import { CountryPickerRow } from './CountryPickerRow';
+import { ListEmptyComponent } from './ListEmptyComponent';
 
 const COUNTRIES_URL = 'https://uikit.tonlabs.io/countries.json';
 
@@ -39,6 +35,19 @@ const fuseOptions = {
     keys: ['name'],
 };
 
+function returnCountryRow({ item }: { item: Country }) {
+    return <CountryPickerRow item={item} />;
+}
+
+type CountryPickerContextType = {
+    loading: boolean;
+    onSelect?(countryCode: string): void;
+};
+
+export const CountryPickerContext = React.createContext<CountryPickerContextType>({
+    loading: true,
+});
+
 export function CountryPicker({
     onClose,
     onSelect,
@@ -52,6 +61,7 @@ export function CountryPicker({
     const styles = useStyles(theme, height);
 
     const [loading, setLoading] = React.useState(true);
+
     const [search, setSearch] = React.useState('');
     const [countriesList, setCountriesList] = React.useState<CountriesArray>([]);
     const [filteredList, setFilteredList] = React.useState(countriesList);
@@ -64,13 +74,6 @@ export function CountryPicker({
             bottom: insets.bottom + UIConstant.contentOffset() + UIConstant.buttonHeight(),
         }),
         [insets?.bottom],
-    );
-
-    const onSelectCountry = React.useCallback(
-        (item: Country) => {
-            onSelect && onSelect(item.code);
-        },
-        [onSelect],
     );
 
     const checkIncludes = React.useCallback((code: string) => {
@@ -136,56 +139,21 @@ export function CountryPicker({
         );
     };
 
-    const renderCountryRow = ({ item }: { item: Country }) => {
-        const onPress = () => onSelectCountry(item);
-        return (
-            <TouchableOpacity onPress={onPress} style={styles.rowContainer}>
-                <View style={styles.rowContainerInner}>
-                    <UILabel>{item.name}</UILabel>
-                    <UILabel style={styles.emojiContainer}>{item.emoji}</UILabel>
-                </View>
-            </TouchableOpacity>
-        );
-    };
-
-    const renderLoading = () => {
-        return <ActivityIndicator />;
-    };
-
-    const renderEmptyList = () => {
-        return (
-            <>
-                <UILabel role={TypographyVariants.TitleMedium} color={ColorVariants.TextSecondary}>
-                    {uiLocalized.CountryPicker.CountryNotFindTitle}
-                </UILabel>
-                <UILabel role={TypographyVariants.Action} color={ColorVariants.TextSecondary}>
-                    {uiLocalized.CountryPicker.CountryNotFindDetails}
-                </UILabel>
-            </>
-        );
-    };
-
-    const ListEmptyComponent = React.useMemo(() => {
-        return (
-            <View style={styles.emptyContainer}>
-                {loading ? renderLoading() : renderEmptyList()}
-            </View>
-        );
-    }, [loading]);
-
     const keyExtractor = React.useCallback((item: Country) => item.code, []);
 
     return (
         <UIBottomSheet onClose={onClose} visible={visible} style={styles.sheet}>
             {renderSearchHeader()}
-            <FlatList
-                data={filteredList}
-                renderItem={renderCountryRow}
-                keyExtractor={keyExtractor}
-                ListEmptyComponent={ListEmptyComponent}
-                keyboardDismissMode="on-drag"
-                contentInset={contentInset}
-            />
+            <CountryPickerContext.Provider value={{ loading, onSelect }}>
+                <FlatList
+                    data={filteredList}
+                    renderItem={returnCountryRow}
+                    keyExtractor={keyExtractor}
+                    ListEmptyComponent={ListEmptyComponent}
+                    keyboardDismissMode="on-drag"
+                    contentInset={contentInset}
+                />
+            </CountryPickerContext.Provider>
         </UIBottomSheet>
     );
 }
@@ -217,22 +185,5 @@ const useStyles = makeStyles((theme: Theme, height) => ({
         flex: 2,
         alignSelf: 'center',
         textAlign: 'center',
-    },
-    rowContainerInner: {
-        paddingVertical: NavigationConstants.contentOffset,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderBottomColor: theme[ColorVariants.LineTertiary] as string,
-        borderBottomWidth: 1,
-    },
-    rowContainer: {
-        paddingLeft: 16,
-    },
-    emojiContainer: {
-        paddingRight: 16,
-    },
-    emptyContainer: {
-        paddingTop: 48,
-        alignItems: 'center',
     },
 }));
