@@ -42,7 +42,7 @@
         "html2canvas": "^1.0.0-rc.7",
         "lodash": "^4.17.21",
         "qrcode": "^1.4.4",
-        "react-native-pager-view": "^5.4.4",
+        "react-native-pager-view": "5.4.4"
     },
     "devDependencies": {
         "@react-native-community/bob": "0.16.2",

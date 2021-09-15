@@ -14,20 +14,18 @@ type CircleProps = {
     theme: Theme;
 };
 
+const CircleHitSlop = {
+    top: 8,
+    left: 8,
+    right: 8,
+    bottom: 8,
+};
+
 const Circle: React.FC<CircleProps> = ({ active, onPress, theme }: CircleProps) => {
     const { animatedStyles } = usePaginationStyle(active, theme);
 
     return (
-        <TouchableOpacity
-            hitSlop={{
-                top: 8,
-                left: 8,
-                right: 8,
-                bottom: 8,
-            }}
-            onPress={onPress}
-            style={{ alignItems: 'center' }}
-        >
+        <TouchableOpacity hitSlop={CircleHitSlop} onPress={onPress}>
             <Animated.View style={[styles.circle, animatedStyles]} />
         </TouchableOpacity>
     );

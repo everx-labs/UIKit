@@ -139,15 +139,21 @@ export const CarouselViewContainer: React.FC<Props> = ({
         }
     }, [jumpToIndex, layoutRef.current.width, initialIndex]);
 
-    const handleLayout = React.useCallback((e: LayoutChangeEvent) => {
-        const { height, width } = e.nativeEvent.layout;
-        setLayout(prevLayout => {
-            if (prevLayout.width === width && prevLayout.height === height) {
-                return prevLayout;
-            }
-            return { height, width };
-        });
-    }, []);
+    const handleLayout = React.useCallback(
+        ({
+            nativeEvent: {
+                layout: { height, width },
+            },
+        }: LayoutChangeEvent) => {
+            setLayout(prevLayout => {
+                if (prevLayout.width === width && prevLayout.height === height) {
+                    return prevLayout;
+                }
+                return { height, width };
+            });
+        },
+        [],
+    );
 
     return (
         <View testID={testID} onLayout={handleLayout} style={[styles.pager]}>
