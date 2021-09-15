@@ -42,6 +42,7 @@
         "@tonlabs/uikit.assets": "^2.3.0",
         "@tonlabs/uikit.localization": "^2.3.0",
         "fontfaceobserver-es": "3.3.3",
+        "nanoid": "^3.1.23",
         "react-native-indicators": "git+https://github.com/tonlabs/react-native-indicators.git"
     },
     "devDependencies": {
@@ -53,7 +54,6 @@
         "@types/jest": "26.0.24",
         "@types/react": "17.0.20",
         "@types/react-native": "0.65.0",
-        "nanoid": "^3.1.23",
         "jest": "26.4.0",
         "react": "17.0.2",
         "react-dom": "17.0.2",
@@ -71,7 +71,6 @@
     "peerDependencies": {
         "@react-native-community/blur": "^3.6.1",
         "@react-native-community/hooks": "2.6.0",
-        "nanoid": "^3.1.23",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-native": "^0.65.0",

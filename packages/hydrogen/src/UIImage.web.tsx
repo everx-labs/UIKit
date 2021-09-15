@@ -5,19 +5,30 @@
 import * as React from 'react';
 import { nanoid } from 'nanoid';
 
-import { ColorValue, Image as RNImage, ImageProps, StyleSheet, View } from 'react-native';
+import {
+    ColorValue,
+    Image as RNImage,
+    ImageProps,
+    ImageStyle,
+    LayoutChangeEvent,
+    LayoutRectangle,
+    StyleProp,
+    StyleSheet,
+    View,
+} from 'react-native';
 import { ColorVariants, useTheme } from './Colors';
 
-const useImageDimensions = (style: any, source: any) => {
+const useImageDimensions = (style: StyleProp<ImageStyle>, source: any) => {
     return React.useMemo(() => {
-        let width = 0;
-        let height = 0;
-        if (style) {
-            if (style.width) {
-                width = style.width;
+        let width: number | string | undefined = undefined;
+        let height: number | string | undefined = undefined;
+        const flatStyle = StyleSheet.flatten(style);
+        if (flatStyle) {
+            if (flatStyle.width) {
+                width = flatStyle.width;
             }
-            if (style.height) {
-                height = style.height;
+            if (flatStyle.height) {
+                height = flatStyle.height;
             }
         }
         if (!width && source && source.width) {
@@ -42,11 +53,6 @@ export type UIImageProps = ImageProps & {
     tintColor?: ColorVariants | null;
 };
 
-/**
- * Scaling is necessary in order to keep the image quality at the same level
- */
-const scale = 2;
-
 const TintUIImage = ({ tintColor, style, onLoadEnd, onError, ...rest }: UIImageProps) => {
     const theme = useTheme();
     const tintColorValue: ColorValue | null = tintColor != null ? theme[tintColor] : null;
@@ -58,6 +64,15 @@ const TintUIImage = ({ tintColor, style, onLoadEnd, onError, ...rest }: UIImageP
 
     const { uri } = source;
     const { width, height } = useImageDimensions(style, source);
+
+    const [dimensions, setDimensions] = React.useState<LayoutRectangle | null>(null);
+
+    const onLayout = (event: LayoutChangeEvent) => {
+        if (rest.onLayout) {
+            rest.onLayout(event);
+        }
+        setDimensions(event.nativeEvent.layout);
+    };
 
     React.useEffect(() => {
         if (!tintColorValue || !width || !height || !uri) {
@@ -76,31 +91,31 @@ const TintUIImage = ({ tintColor, style, onLoadEnd, onError, ...rest }: UIImageP
             return;
         }
         img.onload = () => {
-            if (!ctx) {
+            if (!ctx || !dimensions) {
                 return;
             }
-            ctx.scale(scale, scale);
             // draw image
-            ctx.drawImage(img, 0, 0, width, height);
+            ctx.drawImage(img, 0, 0, dimensions.width, dimensions.height);
             // set composite mode
             ctx.globalCompositeOperation = 'source-in';
             // draw color
             ctx.fillStyle = tintColorValue as string;
-            ctx.fillRect(0, 0, width, height);
+            ctx.fillRect(0, 0, dimensions.width, dimensions.height);
 
             if (onLoadEnd) {
                 onLoadEnd();
             }
         };
         img.src = uri;
-    }, [uri]);
+    }, [uri, dimensions]);
 
     if (hasError || !tintColorValue || !width || !height || !uri) {
         if (__DEV__) {
             console.error(
-                `UIImage.web.tsx: canvas rendering error, tintcolor will not be applied.${
-                    rest.testID ? `TestID: ${rest.testID}` : ''
-                }`,
+                `UIImage.web.tsx: there was tintColor provided for image, ` +
+                    `but no width and height specified, please ensure that they're passed ` +
+                    `in the styles or in the source correctly.` +
+                    `${rest.testID ? `TestID: ${rest.testID}` : ''}`,
             );
         }
         return React.createElement(RNImage, rest);
@@ -109,7 +124,7 @@ const TintUIImage = ({ tintColor, style, onLoadEnd, onError, ...rest }: UIImageP
     return (
         <View
             testID={rest.testID}
-            onLayout={rest.onLayout}
+            onLayout={onLayout}
             style={[
                 style,
                 {
@@ -118,20 +133,7 @@ const TintUIImage = ({ tintColor, style, onLoadEnd, onError, ...rest }: UIImageP
                 },
             ]}
         >
-            <View
-                style={[
-                    styles.tintImageContent,
-                    {
-                        transform: [
-                            {
-                                scale: 1 / scale,
-                            },
-                        ],
-                    },
-                ]}
-            >
-                <canvas id={`${idRef.current}`} width={width * scale} height={height * scale} />
-            </View>
+            <canvas id={`${idRef.current}`} width={dimensions?.width} height={dimensions?.height} />
         </View>
     );
 };
@@ -151,11 +153,3 @@ const UIImageImpl = (props: UIImageProps) => {
  * https://github.com/necolas/react-native-web/issues/1914
  */
 export const UIImage = React.memo(UIImageImpl);
-
-const styles = StyleSheet.create({
-    tintImageContent: {
-        position: 'absolute',
-        top: '-50%',
-        left: '-50%',
-    },
-});
