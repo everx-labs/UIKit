@@ -1,8 +1,8 @@
 import * as React from 'react';
 import type {
     GestureEvent,
-    NativeViewGestureHandlerPayload,
     PanGestureHandlerGestureEvent,
+    TapGestureHandlerEventPayload,
 } from 'react-native-gesture-handler';
 import Animated, {
     interpolate,
@@ -26,13 +26,9 @@ const springConfig: Animated.WithSpringConfig = {
 };
 
 export const useSwitcherGestureEvent = (onPress: (() => void) | undefined) => {
-    const pressed = useSharedValue<PressSwitcherState>(
-        PressSwitcherState.NotPressed,
-    );
+    const pressed = useSharedValue<PressSwitcherState>(PressSwitcherState.NotPressed);
 
-    const onGestureEvent = useAnimatedGestureHandler<
-        GestureEvent<NativeViewGestureHandlerPayload>
-    >({
+    const onGestureEvent = useAnimatedGestureHandler<GestureEvent<TapGestureHandlerEventPayload>>({
         onStart: () => {
             if (pressed.value !== PressSwitcherState.Pressed) {
                 pressed.value = PressSwitcherState.Pressed;
@@ -43,9 +39,9 @@ export const useSwitcherGestureEvent = (onPress: (() => void) | undefined) => {
                 pressed.value = PressSwitcherState.Pressed;
             }
         },
-        onFinish: (event, _, isCanceledOrFailed: boolean) => {
+        onFinish: (_event, _, isCanceledOrFailed: boolean) => {
             pressed.value = PressSwitcherState.NotPressed;
-            if (!isCanceledOrFailed && event.pointerInside && onPress) {
+            if (!isCanceledOrFailed && onPress) {
                 hapticSelection();
                 runOnJS(onPress)();
             }
@@ -62,17 +58,12 @@ export const useImageStyle = (
     theme: Theme,
     onPress?: (() => void) | undefined,
 ) => {
-    const iconSwitcherState = useSharedValue<IconSwitcherState>(
-        IconSwitcherState.NotActive,
-    );
+    const iconSwitcherState = useSharedValue<IconSwitcherState>(IconSwitcherState.NotActive);
 
     React.useEffect(() => {
         if (active && iconSwitcherState.value !== IconSwitcherState.Active) {
             iconSwitcherState.value = IconSwitcherState.Active;
-        } else if (
-            !active &&
-            iconSwitcherState.value !== IconSwitcherState.NotActive
-        ) {
+        } else if (!active && iconSwitcherState.value !== IconSwitcherState.NotActive) {
             iconSwitcherState.value = IconSwitcherState.NotActive;
         }
     }, [active, iconSwitcherState]);
@@ -124,11 +115,7 @@ export const useImageStyle = (
             iconSwitcherState.value = clamp(translationX, 0, 1);
         },
         onEnd: ({ velocityX }) => {
-            const selectedSnapPoint = snapPoint(
-                iconSwitcherState.value,
-                velocityX,
-                [0, 1],
-            );
+            const selectedSnapPoint = snapPoint(iconSwitcherState.value, velocityX, [0, 1]);
             iconSwitcherState.value = withSpring(selectedSnapPoint);
         },
         onFinish: (_e, _, isCanceledOrFailed: boolean) => {
@@ -171,11 +158,7 @@ export const useOverlayStyle = (
         return {
             backgroundColor: interpolateColor(
                 switcherState.value,
-                [
-                    SwitcherState.Active,
-                    SwitcherState.Hovered,
-                    SwitcherState.Pressed,
-                ],
+                [SwitcherState.Active, SwitcherState.Hovered, SwitcherState.Pressed],
                 [
                     theme[ColorVariants.Transparent] as string,
                     theme[ColorVariants.StaticHoverOverlay] as string,
