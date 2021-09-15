@@ -2,16 +2,26 @@ import * as React from 'react';
 import { StyleSheet, View, TextInput, Text, I18nManager } from 'react-native';
 import Animated, {
     Easing,
+    interpolate,
     useAnimatedProps,
+    useAnimatedStyle,
     useDerivedValue,
     useSharedValue,
+    withDelay,
     withTiming,
 } from 'react-native-reanimated';
 
-import { Typography, TypographyVariants } from '@tonlabs/uikit.hydrogen';
+import {
+    Typography,
+    TypographyVariants,
+    UIImage,
+    UIImageProps,
+    ColorVariants,
+} from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
+const AnimatedUIImage = Animated.createAnimatedComponent(UIImage);
 
 export function getRandomNum() {
     const num = Math.random();
@@ -24,22 +34,34 @@ export function UIAnimatedBalance({
     role = TypographyVariants.TitleMedium,
     value,
     maxFractionalDigits = 2,
+    icon,
 }: {
     role: TypographyVariants;
     value: number;
     maxFractionalDigits?: number;
+    icon: UIImageProps['source'];
 }) {
     const valueHolder = useSharedValue(value);
+    const iconProgress = useSharedValue(0);
 
     React.useEffect(() => {
         if (valueHolder.value === value) {
             return;
         }
 
-        valueHolder.value = withTiming(value, {
-            duration: 400,
-            easing: Easing.inOut(Easing.ease),
+        const duration = 500;
+        iconProgress.value = 0;
+        iconProgress.value = withTiming(1, {
+            duration: duration + duration * 0.4,
+            // easing: Easing.inOut(Easing.ease),
         });
+        valueHolder.value = withDelay(
+            0.2 * duration,
+            withTiming(value, {
+                duration: duration * 0.6,
+                easing: Easing.inOut(Easing.ease),
+            }),
+        );
     }, [value]);
 
     const formatted = useDerivedValue(() => {
@@ -61,6 +83,32 @@ export function UIAnimatedBalance({
             text: formatted.value.fractional,
         };
     });
+
+    const iconStyle = useAnimatedStyle(() => {
+        return {};
+        return {
+            transform: [
+                {
+                    scale: interpolate(iconProgress.value, [0, 0.2, 0.8, 1], [1, 0, 0, 1]),
+                },
+            ],
+        };
+        return {
+            opacity: interpolate(iconProgress.value, [0, 0.2, 0.8, 1], [1, 0, 0, 1]),
+        };
+        return {
+            transform: [
+                {
+                    rotateY: `${interpolate(
+                        iconProgress.value,
+                        [0, 0.2, 0.8, 1],
+                        [0, 90, 90, 0],
+                    )}deg`,
+                },
+            ],
+        };
+    });
+
     return (
         <View style={I18nManager.isRTL ? styles.rtlContainer : styles.ltrContainer}>
             <AnimatedTextInput
@@ -76,6 +124,21 @@ export function UIAnimatedBalance({
                 defaultValue={formatted.value.fractional}
                 editable={false}
             />
+            <Text style={Typography[role]}>
+                {' '}
+                <AnimatedUIImage
+                    source={icon}
+                    tintColor={ColorVariants.IconAccent}
+                    resizeMode={'contain'}
+                    style={[
+                        {
+                            height: StyleSheet.flatten(Typography[role]).lineHeight - 5,
+                            // backgroundColor: 'rgba(255,0,0,.1)',
+                        },
+                        iconStyle,
+                    ]}
+                />
+            </Text>
         </View>
     );
 }

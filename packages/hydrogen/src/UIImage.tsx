@@ -3,8 +3,7 @@ import * as React from 'react';
 import { Image, ImageProps, Platform } from 'react-native';
 import { ColorVariants, useTheme } from './Colors';
 
-const FastImage =
-    Platform.OS !== 'web' ? require('react-native-fast-image') : null;
+const FastImage = Platform.OS !== 'web' ? require('react-native-fast-image') : null;
 
 const ImageComponent: any = Platform.OS === 'web' ? Image : FastImage;
 
@@ -15,18 +14,19 @@ export type UIImageProps = ImageProps & {
     tintColor?: ColorVariants | null;
 };
 
-export function UIImage({ tintColor, ...rest }: UIImageProps) {
+export const UIImage = React.forwardRef<Image, UIImageProps>(function UIImageForwarded(
+    { tintColor, ...rest }: UIImageProps,
+    ref,
+) {
     const theme = useTheme();
     if (tintColor) {
         return (
             <Image
+                ref={ref}
                 {...rest}
-                style={[
-                    rest.style,
-                    tintColor != null ? { tintColor: theme[tintColor] } : null,
-                ]}
+                style={[rest.style, tintColor != null ? { tintColor: theme[tintColor] } : null]}
             />
         );
     }
-    return React.createElement(ImageComponent, rest);
-}
+    return React.createElement(ImageComponent, { ref, ...rest });
+});
