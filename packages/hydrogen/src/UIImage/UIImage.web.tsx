@@ -1,14 +1,9 @@
-/**
- * Delete this file when the issue is fixed:
- * https://github.com/necolas/react-native-web/issues/1914
- */
 import * as React from 'react';
 import { nanoid } from 'nanoid';
 
 import {
     ColorValue,
     Image as RNImage,
-    ImageProps,
     ImageStyle,
     LayoutChangeEvent,
     LayoutRectangle,
@@ -16,7 +11,8 @@ import {
     StyleSheet,
     View,
 } from 'react-native';
-import { ColorVariants, useTheme } from './Colors';
+import { useTheme } from '../Colors';
+import type { UIImageProps } from './types';
 
 const useImageDimensions = (style: StyleProp<ImageStyle>, source: any) => {
     return React.useMemo(() => {
@@ -42,15 +38,6 @@ const useImageDimensions = (style: StyleProp<ImageStyle>, source: any) => {
             height,
         };
     }, [style, source && source.uri]);
-};
-
-export type UIImageProps = ImageProps & {
-    /**
-     * tintColor in some cases don't work on Safary with RNImage.
-     * Here is the issue: https://github.com/necolas/react-native-web/issues/1914
-     * Hence passing this prop we force to use canvas
-     */
-    tintColor?: ColorVariants | null;
 };
 
 const TintUIImage = ({ tintColor, style, onLoadEnd, onError, ...rest }: UIImageProps) => {
@@ -140,16 +127,22 @@ const TintUIImage = ({ tintColor, style, onLoadEnd, onError, ...rest }: UIImageP
 
 const UIImageImpl = (props: UIImageProps) => {
     const { tintColor, ...rest } = props;
+    const theme = useTheme();
 
+    /**
+     * Delete TintUIImage and "if" block below when the issue is fixed:
+     * https://github.com/necolas/react-native-web/issues/1914
+     */
     if (tintColor) {
         return <TintUIImage {...props} />;
     }
 
-    return React.createElement(RNImage, rest);
+    return (
+        <RNImage
+            {...rest}
+            style={[rest.style, tintColor != null ? { tintColor: theme[tintColor] } : null]}
+        />
+    );
 };
 
-/**
- * Delete this file when the issue is fixed:
- * https://github.com/necolas/react-native-web/issues/1914
- */
 export const UIImage = React.memo(UIImageImpl);
