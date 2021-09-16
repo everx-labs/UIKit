@@ -2,9 +2,7 @@ import React from 'react';
 import { UICarouselViewPage } from './UICarouselViewPage';
 import type { UICarouselViewPageProps } from '../types';
 
-export const getPages = (
-    children: React.ReactNode,
-): React.ReactElement<UICarouselViewPageProps>[] => {
+export function getPages(children: React.ReactNode): React.ReactElement<UICarouselViewPageProps>[] {
     const childElements: React.ReactElement<UICarouselViewPageProps>[] = React.Children.toArray(
         children,
     ).reduce<React.ReactElement<UICarouselViewPageProps>[]>(
@@ -42,15 +40,15 @@ export const getPages = (
     );
 
     return childElements;
-};
+}
 
-export const usePages = (
+export function usePages(
     children:
         | React.ReactElement<UICarouselViewPageProps>
         | React.ReactElement<UICarouselViewPageProps>[],
-): React.ReactElement<UICarouselViewPageProps>[] => {
+): React.ReactElement<UICarouselViewPageProps>[] {
     return React.useMemo((): React.ReactElement<UICarouselViewPageProps>[] => {
         const pages: React.ReactElement<UICarouselViewPageProps>[] = getPages(children);
         return pages;
     }, [children]);
-};
+}

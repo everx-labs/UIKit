@@ -18,20 +18,10 @@ type PageProps = {
     offset: { value: number };
     onPress: () => void;
     shouldPageMoveOnPress: boolean;
-    key: any;
 };
 
 const PageView: React.FC<PageProps> = React.memo(
-    ({
-        page,
-        index,
-        currentIndex,
-        width,
-        offset,
-        onPress,
-        shouldPageMoveOnPress,
-        key,
-    }: PageProps) => {
+    ({ page, index, currentIndex, width, offset, onPress, shouldPageMoveOnPress }: PageProps) => {
         const PageComponent = page.props.component;
 
         const animatedStyles = useAnimatedStyle(() => {
@@ -54,7 +44,6 @@ const PageView: React.FC<PageProps> = React.memo(
             <Pressable
                 disabled={!shouldPageMoveOnPress}
                 onPress={onPress}
-                key={key}
                 testID={page.props.testID}
             >
                 <Animated.View style={[animatedStyles, pageWidthStyle]}>
@@ -69,20 +58,18 @@ type Props = UICarouselViewContainerProps & {
     pages: React.ReactElement<UICarouselViewPageProps>[];
 };
 
-export const CarouselViewContainer: React.FC<Props> = ({
+export function CarouselViewContainer({
     pages,
     initialIndex = 0,
     testID,
     shouldPageMoveOnPress = true,
     onPageIndexChange,
-}: Props) => {
+}: Props) {
     const [layout, setLayout] = React.useState({ width: 0, height: 0 });
 
     const carouselOffset = useSharedValue(0);
     const itemOffset = useSharedValue(0);
 
-    const layoutRef = React.useRef(layout);
-    const onPageChangedRef = React.useRef(onPageIndexChange);
     const currentIndexRef = React.useRef(0);
     const maxWidthTranslate = React.useMemo(() => layout.width * pages.length, [layout, pages]);
 
@@ -111,9 +98,9 @@ export const CarouselViewContainer: React.FC<Props> = ({
                 withTiming(0, { duration }),
             );
             setIsMoving(false);
-            onPageChangedRef.current && onPageChangedRef.current(index);
+            onPageIndexChange && onPageIndexChange(index);
         },
-        [carouselOffset, itemOffset, layout.width],
+        [carouselOffset, itemOffset, layout.width, onPageIndexChange],
     );
 
     const jumpToNext = React.useCallback(() => {
@@ -124,20 +111,11 @@ export const CarouselViewContainer: React.FC<Props> = ({
     }, [jumpToIndex, isMoving, pages]);
 
     React.useEffect(() => {
-        layoutRef.current = layout;
-        const offset = -currentIndexRef.current * layoutRef.current.width;
-        if (onPageIndexChange) {
-            onPageChangedRef.current = onPageIndexChange;
-        }
-        carouselOffset.value = offset;
-    }, [layoutRef, carouselOffset, onPageIndexChange, layout]);
-
-    React.useEffect(() => {
-        if (layoutRef.current.width && currentIndexRef.current !== initialIndex) {
+        if (currentIndexRef.current !== initialIndex) {
             currentIndexRef.current = initialIndex;
             jumpToIndex(initialIndex);
         }
-    }, [jumpToIndex, layoutRef.current.width, initialIndex]);
+    }, [initialIndex, jumpToIndex]);
 
     const handleLayout = React.useCallback(
         ({
@@ -180,7 +158,7 @@ export const CarouselViewContainer: React.FC<Props> = ({
             </Animated.View>
         </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     pager: {

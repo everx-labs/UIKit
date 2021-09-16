@@ -6,14 +6,14 @@ import { CarouselViewContainer } from './CarouselContainer';
 import { usePages } from './usePages';
 import { Pagination } from './Pagination';
 
-export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = ({
+export function UICarouselViewContainer({
     testID,
     children,
     initialIndex = 0,
     onPageIndexChange,
     shouldPageMoveOnPress,
     showPagination = true,
-}: UICarouselViewContainerProps) => {
+}: UICarouselViewContainerProps) {
     const pages: React.ReactElement<UICarouselViewPageProps>[] = usePages(children);
 
     const [currentIndex, setCurrentIndex] = React.useState(initialIndex);
@@ -50,4 +50,4 @@ export const UICarouselViewContainer: React.FC<UICarouselViewContainerProps> = (
             )}
         </>
     );
-};
+}

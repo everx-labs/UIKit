@@ -2,11 +2,10 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { UIConstant } from '@tonlabs/uikit.core';
+import { UIConstant as CoreConstants } from '@tonlabs/uikit.core';
+import { UIConstant } from '../../constants';
 import { Theme, TouchableOpacity, useTheme } from '@tonlabs/uikit.hydrogen';
 import { usePaginationStyle } from './animations';
-
-const circleSize = 6;
 
 type CircleProps = {
     active: boolean;
@@ -14,25 +13,21 @@ type CircleProps = {
     theme: Theme;
 };
 
-const CircleHitSlop = {
-    top: 8,
-    left: 8,
-    right: 8,
-    bottom: 8,
-};
-
-const Circle: React.FC<CircleProps> = ({ active, onPress, theme }: CircleProps) => {
+function Circle({ active, onPress, theme }: CircleProps) {
     const { animatedStyles } = usePaginationStyle(active, theme);
 
     return (
-        <TouchableOpacity hitSlop={CircleHitSlop} onPress={onPress}>
+        <TouchableOpacity hitSlop={UIConstant.carousel.circleHitSlop} onPress={onPress}>
             <Animated.View style={[styles.circle, animatedStyles]} />
         </TouchableOpacity>
     );
-};
+}
 
 function getPaginationWidth(amount: number) {
-    return UIConstant.contentOffset() + amount * (circleSize + UIConstant.contentOffset());
+    return (
+        CoreConstants.contentOffset() +
+        amount * (UIConstant.carousel.circleSize + CoreConstants.contentOffset())
+    );
 }
 
 type PaginationProps = {
@@ -72,9 +67,9 @@ export const Pagination: React.FC<PaginationProps> = React.memo(
 
 const styles = StyleSheet.create({
     circle: {
-        width: circleSize,
-        height: circleSize,
-        borderRadius: circleSize / 2,
+        width: UIConstant.carousel.circleSize,
+        height: UIConstant.carousel.circleSize,
+        borderRadius: UIConstant.carousel.circleSize / 2,
     },
     pagination: {
         flexDirection: 'row',

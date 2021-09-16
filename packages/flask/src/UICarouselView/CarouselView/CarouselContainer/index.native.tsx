@@ -41,7 +41,7 @@ type Props = UICarouselViewContainerProps & {
     pages: React.ReactElement<UICarouselViewPageProps>[];
 };
 
-export const CarouselViewContainer: React.FC<Props> = function UICarouselViewContainerF({
+export function CarouselViewContainer({
     initialIndex = 0,
     pages,
     testID,
@@ -101,7 +101,7 @@ export const CarouselViewContainer: React.FC<Props> = function UICarouselViewCon
             </AnimatedPagerView>
         </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     carouselViewContainer: {
