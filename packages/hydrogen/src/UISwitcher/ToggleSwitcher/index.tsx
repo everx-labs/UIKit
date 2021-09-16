@@ -14,7 +14,6 @@ export const ToggleSwitcher: React.FC<UISwitcherProps> = ({
     onPress,
     testID,
 }: UISwitcherProps) => {
-    const panRef = React.useRef();
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
     const theme = useTheme();
@@ -47,14 +46,9 @@ export const ToggleSwitcher: React.FC<UISwitcherProps> = ({
             onMouseLeave={onMouseLeave}
             testID={testID}
             enabled={!disabled}
-            ref={panRef}
         >
             <Animated.View style={cursorStyle}>
-                <PanGestureHandler
-                    waitFor={panRef}
-                    enabled={!disabled}
-                    onGestureEvent={panGestureHandler}
-                >
+                <PanGestureHandler enabled={!disabled} onGestureEvent={panGestureHandler}>
                     <Animated.View
                         style={[styles.buttonToggleStyle, switcherStyle, styles.toggleOuterStyle]}
                     >
