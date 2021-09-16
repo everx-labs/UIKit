@@ -13,6 +13,7 @@ export const Lightbox = ({
     imageSize,
     isOpen,
     fullSizeImage,
+    prompt,
 }: LightboxProps) => {
     const ref = useAnimatedRef<View>();
 
@@ -37,6 +38,7 @@ export const Lightbox = ({
                 forwardedRef={ref}
                 fullSizeImage={fullSizeImage}
                 previewImage={copyOfPreviewImage}
+                prompt={prompt}
             />
         </>
     );

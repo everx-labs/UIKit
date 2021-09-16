@@ -11,7 +11,7 @@ import { useImageCallback, useImages, useImageSize } from './hooks';
 
 export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
     const imageRef = React.useRef<Image>(null);
-    const { onError, onLoad, preview, data, onLayout } = message;
+    const { onError, onLoad, preview, data, onLayout, prompt } = message;
     const containerStyle = useBubbleContainerStyle(message);
     const bubbleBackgroundColor = useBubbleBackgroundColor(message);
     const styles = useStyles();
@@ -57,6 +57,7 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
                     imageSize={imageSize}
                     fullSizeImage={fullSizeImage}
                     previewImage={previewImage}
+                    prompt={prompt}
                 />
             </TouchableOpacity>
         </View>
