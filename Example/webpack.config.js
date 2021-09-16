@@ -11,9 +11,6 @@ module.exports = {
         port: 4001,
         disableHostCheck: true,
         historyApiFallback: true,
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-        },
     },
     devtool: 'source-map',
     plugins: [
