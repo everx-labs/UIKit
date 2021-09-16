@@ -4,5 +4,5 @@ import type * as React from 'react';
 import { UIImage as PlatformUIImage } from './UIImage';
 import type { UIImageProps } from './types';
 
-export { UIImageProps } from './types';
+export type { UIImageProps } from './types';
 export const UIImage: React.FC<UIImageProps> = PlatformUIImage;
