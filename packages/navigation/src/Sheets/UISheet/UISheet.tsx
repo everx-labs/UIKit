@@ -1,28 +1,10 @@
 import * as React from 'react';
-import {
-    View,
-    StyleSheet,
-    ViewStyle,
-    StyleProp,
-    Platform,
-    Keyboard,
-} from 'react-native';
-import {
-    PanGestureHandler,
-    TapGestureHandler,
-} from 'react-native-gesture-handler';
-import Animated, {
-    interpolateColor,
-    useAnimatedStyle,
-} from 'react-native-reanimated';
+import { View, StyleSheet, ViewStyle, StyleProp, Platform, Keyboard } from 'react-native';
+import { PanGestureHandler, TapGestureHandler } from 'react-native-gesture-handler';
+import Animated, { interpolateColor, useAnimatedStyle } from 'react-native-reanimated';
 import { useBackHandler } from '@react-native-community/hooks';
 
-import {
-    ColorVariants,
-    Portal,
-    useColorParts,
-    useStatusBar,
-} from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, Portal, useColorParts, useStatusBar } from '@tonlabs/uikit.hydrogen';
 import { useAnimatedKeyboardHeight } from '@tonlabs/uikit.keyboard';
 
 import { UIConstant } from '../../constants';
@@ -151,10 +133,9 @@ function UISheetPortalContent({
         return false;
     });
 
-    const {
-        colorParts: overlayColorParts,
-        opacity: overlayOpacity,
-    } = useColorParts(ColorVariants.BackgroundOverlay);
+    const { colorParts: overlayColorParts, opacity: overlayOpacity } = useColorParts(
+        ColorVariants.BackgroundOverlay,
+    );
 
     useStatusBar({
         backgroundColor: ColorVariants.BackgroundOverlay,
@@ -172,10 +153,7 @@ function UISheetPortalContent({
             backgroundColor: interpolateColor(
                 position.value,
                 [0, -height.value],
-                [
-                    `rgba(${overlayColorParts}, 0)`,
-                    `rgba(${overlayColorParts}, ${overlayOpacity})`,
-                ],
+                [`rgba(${overlayColorParts}, 0)`, `rgba(${overlayColorParts}, ${overlayOpacity})`],
             ),
         };
     }, [overlayColorParts, overlayOpacity, height, position]);
@@ -216,10 +194,7 @@ function UISheetPortalContent({
 
     return (
         <View style={styles.container}>
-            <TapGestureHandler
-                enabled={onClose != null}
-                onGestureEvent={onTapGestureHandler}
-            >
+            <TapGestureHandler enabled={onClose != null} onGestureEvent={onTapGestureHandler}>
                 {/* https://github.com/software-mansion/react-native-gesture-handler/issues/71 */}
                 <Animated.View style={styles.interlayer}>
                     <PanGestureHandler
@@ -231,7 +206,6 @@ function UISheetPortalContent({
                     </PanGestureHandler>
                 </Animated.View>
             </TapGestureHandler>
-
             <Animated.View
                 style={[styles.sheet, cardStyle]}
                 onLayout={onSheetLayout}
@@ -246,9 +220,7 @@ function UISheetPortalContent({
                         : null)}
                 >
                     <Animated.View style={style}>
-                        <ScrollableContext.Provider
-                            value={scrollableContextValue}
-                        >
+                        <ScrollableContext.Provider value={scrollableContextValue}>
                             {children}
                         </ScrollableContext.Provider>
                     </Animated.View>
@@ -283,10 +255,7 @@ export function UISheet(props: UISheetProps) {
 
     return (
         <Portal absoluteFill forId={forId}>
-            <UISheetPortalContent
-                {...props}
-                onClosePortalRequest={onClosePortalRequest}
-            />
+            <UISheetPortalContent {...props} onClosePortalRequest={onClosePortalRequest} />
         </Portal>
     );
 }

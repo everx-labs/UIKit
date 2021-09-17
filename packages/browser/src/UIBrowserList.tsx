@@ -24,6 +24,7 @@ import { EncryptionBox } from './Inputs/EncryptionBox';
 import { DatePicker } from './Inputs/datePicker';
 import { TimePicker } from './Inputs/timePicker';
 import { DateTimePicker } from './Inputs/dateTimePicker';
+import { CountryPicker } from './Inputs/countryPicker';
 import { MediaOutput } from './MediaOutput';
 import { QRCodeDraw } from './QRCodeDraw';
 
@@ -101,13 +102,17 @@ const renderBubble = () => (
         return <TimePicker {...item} onLayout={onLayout} />;
     }
     if (item.type === InteractiveMessageType.DateTime) {
-        return <DateTimePicker {...item} onLayout={onLayout}/>;
+        return <DateTimePicker {...item} onLayout={onLayout} />;
     }
     if (item.type === InteractiveMessageType.MediaOutput) {
         return <MediaOutput {...item} onLayout={onLayout} />;
     }
     if (item.type === InteractiveMessageType.QRCodeDraw) {
         return <QRCodeDraw {...item} onLayout={onLayout} />;
+
+    }
+    if (item.type === InteractiveMessageType.Country) {
+        return <CountryPicker {...item} onLayout={onLayout} />;
 
     }
 
