@@ -157,7 +157,7 @@
     "CopyToClipboard": "클립보드에 복사하기",
     "Country": "국가",
     "CountryPicker": {
-        "Title": "Choose a Country",
+        "Title": "국가 선택",
         "CountryNotFindTitle": "We didn't find your country",
         "CountryNotFindDetails": "Try again or select from the list"
     },
