@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { View, Image } from 'react-native';
 
-import { UIImageView } from '@tonlabs/uikit.navigation_legacy';
 import { UIActionImage } from '@tonlabs/uikit.components';
 import { UIBoxButton } from '@tonlabs/uikit.hydrogen';
 import { UIAssets } from '@tonlabs/uikit.assets';
@@ -30,10 +29,7 @@ function DuplicateImageCheck() {
                 }}
             />
             {showDuplicate && (
-                <DuplicateImage
-                    source={imageRef}
-                    style={{ width: 50, height: 50 }}
-                >
+                <DuplicateImage source={imageRef} style={{ width: 50, height: 50 }}>
                     {image}
                 </DuplicateImage>
             )}
@@ -59,26 +55,6 @@ export const Images = () => (
                     iconDisabled={UIAssets.icons.ui.keyThinGrey}
                     iconHovered={UIAssets.icons.ui.keyThinWhite}
                     disabled
-                />
-            </View>
-        </ExampleSection>
-        <ExampleSection title="UIImageView Editable (press it)">
-            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIImageView
-                    testID="uiImageView_default"
-                    photoStyle={{ width: 100, height: 100 }}
-                    source={UIAssets.icons.ui.keyThinDark}
-                    editable
-                />
-            </View>
-        </ExampleSection>
-        <ExampleSection title="UIImageView Fullscreen (press it)">
-            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIImageView
-                    testID="uiImageView_fullscreen"
-                    photoStyle={{ width: 100, height: 100 }}
-                    sourceBig={UIAssets.icons.logo.tonlabsPrimary}
-                    source={UIAssets.icons.logo.tonlabsPrimary}
                 />
             </View>
         </ExampleSection>

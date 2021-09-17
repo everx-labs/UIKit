@@ -1,4 +1,4 @@
 // @flow
-import UICompatibilityView from './UICompatibilityViewCommon';
-
-export default UICompatibilityView;
+export default function UICompatibilityView() {
+    return null;
+}

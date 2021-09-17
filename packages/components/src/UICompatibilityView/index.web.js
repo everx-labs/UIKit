@@ -2,7 +2,7 @@
 import React from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 // TODO: we have `mobile-detect` in UIDevice
-// maybe use only one lib for detecting?
+// maybe use only one lib for
 import Bowser from 'bowser';
 
 import UICompatibilityViewCommon from './UICompatibilityViewCommon';
