@@ -18,6 +18,7 @@ import {
 import type { CountriesArray, Country, WrappedCountryPickerProps } from '../types';
 import { CountryPickerRow } from './CountryPickerRow';
 import { ListEmptyComponent } from './ListEmptyComponent';
+import { CountryPickerContext } from './CountryPickerContext';
 
 const COUNTRIES_URL = 'https://uikit.tonlabs.io/countries.json';
 
@@ -38,15 +39,6 @@ const fuseOptions = {
 function returnCountryRow({ item }: { item: Country }) {
     return <CountryPickerRow item={item} />;
 }
-
-type CountryPickerContextType = {
-    loading: boolean;
-    onSelect?(countryCode: string): void;
-};
-
-export const CountryPickerContext = React.createContext<CountryPickerContextType>({
-    loading: true,
-});
 
 export function CountryPicker({
     onClose,

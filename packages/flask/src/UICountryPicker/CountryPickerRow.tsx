@@ -12,7 +12,7 @@ import {
 import { UIConstant } from '@tonlabs/uikit.navigation';
 
 import type { Country } from '../types';
-import { CountryPickerContext } from './CountryPicker';
+import { CountryPickerContext } from './CountryPickerContext';
 
 type CountryRowProps = {
     item: Country;
