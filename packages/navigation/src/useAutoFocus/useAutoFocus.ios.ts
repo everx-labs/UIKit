@@ -14,10 +14,7 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
  * So, the fix is to listen for transition events, and therefore
  * prevent autofocus during it, and focus a TextView only when transition is ended.
  */
-export function useAutoFocus(
-    ref: React.Ref<TextInput>,
-    autoFocus: boolean | undefined,
-) {
+export function useAutoFocus(ref: React.Ref<TextInput>, autoFocus: boolean | undefined) {
     let navigation: NavigationProp<any> | null = null;
     try {
         // eslint-disable-next-line react-hooks/rules-of-hooks

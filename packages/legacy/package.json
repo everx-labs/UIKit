@@ -38,9 +38,7 @@
         "@tonlabs/uikit.navigation_legacy": "^2.3.0",
         "bignumber.js": "9.0.0",
         "lodash": "4.17.21",
-        "prop-types": "15.6.2",
-        "react-native-flash-message": "0.1.23",
-        "react-style-proptype": "3.2.2"
+        "react-native-flash-message": "0.1.23"
     },
     "devDependencies": {
         "@react-native-community/bob": "0.16.2",

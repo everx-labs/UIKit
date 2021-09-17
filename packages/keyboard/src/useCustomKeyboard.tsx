@@ -3,9 +3,7 @@ import { Keyboard, TextInput, KeyboardEvent, Platform, AppRegistry } from 'react
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 import type { OnEvent, UICustomKeyboardView } from './types';
 
-export type OnCustomKeyboardVisible = (
-    visible: boolean,
-) => void | Promise<void>;
+export type OnCustomKeyboardVisible = (visible: boolean) => void | Promise<void>;
 
 const callbacks: { [id: string]: OnEvent | undefined } = {};
 const dismisses: { [id: string]: (() => void) | undefined } = {};
@@ -65,9 +63,7 @@ export function useCustomKeyboard(
         };
     }, [cKeyboard]);
 
-    const [customKeyboard, setCustomKeyboard] = React.useState<
-        typeof cKeyboardPrepared
-    >(undefined);
+    const [customKeyboard, setCustomKeyboard] = React.useState<typeof cKeyboardPrepared>(undefined);
     const customKeyboardRef = React.useRef<typeof cKeyboardPrepared>(undefined);
 
     React.useEffect(() => {
@@ -80,10 +76,10 @@ export function useCustomKeyboard(
                 setCustomKeyboard(undefined);
             }, duration);
         };
-        Keyboard.addListener('keyboardWillHide', callback);
+        const keyboardSubscription = Keyboard.addListener('keyboardWillHide', callback);
 
         return () => {
-            Keyboard.removeListener('keyboardWillHide', callback);
+            keyboardSubscription.remove();
         };
     }, []);
 
@@ -103,11 +99,8 @@ export function useCustomKeyboard(
             inputRef.current?.blur();
         }
 
-        setCustomKeyboard(
-            customKeyboard == null ? cKeyboardPrepared : undefined,
-        );
-        customKeyboardRef.current =
-            customKeyboard == null ? cKeyboardPrepared : undefined;
+        setCustomKeyboard(customKeyboard == null ? cKeyboardPrepared : undefined);
+        customKeyboardRef.current = customKeyboard == null ? cKeyboardPrepared : undefined;
     }, [cKeyboardPrepared, customKeyboard, inputRef]);
 
     const onEventCallback = React.useCallback(
@@ -131,23 +124,15 @@ export function useCustomKeyboard(
 
     React.useEffect(() => {
         if (cKeyboard?.moduleName) {
-            callbacks[
-                `${cKeyboard?.moduleName}:${keyboardID.current}`
-            ] = onEventCallback;
+            callbacks[`${cKeyboard?.moduleName}:${keyboardID.current}`] = onEventCallback;
 
-            dismisses[
-                `${cKeyboard?.moduleName}:${keyboardID.current}`
-            ] = dismiss;
+            dismisses[`${cKeyboard?.moduleName}:${keyboardID.current}`] = dismiss;
         }
 
         () => {
             if (cKeyboard?.moduleName) {
-                callbacks[
-                    `${cKeyboard?.moduleName}:${keyboardID.current}`
-                ] = undefined;
-                dismisses[
-                    `${cKeyboard?.moduleName}:${keyboardID.current}`
-                ] = undefined;
+                callbacks[`${cKeyboard?.moduleName}:${keyboardID.current}`] = undefined;
+                dismisses[`${cKeyboard?.moduleName}:${keyboardID.current}`] = undefined;
             }
         };
     }, [cKeyboard, onEventCallback, dismiss]);
@@ -160,7 +145,7 @@ export function useCustomKeyboard(
 }
 
 export function dismiss() {
-    Object.keys(dismisses).forEach((kbID) => {
+    Object.keys(dismisses).forEach(kbID => {
         const dismissCb = dismisses[kbID];
 
         if (dismissCb) {

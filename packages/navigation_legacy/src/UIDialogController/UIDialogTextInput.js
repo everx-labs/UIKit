@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import StylePropType from 'react-style-proptype';
 import { StyleSheet, Text, View, Platform } from 'react-native';
 
 import { UIStyle, UITextStyle } from '@tonlabs/uikit.core';
@@ -215,24 +213,4 @@ UIDialogTextInput.defaultProps = {
     maxLength: null,
     onChangeText: () => {},
     onSubmitEditing: () => {},
-};
-
-UIDialogTextInput.propTypes = {
-    beginningTag: PropTypes.string,
-    tagSeparator: PropTypes.string,
-    placeholder: PropTypes.string,
-    value: PropTypes.string,
-    keyboardType: PropTypes.string,
-    returnKeyType: PropTypes.string,
-    autoCapitalize: PropTypes.string,
-    textAlign: PropTypes.oneOf(['left', 'center']),
-    needBorderBottom: PropTypes.bool,
-    style: StylePropType,
-    textStyle: StylePropType,
-    secureTextEntry: PropTypes.bool,
-    editable: PropTypes.bool,
-    autoFocus: PropTypes.bool,
-    maxLength: PropTypes.number,
-    onChangeText: PropTypes.func,
-    onSubmitEditing: PropTypes.func,
 };

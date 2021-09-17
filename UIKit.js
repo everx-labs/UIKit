@@ -1,8 +1,5 @@
 // @flow
-import {
-    UIPopoverMenu,
-    UIPopoverBackground,
-} from './packages/navigation_legacy/src';
+import { UIPopoverMenu, UIPopoverBackground } from './packages/navigation_legacy/src';
 
 // Fix deprecated exports
 const UIMenuView = UIPopoverMenu;
@@ -53,7 +50,6 @@ export {
     UICountryPicker,
     UIModalController,
     UIDialogController,
-    UIImageView,
     UIPopover,
     UIScreen,
     UIShareManager,
@@ -75,10 +71,7 @@ export { UIAssets } from './packages/assets/src';
 // Types
 export type { UIAccountData } from './packages/legacy/src/UIAccountPicker/types/UIAccountData';
 export type { PointerEvents, PositionObject } from './packages/core';
-export type {
-    UIColorData,
-    UIColorThemeNameType,
-} from './packages/core/src/UIColor/UIColorTypes';
+export type { UIColorData, UIColorThemeNameType } from './packages/core/src/UIColor/UIColorTypes';
 export type {
     NumberParts,
     StringLocaleInfo,

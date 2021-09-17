@@ -4,7 +4,6 @@ export { default as UIController } from './UIController';
 export { default as UICountryPicker } from './UICountryPicker';
 export { default as UIDialogController } from './UIDialogController';
 export { default as UIModalController } from './UIModalController';
-export { default as UIImageView } from './UIImageView';
 export { default as UIPopover } from './UIPopover';
 export { default as UIPopoverBackground } from './UIPopoverBackground';
 export { default as UIPopoverMenu } from './UIPopoverMenu';
