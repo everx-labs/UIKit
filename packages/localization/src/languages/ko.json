@@ -158,7 +158,7 @@
     "Country": "국가",
     "CountryPicker": {
         "Title": "국가 선택",
-        "CountryNotFindTitle": "We didn't find your country",
+        "CountryNotFindTitle": "해당 국가를 찾을 수 없습니다",
         "CountryNotFindDetails": "Try again or select from the list"
     },
     "Create": "만들기",
