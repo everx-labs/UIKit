@@ -9542,7 +9542,7 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
-lodash@4.17.21, lodash@4.x, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.7.0:
+lodash@4.17.21, lodash@4.x, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.7.0:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -12138,10 +12138,10 @@ react-native-navigation-bar-color@2.0.1:
   resolved "https://registry.yarnpkg.com/react-native-navigation-bar-color/-/react-native-navigation-bar-color-2.0.1.tgz#ee2be25cc37105f7da355717b0a9a32c9c059ae6"
   integrity sha512-1kE/oxWt+HYjRxdZdvke9tJ365xaee5n3+euOQA1En8zQuSbOxiE4SYEGM7TeaWnmLJ0l37mRnPHaB2H4mGh0A==
 
-react-native-pager-view@5.1.9:
-  version "5.1.9"
-  resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-5.1.9.tgz#54dafe0ec459018c925ce319fb22df0f83d08d6c"
-  integrity sha512-cwBhjhr+n+VI3UHOGJg2bq9GHO/KmMuke/QH5T+hPdnS/wems5g4J96A8c+EjRCLuUrU1uSS0UQO4ONQN+5kfg==
+react-native-pager-view@^5.4.4:
+  version "5.4.4"
+  resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-5.4.4.tgz#83a873a82748440696ca0e0fd07a77477b854a78"
+  integrity sha512-5zyol+FZ9X4N4OEz92IyaFFROR3KtgAgTmgqlUvG59Eigf+f6aWs5fvcbWwzuz/AlLZbrxIDrnLmSpMUOK57ww==
 
 "react-native-parsed-text@git+https://github.com/FactorBench/react-native-parsed-text.git":
   version "0.0.21"

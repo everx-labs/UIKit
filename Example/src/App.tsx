@@ -58,6 +58,7 @@ import { Profile } from './screens/Profile';
 import { TextScreen } from './screens/Text';
 import { Browser } from './screens/Browser';
 import { Chat } from './screens/Chat';
+import { Carousel } from './screens/Carousel';
 import { Navigation } from './screens/Navigation';
 import { SectionsService } from './Search';
 import { KeyboardScreen } from './screens/Keyboard';
@@ -157,6 +158,12 @@ const Main = ({ navigation }: { navigation: any }) => {
                             title="Buttons"
                             type={UILinkButtonType.Menu}
                             onPress={() => navigation.navigate('buttons')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
+                            title="Carousel"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('carousel')}
                             layout={styles.button}
                         />
                         <UILinkButton
@@ -319,6 +326,7 @@ const App = () => {
                         >
                             <Split.Screen name="browser" component={Browser} />
                             <Split.Screen name="buttons" component={ButtonsScreen} />
+                            <Split.Screen name="carousel" component={Carousel} />
                             <Split.Screen name="chart" component={Chart} />
                             <Split.Screen name="chat" component={Chat} />
                             <Split.Screen name="checkbox" component={Checkbox} />
