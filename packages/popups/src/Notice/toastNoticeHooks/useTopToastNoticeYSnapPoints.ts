@@ -6,6 +6,9 @@ import { UIConstant } from '@tonlabs/uikit.navigation';
 import { initialWindowMetrics } from 'react-native-safe-area-context';
 import type { SnapPoints } from '../types';
 
+// @inline
+const INVALID_VALUE = 100000;
+
 export const useTopToastNoticeYSnapPoints = (
     noticeHeight: Animated.SharedValue<number>,
 ): SnapPoints => {
@@ -26,8 +29,7 @@ export const useTopToastNoticeYSnapPoints = (
     }, [screenHeight, statusBarHeight]);
     const closedYSnapPoint = useDerivedValue(() => {
         if (noticeHeight.value === 0) {
-            /** At first render we don't have noticeHeight.value, but we need some value */
-            return -screenHeight - UIConstant.notice.defaultNoticeHeight;
+            return INVALID_VALUE;
         }
         return -screenHeight - noticeHeight.value;
     }, [screenHeight]);
