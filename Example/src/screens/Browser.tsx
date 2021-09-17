@@ -13,7 +13,7 @@ import {
     QRCodeScannerMessage,
     EncryptionBoxMessage,
     DateMessage,
-    TimeMessage, DateTimeMessage,
+    TimeMessage, DateTimeMessage, CountryMessage,
 } from '@tonlabs/uikit.browser';
 import type {
     AddressInputMessage,
@@ -740,6 +740,32 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                         maxTime: new Date(0, 0, 0, 13, 0),
                                         currentTime: new Date(),
                                         interval: 5,
+                                        onSelect: (externalState: any) => {
+                                            setMessages([
+                                                {
+                                                    ...message,
+                                                    externalState,
+                                                },
+                                                ...messages,
+                                            ]);
+                                        },
+                                    };
+                                    setMessages([message, ...messages]);
+                                    setMenuVisible(false);
+                                }}
+                            />
+
+
+                            <UIBoxButton
+                                title='Choose country'
+                                layout={{
+                                    marginBottom: 10,
+                                }}
+                                onPress={() => {
+                                    const message: CountryMessage = {
+                                        key: `${Date.now()}-country-picker`,
+                                        type: InteractiveMessageType.Country,
+                                        status: MessageStatus.Received,
                                         onSelect: (externalState: any) => {
                                             setMessages([
                                                 {

@@ -4,5 +4,6 @@ export * from './UIQRCodeView';
 export * from './UIDateTimePickerView';
 export * from './UIPinCode';
 export * from './UICarouselView';
+export * from './UICountryPicker';
 
 export * from './types';

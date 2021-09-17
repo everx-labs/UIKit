@@ -40,7 +40,8 @@ export enum InteractiveMessageType {
     MediaOutput = 'MediaOutput',
     Date = 'Date',
     Time = 'Time',
-    DateTime = 'DateTime'
+    DateTime = 'DateTime',
+    Country = 'Country'
 }
 
 type PlainTextMessage = BubbleBaseT & {
@@ -211,8 +212,7 @@ export type EncryptionBoxExternalState = {
     encryptionBox?: EncryptionBox;
 };
 
-export type EncryptionBoxMessage = InteractiveMessage<
-    InteractiveMessageType.EncryptionBox,
+export type EncryptionBoxMessage = InteractiveMessage<InteractiveMessageType.EncryptionBox,
     {
         prompt?: string;
         encryptionBoxes: EncryptionBox[];
@@ -220,15 +220,26 @@ export type EncryptionBoxMessage = InteractiveMessage<
         onAddEncryptionBox: (privateKey: string) => Promise<EncryptionBox>;
         onSelect: (state: EncryptionBoxExternalState) => void;
     },
-    EncryptionBoxExternalState
->;
+    EncryptionBoxExternalState>;
+
+export type CountryExternalState = {
+    value: string;
+};
+
+export type CountryMessage = InteractiveMessage<InteractiveMessageType.Country,
+    {
+        prompt?: string;
+        permitted?: string[];
+        banned?: string[];
+        onSelect: (state: CountryExternalState) => void;
+    },
+    CountryExternalState>;
 
 export type DateExternalState = {
     date?: Date;
 };
 
-export type DateMessage = InteractiveMessage<
-    InteractiveMessageType.Date,
+export type DateMessage = InteractiveMessage<InteractiveMessageType.Date,
     {
         prompt?: string;
         minDate?: Date;
@@ -236,8 +247,7 @@ export type DateMessage = InteractiveMessage<
         currentDate?: Date;
         onSelect: (state: DateExternalState) => void;
     },
-    DateExternalState
->;
+    DateExternalState>;
 export type DateTimeExternalState = {
     datetime?: Date;
 };
@@ -360,7 +370,8 @@ export type BrowserMessage =
     | QRCodeScannerMessage
     | DateMessage
     | TimeMessage
-    | DateTimeMessage;
+    | DateTimeMessage
+    | CountryMessage;
 
 type WithExternalStateHelper<A> = A extends { externalState?: any } ? A : never;
 

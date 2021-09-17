@@ -30,6 +30,7 @@ import {
 import type { DuplicateState, VisibilityState } from './constants';
 import { Zoom } from './Zoom';
 import { UIConstant } from '../constants';
+import { Footer } from './Footer';
 
 // @inline
 const DUPLICATE_STATE_INITIAL: DuplicateState = 0;
@@ -46,6 +47,7 @@ export const DuplicateContent = ({
     previewImage,
     onClose,
     forwardedRef,
+    prompt,
 }: DuplicateContentProps) => {
     const theme = useTheme();
     const insets = useSafeAreaInsets();
@@ -107,11 +109,14 @@ export const DuplicateContent = ({
         };
     }, []);
 
+    const resultVisibilityState = useDerivedValue(() => {
+        return underlayOpacity.value * visibilityState.value;
+    });
+
     const underlayStyle = useAnimatedStyle(() => {
-        const resultVisibilityState = underlayOpacity.value * visibilityState.value;
         return {
             opacity: interpolate(
-                resultVisibilityState,
+                resultVisibilityState.value,
                 [VISIBILITY_STATE_CLOSED, VISIBILITY_STATE_OPENED],
                 [0, 1],
             ),
@@ -119,10 +124,9 @@ export const DuplicateContent = ({
     }, []);
 
     const headerStyle = useAnimatedStyle(() => {
-        const resultVisibilityState = underlayOpacity.value * visibilityState.value;
         return {
             opacity: interpolate(
-                resultVisibilityState,
+                resultVisibilityState.value,
                 [VISIBILITY_STATE_CLOSED, VISIBILITY_STATE_OPENED],
                 [0, 1],
             ),
@@ -172,6 +176,7 @@ export const DuplicateContent = ({
                     </Animated.View>
                 </Zoom>
             </Animated.View>
+            <Footer prompt={prompt} visibilityState={resultVisibilityState} />
         </Animated.View>
     );
 };

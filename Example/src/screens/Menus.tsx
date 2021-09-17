@@ -15,7 +15,6 @@ import {
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import {
-    UICountryPicker,
     UIPopover,
     UIPopoverMenu,
 } from '@tonlabs/uikit.navigation_legacy';
@@ -36,7 +35,7 @@ import {
     UILinkButton,
     UILabel,
 } from '@tonlabs/uikit.hydrogen';
-import { UIPinCode, UIPinCodeBiometryType } from '@tonlabs/uikit.flask';
+import { UIPinCode, UIPinCodeBiometryType, UICountryPicker } from '@tonlabs/uikit.flask';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -78,7 +77,7 @@ function PinCodeMenu() {
                         return Promise.resolve('123123');
                     }}
                     onEnter={(pin: string) => {
-                        return new Promise((resolve) => {
+                        return new Promise(resolve => {
                             setTimeout(() => {
                                 if (pin === '123123') {
                                     setAttempts(5);
@@ -159,7 +158,7 @@ function BigBottomSheet() {
                     {new Array(9)
                         .fill(null)
                         .map((_el, i) => (i + 1) / 10)
-                        .map((opacity) => (
+                        .map(opacity => (
                             <View
                                 key={opacity}
                                 style={{
@@ -208,7 +207,7 @@ function BigBottomLargeTitleSheet() {
                         {new Array(9)
                             .fill(null)
                             .map((_el, i) => (i + 1) / 10)
-                            .map((opacity) => (
+                            .map(opacity => (
                                 <View
                                     key={opacity}
                                     style={{
@@ -238,6 +237,7 @@ export const Menus = () => {
     const [cardSheetVisible, setCardSheetVisible] = React.useState(false);
     const [cardSheet2Visible, setCardSheet2Visible] = React.useState(false);
     const [bottomSheetVisible, setBottomSheetVisible] = React.useState(false);
+    const [countryPickerVisible, setCountryPickerVisible] = React.useState(false)
 
     const [qrVisible, setQrVisible] = React.useState(false);
     return (
@@ -290,10 +290,17 @@ export const Menus = () => {
             </ExampleSection>
             <ExampleSection title="UICountryPicker">
                 <View style={{ paddingVertical: 20 }}>
-                    <UILinkButton
-                        testID="show_uiCountryPicker"
-                        title="Show UICountryPicker"
-                        onPress={() => UICountryPicker.show({})}
+                    <UIBoxButton
+                        title='tap'
+                        onPress={() => setCountryPickerVisible(true)}
+                    />
+                    <UICountryPicker
+                        visible={countryPickerVisible}
+                        onSelect={(countryCode) => {
+                            console.log(countryCode);
+                            setCountryPickerVisible(false);
+                        }}
+                        onClose={() => setCountryPickerVisible(false)}
                     />
                 </View>
             </ExampleSection>
@@ -361,7 +368,7 @@ export const Menus = () => {
                         }}
                     />
                     <SafeAreaInsetsContext.Consumer>
-                        {(insets) => (
+                        {insets => (
                             <UIBottomSheet
                                 visible={bottomSheetVisible}
                                 onClose={() => {

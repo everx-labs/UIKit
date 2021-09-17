@@ -4,9 +4,9 @@ import type BigNumber from 'bignumber.js';
 import type { QRCodeError } from '@tonlabs/uikit.flask';
 
 /**
- * A string of the form: `data:[<data type>][;base64],<data in base64>`
+ * A string of the form: `data:<data type>;base64,<data in base64>`
  */
-export type DataUrl = string
+export type DataUrl = string;
 
 // Semantically describe a bubble position
 // By default:
@@ -44,13 +44,9 @@ export enum ChatMessageType {
     Media = 'Media',
 }
 
-export type OnPressUrl =
-    | ((url: string, index?: number) => void | Promise<void>)
-    | undefined;
+export type OnPressUrl = ((url: string, index?: number) => void | Promise<void>) | undefined;
 
-export type OnLongPressText =
-    | ((text: string) => void | Promise<void>)
-    | undefined;
+export type OnLongPressText = ((text: string) => void | Promise<void>) | undefined;
 
 export type PlainTextMessage = BubbleBaseT & {
     type: ChatMessageType.PlainText;
@@ -154,6 +150,7 @@ export type MediaMessage = BubbleBaseT & {
     type: ChatMessageType.Media;
     data: DataUrl | null;
     preview: DataUrl | null;
+    prompt?: string;
     onLoad?: () => void;
     onError?: (error: MediaMessageError) => void;
 };

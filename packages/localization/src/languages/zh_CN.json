@@ -168,6 +168,11 @@
     "CopyRight": "2018–{CURRENT_YEAR} © TON Labs",
     "CopyToClipboard": "复制到剪切",
     "Country": "国家",
+    "CountryPicker": {
+        "Title": "Choose a Country",
+        "CountryNotFindTitle": "We didn't find your country",
+        "CountryNotFindDetails": "Try again or select from the list"
+    },
     "Create": "创建",
     "CreateChannel": "创建频道",
     "CreateNewAccount": "创建新账户",

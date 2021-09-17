@@ -13,6 +13,7 @@ export type LightboxProps = {
     imageSize: ImageSize | null;
     fullSizeImage: React.ReactElement;
     previewImage: React.ReactElement;
+    prompt?: string;
 };
 
 export type Dimensions = {
@@ -31,6 +32,7 @@ export type DuplicateContentProps = {
     forwardedRef: React.RefObject<View>;
     fullSizeImage: React.ReactElement;
     previewImage: React.ReactElement;
+    prompt?: string;
 };
 
 export type ZoomProps = {
