@@ -159,7 +159,7 @@
     "CountryPicker": {
         "Title": "국가 선택",
         "CountryNotFindTitle": "해당 국가를 찾을 수 없습니다",
-        "CountryNotFindDetails": "Try again or select from the list"
+        "CountryNotFindDetails": "다시 시도하거나 목록에서 선택하세요"
     },
     "Create": "만들기",
     "CreateChannel": "채널 만들기",
