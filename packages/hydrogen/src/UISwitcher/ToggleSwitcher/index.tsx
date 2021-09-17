@@ -1,17 +1,11 @@
 import * as React from 'react';
 import Animated from 'react-native-reanimated';
-import { PanGestureHandler } from 'react-native-gesture-handler';
-import { RawButton } from '../RawButton';
+import { PanGestureHandler, TapGestureHandler } from 'react-native-gesture-handler';
 import type { UISwitcherProps } from '../types';
 import { ColorVariants, Theme, useTheme } from '../../Colors';
 import { makeStyles } from '../../makeStyles';
 import { useHover } from '../../useHover';
-import {
-    useImageStyle,
-    useOverlayStyle,
-    useSwitcherGestureEvent,
-    useSwitcherState,
-} from './hooks';
+import { useImageStyle, useOverlayStyle, useSwitcherGestureEvent, useSwitcherState } from './hooks';
 import { UIConstant } from '../../constants';
 
 export const ToggleSwitcher: React.FC<UISwitcherProps> = ({
@@ -33,45 +27,40 @@ export const ToggleSwitcher: React.FC<UISwitcherProps> = ({
         return disabled ? styles.showDefault : styles.showPointer;
     }, [disabled]);
 
-    const {
-        toggleBackgroundStyle,
-        panGestureHandler,
-        toggleImageOnStyle,
-    } = useImageStyle(active, theme, onPress);
+    const { toggleBackgroundStyle, panGestureHandler, toggleImageOnStyle } = useImageStyle(
+        active,
+        theme,
+        onPress,
+    );
+
+    const switcherStyle = React.useMemo(() => {
+        return disabled ? styles.disabledSwitcherStyle : toggleBackgroundStyle;
+    }, [disabled, toggleBackgroundStyle]);
 
     return (
-        <RawButton
+        <TapGestureHandler
             shouldCancelWhenOutside
             onGestureEvent={onGestureEvent}
-            style={[styles.buttonToggleStyle, cursorStyle]}
             // @ts-expect-error
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             testID={testID}
             enabled={!disabled}
         >
-            <Animated.View
-                style={[
-                    styles.toggleOuterStyle,
-                    disabled
-                        ? styles.disabledSwitcherStyle
-                        : toggleBackgroundStyle,
-                ]}
-            >
-                <Animated.View
-                    style={[styles.toggleInnerStyle, !disabled && overlayStyle]}
-                >
-                    <PanGestureHandler onGestureEvent={panGestureHandler}>
-                        <Animated.View
-                            style={[styles.toggleDotStyle, toggleImageOnStyle]}
-                        />
-                    </PanGestureHandler>
-                </Animated.View>
+            <Animated.View style={cursorStyle}>
+                <PanGestureHandler enabled={!disabled} onGestureEvent={panGestureHandler}>
+                    <Animated.View
+                        style={[styles.buttonToggleStyle, switcherStyle, styles.toggleOuterStyle]}
+                    >
+                        <Animated.View style={[styles.toggleInnerStyle, !disabled && overlayStyle]}>
+                            <Animated.View style={[styles.toggleDotStyle, toggleImageOnStyle]} />
+                        </Animated.View>
+                    </Animated.View>
+                </PanGestureHandler>
             </Animated.View>
-        </RawButton>
+        </TapGestureHandler>
     );
 };
-
 
 const toggleShapeStyles = {
     width: UIConstant.switcher.toggleWidth,
