@@ -1,14 +1,6 @@
 import type QRCode from 'qrcode';
-import type {
-    QRItemAngleSide,
-    QRItemAngleType,
-    QRItemRange,
-    QRItemSideData,
-} from '../../types';
-import {
-    QR_CODE_LOGO_MARGIN_IN_SQUARES,
-    QR_CODE_ITEM_BORDER_RADIUS,
-} from '../../constants';
+import type { QRItemAngleSide, QRItemAngleType, QRItemRange, QRItemSideData } from '../../types';
+import { QR_CODE_LOGO_MARGIN_IN_SQUARES, QR_CODE_ITEM_BORDER_RADIUS } from '../../constants';
 
 const getStartLineType = (angleSide: QRItemAngleSide): string => {
     switch (angleSide) {
@@ -75,23 +67,14 @@ const drawCorner = (
     `;
 };
 
-const getAngleType = (
-    sideData: QRItemSideData,
-    angleSide: QRItemAngleSide,
-): QRItemAngleType => {
+const getAngleType = (sideData: QRItemSideData, angleSide: QRItemAngleSide): QRItemAngleType => {
     switch (angleSide) {
         case 'TopRight':
-            return sideData.topValue || sideData.rightValue
-                ? 'Acute'
-                : 'Obtuse';
+            return sideData.topValue || sideData.rightValue ? 'Acute' : 'Obtuse';
         case 'BottomRight':
-            return sideData.bottomValue || sideData.rightValue
-                ? 'Acute'
-                : 'Obtuse';
+            return sideData.bottomValue || sideData.rightValue ? 'Acute' : 'Obtuse';
         case 'BottomLeft':
-            return sideData.bottomValue || sideData.leftValue
-                ? 'Acute'
-                : 'Obtuse';
+            return sideData.bottomValue || sideData.leftValue ? 'Acute' : 'Obtuse';
         case 'TopLeft':
         default:
             return sideData.topValue || sideData.leftValue ? 'Acute' : 'Obtuse';
@@ -108,37 +91,19 @@ export const draw = (
 ) => {
     const scaledX = x * sizeOfSquare + offsetOfCoordinateGrid;
     const scaledY = y * sizeOfSquare + offsetOfCoordinateGrid;
-    const safeRadius =
-        itemBorderRadius > sizeOfSquare / 2
-            ? sizeOfSquare / 2
-            : itemBorderRadius;
+    const safeRadius = itemBorderRadius > sizeOfSquare / 2 ? sizeOfSquare / 2 : itemBorderRadius;
 
     return `
         M${scaledX + sizeOfSquare / 2},${scaledY}
-        ${drawCorner(
-            sizeOfSquare,
-            'TopRight',
-            getAngleType(sideData, 'TopRight'),
-            safeRadius,
-        )}
+        ${drawCorner(sizeOfSquare, 'TopRight', getAngleType(sideData, 'TopRight'), safeRadius)}
         ${drawCorner(
             sizeOfSquare,
             'BottomRight',
             getAngleType(sideData, 'BottomRight'),
             safeRadius,
         )}
-        ${drawCorner(
-            sizeOfSquare,
-            'BottomLeft',
-            getAngleType(sideData, 'BottomLeft'),
-            safeRadius,
-        )}
-        ${drawCorner(
-            sizeOfSquare,
-            'TopLeft',
-            getAngleType(sideData, 'TopLeft'),
-            safeRadius,
-        )}
+        ${drawCorner(sizeOfSquare, 'BottomLeft', getAngleType(sideData, 'BottomLeft'), safeRadius)}
+        ${drawCorner(sizeOfSquare, 'TopLeft', getAngleType(sideData, 'TopLeft'), safeRadius)}
     `;
 };
 
@@ -160,9 +125,7 @@ export const getEmptyAreaIndexRange = (
     const logoWithMarginSizeInSquares = Math.ceil(
         (logoSize + logoMarginInSquares * sizeOfSquare * 2) / sizeOfSquare,
     );
-    const offsetInSquares = Math.floor(
-        (sizeInSquares - logoWithMarginSizeInSquares) / 2,
-    );
+    const offsetInSquares = Math.floor((sizeInSquares - logoWithMarginSizeInSquares) / 2);
     const start = offsetInSquares;
     const end: number = sizeInSquares - offsetInSquares - 1;
     return { start, end };
@@ -189,10 +152,7 @@ export const getQRSvg = (
     const qrData: number[][] = new Array(qrDataLength)
         .fill(null)
         .map((_: null, index: number): number[] => {
-            return qr.modules.data.slice(
-                index * qrDataLength,
-                (index + 1) * qrDataLength,
-            );
+            return qr.modules.data.slice(index * qrDataLength, (index + 1) * qrDataLength);
         })
         .map((row: number[], y: number): number[] => {
             return row.map((value: number, x: number): number => {

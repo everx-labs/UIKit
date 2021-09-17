@@ -40,7 +40,7 @@ export default class UIActionSheet extends UIComponent<Props, State> {
         needCancelItem: true,
         fullWidth: true,
         onCancel: () => {},
-    }
+    };
 
     static show(
         menuItemsList: MenuItemType[],
@@ -112,20 +112,22 @@ export default class UIActionSheet extends UIComponent<Props, State> {
     ) {
         this.onCancel = onCancel || this.props.onCancel;
         this.fullWidth = fullWidth != null ? fullWidth : this.props.fullWidth;
-        this.setStateSafely({
-            menuItemsList: menuItemsList || this.props.menuItemsList,
-            needCancelItem: needCancelItem !== undefined
-                ? needCancelItem
-                : this.props.needCancelItem,
-        }, () => {
-            this.setCardVisible(true);
-        });
+        this.setStateSafely(
+            {
+                menuItemsList: menuItemsList || this.props.menuItemsList,
+                needCancelItem:
+                    needCancelItem !== undefined ? needCancelItem : this.props.needCancelItem,
+            },
+            () => {
+                this.setCardVisible(true);
+            },
+        );
     }
 
     hide(callback?: () => void) {
         this.setCardVisible(false);
         if (callback) {
-            callback()
+            callback();
         }
     }
 
@@ -179,11 +181,7 @@ export default class UIActionSheet extends UIComponent<Props, State> {
                 visible={this.state.cardVisible}
                 onClose={() => this.setCardVisible(false)}
             >
-                <UIBackgroundView
-                    style={styles.container}
-                >
-                    {this.renderMenu()}
-                </UIBackgroundView>
+                <UIBackgroundView style={styles.container}>{this.renderMenu()}</UIBackgroundView>
             </UICardSheet>
         );
     }

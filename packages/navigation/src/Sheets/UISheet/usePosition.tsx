@@ -126,7 +126,7 @@ export function usePosition(
                     position.value = withSpring(
                         currentState.snapPointPosition,
                         OpenSpringConfig,
-                        (isFinished) => {
+                        isFinished => {
                             if (isFinished && onOpenEndProp) {
                                 runOnJS(onOpenEndProp)();
                             }
@@ -149,7 +149,7 @@ export function usePosition(
                     position.value = withSpring(
                         0 - currentState.keyboardHeight,
                         CloseSpringConfig,
-                        (isFinished) => {
+                        isFinished => {
                             if (isFinished) {
                                 if (onCloseEndProp) {
                                     runOnJS(onCloseEndProp)();
@@ -173,9 +173,7 @@ export function usePosition(
 
     const positionWithoutRubberBand = useSharedValue(0);
 
-    const onTapGestureHandler = useAnimatedGestureHandler<
-        TapGestureHandlerGestureEvent
-    >({
+    const onTapGestureHandler = useAnimatedGestureHandler<TapGestureHandlerGestureEvent>({
         onActive: () => {
             showState.value = SHOW_STATES.CLOSE;
             if (onCloseProp) {
@@ -203,20 +201,14 @@ export function usePosition(
             return;
         }
 
-        positionWithoutRubberBand.value = Math.max(
-            positionWithoutRubberBand.value + y,
-            0,
-        );
+        positionWithoutRubberBand.value = Math.max(positionWithoutRubberBand.value + y, 0);
         position.value = intermediatePosition;
     };
 
     const resetPosition = () => {
         'worklet';
 
-        if (
-            position.value - snapPointPosition.value >
-            UIConstant.swipeThreshold
-        ) {
+        if (position.value - snapPointPosition.value > UIConstant.swipeThreshold) {
             showState.value = SHOW_STATES.CLOSE;
             if (onCloseProp) {
                 runOnJS(onCloseProp)();
@@ -229,7 +221,7 @@ export function usePosition(
     const scrollRef = useAnimatedRef<Animated.ScrollView>();
 
     const scrollHandler = useAnimatedScrollHandler({
-        onScroll: (event) => {
+        onScroll: event => {
             const { y } = event.contentOffset;
 
             yIsNegative.value = y <= 0;

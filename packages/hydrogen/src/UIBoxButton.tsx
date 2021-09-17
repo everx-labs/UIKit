@@ -88,9 +88,7 @@ export type UIBoxButtonProps = {
     variant?: UIBoxButtonVariant;
 };
 
-const getButtonStates = (
-    type: UIBoxButtonType,
-) => {
+const getButtonStates = (type: UIBoxButtonType) => {
     if (type === UIBoxButtonType.Primary) {
         return {
             hoverOverlayColor: ColorVariants.StaticHoverOverlay,
@@ -102,13 +100,13 @@ const getButtonStates = (
             hoverOverlayColor: ColorVariants.BackgroundTertiary,
             pressOverlayColor: ColorVariants.BackgroundNeutral,
             activeContentColor: ColorVariants.TextPrimary,
-        }
+        };
     } else if (type === UIBoxButtonType.Tertiary) {
         return {
             hoverOverlayColor: ColorVariants.Transparent,
             pressOverlayColor: ColorVariants.Transparent,
             activeContentColor: ColorVariants.TextPrimary,
-        }
+        };
     }
     return {
         hoverOverlayColor: ColorVariants.Transparent,
@@ -117,10 +115,7 @@ const getButtonStates = (
     };
 };
 
-function useButtonAnimations(
-    type: UIBoxButtonType,
-    contentColor: ColorVariants,
-): ButtonAnimations {
+function useButtonAnimations(type: UIBoxButtonType, contentColor: ColorVariants): ButtonAnimations {
     const { hoverOverlayColor, pressOverlayColor, activeContentColor } = getButtonStates(type);
     const theme = useTheme();
 
@@ -295,7 +290,7 @@ export const UIBoxButton = ({
     onPress,
     testID,
     title,
-    type= UIBoxButtonType.Primary,
+    type = UIBoxButtonType.Primary,
     variant = UIBoxButtonVariant.Neutral,
 }: UIBoxButtonProps) => {
     const { buttonStyle, contentColor } = useButtonStyles(type, variant, disabled, loading);
@@ -303,11 +298,7 @@ export const UIBoxButton = ({
 
     return (
         <Button
-            containerStyle={[
-                styles.container,
-                buttonStyle,
-                layout,
-            ]}
+            containerStyle={[styles.container, buttonStyle, layout]}
             contentStyle={styles.content}
             animations={buttonAnimations}
             disabled={disabled}
@@ -316,8 +307,7 @@ export const UIBoxButton = ({
             testID={testID}
         >
             <Button.Content>
-                {
-                    iconPosition === UIBoxButtonIconPosition.Left && icon != null &&
+                {iconPosition === UIBoxButtonIconPosition.Left && icon != null && (
                     <Button.Icon
                         source={icon}
                         style={styles.leftIcon}
@@ -325,35 +315,32 @@ export const UIBoxButton = ({
                         initialColor={buttonAnimations.icon?.initialColor}
                         activeColor={buttonAnimations.icon?.activeColor}
                     />
-                }
-                {
-                    title != null &&
+                )}
+                {title != null && (
                     <Button.Title
                         titleColor={contentColor}
                         titleAnimStyle={buttonAnimations.title?.style}
                     >
                         {title}
                     </Button.Title>
-                }
-                {
-                    iconPosition === UIBoxButtonIconPosition.Middle && icon != null &&
+                )}
+                {iconPosition === UIBoxButtonIconPosition.Middle && icon != null && (
                     <Button.Icon
                         source={icon}
                         iconAnimStyle={buttonAnimations.icon?.style}
                         initialColor={buttonAnimations.icon?.initialColor}
                         activeColor={buttonAnimations.icon?.activeColor}
                     />
-                }
+                )}
             </Button.Content>
-            {
-                iconPosition === UIBoxButtonIconPosition.Right && icon != null &&
+            {iconPosition === UIBoxButtonIconPosition.Right && icon != null && (
                 <Button.Icon
                     source={icon}
                     iconAnimStyle={buttonAnimations.icon?.style}
                     initialColor={buttonAnimations.icon?.initialColor}
                     activeColor={buttonAnimations.icon?.activeColor}
                 />
-            }
+            )}
         </Button>
     );
 };

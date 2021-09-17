@@ -3,9 +3,7 @@ import * as React from 'react';
 import { ChatMediaMessage, MediaMessageError, MediaMessage } from '../types';
 import { MediaImage } from './MediaImage';
 
-export const ChatBubbleMedia: React.FC<ChatMediaMessage> = (
-    message: ChatMediaMessage,
-) => {
+export const ChatBubbleMedia: React.FC<ChatMediaMessage> = (message: ChatMediaMessage) => {
     return <BubbleMedia {...message} />;
 };
 

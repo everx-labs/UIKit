@@ -5,17 +5,15 @@ import type { ViewProps } from 'react-native';
 import { ColorVariants, useTheme } from './Colors';
 
 type Props = Omit<ViewProps, 'style'> & {
-    color?: ColorVariants,
+    color?: ColorVariants;
     style?: ViewStyle;
 };
 
 export const UISafeAreaView = React.forwardRef<SafeAreaView, Props>(
     function UISafeAreaViewForwarded(
-        {
-            color: colorProp = ColorVariants.BackgroundPrimary,
-            style,
-            ...rest
-        }: Props, ref) {
+        { color: colorProp = ColorVariants.BackgroundPrimary, style, ...rest }: Props,
+        ref,
+    ) {
         const theme = useTheme();
         const colorStyle: { backgroundColor: ColorValue } = React.useMemo(
             () => ({
@@ -23,15 +21,6 @@ export const UISafeAreaView = React.forwardRef<SafeAreaView, Props>(
             }),
             [theme, colorProp],
         );
-        return (
-            <SafeAreaView
-                ref={ref}
-                {...rest}
-                style={[
-                    style,
-                    colorStyle,
-                ]}
-            />
-        );
+        return <SafeAreaView ref={ref} {...rest} style={[style, colorStyle]} />;
     },
 );

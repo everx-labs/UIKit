@@ -39,7 +39,7 @@ export type FormatNestedListArgs = {
     list: DetailsList,
     key: string,
     needOffset?: boolean,
-}
+};
 
 type Props = {
     narrow?: boolean,
@@ -51,7 +51,7 @@ type Props = {
     rightCellStyle?: ViewStyleProp,
     rowContainerStyle?: ViewStyleProp,
     rowSeparator?: boolean,
-}
+};
 
 type State = {
     captionMinWidth: number,
@@ -122,8 +122,8 @@ class UIDetailsTable extends UIComponent<Props, State> {
             ...item,
             key: `${item.key ? `${item.key}-` : ''}${generatedKey}`,
             caption: item.caption,
-            captionType: item.captionType
-                || (!index ? this.captionType.header : this.captionType.default),
+            captionType:
+                item.captionType || (!index ? this.captionType.header : this.captionType.default),
         }));
     }
 
@@ -155,7 +155,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         } else if (type === UIDetailsTable.cellType.error) {
             return {
                 color: UILabelColors.TextNegative,
-                role: UILabelRoles.ParagraphText
+                role: UILabelRoles.ParagraphText,
             };
         } else if (type === UIDetailsTable.cellType.accent) {
             return {
@@ -180,7 +180,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         }
         return {
             color: UILabelColors.TextSecondary,
-            role: UILabelRoles.ParagraphText
+            role: UILabelRoles.ParagraphText,
         };
     }
 
@@ -215,16 +215,10 @@ class UIDetailsTable extends UIComponent<Props, State> {
     renderTextCell(value: number | string, details: string) {
         return (
             <UILabel>
-                <UILabel
-                    color={UILabelColors.TextPrimary}
-                    role={UILabelRoles.ParagraphNote}
-                >
+                <UILabel color={UILabelColors.TextPrimary} role={UILabelRoles.ParagraphNote}>
                     {value}
                 </UILabel>
-                <UILabel
-                    color={UILabelColors.TextSecondary}
-                    role={UILabelRoles.ParagraphNote}
-                >
+                <UILabel color={UILabelColors.TextSecondary} role={UILabelRoles.ParagraphNote}>
                     {details}
                 </UILabel>
             </UILabel>
@@ -232,12 +226,15 @@ class UIDetailsTable extends UIComponent<Props, State> {
     }
 
     renderCell(details: DetailsRow) {
-        const {
-            type, value, limit, component, onPress, caption,
-        } = details;
+        const { type, value, limit, component, onPress, caption } = details;
         const { color, role } = this.getTextStyle(type, value);
 
-        if (type === UIDetailsTable.cellType.numberPercent && limit && limit !== 0 && typeof value === 'number') {
+        if (
+            type === UIDetailsTable.cellType.numberPercent &&
+            limit &&
+            limit !== 0 &&
+            typeof value === 'number'
+        ) {
             const primary = UIFunction.getNumberString(value);
             const percent = (value / limit) * 100;
             const formattedPercent = UIFunction.getNumberString(percent);
@@ -259,11 +256,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
         }
 
         return (
-            <UILabel
-                color={color}
-                role={role}
-                style={UIStyle.common.flex()}
-            >
+            <UILabel color={color} role={role} style={UIStyle.common.flex()}>
                 {type === UIDetailsTable.cellType.bool || value === true || value === false
                     ? JSON.stringify(value)
                     : value}
@@ -289,9 +282,11 @@ class UIDetailsTable extends UIComponent<Props, State> {
             >
                 <UILabel
                     color={UILabelColors.TextPrimary}
-                    role={[header, bold, boldTopOffset].includes(captionType)
-                        ? UILabelRoles.HeadlineHead
-                        : UILabelRoles.ParagraphText}
+                    role={
+                        [header, bold, boldTopOffset].includes(captionType)
+                            ? UILabelRoles.HeadlineHead
+                            : UILabelRoles.ParagraphText
+                    }
                 >
                     {caption}
                 </UILabel>
@@ -300,68 +295,71 @@ class UIDetailsTable extends UIComponent<Props, State> {
     }
 
     renderRows() {
-        const {
-            detailsList,
-            rightCellStyle,
-            rowSeparator,
-            rowContainerStyle,
-        } = this.props;
-        return detailsList.filter(item => !!item).map<React$Node>((item, index) => {
-            const {
-                caption, value, captionType, key, showAlways, component, comment,
-            } = item;
+        const { detailsList, rightCellStyle, rowSeparator, rowContainerStyle } = this.props;
+        return detailsList
+            .filter(item => !!item)
+            .map<React$Node>((item, index) => {
+                const { caption, value, captionType, key, showAlways, component, comment } = item;
 
-            const { header, topOffset, boldTopOffset } = UIDetailsTable.captionType;
+                const { header, topOffset, boldTopOffset } = UIDetailsTable.captionType;
 
-            if ((value == null || value === '') && !showAlways && !component && captionType !== header) {
-                return null;
-            }
+                if (
+                    (value == null || value === '') &&
+                    !showAlways &&
+                    !component &&
+                    captionType !== header
+                ) {
+                    return null;
+                }
 
-            const marginTopStyle = [header, topOffset, boldTopOffset].includes(captionType)
-                && UIStyle.padding.topHuge();
+                const marginTopStyle =
+                    [header, topOffset, boldTopOffset].includes(captionType) &&
+                    UIStyle.padding.topHuge();
 
-            return (
-                <View>
-                    {index > 0 && rowSeparator && (
-                        <UIBackgroundView
-                            color={UIBackgroundViewColors.LinePrimary}
-                            style={styles.borderTop}
-                        />
-                    )}
-                    <View
-                        style={[
-                            comment
-                                ? [UIStyle.padding.topDefault(), UIStyle.padding.bottomTiny()]
-                                : UIStyle.padding.vertical(),
-                            UIStyle.common.flexRow(),
-                            rowContainerStyle,
-                            marginTopStyle,
-                        ]}
-                        key={`details-table-row-${caption || ''}-${JSON.stringify(value) || ''}-${key || ''}-${captionType || ''}`}
-                    >
-                        {this.renderCaption(caption, captionType)}
-
-                        {![header].includes(captionType) && (
-                            <View
-                                testID={`table_cell_${caption || 'default'}_value`}
-                                style={rightCellStyle || UIStyle.common.flex3()}
-                            >
-                                {this.renderCell(item)}
-                            </View>
+                return (
+                    <View>
+                        {index > 0 && rowSeparator && (
+                            <UIBackgroundView
+                                color={UIBackgroundViewColors.LinePrimary}
+                                style={styles.borderTop}
+                            />
                         )}
-                    </View>
-                    {comment ? (
-                        <UILabel
-                            color={UILabelColors.TextSecondary}
-                            role={UILabelRoles.ParagraphNote}
-                            style={UIStyle.padding.bottomDefault()}
+                        <View
+                            style={[
+                                comment
+                                    ? [UIStyle.padding.topDefault(), UIStyle.padding.bottomTiny()]
+                                    : UIStyle.padding.vertical(),
+                                UIStyle.common.flexRow(),
+                                rowContainerStyle,
+                                marginTopStyle,
+                            ]}
+                            key={`details-table-row-${caption || ''}-${
+                                JSON.stringify(value) || ''
+                            }-${key || ''}-${captionType || ''}`}
                         >
-                            {comment}
-                        </UILabel>
-                    ) : null}
-                </View>
-            );
-        });
+                            {this.renderCaption(caption, captionType)}
+
+                            {![header].includes(captionType) && (
+                                <View
+                                    testID={`table_cell_${caption || 'default'}_value`}
+                                    style={rightCellStyle || UIStyle.common.flex3()}
+                                >
+                                    {this.renderCell(item)}
+                                </View>
+                            )}
+                        </View>
+                        {comment ? (
+                            <UILabel
+                                color={UILabelColors.TextSecondary}
+                                role={UILabelRoles.ParagraphNote}
+                                style={UIStyle.padding.bottomDefault()}
+                            >
+                                {comment}
+                            </UILabel>
+                        ) : null}
+                    </View>
+                );
+            });
     }
 
     render() {

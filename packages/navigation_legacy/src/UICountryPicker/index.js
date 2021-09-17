@@ -4,7 +4,6 @@ import { View, Platform, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import CountryPicker, { getAllCountries } from 'react-native-country-picker-modal';
 import { ScrollView } from 'react-native-gesture-handler';
 
-
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { UISearchBar } from '@tonlabs/uikit.navigation';
 import {
@@ -14,7 +13,7 @@ import {
     UILabel,
     UILabelColors,
     UILabelRoles,
-    useTheme
+    useTheme,
 } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UIAssets } from '@tonlabs/uikit.assets';
@@ -74,7 +73,7 @@ type State = ModalControllerState & {
 export type Country = {
     cca2: string,
     name: string,
-}
+};
 
 function Picker({
     pickerRef,
@@ -128,9 +127,9 @@ function Picker({
                 },
             }}
             onChange={onPickCountry}
-            dataType={isLanguages ?
-                CountryPicker.dataTypes.languages :
-                CountryPicker.dataTypes.countries}
+            dataType={
+                isLanguages ? CountryPicker.dataTypes.languages : CountryPicker.dataTypes.countries
+            }
             hideFlags={hideFlags}
             selectedItemImage={checkboxIco}
         />
@@ -171,14 +170,13 @@ export default class UICountryPicker extends UIModalController<Props, State> {
     selected: ?string;
     translation: ?string;
     screenTitle: ?string;
-    disabledCountries: ?string[];
-    excludedCountries: ?string[];
-    sequenceOrder: ?string[];
+    disabledCountries: ?(string[]);
+    excludedCountries: ?(string[]);
+    sequenceOrder: ?(string[]);
     isLanguages: ?boolean;
     searchBarHidden: ?boolean;
     flagsHidden: ?boolean;
     bottomView: ?React$Node;
-
 
     constructor(props: Props) {
         super(props);
@@ -308,7 +306,7 @@ export default class UICountryPicker extends UIModalController<Props, State> {
             >
                 {this.screenTitle}
             </UILabel>
-        )
+        );
     }
 
     renderSearchBar() {
@@ -360,8 +358,8 @@ export default class UICountryPicker extends UIModalController<Props, State> {
                 </ScrollView>
             </>
         );
-        const toRender = Platform.OS === 'ios'
-            ? (
+        const toRender =
+            Platform.OS === 'ios' ? (
                 <KeyboardAvoidingView
                     style={countryPickerStyle.container}
                     keyboardVerticalOffset={120}
@@ -369,8 +367,9 @@ export default class UICountryPicker extends UIModalController<Props, State> {
                 >
                     {picker}
                 </KeyboardAvoidingView>
-            )
-            : picker;
+            ) : (
+                picker
+            );
         return toRender;
     }
 }

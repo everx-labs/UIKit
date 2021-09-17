@@ -20,11 +20,7 @@ export const useLabelData = (
     }, [data]);
 
     const controlPoints = useDerivedValue<LinearChartControlPoints | null>(() => {
-        return getControlPoints(
-            data,
-            scaledData.value,
-            LINEAR_CHART_STROKE_WIDTH,
-        );
+        return getControlPoints(data, scaledData.value, LINEAR_CHART_STROKE_WIDTH);
     }, [data]);
 
     const {

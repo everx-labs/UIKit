@@ -4,4 +4,5 @@ import type * as React from 'react';
 import { TouchableOpacity as PlatformTouchableOpacity } from './TouchableOpacity';
 import type { TouchableOpacityProps } from './types';
 
-export const TouchableOpacity: React.ComponentType<TouchableOpacityProps> = PlatformTouchableOpacity;
+export const TouchableOpacity: React.ComponentType<TouchableOpacityProps> =
+    PlatformTouchableOpacity;

@@ -2,11 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { View } from 'react-native';
 
-import {
-    UILabel,
-    UISwitcher,
-    UISwitcherVariant,
-} from '@tonlabs/uikit.hydrogen';
+import { UILabel, UISwitcher, UISwitcherVariant } from '@tonlabs/uikit.hydrogen';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -34,7 +30,7 @@ export const Checkbox = () => {
                             active={switcherSelected}
                             onPress={() => {
                                 console.log('onPress', switcherSelected);
-                                setSwitcherSelected((prev) => !prev);
+                                setSwitcherSelected(prev => !prev);
                             }}
                         />
                     </View>
@@ -50,7 +46,7 @@ export const Checkbox = () => {
                             active={switcherSelected}
                             onPress={() => {
                                 console.log('onPress', switcherSelected);
-                                setSwitcherSelected((prev) => !prev);
+                                setSwitcherSelected(prev => !prev);
                             }}
                         />
                     </View>
@@ -66,7 +62,7 @@ export const Checkbox = () => {
                             active={switcherSelected}
                             onPress={() => {
                                 console.log('onPress', switcherSelected);
-                                setSwitcherSelected((prev) => !prev);
+                                setSwitcherSelected(prev => !prev);
                             }}
                         />
                     </View>
@@ -83,7 +79,7 @@ export const Checkbox = () => {
                             active={switcherSelected}
                             onPress={() => {
                                 console.log('onPress', switcherSelected);
-                                setSwitcherSelected((prev) => !prev);
+                                setSwitcherSelected(prev => !prev);
                             }}
                         />
                     </View>
@@ -110,7 +106,7 @@ export const Checkbox = () => {
                             disabled
                             onPress={() => {
                                 console.log('onPress', switcherSelected);
-                                setSwitcherSelected((prev) => !prev);
+                                setSwitcherSelected(prev => !prev);
                             }}
                         />
                     </View>
@@ -127,7 +123,7 @@ export const Checkbox = () => {
                             disabled
                             onPress={() => {
                                 console.log('onPress', switcherSelected);
-                                setSwitcherSelected((prev) => !prev);
+                                setSwitcherSelected(prev => !prev);
                             }}
                         />
                     </View>
@@ -144,7 +140,7 @@ export const Checkbox = () => {
                             disabled
                             onPress={() => {
                                 console.log('onPress', switcherSelected);
-                                setSwitcherSelected((prev) => !prev);
+                                setSwitcherSelected(prev => !prev);
                             }}
                         />
                     </View>
@@ -162,7 +158,7 @@ export const Checkbox = () => {
                             disabled
                             onPress={() => {
                                 console.log('onPress', switcherSelected);
-                                setSwitcherSelected((prev) => !prev);
+                                setSwitcherSelected(prev => !prev);
                             }}
                         />
                     </View>

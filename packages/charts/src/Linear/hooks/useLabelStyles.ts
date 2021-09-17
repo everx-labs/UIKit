@@ -1,14 +1,9 @@
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
-import type {
-    LinearChartDimensions,
-    LinearChartControlPoints,
-} from '../../types';
+import type { LinearChartDimensions, LinearChartControlPoints } from '../../types';
 
 export const useLabelStyles = (
     dimensions: Animated.SharedValue<LinearChartDimensions>,
-    controlPoints: Readonly<
-        Animated.SharedValue<LinearChartControlPoints | null>
-    >,
+    controlPoints: Readonly<Animated.SharedValue<LinearChartControlPoints | null>>,
     minimumLabelXCoordinate: Animated.SharedValue<number>,
     maximumLabelXCoordinate: Animated.SharedValue<number>,
     startLabelYCoordinate: Animated.SharedValue<number>,

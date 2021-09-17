@@ -56,29 +56,21 @@ type LabelProps = {
     focused: boolean;
 };
 
-const useRoutes = (
-    pages: React.ReactElement<UIPagerViewPageProps>[],
-): Route[] => {
+const useRoutes = (pages: React.ReactElement<UIPagerViewPageProps>[]): Route[] => {
     return React.useMemo((): Route[] => {
-        return pages.map(
-            (child: React.ReactElement<UIPagerViewPageProps>): Route => {
-                return {
-                    key: child.props.id,
-                    title: child.props.title,
-                };
-            },
-        );
+        return pages.map((child: React.ReactElement<UIPagerViewPageProps>): Route => {
+            return {
+                key: child.props.id,
+                title: child.props.title,
+            };
+        });
     }, [pages]);
 };
 
-const getPages = (
-    children: React.ReactNode,
-): React.ReactElement<UIPagerViewPageProps>[] => {
-    const childElements: React.ReactElement<
-        UIPagerViewPageProps
-    >[] = React.Children.toArray(children).reduce<
-        React.ReactElement<UIPagerViewPageProps>[]
-    >(
+const getPages = (children: React.ReactNode): React.ReactElement<UIPagerViewPageProps>[] => {
+    const childElements: React.ReactElement<UIPagerViewPageProps>[] = React.Children.toArray(
+        children,
+    ).reduce<React.ReactElement<UIPagerViewPageProps>[]>(
         (
             acc: React.ReactElement<UIPagerViewPageProps>[],
             child: React.ReactNode,
@@ -100,11 +92,7 @@ const getPages = (
                     `UIPagerViewContainer can only contain 'UIPagerView.Page' components as its direct children (found ${
                         // eslint-disable-next-line no-nested-ternary
                         React.isValidElement(child)
-                            ? `${
-                                  typeof child.type === 'string'
-                                      ? child.type
-                                      : child.type?.name
-                              }`
+                            ? `${typeof child.type === 'string' ? child.type : child.type?.name}`
                             : typeof child === 'object'
                             ? JSON.stringify(child)
                             : `'${String(child)}'`
@@ -120,26 +108,17 @@ const getPages = (
 };
 
 const usePages = (
-    children:
-        | React.ReactElement<UIPagerViewPageProps>
-        | React.ReactElement<UIPagerViewPageProps>[],
+    children: React.ReactElement<UIPagerViewPageProps> | React.ReactElement<UIPagerViewPageProps>[],
 ): React.ReactElement<UIPagerViewPageProps>[] => {
     return React.useMemo((): React.ReactElement<UIPagerViewPageProps>[] => {
-        const pages: React.ReactElement<UIPagerViewPageProps>[] = getPages(
-            children,
-        );
+        const pages: React.ReactElement<UIPagerViewPageProps>[] = getPages(children);
         return pages;
     }, [children]);
 };
 
-const getSceneList = (
-    pages: React.ReactElement<UIPagerViewPageProps>[],
-): SceneList => {
+const getSceneList = (pages: React.ReactElement<UIPagerViewPageProps>[]): SceneList => {
     return pages.reduce(
-        (
-            sceneMap: SceneList,
-            page: React.ReactElement<UIPagerViewPageProps>,
-        ): SceneList => {
+        (sceneMap: SceneList, page: React.ReactElement<UIPagerViewPageProps>): SceneList => {
             const updatedSceneMap: SceneList = sceneMap;
             updatedSceneMap[page.props.id] = page.props.component;
             return updatedSceneMap;
@@ -148,9 +127,7 @@ const getSceneList = (
     );
 };
 
-const useScene = (
-    pages: React.ReactElement<UIPagerViewPageProps>[],
-): SceneComponent => {
+const useScene = (pages: React.ReactElement<UIPagerViewPageProps>[]): SceneComponent => {
     return React.useMemo((): SceneComponent => {
         return SceneMap(getSceneList(pages));
     }, [pages]);
@@ -169,35 +146,33 @@ const getLabelColor = (
     return UILabelColors.TextSecondary;
 };
 
-const renderLabel = (pages: React.ReactElement<UIPagerViewPageProps>[]) => (
-    props: LabelProps,
-): React.ReactElement<typeof UILabel> | null => {
-    const currentPage:
-        | React.ReactElement<UIPagerViewPageProps>
-        | undefined = pages.find(
-        (page: React.ReactElement<UIPagerViewPageProps>): boolean =>
-            page.props.id === props.route.key,
-    );
+const renderLabel =
+    (pages: React.ReactElement<UIPagerViewPageProps>[]) =>
+    (props: LabelProps): React.ReactElement<typeof UILabel> | null => {
+        const currentPage: React.ReactElement<UIPagerViewPageProps> | undefined = pages.find(
+            (page: React.ReactElement<UIPagerViewPageProps>): boolean =>
+                page.props.id === props.route.key,
+        );
 
-    if (!currentPage) {
-        return null;
-    }
+        if (!currentPage) {
+            return null;
+        }
 
-    const color: ColorVariants = getLabelColor(props.focused, currentPage);
+        const color: ColorVariants = getLabelColor(props.focused, currentPage);
 
-    return (
-        <UILabel
-            testID={`uiPagerView_label-${currentPage.props.testID}`}
-            color={color}
-            role={UILabelRoles.ActionCallout}
-            style={styles.labelStyle}
-            numberOfLines={1}
-            ellipsizeMode="tail"
-        >
-            {props.route.title}
-        </UILabel>
-    );
-};
+        return (
+            <UILabel
+                testID={`uiPagerView_label-${currentPage.props.testID}`}
+                color={color}
+                role={UILabelRoles.ActionCallout}
+                style={styles.labelStyle}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+            >
+                {props.route.title}
+            </UILabel>
+        );
+    };
 
 const renderFixedTabBar = (
     props: TabBarProps,
@@ -305,9 +280,7 @@ export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
         width: 0,
         height: 0,
     });
-    const [currentIndex, setCurrentIndex] = React.useState<number>(
-        initialPageIndex,
-    );
+    const [currentIndex, setCurrentIndex] = React.useState<number>(initialPageIndex);
 
     const onLayout: (event: LayoutChangeEvent) => void = React.useCallback(
         (event: LayoutChangeEvent): void => {
@@ -322,9 +295,7 @@ export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
         }
     }, [currentIndex, onPageIndexChange]);
 
-    const pages: React.ReactElement<UIPagerViewPageProps>[] = usePages(
-        children,
-    );
+    const pages: React.ReactElement<UIPagerViewPageProps>[] = usePages(children);
 
     const routes: Route[] = useRoutes(pages);
 
@@ -338,9 +309,7 @@ export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
     );
 
     if (pages.length === 0) {
-        console.error(
-            `UIPagerViewContainer: children must have at least 1 item`,
-        );
+        console.error(`UIPagerViewContainer: children must have at least 1 item`);
         return null;
     }
 

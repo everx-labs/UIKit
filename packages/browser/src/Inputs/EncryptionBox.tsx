@@ -22,10 +22,7 @@ type EncryptionBoxAction = {
     type: 'OPEN_KEY_INPUT' | 'CLOSE_KEY_INPUT' | 'OPEN_PICKER' | 'CLOSE_PICKER';
 };
 
-function encryptionBoxReducer(
-    state: EncryptionBoxInternalState,
-    action: EncryptionBoxAction,
-) {
+function encryptionBoxReducer(state: EncryptionBoxInternalState, action: EncryptionBoxAction) {
     if (action.type === 'OPEN_KEY_INPUT') {
         return {
             ...state,
@@ -70,10 +67,7 @@ export function EncryptionBox({ onLayout, ...message }: EncryptionBoxMessage) {
                 <BubbleSimplePlainText
                     type={ChatMessageType.PlainText}
                     key="encryption-box-bubble-prompt"
-                    text={
-                        message.prompt ||
-                        uiLocalized.Browser.EncryptionBox.Prompt
-                    }
+                    text={message.prompt || uiLocalized.Browser.EncryptionBox.Prompt}
                     status={MessageStatus.Received}
                     firstFromChain
                     lastFromChain
@@ -85,9 +79,7 @@ export function EncryptionBox({ onLayout, ...message }: EncryptionBoxMessage) {
                         text={message.externalState.chosenOption}
                         status={MessageStatus.Sent}
                         firstFromChain
-                        lastFromChain={
-                            message.externalState.encryptionBox == null
-                        }
+                        lastFromChain={message.externalState.encryptionBox == null}
                     />
                 ) : null}
                 {message.externalState.encryptionBox != null ? (
@@ -96,9 +88,7 @@ export function EncryptionBox({ onLayout, ...message }: EncryptionBoxMessage) {
                         key="encryption-box-bubble-address-answer"
                         text={message.externalState.encryptionBox.title}
                         status={MessageStatus.Sent}
-                        firstFromChain={
-                            message.externalState.chosenOption == null
-                        }
+                        firstFromChain={message.externalState.chosenOption == null}
                         lastFromChain
                     />
                 ) : null}
@@ -111,9 +101,7 @@ export function EncryptionBox({ onLayout, ...message }: EncryptionBoxMessage) {
             <BubbleSimplePlainText
                 type={ChatMessageType.PlainText}
                 key="encryption-box-bubble-prompt"
-                text={
-                    message.prompt || uiLocalized.Browser.EncryptionBox.Prompt
-                }
+                text={message.prompt || uiLocalized.Browser.EncryptionBox.Prompt}
                 status={MessageStatus.Received}
                 firstFromChain
                 lastFromChain
@@ -170,10 +158,9 @@ export function EncryptionBox({ onLayout, ...message }: EncryptionBoxMessage) {
                         type: 'OPEN_KEY_INPUT',
                     });
                 }}
-                onSelect={(encryptionBox) => {
+                onSelect={encryptionBox => {
                     message.onSelect({
-                        chosenOption:
-                            uiLocalized.Browser.EncryptionBox.PickCipher,
+                        chosenOption: uiLocalized.Browser.EncryptionBox.PickCipher,
                         encryptionBox,
                     });
                     dispatch({
@@ -195,8 +182,7 @@ export function EncryptionBox({ onLayout, ...message }: EncryptionBoxMessage) {
                     const encryptionBox = await message.onAddEncryptionBox(key);
 
                     message.onSelect({
-                        chosenOption:
-                            uiLocalized.Browser.EncryptionBox.EnterKey,
+                        chosenOption: uiLocalized.Browser.EncryptionBox.EnterKey,
                         encryptionBox,
                     });
 

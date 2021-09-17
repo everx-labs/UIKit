@@ -15,7 +15,11 @@ type UIBrowserProps = {
 export function UIBrowser({ messages, onPressUrl, onLongPressText }: UIBrowserProps) {
     return (
         <PortalManager id="browser" renderOnlyLastPortal>
-            <UIBrowserList messages={messages} onPressUrl={onPressUrl} onLongPressText={onLongPressText} />
+            <UIBrowserList
+                messages={messages}
+                onPressUrl={onPressUrl}
+                onLongPressText={onLongPressText}
+            />
         </PortalManager>
     );
 }

@@ -1,10 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import {
-    UIBoxButton,
-    UIBoxButtonType,
-    UIBoxButtonVariant,
-} from '@tonlabs/uikit.hydrogen';
+import { UIBoxButton, UIBoxButtonType, UIBoxButtonVariant } from '@tonlabs/uikit.hydrogen';
 import { UIAlertViewActionProps, UIAlertViewActionType } from './types';
 
 const getActionVariant = (type: UIAlertViewActionType): UIBoxButtonVariant => {
@@ -38,12 +34,7 @@ export const UIAlertViewAction: React.FC<UIAlertViewActionProps> = ({
     const boxButtonType: UIBoxButtonType = getBoxButtonType(type);
     return (
         <View key={title} style={styles.action}>
-            <UIBoxButton
-                type={boxButtonType}
-                variant={variant}
-                title={title}
-                onPress={onPress}
-            />
+            <UIBoxButton type={boxButtonType} variant={variant} title={title} onPress={onPress} />
         </View>
     );
 };

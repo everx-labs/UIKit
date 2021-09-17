@@ -2,12 +2,7 @@ import type { DateFormatInfo, NumberFormatInfo } from '../types';
 
 export function getNumberFormatInfo(): NumberFormatInfo {
     const formatParser = /111(\D*)222(\D*)333(\D*)444/g;
-    const parts = formatParser.exec((111222333.444).toLocaleString()) || [
-        '',
-        '',
-        '',
-        '.',
-    ];
+    const parts = formatParser.exec((111222333.444).toLocaleString()) || ['', '', '', '.'];
     return {
         grouping: parts[1],
         thousands: parts[2],
@@ -44,7 +39,7 @@ export function getDateFormatInfo(): DateFormatInfo {
 
     const shortDateNumbers: number[] = [];
     const splitDate = localeDate.split(separator);
-    splitDate.forEach((component) => shortDateNumbers.push(Number(component)));
+    splitDate.forEach(component => shortDateNumbers.push(Number(component)));
 
     if (shortDateNumbers?.length === 3) {
         components[shortDateNumbers.indexOf(d)] = 'day';

@@ -23,13 +23,9 @@ type ModalControllerProps = {
     navigation: NavigationProp<ParamListBase>;
 };
 
-export const NestedInModalContext = React.createContext<(() => void) | null>(
-    null,
-);
+export const NestedInModalContext = React.createContext<(() => void) | null>(null);
 
-export const NestedInDismissibleModalContext = React.createContext<boolean>(
-    false,
-);
+export const NestedInDismissibleModalContext = React.createContext<boolean>(false);
 
 const ModalScreen = ({
     route,
@@ -96,34 +92,24 @@ export class ModalController extends React.Component<ModalControllerProps> {
     }
 
     render() {
-        return this.props.state.routes.map<React.ReactNode>((route) => {
+        return this.props.state.routes.map<React.ReactNode>(route => {
             const descriptor = this.props.descriptors[route.key];
 
             if (descriptor == null) {
                 return null;
             }
 
-            return (
-                <ModalScreen
-                    key={route.key}
-                    route={route}
-                    descriptor={descriptor}
-                />
-            );
+            return <ModalScreen key={route.key} route={route} descriptor={descriptor} />;
         });
     }
 }
 
 type ModalSceneInstance = {
-    show: <Params = { [key: string]: any }>(
-        params: Params,
-    ) => void | Promise<void>;
+    show: <Params = { [key: string]: any }>(params: Params) => void | Promise<void>;
     hide: () => void;
 };
 
-type ModalSceneWrapperProps<
-    ParamList extends ParamListBase = { params: { visible: boolean } }
-> = {
+type ModalSceneWrapperProps<ParamList extends ParamListBase = { params: { visible: boolean } }> = {
     ref: React.Ref<ModalSceneInstance>;
     navigation: NavigationProp<ParamList>;
     route: RouteProp<ParamList, keyof ParamList>;
@@ -207,21 +193,14 @@ export const withModalSceneWrapper = (
 };
 
 const ModalNavigator = ({ children }: { children: React.ReactNode }) => {
-    const { state, navigation, descriptors } = useNavigationBuilder(
-        ModalRouter,
-        {
-            children,
-            childrenForConfigs: children,
-        },
-    );
+    const { state, navigation, descriptors } = useNavigationBuilder(ModalRouter, {
+        children,
+        childrenForConfigs: children,
+    });
 
     return (
         <NavigationHelpersContext.Provider value={navigation}>
-            <ModalController
-                descriptors={descriptors}
-                state={state}
-                navigation={navigation}
-            />
+            <ModalController descriptors={descriptors} state={state} navigation={navigation} />
         </NavigationHelpersContext.Provider>
     );
 };

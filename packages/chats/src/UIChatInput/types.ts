@@ -1,9 +1,4 @@
-import type {
-    StyleProp,
-    ViewStyle,
-    TextStyle,
-    ImageSourcePropType,
-} from 'react-native';
+import type { StyleProp, ViewStyle, TextStyle, ImageSourcePropType } from 'react-native';
 
 // TODO: should be in UIActionSheet
 // But since it not in TS yet leave it here

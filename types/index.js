@@ -5,6 +5,6 @@ export type PositionObject = {
     bottom?: number,
     left?: number,
     right?: number,
-}
+};
 
 export type EventProps = { [string]: () => void };

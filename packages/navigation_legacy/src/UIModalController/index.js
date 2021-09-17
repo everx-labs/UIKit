@@ -18,18 +18,10 @@ import {
     State as RNGHState,
 } from 'react-native-gesture-handler';
 
-import {
-    UIConstant,
-    UIDevice,
-    UIFunction,
-    UIStyle,
-} from '@tonlabs/uikit.core';
+import { UIConstant, UIDevice, UIFunction, UIStyle } from '@tonlabs/uikit.core';
 import type { SafeAreaInsets } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import {
-    UIBackgroundView,
-    UIBackgroundViewColors,
-} from '@tonlabs/uikit.hydrogen';
+import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
 import {
     NestedInDismissibleModalContext,
     useHasScroll,
@@ -78,11 +70,11 @@ export type ModalControllerState = ControllerState & {
 export type ModalControllerShowArgs =
     | ?boolean
     | {
-    open?: boolean,
-    onCancel?: () => void,
-    onSubmit?: () => void,
-    onSelect?: any => void,
-};
+          open?: boolean,
+          onCancel?: () => void,
+          onSubmit?: () => void,
+          onSelect?: any => void,
+      };
 
 const styles = StyleSheet.create({
     containerCentered: {
@@ -235,9 +227,7 @@ function ModalControllerContainer({
                             ]}
                         >
                             <View style={UIStyle.common.flex()}>
-                                <ScrollableContext.Provider
-                                    value={scrollableContextValue}
-                                >
+                                <ScrollableContext.Provider value={scrollableContextValue}>
                                     {children}
                                 </ScrollableContext.Provider>
                             </View>
@@ -252,7 +242,7 @@ function ModalControllerContainer({
 
 export default class UIModalController<Props, State> extends UIController<
     ModalControllerProps & Props,
-    ModalControllerState & State
+    ModalControllerState & State,
 > {
     fullscreen: boolean;
     dismissible: boolean;
@@ -314,10 +304,7 @@ export default class UIModalController<Props, State> extends UIController<
             onWillAppear();
         }
 
-        BackHandler.addEventListener(
-            HARDWARE_BACK_PRESS_EVENT,
-            this.hardwareBackEventHandler,
-        );
+        BackHandler.addEventListener(HARDWARE_BACK_PRESS_EVENT, this.hardwareBackEventHandler);
     }
 
     onDidAppear() {
@@ -374,7 +361,8 @@ export default class UIModalController<Props, State> extends UIController<
             // For that purpose we should have ExitAndroid native modules installed in the app.
             if (NativeModules.ExitAndroid) {
                 NativeModules.ExitAndroid.sendToBackApp();
-            } else { // If there is no any, just exit the app.
+            } else {
+                // If there is no any, just exit the app.
                 BackHandler.exitApp();
             }
         }
@@ -403,9 +391,7 @@ export default class UIModalController<Props, State> extends UIController<
             ({ width, height } = Dimensions.get('window'));
         }
 
-        const outerNavBarHeight = this.dismissible
-            ? UIDevice.navigationBarHeight()
-            : 0; // navigation bar height above the modal controller
+        const outerNavBarHeight = this.dismissible ? UIDevice.navigationBarHeight() : 0; // navigation bar height above the modal controller
 
         let containerPaddingTop = outerNavBarHeight;
 
@@ -717,8 +703,11 @@ export default class UIModalController<Props, State> extends UIController<
     onPanHandlerStateChange = ({
         nativeEvent: { state, translationY },
     }: RNGHEvent<{ state: RNGHState, translationY: number }>) => {
-        if ((state === RNGHState.END || state === RNGHState.CANCELLED)
-            && this.dismissible && this.shouldSwipeToDismiss()) {
+        if (
+            (state === RNGHState.END || state === RNGHState.CANCELLED) &&
+            this.dismissible &&
+            this.shouldSwipeToDismiss()
+        ) {
             this.onReleaseSwipe(translationY);
         }
     };
@@ -730,11 +719,7 @@ export default class UIModalController<Props, State> extends UIController<
     };
 
     renderContainer() {
-        const {
-            containerStyle,
-            contentHeight,
-            dialogStyle,
-        } = this.getDialogStyle();
+        const { containerStyle, contentHeight, dialogStyle } = this.getDialogStyle();
 
         return (
             <ModalControllerContainer
@@ -745,9 +730,7 @@ export default class UIModalController<Props, State> extends UIController<
                 dYDependentOpacity={this.getDYDependentOpacity()}
                 dismissible={this.dismissible}
                 shouldSwipeToDismiss={this.shouldSwipeToDismiss()}
-                adjustKeyboardInsetDynamically={
-                    this.adjustKeyboardInsetDynamically
-                }
+                adjustKeyboardInsetDynamically={this.adjustKeyboardInsetDynamically}
                 onTapHandlerStateChange={this.onTapHandlerStateChange}
                 onPanHandlerStateChange={this.onPanHandlerStateChange}
                 onPan={this.onPan}

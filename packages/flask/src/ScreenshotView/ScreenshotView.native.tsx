@@ -3,10 +3,10 @@ import ViewShot from 'react-native-view-shot';
 import { getScreenshot } from './getScreenshot';
 import type { QRCodeRef, ScreenshotViewProps } from '../types';
 
-export const ScreenshotViewImpl: React.ForwardRefRenderFunction<
-    QRCodeRef,
-    ScreenshotViewProps
-> = (props: ScreenshotViewProps, ref) => {
+export const ScreenshotViewImpl: React.ForwardRefRenderFunction<QRCodeRef, ScreenshotViewProps> = (
+    props: ScreenshotViewProps,
+    ref,
+) => {
     const screenshotRef = React.useRef<ViewShot | null>(null);
 
     React.useImperativeHandle(
@@ -20,10 +20,7 @@ export const ScreenshotViewImpl: React.ForwardRefRenderFunction<
     );
 
     return (
-        <ViewShot
-            ref={screenshotRef}
-            options={{ format: 'png', result: 'base64' }}
-        >
+        <ViewShot ref={screenshotRef} options={{ format: 'png', result: 'base64' }}>
             {props.children}
         </ViewShot>
     );

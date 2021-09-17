@@ -35,12 +35,14 @@ type MakeStyles = <T extends Record<string, unknown>>(
  * @param styles Can be a style `object` or a `function` that returns a style object
  * @returns A hook that accepts arguments that it passes as parameters to the `styles` function
  */
-export const makeStyles: MakeStyles = (styles) => (...args) => {
-    return React.useMemo(() => {
-        if (typeof styles === 'function') {
-            return styles(...args);
-        }
-        return styles;
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [...args]);
-};
+export const makeStyles: MakeStyles =
+    styles =>
+    (...args) => {
+        return React.useMemo(() => {
+            if (typeof styles === 'function') {
+                return styles(...args);
+            }
+            return styles;
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [...args]);
+    };

@@ -6,4 +6,3 @@ test('should render correctly', () => {
     const { baseElement } = render(<UIButton />);
     expect(baseElement).toMatchSnapshot();
 });
-

@@ -55,9 +55,7 @@ export const UILoadMoreButton: React.FunctionComponent<Props> = ({
             <View
                 style={[
                     styles.wrapper,
-                    UIStyle.color.getBackgroundColorStyle(
-                        theme[ColorVariants.BackgroundTertiary],
-                    ),
+                    UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.BackgroundTertiary]),
                 ]}
             >
                 {label && (

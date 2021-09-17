@@ -7,8 +7,8 @@ import { Typography, TypographyVariants } from './Typography';
 export type OnHeightChange = (height: number) => void;
 
 const textViewHeight =
-    StyleSheet.flatten(Typography[TypographyVariants.ParagraphText])
-        .lineHeight ?? UIConstant.smallCellHeight;
+    StyleSheet.flatten(Typography[TypographyVariants.ParagraphText]).lineHeight ??
+    UIConstant.smallCellHeight;
 
 export function calculateWebInputHeight(elem: HTMLTextAreaElement) {
     // To get real height of a textarea
@@ -31,9 +31,7 @@ export function useAutogrowTextView(
     onHeightChange?: OnHeightChange,
     constrainedNumberOfLines?: number,
 ) {
-    const [inputHeight, setInputHeight] = React.useState<number>(
-        textViewHeight,
-    );
+    const [inputHeight, setInputHeight] = React.useState<number>(textViewHeight);
 
     const onContentSizeChange = React.useCallback(
         (event: any) => {
@@ -72,7 +70,7 @@ export function useAutogrowTextView(
         (_event: any) => {
             if (ref && 'current' in ref && ref.current) {
                 // eslint-disable-next-line no-param-reassign
-                const elem = (ref.current as unknown) as HTMLTextAreaElement;
+                const elem = ref.current as unknown as HTMLTextAreaElement;
                 const height = calculateWebInputHeight(elem);
 
                 onContentSizeChange({
@@ -100,7 +98,7 @@ export function useAutogrowTextView(
 
         if (Platform.OS === 'web' && ref && 'current' in ref && ref.current) {
             // eslint-disable-next-line no-param-reassign
-            const elem = (ref.current as unknown) as HTMLTextAreaElement;
+            const elem = ref.current as unknown as HTMLTextAreaElement;
             elem.style.height = `${textViewHeight}px`;
         }
     }, [ref]);
@@ -118,9 +116,8 @@ export function useAutogrowTextView(
             ...(constrainedNumberOfLines
                 ? {
                       maxHeight:
-                          (StyleSheet.flatten(
-                              Typography[TypographyVariants.ParagraphText],
-                          ).lineHeight ?? 0) * constrainedNumberOfLines,
+                          (StyleSheet.flatten(Typography[TypographyVariants.ParagraphText])
+                              .lineHeight ?? 0) * constrainedNumberOfLines,
                   }
                 : null),
             ...Platform.select({

@@ -10,7 +10,8 @@ import UIController from '../UIController';
 const styles = StyleSheet.create({
     // $FlowExpectedError
     scrollDisabled: Platform.select({
-        web: { // this style does not work on mobile
+        web: {
+            // this style does not work on mobile
             overflowX: 'hidden',
             overflowY: 'hidden',
             touchAction: 'none',
@@ -26,7 +27,7 @@ type ControllerState = {
 export type ContentOffset = {
     x: number,
     y: number,
-}
+};
 
 export type ContentSize = {
     width: number,
@@ -39,8 +40,10 @@ type NavigationProps = {
 
 let staticNarrow;
 
-export default class UIScreen<Props, State>
-    extends UIController<Props & NavigationProps, any & ControllerState> {
+export default class UIScreen<Props, State> extends UIController<
+    Props & NavigationProps,
+    any & ControllerState,
+> {
     scrollView: ?React$ElementRef<*>;
     listenScrollOffset: boolean;
 
@@ -198,13 +201,12 @@ export default class UIScreen<Props, State>
     render() {
         const scrollStyle = this.isScrollDisabled() ? styles.scrollDisabled : null;
         return (
-            <View
-                style={UIStyle.flex.x1()}
-                onLayout={this.onScreenLayoutDefault}
-            >
+            <View style={UIStyle.flex.x1()} onLayout={this.onScreenLayoutDefault}>
                 {this.renderTopContent()}
                 <ScrollView
-                    ref={(component) => { this.scrollView = component; }}
+                    ref={component => {
+                        this.scrollView = component;
+                    }}
                     style={[UIStyle.flex.x1(), scrollStyle]}
                     contentContainerStyle={this.getContentContainerStyle()}
                     scrollEventThrottle={UIConstant.maxScrollEventThrottle()}

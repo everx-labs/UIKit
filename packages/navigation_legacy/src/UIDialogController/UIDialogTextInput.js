@@ -36,7 +36,7 @@ export default class UIDialogTextInput extends UIComponent {
     textInputRef = React.createRef();
 
     // Events
-    onChangeText = (text) => {
+    onChangeText = text => {
         const { beginningTag, tagSeparator, onChangeText } = this.props;
         let value = text;
         if (beginningTag && value.startsWith(beginningTag)) {
@@ -96,9 +96,7 @@ export default class UIDialogTextInput extends UIComponent {
     }
 
     renderBeginningTag() {
-        const {
-            value, beginningTag, tagSeparator, textStyle,
-        } = this.props;
+        const { value, beginningTag, tagSeparator, textStyle } = this.props;
         if (value.length || !beginningTag) {
             return null;
         }
@@ -182,13 +180,7 @@ export default class UIDialogTextInput extends UIComponent {
             );
         }
         return (
-            <View
-                style={[
-                    styles.inputView,
-                    style,
-                    needBorderBottom ? UIStyle.borderBottom : null,
-                ]}
-            >
+            <View style={[styles.inputView, style, needBorderBottom ? UIStyle.borderBottom : null]}>
                 {inputComponent}
             </View>
         );

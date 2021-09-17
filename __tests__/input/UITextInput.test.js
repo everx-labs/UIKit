@@ -4,7 +4,7 @@ import { render, fireEvent } from '@testing-library/react-native';
 
 const Component = () => {
     const [name, setUser] = React.useState('');
-    return (<UITextInput value={name} onChangeText={setUser} />);
+    return <UITextInput value={name} onChangeText={setUser} />;
 };
 
 const testData = [
@@ -21,4 +21,3 @@ test.each(testData)('Should %s', (testName, text) => {
     expect(input.props.value).toBe(text);
     expect(baseElement).toMatchSnapshot();
 });
-

@@ -33,9 +33,7 @@ const style: any = Platform.select({ web: { overflowY: 'overlay' } });
 // Note: `DOMMouseScroll` is commonly used by Firefox!
 const wheelEvent =
     // @ts-ignore (can't find onmousewheel on document)
-    global.document?.onmousewheel !== undefined
-        ? 'mousewheel'
-        : 'DOMMouseScroll';
+    global.document?.onmousewheel !== undefined ? 'mousewheel' : 'DOMMouseScroll';
 
 type WheelEvent = Event & {
     deltaY?: number;
@@ -66,12 +64,7 @@ function useChatListWheelHandler(
     const handler = React.useCallback(
         (e: WheelEvent) => {
             const scroll = document.getElementById(nativeID);
-            if (
-                scroll == null ||
-                e.target == null ||
-                ref == null ||
-                !('current' in ref)
-            ) {
+            if (scroll == null || e.target == null || ref == null || !('current' in ref)) {
                 return;
             }
             // @ts-ignore (contains type doesn't match e.target one)
@@ -81,8 +74,7 @@ function useChatListWheelHandler(
                 // Note: e.deltaY is not present for `DOMMouseScroll` event (used by Firefox)
                 const factor = e.deltaY ? 1 : 100; // the factor value is chosen heuristically
                 const delta = e.deltaY || e.detail || 0; // Note. e.detail is used for `DOMMouseScroll`
-                const y =
-                    (listContentOffsetRef.current?.y ?? 0) - delta * factor;
+                const y = (listContentOffsetRef.current?.y ?? 0) - delta * factor;
                 if (ref.current) {
                     const scrollResponder = ref.current.getScrollResponder();
                     if (scrollResponder) {
@@ -124,19 +116,13 @@ function useLayoutHelpers<ItemT extends BubbleBaseT>(
                 return cellsHeight.current.get(rowData.key) || 0;
             },
             getSectionFooterHeight: () => {
-                return (
-                    UIConstant.smallCellHeight() +
-                    UIConstant.contentOffset() * 2
-                );
+                return UIConstant.smallCellHeight() + UIConstant.contentOffset() * 2;
             },
             listFooterHeight: () => {
                 if (!canLoadMore) {
                     return 0;
                 }
-                return (
-                    UIConstant.smallCellHeight() +
-                    UIConstant.contentOffset() * 2
-                );
+                return UIConstant.smallCellHeight() + UIConstant.contentOffset() * 2;
             },
         }),
         [canLoadMore, cellsHeight, getItemLayoutFabric],
@@ -152,8 +138,7 @@ function useLayoutHelpers<ItemT extends BubbleBaseT>(
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const renderItem = React.useCallback(
-        ({ item }: { item: ItemT }) =>
-            renderBubble(item, (e) => onLayoutCell(item.key, e)),
+        ({ item }: { item: ItemT }) => renderBubble(item, e => onLayoutCell(item.key, e)),
         [onLayoutCell, renderBubble],
     );
 
@@ -175,16 +160,11 @@ export function useHasScroll() {
     const scrollViewInnerHeight = React.useRef(0);
 
     const compareHeights = React.useCallback(() => {
-        if (
-            scrollViewInnerHeight.current === 0 ||
-            scrollViewOutterHeight.current === 0
-        ) {
+        if (scrollViewInnerHeight.current === 0 || scrollViewOutterHeight.current === 0) {
             return;
         }
 
-        setHasScroll(
-            scrollViewInnerHeight.current > scrollViewOutterHeight.current,
-        );
+        setHasScroll(scrollViewInnerHeight.current > scrollViewOutterHeight.current);
     }, [setHasScroll]);
 
     const onLayout = React.useCallback(
@@ -218,10 +198,7 @@ export function useHasScroll() {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function useContentInset(
-    ref: React.RefObject<SectionList>,
-    hasScrollOverflow: boolean,
-) {
+function useContentInset(ref: React.RefObject<SectionList>, hasScrollOverflow: boolean) {
     const bottomInset = useSafeAreaInsets().bottom;
     const contentInset = React.useMemo(
         () => ({
@@ -283,9 +260,7 @@ function useLinesAnimation(hasScrollOverflow: React.RefObject<boolean>) {
     const lineStyle = React.useMemo(
         () => [
             styles.border,
-            UIStyle.color.getBackgroundColorStyle(
-                theme[ColorVariants.LineSecondary],
-            ),
+            UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.LineSecondary]),
             {
                 opacity: topOpacity.current,
             },
@@ -307,11 +282,9 @@ function useLinesAnimation(hasScrollOverflow: React.RefObject<boolean>) {
             return;
         }
 
-        const hasScrollShift =
-            listContentOffset.current && listContentOffset.current.y > 1;
+        const hasScrollShift = listContentOffset.current && listContentOffset.current.y > 1;
 
-        const shouldLinesBeShown =
-            hasScrollShift || hasScrollOverflow.current || false;
+        const shouldLinesBeShown = hasScrollShift || hasScrollOverflow.current || false;
 
         if (shouldLinesBeShown === linesIsShown.current) {
             return;
@@ -381,13 +354,12 @@ const keyExtractor = <ItemT extends BubbleBaseT>(item: ItemT) => {
     return item.key;
 };
 
-const onScrollToIndexFailed: SectionListProps<any>['onScrollToIndexFailed'] = (
-    info,
-) => console.error('Failed to scroll to index:', info);
+const onScrollToIndexFailed: SectionListProps<any>['onScrollToIndexFailed'] = info =>
+    console.error('Failed to scroll to index:', info);
 
-const renderScrollComponent: SectionListProps<any>['renderScrollComponent'] = (
-    scrollProps,
-) => <ScrollView {...scrollProps} />;
+const renderScrollComponent: SectionListProps<any>['renderScrollComponent'] = scrollProps => (
+    <ScrollView {...scrollProps} />
+);
 
 export type CommonChatListProps<ItemT extends BubbleBaseT> = {
     ref: React.RefObject<any>;
@@ -407,9 +379,7 @@ export type CommonChatListProps<ItemT extends BubbleBaseT> = {
     scrollEventThrottle: number;
     style: StyleProp<ViewStyle>;
     contentContainerStyle: StyleProp<ViewStyle>;
-    onViewableItemsChanged: VirtualizedListProps<
-        ItemT
-    >['onViewableItemsChanged'];
+    onViewableItemsChanged: VirtualizedListProps<ItemT>['onViewableItemsChanged'];
     keyExtractor: VirtualizedListProps<ItemT>['keyExtractor'];
     renderItem: ListRenderItem<ItemT>;
     renderScrollComponent: VirtualizedListProps<ItemT>['renderScrollComponent'];
@@ -435,7 +405,7 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
     canLoadMore = false,
     children,
     onLongPressText,
-    onPressUrl
+    onPressUrl,
 }: UICommonChatListProps<ItemT>) {
     const keyboardDismissProp: ScrollViewProps['keyboardDismissMode'] = React.useMemo(() => {
         if (Platform.OS !== 'ios') {
@@ -484,7 +454,7 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
     const handlers = useCloseKeyboardOnTap();
 
     const onLayout = React.useCallback(
-        (e) => {
+        e => {
             onLayoutMeasureScroll(e);
             onLayoutLines();
         },

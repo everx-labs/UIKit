@@ -22,11 +22,7 @@ class Utils {
         monthNames: string[];
         minute: string;
     };
-    constructor({
-        min,
-        max,
-        mode,
-    }: UIDateTimePickerType & PickerPropsType) {
+    constructor({ min, max, mode }: UIDateTimePickerType & PickerPropsType) {
         this.data = {
             min,
             max,
@@ -59,8 +55,7 @@ class Utils {
         // @ts-expect-error
         date.format(this.config[formatName]);
 
-    getFormattedDate = (date = new Date(), format = 'YYYY/MM/DD') =>
-        dayjs(date).format(format);
+    getFormattedDate = (date = new Date(), format = 'YYYY/MM/DD') => dayjs(date).format(format);
 
     getTime = (time: Date) => this.getDate(time).format(this.config.timeFormat);
 
@@ -83,21 +78,16 @@ class Utils {
         let disabled = false;
         if (min) {
             const lastDayInMonth = date.date(date.daysInMonth());
-            disabled =
-                lastDayInMonth.startOf('hour') < dayjs(min).startOf('hour');
+            disabled = lastDayInMonth.startOf('hour') < dayjs(min).startOf('hour');
         }
         if (max && !disabled) {
             const firstDayInMonth = date.date(1);
-            disabled =
-                firstDayInMonth.startOf('hour') > dayjs(max).startOf('hour');
+            disabled = firstDayInMonth.startOf('hour') > dayjs(max).startOf('hour');
         }
         return disabled;
     };
 
-    checkArrowMonthDisabled = (
-        time: dayjs.ConfigType | undefined,
-        next: any,
-    ) => {
+    checkArrowMonthDisabled = (time: dayjs.ConfigType | undefined, next: any) => {
         const date = dayjs(time);
         return this.checkMonthDisabled(date.add(next ? -1 : 1, 'month'));
     };
@@ -108,10 +98,7 @@ class Utils {
         return next ? year >= y : year <= y;
     };
 
-    checkSelectMonthDisabled = (
-        time: dayjs.ConfigType | undefined,
-        month: number,
-    ) => {
+    checkSelectMonthDisabled = (time: dayjs.ConfigType | undefined, month: number) => {
         const date = dayjs(time);
         const dateWithNewMonth = date.month(month);
         return this.checkMonthDisabled(dateWithNewMonth);
@@ -142,14 +129,10 @@ class Utils {
                 let disabled = false;
                 const thisDay = date.date(n + 1);
                 if (min) {
-                    disabled =
-                        thisDay.startOf('hour') <
-                        this.getDate(min).startOf('hour');
+                    disabled = thisDay.startOf('hour') < this.getDate(min).startOf('hour');
                 }
                 if (max && !disabled) {
-                    disabled =
-                        thisDay.startOf('hour') >
-                        this.getDate(max).startOf('hour');
+                    disabled = thisDay.startOf('hour') > this.getDate(max).startOf('hour');
                 }
                 date = dayjs(time);
                 return {
@@ -162,11 +145,7 @@ class Utils {
         ];
     };
 
-    useMonthAnimation = (
-        activeDate: any,
-        distance: number,
-        onEnd = () => null,
-    ) => {
+    useMonthAnimation = (activeDate: any, distance: number, onEnd = () => null) => {
         /* eslint-disable react-hooks/rules-of-hooks */
         const [lastDate, setLastDate] = useState(activeDate);
         const [changeWay, setChangeWay] = useState(null);
@@ -193,10 +172,7 @@ class Utils {
                 {
                     translateX: monthYearAnimation.interpolate({
                         inputRange: [0, 1],
-                        outputRange: [
-                            0,
-                            changeWay === 'NEXT' ? -distance : distance,
-                        ],
+                        outputRange: [0, changeWay === 'NEXT' ? -distance : distance],
                     }),
                 },
             ],
@@ -208,19 +184,13 @@ class Utils {
                 {
                     translateX: monthYearAnimation.interpolate({
                         inputRange: [0, 1],
-                        outputRange: [
-                            changeWay === 'NEXT' ? distance : -distance,
-                            0,
-                        ],
+                        outputRange: [changeWay === 'NEXT' ? distance : -distance, 0],
                     }),
                 },
             ],
         };
 
-        return [
-            { lastDate, shownAnimation, hiddenAnimation },
-            changeMonthAnimation,
-        ];
+        return [{ lastDate, shownAnimation, hiddenAnimation }, changeMonthAnimation];
     };
 
     validateTimeMinMax = (
@@ -236,10 +206,7 @@ class Utils {
             const minHour = min.getHours();
             const minMinute = min.getMinutes();
 
-            if (
-                (newHour === minHour && newMinute < minMinute) ||
-                newHour < minHour
-            ) {
+            if ((newHour === minHour && newMinute < minMinute) || newHour < minHour) {
                 return false;
             }
         }
@@ -247,10 +214,7 @@ class Utils {
             const maxHour = max.getHours();
             const maxMinute = max.getMinutes();
 
-            if (
-                (newHour === maxHour && newMinute > maxMinute) ||
-                newHour > maxHour
-            ) {
+            if ((newHour === maxHour && newMinute > maxMinute) || newHour > maxHour) {
                 return false;
             }
         }
@@ -263,20 +227,12 @@ class Utils {
         const currentTime = new Date(current).getTime();
         let newTime = current;
         if (min) {
-            const minTime = new Date(current).setHours(
-                min.getHours(),
-                min.getMinutes(),
-                0,
-            );
+            const minTime = new Date(current).setHours(min.getHours(), min.getMinutes(), 0);
             if (currentTime < minTime) {
                 newTime = min;
             }
         } else if (max) {
-            const maxTime = new Date(current).setHours(
-                max.getHours(),
-                max.getMinutes(),
-                0,
-            );
+            const maxTime = new Date(current).setHours(max.getHours(), max.getMinutes(), 0);
             if (currentTime > maxTime) {
                 newTime = max;
             }
@@ -289,10 +245,8 @@ class Utils {
         if (value) {
             const hoursValue = new Date(value).getHours();
             const minutesValue = new Date(value).getMinutes();
-            const formattedHours =
-                hoursValue < 10 ? `0${hoursValue}` : hoursValue;
-            const formattedMinutes =
-                minutesValue < 10 ? `0${minutesValue}` : minutesValue;
+            const formattedHours = hoursValue < 10 ? `0${hoursValue}` : hoursValue;
+            const formattedMinutes = minutesValue < 10 ? `0${minutesValue}` : minutesValue;
 
             return `${formattedHours}:${formattedMinutes}`;
         }

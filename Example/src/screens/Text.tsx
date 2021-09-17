@@ -20,9 +20,8 @@ export const TextScreen = () => (
                     color={UILabelColors.TextPrimary}
                     role={UILabelRoles.ParagraphText}
                 >
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua.
                 </UILabel>
             </View>
             <View

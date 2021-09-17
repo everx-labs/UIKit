@@ -1,11 +1,6 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import {
-    Portal,
-    ColorVariants,
-    useTheme,
-    makeStyles,
-} from '@tonlabs/uikit.hydrogen';
+import { Portal, ColorVariants, useTheme, makeStyles } from '@tonlabs/uikit.hydrogen';
 import Animated, {
     interpolate,
     runOnJS,
@@ -67,9 +62,7 @@ const Content: React.FC<ContentProps> = ({
     const displayState = useSharedValue<DisplayState>(DisplayState.HIDDEN);
 
     React.useEffect(() => {
-        const newDisplayState = visible
-            ? DisplayState.VISIBLE
-            : DisplayState.HIDDEN;
+        const newDisplayState = visible ? DisplayState.VISIBLE : DisplayState.HIDDEN;
         if (newDisplayState !== displayState.value) {
             displayState.value = newDisplayState;
         }
@@ -148,9 +141,7 @@ const Content: React.FC<ContentProps> = ({
                 onEnded={onEnded}
                 maxDist={UIConstant.maxSlideDistanceOfTap}
             >
-                <Animated.View
-                    style={[styles.backgroundStyle, backgroundAnimatedStyle]}
-                />
+                <Animated.View style={[styles.backgroundStyle, backgroundAnimatedStyle]} />
             </TapGestureHandler>
 
             <Animated.View
@@ -158,9 +149,7 @@ const Content: React.FC<ContentProps> = ({
                 testID={testID}
                 pointerEvents="box-none"
             >
-                <Animated.View
-                    style={[styles.windowStyles, windowAnimatedStyles]}
-                >
+                <Animated.View style={[styles.windowStyles, windowAnimatedStyles]}>
                     {children}
                 </Animated.View>
             </Animated.View>
@@ -190,9 +179,7 @@ export type AlertBoxProps = {
 export const AlertBox: React.FC<AlertBoxProps> = (props: AlertBoxProps) => {
     const { visible } = props;
     /** It is needed to see how the alert disappears animatedly */
-    const [isComponentVisible, setIsComponentVisible] = React.useState<boolean>(
-        false,
-    );
+    const [isComponentVisible, setIsComponentVisible] = React.useState<boolean>(false);
 
     React.useEffect(() => {
         if (visible && !isComponentVisible) {

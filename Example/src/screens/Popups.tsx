@@ -8,8 +8,7 @@ import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
 export const Popups = () => {
-    const [isUIAlertViewVisible, setIsUIAlertViewVisible] =
-        React.useState(false);
+    const [isUIAlertViewVisible, setIsUIAlertViewVisible] = React.useState(false);
     const getCallback = React.useCallback(
         (message: string) => () => {
             console.log(message);
@@ -55,9 +54,7 @@ export const Popups = () => {
                     <UILinkButton
                         title="Show UIDropdownAlert"
                         onPress={() =>
-                            UIDropdownAlert.showNotification(
-                                'This is a UIDropdownAlert',
-                            )
+                            UIDropdownAlert.showNotification('This is a UIDropdownAlert')
                         }
                     />
                 </View>

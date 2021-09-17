@@ -17,10 +17,7 @@ export type LanguageSimpleValue =
     | string[]
     | string
     | boolean;
-export type LanguageValue<T = LanguageSimpleValue> =
-    | Record<string, T>
-    | Record<string, T>[]
-    | T;
+export type LanguageValue<T = LanguageSimpleValue> = Record<string, T> | Record<string, T>[] | T;
 export type LanguageItem<T = LanguageValue> = Record<string, T>;
 
 export interface LanguageOptions {
@@ -71,7 +68,7 @@ export type StringLocaleInfo = {
 
 export type LocalizationServiceMethods = Omit<LocalizedStringsMethods, 'formatString'> & {
     formatString(str: string, ...values: string[]): string;
-}
+};
 
 export type LanguageInfo = {
     name: string;

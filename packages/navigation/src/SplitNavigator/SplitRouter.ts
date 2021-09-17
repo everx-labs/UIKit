@@ -1,11 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { nanoid } from 'nanoid/non-secure';
-import {
-    BaseRouter,
-    StackRouter,
-    TabRouter,
-    StackActions,
-} from '@react-navigation/native';
+import { BaseRouter, StackRouter, TabRouter, StackActions } from '@react-navigation/native';
 import type { DefaultRouterOptions } from '@react-navigation/native';
 import type {
     CommonNavigationAction,
@@ -31,10 +26,7 @@ type SplitActionType =
       };
 
 export const SplitActions = {
-    setSplitted(
-        isSplitted: boolean,
-        initialRouteName: string,
-    ): SplitActionType {
+    setSplitted(isSplitted: boolean, initialRouteName: string): SplitActionType {
         return {
             type: 'SET_SPLITTED',
             payload: {
@@ -57,19 +49,18 @@ export type SplitActionHelpers = {
 
 export const MAIN_SCREEN_NAME = 'main';
 
-type NavigationRoute<
-    ParamList extends ParamListBase,
-    RouteName extends keyof ParamList
-> = Route<Extract<RouteName, string>, ParamList[RouteName]> & {
+type NavigationRoute<ParamList extends ParamListBase, RouteName extends keyof ParamList> = Route<
+    Extract<RouteName, string>,
+    ParamList[RouteName]
+> & {
     state?: NavigationState | PartialState<NavigationState>;
     order: number;
 };
 
-export type SplitRouterOptions<
-    ParamList extends ParamListBase = ParamListBase
-> = DefaultRouterOptions<Extract<keyof ParamList, string>> & {
-    isSplitted: boolean;
-};
+export type SplitRouterOptions<ParamList extends ParamListBase = ParamListBase> =
+    DefaultRouterOptions<Extract<keyof ParamList, string>> & {
+        isSplitted: boolean;
+    };
 
 const stackStateToTab = <ParamList extends ParamListBase>(
     state: StackLikeSplitNavigationState<ParamList>,
@@ -77,20 +68,15 @@ const stackStateToTab = <ParamList extends ParamListBase>(
 ): TabLikeSplitNavigationState<ParamList> => {
     let { index } = state;
 
-    const currentRoute = state.routes[index] as NavigationRoute<
-        ParamList,
-        keyof ParamList
-    >;
+    const currentRoute = state.routes[index] as NavigationRoute<ParamList, keyof ParamList>;
     if (currentRoute.name !== MAIN_SCREEN_NAME) {
         index = state.routeNames.indexOf(currentRoute.name);
     } else if (options.initialRouteName != null) {
         index = state.routeNames.indexOf(options.initialRouteName);
     }
 
-    const routes = state.routeNames.map((name) => {
-        const route = state.routes.find(
-            ({ name: routeName }) => routeName === name,
-        );
+    const routes = state.routeNames.map(name => {
+        const route = state.routes.find(({ name: routeName }) => routeName === name);
 
         if (route) {
             return {
@@ -118,9 +104,7 @@ const tabStateToStack = <ParamList extends ParamListBase>(
     state: TabLikeSplitNavigationState<ParamList>,
 ): StackLikeSplitNavigationState<ParamList> => {
     let { index } = state;
-    const possibleMainRoute = state.routes.find(
-        ({ name }) => name === MAIN_SCREEN_NAME,
-    );
+    const possibleMainRoute = state.routes.find(({ name }) => name === MAIN_SCREEN_NAME);
     let mainRoute: NavigationRoute<ParamList, keyof ParamList>;
 
     if (possibleMainRoute) {
@@ -155,9 +139,10 @@ const tabStateToStack = <ParamList extends ParamListBase>(
     };
 };
 
-type StackLikeSplitNavigationState<
-    ParamList extends ParamListBase = ParamListBase
-> = Omit<StackNavigationState<ParamList>, 'type' | 'history'> & {
+type StackLikeSplitNavigationState<ParamList extends ParamListBase = ParamListBase> = Omit<
+    StackNavigationState<ParamList>,
+    'type' | 'history'
+> & {
     type: 'split';
     history?: (
         | NavigationRoute<ParamList, keyof ParamList>
@@ -168,9 +153,10 @@ type StackLikeSplitNavigationState<
     )[];
 };
 
-type TabLikeSplitNavigationState<
-    ParamList extends ParamListBase = ParamListBase
-> = Omit<TabNavigationState<ParamList>, 'type' | 'history'> & {
+type TabLikeSplitNavigationState<ParamList extends ParamListBase = ParamListBase> = Omit<
+    TabNavigationState<ParamList>,
+    'type' | 'history'
+> & {
     type: 'split';
     history?: (
         | NavigationRoute<ParamList, keyof ParamList>
@@ -181,9 +167,7 @@ type TabLikeSplitNavigationState<
     )[];
 };
 
-export type SplitNavigationState<
-    ParamList extends ParamListBase = ParamListBase
-> = (
+export type SplitNavigationState<ParamList extends ParamListBase = ParamListBase> = (
     | StackLikeSplitNavigationState<ParamList>
     | TabLikeSplitNavigationState<ParamList>
 ) & { isSplitted?: boolean };
@@ -201,10 +185,7 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
         initialRouteName: MAIN_SCREEN_NAME,
     });
     let isInitialized = false;
-    const router: Router<
-        SplitNavigationState,
-        CommonNavigationAction | SplitActionType
-    > & {
+    const router: Router<SplitNavigationState, CommonNavigationAction | SplitActionType> & {
         ensureTabState(state: SplitNavigationState): SplitNavigationState;
         ensureStackState(state: SplitNavigationState): SplitNavigationState;
     } = {
@@ -222,9 +203,7 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
             if (currentRouteName === MAIN_SCREEN_NAME) {
                 if (initialRouteName != null) {
                     // @ts-ignore index is read-only in type declaration
-                    newState.index = newState.routeNames.indexOf(
-                        initialRouteName,
-                    );
+                    newState.index = newState.routeNames.indexOf(initialRouteName);
                 } else {
                     // @ts-ignore index is read-only in type declaration
                     newState.index += 1;
@@ -235,9 +214,7 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
         },
 
         ensureStackState(newState: SplitNavigationState) {
-            const mainRoute = newState.routes.find(
-                ({ name }) => name === MAIN_SCREEN_NAME,
-            ) || {
+            const mainRoute = newState.routes.find(({ name }) => name === MAIN_SCREEN_NAME) || {
                 name: MAIN_SCREEN_NAME,
                 key: `${MAIN_SCREEN_NAME}-${nanoid()}`,
             };
@@ -281,16 +258,10 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
             }
 
             if (isSplitted) {
-                newState = tabRouter.getRehydratedState(
-                    state as any,
-                    params,
-                ) as any;
+                newState = tabRouter.getRehydratedState(state as any, params) as any;
                 newState = this.ensureTabState(newState);
             } else {
-                newState = stackRouter.getRehydratedState(
-                    state as any,
-                    params,
-                ) as any;
+                newState = stackRouter.getRehydratedState(state as any, params) as any;
                 newState = this.ensureStackState(newState);
             }
 
@@ -300,14 +271,8 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
 
         getStateForRouteNamesChange(state, options) {
             const newState: SplitNavigationState = isSplitted
-                ? (tabRouter.getStateForRouteNamesChange(
-                      state as any,
-                      options,
-                  ) as any)
-                : stackRouter.getStateForRouteNamesChange(
-                      state as any,
-                      options,
-                  );
+                ? (tabRouter.getStateForRouteNamesChange(state as any, options) as any)
+                : stackRouter.getStateForRouteNamesChange(state as any, options);
 
             Object.assign(newState, { type: router.type, isSplitted });
             return newState;
@@ -322,11 +287,7 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
             return newState;
         },
 
-        getStateForAction(
-            state: SplitNavigationState<ParamListBase>,
-            action,
-            options,
-        ) {
+        getStateForAction(state: SplitNavigationState<ParamListBase>, action, options) {
             let newState: SplitNavigationState<ParamListBase> = state;
             if (action.type === 'SET_SPLITTED') {
                 ({ isSplitted } = action.payload);
@@ -346,9 +307,7 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
                         routerOptions,
                     );
                 } else {
-                    newState = tabStateToStack(
-                        state as TabLikeSplitNavigationState<ParamListBase>,
-                    );
+                    newState = tabStateToStack(state as TabLikeSplitNavigationState<ParamListBase>);
                 }
             } else if (action.type === 'RESET_TO_INITIAL') {
                 if (isSplitted) {
@@ -382,16 +341,8 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
                 }
             } else {
                 newState = isSplitted
-                    ? (tabRouter.getStateForAction(
-                          state as any,
-                          action,
-                          options,
-                      ) as any)
-                    : stackRouter.getStateForAction(
-                          state as any,
-                          action,
-                          options,
-                      );
+                    ? (tabRouter.getStateForAction(state as any, action, options) as any)
+                    : stackRouter.getStateForAction(state as any, action, options);
 
                 if (newState == null) {
                     return null;
@@ -402,19 +353,11 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
                 const { history } = newState;
                 if (history) {
                     // Check if the history contains the initial route already
-                    const initialRoute = state.routes.find(
-                        ({ name }) => name === initialRouteName,
-                    );
-                    if (
-                        initialRoute &&
-                        !history.find(({ key }) => key === initialRoute.key)
-                    ) {
+                    const initialRoute = state.routes.find(({ name }) => name === initialRouteName);
+                    if (initialRoute && !history.find(({ key }) => key === initialRoute.key)) {
                         // Add the initial route to the beginning of the history if not
                         // @ts-ignore `history` is declared as read-only, but we have to overwrite it
-                        newState.history = [
-                            { type: 'route', key: initialRoute.key },
-                            ...history,
-                        ];
+                        newState.history = [{ type: 'route', key: initialRoute.key }, ...history];
                     }
                 }
             }

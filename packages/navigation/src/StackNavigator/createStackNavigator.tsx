@@ -12,25 +12,15 @@ import {
     RouteProp,
     NavigationProp,
 } from '@react-navigation/native';
-import type {
-    StackNavigationState,
-    ParamListBase,
-} from '@react-navigation/native';
+import type { StackNavigationState, ParamListBase } from '@react-navigation/native';
 import { screensEnabled } from 'react-native-screens';
 import { StackView, TransitionPresets } from '@react-navigation/stack';
 import { NativeStackView } from 'react-native-screens/native-stack';
 import type { StackNavigationEventMap } from '@react-navigation/stack/lib/typescript/src/types';
 
-import {
-    ColorVariants,
-    UIBackgroundView,
-    PortalManager,
-} from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, UIBackgroundView, PortalManager } from '@tonlabs/uikit.hydrogen';
 
-import {
-    UILargeTitleHeader,
-    UILargeTitleHeaderProps,
-} from '../UILargeTitleHeader';
+import { UILargeTitleHeader, UILargeTitleHeaderProps } from '../UILargeTitleHeader';
 import { UIStackNavigationBar } from '../UIStackNavigationBar';
 import { shouldUpdateScreens } from './shouldUpdateScreens';
 import { useStackTopInsetStyle } from './useStackTopInsetStyle';
@@ -45,14 +35,9 @@ type StackDescriptor = Descriptor<
     {}
 >;
 
-const DescriptorsContext = React.createContext<Record<string, StackDescriptor>>(
-    {},
-);
+const DescriptorsContext = React.createContext<Record<string, StackDescriptor>>({});
 
-export type StackNavigationOptions = Omit<
-    UILargeTitleHeaderProps,
-    'children'
-> & {
+export type StackNavigationOptions = Omit<UILargeTitleHeaderProps, 'children'> & {
     /**
      * A string or ReactNode to render in large title header
      *
@@ -95,10 +80,7 @@ function ScreenWithHeaderContent({
     if (descriptor.options.headerVisible === false) {
         return (
             <UIBackgroundView
-                color={
-                    descriptor.options.backgroundColor ||
-                    ColorVariants.BackgroundPrimary
-                }
+                color={descriptor.options.backgroundColor || ColorVariants.BackgroundPrimary}
                 style={styles.screenContainer}
             >
                 <PortalManager id="scene">{children}</PortalManager>
@@ -108,10 +90,7 @@ function ScreenWithHeaderContent({
 
     return (
         <UIBackgroundView
-            color={
-                descriptor.options.backgroundColor ||
-                ColorVariants.BackgroundPrimary
-            }
+            color={descriptor.options.backgroundColor || ColorVariants.BackgroundPrimary}
             style={[styles.screenContainer, topInsetStyle]}
         >
             {descriptor.options.useHeaderLargeTitle ? (
@@ -124,17 +103,11 @@ function ScreenWithHeaderContent({
                         caption={descriptor.options.caption}
                         captionTestID={descriptor.options.captionTestID}
                         onTitlePress={descriptor.options.onTitlePress}
-                        onHeaderLargeTitlePress={
-                            descriptor.options.onHeaderLargeTitlePress
-                        }
+                        onHeaderLargeTitlePress={descriptor.options.onHeaderLargeTitlePress}
                         label={descriptor.options.label}
                         note={descriptor.options.note}
-                        renderAboveContent={
-                            descriptor.options.renderAboveContent
-                        }
-                        renderBelowContent={
-                            descriptor.options.renderBelowContent
-                        }
+                        renderAboveContent={descriptor.options.renderAboveContent}
+                        renderBelowContent={descriptor.options.renderBelowContent}
                         headerLeft={descriptor.options.headerLeft}
                         headerLeftItems={descriptor.options.headerLeftItems}
                         headerBackButton={descriptor.options.headerBackButton}
@@ -169,22 +142,14 @@ function ScreenWithHeaderContent({
 type OriginalComponentsRegistry = Record<
     string,
     React.ComponentType<{
-        navigation: NavigationProp<
-            ParamListBase,
-            string,
-            StackNavigationState<ParamListBase>
-        >;
+        navigation: NavigationProp<ParamListBase, string, StackNavigationState<ParamListBase>>;
         route: RouteProp<ParamListBase, string>;
     }>
 >;
 type OriginalRenderPropRegistry = Record<
     string,
     (params: {
-        navigation: NavigationProp<
-            ParamListBase,
-            string,
-            StackNavigationState<ParamListBase>
-        >;
+        navigation: NavigationProp<ParamListBase, string, StackNavigationState<ParamListBase>>;
         route: RouteProp<ParamListBase, string>;
     }) => React.ReactNode
 >;
@@ -200,18 +165,13 @@ function ComponentScreenWithHeader({
     navigation,
     route,
 }: {
-    navigation: NavigationProp<
-        ParamListBase,
-        string,
-        StackNavigationState<ParamListBase>
-    >;
+    navigation: NavigationProp<ParamListBase, string, StackNavigationState<ParamListBase>>;
     route: RouteProp<ParamListBase, string>;
 }) {
     const descriptors = React.useContext(DescriptorsContext);
     const descriptor = descriptors[route.key];
 
-    const ScreenComponent = React.useContext(OriginalComponentsContext)
-        .components[route.name];
+    const ScreenComponent = React.useContext(OriginalComponentsContext).components[route.name];
 
     if (descriptor == null || ScreenComponent == null) {
         return null;
@@ -228,18 +188,13 @@ function RenderPropScreenWithHeader({
     navigation,
     route,
 }: {
-    navigation: NavigationProp<
-        ParamListBase,
-        string,
-        StackNavigationState<ParamListBase>
-    >;
+    navigation: NavigationProp<ParamListBase, string, StackNavigationState<ParamListBase>>;
     route: RouteProp<ParamListBase, string>;
 }) {
     const descriptors = React.useContext(DescriptorsContext);
     const descriptor = descriptors[route.key];
 
-    const screenRenderProp = React.useContext(OriginalComponentsContext)
-        .renderProps[route.name];
+    const screenRenderProp = React.useContext(OriginalComponentsContext).renderProps[route.name];
 
     if (descriptor == null || screenRenderProp == null) {
         return null;
@@ -255,57 +210,52 @@ function RenderPropScreenWithHeader({
 function wrapScreensWithHeader(children: React.ReactNode) {
     const originalComponents: OriginalComponentsRegistry = {};
     const originalRenderProps: OriginalRenderPropRegistry = {};
-    const screens = React.Children.toArray(children).reduce<React.ReactNode[]>(
-        (acc, child) => {
-            if (React.isValidElement(child)) {
-                if (child.type === React.Fragment) {
-                    const {
-                        screens: innerScreens,
-                        original: { components, renderProps },
-                    } = wrapScreensWithHeader(child.props.children);
+    const screens = React.Children.toArray(children).reduce<React.ReactNode[]>((acc, child) => {
+        if (React.isValidElement(child)) {
+            if (child.type === React.Fragment) {
+                const {
+                    screens: innerScreens,
+                    original: { components, renderProps },
+                } = wrapScreensWithHeader(child.props.children);
 
-                    acc.push(...innerScreens);
-                    // Iterate over deep components to collect into one registry
-                    Object.keys(components).forEach((key) => {
-                        originalComponents[key] = components[key];
-                    });
-                    // Iterate over deep render props to collect into one registry
-                    Object.keys(renderProps).forEach((key) => {
-                        originalRenderProps[key] = renderProps[key];
-                    });
+                acc.push(...innerScreens);
+                // Iterate over deep components to collect into one registry
+                Object.keys(components).forEach(key => {
+                    originalComponents[key] = components[key];
+                });
+                // Iterate over deep render props to collect into one registry
+                Object.keys(renderProps).forEach(key => {
+                    originalRenderProps[key] = renderProps[key];
+                });
 
-                    return acc;
-                }
-
-                if (child.props && 'component' in child.props) {
-                    originalComponents[child.props.name] =
-                        child.props.component;
-                    acc.push(
-                        React.cloneElement(child, {
-                            ...child.props,
-                            component: ComponentScreenWithHeader,
-                        }),
-                    );
-                    return acc;
-                }
-
-                if (child.props && 'children' in child.props) {
-                    originalRenderProps[child.props.name] =
-                        child.props.children;
-                    acc.push(
-                        React.cloneElement(child, {
-                            ...child.props,
-                            component: RenderPropScreenWithHeader,
-                            children: null,
-                        }),
-                    );
-                    return acc;
-                }
+                return acc;
             }
-            return acc;
-        },
-        [],
-    );
+
+            if (child.props && 'component' in child.props) {
+                originalComponents[child.props.name] = child.props.component;
+                acc.push(
+                    React.cloneElement(child, {
+                        ...child.props,
+                        component: ComponentScreenWithHeader,
+                    }),
+                );
+                return acc;
+            }
+
+            if (child.props && 'children' in child.props) {
+                originalRenderProps[child.props.name] = child.props.children;
+                acc.push(
+                    React.cloneElement(child, {
+                        ...child.props,
+                        component: RenderPropScreenWithHeader,
+                        children: null,
+                    }),
+                );
+                return acc;
+            }
+        }
+        return acc;
+    }, []);
 
     return {
         screens,
@@ -322,10 +272,7 @@ function filterDescriptorOptionsForOriginalImplementation(
     return Object.keys(descriptors).reduce<Record<string, any>>((acc, key) => {
         const originalDescriptor = descriptors[key];
 
-        const {
-            headerShown,
-            stackAnimation,
-        } = originalDescriptor.options as any;
+        const { headerShown, stackAnimation } = originalDescriptor.options as any;
 
         acc[key] = {
             ...originalDescriptor,
@@ -355,10 +302,7 @@ export const StackNavigator = ({
     const prevChildren = React.useRef<React.ReactNode>(null);
     const wrapped = React.useRef<ReturnType<typeof wrapScreensWithHeader>>();
 
-    if (
-        prevChildren.current == null ||
-        shouldUpdateScreens(children, prevChildren.current)
-    ) {
+    if (prevChildren.current == null || shouldUpdateScreens(children, prevChildren.current)) {
         prevChildren.current = children;
         wrapped.current = wrapScreensWithHeader(children);
     }
@@ -392,7 +336,7 @@ export const StackNavigator = ({
 
     React.useEffect(
         () =>
-            navigation.addListener?.('tabPress', (e) => {
+            navigation.addListener?.('tabPress', e => {
                 const isFocused = navigation.isFocused();
 
                 // Run the operation in the next frame so we're sure all listeners have been run
@@ -422,9 +366,7 @@ export const StackNavigator = ({
     }
 
     if (doesSupportNative) {
-        const descriptorsFiltered = filterDescriptorOptionsForOriginalImplementation(
-            descriptors,
-        );
+        const descriptorsFiltered = filterDescriptorOptionsForOriginalImplementation(descriptors);
         return (
             <OriginalComponentsContext.Provider value={originalComponentsData}>
                 <DescriptorsContext.Provider value={descriptors}>

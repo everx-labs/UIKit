@@ -15,12 +15,7 @@ import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/Animat
 import type { ViewLayoutEvent } from 'react-native/Libraries/Components/View/ViewPropTypes';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
-import {
-    UIConstant,
-    UIColor,
-    UIDevice,
-    UIStyle,
-} from '@tonlabs/uikit.core';
+import { UIConstant, UIColor, UIDevice, UIStyle } from '@tonlabs/uikit.core';
 import type { PositionObject } from '@tonlabs/uikit.core';
 import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 
@@ -96,8 +91,7 @@ type NoticeObject = {
 let masterRef = null;
 const insets: Insets = {};
 
-export default class UINotice
-    extends UIComponent<Props, State> {
+export default class UINotice extends UIComponent<Props, State> {
     static Type = {
         Default: 'default',
         Alert: 'alert',
@@ -172,7 +166,7 @@ export default class UINotice
     onFlashContainerLayout = (e: ViewLayoutEvent) => {
         const { width } = e.nativeEvent.layout;
         this.setStateSafely({ flashContainerLayoutWidth: width });
-    }
+    };
 
     // Setters
     setMarginLeft(marginLeft: AnimatedValue, callback?: () => void) {
@@ -205,7 +199,7 @@ export default class UINotice
     }
 
     getContainerWidth() {
-        const pageNoticeWidth = this.getPageWidth() + (hiddenOffset * 2);
+        const pageNoticeWidth = this.getPageWidth() + hiddenOffset * 2;
         const defaultNoticeWidth = UIConstant.noticeWidth() + doubleOffset;
         return Math.min(pageNoticeWidth, defaultNoticeWidth);
     }
@@ -216,10 +210,9 @@ export default class UINotice
 
     getMaxInset() {
         let maxInset = 0;
-        Object.keys(insets)
-            .forEach((key) => {
-                maxInset = Math.max(insets[key], maxInset);
-            });
+        Object.keys(insets).forEach(key => {
+            maxInset = Math.max(insets[key], maxInset);
+        });
         return maxInset;
     }
 
@@ -229,10 +222,7 @@ export default class UINotice
         // if not to set correct 'left/right' property,
         // then flashMessage streches horizontally and
         // blocks touchs on all horizontal space.
-        const right = Math.max(
-            this.state.flashContainerLayoutWidth - UIConstant.noticeWidth(),
-            0,
-        );
+        const right = Math.max(this.state.flashContainerLayoutWidth - UIConstant.noticeWidth(), 0);
 
         if (placement === Bottom) {
             return { bottom: this.getMaxInset(), right };
@@ -255,7 +245,10 @@ export default class UINotice
     showMessage(args: NoticeObject) {
         const { Bottom } = UINotice.Place;
         const {
-            title, subComponent, message, action,
+            title,
+            subComponent,
+            message,
+            action,
             placement = Bottom,
             autoHide = true,
             onCancel = () => {},
@@ -319,17 +312,14 @@ export default class UINotice
 
     animateOpening() {
         const containerWidth = this.getContainerWidth();
-        this.setMarginLeft(
-            new Animated.Value(-containerWidth - contentOffset),
-            () => {
-                // TODO: need to think how to use `useNativeDriver`
-                Animated.spring(this.state.marginLeft, {
-                    toValue: cardShadowWidth,
-                    duration: UIConstant.animationDuration(),
-                    useNativeDriver: false,
-                }).start();
-            },
-        );
+        this.setMarginLeft(new Animated.Value(-containerWidth - contentOffset), () => {
+            // TODO: need to think how to use `useNativeDriver`
+            Animated.spring(this.state.marginLeft, {
+                toValue: cardShadowWidth,
+                duration: UIConstant.animationDuration(),
+                useNativeDriver: false,
+            }).start();
+        });
     }
 
     animateClosing() {
@@ -366,11 +356,7 @@ export default class UINotice
             </UILabel>
         );
         const titleComponent = this.title ? title : null;
-        const subView = (
-            <View style={UIStyle.margin.rightNormal()}>
-                {this.subComponent}
-            </View>
-        );
+        const subView = <View style={UIStyle.margin.rightNormal()}>{this.subComponent}</View>;
         const subComponent = this.subComponent ? subView : null;
         if (titleComponent) {
             return (
@@ -390,10 +376,7 @@ export default class UINotice
                     style={{ marginTop: UIConstant.mediumContentOffset() }}
                     onPress={() => this.closeWithAction()}
                 >
-                    <UILabel
-                        color={UILabelColors.TextPrimary}
-                        role={UILabelRoles.ActionCallout}
-                    >
+                    <UILabel color={UILabelColors.TextPrimary} role={UILabelRoles.ActionCallout}>
                         {this.action.title}
                     </UILabel>
                 </TouchableOpacity>
@@ -409,15 +392,16 @@ export default class UINotice
         const noticeWidth = containerWidth - doubleOffset;
 
         return (
-            <View
-                style={{ alignItems }}
-                onLayout={this.onWindowContainerLayout}
-            >
+            <View style={{ alignItems }} onLayout={this.onWindowContainerLayout}>
                 <View style={[styles.container, { width: containerWidth }]}>
-                    <Animated.View style={[styles.noticeStyle, {
-                        width: noticeWidth,
-                        marginLeft,
-                    }]}
+                    <Animated.View
+                        style={[
+                            styles.noticeStyle,
+                            {
+                                width: noticeWidth,
+                                marginLeft,
+                            },
+                        ]}
                     >
                         <View style={styles.contentContainer}>
                             {this.renderHeader()}
@@ -447,10 +431,7 @@ export default class UINotice
         return (
             <SafeAreaView style={UIStyle.Common.flex()} pointerEvents="box-none">
                 <View
-                    style={[
-                        UIStyle.Common.flex(),
-                        this.showOnTop && { zIndex },
-                    ]}
+                    style={[UIStyle.Common.flex(), this.showOnTop && { zIndex }]}
                     onLayout={this.onFlashContainerLayout}
                     pointerEvents="box-none"
                 >

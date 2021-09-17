@@ -40,11 +40,7 @@ type UISearchBarRightButtonProps = {
     accessibilityLabel?: string;
 };
 
-function renderRightAction({
-    label,
-    onPress,
-    accessibilityLabel,
-}: UISearchBarRightButtonProps) {
+function renderRightAction({ label, onPress, accessibilityLabel }: UISearchBarRightButtonProps) {
     if (label == null) {
         return null;
     }
@@ -78,12 +74,7 @@ function useInnerRightAction(
     searching: boolean | undefined,
     clear: () => void,
 ) {
-    const clearButton = useClearButton(
-        inputHasValue,
-        isFocused,
-        isHovered,
-        clear,
-    );
+    const clearButton = useClearButton(inputHasValue, isFocused, isHovered, clear);
 
     if (searching) {
         return (
@@ -161,10 +152,7 @@ export function UISearchBar({
         clear();
     }, [onChangeTextProp, setSearchText, clear]);
 
-    const { isFocused, onFocus, onBlur } = useFocused(
-        inputProps.onFocus,
-        inputProps.onBlur,
-    );
+    const { isFocused, onFocus, onBlur } = useFocused(inputProps.onFocus, inputProps.onBlur);
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
     const innerRightAction = useInnerRightAction(

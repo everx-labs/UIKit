@@ -74,18 +74,11 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
         return (
             <View style={UIStyle.common.flexRow()}>
                 <UILabel
-                    color={notActive
-                        ? UILabelColors.TextPrimary
-                        : UILabelColors.TextAccent}
+                    color={notActive ? UILabelColors.TextPrimary : UILabelColors.TextAccent}
                     ellipsizeMode="middle"
                     numberOfLines={1}
-                    role={notActive
-                        ? UILabelRoles.ParagraphText
-                        : UILabelRoles.Action}
-                    style={[
-                        UIStyle.common.flex(),
-                        UIStyle.margin.rightDefault(),
-                    ]}
+                    role={notActive ? UILabelRoles.ParagraphText : UILabelRoles.Action}
+                    style={[UIStyle.common.flex(), UIStyle.margin.rightDefault()]}
                 >
                     {name}
                 </UILabel>
@@ -113,28 +106,18 @@ export default class UIAccountPickerCell extends UIComponent<Props, State> {
     }
 
     render() {
-        const {
-            containerStyle,
-            onPress,
-            displayNameOnly,
-            notActive,
-        } = this.props;
+        const { containerStyle, onPress, displayNameOnly, notActive } = this.props;
 
-        return (
-            notActive ? (
-                <View style={containerStyle}>
-                    {this.renderAccount()}
-                    {displayNameOnly ? null : this.renderFooter()}
-                </View>
-            ) : (
-                <TouchableOpacity
-                    style={containerStyle}
-                    onPress={onPress}
-                >
-                    {this.renderAccount()}
-                    {displayNameOnly ? null : this.renderFooter()}
-                </TouchableOpacity>
-            )
+        return notActive ? (
+            <View style={containerStyle}>
+                {this.renderAccount()}
+                {displayNameOnly ? null : this.renderFooter()}
+            </View>
+        ) : (
+            <TouchableOpacity style={containerStyle} onPress={onPress}>
+                {this.renderAccount()}
+                {displayNameOnly ? null : this.renderFooter()}
+            </TouchableOpacity>
         );
     }
 }

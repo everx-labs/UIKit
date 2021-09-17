@@ -15,19 +15,9 @@ import {
 import type { KeyboardEvent } from 'react-native/Libraries/Components/Keyboard/Keyboard';
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
 
-import {
-    UIConstant,
-    UIDevice,
-    UIEventHelper,
-    UIFunction,
-    UIStyle,
-} from '@tonlabs/uikit.core';
+import { UIConstant, UIDevice, UIEventHelper, UIFunction, UIStyle } from '@tonlabs/uikit.core';
 import type { SafeAreaInsets } from '@tonlabs/uikit.core';
-import {
-    UIAlertView,
-    UIComponent,
-    UISpinnerOverlay,
-} from '@tonlabs/uikit.components';
+import { UIAlertView, UIComponent, UISpinnerOverlay } from '@tonlabs/uikit.components';
 import { UISafeAreaView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UILargeTitleContainerRefContext } from '@tonlabs/uikit.navigation';
@@ -36,9 +26,9 @@ const AndroidKeyboardAdjust =
     Platform.OS === 'android'
         ? require('react-native-android-keyboard-adjust')
         : {
-            setAdjustPan() {},
-            setAdjustResize() {},
-        };
+              setAdjustPan() {},
+              setAdjustResize() {},
+          };
 
 type Params = {
     [string]: string,
@@ -132,14 +122,16 @@ export default class UIController<Props, State> extends UIComponent<
     }
 
     static showAlertWithTitleAndMessage(title: string, message: string, callback?: () => void) {
-        UIAlertView.showAlert(title, message, [{
-            title: uiLocalized.OK,
-            onPress: () => {
-                if (callback) {
-                    callback();
-                }
+        UIAlertView.showAlert(title, message, [
+            {
+                title: uiLocalized.OK,
+                onPress: () => {
+                    if (callback) {
+                        callback();
+                    }
+                },
             },
-        }]);
+        ]);
     }
 
     static showErrorWithMessage(message: string, callback?: () => void) {
@@ -182,23 +174,23 @@ export default class UIController<Props, State> extends UIComponent<
 
     static getEasingFunction(easing: string): (t: number) => number {
         switch (easing) {
-        case LayoutAnimation.Types.spring:
-            return Easing.elastic();
-        case LayoutAnimation.Types.linear:
-            return Easing.linear;
-        case LayoutAnimation.Types.easeIn:
-            return Easing.in(Easing.ease);
-        case LayoutAnimation.Types.easeOut:
-            return Easing.out(Easing.ease);
-        case LayoutAnimation.Types.easeInEaseOut:
-            return Easing.inOut(Easing.ease);
-        case LayoutAnimation.Types.keyboard:
-            // There is no information about real easing function for keyboard animation.
-            // But people on Internet try to find closely easing functions.
-            return Easing.bezier(0.17, 0.59, 0.4, 0.77);
+            case LayoutAnimation.Types.spring:
+                return Easing.elastic();
+            case LayoutAnimation.Types.linear:
+                return Easing.linear;
+            case LayoutAnimation.Types.easeIn:
+                return Easing.in(Easing.ease);
+            case LayoutAnimation.Types.easeOut:
+                return Easing.out(Easing.ease);
+            case LayoutAnimation.Types.easeInEaseOut:
+                return Easing.inOut(Easing.ease);
+            case LayoutAnimation.Types.keyboard:
+                // There is no information about real easing function for keyboard animation.
+                // But people on Internet try to find closely easing functions.
+                return Easing.bezier(0.17, 0.59, 0.4, 0.77);
             // return Easing.bezier(0.19, 0.35, 0.0625, 0.5);
-        default:
-            return Easing.out(Easing.ease);
+            default:
+                return Easing.out(Easing.ease);
         }
     }
 
@@ -327,28 +319,22 @@ export default class UIController<Props, State> extends UIComponent<
                 this.isKeyboardShown.maybeCall(() => {
                     if (this.containerRef.current != null) {
                         this.containerRef.current.measureInWindow(
-                            this.isKeyboardShown.maybeCall(
-                                (x, y, width, height) => {
-                                    if (y !== prevY) {
-                                        measureAndApply(y);
-                                        return;
-                                    }
-                                    const pageY = Platform.select({
-                                        ios: y,
-                                        android: y + StatusBar.currentHeight,
-                                    });
-                                    const containerBottomY = pageY + height;
-                                    const keyboardOverlapHeight = Math.max(
-                                        containerBottomY -
-                                            keyboardFrame.screenY,
-                                        0,
-                                    );
-                                    this.setBottomInset(
-                                        keyboardOverlapHeight,
-                                        animation,
-                                    );
-                                },
-                            ),
+                            this.isKeyboardShown.maybeCall((x, y, width, height) => {
+                                if (y !== prevY) {
+                                    measureAndApply(y);
+                                    return;
+                                }
+                                const pageY = Platform.select({
+                                    ios: y,
+                                    android: y + StatusBar.currentHeight,
+                                });
+                                const containerBottomY = pageY + height;
+                                const keyboardOverlapHeight = Math.max(
+                                    containerBottomY - keyboardFrame.screenY,
+                                    0,
+                                );
+                                this.setBottomInset(keyboardOverlapHeight, animation);
+                            }),
                         );
                     }
                 }),
@@ -467,12 +453,11 @@ export default class UIController<Props, State> extends UIComponent<
             if (this.params) {
                 const params = paramsArg || this.getNavigationParams();
                 const parameters = {};
-                Object.keys(params)
-                    .forEach((key) => {
-                        if (this.params[key]) {
-                            parameters[key] = params[key];
-                        }
-                    });
+                Object.keys(params).forEach(key => {
+                    if (this.params[key]) {
+                        parameters[key] = params[key];
+                    }
+                });
                 this.addParametersToPath(parameters);
             }
             console.log(
@@ -490,13 +475,12 @@ export default class UIController<Props, State> extends UIComponent<
             return;
         }
         const pathParameters = UIController.getParametersFromString(this.path);
-        Object.keys(parameters)
-            .forEach((key) => {
-                if (!pathParameters || !pathParameters[key]) {
-                    const symbol = this.path.includes('?') ? '&' : '?';
-                    this.path += `${symbol}${key}=${parameters[key]}`;
-                }
-            });
+        Object.keys(parameters).forEach(key => {
+            if (!pathParameters || !pathParameters[key]) {
+                const symbol = this.path.includes('?') ? '&' : '?';
+                this.path += `${symbol}${key}=${parameters[key]}`;
+            }
+        });
     }
 
     pushParams(paramsArg: any) {
@@ -584,13 +568,11 @@ export default class UIController<Props, State> extends UIComponent<
         }
         this.deinitKeyboardListeners();
         if (Platform.OS === 'ios') {
-            this.keyboardWillShowListener = Keyboard.addListener(
-                'keyboardWillShow',
-                e => this.onKeyboardWillShow(e),
+            this.keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', e =>
+                this.onKeyboardWillShow(e),
             );
-            this.keyboardWillHideListener = Keyboard.addListener(
-                'keyboardWillHide',
-                e => this.onKeyboardWillHide(e),
+            this.keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', e =>
+                this.onKeyboardWillHide(e),
             );
         } else if (Platform.OS === 'android') {
             if (this.androidKeyboardAdjust === UIController.AndroidKeyboardAdjust.Pan) {
@@ -599,13 +581,11 @@ export default class UIController<Props, State> extends UIComponent<
                 // Adjust keyboard mode
                 AndroidKeyboardAdjust.setAdjustPan();
                 // Android only responds to `Did` events
-                this.keyboardWillShowListener = Keyboard.addListener(
-                    'keyboardDidShow',
-                    e => this.onKeyboardWillShow(e),
+                this.keyboardWillShowListener = Keyboard.addListener('keyboardDidShow', e =>
+                    this.onKeyboardWillShow(e),
                 );
-                this.keyboardWillHideListener = Keyboard.addListener(
-                    'keyboardDidHide',
-                    e => this.onKeyboardWillHide(e),
+                this.keyboardWillHideListener = Keyboard.addListener('keyboardDidHide', e =>
+                    this.onKeyboardWillHide(e),
                 );
             } else if (this.androidKeyboardAdjust === UIController.AndroidKeyboardAdjust.Resize) {
                 // Make it resizable only if not panning!
@@ -686,10 +666,7 @@ export default class UIController<Props, State> extends UIComponent<
                     await UIFunction.makeAsync(this.setStateSafely.bind(this))(emptyOperation);
                 }
             } catch (error) {
-                console.log(
-                    `Async operation [${name || ''}] failed: `,
-                    error.message || error,
-                );
+                console.log(`Async operation [${name || ''}] failed: `, error.message || error);
             }
         })();
     }
@@ -697,7 +674,7 @@ export default class UIController<Props, State> extends UIComponent<
     guardedAsyncNavigation(operation: () => void, name?: string): void {
         this.guardedAsyncRun(async () => {
             operation();
-            await new Promise((resolve) => {
+            await new Promise(resolve => {
                 setTimeout(() => resolve(), 1000);
             });
         }, name || 'navigation');
@@ -705,12 +682,14 @@ export default class UIController<Props, State> extends UIComponent<
 
     // Render
     renderSpinnerOverlay() {
-        return (<UISpinnerOverlay
-            key="SpinnerOverlay"
-            visible={this.state?.spinnerVisible}
-            titleContent={this.state?.spinnerTitleContent || ''}
-            textContent={this.state?.spinnerTextContent || ''}
-        />);
+        return (
+            <UISpinnerOverlay
+                key="SpinnerOverlay"
+                visible={this.state?.spinnerVisible}
+                titleContent={this.state?.spinnerTitleContent || ''}
+                textContent={this.state?.spinnerTextContent || ''}
+            />
+        );
     }
 
     render(): React$Node {
@@ -722,7 +701,7 @@ export default class UIController<Props, State> extends UIComponent<
                 style={UIStyle.container.screen()}
             >
                 <UILargeTitleContainerRefContext.Consumer>
-                    {(ref) => {
+                    {ref => {
                         if (ref != null) {
                             this.containerRef = ref;
                         }

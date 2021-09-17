@@ -6,12 +6,7 @@ import BigNumber from 'bignumber.js';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { UIConstant, UIFunction, UIStyle } from '@tonlabs/uikit.core';
-import type {
-    NumberParts,
-    StringLocaleInfo,
-    BigNum,
-    UIColorData,
-} from '@tonlabs/uikit.core';
+import type { NumberParts, StringLocaleInfo, BigNum, UIColorData } from '@tonlabs/uikit.core';
 import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
@@ -83,9 +78,10 @@ export default class UITransferInput extends UIComponent<Props, State> {
         const decG = localeInfo.numbers.decimalGrouping;
 
         if (
-            prevProps.value !== newValue
-            && !new RegExp(`\\${localizedSeparator}(\\d(\\${decG})?){0,}$`)
-                .test(this.state.valueString)
+            prevProps.value !== newValue &&
+            !new RegExp(`\\${localizedSeparator}(\\d(\\${decG})?){0,}$`).test(
+                this.state.valueString,
+            )
         ) {
             this.parseValue(newValue);
         }
@@ -121,10 +117,10 @@ export default class UITransferInput extends UIComponent<Props, State> {
         const { maxValue, maxValueMessage, value } = this.props;
         const fees = this.getFees();
 
-        return maxValue != null
-            && maxValueMessage != null
-            && value != null
-            && value.plus(fees).gte(maxValue.minus(fees))
+        return maxValue != null &&
+            maxValueMessage != null &&
+            value != null &&
+            value.plus(fees).gte(maxValue.minus(fees))
             ? maxValueMessage
             : undefined;
     }
@@ -202,9 +198,7 @@ export default class UITransferInput extends UIComponent<Props, State> {
     }
 
     parseValue(value: ?BigNum) {
-        const text = value === undefined || value === null
-            ? ''
-            : UIFunction.getNumberString(value);
+        const text = value === undefined || value === null ? '' : UIFunction.getNumberString(value);
         const { valueString, inputPlaceholder } = this.parseText(text) || {
             valueString: text,
             inputPlaceholder: '',
@@ -237,7 +231,9 @@ export default class UITransferInput extends UIComponent<Props, State> {
             <UIAmountInput
                 {...this.props}
                 {...testIDProp}
-                ref={(component) => { this.amountInput = component; }}
+                ref={component => {
+                    this.amountInput = component;
+                }}
                 autoCapitalize="none"
                 button={button}
                 maxLines={1}
@@ -287,15 +283,9 @@ export default class UITransferInput extends UIComponent<Props, State> {
         const [integer, fractional] = stringNumber.split(localizedSeparator);
 
         return (
-            <UILabel
-                color={UILabelColors.TextPrimary}
-                role={UILabelRoles.ParagraphText}
-            >
+            <UILabel color={UILabelColors.TextPrimary} role={UILabelRoles.ParagraphText}>
                 {integer}
-                <UILabel
-                    color={UILabelColors.TextTertiary}
-                    role={UILabelRoles.MonoText}
-                >
+                <UILabel color={UILabelColors.TextTertiary} role={UILabelRoles.MonoText}>
                     {`${localizedSeparator}${fractional}`}
                 </UILabel>
             </UILabel>
@@ -311,13 +301,15 @@ export default class UITransferInput extends UIComponent<Props, State> {
                 // when its focus is switched to a selected non-input component.
                 // Thus disable such an ability.
                 selectable={false}
-                value={this.renderFractional(uiLocalized.formatString(
-                    uiLocalized.feeAmount,
-                    uiLocalized.amountToLocale(this.getFees(), {
-                        minimumFractionDigits: this.getMinDecimals(),
-                        maximumFractionDigits: this.getMinDecimals(),
-                    }),
-                ))}
+                value={this.renderFractional(
+                    uiLocalized.formatString(
+                        uiLocalized.feeAmount,
+                        uiLocalized.amountToLocale(this.getFees(), {
+                            minimumFractionDigits: this.getMinDecimals(),
+                            maximumFractionDigits: this.getMinDecimals(),
+                        }),
+                    ),
+                )}
                 comments={uiLocalized.fee}
                 commentsRole={UILabelRoles.ParagraphLabel}
                 containerStyle={[UIStyle.margin.topDefault(), UIStyle.common.flex2()]}

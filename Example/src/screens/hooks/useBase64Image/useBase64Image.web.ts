@@ -5,20 +5,17 @@ export const useBase64Image = (imageUrl: string): string | null => {
     const readerRef = React.useRef(new FileReader());
     React.useEffect(() => {
         readerRef.current.onloadend = () => {
-            if (
-                readerRef.current.result &&
-                typeof readerRef.current.result === 'string'
-            )
+            if (readerRef.current.result && typeof readerRef.current.result === 'string')
                 setImageEncoded(readerRef.current.result);
         };
     }, []);
 
     React.useEffect(() => {
         fetch(imageUrl)
-            .then((response) => {
+            .then(response => {
                 return response.blob();
             })
-            .then((blob) => {
+            .then(blob => {
                 readerRef.current.readAsDataURL(blob);
             });
     }, [imageUrl]);

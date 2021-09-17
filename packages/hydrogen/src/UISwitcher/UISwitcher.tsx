@@ -3,9 +3,7 @@ import { IconSwitcher } from './IconSwitcher';
 import { ToggleSwitcher } from './ToggleSwitcher';
 import { UISwitcherProps, UISwitcherVariant } from './types';
 
-export const UISwitcher: React.FC<UISwitcherProps> = (
-    props: UISwitcherProps,
-) => {
+export const UISwitcher: React.FC<UISwitcherProps> = (props: UISwitcherProps) => {
     switch (props.variant) {
         case UISwitcherVariant.Toggle:
             return <ToggleSwitcher {...props} />;

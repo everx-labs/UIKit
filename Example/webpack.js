@@ -36,9 +36,7 @@ module.exports = {
                 loader: 'babel-loader',
                 query: {
                     // cacheDirectory: true,
-                    plugins: [
-                        'babel-plugin-react-native-web',
-                    ],
+                    plugins: ['babel-plugin-react-native-web'],
                 },
             },
             {
@@ -80,9 +78,12 @@ module.exports = {
             '.wasm',
         ],
         alias: {
-            'react-native/Libraries/ReactNative/AppContainer': 'react-native-web/dist/exports/AppRegistry/AppContainer',
-            'react-native/Libraries/Text/TextAncestor': 'react-native-web/dist/exports/Text/TextAncestorContext',
-            'react-native/Libraries/Animated/SpringConfig': 'react-native-web/dist/vendor/react-native/Animated/SpringConfig',
+            'react-native/Libraries/ReactNative/AppContainer':
+                'react-native-web/dist/exports/AppRegistry/AppContainer',
+            'react-native/Libraries/Text/TextAncestor':
+                'react-native-web/dist/exports/Text/TextAncestorContext',
+            'react-native/Libraries/Animated/SpringConfig':
+                'react-native-web/dist/vendor/react-native/Animated/SpringConfig',
             'react-native/Libraries/Components/View/ReactNativeStyleAttributes': 'react',
             'react-native': 'react-native-web',
             'react-native-localization': 'react-localization',

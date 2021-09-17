@@ -35,27 +35,15 @@ const useBubbleColor = (props: Props) => {
     const theme = useTheme();
 
     if (props.status === MessageStatus.Aborted) {
-        return [
-            UIStyle.color.getBackgroundColorStyle(
-                theme[ColorVariants.BackgroundNegative],
-            ),
-        ];
+        return [UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.BackgroundNegative])];
     }
 
     if (props.type === TransactionType.Expense) {
-        return [
-            UIStyle.color.getBackgroundColorStyle(
-                theme[ColorVariants.StaticBackgroundBlack],
-            ),
-        ];
+        return [UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.StaticBackgroundBlack])];
     }
 
     if (props.type === TransactionType.Income) {
-        return [
-            UIStyle.color.getBackgroundColorStyle(
-                theme[ColorVariants.BackgroundPositive],
-            ),
-        ];
+        return [UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.BackgroundPositive])];
     }
 
     return null;
@@ -73,8 +61,7 @@ export function BubbleTransactionComment(props: Props) {
                 UIStyle.padding.horizontalNormal(),
                 getBubbleCornerStyle(position),
                 bubbleColor,
-                props.status === MessageStatus.Pending &&
-                    UIStyle.common.opacity70(),
+                props.status === MessageStatus.Pending && UIStyle.common.opacity70(),
                 props.encrypted && styles.msgContainerEncrypted,
             ]}
             onPress={props.onPress}

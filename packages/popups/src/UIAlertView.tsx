@@ -1,7 +1,8 @@
 import {
     UIAlertViewContainer,
     UIAlertViewAction,
-    IUIAlertView, UIAlertViewActionType,
+    IUIAlertView,
+    UIAlertViewActionType,
 } from './UIAlert';
 
 export * from './UIAlert/types';
@@ -11,5 +12,5 @@ export * from './UIAlert/types';
 export const UIAlertView: IUIAlertView = UIAlertViewContainer;
 // @ts-expect-error
 // same
-UIAlertView.Action = UIAlertViewAction
-UIAlertView.Action.Type = UIAlertViewActionType
+UIAlertView.Action = UIAlertViewAction;
+UIAlertView.Action.Type = UIAlertViewActionType;

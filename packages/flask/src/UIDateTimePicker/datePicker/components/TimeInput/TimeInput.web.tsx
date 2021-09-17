@@ -2,8 +2,8 @@ import React from 'react';
 import { useCalendar } from '../../calendarContext';
 import type { TimeInputProps } from './types';
 
-export function TimeInput({ onChange, current }: TimeInputProps){
-const { utils } = useCalendar();
+export function TimeInput({ onChange, current }: TimeInputProps) {
+    const { utils } = useCalendar();
     const inputRef = React.useRef<HTMLElement>(null);
 
     const [time, setTime] = React.useState('');
@@ -56,8 +56,7 @@ const { utils } = useCalendar();
         type: 'time',
         value: time,
         autoFocus: false,
-        onChange: (e: { target: { value: string } }) =>
-            onChangeHandler(e.target.value), // its can return value only on end input, '' or '00:00'
+        onChange: (e: { target: { value: string } }) => onChangeHandler(e.target.value), // its can return value only on end input, '' or '00:00'
     };
     /**
      * We  are have to use React element input here because of broken timepicker flatlist in web.
@@ -65,4 +64,4 @@ const { utils } = useCalendar();
      * So it was useful element for faster develop of TimePicker ???
      */
     return React.createElement('input', inputOptions);
-};
+}

@@ -50,9 +50,7 @@ type Props = {
 };
 
 export function CustomKeyboardWrapper(props: Props) {
-    const { height, opacity } = useCustomKeyboardWrapperAnimations(
-        props.children != null,
-    );
+    const { height, opacity } = useCustomKeyboardWrapperAnimations(props.children != null);
 
     return (
         <Animated.View>

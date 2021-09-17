@@ -47,18 +47,9 @@ export function ChatInput(props: ChatInputProps) {
         numberOfLines,
         numberOfLinesProp,
         resetInputHeight,
-    } = useAutogrowTextView(
-        props.textInputRef,
-        undefined,
-        CHAT_INPUT_NUM_OF_LINES,
-    );
+    } = useAutogrowTextView(props.textInputRef, undefined, CHAT_INPUT_NUM_OF_LINES);
     const showMaxLengthAlert = useChatMaxLengthAlert(MAX_INPUT_LENGTH);
-    const {
-        inputHasValue,
-        onChangeText,
-        onKeyPress,
-        onSendText,
-    } = useChatInputValue({
+    const { inputHasValue, onChangeText, onKeyPress, onSendText } = useChatInputValue({
         ref: props.textInputRef,
         onSendText: props.onSendText,
         showMaxLengthAlert,
@@ -74,10 +65,7 @@ export function ChatInput(props: ChatInputProps) {
             shortcuts={props.shortcuts}
             left={
                 props.menuPlus?.length && props.menuPlus?.length > 0 ? (
-                    <MenuPlus
-                        menuPlus={props.menuPlus}
-                        menuPlusDisabled={props.menuPlusDisabled}
-                    />
+                    <MenuPlus menuPlus={props.menuPlus} menuPlusDisabled={props.menuPlusDisabled} />
                 ) : null
             }
             right={
@@ -95,10 +83,7 @@ export function ChatInput(props: ChatInputProps) {
                         inputHasValue={inputHasValue}
                         onSendText={onSendText}
                     />
-                    <MenuMore
-                        menuMore={props.menuMore}
-                        menuMoreDisabled={props.menuMoreDisabled}
-                    />
+                    <MenuMore menuMore={props.menuMore} menuMoreDisabled={props.menuMoreDisabled} />
                 </>
             }
         >

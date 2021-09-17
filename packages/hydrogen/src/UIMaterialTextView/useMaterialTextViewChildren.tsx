@@ -29,10 +29,7 @@ export function UIMaterialTextViewAction({
 }) {
     return (
         <TouchableOpacity onPress={onPress}>
-            <UILabel
-                role={UILabelRoles.Action}
-                color={UILabelColors.TextPrimary}
-            >
+            <UILabel role={UILabelRoles.Action} color={UILabelColors.TextPrimary}>
                 {children}
             </UILabel>
         </TouchableOpacity>
@@ -41,52 +38,42 @@ export function UIMaterialTextViewAction({
 
 export function UIMaterialTextViewText({ children }: { children: string }) {
     return (
-        <UILabel
-            role={UILabelRoles.ParagraphText}
-            color={UILabelColors.TextTertiary}
-        >
+        <UILabel role={UILabelRoles.ParagraphText} color={UILabelColors.TextTertiary}>
             {children}
         </UILabel>
     );
 }
 
 const getChilds = (children: React.ReactNode) => {
-    const configs = React.Children.toArray(children).reduce<React.ReactNode[]>(
-        (acc, child) => {
-            if (React.isValidElement(child)) {
-                if (
-                    child.type === UIMaterialTextViewIcon ||
-                    child.type === UIMaterialTextViewAction ||
-                    child.type === UIMaterialTextViewText
-                ) {
-                    acc.push(child);
-                    return acc;
-                }
-
-                if (child.type === React.Fragment) {
-                    acc.push(...getChilds(child.props.children));
-
-                    return acc;
-                }
+    const configs = React.Children.toArray(children).reduce<React.ReactNode[]>((acc, child) => {
+        if (React.isValidElement(child)) {
+            if (
+                child.type === UIMaterialTextViewIcon ||
+                child.type === UIMaterialTextViewAction ||
+                child.type === UIMaterialTextViewText
+            ) {
+                acc.push(child);
+                return acc;
             }
 
-            throw new Error(
-                `A UIMaterialText can only contain 'UIMaterialTextView.[Icon|Action|Text]' components as its direct children (found ${
-                    // eslint-disable-next-line no-nested-ternary
-                    React.isValidElement(child)
-                        ? `${
-                              typeof child.type === 'string'
-                                  ? child.type
-                                  : child.type?.name
-                          }`
-                        : typeof child === 'object'
-                        ? JSON.stringify(child)
-                        : `'${String(child)}'`
-                })`,
-            );
-        },
-        [],
-    );
+            if (child.type === React.Fragment) {
+                acc.push(...getChilds(child.props.children));
+
+                return acc;
+            }
+        }
+
+        throw new Error(
+            `A UIMaterialText can only contain 'UIMaterialTextView.[Icon|Action|Text]' components as its direct children (found ${
+                // eslint-disable-next-line no-nested-ternary
+                React.isValidElement(child)
+                    ? `${typeof child.type === 'string' ? child.type : child.type?.name}`
+                    : typeof child === 'object'
+                    ? JSON.stringify(child)
+                    : `'${String(child)}'`
+            })`,
+        );
+    }, []);
 
     return configs;
 };
@@ -98,12 +85,7 @@ export function useMaterialTextViewChildren(
     isHovered: boolean,
     clear: () => void,
 ) {
-    const clearButton = useClearButton(
-        inputHasValue,
-        isFocused,
-        isHovered,
-        clear,
-    );
+    const clearButton = useClearButton(inputHasValue, isFocused, isHovered, clear);
 
     if (clearButton) {
         /**
@@ -173,9 +155,7 @@ export function useMaterialTextViewChildren(
 
     if (hasAction) {
         if (hasText) {
-            throw new Error(
-                `You can't pass UIMaterialTextView.Text with Action at the same time.`,
-            );
+            throw new Error(`You can't pass UIMaterialTextView.Text with Action at the same time.`);
         }
 
         return action;

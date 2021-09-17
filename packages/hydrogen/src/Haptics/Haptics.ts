@@ -2,6 +2,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 export function hapticImpact(_inputStyle: 'light' | 'medium' | 'heavy') {}
 export function hapticSelection() {}
-export function hapticNotification(
-    _inputType: 'success' | 'warning' | 'error',
-) {}
+export function hapticNotification(_inputType: 'success' | 'warning' | 'error') {}

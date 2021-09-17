@@ -14,9 +14,7 @@ export const ResourceSavingScene = ({ isVisible, children, style }: Props) => {
         <View
             style={[
                 styles.container,
-                Platform.OS === 'web'
-                    ? { display: isVisible ? 'flex' : 'none' }
-                    : null,
+                Platform.OS === 'web' ? { display: isVisible ? 'flex' : 'none' } : null,
                 style,
             ]}
             collapsable={false}
@@ -27,9 +25,7 @@ export const ResourceSavingScene = ({ isVisible, children, style }: Props) => {
             }
             pointerEvents={isVisible ? 'auto' : 'none'}
         >
-            <View style={isVisible ? styles.attached : styles.detached}>
-                {children}
-            </View>
+            <View style={isVisible ? styles.attached : styles.detached}>{children}</View>
         </View>
     );
 };

@@ -61,9 +61,7 @@ const useProgress = (
             if (isFirstRender.value) {
                 isFirstRender.value = false;
             }
-            visibleState.value = visible
-                ? VISIBLE_STATE_OPENED
-                : VISIBLE_STATE_CLOSED;
+            visibleState.value = visible ? VISIBLE_STATE_OPENED : VISIBLE_STATE_CLOSED;
         }
     }, [visible, visibleState, isFirstRender]);
 
@@ -89,9 +87,7 @@ const useProgress = (
         [onClosed, visibleState.value, isFirstRender.value],
     );
 
-    const progress: Readonly<Animated.SharedValue<
-        number
-    >> = useDerivedValue((): number => {
+    const progress: Readonly<Animated.SharedValue<number>> = useDerivedValue((): number => {
         return withSpring(visibleState.value, withSpringConfig, onAnimation);
     }, []);
 
@@ -158,18 +154,13 @@ function UISearchControllerContent({
                     headerRightLabel={uiLocalized.Cancel}
                     headerRightOnPress={onCancel}
                 />
-                {typeof children === 'function'
-                    ? children(searchText)
-                    : children}
+                {typeof children === 'function' ? children(searchText) : children}
             </SafeAreaView>
         </Animated.View>
     );
 }
 
-export function UISearchController({
-    forId,
-    ...props
-}: UISearchControllerProps) {
+export function UISearchController({ forId, ...props }: UISearchControllerProps) {
     const { visible, children } = props;
     const [isVisible, setIsVisible] = React.useState(visible);
 
@@ -184,10 +175,7 @@ export function UISearchController({
         setIsVisible(false);
     }, [setIsVisible]);
 
-    const progress: Readonly<Animated.SharedValue<number>> = useProgress(
-        visible,
-        onClosed,
-    );
+    const progress: Readonly<Animated.SharedValue<number>> = useProgress(visible, onClosed);
 
     if (!isVisible) {
         return null;

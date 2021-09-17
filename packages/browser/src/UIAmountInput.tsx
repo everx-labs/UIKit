@@ -24,14 +24,8 @@ enum ValidationStatus {
     Less = 'Less',
 }
 
-function useValidation(
-    decimalDivider: number,
-    min: BigNumber | null,
-    max: BigNumber | null,
-) {
-    const [validationStatus, setValidationStatus] = React.useState(
-        ValidationStatus.None,
-    );
+function useValidation(decimalDivider: number, min: BigNumber | null, max: BigNumber | null) {
+    const [validationStatus, setValidationStatus] = React.useState(ValidationStatus.None);
 
     const checkValidation = React.useCallback(
         (rawAmount: BigNumber | string) => {
@@ -165,25 +159,17 @@ const UIAmountInputHint = React.memo(function UIAmountInputHintMemoized({
         }
 
         const minString = minParts
-            ? [minInteger, minDecimal]
-                  .filter((i) => i != null)
-                  .join(fmt.decimalSeparator)
+            ? [minInteger, minDecimal].filter(i => i != null).join(fmt.decimalSeparator)
             : null;
         const maxString = maxParts
-            ? [maxInteger, maxDecimal]
-                  .filter((i) => i != null)
-                  .join(fmt.decimalSeparator)
+            ? [maxInteger, maxDecimal].filter(i => i != null).join(fmt.decimalSeparator)
             : null;
 
         const hint = [
-            minString != null
-                ? `${uiLocalized.Browser.AmountInput.HintMin} ${minString}`
-                : null,
-            maxString != null
-                ? `${maxString} ${uiLocalized.Browser.AmountInput.HintMax}`
-                : null,
+            minString != null ? `${uiLocalized.Browser.AmountInput.HintMin} ${minString}` : null,
+            maxString != null ? `${maxString} ${uiLocalized.Browser.AmountInput.HintMax}` : null,
         ]
-            .filter((i) => i != null)
+            .filter(i => i != null)
             .join(' – ');
 
         return hint;
@@ -238,13 +224,8 @@ function UIAmountInputInternal({
     onHeightChange,
     onSendAmount: onSendAmountProp,
 }: UIAmountInputInternalProps) {
-    const {
-        onChange,
-        onContentSizeChange,
-        numberOfLines,
-        resetInputHeight,
-        inputStyle,
-    } = useAutogrowTextView(textInputRef, onHeightChange, 1);
+    const { onChange, onContentSizeChange, numberOfLines, resetInputHeight, inputStyle } =
+        useAutogrowTextView(textInputRef, onHeightChange, 1);
 
     const {
         inputHasValue,
@@ -254,12 +235,7 @@ function UIAmountInputInternal({
         onKeyPress: onKeyPressBase,
     } = useUITextViewValue(textInputRef, true);
 
-    const {
-        decimalDivider,
-        decimalPlaceholder,
-        min,
-        max,
-    } = React.useMemo(() => {
+    const { decimalDivider, decimalPlaceholder, min, max } = React.useMemo(() => {
         const divider = 10 ** decimals;
         return {
             decimalDivider: divider,
@@ -272,17 +248,13 @@ function UIAmountInputInternal({
         };
     }, [decimals, minProp, maxProp]);
 
-    const {
-        validationStatus,
-        validationString,
-        setValidationStatus,
-        checkValidation,
-    } = useValidation(decimalDivider, min, max);
+    const { validationStatus, validationString, setValidationStatus, checkValidation } =
+        useValidation(decimalDivider, min, max);
 
-    const {
-        onChangeText: onChangeTextFormatting,
-        onSelectionChange,
-    } = useNumberFormatting(textInputRef, decimals);
+    const { onChangeText: onChangeTextFormatting, onSelectionChange } = useNumberFormatting(
+        textInputRef,
+        decimals,
+    );
 
     const onChangeText = React.useCallback(
         (text: string) => {
@@ -292,12 +264,7 @@ function UIAmountInputInternal({
                 setValidationStatus(ValidationStatus.None);
             }
         },
-        [
-            onChangeTextBase,
-            onChangeTextFormatting,
-            setValidationStatus,
-            validationStatus,
-        ],
+        [onChangeTextBase, onChangeTextFormatting, setValidationStatus, validationStatus],
     );
 
     const [isFocused, setIsFocused] = React.useState(true);
@@ -333,9 +300,7 @@ function UIAmountInputInternal({
     }, [isFocused]);
 
     const onActionPress = React.useCallback(() => {
-        const amount = getBigNumberFromRawString(
-            inputValue.current,
-        ).multipliedBy(decimalDivider);
+        const amount = getBigNumberFromRawString(inputValue.current).multipliedBy(decimalDivider);
 
         if (!checkValidation(amount)) {
             return;
@@ -343,13 +308,7 @@ function UIAmountInputInternal({
 
         onSendAmountProp(amount);
         clearBase();
-    }, [
-        onSendAmountProp,
-        clearBase,
-        inputValue,
-        decimalDivider,
-        checkValidation,
-    ]);
+    }, [onSendAmountProp, clearBase, inputValue, decimalDivider, checkValidation]);
 
     const clear = React.useCallback(() => {
         clearBase();
@@ -448,9 +407,7 @@ export function UIAmountInput(props: UIAmountInputProps) {
                 min={props.min}
                 max={props.max}
                 onSendAmount={props.onSendAmount}
-                onHeightChange={
-                    Platform.OS === 'web' ? onHeightChange : undefined
-                }
+                onHeightChange={Platform.OS === 'web' ? onHeightChange : undefined}
             />
         </UIInputAccessoryView>
     );

@@ -7,11 +7,7 @@ export type UIBottomSheetProps = UISheetProps & {
     style?: StyleProp<ViewStyle>;
 };
 
-export function UIBottomSheet({
-    children,
-    style,
-    ...rest
-}: UIBottomSheetProps) {
+export function UIBottomSheet({ children, style, ...rest }: UIBottomSheetProps) {
     return (
         <UISheet
             {...rest}
@@ -21,8 +17,8 @@ export function UIBottomSheet({
                 style,
                 {
                     paddingBottom:
-                        ((StyleSheet.flatten(style).paddingBottom as number) ??
-                            0) + UIConstant.rubberBandEffectDistance,
+                        ((StyleSheet.flatten(style).paddingBottom as number) ?? 0) +
+                        UIConstant.rubberBandEffectDistance,
                 },
             ]}
         >

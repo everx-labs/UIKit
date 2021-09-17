@@ -22,10 +22,7 @@ export function CountryPicker({ onLayout, ...message }: CountryMessage) {
                     <BubbleSimplePlainText
                         type={ChatMessageType.PlainText}
                         key="country-picker-box-bubble-prompt"
-                        text={
-                            message.prompt ||
-                            uiLocalized.CountryPicker.Title
-                        }
+                        text={message.prompt || uiLocalized.CountryPicker.Title}
                         status={MessageStatus.Received}
                     />
                     {message.externalState.value != null && (
@@ -46,10 +43,7 @@ export function CountryPicker({ onLayout, ...message }: CountryMessage) {
             <BubbleSimplePlainText
                 type={ChatMessageType.PlainText}
                 key="country-picker-box-bubble-prompt"
-                text={
-                    message.prompt ||
-                    uiLocalized.CountryPicker.Title
-                }
+                text={message.prompt || uiLocalized.CountryPicker.Title}
                 status={MessageStatus.Received}
                 firstFromChain
                 lastFromChain

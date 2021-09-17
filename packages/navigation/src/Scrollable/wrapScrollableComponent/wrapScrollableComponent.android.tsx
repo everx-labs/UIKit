@@ -1,10 +1,7 @@
 import * as React from 'react';
 import type { ScrollViewProps } from 'react-native';
 import Animated from 'react-native-reanimated';
-import {
-    NativeViewGestureHandler,
-    PanGestureHandler,
-} from 'react-native-gesture-handler';
+import { NativeViewGestureHandler, PanGestureHandler } from 'react-native-gesture-handler';
 
 import { ScrollableContext } from '../Context';
 import { useHasScroll } from './useHasScroll';
@@ -13,9 +10,7 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
     ScrollableComponent: React.ComponentClass<Props>,
     displayName: string,
 ) {
-    const AnimatedScrollable = Animated.createAnimatedComponent(
-        ScrollableComponent,
-    );
+    const AnimatedScrollable = Animated.createAnimatedComponent(ScrollableComponent);
 
     function ScrollableForwarded(
         props: Props & { children?: React.ReactNode },

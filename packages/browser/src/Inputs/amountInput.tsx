@@ -1,11 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import {
-    BubbleSimplePlainText,
-    ChatMessageType,
-    MessageStatus,
-} from '@tonlabs/uikit.chats';
+import { BubbleSimplePlainText, ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';
 import { Portal } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import type { AmountInputMessage } from '../types';
@@ -30,9 +26,7 @@ export function AmountInput({ onLayout, ...message }: AmountInputMessage) {
                     type={ChatMessageType.PlainText}
                     key="amount-input-bubble-amount"
                     text={uiLocalized.amountToLocale(
-                        message.externalState.amount.dividedBy(
-                            10 ** message.decimals,
-                        ),
+                        message.externalState.amount.dividedBy(10 ** message.decimals),
                     )}
                     status={MessageStatus.Sent}
                     firstFromChain
@@ -59,7 +53,7 @@ export function AmountInput({ onLayout, ...message }: AmountInputMessage) {
                     decimals={message.decimals}
                     min={message.min}
                     max={message.max}
-                    onSendAmount={(amount) => {
+                    onSendAmount={amount => {
                         message.onSend({
                             amount,
                         });

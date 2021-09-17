@@ -12,17 +12,17 @@ export type ActionProps = {
     children?: React$Element<any>,
 };
 
-type Props = any & ActionProps
+type Props = any & ActionProps;
 
 const UIActionComponent = ({
-                               testID = '',
-                               disabled = false,
-                               showIndicator = false,
-                               onPress = null,
-                               children,
-                               onMouseEnter,
-                               onMouseLeave,
-                           }: Props) => {
+    testID = '',
+    disabled = false,
+    showIndicator = false,
+    onPress = null,
+    children,
+    onMouseEnter,
+    onMouseLeave,
+}: Props) => {
     const [isTapped, setTapped] = useState<boolean>(false);
     const [isHover, setHover] = useState<boolean>(false);
     const childrenRef = useRef(null);
@@ -71,10 +71,7 @@ const UIActionComponent = ({
             onPressIn={onPressIn}
             onPressOut={onPressOut}
         >
-            <View
-                onMouseEnter={onMouseEnterHandler}
-                onMouseLeave={onMouseLeaveHandler}
-            >
+            <View onMouseEnter={onMouseEnterHandler} onMouseLeave={onMouseLeaveHandler}>
                 {React.cloneElement(children, {
                     ref: childrenRef,
                     isTapped,

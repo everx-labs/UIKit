@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, Text, Animated } from 'react-native';
 
-import { Header } from './Header'
-import { Days } from './Days'
+import { Header } from './Header';
+import { Days } from './Days';
 import { useCalendar } from '../calendarContext';
 
 const Calendar = () => {
@@ -73,4 +73,4 @@ const styles = (theme: any) =>
         },
     });
 
-export { Calendar }
+export { Calendar };

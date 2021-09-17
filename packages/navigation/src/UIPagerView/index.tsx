@@ -1,7 +1,7 @@
 import { UIPagerViewContainer } from './UIPagerViewContainer';
 import { UIPagerViewPage } from './UIPagerViewPage';
 
-import type { UIPagerViewComponents } from './types'
+import type { UIPagerViewComponents } from './types';
 
 export * from './types';
 

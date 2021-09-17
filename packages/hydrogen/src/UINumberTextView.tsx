@@ -6,11 +6,7 @@ import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UITextView, UITextViewProps } from './UITextView';
 import { moveCarret } from './moveCarret';
 
-const groupReversed = (
-    rawString: string,
-    groupSize: number,
-    groupSeparator: string,
-) => {
+const groupReversed = (rawString: string, groupSize: number, groupSeparator: string) => {
     let groupedPart = '';
 
     let i = rawString.length;
@@ -39,11 +35,7 @@ const groupReversed = (
  * But it's turned out that it's 70% slower
  * https://jsbench.me/dckm6ihdfj/1
  */
-const group = (
-    rawString: string,
-    groupSize: number,
-    groupSeparator: string,
-) => {
+const group = (rawString: string, groupSize: number, groupSeparator: string) => {
     let groupedPart = '';
 
     let i = 0;
@@ -73,10 +65,7 @@ function getCarretNormalizedPosition(
     let carretNormalizedPosition = carretPosition;
 
     for (let i = 0; i < carretPosition; i += 1) {
-        if (
-            previousText[i] === integerSeparator ||
-            previousText[i] === fractionalSeparator
-        ) {
+        if (previousText[i] === integerSeparator || previousText[i] === fractionalSeparator) {
             carretNormalizedPosition -= 1;
         }
     }
@@ -123,8 +112,7 @@ function getNewCarretPosition(
     newCarretPosition += normalizedText.length - previousNormalizedText.length;
 
     if (startCarretNormalizedPosition !== endCarretNormalizedPosition) {
-        newCarretPosition +=
-            endCarretNormalizedPosition - startCarretNormalizedPosition;
+        newCarretPosition += endCarretNormalizedPosition - startCarretNormalizedPosition;
     }
 
     // Afrer we got carret position in normalized value
@@ -141,10 +129,7 @@ function getNewCarretPosition(
     return newCarretPosition;
 }
 
-export function useNumberFormatting(
-    ref: React.Ref<TextInput> | null,
-    decimals?: number,
-) {
+export function useNumberFormatting(ref: React.Ref<TextInput> | null, decimals?: number) {
     const selectionStart = React.useRef(0);
     const selectionEnd = React.useRef(0);
 
@@ -182,10 +167,7 @@ export function useNumberFormatting(
             const notNumbersRegexp = /[^0-9]/g;
 
             // Normalize and group integer part
-            const normalizedIntegerPart = integerPart.replace(
-                notNumbersRegexp,
-                '',
-            );
+            const normalizedIntegerPart = integerPart.replace(notNumbersRegexp, '');
 
             normalizedText += normalizedIntegerPart;
 
@@ -199,16 +181,10 @@ export function useNumberFormatting(
 
             // Normalize and group fractional part
             if (fractionalPart != null) {
-                let normalizedFractionalPart = fractionalPart.replace(
-                    notNumbersRegexp,
-                    '',
-                );
+                let normalizedFractionalPart = fractionalPart.replace(notNumbersRegexp, '');
 
                 if (decimals) {
-                    normalizedFractionalPart = normalizedFractionalPart.slice(
-                        0,
-                        decimals,
-                    );
+                    normalizedFractionalPart = normalizedFractionalPart.slice(0, decimals);
                 }
 
                 normalizedText += delimeter;
@@ -264,9 +240,7 @@ export function useNumberFormatting(
 export function UINumberTextView(props: UITextViewProps) {
     const textViewRef = React.useRef<TextInput>(null);
 
-    const { onSelectionChange, onChangeText } = useNumberFormatting(
-        textViewRef,
-    );
+    const { onSelectionChange, onChangeText } = useNumberFormatting(textViewRef);
 
     return (
         <UITextView

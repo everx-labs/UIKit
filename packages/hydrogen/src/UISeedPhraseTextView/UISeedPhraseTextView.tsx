@@ -3,10 +3,7 @@ import { View, Platform } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import {
-    UIMaterialTextView,
-    UIMaterialTextViewRef,
-} from '../UIMaterialTextView';
+import { UIMaterialTextView, UIMaterialTextViewRef } from '../UIMaterialTextView';
 import { UIConstant } from '../constants';
 import { moveCarret } from '../moveCarret';
 
@@ -14,23 +11,12 @@ import { UISeedPhrasePopover } from './UISeedPhrasePopover';
 
 const SPLITTER = ` ${UIConstant.dashSymbol} `;
 
-const identifyWordThatChanged = (
-    phrase: string,
-    lastPhrase: string,
-): [string, number] => {
+const identifyWordThatChanged = (phrase: string, lastPhrase: string): [string, number] => {
     const currentWords = phrase.split(SPLITTER);
     const lastWords = lastPhrase.split(SPLITTER);
 
-    for (
-        let i = Math.max(currentWords.length, lastWords.length) - 1;
-        i >= 0;
-        i -= 1
-    ) {
-        if (
-            lastWords[i] != null &&
-            currentWords[i] != null &&
-            lastWords[i] !== currentWords[i]
-        ) {
+    for (let i = Math.max(currentWords.length, lastWords.length) - 1; i >= 0; i -= 1) {
+        if (lastWords[i] != null && currentWords[i] != null && lastWords[i] !== currentWords[i]) {
             return [currentWords[i], i];
         }
     }
@@ -92,10 +78,7 @@ type ACTION =
     | CHANGE_HIGHLIGHTED_ACTION
     | BLUR_ACTION;
 
-const reducer = (
-    state: CurrentInnerState,
-    action: ACTION,
-): CurrentInnerState => {
+const reducer = (state: CurrentInnerState, action: ACTION): CurrentInnerState => {
     if (action.type === 'separate') {
         return {
             ...state,
@@ -167,10 +150,7 @@ export type UISeedPhraseTextViewProps = {
 export const UISeedPhraseTextView = React.forwardRef<
     UIMaterialTextViewRef,
     UISeedPhraseTextViewProps
->(function UISeedPhraseTextViewForwarded(
-    props: UISeedPhraseTextViewProps,
-    ref,
-) {
+>(function UISeedPhraseTextViewForwarded(props: UISeedPhraseTextViewProps, ref) {
     const { words, validatePhrase, onSuccess, onSubmit, testID } = props;
     const totalWords = React.useMemo(() => {
         if (typeof props.totalWords === 'number') {
@@ -200,11 +180,7 @@ export const UISeedPhraseTextView = React.forwardRef<
     const phrasePartsRef = React.useRef<string[] | null>(null);
 
     const dispatchAndSavePhrase = React.useCallback((action: ACTION) => {
-        if (
-            'payload' in action &&
-            action.payload != null &&
-            'phrase' in action.payload
-        ) {
+        if ('payload' in action && action.payload != null && 'phrase' in action.payload) {
             phraseRef.current = action.payload.phrase;
             phrasePartsRef.current = splitPhrase(action.payload.phrase);
             // eslint-disable-next-line no-param-reassign
@@ -227,11 +203,7 @@ export const UISeedPhraseTextView = React.forwardRef<
         setTimeout(() => {
             // in onHintSelected method we call .focus() to continue typing
             // so it means we don't need to handle blur event anymore
-            if (
-                refToUse &&
-                'current' in refToUse &&
-                refToUse.current?.isFocused()
-            ) {
+            if (refToUse && 'current' in refToUse && refToUse.current?.isFocused()) {
                 return;
             }
             dispatch({
@@ -248,9 +220,7 @@ export const UISeedPhraseTextView = React.forwardRef<
         if (state.typed.word.length === 0) {
             return [];
         }
-        const filtered = words.filter(
-            (word) => word.indexOf(state.typed.word) === 0,
-        );
+        const filtered = words.filter(word => word.indexOf(state.typed.word) === 0);
 
         // Do not show hint if it consist of the typed word itself
         if (filtered.length === 1 && filtered[0] === state.typed.word) {
@@ -262,18 +232,13 @@ export const UISeedPhraseTextView = React.forwardRef<
 
     const onHintSelected = React.useCallback(
         (item: string) => {
-            const parts = phrasePartsRef.current
-                ? [...phrasePartsRef.current]
-                : [];
+            const parts = phrasePartsRef.current ? [...phrasePartsRef.current] : [];
 
             parts[state.typed.index] = item;
 
             let newText = parts.join(SPLITTER);
 
-            if (
-                state.typed.index === parts.length - 1 &&
-                totalWords.indexOf(parts.length) === -1
-            ) {
+            if (state.typed.index === parts.length - 1 && totalWords.indexOf(parts.length) === -1) {
                 newText = `${newText}${SPLITTER}`;
             }
 
@@ -367,10 +332,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 dispatch({
                     type: 'change_highlighted',
                     payload: {
-                        index: Math.min(
-                            state.highlight.index + 1,
-                            hints.length - 1,
-                        ),
+                        index: Math.min(state.highlight.index + 1, hints.length - 1),
                     },
                 });
 
@@ -417,10 +379,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 return;
             }
 
-            if (
-                text.length < phraseRef.current.length &&
-                lastSymbol === UIConstant.dashSymbol
-            ) {
+            if (text.length < phraseRef.current.length && lastSymbol === UIConstant.dashSymbol) {
                 const newText = text.slice(0, text.length - 2);
 
                 if (refToUse && 'current' in refToUse) {
@@ -461,7 +420,7 @@ export const UISeedPhraseTextView = React.forwardRef<
     }, [validatePhrase, onSuccess]);
 
     React.useEffect(() => {
-        validatePhraseRef.current(state.phrase, state.parts).then((valid) => {
+        validatePhraseRef.current(state.phrase, state.parts).then(valid => {
             setIsValid(valid);
             if (valid) {
                 onSuccessRef.current(state.phrase, state.parts);
@@ -480,19 +439,13 @@ export const UISeedPhraseTextView = React.forwardRef<
 
     const totalWordsString = React.useMemo(() => {
         if (typeof props.totalWords === 'number') {
-            return uiLocalized.localizedStringForValue(
-                props.totalWords,
-                'words',
-            );
+            return uiLocalized.localizedStringForValue(props.totalWords, 'words');
         }
 
         const lastIndex = props.totalWords.length - 1;
         return props.totalWords.reduce((acc, num, index) => {
             if (index === lastIndex) {
-                return `${acc}${uiLocalized.localizedStringForValue(
-                    num,
-                    'words',
-                )}`;
+                return `${acc}${uiLocalized.localizedStringForValue(num, 'words')}`;
             }
 
             return `${acc}${num}${uiLocalized.orDelimeter}`;
@@ -502,7 +455,7 @@ export const UISeedPhraseTextView = React.forwardRef<
     const hasValue = state.phrase.length > 0;
 
     const [helperText, error] = React.useMemo(() => {
-        const entered = state.parts.filter((w) => w.length > 0).length;
+        const entered = state.parts.filter(w => w.length > 0).length;
 
         if (!isFocused && hasValue) {
             if (isValid) {

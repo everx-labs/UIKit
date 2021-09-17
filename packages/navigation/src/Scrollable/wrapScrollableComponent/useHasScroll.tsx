@@ -13,16 +13,11 @@ export function useHasScroll() {
             return;
         }
 
-        if (
-            scrollViewInnerHeight.current === 0 ||
-            scrollViewOutterHeight.current === 0
-        ) {
+        if (scrollViewInnerHeight.current === 0 || scrollViewOutterHeight.current === 0) {
             return;
         }
 
-        setHasScroll(
-            scrollViewInnerHeight.current > scrollViewOutterHeight.current,
-        );
+        setHasScroll(scrollViewInnerHeight.current > scrollViewOutterHeight.current);
     }, [setHasScroll]);
 
     const onLayout = React.useCallback(

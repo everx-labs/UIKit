@@ -5,11 +5,7 @@ import { ColorVariants, useTheme } from './Colors';
 import { useIsDarkColor } from './useIsDarkColor';
 
 const StatusBarContext = React.createContext<{
-    addBar: (
-        id: number,
-        barStyle: StatusBarStyle,
-        backgroundColor: ColorVariants,
-    ) => void;
+    addBar: (id: number, barStyle: StatusBarStyle, backgroundColor: ColorVariants) => void;
     removeBar: (id: number) => void;
 } | null>(null);
 
@@ -73,9 +69,7 @@ function reducer(state: State, action: AddBarAction | RemoveBarAction) {
         const styles = { ...state.styles };
         delete styles[action.payload.id];
 
-        const stack = state.stack.filter(
-            (barId) => barId !== action.payload.id,
-        );
+        const stack = state.stack.filter(barId => barId !== action.payload.id);
 
         return {
             styles,
@@ -92,11 +86,7 @@ function useStatusBarStyle(color: ColorVariants): StatusBarStyle {
     return isDark ? 'light-content' : 'dark-content';
 }
 
-export function UIStatusBarManager({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
+export function UIStatusBarManager({ children }: { children: React.ReactNode }) {
     const theme = useTheme();
     const localID = useLocalID();
 
@@ -113,11 +103,7 @@ export function UIStatusBarManager({
     });
 
     const manager = React.useRef({
-        addBar(
-            id: number,
-            barStyle: StatusBarStyle,
-            backgroundColor: ColorVariants,
-        ) {
+        addBar(id: number, barStyle: StatusBarStyle, backgroundColor: ColorVariants) {
             dispatch({
                 type: 'ADD_BAR',
                 payload: {
@@ -146,19 +132,12 @@ export function UIStatusBarManager({
     return (
         <StatusBarContext.Provider value={manager}>
             {children}
-            <StatusBar
-                barStyle={barStyle}
-                backgroundColor={theme[backgroundColor]}
-            />
+            <StatusBar barStyle={barStyle} backgroundColor={theme[backgroundColor]} />
         </StatusBarContext.Provider>
     );
 }
 
-export function useStatusBar({
-    backgroundColor,
-}: {
-    backgroundColor: ColorVariants;
-}) {
+export function useStatusBar({ backgroundColor }: { backgroundColor: ColorVariants }) {
     const localID = useLocalID();
     const parentManager = React.useContext(StatusBarContext);
 

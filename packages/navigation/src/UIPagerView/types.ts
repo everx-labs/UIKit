@@ -12,9 +12,7 @@ export type UIPagerViewContainerProps = {
     /** callback that is called when the page changes */
     onPageIndexChange?: (newPageIndex: number) => void;
     /** only UIPagerViewPage can be passed to children */
-    children:
-        | React.ReactElement<UIPagerViewPageProps>
-        | React.ReactElement<UIPagerViewPageProps>[];
+    children: React.ReactElement<UIPagerViewPageProps> | React.ReactElement<UIPagerViewPageProps>[];
     /** used for autotests */
     testID?: string;
 };
@@ -24,7 +22,7 @@ export type UIPagerViewContainerProps = {
  */
 export type UIPagerViewPageProps = {
     /** Unique string for the page */
-    id: string,
+    id: string;
     /** title of page */
     title: string;
     /** main content component for the page */

@@ -1,10 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import type {
-    GestureEvent,
-    NativeViewGestureHandlerPayload,
-} from 'react-native-gesture-handler';
+import type { GestureEvent, NativeViewGestureHandlerPayload } from 'react-native-gesture-handler';
 import Animated, {
     interpolate,
     interpolateColor,
@@ -15,12 +12,7 @@ import Animated, {
     useSharedValue,
     withSpring,
 } from 'react-native-reanimated';
-import {
-    IconSwitcherState,
-    PressSwitcherState,
-    SwitcherState,
-    UISwitcherVariant,
-} from '../types';
+import { IconSwitcherState, PressSwitcherState, SwitcherState, UISwitcherVariant } from '../types';
 import { UIImage } from '../../UIImage';
 import { hapticSelection } from '../../Haptics/Haptics';
 import { ColorVariants, Theme } from '../../Colors';
@@ -60,31 +52,29 @@ export const useImage = (variant: UISwitcherVariant, theme: Theme) => {
 };
 
 export const useSwitcherGestureEvent = (onPress: (() => void) | undefined) => {
-    const pressed = useSharedValue<PressSwitcherState>(
-        PressSwitcherState.NotPressed,
-    );
+    const pressed = useSharedValue<PressSwitcherState>(PressSwitcherState.NotPressed);
 
-    const onGestureEvent = useAnimatedGestureHandler<
-        GestureEvent<NativeViewGestureHandlerPayload>
-    >({
-        onStart: () => {
-            if (pressed.value !== PressSwitcherState.Pressed) {
-                pressed.value = PressSwitcherState.Pressed;
-            }
+    const onGestureEvent = useAnimatedGestureHandler<GestureEvent<NativeViewGestureHandlerPayload>>(
+        {
+            onStart: () => {
+                if (pressed.value !== PressSwitcherState.Pressed) {
+                    pressed.value = PressSwitcherState.Pressed;
+                }
+            },
+            onActive: () => {
+                if (pressed.value !== PressSwitcherState.Pressed) {
+                    pressed.value = PressSwitcherState.Pressed;
+                }
+            },
+            onFinish: (event, _, isCanceledOrFailed: boolean) => {
+                pressed.value = PressSwitcherState.NotPressed;
+                if (!isCanceledOrFailed && event.pointerInside && onPress) {
+                    hapticSelection();
+                    runOnJS(onPress)();
+                }
+            },
         },
-        onActive: () => {
-            if (pressed.value !== PressSwitcherState.Pressed) {
-                pressed.value = PressSwitcherState.Pressed;
-            }
-        },
-        onFinish: (event, _, isCanceledOrFailed: boolean) => {
-            pressed.value = PressSwitcherState.NotPressed;
-            if (!isCanceledOrFailed && event.pointerInside && onPress) {
-                hapticSelection();
-                runOnJS(onPress)();
-            }
-        },
-    });
+    );
     return {
         onGestureEvent,
         pressed,
@@ -96,17 +86,12 @@ export const useImageStyle = (
     switcherState: Readonly<Animated.SharedValue<SwitcherState>>,
     theme: Theme,
 ) => {
-    const iconSwitcherState = useSharedValue<IconSwitcherState>(
-        IconSwitcherState.NotActive,
-    );
+    const iconSwitcherState = useSharedValue<IconSwitcherState>(IconSwitcherState.NotActive);
 
     React.useEffect(() => {
         if (active && iconSwitcherState.value !== IconSwitcherState.Active) {
             iconSwitcherState.value = IconSwitcherState.Active;
-        } else if (
-            !active &&
-            iconSwitcherState.value !== IconSwitcherState.NotActive
-        ) {
+        } else if (!active && iconSwitcherState.value !== IconSwitcherState.NotActive) {
             iconSwitcherState.value = IconSwitcherState.NotActive;
         }
     }, [active, iconSwitcherState]);
@@ -139,11 +124,7 @@ export const useImageStyle = (
         return {
             borderColor: interpolateColor(
                 switcherState.value,
-                [
-                    SwitcherState.Active,
-                    SwitcherState.Hovered,
-                    SwitcherState.Pressed,
-                ],
+                [SwitcherState.Active, SwitcherState.Hovered, SwitcherState.Pressed],
                 [
                     theme[ColorVariants.BackgroundTertiaryInverted] as string,
                     theme[ColorVariants.LineNeutral] as string,
@@ -185,11 +166,7 @@ export const useOverlayStyle = (
         return {
             backgroundColor: interpolateColor(
                 switcherState.value,
-                [
-                    SwitcherState.Active,
-                    SwitcherState.Hovered,
-                    SwitcherState.Pressed,
-                ],
+                [SwitcherState.Active, SwitcherState.Hovered, SwitcherState.Pressed],
                 [
                     theme[ColorVariants.Transparent] as string,
                     theme[ColorVariants.StaticHoverOverlay] as string,

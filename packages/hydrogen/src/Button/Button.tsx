@@ -22,7 +22,7 @@ export type UILayout = {
     marginRight?: number;
     marginBottom?: number;
     marginLeft?: number;
-}
+};
 
 type ButtonProps = {
     animations: ButtonAnimations;
@@ -34,64 +34,65 @@ type ButtonProps = {
     onLongPress?: () => void | Promise<void>;
     onPress?: () => void | Promise<void>;
     testID?: string;
-}
+};
 
-const ButtonForward = React.forwardRef<
-    typeof TouchableElement,
-    ButtonProps
->(function ButtonForwarded(
-    {
-        animations,
-        children,
-        containerStyle,
-        contentStyle,
-        disabled,
-        loading,
-        onLongPress,
-        onPress,
-        testID,
-        ...props
-    }: ButtonProps,
-    ref,
-) {
-    const handleOnLongPress = React.useCallback(() => {
-        if (!loading && onLongPress != null) {
-            onLongPress();
-        }
-    }, [loading, onLongPress]);
+const ButtonForward = React.forwardRef<typeof TouchableElement, ButtonProps>(
+    function ButtonForwarded(
+        {
+            animations,
+            children,
+            containerStyle,
+            contentStyle,
+            disabled,
+            loading,
+            onLongPress,
+            onPress,
+            testID,
+            ...props
+        }: ButtonProps,
+        ref,
+    ) {
+        const handleOnLongPress = React.useCallback(() => {
+            if (!loading && onLongPress != null) {
+                onLongPress();
+            }
+        }, [loading, onLongPress]);
 
-    const handleOnPress = React.useCallback(() => {
-        if (!loading && onPress != null) {
-            onPress();
-        }
-    }, [loading, onPress]);
+        const handleOnPress = React.useCallback(() => {
+            if (!loading && onPress != null) {
+                onPress();
+            }
+        }, [loading, onPress]);
 
-    const processedChildren = useButtonChildren(children);
+        const processedChildren = useButtonChildren(children);
 
-    return (
-        <TouchableElement
-            ref={ref}
-            {...props}
-            animations={animations}
-            disabled={disabled}
-            loading={loading}
-            onLongPress={handleOnLongPress}
-            onPress={handleOnPress}
-            style={[styles.container, containerStyle]}
-            contentStyle={[styles.content, contentStyle]}
-            testID={testID}
-        >
-            <View style={Platform.OS === 'web' ? styles.content : null}>
-                {loading ? (
-                    <UIIndicator
-                        color={ColorVariants.LineNeutral}
-                        size={UIConstant.loaderSize}
-                    />
-                ) : processedChildren}
-            </View>
-        </TouchableElement>
-    );
-});
+        return (
+            <TouchableElement
+                ref={ref}
+                {...props}
+                animations={animations}
+                disabled={disabled}
+                loading={loading}
+                onLongPress={handleOnLongPress}
+                onPress={handleOnPress}
+                style={[styles.container, containerStyle]}
+                contentStyle={[styles.content, contentStyle]}
+                testID={testID}
+            >
+                <View style={Platform.OS === 'web' ? styles.content : null}>
+                    {loading ? (
+                        <UIIndicator
+                            color={ColorVariants.LineNeutral}
+                            size={UIConstant.loaderSize}
+                        />
+                    ) : (
+                        processedChildren
+                    )}
+                </View>
+            </TouchableElement>
+        );
+    },
+);
 
 // @ts-expect-error
 // ts doesn't understand that we assign [Content|Icon|Title] later, and want to see it right away
@@ -115,6 +116,6 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     content: {
-        flexShrink: 1
+        flexShrink: 1,
     },
 });

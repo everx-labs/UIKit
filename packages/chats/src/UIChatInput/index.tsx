@@ -51,25 +51,19 @@ function useMenuPlus(menuPlusHidden = false) {
     };
 }
 
-export function useBackHandler(
-    ref: React.RefObject<TextInput>,
-    dismissKeyboard: () => void,
-) {
+export function useBackHandler(ref: React.RefObject<TextInput>, dismissKeyboard: () => void) {
     React.useEffect(() => {
         if (Platform.OS !== 'android') {
             return undefined;
         }
 
-        const backHandler = BackHandler.addEventListener(
-            'hardwareBackPress',
-            () => {
-                if (ref.current && ref.current.isFocused()) {
-                    dismissKeyboard();
-                    return true;
-                }
-                return false;
-            },
-        );
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            if (ref.current && ref.current.isFocused()) {
+                dismissKeyboard();
+                return true;
+            }
+            return false;
+        });
 
         return () => {
             if (backHandler) {
@@ -127,9 +121,7 @@ export function UIChatInput(props: UIChatInputProps) {
                 shortcuts={props.shortcuts}
                 menuPlus={menuPlus}
                 menuPlusDisabled={props.menuPlusDisabled}
-                menuMore={
-                    undefined /* TODO: we not render it right now, but could at some point */
-                }
+                menuMore={undefined /* TODO: we not render it right now, but could at some point */}
                 menuMoreDisabled={props.menuMoreDisabled}
                 inputHidden={props.inputHidden}
                 quickActions={props.quickActions}

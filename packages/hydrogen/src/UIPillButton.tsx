@@ -1,10 +1,6 @@
 import * as React from 'react';
 import { ColorValue, ImageSourcePropType, StyleSheet } from 'react-native';
-import {
-    interpolateColor,
-    useAnimatedStyle,
-    useSharedValue,
-} from 'react-native-reanimated';
+import { interpolateColor, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
 import { Button, UILayout } from './Button';
 import type { ButtonAnimations } from './Button/types';
@@ -68,7 +64,7 @@ export type UIPillButtonProps = {
      * - `UIPillButtonVariant.Positive` - button associated with some affirmative action
      */
     variant?: UIPillButtonVariant;
-}
+};
 
 const buttonStates = {
     hoverOverlayColor: ColorVariants.StaticHoverOverlay,
@@ -76,9 +72,7 @@ const buttonStates = {
     activeContentColor: ColorVariants.StaticTextPrimaryLight,
 };
 
-function useButtonAnimations(
-    contentColor: ColorVariants,
-): ButtonAnimations {
+function useButtonAnimations(contentColor: ColorVariants): ButtonAnimations {
     const { hoverOverlayColor, pressOverlayColor, activeContentColor } = buttonStates;
     const theme = useTheme();
 
@@ -155,11 +149,7 @@ function useButtonAnimations(
     };
 }
 
-function useButtonStyles(
-    variant: UIPillButtonVariant,
-    disabled?: boolean,
-    loading?: boolean,
-) {
+function useButtonStyles(variant: UIPillButtonVariant, disabled?: boolean, loading?: boolean) {
     let backgroundColor: ColorVariants = ColorVariants.BackgroundAccent;
     let contentColor: ColorVariants = ColorVariants.StaticTextPrimaryLight;
 
@@ -215,11 +205,7 @@ export const UIPillButton = ({
 
     return (
         <Button
-            containerStyle={[
-                styles.container,
-                buttonStyle,
-                layout,
-            ]}
+            containerStyle={[styles.container, buttonStyle, layout]}
             contentStyle={contentStyle}
             animations={buttonAnimations}
             disabled={disabled}
@@ -228,17 +214,15 @@ export const UIPillButton = ({
             testID={testID}
         >
             <Button.Content>
-                {
-                    iconPosition === UIPillButtonIconPosition.Left && icon != null &&
-                        <Button.Icon
-                            source={icon}
-                            iconAnimStyle={buttonAnimations.icon?.style}
-                            initialColor={buttonAnimations.icon?.initialColor}
-                            activeColor={buttonAnimations.icon?.activeColor}
-                        />
-                }
-                {
-                    title != null &&
+                {iconPosition === UIPillButtonIconPosition.Left && icon != null && (
+                    <Button.Icon
+                        source={icon}
+                        iconAnimStyle={buttonAnimations.icon?.style}
+                        initialColor={buttonAnimations.icon?.initialColor}
+                        activeColor={buttonAnimations.icon?.activeColor}
+                    />
+                )}
+                {title != null && (
                     <Button.Title
                         titleColor={contentColor}
                         titleRole={UILabelRoles.ActionCallout}
@@ -246,16 +230,15 @@ export const UIPillButton = ({
                     >
                         {title}
                     </Button.Title>
-                }
-                {
-                    iconPosition === UIPillButtonIconPosition.Right && icon != null &&
-                        <Button.Icon
-                            source={icon}
-                            iconAnimStyle={buttonAnimations.icon?.style}
-                            initialColor={buttonAnimations.icon?.initialColor}
-                            activeColor={buttonAnimations.icon?.activeColor}
-                        />
-                }
+                )}
+                {iconPosition === UIPillButtonIconPosition.Right && icon != null && (
+                    <Button.Icon
+                        source={icon}
+                        iconAnimStyle={buttonAnimations.icon?.style}
+                        initialColor={buttonAnimations.icon?.initialColor}
+                        activeColor={buttonAnimations.icon?.activeColor}
+                    />
+                )}
             </Button.Content>
         </Button>
     );

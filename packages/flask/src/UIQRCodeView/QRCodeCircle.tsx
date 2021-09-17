@@ -6,43 +6,35 @@ import QRCode from 'qrcode';
 import { useLogoRender } from './hooks';
 import { getEmptyAreaIndexRange, draw, getQRSvg } from './utils';
 import type { QRItemRange, QRCodeProps } from '../types';
-import {
-    QR_CODE_ITEM_BORDER_RADIUS,
-    CIRCLE_QR_CODE_QUIET_ZONE_IN_SQUARES,
-} from '../constants';
+import { QR_CODE_ITEM_BORDER_RADIUS, CIRCLE_QR_CODE_QUIET_ZONE_IN_SQUARES } from '../constants';
 import { useQRCodeSize } from './hooks/useQRCodeSize';
 import { useQRCodeBorderWidth } from './hooks/useQRCodeBorderWidth';
 import { useQRCodeLogoSize } from './hooks/useQRCodeLogoSize';
 
-const useStyles = makeStyles(
-    (theme, qrCodeSize: number, qrCodeBorderWidth: number) => ({
-        container: {
-            borderRadius: qrCodeSize / 2 + qrCodeBorderWidth,
-            height: qrCodeSize + qrCodeBorderWidth * 2,
-            width: qrCodeSize + qrCodeBorderWidth * 2,
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: theme[ColorVariants.BackgroundPrimary],
-            borderColor: theme[ColorVariants.BackgroundPrimary],
-            overflow: 'hidden',
-            borderWidth: qrCodeBorderWidth,
-        },
-        qrCodeContainer: {
-            ...StyleSheet.absoluteFillObject,
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-        outerQrCodeContainer: {
-            ...StyleSheet.absoluteFillObject,
-            zIndex: -10,
-        },
-    }),
-);
+const useStyles = makeStyles((theme, qrCodeSize: number, qrCodeBorderWidth: number) => ({
+    container: {
+        borderRadius: qrCodeSize / 2 + qrCodeBorderWidth,
+        height: qrCodeSize + qrCodeBorderWidth * 2,
+        width: qrCodeSize + qrCodeBorderWidth * 2,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: theme[ColorVariants.BackgroundPrimary],
+        borderColor: theme[ColorVariants.BackgroundPrimary],
+        overflow: 'hidden',
+        borderWidth: qrCodeBorderWidth,
+    },
+    qrCodeContainer: {
+        ...StyleSheet.absoluteFillObject,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    outerQrCodeContainer: {
+        ...StyleSheet.absoluteFillObject,
+        zIndex: -10,
+    },
+}));
 
-const getQrDataLength = (
-    diameterOfCircleQRCode: number,
-    sizeOfSquare: number,
-) => {
+const getQrDataLength = (diameterOfCircleQRCode: number, sizeOfSquare: number) => {
     const qrDataLength = diameterOfCircleQRCode / sizeOfSquare;
     const qrDataLengthFloored = Math.floor(qrDataLength);
     if (qrDataLength !== qrDataLengthFloored) {
@@ -59,16 +51,12 @@ export const getQRSvgCirlce = (
     sizeOfInnerQRCode: number,
     sizeOfSquare: number,
 ) => {
-    const qrDataLength: number = getQrDataLength(
-        diameterOfCircleQRCode,
-        sizeOfSquare,
-    );
+    const qrDataLength: number = getQrDataLength(diameterOfCircleQRCode, sizeOfSquare);
     /**
      * The part of the square that did not fit into the QRSvgCirlce
      * due to the alignment in the center of the QR code
      */
-    const offsetOfCoordinateGrid =
-        (diameterOfCircleQRCode - qrDataLength * sizeOfSquare) / 2;
+    const offsetOfCoordinateGrid = (diameterOfCircleQRCode - qrDataLength * sizeOfSquare) / 2;
 
     const emptyAreaIndexRange: QRItemRange = getEmptyAreaIndexRange(
         qrDataLength * sizeOfSquare,
@@ -131,11 +119,7 @@ export const getQRSvgCirlce = (
     return qrSvg;
 };
 
-export const QRCodeCircle: React.FC<QRCodeProps> = ({
-    value,
-    logo,
-    size,
-}: QRCodeProps) => {
+export const QRCodeCircle: React.FC<QRCodeProps> = ({ value, logo, size }: QRCodeProps) => {
     const theme = useTheme();
     const qrCodeSize = useQRCodeSize(size);
     const qrCodeBorderWidth = useQRCodeBorderWidth(size);
@@ -156,12 +140,7 @@ export const QRCodeCircle: React.FC<QRCodeProps> = ({
     );
 
     const qrSvgOuter = React.useMemo(
-        () =>
-            getQRSvgCirlce(
-                diameterOfCircleQRCode,
-                sizeOfInnerQRCode,
-                sizeOfSquare,
-            ),
+        () => getQRSvgCirlce(diameterOfCircleQRCode, sizeOfInnerQRCode, sizeOfSquare),
         [diameterOfCircleQRCode, sizeOfInnerQRCode, sizeOfSquare],
     );
 
@@ -171,27 +150,16 @@ export const QRCodeCircle: React.FC<QRCodeProps> = ({
         <View style={styles.container}>
             <View style={styles.qrCodeContainer}>
                 <View style={styles.outerQrCodeContainer}>
-                    <Svg
-                        width={diameterOfCircleQRCode}
-                        height={diameterOfCircleQRCode}
-                    >
+                    <Svg width={diameterOfCircleQRCode} height={diameterOfCircleQRCode}>
                         <Path
-                            fill={
-                                theme[
-                                    ColorVariants.BackgroundPrimaryInverted
-                                ] as string
-                            }
+                            fill={theme[ColorVariants.BackgroundPrimaryInverted] as string}
                             d={qrSvgOuter}
                         />
                     </Svg>
                 </View>
                 <Svg width={sizeOfInnerQRCode} height={sizeOfInnerQRCode}>
                     <Path
-                        fill={
-                            theme[
-                                ColorVariants.BackgroundPrimaryInverted
-                            ] as string
-                        }
+                        fill={theme[ColorVariants.BackgroundPrimaryInverted] as string}
                         d={qrSvg}
                     />
                 </Svg>

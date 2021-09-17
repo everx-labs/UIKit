@@ -26,12 +26,9 @@ export function Shortcuts(props: Props) {
 
     return (
         <View style={styles.container}>
-            {props.shortcuts.map((shortcut) => (
+            {props.shortcuts.map(shortcut => (
                 <TouchableOpacity
-                    testID={
-                        shortcut.testID ??
-                        `shortcut_cell_${shortcut.title ?? ''}`
-                    }
+                    testID={shortcut.testID ?? `shortcut_cell_${shortcut.title ?? ''}`}
                     key={shortcut.key ?? shortcut.title}
                     style={[
                         styles.shortcut,

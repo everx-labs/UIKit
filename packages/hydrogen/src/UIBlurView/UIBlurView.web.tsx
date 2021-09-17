@@ -46,26 +46,14 @@ function getBlurStyle(color: string): Record<string, string> {
     return style;
 }
 
-export const UIBlurView = React.forwardRef<View, Props>(
-    function UIBlurViewForwarded({
-        style,
-        testID,
-        ...rest
-    }: Props, ref) {
-        const color = useTheme()[ColorVariants.BackgroundOverlayInverted] as string;
-        const blurStyle = getBlurStyle(color);
+export const UIBlurView = React.forwardRef<View, Props>(function UIBlurViewForwarded(
+    { style, testID, ...rest }: Props,
+    ref,
+) {
+    const color = useTheme()[ColorVariants.BackgroundOverlayInverted] as string;
+    const blurStyle = getBlurStyle(color);
 
-        return (
-            <View
-                ref={ref}
-                testID={testID}
-                {...rest}
-                style={[
-                    styles.container,
-                    style,
-                    blurStyle,
-                ]}
-            />
-        );
-    },
-);
+    return (
+        <View ref={ref} testID={testID} {...rest} style={[styles.container, style, blurStyle]} />
+    );
+});

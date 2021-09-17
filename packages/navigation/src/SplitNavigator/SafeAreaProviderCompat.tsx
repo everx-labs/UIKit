@@ -4,10 +4,7 @@ import {
     SafeAreaConsumer,
     initialWindowSafeAreaInsets,
 } from 'react-native-safe-area-context';
-import {
-    getStatusBarHeight,
-    getBottomSpace,
-} from 'react-native-iphone-x-helper';
+import { getStatusBarHeight, getBottomSpace } from 'react-native-iphone-x-helper';
 
 // The provider component for safe area initializes asynchornously
 // Until the insets are available, there'll be blank screen
@@ -30,7 +27,7 @@ type Props = {
 export function SafeAreaProviderCompat({ children }: Props) {
     return (
         <SafeAreaConsumer>
-            {(insets) => {
+            {insets => {
                 if (insets) {
                     // If we already have insets, don't wrap the stack in another safe area provider
                     // This avoids an issue with updates at the cost of potentially incorrect values
@@ -39,9 +36,7 @@ export function SafeAreaProviderCompat({ children }: Props) {
                 }
 
                 return (
-                    <SafeAreaProvider
-                        initialSafeAreaInsets={initialSafeAreaInsets}
-                    >
+                    <SafeAreaProvider initialSafeAreaInsets={initialSafeAreaInsets}>
                         {children}
                     </SafeAreaProvider>
                 );

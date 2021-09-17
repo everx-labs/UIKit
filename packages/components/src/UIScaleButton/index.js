@@ -6,10 +6,7 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import { UIConstant } from '@tonlabs/uikit.core';
 
 import { UIActionComponent } from '../UIActionComponent';
-import type {
-    UIActionComponentProps,
-    UIActionComponentState,
-} from '../UIActionComponent';
+import type { UIActionComponentProps, UIActionComponentState } from '../UIActionComponent';
 
 type Props = UIActionComponentProps & {
     content: React$Node,
@@ -23,7 +20,7 @@ export default class UIScaleButton extends UIActionComponent<Props, State> {
         ...UIActionComponent.defaultProps,
         style: {},
         scaleInFactor: UIConstant.animationScaleInFactor(),
-    }
+    };
 
     // constructor
     constructor(props: Props) {
@@ -67,9 +64,7 @@ export default class UIScaleButton extends UIActionComponent<Props, State> {
     renderContent() {
         const { scale } = this.state;
         return (
-            <Animated.View
-                style={[this.props.style, { transform: [{ scale }] }]}
-            >
+            <Animated.View style={[this.props.style, { transform: [{ scale }] }]}>
                 {this.props.content || this.props.children}
             </Animated.View>
         );

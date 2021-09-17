@@ -30,9 +30,8 @@ const getSuffix = (
     powerOfThousand: number,
     shortenedNumberSuffixLocalization: ShortenedNumberSuffixLocalization,
 ): string => {
-    const shortenedNumberSuffix: ShortenedNumberSuffix = convertPowerOfThousandToShortenedNumberSuffix(
-        powerOfThousand,
-    );
+    const shortenedNumberSuffix: ShortenedNumberSuffix =
+        convertPowerOfThousandToShortenedNumberSuffix(powerOfThousand);
     return shortenedNumberSuffixLocalization[shortenedNumberSuffix];
 };
 
@@ -58,10 +57,7 @@ const getShortenedAmountAttributes = (
     fractionalDigits: number,
     shortenedNumberSuffixLocalization: ShortenedNumberSuffixLocalization,
 ): ShortenedAmountAttributes => {
-    const suffix: string = getSuffix(
-        powerOfThousand,
-        shortenedNumberSuffixLocalization,
-    );
+    const suffix: string = getSuffix(powerOfThousand, shortenedNumberSuffixLocalization);
     const scale: BigNumber = new BigNumber(1000).pow(powerOfThousand);
     const scaledValue: BigNumber = value.div(scale);
     const resultValue: string = scaledValue.toFixed(fractionalDigits);
@@ -69,9 +65,7 @@ const getShortenedAmountAttributes = (
      * `resultValue` can contain another power of the number.
      * For example if value = 999999 then resultValue = 1000 and result of the function is 1000K (expected 1M).
      */
-    if (
-        getNumberOfDigitsInIntegerPartOfNumber(new BigNumber(resultValue)) > 3
-    ) {
+    if (getNumberOfDigitsInIntegerPartOfNumber(new BigNumber(resultValue)) > 3) {
         return getShortenedAmountAttributes(
             value,
             powerOfThousand + 1,
@@ -115,9 +109,7 @@ const shortenBigNumber = (
 };
 
 export const shortenAmount = (
-    shortenedNumberSuffixLocalized:
-        | ShortenedNumberSuffixLocalization
-        | undefined,
+    shortenedNumberSuffixLocalized: ShortenedNumberSuffixLocalization | undefined,
     value: number | BigNumber | null,
     settings?: ShortenAmountSettings,
 ): string => {
@@ -137,17 +129,11 @@ export const shortenAmount = (
         try {
             bigNumberValue = new BigNumber(value);
         } catch (error) {
-            console.error(
-                `shortenAmount: Failed to convert the number to BigNumber`,
-            );
+            console.error(`shortenAmount: Failed to convert the number to BigNumber`);
             return value.toFixed(fractionalDigits);
         }
     } else {
         bigNumberValue = value;
     }
-    return shortenBigNumber(
-        bigNumberValue,
-        fractionalDigits,
-        shortenedNumberSuffixLocalization,
-    );
+    return shortenBigNumber(bigNumberValue, fractionalDigits, shortenedNumberSuffixLocalization);
 };

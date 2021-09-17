@@ -7,5 +7,4 @@ import { useBase64Image as useBase64ImageImpl } from './useBase64Image';
  * @param imageUrl the source of file
  * @returns base64 string or null
  */
-export const useBase64Image: (imageUrl: string) => string | null =
-    useBase64ImageImpl;
+export const useBase64Image: (imageUrl: string) => string | null = useBase64ImageImpl;

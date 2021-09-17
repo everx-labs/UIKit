@@ -19,10 +19,7 @@ export type MenuItemType = UIActionComponentProps & {
     reversedColors?: boolean,
 };
 
-export default class MenuItem extends UIActionComponent<
-    MenuItemType,
-    UIActionComponentState
-> {
+export default class MenuItem extends UIActionComponent<MenuItemType, UIActionComponentState> {
     static defaultProps: MenuItemType = {
         ...UIActionComponent.defaultProps,
         reversedColors: false,
@@ -38,7 +35,15 @@ export default class MenuItem extends UIActionComponent<
 
     renderContent() {
         const {
-            title, details, titleStyle, titleRole, detailsStyle, chosen, disabled, reversedColors, style,
+            title,
+            details,
+            titleStyle,
+            titleRole,
+            detailsStyle,
+            chosen,
+            disabled,
+            reversedColors,
+            style,
         } = this.props;
 
         const contentStyle = details
@@ -64,7 +69,7 @@ export default class MenuItem extends UIActionComponent<
         const content = (
             <React.Fragment>
                 <UILabel
-                    color={disabled ? UILabelColors.TextTertiary : (titleStyle || defaultTitleStyle)}
+                    color={disabled ? UILabelColors.TextTertiary : titleStyle || defaultTitleStyle}
                     numberOfLines={1}
                     role={titleRole || UILabelRoles.ActionCallout}
                     style={marginRight}
@@ -82,10 +87,6 @@ export default class MenuItem extends UIActionComponent<
             </React.Fragment>
         );
 
-        return (
-            <View style={containerStyle}>
-                {content}
-            </View>
-        );
+        return <View style={containerStyle}>{content}</View>;
     }
 }

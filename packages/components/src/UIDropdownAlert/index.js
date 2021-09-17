@@ -66,8 +66,10 @@ export default class UIDropdownAlert extends UIComponent<Props, State> {
         return (
             <DropdownAlert
                 key="DropdownAlert"
-                ref={(component) => { this.dropdownAlert = component; }}
-                onClose={(data) => {
+                ref={component => {
+                    this.dropdownAlert = component;
+                }}
+                onClose={data => {
                     if (this.notificationCallback) {
                         this.notificationCallback(data.action === 'tap');
                     }

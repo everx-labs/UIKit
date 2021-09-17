@@ -75,24 +75,24 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
 
     // Render
     renderRightButton() {
-        const {
-            rightButton,
-            onRightButtonPress, rightButtonDisabled,
-        } = this.props;
+        const { rightButton, onRightButtonPress, rightButtonDisabled } = this.props;
         if (!rightButton || rightButton.length === 0) {
             return null;
         }
 
-        const button = rightButton instanceof String || typeof rightButton === 'string'
-            ? (
+        const button =
+            rightButton instanceof String || typeof rightButton === 'string' ? (
                 <UILabel
-                    color={rightButtonDisabled ? UILabelColors.TextSecondary : UILabelColors.TextAccent}
+                    color={
+                        rightButtonDisabled ? UILabelColors.TextSecondary : UILabelColors.TextAccent
+                    }
                     role={UILabelRoles.ActionCallout}
                 >
                     {rightButton}
                 </UILabel>
-            )
-            : rightButton;
+            ) : (
+                rightButton
+            );
         return (
             <TouchableOpacity
                 testID="amount_input_right_button"
@@ -106,14 +106,9 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
 
     renderFloatingTitle() {
         const { floatingTitle, value } = this.props;
-        const text = (!floatingTitle || !value) && !this.isFocused()
-            ? ' '
-            : this.getPlaceholder();
+        const text = (!floatingTitle || !value) && !this.isFocused() ? ' ' : this.getPlaceholder();
         return (
-            <UILabel
-                color={UILabelColors.TextTertiary}
-                role={UILabelRoles.ParagraphLabel}
-            >
+            <UILabel color={UILabelColors.TextTertiary} role={UILabelRoles.ParagraphLabel}>
                 {text}
             </UILabel>
         );
@@ -151,10 +146,7 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
                     style={this.textInputStyle()}
                 >
                     {this.props.value}
-                    <UILabel
-                        color={UILabelColors.TextSecondary}
-                        selectable={false}
-                    >
+                    <UILabel color={UILabelColors.TextSecondary} selectable={false}>
                         {trailingValue}
                     </UILabel>
                 </UILabel>

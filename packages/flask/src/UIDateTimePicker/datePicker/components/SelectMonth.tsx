@@ -29,9 +29,7 @@ export const SelectMonth = () => {
     const [mainState, setMainState] = state;
     const [show, setShow] = useState(false);
     const style = styles(options);
-    const [year, setYear] = useState(
-        utils.getMonthYearText(mainState.activeDate).split(' ')[1],
-    );
+    const [year, setYear] = useState(utils.getMonthYearText(mainState.activeDate).split(' ')[1]);
     const openAnimation = useRef(new Animated.Value(0)).current;
     const currentMonth = new Date(mainState.activeDate).getMonth();
     const prevDisable = max && utils.checkYearDisabled(Number(year), true);
@@ -50,25 +48,20 @@ export const SelectMonth = () => {
     }, [mainState.monthOpen, openAnimation]);
 
     useEffect(() => {
-        show &&
-            setYear(utils.getMonthYearText(mainState.activeDate).split(' ')[1]);
+        show && setYear(utils.getMonthYearText(mainState.activeDate).split(' ')[1]);
     }, [mainState.activeDate, utils, show]);
 
     const onSelectMonth = (month: any) => {
         if (show) {
             const y = Number(year);
-            const date = utils.getDate(
-                utils.validYear(mainState.activeDate, y),
-            );
+            const date = utils.getDate(utils.validYear(mainState.activeDate, y));
             const activeDate = month !== null ? date.month(month) : date;
             setMainState({
                 type: 'set',
                 activeDate: utils.getFormatted(activeDate),
             });
             month !== null &&
-                onMonthYearChange?.(
-                    utils.getFormatted(activeDate, 'monthYearFormat'),
-                );
+                onMonthYearChange?.(utils.getFormatted(activeDate, 'monthYearFormat'));
             month !== null &&
                 mode !== 'monthYear' &&
                 setMainState({
@@ -115,9 +108,7 @@ export const SelectMonth = () => {
 
     return show ? (
         <Animated.View style={containerStyle}>
-            <View
-                style={[style.header, I18nManager.isRTL && style.reverseHeader]}
-            >
+            <View style={[style.header, I18nManager.isRTL && style.reverseHeader]}>
                 <TouchableOpacity
                     activeOpacity={0.7}
                     style={style.arrowWrapper}
@@ -148,36 +139,25 @@ export const SelectMonth = () => {
                 >
                     <Image
                         source={UIAssets.icons.ui.arrowLeft}
-                        style={[
-                            style.arrow,
-                            style.rightArrow,
-                            prevDisable && style.disableArrow,
-                        ]}
+                        style={[style.arrow, style.rightArrow, prevDisable && style.disableArrow]}
                     />
                 </TouchableOpacity>
             </View>
 
             <View style={[style.monthList, utils.flexDirection]}>
-                {[...Array(12).keys()].map((item) => {
-                    const disabled = utils.checkSelectMonthDisabled(
-                        mainState.activeDate,
-                        item,
-                    );
+                {[...Array(12).keys()].map(item => {
+                    const disabled = utils.checkSelectMonthDisabled(mainState.activeDate, item);
                     return (
                         <TouchableOpacity
                             key={item}
                             activeOpacity={0.8}
-                            style={[
-                                style.item,
-                                currentMonth === item && style.selectedItem,
-                            ]}
+                            style={[style.item, currentMonth === item && style.selectedItem]}
                             onPress={() => !disabled && onSelectMonth(item)}
                         >
                             <Text
                                 style={[
                                     style.itemText,
-                                    currentMonth === item &&
-                                        style.selectedItemText,
+                                    currentMonth === item && style.selectedItemText,
                                     disabled && style.disabledItemText,
                                 ]}
                             >

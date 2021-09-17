@@ -1,9 +1,5 @@
 import * as React from 'react';
-import type {
-    TextInput,
-    NativeSyntheticEvent,
-    TextInputFocusEventData,
-} from 'react-native';
+import type { TextInput, NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 
@@ -33,26 +29,18 @@ type UIAddressTextViewProps = UIMaterialTextViewProps & {
     };
 };
 
-function useAddressTextView(
-    ref: React.Ref<TextInput> | null,
-    props: UIAddressTextViewProps,
-) {
+function useAddressTextView(ref: React.Ref<TextInput> | null, props: UIAddressTextViewProps) {
     const {
         inputValue,
         onChangeText: onChangeTextBase,
         onKeyPress: onKeyPressBase,
     } = useUITextViewValue(ref, true, props);
 
-    const { 
-        validateAddress, 
-        onSubmitEditing,
-        onBlur: onBlurBase,
-    } = props;
+    const { validateAddress, onSubmitEditing, onBlur: onBlurBase } = props;
 
-    const [
-        validation,
-        setValidation,
-    ] = React.useState<UIAddressTextViewValidationResult | null>(null);
+    const [validation, setValidation] = React.useState<UIAddressTextViewValidationResult | null>(
+        null,
+    );
 
     const onBlur = React.useCallback(
         async (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
@@ -113,80 +101,72 @@ function useAddressTextView(
     };
 }
 
-export const UIAddressTextView = React.forwardRef<
-    UIMaterialTextViewRef,
-    UIAddressTextViewProps
->(function UIAddressTextViewForwarded(
-    props: UIAddressTextViewProps,
-    passedRef,
-) {
-    const localRef = React.useRef<UIMaterialTextViewRef>(null);
-    const ref = passedRef || localRef;
-    const {
-        // To not pass it as a prop to UIMaterialTextView
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        validateAddress,
-        qrCode,
-        ...rest
-    } = props;
-    const {
-        onBlur,
-        onChangeText,
-        onKeyPress,
-        helperText,
-        success,
-        error,
-    } = useAddressTextView(ref, props);
-    const [qrVisible, setQrVisible] = React.useState(false);
+export const UIAddressTextView = React.forwardRef<UIMaterialTextViewRef, UIAddressTextViewProps>(
+    function UIAddressTextViewForwarded(props: UIAddressTextViewProps, passedRef) {
+        const localRef = React.useRef<UIMaterialTextViewRef>(null);
+        const ref = passedRef || localRef;
+        const {
+            // To not pass it as a prop to UIMaterialTextView
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            validateAddress,
+            qrCode,
+            ...rest
+        } = props;
+        const { onBlur, onChangeText, onKeyPress, helperText, success, error } = useAddressTextView(
+            ref,
+            props,
+        );
+        const [qrVisible, setQrVisible] = React.useState(false);
 
-    const onRead = React.useCallback(
-        async (e: any) => {
-            const address = await qrCode.parseData(e.data);
+        const onRead = React.useCallback(
+            async (e: any) => {
+                const address = await qrCode.parseData(e.data);
 
-            if (ref && 'current' in ref) {
-                ref.current?.changeText(address);
-            }
+                if (ref && 'current' in ref) {
+                    ref.current?.changeText(address);
+                }
 
-            if (onChangeText) {
-                onChangeText(address);
-            }
+                if (onChangeText) {
+                    onChangeText(address);
+                }
 
-            setQrVisible(false)
-        },
-        [qrCode, ref, onChangeText],
-    );
+                setQrVisible(false);
+            },
+            [qrCode, ref, onChangeText],
+        );
 
-    return (
-        <>
-            <UIMaterialTextView
-                ref={ref}
-                {...rest}
-                autoCapitalize="none"
-                autoCompleteType="off"
-                autoCorrect={false}
-                multiline
-                onBlur={onBlur}
-                onChangeText={onChangeText}
-                onKeyPress={onKeyPress}
-                helperText={helperText}
-                success={success}
-                error={error}
-            >
-                {props.children}
-                <UIMaterialTextView.Icon
-                    testID="address_text_view_scanner"
-                    source={UIAssets.icons.addressInput.scan}
-                    onPress={() => {
-                        setQrVisible(!qrVisible);
-                    }}
-                    tintColor={ColorVariants.TextAccent}
+        return (
+            <>
+                <UIMaterialTextView
+                    ref={ref}
+                    {...rest}
+                    autoCapitalize="none"
+                    autoCompleteType="off"
+                    autoCorrect={false}
+                    multiline
+                    onBlur={onBlur}
+                    onChangeText={onChangeText}
+                    onKeyPress={onKeyPress}
+                    helperText={helperText}
+                    success={success}
+                    error={error}
+                >
+                    {props.children}
+                    <UIMaterialTextView.Icon
+                        testID="address_text_view_scanner"
+                        source={UIAssets.icons.addressInput.scan}
+                        onPress={() => {
+                            setQrVisible(!qrVisible);
+                        }}
+                        tintColor={ColorVariants.TextAccent}
+                    />
+                </UIMaterialTextView>
+                <UIQRCodeScannerSheet
+                    visible={qrVisible}
+                    onClose={() => setQrVisible(false)}
+                    onRead={onRead}
                 />
-            </UIMaterialTextView>
-            <UIQRCodeScannerSheet
-                visible={qrVisible}
-                onClose={() => setQrVisible(false)}
-                onRead={onRead}
-            />
-        </>
-    );
-});
+            </>
+        );
+    },
+);

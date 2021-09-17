@@ -120,10 +120,7 @@ class UITextInput extends UIComponent<Props, State> {
             <UILabel
                 color={UILabelColors.TextSecondary}
                 role={UILabelRoles.ParagraphText}
-                style={[
-                    styles.beginningTag,
-                    textStyle,
-                ]}
+                style={[styles.beginningTag, textStyle]}
             >
                 {beginningTag}
             </UILabel>
@@ -164,10 +161,7 @@ class UITextInput extends UIComponent<Props, State> {
                 multiline={multiline}
                 autoCapitalize={autoCapitalize}
                 secureTextEntry={secureTextEntry}
-                style={[
-                    styles.textInput,
-                    textStyle,
-                ]}
+                style={[styles.textInput, textStyle]}
                 keyboardType={keyboardType}
                 {...returnKeyTypeProp}
                 onFocus={onFocus}

@@ -1,4 +1,4 @@
-import type { ImageStyle,TextStyle, ViewStyle } from 'react-native';
+import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
 import type Animated from 'react-native-reanimated';
 
 import type { ColorVariants } from '../Colors';
@@ -17,8 +17,8 @@ type ContentParams = {
 };
 
 export type ButtonAnimations = {
-    hover?: BackgroundParams,
-    press?: BackgroundParams,
-    title?: ContentParams,
-    icon?: ContentParams,
+    hover?: BackgroundParams;
+    press?: BackgroundParams;
+    title?: ContentParams;
+    icon?: ContentParams;
 };

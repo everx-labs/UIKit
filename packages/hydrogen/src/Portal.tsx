@@ -2,11 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 
 type PortalMethods = {
-    mount: (
-        children: React.ReactNode,
-        forId?: string,
-        absoluteFill?: boolean,
-    ) => number;
+    mount: (children: React.ReactNode, forId?: string, absoluteFill?: boolean) => number;
     update: (
         key: number,
         children: React.ReactNode,
@@ -25,12 +21,7 @@ type PortalConsumerProps = {
     children: React.ReactNode;
 };
 
-function PortalConsumer({
-    forId,
-    absoluteFill,
-    manager,
-    children,
-}: PortalConsumerProps) {
+function PortalConsumer({ forId, absoluteFill, manager, children }: PortalConsumerProps) {
     const key = React.useRef<number | null>(null);
 
     React.useEffect(() => {
@@ -57,7 +48,7 @@ interface PortalProps {
 
 export const Portal = (props: PortalProps) => (
     <PortalContext.Consumer>
-        {(manager) => {
+        {manager => {
             if (manager != null) {
                 return (
                     <PortalConsumer
@@ -89,16 +80,13 @@ type PortalManagerProps = {
     children: React.ReactNode;
 };
 
-export class PortalManager extends React.PureComponent<
-    PortalManagerProps,
-    PortalManagerState
-> {
+export class PortalManager extends React.PureComponent<PortalManagerProps, PortalManagerState> {
     state: PortalManagerState = {};
 
     getMaxMountedKey() {
         return Object.keys(this.state)
             .sort((a, b) => Number(b) - Number(a)) // reversed order by keys
-            .find((key) => !!this.state[Number(key)]); // find the first (max) key
+            .find(key => !!this.state[Number(key)]); // find the first (max) key
     }
 
     getKey(): number {
@@ -116,20 +104,12 @@ export class PortalManager extends React.PureComponent<
 
     counter: number = 0;
 
-    mount = (
-        children: React.ReactNode,
-        forId?: string,
-        absoluteFill?: boolean,
-    ) => {
-        if (
-            this.props.id != null &&
-            this.parentManager &&
-            this.props.id !== forId
-        ) {
+    mount = (children: React.ReactNode, forId?: string, absoluteFill?: boolean) => {
+        if (this.props.id != null && this.parentManager && this.props.id !== forId) {
             return this.parentManager.mount(children, forId, absoluteFill);
         }
         const key = this.getKey();
-        this.setState((state) => ({
+        this.setState(state => ({
             ...state,
             [key]: {
                 children,
@@ -139,21 +119,12 @@ export class PortalManager extends React.PureComponent<
         return key;
     };
 
-    update = (
-        key: number,
-        children: React.ReactNode,
-        forId?: string,
-        absoluteFill?: boolean,
-    ) => {
-        if (
-            this.props.id != null &&
-            this.parentManager &&
-            this.props.id !== forId
-        ) {
+    update = (key: number, children: React.ReactNode, forId?: string, absoluteFill?: boolean) => {
+        if (this.props.id != null && this.parentManager && this.props.id !== forId) {
             this.parentManager.update(key, children, forId, absoluteFill);
             return;
         }
-        this.setState((state) => {
+        this.setState(state => {
             return {
                 ...state,
                 [key]: {
@@ -165,15 +136,11 @@ export class PortalManager extends React.PureComponent<
     };
 
     unmount = (key: number, forId?: string) => {
-        if (
-            this.props.id != null &&
-            this.parentManager &&
-            this.props.id !== forId
-        ) {
+        if (this.props.id != null && this.parentManager && this.props.id !== forId) {
             this.parentManager.unmount(key, forId);
             return;
         }
-        this.setState((state) => ({
+        this.setState(state => ({
             ...state,
             [key]: null,
         }));
@@ -231,7 +198,7 @@ export class PortalManager extends React.PureComponent<
     render() {
         return (
             <PortalContext.Consumer>
-                {(manager) => {
+                {manager => {
                     this.parentManager = manager;
                     return (
                         <PortalContext.Provider value={this.manager}>

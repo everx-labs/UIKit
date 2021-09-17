@@ -1,12 +1,7 @@
 import React from 'react';
 import { Image, View } from 'react-native';
 import { UIBoxButton, UITextView, useTheme } from '@tonlabs/uikit.hydrogen';
-import {
-    UIQRCodeView,
-    QRCodeType,
-    QRCodeRef,
-    QRCodeSize,
-} from '@tonlabs/uikit.flask';
+import { UIQRCodeView, QRCodeType, QRCodeRef, QRCodeSize } from '@tonlabs/uikit.flask';
 import { createStackNavigator } from '@tonlabs/uikit.navigation';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';

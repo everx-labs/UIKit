@@ -17,10 +17,7 @@ export const Profile = () => (
             >
                 <UIProfileInitials
                     testID="uiProfileInitials_default"
-                    containerStyle={[
-                        UIStyle.margin.bottomDefault(),
-                        UIStyle.margin.rightDefault(),
-                    ]}
+                    containerStyle={[UIStyle.margin.bottomDefault(), UIStyle.margin.rightDefault()]}
                     id={1}
                     initials="AM"
                 />

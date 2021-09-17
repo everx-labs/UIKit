@@ -5,10 +5,7 @@ import { Image, View } from 'react-native';
 import { UIColor, UIStyle } from '@tonlabs/uikit.core';
 
 import { UIActionComponent } from '../UIActionComponent';
-import type {
-    UIActionComponentProps,
-    UIActionComponentState,
-} from '../UIActionComponent';
+import type { UIActionComponentProps, UIActionComponentState } from '../UIActionComponent';
 
 type Props = UIActionComponentProps & {
     iconDisabled: string,
@@ -41,9 +38,8 @@ export default class UIActionImage extends UIActionComponent<Props, State> {
     };
 
     renderColoredImage() {
-        const {
-            source, colorDisabled, colorHovered, colorEnabled, style, theme, onPress,
-        } = this.props;
+        const { source, colorDisabled, colorHovered, colorEnabled, style, theme, onPress } =
+            this.props;
 
         let color;
         const disabled = this.props.disabled || !onPress;
@@ -61,18 +57,14 @@ export default class UIActionImage extends UIActionComponent<Props, State> {
         const colorStyle = color ? UIStyle.Color.getTintColorStyle(color) : null;
         return (
             <View>
-                <Image
-                    source={source}
-                    style={[colorStyle, style]}
-                />
+                <Image source={source} style={[colorStyle, style]} />
             </View>
         );
     }
 
     renderContent() {
-        const {
-            iconDisabled, iconHovered, iconEnabled, disabled, source, style, children,
-        } = this.props;
+        const { iconDisabled, iconHovered, iconEnabled, disabled, source, style, children } =
+            this.props;
 
         if (children) {
             return children;
@@ -90,11 +82,6 @@ export default class UIActionImage extends UIActionComponent<Props, State> {
         } else {
             icon = iconEnabled;
         }
-        return (
-            <Image
-                style={style}
-                source={icon}
-            />
-        );
+        return <Image style={style} source={icon} />;
     }
 }

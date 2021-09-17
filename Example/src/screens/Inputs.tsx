@@ -22,12 +22,7 @@ import { ExampleScreen } from '../components/ExampleScreen';
 
 function getNumberFormatInfo() {
     const formatParser = /111(\D*)222(\D*)333(\D*)444/g;
-    const parts = formatParser.exec((111222333.444).toLocaleString()) || [
-        '',
-        '',
-        '',
-        '.',
-    ];
+    const parts = formatParser.exec((111222333.444).toLocaleString()) || ['', '', '', '.'];
     return {
         grouping: parts[1],
         thousands: parts[2],
@@ -64,7 +59,7 @@ function getDateFormatInfo() {
 
     const shortDateNumbers: number[] = [];
     const splitDate = localeDate.split(separator);
-    splitDate.forEach((component) => shortDateNumbers.push(Number(component)));
+    splitDate.forEach(component => shortDateNumbers.push(Number(component)));
 
     if (shortDateNumbers?.length === 3) {
         components[shortDateNumbers.indexOf(d)] = 'day';
@@ -97,29 +92,17 @@ export const Inputs = () => {
     const [amount, setAmount] = useState('');
     const [details, setDetails] = useState('');
     const [search] = useState('');
-    const mnemonicWords = [
-        'report',
-        'replenish',
-        'meadow',
-        'village',
-        'slight',
-    ];
+    const mnemonicWords = ['report', 'replenish', 'meadow', 'village', 'slight'];
     const [text, setText] = useState('test');
     const [transfer, setTransfer] = useState(new BigNumber(0));
     return (
         <ExampleScreen>
             <ExampleSection title="UINumberTextView">
-                <UINumberTextView
-                    testID="uiNumberTextView_default"
-                    placeholder="Put number"
-                />
+                <UINumberTextView testID="uiNumberTextView_default" placeholder="Put number" />
             </ExampleSection>
             <ExampleSection title="UIMaterialTextView">
                 <View style={{ maxWidth: 300, paddingVertical: 20, minWidth: 250 }}>
-                    <UIMaterialTextView
-                        testID="uiMaterialTextView_default"
-                        label="Label"
-                    />
+                    <UIMaterialTextView testID="uiMaterialTextView_default" label="Label" />
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
                         testID="uiMaterialTextView_with_initial_value"
@@ -167,9 +150,7 @@ export const Inputs = () => {
                         label="Input with right action"
                         helperText="Hint"
                     >
-                        <UIMaterialTextView.Action>
-                            Action
-                        </UIMaterialTextView.Action>
+                        <UIMaterialTextView.Action>Action</UIMaterialTextView.Action>
                     </UIMaterialTextView>
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
@@ -201,9 +182,7 @@ export const Inputs = () => {
                         label="Input with right action"
                         helperText="Hint"
                     >
-                        <UIMaterialTextView.Action>
-                            Action
-                        </UIMaterialTextView.Action>
+                        <UIMaterialTextView.Action>Action</UIMaterialTextView.Action>
                     </UIMaterialTextView>
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
@@ -234,10 +213,7 @@ export const Inputs = () => {
                                 return false;
                             }
                             for (let i = 0; i < parts.length; i += 1) {
-                                if (
-                                    parts[i] !==
-                                    mnemonicWords[i >= 5 ? i - 5 : i]
-                                ) {
+                                if (parts[i] !== mnemonicWords[i >= 5 ? i - 5 : i]) {
                                     return false;
                                 }
                             }

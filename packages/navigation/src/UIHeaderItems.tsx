@@ -85,13 +85,7 @@ function UIHeaderIconItem({
                 tintColor,
             });
         }
-        return (
-            <UIImage
-                {...icon}
-                style={[styles.headerIcon, icon.style]}
-                tintColor={tintColor}
-            />
-        );
+        return <UIImage {...icon} style={[styles.headerIcon, icon.style]} tintColor={tintColor} />;
     }
 
     return null;
@@ -130,10 +124,7 @@ function UIHeaderItemPressable({
     );
 }
 
-function UIHeaderItem({
-    applyMargin,
-    ...item
-}: HeaderItem & { applyMargin: boolean }) {
+function UIHeaderItem({ applyMargin, ...item }: HeaderItem & { applyMargin: boolean }) {
     if (item.label != null) {
         return (
             <UIHeaderItemPressable

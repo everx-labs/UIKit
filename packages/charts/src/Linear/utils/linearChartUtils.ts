@@ -65,14 +65,12 @@ export const getScaledData = (
         y: [dimensions.height, 0],
     };
 
-    return data.map(
-        (point: LinearChartPoint): LinearChartPoint => {
-            return {
-                x: scale(point.x, domain.x, range.x),
-                y: scale(point.y, domain.y, range.y),
-            };
-        },
-    );
+    return data.map((point: LinearChartPoint): LinearChartPoint => {
+        return {
+            x: scale(point.x, domain.x, range.x),
+            y: scale(point.y, domain.y, range.y),
+        };
+    });
 };
 
 const getExtremum = (
@@ -205,9 +203,7 @@ const curveLines = (points: LinearChartPoint[]) => {
         path.curves.push(getCurve(currentPoint, p0, previousPoint, false));
 
         if (i === points.length - 1) {
-            path.curves.push(
-                getCurve(currentPoint, previousPoint, currentPoint, true),
-            );
+            path.curves.push(getCurve(currentPoint, previousPoint, currentPoint, true));
         }
     }
     return path;
@@ -240,10 +236,7 @@ export const convertDataToPath = (
 ): Path | null => {
     'worklet';
 
-    const scaledData: LinearChartPoint[] | null = getScaledData(
-        data,
-        dimensions,
-    );
+    const scaledData: LinearChartPoint[] | null = getScaledData(data, dimensions);
     if (scaledData === null) {
         return null;
     }
@@ -271,13 +264,13 @@ export const interpolatePath = (
             x: interpolate(
                 value,
                 inputRange,
-                outputRange.map((p) => p.move.x),
+                outputRange.map(p => p.move.x),
                 extrapolate,
             ),
             y: interpolate(
                 value,
                 inputRange,
-                outputRange.map((p) => p.move.y),
+                outputRange.map(p => p.move.y),
                 extrapolate,
             ),
         },
@@ -286,13 +279,13 @@ export const interpolatePath = (
                 x: interpolate(
                     value,
                     inputRange,
-                    outputRange.map((p) => p.curves[index].c1.x),
+                    outputRange.map(p => p.curves[index].c1.x),
                     extrapolate,
                 ),
                 y: interpolate(
                     value,
                     inputRange,
-                    outputRange.map((p) => p.curves[index].c1.y),
+                    outputRange.map(p => p.curves[index].c1.y),
                     extrapolate,
                 ),
             },
@@ -300,13 +293,13 @@ export const interpolatePath = (
                 x: interpolate(
                     value,
                     inputRange,
-                    outputRange.map((p) => p.curves[index].c2.x),
+                    outputRange.map(p => p.curves[index].c2.x),
                     extrapolate,
                 ),
                 y: interpolate(
                     value,
                     inputRange,
-                    outputRange.map((p) => p.curves[index].c2.y),
+                    outputRange.map(p => p.curves[index].c2.y),
                     extrapolate,
                 ),
             },
@@ -314,13 +307,13 @@ export const interpolatePath = (
                 x: interpolate(
                     value,
                     inputRange,
-                    outputRange.map((p) => p.curves[index].to.x),
+                    outputRange.map(p => p.curves[index].to.x),
                     extrapolate,
                 ),
                 y: interpolate(
                     value,
                     inputRange,
-                    outputRange.map((p) => p.curves[index].to.y),
+                    outputRange.map(p => p.curves[index].to.y),
                     extrapolate,
                 ),
             },

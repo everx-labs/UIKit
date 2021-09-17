@@ -6,7 +6,7 @@ class Example extends React.Component {
         super();
         this.state = {
             isLoadingMore: false,
-        }
+        };
     }
 
     loadMore() {
@@ -22,10 +22,10 @@ class Example extends React.Component {
             <UILoadMoreButton
                 label="Push to load more"
                 isLoadingMore={isLoadingMore}
-                onLoadMore={() => this.loadMore()} 
+                onLoadMore={() => this.loadMore()}
             />
         );
     }
-};
-<Example />
+}
+<Example />;
 ```

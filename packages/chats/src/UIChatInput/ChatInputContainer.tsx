@@ -69,10 +69,7 @@ export function ChatInputContainer(props: {
                 ]}
             />
             <View
-                style={[
-                    styles.container,
-                    props.left == null ? UIStyle.margin.leftDefault() : null,
-                ]}
+                style={[styles.container, props.left == null ? UIStyle.margin.leftDefault() : null]}
             >
                 {props.left}
                 <View style={styles.inputMsg}>{props.children}</View>

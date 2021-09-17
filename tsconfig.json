@@ -9,10 +9,7 @@
         "importsNotUsedAsValues": "error",
         "forceConsistentCasingInFileNames": true,
         "jsx": "react",
-        "lib": [
-            "es2020",
-            "dom"
-        ],
+        "lib": ["es2020", "dom"],
         "module": "es2020",
         "moduleResolution": "node",
         "noFallthroughCasesInSwitch": true,
@@ -25,5 +22,5 @@
         "skipLibCheck": true,
         "strict": true,
         "target": "es2020"
-    },
+    }
 }

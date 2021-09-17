@@ -12,9 +12,7 @@ export const useToastNoticeYSnapPoints = (
         noticeHeight,
         keyboardHeight,
     );
-    const ySnapPointsTopToastNotice: SnapPoints = useTopToastNoticeYSnapPoints(
-        noticeHeight,
-    );
+    const ySnapPointsTopToastNotice: SnapPoints = useTopToastNoticeYSnapPoints(noticeHeight);
 
     switch (type) {
         case UINoticeType.TopToast:

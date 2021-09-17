@@ -47,11 +47,7 @@ export function QRCodeScanner(props: QRCodeScannerProps) {
                     }}
                     showViewFinder={false}
                     resolution={UIConstant.elasticWidthCardSheet}
-                    delay={
-                        props.reactivate
-                            ? props.reactivateTimeout || 500
-                            : false
-                    }
+                    delay={props.reactivate ? props.reactivateTimeout || 500 : false}
                 />
             </View>
         );

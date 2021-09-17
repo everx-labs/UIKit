@@ -13,7 +13,9 @@ import {
     QRCodeScannerMessage,
     EncryptionBoxMessage,
     DateMessage,
-    TimeMessage, DateTimeMessage, CountryMessage,
+    TimeMessage,
+    DateTimeMessage,
+    CountryMessage,
 } from '@tonlabs/uikit.browser';
 import type {
     AddressInputMessage,
@@ -107,35 +109,38 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
         },
     }));
 
-    const onPressUrl = React.useCallback((url) => {
+    const onPressUrl = React.useCallback(url => {
         console.log('url handled', url);
     }, []);
 
-    const onLongPressText = React.useCallback((text) => {
+    const onLongPressText = React.useCallback(text => {
         Clipboard.setString(text);
         console.log('long press handled', text);
-        setNoticeVisible(true)
+        setNoticeVisible(true);
     }, []);
 
     const hideNotice = React.useCallback(() => {
-        setNoticeVisible(false)
-    }, [])
+        setNoticeVisible(false);
+    }, []);
 
     const { height } = useWindowDimensions();
 
     return (
         <>
-            <UIBrowser messages={messages} onPressUrl={onPressUrl} onLongPressText={onLongPressText} />
+            <UIBrowser
+                messages={messages}
+                onPressUrl={onPressUrl}
+                onLongPressText={onLongPressText}
+            />
             <SafeAreaInsetsContext.Consumer>
-                {(insets) => (
+                {insets => (
                     <UIBottomSheet
                         visible={menuVisible}
                         onClose={() => {
                             setMenuVisible(false);
                         }}
                         style={{
-                            backgroundColor:
-                                theme[ColorVariants.BackgroundPrimary],
+                            backgroundColor: theme[ColorVariants.BackgroundPrimary],
                             padding: 20,
                             paddingBottom: Math.max(
                                 insets?.bottom || 0,
@@ -146,10 +151,7 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                     >
                         <ScrollView
                             style={{
-                                height:
-                                    height -
-                                    (StatusBar.currentHeight ?? 0) -
-                                    100,
+                                height: height - (StatusBar.currentHeight ?? 0) - 100,
                             }}
                         >
                             <UIBoxButton
@@ -165,7 +167,7 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                         data: base64Image,
                                         preview: base64PreviewImage,
                                         prompt: 'Look at this cool picture!',
-                                        onOutput: (status) => {
+                                        onOutput: status => {
                                             console.log({ status });
                                         },
                                     };
@@ -214,10 +216,7 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                         mainAddress: '0:000',
                                         input: {
                                             validateAddress: (text: string) => {
-                                                if (
-                                                    text.length > 0 &&
-                                                    text.length % 5 === 0
-                                                ) {
+                                                if (text.length > 0 && text.length % 5 === 0) {
                                                     return Promise.resolve({
                                                         status: ValidationResultStatus.Error,
                                                         text: 'Oh no, the length is divided by 5',
@@ -237,14 +236,11 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                         select: [
                                             {
                                                 title: 'Accounts',
-                                                data: new Array(20)
-                                                    .fill(null)
-                                                    .map((_i, index) => ({
-                                                        address: `0:000${index}`,
-                                                        balance: `12${index}`,
-                                                        description:
-                                                            'My Crystals',
-                                                    })),
+                                                data: new Array(20).fill(null).map((_i, index) => ({
+                                                    address: `0:000${index}`,
+                                                    balance: `12${index}`,
+                                                    description: 'My Crystals',
+                                                })),
                                             },
                                         ],
                                         onSelect: (externalState: any) => {
@@ -383,12 +379,8 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                         type: InteractiveMessageType.AmountInput,
                                         prompt: 'Enter amount:',
                                         decimals: 9,
-                                        min: new BigNumber(
-                                            '10.25',
-                                        ).multipliedBy(10 ** 9),
-                                        max: new BigNumber('100').multipliedBy(
-                                            10 ** 9,
-                                        ),
+                                        min: new BigNumber('10.25').multipliedBy(10 ** 9),
+                                        max: new BigNumber('100').multipliedBy(10 ** 9),
                                         // min: new BigNumber(
                                         //     '100000000000000000000000.1111111',
                                         // ),
@@ -420,40 +412,27 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                         status: MessageStatus.Received,
                                         type: InteractiveMessageType.SigningBox,
                                         signingBoxes,
-                                        onAddSigningBox: (
-                                            privateKey: string,
-                                        ) => {
+                                        onAddSigningBox: (privateKey: string) => {
                                             const newSigningBox = {
-                                                id:
-                                                    signingBoxes[
-                                                        signingBoxes.length - 1
-                                                    ].id + 1,
+                                                id: signingBoxes[signingBoxes.length - 1].id + 1,
                                                 title: 'Signature',
                                                 publicKey: privateKey,
                                             };
-                                            setSigningBoxes([
-                                                ...signingBoxes,
-                                                newSigningBox,
-                                            ]);
+                                            setSigningBoxes([...signingBoxes, newSigningBox]);
                                             setMessages([
                                                 {
                                                     ...message,
-                                                    signingBoxes: [
-                                                        ...signingBoxes,
-                                                        newSigningBox,
-                                                    ],
+                                                    signingBoxes: [...signingBoxes, newSigningBox],
                                                 },
                                                 ...messages,
                                             ]);
 
-                                            return Promise.resolve(
-                                                newSigningBox,
-                                            );
+                                            return Promise.resolve(newSigningBox);
                                         },
                                         onUseSecurityCard: () => {
                                             setUsingSecCard(true);
 
-                                            return new Promise((resolve) => {
+                                            return new Promise(resolve => {
                                                 setTimeout(() => {
                                                     setUsingSecCard(false);
                                                     resolve(true);
@@ -491,10 +470,8 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                         ) => {
                                             const newEncryptionBox = {
                                                 id:
-                                                    encryptionBoxes[
-                                                        encryptionBoxes.length -
-                                                            1
-                                                    ].id + 1,
+                                                    encryptionBoxes[encryptionBoxes.length - 1].id +
+                                                    1,
                                                 title: 'Cipher key',
                                             };
                                             setEncryptionBoxes([
@@ -512,9 +489,7 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                                 ...messages,
                                             ]);
 
-                                            return Promise.resolve(
-                                                newEncryptionBox,
-                                            );
+                                            return Promise.resolve(newEncryptionBox);
                                         },
                                         onSelect: (externalState: any) => {
                                             setMessages([
@@ -536,82 +511,63 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                     marginBottom: 10,
                                 }}
                                 onPress={() => {
-                                    const message: TransactionConfirmationMessage =
-                                        {
-                                            key: `${Date.now()}-approve`,
-                                            status: MessageStatus.Received,
-                                            type: InteractiveMessageType.TransactionConfirmation,
-                                            toAddress: '0:12300000006789',
-                                            onAddressPress: () => {
-                                                // nothing
-                                            },
-                                            recipientsCount: 255,
-                                            totalAmount: (
-                                                <UILabel>
-                                                    <UILabel
-                                                        role={
-                                                            UILabelRoles.MonoText
-                                                        }
-                                                    >
-                                                        0,000
-                                                    </UILabel>
-                                                    <UILabel
-                                                        role={
-                                                            UILabelRoles.MonoText
-                                                        }
-                                                        color={
-                                                            UILabelColors.TextTertiary
-                                                        }
-                                                    >
-                                                        .000 000 000
-                                                    </UILabel>
+                                    const message: TransactionConfirmationMessage = {
+                                        key: `${Date.now()}-approve`,
+                                        status: MessageStatus.Received,
+                                        type: InteractiveMessageType.TransactionConfirmation,
+                                        toAddress: '0:12300000006789',
+                                        onAddressPress: () => {
+                                            // nothing
+                                        },
+                                        recipientsCount: 255,
+                                        totalAmount: (
+                                            <UILabel>
+                                                <UILabel role={UILabelRoles.MonoText}>
+                                                    0,000
                                                 </UILabel>
-                                            ),
-                                            fees: (
-                                                <UILabel>
-                                                    <UILabel
-                                                        role={
-                                                            UILabelRoles.MonoText
-                                                        }
-                                                    >
-                                                        0
-                                                    </UILabel>
-                                                    <UILabel
-                                                        role={
-                                                            UILabelRoles.MonoText
-                                                        }
-                                                        color={
-                                                            UILabelColors.TextTertiary
-                                                        }
-                                                    >
-                                                        .000 000 000
-                                                    </UILabel>
+                                                <UILabel
+                                                    role={UILabelRoles.MonoText}
+                                                    color={UILabelColors.TextTertiary}
+                                                >
+                                                    .000 000 000
                                                 </UILabel>
-                                            ),
-                                            signature: {
-                                                id: 1,
-                                                title: 'My Surf',
-                                                publicKey: '1c2f3b4a',
-                                            },
-                                            onApprove: (externalState: any) => {
-                                                setMessages([
-                                                    {
-                                                        ...message,
-                                                        externalState,
-                                                    },
-                                                    ...messages,
-                                                ]);
-                                            },
-                                            onCancel: (externalState: any) => {
-                                                setMessages([
-                                                    {
-                                                        ...message,
-                                                        externalState,
-                                                    },
-                                                    ...messages,
-                                                ]);
-                                            },
-                                        };
+                                            </UILabel>
+                                        ),
+                                        fees: (
+                                            <UILabel>
+                                                <UILabel role={UILabelRoles.MonoText}>0</UILabel>
+                                                <UILabel
+                                                    role={UILabelRoles.MonoText}
+                                                    color={UILabelColors.TextTertiary}
+                                                >
+                                                    .000 000 000
+                                                </UILabel>
+                                            </UILabel>
+                                        ),
+                                        signature: {
+                                            id: 1,
+                                            title: 'My Surf',
+                                            publicKey: '1c2f3b4a',
+                                        },
+                                        onApprove: (externalState: any) => {
+                                            setMessages([
+                                                {
+                                                    ...message,
+                                                    externalState,
+                                                },
+                                                ...messages,
+                                            ]);
+                                        },
+                                        onCancel: (externalState: any) => {
+                                            setMessages([
+                                                {
+                                                    ...message,
+                                                    externalState,
+                                                },
+                                                ...messages,
+                                            ]);
+                                        },
+                                    };
                                     setMessages([message, ...messages]);
                                     setMenuVisible(false);
                                 }}
@@ -684,8 +640,12 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                         key: `${Date.now()}-datetime-picker`,
                                         status: MessageStatus.Received,
                                         type: InteractiveMessageType.DateTime,
-                                        minDateTime: new Date(new Date('07/22/2021').setHours(12,4,0)),
-                                        maxDateTime: new Date(new Date('09/25/2021').setHours(19,1,0)),
+                                        minDateTime: new Date(
+                                            new Date('07/22/2021').setHours(12, 4, 0),
+                                        ),
+                                        maxDateTime: new Date(
+                                            new Date('09/25/2021').setHours(19, 1, 0),
+                                        ),
                                         onSelect: (externalState: any) => {
                                             setMessages([
                                                 {
@@ -755,9 +715,8 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                 }}
                             />
 
-
                             <UIBoxButton
-                                title='Choose country'
+                                title="Choose country"
                                 layout={{
                                     marginBottom: 10,
                                 }}

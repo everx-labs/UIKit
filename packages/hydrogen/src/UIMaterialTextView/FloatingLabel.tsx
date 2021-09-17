@@ -1,12 +1,5 @@
 import * as React from 'react';
-import {
-    LayoutChangeEvent,
-    StyleSheet,
-    View,
-    TextStyle,
-    ViewStyle,
-    StyleProp,
-} from 'react-native';
+import { LayoutChangeEvent, StyleSheet, View, TextStyle, ViewStyle, StyleProp } from 'react-native';
 import Animated, {
     interpolate,
     interpolateColor,
@@ -29,17 +22,14 @@ export type FloatingLabelProps = {
 const paragraphTextStyle: TextStyle = StyleSheet.flatten(
     Typography[TypographyVariants.ParagraphText],
 );
-const labelTextStyle: TextStyle = StyleSheet.flatten(
-    Typography[TypographyVariants.ParagraphLabel],
-);
+const labelTextStyle: TextStyle = StyleSheet.flatten(Typography[TypographyVariants.ParagraphLabel]);
 export const expandedLabelLineHeight: number = paragraphTextStyle.lineHeight
     ? paragraphTextStyle.lineHeight
     : 24;
 export const foldedLabelLineHeight: number = labelTextStyle.lineHeight
     ? labelTextStyle.lineHeight
     : 16;
-const FOLDED_LABEL_SCALE: number =
-    foldedLabelLineHeight / expandedLabelLineHeight;
+const FOLDED_LABEL_SCALE: number = foldedLabelLineHeight / expandedLabelLineHeight;
 
 const POSITION_FOLDED: number = 0;
 const POSITION_EXPANDED: number = 1;
@@ -54,9 +44,7 @@ const withSpringConfig: Animated.WithSpringConfig = {
 const validateChildren = (children: string): boolean => {
     if (typeof children !== 'string') {
         if (__DEV__) {
-            console.error(
-                `FloatingLabel: prop 'children' must have only 'string' value`,
-            );
+            console.error(`FloatingLabel: prop 'children' must have only 'string' value`);
         }
         return false;
     }
@@ -114,9 +102,7 @@ const useAnimatedPosition = (
     onFolded: () => void,
 ): Readonly<Animated.SharedValue<number>> => {
     /** Label position switcher (POSITION_FOLDED/POSITION_EXPANDED) */
-    const position: Animated.SharedValue<number> = useSharedValue<number>(
-        getPosition(isFolded),
-    );
+    const position: Animated.SharedValue<number> = useSharedValue<number>(getPosition(isFolded));
 
     React.useEffect(() => {
         position.value = getPosition(isFolded);
@@ -133,9 +119,7 @@ const useAnimatedPosition = (
         [position.value, onFolded],
     );
 
-    const animatedPosition: Readonly<Animated.SharedValue<
-        number
-    >> = useDerivedValue(() => {
+    const animatedPosition: Readonly<Animated.SharedValue<number>> = useDerivedValue(() => {
         return withSpring(position.value, withSpringConfig, animationCallback);
     });
     return animatedPosition;
@@ -144,10 +128,7 @@ const useAnimatedPosition = (
 const getFoldedX = (width: number): number => {
     'worklet';
 
-    return (
-        (width * (1 - FOLDED_LABEL_SCALE)) / 2 -
-        LEFT_OFFSET_OF_UI_LABEL_TEXT_FROM_EDGE / 2
-    );
+    return (width * (1 - FOLDED_LABEL_SCALE)) / 2 - LEFT_OFFSET_OF_UI_LABEL_TEXT_FROM_EDGE / 2;
 };
 
 const useOnLabelLayout = (
@@ -156,54 +137,36 @@ const useOnLabelLayout = (
 ) => {
     return React.useCallback(
         (layoutChangeEvent: LayoutChangeEvent) => {
-            if (
-                expandedLabelWidth.value !==
-                layoutChangeEvent.nativeEvent.layout.width
-            ) {
+            if (expandedLabelWidth.value !== layoutChangeEvent.nativeEvent.layout.width) {
                 // eslint-disable-next-line no-param-reassign
-                expandedLabelWidth.value =
-                    layoutChangeEvent.nativeEvent.layout.width;
+                expandedLabelWidth.value = layoutChangeEvent.nativeEvent.layout.width;
             }
-            if (
-                expandedLabelHeight.value !==
-                layoutChangeEvent.nativeEvent.layout.height
-            ) {
+            if (expandedLabelHeight.value !== layoutChangeEvent.nativeEvent.layout.height) {
                 // eslint-disable-next-line no-param-reassign
-                expandedLabelHeight.value =
-                    layoutChangeEvent.nativeEvent.layout.height;
+                expandedLabelHeight.value = layoutChangeEvent.nativeEvent.layout.height;
             }
         },
         [expandedLabelWidth, expandedLabelHeight],
     );
 };
 
-export const FloatingLabel: React.FC<FloatingLabelProps> = (
-    props: FloatingLabelProps,
-) => {
+export const FloatingLabel: React.FC<FloatingLabelProps> = (props: FloatingLabelProps) => {
     const { isFolded, onFolded, children } = props;
 
     /** Dimensions of label in the expanded state */
-    const expandedLabelWidth: Animated.SharedValue<number> = useSharedValue<
-        number
-    >(0);
-    const expandedLabelHeight: Animated.SharedValue<number> = useSharedValue<
-        number
-    >(0);
+    const expandedLabelWidth: Animated.SharedValue<number> = useSharedValue<number>(0);
+    const expandedLabelHeight: Animated.SharedValue<number> = useSharedValue<number>(0);
 
-    const onLabelLayout = useOnLabelLayout(
-        expandedLabelWidth,
-        expandedLabelHeight,
-    );
+    const onLabelLayout = useOnLabelLayout(expandedLabelWidth, expandedLabelHeight);
 
-    const labelOpacity: Animated.SharedValue<number> = useDerivedValue<
-        number
-    >(() => {
+    const labelOpacity: Animated.SharedValue<number> = useDerivedValue<number>(() => {
         return expandedLabelWidth.value && expandedLabelHeight.value ? 1 : 0;
     }, [expandedLabelWidth, expandedLabelHeight]);
 
-    const animatedPosition: Readonly<Animated.SharedValue<
-        number
-    >> = useAnimatedPosition(isFolded, onFolded);
+    const animatedPosition: Readonly<Animated.SharedValue<number>> = useAnimatedPosition(
+        isFolded,
+        onFolded,
+    );
 
     const labelContainerStyle: StyleProp<ViewStyle> = useAnimatedStyle(() => {
         const foldedX: number = getFoldedX(expandedLabelWidth.value);
@@ -243,10 +206,7 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (
                 style={[styles.floatingLabel, labelContainerStyle]}
                 onLayout={onLabelLayout}
             >
-                <Label
-                    animatedPosition={animatedPosition}
-                    labelOpacity={labelOpacity}
-                >
+                <Label animatedPosition={animatedPosition} labelOpacity={labelOpacity}>
                     {children}
                 </Label>
             </Animated.View>

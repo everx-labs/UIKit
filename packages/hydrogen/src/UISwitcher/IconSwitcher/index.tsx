@@ -19,22 +19,17 @@ const getShape = (variant: UISwitcherVariant) => {
     switch (variant) {
         case UISwitcherVariant.Check:
             return {
-                width:
-                    UIConstant.iconSize - UIConstant.switcher.squarePadding * 2,
-                height:
-                    UIConstant.iconSize - UIConstant.switcher.squarePadding * 2,
+                width: UIConstant.iconSize - UIConstant.switcher.squarePadding * 2,
+                height: UIConstant.iconSize - UIConstant.switcher.squarePadding * 2,
                 borderRadius: UIConstant.switcher.squareBorderRadius,
             };
         case UISwitcherVariant.Radio:
         case UISwitcherVariant.Select:
         default:
             return {
-                width:
-                    UIConstant.iconSize - UIConstant.switcher.circlePadding * 2,
-                height:
-                    UIConstant.iconSize - UIConstant.switcher.circlePadding * 2,
-                borderRadius:
-                    UIConstant.iconSize - UIConstant.switcher.circlePadding * 2,
+                width: UIConstant.iconSize - UIConstant.switcher.circlePadding * 2,
+                height: UIConstant.iconSize - UIConstant.switcher.circlePadding * 2,
+                borderRadius: UIConstant.iconSize - UIConstant.switcher.circlePadding * 2,
             };
     }
 };
@@ -62,11 +57,11 @@ export const IconSwitcher: React.FC<UISwitcherProps> = ({
         return disabled ? styles.showDefault : styles.showPointer;
     }, [disabled]);
 
-    const {
-        imageOnStyle,
-        imageOffOpacity,
-        imageOffBorderColor,
-    } = useImageStyle(active, switcherState, theme);
+    const { imageOnStyle, imageOffOpacity, imageOffBorderColor } = useImageStyle(
+        active,
+        switcherState,
+        theme,
+    );
 
     return (
         <RawButton
@@ -83,19 +78,14 @@ export const IconSwitcher: React.FC<UISwitcherProps> = ({
                 <Animated.View
                     style={[
                         styles.offSwitcher,
-                        disabled
-                            ? styles.disabledSwitcherBordersStyle
-                            : imageOffBorderColor,
+                        disabled ? styles.disabledSwitcherBordersStyle : imageOffBorderColor,
                     ]}
                 />
             </Animated.View>
 
             <Animated.View style={[styles.onSwitcher, imageOnStyle]}>
                 <Animated.View
-                    style={[
-                        styles.overlay,
-                        disabled ? styles.disabledSwitcherStyle : overlayStyle,
-                    ]}
+                    style={[styles.overlay, disabled ? styles.disabledSwitcherStyle : overlayStyle]}
                 >
                     {image}
                 </Animated.View>

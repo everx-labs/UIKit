@@ -14,20 +14,18 @@ import { UIAssets } from '@tonlabs/uikit.assets';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
-const component = (color: ColorValue) => (): React.ReactElement<View> => (
-    <View
-        style={{
-            flex: 1,
-            backgroundColor: color,
-        }}
-    />
-);
+const component = (color: ColorValue) => (): React.ReactElement<View> =>
+    (
+        <View
+            style={{
+                flex: 1,
+                backgroundColor: color,
+            }}
+        />
+    );
 
 export const Navigation = () => {
-    const [
-        isSearchControllerVisible,
-        setSearchControllerVisible,
-    ] = React.useState(false);
+    const [isSearchControllerVisible, setSearchControllerVisible] = React.useState(false);
     const [isSearchBarVisible, setSearchBarVisible] = React.useState(false);
 
     return (
@@ -46,9 +44,7 @@ export const Navigation = () => {
                     <UIPagerView.Container
                         type="Scrollable"
                         initialPageIndex={0}
-                        onPageIndexChange={(newPageIndex: number) =>
-                            newPageIndex
-                        }
+                        onPageIndexChange={(newPageIndex: number) => newPageIndex}
                         testID="UIPagerView"
                     >
                         <>
@@ -79,11 +75,7 @@ export const Navigation = () => {
                             title="Long title of item is displayed in its entirety"
                             component={component('gray')}
                         />
-                        <UIPagerView.Page
-                            id="Item 6"
-                            title="I6"
-                            component={component('black')}
-                        />
+                        <UIPagerView.Page id="Item 6" title="I6" component={component('black')} />
                         <UIPagerView.Page
                             id="Item 7"
                             title="Item 7"
@@ -114,9 +106,7 @@ export const Navigation = () => {
                     <UIPagerView.Container
                         type="Fixed"
                         initialPageIndex={0}
-                        onPageIndexChange={(newPageIndex: number) =>
-                            newPageIndex
-                        }
+                        onPageIndexChange={(newPageIndex: number) => newPageIndex}
                         testID="UIPagerView"
                     >
                         <UIPagerView.Page
@@ -145,9 +135,7 @@ export const Navigation = () => {
                     <UIPagerView.Container
                         type="FixedPadded"
                         initialPageIndex={0}
-                        onPageIndexChange={(newPageIndex: number) =>
-                            newPageIndex
-                        }
+                        onPageIndexChange={(newPageIndex: number) => newPageIndex}
                         testID="UIPagerView"
                     >
                         <UIPagerView.Page
@@ -191,11 +179,7 @@ export const Navigation = () => {
                     <UIBoxButton
                         testID="UISearchController_open_button"
                         title="Open search controller"
-                        onPress={() =>
-                            setSearchControllerVisible(
-                                !isSearchControllerVisible,
-                            )
-                        }
+                        onPress={() => setSearchControllerVisible(!isSearchControllerVisible)}
                     />
                     <UISearchController
                         visible={isSearchControllerVisible}

@@ -12,28 +12,36 @@ export const paddingStyles = {
     paddingVerticalNone: {
         paddingVertical: 0,
     },
-    paddingDefault: { // 16
+    paddingDefault: {
+        // 16
         padding: UIConstant.contentOffset(),
     },
-    paddingTiny: { // 4
+    paddingTiny: {
+        // 4
         padding: UIConstant.tinyContentOffset(),
     },
-    paddingSmall: { // 8
+    paddingSmall: {
+        // 8
         padding: UIConstant.smallContentOffset(),
     },
-    paddingHorizontalTiny: { // 4
+    paddingHorizontalTiny: {
+        // 4
         paddingHorizontal: UIConstant.tinyContentOffset(),
     },
-    paddingHorizontalSmall: { // 8
+    paddingHorizontalSmall: {
+        // 8
         paddingHorizontal: UIConstant.smallContentOffset(),
     },
-    paddingHorizontal: { // 16
+    paddingHorizontal: {
+        // 16
         paddingHorizontal: UIConstant.contentOffset(),
     },
-    paddingHorizontalNormal: { // 12
+    paddingHorizontalNormal: {
+        // 12
         paddingHorizontal: UIConstant.normalContentOffset(),
     },
-    paddingVerticalTiny: { // 4
+    paddingVerticalTiny: {
+        // 4
         paddingVertical: UIConstant.tinyContentOffset(),
     },
     paddingVertical: {
@@ -45,37 +53,46 @@ export const paddingStyles = {
     paddingVerticalSmall: {
         paddingVertical: UIConstant.smallContentOffset(),
     },
-    paddingTopDefault: { // 16
+    paddingTopDefault: {
+        // 16
         paddingTop: UIConstant.contentOffset(),
     },
-    paddingTopTiny: { // 4
+    paddingTopTiny: {
+        // 4
         paddingTop: UIConstant.smallContentOffset(),
     },
-    paddingTopSmall: { // 8
+    paddingTopSmall: {
+        // 8
         paddingTop: UIConstant.smallContentOffset(),
     },
-    paddingTopMedium: { // 24
+    paddingTopMedium: {
+        // 24
         paddingTop: UIConstant.mediumContentOffset(),
     },
-    paddingTopHuge: { // 32
+    paddingTopHuge: {
+        // 32
         paddingTop: UIConstant.hugeContentOffset(),
     },
-    paddingBottomTiny: { // 4
+    paddingBottomTiny: {
+        // 4
         paddingBottom: UIConstant.tinyContentOffset(),
     },
-    paddingBottomSmall: { // 8
+    paddingBottomSmall: {
+        // 8
         paddingBottom: UIConstant.smallContentOffset(),
     },
     paddingBottomMedium: {
         paddingBottom: UIConstant.mediumContentOffset(),
     },
-    paddingBottomSpacious: { // 40
+    paddingBottomSpacious: {
+        // 40
         paddingBottom: UIConstant.spaciousContentOffset(),
     },
     paddingBottomMassive: {
         paddingBottom: UIConstant.massiveContentOffset(),
     },
-    paddingBottomMajor: { // 64
+    paddingBottomMajor: {
+        // 64
         paddingBottom: UIConstant.majorContentOffset(),
     },
     paddingBottomVast: {
@@ -84,7 +101,8 @@ export const paddingStyles = {
     paddingBottomEnormous: {
         paddingBottom: UIConstant.enormousContentOffset(),
     },
-    paddingBottomGiant: { // 136
+    paddingBottomGiant: {
+        // 136
         paddingBottom: UIConstant.giantContentOffset(),
     },
     paddingBottomNormal: {
@@ -119,151 +137,188 @@ export const paddingStyles = {
 const styles = StyleSheet.create(paddingStyles);
 
 export default class UIStylePadding {
-    static none() { // 0
+    static none() {
+        // 0
         return styles.paddingNone;
     }
 
-    static default() { // 16
+    static default() {
+        // 16
         return styles.paddingDefault;
     }
 
-    static tiny() { // 4
+    static tiny() {
+        // 4
         return styles.paddingTiny;
     }
 
-    static small() { // 8
+    static small() {
+        // 8
         return styles.paddingSmall;
     }
 
-    static horizontalNone() { // 0
+    static horizontalNone() {
+        // 0
         return styles.paddingHorizontalNone;
     }
 
-    static horizontal() { // 16
+    static horizontal() {
+        // 16
         return styles.paddingHorizontal;
     }
 
-    static horizontalTiny() { // 4
+    static horizontalTiny() {
+        // 4
         return styles.paddingHorizontalTiny;
     }
 
-    static horizontalSmall() { // 8
+    static horizontalSmall() {
+        // 8
         return styles.paddingHorizontalSmall;
     }
 
-    static horizontalNormal() { // 12
+    static horizontalNormal() {
+        // 12
         return styles.paddingHorizontalNormal;
     }
 
-    static verticalNone() { // 0
+    static verticalNone() {
+        // 0
         return styles.paddingVerticalNone;
     }
 
-    static vertical() { // 16
+    static vertical() {
+        // 16
         return styles.paddingVertical;
     }
 
-    static verticalTiny() { // 4
+    static verticalTiny() {
+        // 4
         return styles.paddingVerticalTiny;
     }
 
-    static verticalSmall() { // 8
+    static verticalSmall() {
+        // 8
         return styles.paddingVerticalSmall;
     }
 
-    static verticalNormal() { // 12
+    static verticalNormal() {
+        // 12
         return styles.paddingVerticalNormal;
     }
 
-    static topTiny() { // 4
+    static topTiny() {
+        // 4
         return styles.paddingTopTiny;
     }
 
-    static topSmall() { // 8
+    static topSmall() {
+        // 8
         return styles.paddingTopSmall;
     }
 
-    static topDefault() { // 16
+    static topDefault() {
+        // 16
         return styles.paddingTopDefault;
     }
 
-    static topMedium() { // 24
+    static topMedium() {
+        // 24
         return styles.paddingTopMedium;
     }
 
-    static topHuge() { // 32
+    static topHuge() {
+        // 32
         return styles.paddingTopHuge;
     }
 
-    static bottomTiny() { // 4
+    static bottomTiny() {
+        // 4
         return styles.paddingBottomTiny;
     }
 
-    static bottomSmall() { // 8
+    static bottomSmall() {
+        // 8
         return styles.paddingBottomSmall;
     }
 
-    static bottomNormal() { // 12
+    static bottomNormal() {
+        // 12
         return styles.paddingBottomNormal;
     }
 
-    static bottomDefault() { // 16
+    static bottomDefault() {
+        // 16
         return styles.paddingBottomDefault;
     }
 
-    static bottomSpacious() { // 40
+    static bottomSpacious() {
+        // 40
         return styles.paddingBottomSpacious;
     }
 
-    static bottomMassive() { // 72
+    static bottomMassive() {
+        // 72
         return styles.paddingBottomMassive;
     }
 
-    static bottomVast() { // 80
+    static bottomVast() {
+        // 80
         return styles.paddingBottomVast;
     }
 
-    static bottomEnormous() { // 104
+    static bottomEnormous() {
+        // 104
         return styles.paddingBottomEnormous;
     }
 
-    static bottomGiant() { // 136
+    static bottomGiant() {
+        // 136
         return styles.paddingBottomGiant;
     }
 
-    static leftSmall() { // 8
+    static leftSmall() {
+        // 8
         return styles.paddingLeftSmall;
     }
 
-    static leftDefault() { // 16
+    static leftDefault() {
+        // 16
         return styles.paddingLeftDefault;
     }
 
-    static rightSmall() { // 8
+    static rightSmall() {
+        // 8
         return styles.paddingRightSmall;
     }
 
-    static rightDefault() { // 16
+    static rightDefault() {
+        // 16
         return styles.paddingRightDefault;
     }
 
-    static rightHuge() { // 32
+    static rightHuge() {
+        // 32
         return styles.paddingRightHuge;
     }
 
-    static rightGreat() { // 48
+    static rightGreat() {
+        // 48
         return styles.paddingRightGreat;
     }
 
-    static bottomMedium() { // 24
+    static bottomMedium() {
+        // 24
         return styles.paddingBottomMedium;
     }
 
-    static bottomHuge() { // 32
+    static bottomHuge() {
+        // 32
         return styles.paddingBottomHuge;
     }
 
-    static bottomMajor() { // 64
+    static bottomMajor() {
+        // 64
         return styles.paddingBottomMajor;
     }
 }

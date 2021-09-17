@@ -7,29 +7,31 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 const UI_STATUS_BAR_HEIGHT = Platform.OS === 'ios' ? getStatusBarHeight() : 0;
 const UI_NAVIGATION_BAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
 
-const UI_IS_DESKTOP_WEB = Platform.OS === 'web'
-        && !(new MobileDetect(window.navigator.userAgent)).mobile();
+const UI_IS_DESKTOP_WEB =
+    Platform.OS === 'web' && !new MobileDetect(window.navigator.userAgent).mobile();
 
-const UI_IS_MOBILE_WEB = Platform.OS === 'web'
-    && (new MobileDetect(window.navigator.userAgent)).phone();
+const UI_IS_MOBILE_WEB =
+    Platform.OS === 'web' && new MobileDetect(window.navigator.userAgent).phone();
 
-const UI_IS_MOBILE_WEB_IOS = Platform.OS === 'web'
-    && ((new MobileDetect(window.navigator.userAgent)).os() === 'iOS' ||
-        (new MobileDetect(window.navigator.userAgent)).os() === 'iPadOS');
+const UI_IS_MOBILE_WEB_IOS =
+    Platform.OS === 'web' &&
+    (new MobileDetect(window.navigator.userAgent).os() === 'iOS' ||
+        new MobileDetect(window.navigator.userAgent).os() === 'iPadOS');
 
-const UI_IS_MOBILE_WEB_ANDROID = Platform.OS === 'web'
-    && (new MobileDetect(window.navigator.userAgent)).os() === 'AndroidOS';
+const UI_IS_MOBILE_WEB_ANDROID =
+    Platform.OS === 'web' && new MobileDetect(window.navigator.userAgent).os() === 'AndroidOS';
 
-const UI_IS_TABLET_WEB = Platform.OS === 'web'
-        && (new MobileDetect(window.navigator.userAgent)).tablet();
+const UI_IS_TABLET_WEB =
+    Platform.OS === 'web' && new MobileDetect(window.navigator.userAgent).tablet();
 
 const UI_IS_TABLET = Platform.OS !== 'web' ? DeviceInfo.isTablet() : UI_IS_TABLET_WEB;
 
 const UI_IS_MOBILE = Platform.OS !== 'web' ? !DeviceInfo.isTablet() : UI_IS_MOBILE_WEB;
 
-const UI_IS_WEBKIT = Platform.OS !== 'web'
-    ? Number.NaN
-    : new MobileDetect(window.navigator.userAgent).version('Webkit');
+const UI_IS_WEBKIT =
+    Platform.OS !== 'web'
+        ? Number.NaN
+        : new MobileDetect(window.navigator.userAgent).version('Webkit');
 
 const APP_NAME = Platform.OS !== 'web' ? DeviceInfo.getApplicationName() : '';
 

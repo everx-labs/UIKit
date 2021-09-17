@@ -40,15 +40,10 @@ export const DateSeparator = React.memo(({ time }: { time: number }) => {
             <View
                 style={[
                     styles.dateSeparator,
-                    UIStyle.color.getBackgroundColorStyle(
-                        theme[ColorVariants.BackgroundSecondary],
-                    ),
+                    UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.BackgroundSecondary]),
                 ]}
             >
-                <UILabel
-                    role={UILabelRoles.HeadlineLabel}
-                    color={UILabelColors.TextSecondary}
-                >
+                <UILabel role={UILabelRoles.HeadlineLabel} color={UILabelColors.TextSecondary}>
                     {getLabel(time)}
                 </UILabel>
             </View>

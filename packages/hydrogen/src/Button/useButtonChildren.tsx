@@ -30,30 +30,20 @@ export function ButtonContent({
     style,
     ...props
 }: ViewProps & {
-    children: React.ReactNode,
-    direction?: ButtonContentDirection,
+    children: React.ReactNode;
+    direction?: ButtonContentDirection;
 }) {
     const childrenDirection = React.useMemo(() => {
         if (direction === ButtonContentDirection.Column) {
-            return [
-                { flexDirection: direction },
-                styles.leftContent,
-            ];
+            return [{ flexDirection: direction }, styles.leftContent];
         }
-        return [
-            { flexDirection: direction },
-            styles.centerContent,
-        ];
+        return [{ flexDirection: direction }, styles.centerContent];
     }, [direction]);
 
     return (
         <View
             {...props}
-            style={[
-                childrenDirection,
-                Platform.OS === 'web' ? styles.flexShrink : null,
-                style,
-            ]}
+            style={[childrenDirection, Platform.OS === 'web' ? styles.flexShrink : null, style]}
         >
             {children}
         </View>
@@ -69,11 +59,11 @@ export function ButtonIcon({
     style,
     ...props
 }: ImageProps & {
-    iconAnimStyle?: any,
-    initialColor?: ColorVariants,
-    activeColor?: ColorVariants,
+    iconAnimStyle?: any;
+    initialColor?: ColorVariants;
+    activeColor?: ColorVariants;
     // add possibility to pass action to the icon, may be used for the right icons
-    onPress?: () => void | Promise<void>,
+    onPress?: () => void | Promise<void>;
 }) {
     const theme = useTheme();
 
@@ -110,11 +100,7 @@ export function ButtonIcon({
         );
     }, [props, source, style, iconAnimStyle, initialColor, activeColor, theme]);
 
-    return onPress ? (
-        <TouchableOpacity onPress={onPress}>
-            {image}
-        </TouchableOpacity>
-    ) : image;
+    return onPress ? <TouchableOpacity onPress={onPress}>{image}</TouchableOpacity> : image;
 }
 
 export function ButtonTitle({
@@ -126,12 +112,12 @@ export function ButtonTitle({
     style,
     ...props
 }: {
-    children: string,
-    titleColor?: ColorVariants,
-    titleRole?: TypographyVariants,
-    titleAnimStyle?: any,
-    numberOfLines?: number,
-    style?: StyleProp<TextStyle>,
+    children: string;
+    titleColor?: ColorVariants;
+    titleRole?: TypographyVariants;
+    titleAnimStyle?: any;
+    numberOfLines?: number;
+    style?: StyleProp<TextStyle>;
 }) {
     return (
         <AnimatedUILabel
@@ -152,7 +138,8 @@ const getChilds = (children: React.ReactNode) => {
     const childElements = React.Children.toArray(children).reduce<React.ReactNode[]>(
         (acc, child) => {
             if (React.isValidElement(child)) {
-                if (child.type === ButtonContent ||
+                if (
+                    child.type === ButtonContent ||
                     child.type === ButtonIcon ||
                     child.type === ButtonTitle
                 ) {
@@ -170,11 +157,7 @@ const getChilds = (children: React.ReactNode) => {
                 `Button can only contain 'Button.[Content|Icon|Title]' components as its direct children (found ${
                     // eslint-disable-next-line no-nested-ternary
                     React.isValidElement(child)
-                        ? `${
-                            typeof child.type === 'string'
-                                ? child.type
-                                : child.type?.name
-                        }`
+                        ? `${typeof child.type === 'string' ? child.type : child.type?.name}`
                         : typeof child === 'object'
                         ? JSON.stringify(child)
                         : `'${String(child)}'`
@@ -195,25 +178,17 @@ export const useButtonChildren = (children: React.ReactNode) => {
     const { length } = childElements;
 
     if (length === 1) {
-        return (
-            <View style={styles.singleElementContainer}>
-                {childElements}
-            </View>
-        );
+        return <View style={styles.singleElementContainer}>{childElements}</View>;
     } else if (length === 2) {
         // TODO: add checking of child type
         //  & separating Button.Container to icon and title with corresponding alignment
         return (
             <View style={styles.moreThanOneElementContainer}>
                 <View style={styles.left} />
-                <View style={styles.center}>
-                    {childElements[0]}
-                </View>
-                <View style={styles.right}>
-                    {childElements[1]}
-                </View>
+                <View style={styles.center}>{childElements[0]}</View>
+                <View style={styles.right}>{childElements[1]}</View>
             </View>
-        )
+        );
     }
 
     return childElements;
@@ -227,7 +202,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
     },
     flexShrink: {
-        flexShrink: 1
+        flexShrink: 1,
     },
     singleElementContainer: {
         flexDirection: 'row',

@@ -1,7 +1,7 @@
 {
-  "extends": "./tsconfig",
-  "compilerOptions": {
-    "experimentalDecorators": true,
-    "resolveJsonModule": true
-  },
+    "extends": "./tsconfig",
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "resolveJsonModule": true
+    }
 }

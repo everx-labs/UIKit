@@ -4,18 +4,15 @@ import * as React from 'react';
 import { Platform, TextInput, View, StyleSheet, Image } from 'react-native';
 
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
-import type { ReturnKeyType, KeyboardType, AutoCapitalize } from 'react-native/Libraries/Components/TextInput/TextInput';
+import type {
+    ReturnKeyType,
+    KeyboardType,
+    AutoCapitalize,
+} from 'react-native/Libraries/Components/TextInput/TextInput';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
-import {
-    UIColor,
-    UIConstant,
-    UIStyle,
-} from '@tonlabs/uikit.core';
-import type {
-    UIColorThemeNameType,
-    EventProps,
-} from '@tonlabs/uikit.core';
+import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import type { UIColorThemeNameType, EventProps } from '@tonlabs/uikit.core';
 import {
     ColorVariants,
     UILabel,
@@ -30,10 +27,7 @@ import {
 
 import UIActionImage from '../UIActionImage';
 import { UIActionComponent } from '../UIActionComponent';
-import type {
-    UIActionComponentProps,
-    UIActionComponentState,
-} from '../UIActionComponent';
+import type { UIActionComponentProps, UIActionComponentState } from '../UIActionComponent';
 
 const styles = StyleSheet.create({
     container: {
@@ -313,7 +307,7 @@ export type UIDetailsInputProps = UIActionComponentProps & {
     Set cursor position. May not work correctly with `copyingLocked = true`
     @default null
     */
-    selection?: ?{start: number, end: number},
+    selection?: ?{ start: number, end: number },
     /**
     If maxLength is set, show how many symbols left to enter.
     @default false
@@ -377,52 +371,45 @@ type UIDetailsInputState = UIActionComponentState & {
     selection: ?Selection,
 };
 
-const TextViewWrapper = React.forwardRef<*, UIDetailsInputProps>(({
-    value,
-    bottomLineColor,
-    mandatoryColor,
-    commentColor,
-    focused,
-    hover,
-    style,
-    ...rest
-}: *, ref) => {
-    const theme = useTheme();
+const TextViewWrapper = React.forwardRef<*, UIDetailsInputProps>(
+    (
+        { value, bottomLineColor, mandatoryColor, commentColor, focused, hover, style, ...rest }: *,
+        ref,
+    ) => {
+        const theme = useTheme();
 
-    const borderBottomColor = React.useMemo(() => {
-        let color: ColorVariants;
-        if (bottomLineColor) {
-            color = bottomLineColor;
-        } else if (mandatoryColor && value) {
-            color = mandatoryColor;
-        } else if (commentColor) {
-            color = commentColor;
-        } else if (focused) {
-            color = ColorVariants.LineAccent;
-        } else if (hover) {
-            color = ColorVariants.LineNeutral;
-        } else {
-            color = ColorVariants.LinePrimary;
-        }
-        return color;
-    }, [bottomLineColor, mandatoryColor, commentColor, focused, hover]);
+        const borderBottomColor = React.useMemo(() => {
+            let color: ColorVariants;
+            if (bottomLineColor) {
+                color = bottomLineColor;
+            } else if (mandatoryColor && value) {
+                color = mandatoryColor;
+            } else if (commentColor) {
+                color = commentColor;
+            } else if (focused) {
+                color = ColorVariants.LineAccent;
+            } else if (hover) {
+                color = ColorVariants.LineNeutral;
+            } else {
+                color = ColorVariants.LinePrimary;
+            }
+            return color;
+        }, [bottomLineColor, mandatoryColor, commentColor, focused, hover]);
 
-    return (
-        <View
-            // $FlowFixMe
-            ref={ref}
-            {...rest}
-            style={[
-                style,
-                { borderBottomColor: theme[borderBottomColor] },
-            ]}
-        />
-    );
-});
+        return (
+            <View
+                // $FlowFixMe
+                ref={ref}
+                {...rest}
+                style={[style, { borderBottomColor: theme[borderBottomColor] }]}
+            />
+        );
+    },
+);
 
 export class UIDetailsInput<Props, State> extends UIActionComponent<
     $Shape<Props & UIDetailsInputProps>,
-    $Shape<State & UIDetailsInputState>
+    $Shape<State & UIDetailsInputState>,
 > {
     textInput = React.createRef<UITextView>();
     auxTextInput = React.createRef<?any>();
@@ -467,7 +454,7 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
                 this.onHeightChange(height);
             }
         }
-    }
+    };
 
     onWebChange = () => {
         this.setStateSafely({}, () => {
@@ -477,7 +464,7 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
                 this.onHeightChange(height);
             }
         });
-    }
+    };
 
     onHeightChange = (height: number) => {
         if (height) {
@@ -488,7 +475,7 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
                 onHeightChange(height);
             }
         }
-    }
+    };
 
     adjustInputAreaHeightIfNeeded = (height: number) => {
         if (Platform.OS === 'ios') {
@@ -499,7 +486,7 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
         const newSize = Math.min(height, UIConstant.smallCellHeight() * 5);
         const inH = newSize;
         this.onContentSizeChange(inH);
-    }
+    };
 
     onContentSizeChange = (height: number): void => {
         // Not implemented in here
@@ -509,7 +496,7 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
         // Not implemented in here
     };
 
-    onChangeText = (text: string, callback: ?((finalValue: string) => void)): void => {
+    onChangeText = (text: string, callback: ?(finalValue: string) => void): void => {
         const { onChangeText } = this.props;
         if (onChangeText) {
             onChangeText(text);
@@ -547,15 +534,19 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
     };
 
     onSelectionChange = (e: any): void => {
-        if (this.props.copyingLocked && Platform.OS !== 'ios') { // more priority than external prop
-            const { nativeEvent: { selection } } = e;
+        if (this.props.copyingLocked && Platform.OS !== 'ios') {
+            // more priority than external prop
+            const {
+                nativeEvent: { selection },
+            } = e;
             const value = this.getValue();
             if (selection.start !== selection.end) {
                 const selectionToSet = {
                     start: value.length,
                     end: value.length,
                 };
-                this.setStateSafely({ selection: selectionToSet }, () => { // set cursor to end
+                this.setStateSafely({ selection: selectionToSet }, () => {
+                    // set cursor to end
                     this.setStateSafely({ selection: undefined }); // stop control cursor
                 });
             }
@@ -584,7 +575,11 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
     }
 
     isFocused(): boolean {
-        return this.state.focused || (this.textInput.current && this.textInput.current.isFocused()) || false;
+        return (
+            this.state.focused ||
+            (this.textInput.current && this.textInput.current.isFocused()) ||
+            false
+        );
     }
 
     isHover(): boolean {
@@ -592,8 +587,7 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
     }
 
     isSubmitDisabled(value: string = this.props.value): boolean {
-        return (this.props.disableSubmitEmpty && !value) ||
-                this.props.submitDisabled || false;
+        return (this.props.disableSubmitEmpty && !value) || this.props.submitDisabled || false;
     }
 
     isMultiline(): boolean {
@@ -618,12 +612,7 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
         const { inputStyle } = this.props;
         // We remove the fontFamily for Android in oder to eliminate jumping input behaviour
         const androidFix = Platform.OS === 'android' ? { fontFamily: undefined } : {};
-        return [
-            styles.textInput,
-            UIStyle.common.flex(),
-            inputStyle,
-            androidFix,
-        ];
+        return [styles.textInput, UIStyle.common.flex(), inputStyle, androidFix];
     }
 
     beginningTag() {
@@ -705,7 +694,6 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
         return this.getPlaceholder();
     }
 
-
     // Actions
     focus() {
         if (this.textInput.current) {
@@ -727,23 +715,19 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
 
     // Render
     renderFloatingTitle() {
-        const {
-            floatingTitle, floatingTitleText, hideFloatingTitle,
-        } = this.props;
+        const { floatingTitle, floatingTitleText, hideFloatingTitle } = this.props;
         if (hideFloatingTitle) {
             return null;
         }
         const value = this.getValue();
         const emptyValue = !value || !value.length;
-        const text = !floatingTitle || (emptyValue && !this.isFocused())
-            ? ' '
-            : floatingTitleText || this.getPlaceholder();
+        const text =
+            !floatingTitle || (emptyValue && !this.isFocused())
+                ? ' '
+                : floatingTitleText || this.getPlaceholder();
 
         return (
-            <UILabel
-                color={UILabelColors.TextTertiary}
-                role={UILabelRoles.ParagraphLabel}
-            >
+            <UILabel color={UILabelColors.TextTertiary} role={UILabelRoles.ParagraphLabel}>
                 {text}
             </UILabel>
         );
@@ -756,9 +740,7 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
         const styleColor = prefixIconColor
             ? UIStyle.color.getTintColorStyle(prefixIconColor)
             : null;
-        return (
-            <Image source={this.props.prefixIcon} style={[styles.prefixIcon, styleColor]} />
-        );
+        return <Image source={this.props.prefixIcon} style={[styles.prefixIcon, styleColor]} />;
     }
 
     renderBeginningTag() {
@@ -908,7 +890,7 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
         if (!token) {
             return null;
         }
-        return (<UILabel role={UILabel.Role.DescriptionTertiary} text={token} />);
+        return <UILabel role={UILabel.Role.DescriptionTertiary} text={token} />;
     }
 
     renderButton() {
@@ -944,10 +926,7 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
         return (
             <UIActionImage
                 {...icons}
-                source={
-                    theme === UIColor.Theme.Light &&
-                    UIAssets.icons.ui.arrowRight
-                }
+                source={theme === UIColor.Theme.Light && UIAssets.icons.ui.arrowRight}
                 disabled={this.isSubmitDisabled()}
                 onPress={this.onSubmitEditing}
             />
@@ -982,10 +961,8 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
                 style={UIStyle.common.positionAbsolute()}
             >
                 {placeholder}
-                <UILabel
-                    color={UILabelColors.TextAccent}
-                    role={UILabelRoles.ParagraphText}
-                > *
+                <UILabel color={UILabelColors.TextAccent} role={UILabelRoles.ParagraphText}>
+                     *
                 </UILabel>
             </UILabel>
         );
@@ -1011,9 +988,7 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
     }
 
     renderTextView() {
-        const {
-            hideBottomLine, bottomLineColor, mandatory, mandatoryColor,
-        } = this.props;
+        const { hideBottomLine, bottomLineColor, mandatory, mandatoryColor } = this.props;
         const bottomLine = hideBottomLine ? null : UIStyle.border.bottom();
 
         return (
@@ -1102,20 +1077,19 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
                     UIStyle.common.alignCenter(),
                 ]}
             >
-                <View
-                    style={commentRight
-                        ? UIStyle.common.flex2()
-                        : UIStyle.common.flex()}
-                >
+                <View style={commentRight ? UIStyle.common.flex2() : UIStyle.common.flex()}>
                     {component}
                 </View>
                 <View
-                    style={commentRight
-                        ? [
-                            UIStyle.common.flex2(),
-                            UIStyle.common.alignEnd(),
-                            UIStyle.margin.leftDefault(),
-                        ] : null}
+                    style={
+                        commentRight
+                            ? [
+                                  UIStyle.common.flex2(),
+                                  UIStyle.common.alignEnd(),
+                                  UIStyle.margin.leftDefault(),
+                              ]
+                            : null
+                    }
                 >
                     {commentRightLabel}
                 </View>

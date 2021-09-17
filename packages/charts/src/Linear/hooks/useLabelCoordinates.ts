@@ -1,8 +1,4 @@
-import Animated, {
-    useAnimatedReaction,
-    useSharedValue,
-    withSpring,
-} from 'react-native-reanimated';
+import Animated, { useAnimatedReaction, useSharedValue, withSpring } from 'react-native-reanimated';
 import type {
     LinearChartAnimatedState,
     LinearChartDimensions,
@@ -20,19 +16,15 @@ const getIsNoAnimationNeeded = (
         return true;
     }
     const isWidthChanged: boolean =
-        currentAnimatedState.dimensions.width !==
-        previousAnimatedState.dimensions.width;
+        currentAnimatedState.dimensions.width !== previousAnimatedState.dimensions.width;
     const isHeightChanged: boolean =
-        currentAnimatedState.dimensions.height !==
-        previousAnimatedState.dimensions.height;
+        currentAnimatedState.dimensions.height !== previousAnimatedState.dimensions.height;
     return isWidthChanged || isHeightChanged;
 };
 
 export const useLabelCoordinates = (
     dimensions: Animated.SharedValue<LinearChartDimensions>,
-    controlPoints: Readonly<
-        Animated.SharedValue<LinearChartControlPoints | null>
-    >,
+    controlPoints: Readonly<Animated.SharedValue<LinearChartControlPoints | null>>,
 ) => {
     const minimumLabelXCoordinate = useSharedValue<number>(0);
     const maximumLabelXCoordinate = useSharedValue<number>(0);
@@ -53,20 +45,11 @@ export const useLabelCoordinates = (
             if (currentAnimatedState.controlPoints === null) {
                 return;
             }
-            if (
-                getIsNoAnimationNeeded(
-                    currentAnimatedState,
-                    previousAnimatedState,
-                )
-            ) {
-                minimumLabelXCoordinate.value =
-                    currentAnimatedState.controlPoints.minimum.x;
-                maximumLabelXCoordinate.value =
-                    currentAnimatedState.controlPoints.maximum.x;
-                startLabelYCoordinate.value =
-                    currentAnimatedState.controlPoints.start.y;
-                endLabelYCoordinate.value =
-                    currentAnimatedState.controlPoints.end.y;
+            if (getIsNoAnimationNeeded(currentAnimatedState, previousAnimatedState)) {
+                minimumLabelXCoordinate.value = currentAnimatedState.controlPoints.minimum.x;
+                maximumLabelXCoordinate.value = currentAnimatedState.controlPoints.maximum.x;
+                startLabelYCoordinate.value = currentAnimatedState.controlPoints.start.y;
+                endLabelYCoordinate.value = currentAnimatedState.controlPoints.end.y;
             } else {
                 minimumLabelXCoordinate.value = withSpring(
                     currentAnimatedState.controlPoints.minimum.x,

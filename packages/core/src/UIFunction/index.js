@@ -26,7 +26,7 @@ type BankCardNumberArgs = {
     number: string,
     raw?: boolean,
     presumed?: boolean,
-}
+};
 
 export type NumberParts = {
     value: BigNum,
@@ -38,7 +38,7 @@ export type NumberParts = {
 export type NumberPartsOptions = {
     minimumFractionDigits: number,
     maximumFractionDigits: number,
-}
+};
 
 type NumberFormatInfo = {
     grouping: string,
@@ -74,8 +74,7 @@ export default class UIFunction {
     // without real work.
     // Instead of <Component onEvent={() => {}} >
     // preferable way is: <Component onEvent={UIFunction.NOP} >
-    static NOP = () => {
-    };
+    static NOP = () => {};
 
     // Async Helpers
     /** Converts callback style function into Promise */
@@ -101,11 +100,14 @@ export default class UIFunction {
     }
 
     // Process money conversion
-    static numberFromMoneyString(string: string, currency: CurrencyInfo = {
-        code: 'USD',
-        symbol: '$',
-        precision: 0,
-    }) {
+    static numberFromMoneyString(
+        string: string,
+        currency: CurrencyInfo = {
+            code: 'USD',
+            symbol: '$',
+            precision: 0,
+        },
+    ) {
         const options = {
             code: currency.code,
             symbol: currency.symbol,
@@ -116,11 +118,14 @@ export default class UIFunction {
         // return Number((string || '0').replace(/[$,]/g, ''));
     }
 
-    static moneyStringFromNumber(number: number, currency: CurrencyInfo = {
-        code: 'USD',
-        symbol: '$',
-        precision: 0,
-    }) {
+    static moneyStringFromNumber(
+        number: number,
+        currency: CurrencyInfo = {
+            code: 'USD',
+            symbol: '$',
+            precision: 0,
+        },
+    ) {
         const options = {
             code: currency.code,
             symbol: currency.symbol,
@@ -194,7 +199,8 @@ export default class UIFunction {
     // Allows to print small numbers with "-e" suffix
     static getNumberString(number: number | BigNum, digits: number = 10): string {
         // $FlowExpectedError
-        if (!BigNumber.isBigNumber(number) && (Math.abs(number) > 1)) { // Apply BigNumber conversion only for non-small numbers!
+        if (!BigNumber.isBigNumber(number) && Math.abs(number) > 1) {
+            // Apply BigNumber conversion only for non-small numbers!
             try {
                 return new BigNumber(number.toString()).toString();
             } catch (error) {
@@ -210,9 +216,7 @@ export default class UIFunction {
             return null;
         }
         let normalized = UIFunction.replaceAll(`${s}`, ' ', '');
-        const {
-            grouping, thousands, decimal, decimalGrouping,
-        } = localeInfo.numbers;
+        const { grouping, thousands, decimal, decimalGrouping } = localeInfo.numbers;
         normalized = UIFunction.replaceAll(normalized, grouping, '');
         normalized = UIFunction.replaceAll(normalized, thousands, '');
         normalized = UIFunction.replaceAll(normalized, decimalGrouping, '');
@@ -241,8 +245,11 @@ export default class UIFunction {
         const normalizedValue = isNormalized
             ? value
             : UIFunction.normalizedAmount(value, localeInfo);
-        if (normalizedValue === undefined || normalizedValue === null
-            || Number.isNaN(Number(normalizedValue))) {
+        if (
+            normalizedValue === undefined ||
+            normalizedValue === null ||
+            Number.isNaN(Number(normalizedValue))
+        ) {
             // The string can't be parsed as a number
             return null;
         }
@@ -262,14 +269,16 @@ export default class UIFunction {
             valueString: '0',
         };
         // Fix value by rounding it from above
-        const fixedValue = (splitParts[1]?.length || 0) > options.maximumFractionDigits
-            ? UIFunction.toFixedDown(normalizedValue, options.maximumFractionDigits)
-            : normalizedValue;
+        const fixedValue =
+            (splitParts[1]?.length || 0) > options.maximumFractionDigits
+                ? UIFunction.toFixedDown(normalizedValue, options.maximumFractionDigits)
+                : normalizedValue;
         // Remove unwanted leading zeros and trailing whitespaces
         const trimmedValue = fixedValue.replace(/^0+/, '').trim();
-        const plainValue = !trimmedValue.length || trimmedValue.startsWith(defaultSeparator)
-            ? `0${trimmedValue}`
-            : trimmedValue;
+        const plainValue =
+            !trimmedValue.length || trimmedValue.startsWith(defaultSeparator)
+                ? `0${trimmedValue}`
+                : trimmedValue;
         // Set resulted value
         result.value = new BigNumber(plainValue);
         // Find value components
@@ -281,13 +290,17 @@ export default class UIFunction {
             result.decimal = `${result.decimal}${'0'.repeat(trailingZerosToAdd)}`;
         }
         // Localize value string
-        const integerString
-                = result.integer.replace(/\B(?=(\d{3})+(?!\d))/g, localeInfo.numbers.thousands);
-        const separatorString = plainValue.indexOf(defaultSeparator) >= 0 || trailingZerosToAdd > 0
-            ? localeInfo.numbers.decimal
-            : '';
+        const integerString = result.integer.replace(
+            /\B(?=(\d{3})+(?!\d))/g,
+            localeInfo.numbers.thousands,
+        );
+        const separatorString =
+            plainValue.indexOf(defaultSeparator) >= 0 || trailingZerosToAdd > 0
+                ? localeInfo.numbers.decimal
+                : '';
         const decimalString = result.decimal || '';
-        const decFormatted = decimalString.match(/.{1,3}/g)?.join(localeInfo.numbers.decimalGrouping) || '';
+        const decFormatted =
+            decimalString.match(/.{1,3}/g)?.join(localeInfo.numbers.decimalGrouping) || '';
         result.valueString = `${integerString}${separatorString}${decFormatted}`;
         // Return result
         return result;
@@ -308,7 +321,10 @@ export default class UIFunction {
             const parseResult = parsePhoneNumberFromString(`+${phone || ''}`);
             valid = parseResult.isValid();
         } catch (exception) {
-            console.log(`[UIFunction] Failed to parse phone code ${phone || ''} with exception`, exception);
+            console.log(
+                `[UIFunction] Failed to parse phone code ${phone || ''} with exception`,
+                exception,
+            );
         }
         return valid;
     }
@@ -338,10 +354,7 @@ export default class UIFunction {
                 phone = this.removeCallingCode(phone, parsedPhone.countryCallingCode);
             }
         } catch (exception) {
-            console.log(
-                `[UIFunction] Failed to parse phone ${phone} with exception`,
-                exception,
-            );
+            console.log(`[UIFunction] Failed to parse phone ${phone} with exception`, exception);
             if (cleanIfFailed) {
                 phone = '';
             }
@@ -383,10 +396,7 @@ export default class UIFunction {
                 for (let i = 0; i < countryList.length; i += 1) {
                     const countryISO = countryList[i];
                     const country = UIAssets.countries[countryISO];
-                    if (
-                        country.phone.split(',')[0] ===
-                        parsedResult.countryCallingCode
-                    ) {
+                    if (country.phone.split(',')[0] === parsedResult.countryCallingCode) {
                         countryCode = countryISO;
                         break;
                     }
@@ -441,17 +451,17 @@ export default class UIFunction {
     }
 
     static roundNumber(number: number, scale: number = 2) {
-        if (!(`${number}`).includes('e')) {
+        if (!`${number}`.includes('e')) {
             // $FlowExpectedError
-            return +(`${Math.round(`${number}e+${scale}`)}e-${scale}`);
+            return +`${Math.round(`${number}e+${scale}`)}e-${scale}`;
         }
-        const arr = (`${number}`).split('e');
+        const arr = `${number}`.split('e');
         let sig = '';
         if (+arr[1] + scale > 0) {
             sig = '+';
         }
         // $FlowExpectedError
-        return +(`${Math.round(`${+arr[0]}e${sig}${+arr[1] + scale}`)}e-${scale}`);
+        return +`${Math.round(`${+arr[0]}e${sig}${+arr[1] + scale}`)}e-${scale}`;
     }
 
     static roundStringNumber(str: string, scale: number = 2) {
@@ -467,8 +477,12 @@ export default class UIFunction {
         const tab = UIFunction.repeat('   ', level);
 
         let str = '';
-        Object.keys(obj).forEach((key) => {
-            str += `${tab + key}: ${typeof obj[key] === 'object' ? `\r\n${UIFunction.objectToString(obj[key], level + 1)}` : obj[key]}\r\n`;
+        Object.keys(obj).forEach(key => {
+            str += `${tab + key}: ${
+                typeof obj[key] === 'object'
+                    ? `\r\n${UIFunction.objectToString(obj[key], level + 1)}`
+                    : obj[key]
+            }\r\n`;
         });
 
         return str;
@@ -511,7 +525,7 @@ export default class UIFunction {
         return true;
     }
 
-    static splitRandomly(s: string, limits: (number[])[]): string[] {
+    static splitRandomly(s: string, limits: number[][]): string[] {
         let pos = 0;
         let limit = 0;
         const parts = [];
@@ -544,8 +558,7 @@ export default class UIFunction {
 
     static formatLowerLetters(str: string): string {
         const normalizedStr = UIFunction.normalizeKeyPhrase(str);
-        return normalizedStr
-            .replace(/[^\s-_0-9a-zA-Zа-яА-ЯёЁ]/g, '');
+        return normalizedStr.replace(/[^\s-_0-9a-zA-Zа-яА-ЯёЁ]/g, '');
     }
 
     static hasLetters(str: string) {
@@ -562,7 +575,9 @@ export default class UIFunction {
 
     static getCookie(name: string) {
         // $FlowExpectedError
-        const matches = document.cookie.match(new RegExp(`(?:^|; )${name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1')}=([^;]*)`));
+        const matches = document.cookie.match(
+            new RegExp(`(?:^|; )${name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1')}=([^;]*)`),
+        );
         return matches ? decodeURIComponent(matches[1]) : undefined;
     }
 
@@ -590,7 +605,8 @@ export default class UIFunction {
         const rawNumber = raw ? number : number.replace(/[^0-9]/gim, '');
         const regEx = {
             [this.bankCardTypes.visa]: /^4[0-9]{12}(?:[0-9]{3})?$/,
-            [this.bankCardTypes.masterCard]: /^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$/,
+            [this.bankCardTypes.masterCard]:
+                /^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$/,
             [this.bankCardTypes.maestro]: /^(5[06789]|6)[0-9]*$/,
             [this.bankCardTypes.amex]: /^3[47][0-9]{13}$/,
             // for future using
@@ -612,14 +628,18 @@ export default class UIFunction {
         };
 
         const results = {};
-        Object.keys(regEx).forEach((key) => {
-            const fullNumber = presumed ? `${rawNumber}${numbers[key].substr(rawNumber.length)}` : rawNumber;
-            if (regEx[key].test(fullNumber)
-            && (
-                (presumed || rawNumber.length === 15) // For American Express
-                || (presumed || rawNumber.length === 16) // Almost all cards
-                || (presumed || rawNumber.length === 19) // For some Maestro cards
-            )
+        Object.keys(regEx).forEach(key => {
+            const fullNumber = presumed
+                ? `${rawNumber}${numbers[key].substr(rawNumber.length)}`
+                : rawNumber;
+            if (
+                regEx[key].test(fullNumber) &&
+                (presumed ||
+                    rawNumber.length === 15 || // For American Express
+                    presumed ||
+                    rawNumber.length === 16 || // Almost all cards
+                    presumed ||
+                    rawNumber.length === 19) // For some Maestro cards
             ) {
                 results[key] = true;
             }
@@ -639,10 +659,7 @@ export default class UIFunction {
     }
 
     // for numeric inputs that can be formatted with different separators
-    static adjustCursorPosition2(
-        prevText: string,
-        currentText: string,
-    ): number {
+    static adjustCursorPosition2(prevText: string, currentText: string): number {
         let idx = 0;
         let idxF = 0;
 
@@ -676,7 +693,9 @@ export default class UIFunction {
         textFormatted: string,
     ): number {
         const digits = '0123456789';
-        const cursorInDigits = cursorSource - textSource.split('').filter((s, r) => !digits.includes(s) && r < cursorSource).length;
+        const cursorInDigits =
+            cursorSource -
+            textSource.split('').filter((s, r) => !digits.includes(s) && r < cursorSource).length;
 
         let idx = 0;
         let cursorFormatted = 0;
@@ -697,10 +716,8 @@ export default class UIFunction {
 
     static combineStyles(stylesArray: (ViewStyleProp | TextStyleProp)[]) {
         let result = [];
-        stylesArray.forEach((item) => {
-            result = Array.isArray(item)
-                ? [...result, ...item]
-                : [...result, item];
+        stylesArray.forEach(item => {
+            result = Array.isArray(item) ? [...result, ...item] : [...result, item];
         });
         return result;
     }
@@ -708,7 +725,7 @@ export default class UIFunction {
     static roundToMeaningDigit(num: number): number {
         const fraction = num - Math.trunc(num);
         for (let i = 0; i < 10; i += 1) {
-            if (fraction * (10 ** i) >= 1) {
+            if (fraction * 10 ** i >= 1) {
                 return Math.trunc(num) + Number(fraction.toFixed(i));
             }
         }
@@ -732,10 +749,10 @@ export default class UIFunction {
         if (!obj) return {};
 
         const result = {};
-        Object.keys(obj).forEach((key) => {
+        Object.keys(obj).forEach(key => {
             if (typeof obj[key] === 'object') {
                 const flattifyResult = this.flatify(obj[key]);
-                Object.keys(flattifyResult).forEach((innerKey) => {
+                Object.keys(flattifyResult).forEach(innerKey => {
                     result[`${key} / ${innerKey}`] = flattifyResult[innerKey];
                 });
             } else {
@@ -755,11 +772,7 @@ export default class UIFunction {
     }
 
     static toFixedOrEmpty(arg: ?number, fractionDigits: number): string {
-        return arg == null
-            ? ''
-            : arg === 0
-                ? '0'
-                : arg.toFixed(fractionDigits);
+        return arg == null ? '' : arg === 0 ? '0' : arg.toFixed(fractionDigits);
     }
 
     /**

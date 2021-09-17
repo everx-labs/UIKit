@@ -24,38 +24,22 @@ import {
 
 import { MessageStatus, OnLongPressText, OnPressUrl } from './types';
 import type { ChatPlainTextMessage, PlainTextMessage } from './types';
-import {
-    useBubblePosition,
-    useBubbleContainerStyle,
-} from './useBubblePosition';
-import {
-    useBubbleBackgroundColor,
-    useBubbleRoundedCornerStyle,
-} from './useBubbleStyle';
+import { useBubblePosition, useBubbleContainerStyle } from './useBubblePosition';
+import { useBubbleBackgroundColor, useBubbleRoundedCornerStyle } from './useBubbleStyle';
 
 const useUrlStyle = (status: MessageStatus) => {
     const theme = useTheme();
 
     if (status === MessageStatus.Received) {
-        return [
-            { color: theme[ColorVariants.TextPrimary] },
-            styles.urlReceived,
-        ];
+        return [{ color: theme[ColorVariants.TextPrimary] }, styles.urlReceived];
     }
 
-    return [
-        { color: theme[ColorVariants.StaticTextPrimaryLight] },
-        styles.urlSent,
-    ];
+    return [{ color: theme[ColorVariants.StaticTextPrimaryLight] }, styles.urlSent];
 };
 
-export const UrlPressHandlerContext = React.createContext<OnPressUrl>(
-    undefined,
-);
+export const UrlPressHandlerContext = React.createContext<OnPressUrl>(undefined);
 
-export const TextLongPressHandlerContext = React.createContext<OnLongPressText>(
-    undefined,
-);
+export const TextLongPressHandlerContext = React.createContext<OnLongPressText>(undefined);
 
 function useUrlPressHandler() {
     return React.useContext(UrlPressHandlerContext);
@@ -107,14 +91,10 @@ const getActionStringColor = (message: PlainTextMessage) => {
 
 // For e2e tests, to create unique id as in those tests
 // we don't know much about messages
-const createUniqTestId = (pattern: string, variable: string) =>
-    pattern.replace('%', variable);
+const createUniqTestId = (pattern: string, variable: string) => pattern.replace('%', variable);
 
 const createTestId = (pattern: string, text: string) => {
-    return createUniqTestId(
-        pattern,
-        `_${text.split(' ').slice(0, 2).join(' ')}`,
-    );
+    return createUniqTestId(pattern, `_${text.split(' ').slice(0, 2).join(' ')}`);
 };
 
 function BubbleTime(
@@ -127,11 +107,7 @@ function BubbleTime(
     return (
         <UILabel
             role={UILabelRoles.ParagraphFootnote}
-            color={
-                props.isHidden
-                    ? UILabelColors.Transparent
-                    : getTimeFontColor(props)
-            }
+            color={props.isHidden ? UILabelColors.Transparent : getTimeFontColor(props)}
             style={props.style}
         >
             {/* Use spaces instead of margins
@@ -143,9 +119,7 @@ function BubbleTime(
     );
 }
 
-function PlainTextContainer(
-    props: PlainTextMessage & { children: React.ReactNode },
-) {
+function PlainTextContainer(props: PlainTextMessage & { children: React.ReactNode }) {
     const scale = React.useRef(new Animated.Value(1)).current;
     const bubbleScaleAnimation = (scaleIn = false) => {
         Animated.spring(scale, {
@@ -160,19 +134,19 @@ function PlainTextContainer(
     const roundedCornerStyle = useBubbleRoundedCornerStyle(props, position);
     const actionString = getActionString(props);
 
-    const textLongPressHandler = useTextLongPressHandler()
+    const textLongPressHandler = useTextLongPressHandler();
 
-    const longPressHandle = React.useCallback(()=>{
+    const longPressHandle = React.useCallback(() => {
         bubbleScaleAnimation(true);
-        props.text && textLongPressHandler && textLongPressHandler(props.text)
+        props.text && textLongPressHandler && textLongPressHandler(props.text);
         /**
          * Maybe it's not the best place to run haptic
          * but I don't want to put it in legacy package
          * so left it here, until we make new share manager
          */
         runOnUI(hapticImpact)('medium');
-    },[props.text, textLongPressHandler, bubbleScaleAnimation])
-    
+    }, [props.text, textLongPressHandler, bubbleScaleAnimation]);
+
     return (
         <View style={containerStyle} onLayout={props.onLayout}>
             <TouchableWithoutFeedback
@@ -279,8 +253,8 @@ export function BubbleSimplePlainText(props: PlainTextMessage) {
                         {
                             type: 'url',
                             style: urlStyle,
-                            onPress: urlPressHandler
-                        }
+                            onPress: urlPressHandler,
+                        },
                     ]}
                 >
                     {props.text}

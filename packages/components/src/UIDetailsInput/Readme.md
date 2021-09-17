@@ -8,7 +8,7 @@ class ExampleComponent extends ThemeSwitcher {
             details: '',
             arrowDetails: '',
             multilineDetails: '',
-        }
+        };
     }
 
     renderContent() {
@@ -19,9 +19,11 @@ class ExampleComponent extends ThemeSwitcher {
                     value={this.state.details}
                     placeholder="Details"
                     comment="Some comment here"
-                    onChangeText={(newText) => this.setState({ 
-                        details: newText 
-                    })}
+                    onChangeText={newText =>
+                        this.setState({
+                            details: newText,
+                        })
+                    }
                 />
                 <UIDetailsInput
                     theme={this.getTheme()}
@@ -30,13 +32,15 @@ class ExampleComponent extends ThemeSwitcher {
                     comment="Some comment here"
                     maxLines={3}
                     containerStyle={{ marginTop: 16 }}
-                    onChangeText={(newText) => this.setState({ 
-                        multilineDetails: newText 
-                    })}
+                    onChangeText={newText =>
+                        this.setState({
+                            multilineDetails: newText,
+                        })
+                    }
                 />
             </View>
         );
     }
-};
-<ExampleComponent />
+}
+<ExampleComponent />;
 ```
