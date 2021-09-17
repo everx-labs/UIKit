@@ -37,12 +37,10 @@
         "@tonlabs/uikit.components": "^2.3.0",
         "@tonlabs/uikit.core": "^2.3.0",
         "@tonlabs/uikit.hydrogen": "^2.3.0",
-        "prop-types": "15.6.2",
         "react-image-lightbox": "5.1.1",
         "react-native-country-picker-modal": "git+https://github.com/tonlabs/react-native-country-picker-modal.git",
         "react-native-lightbox": "0.7.0",
-        "react-native-simple-popover": "git+https://github.com/tonlabs/react-native-simple-popover.git",
-        "react-style-proptype": "3.2.2"
+        "react-native-simple-popover": "git+https://github.com/tonlabs/react-native-simple-popover.git"
     },
     "devDependencies": {
         "@react-native-clipboard/clipboard": "^1.8.4",

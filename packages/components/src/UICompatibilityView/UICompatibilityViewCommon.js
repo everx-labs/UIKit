@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
-import Bowser from 'bowser';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { UIStyle, UITextStyle } from '@tonlabs/uikit.core';
 
@@ -16,8 +15,8 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class UICompatibilityView extends UIComponent<null, null> {
-    static renderNotCompatible() {
+export default class UICompatibilityViewCommon extends UIComponent<null, null> {
+    renderNotCompatible() {
         return (
             <Text style={UITextStyle.primaryBodyRegular}>
                 {uiLocalized.WeAreSorryButYourBrowserVersionIsNotCompatible}
@@ -26,12 +25,9 @@ export default class UICompatibilityView extends UIComponent<null, null> {
     }
 
     render() {
-        if (Platform.OS !== 'web' || !Bowser.msie) {
-            return null;
-        }
         return (
             <View style={[UIStyle.screenBackground, styles.container]}>
-                {UICompatibilityView.renderNotCompatible()}
+                {this.renderNotCompatible()}
             </View>
         );
     }

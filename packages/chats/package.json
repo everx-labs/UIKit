@@ -49,8 +49,7 @@
         "lodash": "4.17.21",
         "react-native-flash-message": "0.1.23",
         "react-native-indicators": "git+https://github.com/tonlabs/react-native-indicators.git",
-        "react-native-parsed-text": "git+https://github.com/FactorBench/react-native-parsed-text.git",
-        "react-style-proptype": "3.2.2"
+        "react-native-parsed-text": "git+https://github.com/FactorBench/react-native-parsed-text.git"
     },
     "devDependencies": {
         "@react-native-community/bob": "0.16.2",

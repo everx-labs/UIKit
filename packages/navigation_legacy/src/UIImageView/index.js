@@ -23,11 +23,18 @@ let Lightbox;
 let LightboxMobile;
 
 if (Platform.OS === 'web') {
-    require('./LightboxStyle');
-    Lightbox = require('react-image-lightbox').default;
+    // TODO: we should use our new Lightbox built with reanimated here
+    // but since UIImageView isn't used anywere for now
+    // it's not that important
+    // require('./LightboxStyle');
+    // Lightbox = require('react-image-lightbox').default;
 } else {
     ImagePicker = require('react-native-image-picker');
-    LightboxMobile = require('react-native-lightbox').default;
+    // LightboxMobile = require('react-native-lightbox').default;
+    // TODO: we should use our new Lightbox built with reanimated here
+    // but since UIImageView isn't used anywere for now
+    // it's not that important
+    LightboxMobile = null;
 }
 
 const styles = StyleSheet.create({
