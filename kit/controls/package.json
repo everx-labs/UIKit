@@ -1,0 +1,66 @@
+{
+    "name": "@tonlabs/uikit.controls",
+    "version": "2.3.0",
+    "description": "Controls for Tonlabs's UIKit",
+    "scripts": {
+        "tsc": "tsc --noEmit",
+        "prepare": "bob build"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tonlabs/UIKit.git",
+        "directory": "kit/controls"
+    },
+    "keywords": [
+        "tonlabs",
+        "design-system",
+        "react-native"
+    ],
+    "author": "tonlabs.io",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/tonlabs/UIKit/issues"
+    },
+    "homepage": "https://github.com/tonlabs/UIKit/kit/controls#readme",
+    "main": "lib/commonjs/index.js",
+    "module": "lib/module/index.js",
+    "react-native": "src/index.ts",
+    "types": "lib/typescript/src/index.d.ts",
+    "files": [
+        "lib/",
+        "src/"
+    ],
+    "dependencies": {},
+    "devDependencies": {
+        "@react-native-community/bob": "0.16.2",
+        "typescript": "4.4.3"
+    },
+    "peerDependencies": {},
+    "@react-native-community/bob": {
+        "source": "src",
+        "output": "lib",
+        "targets": [
+            [
+                "commonjs",
+                {
+                    "configFile": "./babel.config.js"
+                }
+            ],
+            [
+                "module",
+                {
+                    "configFile": "./babel.config.js"
+                }
+            ],
+            [
+                "typescript",
+                {
+                    "project": "tsconfig.build.json"
+                }
+            ]
+        ]
+    }
+}
