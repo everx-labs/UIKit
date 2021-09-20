@@ -18,7 +18,7 @@ const checkCircularDependencies = async () => {
             'packages/hydrogen/src/index.ts',
             'packages/keyboard/src/index.ts',
             'packages/legacy/src/index.js',
-            'packages/localization/src/index.ts',
+            'localization/src/index.ts',
             'packages/navigation/src/index.ts',
             'packages/navigation_legacy/src/index.js',
             'packages/popups/src/index.js',
