@@ -7,7 +7,8 @@
     "workspaces": [
         "packages/*",
         "Example",
-        "localization"
+        "localization",
+        "kit/*"
     ],
     "scripts": {
         "postinstall": "./postinstall.sh",

@@ -1,5 +1,5 @@
 {
-    "packages": ["packages/*", "Example", "localization"],
+    "packages": ["packages/*", "kit/*", "Example", "localization"],
     "version": "2.3.0",
     "npmClient": "yarn",
     "useWorkspaces": true

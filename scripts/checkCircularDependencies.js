@@ -8,7 +8,7 @@ const checkCircularDependencies = async () => {
         const sources = [
             'index.js',
             'Example/index.js',
-            'packages/assets/src/index.ts',
+            'kit/assets/src/index.ts',
             'packages/browser/src/index.ts',
             'packages/charts/src/index.ts',
             'packages/chats/src/index.ts',
