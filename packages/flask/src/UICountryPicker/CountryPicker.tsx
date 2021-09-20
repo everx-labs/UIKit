@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { View, useWindowDimensions } from 'react-native';
 
 import { UIConstant } from '@tonlabs/uikit.core';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 import { FlatList, UIBottomSheet, UISearchBar } from '@tonlabs/uikit.navigation';
 import {
     ColorVariants,

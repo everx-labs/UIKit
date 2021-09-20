@@ -10,7 +10,7 @@ import {
     UILabel,
     UILabelRoles,
 } from '@tonlabs/uikit.hydrogen';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 import {
     OnHeightChange,
     OnSendText,

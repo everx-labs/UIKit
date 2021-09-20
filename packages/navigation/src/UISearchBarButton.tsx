@@ -12,7 +12,7 @@ import {
     TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 
 import { UIConstant as UINavConstant } from './constants';
 import { UISearchController } from './UISearchController';

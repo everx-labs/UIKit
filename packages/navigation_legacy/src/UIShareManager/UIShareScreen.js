@@ -8,7 +8,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { UIBoxButton, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 
 import UIModalController from '../UIModalController';
 import type { ModalControllerProps } from '../UIModalController';

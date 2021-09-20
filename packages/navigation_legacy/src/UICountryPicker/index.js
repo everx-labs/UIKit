@@ -15,7 +15,7 @@ import {
     UILabelRoles,
     useTheme,
 } from '@tonlabs/uikit.hydrogen';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 import { UIAssets } from '@tonlabs/uikit.assets';
 
 import UIModalController from '../UIModalController';

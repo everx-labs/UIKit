@@ -7,7 +7,7 @@ import {
     ChatMessageType,
     MessageStatus,
 } from '@tonlabs/uikit.chats';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 
 import type { SigningBox as SigningBoxType, SigningBoxMessage } from '../types';
 import { UIBoxPicker } from '../UIBoxPicker';

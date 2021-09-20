@@ -1,4 +1,4 @@
-import type { LocalizationString } from '@tonlabs/uikit.localization';
+import type { LocalizationString } from '@tonlabs/localization';
 
 interface DataSet {
     lokalise: boolean;

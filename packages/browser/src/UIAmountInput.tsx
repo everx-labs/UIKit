@@ -13,7 +13,7 @@ import {
     useNumberFormatting,
     useAutogrowTextView,
 } from '@tonlabs/uikit.hydrogen';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 import type { OnHeightChange, OnSendAmount } from './types';
 import { ActionButton } from './ActionButton';
 

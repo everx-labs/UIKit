@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { UIStyle, UITextStyle } from '@tonlabs/uikit.core';
 
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 
 import UIComponent from '../UIComponent';
 

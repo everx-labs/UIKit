@@ -11,7 +11,7 @@ import {
     UILinkButtonSize,
     UILinkButtonType,
 } from '@tonlabs/uikit.hydrogen';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 import { PromoNotice } from './PromoNotice/';
 
 type UIPromoNoticeProps = {

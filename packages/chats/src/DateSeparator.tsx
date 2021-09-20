@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import dayjs from 'dayjs';
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 import {
     ColorVariants,
     UILabel,

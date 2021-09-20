@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { Animated, Easing } from 'react-native';
 import dayjs from 'dayjs';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 import type { PickerPropsType, UIDateTimePickerType } from '../types';
 
 class Utils {

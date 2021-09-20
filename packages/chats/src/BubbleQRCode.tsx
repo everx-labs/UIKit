@@ -3,7 +3,7 @@ import { ImageStyle, StyleProp, View, ViewStyle } from 'react-native';
 
 import { UIQRCodeView, QRCodeType, QRCodeSize, useQRCodeValueError } from '@tonlabs/uikit.flask';
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import {
     makeStyles,

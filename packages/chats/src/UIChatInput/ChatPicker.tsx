@@ -5,7 +5,7 @@ import DocumentPicker from 'react-native-document-picker';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIAlertView } from '@tonlabs/uikit.navigation_legacy';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 
 import type { OnSendMedia, OnSendDocument } from './types';
 

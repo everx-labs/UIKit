@@ -12,7 +12,7 @@ import {
     TransactionType,
 } from '@tonlabs/uikit.chats';
 import { UIPopup } from '@tonlabs/uikit.popups';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 import { useStickers } from '@tonlabs/uikit.stickers';
 import { createStackNavigator } from '@tonlabs/uikit.navigation';
 import { useBase64Image } from './hooks/useBase64Image';

@@ -9,7 +9,7 @@ import {
 } from '@tonlabs/uikit.chats';
 
 import { UIDateTimePickerMode } from '@tonlabs/uikit.flask';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 
 import { UIDateTimePicker } from '../UIDateTimePicker';
 

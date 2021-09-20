@@ -7,7 +7,7 @@ import { UIConstant } from '@tonlabs/uikit.core';
 import { UIComponent } from '@tonlabs/uikit.components';
 import { UIBackgroundView } from '@tonlabs/uikit.hydrogen';
 import { UICardSheet } from '@tonlabs/uikit.navigation';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 
 import MenuItem from './MenuItem';
 import type { MenuItemType } from './MenuItem';

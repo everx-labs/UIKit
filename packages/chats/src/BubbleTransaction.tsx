@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 import { UIScaleButton } from '@tonlabs/uikit.components';
 import {
     ColorVariants,

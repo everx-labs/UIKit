@@ -12,7 +12,7 @@ import ParsedText from 'react-native-parsed-text';
 import { runOnUI } from 'react-native-reanimated';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 import {
     UILabel,
     UILabelColors,

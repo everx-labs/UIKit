@@ -45,7 +45,7 @@
         "@tonlabs/uikit.core": "^2.3.0",
         "@tonlabs/uikit.hydrogen": "^2.3.0",
         "@tonlabs/uikit.keyboard": "^2.3.0",
-        "@tonlabs/uikit.localization": "^2.3.0",
+        "@tonlabs/localization": "^2.3.0",
         "lodash": "^4.17.20",
         "nanoid": "^3.1.23",
         "react-native-iphone-x-helper": "^1.3.1",

@@ -37,7 +37,7 @@
     ],
     "dependencies": {
         "@tonlabs/uikit.hydrogen": "^2.3.0",
-        "@tonlabs/uikit.localization": "^2.3.0"
+        "@tonlabs/localization": "^2.3.0"
     },
     "devDependencies": {
         "@react-native-community/bob": "0.16.2",

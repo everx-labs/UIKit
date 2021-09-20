@@ -7,7 +7,7 @@ import {
     ChatMessageType,
     MessageStatus,
 } from '@tonlabs/uikit.chats';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 
 import { UICountryPicker } from '../UICountryPicker';
 import type { CountryMessage } from '../types';

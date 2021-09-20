@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import { BubbleSimplePlainText, ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';
 import { Portal } from '@tonlabs/uikit.hydrogen';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 import type { AmountInputMessage } from '../types';
 
 import { UIAmountInput } from '../UIAmountInput';

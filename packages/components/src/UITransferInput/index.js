@@ -8,7 +8,7 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import { UIConstant, UIFunction, UIStyle } from '@tonlabs/uikit.core';
 import type { NumberParts, StringLocaleInfo, BigNum, UIColorData } from '@tonlabs/uikit.core';
 import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 
 import UIComponent from '../UIComponent';
 import UIAmountInput from '../UIAmountInput';

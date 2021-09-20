@@ -27,7 +27,7 @@ import type {
     TransactionConfirmationMessage,
 } from '@tonlabs/uikit.browser';
 import { UIPopup } from '@tonlabs/uikit.popups';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 import { ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';
 import {
     useTheme,

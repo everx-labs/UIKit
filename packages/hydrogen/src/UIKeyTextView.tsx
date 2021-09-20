@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { TextInput } from 'react-native';
 
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 
 import { useFocused, useUITextViewValue } from './UITextView';
 import {

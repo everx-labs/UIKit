@@ -1,6 +1,6 @@
 import Animated, { interpolate, Extrapolate } from 'react-native-reanimated';
 import type { Path } from 'react-native-redash';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 import type {
     LinearChartPoint,
     LinearChartDimensions,

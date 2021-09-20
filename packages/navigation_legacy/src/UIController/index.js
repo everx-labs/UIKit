@@ -19,7 +19,7 @@ import { UIConstant, UIDevice, UIEventHelper, UIFunction, UIStyle } from '@tonla
 import type { SafeAreaInsets } from '@tonlabs/uikit.core';
 import { UIAlertView, UIComponent, UISpinnerOverlay } from '@tonlabs/uikit.components';
 import { UISafeAreaView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 import { UILargeTitleContainerRefContext } from '@tonlabs/uikit.navigation';
 
 const AndroidKeyboardAdjust =

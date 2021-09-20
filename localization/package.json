@@ -1,5 +1,5 @@
 {
-    "name": "@tonlabs/uikit.localization",
+    "name": "@tonlabs/localization",
     "version": "2.3.0",
     "description": "Localization utilities for Tonlabs's UIKit",
     "scripts": {

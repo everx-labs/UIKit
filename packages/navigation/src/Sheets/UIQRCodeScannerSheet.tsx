@@ -4,7 +4,7 @@ import { StyleSheet, Vibration } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 import {
     useTheme,
     ColorVariants,

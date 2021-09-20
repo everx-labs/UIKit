@@ -2,7 +2,7 @@
 import React from 'react';
 
 import { UIPopup } from '@tonlabs/uikit.popups';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 import { UILabelColors, TypographyVariants } from '@tonlabs/uikit.hydrogen';
 import MenuItem from '../UIActionSheet/MenuItem';
 import type { MenuItemType } from '../UIActionSheet/MenuItem';

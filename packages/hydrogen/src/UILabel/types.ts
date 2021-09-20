@@ -8,7 +8,7 @@ import type {
     ViewStyle,
 } from 'react-native';
 
-import type { LocalizationString } from '@tonlabs/uikit.localization';
+import type { LocalizationString } from '@tonlabs/localization';
 
 import type { TypographyVariants } from '../Typography';
 import type { ColorVariants } from '../Colors';

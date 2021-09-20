@@ -8,7 +8,7 @@ import {
     MessageStatus,
 } from '@tonlabs/uikit.chats';
 import { UIQRCodeScannerSheet } from '@tonlabs/uikit.navigation';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 
 import type { QRCodeScannerMessage } from '../types';
 

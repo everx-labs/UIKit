@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 import { ColorVariants, UILabel, UILabelRoles, useTheme, UIImage } from '@tonlabs/uikit.hydrogen';
 
 import { MessageStatus } from './types';

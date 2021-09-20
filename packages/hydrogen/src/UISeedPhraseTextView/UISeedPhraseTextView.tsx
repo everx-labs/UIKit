@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Platform } from 'react-native';
 
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 
 import { UIMaterialTextView, UIMaterialTextViewRef } from '../UIMaterialTextView';
 import { UIConstant } from '../constants';

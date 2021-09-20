@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { MaterialIndicator } from 'react-native-indicators';
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 import {
     ColorVariants,
     UILabel,

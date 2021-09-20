@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useBackHandler } from '@react-native-community/hooks';
 
 import { Portal, ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { uiLocalized } from '@tonlabs/localization';
 
 import { UISearchBar } from './UISearchBar';
 import { UIConstant } from './constants';
