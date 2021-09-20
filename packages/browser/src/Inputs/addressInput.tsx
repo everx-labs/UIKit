@@ -187,6 +187,7 @@ export function AddressInput({ onLayout, ...message }: AddressInputMessage) {
                                 type: 'CLOSE_ADDRESS_INPUT',
                             });
                         }}
+                        onMaxLength={message.onMaxLength}
                         validateAddress={message.input.validateAddress}
                     />
                 </Portal>

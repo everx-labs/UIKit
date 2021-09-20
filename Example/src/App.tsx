@@ -12,7 +12,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { UIDropdownAlert, UILayoutManager, UINotice } from '@tonlabs/uikit.components';
+import { UILayoutManager, UINotice } from '@tonlabs/uikit.components';
 import {
     UIActionSheet,
     UICountryPicker,
@@ -335,7 +335,6 @@ const App = () => {
                     <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
                         <UINotice />
                     </View>
-                    <UIDropdownAlert />
                     <UIAndroidNavigationBar />
                 </PortalManager>
             </SafeAreaProvider>

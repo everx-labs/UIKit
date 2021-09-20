@@ -60,6 +60,9 @@ type BrowserScreenRef = { toggleMenu(): void };
 const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
     const theme = useTheme();
 
+    const [isMaxLengthNoticeVisible, setMaxLengthNoticeVisible] = React.useState(false);
+    const [maxLengthTitle, setMaxLengthTitle] = React.useState('');
+
     const base64Image = useBase64Image(imageUrl.original);
     const base64PreviewImage = useBase64Image(imageUrl.small);
 
@@ -121,6 +124,10 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
 
     const hideNotice = React.useCallback(() => {
         setNoticeVisible(false);
+    }, []);
+
+    const hideMaxLengthNotice = React.useCallback(() => {
+        setMaxLengthNoticeVisible(false);
     }, []);
 
     const { height } = useWindowDimensions();
@@ -251,6 +258,15 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                                 },
                                                 ...messages,
                                             ]);
+                                        },
+                                        onMaxLength: (maxLength: number) => {
+                                            setMaxLengthNoticeVisible(true);
+                                            setMaxLengthTitle(
+                                                uiLocalized.formatString(
+                                                    uiLocalized.Chats.Alerts.MessageTooLong,
+                                                    maxLength.toString(),
+                                                ),
+                                            );
                                         },
                                     };
                                     setMessages([
@@ -755,6 +771,14 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
             >
                 <UILabel>Pretending to using a security card...</UILabel>
             </UICardSheet>
+            <UIPopup.Notice
+                visible={isMaxLengthNoticeVisible}
+                title={maxLengthTitle}
+                type={UIPopup.Notice.Type.TopToast}
+                color={UIPopup.Notice.Color.PrimaryInverted}
+                onClose={hideMaxLengthNotice}
+                duration={UIPopup.Notice.Duration.Long}
+            />
             <UIPopup.Notice
                 visible={isNoticeVisible}
                 title={uiLocalized.MessageCopiedToClipboard}

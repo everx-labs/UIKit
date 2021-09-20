@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Platform, StyleSheet, TextInput } from 'react-native';
 
 import { UIInputAccessoryView } from '@tonlabs/uikit.keyboard';
-import { ChatInputContainer, useChatInputValue, useChatMaxLengthAlert } from '@tonlabs/uikit.chats';
+import { ChatInputContainer, useChatInputValue } from '@tonlabs/uikit.chats';
 import {
     ColorVariants,
     UITextView,
@@ -13,6 +13,7 @@ import {
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import {
     OnHeightChange,
+    OnMaxLength,
     OnSendText,
     ValidateAddress,
     ValidationResult,
@@ -77,6 +78,7 @@ type UIAddressInputInternalProps = {
     placeholder?: string;
     onSendText: OnSendText;
     onHeightChange?: OnHeightChange;
+    onMaxLength?: (maxLength: number) => void;
 
     validateAddress: ValidateAddress;
 };
@@ -87,6 +89,7 @@ export function UIAddressInputInternal({
     onSendText: onSendTextProp,
     validateAddress,
     placeholder,
+    onMaxLength,
 }: UIAddressInputInternalProps) {
     const {
         onContentSizeChange,
@@ -97,7 +100,6 @@ export function UIAddressInputInternal({
         resetInputHeight,
     } = useAutogrowTextView(textInputRef, onHeightChange, MAX_INPUT_NUM_OF_LINES);
 
-    const showMaxLengthAlert = useChatMaxLengthAlert(MAX_INPUT_LENGTH);
     const {
         inputHasValue,
         onChangeText: onBaseChangeText,
@@ -107,9 +109,9 @@ export function UIAddressInputInternal({
     } = useChatInputValue({
         ref: textInputRef,
         onSendText: onSendTextProp,
-        showMaxLengthAlert,
         resetInputHeight,
         maxInputLength: MAX_INPUT_LENGTH,
+        onMaxLength,
     });
     const { validation, onChangeText, clear } = useValidation(
         onBaseChangeText,
@@ -167,6 +169,7 @@ type UIAddressInputProps = {
 
     onSendText: OnSendText;
     onHeightChange?: OnHeightChange;
+    onMaxLength?: OnMaxLength;
 
     validateAddress: ValidateAddress;
 };
@@ -192,6 +195,7 @@ export function UIAddressInput(props: UIAddressInputProps) {
                 placeholder={props.placeholder}
                 onSendText={props.onSendText}
                 onHeightChange={Platform.OS === 'web' ? onHeightChange : undefined}
+                onMaxLength={props.onMaxLength}
                 validateAddress={props.validateAddress}
             />
         </UIInputAccessoryView>
