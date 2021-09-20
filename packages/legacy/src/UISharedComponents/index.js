@@ -4,7 +4,6 @@ import {
     UIComponent,
     UISpinnerOverlay,
     UINotice,
-    UIDropdownAlert,
     UICompatibilityView,
     UILayoutManager,
 } from '@tonlabs/uikit.components';
@@ -15,7 +14,6 @@ export default class UISharedComponents extends UIComponent {
             <React.Fragment>
                 <UISpinnerOverlay masterSpinner />
                 <UINotice />
-                <UIDropdownAlert />
                 <UICompatibilityView />
                 <UILayoutManager />
             </React.Fragment>

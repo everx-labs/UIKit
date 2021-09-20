@@ -25,7 +25,6 @@ module.exports = {
                     path.resolve(__dirname, '../plugins/'),
                     path.resolve(__dirname, '../localization/'),
                     path.resolve(__dirname, '../node_modules/react-native-indicators/'),
-                    path.resolve(__dirname, '../node_modules/react-native-dropdownalert/'),
                     path.resolve(__dirname, '../node_modules/react-native-simple-popover/'),
                     path.resolve(__dirname, '../node_modules/react-native-flash-message/'),
                     path.resolve(__dirname, '../node_modules/react-native-country-picker-modal/'),

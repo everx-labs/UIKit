@@ -15,7 +15,6 @@ export {
     UIDetailsInput,
     UIDetailsView,
     UIDetailsTable,
-    UIDropdownAlert,
     UILayoutManager,
     UILink,
     UIListHeader,

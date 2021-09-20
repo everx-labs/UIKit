@@ -78,7 +78,6 @@
         "react-native-country-picker-modal": "git+https://github.com/tonlabs/react-native-country-picker-modal.git",
         "react-native-device-info": "^5.6.3",
         "react-native-document-picker": "3.2.4",
-        "react-native-dropdownalert": "4.3.0",
         "react-native-fast-image": "8.3.4",
         "react-native-flash-message": "0.1.23",
         "react-native-gesture-handler": "1.10.3",

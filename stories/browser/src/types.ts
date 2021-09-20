@@ -10,6 +10,7 @@ export type DataUrl = string;
 export type OnSendText = (text: string) => void;
 export type OnSendAmount = (amount: BigNumber) => void;
 export type OnHeightChange = (height: number) => void;
+export type OnMaxLength = (maxLength: number) => void;
 
 // eslint-disable-next-line no-shadow
 export enum ValidationResultStatus {
@@ -113,6 +114,7 @@ export type AddressInputMessage = InteractiveMessage<
     {
         prompt: string;
         onSelect: (state: AddressInputExternalState) => void;
+        onMaxLength?: (maxLength: number) => void;
         mainAddress: string;
         mainAddressTitle?: string;
         input: {
