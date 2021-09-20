@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, TextInput, Text, I18nManager } from 'react-native';
+import { StyleSheet, View, Text, I18nManager } from 'react-native';
 import Animated, {
     cancelAnimation,
     Easing,
@@ -16,19 +16,24 @@ import Animated, {
 import {
     Typography,
     TypographyVariants,
+    ColorVariants,
     UIImage,
     UIImageProps,
-    ColorVariants,
+    useTheme,
 } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
+import { AnimatedTextInput } from './AnimatedTextInput';
+
+Animated.addWhitelistedNativeProps({ text: true });
 const AnimatedUIImage = Animated.createAnimatedComponent(UIImage);
 
 // @inline
 const LOADING_ANIMATION_STARTING_POINT = 0;
 // @inline
 const LOADING_ANIMATION_ENDING_POINT = 1;
+// @inline
+const lineHeightIconAdjustment = 5;
 
 function useIcon(source: UIImageProps['source'], role: TypographyVariants, loading: boolean) {
     const loadingProgress = useSharedValue(LOADING_ANIMATION_STARTING_POINT);
@@ -51,8 +56,10 @@ function useIcon(source: UIImageProps['source'], role: TypographyVariants, loadi
     const iconStaticStyle = React.useMemo(() => {
         const { lineHeight } = StyleSheet.flatten(Typography[role]);
         return {
-            // TODO: explain 5
-            height: lineHeight == null ? undefined : lineHeight - 5,
+            // If use whole lineHeight it will not be
+            // aligned with the baseline
+            // There is a temp workaround to make it look better
+            height: lineHeight == null ? undefined : lineHeight - lineHeightIconAdjustment,
         };
     }, []);
 
@@ -73,7 +80,6 @@ function useIcon(source: UIImageProps['source'], role: TypographyVariants, loadi
     return (
         <AnimatedUIImage
             source={source}
-            tintColor={ColorVariants.IconAccent}
             resizeMode={'contain'}
             style={[iconStaticStyle, iconAnimatedStyle]}
         />
@@ -81,7 +87,8 @@ function useIcon(source: UIImageProps['source'], role: TypographyVariants, loadi
 }
 
 export function UIAnimatedBalance({
-    role = TypographyVariants.TitleLarge,
+    integerVariant = TypographyVariants.TitleLarge,
+    fractionalVariant = TypographyVariants.LightLarge,
     value,
     maxFractionalDigits = 2,
     icon,
@@ -89,10 +96,12 @@ export function UIAnimatedBalance({
 }: {
     value: number;
     icon: UIImageProps['source'];
-    role?: TypographyVariants;
+    integerVariant?: TypographyVariants;
+    fractionalVariant?: TypographyVariants;
     maxFractionalDigits?: number;
     loading?: boolean;
 }) {
+    const theme = useTheme();
     const valueHolder = useSharedValue(value);
     const { decimalSeparator } = uiLocalized;
 
@@ -184,7 +193,9 @@ export function UIAnimatedBalance({
         };
     });
 
-    const iconElement = useIcon(icon, role, loading);
+    const iconElement = useIcon(icon, integerVariant, loading);
+
+    const colorStyle = React.useMemo(() => ({ color: theme[ColorVariants.TextPrimary] }), [theme]);
 
     const textLikeContainer = React.useMemo(
         () => (I18nManager.isRTL ? styles.rtlContainer : styles.ltrContainer),
@@ -195,9 +206,10 @@ export function UIAnimatedBalance({
         <View style={styles.intrinsicWrapper}>
             <View style={[textLikeContainer, styles.main]}>
                 <AnimatedTextInput
-                    style={[Typography[role], styles.hidden]}
+                    style={[Typography[integerVariant], styles.hidden]}
                     animatedProps={normalizedProps}
                     defaultValue={normalized.value}
+                    underlineColorAndroid="transparent"
                     editable={false}
                 />
                 {/*
@@ -206,19 +218,23 @@ export function UIAnimatedBalance({
                  * instead of `marginLeft` as space is more "text friendly"
                  * and will layout properly in text
                  */}
-                <Text style={Typography[role]}> {iconElement}</Text>
+                <Text style={Typography[fractionalVariant]}> {iconElement}</Text>
                 <View style={[textLikeContainer, styles.visible]}>
                     <AnimatedTextInput
-                        style={[Typography[role], styles.integer]}
+                        style={[Typography[integerVariant], colorStyle, styles.integer]}
                         animatedProps={animatedIntegerProps}
                         defaultValue={formatted.value.integer}
+                        underlineColorAndroid="transparent"
                         editable={false}
                     />
-                    <Text style={[Typography[role], styles.delimeter]}>{decimalSeparator}</Text>
+                    <Text style={[Typography[fractionalVariant], colorStyle, styles.delimeter]}>
+                        {decimalSeparator}
+                    </Text>
                     <AnimatedTextInput
-                        style={[Typography[role], styles.fractional]}
+                        style={[Typography[fractionalVariant], colorStyle, styles.fractional]}
                         animatedProps={animatedFractionalProps}
                         defaultValue={formatted.value.fractional}
+                        underlineColorAndroid="transparent"
                         editable={false}
                     />
                 </View>
@@ -255,6 +271,7 @@ const styles = StyleSheet.create({
     delimeter: {
         // text should be "thiner" here for sure by design
         fontWeight: '400',
+        lineHeight: undefined,
     },
     fractional: {
         // text should be "thiner" here for sure by design
