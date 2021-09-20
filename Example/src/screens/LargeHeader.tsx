@@ -27,7 +27,7 @@ function LargeHeaderExample() {
                 <UIMaterialTextView
                     label="Title"
                     defaultValue="Very long title"
-                    onChangeText={(title) => {
+                    onChangeText={title => {
                         if (typeof title === 'string' && title) {
                             navigation.setOptions({
                                 title,
@@ -39,7 +39,7 @@ function LargeHeaderExample() {
             {new Array(9)
                 .fill(null)
                 .map((_el, i) => (i + 1) / 10)
-                .map((opacity) => (
+                .map(opacity => (
                     <View
                         key={opacity}
                         style={{
@@ -74,7 +74,7 @@ const LargeHeaderStack = createStackNavigator();
 
 function RefreshPageController() {
     const turnOnRefreshing = React.useCallback(() => {
-        return new Promise<void>((resolve) => {
+        return new Promise<void>(resolve => {
             setTimeout(() => {
                 resolve(undefined);
             }, 1000);
@@ -97,12 +97,11 @@ const renderBelowContent = () => {
             }}
         >
             <UILabel color={UILabelColors.TextPrimaryInverted}>
-                A thing happened and it takes three whole lines to explain that
-                it happened. This isn’t likely in English but maybe in German. A
-                thing happened and it takes three whole lines to explain that it
-                happened. This isn’t likely in English but maybe in German. A
-                thing happened and it takes three whole lines to explain that it
-                happened. This isn’t likely in English but maybe in German.
+                A thing happened and it takes three whole lines to explain that it happened. This
+                isn’t likely in English but maybe in German. A thing happened and it takes three
+                whole lines to explain that it happened. This isn’t likely in English but maybe in
+                German. A thing happened and it takes three whole lines to explain that it happened.
+                This isn’t likely in English but maybe in German.
             </UILabel>
         </UIBackgroundView>
     );

@@ -1,4 +1,10 @@
-import { IUINotice, UINotice as NoticeView, UINoticeColor, UINoticeDuration, UINoticeType } from './Notice';
+import {
+    IUINotice,
+    UINotice as NoticeView,
+    UINoticeColor,
+    UINoticeDuration,
+    UINoticeType,
+} from './Notice';
 
 export * from './Notice/types';
 

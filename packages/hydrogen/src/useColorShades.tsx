@@ -26,9 +26,9 @@ export function useColorShades(color: ColorVariants) {
         }, '#');
 
         const lightenColorValue = [
-            Math.floor(r + ((255 - r) * SHADE_FACTOR)),
-            Math.floor(g + ((255 - g) * SHADE_FACTOR)),
-            Math.floor(b + ((255 - b) * SHADE_FACTOR)),
+            Math.floor(r + (255 - r) * SHADE_FACTOR),
+            Math.floor(g + (255 - g) * SHADE_FACTOR),
+            Math.floor(b + (255 - b) * SHADE_FACTOR),
         ].reduce((acc, v) => {
             const hex = v.toString(16);
             return acc + (hex.length === 1 ? `0${hex}` : hex);

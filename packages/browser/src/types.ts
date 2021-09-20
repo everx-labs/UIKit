@@ -5,7 +5,7 @@ import type React from 'react';
 /**
  * A string of the form: `data:[<data type>][;base64],<data in base64>`
  */
-export type DataUrl = string
+export type DataUrl = string;
 
 export type OnSendText = (text: string) => void;
 export type OnSendAmount = (amount: BigNumber) => void;
@@ -40,7 +40,8 @@ export enum InteractiveMessageType {
     MediaOutput = 'MediaOutput',
     Date = 'Date',
     Time = 'Time',
-    DateTime = 'DateTime'
+    DateTime = 'DateTime',
+    Country = 'Country',
 }
 
 type PlainTextMessage = BubbleBaseT & {
@@ -62,7 +63,7 @@ type InteractiveMessage<
     T extends InteractiveMessageType,
     // eslint-disable-next-line @typescript-eslint/ban-types
     MessageT extends object,
-    ExternalState = null
+    ExternalState = null,
 > = BubbleBaseT & { type: T } & MessageT & { externalState?: ExternalState };
 
 export type ConfirmExternalState = {
@@ -223,6 +224,21 @@ export type EncryptionBoxMessage = InteractiveMessage<
     EncryptionBoxExternalState
 >;
 
+export type CountryExternalState = {
+    value: string;
+};
+
+export type CountryMessage = InteractiveMessage<
+    InteractiveMessageType.Country,
+    {
+        prompt?: string;
+        permitted?: string[];
+        banned?: string[];
+        onSelect: (state: CountryExternalState) => void;
+    },
+    CountryExternalState
+>;
+
 export type DateExternalState = {
     date?: Date;
 };
@@ -253,7 +269,7 @@ export type DateTimeMessage = InteractiveMessage<
         onSelect: (state: DateTimeExternalState) => void;
     },
     DateTimeExternalState
-    >;
+>;
 
 export type TimeExternalState = {
     time?: Date;
@@ -285,12 +301,8 @@ export type TransactionConfirmationMessage = InteractiveMessage<
         totalAmount: string | React.ReactElement<any, any>;
         fees: string | React.ReactElement<any, any>;
         signature: SigningBox;
-        onApprove: (
-            externalState: TransactionConfirmationExternalState,
-        ) => void | Promise<void>;
-        onCancel: (
-            externalState: TransactionConfirmationExternalState,
-        ) => void | Promise<void>;
+        onApprove: (externalState: TransactionConfirmationExternalState) => void | Promise<void>;
+        onCancel: (externalState: TransactionConfirmationExternalState) => void | Promise<void>;
         isDangerous?: boolean;
     },
     TransactionConfirmationExternalState
@@ -360,10 +372,9 @@ export type BrowserMessage =
     | QRCodeScannerMessage
     | DateMessage
     | TimeMessage
-    | DateTimeMessage;
+    | DateTimeMessage
+    | CountryMessage;
 
 type WithExternalStateHelper<A> = A extends { externalState?: any } ? A : never;
 
-export type ExternalState = WithExternalStateHelper<
-    BrowserMessage
->['externalState'];
+export type ExternalState = WithExternalStateHelper<BrowserMessage>['externalState'];

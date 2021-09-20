@@ -7,9 +7,7 @@ import { UIAssets } from '@tonlabs/uikit.assets';
 import { HeaderItem, UIHeaderItems } from './UIHeaderItems';
 import { NestedInModalContext } from './ModalNavigator/createModalNavigator';
 
-function findIfCanGoBackForStack(
-    navigation: ReturnType<typeof useNavigation>,
-): boolean {
+function findIfCanGoBackForStack(navigation: ReturnType<typeof useNavigation>): boolean {
     const state = navigation.dangerouslyGetState();
 
     if (state == null) {

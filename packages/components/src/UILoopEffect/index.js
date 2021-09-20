@@ -43,9 +43,9 @@ type Props = {
     style?: ViewStyleProp,
     animation?: string,
     animated?: boolean,
-}
+};
 
-type State = {}
+type State = {};
 
 export default class UILoopEffect extends UIComponent<Props, State> {
     static Animation = {
@@ -107,7 +107,7 @@ export default class UILoopEffect extends UIComponent<Props, State> {
         this.animation.reset();
         this.animatedValue.setValue(0);
         this.value = 0;
-    }
+    };
 
     getAnimation = () => {
         return Animated.timing(this.animatedValue, {
@@ -118,9 +118,9 @@ export default class UILoopEffect extends UIComponent<Props, State> {
                 this.props.animation === UILoopEffect.Animation.Forward
                     ? Easing.ease
                     : Easing.linear,
-            useNativeDriver: Platform.OS !== 'web'
+            useNativeDriver: Platform.OS !== 'web',
         });
-    }
+    };
 
     getDuration = () => {
         if (this.props.animation === UILoopEffect.Animation.Pulse) {
@@ -130,7 +130,7 @@ export default class UILoopEffect extends UIComponent<Props, State> {
             return 600;
         }
         return 3000;
-    }
+    };
 
     getTransform = () => {
         if (this.props.animation === UILoopEffect.Animation.Spin) {
@@ -157,13 +157,11 @@ export default class UILoopEffect extends UIComponent<Props, State> {
         }
 
         return [];
-    }
+    };
 
     render() {
         return (
-            <Animated.View
-                style={[{ transform: this.getTransform() }, this.props.style]}
-            >
+            <Animated.View style={[{ transform: this.getTransform() }, this.props.style]}>
                 {this.props.children}
             </Animated.View>
         );

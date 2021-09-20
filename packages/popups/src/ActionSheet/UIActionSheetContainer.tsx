@@ -19,16 +19,12 @@ type ActionSheetActions = {
     actionList: React.ReactElement<UIActionSheetActionProps>[];
     cancelAction: React.ReactElement<UIActionSheetActionProps> | undefined;
 };
-const getActionSheetActions = (
-    children: React.ReactNode,
-): ActionSheetActions => {
+const getActionSheetActions = (children: React.ReactNode): ActionSheetActions => {
     /** cancelAction can be only one or less */
     let cancelAction: React.ReactElement<UIActionSheetActionProps> | undefined;
     const negativeActions: React.ReactElement<UIActionSheetActionProps>[] = [];
     const neutralActions: React.ReactElement<UIActionSheetActionProps>[] = [];
-    const sortAction = (
-        action: React.ReactElement<UIActionSheetActionProps>,
-    ) => {
+    const sortAction = (action: React.ReactElement<UIActionSheetActionProps>) => {
         if (action.props.type === UIActionSheetActionType.Cancel) {
             cancelAction = action;
         }
@@ -58,11 +54,7 @@ const getActionSheetActions = (
                 `UIActionSheet can only contain 'UIActionSheetAction' components as its direct children (found ${
                     // eslint-disable-next-line no-nested-ternary
                     React.isValidElement(child)
-                        ? `${
-                              typeof child.type === 'string'
-                                  ? child.type
-                                  : child.type?.name
-                          }`
+                        ? `${typeof child.type === 'string' ? child.type : child.type?.name}`
                         : typeof child === 'object'
                         ? JSON.stringify(child)
                         : `'${String(child)}'`
@@ -92,10 +84,7 @@ const renderHeader = (
     }
     return (
         <View style={headerStyle}>
-            <UILabel
-                role={UILabelRoles.ParagraphFootnote}
-                color={ColorVariants.TextSecondary}
-            >
+            <UILabel role={UILabelRoles.ParagraphFootnote} color={ColorVariants.TextSecondary}>
                 {note}
             </UILabel>
         </View>
@@ -117,21 +106,16 @@ export const UIActionSheetContainer: React.FC<UIActionSheetContainerProps> = ({
     const styles = useStyles(theme);
 
     return (
-        <UICardSheet
-            visible={visible}
-            onClose={actionSheetActions.cancelAction?.props.onPress}
-        >
+        <UICardSheet visible={visible} onClose={actionSheetActions.cancelAction?.props.onPress}>
             <View style={styles.container} testID={testID}>
                 {renderHeader(note, styles.header as ViewStyle)}
-                <View style={styles.actionsContainer}>
-                    {actionSheetActions.actionList}
-                </View>
+                <View style={styles.actionsContainer}>{actionSheetActions.actionList}</View>
             </View>
         </UICardSheet>
     );
 };
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
     container: {
         paddingHorizontal: UIConstant.contentOffset,
         paddingVertical: UIConstant.contentInsetVerticalX3,
@@ -141,7 +125,7 @@ const useStyles = makeStyles((theme) => ({
     header: {
         paddingVertical: UIConstant.contentInsetVerticalX3,
         paddingHorizontal: UIConstant.contentOffset,
-        alignItems: 'center'
+        alignItems: 'center',
     },
     actionsContainer: {
         flexDirection: 'column',

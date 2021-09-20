@@ -5,13 +5,7 @@ import { UILabel, useTheme, ColorVariants } from '@tonlabs/uikit.hydrogen';
 import { useRoute } from '@react-navigation/core';
 import { SectionsService } from '../Search';
 
-export function ExampleSection({
-    title,
-    children,
-}: {
-    title: string;
-    children: React.ReactNode;
-}) {
+export function ExampleSection({ title, children }: { title: string; children: React.ReactNode }) {
     const theme = useTheme();
     const route = useRoute();
 

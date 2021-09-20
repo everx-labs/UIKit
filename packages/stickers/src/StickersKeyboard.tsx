@@ -4,12 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant, UIDevice } from '@tonlabs/uikit.core';
-import {
-    ColorVariants,
-    useTheme,
-    UIImage,
-    TouchableOpacity,
-} from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme, UIImage, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
 import { registerKeyboardComponent } from '@tonlabs/uikit.keyboard';
 
 // Unfortunately we have to import it as UICustomKeyboard doesn't accept functional props :(
@@ -40,10 +35,7 @@ function Sticker({
     const src = { uri: sticker.url };
 
     return (
-        <TouchableOpacity
-            testID={`stickers_btn_${sticker.url}`}
-            onPress={() => onPress(stk)}
-        >
+        <TouchableOpacity testID={`stickers_btn_${sticker.url}`} onPress={() => onPress(stk)}>
             <UIImage style={styles.sticker} source={src} />
         </TouchableOpacity>
     );
@@ -81,7 +73,7 @@ export function StickersList(props: Props) {
             renderItem={({ item }) => {
                 return (
                     <ScrollView contentContainerStyle={styles.packageContainer}>
-                        {item.stickers.map((sticker) => (
+                        {item.stickers.map(sticker => (
                             <Sticker
                                 key={`pkg_${item.id}_sticker_${sticker.name}`}
                                 sticker={sticker}
@@ -92,7 +84,7 @@ export function StickersList(props: Props) {
                     </ScrollView>
                 );
             }}
-            keyExtractor={(sticker) => sticker.id}
+            keyExtractor={sticker => sticker.id}
             // Apply overflowY style for web to make the scrollbar appear as an overlay
             // thus not affecting the content width of ScrollView to prevent layout issues
             style={[
@@ -107,10 +99,7 @@ export function StickersList(props: Props) {
     );
 }
 
-export const StickersKeyboard = registerKeyboardComponent(
-    StickerPickerKeyboardName,
-    StickersList,
-);
+export const StickersKeyboard = registerKeyboardComponent(StickerPickerKeyboardName, StickersList);
 
 const styles = StyleSheet.create({
     sticker: {

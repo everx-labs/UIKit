@@ -10,7 +10,9 @@ const SelectTime = () => {
     const [mainState, setMainState] = state;
     const [show, setShow] = useState(false);
     const [isValidTime, setValidTime] = useState(true);
-    const [time, setTime] = useState(mainState.activeDate ? new Date(mainState.activeDate) : new Date());
+    const [time, setTime] = useState(
+        mainState.activeDate ? new Date(mainState.activeDate) : new Date(),
+    );
     const style = styles(options);
     const openAnimation = useRef(new Animated.Value(0)).current;
     const minHour = min ? new Date(min).getHours() : 0;
@@ -31,15 +33,9 @@ const SelectTime = () => {
     }, [mainState.timeOpen, openAnimation]);
 
     const selectTime = () => {
-        const newTime = new Date(
-            new Date().setHours(time.getHours(), time.getMinutes(), 0),
-        );
+        const newTime = new Date(new Date().setHours(time.getHours(), time.getMinutes(), 0));
         const newTimeForActiveDate = new Date(
-            new Date(mainState.activeDate).setHours(
-                time.getHours(),
-                time.getMinutes(),
-                0,
-            ),
+            new Date(mainState.activeDate).setHours(time.getHours(), time.getMinutes(), 0),
         );
         setMainState({
             type: 'set',
@@ -82,11 +78,7 @@ const SelectTime = () => {
                 }
             }
         }
-        const isValidated = utils.validateTimeMinMax(
-            new Date(newTime),
-            min,
-            max,
-        );
+        const isValidated = utils.validateTimeMinMax(new Date(newTime), min, max);
         setValidTime(isValidated);
         setTime(newTime);
     };
@@ -109,15 +101,13 @@ const SelectTime = () => {
     return show ? (
         <Animated.View style={containerStyle}>
             <View style={style.header}>
-                <UILabel>{`Please choose time from ${utils.formatTime(
-                    min,
-                )} to ${utils.formatTime(max)}`}</UILabel>
+                <UILabel>{`Please choose time from ${utils.formatTime(min)} to ${utils.formatTime(
+                    max,
+                )}`}</UILabel>
             </View>
             <UITimeInput
                 current={time}
-                onChange={(newTime: Date, isHour?: boolean) =>
-                    updateTime(newTime, isHour)
-                }
+                onChange={(newTime: Date, isHour?: boolean) => updateTime(newTime, isHour)}
             />
             <View style={style.footer}>
                 {mode !== UIDateTimePickerMode.Time && (

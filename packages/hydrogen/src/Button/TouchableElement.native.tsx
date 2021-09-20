@@ -17,7 +17,7 @@ type TouchableElementProps = {
     style?: StyleProp<ViewStyle>;
     contentStyle?: StyleProp<ViewStyle>;
     testID?: string;
-}
+};
 
 export const TouchableElement = ({
     animations,
@@ -38,22 +38,13 @@ export const TouchableElement = ({
             return;
         }
         if (press) {
-            press.animationParam.value = withSpring(
-                1,
-                BUTTON_WITH_SPRING_CONFIG,
-            );
+            press.animationParam.value = withSpring(1, BUTTON_WITH_SPRING_CONFIG);
         }
         if (title) {
-            title.animationParam.value = withSpring(
-                1,
-                BUTTON_WITH_SPRING_CONFIG,
-            );
+            title.animationParam.value = withSpring(1, BUTTON_WITH_SPRING_CONFIG);
         }
         if (icon) {
-            icon.animationParam.value = withSpring(
-                1,
-                BUTTON_WITH_SPRING_CONFIG,
-            );
+            icon.animationParam.value = withSpring(1, BUTTON_WITH_SPRING_CONFIG);
         }
     };
 
@@ -62,22 +53,13 @@ export const TouchableElement = ({
             return;
         }
         if (press) {
-            press.animationParam.value = withSpring(
-                0,
-                BUTTON_WITH_SPRING_CONFIG,
-            );
+            press.animationParam.value = withSpring(0, BUTTON_WITH_SPRING_CONFIG);
         }
         if (title) {
-            title.animationParam.value = withSpring(
-                0,
-                BUTTON_WITH_SPRING_CONFIG,
-            );
+            title.animationParam.value = withSpring(0, BUTTON_WITH_SPRING_CONFIG);
         }
         if (icon) {
-            icon.animationParam.value = withSpring(
-                0,
-                BUTTON_WITH_SPRING_CONFIG,
-            );
+            icon.animationParam.value = withSpring(0, BUTTON_WITH_SPRING_CONFIG);
         }
     };
 
@@ -94,13 +76,7 @@ export const TouchableElement = ({
             background={TouchableNativeFeedback.Ripple('transparent', false)}
         >
             <Animated.View style={[style, press?.backgroundStyle]}>
-                <Animated.View
-                    style={[
-                        styles.overlayContainer,
-                        contentStyle,
-                        press?.overlayStyle,
-                    ]}
-                >
+                <Animated.View style={[styles.overlayContainer, contentStyle, press?.overlayStyle]}>
                     {React.Children.only(children)}
                 </Animated.View>
             </Animated.View>

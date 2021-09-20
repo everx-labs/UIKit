@@ -21,11 +21,7 @@ const TimeScroller = ({ title, data, onChange, current }: any) => {
     data = ['', '', ...data, '', ''];
 
     useEffect(() => {
-        onChange(
-            current && data.length > 5
-                ? data[getIndexOfCurrentItem()]
-                : data[2],
-        );
+        onChange(current && data.length > 5 ? data[getIndexOfCurrentItem()] : data[2]);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -51,9 +47,7 @@ const TimeScroller = ({ title, data, onChange, current }: any) => {
 
     const getIndexOfCurrentItem = () => {
         const closest = data.reduce((prevVal: number, currVal: number) => {
-            return Math.abs(currVal - current) < Math.abs(prevVal - current)
-                ? currVal
-                : prevVal;
+            return Math.abs(currVal - current) < Math.abs(prevVal - current) ? currVal : prevVal;
         });
         const currentIndex = () => data.findIndex((i: number) => i === closest);
         return currentIndex() > 0 ? currentIndex() : 2;
@@ -61,9 +55,7 @@ const TimeScroller = ({ title, data, onChange, current }: any) => {
 
     const getOffsetOfCurrent = useCallback(() => {
         if (nativeEventWidth > 0) {
-            const offset = Math.round(
-                (getIndexOfCurrentItem() - 2) * (nativeEventWidth / 5),
-            );
+            const offset = Math.round((getIndexOfCurrentItem() - 2) * (nativeEventWidth / 5));
             // @ts-ignore
             flatListRef.current.scrollToOffset({
                 animated: true,
@@ -89,10 +81,7 @@ const TimeScroller = ({ title, data, onChange, current }: any) => {
                         const center = i + 2;
                         if (center === index) {
                             return a;
-                        } else if (
-                            center + 1 === index ||
-                            center - 1 === index
-                        ) {
+                        } else if (center + 1 === index || center - 1 === index) {
                             return b;
                         }
                         return c;
@@ -106,14 +95,10 @@ const TimeScroller = ({ title, data, onChange, current }: any) => {
                 style={[
                     {
                         width: itemSize,
-                        opacity: scrollAnimatedValue.interpolate(
-                            makeAnimated(1, 0.6, 0.3),
-                        ),
+                        opacity: scrollAnimatedValue.interpolate(makeAnimated(1, 0.6, 0.3)),
                         transform: [
                             {
-                                scale: scrollAnimatedValue.interpolate(
-                                    makeAnimated(1.2, 0.9, 0.8),
-                                ),
+                                scale: scrollAnimatedValue.interpolate(makeAnimated(1.2, 0.9, 0.8)),
                             },
                             {
                                 scaleX: I18nManager.isRTL ? -1 : 1,
@@ -123,9 +108,7 @@ const TimeScroller = ({ title, data, onChange, current }: any) => {
                     style.listItem,
                 ]}
             >
-                <UILabel>
-                    {String(item).length === 1 ? `0${item}` : item}
-                </UILabel>
+                <UILabel>{String(item).length === 1 ? `0${item}` : item}</UILabel>
             </Animated.View>
         );
     };
@@ -199,9 +182,7 @@ export function TimeInput({ onChange, current }: TimeInputProps) {
 
     function getMinutesArray(minimum = 0, maximum = 59) {
         if (interval) {
-            return numberRange(minimum, maximum).filter(
-                (n) => !(n % Number(interval)),
-            );
+            return numberRange(minimum, maximum).filter(n => !(n % Number(interval)));
         }
         return numberRange(minimum, maximum);
     }
@@ -228,22 +209,18 @@ export function TimeInput({ onChange, current }: TimeInputProps) {
             <TimeScroller
                 title={utils.config.hour}
                 data={numberRange(minHour, maxHour)}
-                onChange={(hour: number) =>
-                    updateTime(hour, true)
-                }
+                onChange={(hour: number) => updateTime(hour, true)}
                 current={currentHour}
             />
             <TimeScroller
                 title={utils.config.minute}
                 data={returnMinutes()}
-                onChange={(minute: number) =>
-                    updateTime(minute, false)
-                }
+                onChange={(minute: number) => updateTime(minute, false)}
                 current={currentMinute}
             />
         </>
     );
-};
+}
 
 const styles = (theme: any) =>
     StyleSheet.create({

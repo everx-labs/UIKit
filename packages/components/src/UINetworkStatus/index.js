@@ -9,11 +9,11 @@ type NetInfoState = {
     isInternetReachable: boolean,
     isWifiEnabled: boolean,
     details: any,
-}
+};
 
 type Props = {
-    onConnected: (boolean) => void,
-}
+    onConnected: boolean => void,
+};
 
 type State = {
     // empty

@@ -46,18 +46,15 @@ function UIBoxPickerItem<Box extends AbstractBox>({
                 onSelect(box);
             }}
         >
-            {box.serialNumber && // Draw a SC icon before the title if serialNumber is present
-                <UIImage
-                    source={UIAssets.icons.security.card}
-                    style={styles.securityCard}
-                />
-            }
+            {box.serialNumber && ( // Draw a SC icon before the title if serialNumber is present
+                <UIImage source={UIAssets.icons.security.card} style={styles.securityCard} />
+            )}
 
             <UILabel style={styles.itemTitle} role={UILabelRoles.Action}>
                 {box.title}
             </UILabel>
 
-            {box.publicKey != null &&
+            {box.publicKey != null && (
                 <>
                     <UILabel color={UILabelColors.TextSecondary}>
                         {`${box.publicKey.slice(0, 2)} ·· `}
@@ -68,7 +65,7 @@ function UIBoxPickerItem<Box extends AbstractBox>({
                         style={styles.itemKey}
                     />
                 </>
-            }
+            )}
         </TouchableOpacity>
     );
 }
@@ -97,26 +94,25 @@ export function UIBoxPicker<Box extends AbstractBox>({
     return (
         <UIPullerSheet visible={visible} onClose={onClose}>
             <UIBackgroundView style={styles.sectionHeader}>
-                <UILabel
-                    role={UILabelRoles.HeadlineFootnote}
-                    color={UILabelColors.TextPrimary}
-                >
+                <UILabel role={UILabelRoles.HeadlineFootnote} color={UILabelColors.TextPrimary}>
                     {headerTitle}
                 </UILabel>
             </UIBackgroundView>
-            {boxes.map((box) => (
+            {boxes.map(box => (
                 <UIBoxPickerItem key={box.id} box={box} onSelect={onSelect} />
             ))}
             {/* TODO: use UILinkButton instead once it's ready! */}
-            {onAdd && <View style={styles.addButtonContainer}>
-                <UIBoxButton
-                    testID="box-picker-add"
-                    disabled
-                    title={addTitle}
-                    type={UIBoxButtonType.Nulled}
-                    onPress={onAdd}
-                />
-            </View>}
+            {onAdd && (
+                <View style={styles.addButtonContainer}>
+                    <UIBoxButton
+                        testID="box-picker-add"
+                        disabled
+                        title={addTitle}
+                        type={UIBoxButtonType.Nulled}
+                        onPress={onAdd}
+                    />
+                </View>
+            )}
         </UIPullerSheet>
     );
 }

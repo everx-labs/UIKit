@@ -1,22 +1,11 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import {
-    UIMsgButton,
-    UIMsgButtonType,
-    UIMsgButtonCornerPosition,
-} from '@tonlabs/uikit.hydrogen';
-import {
-    BubblePosition,
-    useBubbleContainerStyle,
-    useBubblePosition,
-} from './useBubblePosition';
+import { UIMsgButton, UIMsgButtonType, UIMsgButtonCornerPosition } from '@tonlabs/uikit.hydrogen';
+import { BubblePosition, useBubbleContainerStyle, useBubblePosition } from './useBubblePosition';
 import type { ActionButtonMessage } from './types';
 
-const getButtonRadius = (
-    options: ActionButtonMessage,
-    position: BubblePosition,
-) => {
+const getButtonRadius = (options: ActionButtonMessage, position: BubblePosition) => {
     if (position === BubblePosition.left && options.firstFromChain) {
         return UIMsgButtonCornerPosition.TopLeft;
     } else if (position === BubblePosition.right && options.lastFromChain) {

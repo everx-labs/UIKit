@@ -10,9 +10,7 @@ import { UIConstant } from '../constants';
 
 export type OnReadEvent = BarCodeReadEvent;
 
-export function QRCodeScanner(
-    props: React.ComponentProps<typeof QRCodeScannerNative>,
-) {
+export function QRCodeScanner(props: React.ComponentProps<typeof QRCodeScannerNative>) {
     return (
         <QRCodeScannerNative
             {...props}

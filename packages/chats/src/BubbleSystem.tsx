@@ -8,12 +8,7 @@ import type { SystemMessage } from './types';
 
 export function BubbleSystem(props: SystemMessage) {
     return (
-        <View
-            style={[
-                UIStyle.common.alignJustifyCenter(),
-                UIStyle.padding.verticalTiny(),
-            ]}
-        >
+        <View style={[UIStyle.common.alignJustifyCenter(), UIStyle.padding.verticalTiny()]}>
             <UILabel
                 role={UILabelRoles.ActionFootnote}
                 color={UILabelColors.TextTertiary}

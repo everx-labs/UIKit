@@ -23,16 +23,11 @@ export const UIPinCodeDescription = React.forwardRef<
     UIPinCodeDescriptionRef,
     UIPinCodeDescriptionProps
 >(function UIPinCodeDescriptionImpl(
-    {
-        description: descriptionProp = ' ',
-        descriptionTestID,
-    }: UIPinCodeDescriptionProps,
+    { description: descriptionProp = ' ', descriptionTestID }: UIPinCodeDescriptionProps,
     ref,
 ) {
     const [description, setDescription] = React.useState(descriptionProp);
-    const [status, setStatus] = React.useState(
-        UIPinCodeDescriptionStatus.Regular,
-    );
+    const [status, setStatus] = React.useState(UIPinCodeDescriptionStatus.Regular);
 
     React.useImperativeHandle(ref, () => ({
         showValid(validDescription) {

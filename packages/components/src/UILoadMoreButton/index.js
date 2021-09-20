@@ -46,11 +46,11 @@ type Props = {
     onLoadMore: () => void,
     isLoadingMore: boolean,
     label: string,
-}
+};
 
 type State = {
     //
-}
+};
 
 function Indicator() {
     const theme = useTheme();
@@ -77,9 +77,7 @@ export default class UILoadMoreButton extends UIComponent<Props, State> {
         if (!this.props.isLoadingMore) {
             return null;
         }
-        return (
-            <Indicator />
-        );
+        return <Indicator />;
     }
 
     render() {

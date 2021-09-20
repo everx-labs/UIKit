@@ -9,10 +9,10 @@ import { UILabel, UILabelColors, UILabelRoles } from './UILabel';
 import type { ColorVariants } from './Colors';
 
 type Props = {
-    text: string,
-    backgroundColor?: ColorVariants,
-    textColor?: ColorVariants,
-    style?: StyleProp<ViewStyle>, // TODO: Make the style strict as it's done for UILabelStyle
+    text: string;
+    backgroundColor?: ColorVariants;
+    textColor?: ColorVariants;
+    style?: StyleProp<ViewStyle>; // TODO: Make the style strict as it's done for UILabelStyle
 };
 
 const styles = StyleSheet.create({
@@ -24,12 +24,7 @@ const styles = StyleSheet.create({
 });
 
 export function UIBanner(props: Props) {
-    const {
-        text,
-        backgroundColor,
-        textColor,
-        style,
-    } = props;
+    const { text, backgroundColor, textColor, style } = props;
 
     return (
         <UIBackgroundView

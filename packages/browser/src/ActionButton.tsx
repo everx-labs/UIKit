@@ -1,12 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import {
-    ColorVariants,
-    UIImage,
-    useTheme,
-    TouchableOpacity,
-} from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, UIImage, useTheme, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIConstant } from '@tonlabs/uikit.core';
 
@@ -17,12 +12,7 @@ type ActionButtonProps = {
     clear: () => void;
 };
 
-export function ActionButton({
-    inputHasValue,
-    hasError,
-    onPress,
-    clear,
-}: ActionButtonProps) {
+export function ActionButton({ inputHasValue, hasError, onPress, clear }: ActionButtonProps) {
     const theme = useTheme();
     if (hasError) {
         return (
@@ -35,8 +25,7 @@ export function ActionButton({
                     style={[
                         actionStyles.iconRound,
                         {
-                            backgroundColor:
-                                theme[ColorVariants.BackgroundNegative],
+                            backgroundColor: theme[ColorVariants.BackgroundNegative],
                         },
                     ]}
                 >
@@ -56,10 +45,7 @@ export function ActionButton({
                 style={actionStyles.buttonContainer}
                 onPress={onPress}
             >
-                <UIImage
-                    source={UIAssets.icons.ui.buttonMsgSend}
-                    style={actionStyles.icon}
-                />
+                <UIImage source={UIAssets.icons.ui.buttonMsgSend} style={actionStyles.icon} />
             </TouchableOpacity>
         );
     }

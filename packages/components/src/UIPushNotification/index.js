@@ -1,14 +1,8 @@
 // @flow
 import React from 'react';
-import {
-    StyleSheet, Animated,
-    TouchableWithoutFeedback, Dimensions,
-} from 'react-native';
+import { StyleSheet, Animated, TouchableWithoutFeedback, Dimensions } from 'react-native';
 import { hideMessage } from 'react-native-flash-message';
-import {
-    PanGestureHandler,
-    State as RNGHState,
-} from 'react-native-gesture-handler';
+import { PanGestureHandler, State as RNGHState } from 'react-native-gesture-handler';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import {
@@ -25,7 +19,7 @@ import type { MessageObject } from '../UINotice';
 type RNGHEvent<T> = { nativeEvent: T };
 
 const { width } = Dimensions.get('window');
-const pageToastWidth = width - (UIConstant.contentOffset() * 2);
+const pageToastWidth = width - UIConstant.contentOffset() * 2;
 
 const styles = StyleSheet.create({
     containerStyle: {
@@ -51,7 +45,7 @@ type ToastObject = {
     onPress?: () => void,
     duration?: number,
     showOnTop?: boolean,
-}
+};
 
 export default class UIPushNotification {
     static showNotification(args: string | ToastObject, duration?: number) {
@@ -72,12 +66,7 @@ export default class UIPushNotification {
 
     // Actions
     static prepareAndShowNotification(args: ToastObject) {
-        const {
-            message, title,
-            autoHide = true,
-            onPress,
-            showOnTop,
-        } = args;
+        const { message, title, autoHide = true, onPress, showOnTop } = args;
         this.title = title || '';
         this.message = message || '';
         this.onPress = onPress || (() => {});
@@ -143,9 +132,11 @@ export default class UIPushNotification {
                     style={[
                         styles.containerStyle,
                         {
-                            transform: [{
-                                translateY: Animated.add(this.touchY, new Animated.Value(0)),
-                            }],
+                            transform: [
+                                {
+                                    translateY: Animated.add(this.touchY, new Animated.Value(0)),
+                                },
+                            ],
                         },
                     ]}
                 >
@@ -161,19 +152,15 @@ export default class UIPushNotification {
                             color={UIBackgroundViewColors.StaticBackgroundBlack}
                             style={styles.pnStyle}
                         >
-                            {
-                                this.title.length > 0
-                                    ? (
-                                        <UILabel
-                                            color={UILabelColors.StaticTextPrimaryLight}
-                                            role={UILabelRoles.HeadlineFootnote}
-                                            testID="title_notification"
-                                        >
-                                            {this.title}
-                                        </UILabel>
-                                    )
-                                    : undefined
-                            }
+                            {this.title.length > 0 ? (
+                                <UILabel
+                                    color={UILabelColors.StaticTextPrimaryLight}
+                                    role={UILabelRoles.HeadlineFootnote}
+                                    testID="title_notification"
+                                >
+                                    {this.title}
+                                </UILabel>
+                            ) : undefined}
                             <UILabel
                                 color={UILabelColors.StaticTextPrimaryLight}
                                 role={UILabelRoles.ParagraphFootnote}

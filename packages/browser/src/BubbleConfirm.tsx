@@ -16,13 +16,8 @@ import { UIConstant } from '@tonlabs/uikit.core';
 export function BubbleConfirmSuccessful() {
     return (
         <View style={styles.containerRight}>
-            <UIBackgroundView
-                color={ColorVariants.BackgroundPositive}
-                style={styles.answer}
-            >
-                <UILabel color={UILabelColors.StaticTextPrimaryLight}>
-                    {uiLocalized.Yes}
-                </UILabel>
+            <UIBackgroundView color={ColorVariants.BackgroundPositive} style={styles.answer}>
+                <UILabel color={UILabelColors.StaticTextPrimaryLight}>{uiLocalized.Yes}</UILabel>
             </UIBackgroundView>
         </View>
     );
@@ -31,13 +26,8 @@ export function BubbleConfirmSuccessful() {
 export function BubbleConfirmDeclined() {
     return (
         <View style={styles.containerRight}>
-            <UIBackgroundView
-                color={ColorVariants.BackgroundNegative}
-                style={styles.answer}
-            >
-                <UILabel color={UILabelColors.StaticTextPrimaryLight}>
-                    {uiLocalized.No}
-                </UILabel>
+            <UIBackgroundView color={ColorVariants.BackgroundNegative} style={styles.answer}>
+                <UILabel color={UILabelColors.StaticTextPrimaryLight}>{uiLocalized.No}</UILabel>
             </UIBackgroundView>
         </View>
     );

@@ -463,10 +463,7 @@ const Buttons = () => (
                 </UIScaleButton>
             </View>
             <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIScaleButton
-                    testID="uiScaleButton_factor_2"
-                    scaleInFactor={2}
-                >
+                <UIScaleButton testID="uiScaleButton_factor_2" scaleInFactor={2}>
                     <Text>Scale example factor 2</Text>
                 </UIScaleButton>
             </View>

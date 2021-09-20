@@ -47,7 +47,7 @@ async function loadFonts(font: Font) {
     }
 
     await Promise.all(
-        Object.values(font).map((fontVariant) => {
+        Object.values(font).map(fontVariant => {
             const observer = new FontFaceObserver(fontVariant.fontFamily);
             return observer.load();
         }),

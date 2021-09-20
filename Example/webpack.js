@@ -20,7 +20,6 @@ module.exports = {
                     path.resolve(__dirname, '../packages/'),
                     path.resolve(__dirname, '../node_modules/react-native-indicators/'),
                     path.resolve(__dirname, '../node_modules/react-native-dropdownalert/'),
-                    path.resolve(__dirname, '../node_modules/react-native-lightbox/'),
                     path.resolve(__dirname, '../node_modules/react-native-simple-popover/'),
                     path.resolve(__dirname, '../node_modules/react-native-flash-message/'),
                     path.resolve(__dirname, '../node_modules/react-native-country-picker-modal/'),
@@ -37,9 +36,7 @@ module.exports = {
                 loader: 'babel-loader',
                 query: {
                     // cacheDirectory: true,
-                    plugins: [
-                        'babel-plugin-react-native-web',
-                    ],
+                    plugins: ['babel-plugin-react-native-web'],
                 },
             },
             {
@@ -81,13 +78,15 @@ module.exports = {
             '.wasm',
         ],
         alias: {
-            'react-native/Libraries/ReactNative/AppContainer': 'react-native-web/dist/exports/AppRegistry/AppContainer',
-            'react-native/Libraries/Text/TextAncestor': 'react-native-web/dist/exports/Text/TextAncestorContext',
-            'react-native/Libraries/Animated/SpringConfig': 'react-native-web/dist/vendor/react-native/Animated/SpringConfig',
+            'react-native/Libraries/ReactNative/AppContainer':
+                'react-native-web/dist/exports/AppRegistry/AppContainer',
+            'react-native/Libraries/Text/TextAncestor':
+                'react-native-web/dist/exports/Text/TextAncestorContext',
+            'react-native/Libraries/Animated/SpringConfig':
+                'react-native-web/dist/vendor/react-native/Animated/SpringConfig',
             'react-native/Libraries/Components/View/ReactNativeStyleAttributes': 'react',
             'react-native': 'react-native-web',
             'react-native-localization': 'react-localization',
-            'react-native-lightbox': 'react', // Hack in order not to load
             'react-native-document-picker': 'react', // Hack in order not to load
             'rn-fetch-blob': 'react', // Hack in order not to load
             'react-native-camera': 'react', // Hack in order not to load

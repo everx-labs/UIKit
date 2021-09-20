@@ -20,7 +20,7 @@ export type UIActionComponentProps = {
 
 export class UIActionComponent<Props, State> extends UIPureComponent<
     any & UIActionComponentProps,
-    any & UIActionComponentState
+    any & UIActionComponentState,
 > {
     constructor(props: any & UIActionComponentProps) {
         super(props);
@@ -66,20 +66,15 @@ export class UIActionComponent<Props, State> extends UIPureComponent<
     };
 
     // Virtual
-    onEnter = (): void => {
-    };
+    onEnter = (): void => {};
 
-    onLeave = (): void => {
-    };
+    onLeave = (): void => {};
 
-    onPressed = (): void => {
-    };
+    onPressed = (): void => {};
 
-    onTappedIn = (): void => {
-    };
+    onTappedIn = (): void => {};
 
-    onTappedOut = (): void => {
-    };
+    onTappedOut = (): void => {};
 
     // Setters
     setTapped(tapped: boolean = true) {

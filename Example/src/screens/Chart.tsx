@@ -8,8 +8,7 @@ import { ExampleScreen } from '../components/ExampleScreen';
 const getRandomSign = (): number => {
     return Math.random() > 0.5 ? 1 : -1;
 };
-const getRandomValue = () =>
-    (Math.floor(Math.random() * 1000000) / 10) * getRandomSign();
+const getRandomValue = () => (Math.floor(Math.random() * 1000000) / 10) * getRandomSign();
 
 let acc = 0;
 const getСumulativeValue = () => {
@@ -49,8 +48,7 @@ export function Chart() {
                     <View
                         style={{
                             flex: 1,
-                            backgroundColor:
-                                theme[ColorVariants.BackgroundSecondary],
+                            backgroundColor: theme[ColorVariants.BackgroundSecondary],
                         }}
                     >
                         <LinearChart {...{ data }} />

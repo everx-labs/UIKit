@@ -100,12 +100,16 @@ export default class UILayoutManager extends UIComponent<Props, State> {
         this.setStateSafely({ opacity });
     }
 
-    setParams({
-        component, position, visible, opacity,
-    }: State, callback?: () => void) {
-        this.setStateSafely({
-            component, position, visible, opacity,
-        }, callback);
+    setParams({ component, position, visible, opacity }: State, callback?: () => void) {
+        this.setStateSafely(
+            {
+                component,
+                position,
+                visible,
+                opacity,
+            },
+            callback,
+        );
     }
 
     // Getters
@@ -128,12 +132,15 @@ export default class UILayoutManager extends UIComponent<Props, State> {
     // Actions
     showComponent({ component, animation, position }: ShowParams) {
         this.animation = animation;
-        this.setParams({
-            visible: true,
-            opacity: new Animated.Value(0),
-            component,
-            position,
-        }, () => this.animateShow(animation));
+        this.setParams(
+            {
+                visible: true,
+                opacity: new Animated.Value(0),
+                component,
+                position,
+            },
+            () => this.animateShow(animation),
+        );
     }
 
     animateShow(animationParams: AnimationParams) {
@@ -183,9 +190,7 @@ export default class UILayoutManager extends UIComponent<Props, State> {
                 style={[UIStyle.common.absoluteFillObject(), { opacity }]}
                 pointerEvents="none"
             >
-                <View style={{ position: 'absolute', top, left }}>
-                    {this.getComponent()}
-                </View>
+                <View style={{ position: 'absolute', top, left }}>{this.getComponent()}</View>
             </Animated.View>
         );
     }

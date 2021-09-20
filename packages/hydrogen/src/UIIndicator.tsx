@@ -20,11 +20,6 @@ export function UIIndicator({
     const theme = useTheme();
 
     return (
-        <MaterialIndicator
-            color={theme[color]}
-            size={size}
-            trackWidth={trackWidth}
-            style={style}
-        />
+        <MaterialIndicator color={theme[color]} size={size} trackWidth={trackWidth} style={style} />
     );
 }

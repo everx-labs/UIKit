@@ -24,6 +24,7 @@ import { EncryptionBox } from './Inputs/EncryptionBox';
 import { DatePicker } from './Inputs/datePicker';
 import { TimePicker } from './Inputs/timePicker';
 import { DateTimePicker } from './Inputs/dateTimePicker';
+import { CountryPicker } from './Inputs/countryPicker';
 import { MediaOutput } from './MediaOutput';
 import { QRCodeDraw } from './QRCodeDraw';
 
@@ -56,10 +57,7 @@ function flatListGetItemLayoutFabric({
     };
 }
 
-const renderBubble = () => (
-    item: BrowserMessage,
-    onLayout: ViewProps['onLayout'],
-) => {
+const renderBubble = () => (item: BrowserMessage, onLayout: ViewProps['onLayout']) => {
     if (item.type === ChatMessageType.PlainText) {
         return <BubbleSimplePlainText {...item} onLayout={onLayout} />;
     }
@@ -101,14 +99,16 @@ const renderBubble = () => (
         return <TimePicker {...item} onLayout={onLayout} />;
     }
     if (item.type === InteractiveMessageType.DateTime) {
-        return <DateTimePicker {...item} onLayout={onLayout}/>;
+        return <DateTimePicker {...item} onLayout={onLayout} />;
     }
     if (item.type === InteractiveMessageType.MediaOutput) {
         return <MediaOutput {...item} onLayout={onLayout} />;
     }
     if (item.type === InteractiveMessageType.QRCodeDraw) {
         return <QRCodeDraw {...item} onLayout={onLayout} />;
-
+    }
+    if (item.type === InteractiveMessageType.Country) {
+        return <CountryPicker {...item} onLayout={onLayout} />;
     }
 
     return null;
@@ -119,10 +119,7 @@ export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
         { messages, onPressUrl, onLongPressText }: UIBrowserListProps,
         ref,
     ) {
-        const formattedMessages = React.useMemo(
-            () => getFormattedList(messages),
-            [messages],
-        );
+        const formattedMessages = React.useMemo(() => getFormattedList(messages), [messages]);
         return (
             <UICommonChatList
                 forwardRef={ref}
@@ -131,14 +128,14 @@ export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
                 getItemLayoutFabric={flatListGetItemLayoutFabric}
                 onLongPressText={onLongPressText}
                 onPressUrl={onPressUrl}
-                >
+            >
                 {(chatListProps: CommonChatListProps<BrowserMessage>) => (
                     <FlatList
                         testID="browser_container"
                         data={formattedMessages}
                         {...chatListProps}
-                        />
-                    )}
+                    />
+                )}
             </UICommonChatList>
         );
     },

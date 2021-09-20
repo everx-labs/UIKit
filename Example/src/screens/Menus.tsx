@@ -1,24 +1,11 @@
 /* eslint-disable no-alert */
 /* eslint-disable react/no-unused-prop-types */
 import * as React from 'react';
-import {
-    Platform,
-    StatusBar,
-    Text,
-    useWindowDimensions,
-    View,
-} from 'react-native';
-import {
-    SafeAreaInsetsContext,
-    useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { Platform, StatusBar, Text, useWindowDimensions, View } from 'react-native';
+import { SafeAreaInsetsContext, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant } from '@tonlabs/uikit.core';
-import {
-    UICountryPicker,
-    UIPopover,
-    UIPopoverMenu,
-} from '@tonlabs/uikit.navigation_legacy';
+import { UIPopover, UIPopoverMenu } from '@tonlabs/uikit.navigation_legacy';
 import {
     ScrollView,
     UICardSheet,
@@ -36,7 +23,7 @@ import {
     UILinkButton,
     UILabel,
 } from '@tonlabs/uikit.hydrogen';
-import { UIPinCode, UIPinCodeBiometryType } from '@tonlabs/uikit.flask';
+import { UIPinCode, UIPinCodeBiometryType, UICountryPicker } from '@tonlabs/uikit.flask';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -61,10 +48,7 @@ function PinCodeMenu() {
                 forId="lockScreen"
                 style={{
                     backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                    paddingBottom: Math.max(
-                        insets?.bottom || 0,
-                        UIConstant.contentOffset(),
-                    ),
+                    paddingBottom: Math.max(insets?.bottom || 0, UIConstant.contentOffset()),
                     borderRadius: Platform.select({ web: 10, default: 0 }),
                 }}
             >
@@ -78,7 +62,7 @@ function PinCodeMenu() {
                         return Promise.resolve('123123');
                     }}
                     onEnter={(pin: string) => {
-                        return new Promise((resolve) => {
+                        return new Promise(resolve => {
                             setTimeout(() => {
                                 if (pin === '123123') {
                                     setAttempts(5);
@@ -109,8 +93,7 @@ export const actionSheet = React.createRef<typeof UIPopup.ActionSheet>();
 
 function BigBottomSheet() {
     const theme = useTheme();
-    const [bigBottomSheetVisible, setBigBottomSheetVisible] =
-        React.useState(false);
+    const [bigBottomSheetVisible, setBigBottomSheetVisible] = React.useState(false);
     const { height } = useWindowDimensions();
     const insets = useSafeAreaInsets();
     return (
@@ -130,10 +113,7 @@ function BigBottomSheet() {
                 style={{
                     backgroundColor: theme[ColorVariants.BackgroundPrimary],
                     // padding: 20,
-                    paddingBottom: Math.max(
-                        insets?.bottom || 0,
-                        UIConstant.contentOffset(),
-                    ),
+                    paddingBottom: Math.max(insets?.bottom || 0, UIConstant.contentOffset()),
                     borderRadius: 10,
                 }}
             >
@@ -148,10 +128,7 @@ function BigBottomSheet() {
                             height -
                             (StatusBar.currentHeight ?? 0) -
                             insets.top -
-                            Math.max(
-                                insets?.bottom ?? 0,
-                                UIConstant.contentOffset(),
-                            ) -
+                            Math.max(insets?.bottom ?? 0, UIConstant.contentOffset()) -
                             100,
                     }}
                 >
@@ -159,7 +136,7 @@ function BigBottomSheet() {
                     {new Array(9)
                         .fill(null)
                         .map((_el, i) => (i + 1) / 10)
-                        .map((opacity) => (
+                        .map(opacity => (
                             <View
                                 key={opacity}
                                 style={{
@@ -176,8 +153,7 @@ function BigBottomSheet() {
 
 function BigBottomLargeTitleSheet() {
     const theme = useTheme();
-    const [bigBottomSheetVisible, setBigBottomSheetVisible] =
-        React.useState(false);
+    const [bigBottomSheetVisible, setBigBottomSheetVisible] = React.useState(false);
     return (
         <>
             <UILinkButton
@@ -208,7 +184,7 @@ function BigBottomLargeTitleSheet() {
                         {new Array(9)
                             .fill(null)
                             .map((_el, i) => (i + 1) / 10)
-                            .map((opacity) => (
+                            .map(opacity => (
                                 <View
                                     key={opacity}
                                     style={{
@@ -224,13 +200,12 @@ function BigBottomLargeTitleSheet() {
     );
 }
 
-const getCallback =
-    (message: string, setVisible: (visible: boolean) => void) => () => {
-        console.log(message);
-        if (message.includes('Сancel')) {
-            setVisible(false);
-        }
-    };
+const getCallback = (message: string, setVisible: (visible: boolean) => void) => () => {
+    console.log(message);
+    if (message.includes('Сancel')) {
+        setVisible(false);
+    }
+};
 
 export const Menus = () => {
     const theme = useTheme();
@@ -238,6 +213,7 @@ export const Menus = () => {
     const [cardSheetVisible, setCardSheetVisible] = React.useState(false);
     const [cardSheet2Visible, setCardSheet2Visible] = React.useState(false);
     const [bottomSheetVisible, setBottomSheetVisible] = React.useState(false);
+    const [countryPickerVisible, setCountryPickerVisible] = React.useState(false);
 
     const [qrVisible, setQrVisible] = React.useState(false);
     return (
@@ -256,44 +232,36 @@ export const Menus = () => {
                         <UIPopup.ActionSheet.Action
                             type={UIPopup.ActionSheet.Action.Type.Disabled}
                             title="Disabled Action"
-                            onPress={getCallback(
-                                'Disabled Action',
-                                setActionSheetVisible,
-                            )}
+                            onPress={getCallback('Disabled Action', setActionSheetVisible)}
                         />
                         <UIPopup.ActionSheet.Action
                             type={UIPopup.ActionSheet.Action.Type.Neutral}
                             title="Neutral Action"
-                            onPress={getCallback(
-                                'Neutral Action',
-                                setActionSheetVisible,
-                            )}
+                            onPress={getCallback('Neutral Action', setActionSheetVisible)}
                         />
                         <UIPopup.ActionSheet.Action
                             type={UIPopup.ActionSheet.Action.Type.Negative}
                             title="Negative Action"
-                            onPress={getCallback(
-                                'Negative Action',
-                                setActionSheetVisible,
-                            )}
+                            onPress={getCallback('Negative Action', setActionSheetVisible)}
                         />
                         <UIPopup.ActionSheet.Action
                             type={UIPopup.ActionSheet.Action.Type.Cancel}
                             title="Cancel Action"
-                            onPress={getCallback(
-                                'Cancel Action',
-                                setActionSheetVisible,
-                            )}
+                            onPress={getCallback('Cancel Action', setActionSheetVisible)}
                         />
                     </UIPopup.ActionSheet>
                 </View>
             </ExampleSection>
             <ExampleSection title="UICountryPicker">
                 <View style={{ paddingVertical: 20 }}>
-                    <UILinkButton
-                        testID="show_uiCountryPicker"
-                        title="Show UICountryPicker"
-                        onPress={() => UICountryPicker.show({})}
+                    <UIBoxButton title="tap" onPress={() => setCountryPickerVisible(true)} />
+                    <UICountryPicker
+                        visible={countryPickerVisible}
+                        onSelect={countryCode => {
+                            console.log(countryCode);
+                            setCountryPickerVisible(false);
+                        }}
+                        onClose={() => setCountryPickerVisible(false)}
                     />
                 </View>
             </ExampleSection>
@@ -312,8 +280,7 @@ export const Menus = () => {
                             setCardSheetVisible(false);
                         }}
                         style={{
-                            backgroundColor:
-                                theme[ColorVariants.BackgroundPrimary],
+                            backgroundColor: theme[ColorVariants.BackgroundPrimary],
                             padding: 20,
                             borderRadius: 10,
                         }}
@@ -339,8 +306,7 @@ export const Menus = () => {
                             setCardSheet2Visible(false);
                         }}
                         style={{
-                            backgroundColor:
-                                theme[ColorVariants.BackgroundPrimary],
+                            backgroundColor: theme[ColorVariants.BackgroundPrimary],
                             padding: 20,
                             borderRadius: 10,
                         }}
@@ -361,15 +327,14 @@ export const Menus = () => {
                         }}
                     />
                     <SafeAreaInsetsContext.Consumer>
-                        {(insets) => (
+                        {insets => (
                             <UIBottomSheet
                                 visible={bottomSheetVisible}
                                 onClose={() => {
                                     setBottomSheetVisible(false);
                                 }}
                                 style={{
-                                    backgroundColor:
-                                        theme[ColorVariants.BackgroundPrimary],
+                                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
                                     padding: 20,
                                     paddingBottom: Math.max(
                                         insets?.bottom || 0,
@@ -411,14 +376,8 @@ export const Menus = () => {
             </ExampleSection>
             <ExampleSection title="UIPopover">
                 <View style={{ paddingVertical: 20 }}>
-                    <UIPopover
-                        placement="top"
-                        component={<Text>This is a popover</Text>}
-                    >
-                        <UILinkButton
-                            testID="show_uiPopover"
-                            title="Show UIPopover"
-                        />
+                    <UIPopover placement="top" component={<Text>This is a popover</Text>}>
+                        <UILinkButton testID="show_uiPopover" title="Show UIPopover" />
                     </UIPopover>
                 </View>
             </ExampleSection>

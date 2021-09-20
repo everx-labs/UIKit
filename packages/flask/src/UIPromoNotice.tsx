@@ -70,45 +70,15 @@ export function UIPromoNotice({
         openLink(deviceOS, googlePlayUrl);
     }, [deviceOS, googlePlayUrl]);
 
-    const content = React.useMemo(
-        () => {
-            if (deviceOS === 'ios') {
-                return (
-                    <View>
-                        <UILinkButton
-                            title={uiLocalized.promoDownload.appStore}
-                            size={UILinkButtonSize.Small}
-                            onPress={onAppStore}
-                        />
-                        <UILabel
-                            color={UILabelColors.TextPrimary}
-                            role={UILabelRoles.ParagraphFootnote}
-                            style={styles.noticeText}
-                        >
-                            {uiLocalized.promoDownload.notice}
-                        </UILabel>
-                    </View>
-                );
-            } else if (deviceOS === 'android') {
-                return (
-                    <View>
-                        <UILinkButton
-                            title={uiLocalized.promoDownload.googlePlay}
-                            size={UILinkButtonSize.Small}
-                            onPress={onGooglePlay}
-                        />
-                        <UILabel
-                            color={UILabelColors.TextPrimary}
-                            role={UILabelRoles.ParagraphFootnote}
-                            style={styles.noticeText}
-                        >
-                            {uiLocalized.promoDownload.notice}
-                        </UILabel>
-                    </View>
-                );
-            }
+    const content = React.useMemo(() => {
+        if (deviceOS === 'ios') {
             return (
                 <View>
+                    <UILinkButton
+                        title={uiLocalized.promoDownload.appStore}
+                        size={UILinkButtonSize.Small}
+                        onPress={onAppStore}
+                    />
                     <UILabel
                         color={UILabelColors.TextPrimary}
                         role={UILabelRoles.ParagraphFootnote}
@@ -116,40 +86,64 @@ export function UIPromoNotice({
                     >
                         {uiLocalized.promoDownload.notice}
                     </UILabel>
-                    <View style={styles.buttons}>
-                        <UILinkButton
-                            title={uiLocalized.promoDownload.appStore}
-                            type={UILinkButtonType.Menu}
-                            size={UILinkButtonSize.Small}
-                            onPress={onAppStore}
-                            layout={styles.leftButton}
-                        />
-                        <UILinkButton
-                            title={uiLocalized.promoDownload.googlePlay}
-                            type={UILinkButtonType.Menu}
-                            size={UILinkButtonSize.Small}
-                            onPress={onGooglePlay}
-                            layout={styles.rightButton}
-                        />
-                    </View>
                 </View>
             );
-        },
-        [deviceOS, onAppStore, onGooglePlay],
-    );
-
-    return (
-        Platform.OS === 'web'
-            ? (
-                <PromoNotice
-                    folding={folding}
-                    visible={visible}
-                    onClose={onClose}
-                    icon={icon}
-                    testID={testID}
+        } else if (deviceOS === 'android') {
+            return (
+                <View>
+                    <UILinkButton
+                        title={uiLocalized.promoDownload.googlePlay}
+                        size={UILinkButtonSize.Small}
+                        onPress={onGooglePlay}
+                    />
+                    <UILabel
+                        color={UILabelColors.TextPrimary}
+                        role={UILabelRoles.ParagraphFootnote}
+                        style={styles.noticeText}
+                    >
+                        {uiLocalized.promoDownload.notice}
+                    </UILabel>
+                </View>
+            );
+        }
+        return (
+            <View>
+                <UILabel
+                    color={UILabelColors.TextPrimary}
+                    role={UILabelRoles.ParagraphFootnote}
+                    style={styles.noticeText}
                 >
-                    {content}
-                </PromoNotice>
-            ) : null
-    );
+                    {uiLocalized.promoDownload.notice}
+                </UILabel>
+                <View style={styles.buttons}>
+                    <UILinkButton
+                        title={uiLocalized.promoDownload.appStore}
+                        type={UILinkButtonType.Menu}
+                        size={UILinkButtonSize.Small}
+                        onPress={onAppStore}
+                        layout={styles.leftButton}
+                    />
+                    <UILinkButton
+                        title={uiLocalized.promoDownload.googlePlay}
+                        type={UILinkButtonType.Menu}
+                        size={UILinkButtonSize.Small}
+                        onPress={onGooglePlay}
+                        layout={styles.rightButton}
+                    />
+                </View>
+            </View>
+        );
+    }, [deviceOS, onAppStore, onGooglePlay]);
+
+    return Platform.OS === 'web' ? (
+        <PromoNotice
+            folding={folding}
+            visible={visible}
+            onClose={onClose}
+            icon={icon}
+            testID={testID}
+        >
+            {content}
+        </PromoNotice>
+    ) : null;
 }

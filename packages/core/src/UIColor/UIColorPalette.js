@@ -91,8 +91,20 @@ const UIColorPalette = {
         darkBrake: '#D6DADC', // TODO: ask Eugene about the real value
     },
     avatar: [
-        '#EF5350', '#EC407A', '#AB47BC', '#7E57C2', '#5C6BC0', '#1E88E5', '#0288D1',
-        '#0097A7', '#009688', '#43A047', '#558B2F', '#F4511E', '#8D6E63', '#78909C',
+        '#EF5350',
+        '#EC407A',
+        '#AB47BC',
+        '#7E57C2',
+        '#5C6BC0',
+        '#1E88E5',
+        '#0288D1',
+        '#0097A7',
+        '#009688',
+        '#43A047',
+        '#558B2F',
+        '#F4511E',
+        '#8D6E63',
+        '#78909C',
     ],
     tag: {
         black: '#20262A',
@@ -101,6 +113,5 @@ const UIColorPalette = {
         blue: '#0088CC',
         default: '#F5F5F5',
     },
-
 };
 export default UIColorPalette;

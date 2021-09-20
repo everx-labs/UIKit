@@ -62,14 +62,13 @@ const UIAnimatedBalanceSymbol = React.memo(
                 style={[
                     UIStyle.text.primary(),
                     UIStyle.text.titleLight(),
-                    children.kind === BalanceSymbolKind.integer
-                        ? textStyle
-                        : fractionalTextStyle,
+                    children.kind === BalanceSymbolKind.integer ? textStyle : fractionalTextStyle,
                     {
                         opacity: animation,
-                        color: children.kind === BalanceSymbolKind.integer
-                            ? theme[textColor]
-                            : theme[fractionalTextColor],
+                        color:
+                            children.kind === BalanceSymbolKind.integer
+                                ? theme[textColor]
+                                : theme[fractionalTextColor],
                     },
                 ]}
             >
@@ -183,7 +182,8 @@ export default class UIAnimatedBalanceOpacity extends React.Component<
                     delay: index * (UIConstant.animationDuration() / 10),
                     useNativeDriver: true,
                 });
-            })).start(() => {
+            }),
+        ).start(() => {
             this.props.onAnimationEnd();
         });
     }
@@ -241,12 +241,7 @@ export default class UIAnimatedBalanceOpacity extends React.Component<
                     ))}
                 </View>
                 {this.state.prevBalance && (
-                    <View
-                        style={[
-                            StyleSheet.absoluteFill,
-                            UIStyle.common.flexRow(),
-                        ]}
-                    >
+                    <View style={[StyleSheet.absoluteFill, UIStyle.common.flexRow()]}>
                         {this.state.prevBalance.map((symbol, index) => (
                             <UIAnimatedBalanceSymbol
                                 // eslint-disable-next-line react/no-array-index-key

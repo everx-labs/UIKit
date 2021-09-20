@@ -8,15 +8,13 @@ export type UIDateTimePickerFullType = UIDateTimePickerType & {
 };
 
 export const UIDateTimePicker = ({
-        visible,
-        onClose,
-        ...dateTimePickerProps
+    visible,
+    onClose,
+    ...dateTimePickerProps
 }: UIDateTimePickerFullType) => {
     return (
         <UIPullerSheet visible={visible} onClose={onClose}>
-            <UIDateTimePickerView
-                {...dateTimePickerProps}
-            />
+            <UIDateTimePickerView {...dateTimePickerProps} />
         </UIPullerSheet>
     );
 };

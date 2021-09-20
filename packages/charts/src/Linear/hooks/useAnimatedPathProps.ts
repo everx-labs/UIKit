@@ -8,15 +8,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Path, serialize } from 'react-native-redash';
 import type { LinearChartDimensions, LinearChartPoint } from '../../types';
-import {
-    convertDataToPath,
-    interpolatePath,
-    negateProgressTarget,
-} from '../utils';
-import {
-    LINEAR_CHART_STROKE_WIDTH,
-    LINEAR_CHART_WITH_SPRING_CONFIG,
-} from '../../constants';
+import { convertDataToPath, interpolatePath, negateProgressTarget } from '../utils';
+import { LINEAR_CHART_STROKE_WIDTH, LINEAR_CHART_WITH_SPRING_CONFIG } from '../../constants';
 
 export const useAnimatedPathProps = (
     dimensions: Animated.SharedValue<LinearChartDimensions>,
@@ -34,21 +27,14 @@ export const useAnimatedPathProps = (
     const intermediatePath = useSharedValue<Path | null>(null);
 
     const targetPath = useDerivedValue(() => {
-        return convertDataToPath(
-            data,
-            dimensions.value,
-            LINEAR_CHART_STROKE_WIDTH,
-        );
+        return convertDataToPath(data, dimensions.value, LINEAR_CHART_STROKE_WIDTH);
     }, [data, dimensions]);
 
     const currentPath = useDerivedValue<Path | null>(() => {
         if (targetPath.value === null) {
             return null;
         }
-        if (
-            targetPath.value.curves.length !==
-            intermediatePath.value?.curves.length
-        ) {
+        if (targetPath.value.curves.length !== intermediatePath.value?.curves.length) {
             /**
              * If the number of points has changed, the interpolatePath function crashes with an error
              * TODO: Remove this if-block and fix these crashes.
@@ -58,12 +44,7 @@ export const useAnimatedPathProps = (
         return interpolatePath(
             progress.value,
             [negateProgressTarget(progressTarget.value), progressTarget.value],
-            [
-                intermediatePath.value
-                    ? intermediatePath.value
-                    : targetPath.value,
-                targetPath.value,
-            ],
+            [intermediatePath.value ? intermediatePath.value : targetPath.value, targetPath.value],
             Animated.Extrapolate.CLAMP,
         );
     });
@@ -80,20 +61,10 @@ export const useAnimatedPathProps = (
             if (!dimensions.value.width || !dimensions.value.height) {
                 progress.value = progressTarget.value;
             } else {
-                progress.value = withSpring(
-                    progressTarget.value,
-                    LINEAR_CHART_WITH_SPRING_CONFIG,
-                );
+                progress.value = withSpring(progressTarget.value, LINEAR_CHART_WITH_SPRING_CONFIG);
             }
         })();
-    }, [
-        data,
-        progressTarget,
-        intermediatePath,
-        currentPath,
-        progress,
-        dimensions,
-    ]);
+    }, [data, progressTarget, intermediatePath, currentPath, progress, dimensions]);
 
     const animatedPathProps = useAnimatedProps(() => {
         if (currentPath.value === null) {

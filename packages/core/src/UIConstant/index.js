@@ -81,7 +81,8 @@ const UI_TINY_ICON_SIZE = 4;
 const UI_DEFAULT_ICON_SIZE = 24;
 const UI_MEDIUM_ICON_SIZE = 32;
 
-const UI_DISABLED_OUTLINE = Platform.OS === 'web' && !global.__TEST__ ? { outlineStyle: 'none' } : null;
+const UI_DISABLED_OUTLINE =
+    Platform.OS === 'web' && !global.__TEST__ ? { outlineStyle: 'none' } : null;
 
 const UI_SEPARATOR_SYMBOL = '~';
 
@@ -140,47 +141,50 @@ const UI_ALERT_WIDTH = 272;
 
 const UI_HIT_SLOP_NAVIGATION = { top: 10, left: 20, bottom: 10, right: 20 };
 
-const UI_COMMON_SHADOW = Platform.OS === 'android'
-    ? {
-        elevation: 1,
-    }
-    : {
-        shadowColor: UIColor.overlayWithAlpha(0.04),
-        shadowOpacity: 1,
-        shadowRadius: 8,
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-    };
+const UI_COMMON_SHADOW =
+    Platform.OS === 'android'
+        ? {
+              elevation: 1,
+          }
+        : {
+              shadowColor: UIColor.overlayWithAlpha(0.04),
+              shadowOpacity: 1,
+              shadowRadius: 8,
+              shadowOffset: {
+                  width: 0,
+                  height: 4,
+              },
+          };
 
-const UI_SHADOW_40 = Platform.OS === 'android'
-    ? {
-        elevation: 1,
-    }
-    : {
-        shadowColor: UIColor.dark(),
-        shadowOpacity: 0.12,
-        shadowRadius: 20,
-        shadowOffset: {
-            width: 0,
-            height: 12,
-        },
-    };
+const UI_SHADOW_40 =
+    Platform.OS === 'android'
+        ? {
+              elevation: 1,
+          }
+        : {
+              shadowColor: UIColor.dark(),
+              shadowOpacity: 0.12,
+              shadowRadius: 20,
+              shadowOffset: {
+                  width: 0,
+                  height: 12,
+              },
+          };
 
-const UI_CARD_SHADOW = Platform.OS === 'android'
-    ? {
-        elevation: 8,
-    }
-    : {
-        shadowColor: '#000000',
-        shadowOpacity: 0.2,
-        shadowRadius: 20,
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-    };
+const UI_CARD_SHADOW =
+    Platform.OS === 'android'
+        ? {
+              elevation: 8,
+          }
+        : {
+              shadowColor: '#000000',
+              shadowOpacity: 0.2,
+              shadowRadius: 20,
+              shadowOffset: {
+                  width: 0,
+                  height: 4,
+              },
+          };
 
 const UI_CARD_SHADOW_WIDTH = 40;
 
@@ -253,15 +257,18 @@ export default class UIConstant {
     }
 
     // Content offsets
-    static tinyContentOffset() { // 4
+    static tinyContentOffset() {
+        // 4
         return UI_TINY_CONTENT_OFFSET;
     }
 
-    static smallContentOffset() { // 8
+    static smallContentOffset() {
+        // 8
         return UI_SMALL_CONTENT_OFFSET;
     }
 
-    static normalContentOffset() { // 12
+    static normalContentOffset() {
+        // 12
         return UI_NORMAL_CONTENT_OFFSET;
     }
 
@@ -355,7 +362,8 @@ export default class UIConstant {
         return UI_SMALL_BUTTON_HEIGHT; // 32
     }
 
-    static mediumButtonHeight() { // 40
+    static mediumButtonHeight() {
+        // 40
         return UI_MEDIUM_BUTTON_HEIGHT;
     }
 
@@ -363,11 +371,13 @@ export default class UIConstant {
         return UI_DEFAULT_BUTTON_HEIGHT; // 48
     }
 
-    static largeButtonHeight() { // 56
+    static largeButtonHeight() {
+        // 56
         return UI_LARGE_BUTTON_HEIGHT;
     }
 
-    static extraLargeButtonHeight() { // 72
+    static extraLargeButtonHeight() {
+        // 72
         return UI_EXTRA_LARGE_BUTTON_HEIGHT;
     }
 
@@ -411,7 +421,8 @@ export default class UIConstant {
         return UI_DETAILS_CELL_HEIGHT;
     }
 
-    static majorCellHeight() { // 80
+    static majorCellHeight() {
+        // 80
         return UI_MAJOR_CELL_HEIGHT;
     }
 
@@ -627,7 +638,6 @@ export default class UIConstant {
     static dashSymbol() {
         return DASH_SYMBOL;
     }
-
 
     static alertWidth() {
         return UI_ALERT_WIDTH;

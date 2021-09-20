@@ -1,5 +1,7 @@
 import { Platform } from 'react-native';
 
+const GRID_LINE_HEIGHT = 4;
+
 export const UIConstant = {
     mediaImagePartOfScreen: Platform.select<number>({
         web: 3 / 12,
@@ -18,4 +20,9 @@ export const UIConstant = {
         swipeToCloseThreshold: 1 / 5,
         moveDeceleration: 0.995,
     },
+    contentInsetVerticalX2: 2 * GRID_LINE_HEIGHT,
+    contentInsetVerticalX3: 3 * GRID_LINE_HEIGHT,
+    contentInsetVerticalX4: 4 * GRID_LINE_HEIGHT,
+
+    contentOffset: 16,
 };

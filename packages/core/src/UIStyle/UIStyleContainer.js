@@ -61,7 +61,8 @@ export const containerStyles = {
     absoluteFillContainer: {
         ...absoluteFillContainer,
     },
-    absoluteFillObject: { // has { overflow: hidden }
+    absoluteFillObject: {
+        // has { overflow: hidden }
         ...absoluteFillObject,
     },
     screenBackground: {
@@ -154,7 +155,7 @@ export const containerStyles = {
     },
     twoThirdsWidthContainer: {
         width: '66%',
-        maxWidth: UIConstant.elasticWidthHuge() / 3 * 2,
+        maxWidth: (UIConstant.elasticWidthHuge() / 3) * 2,
         alignSelf: 'center',
     },
     fullWidthPaddingContainer: {

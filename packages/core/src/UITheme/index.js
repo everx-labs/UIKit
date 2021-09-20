@@ -2,11 +2,7 @@ import { UIColorThemeName } from '../UIColor/UIColorTypes';
 import UIColorThemeAction from '../UIColor/UIColorThemeAction';
 import UIColorThemeDark from '../UIColor/UIColorThemeDark';
 import UIColorThemeLight from '../UIColor/UIColorThemeLight';
-import type {
-    UIColorData,
-    UIColorThemeData,
-    UIColorThemeNameType,
-} from '../UIColor/UIColorTypes';
+import type { UIColorData, UIColorThemeData, UIColorThemeNameType } from '../UIColor/UIColorTypes';
 
 const themes: { [UIColorThemeNameType]: UIColorThemeData } = {
     light: UIColorThemeLight,

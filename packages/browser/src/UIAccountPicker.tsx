@@ -40,10 +40,7 @@ function UIAccountPickerItem({
         >
             <UILabel style={styles.itemBalance}>{balance}</UILabel>
             {description != null ? (
-                <UILabel
-                    role={UILabelRoles.ParagraphNote}
-                    color={UILabelColors.TextSecondary}
-                >
+                <UILabel role={UILabelRoles.ParagraphNote} color={UILabelColors.TextSecondary}>
                     {description}
                 </UILabel>
             ) : null}
@@ -74,7 +71,7 @@ export function UIAccountPicker({
                             {title}
                         </UILabel>
                     </UIBackgroundView>
-                    {data.map((account) => (
+                    {data.map(account => (
                         <UIAccountPickerItem
                             key={account.address}
                             {...account}

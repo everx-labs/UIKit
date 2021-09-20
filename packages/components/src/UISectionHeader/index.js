@@ -1,7 +1,5 @@
 // Deprecated?
 import React from 'react';
-import PropTypes from 'prop-types';
-import StylePropType from 'react-style-proptype';
 
 import { View, StyleSheet } from 'react-native';
 
@@ -60,16 +58,10 @@ class UISectionHeader extends UIComponent {
                         this.props.containerStyle,
                     ]}
                 >
-                    <UILabel
-                        color={UILabelColors.TextTertiary}
-                        role={UILabelRoles.HeadlineLabel}
-                    >
+                    <UILabel color={UILabelColors.TextTertiary} role={UILabelRoles.HeadlineLabel}>
                         {this.getTitle()}
                     </UILabel>
-                    <UILabel
-                        color={UILabelColors.TextTertiary}
-                        role={UILabelRoles.ParagraphLabel}
-                    >
+                    <UILabel color={UILabelColors.TextTertiary} role={UILabelRoles.ParagraphLabel}>
                         {this.getTitleRight()}
                     </UILabel>
                 </UIBackgroundView>
@@ -85,11 +77,4 @@ UISectionHeader.defaultProps = {
     titleRight: '',
     needBorder: false,
     containerStyle: null,
-};
-
-UISectionHeader.propTypes = {
-    title: PropTypes.string,
-    titleRight: PropTypes.string,
-    needBorder: PropTypes.bool,
-    containerStyle: StylePropType,
 };

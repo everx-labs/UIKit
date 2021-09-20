@@ -1,4 +1,3 @@
-
 /**
  *
  * @param original {Object}
@@ -6,7 +5,11 @@
  * @param keyPath {string}
  * @returns {Object} Errors array
  */
-export function checkConsistent(original: Record<string, any>, target: Record<string, any>, keyPath = ''): string[] {
+export function checkConsistent(
+    original: Record<string, any>,
+    target: Record<string, any>,
+    keyPath = '',
+): string[] {
     const errors: string[] = [];
 
     Object.keys(original).forEach(key => {

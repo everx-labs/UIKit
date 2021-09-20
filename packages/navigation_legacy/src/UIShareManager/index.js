@@ -17,7 +17,6 @@ export type ShareOptions = {
 };
 
 export default class UIShareManager {
-
     static async shareMessage(message: string, success: string) {
         if (!message) {
             return;
@@ -27,7 +26,11 @@ export default class UIShareManager {
         };
         try {
             const result = await Share.share(content);
-            console.log('[UIShareManager] Message successfully shared with result:', result, success);
+            console.log(
+                '[UIShareManager] Message successfully shared with result:',
+                result,
+                success,
+            );
         } catch (error) {
             console.warn('[UIShareManager] Failed to share message with error:', error);
         }

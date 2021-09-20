@@ -37,8 +37,7 @@ function UISeedPhrasePopoverContent(props: UISeedPhrasePopoverProps) {
     } = props;
     const theme = useTheme();
     const maxHintsToShow = Math.min(hints.length, MAX_CELLS);
-    const height =
-        hints.length > 0 ? UIConstant.defaultCellHeight * maxHintsToShow : 0;
+    const height = hints.length > 0 ? UIConstant.defaultCellHeight * maxHintsToShow : 0;
     // Calculate the padding bottom to view cells even if clipped
     const paddingBottom = UIConstant.defaultCellHeight * (maxHintsToShow - 1);
 
@@ -96,31 +95,21 @@ function UISeedPhrasePopoverContent(props: UISeedPhrasePopoverProps) {
                         web: {
                             // a popover is closing before `onPress` event is triggered on web
                             onPressIn: () => onHintSelected(item),
-                            onMouseEnter: () =>
-                                onHighlightedItemIndexChange(index),
-                            onMouseLeave: () =>
-                                onHighlightedItemIndexChange(-1),
+                            onMouseEnter: () => onHighlightedItemIndexChange(index),
+                            onMouseLeave: () => onHighlightedItemIndexChange(-1),
                         },
                         default: {
                             onPress: () => onHintSelected(item),
                         },
                     })}
                 >
-                    <UILabel
-                        color={UILabelColors.TextSecondary}
-                        role={UILabelRoles.ParagraphNote}
-                    >
+                    <UILabel color={UILabelColors.TextSecondary} role={UILabelRoles.ParagraphNote}>
                         {item}
                     </UILabel>
                 </TouchableOpacity>
             );
         },
-        [
-            theme,
-            currentHighlightedItemIndex,
-            onHintSelected,
-            onHighlightedItemIndexChange,
-        ],
+        [theme, currentHighlightedItemIndex, onHintSelected, onHighlightedItemIndexChange],
     );
 
     if (measurement == null) {
@@ -147,7 +136,7 @@ function UISeedPhrasePopoverContent(props: UISeedPhrasePopoverProps) {
                     contentContainerStyle={{ paddingBottom }}
                     scrollEnabled
                     showsVerticalScrollIndicator
-                    keyExtractor={(item) => item}
+                    keyExtractor={item => item}
                     keyboardShouldPersistTaps="handled"
                     data={hints}
                     extraData={currentHighlightedItemIndex}

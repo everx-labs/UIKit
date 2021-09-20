@@ -1,11 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import React from 'react';
-import {
-    View,
-    StyleSheet,
-    Animated,
-    LayoutAnimation,
-} from 'react-native';
+import { View, StyleSheet, Animated, LayoutAnimation } from 'react-native';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import {
@@ -21,9 +16,7 @@ import { ScrollView } from '@tonlabs/uikit.navigation';
 import UIController from '../UIController';
 import UIDialogTextInput from './UIDialogTextInput';
 
-const AnimatedUIBackgroundView = Animated.createAnimatedComponent(
-    UIBackgroundView,
-);
+const AnimatedUIBackgroundView = Animated.createAnimatedComponent(UIBackgroundView);
 
 const styles = StyleSheet.create({
     scrollContainer: {
@@ -123,11 +116,11 @@ class UIDialogController extends UIController {
     }
 
     // Events
-    onChangeInput = (text) => {
+    onChangeInput = text => {
         this.setInput(text);
     };
 
-    onChangeAuxInput = (text) => {
+    onChangeAuxInput = text => {
         this.setAuxInput(text);
     };
 
@@ -203,48 +196,51 @@ class UIDialogController extends UIController {
         const keyboardTypeProp = this.textInputKeyboardType
             ? { keyboardType: this.textInputKeyboardType }
             : null;
-        const maxLengthProp = this.textInputMaxLength > 0
-            ? { maxLength: this.textInputMaxLength }
-            : null;
-        return (<UIDialogTextInput
-            ref={(component) => {
-                this.textInput = component;
-            }}
-            style={UIStyle.marginTopMedium}
-            editable={!this.shouldShowIndicator()}
-            autoFocus={this.textInputAutoFocus}
-            textAlign="center"
-            returnKeyType="next"
-            beginningTag={this.textInputBeginningTag}
-            tagSeparator={this.textInputTagSeparator}
-            placeholder={this.textInputPlaceholder}
-            secureTextEntry={this.textInputSecureTextEntry}
-            {...keyboardTypeProp}
-            {...maxLengthProp}
-            value={this.getInput()}
-            onChangeText={this.onChangeInput}
-            onSubmitEditing={this.onSubmitEditingTextInput}
-        />);
+        const maxLengthProp =
+            this.textInputMaxLength > 0 ? { maxLength: this.textInputMaxLength } : null;
+        return (
+            <UIDialogTextInput
+                ref={component => {
+                    this.textInput = component;
+                }}
+                style={UIStyle.marginTopMedium}
+                editable={!this.shouldShowIndicator()}
+                autoFocus={this.textInputAutoFocus}
+                textAlign="center"
+                returnKeyType="next"
+                beginningTag={this.textInputBeginningTag}
+                tagSeparator={this.textInputTagSeparator}
+                placeholder={this.textInputPlaceholder}
+                secureTextEntry={this.textInputSecureTextEntry}
+                {...keyboardTypeProp}
+                {...maxLengthProp}
+                value={this.getInput()}
+                onChangeText={this.onChangeInput}
+                onSubmitEditing={this.onSubmitEditingTextInput}
+            />
+        );
     }
 
     renderAuxTextInput() {
         if (!this.hasAuxTextInput) {
             return null;
         }
-        return (<UIDialogTextInput
-            ref={(component) => {
-                this.auxTextInput = component;
-            }}
-            style={UIStyle.marginTopDefault}
-            editable={!this.shouldShowIndicator()}
-            autoCapitalize="words"
-            textAlign="center"
-            returnKeyType="done"
-            placeholder={this.auxTextInputPlaceholder}
-            value={this.getAuxInput()}
-            onChangeText={this.onChangeAuxInput}
-            onSubmitEditing={() => this.signUp()}
-        />);
+        return (
+            <UIDialogTextInput
+                ref={component => {
+                    this.auxTextInput = component;
+                }}
+                style={UIStyle.marginTopDefault}
+                editable={!this.shouldShowIndicator()}
+                autoCapitalize="words"
+                textAlign="center"
+                returnKeyType="done"
+                placeholder={this.auxTextInputPlaceholder}
+                value={this.getAuxInput()}
+                onChangeText={this.onChangeAuxInput}
+                onSubmitEditing={() => this.signUp()}
+            />
+        );
     }
 
     renderSubtitle() {
@@ -292,7 +288,7 @@ class UIDialogController extends UIController {
         return null;
     }
 
-    onLayoutBottomContainer = (e) => {
+    onLayoutBottomContainer = e => {
         const { height } = e.nativeEvent.layout;
 
         if (!height) {
@@ -313,16 +309,14 @@ class UIDialogController extends UIController {
         if (Array.isArray(content)) {
             content = <React.Fragment>{content}</React.Fragment>;
         }
-        return content
-            ? (
-                <UIBackgroundView
-                    color={UIBackgroundViewColors.BackgroundPrimary}
-                    style={styles.contentContainer}
-                >
-                    {content}
-                </UIBackgroundView>
-            )
-            : null;
+        return content ? (
+            <UIBackgroundView
+                color={UIBackgroundViewColors.BackgroundPrimary}
+                style={styles.contentContainer}
+            >
+                {content}
+            </UIBackgroundView>
+        ) : null;
     }
 
     renderOverlay() {

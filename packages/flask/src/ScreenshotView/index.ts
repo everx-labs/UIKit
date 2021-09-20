@@ -24,7 +24,5 @@ import { ScreenshotView as ScreenshotViewImpl } from './ScreenshotView';
  *   )
  * }
  */
-export const ScreenshotView: React.ForwardRefRenderFunction<
-    QRCodeRef,
-    ScreenshotViewProps
-> = ScreenshotViewImpl;
+export const ScreenshotView: React.ForwardRefRenderFunction<QRCodeRef, ScreenshotViewProps> =
+    ScreenshotViewImpl;

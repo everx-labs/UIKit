@@ -1,16 +1,6 @@
 import * as React from 'react';
-import {
-    ImageSourcePropType,
-    Platform,
-    StyleProp,
-    StyleSheet,
-    ViewStyle,
-} from 'react-native';
-import {
-    interpolateColor,
-    useAnimatedStyle,
-    useSharedValue,
-} from 'react-native-reanimated';
+import { ImageSourcePropType, Platform, StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { interpolateColor, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
 import { Button, UILayout } from './Button';
 import type { ButtonAnimations } from './Button/types';
@@ -108,11 +98,9 @@ export type UILinkButtonProps = {
      * - `UILinkButtonVariant.Positive` - button associated with some affirmative action
      */
     variant?: UILinkButtonVariant;
-}
+};
 
-const getButtonStates = (
-    type: UILinkButtonType,
-) => {
+const getButtonStates = (type: UILinkButtonType) => {
     if (type === UILinkButtonType.Menu) {
         return {
             activeContentColor: ColorVariants.TextAccent,
@@ -161,7 +149,7 @@ function useButtonAnimations(
             initialColor: contentColor,
             activeColor: activeContentColor,
         },
-    }
+    };
 }
 
 function useButtonStyles(
@@ -226,10 +214,7 @@ export const UILinkButton = ({
                 testID={testID}
             >
                 <Button.Content direction={Button.ContentDirection.Column}>
-                    <Button.Title
-                        titleColor={contentColor}
-                        titleAnimStyle={titleAnim?.style}
-                    >
+                    <Button.Title titleColor={contentColor} titleAnimStyle={titleAnim?.style}>
                         {title}
                     </Button.Title>
                     <Button.Title
@@ -247,10 +232,7 @@ export const UILinkButton = ({
 
     return (
         <Button
-            containerStyle={[
-                containerHeight,
-                layout,
-            ]}
+            containerStyle={[containerHeight, layout]}
             contentStyle={styles.content}
             animations={buttonAnimations}
             disabled={disabled}
@@ -260,8 +242,7 @@ export const UILinkButton = ({
             testID={testID}
         >
             <Button.Content>
-                {
-                    iconPosition === UILinkButtonIconPosition.Left && icon != null &&
+                {iconPosition === UILinkButtonIconPosition.Left && icon != null && (
                     <Button.Icon
                         source={icon}
                         style={styles.leftIcon}
@@ -269,35 +250,29 @@ export const UILinkButton = ({
                         initialColor={iconAnim?.initialColor}
                         activeColor={iconAnim?.activeColor}
                     />
-                }
-                {
-                    title != null &&
-                    <Button.Title
-                        titleColor={contentColor}
-                        titleAnimStyle={titleAnim?.style}
-                    >
+                )}
+                {title != null && (
+                    <Button.Title titleColor={contentColor} titleAnimStyle={titleAnim?.style}>
                         {title}
                     </Button.Title>
-                }
-                {
-                    iconPosition === UILinkButtonIconPosition.Middle && icon != null &&
+                )}
+                {iconPosition === UILinkButtonIconPosition.Middle && icon != null && (
                     <Button.Icon
                         source={icon}
                         iconAnimStyle={iconAnim?.style}
                         initialColor={iconAnim?.initialColor}
                         activeColor={iconAnim?.activeColor}
                     />
-                }
+                )}
             </Button.Content>
-            {
-                iconPosition === UILinkButtonIconPosition.Right && icon != null &&
+            {iconPosition === UILinkButtonIconPosition.Right && icon != null && (
                 <Button.Icon
                     source={icon}
                     iconAnimStyle={iconAnim?.style}
                     initialColor={iconAnim?.initialColor}
                     activeColor={iconAnim?.activeColor}
                 />
-            }
+            )}
         </Button>
     );
 };
@@ -329,6 +304,6 @@ const styles = StyleSheet.create({
             default: {
                 flexBasis: 1,
             },
-        })
+        }),
     },
 });

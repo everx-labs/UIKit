@@ -1,16 +1,8 @@
 import * as React from 'react';
 import { View, StyleSheet, LayoutChangeEvent } from 'react-native';
 import Svg, { Path as SvgPath } from 'react-native-svg';
-import Animated, {
-    useAnimatedProps,
-    useSharedValue,
-} from 'react-native-reanimated';
-import {
-    TypographyVariants,
-    ColorVariants,
-    UILabel,
-    useTheme,
-} from '@tonlabs/uikit.hydrogen';
+import Animated, { useAnimatedProps, useSharedValue } from 'react-native-reanimated';
+import { TypographyVariants, ColorVariants, UILabel, useTheme } from '@tonlabs/uikit.hydrogen';
 import { addNativeProps } from '../Utils';
 import {
     LINEAR_CHART_CONTENT_HORIZONTAL_OFFSET,
@@ -19,11 +11,7 @@ import {
     LINEAR_CHART_VERTICAL_OFFSET_FROM_CHART_TO_THE_EDGE,
     LINEAR_CHART_INITIAL_DIMENSIONS,
 } from '../constants';
-import type {
-    LinearChartPoint,
-    LinearChartDimensions,
-    LinearChartLabelData,
-} from '../types';
+import type { LinearChartPoint, LinearChartDimensions, LinearChartLabelData } from '../types';
 import { useLabelData, useAnimatedPathProps } from './hooks';
 import { formatLabelText } from './utils';
 
@@ -86,9 +74,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const AnimatedPath = Animated.createAnimatedComponent(
-    addNativeProps(SvgPath, { d: true }),
-);
+const AnimatedPath = Animated.createAnimatedComponent(addNativeProps(SvgPath, { d: true }));
 const AnimatedSvg = Animated.createAnimatedComponent(
     addNativeProps(Svg, {
         width: true,
@@ -125,12 +111,8 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                  * The line is built from its center.
                  */
                 dimensions.value = {
-                    height:
-                        event.nativeEvent.layout.height -
-                        LINEAR_CHART_STROKE_WIDTH,
-                    width:
-                        event.nativeEvent.layout.width -
-                        LINEAR_CHART_STROKE_WIDTH,
+                    height: event.nativeEvent.layout.height - LINEAR_CHART_STROKE_WIDTH,
+                    width: event.nativeEvent.layout.width - LINEAR_CHART_STROKE_WIDTH,
                 };
             }
         },
@@ -164,12 +146,7 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                 </AnimatedSvg>
             </View>
             <View style={[styles.labelArea, styles.leftLabelArea]}>
-                <Animated.View
-                    style={[
-                        styles.labelContainer,
-                        labelData.leftLabelContainerStyle,
-                    ]}
-                >
+                <Animated.View style={[styles.labelContainer, labelData.leftLabelContainerStyle]}>
                     <UILabel
                         role={TypographyVariants.ParagraphLabel}
                         color={ColorVariants.TextPrimary}
@@ -180,12 +157,7 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                 </Animated.View>
             </View>
             <View style={[styles.labelArea, styles.rightLabelArea]}>
-                <Animated.View
-                    style={[
-                        styles.labelContainer,
-                        labelData.rightLabelContainerStyle,
-                    ]}
-                >
+                <Animated.View style={[styles.labelContainer, labelData.rightLabelContainerStyle]}>
                     <UILabel
                         role={TypographyVariants.ParagraphLabel}
                         color={ColorVariants.TextPrimary}
@@ -198,10 +170,7 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
             </View>
             <View style={[styles.extremumLabelArea, styles.maximumLabelArea]}>
                 <Animated.View
-                    style={[
-                        styles.extremumLabelContainer,
-                        labelData.maximumLabelContainerStyle,
-                    ]}
+                    style={[styles.extremumLabelContainer, labelData.maximumLabelContainerStyle]}
                 >
                     <Animated.View style={labelData.maximumLabelStyle}>
                         <UILabel
@@ -217,10 +186,7 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
             </View>
             <View style={[styles.extremumLabelArea, styles.minimumLabelArea]}>
                 <Animated.View
-                    style={[
-                        styles.extremumLabelContainer,
-                        labelData.minimumLabelContainerStyle,
-                    ]}
+                    style={[styles.extremumLabelContainer, labelData.minimumLabelContainerStyle]}
                 >
                     <Animated.View style={labelData.minimumLabelStyle}>
                         <UILabel

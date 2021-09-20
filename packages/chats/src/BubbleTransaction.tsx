@@ -14,15 +14,10 @@ import {
 
 import { MessageStatus, TransactionType } from './types';
 import type { TransactionMessage } from './types';
-import {
-    useBubblePosition,
-    BubblePosition,
-    useBubbleContainerStyle,
-} from './useBubblePosition';
+import { useBubblePosition, BubblePosition, useBubbleContainerStyle } from './useBubblePosition';
 import { BubbleTransactionComment } from './BubbleTransactionComment';
 
-const getValueForTestID = (message: TransactionMessage) =>
-    message.info.amount.toFixed(9);
+const getValueForTestID = (message: TransactionMessage) => message.info.amount.toFixed(9);
 
 const getContainerTestID = (message: TransactionMessage) => {
     if (message.status === MessageStatus.Pending) {
@@ -48,27 +43,15 @@ const useBubbleStyle = (message: TransactionMessage) => {
     const { type } = message.info;
 
     if (message.status === MessageStatus.Aborted) {
-        return [
-            UIStyle.color.getBackgroundColorStyle(
-                theme[ColorVariants.BackgroundNegative],
-            ),
-        ];
+        return [UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.BackgroundNegative])];
     }
 
     if (type === TransactionType.Expense) {
-        return [
-            UIStyle.color.getBackgroundColorStyle(
-                theme[ColorVariants.StaticBackgroundBlack],
-            ),
-        ];
+        return [UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.StaticBackgroundBlack])];
     }
 
     if (type === TransactionType.Income) {
-        return [
-            UIStyle.color.getBackgroundColorStyle(
-                theme[ColorVariants.BackgroundPositive],
-            ),
-        ];
+        return [UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.BackgroundPositive])];
     }
 
     return null;
@@ -125,9 +108,7 @@ function TransactionSublabel(props: TransactionMessage) {
         return (
             <>
                 <UILabel
-                    testID={`transaction_message_${getValueForTestID(
-                        props,
-                    )}_aborted`}
+                    testID={`transaction_message_${getValueForTestID(props)}_aborted`}
                     role={UILabelRoles.ParagraphFootnote}
                     color={getCommentColor(props)}
                 >
@@ -143,9 +124,7 @@ function TransactionSublabel(props: TransactionMessage) {
         return (
             <>
                 <UILabel
-                    testID={`transaction_message_${getValueForTestID(
-                        props,
-                    )}_time`}
+                    testID={`transaction_message_${getValueForTestID(props)}_time`}
                     role={UILabelRoles.ParagraphFootnote}
                     color={getCommentColor(props)}
                 >
@@ -157,10 +136,7 @@ function TransactionSublabel(props: TransactionMessage) {
 
     return (
         <>
-            <UILabel
-                role={UILabelRoles.ParagraphFootnote}
-                color={getCommentColor(props)}
-            >
+            <UILabel role={UILabelRoles.ParagraphFootnote} color={getCommentColor(props)}>
                 {getCommentText(props)}
             </UILabel>
             <UILabel
@@ -186,8 +162,7 @@ function BubbleTransactionMain(props: TransactionMessage) {
                 styles.trxCard,
                 bubbleStyle,
                 getBubbleCornerStyle(position),
-                props.status === MessageStatus.Pending &&
-                    UIStyle.common.opacity70(),
+                props.status === MessageStatus.Pending && UIStyle.common.opacity70(),
             ]}
         >
             <View
@@ -197,19 +172,11 @@ function BubbleTransactionMain(props: TransactionMessage) {
                     UIStyle.Common.justifyStart(),
                 ]}
             >
-                <UILabel
-                    role={UILabelRoles.PromoMedium}
-                    color={getAmountColor(props)}
-                >
+                <UILabel role={UILabelRoles.PromoMedium} color={getAmountColor(props)}>
                     {balanceChange}
                 </UILabel>
             </View>
-            <View
-                style={[
-                    UIStyle.Common.flexRow(),
-                    UIStyle.Common.justifyStart(),
-                ]}
-            >
+            <View style={[UIStyle.Common.flexRow(), UIStyle.Common.justifyStart()]}>
                 <TransactionSublabel {...props} />
             </View>
         </View>

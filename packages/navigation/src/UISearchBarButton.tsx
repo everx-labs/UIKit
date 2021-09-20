@@ -35,9 +35,7 @@ export function UISearchBarButton({
     visible: boolean;
     onOpen: () => void | Promise<void>;
     onClose: () => void | Promise<void>;
-    onChangeText?: React.ComponentProps<
-        typeof UISearchController
-    >['onChangeText'];
+    onChangeText?: React.ComponentProps<typeof UISearchController>['onChangeText'];
     children: ((searchText: string) => React.ReactNode) | React.ReactNode;
 }) {
     return (

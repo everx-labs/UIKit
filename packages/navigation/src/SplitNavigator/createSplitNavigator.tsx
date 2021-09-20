@@ -13,47 +13,29 @@ import {
     createNavigatorFactory,
     useTheme,
 } from '@react-navigation/native';
-import type {
-    StackNavigationState,
-    NavigationProp,
-    ParamListBase,
-} from '@react-navigation/native';
+import type { StackNavigationState, NavigationProp, ParamListBase } from '@react-navigation/native';
 import { screensEnabled, ScreenContainer } from 'react-native-screens';
 import { StackView } from '@react-navigation/stack';
 import { NativeStackView } from 'react-native-screens/native-stack';
 
 import { ResourceSavingScene } from './ResourceSavingScene';
 import { SafeAreaProviderCompat } from './SafeAreaProviderCompat';
-import {
-    SplitRouter,
-    SplitActions,
-    MAIN_SCREEN_NAME,
-    SplitActionHelpers,
-} from './SplitRouter';
+import { SplitRouter, SplitActions, MAIN_SCREEN_NAME, SplitActionHelpers } from './SplitRouter';
 import type { SplitNavigationState, SplitRouterOptions } from './SplitRouter';
 
 export const NestedInSplitContext = React.createContext<{
     isSplitted: boolean;
 }>({ isSplitted: false });
 
-const getIsSplitted = ({ width }: { width: number }, mainWidth: number) =>
-    width > mainWidth;
+const getIsSplitted = ({ width }: { width: number }, mainWidth: number) => width > mainWidth;
 
-function SceneContent({
-    isFocused,
-    children,
-}: {
-    isFocused: boolean;
-    children: React.ReactNode;
-}) {
+function SceneContent({ isFocused, children }: { isFocused: boolean; children: React.ReactNode }) {
     const { colors } = useTheme();
 
     return (
         <View
             accessibilityElementsHidden={!isFocused}
-            importantForAccessibility={
-                isFocused ? 'auto' : 'no-hide-descendants'
-            }
+            importantForAccessibility={isFocused ? 'auto' : 'no-hide-descendants'}
             style={[styles.content, { backgroundColor: colors.background }]}
         >
             {children}
@@ -84,8 +66,7 @@ export const SplitNavigator = ({
     const isSplitted = getIsSplitted(dimensions, mainWidth);
     const doesSupportNative = Platform.OS !== 'web' && screensEnabled?.();
 
-    const { splitStyles: splitStylesFromOptions, ...restScreenOptions } =
-        screenOptions || {};
+    const { splitStyles: splitStylesFromOptions, ...restScreenOptions } = screenOptions || {};
     const splitStyles = splitStylesFromOptions || {
         body: styles.body,
         main: styles.main,
@@ -111,10 +92,7 @@ export const SplitNavigator = ({
 
     React.useEffect(() => {
         navigation.dispatch(
-            SplitActions.setSplitted(
-                isSplitted,
-                isSplitted ? initialRouteName : MAIN_SCREEN_NAME,
-            ),
+            SplitActions.setSplitted(isSplitted, isSplitted ? initialRouteName : MAIN_SCREEN_NAME),
         );
     }, [isSplitted, initialRouteName, navigation]);
 
@@ -152,8 +130,7 @@ export const SplitNavigator = ({
                                     style={styles.pages}
                                 >
                                     {state.routes.map((route, index) => {
-                                        const descriptor =
-                                            descriptors[route.key];
+                                        const descriptor = descriptors[route.key];
                                         const isFocused = state.index === index;
 
                                         // Do not render main route
@@ -164,10 +141,7 @@ export const SplitNavigator = ({
                                         // isFocused check is important here
                                         // as we can try to render a screen before it was put
                                         // to `loaded` screens
-                                        if (
-                                            !loaded.includes(index) &&
-                                            !isFocused
-                                        ) {
+                                        if (!loaded.includes(index) && !isFocused) {
                                             // Don't render a screen if we've never navigated to it
                                             return null;
                                         }
@@ -178,9 +152,7 @@ export const SplitNavigator = ({
                                                 style={StyleSheet.absoluteFill}
                                                 isVisible={isFocused}
                                             >
-                                                <SceneContent
-                                                    isFocused={isFocused}
-                                                >
+                                                <SceneContent isFocused={isFocused}>
                                                     {descriptor.render()}
                                                 </SceneContent>
                                             </ResourceSavingScene>

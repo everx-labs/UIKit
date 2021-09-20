@@ -3,10 +3,7 @@ import UIColorPalette from './UIColorPalette';
 import { UIColorThemeName } from './UIColorTypes';
 import UIStyleColor from '../UIStyle/UIStyleColor';
 
-import type {
-    UIColorData,
-    UIColorThemeNameType,
-} from './UIColorTypes';
+import type { UIColorData, UIColorThemeNameType } from './UIColorTypes';
 
 import { UITheme } from '../UITheme';
 
@@ -230,7 +227,7 @@ export default class UIColor {
         theme: ?UIColorThemeNameType,
         disabled: boolean,
         tapped: boolean,
-        hover: boolean
+        hover: boolean,
     ): UIColorData {
         return UITheme.stateTextPrimary(theme, disabled, tapped, hover);
     }
@@ -240,7 +237,7 @@ export default class UIColor {
         theme: ?UIColorThemeNameType,
         disabled: boolean,
         tapped: boolean,
-        hover: boolean
+        hover: boolean,
     ) {
         const color = UIColor.stateTextPrimary(theme, disabled, tapped, hover);
         return UIStyleColor.getColorStyle(color);
@@ -307,9 +304,7 @@ export default class UIColor {
         return UITheme.backgroundPrimary(theme);
     }
 
-    static backgroundPrimaryInverted(
-        theme?: ?UIColorThemeNameType
-    ): UIColorData {
+    static backgroundPrimaryInverted(theme?: ?UIColorThemeNameType): UIColorData {
         return UITheme.backgroundPrimaryInverted(theme);
     }
 
@@ -354,16 +349,12 @@ export default class UIColor {
     static borderBottomColor(
         theme: ?UIColorThemeNameType,
         focused: boolean,
-        hover: boolean
+        hover: boolean,
     ): UIColorData {
         return UITheme.borderBottomColor(theme, focused, hover);
     }
 
-    static borderBottomColorStyle(
-        theme: ?UIColorThemeNameType,
-        focused: boolean,
-        hover: boolean
-    ) {
+    static borderBottomColorStyle(theme: ?UIColorThemeNameType, focused: boolean, hover: boolean) {
         const borderColor = UIColor.borderBottomColor(theme, focused, hover);
         return UIStyleColor.getBorderBottomColorStyle(borderColor);
     }
@@ -372,7 +363,7 @@ export default class UIColor {
     static buttonBackground(
         theme: ?UIColorThemeNameType,
         tapped: boolean,
-        hover: boolean
+        hover: boolean,
     ): UIColorData {
         const { background } = UITheme.button(theme);
         if (tapped) {
@@ -384,10 +375,7 @@ export default class UIColor {
         return background.normal;
     }
 
-    static buttonTitle(
-        theme: ?UIColorThemeNameType,
-        disabled: boolean
-    ): UIColorData {
+    static buttonTitle(theme: ?UIColorThemeNameType, disabled: boolean): UIColorData {
         const { title } = UITheme.button(theme);
         return disabled ? title.disabled : title.normal;
     }
@@ -420,18 +408,12 @@ export default class UIColor {
 
     // deprecated, moved to UIStyleColor
     static getBackgroundColorStyle(color: UIColorData) {
-        return UIStyleColor.getStyle(
-            color,
-            UIStyleColor.Styles.BackgroundColor
-        );
+        return UIStyleColor.getStyle(color, UIStyleColor.Styles.BackgroundColor);
     }
 
     // deprecated, moved to UIStyleColor
     static getBorderBottomColorStyle(color: UIColorData) {
-        return UIStyleColor.getStyle(
-            color,
-            UIStyleColor.Styles.BorderBottomColor
-        );
+        return UIStyleColor.getStyle(color, UIStyleColor.Styles.BorderBottomColor);
     }
 
     // deprecated, moved to UIStyleColor

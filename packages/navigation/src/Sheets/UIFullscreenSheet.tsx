@@ -12,34 +12,22 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { UIConstant } from '../constants';
 import { UISheet, UISheetProps } from './UISheet/UISheet';
 
-export type UIFullscreenSheetProps = Omit<
-    UISheetProps,
-    'countRubberBandDistance'
-> & {
+export type UIFullscreenSheetProps = Omit<UISheetProps, 'countRubberBandDistance'> & {
     style?: StyleProp<ViewStyle>;
 };
 
-export function UIFullscreenSheet({
-    children,
-    style,
-    ...rest
-}: UIFullscreenSheetProps) {
+export function UIFullscreenSheet({ children, style, ...rest }: UIFullscreenSheetProps) {
     const { height } = useWindowDimensions();
     const { top: topInset } = useSafeAreaInsets();
     const flattenStyle = StyleSheet.flatten(style);
     const passedPaddingBottom =
-        (flattenStyle.paddingBottom as number) ??
-        (flattenStyle.padding as number) ??
-        0;
+        (flattenStyle.paddingBottom as number) ?? (flattenStyle.padding as number) ?? 0;
     const passedPaddingTop =
-        (flattenStyle.paddingTop as number) ??
-        (flattenStyle.padding as number) ??
-        0;
+        (flattenStyle.paddingTop as number) ?? (flattenStyle.padding as number) ?? 0;
 
     const sheetStyle = React.useMemo(
         () => ({
-            paddingBottom:
-                passedPaddingBottom + UIConstant.rubberBandEffectDistance,
+            paddingBottom: passedPaddingBottom + UIConstant.rubberBandEffectDistance,
         }),
         [passedPaddingBottom],
     );
@@ -56,11 +44,7 @@ export function UIFullscreenSheet({
     );
 
     return (
-        <UISheet
-            {...rest}
-            countRubberBandDistance
-            style={[styles.bottom, style, sheetStyle]}
-        >
+        <UISheet {...rest} countRubberBandDistance style={[styles.bottom, style, sheetStyle]}>
             <View style={innerStyle}>{children}</View>
         </UISheet>
     );

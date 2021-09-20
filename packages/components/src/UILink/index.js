@@ -35,11 +35,7 @@ export default class UILink extends UIComponent<Props, State> {
 
     goHref = () => {
         if (this.props.href) {
-            if (
-                Platform.OS === 'web' &&
-                this.props.target === '_blank' &&
-                window && window.open
-            ) {
+            if (Platform.OS === 'web' && this.props.target === '_blank' && window && window.open) {
                 window.open(this.props.href, '_blank');
                 return;
             }
@@ -49,16 +45,8 @@ export default class UILink extends UIComponent<Props, State> {
 
     render() {
         if (this.props.href) {
-            return (
-                <UILinkButton
-                    {...this.props}
-                    onPress={this.goHref}
-                />
-            );
+            return <UILinkButton {...this.props} onPress={this.goHref} />;
         }
-        return (
-            <UILinkButton {...this.props} />
-
-        );
+        return <UILinkButton {...this.props} />;
     }
 }

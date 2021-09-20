@@ -168,6 +168,11 @@
     "CopyRight": "2018–{CURRENT_YEAR} © TON Labs",
     "CopyToClipboard": "Скопировать",
     "Country": "Страна",
+    "CountryPicker": {
+        "Title": "Choose a Country",
+        "CountryNotFindTitle": "We didn't find your country",
+        "CountryNotFindDetails": "Try again or select from the list"
+    },
     "Create": "Создать",
     "CreateChannel": "Создать канал",
     "CreateNewAccount": "Создать новый аккаунт",

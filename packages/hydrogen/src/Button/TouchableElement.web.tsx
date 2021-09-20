@@ -1,10 +1,5 @@
 import * as React from 'react';
-import {
-    StyleProp,
-    StyleSheet,
-    TouchableWithoutFeedback,
-    ViewStyle,
-} from 'react-native';
+import { StyleProp, StyleSheet, TouchableWithoutFeedback, ViewStyle } from 'react-native';
 import Animated, { withSpring } from 'react-native-reanimated';
 
 import { useHover } from '../useHover';
@@ -22,7 +17,7 @@ type TouchableElementProps = {
     style?: StyleProp<ViewStyle>;
     contentStyle?: StyleProp<ViewStyle>;
     testID?: string;
-}
+};
 
 export const TouchableElement = ({
     animations,
@@ -43,41 +38,23 @@ export const TouchableElement = ({
     React.useEffect(() => {
         if (!disabled && !loading && isHovered) {
             if (hover) {
-                hover.animationParam.value = withSpring(
-                    1,
-                    BUTTON_WITH_SPRING_CONFIG,
-                );
+                hover.animationParam.value = withSpring(1, BUTTON_WITH_SPRING_CONFIG);
             }
             if (title) {
-                title.animationParam.value = withSpring(
-                    1,
-                    BUTTON_WITH_SPRING_CONFIG,
-                );
+                title.animationParam.value = withSpring(1, BUTTON_WITH_SPRING_CONFIG);
             }
             if (icon) {
-                icon.animationParam.value = withSpring(
-                    1,
-                    BUTTON_WITH_SPRING_CONFIG,
-                );
+                icon.animationParam.value = withSpring(1, BUTTON_WITH_SPRING_CONFIG);
             }
         } else {
             if (hover) {
-                hover.animationParam.value = withSpring(
-                    0,
-                    BUTTON_WITH_SPRING_CONFIG,
-                );
+                hover.animationParam.value = withSpring(0, BUTTON_WITH_SPRING_CONFIG);
             }
             if (title) {
-                title.animationParam.value = withSpring(
-                    0,
-                    BUTTON_WITH_SPRING_CONFIG,
-                );
+                title.animationParam.value = withSpring(0, BUTTON_WITH_SPRING_CONFIG);
             }
             if (icon) {
-                icon.animationParam.value = withSpring(
-                    0,
-                    BUTTON_WITH_SPRING_CONFIG,
-                );
+                icon.animationParam.value = withSpring(0, BUTTON_WITH_SPRING_CONFIG);
             }
         }
     }, [disabled, loading, isHovered, hover, title, icon]);
@@ -87,22 +64,13 @@ export const TouchableElement = ({
             return;
         }
         if (press) {
-            press.animationParam.value = withSpring(
-                1,
-                BUTTON_WITH_SPRING_CONFIG,
-            );
+            press.animationParam.value = withSpring(1, BUTTON_WITH_SPRING_CONFIG);
         }
         if (title) {
-            title.animationParam.value = withSpring(
-                1,
-                BUTTON_WITH_SPRING_CONFIG,
-            );
+            title.animationParam.value = withSpring(1, BUTTON_WITH_SPRING_CONFIG);
         }
         if (icon) {
-            icon.animationParam.value = withSpring(
-                1,
-                BUTTON_WITH_SPRING_CONFIG,
-            );
+            icon.animationParam.value = withSpring(1, BUTTON_WITH_SPRING_CONFIG);
         }
     };
 
@@ -111,22 +79,13 @@ export const TouchableElement = ({
             return;
         }
         if (press) {
-            press.animationParam.value = withSpring(
-                0,
-                BUTTON_WITH_SPRING_CONFIG,
-            );
+            press.animationParam.value = withSpring(0, BUTTON_WITH_SPRING_CONFIG);
         }
         if (title) {
-            title.animationParam.value = withSpring(
-                0,
-                BUTTON_WITH_SPRING_CONFIG,
-            );
+            title.animationParam.value = withSpring(0, BUTTON_WITH_SPRING_CONFIG);
         }
         if (icon) {
-            icon.animationParam.value = withSpring(
-                0,
-                BUTTON_WITH_SPRING_CONFIG,
-            );
+            icon.animationParam.value = withSpring(0, BUTTON_WITH_SPRING_CONFIG);
         }
     };
 
@@ -153,7 +112,7 @@ export const TouchableElement = ({
                         hover?.overlayStyle,
                         press?.overlayStyle,
                         // @ts-expect-error
-                        { cursor: disabled ? 'default' : 'pointer' }
+                        { cursor: disabled ? 'default' : 'pointer' },
                     ]}
                 >
                     {React.Children.only(children)}

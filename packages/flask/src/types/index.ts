@@ -53,11 +53,7 @@ export type QRItemRange = {
     end: number;
 };
 
-export type QRItemAngleSide =
-    | 'TopLeft'
-    | 'TopRight'
-    | 'BottomRight'
-    | 'BottomLeft';
+export type QRItemAngleSide = 'TopLeft' | 'TopRight' | 'BottomRight' | 'BottomLeft';
 
 export type QRItemAngleType = 'Acute' | 'Obtuse';
 
@@ -69,10 +65,7 @@ export type QRItemSideData = {
 };
 
 // The following type is taken from @types/react@^17.0.0 which is not yet supported in UIKit
-type ForwardedRef<T> =
-    | ((instance: T | null) => void)
-    | React.MutableRefObject<T | null>
-    | null;
+type ForwardedRef<T> = ((instance: T | null) => void) | React.MutableRefObject<T | null> | null;
 
 export type ScreenshotViewProps = {
     ref: ForwardedRef<QRCodeRef>;
@@ -158,4 +151,29 @@ export type PickerStateType = {
     selectedDate?: Date;
     timeOpen?: boolean;
     monthOpen?: boolean;
+};
+
+// Country picker types
+
+export type Country = {
+    code: string;
+    name: string;
+    emoji: string;
+};
+
+export type CountriesArray = Country[] | [];
+
+export type CountryPickerProps = {
+    /** Callback on close */
+    onClose: () => void;
+    /** Called if some item is selected */
+    onSelect?: (countryCode: string) => void;
+    /** Array of allowed countries codes */
+    permitted?: string[];
+    /** Array of countries codes to exclude */
+    banned?: string[];
+};
+
+export type WrappedCountryPickerProps = CountryPickerProps & {
+    visible: boolean;
 };

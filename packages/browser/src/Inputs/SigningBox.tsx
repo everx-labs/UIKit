@@ -28,10 +28,7 @@ type SigningBoxAction = {
         | 'CLOSE_PICKER';
 };
 
-function signingBoxReducer(
-    state: SigningBoxInternalState,
-    action: SigningBoxAction,
-) {
+function signingBoxReducer(state: SigningBoxInternalState, action: SigningBoxAction) {
     if (action.type === 'OPEN_KEY_INPUT') {
         return {
             ...state,
@@ -93,21 +90,21 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
             if (signingBox.serialNumber) {
                 securityCardBoxes.push(signingBox);
             } else {
-                signatureBoxes.push(signingBox)
+                signatureBoxes.push(signingBox);
             }
         });
 
         setSignatures(signatureBoxes);
         setSecurityCards(securityCardBoxes);
     }, [message.signingBoxes]);
-    
+
     const [mainSigningBox] = message.signingBoxes;
 
     const signatureAnswerText = React.useMemo(() => {
         if (message.externalState == null) {
             return '';
         }
-    
+
         const { signingBox } = message.externalState;
         if (!signingBox) {
             return '';
@@ -125,7 +122,7 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
             return `${signingBox.title} ${signingBox.publicKey.slice(0, 2)} ·· `;
         }
 
-        return signingBox.title;    
+        return signingBox.title;
     }, [message, mainSigningBox]);
 
     if (message.externalState != null) {
@@ -134,9 +131,7 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
                 <BubbleSimplePlainText
                     type={ChatMessageType.PlainText}
                     key="signing-box-bubble-prompt"
-                    text={
-                        message.prompt || uiLocalized.Browser.SigningBox.Prompt
-                    }
+                    text={message.prompt || uiLocalized.Browser.SigningBox.Prompt}
                     status={MessageStatus.Received}
                     firstFromChain
                     lastFromChain
@@ -157,9 +152,7 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
                         key="signing-box-bubble-signature-answer"
                         text={signatureAnswerText}
                         status={MessageStatus.Sent}
-                        firstFromChain={
-                            message.externalState.chosenOption == null
-                        }
+                        firstFromChain={message.externalState.chosenOption == null}
                         lastFromChain
                     />
                 ) : null}
@@ -217,8 +210,8 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
                     lastFromChain={!message.securityCardSupported}
                 />
             )}
-            {message.securityCardSupported 
-                && securityCards.length > 0 && <BubbleActionButton
+            {message.securityCardSupported && securityCards.length > 0 && (
+                <BubbleActionButton
                     type={ChatMessageType.ActionButton}
                     key="signing-box-bubble-use-scard"
                     status={MessageStatus.Received}
@@ -227,8 +220,7 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
                         if (securityCards.length === 1) {
                             // No need to show the picker, just select the first security card
                             message.onSelect({
-                                chosenOption:
-                                    uiLocalized.Browser.SigningBox.UseSecurityCard,
+                                chosenOption: uiLocalized.Browser.SigningBox.UseSecurityCard,
                                 signingBox: securityCards[0],
                             });
                         } else {
@@ -236,7 +228,7 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
                                 type: 'OPEN_SECURITY_CARD_PICKER',
                             });
                         }
-                        
+
                         /** 
                          * Comment the code bellow, we might want to return it later once we learn how
                          * to deal with several security card related signing boxes on a single usage!
@@ -254,7 +246,8 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
                         */
                     }}
                     lastFromChain
-            />}
+                />
+            )}
             <UIBoxPicker
                 visible={state.pickerVisible}
                 onClose={() => {
@@ -263,37 +256,37 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
                     });
                 }}
                 onAdd={
-                    state.securityCard 
+                    state.securityCard
                         ? undefined
                         : () => {
-                            dispatch({
-                                type: 'OPEN_KEY_INPUT',
-                            });
-                        }
+                              dispatch({
+                                  type: 'OPEN_KEY_INPUT',
+                              });
+                          }
                 }
-                onSelect={(signingBox) => {
+                onSelect={signingBox => {
                     if (state.securityCard) {
                         message.onSelect({
-                            chosenOption:
-                                uiLocalized.Browser.SigningBox.UseSecurityCard,
+                            chosenOption: uiLocalized.Browser.SigningBox.UseSecurityCard,
                             signingBox,
                         });
                     } else {
                         message.onSelect({
-                            chosenOption:
-                                uiLocalized.Browser.SigningBox.PickSignature,
+                            chosenOption: uiLocalized.Browser.SigningBox.PickSignature,
                             signingBox,
                         });
                     }
-                    
+
                     dispatch({
                         type: 'CLOSE_PICKER',
                     });
                 }}
                 boxes={state.securityCard ? securityCards : signatures}
-                headerTitle={state.securityCard
+                headerTitle={
+                    state.securityCard
                         ? uiLocalized.Browser.SigningBox.SecurityCards
-                        : uiLocalized.Browser.SigningBox.Signatures}
+                        : uiLocalized.Browser.SigningBox.Signatures
+                }
                 addTitle={uiLocalized.Browser.SigningBox.AddSignature}
             />
             <UIKeySheet

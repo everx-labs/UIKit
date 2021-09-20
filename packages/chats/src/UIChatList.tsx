@@ -30,10 +30,7 @@ const renderSectionTitle = ({
     return <DateSeparator time={section.time} />;
 };
 
-const renderBubble = (
-    message: ChatMessage,
-    onLayout: ViewProps['onLayout'],
-) => {
+const renderBubble = (message: ChatMessage, onLayout: ViewProps['onLayout']) => {
     switch (message.type) {
         case ChatMessageType.PlainText:
             return <BubbleChatPlainText {...message} onLayout={onLayout} />;
@@ -95,10 +92,7 @@ export const UIChatList = React.forwardRef<SectionList, UIChatListProps>(
             );
         }, [canLoadMore, onLoadEarlierMessages, isLoadingMore]);
 
-        const sections = React.useMemo(
-            () => UIChatListFormatter.getSections(messages),
-            [messages],
-        );
+        const sections = React.useMemo(() => UIChatListFormatter.getSections(messages), [messages]);
 
         return (
             <UICommonChatList
@@ -109,20 +103,20 @@ export const UIChatList = React.forwardRef<SectionList, UIChatListProps>(
                 canLoadMore={canLoadMore}
                 onLongPressText={onLongPressText}
                 onPressUrl={onPressUrl}
-                >
-                {(chatListProps) => (
+            >
+                {chatListProps => (
                     <SectionList
                         testID="chat_container"
                         sections={sections}
-                            // Because the List is inverted in order to render from the bottom,
-                            // the title (date) for each section becomes the footer instead of header.
+                        // Because the List is inverted in order to render from the bottom,
+                        // the title (date) for each section becomes the footer instead of header.
                         renderSectionFooter={renderSectionTitle}
-                            // renderSectionHeader={section => this.renderSectionStatus(section)}
+                        // renderSectionHeader={section => this.renderSectionStatus(section)}
                         onEndReached={onLoadEarlierMessages}
                         ListFooterComponent={renderLoadMore}
                         {...chatListProps}
-                        />
-                    )}
+                    />
+                )}
             </UICommonChatList>
         );
     },

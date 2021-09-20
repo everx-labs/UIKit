@@ -47,67 +47,54 @@ export type UITextViewProps = Omit<
     noPersonalizedLearning?: boolean;
 };
 
-function useAutoFocus(
-    ref: React.Ref<TextInput>,
-    autoFocus: boolean | undefined,
-) {
-    if (
-        Platform.OS === 'ios' &&
-        (global as any).UIKIT_NAVIGATION_AUTO_FOCUS_PATCH != null
-    ) {
+function useAutoFocus(ref: React.Ref<TextInput>, autoFocus: boolean | undefined) {
+    if (Platform.OS === 'ios' && (global as any).UIKIT_NAVIGATION_AUTO_FOCUS_PATCH != null) {
         // See @tonlabs/uikit.navigation -> useAutoFocus
-        return (global as any).UIKIT_NAVIGATION_AUTO_FOCUS_PATCH(
-            ref,
-            autoFocus,
-        );
+        return (global as any).UIKIT_NAVIGATION_AUTO_FOCUS_PATCH(ref, autoFocus);
     }
 
     return autoFocus;
 }
 
-export const UITextView = React.forwardRef<TextInput, UITextViewProps>(
-    function UITextViewForwarded(
-        {
-            style,
-            placeholderTextColor = ColorVariants.TextSecondary,
-            autoFocus,
-            noPersonalizedLearning,
-            ...rest
-        }: UITextViewProps,
-        passedRef,
-    ) {
-        const fallbackRef = React.useRef<TextInput>(null);
-        const ref = passedRef || fallbackRef;
-        const theme = useTheme();
-        const autoFocusProp = useAutoFocus(ref, autoFocus);
+export const UITextView = React.forwardRef<TextInput, UITextViewProps>(function UITextViewForwarded(
+    {
+        style,
+        placeholderTextColor = ColorVariants.TextSecondary,
+        autoFocus,
+        noPersonalizedLearning,
+        ...rest
+    }: UITextViewProps,
+    passedRef,
+) {
+    const fallbackRef = React.useRef<TextInput>(null);
+    const ref = passedRef || fallbackRef;
+    const theme = useTheme();
+    const autoFocusProp = useAutoFocus(ref, autoFocus);
 
-        return (
-            <TextInput
-                ref={ref}
-                {...rest}
-                autoFocus={autoFocusProp}
-                // This is our custom prop, we do it in native for Android
-                {...(Platform.OS === 'android'
-                    ? { noPersonalizedLearning }
-                    : null)}
-                placeholderTextColor={theme[placeholderTextColor]}
-                selectionColor={theme[ColorVariants.TextAccent]}
-                // @ts-ignore
-                keyboardAppearance={theme[ColorVariants.KeyboardStyle]}
-                underlineColorAndroid="transparent"
-                style={[
-                    styles.input,
-                    style,
-                    {
-                        color: theme[ColorVariants.TextPrimary],
-                    },
-                    Typography[TypographyVariants.ParagraphText],
-                    styles.resetStyles,
-                ]}
-            />
-        );
-    },
-);
+    return (
+        <TextInput
+            ref={ref}
+            {...rest}
+            autoFocus={autoFocusProp}
+            // This is our custom prop, we do it in native for Android
+            {...(Platform.OS === 'android' ? { noPersonalizedLearning } : null)}
+            placeholderTextColor={theme[placeholderTextColor]}
+            selectionColor={theme[ColorVariants.TextAccent]}
+            // @ts-ignore
+            keyboardAppearance={theme[ColorVariants.KeyboardStyle]}
+            underlineColorAndroid="transparent"
+            style={[
+                styles.input,
+                style,
+                {
+                    color: theme[ColorVariants.TextPrimary],
+                },
+                Typography[TypographyVariants.ParagraphText],
+                styles.resetStyles,
+            ]}
+        />
+    );
+});
 
 const styles = StyleSheet.create({
     input: {
@@ -181,11 +168,7 @@ export function useUITextViewValue(
             // But the event with newline is fired after this
             // So, to prevent setting it, need to check a flag
             // And also check that input string is a newline
-            if (
-                useClearWithEnter &&
-                wasClearedWithEnter.current &&
-                text === '\n'
-            ) {
+            if (useClearWithEnter && wasClearedWithEnter.current && text === '\n') {
                 wasClearedWithEnter.current = false;
                 return text;
             }
@@ -248,7 +231,7 @@ export function useFocused(
 ) {
     const [isFocused, setIsFocused] = React.useState(false);
     const onFocus = React.useCallback(
-        (e) => {
+        e => {
             setIsFocused(true);
 
             if (onFocusProp) {
@@ -258,7 +241,7 @@ export function useFocused(
         [onFocusProp, setIsFocused],
     );
     const onBlur = React.useCallback(
-        (e) => {
+        e => {
             setIsFocused(false);
 
             if (onBlurProp) {

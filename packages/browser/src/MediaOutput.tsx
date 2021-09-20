@@ -51,6 +51,7 @@ export const MediaOutput = ({
             <BubbleMedia
                 data={data}
                 preview={preview}
+                prompt={prompt}
                 status={status}
                 type={ChatMessageType.Media}
                 onError={onError}

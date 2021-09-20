@@ -16,14 +16,14 @@ import type { ModalControllerProps } from '../UIModalController';
 type Options = {
     message: string,
     subtitle: ?string,
-}
+};
 type Props = ModalControllerProps & {
     isShared: boolean,
-}
+};
 type State = {
     message: string,
     subtitle: string,
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -122,10 +122,7 @@ export default class UIShareScreen extends UIModalController<Props, State> {
     renderContentView(contentHeight: number) {
         return (
             <View style={styles.container}>
-                <UILabel
-                    color={UILabelColors.TextPrimary}
-                    role={UILabelRoles.TitleMedium}
-                >
+                <UILabel color={UILabelColors.TextPrimary} role={UILabelRoles.TitleMedium}>
                     {uiLocalized.Share}
                 </UILabel>
                 <UILabel
@@ -136,10 +133,7 @@ export default class UIShareScreen extends UIModalController<Props, State> {
                     {this.getSubtitle() || uiLocalized.ShareToTalk}
                 </UILabel>
                 <ScrollView contentContainerStyle={styles.messageContainer}>
-                    <UILabel
-                        color={UILabelColors.TextPrimary}
-                        role={UILabelRoles.PromoMedium}
-                    >
+                    <UILabel color={UILabelColors.TextPrimary} role={UILabelRoles.PromoMedium}>
                         {this.getMessage()}
                     </UILabel>
                 </ScrollView>

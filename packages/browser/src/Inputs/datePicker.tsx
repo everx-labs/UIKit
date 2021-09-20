@@ -23,10 +23,7 @@ export function DatePicker({ onLayout, ...message }: DateMessage) {
                 <BubbleSimplePlainText
                     type={ChatMessageType.PlainText}
                     key="date-picker-box-bubble-prompt"
-                    text={
-                        message.prompt ||
-                        uiLocalized.Browser.DateTimeInput.DoYouWantChooseDate
-                    }
+                    text={message.prompt || uiLocalized.Browser.DateTimeInput.DoYouWantChooseDate}
                     status={MessageStatus.Received}
                 />
                 <BubbleSimplePlainText
@@ -44,10 +41,7 @@ export function DatePicker({ onLayout, ...message }: DateMessage) {
             <BubbleSimplePlainText
                 type={ChatMessageType.PlainText}
                 key="date-picker-box-bubble-prompt"
-                text={
-                    message.prompt ||
-                    uiLocalized.Browser.DateTimeInput.DoYouWantChooseDate
-                }
+                text={message.prompt || uiLocalized.Browser.DateTimeInput.DoYouWantChooseDate}
                 status={MessageStatus.Received}
                 firstFromChain
                 lastFromChain

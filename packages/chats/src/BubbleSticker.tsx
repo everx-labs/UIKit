@@ -3,13 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import {
-    ColorVariants,
-    UILabel,
-    UILabelRoles,
-    useTheme,
-    UIImage,
-} from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, UILabel, UILabelRoles, useTheme, UIImage } from '@tonlabs/uikit.hydrogen';
 
 import { MessageStatus } from './types';
 import type { StickerMessage } from './types';
@@ -22,12 +16,7 @@ export const BubbleSticker = (props: StickerMessage) => {
     return (
         <View style={containerStyle} onLayout={props.onLayout}>
             <View style={styles.inner}>
-                <View
-                    style={
-                        props.status === MessageStatus.Pending &&
-                        UIStyle.common.opacity70()
-                    }
-                >
+                <View style={props.status === MessageStatus.Pending && UIStyle.common.opacity70()}>
                     <UIImage style={styles.sticker} source={props.source} />
                 </View>
                 <View
@@ -36,8 +25,7 @@ export const BubbleSticker = (props: StickerMessage) => {
                         UIStyle.color.getBackgroundColorStyle(
                             theme[ColorVariants.BackgroundSecondary],
                         ),
-                        props.status === MessageStatus.Pending &&
-                            UIStyle.common.opacity70(),
+                        props.status === MessageStatus.Pending && UIStyle.common.opacity70(),
                     ]}
                 >
                     <UILabel

@@ -24,10 +24,7 @@ export function MenuPlus({ menuPlus, menuPlusDisabled }: Props) {
     if (menuPlusDisabled) {
         return (
             <View style={commonStyles.buttonContainer}>
-                <Image
-                    source={UIAssets.icons.ui.buttonPlusDisabled}
-                    style={commonStyles.icon}
-                />
+                <Image source={UIAssets.icons.ui.buttonPlusDisabled} style={commonStyles.icon} />
             </View>
         );
     }
@@ -39,10 +36,7 @@ export function MenuPlus({ menuPlus, menuPlusDisabled }: Props) {
                 onPress={menuPlus[0].onPress}
                 style={commonStyles.buttonContainer}
             >
-                <Image
-                    source={UIAssets.icons.ui.buttonPlus}
-                    style={commonStyles.icon}
-                />
+                <Image source={UIAssets.icons.ui.buttonPlus} style={commonStyles.icon} />
             </TouchableOpacity>
         );
     }
@@ -54,10 +48,7 @@ export function MenuPlus({ menuPlus, menuPlusDisabled }: Props) {
             placement="top"
             containerStyle={commonStyles.buttonContainer}
         >
-            <Image
-                source={UIAssets.icons.ui.buttonPlus}
-                style={commonStyles.icon}
-            />
+            <Image source={UIAssets.icons.ui.buttonPlus} style={commonStyles.icon} />
         </UIPopoverMenu>
     );
 }

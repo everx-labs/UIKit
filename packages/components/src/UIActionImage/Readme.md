@@ -1,4 +1,4 @@
-Example: 
+Example:
 
 ```js
 const iconDisabled = require('../../../assets/ico-arrow-right/arrow-right-primary-minus.png');
@@ -11,10 +11,12 @@ class Example extends BackgroundContainer {
             <View>
                 <View style={UIStyle.paddingDefault}>
                     <View style={UIStyle.centerLeftContainer}>
-                        <Text style={[UIStyle.marginRightDefault, UITextStyle.actionMinusSmallMedium]}>
+                        <Text
+                            style={[UIStyle.marginRightDefault, UITextStyle.actionMinusSmallMedium]}
+                        >
                             Disabled:
                         </Text>
-                        <UIActionImage 
+                        <UIActionImage
                             iconEnabled={iconEnabled}
                             iconDisabled={iconDisabled}
                             iconHovered={iconHovered}
@@ -22,10 +24,12 @@ class Example extends BackgroundContainer {
                         />
                     </View>
                     <View style={[UIStyle.centerLeftContainer, UIStyle.marginTopDefault]}>
-                        <Text style={[UIStyle.marginRightDefault, UITextStyle.actionMinusSmallMedium]}>
+                        <Text
+                            style={[UIStyle.marginRightDefault, UITextStyle.actionMinusSmallMedium]}
+                        >
                             Enabled:
                         </Text>
-                        <UIActionImage 
+                        <UIActionImage
                             iconEnabled={iconEnabled}
                             iconDisabled={iconDisabled}
                             iconHovered={iconHovered}
@@ -37,5 +41,5 @@ class Example extends BackgroundContainer {
         );
     }
 }
-<Example />
+<Example />;
 ```

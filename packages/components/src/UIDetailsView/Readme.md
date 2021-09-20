@@ -1,9 +1,9 @@
 Example:
 
 ```js
-<UIDetailsView 
+<UIDetailsView
     value="Details"
     comments="Some comment here"
-    onPress={() => alert("Action was called")}
+    onPress={() => alert('Action was called')}
 />
 ```

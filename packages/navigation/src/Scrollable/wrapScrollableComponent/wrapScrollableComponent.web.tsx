@@ -9,9 +9,7 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
     ScrollableComponent: React.ComponentClass<Props>,
     displayName: string,
 ) {
-    const AnimatedScrollable = Animated.createAnimatedComponent(
-        ScrollableComponent,
-    );
+    const AnimatedScrollable = Animated.createAnimatedComponent(ScrollableComponent);
 
     function ScrollableForwarded(
         props: Props & { children?: React.ReactNode },
@@ -19,13 +17,8 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
     ) {
         const { onLayout, onContentSizeChange } = useHasScroll();
 
-        const {
-            ref,
-            scrollHandler,
-            onWheel,
-            registerScrollable,
-            unregisterScrollable,
-        } = React.useContext(ScrollableContext);
+        const { ref, scrollHandler, onWheel, registerScrollable, unregisterScrollable } =
+            React.useContext(ScrollableContext);
 
         React.useEffect(() => {
             if (registerScrollable) {

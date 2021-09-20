@@ -5,7 +5,7 @@ export const UIColorThemeName = {
     action: 'action',
 };
 
-export type UIColorThemeNameType = ('light' | 'dark' | 'action');
+export type UIColorThemeNameType = 'light' | 'dark' | 'action';
 
 export type UIColorData = string;
 
@@ -63,4 +63,4 @@ export type UIColorThemeData = {
             placeholder: UIColorData,
         },
     },
-}
+};

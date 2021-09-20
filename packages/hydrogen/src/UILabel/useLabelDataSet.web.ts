@@ -1,8 +1,8 @@
 import type { LocalizationString } from '@tonlabs/uikit.localization';
 
 interface DataSet {
-    lokalise: boolean
-    key: string
+    lokalise: boolean;
+    key: string;
 }
 
 export function useLabelDataSet(value: LocalizationString): DataSet {

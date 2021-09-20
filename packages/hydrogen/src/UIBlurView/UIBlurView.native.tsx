@@ -53,15 +53,14 @@ export function UIBlurView({ children, style, testID }: Props) {
     // TODO: get rid of abandoned (not maintained) BlurView for Android which crashes the app!!!
     return (
         <View style={[styles.container, style]} testID={testID}>
-            {
-                blurBackground &&
+            {blurBackground && (
                 <BlurView
                     style={styles.blur}
                     blurType="light"
                     blurAmount={16}
                     reducedTransparencyFallbackColor={color}
                 />
-            }
+            )}
             {children}
         </View>
     );

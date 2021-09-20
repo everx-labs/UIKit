@@ -6,7 +6,7 @@ class ExampleComponent extends ThemeSwitcher {
         super();
         this.state = {
             details: '',
-        }
+        };
     }
 
     renderContent() {
@@ -17,13 +17,15 @@ class ExampleComponent extends ThemeSwitcher {
                     value={this.state.details}
                     placeholder="Amount"
                     comment="Some comment here"
-                    onChangeText={(newText) => this.setState({ 
-                        details: newText 
-                    })}
+                    onChangeText={newText =>
+                        this.setState({
+                            details: newText,
+                        })
+                    }
                 />
             </View>
         );
     }
-};
-<ExampleComponent />
+}
+<ExampleComponent />;
 ```

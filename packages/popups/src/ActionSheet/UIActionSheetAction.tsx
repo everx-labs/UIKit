@@ -1,15 +1,9 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import {
-    UIBoxButton,
-    UIBoxButtonType,
-    UIBoxButtonVariant,
-} from '@tonlabs/uikit.hydrogen';
+import { UIBoxButton, UIBoxButtonType, UIBoxButtonVariant } from '@tonlabs/uikit.hydrogen';
 import { UIActionSheetActionProps, UIActionSheetActionType } from './types';
 
-const getActionVariant = (
-    type: UIActionSheetActionType,
-): UIBoxButtonVariant => {
+const getActionVariant = (type: UIActionSheetActionType): UIBoxButtonVariant => {
     switch (type) {
         case UIActionSheetActionType.Negative:
             return UIBoxButtonVariant.Negative;

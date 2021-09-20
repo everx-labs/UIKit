@@ -10,28 +10,26 @@ import { useQRCodeSize } from './hooks/useQRCodeSize';
 import { useQRCodeBorderWidth } from './hooks/useQRCodeBorderWidth';
 import { useQRCodeLogoSize } from './hooks/useQRCodeLogoSize';
 
-const useStyles = makeStyles(
-    (theme, qrCodeSize: number, qrCodeBorderWidth: number) => {
-        return {
-            container: {
-                backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                padding: qrCodeBorderWidth,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: qrCodeSize + qrCodeBorderWidth * 2,
-                width: qrCodeSize + qrCodeBorderWidth * 2,
-            },
-            qrContainer: {
-                position: 'absolute',
-                top: qrCodeBorderWidth,
-                left: qrCodeBorderWidth,
-                right: qrCodeBorderWidth,
-                bottom: qrCodeBorderWidth,
-            },
-        };
-    },
-);
+const useStyles = makeStyles((theme, qrCodeSize: number, qrCodeBorderWidth: number) => {
+    return {
+        container: {
+            backgroundColor: theme[ColorVariants.BackgroundPrimary],
+            padding: qrCodeBorderWidth,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: qrCodeSize + qrCodeBorderWidth * 2,
+            width: qrCodeSize + qrCodeBorderWidth * 2,
+        },
+        qrContainer: {
+            position: 'absolute',
+            top: qrCodeBorderWidth,
+            left: qrCodeBorderWidth,
+            right: qrCodeBorderWidth,
+            bottom: qrCodeBorderWidth,
+        },
+    };
+});
 
 export const QRCodeSquare = ({ value, logo, size }: QRCodeProps) => {
     const theme = useTheme();
@@ -53,11 +51,7 @@ export const QRCodeSquare = ({ value, logo, size }: QRCodeProps) => {
             <View style={styles.qrContainer}>
                 <Svg width={qrCodeSize} height={qrCodeSize}>
                     <Path
-                        fill={
-                            theme[
-                                ColorVariants.BackgroundPrimaryInverted
-                            ] as string
-                        }
+                        fill={theme[ColorVariants.BackgroundPrimaryInverted] as string}
                         d={qrSvg}
                     />
                 </Svg>

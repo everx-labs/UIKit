@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+// TODO: use new notice here!
 import { UIDropdownAlert } from '@tonlabs/uikit.components';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 

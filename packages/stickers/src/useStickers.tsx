@@ -4,10 +4,7 @@ import type { UICustomKeyboardView } from '@tonlabs/uikit.keyboard';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 
 import { StickersButton } from './StickersButton';
-import {
-    StickerPickerKeyboardName,
-    StickersKeyboard,
-} from './StickersKeyboard';
+import { StickerPickerKeyboardName, StickersKeyboard } from './StickersKeyboard';
 import type { OnPickSticker, UIStickerPackage } from './types';
 
 export function useStickers(
@@ -25,9 +22,7 @@ export function useStickers(
                 stickers,
                 theme,
             },
-            backgroundColor: theme[
-                ColorVariants.BackgroundSecondary
-            ] as ColorValue,
+            backgroundColor: theme[ColorVariants.BackgroundSecondary] as ColorValue,
             onEvent: onStickerSelected,
         };
     }, [stickers, onStickerSelected, theme]);

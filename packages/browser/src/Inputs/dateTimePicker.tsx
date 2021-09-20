@@ -26,8 +26,7 @@ export function DateTimePicker({ onLayout, ...message }: DateTimeMessage) {
                         key="date-picker-box-bubble-prompt"
                         text={
                             message.prompt ||
-                            uiLocalized.Browser.DateTimeInput
-                                .DoYouWantChooseDateTime
+                            uiLocalized.Browser.DateTimeInput.DoYouWantChooseDateTime
                         }
                         status={MessageStatus.Received}
                     />
@@ -49,10 +48,7 @@ export function DateTimePicker({ onLayout, ...message }: DateTimeMessage) {
             <BubbleSimplePlainText
                 type={ChatMessageType.PlainText}
                 key="time-picker-box-bubble-prompt"
-                text={
-                    message.prompt ||
-                    uiLocalized.Browser.DateTimeInput.DoYouWantChooseDateTime
-                }
+                text={message.prompt || uiLocalized.Browser.DateTimeInput.DoYouWantChooseDateTime}
                 status={MessageStatus.Received}
                 firstFromChain
                 lastFromChain

@@ -30,9 +30,7 @@ export function MenuInput({ onLayout, ...message }: MenuMessage) {
                 <BubbleSimplePlainText
                     type={ChatMessageType.PlainText}
                     key="menu-answer"
-                    text={
-                        message.items[message.externalState.chosenIndex].title
-                    }
+                    text={message.items[message.externalState.chosenIndex].title}
                     status={MessageStatus.Sent}
                     firstFromChain
                     lastFromChain
@@ -41,9 +39,7 @@ export function MenuInput({ onLayout, ...message }: MenuMessage) {
         );
     }
 
-    const items = unfolded
-        ? message.items
-        : message.items.slice(0, ITEMS_TO_FOLD_COUNT);
+    const items = unfolded ? message.items : message.items.slice(0, ITEMS_TO_FOLD_COUNT);
 
     return (
         <View onLayout={onLayout}>
@@ -72,9 +68,7 @@ export function MenuInput({ onLayout, ...message }: MenuMessage) {
                         });
                     }}
                     firstFromChain={index === 0}
-                    lastFromChain={
-                        unfolded && index === message.items.length - 1
-                    }
+                    lastFromChain={unfolded && index === message.items.length - 1}
                 />
             ))}
             {!unfolded && message.items.length > ITEMS_TO_FOLD_COUNT && (

@@ -16,46 +16,35 @@ type ModalScreenProps = {
     defaultProps: { [prop: string]: any };
 };
 
-const getModalConfigsFromChildren = (
-    children: React.ReactNode,
-): ModalScreenProps[] => {
-    const configs = React.Children.toArray(children).reduce<ModalScreenProps[]>(
-        (acc, child) => {
-            if (React.isValidElement(child)) {
-                if (child.props.name != null) {
-                    acc.push({
-                        name: child.props.name,
-                        defaultProps: child.props.options?.defaultProps,
-                    });
-                    return acc;
-                }
-
-                if (child.type === React.Fragment) {
-                    acc.push(
-                        ...getModalConfigsFromChildren(child.props.children),
-                    );
-                    return acc;
-                }
-
-                throw new Error(
-                    `A modal navigator can only contain 'Screen' component as its direct children (found '${
-                        // eslint-disable-next-line no-nested-ternary
-                        React.isValidElement(child)
-                            ? `${
-                                  typeof child.type === 'string'
-                                      ? child.type
-                                      : child.type?.name
-                              }`
-                            : typeof child === 'object'
-                            ? JSON.stringify(child)
-                            : `'${String(child)}'`
-                    }')`,
-                );
+const getModalConfigsFromChildren = (children: React.ReactNode): ModalScreenProps[] => {
+    const configs = React.Children.toArray(children).reduce<ModalScreenProps[]>((acc, child) => {
+        if (React.isValidElement(child)) {
+            if (child.props.name != null) {
+                acc.push({
+                    name: child.props.name,
+                    defaultProps: child.props.options?.defaultProps,
+                });
+                return acc;
             }
-            return acc;
-        },
-        [],
-    );
+
+            if (child.type === React.Fragment) {
+                acc.push(...getModalConfigsFromChildren(child.props.children));
+                return acc;
+            }
+
+            throw new Error(
+                `A modal navigator can only contain 'Screen' component as its direct children (found '${
+                    // eslint-disable-next-line no-nested-ternary
+                    React.isValidElement(child)
+                        ? `${typeof child.type === 'string' ? child.type : child.type?.name}`
+                        : typeof child === 'object'
+                        ? JSON.stringify(child)
+                        : `'${String(child)}'`
+                }')`,
+            );
+        }
+        return acc;
+    }, []);
 
     return configs;
 };
@@ -110,15 +99,13 @@ type ModalRouterOptions = {
 
 type ModalNavigationRoute<
     ParamList extends ParamListBase,
-    RouteName extends keyof ParamList
+    RouteName extends keyof ParamList,
 > = Route<Extract<RouteName, string>, ParamList[RouteName]> & {
     state?: NavigationState | PartialState<NavigationState>;
     order: number;
 };
 
-export type ModalNavigationState<
-    ParamList extends ParamListBase = ParamListBase
-> = {
+export type ModalNavigationState<ParamList extends ParamListBase = ParamListBase> = {
     stale: false;
     type: string;
     key: string;
@@ -127,9 +114,7 @@ export type ModalNavigationState<
     index: number;
 };
 
-const getRouteWithHighestOrder = <
-    ParamList extends ParamListBase = ParamListBase
->(
+const getRouteWithHighestOrder = <ParamList extends ParamListBase = ParamListBase>(
     routes: ModalNavigationRoute<ParamList, keyof ParamList>[],
 ) =>
     routes.reduce((acc, route) => {
@@ -140,20 +125,15 @@ const getRouteWithHighestOrder = <
     });
 
 export function ModalRouter(routerOptions: ModalRouterOptions) {
-    const configs = getModalConfigsFromChildren(
-        routerOptions.childrenForConfigs,
-    );
+    const configs = getModalConfigsFromChildren(routerOptions.childrenForConfigs);
     let orderCounter = 0;
-    const router: Router<
-        ModalNavigationState,
-        CommonNavigationAction | ModalActionType
-    > = {
+    const router: Router<ModalNavigationState, CommonNavigationAction | ModalActionType> = {
         ...BaseRouter,
 
         type: 'modals',
 
         getInitialState({ routeNames, routeParamList }) {
-            const routes = routeNames.map((name) => ({
+            const routes = routeNames.map(name => ({
                 name,
                 key: `${name}-${nanoid()}`,
                 params: routeParamList[name],
@@ -177,8 +157,8 @@ export function ModalRouter(routerOptions: ModalRouterOptions) {
                 return state;
             }
 
-            const routes = routeNames.map((name) => {
-                const route = state.routes.find((r) => r.name === name);
+            const routes = routeNames.map(name => {
+                const route = state.routes.find(r => r.name === name);
 
                 let params;
 
@@ -215,8 +195,8 @@ export function ModalRouter(routerOptions: ModalRouterOptions) {
 
         getStateForRouteNamesChange(state, { routeNames, routeParamList }) {
             const routes = routeNames.map(
-                (name) =>
-                    state.routes.find((r) => r.name === name) || {
+                name =>
+                    state.routes.find(r => r.name === name) || {
                         name,
                         key: `${name}-${nanoid()}`,
                         params: routeParamList[name],
@@ -234,9 +214,7 @@ export function ModalRouter(routerOptions: ModalRouterOptions) {
             let index = 0;
 
             if (activeRoute) {
-                index = routes.findIndex(
-                    (route) => route.name === activeRoute.name,
-                );
+                index = routes.findIndex(route => route.name === activeRoute.name);
             }
 
             return {
@@ -248,7 +226,7 @@ export function ModalRouter(routerOptions: ModalRouterOptions) {
         },
 
         getStateForRouteFocus(state, key) {
-            const index = state.routes.findIndex((r) => r.key === key);
+            const index = state.routes.findIndex(r => r.key === key);
 
             if (index === -1 || index === state.index) {
                 return state;
@@ -268,11 +246,11 @@ export function ModalRouter(routerOptions: ModalRouterOptions) {
 
                     if (action.type === 'NAVIGATE' && action.payload.key) {
                         modalRouteIndex = state.routes.findIndex(
-                            (route) => route.key === action.payload.key,
+                            route => route.key === action.payload.key,
                         );
                     } else {
                         modalRouteIndex = state.routes.findIndex(
-                            (route) => route.name === action.payload.name,
+                            route => route.name === action.payload.name,
                         );
                     }
 
@@ -281,9 +259,7 @@ export function ModalRouter(routerOptions: ModalRouterOptions) {
                     }
 
                     const modalRoute = state.routes[modalRouteIndex];
-                    const modalRouteConfig = configs.find(
-                        (c) => c.name === modalRoute.name,
-                    );
+                    const modalRouteConfig = configs.find(c => c.name === modalRoute.name);
 
                     const routes = sortBy(
                         state.routes.map((route, i) => {
@@ -315,15 +291,13 @@ export function ModalRouter(routerOptions: ModalRouterOptions) {
                     return {
                         ...state,
                         routes,
-                        index: routes.findIndex(
-                            (route) => route.key === modalRoute.key,
-                        ),
+                        index: routes.findIndex(route => route.key === modalRoute.key),
                     };
                 }
 
                 case 'HIDE': {
                     const activeRouteIndex = state.routes.findIndex(
-                        (route) => route.name === action.payload.name,
+                        route => route.name === action.payload.name,
                     );
 
                     if (activeRouteIndex === -1) {
@@ -331,7 +305,7 @@ export function ModalRouter(routerOptions: ModalRouterOptions) {
                     }
 
                     const activeRoute = state.routes[activeRouteIndex];
-                    const routes = state.routes.map((route) => {
+                    const routes = state.routes.map(route => {
                         if (route.key === activeRoute.key) {
                             return {
                                 ...route,
@@ -345,14 +319,10 @@ export function ModalRouter(routerOptions: ModalRouterOptions) {
                         return route;
                     });
 
-                    const newActiveModalRoute = getRouteWithHighestOrder(
-                        routes,
-                    );
+                    const newActiveModalRoute = getRouteWithHighestOrder(routes);
                     const newIndex =
                         newActiveModalRoute != null
-                            ? state.routes.findIndex(
-                                  (r) => r.name === newActiveModalRoute.name,
-                              )
+                            ? state.routes.findIndex(r => r.name === newActiveModalRoute.name)
                             : 0;
 
                     return {
@@ -363,7 +333,7 @@ export function ModalRouter(routerOptions: ModalRouterOptions) {
                 }
 
                 case 'HIDE_ALL': {
-                    const routes = state.routes.map((route) => ({
+                    const routes = state.routes.map(route => ({
                         ...route,
                         params: {
                             ...route.params,
@@ -389,7 +359,7 @@ export function ModalRouter(routerOptions: ModalRouterOptions) {
                         return null;
                     }
 
-                    const routes = state.routes.map((route) => {
+                    const routes = state.routes.map(route => {
                         if (route.key === activeRoute.key) {
                             return {
                                 ...route,
@@ -403,14 +373,10 @@ export function ModalRouter(routerOptions: ModalRouterOptions) {
                         return route;
                     });
 
-                    const newActiveModalRoute = getRouteWithHighestOrder(
-                        routes,
-                    );
+                    const newActiveModalRoute = getRouteWithHighestOrder(routes);
                     const newIndex =
                         newActiveModalRoute != null
-                            ? state.routes.findIndex(
-                                  (r) => r.name === newActiveModalRoute.name,
-                              )
+                            ? state.routes.findIndex(r => r.name === newActiveModalRoute.name)
                             : 0;
 
                     return {

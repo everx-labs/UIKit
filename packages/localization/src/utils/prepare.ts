@@ -15,9 +15,7 @@ function prepareArray(
     options: LanguageOptions,
     path: string,
 ): LanguageValue[] {
-    return array.map((item) =>
-        prepareValue(item, options, `${path}[]`),
-    ) as LanguageValue[];
+    return array.map(item => prepareValue(item, options, `${path}[]`)) as LanguageValue[];
 }
 
 function prepareObject<T = LanguageItem>(
@@ -27,12 +25,8 @@ function prepareObject<T = LanguageItem>(
 ): T {
     const result: any = {} as T;
 
-    Object.keys(object).forEach((key) => {
-        result[key] = prepareValue(
-            object[key],
-            options,
-            `${path ? path.concat('.') : ''}${key}`,
-        );
+    Object.keys(object).forEach(key => {
+        result[key] = prepareValue(object[key], options, `${path ? path.concat('.') : ''}${key}`);
     });
 
     return result as T;
@@ -64,14 +58,11 @@ function prepareValue(
             const foundConstants = value.match(/{([A-Z_0-9]*)}/g);
 
             if (foundConstants) {
-                foundConstants.forEach((constant) => {
+                foundConstants.forEach(constant => {
                     const key = constant.replace(/[{}]/g, '');
                     // Filtering numerals
                     if (/[A-Z]/.test(constant)) {
-                        result = result.replace(
-                            new RegExp(constant, 'g'),
-                            constants[key],
-                        );
+                        result = result.replace(new RegExp(constant, 'g'), constants[key]);
                     }
                 });
             }
@@ -111,10 +102,7 @@ export function prepareLocales<T = LanguageItem>(
         let content = JSON.stringify(langs[lang]) || '';
 
         Object.keys(constants).forEach((key: string) => {
-            content = content.replace(
-                new RegExp(`{${key}}`, 'g'),
-                constants[key],
-            );
+            content = content.replace(new RegExp(`{${key}}`, 'g'), constants[key]);
         });
 
         preparedLanguages[lang] = JSON.parse(content);
@@ -142,10 +130,10 @@ export function prepare<T>(
     const preparedLanguages: Languages<T> = {} as Languages<T>;
     const languages: Language[] = Object.keys(langs) as Language[];
 
-    languages.forEach((lang) => {
+    languages.forEach(lang => {
         const value = langs[lang] as T;
         preparedLanguages[lang] = prepareObject(
-            (value as unknown) as LanguageItem,
+            value as unknown as LanguageItem,
             options[lang] as LanguageOptions,
             project,
         );

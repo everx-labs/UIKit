@@ -47,9 +47,7 @@ const DatePicker = (props: UIDateTimePickerType) => {
         daysAnimationDistance: 200,
     };
 
-    const calendarUtils = new Utils(
-        props as UIDateTimePickerType & PickerPropsType,
-    );
+    const calendarUtils = new Utils(props as UIDateTimePickerType & PickerPropsType);
 
     const contextValue = {
         ...props,
@@ -59,9 +57,7 @@ const DatePicker = (props: UIDateTimePickerType) => {
         utils: calendarUtils,
         state: useReducer(reducer, {
             activeDate: props.current ? new Date(props.current) : new Date(), // Date in calendar also save time
-            selectedDate: props.selected
-                ? new Date(props.selected)
-                : new Date(),
+            selectedDate: props.selected ? new Date(props.selected) : new Date(),
             monthOpen: props.mode === UIDateTimePickerMode.MonthYear,
             timeOpen: props.mode === UIDateTimePickerMode.Time,
         }),
@@ -98,9 +94,7 @@ const DatePicker = (props: UIDateTimePickerType) => {
         <CalendarContext.Provider value={contextValue}>
             <View
                 style={[style.container, { minHeight }]}
-                onLayout={({ nativeEvent }) =>
-                    setMinHeight(nativeEvent.layout.width * 0.9 + 55)
-                }
+                onLayout={({ nativeEvent }) => setMinHeight(nativeEvent.layout.width * 0.9 + 55)}
             >
                 {renderBody()}
             </View>

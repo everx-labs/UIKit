@@ -33,11 +33,7 @@ export function MenuMore({ menuMore, menuMoreDisabled }: Props) {
         );
     } else {
         content = (
-            <UIPopoverMenu
-                testID="menu_view_more"
-                menuItemsList={menuMore}
-                placement="top"
-            >
+            <UIPopoverMenu testID="menu_view_more" menuItemsList={menuMore} placement="top">
                 <Image source={UIAssets.icons.ui.buttonDots} />
             </UIPopoverMenu>
         );

@@ -1,7 +1,8 @@
 import {
     UIActionSheetContainer,
     UIActionSheetAction,
-    IUIActionSheet, UIActionSheetActionType,
+    IUIActionSheet,
+    UIActionSheetActionType,
 } from './ActionSheet';
 
 export * from './ActionSheet/types';
@@ -11,5 +12,5 @@ export * from './ActionSheet/types';
 export const UIActionSheet: IUIActionSheet = UIActionSheetContainer;
 // @ts-expect-error
 // same
-UIActionSheet.Action = UIActionSheetAction
-UIActionSheet.Action.Type = UIActionSheetActionType
+UIActionSheet.Action = UIActionSheetAction;
+UIActionSheet.Action.Type = UIActionSheetActionType;

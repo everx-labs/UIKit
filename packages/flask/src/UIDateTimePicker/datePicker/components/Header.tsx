@@ -13,41 +13,27 @@ import {
 import { useCalendar } from '../calendarContext';
 
 export const Header = ({ changeMonth }: any) => {
-    const {
-        options,
-        disableDateChange,
-        state,
-        utils,
-        min,
-        max,
-        mode,
-    } = useCalendar();
+    const { options, disableDateChange, state, utils, min, max, mode } = useCalendar();
     const [mainState, setMainState] = state;
     const style = styles(options);
     const [disableChange, setDisableChange] = useState(false);
-    const [
-        { lastDate, shownAnimation, hiddenAnimation },
-        changeMonthAnimation,
-    ] = utils.useMonthAnimation(
-        mainState.activeDate,
-        options && options.headerAnimationDistance,
-        () => setDisableChange(false),
-    );
+    const [{ lastDate, shownAnimation, hiddenAnimation }, changeMonthAnimation] =
+        utils.useMonthAnimation(
+            mainState.activeDate,
+            options && options.headerAnimationDistance,
+            () => setDisableChange(false),
+        );
     const prevDisable =
-        disableDateChange ||
-        (min && utils.checkArrowMonthDisabled(mainState.activeDate, true));
+        disableDateChange || (min && utils.checkArrowMonthDisabled(mainState.activeDate, true));
     const nextDisable =
-        disableDateChange ||
-        (max && utils.checkArrowMonthDisabled(mainState.activeDate, false));
+        disableDateChange || (max && utils.checkArrowMonthDisabled(mainState.activeDate, false));
 
     const onChangeMonth = (type: string) => {
         if (disableChange) return;
         setDisableChange(true);
         changeMonthAnimation(type);
         const modificationNumber = type === 'NEXT' ? 1 : -1;
-        const newDate = utils
-            .getDate(mainState.activeDate)
-            .add(modificationNumber, 'month');
+        const newDate = utils.getDate(mainState.activeDate).add(modificationNumber, 'month');
         setMainState({
             type: 'set',
             activeDate: utils.getFormatted(newDate),
@@ -56,12 +42,7 @@ export const Header = ({ changeMonth }: any) => {
     };
 
     return (
-        <View
-            style={[
-                style.container,
-                I18nManager.isRTL && style.reverseContainer,
-            ]}
-        >
+        <View style={[style.container, I18nManager.isRTL && style.reverseContainer]}>
             <TouchableOpacity
                 activeOpacity={0.7}
                 onPress={() => !nextDisable && onChangeMonth('NEXT')}
@@ -69,11 +50,7 @@ export const Header = ({ changeMonth }: any) => {
             >
                 <Image
                     source={UIAssets.icons.ui.arrowLeft}
-                    style={[
-                        style.arrow,
-                        style.rightArrow,
-                        nextDisable && style.disableArrow,
-                    ]}
+                    style={[style.arrow, style.rightArrow, nextDisable && style.disableArrow]}
                 />
             </TouchableOpacity>
             <View style={style.monthYearContainer}>
@@ -87,11 +64,7 @@ export const Header = ({ changeMonth }: any) => {
                 >
                     <TouchableOpacity
                         activeOpacity={0.7}
-                        style={[
-                            style.centerWrapper,
-                            style.monthYearWrapper,
-                            utils.flexDirection,
-                        ]}
+                        style={[style.centerWrapper, style.monthYearWrapper, utils.flexDirection]}
                         onPress={() =>
                             !disableDateChange &&
                             setMainState({
@@ -100,18 +73,10 @@ export const Header = ({ changeMonth }: any) => {
                         }
                     >
                         <Text style={[style.headerText, style.monthText]}>
-                            {
-                                utils
-                                    .getMonthYearText(mainState.activeDate)
-                                    .split(' ')[0]
-                            }
+                            {utils.getMonthYearText(mainState.activeDate).split(' ')[0]}
                         </Text>
                         <Text style={[style.headerText, style.monthText]}>
-                            {
-                                utils
-                                    .getMonthYearText(mainState.activeDate)
-                                    .split(' ')[1]
-                            }
+                            {utils.getMonthYearText(mainState.activeDate).split(' ')[1]}
                         </Text>
                     </TouchableOpacity>
                     {mode === 'datepicker' && (
@@ -131,7 +96,11 @@ export const Header = ({ changeMonth }: any) => {
                             }
                         >
                             <Text style={style.headerText}>
-                                {utils.getTime(utils.returnValidTime(mainState.activeDate), min, max)}
+                                {utils.getTime(
+                                    utils.returnValidTime(mainState.activeDate),
+                                    min,
+                                    max,
+                                )}
                             </Text>
                         </TouchableOpacity>
                     )}

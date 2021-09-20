@@ -19,8 +19,7 @@ const stickers = new Array(10).fill(null).map((_a, i) => ({
     name: 'test',
     stickers: new Array(4).fill(null).map((_b, j) => ({
         name: `crown${j}`,
-        url:
-            'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
+        url: 'https://firebasestorage.googleapis.com/v0/b/ton-surf.appspot.com/o/chatResources%2Fstickers%2Fsurf%2F7%402x.png?alt=media&token=a34d3bda-f83a-411c-a586-fdb730903928',
     })),
 }));
 
@@ -32,10 +31,7 @@ export function KeyboardScreen() {
     const cStickers = useStickers(stickers, (/* sticker */) => {
         return true;
     });
-    const { customKeyboardView, dismiss, toggle } = useCustomKeyboard(
-        inputRef,
-        cStickers,
-    );
+    const { customKeyboardView, dismiss, toggle } = useCustomKeyboard(inputRef, cStickers);
 
     return (
         <>
@@ -51,9 +47,7 @@ export function KeyboardScreen() {
                 contentContainerStyle={{
                     backgroundColor: 'rgba(0,0,255,.2)',
                     alignItems: 'center',
-                    ...(inverted
-                        ? { paddingBottom: insets.top }
-                        : { paddingTop: insets.bottom }),
+                    ...(inverted ? { paddingBottom: insets.top } : { paddingTop: insets.bottom }),
                 }}
             >
                 <TouchableOpacity
@@ -63,13 +57,11 @@ export function KeyboardScreen() {
                 >
                     <UILabel>Press</UILabel>
                 </TouchableOpacity>
-                <UILabel style={inverted ? styles.verticallyInverted : null}>
-                    Hi there!
-                </UILabel>
+                <UILabel style={inverted ? styles.verticallyInverted : null}>Hi there!</UILabel>
                 {new Array(30)
                     .fill(null)
                     .map((_i, j) => j)
-                    .map((i) => {
+                    .map(i => {
                         return (
                             <TouchableOpacity
                                 key={i}

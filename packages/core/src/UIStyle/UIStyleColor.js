@@ -1,10 +1,7 @@
 // @flow
 import { StyleSheet } from 'react-native';
 
-import type {
-    UIColorData,
-    UIColorThemeNameType,
-} from '../UIColor/UIColorTypes';
+import type { UIColorData, UIColorThemeNameType } from '../UIColor/UIColorTypes';
 import { UITheme } from '../UITheme';
 
 type ColorStyle = string;
@@ -110,11 +107,7 @@ export default class UIStyleColor {
         return this.getBorderBottomColorStyle(borderColor);
     }
 
-    static borderBottom(
-        theme: ?UIColorThemeNameType,
-        focused: boolean,
-        hover: boolean,
-    ) {
+    static borderBottom(theme: ?UIColorThemeNameType, focused: boolean, hover: boolean) {
         const borderColor = UITheme.borderBottomColor(theme, focused, hover);
         return this.getBorderBottomColorStyle(borderColor);
     }

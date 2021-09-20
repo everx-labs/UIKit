@@ -3,11 +3,7 @@ import { StyleSheet, useWindowDimensions, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant } from '@tonlabs/uikit.core';
-import {
-    UIBackgroundView,
-    useTheme,
-    ColorVariants,
-} from '@tonlabs/uikit.hydrogen';
+import { UIBackgroundView, useTheme, ColorVariants } from '@tonlabs/uikit.hydrogen';
 import { UIBottomSheet, ScrollView } from '@tonlabs/uikit.navigation';
 
 const PULLER_HEIGHT = 12;
@@ -25,10 +21,7 @@ export function UIPullerSheet({
     const insets = useSafeAreaInsets();
     const { height } = useWindowDimensions();
 
-    const paddingBottom = Math.max(
-        insets?.bottom || 0,
-        UIConstant.contentOffset(),
-    );
+    const paddingBottom = Math.max(insets?.bottom || 0, UIConstant.contentOffset());
 
     return (
         <UIBottomSheet
@@ -44,11 +37,7 @@ export function UIPullerSheet({
             <ScrollView
                 bounces={false}
                 style={{
-                    maxHeight:
-                        height -
-                        (StatusBar.currentHeight ?? 0) -
-                        insets.top -
-                        PULLER_HEIGHT,
+                    maxHeight: height - (StatusBar.currentHeight ?? 0) - insets.top - PULLER_HEIGHT,
                 }}
                 contentContainerStyle={{
                     paddingBottom,

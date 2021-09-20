@@ -111,9 +111,7 @@ function useErrorAnimation(onClose: () => void) {
     const show = Animated.useValue<ShowStates>(ShowStates.Hiding);
     const errorHeight = Animated.useValue(0);
 
-    const translateY = React.useRef(
-        getErrorTranslateY(show, errorHeight, onClose),
-    ).current;
+    const translateY = React.useRef(getErrorTranslateY(show, errorHeight, onClose)).current;
 
     const onLayout = React.useCallback(
         ({
@@ -155,11 +153,7 @@ function useErrorAnimation(onClose: () => void) {
 
 function UIQRCodeError({ onClose }: { onClose: () => void }) {
     const theme = useTheme();
-    const {
-        onLayout: onErrorLayout,
-        style: errorStyle,
-        showError,
-    } = useErrorAnimation(onClose);
+    const { onLayout: onErrorLayout, style: errorStyle, showError } = useErrorAnimation(onClose);
 
     React.useEffect(() => {
         showError();
@@ -213,8 +207,7 @@ export function UIQRCodeScannerSheet({
                 reactivateTimeout={ERROR_DURATION}
                 containerStyle={[
                     {
-                        backgroundColor:
-                            theme[ColorVariants.StaticBackgroundBlack],
+                        backgroundColor: theme[ColorVariants.StaticBackgroundBlack],
                     },
                 ]}
             />
@@ -230,8 +223,7 @@ export function UIQRCodeScannerSheet({
                 style={[
                     styles.closeButton,
                     {
-                        backgroundColor:
-                            theme[ColorVariants.StaticBackgroundWhite],
+                        backgroundColor: theme[ColorVariants.StaticBackgroundWhite],
                     },
                 ]}
             >

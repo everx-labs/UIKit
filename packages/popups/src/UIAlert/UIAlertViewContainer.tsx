@@ -5,11 +5,7 @@ import { UIConstant } from '@tonlabs/uikit.navigation';
 import { useBackHandler } from '@react-native-community/hooks';
 import { AlertBox } from './AlertBox';
 import { UIAlertViewAction } from './UIAlertViewAction';
-import {
-    UIAlertViewActionProps,
-    UIAlertViewContainerProps,
-    UIAlertViewActionType,
-} from './types';
+import { UIAlertViewActionProps, UIAlertViewContainerProps, UIAlertViewActionType } from './types';
 
 type AlertViewActions = {
     actionList: React.ReactElement<UIAlertViewActionProps>[];
@@ -47,11 +43,7 @@ const getAlertViewActions = (children: React.ReactNode): AlertViewActions => {
                 `UIAlertView can only contain 'UIAlertViewAction' components as its direct children (found ${
                     // eslint-disable-next-line no-nested-ternary
                     React.isValidElement(child)
-                        ? `${
-                              typeof child.type === 'string'
-                                  ? child.type
-                                  : child.type?.name
-                          }`
+                        ? `${typeof child.type === 'string' ? child.type : child.type?.name}`
                         : typeof child === 'object'
                         ? JSON.stringify(child)
                         : `'${String(child)}'`
@@ -72,25 +64,18 @@ const getAlertViewActions = (children: React.ReactNode): AlertViewActions => {
     };
 };
 
-const renderTitleLabel = (
-    title?: string,
-): React.ReactElement<typeof UILabel> | null => {
+const renderTitleLabel = (title?: string): React.ReactElement<typeof UILabel> | null => {
     if (!title) {
         return null;
     }
     return (
-        <UILabel
-            role={UILabelRoles.TitleSmall}
-            style={headerStyles.headerTitle}
-        >
+        <UILabel role={UILabelRoles.TitleSmall} style={headerStyles.headerTitle}>
             {title}
         </UILabel>
     );
 };
 
-const renderNoteLabel = (
-    note?: string,
-): React.ReactElement<typeof UILabel> | null => {
+const renderNoteLabel = (note?: string): React.ReactElement<typeof UILabel> | null => {
     if (!note) {
         return null;
     }
@@ -139,9 +124,7 @@ export const UIAlertViewContainer: React.FC<UIAlertViewContainerProps> = (
         >
             <View style={styles.container}>
                 {renderHeader(title, note)}
-                <View style={styles.actionsContainer}>
-                    {alertViewActions.actionList}
-                </View>
+                <View style={styles.actionsContainer}>{alertViewActions.actionList}</View>
             </View>
         </AlertBox>
     );

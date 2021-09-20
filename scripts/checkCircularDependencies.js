@@ -24,7 +24,7 @@ const checkCircularDependencies = async () => {
             'packages/popups/src/index.js',
             'packages/stickers/src/index.ts',
         ];
-        const tree = await parseDependencyTree(sources, { 
+        const tree = await parseDependencyTree(sources, {
             extensions: [
                 '.ts',
                 '.tsx',
@@ -86,7 +86,8 @@ const checkCircularDependencies = async () => {
     } catch (error) {
         console.error(
             '\x1b[31m%s\x1b[0m', // red
-            'Failed to find circular dependencies with error:', error,
+            'Failed to find circular dependencies with error:',
+            error,
         );
         process.exit(1);
     }

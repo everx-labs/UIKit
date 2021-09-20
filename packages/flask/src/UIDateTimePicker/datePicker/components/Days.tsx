@@ -1,11 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import {
-    View,
-    Text,
-    StyleSheet,
-    TouchableOpacity,
-    LayoutChangeEvent,
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, LayoutChangeEvent } from 'react-native';
 
 import { useCalendar } from '../calendarContext';
 import type { PickerOptionsType } from '../../../types';
@@ -15,10 +9,10 @@ export const Days = () => {
     const [mainState, setMainState] = state;
     const [itemSize, setItemSize] = useState(0);
     const style = styles(options);
-    const days = useMemo(() => utils.getMonthDays(mainState.activeDate), [
-        utils,
-        mainState.activeDate,
-    ]);
+    const days = useMemo(
+        () => utils.getMonthDays(mainState.activeDate),
+        [utils, mainState.activeDate],
+    );
 
     const onSelectDay = (date: Date) => {
         /**
@@ -27,10 +21,7 @@ export const Days = () => {
         // TODO: fix the fact that `activeDate` might be a string
         const validTime = utils.returnValidTime(new Date(mainState.activeDate));
         const newDate = new Date(
-            new Date(date).setHours(
-                validTime.getHours(),
-                validTime.getMinutes(),
-            ),
+            new Date(date).setHours(validTime.getHours(), validTime.getMinutes()),
         );
         setMainState({
             type: 'set',
@@ -46,10 +37,7 @@ export const Days = () => {
     };
 
     return (
-        <View
-            style={[style.container, utils.flexDirection]}
-            onLayout={changeItemHeight}
-        >
+        <View style={[style.container, utils.flexDirection]} onLayout={changeItemHeight}>
             {days.map((day: any, n: React.Key | null | undefined) => (
                 <View
                     /* eslint-disable-next-line react/no-array-index-key */
@@ -66,19 +54,15 @@ export const Days = () => {
                                 {
                                     borderRadius: itemSize / 2,
                                 },
-                                mainState.selectedDate === day.date &&
-                                    style.dayItemSelected,
+                                mainState.selectedDate === day.date && style.dayItemSelected,
                             ]}
-                            onPress={() =>
-                                !day.disabled && onSelectDay(day.date)
-                            }
+                            onPress={() => !day.disabled && onSelectDay(day.date)}
                             activeOpacity={0.8}
                         >
                             <Text
                                 style={[
                                     style.dayText,
-                                    mainState.selectedDate === day.date &&
-                                        style.dayTextSelected,
+                                    mainState.selectedDate === day.date && style.dayTextSelected,
                                     day.disabled && style.dayTextDisabled,
                                 ]}
                             >

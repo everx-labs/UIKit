@@ -1,21 +1,17 @@
 // @flow
 import React, { PureComponent } from 'react';
-import {
-    PanResponder,
-    View,
-} from 'react-native';
+import { PanResponder, View } from 'react-native';
 import type { PanResponderInstance } from 'react-native/Libraries/Interaction/PanResponder';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 type Props = {
-    timeForInactivity?: number;
-    children: React$Node;
-    style?: ViewStyleProp;
-    onIdle: () => void;
+    timeForInactivity?: number,
+    children: React$Node,
+    style?: ViewStyleProp,
+    onIdle: () => void,
 };
 
-type State = {
-}
+type State = {};
 
 export default class UIIdleDetector extends PureComponent<Props, State> {
     static defaultProps = {
@@ -68,16 +64,9 @@ export default class UIIdleDetector extends PureComponent<Props, State> {
     }
 
     render() {
-        const {
-            style,
-            children,
-        } = this.props;
+        const { style, children } = this.props;
         return (
-            <View
-                style={style}
-                collapsable={false}
-                {...this.panResponder.panHandlers}
-            >
+            <View style={style} collapsable={false} {...this.panResponder.panHandlers}>
                 {children}
             </View>
         );

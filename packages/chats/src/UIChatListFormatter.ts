@@ -19,8 +19,7 @@ export class UIChatListFormatter {
             const prevMessage = messages[index + 1];
 
             if (nextMessage) {
-                const durationTooLong =
-                    nextMessage.time - message.time > 3 * 60 * 60 * 1000; // 3 hours
+                const durationTooLong = nextMessage.time - message.time > 3 * 60 * 60 * 1000; // 3 hours
 
                 message.lastFromChain =
                     message.type !== nextMessage.type ||
@@ -31,8 +30,7 @@ export class UIChatListFormatter {
             }
 
             if (prevMessage) {
-                const durationTooLong =
-                    message.time - prevMessage.time > 3 * 60 * 60 * 1000; // 3 hours
+                const durationTooLong = message.time - prevMessage.time > 3 * 60 * 60 * 1000; // 3 hours
 
                 message.firstFromChain =
                     message.type !== prevMessage.type ||
@@ -49,7 +47,7 @@ export class UIChatListFormatter {
             }
         });
 
-        return Object.keys(sections).map((t) => {
+        return Object.keys(sections).map(t => {
             const time = Number(t);
             return {
                 time,

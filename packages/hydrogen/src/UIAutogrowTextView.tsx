@@ -9,24 +9,22 @@ export type UIAutogrowTextViewProps = UITextViewProps & {
     onHeightChange?: OnHeightChange;
 };
 
-export const UIAutogrowTextView = React.forwardRef<
-    TextInput,
-    UIAutogrowTextViewProps
->(function AutogrowTextViewForwarded(props: UIAutogrowTextViewProps, ref) {
-    const {
-        onContentSizeChange,
-        onChange,
-        numberOfLinesProp,
-    } = useAutogrowTextView(ref, props.onHeightChange);
+export const UIAutogrowTextView = React.forwardRef<TextInput, UIAutogrowTextViewProps>(
+    function AutogrowTextViewForwarded(props: UIAutogrowTextViewProps, ref) {
+        const { onContentSizeChange, onChange, numberOfLinesProp } = useAutogrowTextView(
+            ref,
+            props.onHeightChange,
+        );
 
-    return (
-        <UITextView
-            ref={ref}
-            {...props}
-            multiline
-            onChange={onChange}
-            onContentSizeChange={onContentSizeChange}
-            numberOfLines={numberOfLinesProp}
-        />
-    );
-});
+        return (
+            <UITextView
+                ref={ref}
+                {...props}
+                multiline
+                onChange={onChange}
+                onContentSizeChange={onContentSizeChange}
+                numberOfLines={numberOfLinesProp}
+            />
+        );
+    },
+);

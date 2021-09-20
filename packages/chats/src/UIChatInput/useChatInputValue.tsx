@@ -57,20 +57,11 @@ export function useChatInputValue({
             }
 
             const eventKey = e.key || e.nativeEvent?.key;
-            if (
-                eventKey !== 'Backspace' &&
-                inputValue.current.length === maxInputLength
-            ) {
+            if (eventKey !== 'Backspace' && inputValue.current.length === maxInputLength) {
                 showMaxLengthAlert();
             }
         },
-        [
-            onSendText,
-            onBaseKeyPress,
-            inputValue,
-            showMaxLengthAlert,
-            maxInputLength,
-        ],
+        [onSendText, onBaseKeyPress, inputValue, showMaxLengthAlert, maxInputLength],
     );
 
     return {

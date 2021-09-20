@@ -11,20 +11,14 @@ export const useBubbleRoundedCornerStyle = (
 ) => {
     if (position === BubblePosition.left && message.firstFromChain) {
         return {
-            borderRadius:
-                borderRadius !== undefined
-                    ? borderRadius
-                    : UIConstant.borderRadius(),
+            borderRadius: borderRadius !== undefined ? borderRadius : UIConstant.borderRadius(),
             borderTopLeftRadius: 0,
         };
     }
 
     if (position === BubblePosition.right && message.lastFromChain) {
         return {
-            borderRadius:
-                borderRadius !== undefined
-                    ? borderRadius
-                    : UIConstant.borderRadius(),
+            borderRadius: borderRadius !== undefined ? borderRadius : UIConstant.borderRadius(),
             borderBottomRightRadius: 0,
         };
     }
@@ -34,40 +28,24 @@ export const useBubbleRoundedCornerStyle = (
     };
 };
 
-export const useBubbleBackgroundColor = (
-    message: BubbleBaseT,
-): StyleProp<ViewStyle> => {
+export const useBubbleBackgroundColor = (message: BubbleBaseT): StyleProp<ViewStyle> => {
     const theme = useTheme();
 
     if (message.status === MessageStatus.Aborted) {
-        return [
-            UIStyle.color.getBackgroundColorStyle(
-                theme[ColorVariants.BackgroundNegative],
-            ),
-        ];
+        return [UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.BackgroundNegative])];
     }
 
     if (message.status === MessageStatus.Received) {
-        return [
-            UIStyle.color.getBackgroundColorStyle(
-                theme[ColorVariants.BackgroundSecondary],
-            ),
-        ];
+        return [UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.BackgroundSecondary])];
     }
 
     if (message.status === MessageStatus.Sent) {
-        return [
-            UIStyle.color.getBackgroundColorStyle(
-                theme[ColorVariants.BackgroundAccent],
-            ),
-        ];
+        return [UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.BackgroundAccent])];
     }
 
     if (message.status === MessageStatus.Pending) {
         return [
-            UIStyle.color.getBackgroundColorStyle(
-                theme[ColorVariants.BackgroundAccent],
-            ),
+            UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.BackgroundAccent]),
             UIStyle.common.opacity70(),
         ];
     }

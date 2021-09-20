@@ -31,10 +31,7 @@ type AddressInputAction = {
         | 'CLOSE_ADDRESS_SELECTION';
 };
 
-function addressInputReducer(
-    state: AddressInputInternalState,
-    action: AddressInputAction,
-) {
+function addressInputReducer(state: AddressInputInternalState, action: AddressInputAction) {
     if (action.type === 'OPEN_ADDRESS_INPUT') {
         return {
             ...state,
@@ -117,8 +114,7 @@ export function AddressInput({ onLayout, ...message }: AddressInputMessage) {
     }
 
     const mainAccountTitle =
-        message.mainAddressTitle ||
-        uiLocalized.Browser.AddressInputBubble.MainAccount;
+        message.mainAddressTitle || uiLocalized.Browser.AddressInputBubble.MainAccount;
 
     return (
         <View onLayout={onLayout}>
@@ -182,11 +178,9 @@ export function AddressInput({ onLayout, ...message }: AddressInputMessage) {
             {state.inputVisible && (
                 <Portal forId="browser">
                     <UIAddressInput
-                        onSendText={(address) => {
+                        onSendText={address => {
                             message.onSelect({
-                                chosenOption:
-                                    uiLocalized.Browser.AddressInputBubble
-                                        .EnterManually,
+                                chosenOption: uiLocalized.Browser.AddressInputBubble.EnterManually,
                                 address,
                             });
                             dispatch({
@@ -202,8 +196,7 @@ export function AddressInput({ onLayout, ...message }: AddressInputMessage) {
                 onRead={async (e: any) => {
                     const address = await message.qrCode.parseData(e.data);
                     message.onSelect({
-                        chosenOption:
-                            uiLocalized.Browser.AddressInputBubble.ScanQR,
+                        chosenOption: uiLocalized.Browser.AddressInputBubble.ScanQR,
                         address,
                     });
                     dispatch({
@@ -218,10 +211,9 @@ export function AddressInput({ onLayout, ...message }: AddressInputMessage) {
             />
             <UIAccountPicker
                 visible={state.addressSelectionVisible}
-                onSelect={(address) => {
+                onSelect={address => {
                     message.onSelect({
-                        chosenOption:
-                            uiLocalized.Browser.AddressInputBubble.SelectAsset,
+                        chosenOption: uiLocalized.Browser.AddressInputBubble.SelectAsset,
                         address,
                     });
                     dispatch({

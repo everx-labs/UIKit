@@ -2,11 +2,7 @@ import * as React from 'react';
 import { Platform, StyleSheet, TextInput } from 'react-native';
 
 import { UIInputAccessoryView } from '@tonlabs/uikit.keyboard';
-import {
-    ChatInputContainer,
-    useChatInputValue,
-    useChatMaxLengthAlert,
-} from '@tonlabs/uikit.chats';
+import { ChatInputContainer, useChatInputValue, useChatMaxLengthAlert } from '@tonlabs/uikit.chats';
 import {
     ColorVariants,
     UITextView,
@@ -35,9 +31,7 @@ function useValidation(
     const emptyValidation = React.useRef({
         status: ValidationResultStatus.None,
     }).current;
-    const [validation, setValidation] = React.useState<ValidationResult>(
-        emptyValidation,
-    );
+    const [validation, setValidation] = React.useState<ValidationResult>(emptyValidation);
 
     const onChangeText = React.useCallback(
         async (text: string) => {
@@ -101,11 +95,7 @@ export function UIAddressInputInternal({
         numberOfLines,
         numberOfLinesProp,
         resetInputHeight,
-    } = useAutogrowTextView(
-        textInputRef,
-        onHeightChange,
-        MAX_INPUT_NUM_OF_LINES,
-    );
+    } = useAutogrowTextView(textInputRef, onHeightChange, MAX_INPUT_NUM_OF_LINES);
 
     const showMaxLengthAlert = useChatMaxLengthAlert(MAX_INPUT_LENGTH);
     const {
@@ -134,9 +124,7 @@ export function UIAddressInputInternal({
                 <ActionButton
                     inputHasValue={inputHasValue}
                     onPress={onSendText}
-                    hasError={
-                        validation.status === ValidationResultStatus.Error
-                    }
+                    hasError={validation.status === ValidationResultStatus.Error}
                     clear={clear}
                 />
             }
@@ -163,9 +151,7 @@ export function UIAddressInputInternal({
                 maxLength={MAX_INPUT_LENGTH}
                 multiline
                 numberOfLines={numberOfLinesProp}
-                placeholder={
-                    placeholder ?? uiLocalized.Browser.AddressInput.Placeholder
-                }
+                placeholder={placeholder ?? uiLocalized.Browser.AddressInput.Placeholder}
                 onContentSizeChange={onContentSizeChange}
                 onChange={onChange}
                 onChangeText={onChangeText}
@@ -205,9 +191,7 @@ export function UIAddressInput(props: UIAddressInputProps) {
                 textInputRef={textInputRef}
                 placeholder={props.placeholder}
                 onSendText={props.onSendText}
-                onHeightChange={
-                    Platform.OS === 'web' ? onHeightChange : undefined
-                }
+                onHeightChange={Platform.OS === 'web' ? onHeightChange : undefined}
                 validateAddress={props.validateAddress}
             />
         </UIInputAccessoryView>

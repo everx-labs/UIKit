@@ -74,7 +74,7 @@ type Props = {
     textStyle: ViewStyleProp,
     containerStyle: ViewStyleProp,
     masterSpinner: boolean,
-}
+};
 
 type State = {
     visible: boolean,
@@ -160,9 +160,7 @@ export default class UISpinnerOverlay extends UIComponent<Props, State> {
                     styles.titleContent,
                     this.props.titleStyle,
                     {
-                        backgroundColor: !titleContent
-                            ? 'transparent'
-                            : 'white',
+                        backgroundColor: !titleContent ? 'transparent' : 'white',
                     },
                 ]}
             >
@@ -181,9 +179,7 @@ export default class UISpinnerOverlay extends UIComponent<Props, State> {
                     styles.textContent,
                     this.props.textStyle,
                     {
-                        backgroundColor: !textContent
-                            ? 'transparent'
-                            : UIColor.primary(),
+                        backgroundColor: !textContent ? 'transparent' : UIColor.primary(),
                     },
                 ]}
             >
@@ -195,16 +191,13 @@ export default class UISpinnerOverlay extends UIComponent<Props, State> {
     renderContent() {
         return (
             <View style={styles.background}>
-                <WaveIndicator
-                    color={this.props.color}
-                    size={this.props.size}
-                    count={2}
-                />
+                <WaveIndicator color={this.props.color} size={this.props.size} count={2} />
                 <View style={styles.textContainer}>
                     {this.renderTitleContent()}
                     {this.renderTextContent()}
                 </View>
-            </View>);
+            </View>
+        );
     }
 
     renderSpinner() {

@@ -63,10 +63,7 @@ export function TransactionConfirmation({
                         <TouchableOpacity onPress={onAddressPress}>
                             <View style={styles.address}>
                                 <UILabel>
-                                    {`${toAddress.slice(
-                                        0,
-                                        4,
-                                    )} ···· ${toAddress.slice(-4)}`}
+                                    {`${toAddress.slice(0, 4)} ···· ${toAddress.slice(-4)}`}
                                 </UILabel>
                                 <UIImage source={UIAssets.icons.ui.arrowUpRight} />
                             </View>
@@ -85,28 +82,19 @@ export function TransactionConfirmation({
                     </View>
                 )}
                 <View style={styles.cardRow}>
-                    <UILabel
-                        role={UILabelRoles.ParagraphLabel}
-                        color={UILabelColors.TextTertiary}
-                    >
+                    <UILabel role={UILabelRoles.ParagraphLabel} color={UILabelColors.TextTertiary}>
                         {uiLocalized.Browser.TransactionConfirmation.Total}
                     </UILabel>
                     {totalAmount}
                 </View>
                 <View style={styles.cardRow}>
-                    <UILabel
-                        role={UILabelRoles.ParagraphLabel}
-                        color={UILabelColors.TextTertiary}
-                    >
+                    <UILabel role={UILabelRoles.ParagraphLabel} color={UILabelColors.TextTertiary}>
                         {uiLocalized.Browser.TransactionConfirmation.Fees}
                     </UILabel>
                     {fees}
                 </View>
                 <View style={styles.cardRow}>
-                    <UILabel
-                        role={UILabelRoles.ParagraphLabel}
-                        color={UILabelColors.TextTertiary}
-                    >
+                    <UILabel role={UILabelRoles.ParagraphLabel} color={UILabelColors.TextTertiary}>
                         {uiLocalized.Browser.TransactionConfirmation.Signature}
                     </UILabel>
                     <UILabel>{signature.title}</UILabel>
@@ -117,16 +105,10 @@ export function TransactionConfirmation({
                             role={UILabelRoles.ParagraphLabel}
                             color={UILabelColors.TextNegative}
                         >
-                            {
-                                uiLocalized.Browser.TransactionConfirmation
-                                    .Attention
-                            }
+                            {uiLocalized.Browser.TransactionConfirmation.Attention}
                         </UILabel>
                         <UILabel color={UILabelColors.TextNegative}>
-                            {
-                                uiLocalized.Browser.TransactionConfirmation
-                                    .AttentionDesc
-                            }
+                            {uiLocalized.Browser.TransactionConfirmation.AttentionDesc}
                         </UILabel>
                     </View>
                 )}
@@ -173,10 +155,8 @@ export function TransactionConfirmation({
                             color={UILabelColors.StaticTextPrimaryLight}
                         >
                             {externalState.status === 'approved'
-                                ? uiLocalized.Browser.TransactionConfirmation
-                                      .Confirm
-                                : uiLocalized.Browser.TransactionConfirmation
-                                      .Cancel}
+                                ? uiLocalized.Browser.TransactionConfirmation.Confirm
+                                : uiLocalized.Browser.TransactionConfirmation.Cancel}
                         </UILabel>
                     </UIBackgroundView>
                 </View>

@@ -1,10 +1,6 @@
 import { useEffect } from 'react';
 
-import {
-    useTheme,
-    ColorVariants,
-    useIsDarkColor,
-} from '@tonlabs/uikit.hydrogen';
+import { useTheme, ColorVariants, useIsDarkColor } from '@tonlabs/uikit.hydrogen';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
 export function UIAndroidNavigationBar({

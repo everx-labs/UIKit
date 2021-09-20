@@ -17,15 +17,10 @@ type QRCodeScannerInternalState = {
 };
 
 type QRCodeScannerAction = {
-    type:
-        | 'OPEN_QR_CODE'
-        | 'CLOSE_QR_CODE';
+    type: 'OPEN_QR_CODE' | 'CLOSE_QR_CODE';
 };
 
-function qrCodeScannerReducer(
-    state: QRCodeScannerInternalState,
-    action: QRCodeScannerAction,
-) {
+function qrCodeScannerReducer(state: QRCodeScannerInternalState, action: QRCodeScannerAction) {
     if (action.type === 'OPEN_QR_CODE') {
         return {
             ...state,
@@ -43,10 +38,7 @@ function qrCodeScannerReducer(
     };
 }
 
-export function QRCodeScanner({
-    onLayout,
-    ...message
-}: QRCodeScannerMessage) {
+export function QRCodeScanner({ onLayout, ...message }: QRCodeScannerMessage) {
     const [state, dispatch] = React.useReducer(qrCodeScannerReducer, {
         qrCodeScannerVisible: message.fastScan || false,
     });

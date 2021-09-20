@@ -17,13 +17,9 @@ import type {
     StringLocaleInfo,
     ShortenAmount,
     LanguagesOptions,
-    LocalizationServiceMethods
+    LocalizationServiceMethods,
 } from './types';
-import {
-    languagesInfo,
-    predefinedConstants,
-    UIConstant,
-} from './constants';
+import { languagesInfo, predefinedConstants, UIConstant } from './constants';
 import { Language } from './language';
 
 const langsOptions: LanguagesOptions = Object.values(Language).reduce(
@@ -31,10 +27,7 @@ const langsOptions: LanguagesOptions = Object.values(Language).reduce(
     {},
 );
 
-export const preparedLanguages = prepare<UILocalizedData>(
-    availableLanguages,
-    langsOptions,
-);
+export const preparedLanguages = prepare<UILocalizedData>(availableLanguages, langsOptions);
 
 export function getExtendedLanguages() {
     const extendedOptions: LanguagesOptions = Object.values(Language).reduce(
@@ -45,11 +38,7 @@ export function getExtendedLanguages() {
         {},
     );
 
-    return prepare<UILocalizedData>(
-        availableLanguages,
-        extendedOptions,
-        'UIKit',
-    );
+    return prepare<UILocalizedData>(availableLanguages, extendedOptions, 'UIKit');
 }
 
 const defaultLocaleInfo: StringLocaleInfo = {
@@ -59,13 +48,13 @@ const defaultLocaleInfo: StringLocaleInfo = {
 };
 
 type LanguageServiceOptions<T> = {
-    languages: Languages<T>,
-    localeInfo?: StringLocaleInfo
-}
+    languages: Languages<T>;
+    localeInfo?: StringLocaleInfo;
+};
 
-export type LocalizedStrings<T> = LocalizationServiceMethods & T
+export type LocalizedStrings<T> = LocalizationServiceMethods & T;
 
-export type LocalizedInstance<T> = LocalizedStrings<T> & LocalizationService<T>
+export type LocalizedInstance<T> = LocalizedStrings<T> & LocalizationService<T>;
 
 // @ts-ignore
 export class LocalizationService<T> extends (LocalizedStringsService as LocalizedStrings<T>) {
@@ -80,7 +69,7 @@ export class LocalizationService<T> extends (LocalizedStringsService as Localize
 
     setLanguages = (languages: Language[]) => {
         this.languages = languages;
-    }
+    };
 
     amountToLocale(
         value: BigNumber | string | number | unknown,
@@ -98,16 +87,17 @@ export class LocalizationService<T> extends (LocalizedStringsService as Localize
                 numberString = value.toFixed();
             } else if (typeof value === 'string') {
                 numberString = value;
-            }  else if (value instanceof String) {
+            } else if (value instanceof String) {
                 numberString = value.toString();
             } else if (typeof value === 'number') {
                 numberString = UIFunction.getNumberString(value);
             } else {
-                throw Error('[LocalizationService] Passed number is unknown type')
+                throw Error('[LocalizationService] Passed number is unknown type');
             }
 
             const isNormalized = !Number.isNaN(Number(numberString));
-            if (!isNormalized) { // Check if not normalized
+            if (!isNormalized) {
+                // Check if not normalized
                 throw Error('[LocalizationService] Passed number is not normalized');
             }
 
@@ -145,7 +135,7 @@ export class LocalizationService<T> extends (LocalizedStringsService as Localize
 
     changeLocaleInfo = (localeInfo: StringLocaleInfo) => {
         this.localeInfo = localeInfo;
-    }
+    };
 
     changeLanguage = (language: Language) => {
         this.setLanguage(language);
@@ -164,7 +154,7 @@ export class LocalizationService<T> extends (LocalizedStringsService as Localize
         const todayTime = today.getTime();
         const dateTime = date.getTime();
         const isToday = todayTime === dateTime;
-        const isYesterday = (todayTime - dateTime) === (24 * 3600 * 1000);
+        const isYesterday = todayTime - dateTime === 24 * 3600 * 1000;
 
         if (isToday) {
             return this.formatString(uiLocalized.TodayAt, this.formatTime(time));
@@ -209,10 +199,10 @@ export class LocalizationService<T> extends (LocalizedStringsService as Localize
         return Language.En;
     }
 
-    shortenAmount: ShortenAmount = shortenAmount.bind(this, this.ShortenedNumberSuffix)
+    shortenAmount: ShortenAmount = shortenAmount.bind(this, this.ShortenedNumberSuffix);
 }
 
 export const uiLocalized: LocalizedInstance<UILocalizedData> =
-    (new LocalizationService<UILocalizedData>({ languages: preparedLanguages }) as any)
+    new LocalizationService<UILocalizedData>({ languages: preparedLanguages }) as any;
 
 export const TIME_FORMAT = 'HH:mm';

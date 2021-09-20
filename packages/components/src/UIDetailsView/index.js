@@ -52,9 +52,8 @@ export default class UIDetailsView extends UIComponent<Props, State> {
 
     // Render
     renderValue() {
-        const {
-            value, textColor, textRole, onPress, disabled, testID, selectable, reversed,
-        } = this.props;
+        const { value, textColor, textRole, onPress, disabled, testID, selectable, reversed } =
+            this.props;
         let color = UILabelColors.TextPrimary;
         let role = onPress ? UILabelRoles.Action : UILabelRoles.ParagraphText;
         if (disabled) {
@@ -106,9 +105,7 @@ export default class UIDetailsView extends UIComponent<Props, State> {
     }
 
     render() {
-        const {
-            onPress, testID, containerStyle, style,
-        } = this.props;
+        const { onPress, testID, containerStyle, style } = this.props;
         const Wrapper = onPress ? TouchableOpacity : View;
         const onPressProp: any = { onPress };
         const testIDProp = testID ? { testID } : null;

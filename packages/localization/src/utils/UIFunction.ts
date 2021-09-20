@@ -4,10 +4,7 @@ import type { NumberParts, NumberPartsOptions, StringLocaleInfo } from '../types
 
 export class UIFunction {
     // Allows to print small numbers with "-e" suffix
-    static getNumberString(
-        number: number | BigNumber,
-        digits: number = 10,
-    ): string {
+    static getNumberString(number: number | BigNumber, digits: number = 10): string {
         // $FlowExpectedError
         if (!BigNumber.isBigNumber(number) && Math.abs(number) > 1) {
             // Apply BigNumber conversion only for non-small numbers!
@@ -59,10 +56,7 @@ export class UIFunction {
         // Fix value by rounding it from above
         const fixedValue =
             (splitParts[1]?.length || 0) > options.maximumFractionDigits
-                ? UIFunction.toFixedDown(
-                normalizedValue,
-                options.maximumFractionDigits,
-                )
+                ? UIFunction.toFixedDown(normalizedValue, options.maximumFractionDigits)
                 : normalizedValue;
         // Remove unwanted leading zeros and trailing whitespaces
         const trimmedValue = fixedValue.replace(/^0+/, '').trim();
@@ -76,12 +70,9 @@ export class UIFunction {
         const components = plainValue.split(defaultSeparator);
         result.integer = components[0] || '0';
         result.decimal = components[1] || '';
-        const trailingZerosToAdd =
-            options.minimumFractionDigits - result.decimal.length;
+        const trailingZerosToAdd = options.minimumFractionDigits - result.decimal.length;
         if (trailingZerosToAdd > 0) {
-            result.decimal = `${result.decimal}${'0'.repeat(
-                trailingZerosToAdd,
-            )}`;
+            result.decimal = `${result.decimal}${'0'.repeat(trailingZerosToAdd)}`;
         }
         // Localize value string
         const integerString = result.integer.replace(
@@ -94,9 +85,7 @@ export class UIFunction {
                 : '';
         const decimalString = result.decimal || '';
         const decFormatted =
-            decimalString
-                .match(/.{1,3}/g)
-                ?.join(localeInfo.numbers.decimalGrouping) || '';
+            decimalString.match(/.{1,3}/g)?.join(localeInfo.numbers.decimalGrouping) || '';
         result.valueString = `${integerString}${separatorString}${decFormatted}`;
 
         // Return result
@@ -109,22 +98,14 @@ export class UIFunction {
         return match ? match[0] : Number(number).toFixed(fixed);
     }
 
-    static normalizedAmount(
-        s: string | null,
-        localeInfo: StringLocaleInfo,
-    ): string | null {
+    static normalizedAmount(s: string | null, localeInfo: StringLocaleInfo): string | null {
         if (s === undefined || s === null) {
             return null;
         }
 
         let normalized = UIFunction.replaceAll(`${s}`, ' ', '');
 
-        const {
-            grouping,
-            thousands,
-            decimal,
-            decimalGrouping,
-        } = localeInfo.numbers;
+        const { grouping, thousands, decimal, decimalGrouping } = localeInfo.numbers;
 
         normalized = UIFunction.replaceAll(normalized, grouping, '');
         normalized = UIFunction.replaceAll(normalized, thousands, '');

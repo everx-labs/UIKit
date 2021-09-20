@@ -10,12 +10,7 @@ import {
 
 import { ColorVariants, useTheme } from '../Colors';
 import { TypographyVariants } from '../Typography';
-import {
-    UITextView,
-    UITextViewProps,
-    useFocused,
-    useUITextViewValue,
-} from '../UITextView';
+import { UITextView, UITextViewProps, useFocused, useUITextViewValue } from '../UITextView';
 import { useHover } from '../useHover';
 import { UILabel } from '../UILabel';
 import {
@@ -31,11 +26,7 @@ import {
     UIMaterialTextViewText,
 } from './useMaterialTextViewChildren';
 
-import {
-    FloatingLabel,
-    expandedLabelLineHeight,
-    foldedLabelLineHeight,
-} from './FloatingLabel';
+import { FloatingLabel, expandedLabelLineHeight, foldedLabelLineHeight } from './FloatingLabel';
 
 const topOffsetForLabel: number =
     (expandedLabelLineHeight - foldedLabelLineHeight) / 2 + // space between input and folded label (by design mockups)
@@ -72,9 +63,7 @@ const getBorderColor = (
     return ColorVariants.LineSecondary;
 };
 
-const getCommentColor = (
-    props: UIMaterialTextViewCommonProps,
-): ColorVariants => {
+const getCommentColor = (props: UIMaterialTextViewCommonProps): ColorVariants => {
     if (props.success) {
         return ColorVariants.TextPositive;
     }
@@ -92,23 +81,15 @@ const getIsFolded = (
     return Boolean(isFocused || inputHasValue || value);
 };
 
-function useFloatingLabelAttribute(
-    props: UIMaterialTextViewCommonProps,
-    inputHasValue: boolean,
-) {
+function useFloatingLabelAttribute(props: UIMaterialTextViewCommonProps, inputHasValue: boolean) {
     const { value } = props;
 
-    const { isFocused, onFocus, onBlur } = useFocused(
-        props.onFocus,
-        props.onBlur,
-    );
+    const { isFocused, onFocus, onBlur } = useFocused(props.onFocus, props.onBlur);
 
     const isLabelFolded: boolean = getIsFolded(isFocused, inputHasValue, value);
 
-    const [
-        isDefaultPlaceholderVisible,
-        setDefaultPlaceholderVisible,
-    ] = React.useState(isLabelFolded);
+    const [isDefaultPlaceholderVisible, setDefaultPlaceholderVisible] =
+        React.useState(isLabelFolded);
 
     const markDefaultPlacehoderAsVisible = React.useCallback(() => {
         setDefaultPlaceholderVisible(true);
@@ -175,9 +156,7 @@ function useAutogrow(
         [onAutogrowChange, onChangeProp],
     );
 
-    const style = React.useMemo(() => [styles.input, { height: inputHeight }], [
-        inputHeight,
-    ]);
+    const style = React.useMemo(() => [styles.input, { height: inputHeight }], [inputHeight]);
 
     if (!props.multiline) {
         return {
@@ -249,13 +228,7 @@ function UIMaterialTextViewBorder(
                 styles.inputWrapper,
                 {
                     borderBottomColor:
-                        theme[
-                            getBorderColor(
-                                props,
-                                props.isFocused,
-                                props.isHovered,
-                            )
-                        ],
+                        theme[getBorderColor(props, props.isFocused, props.isHovered)],
                 },
             ]}
         >
@@ -300,7 +273,7 @@ function useExtendedRef(
 
             if (props.multiline) {
                 if (Platform.OS === 'web') {
-                    const elem = (localRef.current as unknown) as HTMLTextAreaElement;
+                    const elem = localRef.current as unknown as HTMLTextAreaElement;
                     calculateWebInputHeight(elem);
                 }
             }
@@ -313,10 +286,7 @@ function useExtendedRef(
 const UIMaterialTextViewFloating = React.forwardRef<
     UIMaterialTextViewRef,
     UIMaterialTextViewCommonProps
->(function UIMaterialTextViewFloatingForwarded(
-    props: UIMaterialTextViewCommonProps,
-    passedRef,
-) {
+>(function UIMaterialTextViewFloatingForwarded(props: UIMaterialTextViewCommonProps, passedRef) {
     const { label, onLayout, children, onHeightChange, ...rest } = props;
     const ref = React.useRef<TextInput>(null);
     const {
@@ -333,13 +303,11 @@ const UIMaterialTextViewFloating = React.forwardRef<
         markDefaultPlacehoderAsVisible,
         isLabelFolded,
     } = useFloatingLabelAttribute(props, inputHasValue);
-    const {
-        onContentSizeChange,
-        onChange,
-        numberOfLines,
-        style,
-        resetInputHeight,
-    } = useAutogrow(ref, props, onHeightChange);
+    const { onContentSizeChange, onChange, numberOfLines, style, resetInputHeight } = useAutogrow(
+        ref,
+        props,
+        onHeightChange,
+    );
     const clear = React.useCallback(() => {
         clearInput();
         resetInputHeight();
@@ -374,11 +342,7 @@ const UIMaterialTextViewFloating = React.forwardRef<
                     <UITextView
                         ref={ref}
                         {...rest}
-                        placeholder={
-                            isDefaultPlaceholderVisible
-                                ? props.placeholder
-                                : undefined
-                        }
+                        placeholder={isDefaultPlaceholderVisible ? props.placeholder : undefined}
                         onFocus={onFocus}
                         onBlur={onBlur}
                         onChangeText={onChangeTextProp}
@@ -403,10 +367,7 @@ const UIMaterialTextViewFloating = React.forwardRef<
 const UIMaterialTextViewSimple = React.forwardRef<
     UIMaterialTextViewRef,
     UIMaterialTextViewCommonProps
->(function UIMaterialTextViewSimpleForwarded(
-    props: UIMaterialTextViewCommonProps,
-    passedRef,
-) {
+>(function UIMaterialTextViewSimpleForwarded(props: UIMaterialTextViewCommonProps, passedRef) {
     const { label, onLayout, children, onHeightChange, ...rest } = props;
     const ref = React.useRef<TextInput>(null);
     const {
@@ -415,17 +376,12 @@ const UIMaterialTextViewSimple = React.forwardRef<
         onChangeText: onChangeTextProp,
     } = useUITextViewValue(ref, false, props);
     useExtendedRef(passedRef, ref, props, onChangeTextProp);
-    const { isFocused, onFocus, onBlur } = useFocused(
-        props.onFocus,
-        props.onBlur,
+    const { isFocused, onFocus, onBlur } = useFocused(props.onFocus, props.onBlur);
+    const { onContentSizeChange, onChange, numberOfLines, style, resetInputHeight } = useAutogrow(
+        ref,
+        props,
+        onHeightChange,
     );
-    const {
-        onContentSizeChange,
-        onChange,
-        numberOfLines,
-        style,
-        resetInputHeight,
-    } = useAutogrow(ref, props, onHeightChange);
     const clear = React.useCallback(() => {
         clearInput();
         resetInputHeight();
@@ -475,19 +431,18 @@ export type UIMaterialTextViewProps = UIMaterialTextViewCommonProps & {
     floating?: boolean;
 };
 
-const UIMaterialTextViewForward = React.forwardRef<
-    UIMaterialTextViewRef,
-    UIMaterialTextViewProps
->(function UIMaterialTextViewForwarded(
-    { floating = true, ...props }: UIMaterialTextViewProps,
-    ref,
-) {
-    return floating ? (
-        <UIMaterialTextViewFloating ref={ref} {...props} />
-    ) : (
-        <UIMaterialTextViewSimple ref={ref} {...props} />
-    );
-});
+const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMaterialTextViewProps>(
+    function UIMaterialTextViewForwarded(
+        { floating = true, ...props }: UIMaterialTextViewProps,
+        ref,
+    ) {
+        return floating ? (
+            <UIMaterialTextViewFloating ref={ref} {...props} />
+        ) : (
+            <UIMaterialTextViewSimple ref={ref} {...props} />
+        );
+    },
+);
 
 // @ts-expect-error
 // ts doesn't understand that we assign [Icon|Action|Text] later, and want to see it right away

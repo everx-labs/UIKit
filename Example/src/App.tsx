@@ -12,12 +12,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { UIDropdownAlert, UILayoutManager, UINotice } from '@tonlabs/uikit.components';
 import {
-    UIDropdownAlert,
-    UILayoutManager,
-    UINotice,
-} from '@tonlabs/uikit.components';
-import { UIActionSheet, UICountryPicker, UIPopoverBackground } from '@tonlabs/uikit.navigation_legacy';
+    UIActionSheet,
+    UICountryPicker,
+    UIPopoverBackground,
+} from '@tonlabs/uikit.navigation_legacy';
 import {
     ColorVariants,
     DarkTheme,
@@ -58,6 +58,7 @@ import { Profile } from './screens/Profile';
 import { TextScreen } from './screens/Text';
 import { Browser } from './screens/Browser';
 import { Chat } from './screens/Chat';
+import { Carousel } from './screens/Carousel';
 import { Navigation } from './screens/Navigation';
 import { SectionsService } from './Search';
 import { KeyboardScreen } from './screens/Keyboard';
@@ -109,12 +110,8 @@ const Main = ({ navigation }: { navigation: any }) => {
                                 return (
                                     <FlatList
                                         style={{ flex: 1 }}
-                                        data={SectionsService.shared.find(
-                                            searchText,
-                                        )}
-                                        keyExtractor={({ item: { title } }) =>
-                                            title
-                                        }
+                                        data={SectionsService.shared.find(searchText)}
+                                        keyExtractor={({ item: { title } }) => title}
                                         renderItem={({
                                             item: {
                                                 item: { title, routeKey },
@@ -131,9 +128,7 @@ const Main = ({ navigation }: { navigation: any }) => {
                                                         navigation.navigate({
                                                             key: routeKey,
                                                         });
-                                                        setIsSearchVisible(
-                                                            false,
-                                                        );
+                                                        setIsSearchVisible(false);
                                                     }}
                                                 >
                                                     <UILabel>{title}</UILabel>
@@ -145,9 +140,7 @@ const Main = ({ navigation }: { navigation: any }) => {
                             }}
                         </UISearchBarButton>
                     </View>
-                    <ScrollView
-                        contentContainerStyle={{ paddingBottom: bottom }}
-                    >
+                    <ScrollView contentContainerStyle={{ paddingBottom: bottom }}>
                         <UILinkButton
                             title="Browser"
                             type={UILinkButtonType.Menu}
@@ -158,6 +151,12 @@ const Main = ({ navigation }: { navigation: any }) => {
                             title="Buttons"
                             type={UILinkButtonType.Menu}
                             onPress={() => navigation.navigate('buttons')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
+                            title="Carousel"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('carousel')}
                             layout={styles.button}
                         />
                         <UILinkButton
@@ -285,10 +284,7 @@ const App = () => {
         <UIStatusBarManager>
             <SafeAreaProvider>
                 <PortalManager>
-                    <NavigationContainer
-                        ref={navRef}
-                        linking={{ prefixes: ['/'] }}
-                    >
+                    <NavigationContainer ref={navRef} linking={{ prefixes: ['/'] }}>
                         <Split.Navigator
                             initialRouteName="browser"
                             screenOptions={{
@@ -297,21 +293,14 @@ const App = () => {
                                         styles.body,
                                         {
                                             backgroundColor:
-                                                theme[
-                                                    ColorVariants
-                                                        .BackgroundTertiary
-                                                ],
+                                                theme[ColorVariants.BackgroundTertiary],
                                         },
                                     ],
                                     main: [styles.main],
                                     detail: [
                                         styles.detail,
                                         {
-                                            backgroundColor:
-                                                theme[
-                                                    ColorVariants
-                                                        .BackgroundPrimary
-                                                ],
+                                            backgroundColor: theme[ColorVariants.BackgroundPrimary],
                                         },
                                     ],
                                 },
@@ -326,6 +315,7 @@ const App = () => {
                         >
                             <Split.Screen name="browser" component={Browser} />
                             <Split.Screen name="buttons" component={ButtonsScreen} />
+                            <Split.Screen name="carousel" component={Carousel} />
                             <Split.Screen name="chart" component={Chart} />
                             <Split.Screen name="chat" component={Chat} />
                             <Split.Screen name="checkbox" component={Checkbox} />
@@ -350,10 +340,7 @@ const App = () => {
                     <UILayoutManager />
                     <UIActionSheet />
                     <UICountryPicker navigation={navRef.current} isShared />
-                    <View
-                        style={StyleSheet.absoluteFill}
-                        pointerEvents="box-none"
-                    >
+                    <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
                         <UINotice />
                     </View>
                     <UIDropdownAlert />

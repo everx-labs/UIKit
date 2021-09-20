@@ -15,6 +15,9 @@ import type { SnapPoints } from '../types';
 const Y_THRESHOLD = 20;
 const X_THRESHOLD = 50;
 
+// @inline
+const INVALID_VALUE = 100000;
+
 type SwipeDirection = 'None' | 'Horizontal' | 'Vertical';
 
 type ToastNoticeState = 'Opened' | 'Closed' | 'ClosedLeft' | 'ClosedRight';
@@ -102,7 +105,22 @@ export const useNoticePosition = (
                 closedXSnapPoint: xSnapPoints.closedSnapPoint.value,
             };
         },
-        state => {
+        (state, prevState) => {
+            if (
+                state.closedYSnapPoint === INVALID_VALUE ||
+                state.openedYSnapPoint === INVALID_VALUE
+            ) {
+                return;
+            }
+            if (
+                (!prevState || prevState.closedYSnapPoint === INVALID_VALUE) &&
+                state.closedYSnapPoint !== INVALID_VALUE
+            ) {
+                /**
+                 * Initial yPosition
+                 */
+                yPosition.value = state.closedYSnapPoint;
+            }
             if (state.toastNoticeState === 'Opened') {
                 yPosition.value = moveWithSpring('Open', state.openedYSnapPoint, onAnimationEnd);
                 xPosition.value = moveWithSpring('Open', state.openedXSnapPoint, onAnimationEnd);

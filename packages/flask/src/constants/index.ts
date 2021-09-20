@@ -43,4 +43,14 @@ export const UIConstant = {
         mediumLogoSize: 27,
         maxValueLength: 4296,
     },
+
+    carousel: {
+        circleSize: 6,
+        circleHitSlop: {
+            top: 8,
+            left: 8,
+            right: 8,
+            bottom: 8,
+        },
+    },
 };

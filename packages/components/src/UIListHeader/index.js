@@ -18,11 +18,11 @@ const styles = StyleSheet.create({
 type Props = {
     title: string,
     containerStyle: ViewStyleProp,
-}
+};
 
 type State = {
     //
-}
+};
 
 // @deprecated
 class UIListHeader extends UIComponent<Props, State> {
@@ -46,10 +46,7 @@ class UIListHeader extends UIComponent<Props, State> {
                     this.props.containerStyle,
                 ]}
             >
-                <UILabel
-                    color={UILabelColors.TextPrimary}
-                    role={UILabelRoles.TitleMedium}
-                >
+                <UILabel color={UILabelColors.TextPrimary} role={UILabelRoles.TitleMedium}>
                     {this.getTitle()}
                 </UILabel>
             </View>

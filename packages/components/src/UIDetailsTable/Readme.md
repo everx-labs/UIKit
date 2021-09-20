@@ -33,7 +33,5 @@ const detailsList = [
     },
 ];
 
-<UIDetailsTable 
-    detailsList={detailsList}
-/>
+<UIDetailsTable detailsList={detailsList} />;
 ```

@@ -55,10 +55,7 @@ export function UISlideBar({
         <UIBackgroundView style={styles.container} testID={testID}>
             <View style={styles.headerLeftItems}>{headerLeftElement}</View>
             {hasPuller ? (
-                <UIBackgroundView
-                    color={ColorVariants.BackgroundNeutral}
-                    style={styles.puller}
-                />
+                <UIBackgroundView color={ColorVariants.BackgroundNeutral} style={styles.puller} />
             ) : (
                 <View style={styles.emptyDivider} />
             )}

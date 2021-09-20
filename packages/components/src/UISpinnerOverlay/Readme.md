@@ -14,13 +14,13 @@ class ModalExample extends React.Component {
         super();
         this.state = {
             visible: false,
-        }
+        };
     }
 
     showSpinner() {
         this.setState({ visible: true });
         setTimeout(() => {
-            this.setState({ visible: false })
+            this.setState({ visible: false });
         }, 2000);
     }
 
@@ -36,11 +36,8 @@ class ModalExample extends React.Component {
         return (
             <View style={{ margin: -16, padding: 16 }}>
                 <View style={buttonContainer}>
-                    <UILinkButton 
-                        title="Show spinner overlay"
-                        onPress={() => this.showSpinner()}
-                    />
-                    <UILinkButton 
+                    <UILinkButton title="Show spinner overlay" onPress={() => this.showSpinner()} />
+                    <UILinkButton
                         title="Show master spinner overlay"
                         onPress={() => this.showMasterSpinner()}
                     />
@@ -50,6 +47,6 @@ class ModalExample extends React.Component {
             </View>
         );
     }
-};
-<ModalExample />
+}
+<ModalExample />;
 ```

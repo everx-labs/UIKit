@@ -11,9 +11,7 @@ export function useAnimatedKeyboardHeight() {
         if (Platform.OS !== 'ios') {
             return;
         }
-        keyboardHeight.value = keyboard.keyboardShown
-            ? keyboard.keyboardHeight
-            : 0;
+        keyboardHeight.value = keyboard.keyboardShown ? keyboard.keyboardHeight : 0;
     }, [keyboard.keyboardHeight, keyboard.keyboardShown, keyboardHeight]);
 
     return keyboardHeight;

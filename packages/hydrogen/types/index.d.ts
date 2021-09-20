@@ -11,9 +11,7 @@ declare module 'react-native-indicators' {
         style?: StyleProp<ViewStyle>;
     };
 
-    export class MaterialIndicator extends React.PureComponent<
-        MaterialIndicatorProps
-    > {}
+    export class MaterialIndicator extends React.PureComponent<MaterialIndicatorProps> {}
 }
 
 // eslint-disable-next-line no-underscore-dangle
@@ -21,6 +19,4 @@ declare const _hapticImpact: (inputStyle: 'light' | 'medium' | 'heavy') => void;
 // eslint-disable-next-line no-underscore-dangle
 declare const _hapticSelection: () => void;
 // eslint-disable-next-line no-underscore-dangle
-declare const _hapticNotification: (
-    inputType: 'success' | 'warning' | 'error',
-) => void;
+declare const _hapticNotification: (inputType: 'success' | 'warning' | 'error') => void;

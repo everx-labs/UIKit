@@ -30,10 +30,7 @@ export function QuickAction(props: Props) {
                 style={commonStyles.buttonContainer}
                 onPress={onSendText}
             >
-                <UIImage
-                    source={UIAssets.icons.ui.buttonMsgSend}
-                    style={commonStyles.icon}
-                />
+                <UIImage source={UIAssets.icons.ui.buttonMsgSend} style={commonStyles.icon} />
             </TouchableOpacity>
         );
     }
@@ -46,28 +43,25 @@ export function QuickAction(props: Props) {
     //  that will allow to set icon size 32 (for currency signs)
     return (
         <View style={UIStyle.flex.row()}>
-            {quickActions.map((action) => (
+            {quickActions.map(action => (
                 <TouchableOpacity
                     key={`quickAction~${action.key}`}
                     testID={action.testID}
                     onPress={action.onPress}
                     style={[commonStyles.buttonContainer, UIStyle.flex.row()]}
                 >
-                    {action.icon != null && 
-                        <UIImage 
-                            source={action.icon}
-                            style={commonStyles.actionIcon}
-                        />
-                    }
-                    {action.title != null &&
+                    {action.icon != null && (
+                        <UIImage source={action.icon} style={commonStyles.actionIcon} />
+                    )}
+                    {action.title != null && (
                         <UILabel
                             color={UILabelColors.TextAccent}
                             role={UILabelRoles.Action}
                             style={action.icon ? UIStyle.margin.leftSmall() : null}
-                    >
+                        >
                             {action.title}
                         </UILabel>
-                    }
+                    )}
                 </TouchableOpacity>
             ))}
         </View>

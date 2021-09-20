@@ -1,11 +1,6 @@
 // @flow
 import * as React from 'react';
-import StylePropType from 'react-style-proptype';
-import {
-    View,
-    StyleSheet,
-    TouchableOpacity,
-} from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import type {
     ReturnKeyType,
     AutoCapitalize,
@@ -19,7 +14,7 @@ import {
     UILabel,
     UILabelColors,
     UILabelRoles,
-    UITextView
+    UITextView,
 } from '@tonlabs/uikit.hydrogen';
 
 import UIComponent from '../UIComponent';
@@ -66,11 +61,11 @@ type TextInputTransitProps = {
 type UITextInputProps = {
     testID?: string,
     beginningTag?: string,
-    containerStyle?: StylePropType,
+    containerStyle?: any,
     disabled?: boolean,
     needBorderBottom?: boolean,
     onPress?: (() => void) | null,
-    textStyle?: StylePropType,
+    textStyle?: any,
 };
 
 type Props = UITextInputProps & TextInputTransitProps;
@@ -125,10 +120,7 @@ class UITextInput extends UIComponent<Props, State> {
             <UILabel
                 color={UILabelColors.TextSecondary}
                 role={UILabelRoles.ParagraphText}
-                style={[
-                    styles.beginningTag,
-                    textStyle,
-                ]}
+                style={[styles.beginningTag, textStyle]}
             >
                 {beginningTag}
             </UILabel>
@@ -169,10 +161,7 @@ class UITextInput extends UIComponent<Props, State> {
                 multiline={multiline}
                 autoCapitalize={autoCapitalize}
                 secureTextEntry={secureTextEntry}
-                style={[
-                    styles.textInput,
-                    textStyle,
-                ]}
+                style={[styles.textInput, textStyle]}
                 keyboardType={keyboardType}
                 {...returnKeyTypeProp}
                 onFocus={onFocus}
