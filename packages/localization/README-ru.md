@@ -3,7 +3,7 @@
 # Локализация проекта [UIKit](https://github.com/tonlabs/UIKit)
 [![PR's приветствуются](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-В этом репозитории размещены файлы локализации проекта Quiver UI. 
+В этом репозитории размещены файлы локализации проекта UIKit. 
 
 ## Формат файлов
 Простая структура в формате [JSON](https://ru.wikipedia.org/wiki/JSON)
