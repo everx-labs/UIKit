@@ -3,6 +3,7 @@ import type { TextInput } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UITextView, useAutogrowTextView } from '@tonlabs/uikit.hydrogen';
+import { UIPopup } from '@tonlabs/uikit.popups';
 
 import { ChatInputContainer } from './ChatInputContainer';
 import { MenuPlus } from './MenuPlus';
@@ -47,15 +48,44 @@ export function ChatInput(props: ChatInputProps) {
         numberOfLinesProp,
         resetInputHeight,
     } = useAutogrowTextView(props.textInputRef, undefined, CHAT_INPUT_NUM_OF_LINES);
+    const [isNoticeVisible, setNoticeVisible] = React.useState(false);
+
+    const onMaxLength = () => {
+        setNoticeVisible(true);
+    };
+
+    const hideNotice = () => {
+        setNoticeVisible(false);
+    };
+
     const { inputHasValue, onChangeText, onKeyPress, onSendText } = useChatInputValue({
         ref: props.textInputRef,
         onSendText: props.onSendText,
-        onMaxLength: props.onMaxLength,
+        onMaxLength: props.onMaxLength || onMaxLength,
         resetInputHeight,
         maxInputLength: MAX_INPUT_LENGTH,
     });
 
     const CustomKeyboardButton = props.customKeyboardButton;
+
+    const returnNotice = () => {
+        if (props.onMaxLength === undefined) {
+            return (
+                <UIPopup.Notice
+                    type={UIPopup.Notice.Type.TopToast}
+                    color={UIPopup.Notice.Color.PrimaryInverted}
+                    visible={isNoticeVisible}
+                    title={uiLocalized.formatString(
+                        uiLocalized.Chats.Alerts.MessageTooLong,
+                        MAX_INPUT_LENGTH.toString(),
+                    )}
+                    onClose={hideNotice}
+                    duration={UIPopup.Notice.Duration.Long}
+                />
+            );
+        }
+        return;
+    };
 
     return (
         <ChatInputContainer
@@ -108,6 +138,7 @@ export function ChatInput(props: ChatInputProps) {
                     style={inputStyle}
                 />
             )}
+            {returnNotice()}
         </ChatInputContainer>
     );
 }
