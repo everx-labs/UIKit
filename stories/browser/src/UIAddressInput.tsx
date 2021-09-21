@@ -5,6 +5,7 @@ import { ChatInputContainer, useChatInputValue } from '@tonlabs/uistory.chats';
 import { UITextView, useAutogrowTextView, UIInputAccessoryView } from '@tonlabs/uikit.inputs';
 import { UILabel, UILabelRoles, ColorVariants } from '@tonlabs/uikit.themes';
 import { uiLocalized } from '@tonlabs/localization';
+import { UIPopup } from '@tonlabs/uikit.popups';
 import {
     OnHeightChange,
     OnMaxLength,
@@ -83,7 +84,7 @@ export function UIAddressInputInternal({
     onSendText: onSendTextProp,
     validateAddress,
     placeholder,
-    onMaxLength,
+    onMaxLength: onMaxLengthProp,
 }: UIAddressInputInternalProps) {
     const {
         onContentSizeChange,
@@ -93,6 +94,16 @@ export function UIAddressInputInternal({
         numberOfLinesProp,
         resetInputHeight,
     } = useAutogrowTextView(textInputRef, onHeightChange, MAX_INPUT_NUM_OF_LINES);
+
+    const [isNoticeVisible, setNoticeVisible] = React.useState(false);
+
+    const onMaxLength = () => {
+        setNoticeVisible(true);
+    };
+
+    const hideNotice = () => {
+        setNoticeVisible(false);
+    };
 
     const {
         inputHasValue,
@@ -105,13 +116,32 @@ export function UIAddressInputInternal({
         onSendText: onSendTextProp,
         resetInputHeight,
         maxInputLength: MAX_INPUT_LENGTH,
-        onMaxLength,
+        onMaxLength: onMaxLengthProp || onMaxLength,
     });
     const { validation, onChangeText, clear } = useValidation(
         onBaseChangeText,
         baseClear,
         validateAddress,
     );
+
+    const returnNotice = () => {
+        if (onMaxLengthProp === undefined) {
+            return (
+                <UIPopup.Notice
+                    type={UIPopup.Notice.Type.TopToast}
+                    color={UIPopup.Notice.Color.PrimaryInverted}
+                    visible={isNoticeVisible}
+                    title={uiLocalized.formatString(
+                        uiLocalized.Chats.Alerts.MessageTooLong,
+                        MAX_INPUT_LENGTH.toString(),
+                    )}
+                    onClose={hideNotice}
+                    duration={UIPopup.Notice.Duration.Long}
+                />
+            );
+        }
+        return;
+    };
 
     return (
         <ChatInputContainer
@@ -154,6 +184,7 @@ export function UIAddressInputInternal({
                 onKeyPress={onKeyPress}
                 style={inputStyle}
             />
+            {returnNotice()}
         </ChatInputContainer>
     );
 }

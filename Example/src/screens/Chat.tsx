@@ -344,8 +344,6 @@ const ChatStack = createStackNavigator();
 
 const ChatWindowScreen = () => {
     const [isNoticeVisible, setNoticeVisible] = React.useState(false);
-    const [isMaxLengthNoticeVisible, setMaxLengthNoticeVisible] = React.useState(false);
-    const [maxLengthTitle, setMaxLengthTitle] = React.useState('');
     const initialMessages = useInitialMessages();
     const initialMessagesWithKeys = useInitialMessagesWithKeys(initialMessages);
     const [messages, setMessages] = React.useState<ChatMessage[]>(initialMessagesWithKeys);
@@ -363,17 +361,6 @@ const ChatWindowScreen = () => {
         Clipboard.setString(text);
         console.log('long press handled', text);
         setNoticeVisible(true);
-    }, []);
-
-    const onMaxLength = React.useCallback((maxLength: number) => {
-        setMaxLengthNoticeVisible(true);
-        setMaxLengthTitle(
-            uiLocalized.formatString(uiLocalized.Chats.Alerts.MessageTooLong, maxLength.toString()),
-        );
-    }, []);
-
-    const hideMaxLengthNotice = React.useCallback(() => {
-        setMaxLengthNoticeVisible(false);
     }, []);
 
     const hideNotice = React.useCallback(() => {
@@ -434,15 +421,6 @@ const ChatWindowScreen = () => {
                 onSendMedia={onSendMedia}
                 onSendDocument={onSendDocument}
                 customKeyboard={stickersKeyboard}
-                onMaxLength={onMaxLength}
-            />
-            <UIPopup.Notice
-                visible={isMaxLengthNoticeVisible}
-                title={maxLengthTitle}
-                type={UIPopup.Notice.Type.TopToast}
-                color={UIPopup.Notice.Color.PrimaryInverted}
-                onClose={hideMaxLengthNotice}
-                duration={UIPopup.Notice.Duration.Long}
             />
             <UIPopup.Notice
                 visible={isNoticeVisible}
