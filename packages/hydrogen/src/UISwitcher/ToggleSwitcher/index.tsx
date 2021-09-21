@@ -2,7 +2,7 @@ import * as React from 'react';
 import Animated from 'react-native-reanimated';
 import { PanGestureHandler, TapGestureHandler } from 'react-native-gesture-handler';
 import type { UISwitcherProps } from '../types';
-import { ColorVariants, Theme, useTheme } from '../../Colors';
+import { ColorVariants, Theme, useTheme } from '@tonlabs/uikit.themes';
 import { makeStyles } from '../../makeStyles';
 import { useHover } from '../../useHover';
 import { useImageStyle, useOverlayStyle, useSwitcherGestureEvent, useSwitcherState } from './hooks';

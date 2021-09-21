@@ -1,4 +1,3 @@
-export * from './Colors';
 export * from './Portal';
 export * from './Typography';
 

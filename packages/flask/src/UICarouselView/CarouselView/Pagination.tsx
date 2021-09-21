@@ -4,7 +4,8 @@ import Animated from 'react-native-reanimated';
 
 import { UIConstant as CoreConstants } from '@tonlabs/uikit.core';
 import { UIConstant } from '../../constants';
-import { Theme, TouchableOpacity, useTheme } from '@tonlabs/uikit.hydrogen';
+import { TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import { Theme, useTheme } from '@tonlabs/uikit.themes';
 import { usePaginationStyle } from './animations';
 
 type CircleProps = {

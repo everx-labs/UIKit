@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Image } from 'react-native';
-import { useTheme } from '../Colors';
+import { useTheme } from '@tonlabs/uikit.themes';
 import type { UIImageProps } from './types';
 
 const FastImage = require('react-native-fast-image');

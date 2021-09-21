@@ -9,14 +9,12 @@ import {
 } from 'react-native';
 import type Animated from 'react-native-reanimated';
 import {
-    useTheme,
-    ColorVariants,
-    Theme,
     makeStyles,
     TypographyVariants,
     UILabel,
     UIBoxButtonVariant,
 } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme, Theme } from '@tonlabs/uikit.themes';
 import { UIConstant } from '@tonlabs/uikit.navigation';
 import { NoticeProps, UINoticeType, UINoticeColor, UINoticeActionAttributes } from './types';
 import { Action } from './Action';

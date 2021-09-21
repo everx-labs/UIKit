@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 
 import {
-    ColorVariants,
     UIBackgroundView,
     UIImage,
     UILabel,
@@ -10,10 +9,9 @@ import {
     UILabelRoles,
     UIMsgButton,
     UIMsgButtonType,
-    useShadow,
-    useTheme,
     TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useShadow, useTheme } from '@tonlabs/uikit.themes';
 import { UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
 import { UIAssets } from '@tonlabs/uikit.assets';

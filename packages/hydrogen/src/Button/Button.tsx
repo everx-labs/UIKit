@@ -13,7 +13,7 @@ import {
     ButtonTitle,
     useButtonChildren,
 } from './useButtonChildren';
-import { ColorVariants } from '../Colors';
+import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIConstant } from '../constants';
 import type { ButtonAnimations } from './types';
 

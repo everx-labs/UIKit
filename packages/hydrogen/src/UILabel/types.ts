@@ -11,7 +11,7 @@ import type {
 import type { LocalizationString } from '@tonlabs/localization';
 
 import type { TypographyVariants } from '../Typography';
-import type { ColorVariants } from '../Colors';
+import type { ColorVariants } from '@tonlabs/uikit.themes';
 
 /**
  * Only those `behavioral` styles from Text are accepted!

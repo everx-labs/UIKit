@@ -7,12 +7,11 @@ import {
     UILabelColors,
     UILabelRoles,
     UIBackgroundView,
-    useTheme,
-    ColorVariants,
     UIImage,
     UIBoxButton,
     UIBoxButtonType,
 } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
 
 import { UIPullerSheet } from './UIPullerSheet';

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Animated, ColorValue, Platform, StyleSheet, View } from 'react-native';
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
-import { useTheme, ColorVariants } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 
 import { Shortcuts } from './Shortcuts';
 import type { Shortcut } from './types';

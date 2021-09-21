@@ -1,5 +1,5 @@
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import type { StyleProp, ViewStyle } from 'react-native';
 import { BubbleBaseT, MessageStatus } from './types';
 import { BubblePosition } from './useBubblePosition';

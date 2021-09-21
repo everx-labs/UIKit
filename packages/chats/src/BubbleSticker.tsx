@@ -3,7 +3,8 @@ import { StyleSheet, View } from 'react-native';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
-import { ColorVariants, UILabel, UILabelRoles, useTheme, UIImage } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelRoles, UIImage } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 
 import { MessageStatus } from './types';
 import type { StickerMessage } from './types';

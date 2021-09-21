@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { ColorVariants, useTheme } from './Colors';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { useColorParts } from './useColorParts';
 
 const SHADE_FACTOR = 0.25;

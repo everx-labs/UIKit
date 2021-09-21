@@ -37,6 +37,7 @@
     ],
     "dependencies": {
         "@tonlabs/uikit.hydrogen": "^2.3.0",
+        "@tonlabs/uikit.themes": "^2.3.0",
         "@tonlabs/localization": "^2.3.0"
     },
     "devDependencies": {

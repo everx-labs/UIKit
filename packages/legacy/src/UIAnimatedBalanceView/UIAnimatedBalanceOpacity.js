@@ -7,7 +7,7 @@ import type AnimatedInterpolation from 'react-native/Libraries/Animated/src/node
 import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 
 export type Props = {
     balance: string,

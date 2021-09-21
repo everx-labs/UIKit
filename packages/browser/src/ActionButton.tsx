@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { ColorVariants, UIImage, useTheme, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import { UIImage, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIConstant } from '@tonlabs/uikit.core';
 

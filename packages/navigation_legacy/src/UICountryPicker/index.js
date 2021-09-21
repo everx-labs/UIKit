@@ -7,14 +7,13 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { UISearchBar } from '@tonlabs/uikit.navigation';
 import {
-    ColorVariants,
     Typography,
     TypographyVariants,
     UILabel,
     UILabelColors,
     UILabelRoles,
-    useTheme,
 } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { uiLocalized } from '@tonlabs/localization';
 import { UIAssets } from '@tonlabs/uikit.assets';
 

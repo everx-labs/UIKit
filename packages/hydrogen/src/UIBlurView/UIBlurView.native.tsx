@@ -3,7 +3,7 @@ import { Platform, StyleSheet, View } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
 import type { ViewStyle, StyleProp, ViewProps } from 'react-native';
 
-import { ColorVariants, useTheme } from '../Colors';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { UIConstant } from '../constants';
 
 const styles = StyleSheet.create({

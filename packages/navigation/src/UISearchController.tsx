@@ -11,7 +11,8 @@ import Animated, {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useBackHandler } from '@react-native-community/hooks';
 
-import { Portal, ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
+import { Portal } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { uiLocalized } from '@tonlabs/localization';
 
 import { UISearchBar } from './UISearchBar';

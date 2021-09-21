@@ -7,8 +7,8 @@ import {
     UIMaterialTextView,
     UISeedPhraseTextView,
     UINumberTextView,
-    ColorVariants,
 } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAddressTextView } from '@tonlabs/uikit.flask';
 import {
     UIAmountInput,

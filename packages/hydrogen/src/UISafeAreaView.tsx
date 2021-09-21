@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ViewStyle, SafeAreaView, ColorValue } from 'react-native';
 import type { ViewProps } from 'react-native';
 
-import { ColorVariants, useTheme } from './Colors';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 
 type Props = Omit<ViewProps, 'style'> & {
     color?: ColorVariants;

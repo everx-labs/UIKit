@@ -9,13 +9,8 @@ import type {
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import type { PointerEvents } from '@tonlabs/uikit.core';
-import {
-    ColorVariants,
-    UILabel,
-    UILabelColors,
-    UILabelRoles,
-    UITextView,
-} from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles, UITextView } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants } from '@tonlabs/uikit.themes';
 
 import UIComponent from '../UIComponent';
 

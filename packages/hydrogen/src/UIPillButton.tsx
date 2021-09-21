@@ -5,7 +5,7 @@ import { interpolateColor, useAnimatedStyle, useSharedValue } from 'react-native
 import { Button, UILayout } from './Button';
 import type { ButtonAnimations } from './Button/types';
 
-import { ColorVariants, useTheme } from './Colors';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { UIConstant } from './constants';
 import { UILabelRoles } from './UILabel';
 

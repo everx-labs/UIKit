@@ -12,14 +12,8 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { UIConstant } from '@tonlabs/uikit.core';
-import {
-    UILabel,
-    UILabelColors,
-    UILabelRoles,
-    useTheme,
-    ColorVariants,
-    hapticNotification,
-} from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles, hapticNotification } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { DotsContext } from './DotsContext';
 import { BiometryKey, BiometryProps, DelKey, Key, useBiometryPasscode } from './Keys';
 import {

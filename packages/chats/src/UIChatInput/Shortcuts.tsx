@@ -2,14 +2,8 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
-import {
-    useTheme,
-    ColorVariants,
-    UILabel,
-    UILabelRoles,
-    UILabelColors,
-    TouchableOpacity,
-} from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelRoles, UILabelColors, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 
 import type { Shortcut } from './types';
 

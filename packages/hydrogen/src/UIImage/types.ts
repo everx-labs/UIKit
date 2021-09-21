@@ -1,5 +1,5 @@
 import type { ImageProps } from 'react-native';
-import type { ColorVariants } from '../Colors';
+import type { ColorVariants } from '@tonlabs/uikit.themes';
 
 export type UIImageProps = ImageProps & {
     /**

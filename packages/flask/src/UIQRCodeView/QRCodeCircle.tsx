@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import { ColorVariants, useTheme, makeStyles } from '@tonlabs/uikit.hydrogen';
+import { makeStyles } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import QRCode from 'qrcode';
 import { useLogoRender } from './hooks';
 import { getEmptyAreaIndexRange, draw, getQRSvg } from './utils';

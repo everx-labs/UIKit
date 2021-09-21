@@ -8,7 +8,7 @@ import {
     Platform,
 } from 'react-native';
 
-import { ColorVariants, useTheme } from '../Colors';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { TypographyVariants } from '../Typography';
 import { UITextView, UITextViewProps, useFocused, useUITextViewValue } from '../UITextView';
 import { useHover } from '../useHover';

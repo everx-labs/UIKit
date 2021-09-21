@@ -3,13 +3,13 @@ import { ImageProps, ImageStyle, View, StyleProp, StyleSheet } from 'react-nativ
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import {
-    ColorVariants,
     UIImage,
     UILabel,
     UILabelColors,
     UILabelRoles,
     TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants } from '@tonlabs/uikit.themes';
 
 type OnPress = () => void | Promise<void>;
 

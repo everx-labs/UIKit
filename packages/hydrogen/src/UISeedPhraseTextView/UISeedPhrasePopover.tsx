@@ -9,7 +9,7 @@ import {
     FlatList,
 } from 'react-native';
 
-import { ColorVariants, useTheme } from '../Colors';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { UIConstant } from '../constants';
 import { Portal } from '../Portal';
 import { TouchableOpacity } from '../TouchableOpacity';

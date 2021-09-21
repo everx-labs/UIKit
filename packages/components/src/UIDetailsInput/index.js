@@ -14,7 +14,6 @@ import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import type { UIColorThemeNameType, EventProps } from '@tonlabs/uikit.core';
 import {
-    ColorVariants,
     UILabel,
     UILabelColors,
     UILabelRoles,
@@ -22,8 +21,8 @@ import {
     UILinkButtonSize,
     UILinkButtonVariant,
     UITextView,
-    useTheme,
 } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 
 import UIActionImage from '../UIActionImage';
 import { UIActionComponent } from '../UIActionComponent';

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, View } from 'react-native';
-import { UIBoxButton, UITextView, useTheme } from '@tonlabs/uikit.hydrogen';
+import { UIBoxButton, UITextView } from '@tonlabs/uikit.hydrogen';
+import { useTheme } from '@tonlabs/uikit.themes';
 import { UIQRCodeView, QRCodeType, QRCodeRef, QRCodeSize } from '@tonlabs/uikit.flask';
 import { createStackNavigator } from '@tonlabs/uikit.navigation';
 import { ExampleSection } from '../components/ExampleSection';

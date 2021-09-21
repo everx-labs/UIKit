@@ -2,7 +2,8 @@ import * as React from 'react';
 import { View, StyleSheet, LayoutChangeEvent } from 'react-native';
 import Svg, { Path as SvgPath } from 'react-native-svg';
 import Animated, { useAnimatedProps, useSharedValue } from 'react-native-reanimated';
-import { TypographyVariants, ColorVariants, UILabel, useTheme } from '@tonlabs/uikit.hydrogen';
+import { TypographyVariants, UILabel } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { addNativeProps } from '../Utils';
 import {
     LINEAR_CHART_CONTENT_HORIZONTAL_OFFSET,

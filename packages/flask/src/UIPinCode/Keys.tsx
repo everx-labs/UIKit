@@ -19,7 +19,6 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import {
-    ColorVariants,
     UIImage,
     UILabel,
     UILabelColors,
@@ -27,6 +26,7 @@ import {
     useColorParts,
     hapticSelection,
 } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
 
 import { DotsContext } from './DotsContext';

@@ -4,7 +4,7 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import { UIAssets } from '@tonlabs/uikit.assets';
 
 import { UIImage } from '../UIImage';
-import { ColorVariants } from '../Colors';
+import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIConstant } from '../constants';
 
 export function useClearButton(

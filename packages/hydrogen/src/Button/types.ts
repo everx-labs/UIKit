@@ -1,7 +1,7 @@
 import type { ImageStyle, TextStyle, ViewStyle } from 'react-native';
 import type Animated from 'react-native-reanimated';
 
-import type { ColorVariants } from '../Colors';
+import type { ColorVariants } from '@tonlabs/uikit.themes';
 
 type BackgroundParams = {
     animationParam: Animated.SharedValue<number>;

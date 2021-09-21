@@ -7,9 +7,8 @@ import {
     UILabelColors,
     UILabelRoles,
     UIBackgroundView,
-    useTheme,
-    ColorVariants,
 } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 
 import type { AddressInputAccount, AddressInputAccountData } from './types';
 import { UIPullerSheet } from './UIPullerSheet';

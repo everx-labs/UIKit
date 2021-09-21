@@ -6,7 +6,7 @@ import { UIConstant } from './constants';
 import { UIBackgroundView, UIBackgroundViewColors } from './UIBackgroundView';
 import { UILabel, UILabelColors, UILabelRoles } from './UILabel';
 
-import type { ColorVariants } from './Colors';
+import type { ColorVariants } from '@tonlabs/uikit.themes';
 
 type Props = {
     text: string;

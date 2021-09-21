@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import { UILabel, useTheme, ColorVariants } from '@tonlabs/uikit.hydrogen';
+import { UILabel } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { useRoute } from '@react-navigation/core';
 import { SectionsService } from '../Search';
 

@@ -37,6 +37,7 @@
         "@tonlabs/uikit.components": "^2.3.0",
         "@tonlabs/uikit.core": "^2.3.0",
         "@tonlabs/uikit.hydrogen": "^2.3.0",
+        "@tonlabs/uikit.themes": "^2.3.0",
         "react-native-country-picker-modal": "git+https://github.com/tonlabs/react-native-country-picker-modal.git",
         "react-native-simple-popover": "git+https://github.com/tonlabs/react-native-simple-popover.git"
     },

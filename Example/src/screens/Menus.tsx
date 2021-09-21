@@ -15,14 +15,8 @@ import {
     UILargeTitleHeader,
 } from '@tonlabs/uikit.navigation';
 import { UIPopup } from '@tonlabs/uikit.popups';
-import {
-    UIMaterialTextView,
-    useTheme,
-    ColorVariants,
-    UIBoxButton,
-    UILinkButton,
-    UILabel,
-} from '@tonlabs/uikit.hydrogen';
+import { UIMaterialTextView, UIBoxButton, UILinkButton, UILabel } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { UIPinCode, UIPinCodeBiometryType, UICountryPicker } from '@tonlabs/uikit.flask';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';

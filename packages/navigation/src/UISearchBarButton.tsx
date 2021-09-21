@@ -6,11 +6,11 @@ import {
     UIBackgroundView,
     UIImage,
     UILabel,
-    ColorVariants,
     UILabelColors,
     UILabelRoles,
     TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { uiLocalized } from '@tonlabs/localization';
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import type { StyleProp, ViewProps } from 'react-native';
-import { ColorVariants, useTheme } from '../Colors';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { UIConstant } from '../constants';
 
 const styles = StyleSheet.create({

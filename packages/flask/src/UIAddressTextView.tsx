@@ -7,9 +7,9 @@ import {
     useUITextViewValue,
     UIMaterialTextView,
     UIMaterialTextViewProps,
-    ColorVariants,
     UIMaterialTextViewRef,
 } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIQRCodeScannerSheet } from '@tonlabs/uikit.navigation';
 
 export type UIAddressTextViewValidationResult = {

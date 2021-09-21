@@ -15,7 +15,7 @@ import Animated, {
 import { IconSwitcherState, PressSwitcherState, SwitcherState, UISwitcherVariant } from '../types';
 import { UIImage } from '../../UIImage';
 import { hapticSelection } from '../../Haptics/Haptics';
-import { ColorVariants, Theme } from '../../Colors';
+import { ColorVariants, Theme } from '@tonlabs/uikit.themes';
 import { UIConstant } from '../../constants';
 
 const springConfig: Animated.WithSpringConfig = {

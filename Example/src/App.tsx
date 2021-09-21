@@ -19,22 +19,25 @@ import {
     UIPopoverBackground,
 } from '@tonlabs/uikit.navigation_legacy';
 import {
-    ColorVariants,
-    DarkTheme,
-    LightTheme,
     PortalManager,
-    ThemeContext,
     UIBackgroundView,
     UILabel,
     UILinkButton,
     UILinkButtonType,
     UIStatusBarManager,
-    useTheme,
+
     // @ts-ignore
     useWebFonts,
     UISwitcher,
     UISwitcherVariant,
 } from '@tonlabs/uikit.hydrogen';
+import {
+    DarkTheme,
+    LightTheme,
+    ColorVariants,
+    ThemeContext,
+    useTheme,
+} from '@tonlabs/uikit.themes';
 import {
     createSplitNavigator,
     ScrollView,

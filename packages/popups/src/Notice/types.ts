@@ -1,4 +1,5 @@
-import type { UIBoxButtonVariant, ColorVariants } from '@tonlabs/uikit.hydrogen';
+import type { UIBoxButtonVariant } from '@tonlabs/uikit.hydrogen';
+import type { ColorVariants } from '@tonlabs/uikit.themes';
 import type Animated from 'react-native-reanimated';
 
 // eslint-disable-next-line no-shadow

@@ -38,6 +38,7 @@
         "@tonlabs/uikit.chats": "^2.3.0",
         "@tonlabs/uikit.core": "^2.3.0",
         "@tonlabs/uikit.hydrogen": "^2.3.0",
+        "@tonlabs/uikit.themes": "^2.3.0",
         "@tonlabs/uikit.keyboard": "^2.3.0",
         "@tonlabs/localization": "^2.3.0",
         "@tonlabs/uikit.navigation": "^2.3.0",

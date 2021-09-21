@@ -2,7 +2,7 @@ import * as React from 'react';
 import type { StyleProp, ViewStyle } from 'react-native';
 import { MaterialIndicator } from 'react-native-indicators';
 
-import { ColorVariants, useTheme } from './Colors';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 
 export type UIIndicatorProps = {
     color?: ColorVariants;

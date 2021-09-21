@@ -4,7 +4,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant, UIDevice } from '@tonlabs/uikit.core';
-import { ColorVariants, useTheme, UIImage, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import { UIImage, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { registerKeyboardComponent } from '@tonlabs/uikit.keyboard';
 
 // Unfortunately we have to import it as UICustomKeyboard doesn't accept functional props :(

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { ColorVariants, useTheme } from '../Colors';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { UIConstant } from '../constants';
 import { UILabel, UILabelColors, UILabelRoles } from '../UILabel';
 import type { TypographyVariants } from '../Typography';

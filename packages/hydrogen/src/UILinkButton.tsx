@@ -6,7 +6,7 @@ import { Button, UILayout } from './Button';
 import type { ButtonAnimations } from './Button/types';
 
 import { UIConstant } from './constants';
-import { ColorVariants, useTheme } from './Colors';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { UILabelColors, UILabelRoles } from './UILabel';
 
 // eslint-disable-next-line no-shadow

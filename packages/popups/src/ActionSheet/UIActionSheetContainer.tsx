@@ -1,12 +1,7 @@
 import * as React from 'react';
 import { View, ViewStyle } from 'react-native';
-import {
-    UILabel,
-    UILabelRoles,
-    makeStyles,
-    ColorVariants,
-    useTheme,
-} from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelRoles, makeStyles } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { UICardSheet, UIConstant } from '@tonlabs/uikit.navigation';
 import { UIActionSheetAction } from './UIActionSheetAction';
 import {

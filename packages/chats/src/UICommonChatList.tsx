@@ -19,7 +19,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 
 import type { BubbleBaseT, ChatMessage, OnLongPressText, OnPressUrl } from './types';
 

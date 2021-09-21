@@ -2,7 +2,7 @@ import * as React from 'react';
 import BigNumber from 'bignumber.js';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import { ColorVariants } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants } from '@tonlabs/uikit.themes';
 import {
     UIChatInput,
     UIChatList,

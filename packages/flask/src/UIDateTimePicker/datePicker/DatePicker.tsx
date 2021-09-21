@@ -1,6 +1,6 @@
 import React, { useReducer, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useTheme, ColorVariants } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 
 import { Calendar } from './components/Calendar';
 import { SelectMonth } from './components/SelectMonth';

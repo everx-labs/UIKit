@@ -29,14 +29,8 @@ import type {
 import { UIPopup } from '@tonlabs/uikit.popups';
 import { uiLocalized } from '@tonlabs/localization';
 import { ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';
-import {
-    useTheme,
-    ColorVariants,
-    UIBoxButton,
-    UILabel,
-    UILabelColors,
-    UILabelRoles,
-} from '@tonlabs/uikit.hydrogen';
+import { UIBoxButton, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import {
     UICardSheet,
     UIBottomSheet,

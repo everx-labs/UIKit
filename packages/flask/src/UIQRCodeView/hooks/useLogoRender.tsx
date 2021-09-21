@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { ColorVariants, UIImage, makeStyles } from '@tonlabs/uikit.hydrogen';
+import { UIImage, makeStyles } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants } from '@tonlabs/uikit.themes';
 import type { ImageSourcePropType, ImageStyle, View } from 'react-native';
 import { useQRCodeLogoSize } from './useQRCodeLogoSize';
 import type { QRCodeSize } from '../../types';

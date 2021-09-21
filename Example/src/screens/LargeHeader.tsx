@@ -6,9 +6,9 @@ import {
     UIMaterialTextView,
     UILabel,
     UIBackgroundView,
-    ColorVariants,
     UILabelColors,
 } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants } from '@tonlabs/uikit.themes';
 import {
     ScrollView,
     FlatList,

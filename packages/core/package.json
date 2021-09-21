@@ -35,6 +35,7 @@
     "dependencies": {
         "@quentin-sommer/react-useragent": "2.0.0",
         "@tonlabs/uikit.hydrogen": "^2.3.0",
+        "@tonlabs/uikit.themes": "^2.3.0",
         "bignumber.js": "9.0.0",
         "currency-formatter": "1.5.4",
         "dayjs": "1.9.1",
