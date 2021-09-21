@@ -23,13 +23,11 @@ import {
     UILinkButton,
     UILinkButtonType,
     UIStatusBarManager,
-
-    // @ts-ignore
-    useWebFonts,
     UISwitcher,
     UISwitcherVariant,
 } from '@tonlabs/uikit.hydrogen';
 import {
+    useWebFonts,
     UIBackgroundView,
     UILabel,
     DarkTheme,

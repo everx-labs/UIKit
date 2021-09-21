@@ -23,14 +23,14 @@ Basic font for `hydrogen` is [Inter](https://rsms.me/inter/).
 ## Web
 
 ```ts
-import { useWebFonts } from '@tonlabs/uikit.hydrogen';
+import { useWebFonts } from '@tonlabs/uikit.themes';
 ```
 
 For better performance (faster font load) we recommend following setup with [dynamic imports](https://webpack.js.org/guides/code-splitting/#dynamic-imports) to load fonts as fast as possible:
 
 ```ts
 // index.js
-import { useWebFonts } from '@tonlabs/uikit.hydrogen';
+import { useWebFonts } from '@tonlabs/uikit.themes';
 
 useWebFonts();
 

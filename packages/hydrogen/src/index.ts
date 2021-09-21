@@ -18,9 +18,6 @@ export * from './UIStatusBar';
 export * from './UITextView';
 export * from './UISwitcher';
 
-// @ts-expect-error do not work with '.ios' and '.android' suffixes
-// eslint-disable-next-line import/no-unresolved
-export * from './useWebFonts';
 export * from './useAutogrowTextView';
 export * from './useColorParts';
 export * from './useColorShades';
