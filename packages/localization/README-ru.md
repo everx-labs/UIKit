@@ -1,6 +1,6 @@
 [English](./README.md)
 
-# Локализация проекта [Quiver UI](https://github.com/tonlabs/UIKit)
+# Локализация проекта [UIKit](https://github.com/tonlabs/UIKit)
 [![PR's приветствуются](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 В этом репозитории размещены файлы локализации проекта Quiver UI. 
