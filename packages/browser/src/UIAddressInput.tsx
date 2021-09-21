@@ -103,13 +103,13 @@ export function UIAddressInputInternal({
 
     const [isNoticeVisible, setNoticeVisible] = React.useState(false);
 
-    const onMaxLength = () => {
+    const onMaxLength = React.useCallback(() => {
         setNoticeVisible(true);
-    };
+    }, []);
 
-    const hideNotice = () => {
+    const hideNotice = React.useCallback(() => {
         setNoticeVisible(false);
-    };
+    }, []);
 
     const {
         inputHasValue,
@@ -130,8 +130,8 @@ export function UIAddressInputInternal({
         validateAddress,
     );
 
-    const returnNotice = () => {
-        if (onMaxLengthProp === undefined) {
+    const renderNotice = React.useCallback(() => {
+        if (onMaxLengthProp == null) {
             return (
                 <UIPopup.Notice
                     type={UIPopup.Notice.Type.TopToast}
@@ -146,8 +146,8 @@ export function UIAddressInputInternal({
                 />
             );
         }
-        return;
-    };
+        return null;
+    }, [hideNotice, isNoticeVisible, onMaxLengthProp]);
 
     return (
         <ChatInputContainer
@@ -190,7 +190,7 @@ export function UIAddressInputInternal({
                 onKeyPress={onKeyPress}
                 style={inputStyle}
             />
-            {returnNotice()}
+            {renderNotice()}
         </ChatInputContainer>
     );
 }
