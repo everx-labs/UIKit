@@ -9,8 +9,7 @@ import {
     StyleSheet,
     StyleProp,
 } from 'react-native';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
-import { Typography, TypographyVariants } from './Typography';
+import { ColorVariants, useTheme, Typography, TypographyVariants } from '@tonlabs/uikit.themes';
 
 /**
  * Only those `behavioral` styles from Text are accepted!

@@ -12,8 +12,9 @@ import {
     UILabel,
     UILabelColors,
     UILabelRoles,
-} from '@tonlabs/uikit.hydrogen';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+    ColorVariants,
+    useTheme,
+} from '@tonlabs/uikit.themes';
 import { uiLocalized } from '@tonlabs/localization';
 import { UIAssets } from '@tonlabs/uikit.assets';
 

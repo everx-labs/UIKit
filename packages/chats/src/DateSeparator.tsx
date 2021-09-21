@@ -4,8 +4,13 @@ import dayjs from 'dayjs';
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import {
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    ColorVariants,
+    useTheme,
+} from '@tonlabs/uikit.themes';
 
 const getLabel = (time: number) => {
     const today = new Date();

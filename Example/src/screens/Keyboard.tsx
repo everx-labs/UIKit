@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { UILabel } from '@tonlabs/uikit.hydrogen';
+import { UILabel } from '@tonlabs/uikit.themes';
 import {
     // @ts-ignore
     UIInputAccessoryView,

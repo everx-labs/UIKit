@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 
+import { TouchableOpacity, UIBackgroundView } from '@tonlabs/uikit.hydrogen';
 import {
-    TouchableOpacity,
     UILabel,
     UILabelColors,
     UILabelRoles,
-    UIBackgroundView,
-} from '@tonlabs/uikit.hydrogen';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+    ColorVariants,
+    useTheme,
+} from '@tonlabs/uikit.themes';
 
 import type { AddressInputAccount, AddressInputAccountData } from './types';
 import { UIPullerSheet } from './UIPullerSheet';

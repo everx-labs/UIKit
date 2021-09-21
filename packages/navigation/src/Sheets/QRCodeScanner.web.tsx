@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import QRCodeScannerWeb from 'react-qr-reader';
 
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 import { uiLocalized } from '@tonlabs/localization';
 
 import { UIConstant } from '../constants';

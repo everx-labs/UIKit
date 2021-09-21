@@ -8,12 +8,10 @@ import { UIStyle, UIConstant, UIFunction } from '@tonlabs/uikit.core';
 import {
     UIBackgroundView,
     UIBackgroundViewColors,
-    UILabel,
-    UILabelColors,
-    UILabelRoles,
     UILinkButton,
     UILinkButtonSize,
 } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 
 import UIComponent from '../UIComponent';
 

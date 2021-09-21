@@ -21,7 +21,6 @@ import {
 import {
     PortalManager,
     UIBackgroundView,
-    UILabel,
     UILinkButton,
     UILinkButtonType,
     UIStatusBarManager,
@@ -32,6 +31,7 @@ import {
     UISwitcherVariant,
 } from '@tonlabs/uikit.hydrogen';
 import {
+    UILabel,
     DarkTheme,
     LightTheme,
     ColorVariants,

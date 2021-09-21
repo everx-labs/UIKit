@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Platform, StyleSheet, TextInput } from 'react-native';
 
 import { UIConstant } from './constants';
-import { Typography, TypographyVariants } from './Typography';
+import { Typography, TypographyVariants } from '@tonlabs/uikit.themes';
 
 export type OnHeightChange = (height: number) => void;
 

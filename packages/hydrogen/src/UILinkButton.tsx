@@ -6,8 +6,7 @@ import { Button, UILayout } from './Button';
 import type { ButtonAnimations } from './Button/types';
 
 import { UIConstant } from './constants';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
-import { UILabelColors, UILabelRoles } from './UILabel';
+import { ColorVariants, useTheme, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 
 // eslint-disable-next-line no-shadow
 export enum UILinkButtonType {

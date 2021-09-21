@@ -2,8 +2,8 @@ import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Animated, { runOnJS, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 
-import { UIImage, UILabel, UIIndicator, hapticImpact } from '@tonlabs/uikit.hydrogen';
-import { ColorVariants } from '@tonlabs/uikit.themes';
+import { UIImage, UIIndicator, hapticImpact } from '@tonlabs/uikit.hydrogen';
+import { UILabel, ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
 
 import { useLargeTitlePosition } from './index';

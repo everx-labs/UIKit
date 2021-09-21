@@ -4,14 +4,18 @@ import { Platform, StyleSheet, View } from 'react-native';
 import {
     UIBackgroundView,
     UIImage,
-    UILabel,
-    UILabelColors,
-    UILabelRoles,
     UIMsgButton,
     UIMsgButtonType,
     TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
-import { ColorVariants, useShadow, useTheme } from '@tonlabs/uikit.themes';
+import {
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    ColorVariants,
+    useShadow,
+    useTheme,
+} from '@tonlabs/uikit.themes';
 import { UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
 import { UIAssets } from '@tonlabs/uikit.assets';

@@ -1,6 +1,6 @@
 import React from 'react';
-import { TypographyVariants, UIIndicator, UILabel } from '@tonlabs/uikit.hydrogen';
-import { ColorVariants } from '@tonlabs/uikit.themes';
+import { UIIndicator } from '@tonlabs/uikit.hydrogen';
+import { TypographyVariants, UILabel, ColorVariants } from '@tonlabs/uikit.themes';
 import { CountryPickerContext } from './CountryPickerContext';
 import { uiLocalized } from '@tonlabs/localization';
 import { View, StyleSheet } from 'react-native';

@@ -14,15 +14,18 @@ import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import type { UIColorThemeNameType, EventProps } from '@tonlabs/uikit.core';
 import {
-    UILabel,
-    UILabelColors,
-    UILabelRoles,
     UILinkButton,
     UILinkButtonSize,
     UILinkButtonVariant,
     UITextView,
 } from '@tonlabs/uikit.hydrogen';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import {
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    ColorVariants,
+    useTheme,
+} from '@tonlabs/uikit.themes';
 
 import UIActionImage from '../UIActionImage';
 import { UIActionComponent } from '../UIActionComponent';

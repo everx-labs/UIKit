@@ -3,15 +3,18 @@ import { StyleSheet, View } from 'react-native';
 
 import {
     TouchableOpacity,
-    UILabel,
-    UILabelColors,
-    UILabelRoles,
     UIBackgroundView,
     UIImage,
     UIBoxButton,
     UIBoxButtonType,
 } from '@tonlabs/uikit.hydrogen';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import {
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    ColorVariants,
+    useTheme,
+} from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
 
 import { UIPullerSheet } from './UIPullerSheet';

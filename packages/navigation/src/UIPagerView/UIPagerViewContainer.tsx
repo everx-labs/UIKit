@@ -17,8 +17,13 @@ import {
     TabView,
 } from 'react-native-tab-view';
 
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import {
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    ColorVariants,
+    useTheme,
+} from '@tonlabs/uikit.themes';
 
 import { UIConstant } from '../constants';
 

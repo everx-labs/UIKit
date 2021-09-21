@@ -7,12 +7,10 @@ import { ChatInputContainer } from '@tonlabs/uikit.chats';
 import {
     UITextView,
     useUITextViewValue,
-    UILabel,
-    UILabelRoles,
     useNumberFormatting,
     useAutogrowTextView,
 } from '@tonlabs/uikit.hydrogen';
-import { ColorVariants } from '@tonlabs/uikit.themes';
+import { UILabel, UILabelRoles, ColorVariants } from '@tonlabs/uikit.themes';
 import { uiLocalized } from '@tonlabs/localization';
 import type { OnHeightChange, OnSendAmount } from './types';
 import { ActionButton } from './ActionButton';

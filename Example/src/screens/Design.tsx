@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Platform, View } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIBlurView, UIImage, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
-import { ColorVariants } from '@tonlabs/uikit.themes';
+import { UIBlurView, UIImage } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles, ColorVariants } from '@tonlabs/uikit.themes';
 
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';

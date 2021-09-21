@@ -1,5 +1,4 @@
 export * from './Portal';
-export * from './Typography';
 
 export * from './UIAutogrowTextView';
 export * from './UIBackgroundView';
@@ -9,7 +8,6 @@ export * from './UIBoxButton';
 export * from './UIImage';
 export * from './UIIndicator';
 export * from './UIKeyTextView';
-export * from './UILabel';
 export * from './UILinkButton';
 export * from './UIMaterialTextView';
 export * from './UIMsgButton';

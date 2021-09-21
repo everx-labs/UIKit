@@ -3,8 +3,14 @@ import { View, StyleSheet, Image } from 'react-native';
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UILabel, UILabelRoles, UILabelColors, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import { TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import {
+    UILabel,
+    UILabelRoles,
+    UILabelColors,
+    ColorVariants,
+    useTheme,
+} from '@tonlabs/uikit.themes';
 
 import { MessageStatus, TransactionType } from './types';
 import type { TransactionComment } from './types';

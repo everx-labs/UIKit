@@ -3,13 +3,8 @@ import { View } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIStyle } from '@tonlabs/uikit.core';
-import {
-    UIImage,
-    UILabel,
-    UILabelColors,
-    UILabelRoles,
-    TouchableOpacity,
-} from '@tonlabs/uikit.hydrogen';
+import { UIImage, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 
 import type { QuickActionItem } from './types';
 import { commonStyles } from './styles';

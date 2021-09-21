@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 import { DOTS_STATE_PRESENTATION_DURATION } from './constants';
 
 // eslint-disable-next-line no-shadow

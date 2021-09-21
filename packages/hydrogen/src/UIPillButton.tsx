@@ -5,9 +5,8 @@ import { interpolateColor, useAnimatedStyle, useSharedValue } from 'react-native
 import { Button, UILayout } from './Button';
 import type { ButtonAnimations } from './Button/types';
 
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import { ColorVariants, useTheme, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UIConstant } from './constants';
-import { UILabelRoles } from './UILabel';
 
 // eslint-disable-next-line no-shadow
 export enum UIPillButtonIconPosition {

@@ -10,8 +10,7 @@ import Animated, {
     withSpring,
 } from 'react-native-reanimated';
 
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
-import { Typography, TypographyVariants } from '../Typography';
+import { ColorVariants, useTheme, Typography, TypographyVariants } from '@tonlabs/uikit.themes';
 
 export type FloatingLabelProps = {
     children: string;

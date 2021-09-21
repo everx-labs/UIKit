@@ -5,14 +5,14 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import { MaterialIndicator } from 'react-native-indicators';
 
 import { UIConstant } from '@tonlabs/uikit.core';
+import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
 import {
-    UIBackgroundView,
-    UIBackgroundViewColors,
     UILabel,
     UILabelColors,
     UILabelRoles,
-} from '@tonlabs/uikit.hydrogen';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+    ColorVariants,
+    useTheme,
+} from '@tonlabs/uikit.themes';
 import { uiLocalized } from '@tonlabs/localization';
 
 import UIComponent from '../UIComponent';

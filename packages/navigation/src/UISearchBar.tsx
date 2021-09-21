@@ -5,9 +5,6 @@ import {
     UIBackgroundView,
     UIImage,
     UIIndicator,
-    UILabel,
-    UILabelColors,
-    UILabelRoles,
     UITextView,
     UITextViewProps,
     useUITextViewValue,
@@ -16,7 +13,7 @@ import {
     useFocused,
     TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
-import { ColorVariants } from '@tonlabs/uikit.themes';
+import { UILabel, UILabelColors, UILabelRoles, ColorVariants } from '@tonlabs/uikit.themes';
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { uiLocalized } from '@tonlabs/localization';

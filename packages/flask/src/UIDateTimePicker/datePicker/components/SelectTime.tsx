@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Easing, Platform, StyleSheet, View } from 'react-native';
-import { UIBoxButton, UIBoxButtonType, UILabel } from '@tonlabs/uikit.hydrogen';
+import { UIBoxButton, UIBoxButtonType } from '@tonlabs/uikit.hydrogen';
+import { UILabel } from '@tonlabs/uikit.themes';
 import { useCalendar } from '../calendarContext';
 import { UITimeInput } from './TimeInput';
 import { UIDateTimePickerMode } from '../../../types';

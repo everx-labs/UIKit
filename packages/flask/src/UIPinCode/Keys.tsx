@@ -18,15 +18,8 @@ import Animated, {
     withSpring,
 } from 'react-native-reanimated';
 
-import {
-    UIImage,
-    UILabel,
-    UILabelColors,
-    UILabelRoles,
-    useColorParts,
-    hapticSelection,
-} from '@tonlabs/uikit.hydrogen';
-import { ColorVariants } from '@tonlabs/uikit.themes';
+import { UIImage, useColorParts, hapticSelection } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles, ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
 
 import { DotsContext } from './DotsContext';

@@ -1,5 +1,5 @@
 import { TypographyVariants } from '../Typography';
-import { ColorVariants } from '@tonlabs/uikit.themes';
+import { ColorVariants } from '../Colors';
 
 export * from './UILabel';
 export const UILabelRoles = TypographyVariants;

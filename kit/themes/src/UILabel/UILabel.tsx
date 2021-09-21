@@ -5,7 +5,7 @@ import { ColorValue, Text } from 'react-native';
 import TextAncestorContext from 'react-native/Libraries/Text/TextAncestor';
 
 import { Typography, TypographyVariants } from '../Typography';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import { ColorVariants, useTheme } from '../Colors';
 import type { Props } from './types';
 // @ts-expect-error
 import { useLabelDataSet } from './useLabelDataSet';

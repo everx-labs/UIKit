@@ -2,15 +2,8 @@ import * as React from 'react';
 import { StyleSheet } from 'react-native';
 
 import { UIConstant } from '@tonlabs/uikit.core';
-import {
-    UIBackgroundView,
-    UIImage,
-    UILabel,
-    UILabelColors,
-    UILabelRoles,
-    TouchableOpacity,
-} from '@tonlabs/uikit.hydrogen';
-import { ColorVariants } from '@tonlabs/uikit.themes';
+import { UIBackgroundView, UIImage, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles, ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { uiLocalized } from '@tonlabs/localization';
 

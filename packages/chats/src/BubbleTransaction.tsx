@@ -4,8 +4,13 @@ import { View, StyleSheet } from 'react-native';
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
 import { UIScaleButton } from '@tonlabs/uikit.components';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import {
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    ColorVariants,
+    useTheme,
+} from '@tonlabs/uikit.themes';
 
 import { MessageStatus, TransactionType } from './types';
 import type { TransactionMessage } from './types';

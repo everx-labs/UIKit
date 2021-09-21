@@ -8,11 +8,9 @@ import {
     Platform,
 } from 'react-native';
 
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
-import { TypographyVariants } from '../Typography';
+import { ColorVariants, useTheme, UILabel, TypographyVariants } from '@tonlabs/uikit.themes';
 import { UITextView, UITextViewProps, useFocused, useUITextViewValue } from '../UITextView';
 import { useHover } from '../useHover';
-import { UILabel } from '../UILabel';
 import {
     calculateWebInputHeight,
     OnHeightChange,

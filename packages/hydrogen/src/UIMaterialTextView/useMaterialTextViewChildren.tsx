@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from '../TouchableOpacity';
 
 import { UIImage, UIImageProps } from '../UIImage';
-import { UILabel, UILabelColors, UILabelRoles } from '../UILabel';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 import { useClearButton } from './useClearButton';
 
 export function UIMaterialTextViewIcon({

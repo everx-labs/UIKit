@@ -1,8 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { makeStyles, TouchableOpacity, UILabel } from '@tonlabs/uikit.hydrogen';
-import { ColorVariants, useTheme, Theme } from '@tonlabs/uikit.themes';
+import { makeStyles, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import { UILabel, ColorVariants, useTheme, Theme } from '@tonlabs/uikit.themes';
 import { UIConstant } from '@tonlabs/uikit.navigation';
 
 import type { Country } from '../types';

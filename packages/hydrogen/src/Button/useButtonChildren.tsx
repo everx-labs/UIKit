@@ -10,10 +10,15 @@ import {
 } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import {
+    ColorVariants,
+    useTheme,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    TypographyVariants,
+} from '@tonlabs/uikit.themes';
 import { UIConstant } from '../constants';
-import { UILabel, UILabelColors, UILabelRoles } from '../UILabel';
-import type { TypographyVariants } from '../Typography';
 import { TouchableOpacity } from '../TouchableOpacity';
 
 // eslint-disable-next-line no-shadow

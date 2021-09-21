@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 
 import { UIStyle } from '@tonlabs/uikit.core';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 
 import type { SystemMessage } from './types';
 

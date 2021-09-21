@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Animated, I18nManager, StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { UILabel } from '@tonlabs/uikit.hydrogen';
-import { ColorVariants } from '@tonlabs/uikit.themes';
+import { UILabel, ColorVariants } from '@tonlabs/uikit.themes';
 import type { TimeInputProps } from './types';
 import { useCalendar } from '../../calendarContext';
 

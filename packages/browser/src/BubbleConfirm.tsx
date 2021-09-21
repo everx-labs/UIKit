@@ -2,14 +2,14 @@ import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/localization';
+import { UIBackgroundView, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
 import {
     UILabel,
     UILabelColors,
     UILabelRoles,
-    UIBackgroundView,
-    TouchableOpacity,
-} from '@tonlabs/uikit.hydrogen';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+    ColorVariants,
+    useTheme,
+} from '@tonlabs/uikit.themes';
 import { UIConstant } from '@tonlabs/uikit.core';
 
 export function BubbleConfirmSuccessful() {

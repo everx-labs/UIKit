@@ -13,8 +13,14 @@ import { runOnUI } from 'react-native-reanimated';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
-import { UILabel, UILabelColors, UILabelRoles, hapticImpact } from '@tonlabs/uikit.hydrogen';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import { hapticImpact } from '@tonlabs/uikit.hydrogen';
+import {
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    ColorVariants,
+    useTheme,
+} from '@tonlabs/uikit.themes';
 
 import { MessageStatus, OnLongPressText, OnPressUrl } from './types';
 import type { ChatPlainTextMessage, PlainTextMessage } from './types';

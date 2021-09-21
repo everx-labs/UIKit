@@ -9,11 +9,16 @@ import {
     FlatList,
 } from 'react-native';
 
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import {
+    ColorVariants,
+    useTheme,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+} from '@tonlabs/uikit.themes';
 import { UIConstant } from '../constants';
 import { Portal } from '../Portal';
 import { TouchableOpacity } from '../TouchableOpacity';
-import { UILabel, UILabelColors, UILabelRoles } from '../UILabel';
 
 const MAX_CELLS = 3;
 

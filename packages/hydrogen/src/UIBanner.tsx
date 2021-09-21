@@ -4,7 +4,7 @@ import type { StyleProp, ViewStyle } from 'react-native';
 
 import { UIConstant } from './constants';
 import { UIBackgroundView, UIBackgroundViewColors } from './UIBackgroundView';
-import { UILabel, UILabelColors, UILabelRoles } from './UILabel';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 
 import type { ColorVariants } from '@tonlabs/uikit.themes';
 

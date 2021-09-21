@@ -33,7 +33,9 @@
         "lib/",
         "src/"
     ],
-    "dependencies": {},
+    "dependencies": {
+        "@tonlabs/localization": "^2.3.0"
+    },
     "devDependencies": {
         "@react-native-community/bob": "0.16.2",
         "typescript": "4.4.3"

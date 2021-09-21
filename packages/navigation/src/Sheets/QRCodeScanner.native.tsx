@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import QRCodeScannerNative from 'react-native-qrcode-scanner';
 import type { BarCodeReadEvent } from 'react-native-camera';
 
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 import { uiLocalized } from '@tonlabs/localization';
 
 import { UIConstant } from '../constants';

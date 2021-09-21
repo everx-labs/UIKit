@@ -3,8 +3,8 @@ import { Platform, StyleSheet, TextInput } from 'react-native';
 
 import { UIInputAccessoryView } from '@tonlabs/uikit.keyboard';
 import { ChatInputContainer, useChatInputValue, useChatMaxLengthAlert } from '@tonlabs/uikit.chats';
-import { UITextView, useAutogrowTextView, UILabel, UILabelRoles } from '@tonlabs/uikit.hydrogen';
-import { ColorVariants } from '@tonlabs/uikit.themes';
+import { UITextView, useAutogrowTextView } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelRoles, ColorVariants } from '@tonlabs/uikit.themes';
 import { uiLocalized } from '@tonlabs/localization';
 import {
     OnHeightChange,

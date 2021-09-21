@@ -5,13 +5,8 @@ import { hideMessage } from 'react-native-flash-message';
 import { PanGestureHandler, State as RNGHState } from 'react-native-gesture-handler';
 
 import { UIConstant } from '@tonlabs/uikit.core';
-import {
-    UIBackgroundView,
-    UIBackgroundViewColors,
-    UILabel,
-    UILabelColors,
-    UILabelRoles,
-} from '@tonlabs/uikit.hydrogen';
+import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 
 import UINotice from '../UINotice';
 import type { MessageObject } from '../UINotice';

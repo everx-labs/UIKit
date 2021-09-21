@@ -10,13 +10,8 @@ import Animated, {
     useAnimatedReaction,
     scrollTo,
 } from 'react-native-reanimated';
-import {
-    UILabel,
-    UILabelColors,
-    UILabelRoles,
-    UIBackgroundView,
-    TouchableOpacity,
-} from '@tonlabs/uikit.hydrogen';
+import { UIBackgroundView, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 
 import { useHasScroll } from '../Scrollable';
 import { ScrollableContext } from '../Scrollable/Context';

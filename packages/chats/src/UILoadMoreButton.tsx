@@ -4,8 +4,14 @@ import { MaterialIndicator } from 'react-native-indicators';
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
-import { UILabel, UILabelColors, UILabelRoles, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import { TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import {
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    ColorVariants,
+    useTheme,
+} from '@tonlabs/uikit.themes';
 
 type Props = {
     label?: string;

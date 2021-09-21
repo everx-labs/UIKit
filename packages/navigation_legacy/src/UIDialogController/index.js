@@ -3,14 +3,8 @@ import React from 'react';
 import { View, StyleSheet, Animated, LayoutAnimation } from 'react-native';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import {
-    UIBackgroundView,
-    UIBackgroundViewColors,
-    UILabel,
-    UILabelColors,
-    UILabelRoles,
-    Portal,
-} from '@tonlabs/uikit.hydrogen';
+import { UIBackgroundView, UIBackgroundViewColors, Portal } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 import { ScrollView } from '@tonlabs/uikit.navigation';
 
 import UIController from '../UIController';

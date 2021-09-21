@@ -17,7 +17,7 @@ import type { ViewLayoutEvent } from 'react-native/Libraries/Components/View/Vie
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIConstant, UIColor, UIDevice, UIStyle } from '@tonlabs/uikit.core';
 import type { PositionObject } from '@tonlabs/uikit.core';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 
 import UIComponent from '../UIComponent';
 
