@@ -3,8 +3,8 @@ import { View, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { UIConstant as CoreConstants } from '@tonlabs/uikit.core';
-import { UIConstant } from '../../constants';
 import { Theme, TouchableOpacity, useTheme } from '@tonlabs/uikit.hydrogen';
+import { UIConstant } from '../../constants';
 import { usePaginationStyle } from './animations';
 
 type CircleProps = {
@@ -24,10 +24,7 @@ function Circle({ active, onPress, theme }: CircleProps) {
 }
 
 function getPaginationWidth(amount: number) {
-    return (
-        CoreConstants.contentOffset() +
-        amount * (UIConstant.carousel.circleSize + CoreConstants.contentOffset())
-    );
+    return amount * (UIConstant.carousel.circleSize + CoreConstants.contentOffset());
 }
 
 type PaginationProps = {
@@ -75,5 +72,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignSelf: 'center',
+        alignItems: 'center',
     },
 });
