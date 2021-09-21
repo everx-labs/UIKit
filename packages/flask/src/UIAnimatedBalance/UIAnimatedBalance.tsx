@@ -98,6 +98,8 @@ export function UIAnimatedBalance({
     icon: UIImageProps['source'];
     integerVariant?: TypographyVariants;
     fractionalVariant?: TypographyVariants;
+    // We don't want to deal with edge cases for now
+    // as the component is not for use for general cases with all number
     maxFractionalDigits?: 1 | 2 | 3 | 4 | 5;
     loading?: boolean;
 }) {
