@@ -48,15 +48,16 @@ export function ChatInput(props: ChatInputProps) {
         numberOfLinesProp,
         resetInputHeight,
     } = useAutogrowTextView(props.textInputRef, undefined, CHAT_INPUT_NUM_OF_LINES);
+
     const [isNoticeVisible, setNoticeVisible] = React.useState(false);
 
-    const onMaxLength = () => {
+    const onMaxLength = React.useCallback(() => {
         setNoticeVisible(true);
-    };
+    }, []);
 
-    const hideNotice = () => {
+    const hideNotice = React.useCallback(() => {
         setNoticeVisible(false);
-    };
+    }, []);
 
     const { inputHasValue, onChangeText, onKeyPress, onSendText } = useChatInputValue({
         ref: props.textInputRef,
@@ -68,8 +69,8 @@ export function ChatInput(props: ChatInputProps) {
 
     const CustomKeyboardButton = props.customKeyboardButton;
 
-    const returnNotice = () => {
-        if (props.onMaxLength === undefined) {
+    const renderNotice = React.useCallback(() => {
+        if (props.onMaxLength == null) {
             return (
                 <UIPopup.Notice
                     type={UIPopup.Notice.Type.TopToast}
@@ -84,8 +85,8 @@ export function ChatInput(props: ChatInputProps) {
                 />
             );
         }
-        return;
-    };
+        return null;
+    }, [hideNotice, isNoticeVisible, props.onMaxLength]);
 
     return (
         <ChatInputContainer
@@ -138,7 +139,7 @@ export function ChatInput(props: ChatInputProps) {
                     style={inputStyle}
                 />
             )}
-            {returnNotice()}
+            {renderNotice()}
         </ChatInputContainer>
     );
 }
