@@ -98,7 +98,7 @@ export function UIAnimatedBalance({
     icon: UIImageProps['source'];
     integerVariant?: TypographyVariants;
     fractionalVariant?: TypographyVariants;
-    maxFractionalDigits?: number;
+    maxFractionalDigits?: 1 | 2 | 3 | 4 | 5;
     loading?: boolean;
 }) {
     const theme = useTheme();
