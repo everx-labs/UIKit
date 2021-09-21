@@ -18,8 +18,8 @@ import { StackView, TransitionPresets } from '@react-navigation/stack';
 import { NativeStackView } from 'react-native-screens/native-stack';
 import type { StackNavigationEventMap } from '@react-navigation/stack/lib/typescript/src/types';
 
-import { UIBackgroundView, PortalManager } from '@tonlabs/uikit.hydrogen';
-import { ColorVariants } from '@tonlabs/uikit.themes';
+import { PortalManager } from '@tonlabs/uikit.hydrogen';
+import { UIBackgroundView, ColorVariants } from '@tonlabs/uikit.themes';
 
 import { UILargeTitleHeader, UILargeTitleHeaderProps } from '../UILargeTitleHeader';
 import { UIStackNavigationBar } from '../UIStackNavigationBar';

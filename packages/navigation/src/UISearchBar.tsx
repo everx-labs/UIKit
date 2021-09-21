@@ -2,7 +2,6 @@ import * as React from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 
 import {
-    UIBackgroundView,
     UIImage,
     UIIndicator,
     UITextView,
@@ -13,7 +12,13 @@ import {
     useFocused,
     TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
-import { UILabel, UILabelColors, UILabelRoles, ColorVariants } from '@tonlabs/uikit.themes';
+import {
+    UIBackgroundView,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    ColorVariants,
+} from '@tonlabs/uikit.themes';
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { uiLocalized } from '@tonlabs/localization';

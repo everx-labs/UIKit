@@ -3,7 +3,10 @@ import { StyleSheet } from 'react-native';
 import type { StyleProp, ViewStyle } from 'react-native';
 
 import { UIConstant } from './constants';
-import { UIBackgroundView, UIBackgroundViewColors } from './UIBackgroundView';
+import {
+    UIBackgroundView,
+    UIBackgroundViewColors,
+} from '@tonlabs/uikit.themes/src/UIBackgroundView';
 import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 
 import type { ColorVariants } from '@tonlabs/uikit.themes';

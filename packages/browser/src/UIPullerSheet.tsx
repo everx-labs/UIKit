@@ -3,8 +3,7 @@ import { StyleSheet, useWindowDimensions, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant } from '@tonlabs/uikit.core';
-import { UIBackgroundView } from '@tonlabs/uikit.hydrogen';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import { UIBackgroundView, ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { UIBottomSheet, ScrollView } from '@tonlabs/uikit.navigation';
 
 const PULLER_HEIGHT = 12;

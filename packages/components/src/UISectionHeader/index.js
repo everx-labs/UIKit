@@ -4,8 +4,13 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
-import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
+import {
+    UIBackgroundView,
+    UIBackgroundViewColors,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+} from '@tonlabs/uikit.themes';
 
 import UIComponent from '../UIComponent';
 

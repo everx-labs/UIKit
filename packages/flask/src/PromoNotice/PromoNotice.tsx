@@ -4,15 +4,8 @@ import { TapGestureHandler } from 'react-native-gesture-handler';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 
-import {
-    UIImage,
-    Portal,
-    useHover,
-    UIBackgroundView,
-    UIBackgroundViewColors,
-    TouchableOpacity,
-} from '@tonlabs/uikit.hydrogen';
-import { ColorVariants } from '@tonlabs/uikit.themes';
+import { UIImage, Portal, useHover, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import { UIBackgroundView, UIBackgroundViewColors, ColorVariants } from '@tonlabs/uikit.themes';
 
 import { UIConstant } from '../constants';
 

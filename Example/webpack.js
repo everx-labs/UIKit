@@ -18,6 +18,8 @@ module.exports = {
                     path.resolve(__dirname, '../node_modules/react-native-web/'),
                     // path.resolve(__dirname, "../UIKit.js"),
                     path.resolve(__dirname, '../packages/'),
+                    path.resolve(__dirname, '../kit/'),
+                    path.resolve(__dirname, '../localization/'),
                     path.resolve(__dirname, '../node_modules/react-native-indicators/'),
                     path.resolve(__dirname, '../node_modules/react-native-dropdownalert/'),
                     path.resolve(__dirname, '../node_modules/react-native-simple-popover/'),

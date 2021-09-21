@@ -18,7 +18,8 @@ import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
 import { UIConstant, UIDevice, UIEventHelper, UIFunction, UIStyle } from '@tonlabs/uikit.core';
 import type { SafeAreaInsets } from '@tonlabs/uikit.core';
 import { UIAlertView, UIComponent, UISpinnerOverlay } from '@tonlabs/uikit.components';
-import { UISafeAreaView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
+import { UISafeAreaView } from '@tonlabs/uikit.hydrogen';
+import { UIBackgroundViewColors } from '@tonlabs/uikit.themes';
 import { uiLocalized } from '@tonlabs/localization';
 import { UILargeTitleContainerRefContext } from '@tonlabs/uikit.navigation';
 

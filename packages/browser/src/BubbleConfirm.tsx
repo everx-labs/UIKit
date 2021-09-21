@@ -2,8 +2,9 @@ import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/localization';
-import { UIBackgroundView, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import { TouchableOpacity } from '@tonlabs/uikit.hydrogen';
 import {
+    UIBackgroundView,
     UILabel,
     UILabelColors,
     UILabelRoles,

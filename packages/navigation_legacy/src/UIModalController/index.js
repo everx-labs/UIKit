@@ -21,7 +21,7 @@ import {
 import { UIConstant, UIDevice, UIFunction, UIStyle } from '@tonlabs/uikit.core';
 import type { SafeAreaInsets } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
+import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.themes';
 import {
     NestedInDismissibleModalContext,
     useHasScroll,

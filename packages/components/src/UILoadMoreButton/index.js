@@ -5,8 +5,9 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import { MaterialIndicator } from 'react-native-indicators';
 
 import { UIConstant } from '@tonlabs/uikit.core';
-import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
 import {
+    UIBackgroundView,
+    UIBackgroundViewColors,
     UILabel,
     UILabelColors,
     UILabelRoles,

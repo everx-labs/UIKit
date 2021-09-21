@@ -20,7 +20,6 @@ import {
 } from '@tonlabs/uikit.navigation_legacy';
 import {
     PortalManager,
-    UIBackgroundView,
     UILinkButton,
     UILinkButtonType,
     UIStatusBarManager,
@@ -31,6 +30,7 @@ import {
     UISwitcherVariant,
 } from '@tonlabs/uikit.hydrogen';
 import {
+    UIBackgroundView,
     UILabel,
     DarkTheme,
     LightTheme,

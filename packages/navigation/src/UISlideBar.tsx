@@ -2,8 +2,7 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { UIConstant } from '@tonlabs/uikit.core';
-import { UIBackgroundView } from '@tonlabs/uikit.hydrogen';
-import { ColorVariants } from '@tonlabs/uikit.themes';
+import { UIBackgroundView, ColorVariants } from '@tonlabs/uikit.themes';
 
 import { UIConstant as UINavConstant } from './constants';
 import { UIHeaderItems } from './UIHeaderItems';

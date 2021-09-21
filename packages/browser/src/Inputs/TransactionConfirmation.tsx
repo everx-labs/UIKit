@@ -1,14 +1,9 @@
 import * as React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 
+import { UIImage, UIMsgButton, UIMsgButtonType, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
 import {
     UIBackgroundView,
-    UIImage,
-    UIMsgButton,
-    UIMsgButtonType,
-    TouchableOpacity,
-} from '@tonlabs/uikit.hydrogen';
-import {
     UILabel,
     UILabelColors,
     UILabelRoles,

@@ -5,13 +5,14 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import type { ViewLayoutEvent } from 'react-native/Libraries/Components/View/ViewPropTypes';
 
 import { UIStyle, UIConstant, UIFunction } from '@tonlabs/uikit.core';
+import { UILinkButton, UILinkButtonSize } from '@tonlabs/uikit.hydrogen';
 import {
     UIBackgroundView,
     UIBackgroundViewColors,
-    UILinkButton,
-    UILinkButtonSize,
-} from '@tonlabs/uikit.hydrogen';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+} from '@tonlabs/uikit.themes';
 
 import UIComponent from '../UIComponent';
 

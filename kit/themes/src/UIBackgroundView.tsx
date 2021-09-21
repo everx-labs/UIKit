@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ViewStyle, View, ColorValue } from 'react-native';
 import type { StyleProp, ViewProps } from 'react-native';
 
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import { ColorVariants, useTheme } from './Colors';
 
 type Props = Omit<ViewProps, 'style'> & {
     color?: ColorVariants;

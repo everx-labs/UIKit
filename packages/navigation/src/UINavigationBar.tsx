@@ -4,12 +4,14 @@ import { Platform, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 import { UIConstant } from '@tonlabs/uikit.core';
+import { TouchableOpacity } from '@tonlabs/uikit.hydrogen';
 import {
     UIBackgroundView,
-    TouchableOpacity,
     useBackgroundColorStyle,
-} from '@tonlabs/uikit.hydrogen';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+} from '@tonlabs/uikit.themes';
 
 import { UIConstant as UINavConstant } from './constants';
 import { UIHeaderItems } from './UIHeaderItems';
