@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
-import { Portal } from '@tonlabs/uikit.hydrogen';
+import { Portal } from '@tonlabs/uikit.layout';
 import { useHover } from '@tonlabs/uikit.controls';
 import { UIConstant } from '@tonlabs/uikit.navigation';
 import type { SnapPoints, ToastNoticeProps } from './types';

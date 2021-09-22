@@ -29,6 +29,7 @@
         "@tonlabs/uikit.assets": "*",
         "@tonlabs/uikit.controls": "*",
         "@tonlabs/uikit.media": "*",
+        "@tonlabs/uikit.layout": "*",
         "@tonlabs/uikit.themes": "*",
         "@tonlabs/uikit.browser": "*",
         "@tonlabs/uikit.charts": "*",

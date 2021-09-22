@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import { Portal } from '@tonlabs/uikit.hydrogen';
+import { Portal } from '@tonlabs/uikit.layout';
 import { uiLocalized } from '@tonlabs/localization';
 import {
     MessageStatus,

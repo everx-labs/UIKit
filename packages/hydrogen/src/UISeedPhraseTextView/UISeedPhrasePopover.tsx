@@ -18,7 +18,7 @@ import {
 } from '@tonlabs/uikit.themes';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UIConstant } from '../constants';
-import { Portal } from '../Portal';
+import { Portal } from '@tonlabs/uikit.layout';
 
 const MAX_CELLS = 3;
 

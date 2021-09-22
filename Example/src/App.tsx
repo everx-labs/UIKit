@@ -18,7 +18,8 @@ import {
     UICountryPicker,
     UIPopoverBackground,
 } from '@tonlabs/uikit.navigation_legacy';
-import { PortalManager, UIStatusBarManager } from '@tonlabs/uikit.hydrogen';
+import { UIStatusBarManager } from '@tonlabs/uikit.hydrogen';
+import { PortalManager } from '@tonlabs/uikit.layout';
 import {
     UILinkButton,
     UILinkButtonType,

@@ -1,12 +1,9 @@
-export * from './Portal';
-
 export * from './UIAutogrowTextView';
 export * from './UIBanner';
 export * from './UIBlurView';
 export * from './UIKeyTextView';
 export * from './UIMaterialTextView';
 export * from './UINumberTextView';
-export * from './UISafeAreaView';
 export * from './UISeedPhraseTextView';
 export * from './UIStatusBar';
 export * from './UITextView';
