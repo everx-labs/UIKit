@@ -177,7 +177,7 @@ export const DarkTheme: Theme = {
     [ColorVariants.Transparent]: 'rgba(0,0,0,0)',
     [ColorVariants.KeyboardStyle]: 'dark',
 
-    [ColorVariants.Shadow]: 'rgb(32, 38, 42)',
+    [ColorVariants.Shadow]: 'rgb(142, 142, 147)',
 };
 
 export const ThemeContext = React.createContext(LightTheme);

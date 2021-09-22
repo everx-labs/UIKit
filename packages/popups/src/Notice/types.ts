@@ -1,3 +1,4 @@
+import type React from 'react';
 import type { UIBoxButtonVariant, ColorVariants } from '@tonlabs/uikit.hydrogen';
 import type Animated from 'react-native-reanimated';
 
@@ -87,14 +88,18 @@ export type UINoticeProps = {
     testID?: string;
 };
 
-export type ToastNoticeProps = UINoticeProps & {
+export type ToastNoticeProps = {
+    type: NoticeProps['type'];
+    visible: UINoticeProps['visible'];
+    onTap: UINoticeProps['onTap'];
     onCloseAnimationEnd: () => void;
     suspendClosingTimer: () => void;
     continueClosingTimer: () => void;
-    keyboardHeight: Animated.SharedValue<number>;
-    countdownValue: Animated.SharedValue<number>;
-    countdownProgress: Animated.SharedValue<number>;
-    hasCountdown?: boolean;
+    children: (props: {
+        onPress: () => void;
+        onLongPress: () => void;
+        onPressOut: () => void;
+    }) => React.ReactNode;
 };
 
 export type SnapPoints = {

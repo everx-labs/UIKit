@@ -1,6 +1,7 @@
 import { IUIAlertView, UIAlertView } from './UIAlertView';
 import { IUIActionSheet, UIActionSheet } from './UIActionSheet';
 import { IUINotice, UINotice } from './UINotice';
+import { UIPushNotice } from './UIPushNotice';
 
 export * from './Notice/types';
 export * from './ActionSheet/types';
@@ -14,4 +15,7 @@ export const UIPopup = {
     ActionSheet,
     AlertView,
     Notice,
+    Push: UIPushNotice,
 };
+
+export { UIPushNotice };
