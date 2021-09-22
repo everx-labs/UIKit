@@ -1,7 +1,6 @@
 import { Platform } from 'react-native';
-import type Animated from 'react-native-reanimated';
 
-export const UIConstant = {
+export const UILayoutConstant = {
     iconSize: 24,
 
     loaderSize: 18,
@@ -65,9 +64,4 @@ export const UIConstant = {
         toggleHeight: 18,
         togglePadding: 4,
     },
-};
-
-export const BUTTON_WITH_SPRING_CONFIG: Animated.WithSpringConfig = {
-    damping: 100,
-    stiffness: 500,
 };

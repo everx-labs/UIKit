@@ -3,7 +3,7 @@ import React from 'react';
 import { View, StyleSheet, Animated, LayoutAnimation } from 'react-native';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import { Portal } from '@tonlabs/uikit.hydrogen';
+import { Portal } from '@tonlabs/uikit.layout';
 import {
     UIBackgroundView,
     UIBackgroundViewColors,

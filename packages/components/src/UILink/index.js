@@ -8,7 +8,7 @@ import {
     UILinkButtonSize,
     UILinkButtonType,
     UILinkButtonVariant,
-} from '@tonlabs/uikit.hydrogen';
+} from '@tonlabs/uikit.controls';
 
 import UIComponent from '../UIComponent';
 

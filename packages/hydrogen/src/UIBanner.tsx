@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import type { StyleProp, ViewStyle } from 'react-native';
 
-import { UIConstant } from './constants';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import {
     UIBackgroundView,
     UIBackgroundViewColors,
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     container: {
         paddingHorizontal: 12,
         paddingVertical: 12,
-        borderRadius: UIConstant.alertBorderRadius,
+        borderRadius: UILayoutConstant.alertBorderRadius,
     },
 });
 

@@ -13,7 +13,7 @@ import type {
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import type { UIColorThemeNameType, EventProps } from '@tonlabs/uikit.core';
-import { UITextView } from '@tonlabs/uikit.hydrogen';
+import { UITextView } from '@tonlabs/uikit.inputs';
 import { UILinkButton, UILinkButtonSize, UILinkButtonVariant } from '@tonlabs/uikit.controls';
 import {
     UILabel,

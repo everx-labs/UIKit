@@ -42,6 +42,7 @@
         "@tonlabs/uikit.controls": "^2.3.0",
         "@tonlabs/uikit.media": "^2.3.0",
         "@tonlabs/uikit.layout": "^2.3.0",
+        "@tonlabs/uikit.inputs": "^2.3.0",
         "@tonlabs/uikit.keyboard": "^2.3.0",
         "@tonlabs/localization": "^2.3.0",
         "@tonlabs/uikit.navigation": "^2.3.0",

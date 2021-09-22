@@ -4,12 +4,12 @@ import { View, Platform } from 'react-native';
 import { uiLocalized } from '@tonlabs/localization';
 
 import { UIMaterialTextView, UIMaterialTextViewRef } from '../UIMaterialTextView';
-import { UIConstant } from '../constants';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { moveCarret } from '../moveCarret';
 
 import { UISeedPhrasePopover } from './UISeedPhrasePopover';
 
-const SPLITTER = ` ${UIConstant.dashSymbol} `;
+const SPLITTER = ` ${UILayoutConstant.dashSymbol} `;
 
 const identifyWordThatChanged = (phrase: string, lastPhrase: string): [string, number] => {
     const currentWords = phrase.split(SPLITTER);
@@ -364,7 +364,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 const parts = text.split(SPLITTER);
                 const newText =
                     parts.length < Math.max.apply(null, totalWords)
-                        ? `${text}${UIConstant.dashSymbol} `
+                        ? `${text}${UILayoutConstant.dashSymbol} `
                         : text.trim();
 
                 if (refToUse && 'current' in refToUse) {
@@ -379,7 +379,10 @@ export const UISeedPhraseTextView = React.forwardRef<
                 return;
             }
 
-            if (text.length < phraseRef.current.length && lastSymbol === UIConstant.dashSymbol) {
+            if (
+                text.length < phraseRef.current.length &&
+                lastSymbol === UILayoutConstant.dashSymbol
+            ) {
                 const newText = text.slice(0, text.length - 2);
 
                 if (refToUse && 'current' in refToUse) {

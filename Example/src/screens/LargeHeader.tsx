@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { UIMaterialTextView } from '@tonlabs/uikit.hydrogen';
+import { UIMaterialTextView } from '@tonlabs/uikit.inputs';
 import { UIBackgroundView, UILabel, UILabelColors, ColorVariants } from '@tonlabs/uikit.themes';
 import {
     ScrollView,

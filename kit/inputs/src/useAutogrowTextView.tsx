@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { Platform, StyleSheet, TextInput } from 'react-native';
 
-import { UIConstant } from './constants';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { Typography, TypographyVariants } from '@tonlabs/uikit.themes';
 
 export type OnHeightChange = (height: number) => void;
 
 const textViewHeight =
     StyleSheet.flatten(Typography[TypographyVariants.ParagraphText]).lineHeight ??
-    UIConstant.smallCellHeight;
+    UILayoutConstant.smallCellHeight;
 
 export function calculateWebInputHeight(elem: HTMLTextAreaElement) {
     // To get real height of a textarea

@@ -17,8 +17,7 @@ import {
     UILabelRoles,
 } from '@tonlabs/uikit.themes';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
-import { UIConstant } from '../constants';
-import { Portal } from '@tonlabs/uikit.layout';
+import { Portal, UILayoutConstant } from '@tonlabs/uikit.layout';
 
 const MAX_CELLS = 3;
 
@@ -42,9 +41,9 @@ function UISeedPhrasePopoverContent(props: UISeedPhrasePopoverProps) {
     } = props;
     const theme = useTheme();
     const maxHintsToShow = Math.min(hints.length, MAX_CELLS);
-    const height = hints.length > 0 ? UIConstant.defaultCellHeight * maxHintsToShow : 0;
+    const height = hints.length > 0 ? UILayoutConstant.defaultCellHeight * maxHintsToShow : 0;
     // Calculate the padding bottom to view cells even if clipped
-    const paddingBottom = UIConstant.defaultCellHeight * (maxHintsToShow - 1);
+    const paddingBottom = UILayoutConstant.defaultCellHeight * (maxHintsToShow - 1);
 
     const [measurement, setMeasurement] = React.useState<{
         x: number;
@@ -167,20 +166,20 @@ export function UISeedPhrasePopover(props: UISeedPhrasePopoverProps) {
 const styles = StyleSheet.create({
     hintsContainer: {
         flex: 1,
-        ...UIConstant.cardShadow,
-        borderBottomLeftRadius: UIConstant.borderRadius,
-        borderBottomRightRadius: UIConstant.borderRadius,
+        ...UILayoutConstant.cardShadow,
+        borderBottomLeftRadius: UILayoutConstant.borderRadius,
+        borderBottomRightRadius: UILayoutConstant.borderRadius,
     },
     hintsInner: {
         flex: 1,
         overflow: 'hidden',
-        borderBottomLeftRadius: UIConstant.borderRadius,
-        borderBottomRightRadius: UIConstant.borderRadius,
+        borderBottomLeftRadius: UILayoutConstant.borderRadius,
+        borderBottomRightRadius: UILayoutConstant.borderRadius,
     },
     cellHint: {
         zIndex: 1,
         justifyContent: 'center',
-        paddingHorizontal: UIConstant.contentOffset,
-        minHeight: UIConstant.defaultCellHeight,
+        paddingHorizontal: UILayoutConstant.contentOffset,
+        minHeight: UILayoutConstant.defaultCellHeight,
     },
 });

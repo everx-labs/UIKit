@@ -3,11 +3,7 @@ import { useState } from 'react';
 import BigNumber from 'bignumber.js';
 import { View } from 'react-native';
 
-import {
-    UIMaterialTextView,
-    UISeedPhraseTextView,
-    UINumberTextView,
-} from '@tonlabs/uikit.hydrogen';
+import { UIMaterialTextView, UISeedPhraseTextView, UINumberTextView } from '@tonlabs/uikit.inputs';
 import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAddressTextView } from '@tonlabs/uikit.flask';
 import {

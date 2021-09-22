@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { TextInput } from 'react-native';
 
-import { useUITextViewValue } from '@tonlabs/uikit.hydrogen';
+import { useUITextViewValue } from '@tonlabs/uikit.inputs';
 
 import type { OnSendText } from './types';
 

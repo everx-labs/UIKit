@@ -2,7 +2,7 @@ import * as React from 'react';
 import type { TextInput } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/localization';
-import { UITextView, useAutogrowTextView } from '@tonlabs/uikit.hydrogen';
+import { UITextView, useAutogrowTextView } from '@tonlabs/uikit.inputs';
 
 import { ChatInputContainer } from './ChatInputContainer';
 import { MenuPlus } from './MenuPlus';

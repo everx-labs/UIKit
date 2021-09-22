@@ -2,12 +2,12 @@ import * as React from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import type { StyleProp, ViewProps } from 'react-native';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
-import { UIConstant } from '../constants';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
 const styles = StyleSheet.create({
     container: {
         overflow: 'hidden',
-        borderRadius: UIConstant.alertBorderRadius,
+        borderRadius: UILayoutConstant.alertBorderRadius,
     },
 });
 

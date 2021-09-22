@@ -7,7 +7,7 @@ import {
     useUITextViewValue,
     useClearButton,
     useFocused,
-} from '@tonlabs/uikit.hydrogen';
+} from '@tonlabs/uikit.inputs';
 import { UIImage } from '@tonlabs/uikit.media';
 import { UIIndicator, TouchableOpacity, useHover } from '@tonlabs/uikit.controls';
 import {

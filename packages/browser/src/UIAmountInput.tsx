@@ -9,7 +9,7 @@ import {
     useUITextViewValue,
     useNumberFormatting,
     useAutogrowTextView,
-} from '@tonlabs/uikit.hydrogen';
+} from '@tonlabs/uikit.inputs';
 import { UILabel, UILabelRoles, ColorVariants } from '@tonlabs/uikit.themes';
 import { uiLocalized } from '@tonlabs/localization';
 import type { OnHeightChange, OnSendAmount } from './types';

@@ -35,6 +35,7 @@
     "dependencies": {
         "@tonlabs/uikit.assets": "^2.3.0",
         "@tonlabs/uikit.core": "^2.3.0",
+        "@tonlabs/uikit.inputs": "^2.3.0",
         "bignumber.js": "9.0.0",
         "bowser": "1.9.4",
         "dayjs": "1.9.1",

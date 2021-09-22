@@ -7,7 +7,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
-import { UIBoxButton } from '@tonlabs/uikit.hydrogen';
+import { UIBoxButton } from '@tonlabs/uikit.controls';
 import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 import { uiLocalized } from '@tonlabs/localization';
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import { UIKeyTextView, UIMaterialTextViewRef } from '@tonlabs/uikit.hydrogen';
+import { UIKeyTextView, UIMaterialTextViewRef } from '@tonlabs/uikit.inputs';
 
 import { UIPullerSheet } from './UIPullerSheet';
 

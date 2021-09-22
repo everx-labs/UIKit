@@ -8,7 +8,7 @@ import {
     UIMaterialTextView,
     UIMaterialTextViewProps,
     UIMaterialTextViewRef,
-} from '@tonlabs/uikit.hydrogen';
+} from '@tonlabs/uikit.inputs';
 import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIQRCodeScannerSheet } from '@tonlabs/uikit.navigation';
 
