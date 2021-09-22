@@ -97,7 +97,7 @@ export const UILabel = React.forwardRef<Text, Props>(function UILabelForwarded(
                 fontStyle,
                 colorStyle,
                 /**
-                 * Appling a fix until it isn't merged to RNW
+                 * Applying a fix until it isn't merged to RNW
                  * https://github.com/necolas/react-native-web/pull/2113/files
                  *
                  * TODO: delete it when update for RNW is there! (fix was for 0.17.1)
