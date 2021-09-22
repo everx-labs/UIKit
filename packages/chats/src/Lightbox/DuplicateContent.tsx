@@ -6,9 +6,8 @@ import Animated, {
     useDerivedValue,
     useSharedValue,
 } from 'react-native-reanimated';
-import { useStatusBar } from '@tonlabs/uikit.hydrogen';
 import { UIImage } from '@tonlabs/uikit.media';
-import { ColorVariants, Theme, useTheme, makeStyles } from '@tonlabs/uikit.themes';
+import { ColorVariants, Theme, useTheme, makeStyles, useStatusBar } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIConstant as UICoreConstant } from '@tonlabs/uikit.core';
 import { UIConstant as UINavigationConstant } from '@tonlabs/uikit.navigation';

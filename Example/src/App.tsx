@@ -18,7 +18,6 @@ import {
     UICountryPicker,
     UIPopoverBackground,
 } from '@tonlabs/uikit.navigation_legacy';
-import { UIStatusBarManager } from '@tonlabs/uikit.hydrogen';
 import { PortalManager } from '@tonlabs/uikit.layout';
 import {
     UILinkButton,
@@ -35,6 +34,7 @@ import {
     ColorVariants,
     ThemeContext,
     useTheme,
+    UIStatusBarManager,
 } from '@tonlabs/uikit.themes';
 import {
     createSplitNavigator,

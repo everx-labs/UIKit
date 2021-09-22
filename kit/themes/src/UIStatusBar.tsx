@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StatusBar, StatusBarStyle } from 'react-native';
 
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import { ColorVariants, useTheme } from './Colors';
 import { useIsDarkColor } from './useIsDarkColor';
 
 const StatusBarContext = React.createContext<{

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
 import { useColorParts } from './useColorParts';
-import type { ColorVariants } from '@tonlabs/uikit.themes';
+import type { ColorVariants } from './Colors';
 
 export function useIsDarkColor(color: ColorVariants) {
     const { colorPartsArray } = useColorParts(color);

@@ -4,9 +4,8 @@ import { PanGestureHandler, TapGestureHandler } from 'react-native-gesture-handl
 import Animated, { interpolateColor, useAnimatedStyle } from 'react-native-reanimated';
 import { useBackHandler } from '@react-native-community/hooks';
 
-import { useColorParts, useStatusBar } from '@tonlabs/uikit.hydrogen';
 import { Portal } from '@tonlabs/uikit.layout';
-import { ColorVariants } from '@tonlabs/uikit.themes';
+import { ColorVariants, useColorParts, useStatusBar } from '@tonlabs/uikit.themes';
 import { useAnimatedKeyboardHeight } from '@tonlabs/uikit.keyboard';
 
 import { UIConstant } from '../../constants';

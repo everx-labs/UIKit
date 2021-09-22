@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import { ColorVariants, useTheme } from './Colors';
 
 export function useColorParts(color: ColorVariants) {
     const currentColor = useTheme()[color] as string;
