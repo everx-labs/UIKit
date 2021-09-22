@@ -4,7 +4,7 @@ import { PanGestureHandler, TapGestureHandler } from 'react-native-gesture-handl
 import type { UISwitcherProps } from '../types';
 import { ColorVariants, Theme, useTheme } from '@tonlabs/uikit.themes';
 import { makeStyles } from '../../makeStyles';
-import { useHover } from '../../useHover';
+import { useHover } from '@tonlabs/uikit.controls';
 import { useImageStyle, useOverlayStyle, useSwitcherGestureEvent, useSwitcherState } from './hooks';
 import { UIConstant } from '../../constants';
 

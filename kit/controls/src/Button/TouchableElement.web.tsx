@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleProp, StyleSheet, TouchableWithoutFeedback, ViewStyle } from 'react-native';
 import Animated, { withSpring } from 'react-native-reanimated';
 
-import { useHover } from '@tonlabs/uikit.hydrogen';
+import { useHover } from '../useHover';
 import { BUTTON_WITH_SPRING_CONFIG } from '../constants';
 
 import type { ButtonAnimations } from './types';

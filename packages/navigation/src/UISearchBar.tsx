@@ -6,11 +6,10 @@ import {
     UITextViewProps,
     useUITextViewValue,
     useClearButton,
-    useHover,
     useFocused,
 } from '@tonlabs/uikit.hydrogen';
 import { UIImage } from '@tonlabs/uikit.media';
-import { UIIndicator, TouchableOpacity } from '@tonlabs/uikit.controls';
+import { UIIndicator, TouchableOpacity, useHover } from '@tonlabs/uikit.controls';
 import {
     UIBackgroundView,
     UILabel,

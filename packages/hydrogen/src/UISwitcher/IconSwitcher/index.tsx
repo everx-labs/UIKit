@@ -5,7 +5,7 @@ import { RawButton } from '../RawButton';
 import { UISwitcherProps, UISwitcherVariant } from '../types';
 import { ColorVariants, Theme, useTheme } from '@tonlabs/uikit.themes';
 import { makeStyles } from '../../makeStyles';
-import { useHover } from '../../useHover';
+import { useHover } from '@tonlabs/uikit.controls';
 import {
     useImage,
     useImageStyle,

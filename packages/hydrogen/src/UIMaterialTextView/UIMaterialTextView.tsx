@@ -10,7 +10,7 @@ import {
 
 import { ColorVariants, useTheme, UILabel, TypographyVariants } from '@tonlabs/uikit.themes';
 import { UITextView, UITextViewProps, useFocused, useUITextViewValue } from '../UITextView';
-import { useHover } from '../useHover';
+import { useHover } from '@tonlabs/uikit.controls';
 import {
     calculateWebInputHeight,
     OnHeightChange,
