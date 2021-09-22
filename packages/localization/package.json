@@ -1,11 +1,10 @@
 {
     "name": "@tonlabs/uikit.localization",
-    "version": "2.3.0",
+    "version": "2.3.2",
     "description": "Localization utilities for Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit",
-        "prepare": "bob build",
-        "postprepare": "cp -R src/languages/en.json lib/typescript/src/languages/"
+        "prepare": "bob build && cp -R src/languages/en.json lib/typescript/src/languages/"
     },
     "publishConfig": {
         "registry": "https://npm.pkg.github.com/"
