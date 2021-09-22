@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import { Portal, makeStyles } from '@tonlabs/uikit.hydrogen';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import { Portal } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants, useTheme, makeStyles } from '@tonlabs/uikit.themes';
 import Animated, {
     interpolate,
     runOnJS,

@@ -6,9 +6,15 @@ import { View, useWindowDimensions } from 'react-native';
 import { UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
 import { FlatList, UIBottomSheet, UISearchBar } from '@tonlabs/uikit.navigation';
-import { makeStyles } from '@tonlabs/uikit.hydrogen';
 import { UILinkButton } from '@tonlabs/uikit.controls';
-import { TypographyVariants, UILabel, ColorVariants, useTheme, Theme } from '@tonlabs/uikit.themes';
+import {
+    TypographyVariants,
+    UILabel,
+    ColorVariants,
+    useTheme,
+    Theme,
+    makeStyles,
+} from '@tonlabs/uikit.themes';
 import type { CountriesArray, Country, WrappedCountryPickerProps } from '../types';
 import { CountryPickerRow } from './CountryPickerRow';
 import { ListEmptyComponent } from './ListEmptyComponent';

@@ -10,14 +10,9 @@ export * from './UISafeAreaView';
 export * from './UISeedPhraseTextView';
 export * from './UIStatusBar';
 export * from './UITextView';
-export * from './UISwitcher';
 
 export * from './useAutogrowTextView';
 export * from './useColorParts';
 export * from './useColorShades';
 export * from './useIsDarkColor';
 export * from './UIMaterialTextView/useClearButton';
-
-export * from './makeStyles';
-
-export * from './Haptics/Haptics';

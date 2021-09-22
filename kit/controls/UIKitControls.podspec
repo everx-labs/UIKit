@@ -11,7 +11,7 @@ class ReactNativeVersion
     end
     # If it more that 10 than we assume that it's not an RN project
     if level == 10
-      throw "You can't use uikit.hydrogen in not RN project"
+      throw "You can't use uikit.controls in not RN project"
     end
     return find_nearest_app_rn_version(File.join('..', path), level + 1);
   end
@@ -29,7 +29,7 @@ folly_flags = "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -DRNVERSI
 folly_compiler_flags = folly_flags + " " + "-Wno-comma -Wno-shorten-64-to-32"
 
 Pod::Spec.new do |s|
-  s.name         = "UIKitHydrogen"
+  s.name         = "UIKitControls"
   s.version      = package["version"]
   s.summary      = package["description"]
   s.homepage     = "https://github.com/tonlabs/UIKit/packages/keyboard#readme"

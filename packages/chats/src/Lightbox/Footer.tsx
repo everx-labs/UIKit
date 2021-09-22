@@ -1,8 +1,14 @@
 import * as React from 'react';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { makeStyles } from '@tonlabs/uikit.hydrogen';
-import { UILabel, UILabelRoles, ColorVariants, Theme, useTheme } from '@tonlabs/uikit.themes';
+import {
+    UILabel,
+    UILabelRoles,
+    ColorVariants,
+    Theme,
+    useTheme,
+    makeStyles,
+} from '@tonlabs/uikit.themes';
 import { UIConstant as UINavigationConstant } from '@tonlabs/uikit.navigation';
 import type { VisibilityState } from './constants';
 import { UIConstant } from '../constants';

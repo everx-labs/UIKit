@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 import { useAnimatedRef } from 'react-native-reanimated';
-import { makeStyles } from '@tonlabs/uikit.hydrogen';
+import { makeStyles } from '@tonlabs/uikit.themes';
 import { Duplicate } from './Duplicate';
 import { DuplicateImage } from '../DuplicateImage';
 import type { LightboxProps } from './types';

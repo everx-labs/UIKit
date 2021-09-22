@@ -12,7 +12,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { UIConstant } from '@tonlabs/uikit.core';
-import { hapticNotification } from '@tonlabs/uikit.hydrogen';
+import { hapticNotification } from '@tonlabs/uikit.controls';
 import {
     UILabel,
     UILabelColors,

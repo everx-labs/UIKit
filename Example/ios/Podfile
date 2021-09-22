@@ -15,7 +15,7 @@ target 'Quiver UI' do
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
 
   pod 'UIKitKeyboard', :path => "../../packages/keyboard/UIKitKeyboard.podspec"
-  pod 'UIKitHydrogen', :path => "../../packages/hydrogen/UIKitHydrogen.podspec"
+  pod 'UIKitControls', :path => "../../kit/controls/UIKitControls.podspec"
 
   target 'Quiver UITests' do
     inherit! :complete

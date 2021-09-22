@@ -53,18 +53,18 @@ export const UIConstant = {
     //     right: 24,
     // },
 
-    // switcher: {
-    //     circlePadding: 2,
-    //     squarePadding: 3,
-    //     squareBorderRadius: 4,
-    //     thikIconSize: 12,
-    //     radioDotSize: 8,
-    //     offBorderWidth: 1.75,
-    //     toggleDotSize: 10,
-    //     toggleWidth: 32,
-    //     toggleHeight: 18,
-    //     togglePadding: 4,
-    // },
+    switcher: {
+        circlePadding: 2,
+        squarePadding: 3,
+        squareBorderRadius: 4,
+        thikIconSize: 12,
+        radioDotSize: 8,
+        offBorderWidth: 1.75,
+        toggleDotSize: 10,
+        toggleWidth: 32,
+        toggleHeight: 18,
+        togglePadding: 4,
+    },
 };
 
 export const BUTTON_WITH_SPRING_CONFIG: Animated.WithSpringConfig = {

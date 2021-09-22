@@ -13,7 +13,7 @@ import { runOnUI } from 'react-native-reanimated';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
-import { hapticImpact } from '@tonlabs/uikit.hydrogen';
+import { hapticImpact } from '@tonlabs/uikit.controls';
 import {
     UILabel,
     UILabelColors,

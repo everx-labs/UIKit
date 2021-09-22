@@ -18,13 +18,13 @@ import {
     UICountryPicker,
     UIPopoverBackground,
 } from '@tonlabs/uikit.navigation_legacy';
+import { PortalManager, UIStatusBarManager } from '@tonlabs/uikit.hydrogen';
 import {
-    PortalManager,
-    UIStatusBarManager,
+    UILinkButton,
+    UILinkButtonType,
     UISwitcher,
     UISwitcherVariant,
-} from '@tonlabs/uikit.hydrogen';
-import { UILinkButton, UILinkButtonType } from '@tonlabs/uikit.controls';
+} from '@tonlabs/uikit.controls';
 import {
     useWebFonts,
     UIBackgroundView,

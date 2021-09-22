@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { makeStyles } from '@tonlabs/uikit.hydrogen';
-import { UILabel, UILabelRoles } from '@tonlabs/uikit.themes';
+import { UILabel, UILabelRoles, makeStyles } from '@tonlabs/uikit.themes';
 import { UIConstant } from '@tonlabs/uikit.navigation';
 import { useBackHandler } from '@react-native-community/hooks';
 import { AlertBox } from './AlertBox';

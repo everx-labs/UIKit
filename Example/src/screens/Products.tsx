@@ -3,8 +3,7 @@ import { useState } from 'react';
 import { View } from 'react-native';
 
 import { UIPromoNotice } from '@tonlabs/uikit.flask';
-import { UISwitcher, UISwitcherVariant } from '@tonlabs/uikit.hydrogen';
-import { TouchableOpacity } from '@tonlabs/uikit.controls';
+import { TouchableOpacity, UISwitcher, UISwitcherVariant } from '@tonlabs/uikit.controls';
 import { UILabel } from '@tonlabs/uikit.themes';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
