@@ -3,15 +3,14 @@ import { StyleSheet, TextInput } from 'react-native';
 
 import {
     UIImage,
-    UIIndicator,
     UITextView,
     UITextViewProps,
     useUITextViewValue,
     useClearButton,
     useHover,
     useFocused,
-    TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
+import { UIIndicator, TouchableOpacity } from '@tonlabs/uikit.controls';
 import {
     UIBackgroundView,
     UILabel,

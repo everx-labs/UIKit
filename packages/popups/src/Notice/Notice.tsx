@@ -8,7 +8,8 @@ import {
     ViewStyle,
 } from 'react-native';
 import type Animated from 'react-native-reanimated';
-import { makeStyles, UIBoxButtonVariant } from '@tonlabs/uikit.hydrogen';
+import { makeStyles } from '@tonlabs/uikit.hydrogen';
+import { UIBoxButtonVariant } from '@tonlabs/uikit.controls';
 import { TypographyVariants, UILabel, ColorVariants, useTheme, Theme } from '@tonlabs/uikit.themes';
 import { UIConstant } from '@tonlabs/uikit.navigation';
 import { NoticeProps, UINoticeType, UINoticeColor, UINoticeActionAttributes } from './types';

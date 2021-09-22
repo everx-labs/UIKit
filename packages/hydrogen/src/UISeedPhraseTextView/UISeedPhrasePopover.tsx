@@ -16,9 +16,9 @@ import {
     UILabelColors,
     UILabelRoles,
 } from '@tonlabs/uikit.themes';
+import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UIConstant } from '../constants';
 import { Portal } from '../Portal';
-import { TouchableOpacity } from '../TouchableOpacity';
 
 const MAX_CELLS = 3;
 

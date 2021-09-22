@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { UIBoxButton, UIBoxButtonType, UIBoxButtonVariant } from '@tonlabs/uikit.hydrogen';
+import { UIBoxButton, UIBoxButtonType, UIBoxButtonVariant } from '@tonlabs/uikit.controls';
 import { UIAlertViewActionProps, UIAlertViewActionType } from './types';
 
 const getActionVariant = (type: UIAlertViewActionType): UIBoxButtonVariant => {

@@ -10,7 +10,7 @@ import Animated, {
     useAnimatedReaction,
     scrollTo,
 } from 'react-native-reanimated';
-import { TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UIBackgroundView, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 
 import { useHasScroll } from '../Scrollable';

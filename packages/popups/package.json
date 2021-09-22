@@ -37,6 +37,7 @@
         "@react-native-community/hooks": "^2.6.0",
         "@tonlabs/uikit.hydrogen": "^2.3.0",
         "@tonlabs/uikit.themes": "^2.3.0",
+        "@tonlabs/uikit.controls": "^2.3.0",
         "@tonlabs/uikit.navigation": "^2.3.0",
         "@tonlabs/uikit.keyboard": "^2.3.0",
         "@tonlabs/uikit.charts": "^2.3.0",

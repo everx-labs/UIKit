@@ -4,7 +4,7 @@ import { Platform, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 import { UIConstant } from '@tonlabs/uikit.core';
-import { TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import {
     UIBackgroundView,
     useBackgroundColorStyle,

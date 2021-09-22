@@ -2,7 +2,8 @@ import * as React from 'react';
 import { StyleSheet } from 'react-native';
 
 import { UIConstant } from '@tonlabs/uikit.core';
-import { UIImage, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import { UIImage } from '@tonlabs/uikit.hydrogen';
+import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import {
     UIBackgroundView,
     UILabel,

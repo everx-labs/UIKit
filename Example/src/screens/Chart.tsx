@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Platform, View } from 'react-native';
-import { UILinkButton, UILinkButtonSize } from '@tonlabs/uikit.hydrogen';
+import { UILinkButton, UILinkButtonSize } from '@tonlabs/uikit.controls';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { LinearChart, LinearChartPoint } from '@tonlabs/uikit.charts';
 import { ExampleSection } from '../components/ExampleSection';

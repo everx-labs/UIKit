@@ -2,7 +2,8 @@ import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Animated, { runOnJS, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 
-import { UIImage, UIIndicator, hapticImpact } from '@tonlabs/uikit.hydrogen';
+import { UIImage, hapticImpact } from '@tonlabs/uikit.hydrogen';
+import { UIIndicator } from '@tonlabs/uikit.controls';
 import { UILabel, ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
 

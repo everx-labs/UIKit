@@ -4,7 +4,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant, UIDevice } from '@tonlabs/uikit.core';
-import { UIImage, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import { UIImage } from '@tonlabs/uikit.hydrogen';
+import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { registerKeyboardComponent } from '@tonlabs/uikit.keyboard';
 

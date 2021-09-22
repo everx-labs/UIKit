@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import { UILinkButton, UIBoxButton, UIBoxButtonVariant } from '@tonlabs/uikit.hydrogen';
+import { UILinkButton, UIBoxButton, UIBoxButtonVariant } from '@tonlabs/uikit.controls';
 import { UILabel } from '@tonlabs/uikit.themes';
 import { UIPopup, UINoticeColor } from '@tonlabs/uikit.popups';
 import { ExampleSection } from '../components/ExampleSection';

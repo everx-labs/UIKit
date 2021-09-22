@@ -3,7 +3,7 @@ import { ImageProps, Linking, Platform, StyleSheet, View } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIDevice } from '@tonlabs/uikit.core';
-import { UILinkButton, UILinkButtonSize, UILinkButtonType } from '@tonlabs/uikit.hydrogen';
+import { UILinkButton, UILinkButtonSize, UILinkButtonType } from '@tonlabs/uikit.controls';
 import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 import { uiLocalized } from '@tonlabs/localization';
 import { PromoNotice } from './PromoNotice/';

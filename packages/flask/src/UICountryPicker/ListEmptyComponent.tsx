@@ -1,5 +1,5 @@
 import React from 'react';
-import { UIIndicator } from '@tonlabs/uikit.hydrogen';
+import { UIIndicator } from '@tonlabs/uikit.controls';
 import { TypographyVariants, UILabel, ColorVariants } from '@tonlabs/uikit.themes';
 import { CountryPickerContext } from './CountryPickerContext';
 import { uiLocalized } from '@tonlabs/localization';

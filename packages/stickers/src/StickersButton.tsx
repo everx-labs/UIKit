@@ -6,7 +6,7 @@ import {
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIConstant } from '@tonlabs/uikit.core';
-import { TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import { TouchableOpacity } from '@tonlabs/uikit.controls';
 
 export type OnStickersPress = () => void | Promise<void>;
 

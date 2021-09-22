@@ -3,7 +3,7 @@ import { View, StyleSheet, Image } from 'react-native';
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import {
     UILabel,
     UILabelRoles,

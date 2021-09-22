@@ -2,7 +2,8 @@ import * as React from 'react';
 import { ImageProps, ImageStyle, View, StyleProp, StyleSheet } from 'react-native';
 
 import { UIConstant } from '@tonlabs/uikit.core';
-import { UIImage, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import { UIImage } from '@tonlabs/uikit.hydrogen';
+import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UILabel, UILabelColors, UILabelRoles, ColorVariants } from '@tonlabs/uikit.themes';
 
 type OnPress = () => void | Promise<void>;

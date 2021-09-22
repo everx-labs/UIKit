@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import { UIMsgButton, UIMsgButtonType, UIMsgButtonCornerPosition } from '@tonlabs/uikit.hydrogen';
+import { UIMsgButton, UIMsgButtonType, UIMsgButtonCornerPosition } from '@tonlabs/uikit.controls';
 import { BubblePosition, useBubbleContainerStyle, useBubblePosition } from './useBubblePosition';
 import type { ActionButtonMessage } from './types';
 

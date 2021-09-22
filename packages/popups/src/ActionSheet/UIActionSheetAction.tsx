@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { UIBoxButton, UIBoxButtonType, UIBoxButtonVariant } from '@tonlabs/uikit.hydrogen';
+import { UIBoxButton, UIBoxButtonType, UIBoxButtonVariant } from '@tonlabs/uikit.controls';
 import { UIActionSheetActionProps, UIActionSheetActionType } from './types';
 
 const getActionVariant = (type: UIActionSheetActionType): UIBoxButtonVariant => {

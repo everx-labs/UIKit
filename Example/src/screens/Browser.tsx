@@ -29,7 +29,7 @@ import type {
 import { UIPopup } from '@tonlabs/uikit.popups';
 import { uiLocalized } from '@tonlabs/localization';
 import { ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';
-import { UIBoxButton } from '@tonlabs/uikit.hydrogen';
+import { UIBoxButton } from '@tonlabs/uikit.controls';
 import {
     UILabel,
     UILabelColors,

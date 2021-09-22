@@ -1,4 +1,4 @@
-import { UIBoxButton, UIBoxButtonType } from '@tonlabs/uikit.hydrogen';
+import { UIBoxButton, UIBoxButtonType } from '@tonlabs/uikit.controls';
 import { UIConstant } from '@tonlabs/uikit.navigation';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';

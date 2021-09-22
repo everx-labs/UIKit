@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { View, Image } from 'react-native';
 import { UIConstant as UICoreConstant } from '@tonlabs/uikit.core';
-import { makeStyles, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import { makeStyles } from '@tonlabs/uikit.hydrogen';
+import { TouchableOpacity } from '@tonlabs/uikit.controls';
 
 import { useBubbleContainerStyle } from '../useBubblePosition';
 import { useBubbleBackgroundColor } from '../useBubbleStyle';

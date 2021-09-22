@@ -6,7 +6,7 @@ import {
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIPopoverMenu } from '@tonlabs/uikit.navigation_legacy';
-import { TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import { TouchableOpacity } from '@tonlabs/uikit.controls';
 
 import { commonStyles } from './styles';
 import type { MenuItem } from './types';

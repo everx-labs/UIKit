@@ -20,12 +20,11 @@ import {
 } from '@tonlabs/uikit.navigation_legacy';
 import {
     PortalManager,
-    UILinkButton,
-    UILinkButtonType,
     UIStatusBarManager,
     UISwitcher,
     UISwitcherVariant,
 } from '@tonlabs/uikit.hydrogen';
+import { UILinkButton, UILinkButtonType } from '@tonlabs/uikit.controls';
 import {
     useWebFonts,
     UIBackgroundView,

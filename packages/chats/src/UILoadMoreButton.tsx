@@ -4,7 +4,7 @@ import { MaterialIndicator } from 'react-native-indicators';
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
-import { TouchableOpacity } from '@tonlabs/uikit.hydrogen';
+import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import {
     UILabel,
     UILabelColors,
