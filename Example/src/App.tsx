@@ -64,6 +64,7 @@ import { SectionsService } from './Search';
 import { KeyboardScreen } from './screens/Keyboard';
 import { LargeHeaderScreen } from './screens/LargeHeader';
 import { QRCodeScreen } from './screens/QRCode';
+import { FinancesScreen } from './screens/Finances';
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
 useWebFonts();
@@ -260,6 +261,12 @@ const Main = ({ navigation }: { navigation: any }) => {
                             onPress={() => navigation.navigate('text')}
                             layout={styles.button}
                         />
+                        <UILinkButton
+                            title="Finances"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('finances')}
+                            layout={styles.button}
+                        />
                     </ScrollView>
                 </UILargeTitleHeader>
             </PortalManager>
@@ -327,6 +334,7 @@ const App = () => {
                             <Split.Screen name="profile" component={Profile} />
                             <Split.Screen name="qr-code" component={QRCodeScreen} />
                             <Split.Screen name="text" component={TextScreen} />
+                            <Split.Screen name="finances" component={FinancesScreen} />
                         </Split.Navigator>
                     </NavigationContainer>
                     <UILayoutManager />

@@ -40,7 +40,10 @@ const useImageDimensions = (style: StyleProp<ImageStyle>, source: any) => {
     }, [style, source && source.uri]);
 };
 
-const TintUIImage = ({ tintColor, style, onLoadEnd, onError, ...rest }: UIImageProps) => {
+const TintUIImage = React.forwardRef<View, UIImageProps>(function TintUIImageForwarded(
+    { tintColor, style, onLoadEnd, onError, ...rest }: UIImageProps,
+    ref,
+) {
     const theme = useTheme();
     const tintColorValue: ColorValue | null = tintColor != null ? theme[tintColor] : null;
 
@@ -110,6 +113,7 @@ const TintUIImage = ({ tintColor, style, onLoadEnd, onError, ...rest }: UIImageP
 
     return (
         <View
+            ref={ref}
             testID={rest.testID}
             onLayout={onLayout}
             style={[
@@ -123,9 +127,9 @@ const TintUIImage = ({ tintColor, style, onLoadEnd, onError, ...rest }: UIImageP
             <canvas id={`${idRef.current}`} width={dimensions?.width} height={dimensions?.height} />
         </View>
     );
-};
+});
 
-const UIImageImpl = (props: UIImageProps) => {
+const UIImageImpl = React.forwardRef<RNImage, UIImageProps>(function UIImageForwarded(props, ref) {
     const { tintColor, ...rest } = props;
     const theme = useTheme();
 
@@ -134,15 +138,16 @@ const UIImageImpl = (props: UIImageProps) => {
      * https://github.com/necolas/react-native-web/issues/1914
      */
     if (tintColor) {
-        return <TintUIImage {...props} />;
+        return <TintUIImage ref={ref} {...props} />;
     }
 
     return (
         <RNImage
+            ref={ref}
             {...rest}
             style={[rest.style, tintColor != null ? { tintColor: theme[tintColor] } : null]}
         />
     );
-};
+});
 
 export const UIImage = React.memo(UIImageImpl);
