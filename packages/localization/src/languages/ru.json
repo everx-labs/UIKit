@@ -577,40 +577,40 @@
     },
     "DateTimePicker": {
         "dayNames": {
-            "Sunday": "Sunday",
-            "Monday": "Monday",
-            "Tuesday": "Tuesday",
-            "Wednesday": "Wednesday",
-            "Thursday": "Thursday",
-            "Friday": "Friday",
-            "Saturday": "Saturday"
+            "Sunday": "Воскресенье",
+            "Monday": "Понедельник",
+            "Tuesday": "Вторник",
+            "Wednesday": "Среда",
+            "Thursday": "Четверг",
+            "Friday": "Пятница",
+            "Saturday": "Суббота"
         },
         "dayNamesShort": {
-            "Sunday": "Su",
-            "Monday": "Mo",
-            "Tuesday": "Tu",
-            "Wednesday": "We",
-            "Thursday": "Th",
-            "Friday": "Fr",
-            "Saturday": "Sa"
+            "Sunday": "Вс",
+            "Monday": "Пн",
+            "Tuesday": "Вт",
+            "Wednesday": "Ср",
+            "Thursday": "Чт",
+            "Friday": "Пт",
+            "Saturday": "Сб"
         },
         "monthNames": {
-            "January": "January",
-            "February": "February",
-            "March": "March",
-            "April": "April",
-            "May": "May",
-            "June": "June",
-            "July": "July",
-            "August": "August",
-            "September": "September",
-            "October": "October",
-            "November": "November",
-            "December": "December"
+            "January": "Январь",
+            "February": "Февраль",
+            "March": "Март",
+            "April": "Апрель",
+            "May": "Май",
+            "June": "Июнь",
+            "July": "Июль",
+            "August": "Август",
+            "September": "Сентябрь",
+            "October": "Октябрь",
+            "November": "Ноябрь",
+            "December": "Декабрь"
         },
-        "hour": "Hour",
-        "minute": "Minute",
-        "select": "Select",
-        "close": "Close"
+        "hour": "Час",
+        "minute": "Минута",
+        "select": "Выбрать",
+        "close": "Закрыть"
     }
 }
