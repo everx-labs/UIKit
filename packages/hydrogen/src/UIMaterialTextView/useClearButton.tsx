@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 
-import { UIImage } from '../UIImage';
+import { UIImage } from '@tonlabs/uikit.media';
 import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIConstant } from '../constants';
 

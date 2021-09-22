@@ -3,7 +3,6 @@ export * from './Portal';
 export * from './UIAutogrowTextView';
 export * from './UIBanner';
 export * from './UIBlurView';
-export * from './UIImage';
 export * from './UIKeyTextView';
 export * from './UIMaterialTextView';
 export * from './UINumberTextView';

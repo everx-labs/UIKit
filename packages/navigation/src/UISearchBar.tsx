@@ -2,7 +2,6 @@ import * as React from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 
 import {
-    UIImage,
     UITextView,
     UITextViewProps,
     useUITextViewValue,
@@ -10,6 +9,7 @@ import {
     useHover,
     useFocused,
 } from '@tonlabs/uikit.hydrogen';
+import { UIImage } from '@tonlabs/uikit.media';
 import { UIIndicator, TouchableOpacity } from '@tonlabs/uikit.controls';
 import {
     UIBackgroundView,

@@ -5,7 +5,7 @@ import Animated from 'react-native-reanimated';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { uiLocalized } from '@tonlabs/localization';
-import { UIImage } from '@tonlabs/uikit.hydrogen';
+import { UIImage } from '@tonlabs/uikit.media';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import {
     UILabel,

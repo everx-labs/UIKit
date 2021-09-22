@@ -42,6 +42,7 @@
         "@tonlabs/uikit.assets": "^2.3.0",
         "@tonlabs/uikit.themes": "^2.3.0",
         "@tonlabs/uikit.controls": "^2.3.0",
+        "@tonlabs/uikit.media": "^2.3.0",
         "@tonlabs/localization": "^2.3.0",
         "fontfaceobserver-es": "3.3.3",
         "nanoid": "^3.1.23"

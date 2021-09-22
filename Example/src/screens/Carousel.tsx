@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 
 import { UICarouselView } from '@tonlabs/uikit.flask';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIImage } from '@tonlabs/uikit.hydrogen';
+import { UIImage } from '@tonlabs/uikit.media';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 

@@ -13,7 +13,7 @@ import Animated, {
     withSpring,
 } from 'react-native-reanimated';
 import { IconSwitcherState, PressSwitcherState, SwitcherState, UISwitcherVariant } from '../types';
-import { UIImage } from '../../UIImage';
+import { UIImage } from '@tonlabs/uikit.media';
 import { hapticSelection } from '../../Haptics/Haptics';
 import { ColorVariants, Theme } from '@tonlabs/uikit.themes';
 import { UIConstant } from '../../constants';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { UIImage } from '@tonlabs/uikit.hydrogen';
+import { UIImage } from '@tonlabs/uikit.media';
 import { TouchableOpacity, UIBoxButton, UIBoxButtonType } from '@tonlabs/uikit.controls';
 import {
     UIBackgroundView,

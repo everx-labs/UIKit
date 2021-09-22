@@ -9,6 +9,7 @@ export * from './Typography';
 export * from './UIBackgroundView';
 export * from './UILabel';
 export * from './useWebFonts';
+
 export const UIThemes = {
     Colors,
     Typography,

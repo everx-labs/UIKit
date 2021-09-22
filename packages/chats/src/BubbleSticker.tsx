@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
-import { UIImage } from '@tonlabs/uikit.hydrogen';
+import { UIImage } from '@tonlabs/uikit.media';
 import { UILabel, UILabelRoles, ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 
 import { MessageStatus } from './types';

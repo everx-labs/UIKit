@@ -11,6 +11,7 @@ export * from './UIMsgButton';
 export * from './UIPillButton';
 export * from './TouchableOpacity';
 export * from './UIIndicator';
+
 export const UIControl = {
     UIBoxButton,
     UILinkButton,

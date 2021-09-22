@@ -5,7 +5,8 @@ import { UIQRCodeView, QRCodeType, QRCodeSize, useQRCodeValueError } from '@tonl
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { makeStyles, UIImage } from '@tonlabs/uikit.hydrogen';
+import { makeStyles } from '@tonlabs/uikit.hydrogen';
+import { UIImage } from '@tonlabs/uikit.media';
 import { UILabel, TypographyVariants, ColorVariants, Theme, useTheme } from '@tonlabs/uikit.themes';
 import { useBubbleContainerStyle, useBubblePosition } from './useBubblePosition';
 import { useBubbleBackgroundColor, useBubbleRoundedCornerStyle } from './useBubbleStyle';
