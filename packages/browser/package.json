@@ -42,6 +42,7 @@
         "@tonlabs/uikit.localization": "^2.3.0",
         "@tonlabs/uikit.navigation": "^2.3.0",
         "@tonlabs/uikit.flask": "^2.3.0",
+        "@tonlabs/uikit.popups": "^2.3.0",
         "bignumber.js": "9.0.0"
     },
     "devDependencies": {

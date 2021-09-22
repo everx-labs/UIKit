@@ -8,15 +8,15 @@ import type { OnSendText } from './types';
 export function useChatInputValue({
     ref,
     onSendText: onSendTextProp,
-    showMaxLengthAlert,
     resetInputHeight,
     maxInputLength,
+    onMaxLength,
 }: {
     ref: React.RefObject<TextInput>;
     onSendText: OnSendText;
-    showMaxLengthAlert: () => void;
     resetInputHeight: () => void;
     maxInputLength: number;
+    onMaxLength?: (maxLength: number) => void;
 }) {
     const {
         inputHasValue,
@@ -40,10 +40,10 @@ export function useChatInputValue({
             onBaseChangeText(text);
 
             if (text.length >= maxInputLength) {
-                showMaxLengthAlert();
+                onMaxLength && onMaxLength(maxInputLength);
             }
         },
-        [onBaseChangeText, showMaxLengthAlert, maxInputLength],
+        [onBaseChangeText, maxInputLength, onMaxLength],
     );
 
     const onKeyPress = React.useCallback(
@@ -58,10 +58,10 @@ export function useChatInputValue({
 
             const eventKey = e.key || e.nativeEvent?.key;
             if (eventKey !== 'Backspace' && inputValue.current.length === maxInputLength) {
-                showMaxLengthAlert();
+                onMaxLength && onMaxLength(maxInputLength);
             }
         },
-        [onSendText, onBaseKeyPress, inputValue, showMaxLengthAlert, maxInputLength],
+        [onSendText, onBaseKeyPress, inputValue, maxInputLength, onMaxLength],
     );
 
     return {

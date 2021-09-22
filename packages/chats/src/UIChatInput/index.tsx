@@ -89,6 +89,7 @@ export type UIChatInputProps = {
     onSendMedia: OnSendMedia;
     onSendDocument: OnSendDocument;
     onCustomKeyboardVisible?: (visible: boolean) => void | Promise<void>;
+    onMaxLength?: (maxValue: number) => void;
 
     customKeyboard?: UICustomKeyboardView;
 
@@ -130,6 +131,7 @@ export function UIChatInput(props: UIChatInputProps) {
                 customKeyboardButton={props.customKeyboard?.button}
                 onSendText={props.onSendText}
                 onFocus={dismissKeyboard}
+                onMaxLength={props.onMaxLength}
             />
             <ChatPicker
                 ref={chatPickerRef}

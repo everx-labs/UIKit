@@ -3,13 +3,13 @@ import type { TextInput } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UITextView, useAutogrowTextView } from '@tonlabs/uikit.hydrogen';
+import { UIPopup } from '@tonlabs/uikit.popups';
 
 import { ChatInputContainer } from './ChatInputContainer';
 import { MenuPlus } from './MenuPlus';
 import { MenuMore } from './MenuMore';
 import { QuickAction } from './QuickActions';
 import { useChatInputValue } from './useChatInputValue';
-import { useChatMaxLengthAlert } from './useChatMaxLengthAlert';
 import type { MenuItem, QuickActionItem, OnSendText, Shortcut } from './types';
 
 const MAX_INPUT_LENGTH = 2 ** 10;
@@ -18,7 +18,6 @@ const CHAT_INPUT_NUM_OF_LINES = 5;
 
 type ChatInputProps = {
     textInputRef: React.RefObject<TextInput>;
-
     autoFocus?: boolean;
     editable: boolean;
     placeholder?: string;
@@ -37,6 +36,7 @@ type ChatInputProps = {
     onSendText: OnSendText;
     onFocus: () => void;
     onBlur?: () => void;
+    onMaxLength?: (maxLength: number) => void;
 };
 
 export function ChatInput(props: ChatInputProps) {
@@ -48,16 +48,45 @@ export function ChatInput(props: ChatInputProps) {
         numberOfLinesProp,
         resetInputHeight,
     } = useAutogrowTextView(props.textInputRef, undefined, CHAT_INPUT_NUM_OF_LINES);
-    const showMaxLengthAlert = useChatMaxLengthAlert(MAX_INPUT_LENGTH);
+
+    const [isNoticeVisible, setNoticeVisible] = React.useState(false);
+
+    const onMaxLength = React.useCallback(() => {
+        setNoticeVisible(true);
+    }, []);
+
+    const hideNotice = React.useCallback(() => {
+        setNoticeVisible(false);
+    }, []);
+
     const { inputHasValue, onChangeText, onKeyPress, onSendText } = useChatInputValue({
         ref: props.textInputRef,
         onSendText: props.onSendText,
-        showMaxLengthAlert,
+        onMaxLength: props.onMaxLength || onMaxLength,
         resetInputHeight,
         maxInputLength: MAX_INPUT_LENGTH,
     });
 
     const CustomKeyboardButton = props.customKeyboardButton;
+
+    const renderNotice = React.useCallback(() => {
+        if (props.onMaxLength == null) {
+            return (
+                <UIPopup.Notice
+                    type={UIPopup.Notice.Type.TopToast}
+                    color={UIPopup.Notice.Color.PrimaryInverted}
+                    visible={isNoticeVisible}
+                    title={uiLocalized.formatString(
+                        uiLocalized.Chats.Alerts.MessageTooLong,
+                        MAX_INPUT_LENGTH.toString(),
+                    )}
+                    onClose={hideNotice}
+                    duration={UIPopup.Notice.Duration.Long}
+                />
+            );
+        }
+        return null;
+    }, [hideNotice, isNoticeVisible, props.onMaxLength]);
 
     return (
         <ChatInputContainer
@@ -110,6 +139,7 @@ export function ChatInput(props: ChatInputProps) {
                     style={inputStyle}
                 />
             )}
+            {renderNotice()}
         </ChatInputContainer>
     );
 }

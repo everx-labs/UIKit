@@ -7,7 +7,6 @@ export { default as UIComponent } from './UIComponent';
 export * from './UIDetailsInput';
 export { default as UIDetailsTable } from './UIDetailsTable';
 export { default as UIDetailsView } from './UIDetailsView';
-export { default as UIDropdownAlert } from './UIDropdownAlert';
 export { default as UILayoutManager } from './UILayoutManager';
 export { default as UILink } from './UILink';
 export { default as UIListHeader } from './UIListHeader';

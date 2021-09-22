@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import { UIDropdownAlert } from '@tonlabs/uikit.components';
 import { UILinkButton } from '@tonlabs/uikit.hydrogen';
 import { UIPopup } from '@tonlabs/uikit.popups';
 import { ExampleSection } from '../components/ExampleSection';
@@ -47,16 +46,6 @@ export const Popups = () => {
                             onPress={getCallback('Cancel Action')}
                         />
                     </UIPopup.AlertView>
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UIDropdownAlert">
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                    <UILinkButton
-                        title="Show UIDropdownAlert"
-                        onPress={() =>
-                            UIDropdownAlert.showNotification('This is a UIDropdownAlert')
-                        }
-                    />
                 </View>
             </ExampleSection>
         </ExampleScreen>
