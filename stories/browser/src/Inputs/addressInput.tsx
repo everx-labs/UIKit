@@ -9,7 +9,7 @@ import {
     BubbleSimplePlainText,
     BubbleActionButton,
 } from '@tonlabs/uistory.chats';
-import { UIQRCodeScannerSheet } from '@tonlabs/uikit.navigation';
+import { UIQRCodeScannerSheet } from '@tonlabs/uicast.qr-code-scanner-sheet';
 
 import type { AddressInputMessage } from '../types';
 import { UIAddressInput } from '../UIAddressInput';

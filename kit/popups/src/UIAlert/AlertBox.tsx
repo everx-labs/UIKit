@@ -11,7 +11,7 @@ import Animated, {
     withSpring,
     withTiming,
 } from 'react-native-reanimated';
-import { UIConstant } from '@tonlabs/uikit.navigation';
+import { UIConstant } from '../constants';
 import { TapGestureHandler } from 'react-native-gesture-handler';
 
 // eslint-disable-next-line no-shadow

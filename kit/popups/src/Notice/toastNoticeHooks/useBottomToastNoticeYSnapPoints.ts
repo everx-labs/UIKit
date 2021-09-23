@@ -1,6 +1,6 @@
 import Animated, { useDerivedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { UIConstant } from '@tonlabs/uikit.navigation';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { SnapPoints } from '../types';
 
 // @inline
@@ -11,7 +11,7 @@ export const useBottomToastNoticeYSnapPoints = (
     keyboardHeight: Animated.SharedValue<number>,
 ): SnapPoints => {
     const { bottom } = useSafeAreaInsets();
-    const paddingBottom = Math.max(bottom, UIConstant.contentOffset);
+    const paddingBottom = Math.max(bottom, UILayoutConstant.contentOffset);
 
     const openedYSnapPoint = useDerivedValue(() => {
         if (noticeHeight.value === 0) {

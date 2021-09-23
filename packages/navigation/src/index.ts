@@ -10,7 +10,6 @@ export * from './UIAndroidNavigationBar';
 export * from './UILargeTitleHeader';
 export * from './UILargeTitleHeader/RefreshControl';
 export * from './constants';
-export * from './Sheets';
 
 export * from './SplitNavigator/createSplitNavigator';
 export {

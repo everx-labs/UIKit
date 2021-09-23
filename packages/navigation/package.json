@@ -50,6 +50,7 @@
         "@tonlabs/uikit.layout": "^2.3.0",
         "@tonlabs/uikit.inputs": "^2.3.0",
         "@tonlabs/uikit.scrolls": "^2.3.0",
+        "@tonlabs/uikit.popups": "^2.3.0",
         "@tonlabs/localization": "^2.3.0",
         "lodash": "^4.17.20",
         "nanoid": "^3.1.23",

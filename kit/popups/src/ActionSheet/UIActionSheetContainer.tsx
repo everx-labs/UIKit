@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { View, ViewStyle } from 'react-native';
 import { UILabel, UILabelRoles, ColorVariants, useTheme, makeStyles } from '@tonlabs/uikit.themes';
-import { UICardSheet, UIConstant } from '@tonlabs/uikit.navigation';
+import { UICardSheet } from '../Sheets';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIActionSheetAction } from './UIActionSheetAction';
 import {
     UIActionSheetActionProps,
@@ -111,14 +112,14 @@ export const UIActionSheetContainer: React.FC<UIActionSheetContainerProps> = ({
 
 const useStyles = makeStyles(theme => ({
     container: {
-        paddingHorizontal: UIConstant.contentOffset,
-        paddingVertical: UIConstant.contentInsetVerticalX3,
+        paddingHorizontal: UILayoutConstant.contentOffset,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX3,
         backgroundColor: theme[ColorVariants.BackgroundPrimary],
-        borderRadius: UIConstant.alertBorderRadius,
+        borderRadius: UILayoutConstant.alertBorderRadius,
     },
     header: {
-        paddingVertical: UIConstant.contentInsetVerticalX3,
-        paddingHorizontal: UIConstant.contentOffset,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX3,
+        paddingHorizontal: UILayoutConstant.contentOffset,
         alignItems: 'center',
     },
     actionsContainer: {

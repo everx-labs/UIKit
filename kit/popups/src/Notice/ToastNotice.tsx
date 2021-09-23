@@ -4,7 +4,7 @@ import { PanGestureHandler } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import { Portal } from '@tonlabs/uikit.layout';
 import { useHover } from '@tonlabs/uikit.controls';
-import { UIConstant } from '@tonlabs/uikit.navigation';
+import { UIConstant } from './constants';
 import type { SnapPoints, ToastNoticeProps } from './types';
 import { Notice } from './Notice';
 import { useNoticeHeight } from './hooks/useNoticeHeight';
@@ -89,13 +89,13 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        paddingHorizontal: UIConstant.notice.toastIndentFromScreenEdges,
+        paddingHorizontal: UIConstant.toastIndentFromScreenEdges,
         flexDirection: 'row',
         justifyContent: 'center',
     },
     content: {
         flex: 1,
-        maxWidth: UIConstant.notice.maxWidth,
+        maxWidth: UIConstant.maxWidth,
     },
     notice: {
         position: 'absolute',

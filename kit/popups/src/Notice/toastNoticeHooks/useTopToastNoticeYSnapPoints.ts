@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useWindowDimensions } from 'react-native';
 import Animated, { useDerivedValue } from 'react-native-reanimated';
 import { UIDevice } from '@tonlabs/uikit.core';
-import { UIConstant } from '@tonlabs/uikit.navigation';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { initialWindowMetrics } from 'react-native-safe-area-context';
 import type { SnapPoints } from '../types';
 
@@ -25,7 +25,7 @@ export const useTopToastNoticeYSnapPoints = (
     }, [initialWindowMetrics, screenDimensionsHeight]);
 
     const openedYSnapPoint = useDerivedValue(() => {
-        return -screenHeight + statusBarHeight + UIConstant.contentOffset;
+        return -screenHeight + statusBarHeight + UILayoutConstant.contentOffset;
     }, [screenHeight, statusBarHeight]);
     const closedYSnapPoint = useDerivedValue(() => {
         if (noticeHeight.value === 0) {

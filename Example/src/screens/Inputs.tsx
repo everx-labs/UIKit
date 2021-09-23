@@ -5,7 +5,7 @@ import { View } from 'react-native';
 
 import { UIMaterialTextView, UISeedPhraseTextView, UINumberTextView } from '@tonlabs/uikit.inputs';
 import { ColorVariants } from '@tonlabs/uikit.themes';
-import { UIAddressTextView } from '@tonlabs/uikit.flask';
+import { UIAddressTextView } from '@tonlabs/uicast.address-text';
 import {
     UIAmountInput,
     UIDetailsInput,

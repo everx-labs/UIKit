@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { UILabel, UILabelRoles, makeStyles } from '@tonlabs/uikit.themes';
-import { UIConstant } from '@tonlabs/uikit.navigation';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { useBackHandler } from '@react-native-community/hooks';
 import { AlertBox } from './AlertBox';
 import { UIAlertViewAction } from './UIAlertViewAction';
@@ -144,7 +144,7 @@ const useStyles = makeStyles((actionCount: number) => ({
 
 const headerStyles = StyleSheet.create({
     header: {
-        paddingVertical: UIConstant.contentInsetVerticalX4,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX4,
     },
     headerTitle: {
         paddingBottom: 4,

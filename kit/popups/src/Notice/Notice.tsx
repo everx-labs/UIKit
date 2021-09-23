@@ -17,7 +17,8 @@ import {
     Theme,
     makeStyles,
 } from '@tonlabs/uikit.themes';
-import { UIConstant } from '@tonlabs/uikit.navigation';
+import { UIConstant } from './constants';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { NoticeProps, UINoticeType, UINoticeColor, UINoticeActionAttributes } from './types';
 import { Action } from './Action';
 import { CountdownCirlce } from './CountdownCircle';
@@ -61,7 +62,7 @@ const getBorderRadius = (type: UINoticeType): number => {
         case UINoticeType.BottomToast:
         case UINoticeType.TopToast:
         default:
-            return UIConstant.alertBorderRadius;
+            return UILayoutConstant.alertBorderRadius;
     }
 };
 
@@ -121,7 +122,7 @@ export const Notice: React.FC<NoticeProps> = ({
                 <TouchableWithoutFeedback
                     onPress={onPress}
                     onLongPress={onLongPress}
-                    delayLongPress={UIConstant.notice.longPressDelay}
+                    delayLongPress={UIConstant.longPressDelay}
                     onPressOut={onPressOut}
                 >
                     <View style={StyleSheet.absoluteFill} />
@@ -150,7 +151,7 @@ export const Notice: React.FC<NoticeProps> = ({
 
 const useStyles = makeStyles((color: UINoticeColor, type: UINoticeType, theme: Theme) => ({
     underlay: {
-        maxWidth: UIConstant.notice.maxWidth,
+        maxWidth: UIConstant.maxWidth,
         flex: 1,
         backgroundColor: 'white',
         borderRadius: getBorderRadius(type),
@@ -169,17 +170,17 @@ const useStyles = makeStyles((color: UINoticeColor, type: UINoticeType, theme: T
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: getBackgroundColor(color, theme),
-        paddingHorizontal: UIConstant.contentOffset,
+        paddingHorizontal: UILayoutConstant.contentOffset,
     },
     labelContainer: {
         flex: 1,
-        paddingVertical: UIConstant.contentInsetVerticalX3,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX3,
     },
     countdown: {
-        paddingRight: UIConstant.contentInsetVerticalX2,
+        paddingRight: UILayoutConstant.contentInsetVerticalX2,
         zIndex: -10,
     },
     action: {
-        marginHorizontal: -UIConstant.contentInsetVerticalX3,
+        marginHorizontal: -UILayoutConstant.contentInsetVerticalX3,
     },
 }));

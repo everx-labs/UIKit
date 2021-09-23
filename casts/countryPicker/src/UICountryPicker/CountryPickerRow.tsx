@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UILabel, ColorVariants, useTheme, Theme, makeStyles } from '@tonlabs/uikit.themes';
-import { UIConstant } from '@tonlabs/uikit.navigation';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
 import type { Country } from './types';
 import { CountryPickerContext } from './CountryPickerContext';
@@ -34,7 +34,7 @@ export const CountryPickerRow: React.FC<CountryRowProps> = ({ item }: CountryRow
 
 const useStyles = makeStyles((theme: Theme) => ({
     rowContainerInner: {
-        paddingVertical: UIConstant.contentOffset,
+        paddingVertical: UILayoutConstant.contentOffset,
         flexDirection: 'row',
         justifyContent: 'space-between',
         borderBottomColor: theme[ColorVariants.LineTertiary] as string,

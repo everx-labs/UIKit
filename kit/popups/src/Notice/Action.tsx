@@ -1,5 +1,5 @@
 import { UIBoxButton, UIBoxButtonType } from '@tonlabs/uikit.controls';
-import { UIConstant } from '@tonlabs/uikit.navigation';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import type { ActionProps } from './types';
@@ -24,6 +24,6 @@ export const Action = ({ action, variant }: ActionProps) => {
 
 const styles = StyleSheet.create({
     container: {
-        paddingLeft: UIConstant.contentInsetVerticalX2,
+        paddingLeft: UILayoutConstant.contentInsetVerticalX2,
     },
 });

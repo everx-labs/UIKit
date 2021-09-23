@@ -1,5 +1,7 @@
 import { Platform } from 'react-native';
 
+const GRID_LINE_HEIGHT = 4;
+
 export const UILayoutConstant = {
     iconSize: 24,
 
@@ -24,9 +26,17 @@ export const UILayoutConstant = {
     smallContentOffset: 8,
     normalContentOffset: 12,
     contentOffset: 16,
+    contentInsetVerticalX2: 2 * GRID_LINE_HEIGHT,
+    contentInsetVerticalX3: 3 * GRID_LINE_HEIGHT,
+    contentInsetVerticalX4: 4 * GRID_LINE_HEIGHT,
     borderRadius: 8,
     alertBorderRadius: 12,
     pillButtonBorderRadius: 20,
+
+    elasticWidthCardSheet: 414,
+    elasticWidthBottomSheet: 448,
+    swipeThreshold: 50,
+    rubberBandEffectDistance: 50,
 
     cardShadow:
         Platform.OS === 'android'

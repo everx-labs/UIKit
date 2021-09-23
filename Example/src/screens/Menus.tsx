@@ -6,19 +6,15 @@ import { SafeAreaInsetsContext, useSafeAreaInsets } from 'react-native-safe-area
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIPopover, UIPopoverMenu } from '@tonlabs/uikit.navigation_legacy';
-import {
-    UICardSheet,
-    UIBottomSheet,
-    UIQRCodeScannerSheet,
-    UIFullscreenSheet,
-    UILargeTitleHeader,
-} from '@tonlabs/uikit.navigation';
+import { UILargeTitleHeader } from '@tonlabs/uikit.navigation';
+import { UIQRCodeScannerSheet } from '@tonlabs/uicast.qr-code-scanner-sheet';
+import { UICardSheet, UIBottomSheet, UIFullscreenSheet } from '@tonlabs/uikit.popups';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
 import { UIPopup } from '@tonlabs/uikit.popups';
 import { UIMaterialTextView } from '@tonlabs/uikit.inputs';
 import { UIBoxButton, UILinkButton } from '@tonlabs/uikit.controls';
 import { UILabel, ColorVariants, useTheme } from '@tonlabs/uikit.themes';
-import { UIPinCode, UIPinCodeBiometryType } from '@tonlabs/uikit.flask';
+import { UIPinCode, UIPinCodeBiometryType } from '@tonlabs/uicast.pin-code';
 import { UICountryPicker } from '@tonlabs/uicast.country-picker';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';

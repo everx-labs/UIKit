@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { View } from 'react-native';
 
-import { UIPromoNotice } from '@tonlabs/uikit.flask';
+import { UIPromoNotice } from '@tonlabs/uicast.promo-notice';
 import { TouchableOpacity, UISwitcher, UISwitcherVariant } from '@tonlabs/uikit.controls';
 import { UILabel } from '@tonlabs/uikit.themes';
 import { ExampleSection } from '../components/ExampleSection';

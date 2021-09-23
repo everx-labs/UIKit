@@ -7,7 +7,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import type { View, ScrollView as RNScrollView, NativeScrollEvent } from 'react-native';
 
-import { getYWithRubberBandEffect } from '../../../AnimationHelpers/getYWithRubberBandEffect';
+import { getYWithRubberBandEffect } from '@tonlabs/uikit.popups';
 import type { ScrollHandlerContext } from '../../types';
 
 const measure: (

@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIBackgroundView, ColorVariants, useTheme } from '@tonlabs/uikit.themes';
-import { UIBottomSheet } from '@tonlabs/uikit.navigation';
+import { UIBottomSheet } from '@tonlabs/uikit.popups';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
 
 const PULLER_HEIGHT = 12;

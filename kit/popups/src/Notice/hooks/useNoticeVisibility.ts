@@ -8,17 +8,17 @@ import {
     useDerivedValue,
     Easing,
 } from 'react-native-reanimated';
-import { UIConstant } from '@tonlabs/uikit.navigation';
+import { UIConstant } from '../constants';
 import { UINoticeDuration } from '../types';
 
 const useNotificationDuration = (duration: UINoticeDuration | undefined) => {
     return React.useMemo(() => {
         switch (duration) {
             case UINoticeDuration.Short:
-                return UIConstant.notice.notificationDurationsShort;
+                return UIConstant.notificationDurationsShort;
             case UINoticeDuration.Long:
             default:
-                return UIConstant.notice.notificationDurationsLong;
+                return UIConstant.notificationDurationsLong;
         }
     }, [duration]);
 };
