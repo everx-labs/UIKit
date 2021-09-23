@@ -26,7 +26,7 @@ const useNotificationDuration = (duration: UINoticeDuration | undefined) => {
 export const useNoticeVisibility = (
     onClose: (() => void) | undefined,
     visible: boolean,
-    duration: UINoticeDuration | undefined,
+    duration?: UINoticeDuration,
 ) => {
     const [noticeVisible, setNoticeVisible] = React.useState(visible);
     const notificationDuration = useNotificationDuration(duration);
@@ -40,13 +40,11 @@ export const useNoticeVisibility = (
         () => {
             return {
                 countdownValue: countdownValue.value,
-                visible,
-                onClose,
             };
         },
         state => {
-            if (state.countdownValue === 0 && state.visible && state.onClose) {
-                runOnJS(state.onClose)();
+            if (state.countdownValue === 0 && visible && onClose) {
+                runOnJS(onClose)();
             }
         },
         [visible, onClose],

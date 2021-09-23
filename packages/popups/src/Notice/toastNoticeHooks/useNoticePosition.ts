@@ -7,9 +7,13 @@ import {
     withSpring,
     runOnJS,
     useWorkletCallback,
+    useDerivedValue,
 } from 'react-native-reanimated';
 // @ts-expect-error
 import SpringConfig from 'react-native/Libraries/Animated/SpringConfig';
+
+import { getYWithRubberBandEffect } from '@tonlabs/uikit.navigation';
+
 import type { SnapPoints } from '../types';
 
 const Y_THRESHOLD = 20;
@@ -152,8 +156,9 @@ export const useNoticePosition = (
         },
     );
 
-    const isBottomNotice =
-        ySnapPoints.openedSnapPoint.value - ySnapPoints.closedSnapPoint.value < 0;
+    const { openedSnapPoint, closedSnapPoint } = ySnapPoints;
+    const isBottomNotice = useDerivedValue(() => openedSnapPoint.value - closedSnapPoint.value < 0);
+
     const gestureHandler = useAnimatedGestureHandler({
         onActive: event => {
             if (toastNoticeState.value === 'Opened') {
@@ -170,11 +175,16 @@ export const useNoticePosition = (
 
                 if (swipeDirection.value === 'Vertical') {
                     /** Swipe up is prohibited */
-                    const isMovingAllowed = isBottomNotice
+                    const isMovingAllowed = isBottomNotice.value
                         ? event.translationY >= 0
                         : event.translationY <= 0;
                     if (isMovingAllowed) {
                         yPosition.value = ySnapPoints.openedSnapPoint.value + event.translationY;
+                    } else {
+                        const directionCoef = event.translationY > 0 ? 1 : -1;
+                        yPosition.value =
+                            ySnapPoints.openedSnapPoint.value +
+                            getYWithRubberBandEffect(event.translationY, 50) * directionCoef;
                     }
                 } else {
                     xPosition.value = event.translationX;
@@ -184,7 +194,7 @@ export const useNoticePosition = (
         onEnd: event => {
             if (toastNoticeState.value === 'Opened') {
                 isNoticeHeld.value = false;
-                const isTranslationYExceededThreshold = isBottomNotice
+                const isTranslationYExceededThreshold = isBottomNotice.value
                     ? event.translationY > Y_THRESHOLD
                     : event.translationY < -Y_THRESHOLD;
                 if (swipeDirection.value === 'Horizontal' && event.translationX < -X_THRESHOLD) {

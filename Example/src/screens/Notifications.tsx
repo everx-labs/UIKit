@@ -6,6 +6,48 @@ import { UIPopup, UINoticeColor } from '@tonlabs/uikit.popups';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
+function PushPopup() {
+    const [visible, setVisible] = React.useState(false);
+    const [longVisible, setLongVisible] = React.useState(false);
+    return (
+        <>
+            <UIPopup.Push
+                title="Hello!"
+                message="You got a new message!"
+                visible={visible}
+                onClose={() => setVisible(false)}
+                onTap={() => setVisible(false)}
+            />
+            <UIPopup.Push
+                title="Hello!"
+                message="Hey man, long time no see, maybe we can call each other? Come on, just 5-10 minutes, it won't take much time, you'll see."
+                visible={longVisible}
+                onClose={() => setLongVisible(false)}
+                onTap={() => setLongVisible(false)}
+                icon={require('./assets/long-push-icon.png')}
+            />
+            <View
+                style={{
+                    flexDirection: 'column',
+                    paddingBottom: 30,
+                    width: 250,
+                }}
+            >
+                <UILinkButton
+                    testID="show_push_popup"
+                    title={`${visible ? 'Hide' : 'Show'} push popup`}
+                    onPress={() => setVisible(!visible)}
+                />
+                <UILinkButton
+                    testID="show_long_push_popup"
+                    title={`${longVisible ? 'Hide' : 'Show'} long push popup`}
+                    onPress={() => setLongVisible(!longVisible)}
+                />
+            </View>
+        </>
+    );
+}
+
 export const Notifications = () => {
     const [noticeColor, setNoticeColor] = React.useState<UINoticeColor>(
         UINoticeColor.PrimaryInverted,
@@ -138,6 +180,9 @@ export const Notifications = () => {
                         hasCountdown={hasCountdown}
                     />
                 </View>
+            </ExampleSection>
+            <ExampleSection title="UIPopup.Push">
+                <PushPopup />
             </ExampleSection>
         </ExampleScreen>
     );

@@ -6,12 +6,14 @@ export const UIConstant = {
     iconSearchSize: 20,
     iconSearchingIndicatorSize: 14,
 
+    iconPushSize: 40,
+
     scrollContentInsetHorizontal: 16,
     contentInsetVerticalX2: 2 * GRID_LINE_HEIGHT,
     contentInsetVerticalX3: 3 * GRID_LINE_HEIGHT,
     contentInsetVerticalX4: 4 * GRID_LINE_HEIGHT,
 
-    contentOffset: 16,
+    contentOffset: 4 * GRID_LINE_HEIGHT,
     alertBorderRadius: 12,
 
     headerHeight: 56,
