@@ -12,10 +12,12 @@ import Animated, {
     withRepeat,
     withTiming,
 } from 'react-native-reanimated';
+import BigNumber from 'bignumber.js';
 
 import {
     Typography,
     TypographyVariants,
+    getFontMesurements,
     ColorVariants,
     UIImage,
     UIImageProps,
@@ -32,10 +34,13 @@ const AnimatedUIImage = Animated.createAnimatedComponent(UIImage);
 const LOADING_ANIMATION_STARTING_POINT = 0;
 // @inline
 const LOADING_ANIMATION_ENDING_POINT = 1;
-// @inline
-const lineHeightIconAdjustment = 5;
 
-function useIcon(source: UIImageProps['source'], role: TypographyVariants, loading: boolean) {
+function useIcon(
+    source: UIImageProps['source'],
+    variant: TypographyVariants,
+    loading: boolean,
+    aspectRatio: number = 1,
+) {
     const loadingProgress = useSharedValue(LOADING_ANIMATION_STARTING_POINT);
 
     React.useEffect(() => {
@@ -54,12 +59,18 @@ function useIcon(source: UIImageProps['source'], role: TypographyVariants, loadi
     }, [loading]);
 
     const iconStaticStyle = React.useMemo(() => {
-        const { lineHeight } = StyleSheet.flatten(Typography[role]);
+        const { capHeight } = getFontMesurements(variant);
+
+        if (capHeight == null) {
+            return {};
+        }
+
         return {
             // If use whole lineHeight it will not be
             // aligned with the baseline
             // There is a temp workaround to make it look better
-            height: lineHeight == null ? undefined : lineHeight - lineHeightIconAdjustment,
+            height: capHeight,
+            width: capHeight * aspectRatio,
         };
     }, []);
 
@@ -87,23 +98,35 @@ function useIcon(source: UIImageProps['source'], role: TypographyVariants, loadi
 }
 
 export function UIAnimatedBalance({
+    testID,
     integerVariant = TypographyVariants.TitleLarge,
     fractionalVariant = TypographyVariants.LightLarge,
-    value,
+    value: rawValue,
     maxFractionalDigits = 2,
     icon,
+    iconAspectRatio,
     loading = false,
 }: {
-    value: number;
+    testID?: string;
+    value: number | BigNumber;
     icon: UIImageProps['source'];
+    iconAspectRatio?: number;
     integerVariant?: TypographyVariants;
     fractionalVariant?: TypographyVariants;
     // We don't want to deal with edge cases for now
     // as the component is not for use for general cases with all number
-    maxFractionalDigits?: 1 | 2 | 3 | 4 | 5;
+    maxFractionalDigits?: number;
     loading?: boolean;
 }) {
     const theme = useTheme();
+    let value: number =
+        rawValue instanceof BigNumber
+            ? rawValue
+                  .multipliedBy(10 ** maxFractionalDigits)
+                  .integerValue()
+                  .dividedBy(10 ** maxFractionalDigits)
+                  .toNumber()
+            : rawValue;
     const valueHolder = useSharedValue(value);
     const { decimalSeparator } = uiLocalized;
 
@@ -120,6 +143,14 @@ export function UIAnimatedBalance({
 
     const formatted = useDerivedValue(() => {
         const integer = Math.floor(valueHolder.value);
+
+        if (maxFractionalDigits <= 0) {
+            return {
+                integer: integer.toString(),
+                fractional: '',
+            };
+        }
+
         const fractional = Math.floor((valueHolder.value - integer) * 10 ** maxFractionalDigits);
         return {
             integer: integer.toString(),
@@ -165,6 +196,11 @@ export function UIAnimatedBalance({
             const numRegExp = /[0-9]/g;
             const wideNumLiteral = '5';
 
+            if (maxFractionalDigits <= 0) {
+                normalized.value = state.integer.replace(numRegExp, wideNumLiteral);
+                return;
+            }
+
             normalized.value =
                 state.integer.replace(numRegExp, wideNumLiteral) +
                 decimalSeparator +
@@ -195,7 +231,7 @@ export function UIAnimatedBalance({
         };
     });
 
-    const iconElement = useIcon(icon, integerVariant, loading);
+    const iconElement = useIcon(icon, integerVariant, loading, iconAspectRatio);
 
     const colorStyle = React.useMemo(() => ({ color: theme[ColorVariants.TextPrimary] }), [theme]);
 
@@ -208,7 +244,7 @@ export function UIAnimatedBalance({
         <View style={styles.intrinsicWrapper}>
             <View style={[textLikeContainer, styles.main]}>
                 <AnimatedTextInput
-                    style={[Typography[integerVariant], styles.hidden]}
+                    style={[Typography[integerVariant], styles.hiddenInput]}
                     animatedProps={normalizedProps}
                     defaultValue={normalized.value}
                     underlineColorAndroid="transparent"
@@ -220,8 +256,11 @@ export function UIAnimatedBalance({
                  * instead of `marginLeft` as space is more "text friendly"
                  * and will layout properly in text
                  */}
-                <Text style={Typography[fractionalVariant]}> {iconElement}</Text>
-                <View style={[textLikeContainer, styles.visible]}>
+                <Text style={[Typography[fractionalVariant], styles.hiddenText]}>
+                    {' '}
+                    {iconElement}
+                </Text>
+                <View style={[textLikeContainer, styles.visible]} testID={testID}>
                     <AnimatedTextInput
                         style={[Typography[integerVariant], colorStyle, styles.integer]}
                         animatedProps={animatedIntegerProps}
@@ -229,9 +268,11 @@ export function UIAnimatedBalance({
                         underlineColorAndroid="transparent"
                         editable={false}
                     />
-                    <Text style={[Typography[fractionalVariant], colorStyle, styles.delimeter]}>
-                        {decimalSeparator}
-                    </Text>
+                    {maxFractionalDigits > 0 && (
+                        <Text style={[Typography[fractionalVariant], colorStyle, styles.delimeter]}>
+                            {decimalSeparator}
+                        </Text>
+                    )}
                     <AnimatedTextInput
                         style={[Typography[fractionalVariant], colorStyle, styles.fractional]}
                         animatedProps={animatedFractionalProps}
@@ -282,7 +323,12 @@ const styles = StyleSheet.create({
         padding: 0,
         lineHeight: undefined,
     },
-    hidden: {
+    hiddenInput: {
         color: 'transparent',
+        fontWeight: '600',
+        // reset RN styles to have proper vertical alignment
+        padding: 0,
+        lineHeight: undefined,
     },
+    hiddenText: { lineHeight: undefined },
 });

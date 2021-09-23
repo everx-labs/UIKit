@@ -46,6 +46,12 @@ export type Font = {
     light: FontVariant;
 };
 
+// See picture here https://www.npmjs.com/package/font-measure#metrics-
+// This is approximate measurement
+// (It seems to be average for fonts)
+const interFontBaselineRatio = 0.19;
+const interFontCapHeightRatio = 0.68;
+
 export const InterFont: Font = {
     semiBold: {
         fontFamily: 'Inter-SemiBold',
@@ -249,3 +255,23 @@ export const Typography: TypographyT = StyleSheet.create({
         letterSpacing: -0.26,
     },
 });
+
+export function getFontMesurements(variant: TypographyVariants) {
+    const { lineHeight } = StyleSheet.flatten(Typography[variant]);
+
+    if (!lineHeight) {
+        return {
+            baseline: undefined,
+            capHeight: undefined,
+            upperline: undefined,
+        };
+    }
+
+    const baseline = interFontBaselineRatio * lineHeight;
+    const capHeight = interFontCapHeightRatio * lineHeight;
+    return {
+        baseline,
+        capHeight,
+        upperline: baseline + capHeight,
+    };
+}
