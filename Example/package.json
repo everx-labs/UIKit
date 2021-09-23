@@ -33,7 +33,7 @@
         "@tonlabs/uikit.inputs": "*",
         "@tonlabs/uikit.themes": "*",
         "@tonlabs/uistory.browser": "*",
-        "@tonlabs/uikit.charts": "*",
+        "@tonlabs/uicast.linear-chart": "*",
         "@tonlabs/uistory.chats": "*",
         "@tonlabs/uikit.components": "*",
         "@tonlabs/uikit.core": "*",

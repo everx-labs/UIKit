@@ -3,15 +3,15 @@ import { View, StyleSheet, LayoutChangeEvent } from 'react-native';
 import Svg, { Path as SvgPath } from 'react-native-svg';
 import Animated, { useAnimatedProps, useSharedValue } from 'react-native-reanimated';
 import { TypographyVariants, UILabel, ColorVariants, useTheme } from '@tonlabs/uikit.themes';
-import { addNativeProps } from '../Utils';
+import { addNativeProps } from '../addNativeProps';
 import {
     LINEAR_CHART_CONTENT_HORIZONTAL_OFFSET,
     LINEAR_CHART_STROKE_WIDTH,
     LINEAR_CHART_HORIZONTAL_OFFSET_FROM_CHART_TO_THE_EDGE,
     LINEAR_CHART_VERTICAL_OFFSET_FROM_CHART_TO_THE_EDGE,
     LINEAR_CHART_INITIAL_DIMENSIONS,
-} from '../constants';
-import type { LinearChartPoint, LinearChartDimensions, LinearChartLabelData } from '../types';
+} from './constants';
+import type { LinearChartPoint, LinearChartDimensions, LinearChartLabelData } from './types';
 import { useLabelData, useAnimatedPathProps } from './hooks';
 import { formatLabelText } from './utils';
 

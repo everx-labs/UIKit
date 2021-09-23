@@ -6,7 +6,7 @@ import type {
     LinearChartDimensions,
     LinearChartExtremum,
     LinearChartControlPoints,
-} from '../../types';
+} from './types';
 
 /**
  * @worklet

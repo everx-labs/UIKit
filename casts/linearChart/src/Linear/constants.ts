@@ -1,5 +1,5 @@
 import type Animated from 'react-native-reanimated';
-import type { LinearChartDimensions } from '../types';
+import type { LinearChartDimensions } from './types';
 
 export const LINEAR_CHART_CONTENT_HORIZONTAL_OFFSET: number = 16;
 export const LINEAR_CHART_STROKE_WIDTH: number = 2;

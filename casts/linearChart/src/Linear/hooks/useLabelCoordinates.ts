@@ -3,8 +3,8 @@ import type {
     LinearChartAnimatedState,
     LinearChartDimensions,
     LinearChartControlPoints,
-} from '../../types';
-import { LINEAR_CHART_WITH_SPRING_CONFIG } from '../../constants';
+} from '../types';
+import { LINEAR_CHART_WITH_SPRING_CONFIG } from '../constants';
 
 const getIsNoAnimationNeeded = (
     currentAnimatedState: LinearChartAnimatedState,

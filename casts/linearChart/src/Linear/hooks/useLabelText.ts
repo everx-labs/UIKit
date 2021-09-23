@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Animated, { runOnJS, useAnimatedReaction, useDerivedValue } from 'react-native-reanimated';
-import type { LinearChartControlPoints } from '../../types';
+import type { LinearChartControlPoints } from '../types';
 
 export const useLabelText = (
     controlPoints: Readonly<Animated.SharedValue<LinearChartControlPoints | null>>,

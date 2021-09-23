@@ -4,12 +4,12 @@ import type {
     LinearChartPoint,
     LinearChartLabelData,
     LinearChartControlPoints,
-} from '../../types';
+} from '../types';
 import { getScaledData, getControlPoints } from '../utils';
 import { useLabelCoordinates } from './useLabelCoordinates';
 import { useLabelText } from './useLabelText';
 import { useLabelStyles } from './useLabelStyles';
-import { LINEAR_CHART_STROKE_WIDTH } from '../../constants';
+import { LINEAR_CHART_STROKE_WIDTH } from '../constants';
 
 export const useLabelData = (
     dimensions: Animated.SharedValue<LinearChartDimensions>,

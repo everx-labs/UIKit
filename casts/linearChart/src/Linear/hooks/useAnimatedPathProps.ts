@@ -7,9 +7,9 @@ import Animated, {
     withSpring,
 } from 'react-native-reanimated';
 import { Path, serialize } from 'react-native-redash';
-import type { LinearChartDimensions, LinearChartPoint } from '../../types';
+import type { LinearChartDimensions, LinearChartPoint } from '../types';
 import { convertDataToPath, interpolatePath, negateProgressTarget } from '../utils';
-import { LINEAR_CHART_STROKE_WIDTH, LINEAR_CHART_WITH_SPRING_CONFIG } from '../../constants';
+import { LINEAR_CHART_STROKE_WIDTH, LINEAR_CHART_WITH_SPRING_CONFIG } from '../constants';
 
 export const useAnimatedPathProps = (
     dimensions: Animated.SharedValue<LinearChartDimensions>,
