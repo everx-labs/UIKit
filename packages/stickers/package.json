@@ -40,8 +40,7 @@
         "@tonlabs/uikit.hydrogen": "^2.3.0",
         "@tonlabs/uikit.themes": "^2.3.0",
         "@tonlabs/uikit.controls": "^2.3.0",
-        "@tonlabs/uikit.media": "^2.3.0",
-        "@tonlabs/uikit.keyboard": "^2.3.0"
+        "@tonlabs/uikit.media": "^2.3.0"
     },
     "devDependencies": {
         "@react-native-community/bob": "0.16.2",

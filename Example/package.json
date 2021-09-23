@@ -39,7 +39,6 @@
         "@tonlabs/uikit.core": "*",
         "@tonlabs/uikit.flask": "*",
         "@tonlabs/uikit.hydrogen": "*",
-        "@tonlabs/uikit.keyboard": "*",
         "@tonlabs/uikit.legacy": "*",
         "@tonlabs/uikit.navigation": "*",
         "@tonlabs/uikit.navigation_legacy": "*",

@@ -6,7 +6,7 @@ import { useBackHandler } from '@react-native-community/hooks';
 
 import { Portal } from '@tonlabs/uikit.layout';
 import { ColorVariants, useColorParts, useStatusBar } from '@tonlabs/uikit.themes';
-import { useAnimatedKeyboardHeight } from '@tonlabs/uikit.keyboard';
+import { useAnimatedKeyboardHeight } from '@tonlabs/uikit.inputs';
 
 import { UIConstant } from '../../constants';
 import { ScrollableContext } from '../../Scrollable/Context';

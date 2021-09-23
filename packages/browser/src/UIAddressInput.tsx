@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { Platform, StyleSheet, TextInput } from 'react-native';
 
-import { UIInputAccessoryView } from '@tonlabs/uikit.keyboard';
 import { ChatInputContainer, useChatInputValue, useChatMaxLengthAlert } from '@tonlabs/uikit.chats';
-import { UITextView, useAutogrowTextView } from '@tonlabs/uikit.inputs';
+import { UITextView, useAutogrowTextView, UIInputAccessoryView } from '@tonlabs/uikit.inputs';
 import { UILabel, UILabelRoles, ColorVariants } from '@tonlabs/uikit.themes';
 import { uiLocalized } from '@tonlabs/localization';
 import {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useAnimatedKeyboardHeight } from '@tonlabs/uikit.keyboard';
+import { useAnimatedKeyboardHeight } from '@tonlabs/uikit.inputs';
 import { UINoticeProps, UINoticeType } from './types';
 import { ToastNotice } from './ToastNotice';
 import { useNoticeVisibility } from './hooks/useNoticeVisibility';

@@ -7,7 +7,7 @@ import { UIConstant, UIDevice } from '@tonlabs/uikit.core';
 import { UIImage } from '@tonlabs/uikit.media';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
-import { registerKeyboardComponent } from '@tonlabs/uikit.keyboard';
+import { registerKeyboardComponent } from '@tonlabs/uikit.inputs';
 
 // Unfortunately we have to import it as UICustomKeyboard doesn't accept functional props :(
 import type {

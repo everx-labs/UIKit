@@ -32,7 +32,7 @@ Pod::Spec.new do |s|
   s.name         = "UIKitControls"
   s.version      = package["version"]
   s.summary      = package["description"]
-  s.homepage     = "https://github.com/tonlabs/UIKit/packages/keyboard#readme"
+  s.homepage     = "https://github.com/tonlabs/UIKit/kit/controls#readme"
   s.license      = "Apache-2.0"
   s.author       = { "author" => "tonlabs.io" }
   s.platforms    = { :ios => "11.0", :tvos => "11.0" }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { ColorValue } from 'react-native';
-import type { UICustomKeyboardView } from '@tonlabs/uikit.keyboard';
+import type { UICustomKeyboardView } from '@tonlabs/uikit.inputs';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 
 import { StickersButton } from './StickersButton';

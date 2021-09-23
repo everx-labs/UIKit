@@ -6,7 +6,7 @@ import {
     useCustomKeyboard,
     UIInputAccessoryView,
     UICustomKeyboardView,
-} from '@tonlabs/uikit.keyboard';
+} from '@tonlabs/uikit.inputs';
 
 import { ChatInput } from './ChatInput';
 import type {

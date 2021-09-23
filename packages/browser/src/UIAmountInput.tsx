@@ -2,13 +2,13 @@ import * as React from 'react';
 import { Platform, StyleSheet, TextInput } from 'react-native';
 import BigNumber from 'bignumber.js';
 
-import { UIInputAccessoryView } from '@tonlabs/uikit.keyboard';
 import { ChatInputContainer } from '@tonlabs/uikit.chats';
 import {
     UITextView,
     useUITextViewValue,
     useNumberFormatting,
     useAutogrowTextView,
+    UIInputAccessoryView,
 } from '@tonlabs/uikit.inputs';
 import { UILabel, UILabelRoles, ColorVariants } from '@tonlabs/uikit.themes';
 import { uiLocalized } from '@tonlabs/localization';

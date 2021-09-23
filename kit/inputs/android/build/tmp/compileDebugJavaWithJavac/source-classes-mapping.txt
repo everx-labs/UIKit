@@ -1,0 +1,32 @@
+tonlabs/uikit/keyboard/CustomKeyboardViewManager.java
+ tonlabs.uikit.keyboard.CustomKeyboardViewManager
+tonlabs/uikit/keyboard/BuildConfig.java
+ tonlabs.uikit.keyboard.BuildConfig
+tonlabs/uikit/keyboard/CustomKeyboardViewShadowNode.java
+ tonlabs.uikit.keyboard.CustomKeyboardViewShadowNode
+tonlabs/uikit/keyboard/ScreenMonitor.java
+ tonlabs.uikit.keyboard.ScreenMonitor
+ tonlabs.uikit.keyboard.ScreenMonitor$1
+ tonlabs.uikit.keyboard.ScreenMonitor$Listener
+tonlabs/uikit/keyboard/PredicateFunc.java
+ tonlabs.uikit.keyboard.PredicateFunc
+tonlabs/uikit/keyboard/AppContextHolder.java
+ tonlabs.uikit.keyboard.AppContextHolder
+ tonlabs.uikit.keyboard.AppContextHolder$1
+ tonlabs.uikit.keyboard.AppContextHolder$VisibleViewClassMatchPredicate
+tonlabs/uikit/keyboard/SoftKeyboardMonitor.java
+ tonlabs.uikit.keyboard.SoftKeyboardMonitor
+ tonlabs.uikit.keyboard.SoftKeyboardMonitor$1
+ tonlabs.uikit.keyboard.SoftKeyboardMonitor$2
+ tonlabs.uikit.keyboard.SoftKeyboardMonitor$Listener
+tonlabs/uikit/keyboard/KeyboardPackage.java
+ tonlabs.uikit.keyboard.KeyboardPackage
+tonlabs/uikit/keyboard/CustomKeyboardLayout.java
+ tonlabs.uikit.keyboard.CustomKeyboardLayout
+ tonlabs.uikit.keyboard.CustomKeyboardLayout$1
+ tonlabs.uikit.keyboard.CustomKeyboardLayout$2
+ tonlabs.uikit.keyboard.CustomKeyboardLayout$3
+ tonlabs.uikit.keyboard.CustomKeyboardLayout$3$1
+ tonlabs.uikit.keyboard.CustomKeyboardLayout$Ref
+tonlabs/uikit/keyboard/CustomKeyboardView.java
+ tonlabs.uikit.keyboard.CustomKeyboardView
