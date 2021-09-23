@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import { BubbleSimplePlainText, ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';
+import { BubbleSimplePlainText, ChatMessageType, MessageStatus } from '@tonlabs/uistory.chats';
 import type { ConfirmMessage } from '../types';
 import {
     BubbleConfirmButtons,

@@ -7,7 +7,7 @@ import {
     MessageStatus,
     BubbleMedia,
     MediaMessageError,
-} from '@tonlabs/uikit.chats';
+} from '@tonlabs/uistory.chats';
 
 import { MediaOutputMessage, MediaOutputMessageStatus } from './types';
 

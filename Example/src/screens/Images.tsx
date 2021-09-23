@@ -4,7 +4,7 @@ import { View, Image } from 'react-native';
 import { UIActionImage } from '@tonlabs/uikit.components';
 import { UIBoxButton } from '@tonlabs/uikit.controls';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { DuplicateImage } from '@tonlabs/uikit.chats';
+import { DuplicateImage } from '@tonlabs/uistory.chats';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 

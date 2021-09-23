@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Platform, StyleSheet, TextInput } from 'react-native';
 import BigNumber from 'bignumber.js';
 
-import { ChatInputContainer } from '@tonlabs/uikit.chats';
+import { ChatInputContainer } from '@tonlabs/uistory.chats';
 import {
     UITextView,
     useUITextViewValue,

@@ -6,7 +6,7 @@ import {
     BubbleActionButton,
     ChatMessageType,
     MessageStatus,
-} from '@tonlabs/uikit.chats';
+} from '@tonlabs/uistory.chats';
 import { UIQRCodeScannerSheet } from '@tonlabs/uikit.navigation';
 import { uiLocalized } from '@tonlabs/localization';
 

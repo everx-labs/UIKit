@@ -6,7 +6,7 @@ import {
     BubbleSimplePlainText,
     ChatMessageType,
     MessageStatus,
-} from '@tonlabs/uikit.chats';
+} from '@tonlabs/uistory.chats';
 import { uiLocalized } from '@tonlabs/localization';
 
 import type { EncryptionBoxMessage } from '../types';

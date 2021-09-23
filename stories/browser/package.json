@@ -35,7 +35,7 @@
     ],
     "dependencies": {
         "@tonlabs/uikit.assets": "^2.3.0",
-        "@tonlabs/uikit.chats": "^2.3.0",
+        "@tonlabs/uistory.chats": "^2.3.0",
         "@tonlabs/uikit.core": "^2.3.0",
         "@tonlabs/uikit.hydrogen": "^2.3.0",
         "@tonlabs/uikit.themes": "^2.3.0",

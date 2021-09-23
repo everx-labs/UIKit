@@ -1,4 +1,4 @@
-import type { ChatMessageType, BubbleBaseT } from '@tonlabs/uikit.chats';
+import type { ChatMessageType, BubbleBaseT } from '@tonlabs/uistory.chats';
 import type BigNumber from 'bignumber.js';
 import type React from 'react';
 

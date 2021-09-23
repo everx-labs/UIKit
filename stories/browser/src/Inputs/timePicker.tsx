@@ -6,7 +6,7 @@ import {
     BubbleSimplePlainText,
     ChatMessageType,
     MessageStatus,
-} from '@tonlabs/uikit.chats';
+} from '@tonlabs/uistory.chats';
 
 import { UIDateTimePickerMode } from '@tonlabs/uikit.flask';
 

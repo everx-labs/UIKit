@@ -6,7 +6,7 @@ import {
     ChatMessageType,
     MessageStatus,
     UIChatInput,
-} from '@tonlabs/uikit.chats';
+} from '@tonlabs/uistory.chats';
 import { Portal } from '@tonlabs/uikit.layout';
 
 import type { TerminalMessage } from '../types';

@@ -8,7 +8,7 @@ import {
     ChatMessageType,
     BubbleSimplePlainText,
     BubbleActionButton,
-} from '@tonlabs/uikit.chats';
+} from '@tonlabs/uistory.chats';
 import { UIQRCodeScannerSheet } from '@tonlabs/uikit.navigation';
 
 import type { AddressInputMessage } from '../types';

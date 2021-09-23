@@ -28,7 +28,7 @@ import type {
 } from '@tonlabs/uistory.browser';
 import { UIPopup } from '@tonlabs/uikit.popups';
 import { uiLocalized } from '@tonlabs/localization';
-import { ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';
+import { ChatMessageType, MessageStatus } from '@tonlabs/uistory.chats';
 import { UIBoxButton } from '@tonlabs/uikit.controls';
 import {
     UILabel,

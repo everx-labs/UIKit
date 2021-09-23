@@ -34,7 +34,7 @@
         "@tonlabs/uikit.themes": "*",
         "@tonlabs/uistory.browser": "*",
         "@tonlabs/uikit.charts": "*",
-        "@tonlabs/uikit.chats": "*",
+        "@tonlabs/uistory.chats": "*",
         "@tonlabs/uikit.components": "*",
         "@tonlabs/uikit.core": "*",
         "@tonlabs/uikit.flask": "*",

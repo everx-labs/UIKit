@@ -10,7 +10,7 @@ import {
     ChatMessage,
     MessageStatus,
     TransactionType,
-} from '@tonlabs/uikit.chats';
+} from '@tonlabs/uistory.chats';
 import { UIPopup } from '@tonlabs/uikit.popups';
 import { uiLocalized } from '@tonlabs/localization';
 import { useStickers } from '@tonlabs/uikit.stickers';

@@ -9,7 +9,7 @@ import {
     UICommonChatList,
     OnPressUrl,
     OnLongPressText,
-} from '@tonlabs/uikit.chats';
+} from '@tonlabs/uistory.chats';
 import { BrowserMessage, InteractiveMessageType } from './types';
 import { getFormattedList } from './getFormattedList';
 import { AddressInput } from './Inputs/addressInput';

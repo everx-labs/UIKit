@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { PortalManager } from '@tonlabs/uikit.layout';
-import type { OnPressUrl, OnLongPressText } from '@tonlabs/uikit.chats';
+import type { OnPressUrl, OnLongPressText } from '@tonlabs/uistory.chats';
 
 import { UIBrowserList } from './UIBrowserList';
 import type { BrowserMessage } from './types';

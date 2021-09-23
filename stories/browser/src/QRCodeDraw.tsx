@@ -6,7 +6,7 @@ import {
     ChatMessageType,
     MessageStatus,
     BubbleQRCode,
-} from '@tonlabs/uikit.chats';
+} from '@tonlabs/uistory.chats';
 import { QRCodeError, useQRCodeValueError } from '@tonlabs/uikit.media';
 
 import { QRCodeDrawMessage, QRCodeDrawMessageStatus } from './types';
