@@ -16,7 +16,7 @@ import {
     TimeMessage,
     DateTimeMessage,
     CountryMessage,
-} from '@tonlabs/uikit.browser';
+} from '@tonlabs/uistory.browser';
 import type {
     AddressInputMessage,
     ConfirmMessage,
@@ -25,7 +25,7 @@ import type {
     AmountInputMessage,
     SigningBoxMessage,
     TransactionConfirmationMessage,
-} from '@tonlabs/uikit.browser';
+} from '@tonlabs/uistory.browser';
 import { UIPopup } from '@tonlabs/uikit.popups';
 import { uiLocalized } from '@tonlabs/localization';
 import { ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';

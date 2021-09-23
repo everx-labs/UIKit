@@ -6,9 +6,10 @@
     "private": true,
     "workspaces": [
         "packages/*",
+        "kit/*",
+        "stories/*",
         "Example",
-        "localization",
-        "kit/*"
+        "localization"
     ],
     "scripts": {
         "postinstall": "./postinstall.sh",
