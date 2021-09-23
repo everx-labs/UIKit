@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type Animated from 'react-native-reanimated';
 import type { useAnimatedGestureHandler } from 'react-native-reanimated';
-import type { ScrollableParentScrollHandler } from '../../../Scrollable/Context';
+import type { ScrollableParentScrollHandler } from '@tonlabs/uikit.scrolls';
 
 /**
  * On Android ScrollView stops to fire events when it reaches the end (y is 0).

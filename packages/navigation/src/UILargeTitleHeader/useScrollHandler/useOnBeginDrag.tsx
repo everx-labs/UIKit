@@ -2,7 +2,7 @@
 import * as React from 'react';
 import type { NativeScrollEvent } from 'react-native';
 import Animated, { cancelAnimation } from 'react-native-reanimated';
-import type { ScrollableParentScrollHandler } from '../../Scrollable/Context';
+import type { ScrollableParentScrollHandler } from '@tonlabs/uikit.scrolls';
 import type { ScrollHandlerContext } from '../types';
 
 export function useOnBeginDrag(

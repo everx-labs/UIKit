@@ -13,8 +13,7 @@ import Animated, {
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UIBackgroundView, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 
-import { useHasScroll } from '../Scrollable';
-import { ScrollableContext } from '../Scrollable/Context';
+import { useHasScroll, ScrollableContext } from '@tonlabs/uikit.scrolls';
 import { UIConstant } from '../constants';
 import type { UINavigationBarProps } from '../UINavigationBar';
 import { UIStackNavigationBar } from '../UIStackNavigationBar';

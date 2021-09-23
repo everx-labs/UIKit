@@ -20,7 +20,7 @@ import Animated, {
 
 import { UIConstant } from '../../constants';
 import { getYWithRubberBandEffect } from '../../AnimationHelpers/getYWithRubberBandEffect';
-import { useHasScroll } from '../../Scrollable';
+import { useHasScroll } from '@tonlabs/uikit.scrolls';
 import type { OnOpen, OnClose } from './types';
 
 const OpenSpringConfig = {

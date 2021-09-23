@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import type { NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import type Animated from 'react-native-reanimated';
-import type { ScrollableParentScrollHandler } from '../../../Scrollable/Context';
+import type { ScrollableParentScrollHandler } from '@tonlabs/uikit.scrolls';
 
 // @ts-ignore
 // eslint-disable-next-line import/no-unresolved, import/extensions

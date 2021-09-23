@@ -38,11 +38,11 @@ import {
 } from '@tonlabs/uikit.themes';
 import {
     createSplitNavigator,
-    ScrollView,
     UIAndroidNavigationBar,
     UILargeTitleHeader,
     UISearchBarButton,
 } from '@tonlabs/uikit.navigation';
+import { ScrollView } from '@tonlabs/uikit.scrolls';
 
 import { ButtonsScreen } from './screens/Buttons';
 import { Checkbox } from './screens/Checkbox';

@@ -5,7 +5,7 @@ import { Platform } from 'react-native';
 import type { ScrollView as RNScrollView, NativeScrollEvent } from 'react-native';
 
 import { getYWithRubberBandEffect } from '../../../AnimationHelpers/getYWithRubberBandEffect';
-import type { ScrollableParentScrollHandler } from '../../../Scrollable/Context';
+import type { ScrollableParentScrollHandler } from '@tonlabs/uikit.scrolls';
 import type { ScrollHandlerContext } from '../../types';
 
 const isIOS = Platform.OS === 'ios';

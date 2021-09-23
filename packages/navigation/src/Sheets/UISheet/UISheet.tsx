@@ -9,7 +9,7 @@ import { ColorVariants, useColorParts, useStatusBar } from '@tonlabs/uikit.theme
 import { useAnimatedKeyboardHeight } from '@tonlabs/uikit.inputs';
 
 import { UIConstant } from '../../constants';
-import { ScrollableContext } from '../../Scrollable/Context';
+import { ScrollableContext } from '@tonlabs/uikit.scrolls';
 import { useSheetHeight } from './useSheetHeight';
 import type { OnOpen, OnClose } from './types';
 import { usePosition } from './usePosition';

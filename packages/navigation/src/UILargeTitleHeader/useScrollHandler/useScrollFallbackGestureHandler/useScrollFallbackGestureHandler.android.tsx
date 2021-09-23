@@ -4,10 +4,7 @@ import * as React from 'react';
 import type { NativeScrollEvent } from 'react-native';
 import type { PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
 import Animated, { useAnimatedGestureHandler } from 'react-native-reanimated';
-import {
-    getWorkletFromParentHandler,
-    ScrollableParentScrollHandler,
-} from '../../../Scrollable/Context';
+import { getWorkletFromParentHandler, ScrollableParentScrollHandler } from '@tonlabs/uikit.scrolls';
 
 type ScrollFallbackCtx = {
     yPrev: number;

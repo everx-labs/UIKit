@@ -38,6 +38,7 @@
         "@tonlabs/uikit.core": "^2.3.0",
         "@tonlabs/uikit.navigation": "^2.3.0",
         "@tonlabs/uikit.controls": "^2.3.0",
+        "@tonlabs/uikit.scrolls": "^2.3.0",
         "@tonlabs/localization": "^2.3.0"
     },
     "devDependencies": {

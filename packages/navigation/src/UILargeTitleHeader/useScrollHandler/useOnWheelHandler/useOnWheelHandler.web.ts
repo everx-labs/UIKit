@@ -1,10 +1,7 @@
 /* eslint-disable no-param-reassign */
 import * as React from 'react';
 import type Animated from 'react-native-reanimated';
-import {
-    getWorkletFromParentHandler,
-    ScrollableParentScrollHandler,
-} from '../../../Scrollable/Context';
+import { getWorkletFromParentHandler, ScrollableParentScrollHandler } from '@tonlabs/uikit.scrolls';
 
 const END_THRESHOLD = 100;
 const ON_WHEEL_MIN_DELTA = 10;

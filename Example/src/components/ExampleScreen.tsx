@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIBackgroundView } from '@tonlabs/uikit.themes';
 import type { ColorVariants } from '@tonlabs/uikit.themes';
-import { ScrollView } from '@tonlabs/uikit.navigation';
+import { ScrollView } from '@tonlabs/uikit.scrolls';
 
 export function ExampleScreen({
     children,

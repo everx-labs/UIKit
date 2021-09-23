@@ -4,7 +4,7 @@ import Animated, {
     useSharedValue,
     scrollTo,
 } from 'react-native-reanimated';
-import { useScrollableParentScrollHandler } from '../../Scrollable/Context';
+import { useScrollableParentScrollHandler } from '@tonlabs/uikit.scrolls';
 import type { ScrollHandlerContext } from '../types';
 import { useOnScrollHandler } from './useOnScrollHandler';
 import { useOnWheelHandler } from './useOnWheelHandler';

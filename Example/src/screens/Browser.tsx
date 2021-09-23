@@ -37,12 +37,8 @@ import {
     ColorVariants,
     useTheme,
 } from '@tonlabs/uikit.themes';
-import {
-    UICardSheet,
-    UIBottomSheet,
-    createStackNavigator,
-    ScrollView,
-} from '@tonlabs/uikit.navigation';
+import { UICardSheet, UIBottomSheet, createStackNavigator } from '@tonlabs/uikit.navigation';
+import { ScrollView } from '@tonlabs/uikit.scrolls';
 
 import { useBase64Image } from './hooks/useBase64Image';
 

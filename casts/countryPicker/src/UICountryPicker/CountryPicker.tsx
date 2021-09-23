@@ -5,7 +5,8 @@ import { View, useWindowDimensions } from 'react-native';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
-import { FlatList, UIBottomSheet, UISearchBar } from '@tonlabs/uikit.navigation';
+import { UIBottomSheet, UISearchBar } from '@tonlabs/uikit.navigation';
+import { FlatList } from '@tonlabs/uikit.scrolls';
 import { UILinkButton } from '@tonlabs/uikit.controls';
 import {
     TypographyVariants,
