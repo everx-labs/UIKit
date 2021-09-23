@@ -12,7 +12,7 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/tonlabs/UIKit.git",
-        "directory": "packages/popups"
+        "directory": "kit/popups"
     },
     "keywords": [
         "tonlabs",
@@ -24,7 +24,7 @@
     "bugs": {
         "url": "https://github.com/tonlabs/UIKit/issues"
     },
-    "homepage": "https://github.com/tonlabs/UIKit/packages/popups#readme",
+    "homepage": "https://github.com/tonlabs/UIKit/kit/popups#readme",
     "main": "lib/commonjs/index.js",
     "module": "lib/module/index.js",
     "react-native": "src/index.ts",
