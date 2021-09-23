@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { UIPullerSheet } from './UIPullerSheet';
-import { UIDateTimePickerView, UIDateTimePickerType } from '@tonlabs/uikit.flask';
+import { UIDateTimePickerView, UIDateTimePickerType } from '@tonlabs/uicast.date-time-picker';
 
 export type UIDateTimePickerFullType = UIDateTimePickerType & {
     visible: boolean;

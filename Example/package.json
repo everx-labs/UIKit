@@ -35,6 +35,7 @@
         "@tonlabs/uistory.browser": "*",
         "@tonlabs/uicast.linear-chart": "*",
         "@tonlabs/uicast.country-picker": "*",
+        "@tonlabs/uicast.date-time-picker": "*",
         "@tonlabs/uistory.chats": "*",
         "@tonlabs/uikit.components": "*",
         "@tonlabs/uikit.core": "*",

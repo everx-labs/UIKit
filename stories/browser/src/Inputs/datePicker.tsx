@@ -8,7 +8,7 @@ import {
     MessageStatus,
 } from '@tonlabs/uistory.chats';
 
-import { UIDateTimePickerMode } from '@tonlabs/uikit.flask';
+import { UIDateTimePickerMode } from '@tonlabs/uicast.date-time-picker';
 import { uiLocalized } from '@tonlabs/localization';
 
 import { UIDateTimePicker } from '../UIDateTimePicker';
