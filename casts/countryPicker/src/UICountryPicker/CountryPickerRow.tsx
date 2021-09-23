@@ -5,7 +5,7 @@ import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UILabel, ColorVariants, useTheme, Theme, makeStyles } from '@tonlabs/uikit.themes';
 import { UIConstant } from '@tonlabs/uikit.navigation';
 
-import type { Country } from '../types';
+import type { Country } from './types';
 import { CountryPickerContext } from './CountryPickerContext';
 
 type CountryRowProps = {

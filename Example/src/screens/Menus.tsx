@@ -18,7 +18,8 @@ import { UIPopup } from '@tonlabs/uikit.popups';
 import { UIMaterialTextView } from '@tonlabs/uikit.inputs';
 import { UIBoxButton, UILinkButton } from '@tonlabs/uikit.controls';
 import { UILabel, ColorVariants, useTheme } from '@tonlabs/uikit.themes';
-import { UIPinCode, UIPinCodeBiometryType, UICountryPicker } from '@tonlabs/uikit.flask';
+import { UIPinCode, UIPinCodeBiometryType } from '@tonlabs/uikit.flask';
+import { UICountryPicker } from '@tonlabs/uicast.country-picker';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 

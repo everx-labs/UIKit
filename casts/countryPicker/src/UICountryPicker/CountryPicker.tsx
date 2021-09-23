@@ -15,7 +15,7 @@ import {
     Theme,
     makeStyles,
 } from '@tonlabs/uikit.themes';
-import type { CountriesArray, Country, WrappedCountryPickerProps } from '../types';
+import type { CountriesArray, Country, WrappedCountryPickerProps } from './types';
 import { CountryPickerRow } from './CountryPickerRow';
 import { ListEmptyComponent } from './ListEmptyComponent';
 import { CountryPickerContext } from './CountryPickerContext';
