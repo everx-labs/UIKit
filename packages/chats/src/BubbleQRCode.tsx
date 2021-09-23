@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ImageStyle, StyleProp, View, ViewStyle } from 'react-native';
 
-import { UIQRCodeView, QRCodeType, QRCodeSize, useQRCodeValueError } from '@tonlabs/uikit.flask';
+import { UIQRCodeView, QRCodeType, QRCodeSize, useQRCodeValueError } from '@tonlabs/uikit.media';
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
 import { UIAssets } from '@tonlabs/uikit.assets';

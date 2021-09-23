@@ -1,6 +1,6 @@
 import type QRCode from 'qrcode';
-import type { QRItemAngleSide, QRItemAngleType, QRItemRange, QRItemSideData } from '../../types';
-import { QR_CODE_LOGO_MARGIN_IN_SQUARES, QR_CODE_ITEM_BORDER_RADIUS } from '../../constants';
+import type { QRItemAngleSide, QRItemAngleType, QRItemRange, QRItemSideData } from '../types';
+import { QR_CODE_LOGO_MARGIN_IN_SQUARES, QR_CODE_ITEM_BORDER_RADIUS } from '../constants';
 
 const getStartLineType = (angleSide: QRItemAngleSide): string => {
     switch (angleSide) {

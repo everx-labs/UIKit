@@ -5,11 +5,11 @@ import { ColorVariants, useTheme, makeStyles } from '@tonlabs/uikit.themes';
 import QRCode from 'qrcode';
 import { useLogoRender } from './hooks';
 import { getEmptyAreaIndexRange, draw, getQRSvg } from './utils';
-import type { QRItemRange, QRCodeProps } from '../types';
-import { QR_CODE_ITEM_BORDER_RADIUS, CIRCLE_QR_CODE_QUIET_ZONE_IN_SQUARES } from '../constants';
+import { QR_CODE_ITEM_BORDER_RADIUS, CIRCLE_QR_CODE_QUIET_ZONE_IN_SQUARES } from './constants';
 import { useQRCodeSize } from './hooks/useQRCodeSize';
 import { useQRCodeBorderWidth } from './hooks/useQRCodeBorderWidth';
 import { useQRCodeLogoSize } from './hooks/useQRCodeLogoSize';
+import type { QRCodeProps, QRItemRange } from './types';
 
 const useStyles = makeStyles((theme, qrCodeSize: number, qrCodeBorderWidth: number) => ({
     container: {

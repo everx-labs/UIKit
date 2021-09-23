@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { UIImage } from '@tonlabs/uikit.media';
+import { UIImage } from '../../UIImage';
 import { ColorVariants, makeStyles } from '@tonlabs/uikit.themes';
 import type { ImageSourcePropType, ImageStyle, View } from 'react-native';
 import { useQRCodeLogoSize } from './useQRCodeLogoSize';
-import type { QRCodeSize } from '../../types';
+import type { QRCodeSize } from '../types';
 
 const useLogoStyles = makeStyles((logoSize: number) => ({
     image: {

@@ -4,7 +4,7 @@ import { ColorVariants, useTheme, makeStyles } from '@tonlabs/uikit.themes';
 import QRCode from 'qrcode';
 import Svg, { Path } from 'react-native-svg';
 import { useLogoRender } from './hooks';
-import type { QRCodeProps } from '../types';
+import type { QRCodeProps } from './types';
 import { getQRSvg } from './utils';
 import { useQRCodeSize } from './hooks/useQRCodeSize';
 import { useQRCodeBorderWidth } from './hooks/useQRCodeBorderWidth';

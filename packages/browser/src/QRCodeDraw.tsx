@@ -7,7 +7,7 @@ import {
     MessageStatus,
     BubbleQRCode,
 } from '@tonlabs/uikit.chats';
-import { QRCodeError, useQRCodeValueError } from '@tonlabs/uikit.flask';
+import { QRCodeError, useQRCodeValueError } from '@tonlabs/uikit.media';
 
 import { QRCodeDrawMessage, QRCodeDrawMessageStatus } from './types';
 

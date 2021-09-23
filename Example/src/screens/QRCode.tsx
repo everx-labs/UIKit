@@ -3,7 +3,7 @@ import { Image, View } from 'react-native';
 import { UITextView } from '@tonlabs/uikit.inputs';
 import { UIBoxButton } from '@tonlabs/uikit.controls';
 import { useTheme } from '@tonlabs/uikit.themes';
-import { UIQRCodeView, QRCodeType, QRCodeRef, QRCodeSize } from '@tonlabs/uikit.flask';
+import { UIQRCodeView, QRCodeType, QRCodeRef, QRCodeSize } from '@tonlabs/uikit.media';
 import { createStackNavigator } from '@tonlabs/uikit.navigation';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';

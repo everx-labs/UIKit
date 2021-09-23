@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { QRCodeCircle } from './QRCodeCircle';
 import { QRCodeSquare } from './QRCodeSquare';
-import { QRCodeType, QRCodeError } from '../types';
-import type { QRCodeProps, QRCodeRef } from '../types';
+import { QRCodeType, QRCodeError, QRCodeProps, QRCodeRef } from './types';
 import { ScreenshotView } from '../ScreenshotView';
-import { UIConstant } from '../constants';
+import { UIQRCodeConstant } from './constants';
 
 const renderContent = (props: QRCodeProps) => {
     switch (props.type) {
@@ -25,7 +24,7 @@ export const useQRCodeValueError = (
         if (value.length === 0) {
             return QRCodeError.DataIsEmpty;
         }
-        if (value.length > UIConstant.qrCode.maxValueLength) {
+        if (value.length > UIQRCodeConstant.maxValueLength) {
             return QRCodeError.DataTooLong;
         }
         return null;

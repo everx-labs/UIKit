@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 import type { ImageSourcePropType, LayoutChangeEvent, ViewProps } from 'react-native';
 import type BigNumber from 'bignumber.js';
-import type { QRCodeError } from '@tonlabs/uikit.flask';
+import type { QRCodeError } from '@tonlabs/uikit.media';
 
 /**
  * A string of the form: `data:<data type>;base64,<data in base64>`
