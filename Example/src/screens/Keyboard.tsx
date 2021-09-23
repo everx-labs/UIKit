@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UILabel } from '@tonlabs/uikit.themes';
 import { UIInputAccessoryView, useCustomKeyboard } from '@tonlabs/uikit.inputs';
-import { useStickers } from '@tonlabs/uikit.stickers';
+import { useStickers } from '@tonlabs/uistory.stickers';
 
 import { ExampleScreen } from '../components/ExampleScreen';
 

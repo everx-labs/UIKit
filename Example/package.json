@@ -43,7 +43,7 @@
         "@tonlabs/uikit.navigation": "*",
         "@tonlabs/uikit.navigation_legacy": "*",
         "@tonlabs/uikit.popups": "*",
-        "@tonlabs/uikit.stickers": "*",
+        "@tonlabs/uistory.stickers": "*",
         "@types/qrcode": "1.4.0",
         "bignumber.js": "9.0.0",
         "bowser": "1.9.4",
