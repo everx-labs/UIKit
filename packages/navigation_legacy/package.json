@@ -33,11 +33,20 @@
         "types/"
     ],
     "dependencies": {
+        "@tonlabs/uicast.bars": "^2.3.0",
+        "@tonlabs/uicast.modal-navigator": "^2.3.0",
         "@tonlabs/uikit.assets": "^2.3.0",
         "@tonlabs/uikit.components": "^2.3.0",
         "@tonlabs/uikit.core": "^2.3.0",
         "@tonlabs/uikit.hydrogen": "^2.3.0",
         "@tonlabs/uikit.themes": "^2.3.0",
+        "@tonlabs/uikit.popups": "^2.3.0",
+        "@tonlabs/uikit.navigation": "^2.3.0",
+        "@tonlabs/uikit.scrolls": "^2.3.0",
+        "@tonlabs/uikit.inputs": "^2.3.0",
+        "@tonlabs/uikit.controls": "^2.3.0",
+        "@tonlabs/uikit.layout": "^2.3.0",
+        "@tonlabs/localization": "^2.3.0",
         "react-native-country-picker-modal": "git+https://github.com/tonlabs/react-native-country-picker-modal.git",
         "react-native-simple-popover": "git+https://github.com/tonlabs/react-native-simple-popover.git"
     },

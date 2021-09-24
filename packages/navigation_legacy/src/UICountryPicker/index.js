@@ -5,7 +5,7 @@ import CountryPicker, { getAllCountries } from 'react-native-country-picker-moda
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import { UISearchBar } from '@tonlabs/uikit.navigation';
+import { UISearchBar } from '@tonlabs/uicast.bars';
 import {
     Typography,
     TypographyVariants,
@@ -74,7 +74,6 @@ export type Country = {
     cca2: string,
     name: string,
 };
-
 function Picker({
     pickerRef,
     cca2,

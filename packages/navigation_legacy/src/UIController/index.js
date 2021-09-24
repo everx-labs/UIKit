@@ -21,7 +21,7 @@ import { UIAlertView, UIComponent, UISpinnerOverlay } from '@tonlabs/uikit.compo
 import { UISafeAreaView } from '@tonlabs/uikit.layout';
 import { UIBackgroundViewColors } from '@tonlabs/uikit.themes';
 import { uiLocalized } from '@tonlabs/localization';
-import { UILargeTitleContainerRefContext } from '@tonlabs/uikit.navigation';
+import { UILargeTitleContainerRefContext } from '@tonlabs/uicast.bars';
 
 const AndroidKeyboardAdjust =
     Platform.OS === 'android'

@@ -11,7 +11,7 @@ import {
     UILabelColors,
     UILabelRoles,
 } from '@tonlabs/uikit.themes';
-import { ScrollView } from '@tonlabs/uikit.navigation';
+import { ScrollView } from '@tonlabs/uikit.scrolls';
 
 import UIController from '../UIController';
 import UIDialogTextInput from './UIDialogTextInput';
