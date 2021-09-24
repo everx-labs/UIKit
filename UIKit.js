@@ -19,7 +19,6 @@ export {
     UILink,
     UIListHeader,
     UILoadMoreButton,
-    UILoopEffect,
     UINetworkStatus,
     UIPureComponent,
     UIScaleButton,
@@ -54,7 +53,6 @@ export {
 
 export {
     UIAccountPicker,
-    UIAnimatedBalanceView,
     UIIdleDetector,
     UILandingView,
     UIProfileInitials,
