@@ -20,7 +20,6 @@ module.exports = {
                     path.resolve(__dirname, '../packages/'),
                     path.resolve(__dirname, '../node_modules/react-native-indicators/'),
                     path.resolve(__dirname, '../node_modules/react-native-simple-popover/'),
-                    path.resolve(__dirname, '../node_modules/react-native-flash-message/'),
                     path.resolve(__dirname, '../node_modules/react-native-country-picker-modal/'),
                     path.resolve(__dirname, '../node_modules/react-native-awesome-alerts/'),
                     path.resolve(__dirname, '../node_modules/react-native-parsed-text/'),
