@@ -6,7 +6,7 @@ import { SafeAreaInsetsContext, useSafeAreaInsets } from 'react-native-safe-area
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIPopover, UIPopoverMenu } from '@tonlabs/uikit.navigation_legacy';
-import { UILargeTitleHeader } from '@tonlabs/uikit.navigation';
+import { UILargeTitleHeader } from '@tonlabs/uicast.bars';
 import { UIQRCodeScannerSheet } from '@tonlabs/uicast.qr-code-scanner-sheet';
 import { UICardSheet, UIBottomSheet, UIFullscreenSheet } from '@tonlabs/uikit.popups';
 import { ScrollView } from '@tonlabs/uikit.scrolls';

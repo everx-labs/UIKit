@@ -4,7 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 
 import { UIMaterialTextView } from '@tonlabs/uikit.inputs';
 import { UIBackgroundView, UILabel, UILabelColors, ColorVariants } from '@tonlabs/uikit.themes';
-import { createStackNavigator, UILargeTitleHeaderRefreshControl } from '@tonlabs/uikit.navigation';
+import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
+import { UILargeTitleHeaderRefreshControl } from '@tonlabs/uicast.bars';
 import { ScrollView, FlatList } from '@tonlabs/uikit.scrolls';
 
 const CHECK_TITLE = false;

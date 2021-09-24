@@ -37,11 +37,11 @@ import {
     UIStatusBarManager,
 } from '@tonlabs/uikit.themes';
 import {
-    createSplitNavigator,
     UIAndroidNavigationBar,
     UILargeTitleHeader,
     UISearchBarButton,
-} from '@tonlabs/uikit.navigation';
+} from '@tonlabs/uicast.bars';
+import { createSplitNavigator } from '@tonlabs/uicast.split-navigator';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
 
 import { ButtonsScreen } from './screens/Buttons';

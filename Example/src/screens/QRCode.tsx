@@ -4,7 +4,7 @@ import { UITextView } from '@tonlabs/uikit.inputs';
 import { UIBoxButton } from '@tonlabs/uikit.controls';
 import { useTheme } from '@tonlabs/uikit.themes';
 import { UIQRCodeView, QRCodeType, QRCodeRef, QRCodeSize } from '@tonlabs/uikit.media';
-import { createStackNavigator } from '@tonlabs/uikit.navigation';
+import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 

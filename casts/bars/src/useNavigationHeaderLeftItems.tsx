@@ -5,7 +5,7 @@ import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
 
 import { HeaderItem, UIHeaderItems } from './UIHeaderItems';
-import { NestedInModalContext } from './ModalNavigator/createModalNavigator';
+import { NestedInModalContext } from '@tonlabs/uicast.modal-navigator';
 
 function findIfCanGoBackForStack(navigation: ReturnType<typeof useNavigation>): boolean {
     const state = navigation.dangerouslyGetState();

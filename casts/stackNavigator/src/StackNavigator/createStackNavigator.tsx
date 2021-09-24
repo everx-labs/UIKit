@@ -21,8 +21,11 @@ import type { StackNavigationEventMap } from '@react-navigation/stack/lib/typesc
 import { PortalManager } from '@tonlabs/uikit.layout';
 import { UIBackgroundView, ColorVariants } from '@tonlabs/uikit.themes';
 
-import { UILargeTitleHeader, UILargeTitleHeaderProps } from '../UILargeTitleHeader';
-import { UIStackNavigationBar } from '../UIStackNavigationBar';
+import {
+    UILargeTitleHeader,
+    UILargeTitleHeaderProps,
+    UIStackNavigationBar,
+} from '@tonlabs/uicast.bars';
 import { shouldUpdateScreens } from './shouldUpdateScreens';
 import { useStackTopInsetStyle } from './useStackTopInsetStyle';
 

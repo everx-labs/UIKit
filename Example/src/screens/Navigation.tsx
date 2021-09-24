@@ -3,14 +3,14 @@ import { View, ColorValue } from 'react-native';
 
 import { UIBoxButton } from '@tonlabs/uikit.controls';
 import { UILabel, ColorVariants } from '@tonlabs/uikit.themes';
+import { UIPagerView } from '@tonlabs/uikit.navigation';
 import {
     UIDialogBar,
-    UIPagerView,
     UISearchBar,
     UISearchBarButton,
     UISearchController,
     UISlideBar,
-} from '@tonlabs/uikit.navigation';
+} from '@tonlabs/uicast.bars';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';

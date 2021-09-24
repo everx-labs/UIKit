@@ -14,7 +14,7 @@ import {
 import { UIPopup } from '@tonlabs/uikit.popups';
 import { uiLocalized } from '@tonlabs/localization';
 import { useStickers } from '@tonlabs/uistory.stickers';
-import { createStackNavigator } from '@tonlabs/uikit.navigation';
+import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 import { useBase64Image } from './hooks/useBase64Image';
 
 const userId = '0:000';

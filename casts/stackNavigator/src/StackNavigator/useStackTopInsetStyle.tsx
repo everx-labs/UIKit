@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { NestedInModalContext } from '../ModalNavigator/createModalNavigator';
-import { NestedInSplitContext } from '../SplitNavigator/createSplitNavigator';
+import { NestedInModalContext } from '@tonlabs/uicast.modal-navigator';
+import { NestedInSplitContext } from '@tonlabs/uicast.split-navigator';
 
 export function useStackTopInsetStyle() {
     const { top } = useSafeAreaInsets();

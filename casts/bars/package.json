@@ -1,7 +1,7 @@
 {
-    "name": "@tonlabs/uicast.country-picker",
+    "name": "@tonlabs/uicast.bars",
     "version": "2.3.0",
-    "description": "Country picker on Tonlabs's UIKit",
+    "description": "Bars on Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",
         "prepare": "bob build"
@@ -12,7 +12,7 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/tonlabs/UIKit.git",
-        "directory": "casts/countryPicker"
+        "directory": "casts/bars"
     },
     "keywords": [
         "tonlabs",
@@ -24,7 +24,7 @@
     "bugs": {
         "url": "https://github.com/tonlabs/UIKit/issues"
     },
-    "homepage": "https://github.com/tonlabs/UIKit/casts/countryPicker#readme",
+    "homepage": "https://github.com/tonlabs/UIKit/casts/bars#readme",
     "main": "lib/commonjs/index.js",
     "module": "lib/module/index.js",
     "react-native": "src/index.ts",
@@ -34,13 +34,13 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/uicast.bars": "^2.3.0",
         "@tonlabs/uikit.themes": "^2.3.0",
         "@tonlabs/uikit.core": "^2.3.0",
         "@tonlabs/uikit.navigation": "^2.3.0",
         "@tonlabs/uikit.controls": "^2.3.0",
         "@tonlabs/uikit.scrolls": "^2.3.0",
         "@tonlabs/uikit.popups": "^2.3.0",
+        "@tonlabs/uicast.modal-navigator": "^2.3.0",
         "@tonlabs/localization": "^2.3.0"
     },
     "devDependencies": {

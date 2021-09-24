@@ -14,6 +14,7 @@ import {
 } from '@tonlabs/uikit.themes';
 
 import { UIConstant as UINavConstant } from './constants';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIHeaderItems } from './UIHeaderItems';
 import type { HeaderItem } from './UIHeaderItems';
 import { useNavigationHeaderLeftItems } from './useNavigationHeaderLeftItems';
@@ -197,21 +198,21 @@ const styles = StyleSheet.create({
         height: UINavConstant.headerHeight,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: UINavConstant.contentInsetVerticalX2,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX2,
         paddingHorizontal: UINavConstant.scrollContentInsetHorizontal,
         flexWrap: 'nowrap',
     },
     titleContainer: {
         position: 'absolute',
-        top: UINavConstant.contentInsetVerticalX2,
-        bottom: UINavConstant.contentInsetVerticalX2,
+        top: UILayoutConstant.contentInsetVerticalX2,
+        bottom: UILayoutConstant.contentInsetVerticalX2,
         left:
             UIConstant.iconSize() +
-            UINavConstant.contentInsetVerticalX2 +
+            UILayoutConstant.contentInsetVerticalX2 +
             UINavConstant.scrollContentInsetHorizontal,
         right:
             UIConstant.iconSize() +
-            UINavConstant.contentInsetVerticalX2 +
+            UILayoutConstant.contentInsetVerticalX2 +
             UINavConstant.scrollContentInsetHorizontal,
         alignItems: 'center',
         justifyContent: 'center',

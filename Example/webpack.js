@@ -20,6 +20,7 @@ module.exports = {
                     path.resolve(__dirname, '../packages/'),
                     path.resolve(__dirname, '../kit/'),
                     path.resolve(__dirname, '../stories/'),
+                    path.resolve(__dirname, '../casts/'),
                     path.resolve(__dirname, '../plugins/'),
                     path.resolve(__dirname, '../localization/'),
                     path.resolve(__dirname, '../node_modules/react-native-indicators/'),

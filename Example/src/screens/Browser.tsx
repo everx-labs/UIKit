@@ -37,7 +37,7 @@ import {
     ColorVariants,
     useTheme,
 } from '@tonlabs/uikit.themes';
-import { createStackNavigator } from '@tonlabs/uikit.navigation';
+import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 import { UICardSheet, UIBottomSheet } from '@tonlabs/uikit.popups';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
 
