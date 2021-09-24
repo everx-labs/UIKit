@@ -76,7 +76,10 @@ function LineCountdown({
     const theme = useTheme();
     const dynamicStyles = useStyles(theme);
     return (
-        <UIBackgroundView style={styles.countdownContainer}>
+        <UIBackgroundView
+            color={UIBackgroundViewColors.BackgroundTertiary}
+            style={styles.countdownContainer}
+        >
             <Animated.View style={[dynamicStyles.countdownLine, countdownStyle]}></Animated.View>
         </UIBackgroundView>
     );
@@ -104,8 +107,14 @@ export function UIPushNoticeContent({
     const shadowStyle = useShadow(5);
 
     return (
-        <UIBackgroundView style={[shadowStyle, styles.wrapper]}>
-            <UIBackgroundView style={[shadowStyle, styles.inner]}>
+        <UIBackgroundView
+            color={UIBackgroundViewColors.BackgroundTertiary}
+            style={[shadowStyle, styles.wrapper]}
+        >
+            <UIBackgroundView
+                color={UIBackgroundViewColors.BackgroundTertiary}
+                style={[shadowStyle, styles.inner]}
+            >
                 <TouchableWithoutFeedback
                     onPress={onPress}
                     onLongPress={onLongPress}
@@ -119,7 +128,11 @@ export function UIPushNoticeContent({
                         <UIImage source={icon} style={styles.icon} />
                     </View>
                 )}
-                <UIBackgroundView style={styles.description} pointerEvents="none">
+                <UIBackgroundView
+                    color={UIBackgroundViewColors.BackgroundTertiary}
+                    style={styles.description}
+                    pointerEvents="none"
+                >
                     <UILabel role={UILabelRoles.HeadlineSubhead} numberOfLines={1}>
                         {title}
                     </UILabel>
