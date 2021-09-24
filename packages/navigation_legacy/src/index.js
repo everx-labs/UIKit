@@ -1,5 +1,4 @@
 // @flow
-export { default as UIActionSheet } from './UIActionSheet'; // @deprecated
 export { default as UIController } from './UIController';
 export { default as UICountryPicker } from './UICountryPicker';
 export { default as UIDialogController } from './UIDialogController';
@@ -11,5 +10,5 @@ export { default as UIScreen } from './UIScreen';
 export { default as UIShareManager } from './UIShareManager';
 export { default as UIShareScreen } from './UIShareManager/UIShareScreen';
 
-export type * from './UIActionSheet/MenuItem';
+export type * from './UIPopoverMenu/MenuItem';
 export type * from './UIModalController';
