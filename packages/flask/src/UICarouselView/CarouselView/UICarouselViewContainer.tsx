@@ -18,6 +18,10 @@ export function UICarouselViewContainer({
 
     const [currentIndex, setCurrentIndex] = React.useState(initialIndex);
 
+    React.useEffect(() => {
+        setCurrentIndex(initialIndex);
+    }, [initialIndex]);
+
     const onIndexChanged = React.useCallback(
         (index: number) => {
             if (index !== currentIndex) {
