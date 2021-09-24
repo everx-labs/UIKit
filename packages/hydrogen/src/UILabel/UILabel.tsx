@@ -89,7 +89,7 @@ export const UILabel = React.forwardRef<Text, Props>(function UILabelForwarded(
             ref={ref}
             {...rest}
             // It's also part of a fix below with textMultiline
-            numberOfLines={undefined}
+            numberOfLines={Platform.select({ web: undefined, default: numberOfLines })}
             style={[
                 style,
                 // Override font and color styles

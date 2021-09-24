@@ -47,7 +47,7 @@ import { Chart } from './screens/Chart';
 import { Images } from './screens/Images';
 import { Layouts } from './screens/Layouts';
 import { Menus } from './screens/Menus';
-import { Notifications } from './screens/Notifications';
+import { NotificationsScreen } from './screens/Notifications';
 import { Popups } from './screens/Popups';
 import { Products } from './screens/Products';
 import { Profile } from './screens/Profile';
@@ -324,7 +324,7 @@ const App = () => {
                             <Split.Screen name="main" component={Main} />
                             <Split.Screen name="menus" component={Menus} />
                             <Split.Screen name="navigation" component={Navigation} />
-                            <Split.Screen name="notifications" component={Notifications} />
+                            <Split.Screen name="notifications" component={NotificationsScreen} />
                             <Split.Screen name="popups" component={Popups} />
                             <Split.Screen name="products" component={Products} />
                             <Split.Screen name="profile" component={Profile} />
