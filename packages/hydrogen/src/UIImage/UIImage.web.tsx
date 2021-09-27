@@ -70,20 +70,34 @@ const TintUIImage = React.forwardRef<View, UIImageProps>(function TintUIImageFor
             return;
         }
         var img = new Image();
-        var currentCanvas = document.getElementById(`${idRef.current}`) as any;
+        var currentCanvas = document.getElementById(`${idRef.current}`) as HTMLCanvasElement;
         if (!currentCanvas || !currentCanvas.getContext) {
             setHasError(true);
             return;
         }
-        var ctx: CanvasRenderingContext2D | undefined = currentCanvas.getContext('2d');
+
+        const ctx: CanvasRenderingContext2D | null = currentCanvas.getContext('2d');
         if (!ctx) {
             setHasError(true);
             return;
         }
+
         img.onload = () => {
             if (!ctx || !dimensions) {
                 return;
             }
+
+            currentCanvas.style.width = dimensions.width + 'px';
+            currentCanvas.style.height = dimensions.height + 'px';
+
+            // https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio#correcting_resolution_in_a_canvas
+            const scale = window.devicePixelRatio;
+
+            currentCanvas.width = Math.floor(dimensions.width * scale);
+            currentCanvas.height = Math.floor(dimensions.height * scale);
+
+            ctx.scale(scale, scale);
+
             // draw image
             ctx.drawImage(img, 0, 0, dimensions.width, dimensions.height);
             // set composite mode
