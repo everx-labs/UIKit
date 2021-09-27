@@ -5,7 +5,6 @@ import Animated, {
     Easing,
     interpolate,
     useAnimatedProps,
-    useAnimatedReaction,
     useAnimatedStyle,
     useDerivedValue,
     useSharedValue,
@@ -28,6 +27,420 @@ import { uiLocalized } from '@tonlabs/uikit.localization';
 import { AnimatedTextInput } from './AnimatedTextInput';
 
 Animated.addWhitelistedNativeProps({ text: true });
+
+// @inline
+const DECIMAL_ASPECT_NONE = 1;
+// @inline
+const DECIMAL_ASPECT_PRECISION = 2;
+// @inline
+const DECIMAL_ASPECT_SHORT = 3;
+// @inline
+const DECIMAL_ASPECT_SHORT_ELLIPSIZED = 4;
+
+enum DecimalAspect {
+    None = DECIMAL_ASPECT_NONE,
+    Precision = DECIMAL_ASPECT_PRECISION,
+    Short = DECIMAL_ASPECT_SHORT,
+    ShortEllipsized = DECIMAL_ASPECT_SHORT_ELLIPSIZED,
+}
+
+function getDecimalAspectDigits(aspect: DecimalAspect) {
+    'worklet';
+
+    if (aspect === DECIMAL_ASPECT_SHORT_ELLIPSIZED) {
+        return 1;
+    }
+    if (aspect === DECIMAL_ASPECT_SHORT) {
+        return 2;
+    }
+    if (aspect === DECIMAL_ASPECT_PRECISION) {
+        return 9;
+    }
+
+    return 0;
+}
+
+// TODO: move it to uiLocalized!
+// @inline
+const INTEGER_GROUP_SIZE = 3;
+
+// Appearance customization
+type UINumberAppearance = {
+    /**
+     * Text style preset from Typography for integer part
+     * instead of default one
+     */
+    integerVariant: TypographyVariants;
+    /**
+     * Color for integer part
+     */
+    integerColor: ColorVariants;
+    /**
+     * Text style preset from Typography for decimal part
+     * instead of default one
+     */
+    decimalVariant: TypographyVariants;
+    /**
+     * Color for decimal part
+     */
+    decimalColor: ColorVariants;
+};
+
+type UINumberGeneralProps = {
+    /**
+     * ID for tests
+     */
+    testID?: string;
+    /**
+     * A value to show
+     */
+    value: number | BigNumber;
+    /**
+     * How many digits to draw for decimal aspect.
+     *
+     * You should choose from predefined ones.
+     */
+    decimalAspect: DecimalAspect;
+};
+
+type UINumberProps = UINumberGeneralProps &
+    Partial<UINumberAppearance> & {
+        /**
+         * Whether change of a value should be animated or not.
+         */
+        animated?: boolean;
+        /**
+         * How many digits to draw for decimal aspect.
+         *
+         * You should choose from predefined ones.
+         */
+        decimalAspect?: DecimalAspect;
+    };
+
+function useNumberStaticStyles(integerColor: ColorVariants, decimalColor: ColorVariants) {
+    const theme = useTheme();
+    const integerColorStyle = React.useMemo(
+        () => ({ color: theme[integerColor] }),
+        [theme, integerColor],
+    );
+    const decimalColorStyle = React.useMemo(
+        () => ({ color: theme[decimalColor] }),
+        [theme, decimalColor],
+    );
+
+    return [integerColorStyle, decimalColorStyle];
+}
+
+function UIStaticNumber({
+    value: rawValue,
+    integerVariant,
+    integerColor,
+    decimalVariant,
+    decimalColor,
+    decimalAspect,
+}: UINumberGeneralProps & UINumberAppearance) {
+    const value: number = React.useMemo(
+        () =>
+            rawValue instanceof BigNumber
+                ? bigNumToNumberWithAspect(rawValue, decimalAspect)
+                : rawValue,
+        [rawValue],
+    );
+    const { decimal: decimalSeparator, grouping: integerGroupChar } =
+        uiLocalized.localeInfo.numbers;
+
+    const formatted = React.useMemo(() => {
+        return runOnUILocalizedNumberFormat(
+            value,
+            decimalAspect,
+            decimalSeparator,
+            INTEGER_GROUP_SIZE,
+            integerGroupChar,
+        );
+    }, [value, decimalAspect, decimalSeparator]);
+
+    const [integerColorStyle, decimalColorStyle] = useNumberStaticStyles(
+        integerColor,
+        decimalColor,
+    );
+
+    return (
+        <Text>
+            <Text style={[Typography[integerVariant], integerColorStyle]}>{formatted.integer}</Text>
+            <Text style={[Typography[decimalVariant], decimalColorStyle]}>{formatted.decimal}</Text>
+        </Text>
+    );
+}
+
+function bigNumToNumberWithAspect(value: BigNumber, decimalAspect: DecimalAspect) {
+    if (decimalAspect === DecimalAspect.None) {
+        return value.integerValue().toNumber();
+    }
+
+    const decimalDigits = getDecimalAspectDigits(decimalAspect);
+
+    return value
+        .multipliedBy(10 ** decimalDigits)
+        .integerValue()
+        .dividedBy(10 ** decimalDigits)
+        .toNumber();
+}
+
+/**
+ * TODO: move it to uiLocalized to format number generally!
+ *
+ * @param rawString
+ * @param groupSize
+ * @param groupSeparator
+ * @returns
+ */
+const groupReversed = (rawString: string, groupSize: number, groupSeparator: string) => {
+    'worklet';
+
+    let groupedPart = '';
+
+    let i = rawString.length;
+    while (i > 0) {
+        if (groupSize < i) {
+            for (let j = 0; j < groupSize; j += 1) {
+                groupedPart = rawString[i - j - 1] + groupedPart;
+            }
+
+            groupedPart = groupSeparator + groupedPart;
+            i -= groupSize;
+        } else {
+            groupedPart = rawString[i - 1] + groupedPart;
+            i -= 1;
+        }
+    }
+
+    return groupedPart;
+};
+
+function runOnUILocalizedNumberFormat(
+    value: number,
+    decimalAspect: DecimalAspect,
+    decimalSeparator: string,
+    integerGroupSize: number,
+    integerGroupChar: string,
+) {
+    'worklet';
+
+    // TODO: format integer properly!
+    const integer = Math.floor(value);
+    const integerFormatted = groupReversed(integer.toString(), integerGroupSize, integerGroupChar);
+
+    if (decimalAspect === DECIMAL_ASPECT_NONE) {
+        return {
+            integer: integerFormatted,
+            decimal: '',
+        };
+    }
+
+    const digits = getDecimalAspectDigits(decimalAspect);
+
+    // TODO: put ellipsis!
+    const decimal = Math.floor((value - integer) * 10 ** digits);
+    return {
+        integer: integerFormatted,
+        decimal: `${decimalSeparator}${decimal.toString().padEnd(digits, '0')}`,
+    };
+}
+
+function UIAnimatedNumber({
+    value: rawValue,
+    decimalAspect,
+    // appearance
+    integerVariant,
+    integerColor,
+    decimalVariant,
+    decimalColor,
+}: UINumberGeneralProps & UINumberAppearance) {
+    const value: number = React.useMemo(
+        () =>
+            rawValue instanceof BigNumber
+                ? bigNumToNumberWithAspect(rawValue, decimalAspect)
+                : rawValue,
+        [rawValue],
+    );
+    const valueHolder = useSharedValue(value);
+    const { decimal: decimalSeparator, grouping: integerGroupChar } =
+        uiLocalized.localeInfo.numbers;
+
+    React.useEffect(() => {
+        if (valueHolder.value === value) {
+            return;
+        }
+
+        valueHolder.value = withTiming(value, {
+            duration: 400,
+            easing: Easing.inOut(Easing.ease),
+        });
+    }, [value]);
+
+    const formatted = useDerivedValue(() => {
+        return runOnUILocalizedNumberFormat(
+            valueHolder.value,
+            decimalAspect,
+            decimalSeparator,
+            INTEGER_GROUP_SIZE,
+            integerGroupChar,
+        );
+    });
+
+    /**
+     * Basically we exploit the fact that TextView's text
+     * can be updated with `setNativeProps`,
+     * in order to not do it manually just delegating it here
+     * to reanimated, that will do the same under the hood
+     */
+    const animatedIntegerProps: any = useAnimatedProps(() => {
+        return {
+            text: formatted.value.integer,
+        };
+    });
+    const animatedDecimalProps: any = useAnimatedProps(() => {
+        return {
+            text: formatted.value.decimal,
+        };
+    });
+
+    const [integerColorStyle, decimalColorStyle] = useNumberStaticStyles(
+        integerColor,
+        decimalColor,
+    );
+
+    return (
+        <>
+            <AnimatedTextInput
+                style={[Typography[integerVariant], integerColorStyle, styles.integerInput]}
+                animatedProps={animatedIntegerProps}
+                defaultValue={formatted.value.integer}
+                underlineColorAndroid="transparent"
+                editable={false}
+            />
+            <AnimatedTextInput
+                style={[Typography[decimalVariant], decimalColorStyle, styles.decimalInput]}
+                animatedProps={animatedDecimalProps}
+                defaultValue={formatted.value.decimal}
+                underlineColorAndroid="transparent"
+                editable={false}
+            />
+        </>
+    );
+}
+
+export function UINumber({
+    animated,
+    decimalAspect = DecimalAspect.Short,
+    integerVariant = TypographyVariants.ParagraphText,
+    decimalVariant = TypographyVariants.ParagraphText,
+    integerColor = ColorVariants.TextPrimary,
+    decimalColor = ColorVariants.TextPrimary,
+    ...rest
+}: UINumberProps) {
+    if (animated) {
+        return (
+            <UIAnimatedNumber
+                decimalAspect={decimalAspect}
+                integerVariant={integerVariant}
+                integerColor={integerColor}
+                decimalVariant={decimalVariant}
+                decimalColor={decimalColor}
+                {...rest}
+            />
+        );
+    }
+
+    return (
+        <UIStaticNumber
+            decimalAspect={decimalAspect}
+            integerVariant={integerVariant}
+            integerColor={integerColor}
+            decimalVariant={decimalVariant}
+            decimalColor={decimalColor}
+            {...rest}
+        />
+    );
+}
+
+type UICurrencySignProps = {
+    /**
+     * Text style preset from Typography for sign sign or icon
+     * instead of default one.
+     *
+     * If nothing is provided variant for decimal part will be used.
+     */
+    signVariant: TypographyVariants;
+    /**
+     * A char for currency that should be shown after value as a char symbol.
+     *
+     * If char was provided then icon wouldn't be drawn!
+     */
+    signChar?: string;
+    /**
+     * An image source for icon, that act as a currency symbol
+     *
+     * If char was provided then icon wouldn't be drawn!
+     */
+    signIcon?: UIImageProps['source'];
+    /**
+     * Ratio of an icon to help determine width of the icon.
+     * Default value is 1.
+     *
+     * It would try to calculate height of the icon based on
+     * `lineHeight` of the current text variant (decimal one).
+     */
+    signIconAspectRatio?: number;
+    /**
+     * Use this prop if you want to indicate to a user that
+     * there is some loading in process and a value could change.
+     *
+     * Loading animation is only applied to icon, `signChar` can't be animated.
+     */
+    loading?: boolean;
+};
+
+type UICurrencyProps = UINumberProps & Partial<UICurrencySignProps>;
+
+function useInlineIconStyle(variant: TypographyVariants, aspectRatio: number) {
+    return React.useMemo(() => {
+        const { capHeight } = getFontMesurements(variant);
+
+        if (capHeight == null) {
+            return {};
+        }
+
+        return {
+            // If use whole lineHeight it will not be
+            // aligned with the baseline
+            // There is a temp workaround to make it look better
+            height: capHeight,
+            width: capHeight * aspectRatio,
+        };
+    }, []);
+}
+
+function StaticCurrencyIcon({
+    signVariant,
+    signIcon,
+    signIconAspectRatio,
+}: Required<Omit<UICurrencySignProps, 'signChar' | 'loading'>>) {
+    const iconStyle = useInlineIconStyle(signVariant, signIconAspectRatio);
+    /*
+     * Space letter here is important here, it's not a mistake!
+     * It's placed to have a separation from main balance,
+     * instead of `marginLeft` as space is more "text friendly"
+     * and will layout properly in text
+     */
+    return (
+        <Text style={[Typography[signVariant]]}>
+            {'U00A0'}
+            <UIImage source={signIcon} resizeMode={'contain'} style={iconStyle} />
+        </Text>
+    );
+}
+
 const AnimatedUIImage = Animated.createAnimatedComponent(UIImage);
 
 // @inline
@@ -35,12 +448,12 @@ const LOADING_ANIMATION_STARTING_POINT = 0;
 // @inline
 const LOADING_ANIMATION_ENDING_POINT = 1;
 
-function useIcon(
-    source: UIImageProps['source'] | undefined,
-    variant: TypographyVariants,
-    loading: boolean,
-    aspectRatio: number = 1,
-) {
+function AnimatedCurrencyIcon({
+    loading,
+    signVariant,
+    signIcon,
+    signIconAspectRatio,
+}: Required<Omit<UICurrencySignProps, 'signChar'>>) {
     const loadingProgress = useSharedValue(LOADING_ANIMATION_STARTING_POINT);
 
     React.useEffect(() => {
@@ -58,21 +471,7 @@ function useIcon(
         }
     }, [loading]);
 
-    const iconStaticStyle = React.useMemo(() => {
-        const { capHeight } = getFontMesurements(variant);
-
-        if (capHeight == null) {
-            return {};
-        }
-
-        return {
-            // If use whole lineHeight it will not be
-            // aligned with the baseline
-            // There is a temp workaround to make it look better
-            height: capHeight,
-            width: capHeight * aspectRatio,
-        };
-    }, []);
+    const iconStaticStyle = useInlineIconStyle(signVariant, signIconAspectRatio);
 
     const iconAnimatedStyle = useAnimatedStyle(() => {
         return {
@@ -87,223 +486,121 @@ function useIcon(
             ],
         };
     });
+    /*
+     * Space letter here is important here, it's not a mistake!
+     * It's placed to have a separation from main balance,
+     * instead of `marginLeft` as space is more "text friendly"
+     * and will layout properly in text
+     */
+    return (
+        <Text style={[Typography[signVariant]]}>
+            {'U00A0'}
+            <AnimatedUIImage
+                source={signIcon}
+                resizeMode={'contain'}
+                style={[iconStaticStyle, iconAnimatedStyle]}
+            />
+        </Text>
+    );
+}
 
-    if (source == null) {
+function CurrencySign({
+    signChar,
+    signVariant,
+    loading,
+    signIcon,
+    signIconAspectRatio = 1,
+}: UICurrencySignProps) {
+    if (signChar) {
+        return <Text style={[Typography[signVariant]]}>{signChar}</Text>;
+    }
+
+    if (signIcon == null) {
         return null;
     }
 
+    if (loading == null) {
+        return (
+            <StaticCurrencyIcon
+                signVariant={signVariant}
+                signIcon={signIcon}
+                signIconAspectRatio={signIconAspectRatio}
+            />
+        );
+    }
+
     return (
-        <AnimatedUIImage
-            source={source}
-            resizeMode={'contain'}
-            style={[iconStaticStyle, iconAnimatedStyle]}
+        <AnimatedCurrencyIcon
+            loading={loading}
+            signVariant={signVariant}
+            signIcon={signIcon}
+            signIconAspectRatio={signIconAspectRatio}
         />
     );
 }
 
-export function UIAnimatedBalance({
+export function UICurrency({
     testID,
+    value,
+    animated,
+    decimalAspect = DecimalAspect.Short,
     integerVariant = TypographyVariants.TitleLarge,
-    fractionalVariant = TypographyVariants.LightLarge,
+    decimalVariant = TypographyVariants.LightLarge,
     integerColor = ColorVariants.TextPrimary,
-    fractionalColor = ColorVariants.TextPrimary,
-    value: rawValue,
-    maxFractionalDigits = 2,
-    icon,
-    iconAspectRatio,
-    loading = false,
-}: {
-    testID?: string;
-    value: number | BigNumber;
-    icon?: UIImageProps['source'];
-    iconAspectRatio?: number;
-    integerVariant?: TypographyVariants;
-    integerColor?: ColorVariants;
-    fractionalVariant?: TypographyVariants;
-    fractionalColor?: ColorVariants;
-    // We don't want to deal with edge cases for now
-    // as the component is not for use for general cases with all number
-    maxFractionalDigits?: number;
-    loading?: boolean;
-}) {
-    const theme = useTheme();
-    let value: number =
-        rawValue instanceof BigNumber
-            ? rawValue
-                  .multipliedBy(10 ** maxFractionalDigits)
-                  .integerValue()
-                  .dividedBy(10 ** maxFractionalDigits)
-                  .toNumber()
-            : rawValue;
-    const valueHolder = useSharedValue(value);
-    const { decimalSeparator } = uiLocalized;
-
-    React.useEffect(() => {
-        if (valueHolder.value === value) {
-            return;
-        }
-
-        valueHolder.value = withTiming(value, {
-            duration: 400,
-            easing: Easing.inOut(Easing.ease),
-        });
-    }, [value]);
-
-    const formatted = useDerivedValue(() => {
-        const integer = Math.floor(valueHolder.value);
-
-        if (maxFractionalDigits <= 0) {
-            return {
-                integer: integer.toString(),
-                fractional: '',
-            };
-        }
-
-        const fractional = Math.floor((valueHolder.value - integer) * 10 ** maxFractionalDigits);
-        return {
-            integer: integer.toString(),
-            fractional: fractional.toString().padEnd(maxFractionalDigits, '0'),
-        };
-    });
-
-    /**
-     * (savelichalex):
-     * In order to understand why we need it at all,
-     * you should understand that numeric letters
-     * actually have different width, so when we change
-     * the value of a balance fast, the whole width of it
-     * also will have different width, and it will be changing fast.
-     * Since icon is positioned after balance, it will cause
-     * change of position for icon, that looks like icon is shaking.
-     * So to prevent that I drew balance two times:
-     * 1. Visible part, that draw actual balance
-     * 2. Hidden part, it's a copy of the visible balance with
-     *    all numerical letters replaced to "wider" ones
-     * Example:
-     * 1234.67 -> 5555.55
-     *
-     * We render icon with hidden part, as it changes width
-     * less frequently then visible one, therefore it looks stable.
-     * Visible part is just placed above with absolute positioning.
-     */
-    const normalized = useSharedValue(value.toString());
-    useAnimatedReaction(
-        () => {
-            return formatted.value;
-        },
-        (state, prevState) => {
-            // To change the hidden input only in case the length is changed
-            if (
-                prevState != null &&
-                state.integer.length + state.fractional.length ===
-                    prevState.integer.length + prevState.fractional.length
-            ) {
-                return;
-            }
-
-            const numRegExp = /[0-9]/g;
-            const wideNumLiteral = '5';
-
-            if (maxFractionalDigits <= 0) {
-                normalized.value = state.integer.replace(numRegExp, wideNumLiteral);
-                return;
-            }
-
-            normalized.value =
-                state.integer.replace(numRegExp, wideNumLiteral) +
-                decimalSeparator +
-                state.fractional.replace(numRegExp, wideNumLiteral);
-        },
-    );
-
-    /**
-     * Basically we exploit the fact that TextView's text
-     * can be updated with `setNativeProps`,
-     * in order to not do it manually just delegating it here
-     * to reanimated, that will do the same under the hood
-     */
-    const animatedIntegerProps: any = useAnimatedProps(() => {
-        return {
-            text: formatted.value.integer,
-        };
-    });
-    const animatedFractionalProps: any = useAnimatedProps(() => {
-        return {
-            text: formatted.value.fractional,
-        };
-    });
-
-    const normalizedProps: any = useAnimatedProps(() => {
-        return {
-            text: normalized.value,
-        };
-    });
-
-    const iconElement = useIcon(icon, integerVariant, loading, iconAspectRatio);
-
-    const integerColorStyle = React.useMemo(() => ({ color: theme[integerColor] }), [theme]);
-    const fractionalColorStyle = React.useMemo(() => ({ color: theme[fractionalColor] }), [theme]);
-
+    decimalColor = ColorVariants.TextPrimary,
+    signChar,
+    signVariant,
+    signIcon,
+    signIconAspectRatio,
+    loading,
+}: UICurrencyProps) {
     const textLikeContainer = React.useMemo(
         () => (I18nManager.isRTL ? styles.rtlContainer : styles.ltrContainer),
         [I18nManager.isRTL],
     );
 
-    return (
-        <View style={styles.intrinsicWrapper}>
-            <View style={[textLikeContainer, styles.main]}>
-                <AnimatedTextInput
-                    style={[Typography[integerVariant], styles.hiddenInput]}
-                    animatedProps={normalizedProps}
-                    defaultValue={normalized.value}
-                    underlineColorAndroid="transparent"
-                    editable={false}
-                />
-                {/*
-                 * Space letter here is important here, it's not a mistake!
-                 * It's placed to have a separation from main balance,
-                 * instead of `marginLeft` as space is more "text friendly"
-                 * and will layout properly in text
-                 */}
-                {iconElement && (
-                    <Text style={[Typography[fractionalVariant], styles.hiddenText]}>
-                        {' '}
-                        {iconElement}
-                    </Text>
-                )}
+    if (animated) {
+        return (
+            <View style={styles.intrinsicWrapper}>
                 <View style={[textLikeContainer, styles.visible]} testID={testID}>
-                    <AnimatedTextInput
-                        style={[Typography[integerVariant], integerColorStyle, styles.integer]}
-                        animatedProps={animatedIntegerProps}
-                        defaultValue={formatted.value.integer}
-                        underlineColorAndroid="transparent"
-                        editable={false}
+                    <UIAnimatedNumber
+                        decimalAspect={decimalAspect}
+                        integerVariant={integerVariant}
+                        integerColor={integerColor}
+                        decimalVariant={decimalVariant}
+                        decimalColor={decimalColor}
+                        value={value}
                     />
-                    {maxFractionalDigits > 0 && (
-                        <Text
-                            style={[
-                                Typography[fractionalVariant],
-                                fractionalColorStyle,
-                                styles.delimeter,
-                            ]}
-                        >
-                            {decimalSeparator}
-                        </Text>
-                    )}
-                    <AnimatedTextInput
-                        style={[
-                            Typography[fractionalVariant],
-                            fractionalColorStyle,
-                            styles.fractional,
-                        ]}
-                        animatedProps={animatedFractionalProps}
-                        defaultValue={formatted.value.fractional}
-                        underlineColorAndroid="transparent"
-                        editable={false}
+                    <CurrencySign
+                        loading={loading}
+                        signChar={signChar}
+                        signVariant={signVariant || decimalVariant}
+                        signIcon={signIcon}
+                        signIconAspectRatio={signIconAspectRatio}
                     />
                 </View>
             </View>
-        </View>
+        );
+    }
+
+    return (
+        <>
+            <UIStaticNumber
+                decimalAspect={decimalAspect}
+                integerVariant={integerVariant}
+                integerColor={integerColor}
+                decimalVariant={decimalVariant}
+                decimalColor={decimalColor}
+                value={value}
+            />
+            <CurrencySign
+                loading={false}
+                signChar={signChar}
+                signVariant={signVariant || decimalVariant}
+                signIcon={signIcon}
+                signIconAspectRatio={signIconAspectRatio}
+            />
+        </>
     );
 }
 
@@ -325,15 +622,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row-reverse',
         justifyContent: 'flex-end',
     },
-    integer: {
+    integerInput: {
+        fontVariant: ['tabular-nums'],
         // reset RN styles to have proper vertical alignment
         padding: 0,
         lineHeight: undefined,
     },
-    delimeter: {
-        lineHeight: undefined,
-    },
-    fractional: {
+    decimalInput: {
+        fontVariant: ['tabular-nums'],
         // reset RN styles to have proper vertical alignment
         padding: 0,
         lineHeight: undefined,
