@@ -119,6 +119,16 @@ export type UIDateTimePickerType = {
     interval?: number;
     /* Gets called when selected value changes */
     onValueRetrieved: (datetime: Date) => void;
+    /* Callback on close */
+    onClose: () => void;
+    /**
+     * Used to show/hide UIBottomSheet
+     */
+    visible: boolean;
+    /**
+     * Used to show/hide UIBottomSheet
+     */
+    isAmPmTime?: boolean;
 };
 
 export type PickerPropsType = UIDateTimePickerType & {

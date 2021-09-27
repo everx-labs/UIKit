@@ -1,10 +1,11 @@
 import React, { useReducer, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme, ColorVariants } from '@tonlabs/uikit.hydrogen';
-
+import { UIBottomSheet } from '@tonlabs/uikit.navigation';
+import { UIConstant } from '@tonlabs/uikit.core';
 import { Calendar } from './components/Calendar';
 import { SelectMonth } from './components/SelectMonth';
-import { SelectTime } from './components/SelectTime';
 import { CalendarContext, useCalendar } from './calendarContext';
 import { Utils } from '../utils';
 import {
@@ -16,6 +17,7 @@ import {
     UIDateTimePickerMode,
     UIDateTimePickerType,
 } from '../../types';
+import { UITimeInput } from './components/UITimeInput';
 
 const reducer = (state: PickerStateType, action: PickerAction) => {
     switch (action.type) {
@@ -55,6 +57,7 @@ const DatePicker = (props: UIDateTimePickerType) => {
         reverse: false,
         options: { ...options },
         utils: calendarUtils,
+        isAmPmTime: props.isAmPmTime ?? false,
         state: useReducer(reducer, {
             activeDate: props.current ? new Date(props.current) : new Date(), // Date in calendar also save time
             selectedDate: props.selected ? new Date(props.selected) : new Date(),
@@ -64,41 +67,55 @@ const DatePicker = (props: UIDateTimePickerType) => {
     };
     const [minHeight, setMinHeight] = useState(300);
     const style = styles(contextValue.options);
+    const insets = useSafeAreaInsets();
 
     const renderBody = () => {
         switch (contextValue.mode) {
             default:
             case 'datepicker':
                 return (
-                    <React.Fragment>
+                    <>
                         <Calendar />
                         <SelectMonth />
-                        <SelectTime />
-                    </React.Fragment>
+                        <UITimeInput />
+                    </>
                 );
             case 'monthYear':
                 return <SelectMonth />;
             case 'calendar':
                 return (
-                    <React.Fragment>
+                    <>
                         <Calendar />
                         <SelectMonth />
-                    </React.Fragment>
+                    </>
                 );
             case 'time':
-                return <SelectTime />;
+                return <UITimeInput />;
         }
     };
 
     return (
-        <CalendarContext.Provider value={contextValue}>
-            <View
-                style={[style.container, { minHeight }]}
-                onLayout={({ nativeEvent }) => setMinHeight(nativeEvent.layout.width * 0.9 + 55)}
-            >
-                {renderBody()}
-            </View>
-        </CalendarContext.Provider>
+        <UIBottomSheet
+            style={{
+                paddingBottom: 0,
+            }}
+            visible={props.visible}
+            onClose={props.onClose}
+        >
+            <CalendarContext.Provider value={contextValue}>
+                <View
+                    style={[
+                        style.container,
+                        { minHeight: minHeight + insets.bottom + UIConstant.buttonHeight() },
+                    ]}
+                    onLayout={({ nativeEvent }) =>
+                        setMinHeight(nativeEvent.layout.width * 0.9 + 55)
+                    }
+                >
+                    {renderBody()}
+                </View>
+            </CalendarContext.Provider>
+        </UIBottomSheet>
     );
 };
 
@@ -109,6 +126,8 @@ const styles = (theme: { backgroundColor: any }) =>
             position: 'relative',
             width: '100%',
             overflow: 'hidden',
+            borderTopLeftRadius: 12,
+            borderTopRightRadius: 12,
         },
     });
 

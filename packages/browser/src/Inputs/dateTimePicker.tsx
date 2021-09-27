@@ -10,9 +10,9 @@ import {
 
 import { UIDateTimePickerMode } from '@tonlabs/uikit.flask';
 
+import { uiLocalized } from '@tonlabs/uikit.localization';
 import type { DateTimeMessage } from '../types';
 import { UIDateTimePicker } from '../UIDateTimePicker';
-import { uiLocalized } from '@tonlabs/uikit.localization';
 
 export function DateTimePicker({ onLayout, ...message }: DateTimeMessage) {
     const [isPickerVisible, setPickerVisible] = React.useState(false);
@@ -69,6 +69,7 @@ export function DateTimePicker({ onLayout, ...message }: DateTimeMessage) {
                 max={message.maxDateTime}
                 current={message.current}
                 interval={message.interval}
+                isAmPmTime={message.isAmPmTime}
                 onClose={() => {
                     setPickerVisible(false);
                 }}

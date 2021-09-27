@@ -114,6 +114,7 @@ import iconKeyThin from '../key-thin/key-thin.png';
 import iconKeyThinDark from '../key-thin/key-thin-dark.png';
 import iconKeyThinGrey from '../key-thin/key-thin-grey.png';
 import iconKeyThinWhite from '../key-thin/key-thin-white.png';
+import iconWarn from '../ico-warn/ico-warn.png';
 
 import iconLogoGramLabel from '../logo/gram-label/gram-label.png';
 import iconLogoTonLabelWhite from '../logo/ton-label/ton-label-white.png';
@@ -239,6 +240,7 @@ export const UIAssets = {
             fileIncomeWhite: iconFileIncomeWhite,
             glass: iconGlass,
             info: iconInfo,
+            warn: iconWarn,
             menuContained: iconMenuContained,
             openMenu: iconOpenMenu,
             progress: iconProgress,

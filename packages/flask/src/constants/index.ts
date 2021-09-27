@@ -53,4 +53,8 @@ export const UIConstant = {
             bottom: 8,
         },
     },
+
+    timeInput: {
+        warningIconSize: 20,
+    },
 };
