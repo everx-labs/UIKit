@@ -271,7 +271,11 @@ export function UIAnimatedBalance({
                         {iconElement}
                     </Text>
                 )}
-                <View style={[textLikeContainer, styles.visible]} testID={testID}>
+                <View
+                    style={[textLikeContainer, styles.visible]}
+                    testID={testID}
+                    accessibilityLabel={`${formatted.value.integer}.${formatted.value.fractional}`}
+                >
                     <AnimatedTextInput
                         style={[Typography[integerVariant], integerColorStyle, styles.integer]}
                         animatedProps={animatedIntegerProps}
