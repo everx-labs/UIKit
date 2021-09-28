@@ -15,7 +15,6 @@ import {
 import dayjs from 'dayjs';
 import { useCalendar } from './calendarContext';
 
-// todo: we should make this component for whole DateTimePicker
 export function DateTimeInputHeader({ mode }: { mode: any }) {
     const { onClose, onChange, state } = useCalendar();
     const [mainState] = state;
@@ -31,7 +30,6 @@ export function DateTimeInputHeader({ mode }: { mode: any }) {
     }, [onChange, mainState]);
 
     React.useEffect(() => {
-        // todo: add other modes titles
         switch (mode) {
             case 'time':
                 // @ts-ignore
