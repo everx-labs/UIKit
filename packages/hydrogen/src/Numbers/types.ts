@@ -35,7 +35,7 @@ export type UINumberGeneralProps = {
     /**
      * A value to show
      */
-    value: number | BigNumber;
+    children: number | BigNumber;
     /**
      * How many digits to draw for decimal aspect.
      *

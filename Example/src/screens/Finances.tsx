@@ -32,9 +32,9 @@ function Numbers() {
                 style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20 }}
             >
                 <View>
-                    <UINumber animated value={val} />
+                    <UINumber animated>{val}</UINumber>
                     <View style={{ height: 10 }} />
-                    <UINumber value={val} />
+                    <UINumber>{val}</UINumber>
                 </View>
                 <UILabel color={UILabelColors.TextSecondary}>Short</UILabel>
             </View>
@@ -42,25 +42,21 @@ function Numbers() {
                 style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20 }}
             >
                 <View>
-                    <UINumber
-                        animated
-                        value={val}
-                        decimalAspect={UINumberDecimalAspect.ShortEllipsized}
-                    />
+                    <UINumber animated decimalAspect={UINumberDecimalAspect.ShortEllipsized}>
+                        {val}
+                    </UINumber>
                     <View style={{ height: 10 }} />
-                    <UINumber value={val} decimalAspect={UINumberDecimalAspect.ShortEllipsized} />
+                    <UINumber decimalAspect={UINumberDecimalAspect.ShortEllipsized}>{val}</UINumber>
                 </View>
                 <UILabel color={UILabelColors.TextSecondary}>ShortEllipsized</UILabel>
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View>
-                    <UINumber
-                        animated
-                        value={val}
-                        decimalAspect={UINumberDecimalAspect.Precision}
-                    />
+                    <UINumber animated decimalAspect={UINumberDecimalAspect.Precision}>
+                        {val}
+                    </UINumber>
                     <View style={{ height: 10 }} />
-                    <UINumber value={val} decimalAspect={UINumberDecimalAspect.Precision} />
+                    <UINumber decimalAspect={UINumberDecimalAspect.Precision}>{val}</UINumber>
                 </View>
                 <UILabel color={UILabelColors.TextSecondary}>Precision</UILabel>
             </View>
@@ -104,18 +100,19 @@ function Currencies() {
                 <View>
                     <UICurrency
                         animated
-                        value={val}
                         signIcon={UIAssets.icons.brand.tonSymbolBlack}
                         loading={loading}
-                    />
+                    >
+                        {val}
+                    </UICurrency>
                     <View style={{ height: 10 }} />
-                    <UICurrency animated value={val} signChar="$" loading={loading} />
+                    <UICurrency animated signChar="$" loading={loading}>
+                        {val}
+                    </UICurrency>
                     <View style={{ height: 10 }} />
-                    <UICurrency
-                        value={val}
-                        signIcon={UIAssets.icons.brand.tonSymbolBlack}
-                        loading={loading}
-                    />
+                    <UICurrency signIcon={UIAssets.icons.brand.tonSymbolBlack} loading={loading}>
+                        {val}
+                    </UICurrency>
                 </View>
                 <UILabel color={UILabelColors.TextSecondary}>Short</UILabel>
             </View>
@@ -125,26 +122,29 @@ function Currencies() {
                 <View>
                     <UICurrency
                         animated
-                        value={val}
                         signIcon={UIAssets.icons.brand.tonSymbolBlack}
                         loading={loading}
                         decimalAspect={UINumberDecimalAspect.ShortEllipsized}
-                    />
+                    >
+                        {val}
+                    </UICurrency>
                     <View style={{ height: 10 }} />
                     <UICurrency
                         animated
-                        value={val}
                         signChar="$"
                         loading={loading}
                         decimalAspect={UINumberDecimalAspect.ShortEllipsized}
-                    />
+                    >
+                        {val}
+                    </UICurrency>
                     <View style={{ height: 10 }} />
                     <UICurrency
-                        value={val}
                         signIcon={UIAssets.icons.brand.tonSymbolBlack}
                         loading={loading}
                         decimalAspect={UINumberDecimalAspect.ShortEllipsized}
-                    />
+                    >
+                        {val}
+                    </UICurrency>
                 </View>
                 <UILabel color={UILabelColors.TextSecondary}>ShortEllipsized</UILabel>
             </View>
@@ -152,26 +152,29 @@ function Currencies() {
                 <View>
                     <UICurrency
                         animated
-                        value={val}
                         signIcon={UIAssets.icons.brand.tonSymbolBlack}
                         loading={loading}
                         decimalAspect={UINumberDecimalAspect.Precision}
-                    />
+                    >
+                        {val}
+                    </UICurrency>
                     <View style={{ height: 10 }} />
                     <UICurrency
                         animated
-                        value={val}
                         signChar="$"
                         loading={loading}
                         decimalAspect={UINumberDecimalAspect.Precision}
-                    />
+                    >
+                        {val}
+                    </UICurrency>
                     <View style={{ height: 10 }} />
                     <UICurrency
-                        value={val}
                         signIcon={UIAssets.icons.brand.tonSymbolBlack}
                         loading={loading}
                         decimalAspect={UINumberDecimalAspect.Precision}
-                    />
+                    >
+                        {val}
+                    </UICurrency>
                 </View>
                 <UILabel color={UILabelColors.TextSecondary}>Precision</UILabel>
             </View>

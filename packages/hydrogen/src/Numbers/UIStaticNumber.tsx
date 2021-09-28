@@ -28,14 +28,16 @@ export function useNumberStaticStyles(integerColor: ColorVariants, decimalColor:
 }
 
 export function UIStaticNumber({
-    value: rawValue,
+    testID,
+    children,
     integerVariant,
     integerColor,
     decimalVariant,
     decimalColor,
     decimalAspect = UINumberDecimalAspect.None,
-}: UINumberGeneralProps & UINumberAppearance) {
-    const value = useNumberValue(rawValue, decimalAspect);
+    sign,
+}: UINumberGeneralProps & UINumberAppearance & { sign?: React.ReactNode }) {
+    const value = useNumberValue(children, decimalAspect);
     const { decimal: decimalSeparator, grouping: integerGroupChar } =
         uiLocalized.localeInfo.numbers;
 
@@ -54,13 +56,14 @@ export function UIStaticNumber({
     );
 
     return (
-        <Text>
+        <Text testID={testID} accessibilityLabel={`${formatted.integer}${formatted.decimal}`}>
             <Text style={[Typography[integerVariant], styles.integerText, integerColorStyle]}>
                 {formatted.integer}
             </Text>
             <Text style={[Typography[decimalVariant], styles.decimalText, decimalColorStyle]}>
                 {formatted.decimal}
             </Text>
+            {sign}
         </Text>
     );
 }

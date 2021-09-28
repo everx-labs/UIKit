@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { View } from 'react-native';
 import Animated, {
     Easing,
     useAnimatedProps,
@@ -19,19 +20,22 @@ import {
 import { useNumberStaticStyles } from './UIStaticNumber';
 import type { UINumberAppearance, UINumberGeneralProps } from './types';
 import { StyleSheet } from 'react-native';
+import { useTextLikeContainer } from './useTextLikeContainer';
 
 Animated.addWhitelistedNativeProps({ text: true });
 
 export function UIAnimatedNumber({
-    value: rawValue,
+    testID,
+    children,
     decimalAspect = UINumberDecimalAspect.None,
     // appearance
     integerVariant,
     integerColor,
     decimalVariant,
     decimalColor,
-}: UINumberGeneralProps & UINumberAppearance) {
-    const value: number = useNumberValue(rawValue, decimalAspect);
+    sign,
+}: UINumberGeneralProps & UINumberAppearance & { sign?: React.ReactNode }) {
+    const value: number = useNumberValue(children, decimalAspect);
     const valueHolder = useSharedValue(value);
     const { decimal: decimalSeparator, grouping: integerGroupChar } =
         uiLocalized.localeInfo.numbers;
@@ -78,8 +82,14 @@ export function UIAnimatedNumber({
         decimalColor,
     );
 
+    const textLikeContainer = useTextLikeContainer();
+
     return (
-        <>
+        <View
+            style={textLikeContainer}
+            testID={testID}
+            accessibilityLabel={`${formatted.value.integer}${formatted.value.decimal}`}
+        >
             <AnimatedTextInput
                 style={[Typography[integerVariant], integerColorStyle, styles.integerInput]}
                 animatedProps={animatedIntegerProps}
@@ -94,7 +104,8 @@ export function UIAnimatedNumber({
                 underlineColorAndroid="transparent"
                 editable={false}
             />
-        </>
+            {sign}
+        </View>
     );
 }
 
