@@ -21,6 +21,7 @@ export * from './UISeedPhraseTextView';
 export * from './UIStatusBar';
 export * from './UITextView';
 export * from './UISwitcher';
+export * from './Numbers';
 
 // @ts-expect-error do not work with '.ios' and '.android' suffixes
 // eslint-disable-next-line import/no-unresolved
