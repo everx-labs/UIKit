@@ -10,7 +10,6 @@ import {
     TypographyVariants,
 } from '@tonlabs/uikit.hydrogen';
 
-// todo DateTimePickerHeader
 export function TimeInputSwitcher({
     onPress,
     isAM = true,
