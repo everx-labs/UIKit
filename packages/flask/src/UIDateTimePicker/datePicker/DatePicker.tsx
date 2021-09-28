@@ -18,6 +18,7 @@ import {
     UIDateTimePickerType,
 } from '../../types';
 import { UITimeInput } from './components/UITimeInput';
+import { DateTimeInputHeader } from './DateTimeInputHeader';
 
 const reducer = (state: PickerStateType, action: PickerAction) => {
     switch (action.type) {
@@ -64,6 +65,8 @@ const DatePicker = (props: UIDateTimePickerType) => {
             monthOpen: props.mode === UIDateTimePickerMode.MonthYear,
             timeOpen: props.mode === UIDateTimePickerMode.Time,
         }),
+        time: undefined,
+        isTimeValidated: true,
     };
     const [minHeight, setMinHeight] = useState(300);
     const style = styles(contextValue.options);
@@ -109,9 +112,10 @@ const DatePicker = (props: UIDateTimePickerType) => {
                         { minHeight: minHeight + insets.bottom + UIConstant.buttonHeight() },
                     ]}
                     onLayout={({ nativeEvent }) =>
-                        setMinHeight(nativeEvent.layout.width * 0.9 + 55)
+                        setMinHeight(nativeEvent.layout.width + insets.bottom)
                     }
                 >
+                    <DateTimeInputHeader mode={contextValue.mode} />
                     {renderBody()}
                 </View>
             </CalendarContext.Provider>

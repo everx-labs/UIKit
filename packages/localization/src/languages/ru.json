@@ -611,6 +611,9 @@
         "hour": "Час",
         "minute": "Минута",
         "select": "Выбрать",
-        "close": "Закрыть"
+        "close": "Закрыть",
+        "ChooseTime": "Choose Time",
+        "ChooseDate": "Choose Date",
+        "ChooseDateTime": "Choose Date and Time"
     }
 }

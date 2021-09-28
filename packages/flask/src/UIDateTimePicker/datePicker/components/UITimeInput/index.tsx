@@ -12,28 +12,27 @@ import {
     useTheme,
 } from '@tonlabs/uikit.hydrogen';
 
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { useCalendar } from '../../calendarContext';
 import { TimeInputWarning } from './TimeInputWarning';
-import { TimeInputHeader } from './TimeInputHeader';
-import { validateTime } from './utils';
 import { TimeInputSwitcher } from './TimeInputSwitcher';
 
 export function UITimeInput() {
-    const { state, min, max, isAmPmTime } = useCalendar();
-    const [mainState] = state;
+    const { state, min, max, isAmPmTime, utils } = useCalendar();
+    const [mainState, setMainState] = state;
 
     const initialTime = React.useMemo(() => {
         return min || max ? dayjs(min ?? max) : dayjs(mainState.activeDate ?? null);
     }, [mainState.activeDate, max, min]);
 
-    const initialTextTime = `${dayjs(initialTime).hour()}:${dayjs(initialTime).minute()}`;
+    const initialTextTime = isAmPmTime
+        ? utils.convertToAmPm(initialTime)
+        : initialTime.format('HH:mm');
 
     const [textTime, setTextTime] = React.useState(initialTextTime);
     const [time, setTime] = React.useState<Dayjs>(initialTime);
     const [timeValidated, setTimeValidated] = React.useState(true);
 
-    const [isAM, setAM] = React.useState(true);
+    const [isAM, setAM] = React.useState(dayjs(initialTime).format('a') === 'am');
 
     const inputRef = React.useRef<TextInput>(null);
 
@@ -45,7 +44,7 @@ export function UITimeInput() {
             if (value) {
                 const hour = dayjs(value).hour();
                 const minute = dayjs(value).minute();
-                return dayjs(time).hour(hour).minute(minute).valueOf();
+                return dayjs(time).hour(hour).minute(minute).second(0).valueOf();
             }
             return 0;
         },
@@ -83,16 +82,18 @@ export function UITimeInput() {
             let newTime;
             if (value.length) {
                 const [hoursStr, minutesStr] = value.split(':');
-                const hours = Number(hoursStr ?? 0);
+                const hours = isAmPmTime
+                    ? utils.convertHourTo24(Number(hoursStr ?? 0), isAM)
+                    : Number(hoursStr ?? 0);
                 const minutes = Number(minutesStr ?? 0);
-                newTime = dayjs().hour(hours).minute(minutes);
+                newTime = dayjs().hour(hours).minute(minutes).second(0).millisecond(0);
             } else {
                 newTime = initialTime;
             }
             setTime(newTime);
             setTimeValidated(checkMinMaxScope(newTime));
         },
-        [initialTime, checkMinMaxScope],
+        [checkMinMaxScope, isAmPmTime, utils, isAM, initialTime],
     );
 
     /**
@@ -104,9 +105,8 @@ export function UITimeInput() {
                 return;
             }
 
-            const isValidTime = validateTime(val, isAmPmTime);
+            const isValidTime = utils.validateTime(val, isAmPmTime, isAM);
             setTimeValidated(val.length > 5 ? timeValidated : isValidTime);
-
             if (isValidTime) {
                 let newVal = val;
                 if (newVal.length === 2 && textTime.length !== 3 && newVal.indexOf(':') === -1) {
@@ -121,11 +121,29 @@ export function UITimeInput() {
                 parseTime(newVal);
             }
         },
-        [textTime, timeValidated, parseTime, isAmPmTime],
+        [textTime, utils, isAmPmTime, isAM, timeValidated, parseTime],
     );
 
     const onChangeAmPm = React.useCallback(() => {
         setAM(!isAM);
+    }, [isAM]);
+
+    React.useEffect(() => {
+        setMainState({
+            type: 'set',
+            time,
+            isValidDateTime: timeValidated,
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [time]);
+
+    React.useEffect(() => {
+        const isValidTime = utils.validateTime(textTime, isAmPmTime, isAM);
+        setTimeValidated(isValidTime);
+        if (isValidTime) {
+            parseTime(textTime);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isAM]);
 
     React.useEffect(() => {
@@ -144,7 +162,6 @@ export function UITimeInput() {
 
     return mainState.timeOpen ? (
         <View style={{ flex: 1 }}>
-            <TimeInputHeader time={time} isValidTime={timeValidated} />
             <View style={styles.selectTimeBody}>
                 <View style={styles.selectTimeInputContainer}>
                     <UILabel role={TypographyVariants.TitleMedium}>Time</UILabel>

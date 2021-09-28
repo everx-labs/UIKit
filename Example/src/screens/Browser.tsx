@@ -699,7 +699,7 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                         minTime: new Date(0, 0, 0, 12, 15),
                                         maxTime: new Date(0, 0, 0, 13, 0),
                                         currentTime: new Date(),
-                                        isAmPmTime: true,
+                                        isAmPmTime: false,
                                         interval: 5,
                                         onSelect: (externalState: any) => {
                                             setMessages([

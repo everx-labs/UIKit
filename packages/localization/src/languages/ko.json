@@ -208,7 +208,10 @@
             "October": "10월",
             "September": "9월"
         },
-        "select": "선택"
+        "select": "선택",
+        "ChooseTime": "Choose Time",
+        "ChooseDate": "Choose Date",
+        "ChooseDateTime": "Choose Date and Time"
     },
     "DecryptingDocument": "문서 해독 중...",
     "Delete": "삭제하기",

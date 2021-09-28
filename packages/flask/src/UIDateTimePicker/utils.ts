@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { Animated, Easing } from 'react-native';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import type { PickerPropsType, UIDateTimePickerType } from '../types';
 
@@ -9,6 +9,7 @@ class Utils {
         max: Date | undefined;
         min: Date | undefined;
     };
+
     private readonly config: {
         selectedFormat: string;
         monthYearFormat: string;
@@ -22,6 +23,7 @@ class Utils {
         monthNames: string[];
         minute: string;
     };
+
     constructor({ min, max, mode }: UIDateTimePickerType & PickerPropsType) {
         this.data = {
             min,
@@ -193,35 +195,7 @@ class Utils {
         return [{ lastDate, shownAnimation, hiddenAnimation }, changeMonthAnimation];
     };
 
-    validateTimeMinMax = (
-        newTime: string | number | Date,
-        min: { getHours: () => any; getMinutes: () => any },
-        max: { getHours: () => any; getMinutes: () => any },
-    ) => {
-        const newHour = new Date(newTime).getHours();
-        const newMinute = new Date(newTime).getMinutes();
-
-        // comparing newTime with maxTime and minTime by hours and minutes, not considering the date
-        if (min) {
-            const minHour = min.getHours();
-            const minMinute = min.getMinutes();
-
-            if ((newHour === minHour && newMinute < minMinute) || newHour < minHour) {
-                return false;
-            }
-        }
-        if (max) {
-            const maxHour = max.getHours();
-            const maxMinute = max.getMinutes();
-
-            if ((newHour === maxHour && newMinute > maxMinute) || newHour > maxHour) {
-                return false;
-            }
-        }
-
-        return true;
-    };
-
+    // legacy
     returnValidTime = (current: Date) => {
         const { min, max } = this.data;
         const currentTime = new Date(current).getTime();
@@ -240,17 +214,74 @@ class Utils {
         return newTime;
     };
 
-    // Format time: Date to time: string like 00:00
-    formatTime = (value: string | number | Date) => {
-        if (value) {
-            const hoursValue = new Date(value).getHours();
-            const minutesValue = new Date(value).getMinutes();
-            const formattedHours = hoursValue < 10 ? `0${hoursValue}` : hoursValue;
-            const formattedMinutes = minutesValue < 10 ? `0${minutesValue}` : minutesValue;
+    validateTime = (val: string, isAmPmTime?: boolean, isAM?: boolean) => {
+        const regexp = /^\d{0,2}?\:?\d{0,2}$/;
 
-            return `${formattedHours}:${formattedMinutes}`;
+        const [hoursStr, minutesStr] = val.split(':');
+
+        if (!regexp.test(val)) {
+            return false;
         }
-        return '00:00';
+
+        const maxHour = isAmPmTime ? 12 : 24;
+
+        const hours = Number(hoursStr);
+        const minutes = Number(minutesStr);
+
+        const isValidHour = (hour: string | number) =>
+            Number.isInteger(hour) &&
+            hour >= 0 &&
+            hour < (isAmPmTime && isAM ? maxHour + 1 : maxHour);
+        const isValidMinutes = (min1: string | number) =>
+            (Number.isInteger(min1) &&
+                hours >= 0 &&
+                hours < (isAmPmTime ? maxHour + 1 : maxHour)) ||
+            Number.isNaN(min1);
+
+        if (!isValidHour(hours) || !isValidMinutes(minutes)) {
+            return false;
+        }
+
+        if (minutes < 10 && Number(minutesStr[0]) > 5) {
+            return false;
+        }
+
+        const valArr = val.indexOf(':') !== -1 ? val.split(':') : [val];
+
+        // check mm and HH
+        if (
+            valArr[0] &&
+            valArr[0].length &&
+            (parseInt(valArr[0], 10) < 0 ||
+                parseInt(valArr[0], 10) > (isAmPmTime ? maxHour + 1 : maxHour - 1))
+        ) {
+            return false;
+        }
+
+        if (
+            valArr[1] &&
+            valArr[1].length &&
+            (parseInt(valArr[1], 10) < 0 ||
+                (isAmPmTime && !isAM && hours === maxHour + 1
+                    ? parseInt(valArr[1], 10) > 0
+                    : parseInt(valArr[1], 10) > 59))
+        ) {
+            return false;
+        }
+        return true;
+    };
+
+    convertToAmPm = (value: Date | Dayjs | string) => {
+        return dayjs(value).hour() === 12
+            ? `00:${dayjs(value).minute()}`
+            : dayjs(value).format('hh:mm');
+    };
+
+    convertHourTo24 = (value: number, isAM: boolean) => {
+        if (isAM) {
+            return value === 12 ? 0 : value;
+        }
+        return value !== 12 ? value + 12 : value;
     };
 }
 

@@ -623,6 +623,9 @@
         "hour": "Hour",
         "minute": "Minute",
         "select": "Select",
-        "close": "Close"
+        "close": "Close",
+        "ChooseTime": "Choose Time",
+        "ChooseDate": "Choose Date",
+        "ChooseDateTime": "Choose Date and Time"
     }
 }

@@ -59,6 +59,7 @@ export type LocalizedInstance<T> = LocalizedStrings<T> & LocalizationService<T>;
 // @ts-ignore
 export class LocalizationService<T> extends (LocalizedStringsService as LocalizedStrings<T>) {
     languages: Language[];
+
     localeInfo: StringLocaleInfo;
 
     constructor({ languages, localeInfo = defaultLocaleInfo }: LanguageServiceOptions<T>) {

@@ -12,6 +12,8 @@ import {
     useTheme,
 } from '@tonlabs/uikit.hydrogen';
 
+import type { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { UIConstant } from '../../../../constants';
 import { useCalendar } from '../../calendarContext';
 
@@ -21,12 +23,24 @@ const iconSize = {
 };
 
 export function TimeInputWarning({ isValidTime = true }: { isValidTime: boolean }) {
-    const { utils, min, max } = useCalendar();
+    const { utils, min, max, isAmPmTime } = useCalendar();
     const theme = useTheme();
     const styles = useStyles(theme, isValidTime);
 
-    const minTime = min ? utils.formatTime(min) : '00:00';
-    const maxTime = min ? utils.formatTime(max) : '00:00';
+    const formatTime = React.useCallback(
+        (value: Date | Dayjs | undefined) => {
+            if (value) {
+                return isAmPmTime
+                    ? `${utils.convertToAmPm(value)} ${dayjs(value).format('A')}`
+                    : dayjs(value).format('HH.mm');
+            }
+            return null;
+        },
+        [isAmPmTime, utils],
+    );
+
+    const minTime = React.useMemo(() => formatTime(min), [min, formatTime]);
+    const maxTime = React.useMemo(() => formatTime(max), [max, formatTime]);
 
     const color = React.useMemo(() => {
         return isValidTime ? ColorVariants.TextAccent : ColorVariants.TextNegative;
@@ -47,7 +61,7 @@ export function TimeInputWarning({ isValidTime = true }: { isValidTime: boolean 
                     resizeMode="contain"
                 />
             </View>
-            <UILabel role={TypographyVariants.ParagraphNote} color={color}>
+            <UILabel style={styles.label} role={TypographyVariants.ParagraphNote} color={color}>
                 {`Choose a time between ${minTime} and ${maxTime}`}
             </UILabel>
         </View>
@@ -74,5 +88,8 @@ const useStyles = makeStyles((theme: Theme, isValidTime: boolean) => ({
         marginRight: 8,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    label: {
+        flex: 1,
     },
 }));

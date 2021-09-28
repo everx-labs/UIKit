@@ -33,7 +33,10 @@ export function TimePicker({ onLayout, ...message }: TimeMessage) {
                         <BubbleSimplePlainText
                             type={ChatMessageType.PlainText}
                             key="time-picker-value-bubble-chosen-time"
-                            text={uiLocalized.formatTime(message.externalState.time)}
+                            text={uiLocalized.formatTime(
+                                message.externalState.time,
+                                message.isAmPmTime ? 'hh:mm A' : 'HH:mm',
+                            )}
                             status={MessageStatus.Sent}
                         />
                     )}
