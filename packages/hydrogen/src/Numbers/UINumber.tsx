@@ -29,6 +29,7 @@ export function UINumber({
     decimalColor = ColorVariants.TextSecondary,
     ...rest
 }: UINumberProps) {
+    // TODO: set accessibilityLabel!
     const textLikeContainer = useTextLikeContainer();
 
     if (animated) {
