@@ -42,7 +42,7 @@ export function DateTimeInputHeader({ mode }: { mode: any }) {
                 setTitle(uiLocalized.DateTimePicker.ChooseDateTime);
                 break;
             default:
-                // @ts-ignore
+                // @ts-ignore todo: something wrong with my ts (Eremina M.)
                 setTitle(uiLocalized.DateTimePicker.ChooseDate);
                 break;
         }
