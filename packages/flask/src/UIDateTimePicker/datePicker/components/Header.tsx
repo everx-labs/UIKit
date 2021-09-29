@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { makeStyles, TypographyVariants, UILabel, useTheme } from '@tonlabs/uikit.hydrogen';
 
 import { useCalendar } from '../calendarContext';
-import { ArrowsButtons, MonthYearButton } from './Controls';
+import { ArrowsButtons, MonthYearButton } from './DateControls';
 import { PickerActionName } from '../../../types';
 
 export const Header = ({ changeMonth, title }: any) => {
