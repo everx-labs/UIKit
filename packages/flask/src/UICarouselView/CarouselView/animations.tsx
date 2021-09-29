@@ -85,14 +85,6 @@ export const usePaginationStyle = (active: boolean, theme: Theme) => {
                     ),
                 },
             ],
-            backgroundColor: interpolateColor(
-                animatedValue.value,
-                [PaginationState.NotActive, PaginationState.Active],
-                [
-                    theme[UIBackgroundViewColors.BackgroundNeutral] as string,
-                    theme[UIBackgroundViewColors.BackgroundAccent] as string,
-                ],
-            ),
         };
     });
 
