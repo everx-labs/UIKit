@@ -24,7 +24,7 @@ class Utils {
         minute: string;
     };
 
-    constructor({ min, max, mode }: UIDateTimePickerType & PickerPropsType) {
+    constructor({ min, max, mode }: UIDateTimePickerType & PickerPropsType<Utils>) {
         this.data = {
             min,
             max,
@@ -45,12 +45,6 @@ class Utils {
         if (mode === 'time' || mode === 'datepicker') {
             this.config.selectedFormat = `${this.config.dateFormat} ${this.config.timeFormat}`;
         }
-    }
-
-    get flexDirection() {
-        return {
-            flexDirection: 'row',
-        };
     }
 
     getFormatted = (date: any, formatName: string = 'selectedFormat') =>
@@ -147,7 +141,7 @@ class Utils {
         ];
     };
 
-    useMonthAnimation = (activeDate: any, distance: number, onEnd = () => null) => {
+    useMonthAnimation = (activeDate: Date, distance: number, onEnd?: () => void) => {
         /* eslint-disable react-hooks/rules-of-hooks */
         const [lastDate, setLastDate] = useState(activeDate);
         const [changeWay, setChangeWay] = useState(null);
@@ -192,7 +186,7 @@ class Utils {
             ],
         };
 
-        return [{ lastDate, shownAnimation, hiddenAnimation }, changeMonthAnimation];
+        return { lastDate, shownAnimation, hiddenAnimation, changeMonthAnimation };
     };
 
     // legacy

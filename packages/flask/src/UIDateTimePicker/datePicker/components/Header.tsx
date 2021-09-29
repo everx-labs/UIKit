@@ -11,32 +11,32 @@ import {
 } from 'react-native';
 
 import { useCalendar } from '../calendarContext';
+import { PickerActionName } from '../../../types';
 
 export const Header = ({ changeMonth }: any) => {
-    const { options, disableDateChange, state, utils, min, max, mode } = useCalendar();
-    const [mainState, setMainState] = state;
+    const { options, disableDateChange, state, dispatch, utils, min, max, mode } = useCalendar();
     const style = styles(options);
     const [disableChange, setDisableChange] = useState(false);
-    const [{ lastDate, shownAnimation, hiddenAnimation }, changeMonthAnimation] =
-        utils.useMonthAnimation(
-            mainState.activeDate,
-            options && options.headerAnimationDistance,
-            () => setDisableChange(false),
+    const { lastDate, shownAnimation, hiddenAnimation, changeMonthAnimation } =
+        utils.useMonthAnimation(state.activeDate, options && options.headerAnimationDistance, () =>
+            setDisableChange(false),
         );
     const prevDisable =
-        disableDateChange || (min && utils.checkArrowMonthDisabled(mainState.activeDate, true));
+        disableDateChange || (min && utils.checkArrowMonthDisabled(state.activeDate, true));
     const nextDisable =
-        disableDateChange || (max && utils.checkArrowMonthDisabled(mainState.activeDate, false));
+        disableDateChange || (max && utils.checkArrowMonthDisabled(state.activeDate, false));
 
     const onChangeMonth = (type: string) => {
         if (disableChange) return;
         setDisableChange(true);
         changeMonthAnimation(type);
         const modificationNumber = type === 'NEXT' ? 1 : -1;
-        const newDate = utils.getDate(mainState.activeDate).add(modificationNumber, 'month');
-        setMainState({
-            type: 'set',
-            activeDate: utils.getFormatted(newDate),
+        const newDate = utils.getDate(state.activeDate).add(modificationNumber, 'month');
+        dispatch({
+            type: PickerActionName.Set,
+            payload: {
+                activeDate: utils.getFormatted(newDate),
+            },
         });
         changeMonth(type);
     };
@@ -64,19 +64,19 @@ export const Header = ({ changeMonth }: any) => {
                 >
                     <TouchableOpacity
                         activeOpacity={0.7}
-                        style={[style.centerWrapper, style.monthYearWrapper, utils.flexDirection]}
+                        style={[style.centerWrapper, style.monthYearWrapper]}
                         onPress={() =>
                             !disableDateChange &&
-                            setMainState({
-                                type: 'toggleMonth',
+                            dispatch({
+                                type: PickerActionName.ToggleMonth,
                             })
                         }
                     >
                         <Text style={[style.headerText, style.monthText]}>
-                            {utils.getMonthYearText(mainState.activeDate).split(' ')[0]}
+                            {utils.getMonthYearText(state.activeDate).split(' ')[0]}
                         </Text>
                         <Text style={[style.headerText, style.monthText]}>
-                            {utils.getMonthYearText(mainState.activeDate).split(' ')[1]}
+                            {utils.getMonthYearText(state.activeDate).split(' ')[1]}
                         </Text>
                     </TouchableOpacity>
                     {mode === 'datepicker' && (
@@ -90,17 +90,13 @@ export const Header = ({ changeMonth }: any) => {
                                 },
                             ]}
                             onPress={() =>
-                                setMainState({
-                                    type: 'toggleTime',
+                                dispatch({
+                                    type: PickerActionName.ToggleTime,
                                 })
                             }
                         >
                             <Text style={style.headerText}>
-                                {utils.getTime(
-                                    utils.returnValidTime(mainState.activeDate),
-                                    min,
-                                    max,
-                                )}
+                                {utils.getTime(utils.returnValidTime(state.activeDate))}
                             </Text>
                         </TouchableOpacity>
                     )}
@@ -109,7 +105,6 @@ export const Header = ({ changeMonth }: any) => {
                     style={[
                         style.monthYear,
                         hiddenAnimation,
-                        utils.flexDirection,
                         I18nManager.isRTL && style.reverseMonthYear,
                     ]}
                 >
@@ -121,7 +116,7 @@ export const Header = ({ changeMonth }: any) => {
                     </Text>
                     {mode === 'datepicker' && (
                         <Text style={style.headerText}>
-                            {utils.getTime(utils.returnValidTime(mainState.activeDate), min, max)}
+                            {utils.getTime(utils.returnValidTime(state.activeDate))}
                         </Text>
                     )}
                 </Animated.View>
@@ -191,6 +186,7 @@ const styles = (theme: any) =>
         },
         monthYearWrapper: {
             alignItems: 'center',
+            flexDirection: 'row',
         },
         headerText: {
             fontSize: theme.textHeaderFontSize,

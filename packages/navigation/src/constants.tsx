@@ -25,6 +25,7 @@ export const UIConstant = {
     elasticWidthBottomSheet: 448,
     swipeThreshold: 50,
     rubberBandEffectDistance: 50,
+    borderRadius: 12,
 
     titleMinimumFontScale: 0.7,
 

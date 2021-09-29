@@ -12,6 +12,21 @@ import { ScrollableContext } from '../../Scrollable/Context';
 import { useSheetHeight } from './useSheetHeight';
 import type { OnOpen, OnClose } from './types';
 import { usePosition } from './usePosition';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+function useBottomInsetStyle(countRubberBandDistance: boolean = false) {
+    const { bottom } = useSafeAreaInsets();
+
+    return React.useMemo(() => {
+        let paddingBottom = Math.max(bottom, UIConstant.contentOffset);
+        if (countRubberBandDistance) {
+            paddingBottom += UIConstant.rubberBandEffectDistance;
+        }
+        return {
+            paddingBottom,
+        };
+    }, [bottom, countRubberBandDistance]);
+}
 
 export type UISheetProps = {
     /**
@@ -92,6 +107,7 @@ function UISheetPortalContent({
         countRubberBandDistance,
     );
     const keyboardHeight = useAnimatedKeyboardHeight();
+    const contentStyle = useBottomInsetStyle(countRubberBandDistance);
 
     const {
         animate,
@@ -106,9 +122,11 @@ function UISheetPortalContent({
     } = usePosition(
         height,
         keyboardHeight,
+        contentStyle.paddingBottom,
         hasOpenAnimation,
         hasCloseAnimation,
         shouldHandleKeyboard,
+        countRubberBandDistance,
         onClose,
         onClosePortalRequest,
         onOpenEnd,
@@ -219,7 +237,7 @@ function UISheetPortalContent({
                         ? { waitFor: scrollPanGestureHandlerRef }
                         : null)}
                 >
-                    <Animated.View style={style}>
+                    <Animated.View style={[style, contentStyle]}>
                         <ScrollableContext.Provider value={scrollableContextValue}>
                             {children}
                         </ScrollableContext.Provider>
