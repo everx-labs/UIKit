@@ -183,13 +183,13 @@
             "Saturday": "Saturday"
         },
         "dayNamesShort": {
-            "Sunday": "Su",
-            "Monday": "Mo",
-            "Tuesday": "Tu",
-            "Wednesday": "We",
-            "Thursday": "Th",
-            "Friday": "Fr",
-            "Saturday": "Sa"
+            "Sunday": "SUN",
+            "Monday": "MON",
+            "Tuesday": "TUE",
+            "Wednesday": "WED",
+            "Thursday": "THU",
+            "Friday": "FRI",
+            "Saturday": "SAT"
         },
         "monthNames": {
             "January": "January",

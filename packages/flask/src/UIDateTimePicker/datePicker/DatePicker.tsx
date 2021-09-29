@@ -50,7 +50,7 @@ function Content() {
             return (
                 <>
                     <Calendar />
-                    <SelectMonth />
+                    {/* <SelectMonth /> */}
                     <UITimeInput />
                 </>
             );

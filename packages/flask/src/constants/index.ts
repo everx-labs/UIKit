@@ -59,4 +59,9 @@ export const UIConstant = {
         amPmOffset: 12,
         amPmBorderRadius: 8,
     },
+
+    calendar: {
+        dayCeilPadding: 5,
+        dayCeilPaddingBorderRadius: 20,
+    },
 };

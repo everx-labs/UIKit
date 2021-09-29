@@ -188,6 +188,9 @@ export function UITimeInput() {
             : inputRef.current?.focus();
     }, []);
 
+    // TODO: move ScrollView to DatePicker to cover date/time mode
+    // TODO: don't forget to set maxHeight for it, to cover small screens
+    //       when date/time won't fit with keyboard open!
     return (
         <ScrollView contentContainerStyle={styles.wrapper} keyboardShouldPersistTaps="handled">
             <View style={styles.selectTimeInputContainer}>
