@@ -26,7 +26,7 @@ import {
 } from '@tonlabs/uikit.hydrogen';
 import { ScrollView } from '@tonlabs/uikit.navigation';
 
-import { useCalendar } from '../../calendarContext';
+import { useTime } from '../../calendarContext';
 import { TimeInputWarning } from './TimeInputWarning';
 import { TimeInputSwitcher } from './TimeInputSwitcher';
 import { UIConstant } from '../../../../constants';
@@ -164,69 +164,7 @@ const TimeInput = React.forwardRef<TextInput, TimeInputProps>(function TimeInput
 });
 
 export function UITimeInput() {
-    const { state: mainState, dispatch, min, max, isAmPmTime, utils } = useCalendar();
-
-    const initialTime = React.useMemo(() => {
-        return min || max ? dayjs(min ?? max) : dayjs(mainState.activeDate ?? null);
-    }, [mainState.activeDate, max, min]);
-
-    const initialTextTime = isAmPmTime
-        ? utils.convertToAmPm(initialTime)
-        : initialTime.format('HH:mm');
-
-    const [time, setTime] = React.useState<Dayjs>(initialTime);
-    const [timeValidated, setTimeValidated] = React.useState(true);
-
-    const [isAM, setAM] = React.useState(dayjs(initialTime).format('a') === 'am');
-
-    const returnUnixTime = React.useCallback(
-        (value: Date | Dayjs | undefined) => {
-            if (value) {
-                const hour = dayjs(value).hour();
-                const minute = dayjs(value).minute();
-                return dayjs(time).hour(hour).minute(minute).second(0).valueOf();
-            }
-            return 0;
-        },
-        [time],
-    );
-
-    const maxUnix = React.useMemo(() => returnUnixTime(max), [max, returnUnixTime]);
-    const minUnix = React.useMemo(() => returnUnixTime(min), [min, returnUnixTime]);
-
-    /**
-     * Check that new time value is inside min and max scope
-     */
-    const checkMinMaxScope = React.useCallback(
-        (newTime: Dayjs) => {
-            const currentUnix = dayjs(newTime).valueOf();
-            if (minUnix || maxUnix) {
-                if (!minUnix) {
-                    return currentUnix <= maxUnix;
-                }
-                if (!maxUnix) {
-                    return minUnix <= currentUnix;
-                }
-                return minUnix <= currentUnix && currentUnix <= maxUnix;
-            }
-            return true;
-        },
-        [minUnix, maxUnix],
-    );
-
-    const onChangeAmPm = React.useCallback(() => {
-        setAM(!isAM);
-    }, [isAM]);
-
-    React.useEffect(() => {
-        // TODO!
-        dispatch({
-            type: PickerActionName.Set,
-            time,
-            isValidDateTime: timeValidated,
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [time]);
+    const { initialTime, isValid, haveValidation, isAmPmTime, isAM, toggleAmPm, set } = useTime();
 
     // React.useEffect(() => {
     //     const isValidTime = utils.validateTime(timeInputHolderRef.current, isAmPmTime, isAM);
@@ -240,7 +178,7 @@ export function UITimeInput() {
     const inputRef = React.useRef<TextInput>(null);
 
     React.useEffect(() => {
-        setTimeValidated(checkMinMaxScope(time));
+        // setIsTimeValid(checkMinMaxScope(time));
         /**
          * Only web: fast autofocus on load affects the height of the parent element,
          * so we have to use a timeout to wait for the parent animation
@@ -258,32 +196,11 @@ export function UITimeInput() {
                 {/* TODO: localize me! */}
                 <UILabel role={TypographyVariants.TitleMedium}>Time</UILabel>
                 <View style={styles.timeInputWrapper}>
-                    <TimeInput
-                        ref={inputRef}
-                        initialTextTime={initialTextTime}
-                        onChange={(hours, minutes) => {
-                            if (isNaN(hours) || isNaN(minutes)) {
-                                setTimeValidated(false);
-                                return;
-                            }
-
-                            const hoursNormilized = isAmPmTime
-                                ? utils.convertHourTo24(hours, isAM)
-                                : hours;
-
-                            const time = dayjs()
-                                .hour(hoursNormilized)
-                                .minute(minutes)
-                                .second(0)
-                                .millisecond(0);
-                            setTime(time);
-                            setTimeValidated(checkMinMaxScope(time));
-                        }}
-                    />
-                    {isAmPmTime && <TimeInputSwitcher isAM={isAM} onPress={onChangeAmPm} />}
+                    <TimeInput ref={inputRef} initialTextTime={initialTime} onChange={set} />
+                    {isAmPmTime && <TimeInputSwitcher isAM={isAM} onPress={toggleAmPm} />}
                 </View>
             </View>
-            {(min || max) && <TimeInputWarning isValidTime={timeValidated} />}
+            {haveValidation && <TimeInputWarning isValidTime={isValid} />}
         </ScrollView>
     );
 }
