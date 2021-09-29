@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { makeStyles, TypographyVariants, UILabel, useTheme } from '@tonlabs/uikit.hydrogen';
 
@@ -11,16 +11,36 @@ export const Header = ({ changeMonth, title }: any) => {
 
     const theme = useTheme();
     const styles = useStyles(theme);
-    const [disableChange, setDisableChange] = useState(false);
-    const { lastDate, changeMonthAnimation } = utils.useMonthAnimation(
-        state.activeDate,
-        options && options.headerAnimationDistance,
-        () => setDisableChange(false),
+    const [disableChange, setDisableChange] = React.useState(false);
+
+    const { lastDate, changeMonthAnimation } = React.useMemo(
+        () =>
+            utils.useMonthAnimation(
+                state.activeDate,
+                options && options.headerAnimationDistance,
+                () => setDisableChange(false),
+            ),
+        [options, state.activeDate, utils],
     );
-    const prevDisable =
-        disableDateChange || (min && utils.checkArrowMonthDisabled(state.activeDate, true));
-    const nextDisable =
-        disableDateChange || (max && utils.checkArrowMonthDisabled(state.activeDate, false));
+
+    const prevDisable = React.useMemo(
+        () => disableDateChange || (min && utils.checkArrowMonthDisabled(state.activeDate, true)),
+        [disableDateChange, min, state.activeDate, utils],
+    );
+
+    const nextDisable = React.useMemo(
+        () => disableDateChange || (max && utils.checkArrowMonthDisabled(state.activeDate, false)),
+        [disableDateChange, max, state.activeDate, utils],
+    );
+
+    const currentMonth = React.useMemo(
+        () => utils.getMonthYearText(lastDate).split(' ')[0],
+        [lastDate, utils],
+    );
+    const currentYear = React.useMemo(
+        () => utils.getMonthYearText(state.activeDate).split(' ')[1],
+        [state.activeDate, utils],
+    );
 
     const onChangeMonth = React.useCallback(
         (type: string) => {
@@ -62,8 +82,8 @@ export const Header = ({ changeMonth, title }: any) => {
                 <MonthYearButton
                     onPressMonth={onPressMonth}
                     onPressYear={() => console.log('todo: year view')}
-                    month={utils.getMonthYearText(lastDate).split(' ')[0]}
-                    year={utils.getMonthYearText(state.activeDate).split(' ')[1]}
+                    month={currentMonth}
+                    year={currentYear}
                 />
                 <ArrowsButtons onPressRight={onPrevMonth} onPressLeft={onNextMonth} />
             </View>
