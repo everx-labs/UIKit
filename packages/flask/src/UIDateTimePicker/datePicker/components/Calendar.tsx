@@ -8,7 +8,7 @@ import { useCalendar } from '../calendarContext';
 const Calendar = () => {
     const { options, state, utils, onChange } = useCalendar();
     const style = styles(options);
-    const [{ shownAnimation }, changeMonthAnimation] = utils.useMonthAnimation(
+    const { shownAnimation, changeMonthAnimation } = utils.useMonthAnimation(
         state.activeDate,
         options.daysAnimationDistance,
     );
@@ -20,7 +20,14 @@ const Calendar = () => {
     return (
         <View style={style.container}>
             <Header changeMonth={changeMonthAnimation} />
-            <View style={[style.daysName, utils.flexDirection]}>
+            <View
+                style={[
+                    style.daysName,
+                    {
+                        flexDirection: 'row',
+                    },
+                ]}
+            >
                 {utils.config.dayNamesShort.map((item: any) => (
                     <Text key={item} style={style.daysNameText}>
                         {item}

@@ -1,3 +1,4 @@
+import type React from 'react';
 import type { ColorValue, ImageSourcePropType } from 'react-native';
 
 // eslint-disable-next-line no-shadow
@@ -105,7 +106,7 @@ export type UIDateTimePickerType = {
      * - `Date`
      * - `Time`
      */
-    mode?: UIDateTimePickerMode;
+    mode: UIDateTimePickerMode;
     /* Specifies the minimum selectable date/time by user */
     min?: Date;
     /* Specifies the maximum selectable date/time by user */
@@ -131,7 +132,7 @@ export type UIDateTimePickerType = {
     isAmPmTime?: boolean;
 };
 
-export type PickerPropsType = UIDateTimePickerType & {
+export type PickerPropsType<Utils> = UIDateTimePickerType & {
     onChange?: (datetime: Date) => void;
     onMonthYearChange?: (datetime: Date) => void;
     value?: any;
@@ -140,8 +141,9 @@ export type PickerPropsType = UIDateTimePickerType & {
     disableDateChange?: boolean;
     reverse?: true | false | 'unset';
     options: PickerOptionsType;
-    state?: any;
-    utils?: any;
+    state: PickerStateType;
+    dispatch: React.Dispatch<PickerAction>;
+    utils: Utils;
 };
 
 // eslint-disable-next-line no-shadow
@@ -152,15 +154,12 @@ export enum PickerActionName {
 }
 
 export type PickerAction = {
-    value: any;
     type: PickerActionName;
-    state: PickerStateType;
+    payload?: Partial<PickerStateType>;
 };
 export type PickerStateType = {
-    activeDate?: Date;
-    selectedDate?: Date;
-    timeOpen?: boolean;
-    monthOpen?: boolean;
+    activeDate: Date;
+    selectedDate: Date;
 };
 
 // Country picker types
