@@ -612,8 +612,11 @@
         "minute": "Минута",
         "select": "Выбрать",
         "close": "Закрыть",
-        "ChooseTime": "Choose Time",
-        "ChooseDate": "Choose Date",
-        "ChooseDateTime": "Choose Date and Time"
+        "ChooseTime": "Выбрать время",
+        "ChooseDate": "Выбрать дату",
+        "ChooseDateTime": "Выбрать дату и время",
+        "Day": "День",
+        "Month": "Месяц",
+        "Year": "Год"
     }
 }

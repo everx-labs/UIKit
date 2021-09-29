@@ -4,10 +4,10 @@ import { makeStyles, TypographyVariants, UILabel, useTheme } from '@tonlabs/uiki
 
 import { useCalendar } from '../calendarContext';
 import { ArrowsButtons, MonthYearButton } from './Controls';
-import { PickerActionName, UIDateTimePickerMode } from '../../../types';
+import { PickerActionName } from '../../../types';
 
-export const Header = ({ changeMonth }: any) => {
-    const { options, disableDateChange, state, dispatch, utils, min, max, mode } = useCalendar();
+export const Header = ({ changeMonth, title }: any) => {
+    const { options, disableDateChange, state, dispatch, utils, min, max } = useCalendar();
 
     const theme = useTheme();
     const styles = useStyles(theme);
@@ -55,20 +55,9 @@ export const Header = ({ changeMonth }: any) => {
             });
     }, [disableDateChange, dispatch]);
 
-    const returnTitle = React.useCallback(() => {
-        switch (mode) {
-            case UIDateTimePickerMode.Date:
-                return '';
-            case UIDateTimePickerMode.DateTime:
-                return '';
-            default:
-                return '';
-        }
-    }, [mode]);
-
     return (
         <View style={styles.container}>
-            <UILabel role={TypographyVariants.TitleMedium}>{returnTitle}</UILabel>
+            <UILabel role={TypographyVariants.TitleMedium}>{title}</UILabel>
             <View style={styles.controlsContainer}>
                 <MonthYearButton
                     onPressMonth={onPressMonth}

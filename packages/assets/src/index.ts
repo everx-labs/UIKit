@@ -77,6 +77,7 @@ import iconCheckboxSquareActive from '../ico-checkbox-square-active/ico-checkbox
 import iconCheckboxSquareActiveAction from '../ico-checkbox-square-active/active-action.png';
 import iconCheckboxSquareInactive from '../ico-checkbox-square-inactive/ico-checkbox-square-inactive.png';
 import iconCheckboxSquareInactiveAction from '../ico-checkbox-square-inactive/inactive-action.png';
+import iconCloudWhite from '../ico-cloud-white/cloudWhite.png';
 import iconClear from '../ico-clear/ico-clear.png';
 import iconCloseBlack8 from '../ico-close/close-black-8.png';
 import iconCloseBlack from '../ico-close/close-black.png';
@@ -86,7 +87,7 @@ import iconCloseGrey from '../ico-close/close-grey.png';
 import iconCloseLight from '../ico-close/close-light.png';
 import iconCloseRemove from '../ico-close/remove.png';
 import iconCloudBlack from '../ico-cloud-black/cloudBlack.png';
-import iconCloudWhite from '../ico-cloud-white/cloudWhite.png';
+import iconChevron from '../ico-chevron/chevron-left.png';
 import iconDelete from '../ico-delete/delete.png';
 import iconDocBlue from '../ico-doc-blue/ico-doc-blue.png';
 import iconDocWhite from '../ico-doc-white/ico-doc-white.png';
@@ -223,6 +224,7 @@ export const UIAssets = {
             checkboxSquareActiveAction: iconCheckboxSquareActiveAction,
             checkboxSquareInactive: iconCheckboxSquareInactive,
             checkboxSquareInactiveAction: iconCheckboxSquareInactiveAction,
+            chevron: iconChevron,
             clear: iconClear,
             closeBlack8: iconCloseBlack8,
             closeBlack: iconCloseBlack,

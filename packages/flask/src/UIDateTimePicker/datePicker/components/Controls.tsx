@@ -6,9 +6,12 @@ import {
     Theme,
     TouchableOpacity,
     TypographyVariants,
+    UIImage,
     UILabel,
     useTheme,
 } from '@tonlabs/uikit.hydrogen';
+import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIConstant } from '../../../constants';
 
 export type DateControlsProps = {
     onPressMonth?: () => void;
@@ -28,13 +31,13 @@ export function MonthYearButton({ onPressMonth, onPressYear, month, year }: Date
     const styles = useStyles(theme);
 
     return (
-        <View style={styles.monthYearContainer}>
+        <View style={styles.container}>
             {!!month && (
                 <TouchableOpacity onPress={onPressMonth}>
                     <UILabel role={TypographyVariants.Action}>{month}</UILabel>
                 </TouchableOpacity>
             )}
-            {!!month && !!year && <Separator />}
+            {!!month || (!!year && <Separator />)}
             {!!year && (
                 <TouchableOpacity onPress={onPressYear}>
                     <UILabel role={TypographyVariants.Action}>{year}</UILabel>
@@ -54,36 +57,45 @@ export function ArrowsButtons({ onPressLeft, onPressRight }: ArrowsButtonsProps)
     const styles = useStyles(theme);
 
     return (
-        <View>
-            <View>
-                <View style={styles.monthYearContainer}>
-                    <TouchableOpacity onPress={onPressLeft}>
-                        <UILabel role={TypographyVariants.Action}>{'<'}</UILabel>
-                    </TouchableOpacity>
-                    <Separator />
-                    <TouchableOpacity onPress={onPressRight}>
-                        <UILabel role={TypographyVariants.Action}>{'>'}</UILabel>
-                    </TouchableOpacity>
-                </View>
-            </View>
+        <View style={[styles.arrows, styles.container]}>
+            <TouchableOpacity onPress={onPressLeft}>
+                <UIImage style={styles.icon} source={UIAssets.icons.ui.chevron} />
+            </TouchableOpacity>
+            <Separator />
+            <TouchableOpacity onPress={onPressRight}>
+                <UIImage
+                    style={[styles.icon, styles.rotateIcon]}
+                    source={UIAssets.icons.ui.chevron}
+                />
+            </TouchableOpacity>
         </View>
     );
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
-    monthYearContainer: {
+    container: {
         backgroundColor: theme[ColorVariants.BackgroundTertiary] as string,
         borderRadius: 8,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: 8,
-        paddingVertical: 4,
+        paddingHorizontal: UIConstant.smallContentOffset,
+        paddingVertical: UIConstant.tinyContentOffset,
     },
     separator: {
         height: 12,
         width: 1,
         backgroundColor: theme[ColorVariants.BackgroundTertiaryInverted],
-        marginHorizontal: 12,
+        marginHorizontal: UIConstant.normalContentOffset,
+    },
+    arrows: {
+        marginLeft: UIConstant.normalContentOffset,
+    },
+    icon: {
+        width: UIConstant.datePicker.iconSize,
+        height: UIConstant.datePicker.iconSize,
+    },
+    rotateIcon: {
+        transform: [{ rotate: '180deg' }],
     },
 }));
