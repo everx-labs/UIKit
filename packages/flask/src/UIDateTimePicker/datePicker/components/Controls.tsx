@@ -34,7 +34,7 @@ export function MonthYearButton({ onPressMonth, onPressYear, month, year }: Date
                     <UILabel role={TypographyVariants.Action}>{month}</UILabel>
                 </TouchableOpacity>
             )}
-            {!!month && !!year && <Separator />}
+            {!!month || !!year && <Separator />}
             {!!year && (
                 <TouchableOpacity onPress={onPressYear}>
                     <UILabel role={TypographyVariants.Action}>{year}</UILabel>
