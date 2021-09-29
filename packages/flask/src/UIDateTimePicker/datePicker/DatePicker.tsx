@@ -60,7 +60,7 @@ function Content() {
             return (
                 <>
                     <Calendar />
-                    <SelectMonth />
+                    {/* <SelectMonth /> */}
                 </>
             );
         case UIDateTimePickerMode.Time:
@@ -88,7 +88,8 @@ function DatePickerContent(props: UIDateTimePickerType) {
 
     const [state, dispatch] = useReducer(reducer, {
         activeDate: props.current ? new Date(props.current) : new Date(), // Date in calendar also save time
-        selectedDate: props.selected ? new Date(props.selected) : new Date(),
+        selectedDate: props.selected ? dayjs(props.selected) : dayjs(),
+        monthOpen: false, // TODO
     });
 
     const contextValue = {

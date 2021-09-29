@@ -17,7 +17,8 @@ import { useCalendar } from '../calendarContext';
 export const SelectMonth = () => {
     const {
         options,
-        state,
+        state: { activeDate, monthOpen },
+        dispatch,
         utils,
         selectorStartingYear,
         selectorEndingYear,
@@ -26,45 +27,46 @@ export const SelectMonth = () => {
         max,
         onMonthYearChange,
     } = useCalendar();
-    const [mainState, setMainState] = state;
     const [show, setShow] = useState(false);
     const style = styles(options);
-    const [year, setYear] = useState(utils.getMonthYearText(mainState.activeDate).split(' ')[1]);
+    const [year, setYear] = useState(utils.getMonthYearText(activeDate).split(' ')[1]);
     const openAnimation = useRef(new Animated.Value(0)).current;
-    const currentMonth = new Date(mainState.activeDate).getMonth();
+    const currentMonth = new Date(activeDate).getMonth();
     const prevDisable = max && utils.checkYearDisabled(Number(year), true);
     const nextDisable = min && utils.checkYearDisabled(Number(year), false);
 
     useEffect(() => {
-        mainState.monthOpen && setShow(true);
+        monthOpen && setShow(true);
         Animated.timing(openAnimation, {
-            toValue: mainState.monthOpen ? 1 : 0,
+            toValue: monthOpen ? 1 : 0,
             duration: 350,
             useNativeDriver: true,
             easing: Easing.bezier(0.17, 0.67, 0.46, 1),
         }).start(() => {
-            !mainState.monthOpen && setShow(false);
+            !monthOpen && setShow(false);
         });
-    }, [mainState.monthOpen, openAnimation]);
+    }, [monthOpen, openAnimation]);
 
     useEffect(() => {
-        show && setYear(utils.getMonthYearText(mainState.activeDate).split(' ')[1]);
-    }, [mainState.activeDate, utils, show]);
+        show && setYear(utils.getMonthYearText(activeDate).split(' ')[1]);
+    }, [activeDate, utils, show]);
 
     const onSelectMonth = (month: any) => {
         if (show) {
             const y = Number(year);
-            const date = utils.getDate(utils.validYear(mainState.activeDate, y));
+            const date = utils.getDate(utils.validYear(activeDate, y));
             const activeDate = month !== null ? date.month(month) : date;
-            setMainState({
+            dispatch({
                 type: 'set',
-                activeDate: utils.getFormatted(activeDate),
+                payload: {
+                    activeDate: utils.getFormatted(activeDate),
+                },
             });
             month !== null &&
                 onMonthYearChange?.(utils.getFormatted(activeDate, 'monthYearFormat'));
             month !== null &&
                 mode !== 'monthYear' &&
-                setMainState({
+                dispatch({
                     type: 'toggleMonth',
                 });
         }
@@ -144,9 +146,9 @@ export const SelectMonth = () => {
                 </TouchableOpacity>
             </View>
 
-            <View style={[style.monthList, utils.flexDirection]}>
+            <View style={[style.monthList]}>
                 {[...Array(12).keys()].map(item => {
-                    const disabled = utils.checkSelectMonthDisabled(mainState.activeDate, item);
+                    const disabled = utils.checkSelectMonthDisabled(activeDate, item);
                     return (
                         <TouchableOpacity
                             key={item}
@@ -199,6 +201,7 @@ const styles = (theme: any) =>
         monthList: {
             flexWrap: 'wrap',
             margin: 25,
+            flexDirection: 'row',
         },
         item: {
             width: '30%',

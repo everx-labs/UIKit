@@ -1,3 +1,4 @@
+import type { Dayjs } from 'dayjs';
 import type React from 'react';
 import type { ColorValue, ImageSourcePropType } from 'react-native';
 
@@ -159,7 +160,7 @@ export type PickerAction = {
 };
 export type PickerStateType = {
     activeDate: Date;
-    selectedDate: Date;
+    selectedDate: Dayjs;
 };
 
 // Country picker types

@@ -10,15 +10,6 @@ export const useCalendar = () => {
     return useContext(CalendarContext);
 };
 
-function returnUnixTime(value: Date | undefined, time: Dayjs) {
-    if (value) {
-        const hour = dayjs(value).hour();
-        const minute = dayjs(value).minute();
-        return dayjs(time).hour(hour).minute(minute).second(0).valueOf();
-    }
-    return 0;
-}
-
 function validateTime(time: Dayjs, min?: Date, max?: Date) {
     let i = 0;
     if (min == null && max == null) {

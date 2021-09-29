@@ -47,15 +47,11 @@ class Utils {
         }
     }
 
-    getFormatted = (date: any, formatName: string = 'selectedFormat') =>
-        // @ts-expect-error
-        date.format(this.config[formatName]);
-
     getFormattedDate = (date = new Date(), format = 'YYYY/MM/DD') => dayjs(date).format(format);
 
     getTime = (time: Date) => this.getDate(time).format(this.config.timeFormat);
 
-    getToday = () => this.getFormatted(new Date(), 'dateFormat');
+    getToday = () => dayjs(new Date(), 'dateFormat');
 
     getMonthName = (month: number) => this.config.monthNames[month];
 
@@ -113,15 +109,17 @@ class Utils {
         return validDate;
     };
 
-    getMonthDays = (time: dayjs.ConfigType | undefined) => {
+    getMonthDays(
+        time: dayjs.ConfigType | undefined,
+    ): (undefined | { dayString: string; day: number; date: Dayjs; disabled: boolean })[] {
+        // TODO: get from context
         const { min, max } = this.data;
         let date = dayjs(time);
         const currentMonthDays = date.daysInMonth();
         const firstDay = date.date(1);
         const dayOfMonth = firstDay.day() % 7;
-        return [
-            ...new Array(dayOfMonth),
-            ...[...new Array(currentMonthDays)].map((_, n) => {
+        return new Array(dayOfMonth).fill(undefined).concat(
+            new Array(currentMonthDays).fill(null).map((_, n) => {
                 let disabled = false;
                 const thisDay = date.date(n + 1);
                 if (min) {
@@ -132,14 +130,14 @@ class Utils {
                 }
                 date = dayjs(time);
                 return {
-                    dayString: n + 1,
+                    dayString: `${n + 1}`,
                     day: n + 1,
-                    date: this.getFormatted(date.date(n + 1)),
+                    date: dayjs(date.date(n + 1)),
                     disabled,
                 };
             }),
-        ];
-    };
+        );
+    }
 
     useMonthAnimation = (activeDate: Date, distance: number, onEnd?: () => void) => {
         /* eslint-disable react-hooks/rules-of-hooks */

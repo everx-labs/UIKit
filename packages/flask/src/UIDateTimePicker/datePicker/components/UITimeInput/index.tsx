@@ -7,7 +7,6 @@ import {
     TouchableWithoutFeedback,
     StyleSheet,
 } from 'react-native';
-import dayjs, { Dayjs } from 'dayjs';
 import Animated, {
     interpolateColor,
     useAnimatedProps,
@@ -32,7 +31,6 @@ import { TimeInputSwitcher } from './TimeInputSwitcher';
 import { UIConstant } from '../../../../constants';
 
 import { AnimatedTextInput } from '../../../../UIAnimatedBalance/AnimatedTextInput';
-import { PickerActionName } from '../../../../types';
 
 Animated.addWhitelistedNativeProps({ text: true });
 
