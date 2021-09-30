@@ -20,7 +20,6 @@ import {
     UIDateTimePickerType,
 } from '../../types';
 import { UITimeInput } from './components/UITimeInput';
-import { DateTimeInputHeader } from './DateTimeInputHeader';
 
 const reducer = (state: PickerStateType, action: PickerAction) => {
     switch (action.type) {

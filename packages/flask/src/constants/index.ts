@@ -59,4 +59,7 @@ export const UIConstant = {
         amPmOffset: 12,
         amPmBorderRadius: 8,
     },
+    datePicker: {
+        iconSize: 24,
+    },
 };
