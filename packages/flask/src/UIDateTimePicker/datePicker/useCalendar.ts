@@ -1,13 +1,10 @@
 import * as React from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import localeData from 'dayjs/plugin/localeData';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import { CalendarContext } from './calendarContext';
 
 import { PickerActionName } from '../../types';
-
-dayjs.extend(localeData);
 
 type DayLabel = {
     type: 'dayLabel';
@@ -89,39 +86,41 @@ function dateWithConstraints(currentDate: Dayjs, min?: Date, max?: Date) {
     return currentDate;
 }
 
-export function useCalendar() {
+export function useDaysCalendar() {
     const {
-        state: { activeDate, selectedDate },
+        state: { selectedDate },
         dispatch,
         min,
         max,
     } = React.useContext(CalendarContext);
 
-    const dayNamesShort = (dayjs as any) // marking it as any as we use plugin here
-        .weekdays()
-        .map((weekday: keyof typeof uiLocalized['DateTimePicker']['dayNamesShort']) => {
-            return uiLocalized.DateTimePicker.dayNamesShort[weekday];
-        });
+    const dayNamesShort = React.useMemo(
+        () => Object.values(uiLocalized.DateTimePicker.dayNamesShort),
+        [],
+    );
 
     const [currentYear, currentMonth] = React.useMemo(
-        () => [activeDate.year(), activeDate.month()],
-        [activeDate],
+        () => [selectedDate.year(), selectedDate.month()],
+        [selectedDate],
     );
 
     const { firstDayShift, daysMatrix } = React.useMemo(() => {
-        return getDaysMatrix(activeDate, dayNamesShort, min, max);
-    }, [currentYear, currentMonth]);
+        return getDaysMatrix(selectedDate, dayNamesShort, min, max);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentYear, currentMonth, dayNamesShort, min, max]);
 
     const [activeDayRow, activeDayColumn] = React.useMemo(() => {
-        const activeDay = selectedDate.date() + firstDayShift;
-        const activeDayRow = Math.trunc(activeDay / dayNamesShort.length);
-        const activeDayColumn = activeDay - activeDayRow * dayNamesShort.length - 1;
+        const day = selectedDate.date() + firstDayShift - 1;
+        const dayRow = Math.trunc(day / dayNamesShort.length);
+        const dayColumn = day - dayRow * dayNamesShort.length;
 
-        return [activeDayRow + 1, activeDayColumn];
-    }, [selectedDate, firstDayShift]);
+        return [dayRow + 1, dayColumn];
+    }, [selectedDate, firstDayShift, dayNamesShort.length]);
+
+    console.log(selectedDate, activeDayRow, activeDayColumn);
 
     const onSelect = React.useCallback(
-        (column, row) => {
+        (column: number, row: number) => {
             const day = daysMatrix[column][row];
 
             if (!day) {
@@ -140,13 +139,68 @@ export function useCalendar() {
                 },
             });
         },
-        [activeDate],
+        [daysMatrix, dispatch],
     );
+
+    const onPrev = React.useCallback(() => {
+        const day = daysMatrix[activeDayColumn][activeDayRow];
+
+        if (!day) {
+            return;
+        }
+
+        if (day.type !== 'dayCell') {
+            return;
+        }
+
+        const newDate = dateWithConstraints(day.date.subtract(1, 'day'));
+        dispatch({
+            type: PickerActionName.Set,
+            payload: {
+                selectedDate: newDate,
+            },
+        });
+    }, [daysMatrix, dispatch, activeDayRow, activeDayColumn]);
+
+    const onNext = React.useCallback(() => {
+        const day = daysMatrix[activeDayColumn][activeDayRow];
+
+        if (!day) {
+            return;
+        }
+
+        if (day.type !== 'dayCell') {
+            return;
+        }
+
+        const newDate = dateWithConstraints(day.date.add(1, 'day'));
+        dispatch({
+            type: PickerActionName.Set,
+            payload: {
+                selectedDate: newDate,
+            },
+        });
+    }, [daysMatrix, dispatch, activeDayRow, activeDayColumn]);
 
     return {
         activeDayColumn,
         activeDayRow,
         daysMatrix,
         onSelect,
+        onPrev,
+        onNext,
+        month: uiLocalized.DateTimePicker.monthNames[currentMonth],
+        year: `${currentYear}`,
     };
+}
+
+export function useMonthsCalendar() {
+    const {
+        state: { activeDate },
+    } = React.useContext(CalendarContext);
+
+    const monthNames = React.useMemo(
+        () => Object.values(uiLocalized.DateTimePicker.monthNames),
+        [],
+    );
 }

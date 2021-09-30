@@ -20,25 +20,23 @@ export type DateControlsProps = {
     year?: string;
 };
 
-export function Separator() {
-    const theme = useTheme();
-    const styles = useStyles(theme);
-    return <View style={styles.separator} />;
-}
-
 export function MonthYearButton({ onPressMonth, onPressYear, month, year }: DateControlsProps) {
     const theme = useTheme();
     const styles = useStyles(theme);
 
+    if (month == null && year == null) {
+        return null;
+    }
+
     return (
         <View style={styles.container}>
-            {!!month && (
+            {month != null && (
                 <TouchableOpacity onPress={onPressMonth}>
                     <UILabel role={TypographyVariants.Action}>{month}</UILabel>
                 </TouchableOpacity>
             )}
-            {!!month || (!!year && <Separator />)}
-            {!!year && (
+            {month != null && <View style={styles.separator} />}
+            {year != null && (
                 <TouchableOpacity onPress={onPressYear}>
                     <UILabel role={TypographyVariants.Action}>{year}</UILabel>
                 </TouchableOpacity>
@@ -61,7 +59,7 @@ export function ArrowsButtons({ onPressLeft, onPressRight }: ArrowsButtonsProps)
             <TouchableOpacity onPress={onPressLeft}>
                 <UIImage style={styles.icon} source={UIAssets.icons.ui.chevron} />
             </TouchableOpacity>
-            <Separator />
+            <View style={styles.separator} />
             <TouchableOpacity onPress={onPressRight}>
                 <UIImage
                     style={[styles.icon, styles.rotateIcon]}

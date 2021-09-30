@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
@@ -15,7 +15,7 @@ import {
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import { UIConstant } from '../../../../constants';
-import { useCalendar } from '../../calendarContext';
+import { CalendarContext } from '../../calendarContext';
 
 const iconSize = {
     height: UIConstant.timeInput.warningIconSize,
@@ -23,7 +23,8 @@ const iconSize = {
 };
 
 export function TimeInputWarning({ isValidTime = true }: { isValidTime: boolean }) {
-    const { utils, min, max, isAmPmTime } = useCalendar();
+    // TODO: remake!
+    const { utils, min, max, isAmPmTime } = React.useContext(CalendarContext);
     const theme = useTheme();
     const styles = useStyles(theme, isValidTime);
 

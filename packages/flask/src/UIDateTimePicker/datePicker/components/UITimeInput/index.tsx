@@ -25,7 +25,7 @@ import {
 } from '@tonlabs/uikit.hydrogen';
 import { ScrollView } from '@tonlabs/uikit.navigation';
 
-import { useTime } from '../../calendarContext';
+import { useTime } from '../../useTime';
 import { TimeInputWarning } from './TimeInputWarning';
 import { TimeInputSwitcher } from './TimeInputSwitcher';
 import { UIConstant } from '../../../../constants';

@@ -10,9 +10,6 @@
         "plugin:flowtype/recommended",
         "plugin:@typescript-eslint/recommended",
         "prettier",
-        "prettier/react",
-        "prettier/flowtype",
-        "prettier/@typescript-eslint",
         "plugin:react-hooks/recommended"
     ],
     "plugins": ["@babel", "@typescript-eslint", "flowtype", "module-resolver", "import"],
