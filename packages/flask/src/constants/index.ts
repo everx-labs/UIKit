@@ -61,7 +61,7 @@ export const UIConstant = {
     },
 
     calendar: {
-        dayCeilPadding: 5,
-        dayCeilPaddingBorderRadius: 20,
+        dayCellPadding: 5,
+        dayCellPaddingBorderRadius: 20,
     },
 };

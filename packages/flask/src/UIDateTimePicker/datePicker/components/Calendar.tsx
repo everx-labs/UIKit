@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
-import dayjs from 'dayjs';
 
 import {
     ColorVariants,
@@ -11,127 +10,97 @@ import {
     TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
 
-import { useCalendar } from '../calendarContext';
-import { PickerActionName } from '../../../types';
+import { useCalendar, DayCells } from '../useCalendar';
 import { UIConstant } from '../../../constants';
 
-export function Calendar() {
-    const {
-        state: { activeDate, selectedDate },
-        dispatch,
-        utils,
-    } = useCalendar();
-    // const { shownAnimation, changeMonthAnimation } = utils.useMonthAnimation(
-    //     state.activeDate,
-    //     200, // TODO!
-    // );
+const Column = React.memo(function Column({
+    id,
+    items,
+    selected,
+    selectedRow,
+    onSelect,
+}: {
+    id: number;
+    items: DayCells[];
+    selected: boolean;
+    selectedRow: number;
+    onSelect: (column: number, row: number) => void;
+}) {
     const theme = useTheme();
+    return (
+        <View style={styles.column}>
+            {items.map((day, index) => {
+                if (day.type === 'dayLabel') {
+                    return (
+                        <UILabel
+                            key={day.label}
+                            role={UILabelRoles.ActionFootnote}
+                            color={ColorVariants.TextSecondary}
+                        >
+                            {day.label}
+                        </UILabel>
+                    );
+                }
 
-    // TODO: it has different order for different countries!
-    const { dayNamesShort } = utils.config;
+                if (day.type === 'dayFiller') {
+                    return (
+                        <View style={styles.day}>
+                            <UILabel role={UILabelRoles.Action} color={UILabelColors.TextPrimary}>
+                                {' '}
+                            </UILabel>
+                        </View>
+                    );
+                }
 
-    type MonthDaysT = ReturnType<typeof utils.getMonthDays>;
-    type MonthDayT = MonthDaysT extends readonly (infer T)[] ? T : never;
+                // const isSelected = day != null && selectedDate.isSame(day.date, 'day');
+                const isSelected = selected && index === selectedRow;
+                return (
+                    <TouchableOpacity
+                        key={index}
+                        style={[
+                            styles.day,
+                            isSelected && {
+                                backgroundColor: theme[ColorVariants.StaticBackgroundAccent],
+                            },
+                        ]}
+                        disabled={day.disabled || isSelected}
+                        onPress={() => onSelect(id, index)}
+                        activeOpacity={0.8}
+                    >
+                        {
+                            <UILabel
+                                role={isSelected ? UILabelRoles.HeadlineHead : UILabelRoles.Action}
+                                color={
+                                    isSelected
+                                        ? UILabelColors.TextAccent
+                                        : UILabelColors.TextPrimary
+                                }
+                            >
+                                {day.dayString}
+                            </UILabel>
+                        }
+                    </TouchableOpacity>
+                );
+            })}
+        </View>
+    );
+});
 
-    const days = React.useMemo(() => utils.getMonthDays(activeDate), [utils, activeDate]).reduce<
-        (MonthDayT | string)[][]
-    >((acc, item, index) => {
-        const row = Math.trunc(index / utils.config.dayNamesShort.length);
-        const column = index - row * utils.config.dayNamesShort.length;
-
-        if (acc[column] == null) {
-            acc[column] = [dayNamesShort[column]];
-        }
-
-        acc[column].push(item);
-
-        return acc;
-    }, []);
-
-    const onSelectDay = (date: Date) => {
-        /**
-         * In case the user did not select the time in datetime mode, but immediately clicked on the date, we must set the most probable time within the minimum and maximum time by taking the time from the mainState.activeDate.
-         */
-        // TODO: fix the fact that `activeDate` might be a string
-        const validTime = utils.returnValidTime(new Date(activeDate));
-        const newDate = dayjs(
-            new Date(date).setHours(validTime.getHours(), validTime.getMinutes()),
-        );
-        dispatch({
-            type: PickerActionName.Set,
-            payload: {
-                selectedDate: newDate,
-            },
-        });
-        // onChange && onChange(newDate);
-    };
-
-    // React.useEffect(() => {
-    //     selectedDate && onChange && onChange(selectedDate);
-    // }, [selectedDate, onChange]);
+export function Calendar() {
+    const { activeDayColumn, activeDayRow, daysMatrix, onSelect } = useCalendar();
 
     return (
         <View style={styles.container}>
             {/* <Header changeMonth={changeMonthAnimation} /> */}
-            {days.map((column, index) => (
-                <View
+            {daysMatrix.map((column, index) => (
+                <Column
                     key={index}
-                    style={{
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
-                    {column.map((day, index) => {
-                        if (typeof day === 'string') {
-                            return (
-                                <UILabel
-                                    role={UILabelRoles.ActionFootnote}
-                                    color={ColorVariants.TextSecondary}
-                                    key={day}
-                                >
-                                    {day}
-                                </UILabel>
-                            );
-                        }
-
-                        const isSelected = day != null && selectedDate.isSame(day.date, 'day');
-                        return (
-                            <TouchableOpacity
-                                key={index}
-                                style={[
-                                    styles.day,
-                                    isSelected && {
-                                        backgroundColor:
-                                            theme[ColorVariants.StaticBackgroundAccent],
-                                    },
-                                ]}
-                                onPress={
-                                    day != null
-                                        ? () => !day.disabled && onSelectDay(day.date)
-                                        : undefined
-                                }
-                                activeOpacity={0.8}
-                            >
-                                {
-                                    <UILabel
-                                        role={
-                                            isSelected
-                                                ? UILabelRoles.HeadlineHead
-                                                : UILabelRoles.Action
-                                        }
-                                        color={
-                                            isSelected
-                                                ? UILabelColors.TextAccent
-                                                : UILabelColors.TextPrimary
-                                        }
-                                    >
-                                        {day ? day.dayString : ' '}
-                                    </UILabel>
-                                }
-                            </TouchableOpacity>
-                        );
-                    })}
-                </View>
+                    id={index}
+                    selected={index === activeDayColumn}
+                    selectedRow={activeDayRow}
+                    items={column}
+                    onSelect={onSelect}
+                />
             ))}
         </View>
     );
@@ -143,11 +112,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: UIConstant.contentOffset,
         justifyContent: 'space-between',
     },
+    column: {
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
     day: {
-        // height: UIConstant.calendar.dayCeilHeight,
-        paddingVertical: 5,
+        paddingVertical: UIConstant.calendar.dayCellPadding,
         aspectRatio: 1,
-        borderRadius: UIConstant.calendar.dayCeilPaddingBorderRadius,
+        borderRadius: UIConstant.calendar.dayCellPaddingBorderRadius,
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: UIConstant.contentOffset,

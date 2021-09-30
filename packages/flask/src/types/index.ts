@@ -159,7 +159,7 @@ export type PickerAction = {
     payload?: Partial<PickerStateType>;
 };
 export type PickerStateType = {
-    activeDate: Date;
+    activeDate: Dayjs;
     selectedDate: Dayjs;
 };
 

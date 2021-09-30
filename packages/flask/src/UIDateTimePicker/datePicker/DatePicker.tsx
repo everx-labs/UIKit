@@ -87,7 +87,7 @@ function DatePickerContent(props: UIDateTimePickerType) {
     const calendarUtils = new Utils(props as UIDateTimePickerType & PickerPropsType<Utils>);
 
     const [state, dispatch] = useReducer(reducer, {
-        activeDate: props.current ? new Date(props.current) : new Date(), // Date in calendar also save time
+        activeDate: props.current ? dayjs(props.current) : dayjs(), // Date in calendar also save time
         selectedDate: props.selected ? dayjs(props.selected) : dayjs(),
         monthOpen: false, // TODO
     });

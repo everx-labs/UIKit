@@ -109,36 +109,6 @@ class Utils {
         return validDate;
     };
 
-    getMonthDays(
-        time: dayjs.ConfigType | undefined,
-    ): (undefined | { dayString: string; day: number; date: Dayjs; disabled: boolean })[] {
-        // TODO: get from context
-        const { min, max } = this.data;
-        let date = dayjs(time);
-        const currentMonthDays = date.daysInMonth();
-        const firstDay = date.date(1);
-        const dayOfMonth = firstDay.day() % 7;
-        return new Array(dayOfMonth).fill(undefined).concat(
-            new Array(currentMonthDays).fill(null).map((_, n) => {
-                let disabled = false;
-                const thisDay = date.date(n + 1);
-                if (min) {
-                    disabled = thisDay.startOf('hour') < this.getDate(min).startOf('hour');
-                }
-                if (max && !disabled) {
-                    disabled = thisDay.startOf('hour') > this.getDate(max).startOf('hour');
-                }
-                date = dayjs(time);
-                return {
-                    dayString: `${n + 1}`,
-                    day: n + 1,
-                    date: dayjs(date.date(n + 1)),
-                    disabled,
-                };
-            }),
-        );
-    }
-
     useMonthAnimation = (activeDate: Date, distance: number, onEnd?: () => void) => {
         /* eslint-disable react-hooks/rules-of-hooks */
         const [lastDate, setLastDate] = useState(activeDate);
