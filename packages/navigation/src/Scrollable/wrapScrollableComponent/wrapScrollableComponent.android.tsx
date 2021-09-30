@@ -52,6 +52,7 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
                 shouldCancelWhenOutside={false}
                 onGestureEvent={gestureHandler}
                 simultaneousHandlers={nativeGestureRef}
+                waitFor={nativeGestureRef}
             >
                 <Animated.View style={{ flex: 1 }}>
                     <NativeViewGestureHandler
