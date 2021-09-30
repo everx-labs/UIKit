@@ -181,8 +181,10 @@ const renderFixedTabBar = (
     indicatorContainerColor: ColorValue,
     type: UIPagerViewContainerType,
 ): React.ReactElement => {
-    const tabBarStyle: StyleProp<ViewStyle> =
-        type === 'FixedPadded' ? styles.fixedPaddedTabBar : styles.fixedTabBar;
+    const tabBarStyle: StyleProp<ViewStyle> = [
+        styles.fixedTabBar,
+        type === 'FixedPadded' && styles.paddedTabBar,
+    ];
     return (
         <TabBar
             {...props}
@@ -337,18 +339,15 @@ const styles = StyleSheet.create({
         height: 1,
     },
     fixedTabBar: {
-        height: UIConstant.pagerViewHeight,
+        height: UIConstant.pager.pagerViewHeight,
         backgroundColor: 'transparent',
         shadowColor: 'transparent',
         elevation: 0,
         justifyContent: 'center',
+        bottom: UIConstant.pager.tabBarOffset,
+        borderWidth: 0,
     },
-    fixedPaddedTabBar: {
-        height: UIConstant.pagerViewHeight,
-        backgroundColor: 'transparent',
-        shadowColor: 'transparent',
-        elevation: 0,
-        justifyContent: 'center',
+    paddedTabBar: {
         marginHorizontal: UIConstant.contentOffset,
     },
     tab: {
@@ -361,11 +360,10 @@ const styles = StyleSheet.create({
     },
     indicatorContainer: {
         top: undefined,
-        bottom: 16,
         height: 1,
     },
     scrollableTabBar: {
-        height: UIConstant.pagerViewHeight,
+        height: UIConstant.pager.pagerViewHeight,
         backgroundColor: 'transparent',
         shadowColor: 'transparent',
         elevation: 0,
@@ -377,5 +375,6 @@ const styles = StyleSheet.create({
     },
     labelStyle: {
         textAlign: 'center',
+        marginTop: UIConstant.pager.tabBarOffset,
     },
 });
