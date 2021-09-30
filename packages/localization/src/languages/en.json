@@ -211,7 +211,10 @@
         "close": "Close",
         "ChooseTime": "Choose Time",
         "ChooseDate": "Choose Date",
-        "ChooseDateTime": "Choose Date and Time"
+        "ChooseDateTime": "Choose Date and Time",
+        "Day": "Day",
+        "Month": "Month",
+        "Year": "Year"
     },
     "ShortenedNumberSuffix": {
         "3": "K",

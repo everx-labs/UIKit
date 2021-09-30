@@ -64,4 +64,8 @@ export const UIConstant = {
         dayCellPadding: 5,
         dayCellPaddingBorderRadius: 20,
     },
+
+    datePicker: {
+        iconSize: 24,
+    },
 };
