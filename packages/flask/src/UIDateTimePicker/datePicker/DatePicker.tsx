@@ -21,16 +21,16 @@ import {
 } from '../../types';
 import { UITimeInput } from './components/UITimeInput';
 
-const reducer = (state: PickerStateType, action: PickerAction) => {
+const reducer = (state: PickerStateType, action: PickerAction): PickerStateType => {
     switch (action.type) {
         case PickerActionName.Set:
             return { ...state, ...action.payload };
-        case PickerActionName.ToggleTime:
-            return { ...state, timeOpen: !state.timeOpen };
-        case PickerActionName.ToggleMonth:
-            return { ...state, monthOpen: !state.monthOpen };
+        case PickerActionName.ToggleMonths:
+            return { ...state, isMonthsVisible: !state.isMonthsVisible, isYearsVisible: false };
+        case PickerActionName.ToggleYears:
+            return { ...state, isYearsVisible: !state.isYearsVisible, isMonthsVisible: false };
         default:
-            throw new Error('Unexpected action');
+            return state;
     }
 };
 
@@ -86,9 +86,9 @@ function DatePickerContent(props: UIDateTimePickerType) {
     const calendarUtils = new Utils(props as UIDateTimePickerType & PickerPropsType<Utils>);
 
     const [state, dispatch] = useReducer(reducer, {
-        activeDate: props.current ? dayjs(props.current) : dayjs(), // Date in calendar also save time
         selectedDate: props.selected ? dayjs(props.selected) : dayjs(),
-        monthOpen: false, // TODO
+        isMonthsVisible: false,
+        isYearsVisible: false,
     });
 
     const contextValue = {
@@ -131,6 +131,7 @@ function DatePickerContent(props: UIDateTimePickerType) {
 }
 
 export function DatePicker(props: UIDateTimePickerType) {
+    const { visible, onClose } = props;
     const theme = useTheme();
 
     return (
@@ -140,8 +141,8 @@ export function DatePicker(props: UIDateTimePickerType) {
                     backgroundColor: theme[ColorVariants.BackgroundPrimary],
                 },
             ]}
-            visible={props.visible}
-            onClose={props.onClose}
+            visible={visible}
+            onClose={onClose}
         >
             <DatePickerContent {...props} />
         </UIBottomSheet>

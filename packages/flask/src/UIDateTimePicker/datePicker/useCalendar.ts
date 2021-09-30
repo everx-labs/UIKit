@@ -117,8 +117,6 @@ export function useDaysCalendar() {
         return [dayRow + 1, dayColumn];
     }, [selectedDate, firstDayShift, dayNamesShort.length]);
 
-    console.log(selectedDate, activeDayRow, activeDayColumn);
-
     const onSelect = React.useCallback(
         (column: number, row: number) => {
             const day = daysMatrix[column][row];
@@ -189,18 +187,105 @@ export function useDaysCalendar() {
         onSelect,
         onPrev,
         onNext,
-        month: uiLocalized.DateTimePicker.monthNames[currentMonth],
+        month: uiLocalized.DateTimePicker.monthNames[`${currentMonth}`],
         year: `${currentYear}`,
     };
 }
 
-export function useMonthsCalendar() {
+export function useAditionalCalendars() {
     const {
-        state: { activeDate },
+        state: { isMonthsVisible, isYearsVisible },
+        dispatch,
     } = React.useContext(CalendarContext);
 
-    const monthNames = React.useMemo(
-        () => Object.values(uiLocalized.DateTimePicker.monthNames),
+    const openMonths = React.useCallback(() => {
+        dispatch({
+            type: PickerActionName.ToggleMonths,
+        });
+    }, [dispatch]);
+
+    const openYears = React.useCallback(() => {
+        dispatch({
+            type: PickerActionName.ToggleYears,
+        });
+    }, [dispatch]);
+
+    return {
+        isMonthsVisible,
+        openMonths,
+        isYearsVisible,
+        openYears,
+    };
+}
+
+type MonthCell = {
+    id: number;
+    label: string;
+};
+
+export type MonthCells = MonthCell;
+
+export function useMonthsCalendar() {
+    const {
+        state: { selectedDate },
+        dispatch,
+    } = React.useContext(CalendarContext);
+
+    const monthsMatrix = React.useMemo(
+        () =>
+            new Array(12).fill(null).reduce<MonthCell[][]>((acc, _, index) => {
+                const row = Math.trunc(index / 3);
+                const column = index - row * 3;
+
+                if (acc[column] == null) {
+                    acc[column] = [];
+                }
+
+                acc[column].push({
+                    id: index,
+                    label: uiLocalized.DateTimePicker.monthNames[index],
+                    // disabled TODO!
+                });
+
+                return acc;
+            }, []),
         [],
     );
+
+    const currentMonth = React.useMemo(() => {
+        return selectedDate.month();
+    }, [selectedDate]);
+
+    const [currentRow, currentColumn] = React.useMemo(() => {
+        const row = Math.trunc(currentMonth / 3);
+        const column = currentMonth - row * 3;
+
+        return [row, column];
+    }, [currentMonth]);
+
+    const onSelect = React.useCallback(
+        (month: number) => {
+            const newDate = dateWithConstraints(selectedDate.month(month));
+            dispatch({
+                type: PickerActionName.Set,
+                payload: {
+                    selectedDate: newDate,
+                },
+            });
+            dispatch({
+                type: PickerActionName.ToggleMonths,
+                payload: {
+                    selectedDate: newDate,
+                },
+            });
+        },
+        [dispatch, selectedDate],
+    );
+
+    return {
+        monthsMatrix,
+        currentRow,
+        currentColumn,
+        onSelect,
+    };
 }

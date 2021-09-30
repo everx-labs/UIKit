@@ -52,7 +52,7 @@ export type ArrowsButtonsProps = {
 
 export function ArrowsButtons({ onPressLeft, onPressRight }: ArrowsButtonsProps) {
     const theme = useTheme();
-    const styles = useStyles(theme);
+    const styles: any = useStyles(theme);
 
     return (
         <View style={[styles.arrows, styles.container]}>

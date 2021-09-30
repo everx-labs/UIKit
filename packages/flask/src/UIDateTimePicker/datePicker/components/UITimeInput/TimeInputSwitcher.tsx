@@ -61,7 +61,7 @@ export function TimeInputSwitcher({
         position.value = withSpring(isAM ? SWITCHER_LEFT : SWITCHER_RIGHT, {
             overshootClamping: true,
         });
-    }, [isAM]);
+    }, [isAM, position]);
 
     return (
         <TouchableOpacity activeOpacity={1} onPress={onPress}>

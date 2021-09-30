@@ -151,7 +151,8 @@ export type PickerPropsType<Utils> = UIDateTimePickerType & {
 export enum PickerActionName {
     Set = 'set',
     ToggleTime = 'toggleTime',
-    ToggleMonth = 'toggleMonth',
+    ToggleMonths = 'ToggleMonths',
+    ToggleYears = 'ToggleYears',
 }
 
 export type PickerAction = {
@@ -159,8 +160,9 @@ export type PickerAction = {
     payload?: Partial<PickerStateType>;
 };
 export type PickerStateType = {
-    activeDate: Dayjs;
     selectedDate: Dayjs;
+    isMonthsVisible: boolean;
+    isYearsVisible: boolean;
 };
 
 // Country picker types

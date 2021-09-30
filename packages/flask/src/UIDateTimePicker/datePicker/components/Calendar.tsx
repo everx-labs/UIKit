@@ -20,10 +20,17 @@ import {
     makeStyles,
     Theme,
 } from '@tonlabs/uikit.hydrogen';
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import { Header } from './Header';
 
-import { useDaysCalendar, DayCells } from '../useCalendar';
+import {
+    useDaysCalendar,
+    DayCells,
+    useMonthsCalendar,
+    MonthCells,
+    useAditionalCalendars,
+} from '../useCalendar';
 import { UIConstant } from '../../../constants';
 
 const Column = React.memo(function Column({
@@ -153,25 +160,96 @@ const useStyles = makeStyles((theme: Theme) => ({
     container: {
         flex: 1,
         backgroundColor: theme[ColorVariants.BackgroundPrimary],
-        paddingHorizontal: UIConstant.contentOffset,
     },
 }));
+
+const MonthsColumn = React.memo(function MonthColumn({
+    items,
+    selected,
+    selectedRow,
+    onSelect,
+}: {
+    items: MonthCells[];
+    selected: boolean;
+    selectedRow: number;
+    onSelect: (month: number) => void;
+}) {
+    const theme = useTheme();
+    return (
+        <View style={{ flex: 1 }}>
+            {items.map(({ id, label }, index) => {
+                const isSelected = selected && index === selectedRow;
+                return (
+                    <TouchableOpacity
+                        // eslint-disable-next-line react/no-array-index-key
+                        key={index}
+                        style={[
+                            styles.month,
+                            isSelected && {
+                                backgroundColor: theme[ColorVariants.StaticBackgroundAccent],
+                            },
+                        ]}
+                        onPress={() => onSelect(id)}
+                        activeOpacity={0.8}
+                    >
+                        <UILabel
+                            role={isSelected ? UILabelRoles.HeadlineHead : UILabelRoles.Action}
+                            color={
+                                isSelected ? UILabelColors.TextAccent : UILabelColors.TextPrimary
+                            }
+                        >
+                            {label}
+                        </UILabel>
+                    </TouchableOpacity>
+                );
+            })}
+        </View>
+    );
+});
+
+function Months() {
+    const { monthsMatrix, currentRow, currentColumn, onSelect } = useMonthsCalendar();
+
+    return (
+        <View style={styles.container}>
+            {monthsMatrix.map((column, index) => (
+                <MonthsColumn
+                    // eslint-disable-next-line react/no-array-index-key
+                    key={index}
+                    items={column}
+                    selected={index === currentColumn}
+                    selectedRow={currentRow}
+                    onSelect={onSelect}
+                />
+            ))}
+        </View>
+    );
+}
 
 export function Calendar() {
     const { activeDayColumn, activeDayRow, daysMatrix, month, year, onSelect, onPrev, onNext } =
         useDaysCalendar();
-    const [isMonthsVisible, setIsMonthsVisible] = React.useState(false);
-    const [isYearsVisible, setIsYearsVisible] = React.useState(false);
+    const { isMonthsVisible, openMonths, isYearsVisible, openYears } = useAditionalCalendars();
+
+    const headerTitle = React.useMemo(() => {
+        if (isYearsVisible) {
+            return uiLocalized.DateTimePicker.Year;
+        }
+        if (isMonthsVisible) {
+            return uiLocalized.DateTimePicker.Month;
+        }
+        return uiLocalized.DateTimePicker.Day;
+    }, [isYearsVisible, isMonthsVisible]);
 
     return (
         <>
             <Header
-                title="Day"
-                onPressMonth={() => setIsMonthsVisible(!isMonthsVisible)}
-                onPressYear={() => setIsYearsVisible(!isYearsVisible)}
+                title={headerTitle}
+                onPressMonth={openMonths}
+                onPressYear={openYears}
                 onPrev={onPrev}
                 onNext={onNext}
-                month={isMonthsVisible ? undefined : month}
+                month={isMonthsVisible || isYearsVisible ? undefined : month}
                 year={isYearsVisible ? undefined : year}
             />
             <View style={styles.container}>
@@ -187,7 +265,7 @@ export function Calendar() {
                             onSelect={onSelect}
                         />
                     ))}
-                    <UpperLayer visible={isMonthsVisible}>{() => null}</UpperLayer>
+                    <UpperLayer visible={isMonthsVisible}>{() => <Months />}</UpperLayer>
                     <UpperLayer visible={isYearsVisible}>{() => null}</UpperLayer>
                 </PortalManager>
             </View>
@@ -208,6 +286,14 @@ const styles = StyleSheet.create({
     day: {
         paddingVertical: UIConstant.calendar.dayCellPadding,
         aspectRatio: 1,
+        borderRadius: UIConstant.calendar.dayCellPaddingBorderRadius,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: UIConstant.contentOffset,
+    },
+    month: {
+        paddingVertical: UIConstant.calendar.dayCellPadding,
+        // aspectRatio: 1,
         borderRadius: UIConstant.calendar.dayCellPaddingBorderRadius,
         alignItems: 'center',
         justifyContent: 'center',

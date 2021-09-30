@@ -85,20 +85,23 @@ const TimeInput = React.forwardRef<TextInput, TimeInputProps>(function TimeInput
         };
     });
 
-    const onChangeTextTime = React.useCallback((text: string) => {
-        const newValue = text.length > 4 ? text.slice(text.length - 4) : text;
+    const onChangeTextTime = React.useCallback(
+        (text: string) => {
+            const newValue = text.length > 4 ? text.slice(text.length - 4) : text;
 
-        const newHours = `${newValue[0] || ''}${newValue[1] || ''}`;
-        const newMinutes = `${newValue[2] || ''}${newValue[3] || ''}`;
+            const newHours = `${newValue[0] || ''}${newValue[1] || ''}`;
+            const newMinutes = `${newValue[2] || ''}${newValue[3] || ''}`;
 
-        hours.value = newHours;
-        minutes.value = newMinutes;
-        inputRef.current?.setNativeProps({
-            text: newValue,
-        });
+            hours.value = newHours;
+            minutes.value = newMinutes;
+            inputRef.current?.setNativeProps({
+                text: newValue,
+            });
 
-        onChange(Number(newHours), Number(newMinutes));
-    }, []);
+            onChange(Number(newHours), Number(newMinutes));
+        },
+        [hours, minutes, onChange],
+    );
 
     return (
         <TouchableWithoutFeedback onPress={() => inputRef.current?.focus()}>

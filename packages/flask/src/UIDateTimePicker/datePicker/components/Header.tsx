@@ -2,9 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { makeStyles, TypographyVariants, UILabel, useTheme } from '@tonlabs/uikit.hydrogen';
 
-import { CalendarContext } from '../calendarContext';
 import { ArrowsButtons, MonthYearButton } from './DateControls';
-import { PickerActionName } from '../../../types';
 
 export function Header({
     title,
