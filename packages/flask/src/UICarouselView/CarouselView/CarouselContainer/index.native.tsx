@@ -19,13 +19,7 @@ const returnPages = (
     );
 
     return pages.map((page, index) => {
-        const onPressPage = () => {
-            if (Platform.OS === 'android') {
-                nextPage(index);
-            } else {
-                onPress(index);
-            }
-        };
+        const onPressPage = Platform.select({ android: nextPage, default: onPress });
         const ChildView = page.props.component;
         const key = `UICarouselPage_${index}`;
 
