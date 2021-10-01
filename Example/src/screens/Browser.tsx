@@ -672,16 +672,16 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                     const now = new Date();
                                     return new Date(
                                         now.getFullYear(),
-                                        now.getMonth() - 2,
-                                        now.getDate(),
+                                        now.getMonth(),
+                                        now.getDate() - 2,
                                     );
                                 })(),
                                 maxDate: (() => {
                                     const now = new Date();
                                     return new Date(
                                         now.getFullYear(),
-                                        now.getMonth() + 2,
-                                        now.getDate(),
+                                        now.getMonth(),
+                                        now.getDate() + 2,
                                     );
                                 })(),
                                 onSelect: (externalState: any) => {

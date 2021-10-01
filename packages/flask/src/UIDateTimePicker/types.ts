@@ -46,19 +46,44 @@ export type UIDateTimePickerProps = {
 
 // eslint-disable-next-line no-shadow
 export enum DateTimeActionType {
-    Set = 'set',
-    ToggleTime = 'toggleTime',
+    SetDay = 'setDay',
+    SetMonth = 'setMonth',
+    SetYear = 'setYear',
+    SetTime = 'setTime',
+    // ToggleTime = 'toggleTime',
     ToggleMonths = 'ToggleMonths',
     ToggleYears = 'ToggleYears',
 }
 
 export type DateTimeState = {
-    selectedDate: Dayjs | null;
+    selectedDate: Dayjs;
+    selectedTime: Dayjs | null;
+    selectedMonth: number;
+    selectedYear: number;
     isMonthsVisible: boolean;
     isYearsVisible: boolean;
 };
 
-export type DateTimeAction = {
-    type: DateTimeActionType;
-    payload?: Partial<DateTimeState>;
-};
+export type DateTimeAction =
+    | {
+          type: DateTimeActionType.ToggleMonths;
+      }
+    | {
+          type: DateTimeActionType.ToggleYears;
+      }
+    | {
+          type: DateTimeActionType.SetMonth;
+          selectedMonth: number;
+      }
+    | {
+          type: DateTimeActionType.SetYear;
+          selectedYear: number;
+      }
+    | {
+          type: DateTimeActionType.SetDay;
+          selectedDate: Dayjs;
+      }
+    | {
+          type: DateTimeActionType.SetTime;
+          selectedTime: Dayjs | null;
+      };

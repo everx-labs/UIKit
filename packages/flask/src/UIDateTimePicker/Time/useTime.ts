@@ -4,17 +4,18 @@ import dayjs, { Dayjs } from 'dayjs';
 import { DateTimeActionType } from '../types';
 import { useDateTimeState } from '../useDateTimeState';
 
-export function validateTime(time: Dayjs | null, min?: Date, max?: Date) {
+export function validateTime(time: Dayjs | null, date: Dayjs, min?: Date, max?: Date) {
     if (time == null) {
         return false;
     }
+    const d = date.hour(time.hour()).minute(time.minute());
     if (min == null && max == null) {
         return true;
     }
-    if (min != null && time.isBefore(min)) {
+    if (min != null && d.isBefore(min)) {
         return false;
     }
-    if (max != null && time.isAfter(max)) {
+    if (max != null && d.isAfter(max)) {
         return false;
     }
     return true;
@@ -22,7 +23,7 @@ export function validateTime(time: Dayjs | null, min?: Date, max?: Date) {
 
 export function useTime() {
     const {
-        state: { selectedDate },
+        state: { selectedTime },
         dispatch,
         min,
         max,
@@ -30,39 +31,37 @@ export function useTime() {
         isTimeValid,
     } = useDateTimeState();
 
-    const [isAM, setAM] = React.useState(dayjs(selectedDate ?? dayjs()).format('a') === 'am');
+    const [isAM, setAM] = React.useState(dayjs(selectedTime ?? dayjs()).format('a') === 'am');
 
     const toggleAmPm = React.useCallback(() => {
         setAM(!isAM);
     }, [isAM]);
 
-    return {
-        initialTime: (selectedDate ?? dayjs()).format(isAmPmTime ? 'HH:mm A' : 'HH:mm').slice(0, 5),
-        haveValidation: min != null || max != null,
-        isValid: isTimeValid,
-        set: (hours: number, minutes: number) => {
-            // console.log(hours, minutes);
+    const set = React.useCallback(
+        (hours: number, minutes: number) => {
             if (isNaN(hours) || isNaN(minutes) || hours > (isAM ? 12 : 23) || minutes > 59) {
                 dispatch({
-                    type: DateTimeActionType.Set,
-                    payload: {
-                        selectedDate: null,
-                    },
+                    type: DateTimeActionType.SetTime,
+                    selectedTime: null,
                 });
                 return;
             }
 
-            // const hoursNormilized = isAmPmTime ? convertHourTo24(hours, isAM) : hours;
-
             const newTime = dayjs().hour(hours).minute(minutes).second(0).millisecond(0);
 
             dispatch({
-                type: DateTimeActionType.Set,
-                payload: {
-                    selectedDate: newTime,
-                },
+                type: DateTimeActionType.SetTime,
+                selectedTime: newTime,
             });
         },
+        [dispatch, isAM],
+    );
+
+    return {
+        initialTime: (selectedTime ?? dayjs()).format(isAmPmTime ? 'HH:mm A' : 'HH:mm').slice(0, 5),
+        haveValidation: min != null || max != null,
+        isValid: isTimeValid,
+        set,
         isAmPmTime,
         isAM,
         toggleAmPm,

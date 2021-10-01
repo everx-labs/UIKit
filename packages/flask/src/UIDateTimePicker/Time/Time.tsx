@@ -167,20 +167,9 @@ const TimeInput = React.forwardRef<TextInput, TimeInputProps>(function TimeInput
 export function Time() {
     const { initialTime, isValid, haveValidation, isAmPmTime, isAM, toggleAmPm, set } = useTime();
 
-    // TODO: what to do with it?
-    // React.useEffect(() => {
-    //     const isValidTime = utils.validateTime(timeInputHolderRef.current, isAmPmTime, isAM);
-    //     setTimeValidated(isValidTime);
-    //     if (isValidTime) {
-    //         parseTime(timeInputHolderRef.current);
-    //     }
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [isAM]);
-
     const inputRef = React.useRef<TextInput>(null);
 
     React.useEffect(() => {
-        // setIsTimeValid(checkMinMaxScope(time));
         /**
          * Only web: fast autofocus on load affects the height of the parent element,
          * so we have to use a timeout to wait for the parent animation

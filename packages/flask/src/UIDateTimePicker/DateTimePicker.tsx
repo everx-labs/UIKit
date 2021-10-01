@@ -21,8 +21,37 @@ import { UIConstant } from '../constants';
 
 const reducer = (state: DateTimeState, action: DateTimeAction): DateTimeState => {
     switch (action.type) {
-        case DateTimeActionType.Set:
-            return { ...state, ...action.payload };
+        case DateTimeActionType.SetDay:
+            return {
+                ...state,
+                selectedDate: state.selectedDate
+                    .year(action.selectedDate.year())
+                    .month(action.selectedDate.month())
+                    .date(action.selectedDate.date()),
+                selectedMonth:
+                    state.selectedMonth !== action.selectedDate.month()
+                        ? action.selectedDate.month()
+                        : state.selectedMonth,
+                selectedYear:
+                    state.selectedYear !== action.selectedDate.year()
+                        ? action.selectedDate.year()
+                        : state.selectedYear,
+            };
+        case DateTimeActionType.SetMonth:
+            return {
+                ...state,
+                selectedMonth: action.selectedMonth,
+            };
+        case DateTimeActionType.SetYear:
+            return {
+                ...state,
+                selectedYear: action.selectedYear,
+            };
+        case DateTimeActionType.SetTime:
+            return {
+                ...state,
+                selectedTime: action.selectedTime,
+            };
         case DateTimeActionType.ToggleMonths:
             return { ...state, isMonthsVisible: !state.isMonthsVisible };
         case DateTimeActionType.ToggleYears:
@@ -82,13 +111,15 @@ function DatePickerContent(props: UIDateTimePickerProps) {
     }, [defaultDate, max, min]);
 
     const [state, dispatch] = useReducer(reducer, {
-        selectedDate: initialDate,
         isMonthsVisible: false,
         isYearsVisible: false,
+        selectedDate: initialDate.hour(0).minute(0).second(0).millisecond(0),
+        selectedTime: initialDate.month(0).day(0),
+        selectedMonth: initialDate.month(),
+        selectedYear: initialDate.year(),
     });
 
-    const isTimeValid = validateTime(state.selectedDate, min, max);
-    console.log(state.selectedDate, isTimeValid, min, max);
+    const isTimeValid = validateTime(state.selectedTime, state.selectedDate, min, max);
     const contextValue = {
         mode,
         min,
@@ -113,8 +144,13 @@ function DatePickerContent(props: UIDateTimePickerProps) {
                     {
                         label: uiLocalized.Done,
                         onPress: () => {
-                            if (props.onValueRetrieved && state.selectedDate) {
-                                props.onValueRetrieved(dayjs(state.selectedDate).toDate());
+                            if (props.onValueRetrieved && state.selectedTime) {
+                                props.onValueRetrieved(
+                                    state.selectedDate
+                                        .hour(state.selectedTime.hour())
+                                        .minute(state.selectedTime.minute())
+                                        .toDate(),
+                                );
                             }
                         },
                         disabled: !isTimeValid,

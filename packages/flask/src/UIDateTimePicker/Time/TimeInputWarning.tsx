@@ -68,6 +68,7 @@ export function TimeInputWarning({ isValidTime = true }: { isValidTime: boolean 
                 />
             </View>
             <UILabel style={styles.label} role={TypographyVariants.ParagraphNote} color={color}>
+                {/* TODO: localize me! */}
                 {`Choose a time between ${minTime} and ${maxTime}`}
             </UILabel>
         </View>

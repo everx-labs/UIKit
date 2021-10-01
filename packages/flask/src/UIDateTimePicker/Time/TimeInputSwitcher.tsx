@@ -68,9 +68,11 @@ export function TimeInputSwitcher({
             <Animated.View style={styles.container}>
                 <Animated.View style={[styles.button, animatedButton]} />
                 <View style={[styles.labelContainer]}>
+                    {/* TODO: localize me! */}
                     <UILabel role={TypographyVariants.Action}>AM</UILabel>
                 </View>
                 <View style={[styles.labelContainer]}>
+                    {/* TODO: localize me! */}
                     <UILabel role={TypographyVariants.Action}>PM</UILabel>
                 </View>
             </Animated.View>
