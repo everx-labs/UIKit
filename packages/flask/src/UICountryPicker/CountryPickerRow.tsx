@@ -6,7 +6,6 @@ import {
     makeStyles,
     Theme,
     TouchableOpacity,
-    TypographyVariants,
     UILabel,
     useTheme,
 } from '@tonlabs/uikit.hydrogen';
