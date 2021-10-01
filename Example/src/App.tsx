@@ -83,9 +83,8 @@ const Main = ({ navigation }: { navigation: any }) => {
                 <UILargeTitleHeader
                     title="Main"
                     headerRight={() => (
-                        <View >
+                        <View testID="theme_switcher">
                             <UISwitcher
-                                testID="theme_switcher"
                                 variant={UISwitcherVariant.Toggle}
                                 active={themeSwitcher.isDarkTheme}
                                 onPress={() => themeSwitcher.toggleTheme()}
