@@ -83,12 +83,14 @@ const Main = ({ navigation }: { navigation: any }) => {
                 <UILargeTitleHeader
                     title="Main"
                     headerRight={() => (
-                        <UISwitcher
-                            variant={UISwitcherVariant.Toggle}
-                            testID="theme_switcher"
-                            active={themeSwitcher.isDarkTheme}
-                            onPress={() => themeSwitcher.toggleTheme()}
-                        />
+                        <View testID="theme_switcher">
+                            <UISwitcher
+                                variant={UISwitcherVariant.Toggle}
+                                active={themeSwitcher.isDarkTheme}
+                                onPress={() => themeSwitcher.toggleTheme()}
+                            />
+                        </View>
+                        
                     )}
                 >
                     <View style={{ paddingHorizontal: 10 }}>
