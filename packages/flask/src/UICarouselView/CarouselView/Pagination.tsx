@@ -6,9 +6,7 @@ import { UIConstant as CoreConstants } from '@tonlabs/uikit.core';
 import {
     UIBackgroundView,
     UIBackgroundViewColors,
-    Theme,
     TouchableOpacity,
-    useTheme,
 } from '@tonlabs/uikit.hydrogen';
 import { UIConstant } from '../../constants';
 import { usePaginationStyle } from './animations';
@@ -49,8 +47,6 @@ type PaginationProps = {
 
 export const Pagination: React.FC<PaginationProps> = React.memo(
     ({ pages, setPage, activeIndex }: PaginationProps) => {
-        const theme = useTheme();
-
         const onHandlePress = React.useCallback(
             (index: number) => {
                 setPage(index);
@@ -67,7 +63,6 @@ export const Pagination: React.FC<PaginationProps> = React.memo(
                             key={`Circles_${index}`}
                             active={index === activeIndex}
                             onPress={() => onHandlePress(index)}
-                            theme={theme}
                         />
                     );
                 })}

@@ -5,9 +5,7 @@ import Animated, {
     interpolate,
     useAnimatedStyle,
     useSharedValue,
-    interpolateColor,
 } from 'react-native-reanimated';
-import { Theme, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
 
 import { PaginationState } from '../types';
 
