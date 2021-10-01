@@ -708,8 +708,26 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                 key: `${Date.now()}-time-picker`,
                                 status: MessageStatus.Received,
                                 type: InteractiveMessageType.Time,
-                                minTime: new Date(0, 0, 0, 12, 15),
-                                maxTime: new Date(0, 0, 0, 13, 0),
+                                minTime: (() => {
+                                    const now = new Date();
+                                    return new Date(
+                                        now.getFullYear(),
+                                        now.getMonth(),
+                                        now.getDate(),
+                                        12,
+                                        15,
+                                    );
+                                })(),
+                                maxTime: (() => {
+                                    const now = new Date();
+                                    return new Date(
+                                        now.getFullYear(),
+                                        now.getMonth(),
+                                        now.getDate(),
+                                        13,
+                                        0,
+                                    );
+                                })(),
                                 // isAmPmTime: false,
                                 interval: 5,
                                 onSelect: (externalState: any) => {

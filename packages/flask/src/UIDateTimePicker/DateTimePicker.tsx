@@ -17,6 +17,7 @@ import {
 } from './types';
 import { Time } from './Time/Time';
 import { validateTime } from './Time/useTime';
+import { UIConstant } from '../constants';
 
 const reducer = (state: DateTimeState, action: DateTimeAction): DateTimeState => {
     switch (action.type) {
@@ -46,6 +47,7 @@ function Content() {
             return (
                 <>
                     <Calendar />
+                    <UIBackgroundView color={ColorVariants.LineTertiary} style={styles.divider} />
                     <Time />
                 </>
             );
@@ -65,15 +67,28 @@ function Content() {
 
 function DatePickerContent(props: UIDateTimePickerProps) {
     const { defaultDate, isAmPmTime, mode, onClose, min, max } = props;
-    console.log(min, max);
-    const selectedDate = defaultDate != null ? dayjs(defaultDate) : dayjs();
+
+    const initialDate = React.useMemo(() => {
+        const date = dayjs(defaultDate);
+
+        if (min != null && date.isBefore(min)) {
+            return dayjs(min);
+        }
+        if (max != null && date.isAfter(max)) {
+            return dayjs(max);
+        }
+
+        return date;
+    }, [defaultDate, max, min]);
+
     const [state, dispatch] = useReducer(reducer, {
-        selectedDate,
+        selectedDate: initialDate,
         isMonthsVisible: false,
         isYearsVisible: false,
-        isTimeValid: validateTime(selectedDate, min, max),
     });
 
+    const isTimeValid = validateTime(state.selectedDate, min, max);
+    console.log(state.selectedDate, isTimeValid, min, max);
     const contextValue = {
         mode,
         min,
@@ -81,6 +96,7 @@ function DatePickerContent(props: UIDateTimePickerProps) {
         isAmPmTime: isAmPmTime ?? false,
         state,
         dispatch,
+        isTimeValid,
     };
 
     return (
@@ -97,11 +113,11 @@ function DatePickerContent(props: UIDateTimePickerProps) {
                     {
                         label: uiLocalized.Done,
                         onPress: () => {
-                            console.log(state.selectedDate);
-                            if (props.onValueRetrieved) {
+                            if (props.onValueRetrieved && state.selectedDate) {
                                 props.onValueRetrieved(dayjs(state.selectedDate).toDate());
                             }
                         },
+                        disabled: !isTimeValid,
                     },
                 ]}
             />
@@ -133,5 +149,10 @@ export function DatePicker(props: UIDateTimePickerProps) {
 const styles = StyleSheet.create({
     underline: {
         height: 1,
+    },
+    divider: {
+        height: 1,
+        marginHorizontal: UIConstant.contentOffset,
+        marginTop: UIConstant.contentOffset,
     },
 });

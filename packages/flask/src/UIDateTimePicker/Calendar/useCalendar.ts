@@ -92,29 +92,28 @@ export function useDaysCalendar() {
         min,
         max,
     } = useDateTimeState();
+    // TODO: it should be last valid rather!!!
+    const date = React.useMemo(() => selectedDate ?? dayjs(), [selectedDate]);
 
     const dayNamesShort = React.useMemo(
         () => Object.values(uiLocalized.DateTimePicker.dayNamesShort),
         [],
     );
 
-    const [currentYear, currentMonth] = React.useMemo(
-        () => [selectedDate.year(), selectedDate.month()],
-        [selectedDate],
-    );
+    const [currentYear, currentMonth] = React.useMemo(() => [date.year(), date.month()], [date]);
 
     const { firstDayShift, daysMatrix } = React.useMemo(() => {
-        return getDaysMatrix(selectedDate, dayNamesShort, min, max);
+        return getDaysMatrix(date, dayNamesShort, min, max);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentYear, currentMonth, dayNamesShort, min, max]);
 
     const [activeDayRow, activeDayColumn] = React.useMemo(() => {
-        const day = selectedDate.date() + firstDayShift - 1;
+        const day = date.date() + firstDayShift - 1;
         const dayRow = Math.trunc(day / dayNamesShort.length);
         const dayColumn = day - dayRow * dayNamesShort.length;
 
         return [dayRow + 1, dayColumn];
-    }, [selectedDate, firstDayShift, dayNamesShort.length]);
+    }, [date, firstDayShift, dayNamesShort.length]);
 
     const onSelect = React.useCallback(
         (column: number, row: number) => {
@@ -230,6 +229,8 @@ export function useMonths() {
         state: { selectedDate },
         dispatch,
     } = useDateTimeState();
+    // TODO: it should be last valid rather!!!
+    const date = React.useMemo(() => selectedDate ?? dayjs(), [selectedDate]);
 
     const monthsMatrix = React.useMemo(
         () =>
@@ -254,8 +255,8 @@ export function useMonths() {
     );
 
     const currentMonth = React.useMemo(() => {
-        return selectedDate.month();
-    }, [selectedDate]);
+        return date.month();
+    }, [date]);
 
     const [currentRow, currentColumn] = React.useMemo(() => {
         const row = Math.trunc(currentMonth / 3);
@@ -266,7 +267,7 @@ export function useMonths() {
 
     const onSelect = React.useCallback(
         (month: number) => {
-            const newDate = dateWithConstraints(selectedDate.month(month));
+            const newDate = dateWithConstraints(date.month(month));
             dispatch({
                 type: DateTimeActionType.ToggleMonths,
                 payload: {
@@ -280,7 +281,7 @@ export function useMonths() {
                 },
             });
         },
-        [dispatch, selectedDate],
+        [dispatch, date],
     );
 
     return {
@@ -300,6 +301,8 @@ export function useYears() {
         state: { selectedDate },
         dispatch,
     } = useDateTimeState();
+    // TODO: it should be last valid rather!!!
+    const date = React.useMemo(() => selectedDate ?? dayjs(), [selectedDate]);
 
     // TODO: disabled!
     const yearsMatrix = React.useMemo(() => {
@@ -317,15 +320,15 @@ export function useYears() {
     }, []);
 
     const [selectedYear, selectedRow] = React.useMemo(() => {
-        const y = selectedDate.year();
+        const y = date.year();
         const row = Math.trunc((y - EARLIEST_YEAR) / YEARS_IN_ROW);
 
         return [y, row];
-    }, [selectedDate]);
+    }, [date]);
 
     const onSelect = React.useCallback(
         (year: number) => {
-            const newDate = dateWithConstraints(selectedDate.year(year));
+            const newDate = dateWithConstraints(date.year(year));
             dispatch({
                 type: DateTimeActionType.ToggleYears,
                 payload: {
@@ -339,7 +342,7 @@ export function useYears() {
                 },
             });
         },
-        [selectedDate, dispatch],
+        [date, dispatch],
     );
 
     return {

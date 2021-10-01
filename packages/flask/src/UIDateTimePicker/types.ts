@@ -53,10 +53,9 @@ export enum DateTimeActionType {
 }
 
 export type DateTimeState = {
-    selectedDate: Dayjs;
+    selectedDate: Dayjs | null;
     isMonthsVisible: boolean;
     isYearsVisible: boolean;
-    isTimeValid: boolean;
 };
 
 export type DateTimeAction = {

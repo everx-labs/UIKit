@@ -5,6 +5,7 @@ import type { UIDateTimePickerMode, DateTimeState, DateTimeAction } from './type
 type DateTimeStateContext = {
     mode: UIDateTimePickerMode;
     state: DateTimeState;
+    isTimeValid: boolean;
     dispatch: React.Dispatch<DateTimeAction>;
     min?: Date;
     max?: Date;
