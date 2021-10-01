@@ -1,11 +1,12 @@
 import React from 'react';
 import throttle from 'lodash/throttle';
-import { View, StyleSheet, Pressable } from 'react-native';
+import { View, StyleSheet, Pressable, Platform } from 'react-native';
 import Animated from 'react-native-reanimated';
 import PagerView from 'react-native-pager-view';
 
 import type { UICarouselViewContainerProps, UICarouselViewPageProps } from '../../types';
 import { usePageStyle } from '../animations';
+import { Pagination } from '../Pagination';
 
 const returnPages = (
     pages: React.ReactElement<UICarouselViewPageProps>[],
@@ -13,12 +14,18 @@ const returnPages = (
     nextPage: (index: number) => void,
 ) => {
     const onPress = React.useCallback(
-        throttle((index: number) => nextPage(index), 250, { leading: false, trailing: true }),
+        throttle((index: number) => nextPage(index), 1000, { leading: true, trailing: true }),
         [],
     );
 
     return pages.map((page, index) => {
-        const onPressPage = () => onPress(index);
+        const onPressPage = () => {
+            if (Platform.OS === 'android') {
+                nextPage(index);
+            } else {
+                onPress(index);
+            }
+        };
         const ChildView = page.props.component;
         const key = `UICarouselPage_${index}`;
 
@@ -47,10 +54,12 @@ export function CarouselViewContainer({
     testID,
     shouldPageMoveOnPress = true,
     onPageIndexChange,
+    showPagination,
 }: Props) {
     const pagerRef = React.useRef<PagerView>(null);
     const [offset, setOffset] = React.useState(0);
     const pagerStyle = usePageStyle(offset);
+    const [currentIndex, setCurrentIndex] = React.useState(initialIndex);
 
     const setPage = React.useCallback((index: number) => {
         requestAnimationFrame(() => {
@@ -69,6 +78,7 @@ export function CarouselViewContainer({
         ({ nativeEvent }: any) => {
             pagerRef.current?.setScrollEnabled(true);
             onPageIndexChange && onPageIndexChange(nativeEvent.position);
+            setCurrentIndex(nativeEvent.position);
         },
         [onPageIndexChange],
     );
@@ -83,6 +93,14 @@ export function CarouselViewContainer({
         },
         [setPage, pages],
     );
+
+    const renderPagination = React.useCallback(() => {
+        return (
+            showPagination && (
+                <Pagination pages={pages} activeIndex={currentIndex} setPage={setPage} />
+            )
+        );
+    }, [currentIndex, pages, setPage, showPagination]);
 
     React.useEffect(() => {
         setPage(initialIndex);
@@ -99,6 +117,7 @@ export function CarouselViewContainer({
             >
                 {returnPages(pages, shouldPageMoveOnPress, nextPage)}
             </AnimatedPagerView>
+            {renderPagination()}
         </View>
     );
 }

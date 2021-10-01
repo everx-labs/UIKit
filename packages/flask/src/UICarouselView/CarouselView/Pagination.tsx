@@ -16,11 +16,10 @@ import { usePaginationStyle } from './animations';
 type CircleProps = {
     active: boolean;
     onPress: (event: any) => void;
-    theme: Theme;
 };
 
-function Circle({ active, onPress, theme }: CircleProps) {
-    const { animatedStyles } = usePaginationStyle(active, theme);
+function Circle({ active, onPress }: CircleProps) {
+    const { animatedStyles } = usePaginationStyle(active);
 
     return (
         <Animated.View style={[animatedStyles, styles.circle]}>

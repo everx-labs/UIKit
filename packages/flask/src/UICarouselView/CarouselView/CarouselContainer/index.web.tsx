@@ -9,6 +9,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import type { UICarouselViewContainerProps, UICarouselViewPageProps } from '../../types';
 import { duration } from '../animations';
+import { Pagination } from '../Pagination';
 
 type PageProps = {
     page: React.ReactElement<UICarouselViewPageProps>;
@@ -34,10 +35,16 @@ const PageView: React.FC<PageProps> = React.memo(
             return { opacity, transform };
         });
 
-        const focused = React.useMemo(() => index === currentIndex.current, [currentIndex]);
+        const focused = React.useMemo(() => index === currentIndex.current, [currentIndex, index]);
 
         const pageWidthStyle = React.useMemo(() => {
-            return width ? { width } : focused ? { ...StyleSheet.absoluteFillObject } : null;
+            if (width) {
+                return { width };
+            }
+            if (focused) {
+                return { ...StyleSheet.absoluteFillObject };
+            }
+            return null;
         }, [width, focused]);
 
         return (
@@ -64,6 +71,7 @@ export function CarouselViewContainer({
     testID,
     shouldPageMoveOnPress = true,
     onPageIndexChange,
+    showPagination,
 }: Props) {
     const [layout, setLayout] = React.useState({ width: 0, height: 0 });
 
@@ -133,6 +141,18 @@ export function CarouselViewContainer({
         [],
     );
 
+    const renderPagination = React.useCallback(() => {
+        return (
+            showPagination && (
+                <Pagination
+                    pages={pages}
+                    activeIndex={currentIndexRef.current}
+                    setPage={jumpToIndex}
+                />
+            )
+        );
+    }, [jumpToIndex, pages, showPagination]);
+
     return (
         <View testID={testID} onLayout={handleLayout} style={[styles.pager]}>
             <Animated.View
@@ -156,6 +176,7 @@ export function CarouselViewContainer({
                     );
                 })}
             </Animated.View>
+            {renderPagination()}
         </View>
     );
 }

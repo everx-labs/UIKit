@@ -20,10 +20,10 @@ export const duration = 400;
  * Config of any spring animations in component
  */
 const springConfig: Animated.WithSpringConfig = {
-    damping: 100,
-    stiffness: 500,
-    mass: 3,
-    overshootClamping: false,
+    damping: 10,
+    stiffness: 100,
+    mass: 1,
+    overshootClamping: true,
 };
 
 /**
@@ -59,7 +59,7 @@ export const usePageStyle = (initialOffset: any) => {
 /**
  * Pagination animations
  */
-export const usePaginationStyle = (active: boolean, theme: Theme) => {
+export const usePaginationStyle = (active: boolean) => {
     const iconSwitcherState = useSharedValue<PaginationState>(PaginationState.NotActive);
 
     React.useEffect(() => {
