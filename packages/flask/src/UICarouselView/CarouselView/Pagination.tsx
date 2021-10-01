@@ -3,23 +3,37 @@ import { View, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { UIConstant as CoreConstants } from '@tonlabs/uikit.core';
-import { Theme, TouchableOpacity, useTheme } from '@tonlabs/uikit.hydrogen';
+import {
+    UIBackgroundView,
+    UIBackgroundViewColors,
+    Theme,
+    TouchableOpacity,
+    useTheme,
+} from '@tonlabs/uikit.hydrogen';
 import { UIConstant } from '../../constants';
 import { usePaginationStyle } from './animations';
 
 type CircleProps = {
     active: boolean;
     onPress: (event: any) => void;
-    theme: Theme;
 };
 
-function Circle({ active, onPress, theme }: CircleProps) {
-    const { animatedStyles } = usePaginationStyle(active, theme);
+function Circle({ active, onPress }: CircleProps) {
+    const { animatedStyles } = usePaginationStyle(active);
 
     return (
-        <TouchableOpacity hitSlop={UIConstant.carousel.circleHitSlop} onPress={onPress}>
-            <Animated.View style={[styles.circle, animatedStyles]} />
-        </TouchableOpacity>
+        <Animated.View style={[animatedStyles, styles.circle]}>
+            <TouchableOpacity hitSlop={UIConstant.carousel.circleHitSlop} onPress={onPress}>
+                <UIBackgroundView
+                    color={
+                        active
+                            ? UIBackgroundViewColors.BackgroundAccent
+                            : UIBackgroundViewColors.BackgroundNeutral
+                    }
+                    style={styles.circle}
+                />
+            </TouchableOpacity>
+        </Animated.View>
     );
 }
 
