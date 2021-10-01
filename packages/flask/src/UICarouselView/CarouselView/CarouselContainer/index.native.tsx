@@ -117,7 +117,9 @@ export function CarouselViewContainer({
             >
                 {returnPages(pages, shouldPageMoveOnPress, nextPage)}
             </AnimatedPagerView>
-            {renderPagination()}
+            {showPagination && (
+                 <Pagination pages={pages} activeIndex={currentIndex} setPage={setPage} />
+             )}
         </View>
     );
 }
