@@ -345,6 +345,11 @@ const styles = StyleSheet.create({
         elevation: 0,
         justifyContent: 'center',
         bottom: UIConstant.pager.tabBarOffset,
+        /**
+         * The ripple effect on android fills all the available space.
+         * This is visible if the page has a transparent background.
+         * borderWidth: 0 - brings some kind of magic in the form of limiting the effect to invisible borders
+         */
         borderWidth: 0,
     },
     paddedTabBar: {
