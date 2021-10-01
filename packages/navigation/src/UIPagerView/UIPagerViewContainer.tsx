@@ -347,8 +347,10 @@ const styles = StyleSheet.create({
         bottom: UIConstant.pager.tabBarOffset,
         /**
          * The ripple effect on android fills all the available space.
-         * This is visible if the page has a transparent background.
-         * borderWidth: 0 - brings some kind of magic in the form of limiting the effect to invisible borders
+         * But there was a problem when ripple effect went outside of borders,
+         * it is visible if the page has a transparent background.
+         *
+         * borderWidth: 0 - brings some kind of magic in the form of limiting the effect to visible borders
          */
         borderWidth: 0,
     },
