@@ -141,18 +141,6 @@ export function CarouselViewContainer({
         [],
     );
 
-    const renderPagination = React.useCallback(() => {
-        return (
-            showPagination && (
-                <Pagination
-                    pages={pages}
-                    activeIndex={currentIndexRef.current}
-                    setPage={jumpToIndex}
-                />
-            )
-        );
-    }, [jumpToIndex, pages, showPagination]);
-
     return (
         <View testID={testID} onLayout={handleLayout} style={[styles.pager]}>
             <Animated.View
@@ -177,12 +165,12 @@ export function CarouselViewContainer({
                 })}
             </Animated.View>
             {showPagination && (
-                 <Pagination
-                     pages={pages}
-                     activeIndex={currentIndexRef.current}
-                     setPage={jumpToIndex}
-                 />
-             )}
+                <Pagination
+                    pages={pages}
+                    activeIndex={currentIndexRef.current}
+                    setPage={jumpToIndex}
+                />
+            )}
         </View>
     );
 }

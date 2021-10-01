@@ -19,7 +19,10 @@ const returnPages = (
     );
 
     return pages.map((page, index) => {
-        const onPressPage = Platform.select({ android: nextPage, default: onPress });
+        const onPressPage = Platform.select({
+            ios: () => onPress(index),
+            default: () => nextPage(index),
+        });
         const ChildView = page.props.component;
         const key = `UICarouselPage_${index}`;
 
@@ -88,14 +91,6 @@ export function CarouselViewContainer({
         [setPage, pages],
     );
 
-    const renderPagination = React.useCallback(() => {
-        return (
-            showPagination && (
-                <Pagination pages={pages} activeIndex={currentIndex} setPage={setPage} />
-            )
-        );
-    }, [currentIndex, pages, setPage, showPagination]);
-
     React.useEffect(() => {
         setPage(initialIndex);
     }, [setPage, initialIndex]);
@@ -112,8 +107,8 @@ export function CarouselViewContainer({
                 {returnPages(pages, shouldPageMoveOnPress, nextPage)}
             </AnimatedPagerView>
             {showPagination && (
-                 <Pagination pages={pages} activeIndex={currentIndex} setPage={setPage} />
-             )}
+                <Pagination pages={pages} activeIndex={currentIndex} setPage={setPage} />
+            )}
         </View>
     );
 }
