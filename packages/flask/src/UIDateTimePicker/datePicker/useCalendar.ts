@@ -225,7 +225,7 @@ type MonthCell = {
 
 export type MonthCells = MonthCell;
 
-export function useMonthsCalendar() {
+export function useMonths() {
     const {
         state: { selectedDate },
         dispatch,
@@ -267,13 +267,13 @@ export function useMonthsCalendar() {
         (month: number) => {
             const newDate = dateWithConstraints(selectedDate.month(month));
             dispatch({
-                type: PickerActionName.Set,
+                type: PickerActionName.ToggleMonths,
                 payload: {
                     selectedDate: newDate,
                 },
             });
             dispatch({
-                type: PickerActionName.ToggleMonths,
+                type: PickerActionName.Set,
                 payload: {
                     selectedDate: newDate,
                 },
@@ -286,6 +286,65 @@ export function useMonthsCalendar() {
         monthsMatrix,
         currentRow,
         currentColumn,
+        onSelect,
+    };
+}
+
+const EARLIEST_YEAR = 1900;
+const YEARS_IN_ROW = 3;
+const YEARS_COUNT = 3 * 60;
+
+export function useYears() {
+    const {
+        state: { selectedDate },
+        dispatch,
+    } = React.useContext(CalendarContext);
+
+    // TODO: disabled!
+    const yearsMatrix = React.useMemo(() => {
+        return new Array(YEARS_COUNT).fill(null).reduce<number[][]>((acc, _, i) => {
+            const row = Math.trunc(i / YEARS_IN_ROW);
+
+            if (acc[row] == null) {
+                acc[row] = [];
+            }
+
+            acc[row].push(EARLIEST_YEAR + i);
+
+            return acc;
+        }, []);
+    }, []);
+
+    const [selectedYear, selectedRow] = React.useMemo(() => {
+        const y = selectedDate.year();
+        const row = Math.trunc((y - EARLIEST_YEAR) / YEARS_IN_ROW);
+
+        return [y, row];
+    }, [selectedDate]);
+
+    const onSelect = React.useCallback(
+        (year: number) => {
+            const newDate = dateWithConstraints(selectedDate.year(year));
+            dispatch({
+                type: PickerActionName.ToggleYears,
+                payload: {
+                    selectedDate: newDate,
+                },
+            });
+            dispatch({
+                type: PickerActionName.Set,
+                payload: {
+                    selectedDate: newDate,
+                },
+            });
+        },
+        [selectedDate, dispatch],
+    );
+
+    return {
+        selectedYear,
+        selectedRow,
+        yearsMatrix,
         onSelect,
     };
 }

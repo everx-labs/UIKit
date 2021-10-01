@@ -8,7 +8,7 @@ import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import { Calendar } from './components/Calendar';
 import { SelectMonth } from './components/SelectMonth';
-import { CalendarContext, useCalendar } from './calendarContext';
+import { CalendarContext } from './calendarContext';
 import { Utils } from '../utils';
 import {
     PickerAction,
@@ -26,9 +26,9 @@ const reducer = (state: PickerStateType, action: PickerAction): PickerStateType 
         case PickerActionName.Set:
             return { ...state, ...action.payload };
         case PickerActionName.ToggleMonths:
-            return { ...state, isMonthsVisible: !state.isMonthsVisible, isYearsVisible: false };
+            return { ...state, isMonthsVisible: !state.isMonthsVisible };
         case PickerActionName.ToggleYears:
-            return { ...state, isYearsVisible: !state.isYearsVisible, isMonthsVisible: false };
+            return { ...state, isYearsVisible: !state.isYearsVisible };
         default:
             return state;
     }

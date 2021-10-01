@@ -5,6 +5,7 @@ import Animated, {
     runOnJS,
     useAnimatedStyle,
     useSharedValue,
+    withSpring,
     withTiming,
 } from 'react-native-reanimated';
 
@@ -17,19 +18,19 @@ import {
     TouchableOpacity,
     PortalManager,
     Portal,
-    makeStyles,
-    Theme,
 } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
+import { FlatList } from '@tonlabs/uikit.navigation';
 
 import { Header } from './Header';
 
 import {
-    useDaysCalendar,
     DayCells,
-    useMonthsCalendar,
-    MonthCells,
+    useDaysCalendar,
     useAditionalCalendars,
+    MonthCells,
+    useMonths,
+    useYears,
 } from '../useCalendar';
 import { UIConstant } from '../../../constants';
 
@@ -113,6 +114,10 @@ function UpperLayer({ visible, children }: { visible: boolean; children: () => R
     const opacity = useSharedValue(0);
 
     React.useEffect(() => {
+        if (visible === isVisible) {
+            return;
+        }
+
         if (!visible) {
             opacity.value = withTiming(
                 0,
@@ -130,20 +135,19 @@ function UpperLayer({ visible, children }: { visible: boolean; children: () => R
         }
 
         setIsVisible(true);
-        opacity.value = withTiming(1, {
-            duration: 100,
-            easing: Easing.in(Easing.ease),
+        opacity.value = withSpring(1, {
+            overshootClamping: true,
         });
-    }, [visible, dismiss, opacity]);
+    }, [visible, dismiss, opacity, isVisible]);
 
+    const theme = useTheme();
+    const bgColor = theme[ColorVariants.BackgroundPrimary];
     const style = useAnimatedStyle(() => {
         return {
             opacity: opacity.value,
+            backgroundColor: bgColor,
         };
     });
-
-    const theme = useTheme();
-    const styles = useStyles(theme);
 
     if (!isVisible) {
         return null;
@@ -151,17 +155,10 @@ function UpperLayer({ visible, children }: { visible: boolean; children: () => R
 
     return (
         <Portal absoluteFill forId="calendar">
-            <Animated.View style={[styles.container, style]}>{children()}</Animated.View>
+            <Animated.View style={[styles.layerContainer, style]}>{children()}</Animated.View>
         </Portal>
     );
 }
-
-const useStyles = makeStyles((theme: Theme) => ({
-    container: {
-        flex: 1,
-        backgroundColor: theme[ColorVariants.BackgroundPrimary],
-    },
-}));
 
 const MonthsColumn = React.memo(function MonthColumn({
     items,
@@ -207,8 +204,8 @@ const MonthsColumn = React.memo(function MonthColumn({
     );
 });
 
-function Months() {
-    const { monthsMatrix, currentRow, currentColumn, onSelect } = useMonthsCalendar();
+const Months = React.memo(function Months() {
+    const { monthsMatrix, currentRow, currentColumn, onSelect } = useMonths();
 
     return (
         <View style={styles.container}>
@@ -224,7 +221,77 @@ function Months() {
             ))}
         </View>
     );
-}
+});
+
+const YEAR_ROW_HEIGHT = 34 + UIConstant.contentOffset;
+
+const Years = React.memo(function Years() {
+    const { yearsMatrix, selectedRow, selectedYear, onSelect } = useYears();
+    const theme = useTheme();
+
+    return (
+        <FlatList
+            style={{ flex: 1 }}
+            data={yearsMatrix}
+            keyExtractor={item => `${item[0]}`}
+            getItemLayout={(_, index) => ({
+                length: YEAR_ROW_HEIGHT,
+                offset: YEAR_ROW_HEIGHT * index,
+                index,
+            })}
+            initialScrollIndex={Math.max(selectedRow - 2, 0)}
+            renderItem={({ item, index: rowIndex }) => (
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        backgroundColor: theme[ColorVariants.BackgroundPrimary],
+                    }}
+                >
+                    {item.map((year: number) => {
+                        const isSelected = selectedRow === rowIndex && selectedYear === year;
+                        return (
+                            <View
+                                key={year}
+                                style={{
+                                    flex: 1,
+                                    alignItems: 'center',
+                                    marginTop: UIConstant.contentOffset,
+                                }}
+                            >
+                                <TouchableOpacity
+                                    style={[
+                                        styles.year,
+                                        isSelected && {
+                                            backgroundColor:
+                                                theme[ColorVariants.StaticBackgroundAccent],
+                                        },
+                                    ]}
+                                    onPress={() => onSelect(year)}
+                                    activeOpacity={0.8}
+                                >
+                                    <UILabel
+                                        role={
+                                            isSelected
+                                                ? UILabelRoles.HeadlineHead
+                                                : UILabelRoles.Action
+                                        }
+                                        color={
+                                            isSelected
+                                                ? UILabelColors.TextAccent
+                                                : UILabelColors.TextPrimary
+                                        }
+                                    >
+                                        {year}
+                                    </UILabel>
+                                </TouchableOpacity>
+                            </View>
+                        );
+                    })}
+                </View>
+            )}
+        />
+    );
+});
 
 export function Calendar() {
     const { activeDayColumn, activeDayRow, daysMatrix, month, year, onSelect, onPrev, onNext } =
@@ -266,7 +333,7 @@ export function Calendar() {
                         />
                     ))}
                     <UpperLayer visible={isMonthsVisible}>{() => <Months />}</UpperLayer>
-                    <UpperLayer visible={isYearsVisible}>{() => null}</UpperLayer>
+                    <UpperLayer visible={isYearsVisible}>{() => <Years />}</UpperLayer>
                 </PortalManager>
             </View>
         </>
@@ -293,10 +360,19 @@ const styles = StyleSheet.create({
     },
     month: {
         paddingVertical: UIConstant.calendar.dayCellPadding,
-        // aspectRatio: 1,
         borderRadius: UIConstant.calendar.dayCellPaddingBorderRadius,
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: UIConstant.contentOffset,
+    },
+    year: {
+        paddingVertical: UIConstant.calendar.dayCellPadding,
+        paddingHorizontal: 29,
+        borderRadius: UIConstant.calendar.dayCellPaddingBorderRadius,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    layerContainer: {
+        flex: 1,
     },
 });
