@@ -77,7 +77,6 @@ const Column = React.memo(function Column({
                     );
                 }
 
-                // const isSelected = day != null && selectedDate.isSame(day.date, 'day');
                 const isSelected = selected && index === selectedRow;
                 const labelRole = getDayLabelRole(isSelected);
                 const labelColor = getDayLabelColor(day.disabled, isSelected);

@@ -13,6 +13,7 @@ import {
     UILabel,
     useTheme,
 } from '@tonlabs/uikit.hydrogen';
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import { UIConstant } from '../../constants';
 import { useDateTimeState } from '../useDateTimeState';
@@ -56,6 +57,29 @@ export function TimeInputWarning({ isValidTime = true }: { isValidTime: boolean 
         return isValidTime ? UIAssets.icons.ui.info : UIAssets.icons.ui.warn;
     }, [isValidTime]);
 
+    const warningLabel = React.useMemo(() => {
+        if (minTime == null && maxTime == null) {
+            return null;
+        }
+
+        if (minTime == null) {
+            return uiLocalized.formatString(
+                uiLocalized.DateTimePicker.WarningBefore,
+                maxTime as string,
+            );
+        }
+
+        if (maxTime == null) {
+            return uiLocalized.formatString(uiLocalized.DateTimePicker.WarningAfter, minTime);
+        }
+
+        return uiLocalized.formatString(uiLocalized.DateTimePicker.Warning, minTime, maxTime);
+    }, [minTime, maxTime]);
+
+    if (warningLabel == null) {
+        return null;
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.image}>
@@ -68,8 +92,7 @@ export function TimeInputWarning({ isValidTime = true }: { isValidTime: boolean 
                 />
             </View>
             <UILabel style={styles.label} role={TypographyVariants.ParagraphNote} color={color}>
-                {/* TODO: localize me! */}
-                {`Choose a time between ${minTime} and ${maxTime}`}
+                {warningLabel}
             </UILabel>
         </View>
     );

@@ -617,6 +617,11 @@
         "ChooseDateTime": "Выбрать дату и время",
         "Day": "День",
         "Month": "Месяц",
-        "Year": "Год"
+        "Year": "Год",
+        "AM": "AM",
+        "PM": "PM",
+        "Warning": "Choose a time between {0} and {1}",
+        "WarningAfter": "Choose a time after {0}",
+        "WarningBefore": "Choose a time before {0}"
     }
 }

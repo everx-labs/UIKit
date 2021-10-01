@@ -15,6 +15,7 @@ import {
     TypographyVariants,
     TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
+import { uiLocalized } from '@tonlabs/uikit.localization';
 import { UIConstant } from '../../constants';
 
 // @inline
@@ -68,12 +69,14 @@ export function TimeInputSwitcher({
             <Animated.View style={styles.container}>
                 <Animated.View style={[styles.button, animatedButton]} />
                 <View style={[styles.labelContainer]}>
-                    {/* TODO: localize me! */}
-                    <UILabel role={TypographyVariants.Action}>AM</UILabel>
+                    <UILabel role={TypographyVariants.Action}>
+                        {uiLocalized.DateTimePicker.AM}
+                    </UILabel>
                 </View>
                 <View style={[styles.labelContainer]}>
-                    {/* TODO: localize me! */}
-                    <UILabel role={TypographyVariants.Action}>PM</UILabel>
+                    <UILabel role={TypographyVariants.Action}>
+                        {uiLocalized.DateTimePicker.PM}
+                    </UILabel>
                 </View>
             </Animated.View>
         </TouchableOpacity>

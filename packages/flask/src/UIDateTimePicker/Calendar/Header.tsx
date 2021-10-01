@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { makeStyles, TypographyVariants, UILabel, useTheme } from '@tonlabs/uikit.hydrogen';
 
 import { ArrowsButtons, MonthYearButton } from './DateControls';
+import { UIConstant } from '../../constants';
 
 export function Header({
     title,
@@ -44,7 +45,7 @@ const useStyles = makeStyles(() => ({
     container: {
         alignItems: 'center',
         flexDirection: 'row',
-        padding: 16, // TODO
+        padding: UIConstant.contentOffset,
         justifyContent: 'space-between',
     },
     controlsContainer: {
