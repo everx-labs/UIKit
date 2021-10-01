@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 
-import { PickerActionName } from '../../types';
-import { CalendarContext } from './calendarContext';
+import { DateTimeActionType } from '../types';
+import { useDateTimeState } from '../useDateTimeState';
 
-function validateTime(time: Dayjs, min?: Date, max?: Date) {
+export function validateTime(time: Dayjs, min?: Date, max?: Date) {
     let i = 0;
     if (min == null && max == null) {
         return true;
@@ -18,15 +18,21 @@ function validateTime(time: Dayjs, min?: Date, max?: Date) {
     return i > 0;
 }
 
+function convertHourTo24(value: number, isAM: boolean) {
+    if (isAM) {
+        return value === 12 ? 0 : value;
+    }
+    return value !== 12 ? value + 12 : value;
+}
+
 export function useTime() {
     const {
-        state: { activeDate, time, isTimeValid },
+        state: { selectedDate, isTimeValid },
         dispatch,
         min,
         max,
         isAmPmTime,
-        utils,
-    } = useContext(CalendarContext);
+    } = useDateTimeState();
 
     const initialTime = React.useMemo(() => {
         if (min != null) {
@@ -36,8 +42,10 @@ export function useTime() {
             return dayjs(max);
         }
 
-        return dayjs(activeDate ?? null);
-    }, [activeDate, max, min]);
+        return selectedDate;
+    }, [selectedDate, max, min]);
+    console.log(selectedDate, initialTime, min, max);
+
     const [isAM, setAM] = React.useState(dayjs(initialTime).format('a') === 'am');
 
     const toggleAmPm = React.useCallback(() => {
@@ -51,7 +59,7 @@ export function useTime() {
         set: (hours: number, minutes: number) => {
             if (isNaN(hours) || isNaN(minutes)) {
                 dispatch({
-                    type: PickerActionName.Set,
+                    type: DateTimeActionType.Set,
                     payload: {
                         isTimeValid: false,
                     },
@@ -59,14 +67,14 @@ export function useTime() {
                 return;
             }
 
-            const hoursNormilized = isAmPmTime ? utils.convertHourTo24(hours, isAM) : hours;
+            const hoursNormilized = isAmPmTime ? convertHourTo24(hours, isAM) : hours;
 
             const newTime = dayjs().hour(hoursNormilized).minute(minutes).second(0).millisecond(0);
 
             dispatch({
-                type: PickerActionName.Set,
+                type: DateTimeActionType.Set,
                 payload: {
-                    time: newTime,
+                    selectedDate: newTime,
                     isTimeValid: validateTime(newTime, min, max),
                 },
             });

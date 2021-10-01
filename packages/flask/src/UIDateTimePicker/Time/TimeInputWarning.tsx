@@ -1,5 +1,7 @@
-import React, { useContext } from 'react';
+import * as React from 'react';
 import { View } from 'react-native';
+import type { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import {
@@ -12,19 +14,22 @@ import {
     useTheme,
 } from '@tonlabs/uikit.hydrogen';
 
-import type { Dayjs } from 'dayjs';
-import dayjs from 'dayjs';
-import { UIConstant } from '../../../../constants';
-import { CalendarContext } from '../../calendarContext';
+import { UIConstant } from '../../constants';
+import { useDateTimeState } from '../useDateTimeState';
 
 const iconSize = {
     height: UIConstant.timeInput.warningIconSize,
     width: UIConstant.timeInput.warningIconSize,
 };
 
+function convertToAmPm(value: Date | Dayjs | string) {
+    return dayjs(value).hour() === 12
+        ? `00:${dayjs(value).minute()}`
+        : dayjs(value).format('hh:mm');
+}
+
 export function TimeInputWarning({ isValidTime = true }: { isValidTime: boolean }) {
-    // TODO: remake!
-    const { utils, min, max, isAmPmTime } = React.useContext(CalendarContext);
+    const { min, max, isAmPmTime } = useDateTimeState();
     const theme = useTheme();
     const styles = useStyles(theme, isValidTime);
 
@@ -32,12 +37,12 @@ export function TimeInputWarning({ isValidTime = true }: { isValidTime: boolean 
         (value: Date | Dayjs | undefined) => {
             if (value) {
                 return isAmPmTime
-                    ? `${utils.convertToAmPm(value)} ${dayjs(value).format('A')}`
+                    ? `${convertToAmPm(value)} ${dayjs(value).format('A')}`
                     : dayjs(value).format('HH.mm');
             }
             return null;
         },
-        [isAmPmTime, utils],
+        [isAmPmTime],
     );
 
     const minTime = React.useMemo(() => formatTime(min), [min, formatTime]);

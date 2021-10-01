@@ -11,7 +11,7 @@ import {
     useTheme,
 } from '@tonlabs/uikit.hydrogen';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIConstant } from '../../../constants';
+import { UIConstant } from '../../constants';
 
 export type DateControlsProps = {
     onPressMonth?: () => void;

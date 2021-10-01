@@ -31,8 +31,8 @@ import {
     MonthCells,
     useMonths,
     useYears,
-} from '../useCalendar';
-import { UIConstant } from '../../../constants';
+} from './useCalendar';
+import { UIConstant } from '../../constants';
 
 const Column = React.memo(function Column({
     id,
@@ -208,7 +208,7 @@ const Months = React.memo(function Months() {
     const { monthsMatrix, currentRow, currentColumn, onSelect } = useMonths();
 
     return (
-        <View style={styles.container}>
+        <View style={styles.monthContainer}>
             {monthsMatrix.map((column, index) => (
                 <MonthsColumn
                     // eslint-disable-next-line react/no-array-index-key
@@ -357,6 +357,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: UIConstant.contentOffset,
+    },
+    monthContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        paddingHorizontal: UIConstant.contentOffset,
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     month: {
         paddingVertical: UIConstant.calendar.dayCellPadding,

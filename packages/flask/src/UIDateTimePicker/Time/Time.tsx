@@ -25,12 +25,12 @@ import {
 } from '@tonlabs/uikit.hydrogen';
 import { ScrollView } from '@tonlabs/uikit.navigation';
 
-import { useTime } from '../../useTime';
+import { useTime } from './useTime';
 import { TimeInputWarning } from './TimeInputWarning';
 import { TimeInputSwitcher } from './TimeInputSwitcher';
-import { UIConstant } from '../../../../constants';
+import { UIConstant } from '../../constants';
 
-import { AnimatedTextInput } from '../../../../UIAnimatedBalance/AnimatedTextInput';
+import { AnimatedTextInput } from '../../UIAnimatedBalance/AnimatedTextInput';
 
 Animated.addWhitelistedNativeProps({ text: true });
 
@@ -164,9 +164,10 @@ const TimeInput = React.forwardRef<TextInput, TimeInputProps>(function TimeInput
     );
 });
 
-export function UITimeInput() {
+export function Time() {
     const { initialTime, isValid, haveValidation, isAmPmTime, isAM, toggleAmPm, set } = useTime();
 
+    // TODO: what to do with it?
     // React.useEffect(() => {
     //     const isValidTime = utils.validateTime(timeInputHolderRef.current, isAmPmTime, isAM);
     //     setTimeValidated(isValidTime);

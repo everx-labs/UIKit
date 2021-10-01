@@ -15,7 +15,7 @@ import {
     TypographyVariants,
     TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
-import { UIConstant } from '../../../../constants';
+import { UIConstant } from '../../constants';
 
 // @inline
 const SWITCHER_LEFT = 0;

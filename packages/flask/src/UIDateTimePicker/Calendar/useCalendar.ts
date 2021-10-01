@@ -2,9 +2,8 @@ import * as React from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import { CalendarContext } from './calendarContext';
-
-import { PickerActionName } from '../../types';
+import { DateTimeActionType } from '../types';
+import { useDateTimeState } from '../useDateTimeState';
 
 type DayLabel = {
     type: 'dayLabel';
@@ -92,7 +91,7 @@ export function useDaysCalendar() {
         dispatch,
         min,
         max,
-    } = React.useContext(CalendarContext);
+    } = useDateTimeState();
 
     const dayNamesShort = React.useMemo(
         () => Object.values(uiLocalized.DateTimePicker.dayNamesShort),
@@ -131,7 +130,7 @@ export function useDaysCalendar() {
 
             const newDate = dateWithConstraints(day.date);
             dispatch({
-                type: PickerActionName.Set,
+                type: DateTimeActionType.Set,
                 payload: {
                     selectedDate: newDate,
                 },
@@ -153,7 +152,7 @@ export function useDaysCalendar() {
 
         const newDate = dateWithConstraints(day.date.subtract(1, 'day'));
         dispatch({
-            type: PickerActionName.Set,
+            type: DateTimeActionType.Set,
             payload: {
                 selectedDate: newDate,
             },
@@ -173,7 +172,7 @@ export function useDaysCalendar() {
 
         const newDate = dateWithConstraints(day.date.add(1, 'day'));
         dispatch({
-            type: PickerActionName.Set,
+            type: DateTimeActionType.Set,
             payload: {
                 selectedDate: newDate,
             },
@@ -187,7 +186,8 @@ export function useDaysCalendar() {
         onSelect,
         onPrev,
         onNext,
-        month: uiLocalized.DateTimePicker.monthNames[`${currentMonth}`],
+        // @ts-ignore
+        month: uiLocalized.DateTimePicker.monthNames[currentMonth],
         year: `${currentYear}`,
     };
 }
@@ -196,17 +196,17 @@ export function useAditionalCalendars() {
     const {
         state: { isMonthsVisible, isYearsVisible },
         dispatch,
-    } = React.useContext(CalendarContext);
+    } = useDateTimeState();
 
     const openMonths = React.useCallback(() => {
         dispatch({
-            type: PickerActionName.ToggleMonths,
+            type: DateTimeActionType.ToggleMonths,
         });
     }, [dispatch]);
 
     const openYears = React.useCallback(() => {
         dispatch({
-            type: PickerActionName.ToggleYears,
+            type: DateTimeActionType.ToggleYears,
         });
     }, [dispatch]);
 
@@ -229,7 +229,7 @@ export function useMonths() {
     const {
         state: { selectedDate },
         dispatch,
-    } = React.useContext(CalendarContext);
+    } = useDateTimeState();
 
     const monthsMatrix = React.useMemo(
         () =>
@@ -243,6 +243,7 @@ export function useMonths() {
 
                 acc[column].push({
                     id: index,
+                    // @ts-ignore
                     label: uiLocalized.DateTimePicker.monthNames[index],
                     // disabled TODO!
                 });
@@ -267,13 +268,13 @@ export function useMonths() {
         (month: number) => {
             const newDate = dateWithConstraints(selectedDate.month(month));
             dispatch({
-                type: PickerActionName.ToggleMonths,
+                type: DateTimeActionType.ToggleMonths,
                 payload: {
                     selectedDate: newDate,
                 },
             });
             dispatch({
-                type: PickerActionName.Set,
+                type: DateTimeActionType.Set,
                 payload: {
                     selectedDate: newDate,
                 },
@@ -298,7 +299,7 @@ export function useYears() {
     const {
         state: { selectedDate },
         dispatch,
-    } = React.useContext(CalendarContext);
+    } = useDateTimeState();
 
     // TODO: disabled!
     const yearsMatrix = React.useMemo(() => {
@@ -326,13 +327,13 @@ export function useYears() {
         (year: number) => {
             const newDate = dateWithConstraints(selectedDate.year(year));
             dispatch({
-                type: PickerActionName.ToggleYears,
+                type: DateTimeActionType.ToggleYears,
                 payload: {
                     selectedDate: newDate,
                 },
             });
             dispatch({
-                type: PickerActionName.Set,
+                type: DateTimeActionType.Set,
                 payload: {
                     selectedDate: newDate,
                 },

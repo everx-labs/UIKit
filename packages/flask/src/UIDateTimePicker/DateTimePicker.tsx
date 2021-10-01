@@ -6,28 +6,25 @@ import { useTheme, ColorVariants, UIBackgroundView } from '@tonlabs/uikit.hydrog
 import { UIBottomSheet, UINavigationBar } from '@tonlabs/uikit.navigation';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import { Calendar } from './components/Calendar';
-import { SelectMonth } from './components/SelectMonth';
-import { CalendarContext } from './calendarContext';
-import { Utils } from '../utils';
+import { Calendar } from './Calendar/Calendar';
+import { DateTimeStateProvider, useDateTimeState } from './useDateTimeState';
 import {
-    PickerAction,
-    PickerActionName,
-    PickerOptionsType,
-    PickerPropsType,
-    PickerStateType,
     UIDateTimePickerMode,
-    UIDateTimePickerType,
-} from '../../types';
-import { UITimeInput } from './components/UITimeInput';
+    UIDateTimePickerProps,
+    DateTimeState,
+    DateTimeAction,
+    DateTimeActionType,
+} from './types';
+import { Time } from './Time/Time';
+import { validateTime } from './Time/useTime';
 
-const reducer = (state: PickerStateType, action: PickerAction): PickerStateType => {
+const reducer = (state: DateTimeState, action: DateTimeAction): DateTimeState => {
     switch (action.type) {
-        case PickerActionName.Set:
+        case DateTimeActionType.Set:
             return { ...state, ...action.payload };
-        case PickerActionName.ToggleMonths:
+        case DateTimeActionType.ToggleMonths:
             return { ...state, isMonthsVisible: !state.isMonthsVisible };
-        case PickerActionName.ToggleYears:
+        case DateTimeActionType.ToggleYears:
             return { ...state, isYearsVisible: !state.isYearsVisible };
         default:
             return state;
@@ -37,88 +34,72 @@ const reducer = (state: PickerStateType, action: PickerAction): PickerStateType 
 const headerTitles: Record<UIDateTimePickerMode, string> = {
     [UIDateTimePickerMode.Time]: uiLocalized.DateTimePicker.ChooseTime,
     [UIDateTimePickerMode.Date]: uiLocalized.DateTimePicker.ChooseDate,
-    [UIDateTimePickerMode.MonthYear]: uiLocalized.DateTimePicker.ChooseDate,
+    // [UIDateTimePickerMode.MonthYear]: uiLocalized.DateTimePicker.ChooseDate,
     [UIDateTimePickerMode.DateTime]: uiLocalized.DateTimePicker.ChooseDateTime,
 };
 
 function Content() {
-    const contextValue = React.useContext(CalendarContext);
-    switch (contextValue.mode) {
+    const { mode } = useDateTimeState();
+    switch (mode) {
         default:
         case UIDateTimePickerMode.DateTime:
             return (
                 <>
                     <Calendar />
-                    {/* <SelectMonth /> */}
-                    <UITimeInput />
+                    <Time />
                 </>
             );
-        case UIDateTimePickerMode.MonthYear:
-            return <SelectMonth />;
+        // TODO!!!!
+        // case UIDateTimePickerMode.MonthYear:
+        //     return <SelectMonth />;
         case UIDateTimePickerMode.Date:
             return (
                 <>
                     <Calendar />
-                    {/* <SelectMonth /> */}
                 </>
             );
         case UIDateTimePickerMode.Time:
-            return <UITimeInput />;
+            return <Time />;
     }
 }
 
-function DatePickerContent(props: UIDateTimePickerType) {
-    const theme = useTheme();
-    const options: PickerOptionsType = {
-        backgroundColor: theme[ColorVariants.BackgroundPrimary],
-        textHeaderColor: theme[ColorVariants.TextPrimary],
-        textDefaultColor: theme[ColorVariants.TextPrimary],
-        selectedTextColor: theme[ColorVariants.StaticTextPrimaryLight],
-        mainColor: theme[ColorVariants.BackgroundAccent],
-        textSecondaryColor: theme[ColorVariants.TextSecondary],
-        borderColor: theme[ColorVariants.BackgroundOverlay],
-        textFontSize: 15,
-        textHeaderFontSize: 17,
-        headerAnimationDistance: 100,
-        daysAnimationDistance: 200,
-    };
-
-    const calendarUtils = new Utils(props as UIDateTimePickerType & PickerPropsType<Utils>);
-
+function DatePickerContent(props: UIDateTimePickerProps) {
+    const { defaultDate, isAmPmTime, mode, onClose, min, max } = props;
+    console.log(min, max);
+    const selectedDate = defaultDate != null ? dayjs(defaultDate) : dayjs();
     const [state, dispatch] = useReducer(reducer, {
-        selectedDate: props.selected ? dayjs(props.selected) : dayjs(),
+        selectedDate,
         isMonthsVisible: false,
         isYearsVisible: false,
+        isTimeValid: validateTime(selectedDate, min, max),
     });
 
     const contextValue = {
-        ...props,
-        reverse: false,
-        options: { ...options },
-        utils: calendarUtils,
-        isAmPmTime: props.isAmPmTime ?? false,
+        mode,
+        min,
+        max,
+        isAmPmTime: isAmPmTime ?? false,
         state,
         dispatch,
-        time: undefined,
-        isTimeValidated: true,
     };
 
     return (
-        <CalendarContext.Provider value={contextValue}>
+        <DateTimeStateProvider value={contextValue}>
             <UINavigationBar
-                title={headerTitles[props.mode]}
+                title={headerTitles[mode]}
                 headerLeftItems={[
                     {
                         label: uiLocalized.Cancel,
-                        onPress: props.onClose,
+                        onPress: onClose,
                     },
                 ]}
                 headerRightItems={[
                     {
                         label: uiLocalized.Done,
                         onPress: () => {
+                            console.log(state.selectedDate);
                             if (props.onValueRetrieved) {
-                                props.onValueRetrieved(dayjs(state.time).toDate());
+                                props.onValueRetrieved(dayjs(state.selectedDate).toDate());
                             }
                         },
                     },
@@ -126,11 +107,11 @@ function DatePickerContent(props: UIDateTimePickerType) {
             />
             <UIBackgroundView color={ColorVariants.BackgroundTertiary} style={styles.underline} />
             <Content />
-        </CalendarContext.Provider>
+        </DateTimeStateProvider>
     );
 }
 
-export function DatePicker(props: UIDateTimePickerType) {
+export function DatePicker(props: UIDateTimePickerProps) {
     const { visible, onClose } = props;
     const theme = useTheme();
 
