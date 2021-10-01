@@ -176,7 +176,13 @@ export function CarouselViewContainer({
                     );
                 })}
             </Animated.View>
-            {renderPagination()}
+            {showPagination && (
+                 <Pagination
+                     pages={pages}
+                     activeIndex={currentIndexRef.current}
+                     setPage={jumpToIndex}
+                 />
+             )}
         </View>
     );
 }
