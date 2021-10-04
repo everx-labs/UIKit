@@ -33,7 +33,6 @@ export const Grids = () => {
                     style={{
                         flex: 1,
                         maxWidth: 500,
-                        flexDirection: Platform.select({ native: 'column', web: 'row' }),
                     }}
                 >
                     <UIGridView
