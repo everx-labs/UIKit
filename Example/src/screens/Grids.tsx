@@ -36,7 +36,7 @@ export const Grids = () => {
                     }}
                 >
                     <UIGridView
-                        itemHeight={200}
+                        // itemHeight={200}
                         data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
                         renderItem={renderItem}
                     />
