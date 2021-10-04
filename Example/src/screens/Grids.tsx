@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, View } from 'react-native';
+import { View } from 'react-native';
 
 import { UIGridView } from '@tonlabs/uikit.navigation';
 import { ColorVariants, TypographyVariants, UILabel, useTheme } from '@tonlabs/uikit.hydrogen';
