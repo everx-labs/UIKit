@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import Animated, {
     Easing,
     useAnimatedProps,
@@ -114,12 +114,12 @@ const styles = StyleSheet.create({
         fontVariant: ['tabular-nums'],
         // reset RN styles to have proper vertical alignment
         padding: 0,
-        lineHeight: undefined,
+        ...Platform.select({ web: {}, default: { lineHeight: undefined } }),
     },
     decimalInput: {
         fontVariant: ['tabular-nums'],
         // reset RN styles to have proper vertical alignment
         padding: 0,
-        lineHeight: undefined,
+        ...Platform.select({ web: {}, default: { lineHeight: undefined } }),
     },
 });

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, Platform } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
         fontVariant: ['tabular-nums'],
         // reset RN styles to have proper vertical alignment
         padding: 0,
-        lineHeight: undefined,
+        ...Platform.select({ web: {}, default: { lineHeight: undefined } }),
     },
     decimalText: {
         fontVariant: ['tabular-nums'],

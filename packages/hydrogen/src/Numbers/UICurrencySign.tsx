@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, Platform } from 'react-native';
 import Animated, {
     cancelAnimation,
     interpolate,
@@ -124,7 +124,7 @@ export function UICurrencySign({
 }: UICurrencySignProps) {
     if (signChar) {
         return (
-            <Text style={[Typography[signVariant]]}>
+            <Text style={[Typography[signVariant], styles.iconTextContainer]}>
                 {'\u00A0'}
                 {signChar}
             </Text>
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
         fontVariant: ['tabular-nums'],
         // reset RN styles to have proper vertical alignment
         padding: 0,
-        lineHeight: undefined,
+        ...Platform.select({ web: {}, default: { lineHeight: undefined } }),
     },
     iconTextContainer: {
         fontVariant: ['tabular-nums'],
