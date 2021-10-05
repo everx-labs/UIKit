@@ -1,6 +1,8 @@
 import './useAutoFocus';
 
 export * from './UIGridList';
+// TODO: move it
+export * from './UIGridList/UIMasonryList';
 export * from './UIPagerView';
 export * from './UISearchBar';
 export * from './UISearchController';
