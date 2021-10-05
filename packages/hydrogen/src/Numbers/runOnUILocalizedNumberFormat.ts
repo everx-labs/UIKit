@@ -67,6 +67,20 @@ const groupReversed = (rawString: string, groupSize: number, groupSeparator: str
     return groupedPart;
 };
 
+function getIntegerSign(integer: number, showPositiveSign?: boolean) {
+    'worklet';
+
+    if (integer < 0) {
+        return '-';
+    }
+
+    if (showPositiveSign) {
+        return '+';
+    }
+
+    return '';
+}
+
 /**
  * TODO: move it to uiLocalized to format number generally!
  *
@@ -81,15 +95,16 @@ export function runOnUILocalizedNumberFormat(
     decimalAspect: UINumberDecimalAspect,
     decimalSeparator: string,
     integerGroupChar: string,
+    showPositiveSign?: boolean,
 ) {
     'worklet';
 
     const integer = Math.trunc(value);
-    const integerFormatted = groupReversed(
-        integer.toString(),
+    const integerFormatted = `${getIntegerSign(integer, showPositiveSign)}${groupReversed(
+        Math.abs(integer).toString(),
         INTEGER_GROUP_SIZE,
         integerGroupChar,
-    );
+    )}`;
 
     if (decimalAspect === DECIMAL_ASPECT_NONE) {
         return {

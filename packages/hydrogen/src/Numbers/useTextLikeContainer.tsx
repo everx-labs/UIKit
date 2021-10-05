@@ -2,14 +2,17 @@ import * as React from 'react';
 import { StyleSheet, I18nManager } from 'react-native';
 
 export function useTextLikeContainer() {
-    return React.useMemo(
-        () => (I18nManager.isRTL ? styles.rtlContainer : styles.ltrContainer),
-        [I18nManager.isRTL],
-    );
+    return React.useMemo(() => {
+        if (I18nManager.isRTL) {
+            return styles.rtlContainer;
+        }
+        return styles.ltrContainer;
+    }, []);
 }
 
 const styles = StyleSheet.create({
     ltrContainer: {
+        position: 'relative',
         flexDirection: 'row',
         justifyContent: 'flex-start',
     },
@@ -18,6 +21,7 @@ const styles = StyleSheet.create({
     // as it is a "text-like" container
     // and text in RTL is shown as usual
     rtlContainer: {
+        position: 'relative',
         flexDirection: 'row-reverse',
         justifyContent: 'flex-end',
     },

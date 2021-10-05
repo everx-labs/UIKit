@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Platform } from 'react-native';
+import { View, Platform, StyleSheet } from 'react-native';
 import Animated, {
     Easing,
     useAnimatedProps,
@@ -19,8 +19,8 @@ import {
 } from './runOnUILocalizedNumberFormat';
 import { useNumberStaticStyles } from './UIStaticNumber';
 import type { UINumberAppearance, UINumberGeneralProps } from './types';
-import { StyleSheet } from 'react-native';
 import { useTextLikeContainer } from './useTextLikeContainer';
+import { DebugGrid } from './DebugGrid';
 
 Animated.addWhitelistedNativeProps({ text: true });
 
@@ -34,6 +34,8 @@ export function UIAnimatedNumber({
     decimalVariant,
     decimalColor,
     sign,
+    showDebugGrid,
+    showPositiveSign,
 }: UINumberGeneralProps & UINumberAppearance & { sign?: React.ReactNode }) {
     const value: number = useNumberValue(children, decimalAspect);
     const valueHolder = useSharedValue(value);
@@ -49,7 +51,7 @@ export function UIAnimatedNumber({
             duration: 400,
             easing: Easing.inOut(Easing.ease),
         });
-    }, [value]);
+    }, [value, valueHolder]);
 
     const formatted = useDerivedValue(() => {
         return runOnUILocalizedNumberFormat(
@@ -57,6 +59,7 @@ export function UIAnimatedNumber({
             decimalAspect,
             decimalSeparator,
             integerGroupChar,
+            showPositiveSign,
         );
     });
 
@@ -105,6 +108,7 @@ export function UIAnimatedNumber({
                 editable={false}
             />
             {sign}
+            {showDebugGrid && <DebugGrid variant={decimalVariant} />}
         </View>
     );
 }
@@ -114,7 +118,10 @@ const styles = StyleSheet.create({
         fontVariant: ['tabular-nums'],
         // reset RN styles to have proper vertical alignment
         padding: 0,
-        ...Platform.select({ web: {}, default: { lineHeight: undefined } }),
+        ...Platform.select({
+            web: {},
+            default: { lineHeight: undefined },
+        }),
     },
     decimalInput: {
         fontVariant: ['tabular-nums'],

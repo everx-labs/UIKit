@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, StyleSheet, Platform } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
@@ -12,6 +12,7 @@ import {
     UINumberDecimalAspect,
 } from './runOnUILocalizedNumberFormat';
 import type { UINumberAppearance, UINumberGeneralProps } from './types';
+import { DebugGrid } from './DebugGrid';
 
 export function useNumberStaticStyles(integerColor: ColorVariants, decimalColor: ColorVariants) {
     const theme = useTheme();
@@ -36,6 +37,8 @@ export function UIStaticNumber({
     decimalColor,
     decimalAspect = UINumberDecimalAspect.None,
     sign,
+    showDebugGrid,
+    showPositiveSign,
 }: UINumberGeneralProps & UINumberAppearance & { sign?: React.ReactNode }) {
     const value = useNumberValue(children, decimalAspect);
     const { decimal: decimalSeparator, grouping: integerGroupChar } =
@@ -47,8 +50,9 @@ export function UIStaticNumber({
             decimalAspect,
             decimalSeparator,
             integerGroupChar,
+            showPositiveSign,
         );
-    }, [value, decimalAspect, decimalSeparator]);
+    }, [value, decimalAspect, decimalSeparator, integerGroupChar, showPositiveSign]);
 
     const [integerColorStyle, decimalColorStyle] = useNumberStaticStyles(
         integerColor,
@@ -64,6 +68,7 @@ export function UIStaticNumber({
                 {formatted.decimal}
             </Text>
             {sign}
+            {showDebugGrid && <DebugGrid variant={decimalVariant} />}
         </Text>
     );
 }
@@ -71,9 +76,6 @@ export function UIStaticNumber({
 const styles = StyleSheet.create({
     integerText: {
         fontVariant: ['tabular-nums'],
-        // reset RN styles to have proper vertical alignment
-        padding: 0,
-        ...Platform.select({ web: {}, default: { lineHeight: undefined } }),
     },
     decimalText: {
         fontVariant: ['tabular-nums'],

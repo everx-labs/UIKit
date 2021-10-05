@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, Platform } from 'react-native';
+import { StyleSheet, Text, Platform, ImageSourcePropType, Image as RNImage } from 'react-native';
 import Animated, {
     cancelAnimation,
     interpolate,
@@ -9,37 +9,99 @@ import Animated, {
     withTiming,
 } from 'react-native-reanimated';
 
+import { UICurrencySignIconAlign, UICurrencySignIconInlineHeight } from './types';
+import type { UICurrencySignProps } from './types';
+
 import { Typography, TypographyVariants, getFontMesurements } from '../Typography';
 import { UIImage } from '../UIImage';
 
-import type { UICurrencySignProps } from './types';
-
-function useInlineIconStyle(variant: TypographyVariants, aspectRatio: number) {
+function useInlineIconStyle(
+    variant: TypographyVariants,
+    aspectRatio: number,
+    inlineHeight: UICurrencySignIconInlineHeight,
+    align: UICurrencySignIconAlign,
+) {
     return React.useMemo(() => {
-        const { capHeight } = getFontMesurements(variant);
+        const measurement = getFontMesurements(variant);
 
-        if (capHeight == null) {
+        if (measurement == null) {
             return {};
+        }
+
+        const { capHeight, lowerHeight, baseline, middleline, descentBottom } = measurement;
+
+        let height = capHeight;
+
+        if (inlineHeight === UICurrencySignIconInlineHeight.LowerHeight) {
+            height = lowerHeight;
+        }
+
+        if (height == null) {
+            return {};
+        }
+
+        let bottomAlign = 0;
+
+        if (align === UICurrencySignIconAlign.Middle) {
+            let iconMiddle = 0.5 * height + baseline;
+            // See below why I did it
+            if (Platform.OS === 'ios') {
+                iconMiddle -= descentBottom;
+            }
+            /**
+             * Android for some reason also applies descentBottom to baseline
+             */
+            if (Platform.OS === 'android') {
+                iconMiddle += descentBottom;
+            }
+            if (iconMiddle < middleline) {
+                bottomAlign = middleline - iconMiddle;
+            }
+        }
+
+        /**
+         * Since iOS can't position icon properly on baseline
+         * we do it manually.
+         *
+         * Important to notice here that iOS can't position image
+         * to the bottom, it's actually has some aligment and it
+         * looks like that it's height of descent (see Typography)
+         * so we have to subtract it from baseline
+         */
+        if (Platform.OS === 'ios' && align === UICurrencySignIconAlign.Baseline) {
+            bottomAlign = baseline - descentBottom;
         }
 
         return {
             // If use whole lineHeight it will not be
             // aligned with the baseline
             // There is a temp workaround to make it look better
-            height: capHeight,
-            width: capHeight * aspectRatio,
+            height: Math.round(height),
+            width: Math.round(height * aspectRatio),
+            transform: [
+                {
+                    translateY: -bottomAlign,
+                },
+            ],
         };
-    }, []);
+    }, [variant, aspectRatio, align, inlineHeight]);
 }
 
 function StaticCurrencyIcon({
     signVariant,
     signIcon,
     signIconAspectRatio,
+    signIconInlineHeight,
+    signIconAlign,
 }: Required<Omit<UICurrencySignProps, 'signChar' | 'loading'>>) {
-    const iconStyle = useInlineIconStyle(signVariant, signIconAspectRatio);
+    const iconStyle = useInlineIconStyle(
+        signVariant,
+        signIconAspectRatio,
+        signIconInlineHeight,
+        signIconAlign,
+    );
     /*
-     * Space letter here is important here, it's not a mistake!
+     * Space letter is important here, it's not a mistake!
      * It's placed to have a separation from main balance,
      * instead of `marginLeft` as space is more "text friendly"
      * and will layout properly in text
@@ -47,7 +109,7 @@ function StaticCurrencyIcon({
     return (
         <Text style={[Typography[signVariant], styles.iconTextContainer]}>
             {'\u00A0'}
-            <UIImage source={signIcon} resizeMode={'contain'} style={iconStyle} />
+            <UIImage source={signIcon} style={iconStyle} />
         </Text>
     );
 }
@@ -64,6 +126,8 @@ function AnimatedCurrencyIcon({
     signVariant,
     signIcon,
     signIconAspectRatio,
+    signIconInlineHeight,
+    signIconAlign,
 }: Required<Omit<UICurrencySignProps, 'signChar'>>) {
     const loadingProgress = useSharedValue(LOADING_ANIMATION_STARTING_POINT);
 
@@ -80,13 +144,19 @@ function AnimatedCurrencyIcon({
                 -1,
             );
         }
-    }, [loading]);
+    }, [loading, loadingProgress]);
 
-    const iconStaticStyle = useInlineIconStyle(signVariant, signIconAspectRatio);
+    const iconStaticStyle = useInlineIconStyle(
+        signVariant,
+        signIconAspectRatio,
+        signIconInlineHeight,
+        signIconAlign,
+    );
 
     const iconAnimatedStyle = useAnimatedStyle(() => {
         return {
             transform: [
+                ...(iconStaticStyle.transform ?? []),
                 {
                     rotateY: `${interpolate(
                         loadingProgress.value,
@@ -104,15 +174,29 @@ function AnimatedCurrencyIcon({
      * and will layout properly in text
      */
     return (
-        <Text style={[Typography[signVariant], styles.iconTextInputContainer]}>
+        <Text style={[Typography[signVariant], styles.iconTextContainer]}>
             {'\u00A0'}
             <AnimatedUIImage
                 source={signIcon}
-                // resizeMode={'contain'}
+                resizeMode="contain"
                 style={[iconStaticStyle, iconAnimatedStyle]}
             />
         </Text>
     );
+}
+
+function getDefaultAspectRatio(signIcon?: ImageSourcePropType) {
+    if (signIcon == null) {
+        return 1;
+    }
+
+    const source = RNImage.resolveAssetSource(signIcon);
+
+    if (source.height > 0 && source.width > 0) {
+        return source.width / source.height;
+    }
+
+    return 1;
 }
 
 export function UICurrencySign({
@@ -120,7 +204,9 @@ export function UICurrencySign({
     signVariant,
     loading,
     signIcon,
-    signIconAspectRatio = 1,
+    signIconAspectRatio = getDefaultAspectRatio(signIcon),
+    signIconInlineHeight = UICurrencySignIconInlineHeight.CapHeight,
+    signIconAlign = UICurrencySignIconAlign.Middle,
 }: UICurrencySignProps) {
     if (signChar) {
         return (
@@ -141,6 +227,8 @@ export function UICurrencySign({
                 signVariant={signVariant}
                 signIcon={signIcon}
                 signIconAspectRatio={signIconAspectRatio}
+                signIconInlineHeight={signIconInlineHeight}
+                signIconAlign={signIconAlign}
             />
         );
     }
@@ -151,18 +239,15 @@ export function UICurrencySign({
             signVariant={signVariant}
             signIcon={signIcon}
             signIconAspectRatio={signIconAspectRatio}
+            signIconInlineHeight={signIconInlineHeight}
+            signIconAlign={signIconAlign}
         />
     );
 }
 
 const styles = StyleSheet.create({
-    iconTextInputContainer: {
-        fontVariant: ['tabular-nums'],
-        // reset RN styles to have proper vertical alignment
-        padding: 0,
-        ...Platform.select({ web: {}, default: { lineHeight: undefined } }),
-    },
     iconTextContainer: {
-        fontVariant: ['tabular-nums'],
+        fontVariant: ['tabular-nums', 'proportional-nums'],
+        ...Platform.select({ default: {}, android: { lineHeight: undefined } }),
     },
 });

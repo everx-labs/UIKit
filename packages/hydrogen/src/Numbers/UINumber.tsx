@@ -26,6 +26,8 @@ export const UINumber = React.memo(function UINumber({
     decimalVariant = TypographyVariants.ParagraphText,
     integerColor = ColorVariants.TextPrimary,
     decimalColor = ColorVariants.TextSecondary,
+    showPositiveSign,
+    showDebugGrid,
 }: UINumberProps) {
     if (animated) {
         return (
@@ -36,6 +38,8 @@ export const UINumber = React.memo(function UINumber({
                 integerColor={integerColor}
                 decimalVariant={decimalVariant}
                 decimalColor={decimalColor}
+                showPositiveSign={showPositiveSign}
+                showDebugGrid={showDebugGrid}
             >
                 {children}
             </UIAnimatedNumber>
@@ -50,6 +54,8 @@ export const UINumber = React.memo(function UINumber({
             integerColor={integerColor}
             decimalVariant={decimalVariant}
             decimalColor={decimalColor}
+            showPositiveSign={showPositiveSign}
+            showDebugGrid={showDebugGrid}
         >
             {children}
         </UIStaticNumber>

@@ -24,7 +24,11 @@ export const UICurrency = React.memo(function UICurrency({
     signVariant,
     signIcon,
     signIconAspectRatio,
+    signIconInlineHeight,
+    signIconAlign,
     loading,
+    showPositiveSign,
+    showDebugGrid,
 }: UICurrencyProps) {
     if (animated) {
         return (
@@ -42,8 +46,12 @@ export const UICurrency = React.memo(function UICurrency({
                         signVariant={signVariant || decimalVariant}
                         signIcon={signIcon}
                         signIconAspectRatio={signIconAspectRatio}
+                        signIconInlineHeight={signIconInlineHeight}
+                        signIconAlign={signIconAlign}
                     />
                 }
+                showPositiveSign={showPositiveSign}
+                showDebugGrid={showDebugGrid}
             >
                 {children}
             </UIAnimatedNumber>
@@ -65,8 +73,12 @@ export const UICurrency = React.memo(function UICurrency({
                     signVariant={signVariant || decimalVariant}
                     signIcon={signIcon}
                     signIconAspectRatio={signIconAspectRatio}
+                    signIconInlineHeight={signIconInlineHeight}
+                    signIconAlign={signIconAlign}
                 />
             }
+            showPositiveSign={showPositiveSign}
+            showDebugGrid={showDebugGrid}
         >
             {children}
         </UIStaticNumber>
