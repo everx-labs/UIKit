@@ -190,6 +190,13 @@ function getDefaultAspectRatio(signIcon?: ImageSourcePropType) {
         return 1;
     }
 
+    // For web
+    // @ts-ignore
+    if (signIcon.height > 0 && signIcon.width > 0) {
+        // @ts-ignore
+        return signIcon.width / signIcon.height;
+    }
+
     const source = RNImage.resolveAssetSource(signIcon);
 
     if (source.height > 0 && source.width > 0) {
