@@ -1,4 +1,4 @@
-import type { FlatListProps, ViewStyle } from 'react-native';
+import type { FlatListProps, ListRenderItem, ViewStyle } from 'react-native';
 
 export type GridProps<ItemT> = {
     /**
@@ -8,7 +8,7 @@ export type GridProps<ItemT> = {
     /**
      * Takes an item from data and renders it into the list.
      */
-    renderItem: FlatListProps<ItemT>['renderItem'];
+    renderItem: ListRenderItem<ItemT>;
     /**
      * GridView container style
      */

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import { UIGridView } from '@tonlabs/uikit.navigation';
+import { UIGridList } from '@tonlabs/uikit.navigation';
 import { ColorVariants, TypographyVariants, UILabel, useTheme } from '@tonlabs/uikit.hydrogen';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -33,11 +33,12 @@ export const Grids = () => {
                     style={{
                         flex: 1,
                         maxWidth: 500,
+                        margin: 8,
                     }}
                 >
-                    <UIGridView
-                        // itemHeight={200}
-                        data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
+                    <UIGridList
+                        // itemHeight={300}
+                        data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]}
                         renderItem={renderItem}
                     />
                 </View>
