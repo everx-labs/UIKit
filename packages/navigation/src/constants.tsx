@@ -47,4 +47,7 @@ export const UIConstant = {
         tabBarOffset: 16,
         pagerViewHeight: 72,
     },
+    grid: {
+        numColumns: 2,
+    },
 };
