@@ -8,7 +8,7 @@ export function UIGridList<T>({
     data,
     renderItem: renderItemProp,
     containerStyle,
-    itemHeight,
+    itemHeight = 0,
     testID,
 }: GridProps<T>) {
     const renderItem: ListRenderItem<T> = React.useCallback(
@@ -23,6 +23,17 @@ export function UIGridList<T>({
         [renderItemProp, itemHeight],
     );
 
+    const getItemLayout = React.useCallback(
+        (_, index: number) => {
+            return {
+                length: itemHeight + UIConstant.contentOffset,
+                offset: (itemHeight + UIConstant.contentOffset) * index,
+                index,
+            };
+        },
+        [itemHeight],
+    );
+
     return (
         <FlatList
             testID={testID}
@@ -31,6 +42,8 @@ export function UIGridList<T>({
             numColumns={UIConstant.grid.numColumns}
             columnWrapperStyle={styles.columnWrapperStyle}
             renderItem={renderItem}
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            {...(itemHeight && { getItemLayout })}
         />
     );
 }
