@@ -15,7 +15,6 @@ export function UIGridList<T>({
         ({ item, index, separators }) => {
             const height = itemHeight ? { height: itemHeight } : styles.itemSquare;
             const isLastItem = data?.length && index === data?.length - 1;
-            console.log(isLastItem);
             return (
                 <View style={[styles.item, height, !!isLastItem && styles.lastItem]}>
                     {renderItemProp({ item, index, separators })}
