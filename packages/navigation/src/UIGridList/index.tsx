@@ -43,7 +43,6 @@ export function UIGridList<T>({
             numColumns={UIConstant.grid.numColumns}
             columnWrapperStyle={styles.columnWrapperStyle}
             renderItem={renderItem}
-            // eslint-disable-next-line react/jsx-props-no-spreading
             {...(itemHeight && { getItemLayout })}
         />
     );
