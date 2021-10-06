@@ -67,7 +67,7 @@ export default class MenuItem extends UIActionComponent<MenuItemType, UIActionCo
         ];
 
         const content = (
-            <React.Fragment>
+            <>
                 <UILabel
                     color={disabled ? UILabelColors.TextTertiary : titleStyle || defaultTitleStyle}
                     numberOfLines={1}
@@ -84,7 +84,7 @@ export default class MenuItem extends UIActionComponent<MenuItemType, UIActionCo
                 >
                     {details}
                 </UILabel>
-            </React.Fragment>
+            </>
         );
 
         return <View style={containerStyle}>{content}</View>;

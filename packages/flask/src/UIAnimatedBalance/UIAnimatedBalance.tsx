@@ -36,7 +36,7 @@ const LOADING_ANIMATION_STARTING_POINT = 0;
 const LOADING_ANIMATION_ENDING_POINT = 1;
 
 function useIcon(
-    source: UIImageProps['source'],
+    source: UIImageProps['source'] | undefined,
     variant: TypographyVariants,
     loading: boolean,
     aspectRatio: number = 1,
@@ -88,6 +88,10 @@ function useIcon(
         };
     });
 
+    if (source == null) {
+        return null;
+    }
+
     return (
         <AnimatedUIImage
             source={source}
@@ -101,6 +105,8 @@ export function UIAnimatedBalance({
     testID,
     integerVariant = TypographyVariants.TitleLarge,
     fractionalVariant = TypographyVariants.LightLarge,
+    integerColor = ColorVariants.TextPrimary,
+    fractionalColor = ColorVariants.TextPrimary,
     value: rawValue,
     maxFractionalDigits = 2,
     icon,
@@ -109,10 +115,12 @@ export function UIAnimatedBalance({
 }: {
     testID?: string;
     value: number | BigNumber;
-    icon: UIImageProps['source'];
+    icon?: UIImageProps['source'];
     iconAspectRatio?: number;
     integerVariant?: TypographyVariants;
+    integerColor?: ColorVariants;
     fractionalVariant?: TypographyVariants;
+    fractionalColor?: ColorVariants;
     // We don't want to deal with edge cases for now
     // as the component is not for use for general cases with all number
     maxFractionalDigits?: number;
@@ -233,7 +241,8 @@ export function UIAnimatedBalance({
 
     const iconElement = useIcon(icon, integerVariant, loading, iconAspectRatio);
 
-    const colorStyle = React.useMemo(() => ({ color: theme[ColorVariants.TextPrimary] }), [theme]);
+    const integerColorStyle = React.useMemo(() => ({ color: theme[integerColor] }), [theme]);
+    const fractionalColorStyle = React.useMemo(() => ({ color: theme[fractionalColor] }), [theme]);
 
     const textLikeContainer = React.useMemo(
         () => (I18nManager.isRTL ? styles.rtlContainer : styles.ltrContainer),
@@ -256,25 +265,37 @@ export function UIAnimatedBalance({
                  * instead of `marginLeft` as space is more "text friendly"
                  * and will layout properly in text
                  */}
-                <Text style={[Typography[fractionalVariant], styles.hiddenText]}>
-                    {' '}
-                    {iconElement}
-                </Text>
+                {iconElement && (
+                    <Text style={[Typography[fractionalVariant], styles.hiddenText]}>
+                        {' '}
+                        {iconElement}
+                    </Text>
+                )}
                 <View style={[textLikeContainer, styles.visible]} testID={testID}>
                     <AnimatedTextInput
-                        style={[Typography[integerVariant], colorStyle, styles.integer]}
+                        style={[Typography[integerVariant], integerColorStyle, styles.integer]}
                         animatedProps={animatedIntegerProps}
                         defaultValue={formatted.value.integer}
                         underlineColorAndroid="transparent"
                         editable={false}
                     />
                     {maxFractionalDigits > 0 && (
-                        <Text style={[Typography[fractionalVariant], colorStyle, styles.delimeter]}>
+                        <Text
+                            style={[
+                                Typography[fractionalVariant],
+                                fractionalColorStyle,
+                                styles.delimeter,
+                            ]}
+                        >
                             {decimalSeparator}
                         </Text>
                     )}
                     <AnimatedTextInput
-                        style={[Typography[fractionalVariant], colorStyle, styles.fractional]}
+                        style={[
+                            Typography[fractionalVariant],
+                            fractionalColorStyle,
+                            styles.fractional,
+                        ]}
                         animatedProps={animatedFractionalProps}
                         defaultValue={formatted.value.fractional}
                         underlineColorAndroid="transparent"
@@ -305,27 +326,20 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
     integer: {
-        // make it "bold", it's provided by design
-        fontWeight: '600',
         // reset RN styles to have proper vertical alignment
         padding: 0,
         lineHeight: undefined,
     },
     delimeter: {
-        // text should be "thiner" here for sure by design
-        fontWeight: '400',
         lineHeight: undefined,
     },
     fractional: {
-        // text should be "thiner" here for sure by design
-        fontWeight: '400',
         // reset RN styles to have proper vertical alignment
         padding: 0,
         lineHeight: undefined,
     },
     hiddenInput: {
         color: 'transparent',
-        fontWeight: '600',
         // reset RN styles to have proper vertical alignment
         padding: 0,
         lineHeight: undefined,

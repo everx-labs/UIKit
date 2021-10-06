@@ -26,13 +26,13 @@ export const CountryPickerRow: React.FC<CountryRowProps> = ({ item }: CountryRow
 
     const onPress = React.useCallback(() => {
         onSelect && onSelect(item.code);
-    }, [item]);
+    }, [item.code, onSelect]);
 
     return (
         <TouchableOpacity onPress={onPress} style={styles.rowContainer}>
             <View style={styles.rowContainerInner}>
-                <UILabel>{item.name}</UILabel>
                 <UILabel style={styles.emojiContainer}>{item.emoji}</UILabel>
+                <UILabel>{item.name}</UILabel>
             </View>
         </TouchableOpacity>
     );
@@ -42,14 +42,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     rowContainerInner: {
         paddingVertical: UIConstant.contentOffset,
         flexDirection: 'row',
-        justifyContent: 'space-between',
         borderBottomColor: theme[ColorVariants.LineTertiary] as string,
         borderBottomWidth: 1,
     },
     rowContainer: {
-        paddingLeft: 16,
+        paddingLeft: UIConstant.contentOffset,
     },
     emojiContainer: {
-        paddingRight: 16,
+        paddingRight: UIConstant.contentOffset,
     },
 }));

@@ -137,7 +137,7 @@ function UISeedPhrasePopoverContent(props: UISeedPhrasePopoverProps) {
                     scrollEnabled
                     showsVerticalScrollIndicator
                     keyExtractor={item => item}
-                    keyboardShouldPersistTaps="handled"
+                    keyboardShouldPersistTaps="always"
                     data={hints}
                     extraData={currentHighlightedItemIndex}
                     renderItem={renderItem}
