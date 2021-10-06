@@ -1,6 +1,6 @@
 import React from 'react';
 import { ListRenderItem, View, StyleSheet } from 'react-native';
-import { FlatList } from '../Scrollable/FlatList';
+import { FlatList } from '../Scrollable';
 import { UIConstant } from '../constants';
 import type { GridProps } from './types';
 
@@ -43,7 +43,6 @@ export function UIGridList<T>({
             numColumns={UIConstant.grid.numColumns}
             columnWrapperStyle={styles.columnWrapperStyle}
             renderItem={renderItem}
-            // eslint-disable-next-line react/jsx-props-no-spreading
             {...(itemHeight && { getItemLayout })}
         />
     );

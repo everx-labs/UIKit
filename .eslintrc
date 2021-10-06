@@ -10,9 +10,6 @@
         "plugin:flowtype/recommended",
         "plugin:@typescript-eslint/recommended",
         "prettier",
-        "prettier/react",
-        "prettier/flowtype",
-        "prettier/@typescript-eslint",
         "plugin:react-hooks/recommended"
     ],
     "plugins": ["@babel", "@typescript-eslint", "flowtype", "module-resolver", "import"],
@@ -57,6 +54,7 @@
         "react/jsx-indent": ["error", 4],
         "react/prop-types": ["warn", { "skipUndeclared": true }],
         "react/require-default-props": "off",
+        "react/jsx-props-no-spreading": "off",
 
         "arrow-body-style": "off",
         "arrow-parens": ["error", "as-needed"],

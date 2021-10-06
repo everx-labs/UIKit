@@ -1,4 +1,4 @@
-import type { FlatListProps, ListRenderItem, ViewStyle } from 'react-native';
+import type { FlatListProps, ListRenderItem, ViewStyle, StyleProp } from 'react-native';
 
 export type GridProps<ItemT> = {
     /**
@@ -12,7 +12,7 @@ export type GridProps<ItemT> = {
     /**
      * GridView container style
      */
-    containerStyle?: ViewStyle;
+    containerStyle?: StyleProp<ViewStyle>;
     /**
      * The height of the grid item. By default all items are squares.
      */
