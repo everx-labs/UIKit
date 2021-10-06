@@ -34,6 +34,17 @@ function measureList<Item>(cellWidth: number, data: MasonryItem<Item>[], numOfCo
 
     const layout: Layout = {};
 
+    // Calculating offsets for columns in advance,
+    // since for each row they are simply going to
+    // be repeated agan
+    const offsetsByColumn = new Array(numOfColumns).fill(null).map((_, column) => {
+        return (
+            UIConstant.contentOffset +
+            column * cellWidth +
+            (column > 0 ? column * interRowsOffset : 0)
+        );
+    });
+
     for (let i = 0; i < data.length; i += 1) {
         const item = data[i];
         const row = Math.trunc(i / numOfColumns);
@@ -45,11 +56,7 @@ function measureList<Item>(cellWidth: number, data: MasonryItem<Item>[], numOfCo
         }
 
         const y = columnsHeights[column];
-        // TODO: maybe precompute it?
-        const x =
-            UIConstant.contentOffset +
-            column * cellWidth +
-            (column > 0 ? column * interRowsOffset : 0);
+        const x = offsetsByColumn[column];
 
         columnsHeights[column] += height + interColumnOffset;
 
@@ -125,10 +132,6 @@ type UIMasonryListCellProps<Item = any> = {
     layout: LayoutCell;
 };
 
-/**
- * TODO: I just feel that it might produce some bugs with layout being a ref
- * but can't imagine a case
- */
 const UIMasonryListCell = React.memo(
     React.forwardRef<UIMasonryListCellRef, UIMasonryListCellProps>(function UIMasonryListCell(
         { item, renderItem, width, layout }: UIMasonryListCellProps,
