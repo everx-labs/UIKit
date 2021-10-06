@@ -1,6 +1,6 @@
 import React from 'react';
 import { ListRenderItem, View, StyleSheet } from 'react-native';
-import { FlatList } from '..';
+import { FlatList } from '../Scrollable/FlatList';
 import { UIConstant } from '../constants';
 import type { GridProps } from './types';
 

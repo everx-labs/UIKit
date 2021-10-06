@@ -4,13 +4,15 @@ import * as React from 'react';
 import {
     LayoutChangeEvent,
     NativeScrollEvent,
-    NativeSyntheticEvent,
-    ScrollView,
     View,
     ViewStyle,
+    ScrollView,
+    NativeSyntheticEvent,
+    ScrollViewProps,
 } from 'react-native';
 
 import { UIConstant } from '../constants';
+import { wrapScrollableComponent } from '../Scrollable/wrapScrollableComponent';
 
 const interColumnOffset = UIConstant.contentOffset / 2;
 const interRowsOffset = interColumnOffset;
@@ -25,19 +27,22 @@ type LayoutCell = {
 
 type Layout = Record<string, LayoutCell>;
 
-function measureList<Item>(
-    cellWidth: number,
-    data: MasonryItem<Item>[],
-    numOfColumns: number,
-    layout: Layout,
-) {
+function measureList<Item>(cellWidth: number, data: MasonryItem<Item>[], numOfColumns: number) {
     const columnsHeights = new Array(numOfColumns).fill(0);
+
+    let maxHeight = 0;
+
+    const layout: Layout = {};
 
     for (let i = 0; i < data.length; i += 1) {
         const item = data[i];
         const row = Math.trunc(i / numOfColumns);
         const column = i - row * numOfColumns;
         const height = cellWidth * item.aspectRatio;
+
+        if (height > maxHeight) {
+            maxHeight = height;
+        }
 
         const y = columnsHeights[column];
         // TODO: maybe precompute it?
@@ -48,10 +53,6 @@ function measureList<Item>(
 
         columnsHeights[column] += height + interColumnOffset;
 
-        if (layout[item.key] != null) {
-            continue;
-        }
-
         // eslint-disable-next-line no-param-reassign
         layout[item.key] = {
             height,
@@ -59,7 +60,57 @@ function measureList<Item>(
             y,
         };
     }
-    return Math.max.apply(null, columnsHeights);
+
+    return {
+        maxItemHeight: maxHeight,
+        contentHeight: Math.max.apply(null, columnsHeights),
+        layout,
+    };
+}
+
+type IndexItem = {
+    key: string;
+    y: number;
+};
+
+function buildIndex<Item>(data: MasonryItem<Item>[], layout: Layout) {
+    return data
+        .map<IndexItem>(({ key }) => {
+            return {
+                key,
+                y: layout[key].y,
+            };
+        })
+        .sort(({ y: a }, { y: b }) => {
+            return a < b ? -1 : 1;
+        });
+}
+
+// https://www.typescriptlang.org/play?ssl=10&ssc=12&pln=8&pc=19#code/FAMwrgdgxgLglgewgAgEZwgQwE4E8DKApjlABYAUUCC2AJgFzIRgC2qh2ANMhrYQB6EAzowDeyXAFEIDJq3bZkAXwDaAXQCUyUcGR7kAG0IxDhECYC8yAAwBuXfqMnscAOalLPGQOEA6IxCuMKT2+sgA7qRwRsjkMNhghFo6YWFUEEImLHC0tDFWALKYwb7xkFDk5C7uJgDUpuZaAPTIAEwaoal66Zk8MIQsyFa8PkIq2blGap1dPQhG-giu5CldqUbm3NUe3BN5hNxSMoxw-Sy+R7TcVDRXyADkpwMX0rTIAHzIN3T3J2cvMg+X2odAcXSUHTBqTgIFiT3Olw+Vm+tGSULWyG2nj2RhmqSUyEIBiEhG06LWG2xOX2eLCSmA5L0MNiWOQAFoGiYADxWACMaIxYWwxjA2BQWNp+npdOA9IZPRMbysKih4kujF51mU3CaLWsqokrw1vO1yF1yF5BvVFtapvNrStRotAGY7S1nY7jhaACxu5Dez2yXkAVj9wcDGoAbH7IxGLQB2P3xuO8gAcftTKfTSh1LQAnCm837NXHWlqc2aWrzLWE1U6y8WHbXDV6GxXzbyPc3ra0Te2qwHu-Xbf2LeGh63XaPebGJ7JWr7p8m54xWqHp5mV2117mLQWt2u-WXSzvK20a-o663o6PWk3Ly354nb12Hz3n7uF8A1L4hDQYJUV6yJgppAYwqDKFoFifKsgqYiKYrICBXJoMgAD87Imhqkp6BC9jAOacwLAYSzkOgWB4EQJAUK08bcBAhDhMgACC2DYJguDkJqC4aL4IDRAY5DMAYBi8SwmAAA6VAA+twcBQZ8KyPickEaGp9hEYQizLOROAEMQ2BkOQZbcKiHRAA
+function binarySearch(coord: number, indexes: { y: number }[]) {
+    if (indexes.length === 0) {
+        return 0;
+    }
+
+    let left = 0;
+    let right = indexes.length;
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+        const middle = Math.trunc((right + left) / 2);
+        const item = indexes[middle];
+        if (item.y >= coord) {
+            right = middle;
+        } else {
+            left = middle;
+        }
+
+        if (right - left <= 1) {
+            if (indexes[left].y >= coord) {
+                return left;
+            }
+            return right;
+        }
+    }
 }
 
 type UIMasonryListCellRef = {
@@ -83,7 +134,7 @@ const UIMasonryListCell = React.memo(
         { item, renderItem, width, layout }: UIMasonryListCellProps,
         ref,
     ) {
-        const [isVisible, setIsVisible] = React.useState(true);
+        const [isVisible, setIsVisible] = React.useState(false);
         React.useImperativeHandle(ref, () => ({
             show() {
                 setIsVisible(true);
@@ -139,89 +190,306 @@ function useMasonryCellsRefs<Item>(data: MasonryItem<Item>[]) {
     return cellsRefs.current;
 }
 
-export const UIMasonryList = React.memo(function UIMasonryList<Item>({
-    data,
-    numOfColumns,
-    renderItem,
-}: {
-    data: MasonryItem<Item>[];
-    numOfColumns: number;
-    renderItem: (item: MasonryItem<Item>) => React.ReactNode;
-}) {
-    const [width, setWidth] = React.useState(0);
+const virtualWindowSize = 1.5;
 
-    const onLayout = React.useCallback(
-        ({
-            nativeEvent: {
-                layout: { width: lWidth },
-            },
-        }: LayoutChangeEvent) => {
-            if (lWidth !== width) setWidth(lWidth);
-        },
-        [width],
-    );
+function manageTopCells(
+    prev: number,
+    curr: number,
+    show: (start: number, end: number) => void,
+    hide: (start: number, end: number) => void,
+) {
+    if (prev === curr) {
+        return;
+    }
 
-    const cellWidth = React.useMemo(() => {
-        return (
-            (width - 2 * UIConstant.contentOffset - (numOfColumns - 1) * interColumnOffset) /
-            numOfColumns
-        );
-    }, [width, numOfColumns]);
+    if (prev < curr) {
+        hide(prev, curr);
+    } else {
+        show(curr, prev);
+    }
+}
+function manageBottomCells(
+    prev: number,
+    curr: number,
+    show: (start: number, end: number) => void,
+    hide: (start: number, end: number) => void,
+) {
+    if (prev === curr) {
+        return;
+    }
 
-    const layoutRef = React.useRef<Layout>({});
+    if (prev < curr) {
+        show(prev, curr);
+    } else {
+        hide(curr, prev);
+    }
+}
 
-    const height = React.useMemo(() => {
-        if (width === 0) {
-            return 0;
-        }
-
-        return measureList(cellWidth, data, numOfColumns, layoutRef.current);
-    }, [width, cellWidth, data, numOfColumns]);
-
-    const contentContainerStyle: ViewStyle = React.useMemo(
-        () => ({
-            position: 'relative',
-            height,
-        }),
-        [height],
-    );
+function useVirtualization<Item>(
+    data: MasonryItem<Item>[],
+    cellWidth: number,
+    numOfColumns: number,
+    onLayoutProp: ScrollViewProps['onLayout'],
+    onScrollProp: ScrollViewProps['onScroll'],
+    setWidth: (w: number) => void,
+) {
+    const lastTopCellIndex = React.useRef(0);
+    const lastBottomCellIndex = React.useRef(0);
 
     const cellsRefs = useMasonryCellsRefs(data);
 
-    const content =
-        height > 0 &&
-        data.map(item => (
-            <UIMasonryListCell
-                ref={cellsRefs[item.key]}
-                key={item.key}
-                item={item}
-                renderItem={renderItem}
-                width={cellWidth}
-                layout={layoutRef.current[item.key]}
-            />
-        ));
+    const [initialWindowHeight, setInitialWindowHeight] = React.useState(0);
+
+    const { maxItemHeight, contentHeight, cellsIndexes, layout } = React.useMemo(() => {
+        if (cellWidth < 0) {
+            return {
+                maxItemHeight: 0,
+                contentHeight: 0,
+                cellsIndexes: [],
+                layout: {},
+            };
+        }
+
+        /**
+         * This is how it works:
+         *
+         * Since a developer must provide `aspectRatio` for each item
+         * we can calculate the overall height of all items.
+         * Also within that pass we calculate coordinates for each cell,
+         * that are used to position them in ScrollView properly.
+         * Each cell has `position: absolute`.
+         */
+        const measurement = measureList(cellWidth, data, numOfColumns);
+        /**
+         * Also we have to build index, to run binary search later (see onScroll).
+         * In a nutshell it's just a sorting by `y` coordinate.
+         */
+        const indexes = buildIndex(data, measurement.layout);
+
+        return {
+            ...measurement,
+            cellsIndexes: indexes,
+        };
+    }, [cellWidth, data, numOfColumns]);
+
+    const hide = React.useCallback(
+        (start: number, end: number) => {
+            for (let i = start; i < end; i += 1) {
+                cellsRefs[cellsIndexes[i].key].current?.hide();
+            }
+        },
+        [cellsIndexes, cellsRefs],
+    );
+    const show = React.useCallback(
+        (start: number, end: number) => {
+            for (let i = start; i < end; i += 1) {
+                cellsRefs[cellsIndexes[i].key].current?.show();
+            }
+        },
+        [cellsIndexes, cellsRefs],
+    );
+
+    React.useEffect(() => {
+        /**
+         * So basically when we render items for the first time,
+         * we have to calculate items that're in virtual window
+         */
+        const bottom = binarySearch(
+            initialWindowHeight + virtualWindowSize * initialWindowHeight,
+            cellsIndexes,
+        );
+        manageBottomCells(lastBottomCellIndex.current, bottom, show, hide);
+
+        lastBottomCellIndex.current = bottom;
+    }, [cellsIndexes, initialWindowHeight, cellsRefs, show, hide]);
+
+    const onLayout = React.useCallback(
+        (event: LayoutChangeEvent) => {
+            const {
+                nativeEvent: {
+                    layout: { width: lWidth, height: lHeight },
+                },
+            } = event;
+            setWidth(lWidth);
+            if (initialWindowHeight === 0) {
+                setInitialWindowHeight(lHeight);
+            }
+
+            if (onLayoutProp) {
+                onLayoutProp(event);
+            }
+        },
+        [initialWindowHeight, onLayoutProp, setWidth],
+    );
 
     const onScroll = React.useCallback(
-        ({
-            nativeEvent: {
-                contentOffset: { y },
-                contentSize: { height: contentHeight },
-                layoutMeasurement: { height: windowHeight },
-            },
-        }: NativeSyntheticEvent<NativeScrollEvent>) => {
-            console.log(y, contentHeight, windowHeight);
+        (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+            const {
+                nativeEvent: {
+                    contentOffset: { y },
+                    layoutMeasurement: { height: windowHeight },
+                },
+            } = event;
+            /**
+             * This is a core of virtualization.
+             *
+             * At the point we already prepared a sorted index
+             * which we can easily and fast traverse to find
+             * cells keys that fit into our virtual window.
+             *
+             * We use modified binary search alrorithm,
+             * kinda like "binary search with duplicates to left side".
+             *
+             * Because we sort index by `y` coordinate,
+             * we can easily find what cells to show for bottom edge,
+             * but for top edge it's not that easy.
+             * For top edge we have to use another index, that is sorted
+             * by `y + height` values, to detect bottom edges of cells.
+             * But if we did that, we would merge two sets of keys,
+             * that is simply not efficient. To prevent that we just modify
+             * the top edge on a virtual window, and include height
+             * for the most tall cell that we have there. Therefore
+             * we can safely use our algorithm for top edge too.
+             *
+             * So, we found items where a virtual window
+             * starts and ends, what next?
+             *
+             * We could've easily just traverse through all items
+             * and change the status for cells. But again, we could do better.
+             * To improve that we save last known items and use them for
+             * next measurement.
+             * So, we have
+             * - previous top item
+             * - current top item
+             * - previous bottom item
+             * - current bottom item
+             *
+             * Since our index is sorted, we can easily find out that
+             * items between previous and current items the ones that're
+             * changed, and others shouldn't be touched.
+             *
+             * With this information, we just traverse items between that points,
+             * and either turn them on or off, based on condition.
+             *
+             * You might ask, how cells can be turned on and off?
+             * It's done with refs. We render wrappers for all cells,
+             * that by default render nothing. These wrappers
+             * have methods `show` and `hide`, that simply call
+             * internal `useState`.
+             */
+            const top = binarySearch(
+                y - virtualWindowSize * windowHeight - maxItemHeight,
+                cellsIndexes,
+            );
+            const bottom = binarySearch(
+                y + windowHeight + virtualWindowSize * windowHeight,
+                cellsIndexes,
+            );
+            manageTopCells(lastTopCellIndex.current, top, show, hide);
+            manageBottomCells(lastBottomCellIndex.current, bottom, show, hide);
+            lastTopCellIndex.current = top;
+            lastBottomCellIndex.current = bottom;
+
+            if (onScrollProp) {
+                onScrollProp(event);
+            }
         },
-        [],
+        [cellsIndexes, maxItemHeight, onScrollProp, show, hide],
     );
 
-    return (
-        <ScrollView
-            onLayout={onLayout}
-            contentContainerStyle={contentContainerStyle}
-            onScroll={onScroll}
-            scrollEventThrottle={16 * 3}
-        >
-            {content}
-        </ScrollView>
-    );
-});
+    return {
+        onLayout,
+        onScroll,
+        contentHeight,
+        cellsRefs,
+        layout,
+    };
+}
+
+type UIMasonryListProps<Item = any> = {
+    /**
+     * Data for each cell.
+     * Please be aware that both list and cells are wrapped with `React.memo`
+     * So you have to be sure that you provide a new array
+     * if you want to update the list.
+     */
+    data: MasonryItem<Item>[];
+    /**
+     * Number of columns.
+     *
+     * 2 by default.
+     */
+    numOfColumns?: number;
+    /**
+     * Callback to render content of the cell.
+     */
+    renderItem: (item: MasonryItem<Item>) => React.ReactNode;
+} & ScrollViewProps;
+
+/**
+ * Masonry list with virtualization.
+ *
+ * IMPORTANT:
+ * You *must* provide `aspectRatio` for each cell!
+ */
+const UIMasonryListOriginal = React.memo(
+    React.forwardRef<ScrollView, UIMasonryListProps>(function UIMasonryList<Item>(
+        { data, numOfColumns = 2, renderItem, ...scrollViewProps }: UIMasonryListProps<Item>,
+        ref: React.ForwardedRef<ScrollView>,
+    ) {
+        const [width, setWidth] = React.useState(0);
+
+        const cellWidth = React.useMemo(() => {
+            return (
+                (width - 2 * UIConstant.contentOffset - (numOfColumns - 1) * interColumnOffset) /
+                numOfColumns
+            );
+        }, [width, numOfColumns]);
+
+        const { onLayout, onScroll, contentHeight, cellsRefs, layout } = useVirtualization(
+            data,
+            cellWidth,
+            numOfColumns,
+            scrollViewProps.onLayout,
+            scrollViewProps.onScroll,
+            setWidth,
+        );
+
+        const contentContainerStyle: ViewStyle = React.useMemo(
+            () => ({
+                position: 'relative',
+                height: contentHeight,
+            }),
+            [contentHeight],
+        );
+
+        const content =
+            contentHeight > 0 &&
+            data.map(item => (
+                <UIMasonryListCell
+                    ref={cellsRefs[item.key]}
+                    key={item.key}
+                    item={item}
+                    renderItem={renderItem}
+                    width={cellWidth}
+                    layout={layout[item.key]}
+                />
+            ));
+
+        return (
+            <ScrollView
+                // eslint-disable-next-line react/jsx-props-no-spreading
+                {...scrollViewProps}
+                ref={ref}
+                onLayout={onLayout}
+                contentContainerStyle={contentContainerStyle}
+                onScroll={onScroll}
+                scrollEventThrottle={16}
+            >
+                {content}
+            </ScrollView>
+        );
+    }),
+);
+
+export const UIMasonryList = wrapScrollableComponent(UIMasonryListOriginal, 'UIMasonryList');

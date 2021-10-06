@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { useWindowDimensions, View } from 'react-native';
 
 import { UIGridList, UIMasonryList, createStackNavigator } from '@tonlabs/uikit.navigation';
 import {
@@ -60,6 +60,11 @@ export function getRandomNum() {
 }
 
 function MasonryList() {
+    const { width: windowWidth } = useWindowDimensions();
+    const width = Math.max(850, windowWidth);
+
+    const numOfColumns = Math.trunc(width / 180);
+
     const [data] = React.useState(() => {
         return new Array(100 * Math.trunc(Math.random() * 10)).fill(null).map((_, index) => {
             return {
@@ -76,23 +81,21 @@ function MasonryList() {
                     flex: 1,
                     backgroundColor: `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${
                         Math.random() * 255
-                    }, ${Math.random()})`,
+                    }, ${0.5 + 0.5 * Math.random()})`,
                 }}
             />
         );
     }, []);
     return (
-        <ExampleSection title="UIMasonryList">
-            <View
-                style={{
-                    flex: 1,
-                    maxWidth: 500,
-                    margin: 8,
-                }}
-            >
-                <UIMasonryList data={data} numOfColumns={2} renderItem={renderItem} />
-            </View>
-        </ExampleSection>
+        <View
+            style={{
+                flex: 1,
+                maxWidth: 850,
+                margin: 8,
+            }}
+        >
+            <UIMasonryList data={data} numOfColumns={numOfColumns} renderItem={renderItem} />
+        </View>
     );
 }
 
@@ -127,7 +130,7 @@ export function ListsScreen() {
                 name="MasonryList"
                 options={{
                     useHeaderLargeTitle: true,
-                    title: 'MasonryList',
+                    title: 'UIMasonryList',
                 }}
                 component={MasonryList}
             />
@@ -135,7 +138,7 @@ export function ListsScreen() {
                 name="GridList"
                 options={{
                     useHeaderLargeTitle: true,
-                    title: 'GridList',
+                    title: 'UIGridList',
                 }}
                 component={GridList}
             />

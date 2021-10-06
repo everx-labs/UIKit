@@ -43,7 +43,7 @@ import { ButtonsScreen } from './screens/Buttons';
 import { Checkbox } from './screens/Checkbox';
 import { Inputs } from './screens/Inputs';
 import { Design } from './screens/Design';
-import { Grids } from './screens/Grids';
+import { ListsScreen } from './screens/Lists';
 import { Chart } from './screens/Chart';
 import { Images } from './screens/Images';
 import { Layouts } from './screens/Layouts';
@@ -182,9 +182,9 @@ const Main = ({ navigation }: { navigation: any }) => {
                             layout={styles.button}
                         />
                         <UILinkButton
-                            title="Grids"
+                            title="Lists"
                             type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('grids')}
+                            onPress={() => navigation.navigate('lists')}
                             layout={styles.button}
                         />
                         <UILinkButton
@@ -324,7 +324,7 @@ const App = () => {
                             <Split.Screen name="chat" component={Chat} />
                             <Split.Screen name="checkbox" component={Checkbox} />
                             <Split.Screen name="design" component={Design} />
-                            <Split.Screen name="grids" component={Grids} />
+                            <Split.Screen name="lists" component={ListsScreen} />
                             <Split.Screen name="images" component={Images} />
                             <Split.Screen name="inputs" component={Inputs} />
                             <Split.Screen name="keyboard" component={KeyboardScreen} />
