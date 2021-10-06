@@ -1,3 +1,5 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/jsx-props-no-spreading */
 import * as React from 'react';
 import {
     TouchableWithoutFeedback,
@@ -8,7 +10,7 @@ import {
     Text,
     TextStyle,
 } from 'react-native';
-import ParsedText from 'react-native-parsed-text';
+import ParsedText, { PATTERNS } from 'react-native-parsed-text';
 import { runOnUI } from 'react-native-reanimated';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
@@ -26,6 +28,29 @@ import { MessageStatus, OnLongPressText, OnPressUrl } from './types';
 import type { ChatPlainTextMessage, PlainTextMessage } from './types';
 import { useBubblePosition, useBubbleContainerStyle } from './useBubblePosition';
 import { useBubbleBackgroundColor, useBubbleRoundedCornerStyle } from './useBubbleStyle';
+import { URI_TON_SURF } from './constants';
+
+const renderParsedText = (matchingString: string, matches: string[]) => {
+    if (matches[1]) {
+        const domain = matches[0].replace(matches[1], '').replace(matches[2], '');
+        if (domain === URI_TON_SURF) {
+            const clearUrl = matches[0].replace(matches[1], '');
+            return matchingString.replace(matches[0], '') + decodeURI(clearUrl);
+        }
+    }
+    return matchingString;
+};
+
+const formatURI = (str: string) => {
+    const encodedURIArray = encodeURI(str).match(PATTERNS.url);
+    if (encodedURIArray) {
+        const encodedURI = encodedURIArray[0];
+        const clearText = str.replace(decodeURI(encodedURI), '');
+        return clearText + encodedURI;
+    }
+
+    return str;
+};
 
 const useUrlStyle = (status: MessageStatus) => {
     const theme = useTheme();
@@ -205,10 +230,11 @@ export function BubbleChatPlainText(props: ChatPlainTextMessage) {
                             type: 'url',
                             style: urlStyle,
                             onPress: urlPressHandler,
+                            renderText: renderParsedText,
                         },
                     ]}
                 >
-                    {props.text}
+                    {formatURI(props.text)}
                 </ParsedText>
                 <BubbleTime
                     {...props}
@@ -254,10 +280,11 @@ export function BubbleSimplePlainText(props: PlainTextMessage) {
                             type: 'url',
                             style: urlStyle,
                             onPress: urlPressHandler,
+                            renderText: renderParsedText,
                         },
                     ]}
                 >
-                    {props.text}
+                    {formatURI(props.text)}
                 </ParsedText>
             </UILabel>
         </PlainTextContainer>

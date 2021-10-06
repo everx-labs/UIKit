@@ -1,5 +1,7 @@
 import { Platform } from 'react-native';
 
+export const URI_TON_SURF = 'uri.ton.surf';
+
 const GRID_LINE_HEIGHT = 4;
 
 export const UIConstant = {
