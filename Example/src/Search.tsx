@@ -17,6 +17,7 @@ export type FuseSearchResult<T> = {
 
 export class SectionsService {
     static instance: SectionsService;
+
     static get shared() {
         if (SectionsService.instance == null) {
             SectionsService.instance = new SectionsService();

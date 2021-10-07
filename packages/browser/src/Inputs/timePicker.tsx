@@ -10,9 +10,10 @@ import {
 
 import { UIDateTimePickerMode } from '@tonlabs/uikit.flask';
 
+import { uiLocalized } from '@tonlabs/uikit.localization';
+
 import type { TimeMessage } from '../types';
 import { UIDateTimePicker } from '../UIDateTimePicker';
-import { uiLocalized } from '@tonlabs/uikit.localization';
 
 export function TimePicker({ onLayout, ...message }: TimeMessage) {
     const [isPickerVisible, setPickerVisible] = React.useState(false);

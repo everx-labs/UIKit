@@ -77,7 +77,7 @@ export function usePosition(
     const snapPointPosition = useDerivedValue(() => {
         let snapPoint = 0 - height.value;
         if (shouldHandleKeyboard) {
-            snapPoint - keyboardHeight.value;
+            snapPoint -= keyboardHeight.value;
         }
         return snapPoint;
     });

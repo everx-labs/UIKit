@@ -81,7 +81,8 @@ const TimeScroller = ({ title, data, onChange, current }: any) => {
                         const center = i + 2;
                         if (center === index) {
                             return a;
-                        } else if (center + 1 === index || center - 1 === index) {
+                        }
+                        if (center + 1 === index || center - 1 === index) {
                             return b;
                         }
                         return c;
@@ -190,7 +191,8 @@ export function TimeInput({ onChange, current }: TimeInputProps) {
     const returnMinutes = () => {
         if (current.getHours() <= minHour) {
             return getMinutesArray(minMinutes);
-        } else if (current.getHours() >= maxHour) {
+        }
+        if (current.getHours() >= maxHour) {
             return getMinutesArray(0, maxMinutes);
         }
         return getMinutesArray();

@@ -49,6 +49,7 @@ export default class UIIdleDetector extends PureComponent<Props, State> {
         onPanResponderTerminationRequest: this.onShouldSetPanResponderCapture,
         onStartShouldSetPanResponderCapture: this.onShouldSetPanResponderCapture,
     });
+
     timeout: ?TimeoutID;
 
     // Actions

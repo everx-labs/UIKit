@@ -95,13 +95,15 @@ const getButtonStates = (type: UIBoxButtonType) => {
             pressOverlayColor: ColorVariants.StaticPressOverlay,
             activeContentColor: ColorVariants.StaticTextPrimaryLight,
         };
-    } else if (type === UIBoxButtonType.Secondary) {
+    }
+    if (type === UIBoxButtonType.Secondary) {
         return {
             hoverOverlayColor: ColorVariants.BackgroundTertiary,
             pressOverlayColor: ColorVariants.BackgroundNeutral,
             activeContentColor: ColorVariants.TextPrimary,
         };
-    } else if (type === UIBoxButtonType.Tertiary) {
+    }
+    if (type === UIBoxButtonType.Tertiary) {
         return {
             hoverOverlayColor: ColorVariants.Transparent,
             pressOverlayColor: ColorVariants.Transparent,

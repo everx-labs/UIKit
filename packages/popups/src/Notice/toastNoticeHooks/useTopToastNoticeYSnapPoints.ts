@@ -19,10 +19,10 @@ export const useTopToastNoticeYSnapPoints = (
         /**
          * Let's be safe if initialWindowMetrics does not has the value
          */
-        return !!initialWindowMetrics?.frame.height
+        return initialWindowMetrics?.frame.height
             ? initialWindowMetrics?.frame.height
             : screenDimensionsHeight;
-    }, [initialWindowMetrics, screenDimensionsHeight]);
+    }, [screenDimensionsHeight]);
 
     const openedYSnapPoint = useDerivedValue(() => {
         return -screenHeight + statusBarHeight + UIConstant.contentOffset;

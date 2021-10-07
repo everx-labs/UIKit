@@ -70,20 +70,20 @@ const DatePicker = (props: UIDateTimePickerType) => {
             default:
             case 'datepicker':
                 return (
-                    <React.Fragment>
+                    <>
                         <Calendar />
                         <SelectMonth />
                         <SelectTime />
-                    </React.Fragment>
+                    </>
                 );
             case 'monthYear':
                 return <SelectMonth />;
             case 'calendar':
                 return (
-                    <React.Fragment>
+                    <>
                         <Calendar />
                         <SelectMonth />
-                    </React.Fragment>
+                    </>
                 );
             case 'time':
                 return <SelectTime />;

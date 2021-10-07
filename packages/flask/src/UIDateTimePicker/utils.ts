@@ -9,6 +9,7 @@ class Utils {
         max: Date | undefined;
         min: Date | undefined;
     };
+
     private readonly config: {
         selectedFormat: string;
         monthYearFormat: string;
@@ -22,6 +23,7 @@ class Utils {
         monthNames: string[];
         minute: string;
     };
+
     constructor({ min, max, mode }: UIDateTimePickerType & PickerPropsType) {
         this.data = {
             min,
@@ -45,6 +47,7 @@ class Utils {
         }
     }
 
+    // eslint-disable-next-line class-methods-use-this
     get flexDirection() {
         return {
             flexDirection: 'row',

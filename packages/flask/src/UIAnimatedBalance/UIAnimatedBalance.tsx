@@ -95,7 +95,7 @@ function useIcon(
     return (
         <AnimatedUIImage
             source={source}
-            resizeMode={'contain'}
+            resizeMode="contain"
             style={[iconStaticStyle, iconAnimatedStyle]}
         />
     );
@@ -127,7 +127,7 @@ export function UIAnimatedBalance({
     loading?: boolean;
 }) {
     const theme = useTheme();
-    let value: number =
+    const value: number =
         rawValue instanceof BigNumber
             ? rawValue
                   .multipliedBy(10 ** maxFractionalDigits)

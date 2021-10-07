@@ -1,8 +1,9 @@
 import React from 'react';
 import { ColorVariants, TypographyVariants, UIIndicator, UILabel } from '@tonlabs/uikit.hydrogen';
-import { CountryPickerContext } from './CountryPickerContext';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 import { View, StyleSheet } from 'react-native';
+
+import { CountryPickerContext } from './CountryPickerContext';
 
 function renderLoading() {
     return <UIIndicator />;
@@ -24,6 +25,7 @@ export const ListEmptyComponent = () => {
     const { loading } = React.useContext(CountryPickerContext);
 
     const renderContent = React.useMemo(
+        // eslint-disable-next-line no-confusing-arrow
         () => (loading ? renderLoading() : renderEmptyList()),
         [loading],
     );
