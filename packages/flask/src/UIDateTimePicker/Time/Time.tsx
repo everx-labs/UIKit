@@ -24,6 +24,7 @@ import {
     useTheme,
 } from '@tonlabs/uikit.hydrogen';
 import { ScrollView } from '@tonlabs/uikit.navigation';
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import { useTime } from './useTime';
 import { TimeInputWarning } from './TimeInputWarning';
@@ -129,7 +130,6 @@ const TimeInput = React.forwardRef<TextInput, TimeInputProps>(function TimeInput
                         style={[
                             Typography[TypographyVariants.Action],
                             { lineHeight: undefined, padding: 0, fontVariant: ['tabular-nums'] },
-                            // { backgroundColor: 'rgba(255,0,0,.1)' },
                         ]}
                         animatedProps={hoursProps}
                         defaultValue={hours.value}
@@ -187,8 +187,9 @@ export function Time() {
     return (
         <ScrollView contentContainerStyle={styles.wrapper} keyboardShouldPersistTaps="handled">
             <View style={styles.selectTimeInputContainer}>
-                {/* TODO: localize me! */}
-                <UILabel role={TypographyVariants.TitleMedium}>Time</UILabel>
+                <UILabel role={TypographyVariants.TitleMedium}>
+                    {uiLocalized.DateTimePicker.Time}
+                </UILabel>
                 <View style={styles.timeInputWrapper}>
                     <TimeInput ref={inputRef} initialTextTime={initialTime} onChange={set} />
                     {isAmPmTime && <TimeInputSwitcher isAM={isAM} onPress={toggleAmPm} />}
@@ -210,7 +211,7 @@ const styles = StyleSheet.create({
     },
     timeInputWrapper: { flexDirection: 'row' },
     timeInput: {
-        width: 65, // TODO: why it's hardcoded!!!
+        width: 65,
         borderRadius: 8,
         flexDirection: 'row',
         alignItems: 'center',

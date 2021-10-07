@@ -98,7 +98,6 @@ export function useDaysCalendar() {
         min,
         max,
     } = useDateTimeState();
-    // TODO: it should be last valid rather!!!
     const date = React.useMemo(() => selectedDate ?? dayjs(), [selectedDate]);
 
     const dayNamesShort = React.useMemo(

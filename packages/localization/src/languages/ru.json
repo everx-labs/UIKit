@@ -618,6 +618,7 @@
         "Day": "День",
         "Month": "Месяц",
         "Year": "Год",
+        "Time": "Время",
         "AM": "AM",
         "PM": "PM",
         "Warning": "Choose a time between {0} and {1}",

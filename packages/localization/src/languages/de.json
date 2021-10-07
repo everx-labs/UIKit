@@ -630,6 +630,7 @@
         "Day": "Day",
         "Month": "Month",
         "Year": "Year",
+        "Time": "Time",
         "AM": "AM",
         "PM": "PM",
         "Warning": "Choose a time between {0} and {1}",

@@ -12,7 +12,6 @@ type DateTimeStateContext = {
     isAmPmTime?: boolean;
 };
 
-// TODO: change type!!!
 const DateTimeContext = React.createContext<DateTimeStateContext>({} as DateTimeStateContext);
 
 export const DateTimeStateProvider = DateTimeContext.Provider;
