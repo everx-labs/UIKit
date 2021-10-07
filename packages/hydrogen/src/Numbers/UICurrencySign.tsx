@@ -133,8 +133,8 @@ function AnimatedCurrencyIcon({
 
     React.useEffect(() => {
         cancelAnimation(loadingProgress);
-        loadingProgress.value = LOADING_ANIMATION_STARTING_POINT;
         if (loading) {
+            loadingProgress.value = LOADING_ANIMATION_STARTING_POINT;
             loadingProgress.value = withRepeat(
                 withTiming(LOADING_ANIMATION_ENDING_POINT, {
                     duration: 1000,
@@ -143,6 +143,13 @@ function AnimatedCurrencyIcon({
                 // https://docs.swmansion.com/react-native-reanimated/docs/2.3.0-alpha.2/api/withRepeat#numberofreps-number-default-2
                 -1,
             );
+        } else {
+            // If animation was in progress
+            // we have to complete it, so that
+            // it doesn't look like it's glitching
+            loadingProgress.value = withTiming(LOADING_ANIMATION_ENDING_POINT, {
+                duration: 1000 * (LOADING_ANIMATION_ENDING_POINT - loadingProgress.value),
+            });
         }
     }, [loading, loadingProgress]);
 
