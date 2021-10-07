@@ -1,21 +1,7 @@
 import * as React from 'react';
-import { UIDateTimePickerView, UIDateTimePickerType } from '@tonlabs/uikit.flask';
 
-import { UIPullerSheet } from './UIPullerSheet';
+import { UIDateTimePickerView, UIDateTimePickerProps } from '@tonlabs/uikit.flask';
 
-export type UIDateTimePickerFullType = UIDateTimePickerType & {
-    visible: boolean;
-    onClose: () => void;
-};
-
-export const UIDateTimePicker = ({
-    visible,
-    onClose,
-    ...dateTimePickerProps
-}: UIDateTimePickerFullType) => {
-    return (
-        <UIPullerSheet visible={visible} onClose={onClose}>
-            <UIDateTimePickerView {...dateTimePickerProps} />
-        </UIPullerSheet>
-    );
+export const UIDateTimePicker = (props: UIDateTimePickerProps) => {
+    return <UIDateTimePickerView {...props} />;
 };

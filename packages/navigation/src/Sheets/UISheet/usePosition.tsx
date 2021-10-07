@@ -51,9 +51,11 @@ enum SHOW_STATES {
 export function usePosition(
     height: Animated.SharedValue<number>,
     keyboardHeight: Animated.SharedValue<number>,
+    bottomInset: number,
     hasOpenAnimation: boolean = true,
     hasCloseAnimation: boolean = true,
     shouldHandleKeyboard: boolean = true,
+    countRubberBandDistance: boolean = false,
     onCloseProp: OnClose | undefined,
     onCloseModal: OnClose,
     onOpenEndProp: OnOpen | undefined,
@@ -76,8 +78,16 @@ export function usePosition(
 
     const snapPointPosition = useDerivedValue(() => {
         let snapPoint = 0 - height.value;
-        if (shouldHandleKeyboard) {
-            snapPoint -= keyboardHeight.value;
+        if (shouldHandleKeyboard && keyboardHeight.value !== 0) {
+            snapPoint =
+                snapPoint -
+                keyboardHeight.value +
+                // At this point we don't want inset to be the size of
+                // safe area bottom inset, therefore trying to apply
+                // only `contentOffset`
+                bottomInset -
+                UIConstant.contentOffset -
+                (countRubberBandDistance ? UIConstant.rubberBandEffectDistance : 0);
         }
         return snapPoint;
     });

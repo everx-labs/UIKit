@@ -16,6 +16,7 @@ target 'Quiver UI' do
 
   pod 'UIKitKeyboard', :path => "../../packages/keyboard/UIKitKeyboard.podspec"
   pod 'UIKitHydrogen', :path => "../../packages/hydrogen/UIKitHydrogen.podspec"
+  pod 'UIKitLocalization', :path => "../../packages/localization/UIKitLocalization.podspec"
 
   target 'Quiver UITests' do
     inherit! :complete
