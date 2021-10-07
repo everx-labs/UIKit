@@ -155,7 +155,7 @@ export function CountryPicker({
     );
 }
 
-const useStyles = makeStyles((theme: Theme, height) => ({
+const useStyles = makeStyles((theme: Theme, height: number) => ({
     sheet: {
         backgroundColor: theme[ColorVariants.BackgroundPrimary] as string,
         borderRadius: 10,
