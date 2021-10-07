@@ -3,6 +3,8 @@ import { View } from 'react-native';
 
 import { UILinkButton, UIBoxButton, UIBoxButtonVariant, UILabel } from '@tonlabs/uikit.hydrogen';
 import { UIPopup, UINoticeColor } from '@tonlabs/uikit.popups';
+import { createStackNavigator } from '@tonlabs/uikit.navigation';
+
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -48,7 +50,7 @@ function PushPopup() {
     );
 }
 
-export const Notifications = () => {
+export function Notifications() {
     const [noticeColor, setNoticeColor] = React.useState<UINoticeColor>(
         UINoticeColor.PrimaryInverted,
     );
@@ -186,4 +188,21 @@ export const Notifications = () => {
             </ExampleSection>
         </ExampleScreen>
     );
-};
+}
+
+const NotificationsStack = createStackNavigator();
+
+export function NotificationsScreen() {
+    return (
+        <NotificationsStack.Navigator>
+            <NotificationsStack.Screen
+                name="NotificationsWindow"
+                options={{
+                    useHeaderLargeTitle: true,
+                    title: 'Notifications',
+                }}
+                component={Notifications}
+            />
+        </NotificationsStack.Navigator>
+    );
+}

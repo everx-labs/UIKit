@@ -11,7 +11,6 @@ export { default as UILayoutManager } from './UILayoutManager';
 export { default as UILink } from './UILink';
 export { default as UIListHeader } from './UIListHeader';
 export { default as UILoadMoreButton } from './UILoadMoreButton';
-export { default as UILoopEffect } from './UILoopEffect';
 export { default as UINetworkStatus } from './UINetworkStatus';
 export { default as UIPureComponent } from './UIPureComponent';
 export { default as UIScaleButton } from './UIScaleButton';

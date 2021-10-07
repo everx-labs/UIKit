@@ -58,6 +58,8 @@ export function CountryPicker({ onLayout, ...message }: CountryMessage) {
                 }}
             />
             <UICountryPicker
+                banned={message.banned}
+                permitted={message.permitted}
                 visible={isPickerVisible}
                 onClose={() => {
                     setPickerVisible(false);

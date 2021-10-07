@@ -17,7 +17,6 @@ export const UIConstant = {
     alertBorderRadius: 12,
 
     headerHeight: 56,
-    pagerViewHeight: 72,
 
     elastiicWidthController: 600,
 
@@ -25,6 +24,7 @@ export const UIConstant = {
     elasticWidthBottomSheet: 448,
     swipeThreshold: 50,
     rubberBandEffectDistance: 50,
+    borderRadius: 12,
 
     titleMinimumFontScale: 0.7,
 
@@ -43,5 +43,12 @@ export const UIConstant = {
         notificationDurationsLong: Platform.OS === 'web' ? 1.5 * 3000 : 3000,
         defaultNoticeHeight: 72, // Using when notice has not yet been measured
         longPressDelay: 200,
+    },
+    pager: {
+        tabBarOffset: 16,
+        pagerViewHeight: 72,
+    },
+    grid: {
+        numColumns: 2,
     },
 };

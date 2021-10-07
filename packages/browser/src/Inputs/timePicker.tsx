@@ -69,7 +69,7 @@ export function TimePicker({ onLayout, ...message }: TimeMessage) {
                 mode={UIDateTimePickerMode.Time}
                 min={message.minTime}
                 max={message.maxTime}
-                current={message.currentTime}
+                defaultDate={message.currentTime}
                 interval={message.interval}
                 isAmPmTime={message.isAmPmTime}
                 onClose={() => {

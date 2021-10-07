@@ -1,6 +1,5 @@
 // @flow
 export { default as UIAccountPicker } from './UIAccountPicker';
-export { default as UIAnimatedBalanceView } from './UIAnimatedBalanceView';
 export { default as UIIdleDetector } from './UIIdleDetector';
 export { default as UILandingView } from './UILandingView';
 export { default as UIProfileInitials } from './UIProfileInitials';
