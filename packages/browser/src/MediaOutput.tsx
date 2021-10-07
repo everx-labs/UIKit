@@ -47,7 +47,7 @@ export const MediaOutput = ({
         }
     }, [onOutput]);
     return (
-        <View onLayout={onLayout}>
+        <View testID={`media_${prompt || 'default'}`} onLayout={onLayout}>
             <BubbleMedia
                 data={data}
                 preview={preview}
