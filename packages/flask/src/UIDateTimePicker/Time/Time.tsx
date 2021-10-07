@@ -16,6 +16,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import {
+    AnimatedTextInput,
     ColorVariants,
     Typography,
     TypographyVariants,
@@ -30,8 +31,6 @@ import { useTime } from './useTime';
 import { TimeInputWarning } from './TimeInputWarning';
 import { TimeInputSwitcher } from './TimeInputSwitcher';
 import { UIConstant } from '../../constants';
-
-import { AnimatedTextInput } from '../../UIAnimatedBalance/AnimatedTextInput';
 
 Animated.addWhitelistedNativeProps({ text: true });
 

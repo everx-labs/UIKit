@@ -24,7 +24,7 @@ export * from './UISwitcher';
 export * from './Numbers';
 
 // @ts-expect-error do not work with '.ios' and '.android' suffixes
-// eslint-disable-next-line import/no-unresolved
+// eslint-disable-next-line import/no-unresolved, import/extensions
 export * from './useWebFonts';
 export * from './useAutogrowTextView';
 export * from './useColorParts';
@@ -37,3 +37,5 @@ export * from './makeStyles';
 
 export * from './Haptics/Haptics';
 export * from './TouchableOpacity';
+
+export { AnimatedTextInput } from './Numbers/AnimatedTextInput';
