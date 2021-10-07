@@ -14,12 +14,12 @@ export function UIGridList<T>({
     const renderItem: ListRenderItem<T> = React.useCallback(
         ({ item, index, separators }) => {
             const height = itemHeight ? { height: itemHeight } : styles.itemSquare;
-            const isLastItem =
+            const isLonelyItem =
                 data?.length &&
                 data?.length % UIConstant.grid.numColumns &&
                 index === data?.length - 1;
             return (
-                <View style={[styles.item, height, !!isLastItem && styles.lastItem]}>
+                <View style={[styles.item, height, !!isLonelyItem && styles.lastItem]}>
                     {renderItemProp({ item, index, separators })}
                 </View>
             );
