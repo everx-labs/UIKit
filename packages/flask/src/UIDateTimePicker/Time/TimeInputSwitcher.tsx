@@ -15,7 +15,8 @@ import {
     TypographyVariants,
     TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
-import { UIConstant } from '../../../../constants';
+import { uiLocalized } from '@tonlabs/uikit.localization';
+import { UIConstant } from '../../constants';
 
 // @inline
 const SWITCHER_LEFT = 0;
@@ -61,17 +62,21 @@ export function TimeInputSwitcher({
         position.value = withSpring(isAM ? SWITCHER_LEFT : SWITCHER_RIGHT, {
             overshootClamping: true,
         });
-    }, [isAM]);
+    }, [isAM, position]);
 
     return (
         <TouchableOpacity activeOpacity={1} onPress={onPress}>
             <Animated.View style={styles.container}>
                 <Animated.View style={[styles.button, animatedButton]} />
                 <View style={[styles.labelContainer]}>
-                    <UILabel role={TypographyVariants.Action}>AM</UILabel>
+                    <UILabel role={TypographyVariants.Action}>
+                        {uiLocalized.DateTimePicker.AM}
+                    </UILabel>
                 </View>
                 <View style={[styles.labelContainer]}>
-                    <UILabel role={TypographyVariants.Action}>PM</UILabel>
+                    <UILabel role={TypographyVariants.Action}>
+                        {uiLocalized.DateTimePicker.PM}
+                    </UILabel>
                 </View>
             </Animated.View>
         </TouchableOpacity>

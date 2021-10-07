@@ -1,5 +1,7 @@
-import React from 'react';
+import * as React from 'react';
 import { View } from 'react-native';
+import type { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import {
@@ -11,19 +13,24 @@ import {
     UILabel,
     useTheme,
 } from '@tonlabs/uikit.hydrogen';
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import type { Dayjs } from 'dayjs';
-import dayjs from 'dayjs';
-import { UIConstant } from '../../../../constants';
-import { useCalendar } from '../../calendarContext';
+import { UIConstant } from '../../constants';
+import { useDateTimeState } from '../useDateTimeState';
 
 const iconSize = {
     height: UIConstant.timeInput.warningIconSize,
     width: UIConstant.timeInput.warningIconSize,
 };
 
+function convertToAmPm(value: Date | Dayjs | string) {
+    return dayjs(value).hour() === 12
+        ? `00:${dayjs(value).minute()}`
+        : dayjs(value).format('hh:mm');
+}
+
 export function TimeInputWarning({ isValidTime = true }: { isValidTime: boolean }) {
-    const { utils, min, max, isAmPmTime } = useCalendar();
+    const { min, max, isAmPmTime } = useDateTimeState();
     const theme = useTheme();
     const styles = useStyles(theme, isValidTime);
 
@@ -31,12 +38,12 @@ export function TimeInputWarning({ isValidTime = true }: { isValidTime: boolean 
         (value: Date | Dayjs | undefined) => {
             if (value) {
                 return isAmPmTime
-                    ? `${utils.convertToAmPm(value)} ${dayjs(value).format('A')}`
+                    ? `${convertToAmPm(value)} ${dayjs(value).format('A')}`
                     : dayjs(value).format('HH.mm');
             }
             return null;
         },
-        [isAmPmTime, utils],
+        [isAmPmTime],
     );
 
     const minTime = React.useMemo(() => formatTime(min), [min, formatTime]);
@@ -50,6 +57,29 @@ export function TimeInputWarning({ isValidTime = true }: { isValidTime: boolean 
         return isValidTime ? UIAssets.icons.ui.info : UIAssets.icons.ui.warn;
     }, [isValidTime]);
 
+    const warningLabel = React.useMemo(() => {
+        if (minTime == null && maxTime == null) {
+            return null;
+        }
+
+        if (minTime == null) {
+            return uiLocalized.formatString(
+                uiLocalized.DateTimePicker.WarningBefore,
+                maxTime as string,
+            );
+        }
+
+        if (maxTime == null) {
+            return uiLocalized.formatString(uiLocalized.DateTimePicker.WarningAfter, minTime);
+        }
+
+        return uiLocalized.formatString(uiLocalized.DateTimePicker.Warning, minTime, maxTime);
+    }, [minTime, maxTime]);
+
+    if (warningLabel == null) {
+        return null;
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.image}>
@@ -62,7 +92,7 @@ export function TimeInputWarning({ isValidTime = true }: { isValidTime: boolean 
                 />
             </View>
             <UILabel style={styles.label} role={TypographyVariants.ParagraphNote} color={color}>
-                {`Choose a time between ${minTime} and ${maxTime}`}
+                {warningLabel}
             </UILabel>
         </View>
     );

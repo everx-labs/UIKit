@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { UIDateTimePickerView, UIDateTimePickerType } from '@tonlabs/uikit.flask';
+import { UIDateTimePickerView, UIDateTimePickerProps } from '@tonlabs/uikit.flask';
 
-export const UIDateTimePicker = (props: UIDateTimePickerType) => {
+export const UIDateTimePicker = (props: UIDateTimePickerProps) => {
     return <UIDateTimePickerView {...props} />;
 };

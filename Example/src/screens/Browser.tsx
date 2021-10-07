@@ -1,10 +1,8 @@
 import * as React from 'react';
 import { useWindowDimensions, StatusBar } from 'react-native';
-import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
 import Clipboard from '@react-native-clipboard/clipboard';
 import BigNumber from 'bignumber.js';
 
-import { UIConstant } from '@tonlabs/uikit.core';
 import {
     InteractiveMessageType,
     UIBrowser,
@@ -624,8 +622,28 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                 key: `${Date.now()}-datetime-picker`,
                                 status: MessageStatus.Received,
                                 type: InteractiveMessageType.DateTime,
-                                minDateTime: new Date(new Date('07/22/2021').setHours(12, 4, 0)),
-                                maxDateTime: new Date(new Date('09/25/2021').setHours(19, 1, 0)),
+                                minDateTime: (() => {
+                                    const now = new Date();
+                                    return new Date(
+                                        now.getFullYear(),
+                                        now.getMonth() - 2,
+                                        now.getDate(),
+                                        12,
+                                        4,
+                                        0,
+                                    );
+                                })(),
+                                maxDateTime: (() => {
+                                    const now = new Date();
+                                    return new Date(
+                                        now.getFullYear(),
+                                        now.getMonth() + 2,
+                                        now.getDate(),
+                                        19,
+                                        1,
+                                        0,
+                                    );
+                                })(),
                                 onSelect: (externalState: any) => {
                                     setMessages([
                                         {
@@ -650,8 +668,22 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                 key: `${Date.now()}-date-picker`,
                                 status: MessageStatus.Received,
                                 type: InteractiveMessageType.Date,
-                                minDate: new Date('07/22/2021'),
-                                maxDate: new Date('09/25/2021'),
+                                minDate: (() => {
+                                    const now = new Date();
+                                    return new Date(
+                                        now.getFullYear(),
+                                        now.getMonth(),
+                                        now.getDate() - 2,
+                                    );
+                                })(),
+                                maxDate: (() => {
+                                    const now = new Date();
+                                    return new Date(
+                                        now.getFullYear(),
+                                        now.getMonth(),
+                                        now.getDate() + 2,
+                                    );
+                                })(),
                                 onSelect: (externalState: any) => {
                                     setMessages([
                                         {
@@ -676,10 +708,27 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                 key: `${Date.now()}-time-picker`,
                                 status: MessageStatus.Received,
                                 type: InteractiveMessageType.Time,
-                                minTime: new Date(0, 0, 0, 12, 15),
-                                maxTime: new Date(0, 0, 0, 13, 0),
-                                currentTime: new Date(),
-                                isAmPmTime: true,
+                                minTime: (() => {
+                                    const now = new Date();
+                                    return new Date(
+                                        now.getFullYear(),
+                                        now.getMonth(),
+                                        now.getDate(),
+                                        12,
+                                        15,
+                                    );
+                                })(),
+                                maxTime: (() => {
+                                    const now = new Date();
+                                    return new Date(
+                                        now.getFullYear(),
+                                        now.getMonth(),
+                                        now.getDate(),
+                                        13,
+                                        0,
+                                    );
+                                })(),
+                                // isAmPmTime: false,
                                 interval: 5,
                                 onSelect: (externalState: any) => {
                                     setMessages([

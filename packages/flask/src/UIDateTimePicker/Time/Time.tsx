@@ -7,7 +7,6 @@ import {
     TouchableWithoutFeedback,
     StyleSheet,
 } from 'react-native';
-import dayjs, { Dayjs } from 'dayjs';
 import Animated, {
     interpolateColor,
     useAnimatedProps,
@@ -25,14 +24,14 @@ import {
     useTheme,
 } from '@tonlabs/uikit.hydrogen';
 import { ScrollView } from '@tonlabs/uikit.navigation';
+import { uiLocalized } from '@tonlabs/uikit.localization';
 
-import { useTime } from '../../calendarContext';
+import { useTime } from './useTime';
 import { TimeInputWarning } from './TimeInputWarning';
 import { TimeInputSwitcher } from './TimeInputSwitcher';
-import { UIConstant } from '../../../../constants';
+import { UIConstant } from '../../constants';
 
-import { AnimatedTextInput } from '../../../../UIAnimatedBalance/AnimatedTextInput';
-import { PickerActionName } from '../../../../types';
+import { AnimatedTextInput } from '../../UIAnimatedBalance/AnimatedTextInput';
 
 Animated.addWhitelistedNativeProps({ text: true });
 
@@ -87,20 +86,23 @@ const TimeInput = React.forwardRef<TextInput, TimeInputProps>(function TimeInput
         };
     });
 
-    const onChangeTextTime = React.useCallback((text: string) => {
-        const newValue = text.length > 4 ? text.slice(text.length - 4) : text;
+    const onChangeTextTime = React.useCallback(
+        (text: string) => {
+            const newValue = text.length > 4 ? text.slice(text.length - 4) : text;
 
-        const newHours = `${newValue[0] || ''}${newValue[1] || ''}`;
-        const newMinutes = `${newValue[2] || ''}${newValue[3] || ''}`;
+            const newHours = `${newValue[0] || ''}${newValue[1] || ''}`;
+            const newMinutes = `${newValue[2] || ''}${newValue[3] || ''}`;
 
-        hours.value = newHours;
-        minutes.value = newMinutes;
-        inputRef.current?.setNativeProps({
-            text: newValue,
-        });
+            hours.value = newHours;
+            minutes.value = newMinutes;
+            inputRef.current?.setNativeProps({
+                text: newValue,
+            });
 
-        onChange(Number(newHours), Number(newMinutes));
-    }, []);
+            onChange(Number(newHours), Number(newMinutes));
+        },
+        [hours, minutes, onChange],
+    );
 
     return (
         <TouchableWithoutFeedback onPress={() => inputRef.current?.focus()}>
@@ -128,7 +130,6 @@ const TimeInput = React.forwardRef<TextInput, TimeInputProps>(function TimeInput
                         style={[
                             Typography[TypographyVariants.Action],
                             { lineHeight: undefined, padding: 0, fontVariant: ['tabular-nums'] },
-                            // { backgroundColor: 'rgba(255,0,0,.1)' },
                         ]}
                         animatedProps={hoursProps}
                         defaultValue={hours.value}
@@ -163,22 +164,12 @@ const TimeInput = React.forwardRef<TextInput, TimeInputProps>(function TimeInput
     );
 });
 
-export function UITimeInput() {
+export function Time() {
     const { initialTime, isValid, haveValidation, isAmPmTime, isAM, toggleAmPm, set } = useTime();
-
-    // React.useEffect(() => {
-    //     const isValidTime = utils.validateTime(timeInputHolderRef.current, isAmPmTime, isAM);
-    //     setTimeValidated(isValidTime);
-    //     if (isValidTime) {
-    //         parseTime(timeInputHolderRef.current);
-    //     }
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [isAM]);
 
     const inputRef = React.useRef<TextInput>(null);
 
     React.useEffect(() => {
-        // setIsTimeValid(checkMinMaxScope(time));
         /**
          * Only web: fast autofocus on load affects the height of the parent element,
          * so we have to use a timeout to wait for the parent animation
@@ -190,11 +181,15 @@ export function UITimeInput() {
             : inputRef.current?.focus();
     }, []);
 
+    // TODO: move ScrollView to DatePicker to cover date/time mode
+    // TODO: don't forget to set maxHeight for it, to cover small screens
+    //       when date/time won't fit with keyboard open!
     return (
         <ScrollView contentContainerStyle={styles.wrapper} keyboardShouldPersistTaps="handled">
             <View style={styles.selectTimeInputContainer}>
-                {/* TODO: localize me! */}
-                <UILabel role={TypographyVariants.TitleMedium}>Time</UILabel>
+                <UILabel role={TypographyVariants.TitleMedium}>
+                    {uiLocalized.DateTimePicker.Time}
+                </UILabel>
                 <View style={styles.timeInputWrapper}>
                     <TimeInput ref={inputRef} initialTextTime={initialTime} onChange={set} />
                     {isAmPmTime && <TimeInputSwitcher isAM={isAM} onPress={toggleAmPm} />}
@@ -216,7 +211,7 @@ const styles = StyleSheet.create({
     },
     timeInputWrapper: { flexDirection: 'row' },
     timeInput: {
-        width: 65, // TODO: why it's hardcoded!!!
+        width: 65,
         borderRadius: 8,
         flexDirection: 'row',
         alignItems: 'center',

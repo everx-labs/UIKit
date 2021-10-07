@@ -11,7 +11,7 @@ import {
     useTheme,
 } from '@tonlabs/uikit.hydrogen';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIConstant } from '../../../constants';
+import { UIConstant } from '../../constants';
 
 export type DateControlsProps = {
     onPressMonth?: () => void;
@@ -20,25 +20,23 @@ export type DateControlsProps = {
     year?: string;
 };
 
-export function Separator() {
-    const theme = useTheme();
-    const styles = useStyles(theme);
-    return <View style={styles.separator} />;
-}
-
 export function MonthYearButton({ onPressMonth, onPressYear, month, year }: DateControlsProps) {
     const theme = useTheme();
     const styles = useStyles(theme);
 
+    if (month == null && year == null) {
+        return null;
+    }
+
     return (
         <View style={styles.container}>
-            {!!month && (
+            {month != null && (
                 <TouchableOpacity onPress={onPressMonth}>
                     <UILabel role={TypographyVariants.Action}>{month}</UILabel>
                 </TouchableOpacity>
             )}
-            {!!month || (!!year && <Separator />)}
-            {!!year && (
+            {month != null && <View style={styles.separator} />}
+            {year != null && (
                 <TouchableOpacity onPress={onPressYear}>
                     <UILabel role={TypographyVariants.Action}>{year}</UILabel>
                 </TouchableOpacity>
@@ -54,14 +52,14 @@ export type ArrowsButtonsProps = {
 
 export function ArrowsButtons({ onPressLeft, onPressRight }: ArrowsButtonsProps) {
     const theme = useTheme();
-    const styles = useStyles(theme);
+    const styles: any = useStyles(theme);
 
     return (
         <View style={[styles.arrows, styles.container]}>
             <TouchableOpacity onPress={onPressLeft}>
                 <UIImage style={styles.icon} source={UIAssets.icons.ui.chevron} />
             </TouchableOpacity>
-            <Separator />
+            <View style={styles.separator} />
             <TouchableOpacity onPress={onPressRight}>
                 <UIImage
                     style={[styles.icon, styles.rotateIcon]}
