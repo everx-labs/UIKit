@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View, Platform, StyleSheet } from 'react-native';
 import Animated, {
+    Easing,
     runOnJS,
     useAnimatedProps,
     useAnimatedReaction,
@@ -26,11 +27,12 @@ export function UIAnimatedNumber({
     testID,
     children: value,
     decimalAspect = UINumberDecimalAspect.None,
-    // appearance
+    // appearance customization
     integerVariant,
     integerColor,
     decimalVariant,
     decimalColor,
+    // sign customization
     sign,
     showDebugGrid,
     showPositiveSign,
@@ -81,7 +83,7 @@ export function UIAnimatedNumber({
             1,
             {
                 duration: 400,
-                // easing: Easing.inOut(Easing.ease),
+                easing: Easing.inOut(Easing.ease),
             },
             (isFinished: boolean) => {
                 runOnJS(updateRefs)(isFinished);
