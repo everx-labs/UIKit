@@ -3,7 +3,7 @@ import type BigNumber from 'bignumber.js';
 import type { TypographyVariants } from '../Typography';
 import type { ColorVariants } from '../Colors';
 import type { UIImageProps } from '../UIImage';
-import type { UINumberDecimalAspect } from './runOnUILocalizedNumberFormat';
+import type { UINumberDecimalAspect } from './localizedNumberFormat';
 
 // Appearance customization
 export type UINumberAppearance = {
@@ -35,7 +35,7 @@ export type UINumberGeneralProps = {
     /**
      * A value to show
      */
-    children: number | BigNumber;
+    children: BigNumber;
     /**
      * How many digits to draw for decimal aspect.
      *

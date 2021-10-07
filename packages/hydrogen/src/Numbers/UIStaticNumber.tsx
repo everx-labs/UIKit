@@ -6,11 +6,7 @@ import { uiLocalized } from '@tonlabs/uikit.localization';
 import { Typography } from '../Typography';
 import { useTheme, ColorVariants } from '../Colors';
 
-import { useNumberValue } from './useNumberValue';
-import {
-    runOnUILocalizedNumberFormat,
-    UINumberDecimalAspect,
-} from './runOnUILocalizedNumberFormat';
+import { localizedNumberFormat, UINumberDecimalAspect } from './localizedNumberFormat';
 import type { UINumberAppearance, UINumberGeneralProps } from './types';
 import { DebugGrid } from './DebugGrid';
 
@@ -30,7 +26,7 @@ export function useNumberStaticStyles(integerColor: ColorVariants, decimalColor:
 
 export function UIStaticNumber({
     testID,
-    children,
+    children: value,
     integerVariant,
     integerColor,
     decimalVariant,
@@ -40,12 +36,11 @@ export function UIStaticNumber({
     showDebugGrid,
     showPositiveSign,
 }: UINumberGeneralProps & UINumberAppearance & { sign?: React.ReactNode }) {
-    const value = useNumberValue(children, decimalAspect);
     const { decimal: decimalSeparator, grouping: integerGroupChar } =
         uiLocalized.localeInfo.numbers;
 
     const formatted = React.useMemo(() => {
-        return runOnUILocalizedNumberFormat(
+        return localizedNumberFormat(
             value,
             decimalAspect,
             decimalSeparator,

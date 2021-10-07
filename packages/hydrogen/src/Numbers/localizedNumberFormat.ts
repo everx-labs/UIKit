@@ -67,10 +67,10 @@ const groupReversed = (rawString: string, groupSize: number, groupSeparator: str
     return groupedPart;
 };
 
-function getIntegerSign(integer: number, showPositiveSign?: boolean) {
+function getIntegerSign(integer: BigNumber, showPositiveSign?: boolean) {
     'worklet';
 
-    if (integer < 0) {
+    if (integer.lt(0)) {
         return '-';
     }
 
@@ -90,8 +90,8 @@ function getIntegerSign(integer: number, showPositiveSign?: boolean) {
  * @param integerGroupChar localized char for group from user's device
  * @returns formatter number as string
  */
-export function runOnUILocalizedNumberFormat(
-    value: number,
+export function localizedNumberFormat(
+    value: BigNumber,
     decimalAspect: UINumberDecimalAspect,
     decimalSeparator: string,
     integerGroupChar: string,
@@ -99,9 +99,9 @@ export function runOnUILocalizedNumberFormat(
 ) {
     'worklet';
 
-    const integer = Math.trunc(value);
+    const integer = value.integerValue();
     const integerFormatted = `${getIntegerSign(integer, showPositiveSign)}${groupReversed(
-        Math.abs(integer).toString(),
+        integer.abs().toFixed(0),
         INTEGER_GROUP_SIZE,
         integerGroupChar,
     )}`;
@@ -117,32 +117,18 @@ export function runOnUILocalizedNumberFormat(
 
     // decimal at the point would start with `0,` or `0.`
     // if it's negative it would be `-0,` or `-0.`
-    let decimal = `${value - integer}`.slice(value < 0 ? 3 : 2).slice(0, digits);
+    const decimalNumber = value.minus(value.toFixed(0));
+    let decimal = decimalNumber
+        .toFixed(DECIMAL_ASPECT_PRECISION)
+        .slice(decimalNumber.lt(0) ? 3 : 2)
+        .slice(0, digits);
 
     if (decimalAspect === DECIMAL_ASPECT_SHORT_ELLIPSIZED) {
-        decimal = `${decimal.slice(0, DECIMAL_ASPECT_SHORT_ELLIPSIZED)}..`;
+        decimal = `${decimal}..`;
     }
 
     return {
         integer: integerFormatted,
         decimal: `${decimalSeparator}${decimal.padEnd(digits, '0')}`,
     };
-}
-
-export function bigNumToNumber(value: BigNumber, decimalAspect: UINumberDecimalAspect) {
-    if (decimalAspect === UINumberDecimalAspect.None) {
-        return value.integerValue().toNumber();
-    }
-
-    /**
-     * We take it with a highest precision possible to not lose data
-     * then on formatting we're still going to apply correct one
-     */
-    const decimalDigits = getDecimalAspectDigits(DECIMAL_ASPECT_PRECISION);
-
-    return value
-        .multipliedBy(10 ** decimalDigits)
-        .integerValue()
-        .dividedBy(10 ** decimalDigits)
-        .toNumber();
 }

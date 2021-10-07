@@ -1,22 +1,20 @@
 import * as React from 'react';
 import { View, Platform, StyleSheet } from 'react-native';
 import Animated, {
-    Easing,
+    runOnJS,
     useAnimatedProps,
-    useDerivedValue,
+    useAnimatedReaction,
     useSharedValue,
     withTiming,
 } from 'react-native-reanimated';
+import BigNumber from 'bignumber.js';
+
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import { Typography } from '../Typography';
 
 import { AnimatedTextInput } from './AnimatedTextInput';
-import { useNumberValue } from './useNumberValue';
-import {
-    runOnUILocalizedNumberFormat,
-    UINumberDecimalAspect,
-} from './runOnUILocalizedNumberFormat';
+import { localizedNumberFormat, UINumberDecimalAspect } from './localizedNumberFormat';
 import { useNumberStaticStyles } from './UIStaticNumber';
 import type { UINumberAppearance, UINumberGeneralProps } from './types';
 import { useTextLikeContainer } from './useTextLikeContainer';
@@ -26,7 +24,7 @@ Animated.addWhitelistedNativeProps({ text: true });
 
 export function UIAnimatedNumber({
     testID,
-    children,
+    children: value,
     decimalAspect = UINumberDecimalAspect.None,
     // appearance
     integerVariant,
@@ -37,31 +35,94 @@ export function UIAnimatedNumber({
     showDebugGrid,
     showPositiveSign,
 }: UINumberGeneralProps & UINumberAppearance & { sign?: React.ReactNode }) {
-    const value: number = useNumberValue(children, decimalAspect);
-    const valueHolder = useSharedValue(value);
+    // Basically we need it only to not re-create `updateRefs`
+    const valueHolder = React.useRef(value);
+    valueHolder.current = value; // To have it always up to date
+
+    const prevValueHolder = React.useRef(value);
+    const diff = React.useRef(new BigNumber(0));
+
+    const progress = useSharedValue(0);
     const { decimal: decimalSeparator, grouping: integerGroupChar } =
         uiLocalized.localeInfo.numbers;
 
+    const formatted = useSharedValue(
+        localizedNumberFormat(value, decimalAspect, decimalSeparator, integerGroupChar),
+    );
+
+    const updateRefs = React.useCallback(
+        (isFinished: boolean) => {
+            if (isFinished) {
+                prevValueHolder.current = valueHolder.current;
+                formatted.value = localizedNumberFormat(
+                    valueHolder.current,
+                    decimalAspect,
+                    decimalSeparator,
+                    integerGroupChar,
+                    showPositiveSign,
+                );
+                return;
+            }
+            prevValueHolder.current = prevValueHolder.current.plus(
+                diff.current.multipliedBy(progress.value),
+            );
+        },
+        [progress, decimalAspect, decimalSeparator, integerGroupChar, formatted, showPositiveSign],
+    );
+
     React.useEffect(() => {
-        if (valueHolder.value === value) {
+        if (prevValueHolder.current.eq(value)) {
             return;
         }
 
-        valueHolder.value = withTiming(value, {
-            duration: 400,
-            easing: Easing.inOut(Easing.ease),
-        });
-    }, [value, valueHolder]);
-
-    const formatted = useDerivedValue(() => {
-        return runOnUILocalizedNumberFormat(
-            valueHolder.value,
-            decimalAspect,
-            decimalSeparator,
-            integerGroupChar,
-            showPositiveSign,
+        diff.current = value.minus(prevValueHolder.current);
+        progress.value = 0;
+        progress.value = withTiming(
+            1,
+            {
+                duration: 400,
+                // easing: Easing.inOut(Easing.ease),
+            },
+            (isFinished: boolean) => {
+                runOnJS(updateRefs)(isFinished);
+            },
         );
-    });
+    }, [value, progress, updateRefs]);
+
+    const applyFormatted = React.useCallback(
+        (p: number) => {
+            const newValue = prevValueHolder.current.plus(diff.current.multipliedBy(p));
+            formatted.value = localizedNumberFormat(
+                newValue,
+                decimalAspect,
+                decimalSeparator,
+                integerGroupChar,
+                showPositiveSign,
+            );
+        },
+        [decimalAspect, decimalSeparator, integerGroupChar, formatted, showPositiveSign],
+    );
+
+    useAnimatedReaction(
+        () => {
+            return {
+                progress: progress.value,
+            };
+        },
+        state => {
+            if (state.progress === 0) {
+                return;
+            }
+            // For some reason it fires after onEnd callback
+            // for withTiming, therefore `prevValueHolder` has incorrect
+            // value at the point
+            if (state.progress === 1) {
+                return;
+            }
+
+            runOnJS(applyFormatted)(state.progress);
+        },
+    );
 
     /**
      * Basically we exploit the fact that TextView's text

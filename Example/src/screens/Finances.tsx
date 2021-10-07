@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { View, Platform, I18nManager, NativeModules } from 'react-native';
+import BigNumber from 'bignumber.js';
 
 import { createStackNavigator } from '@tonlabs/uikit.navigation';
 import { UIAssets } from '@tonlabs/uikit.assets';
@@ -24,7 +25,7 @@ export function getRandomNum() {
 }
 
 function Numbers() {
-    const [val, setVal] = React.useState(getRandomNum());
+    const [val, setVal] = React.useState(new BigNumber(getRandomNum()));
 
     return (
         <View style={{ alignSelf: 'stretch', marginTop: 50 }}>
@@ -64,7 +65,7 @@ function Numbers() {
                 title="Change it!"
                 type={UIBoxButtonType.Tertiary}
                 onPress={() => {
-                    setVal(getRandomNum());
+                    setVal(new BigNumber(getRandomNum()));
                 }}
                 layout={{ marginBottom: 5 }}
             />
@@ -72,7 +73,7 @@ function Numbers() {
                 title="+"
                 type={UIBoxButtonType.Tertiary}
                 onPress={() => {
-                    setVal(val + 10 ** Math.abs(Math.floor(Math.random() * 10) - 5));
+                    setVal(val.plus(10 ** Math.abs(Math.floor(Math.random() * 10) - 5)));
                 }}
                 layout={{ marginBottom: 5 }}
             />
@@ -80,7 +81,7 @@ function Numbers() {
                 title="-"
                 type={UIBoxButtonType.Tertiary}
                 onPress={() => {
-                    setVal(val - 10 ** Math.abs(Math.floor(Math.random() * 10) - 5));
+                    setVal(val.minus(10 ** Math.abs(Math.floor(Math.random() * 10) - 5)));
                 }}
                 layout={{ marginBottom: 5 }}
             />
@@ -89,7 +90,7 @@ function Numbers() {
 }
 
 function Currencies() {
-    const [val, setVal] = React.useState(getRandomNum());
+    const [val, setVal] = React.useState(new BigNumber(getRandomNum()));
     const [loading, setLoading] = React.useState(false);
 
     return (
@@ -182,7 +183,7 @@ function Currencies() {
                 title="Change it!"
                 type={UIBoxButtonType.Tertiary}
                 onPress={() => {
-                    setVal(getRandomNum());
+                    setVal(new BigNumber(getRandomNum()));
                 }}
                 layout={{ marginBottom: 5 }}
             />
@@ -190,7 +191,7 @@ function Currencies() {
                 title="+"
                 type={UIBoxButtonType.Tertiary}
                 onPress={() => {
-                    setVal(val + 10 ** Math.abs(Math.floor(Math.random() * 10) - 5));
+                    setVal(val.plus(10 ** Math.abs(Math.floor(Math.random() * 10) - 5)));
                 }}
                 layout={{ marginBottom: 5 }}
             />
@@ -198,7 +199,7 @@ function Currencies() {
                 title="-"
                 type={UIBoxButtonType.Tertiary}
                 onPress={() => {
-                    setVal(val - 10 ** Math.abs(Math.floor(Math.random() * 10) - 5));
+                    setVal(val.minus(10 ** Math.abs(Math.floor(Math.random() * 10) - 5)));
                 }}
                 layout={{ marginBottom: 5 }}
             />
@@ -207,6 +208,14 @@ function Currencies() {
                 type={UIBoxButtonType.Tertiary}
                 onPress={() => {
                     setLoading(!loading);
+                }}
+                layout={{ marginBottom: 5 }}
+            />
+            <UIBoxButton
+                title="Set really big value"
+                type={UIBoxButtonType.Tertiary}
+                onPress={() => {
+                    setVal(new BigNumber('100000000000000000000.000000002'));
                 }}
             />
         </View>

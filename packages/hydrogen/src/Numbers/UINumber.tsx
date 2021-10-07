@@ -3,7 +3,7 @@ import * as React from 'react';
 import { TypographyVariants } from '../Typography';
 import { ColorVariants } from '../Colors';
 
-import { UINumberDecimalAspect } from './runOnUILocalizedNumberFormat';
+import { UINumberDecimalAspect } from './localizedNumberFormat';
 import type { UINumberProps } from './types';
 import { UIAnimatedNumber } from './UIAnimatedNumber';
 import { UIStaticNumber } from './UIStaticNumber';

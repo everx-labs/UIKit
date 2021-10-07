@@ -109,7 +109,7 @@ function StaticCurrencyIcon({
     return (
         <Text style={[Typography[signVariant], styles.iconTextContainer]}>
             {'\u00A0'}
-            <UIImage source={signIcon} style={iconStyle} />
+            <UIImage source={signIcon} resizeMode="contain" style={iconStyle} />
         </Text>
     );
 }
