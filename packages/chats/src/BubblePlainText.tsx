@@ -210,7 +210,7 @@ export function BubbleChatPlainText(props: ChatPlainTextMessage) {
                 <ParsedText
                     parse={[
                         {
-                            pattern: RegExpConstants.urlPattern,
+                            pattern: RegExpConstants.url,
                             style: urlStyle,
                             onPress: urlPressHandler,
                             renderText: renderParsedText,
@@ -260,7 +260,7 @@ export function BubbleSimplePlainText(props: PlainTextMessage) {
                 <ParsedText
                     parse={[
                         {
-                            pattern: RegExpConstants.urlPattern,
+                            pattern: RegExpConstants.url,
                             style: urlStyle,
                             onPress: urlPressHandler,
                             renderText: renderParsedText,
