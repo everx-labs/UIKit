@@ -261,7 +261,7 @@ export function UICurrencySign({
 
 const styles = StyleSheet.create({
     iconTextContainer: {
-        fontVariant: ['tabular-nums', 'proportional-nums'],
+        fontVariant: ['tabular-nums'],
         ...Platform.select({ default: {}, android: { lineHeight: undefined } }),
     },
 });

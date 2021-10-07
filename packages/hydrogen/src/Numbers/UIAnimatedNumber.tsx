@@ -181,10 +181,7 @@ const styles = StyleSheet.create({
         fontVariant: ['tabular-nums'],
         // reset RN styles to have proper vertical alignment
         padding: 0,
-        ...Platform.select({
-            web: {},
-            default: { lineHeight: undefined },
-        }),
+        ...Platform.select({ web: {}, default: { lineHeight: undefined } }),
     },
     decimalInput: {
         fontVariant: ['tabular-nums'],
