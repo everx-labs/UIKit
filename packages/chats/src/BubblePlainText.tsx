@@ -26,11 +26,11 @@ import { MessageStatus, OnLongPressText, OnPressUrl } from './types';
 import type { ChatPlainTextMessage, PlainTextMessage } from './types';
 import { useBubblePosition, useBubbleContainerStyle } from './useBubblePosition';
 import { useBubbleBackgroundColor, useBubbleRoundedCornerStyle } from './useBubbleStyle';
-import { URI_TON_SURF, urlPattern } from './constants';
+import { URI_TON_SURF, RegExpConstants } from './constants';
 
 const renderParsedText = (matchingString: string) => {
-    if (URI_TON_SURF === matchingString.replace(/.+\/\/|www.|\/.+/g, '')) {
-        return matchingString.replace(/^https?:\/\//, '');
+    if (URI_TON_SURF === matchingString.replace(RegExpConstants.domain, '')) {
+        return matchingString.replace(RegExpConstants.protocol, '');
     }
     return matchingString;
 };
@@ -210,7 +210,7 @@ export function BubbleChatPlainText(props: ChatPlainTextMessage) {
                 <ParsedText
                     parse={[
                         {
-                            pattern: urlPattern,
+                            pattern: RegExpConstants.urlPattern,
                             style: urlStyle,
                             onPress: urlPressHandler,
                             renderText: renderParsedText,
@@ -260,7 +260,7 @@ export function BubbleSimplePlainText(props: PlainTextMessage) {
                 <ParsedText
                     parse={[
                         {
-                            pattern: urlPattern,
+                            pattern: RegExpConstants.urlPattern,
                             style: urlStyle,
                             onPress: urlPressHandler,
                             renderText: renderParsedText,
