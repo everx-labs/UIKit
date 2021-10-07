@@ -45,7 +45,7 @@ export function useNavigationHeaderLeftItems(
     headerBackButton: HeaderItem | undefined,
     shouldShowCloseButton: boolean = true,
 ) {
-    let navigation: ReturnType<typeof useNavigation>;
+    let navigation: ReturnType<typeof useNavigation> | null = null;
     const closeModal = React.useContext(NestedInModalContext);
 
     // If it's used not in a navigation context
@@ -55,7 +55,6 @@ export function useNavigationHeaderLeftItems(
         navigation = useNavigation();
     } catch (err) {
         // no-op
-        return null;
     }
 
     if (headerLeft != null) {
@@ -64,6 +63,10 @@ export function useNavigationHeaderLeftItems(
 
     if (headerLeftItems != null) {
         return <UIHeaderItems items={headerLeftItems} />;
+    }
+
+    if (navigation == null) {
+        return;
     }
 
     const canGoBackIfStack = findIfCanGoBackForStack(navigation);

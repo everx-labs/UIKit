@@ -7,6 +7,7 @@ export * from './UISearchController';
 export * from './UISearchBarButton';
 export * from './UIDialogBar';
 export * from './UISlideBar';
+export * from './UINavigationBar';
 export * from './UIAndroidNavigationBar';
 export * from './Scrollable';
 export {

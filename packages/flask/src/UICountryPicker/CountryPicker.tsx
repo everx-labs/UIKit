@@ -139,7 +139,12 @@ export function CountryPicker({
     const keyExtractor = React.useCallback((item: Country) => item.code, []);
 
     return (
-        <UIBottomSheet onClose={onClose} visible={visible} style={styles.sheet}>
+        <UIBottomSheet
+            onClose={onClose}
+            visible={visible}
+            style={styles.sheet}
+            shouldHandleKeyboard={false}
+        >
             {renderSearchHeader()}
             <CountryPickerContext.Provider value={{ loading, onSelect }}>
                 <FlatList
@@ -147,7 +152,7 @@ export function CountryPicker({
                     renderItem={returnCountryRow}
                     keyExtractor={keyExtractor}
                     ListEmptyComponent={ListEmptyComponent}
-                    keyboardDismissMode="on-drag"
+                    keyboardDismissMode="interactive"
                     contentInset={contentInset}
                 />
             </CountryPickerContext.Provider>
