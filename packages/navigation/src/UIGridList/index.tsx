@@ -14,7 +14,10 @@ export function UIGridList<T>({
     const renderItem: ListRenderItem<T> = React.useCallback(
         ({ item, index, separators }) => {
             const height = itemHeight ? { height: itemHeight } : styles.itemSquare;
-            const isLastItem = data?.length && index === data?.length - 1;
+            const isLastItem =
+                data?.length &&
+                data?.length % UIConstant.grid.numColumns &&
+                index === data?.length - 1;
             return (
                 <View style={[styles.item, height, !!isLastItem && styles.lastItem]}>
                     {renderItemProp({ item, index, separators })}
