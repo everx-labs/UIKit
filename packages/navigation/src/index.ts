@@ -1,6 +1,6 @@
 import './useAutoFocus';
 
-export * from './UIGridList';
+export * from './Lists';
 export * from './UIPagerView';
 export * from './UISearchBar';
 export * from './UISearchController';
