@@ -170,7 +170,7 @@ export const DuplicateContent = ({
                         </Animated.View>
                         {isFullSizeDisplayed ? (
                             <Animated.View
-                                testID={`image_expanded`}
+                                testID="image_expanded"
                                 style={styles.fullSizeImage}
                             >
                                 {fullSizeImage}
