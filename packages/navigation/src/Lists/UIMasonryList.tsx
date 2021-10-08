@@ -55,6 +55,17 @@ function measureList<Item>(cellWidth: number, data: MasonryItem<Item>[], numOfCo
             maxHeight = height;
         }
 
+        /**
+         * The layout calculation might be changed
+         * in future, since for now it's pretty simple
+         * and have some flaws, i.e.:
+         * - columns have different size,
+         *   therefore there is possibly can be a situation
+         *   when one column can be much bigger then others
+         * - if one item is very big, ones after that item
+         *   won't be positioned to fit free space, they just
+         *   will be placed as they're in a row
+         */
         const y = columnsHeights[column];
         const x = offsetsByColumn[column];
 
@@ -171,10 +182,9 @@ type MasonryCellsRefs = Record<string, React.RefObject<UIMasonryListCellRef>>;
 
 function getMasonryCellsRefs<Item>(data: MasonryItem<Item>[]) {
     return data.reduce<MasonryCellsRefs>((acc, { key }) => {
-        if (acc[key] != null) {
-            return acc;
+        if (acc[key] == null) {
+            acc[key] = React.createRef<UIMasonryListCellRef>();
         }
-        acc[key] = React.createRef<UIMasonryListCellRef>();
         return acc;
     }, {});
 }
@@ -192,8 +202,6 @@ function useMasonryCellsRefs<Item>(data: MasonryItem<Item>[]) {
 
     return cellsRefs.current;
 }
-
-const virtualWindowSize = 1.5;
 
 function manageTopCells(
     prev: number,
@@ -232,6 +240,7 @@ function useVirtualization<Item>(
     data: MasonryItem<Item>[],
     cellWidth: number,
     numOfColumns: number,
+    virtualWindowSizeRatio: number,
     onLayoutProp: ScrollViewProps['onLayout'],
     onScrollProp: ScrollViewProps['onScroll'],
     setWidth: (w: number) => void,
@@ -298,13 +307,13 @@ function useVirtualization<Item>(
          * we have to calculate items that're in virtual window
          */
         const bottom = binarySearch(
-            initialWindowHeight + virtualWindowSize * initialWindowHeight,
+            initialWindowHeight + virtualWindowSizeRatio * initialWindowHeight,
             cellsIndexes,
         );
         manageBottomCells(lastBottomCellIndex.current, bottom, show, hide);
 
         lastBottomCellIndex.current = bottom;
-    }, [cellsIndexes, initialWindowHeight, cellsRefs, show, hide]);
+    }, [cellsIndexes, initialWindowHeight, cellsRefs, show, hide, virtualWindowSizeRatio]);
 
     const onLayout = React.useCallback(
         (event: LayoutChangeEvent) => {
@@ -381,11 +390,11 @@ function useVirtualization<Item>(
              * internal `useState`.
              */
             const top = binarySearch(
-                y - virtualWindowSize * windowHeight - maxItemHeight,
+                y - virtualWindowSizeRatio * windowHeight - maxItemHeight,
                 cellsIndexes,
             );
             const bottom = binarySearch(
-                y + windowHeight + virtualWindowSize * windowHeight,
+                y + windowHeight + virtualWindowSizeRatio * windowHeight,
                 cellsIndexes,
             );
             manageTopCells(lastTopCellIndex.current, top, show, hide);
@@ -397,7 +406,7 @@ function useVirtualization<Item>(
                 onScrollProp(event);
             }
         },
-        [cellsIndexes, maxItemHeight, onScrollProp, show, hide],
+        [cellsIndexes, maxItemHeight, virtualWindowSizeRatio, onScrollProp, show, hide],
     );
 
     return {
@@ -427,6 +436,28 @@ type UIMasonryListProps<Item = any> = {
      * Callback to render content of the cell.
      */
     renderItem: (item: MasonryItem<Item>) => React.ReactNode;
+    /**
+     * For virtualization we render items that only fit
+     * a virtual window, that is more than the current
+     * visible height.
+     *
+     * That ratio is needed to calculate
+     * the size of the virtual window.
+     * The ratio will be applied to currently visible height,
+     * for both areas on top and bottom.
+     * So overall the virtual window will be:
+     * - ratio * visible height + height of the biggest item in data
+     * - visible height
+     * - ratio * visible height.
+     *
+     * This is always a trade off how big it should be
+     * and depends on what data you're trying to render,
+     * so you might want to play with the parameter to identify
+     * best ratio that fits your needs.
+     *
+     * Be default is 1.5
+     */
+    virtualWindowSizeRatio?: number;
 } & ScrollViewProps;
 
 /**
@@ -437,7 +468,13 @@ type UIMasonryListProps<Item = any> = {
  */
 const UIMasonryListOriginal = React.memo(
     React.forwardRef<ScrollView, UIMasonryListProps>(function UIMasonryList<Item>(
-        { data, numOfColumns = 2, renderItem, ...scrollViewProps }: UIMasonryListProps<Item>,
+        {
+            data,
+            numOfColumns = 2,
+            renderItem,
+            virtualWindowSizeRatio = 1.5,
+            ...scrollViewProps
+        }: UIMasonryListProps<Item>,
         ref: React.ForwardedRef<ScrollView>,
     ) {
         const [width, setWidth] = React.useState(0);
@@ -453,6 +490,7 @@ const UIMasonryListOriginal = React.memo(
             data,
             cellWidth,
             numOfColumns,
+            virtualWindowSizeRatio,
             scrollViewProps.onLayout,
             scrollViewProps.onScroll,
             setWidth,
@@ -481,7 +519,6 @@ const UIMasonryListOriginal = React.memo(
 
         return (
             <ScrollView
-                // eslint-disable-next-line react/jsx-props-no-spreading
                 {...scrollViewProps}
                 ref={ref}
                 onLayout={onLayout}
