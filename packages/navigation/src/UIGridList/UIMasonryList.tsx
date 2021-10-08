@@ -340,7 +340,7 @@ function useVirtualization<Item>(
              * which we can easily and fast traverse to find
              * cells keys that fit into our virtual window.
              *
-             * We use modified binary search alrorithm,
+             * We use modified binary search algorithm,
              * kinda like "binary search with duplicates to left side".
              *
              * Because we sort index by `y` coordinate,
