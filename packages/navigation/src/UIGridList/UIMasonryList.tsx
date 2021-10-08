@@ -36,7 +36,7 @@ function measureList<Item>(cellWidth: number, data: MasonryItem<Item>[], numOfCo
 
     // Calculating offsets for columns in advance,
     // since for each row they are simply going to
-    // be repeated agan
+    // be repeated again
     const offsetsByColumn = new Array(numOfColumns).fill(null).map((_, column) => {
         return (
             UIConstant.contentOffset +
