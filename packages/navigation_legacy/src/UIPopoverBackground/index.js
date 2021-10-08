@@ -31,9 +31,12 @@ export default class UIPopoverBackground extends UIComponent<Props, State> {
     }
 
     callback: () => void;
+
     constructor(props: Props) {
         super(props);
-        this.callback = () => {};
+        this.callback = () => {
+            /** */
+        };
 
         this.state = {
             isBackgroundActive: false,

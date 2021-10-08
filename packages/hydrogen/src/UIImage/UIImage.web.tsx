@@ -16,8 +16,8 @@ import type { UIImageProps } from './types';
 
 const useImageDimensions = (style: StyleProp<ImageStyle>, source: any) => {
     return React.useMemo(() => {
-        let width: number | string | undefined = undefined;
-        let height: number | string | undefined = undefined;
+        let width: number | string | undefined;
+        let height: number | string | undefined;
         const flatStyle = StyleSheet.flatten(style);
         if (flatStyle) {
             if (flatStyle.width) {
@@ -37,7 +37,7 @@ const useImageDimensions = (style: StyleProp<ImageStyle>, source: any) => {
             width,
             height,
         };
-    }, [style, source && source.uri]);
+    }, [source, style]);
 };
 
 const TintUIImage = React.forwardRef<View, UIImageProps>(function TintUIImageForwarded(
@@ -69,8 +69,8 @@ const TintUIImage = React.forwardRef<View, UIImageProps>(function TintUIImageFor
             setHasError(true);
             return;
         }
-        var img = new Image();
-        var currentCanvas = document.getElementById(`${idRef.current}`) as HTMLCanvasElement;
+        const img = new Image();
+        const currentCanvas = document.getElementById(`${idRef.current}`) as HTMLCanvasElement;
         if (!currentCanvas || !currentCanvas.getContext) {
             setHasError(true);
             return;
@@ -87,8 +87,8 @@ const TintUIImage = React.forwardRef<View, UIImageProps>(function TintUIImageFor
                 return;
             }
 
-            currentCanvas.style.width = dimensions.width + 'px';
-            currentCanvas.style.height = dimensions.height + 'px';
+            currentCanvas.style.width = `${dimensions.width}px`;
+            currentCanvas.style.height = `${dimensions.height}px`;
 
             // https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio#correcting_resolution_in_a_canvas
             const scale = window.devicePixelRatio;
@@ -111,7 +111,7 @@ const TintUIImage = React.forwardRef<View, UIImageProps>(function TintUIImageFor
             }
         };
         img.src = uri;
-    }, [uri, dimensions]);
+    }, [uri, dimensions, tintColorValue, width, height, onLoadEnd]);
 
     if (hasError || !tintColorValue || !width || !height || !uri) {
         if (__DEV__) {

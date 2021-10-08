@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { NativeModules } from 'react-native';
 import LocalizedStringsService from 'react-native-localization';
 import BigNumber from 'bignumber.js';
 
@@ -62,7 +63,12 @@ export class LocalizationService<T> extends (LocalizedStringsService as Localize
 
     localeInfo: StringLocaleInfo;
 
-    constructor({ languages, localeInfo = defaultLocaleInfo }: LanguageServiceOptions<T>) {
+    constructor({
+        languages,
+        localeInfo = NativeModules.UIKitLocalization != null
+            ? NativeModules.UIKitLocalization.getConstants()
+            : defaultLocaleInfo,
+    }: LanguageServiceOptions<T>) {
         super(languages);
         this.languages = Object.keys(languages) as Language[];
         this.localeInfo = localeInfo;
