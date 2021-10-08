@@ -6,6 +6,7 @@ import {
     makeStyles,
     Theme,
     TouchableOpacity,
+    UIImage,
     UILabel,
     useTheme,
 } from '@tonlabs/uikit.hydrogen';
@@ -24,6 +25,13 @@ export const CountryPickerRow: React.FC<CountryRowProps> = ({ item }: CountryRow
     const theme = useTheme();
     const styles = useStyles(theme);
 
+    const imageStyle = {
+        marginRight: UIConstant.contentOffset,
+        width: 32,
+        height: 24,
+        borderRadius: 4,
+    };
+
     const onPress = React.useCallback(() => {
         onSelect && onSelect(item.code);
     }, [item.code, onSelect]);
@@ -31,7 +39,10 @@ export const CountryPickerRow: React.FC<CountryRowProps> = ({ item }: CountryRow
     return (
         <TouchableOpacity onPress={onPress} style={styles.rowContainer}>
             <View style={styles.rowContainerInner}>
-                <UILabel style={styles.emojiContainer}>{item.emoji}</UILabel>
+                <UIImage
+                    style={imageStyle}
+                    source={{ uri: `data:image/png;base64,${item.flag}` }}
+                />
                 <UILabel>{item.name}</UILabel>
             </View>
         </TouchableOpacity>
@@ -47,8 +58,5 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     rowContainer: {
         paddingLeft: UIConstant.contentOffset,
-    },
-    emojiContainer: {
-        paddingRight: UIConstant.contentOffset,
     },
 }));
