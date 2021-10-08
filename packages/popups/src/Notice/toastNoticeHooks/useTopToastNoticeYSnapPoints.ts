@@ -19,7 +19,7 @@ export const useTopToastNoticeYSnapPoints = (
         /**
          * Let's be safe if initialWindowMetrics does not has the value
          */
-        return initialWindowMetrics?.frame.height
+        return initialWindowMetrics?.frame.height != null
             ? initialWindowMetrics?.frame.height
             : screenDimensionsHeight;
     }, [screenDimensionsHeight]);

@@ -24,11 +24,12 @@ function renderEmptyList() {
 export const ListEmptyComponent = () => {
     const { loading } = React.useContext(CountryPickerContext);
 
-    const renderContent = React.useMemo(
-        // eslint-disable-next-line no-confusing-arrow
-        () => (loading ? renderLoading() : renderEmptyList()),
-        [loading],
-    );
+    const renderContent = React.useMemo(() => {
+        if (loading) {
+            return renderLoading();
+        }
+        return renderEmptyList();
+    }, [loading]);
 
     return <View style={styles.emptyContainer}>{renderContent}</View>;
 };
