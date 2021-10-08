@@ -47,7 +47,7 @@ export function CountryPicker({
     banned = [],
     permitted = [],
 }: WrappedCountryPickerProps) {
-    const height = useWindowDimensions().height;
+    const { height } = useWindowDimensions();
 
     const theme = useTheme();
     const styles = useStyles(theme, height);
@@ -159,7 +159,7 @@ const useStyles = makeStyles((theme: Theme, height) => ({
     sheet: {
         backgroundColor: theme[ColorVariants.BackgroundPrimary] as string,
         borderRadius: 10,
-        height: height,
+        height,
     },
     headerContainer: {
         backgroundColor: theme[ColorVariants.BackgroundPrimary] as string,

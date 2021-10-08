@@ -8,7 +8,8 @@ import type { ActionButtonMessage } from './types';
 const getButtonRadius = (options: ActionButtonMessage, position: BubblePosition) => {
     if (position === BubblePosition.left && options.firstFromChain) {
         return UIMsgButtonCornerPosition.TopLeft;
-    } else if (position === BubblePosition.right && options.lastFromChain) {
+    }
+    if (position === BubblePosition.right && options.lastFromChain) {
         return UIMsgButtonCornerPosition.BottomRight;
     }
     return undefined;

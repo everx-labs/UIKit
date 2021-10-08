@@ -379,7 +379,7 @@ export const UIMsgButton = ({
                     {iconPosition === UIMsgButtonIconPosition.Left && icon != null && (
                         <Button.Icon
                             source={icon}
-                            style={!!title ? styles.leftIcon : null}
+                            style={title ? styles.leftIcon : null}
                             iconAnimStyle={iconAnim?.style}
                             initialColor={iconAnim?.initialColor}
                             activeColor={iconAnim?.activeColor}

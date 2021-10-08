@@ -1,5 +1,5 @@
 // @flow
-import UITextStyle from '../UITextStyle';
+import UITextStyle from '.';
 
 export default class UIStyleText {
     static alignCenter() {
@@ -16,6 +16,7 @@ export default class UIStyleText {
 
     // [Colors]
     static primary() {
+        // eslint-disable-next-line import/no-named-as-default-member
         return UITextStyle.primary;
     }
 
@@ -44,6 +45,7 @@ export default class UIStyleText {
     static titleLight() {
         return UITextStyle.titleLight;
     }
+
     // Tiny - fontSize: 12, lineHeight: 16
     static tinyRegular() {
         return UITextStyle.tinyRegular;
