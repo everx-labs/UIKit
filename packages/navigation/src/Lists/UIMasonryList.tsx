@@ -36,7 +36,7 @@ function measureList<Item>(cellWidth: number, data: MasonryItem<Item>[], numOfCo
 
     // Calculating offsets for columns in advance,
     // since for each row they are simply going to
-    // be repeated agan
+    // be repeated again
     const offsetsByColumn = new Array(numOfColumns).fill(null).map((_, column) => {
         return (
             UIConstant.contentOffset +
@@ -349,7 +349,7 @@ function useVirtualization<Item>(
              * which we can easily and fast traverse to find
              * cells keys that fit into our virtual window.
              *
-             * We use modified binary search alrorithm,
+             * We use modified binary search algorithm,
              * kinda like "binary search with duplicates to left side".
              *
              * Because we sort index by `y` coordinate,
