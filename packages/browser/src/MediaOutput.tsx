@@ -47,7 +47,7 @@ export const MediaOutput = ({
         }
     }, [onOutput]);
     return (
-        <View onLayout={onLayout}>
+        <View testID={`media_${data.slice(0, 40) || null}`} onLayout={onLayout}>
             <BubbleMedia
                 data={data}
                 preview={preview}
