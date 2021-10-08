@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet, ViewStyle, StyleProp, Platform, Keyboard } from 'react-native';
 import { PanGestureHandler, TapGestureHandler } from 'react-native-gesture-handler';
 import Animated, { interpolateColor, useAnimatedStyle } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useBackHandler } from '@react-native-community/hooks';
 
 import { ColorVariants, Portal, useColorParts, useStatusBar } from '@tonlabs/uikit.hydrogen';
@@ -12,7 +13,6 @@ import { ScrollableContext } from '../../Scrollable/Context';
 import { useSheetHeight } from './useSheetHeight';
 import type { OnOpen, OnClose } from './types';
 import { usePosition } from './usePosition';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 function useBottomInsetStyle(countRubberBandDistance: boolean = false) {
     const { bottom } = useSafeAreaInsets();
