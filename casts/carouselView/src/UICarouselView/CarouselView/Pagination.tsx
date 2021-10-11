@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { UIConstant as CoreConstants } from '@tonlabs/uikit.core';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIConstant } from '../../constants';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { Theme, useTheme } from '@tonlabs/uikit.themes';
@@ -26,8 +26,8 @@ function Circle({ active, onPress, theme }: CircleProps) {
 
 function getPaginationWidth(amount: number) {
     return (
-        CoreConstants.contentOffset() +
-        amount * (UIConstant.carousel.circleSize + CoreConstants.contentOffset())
+        UILayoutConstant.contentOffset +
+        amount * (UIConstant.carousel.circleSize + UILayoutConstant.contentOffset)
     );
 }
 

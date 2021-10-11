@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Text } from 'react-native';
 
-import { UICarouselView } from '@tonlabs/uikit.flask';
+import { UICarouselView } from '@tonlabs/uicast.carousel-view';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIImage } from '@tonlabs/uikit.media';
 import { ExampleSection } from '../components/ExampleSection';

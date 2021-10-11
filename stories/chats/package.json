@@ -38,7 +38,6 @@
         "@tonlabs/uikit.assets": "^2.3.0",
         "@tonlabs/uikit.components": "^2.3.0",
         "@tonlabs/uikit.core": "^2.3.0",
-        "@tonlabs/uikit.flask": "^2.3.0",
         "@tonlabs/uikit.hydrogen": "^2.3.0",
         "@tonlabs/uikit.themes": "^2.3.0",
         "@tonlabs/uikit.controls": "^2.3.0",
