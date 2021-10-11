@@ -14,7 +14,6 @@ const checkCircularDependencies = async () => {
             'packages/chats/src/index.ts',
             'packages/components/src/index.js',
             'packages/core/src/index.js',
-            'packages/flask/src/index.ts',
             'packages/hydrogen/src/index.ts',
             'packages/keyboard/src/index.ts',
             'packages/legacy/src/index.js',
