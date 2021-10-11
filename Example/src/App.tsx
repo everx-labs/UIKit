@@ -62,6 +62,7 @@ import { KeyboardScreen } from './screens/Keyboard';
 import { LargeHeaderScreen } from './screens/LargeHeader';
 import { QRCodeScreen } from './screens/QRCode';
 import { FinancesScreen } from './screens/Finances';
+import { SkeletonsScreen } from './screens/Skeletons';
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
 useWebFonts();
@@ -271,6 +272,12 @@ const Main = ({ navigation }: { navigation: any }) => {
                             onPress={() => navigation.navigate('finances')}
                             layout={styles.button}
                         />
+                        <UILinkButton
+                            title="Skeletons"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('skeletons')}
+                            layout={styles.button}
+                        />
                     </ScrollView>
                 </UILargeTitleHeader>
             </PortalManager>
@@ -340,6 +347,7 @@ const App = () => {
                             <Split.Screen name="qr-code" component={QRCodeScreen} />
                             <Split.Screen name="text" component={TextScreen} />
                             <Split.Screen name="finances" component={FinancesScreen} />
+                            <Split.Screen name="skeletons" component={SkeletonsScreen} />
                         </Split.Navigator>
                     </NavigationContainer>
                     <UILayoutManager />
