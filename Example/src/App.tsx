@@ -12,12 +12,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { UIDropdownAlert, UILayoutManager, UINotice } from '@tonlabs/uikit.components';
-import {
-    UIActionSheet,
-    UICountryPicker,
-    UIPopoverBackground,
-} from '@tonlabs/uikit.navigation_legacy';
+import { UIPopoverBackground } from '@tonlabs/uikit.navigation_legacy';
 import { PortalManager } from '@tonlabs/uikit.layout';
 import {
     UILinkButton,
@@ -330,13 +325,6 @@ const App = () => {
                             <Split.Screen name="text" component={TextScreen} />
                         </Split.Navigator>
                     </NavigationContainer>
-                    <UILayoutManager />
-                    <UIActionSheet />
-                    <UICountryPicker navigation={navRef.current} isShared />
-                    <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
-                        <UINotice />
-                    </View>
-                    <UIDropdownAlert />
                     <UIAndroidNavigationBar />
                 </PortalManager>
             </SafeAreaProvider>
