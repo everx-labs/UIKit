@@ -45,6 +45,7 @@
         "@tonlabs/uicast.modal-navigator": "*",
         "@tonlabs/uicast.bars": "*",
         "@tonlabs/uicast.carousel-view": "*",
+        "@tonlabs/uicast.blur-view": "*",
         "@tonlabs/uistory.chats": "*",
         "@tonlabs/uikit.components": "*",
         "@tonlabs/uikit.core": "*",

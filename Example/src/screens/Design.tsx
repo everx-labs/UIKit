@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Platform, View } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIBlurView } from '@tonlabs/uikit.hydrogen';
+import { UIBlurView } from '@tonlabs/uicast.blur-view';
 import { UIImage } from '@tonlabs/uikit.media';
 import { UILabel, UILabelColors, UILabelRoles, ColorVariants } from '@tonlabs/uikit.themes';
 
