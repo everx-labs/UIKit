@@ -339,8 +339,13 @@ export const UISeedPhraseTextView = React.forwardRef<
                 return;
             }
             if (event.key === 'Enter' && state.highlight.index >= 0) {
+                const item = hints[state.highlight.index];
+                // If nothing is selected treat as a usual submit
+                if (item == null) {
+                    return;
+                }
                 e.preventDefault();
-                onHintSelected(hints[state.highlight.index]);
+                onHintSelected(item);
             }
         },
         [hints, state.highlight.index, onHintSelected],
