@@ -46,6 +46,7 @@
         "@tonlabs/uicast.bars": "*",
         "@tonlabs/uicast.carousel-view": "*",
         "@tonlabs/uicast.blur-view": "*",
+        "@tonlabs/uicast.pager-view": "*",
         "@tonlabs/uistory.chats": "*",
         "@tonlabs/uikit.components": "*",
         "@tonlabs/uikit.core": "*",

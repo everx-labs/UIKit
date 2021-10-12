@@ -24,6 +24,7 @@ import {
     ColorVariants,
     useTheme,
 } from '@tonlabs/uikit.themes';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
 import { UIConstant } from '../constants';
 
@@ -349,12 +350,12 @@ const styles = StyleSheet.create({
         shadowColor: 'transparent',
         elevation: 0,
         justifyContent: 'center',
-        marginHorizontal: UIConstant.contentOffset,
+        marginHorizontal: UILayoutConstant.contentOffset,
     },
     tab: {
         minHeight: 40,
         paddingVertical: 10,
-        paddingHorizontal: UIConstant.contentOffset,
+        paddingHorizontal: UILayoutConstant.contentOffset,
     },
     fixedTab: {
         alignItems: 'stretch',

@@ -3,7 +3,7 @@ import { View, ColorValue } from 'react-native';
 
 import { UIBoxButton } from '@tonlabs/uikit.controls';
 import { UILabel, ColorVariants } from '@tonlabs/uikit.themes';
-import { UIPagerView } from '@tonlabs/uikit.navigation';
+import { UIPagerView } from '@tonlabs/uicast.pager-view';
 import {
     UIDialogBar,
     UISearchBar,

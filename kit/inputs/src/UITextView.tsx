@@ -48,7 +48,7 @@ export type UITextViewProps = Omit<
 
 function useAutoFocus(ref: React.Ref<TextInput>, autoFocus: boolean | undefined) {
     if (Platform.OS === 'ios' && (global as any).UIKIT_NAVIGATION_AUTO_FOCUS_PATCH != null) {
-        // See @tonlabs/uikit.navigation -> useAutoFocus
+        // See @tonlabs/uicast.stack-navigator -> useAutoFocus
         return (global as any).UIKIT_NAVIGATION_AUTO_FOCUS_PATCH(ref, autoFocus);
     }
 

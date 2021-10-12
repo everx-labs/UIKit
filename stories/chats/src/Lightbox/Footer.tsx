@@ -9,7 +9,7 @@ import {
     useTheme,
     makeStyles,
 } from '@tonlabs/uikit.themes';
-import { UIConstant as UINavigationConstant } from '@tonlabs/uikit.navigation';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { VisibilityState } from './constants';
 import { UIConstant } from '../constants';
 
@@ -71,6 +71,6 @@ const useStyles = makeStyles((theme: Theme, insets: EdgeInsets) => ({
         justifyContent: 'center',
         alignItems: 'flex-start',
         paddingVertical: UIConstant.contentInsetVerticalX3,
-        paddingHorizontal: UINavigationConstant.contentOffset,
+        paddingHorizontal: UILayoutConstant.contentOffset,
     },
 }));

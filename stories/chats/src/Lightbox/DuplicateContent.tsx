@@ -10,7 +10,8 @@ import { UIImage } from '@tonlabs/uikit.media';
 import { ColorVariants, Theme, useTheme, makeStyles, useStatusBar } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIConstant as UICoreConstant } from '@tonlabs/uikit.core';
-import { UIConstant as UINavigationConstant } from '@tonlabs/uikit.navigation';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { UIConstant as UIBarConstant } from '@tonlabs/uicast.bars';
 import { useBackHandler } from '@react-native-community/hooks';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { DuplicateContentProps } from './types';
@@ -201,11 +202,11 @@ const useStyles = makeStyles((theme: Theme, insets: EdgeInsets) => ({
         backgroundColor: theme[ColorVariants.BackgroundOverlay],
     },
     header: {
-        minHeight: UINavigationConstant.headerHeight,
+        minHeight: UIBarConstant.headerHeight,
         justifyContent: 'center',
         alignItems: 'flex-start',
         paddingVertical: UIConstant.lightbox.verticalHeaderPadding,
-        paddingHorizontal: UINavigationConstant.contentOffset,
+        paddingHorizontal: UILayoutConstant.contentOffset,
     },
     backButton: {
         width: UICoreConstant.iconSize(),
