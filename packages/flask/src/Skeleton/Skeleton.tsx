@@ -12,7 +12,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useTheme, ColorVariants, UIBackgroundView } from '@tonlabs/uikit.hydrogen';
 import { SkeletonProgress, useSkeletonProgress } from './useSkeletonProgress';
 
-enum CrossDisolveProgress {
+enum CrossDissolveProgress {
     Visible = 1,
     Hidden = 0,
 }
@@ -22,8 +22,8 @@ enum CrossDisolveProgress {
  * in which you gently increase the opacity of one scene over the previous one.
  */
 function useCrossDissolve(visible: boolean) {
-    const crossDisolveProgress = useSharedValue(
-        visible ? CrossDisolveProgress.Visible : CrossDisolveProgress.Hidden,
+    const crossDissolveProgress = useSharedValue(
+        visible ? CrossDissolveProgress.Visible : CrossDissolveProgress.Hidden,
     );
 
     const [isVisible, setIsVisible] = React.useState(visible);
@@ -37,33 +37,33 @@ function useCrossDissolve(visible: boolean) {
 
         if (visible) {
             setIsVisible(true);
-            crossDisolveProgress.value = withSpring(CrossDisolveProgress.Visible, {
+            crossDissolveProgress.value = withSpring(CrossDissolveProgress.Visible, {
                 overshootClamping: true,
             });
             return;
         }
 
-        crossDisolveProgress.value = withSpring(
-            CrossDisolveProgress.Hidden,
+        crossDissolveProgress.value = withSpring(
+            CrossDissolveProgress.Hidden,
             { overshootClamping: true },
             () => {
                 runOnJS(turnOff)();
             },
         );
-    }, [visible, crossDisolveProgress, isVisible, turnOff]);
+    }, [visible, crossDissolveProgress, isVisible, turnOff]);
 
     return {
         isVisible,
-        crossDisolveProgress,
+        crossDissolveProgress,
     };
 }
 
 function SkeletonAnimatable({
     width,
-    crossDisolveProgress,
+    crossDissolveProgress,
 }: {
     width: Animated.SharedValue<number>;
-    crossDisolveProgress: Animated.SharedValue<number>;
+    crossDissolveProgress: Animated.SharedValue<number>;
 }) {
     const theme = useTheme();
     const progress = useSkeletonProgress();
@@ -82,9 +82,9 @@ function SkeletonAnimatable({
         };
     }, []);
 
-    const crossDissolveStyle1 = useAnimatedStyle(() => {
+    const backdropStyle = useAnimatedStyle(() => {
         return {
-            opacity: crossDisolveProgress.value,
+            opacity: crossDissolveProgress.value,
         };
     });
 
@@ -93,7 +93,7 @@ function SkeletonAnimatable({
             style={[
                 StyleSheet.absoluteFill,
                 { backgroundColor: theme[ColorVariants.BackgroundSecondary] as string },
-                crossDissolveStyle1,
+                backdropStyle,
             ]}
         >
             <Animated.View
@@ -188,13 +188,13 @@ export function UISkeleton({
         [width],
     );
 
-    const { isVisible, crossDisolveProgress } = useCrossDissolve(visible);
+    const { isVisible, crossDissolveProgress } = useCrossDissolve(visible);
 
     return (
         <UIBackgroundView style={[styles.container, styleProp]} onLayout={onLayout}>
             {children}
             {isVisible && (
-                <SkeletonAnimatable width={width} crossDisolveProgress={crossDisolveProgress} />
+                <SkeletonAnimatable width={width} crossDissolveProgress={crossDissolveProgress} />
             )}
         </UIBackgroundView>
     );
