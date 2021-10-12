@@ -2,9 +2,9 @@
  * Task to copy icon font files
  */
 
-def config = project.hasProperty("hydrogen") ? project.hydrogen : [];
+def config = project.hasProperty("themes") ? project.themes : [];
 
-def iconFontsDir = config.iconFontsDir ?: "../../node_modules/@tonlabs/uikit.hydrogen/assets/fonts";
+def iconFontsDir = config.iconFontsDir ?: "../../node_modules/@tonlabs/uikit.themes/src/assets/fonts";
 def iconFontNames = config.iconFontNames ?: [ "*.ttf" ];
 
 gradle.projectsEvaluated {

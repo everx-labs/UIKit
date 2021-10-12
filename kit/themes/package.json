@@ -31,7 +31,8 @@
     "types": "lib/typescript/src/index.d.ts",
     "files": [
         "lib/",
-        "src/"
+        "src/",
+        "fonts.gradle"
     ],
     "dependencies": {
         "@tonlabs/localization": "^2.3.0"
