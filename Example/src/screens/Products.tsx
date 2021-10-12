@@ -25,7 +25,7 @@ export const Products = () => {
                     >
                         <UILabel>Display UIPromoNotice</UILabel>
                         <UISwitcher
-                            testID={`uiPromoNotice_display_toggle`}
+                            testID="uiPromoNotice_display_toggle"
                             variant={UISwitcherVariant.Toggle}
                             active={displayPromoNotice}
                         />

@@ -1,12 +1,13 @@
 import './useAutoFocus';
 
-export * from './UIGridList';
+export * from './Lists';
 export * from './UIPagerView';
 export * from './UISearchBar';
 export * from './UISearchController';
 export * from './UISearchBarButton';
 export * from './UIDialogBar';
 export * from './UISlideBar';
+export * from './UINavigationBar';
 export * from './UIAndroidNavigationBar';
 export * from './Scrollable';
 export {

@@ -45,6 +45,7 @@ export default class UIScreen<Props, State> extends UIController<
     any & ControllerState,
 > {
     scrollView: ?React$ElementRef<*>;
+
     listenScrollOffset: boolean;
 
     static isNarrow(width: number) {

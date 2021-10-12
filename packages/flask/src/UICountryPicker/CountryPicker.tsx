@@ -47,7 +47,7 @@ export function CountryPicker({
     banned = [],
     permitted = [],
 }: WrappedCountryPickerProps) {
-    const height = useWindowDimensions().height;
+    const { height } = useWindowDimensions();
 
     const theme = useTheme();
     const styles = useStyles(theme, height);
@@ -68,24 +68,27 @@ export function CountryPicker({
         [insets?.bottom],
     );
 
-    const checkIncludes = React.useCallback((code: string) => {
-        let isPermitted = true;
-        let isBanned = false;
-        if (permitted.length) {
-            isPermitted = permitted.includes(code);
-        }
-        if (banned.length) {
-            isBanned = banned.includes(code);
-        }
-        return isPermitted && !isBanned;
-    }, []);
+    const checkIncludes = React.useCallback(
+        (code: string) => {
+            let isPermitted = true;
+            let isBanned = false;
+            if (permitted.length) {
+                isPermitted = permitted.includes(code);
+            }
+            if (banned.length) {
+                isBanned = banned.includes(code);
+            }
+            return isPermitted && !isBanned;
+        },
+        [banned, permitted],
+    );
 
     const filterCountries = React.useCallback(
         list => {
             const permittedCountries = list.filter((country: any) => checkIncludes(country.code));
             setFilteredList(permittedCountries);
         },
-        [banned, permitted],
+        [checkIncludes],
     );
 
     React.useEffect(() => {
@@ -95,6 +98,7 @@ export function CountryPicker({
     React.useEffect(() => {
         const result = search ? fuse.search(search) : countriesList;
         setFilteredList(result as CountriesArray);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search]);
 
     React.useEffect(() => {
@@ -112,6 +116,7 @@ export function CountryPicker({
             .finally(() => {
                 setLoading(false);
             });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const renderSearchHeader = () => {
@@ -134,7 +139,12 @@ export function CountryPicker({
     const keyExtractor = React.useCallback((item: Country) => item.code, []);
 
     return (
-        <UIBottomSheet onClose={onClose} visible={visible} style={styles.sheet}>
+        <UIBottomSheet
+            onClose={onClose}
+            visible={visible}
+            style={styles.sheet}
+            shouldHandleKeyboard={false}
+        >
             {renderSearchHeader()}
             <CountryPickerContext.Provider value={{ loading, onSelect }}>
                 <FlatList
@@ -142,7 +152,7 @@ export function CountryPicker({
                     renderItem={returnCountryRow}
                     keyExtractor={keyExtractor}
                     ListEmptyComponent={ListEmptyComponent}
-                    keyboardDismissMode="on-drag"
+                    keyboardDismissMode="interactive"
                     contentInset={contentInset}
                 />
             </CountryPickerContext.Provider>
@@ -150,11 +160,11 @@ export function CountryPicker({
     );
 }
 
-const useStyles = makeStyles((theme: Theme, height) => ({
+const useStyles = makeStyles((theme: Theme, height: number) => ({
     sheet: {
         backgroundColor: theme[ColorVariants.BackgroundPrimary] as string,
         borderRadius: 10,
-        height: height,
+        height,
     },
     headerContainer: {
         backgroundColor: theme[ColorVariants.BackgroundPrimary] as string,

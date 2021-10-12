@@ -2,6 +2,7 @@ import { IUIAlertView, UIAlertView } from './UIAlertView';
 import { IUIActionSheet, UIActionSheet } from './UIActionSheet';
 import { IUINotice, UINotice } from './UINotice';
 import { UIPushNotice } from './UIPushNotice';
+
 export type { UIPushNoticeContentPublicProps } from './UIPushNotice';
 
 export * from './Notice/types';

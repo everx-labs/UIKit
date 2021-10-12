@@ -216,58 +216,72 @@ export default class UIStyleMargin {
         // 4
         return styles.marginTopTiny;
     }
+
     static topSmall() {
         // 8
         return styles.marginTopSmall;
     }
+
     static topNormal() {
         // 12
         return styles.marginTopNormal;
     }
+
     static topDefault() {
         // 16
         return styles.marginTopDefault;
     }
+
     static topMedium() {
         // 24
         return styles.marginTopMedium;
     }
+
     static topHuge() {
         // 32
         return styles.marginTopHuge;
     }
+
     static topSpacious() {
         // 40
         return styles.marginTopSpacious;
     }
+
     static topGreat() {
         // 48
         return styles.marginTopGreat;
     }
+
     static topBig() {
         // 56
         return styles.marginTopBig;
     }
+
     static topMajor() {
         // 64
         return styles.marginTopMajor;
     }
+
     static topMassive() {
         // 72
         return styles.marginTopMassive;
     }
+
     static topVast() {
         // 80
         return styles.marginTopVast;
     }
+
     static topTremendous() {
         // 96
         return styles.marginTopTremendous;
     }
+
     static topEnormous() {
         // 104
         return styles.marginTopEnormous;
     }
+
     static topGiant() {
         // 136
         return styles.marginTopGiant;
@@ -278,42 +292,52 @@ export default class UIStyleMargin {
         // 4
         return styles.marginBottomTiny;
     }
+
     static bottomSmall() {
         // 8
         return styles.marginBottomSmall;
     }
+
     static bottomNormal() {
         // 12
         return styles.marginBottomNormal;
     }
+
     static bottomDefault() {
         // 16
         return styles.marginBottomDefault;
     }
+
     static bottomMedium() {
         // 24
         return styles.marginBottomMedium;
     }
+
     static bottomHuge() {
         // 32
         return styles.marginBottomHuge;
     }
+
     static bottomGreat() {
         // 48
         return styles.marginBottomGreat;
     }
+
     static bottomMajor() {
         // 64
         return styles.marginBottomMajor;
     }
+
     static bottomMassive() {
         // 72
         return styles.marginBottomMassive;
     }
+
     static bottomVast() {
         // 80
         return styles.marginBottomVast;
     }
+
     static bottomGiant() {
         // 136
         return styles.marginBottomGiant;
@@ -324,30 +348,37 @@ export default class UIStyleMargin {
         // 4
         return styles.marginRightTiny;
     }
+
     static rightSmall() {
         // 8
         return styles.marginRightSmall;
     }
+
     static rightNormal() {
         // 12
         return styles.marginRightNormal;
     }
+
     static rightDefault() {
         // 16
         return styles.marginRightDefault;
     }
+
     static rightMedium() {
         // 24
         return styles.marginRightMedium;
     }
+
     static rightHuge() {
         // 32
         return styles.marginRightHuge;
     }
+
     static rightGreat() {
         // 48
         return styles.rightGreat;
     }
+
     static rightMajor() {
         // 64
         return styles.rightMajor;
@@ -358,30 +389,37 @@ export default class UIStyleMargin {
         // 4
         return styles.marginLeftTiny;
     }
+
     static leftSmall() {
         // 8
         return styles.marginLeftSmall;
     }
+
     static leftNormal() {
         // 12
         return styles.marginLeftNormal;
     }
+
     static leftDefault() {
         // 16
         return styles.marginLeftDefault;
     }
+
     static leftMedium() {
         // 24
         return styles.marginLeftMedium;
     }
+
     static leftHuge() {
         // 32
         return styles.marginLeftHuge;
     }
+
     static leftGreat() {
         // 48
         return styles.leftGreat;
     }
+
     static leftMajor() {
         // 64
         return styles.leftMajor;
@@ -392,18 +430,22 @@ export default class UIStyleMargin {
         // 8
         return styles.marginHorizontalTinyOffset;
     }
+
     static horizontalSmallOffset() {
         // 8
         return styles.marginHorizontalSmallOffset;
     }
+
     static horizontalOffset() {
         // 16
         return styles.marginHorizontalOffset;
     }
+
     static horizontalNegativeOffset() {
         // -16
         return styles.marginHorizontalNegativeOffset;
     }
+
     static horizontalMediumOffset() {
         // 24
         return styles.marginHorizontalMediumOffset;
@@ -414,6 +456,7 @@ export default class UIStyleMargin {
         // 16
         return styles.marginDefault;
     }
+
     static bottomLeftRight() {
         return styles.marginLeftRight;
     }
