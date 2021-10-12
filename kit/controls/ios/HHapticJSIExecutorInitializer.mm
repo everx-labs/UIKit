@@ -1,6 +1,6 @@
 //
 //  HHapticJSIExecutorInitializer.m
-//  uikit.hydrogen
+//  kit.controls
 //
 //  Created by Aleksei Saveliev on 20.08.2021.
 //

@@ -1,6 +1,6 @@
 //
 //  HHapticModule.m
-//  uikit.hydrogen
+//  kit.controls
 //
 //  Created by Aleksei Saveliev on 21.07.2021.
 //
