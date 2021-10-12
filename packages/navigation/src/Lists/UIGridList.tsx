@@ -14,13 +14,17 @@ export function UIGridList<T>({
     const renderItem: ListRenderItem<T> = React.useCallback(
         ({ item, index, separators }) => {
             const height = itemHeight ? { height: itemHeight } : styles.itemSquare;
+            const isLonelyItem =
+                data?.length &&
+                data?.length % UIConstant.grid.numColumns &&
+                index === data?.length - 1;
             return (
-                <View style={[styles.item, height]}>
+                <View style={[styles.item, height, !!isLonelyItem && styles.lastItem]}>
                     {renderItemProp({ item, index, separators })}
                 </View>
             );
         },
-        [renderItemProp, itemHeight],
+        [itemHeight, data?.length, renderItemProp],
     );
 
     const getItemLayout = React.useCallback(
@@ -52,6 +56,10 @@ const styles = StyleSheet.create({
     item: {
         margin: UIConstant.contentOffset / 2,
         flex: 0.5,
+    },
+    lastItem: {
+        paddingRight: UIConstant.contentOffset,
+        paddingBottom: UIConstant.contentOffset,
     },
     itemSquare: {
         aspectRatio: 1,
