@@ -30,6 +30,7 @@ module.exports = {
                     path.resolve(__dirname, '../node_modules/rn-fetch-blob/'),
                     path.resolve(__dirname, '../node_modules/react-native-reanimated/'),
                     path.resolve(__dirname, '../node_modules/react-native-view-shot/'),
+                    path.resolve(__dirname, '../node_modules/react-native-web-linear-gradient/'),
                 ],
                 loader: 'babel-loader',
                 query: {
@@ -90,6 +91,7 @@ module.exports = {
             'react-native-camera': 'react', // Hack in order not to load
             'react-native-permissions': 'react', // Hack in order not to load
             'react-native-qrcode-scanner': 'react', // Hack in order not to load
+            'react-native-linear-gradient': 'react-native-web-linear-gradient',
         },
     },
 };
