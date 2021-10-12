@@ -1,6 +1,6 @@
 //
 //  HDuplicateImageViewManager.m
-//  uikit.hydrogen
+//  uistory.chats
 //
 //  Created by Aleksei Saveliev on 02.08.2021.
 //

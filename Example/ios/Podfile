@@ -16,7 +16,8 @@ target 'Quiver UI' do
 
   pod 'UIKitInputs', :path => "../../kit/inputs/UIKitInputs.podspec"
   pod 'UIKitControls', :path => "../../kit/controls/UIKitControls.podspec"
-
+  pod 'StoriesChats', :path => "../../stories/chats/StoriesChats.podspec"
+  
   target 'Quiver UITests' do
     inherit! :complete
     # Pods for testing

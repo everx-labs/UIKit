@@ -1,4 +1,4 @@
-package tonlabs.uikit.hydrogen;
+package tonlabs.stories.chats;
 
 import android.content.Context;
 import android.os.Build;

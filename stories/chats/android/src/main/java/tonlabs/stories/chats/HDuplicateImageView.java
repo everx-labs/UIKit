@@ -1,4 +1,4 @@
-package tonlabs.uikit.hydrogen;
+package tonlabs.stories.chats;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

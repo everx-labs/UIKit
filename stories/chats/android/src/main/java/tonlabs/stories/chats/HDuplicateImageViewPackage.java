@@ -1,4 +1,4 @@
-package tonlabs.uikit.hydrogen;
+package tonlabs.stories.chats;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;

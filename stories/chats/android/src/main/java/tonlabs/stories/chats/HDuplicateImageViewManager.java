@@ -1,4 +1,4 @@
-package tonlabs.uikit.hydrogen;
+package tonlabs.stories.chats;
 
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
