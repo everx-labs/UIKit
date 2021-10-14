@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 
 import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
-import { UISkeleton } from '@tonlabs/uicast.promo-notice';
+import { UISkeleton } from '@tonlabs/uikit.layout';
 import { UIBoxButton } from '@tonlabs/uikit.controls';
 
 import { ExampleScreen } from '../components/ExampleScreen';
