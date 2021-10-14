@@ -1,11 +1,44 @@
+import groovy.json.JsonSlurper
+
+def findNodeModulesWithRN(path = '..', level = 0) {
+    def rnPackageJsonFile = new File(rootProject.projectDir, path + "/node_modules/react-native/package.json")
+    if (file(rnPackageJsonFile).exists()) {
+        return new File(rootProject.projectDir, path + "/node_modules").absolutePath
+    }
+    // If it more that 10 than we assume that it's not an RN project
+    if (level == 10) {
+        throw "You can't use uikit.keyboard in not RN project"
+    }
+    return findNodeModulesWithRN("${path}/..", level + 1)
+}
+def NODE_MODULES_DIR = findNodeModulesWithRN();
+
+def FOR_HERMES = System.getenv("FOR_HERMES") == "True"
+rootProject.getSubprojects().forEach({project ->
+    if (project.plugins.hasPlugin("com.android.application")) {
+        FOR_HERMES = project.ext.react.enableHermes
+    }
+})
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.2.2'
+    }
+}
+
 apply plugin: 'com.android.library'
 
 project.ext {
-    buildToolsVersion = rootProject.ext.has("buildToolsVersion") ? rootProject.ext.buildToolsVersion : '27.0.3'
-    minSdkVersion = rootProject.ext.has("minSdkVersion") ? rootProject.ext.minSdkVersion : 19
-    compileSdkVersion = rootProject.ext.has("compileSdkVersion") ? rootProject.ext.compileSdkVersion : 27
-    targetSdkVersion = rootProject.ext.has("targetSdkVersion") ? rootProject.ext.targetSdkVersion : 25
-    supportLibVersion = rootProject.ext.has("supportLibVersion") ? rootProject.ext.supportLibVersion  : '27.1.1'
+    buildToolsVersion = rootProject.ext.has("buildToolsVersion") ? rootProject.ext.buildToolsVersion : '30.0.2'
+    minSdkVersion = rootProject.ext.has("minSdkVersion") ? rootProject.ext.minSdkVersion : 24
+    compileSdkVersion = rootProject.ext.has("compileSdkVersion") ? rootProject.ext.compileSdkVersion : 30
+    targetSdkVersion = rootProject.ext.has("targetSdkVersion") ? rootProject.ext.targetSdkVersion : 30
+    supportLibVersion = rootProject.ext.has("supportLibVersion") ? rootProject.ext.supportLibVersion : '30.0.2'
 }
 
 android {
@@ -17,15 +50,182 @@ android {
         targetSdkVersion project.ext.targetSdkVersion
         versionCode 1
         versionName "2.0.2"
+
+        externalNativeBuild {
+            cmake {
+                cppFlags "-O2 -frtti -fexceptions -std=c++1y -Wall -Wno-unused-variable -fstack-protector-all"
+                abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
+                arguments "-DANDROID_STL=c++_shared",
+                        "-DONANDROID",
+                        "-DANDROID_TOOLCHAIN=clang",
+                        "-DNODE_MODULES_DIR=${NODE_MODULES_DIR}",
+                        "-DFOR_HERMES=${FOR_HERMES}"
+            }
+        }
     }
+
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
+
+    packagingOptions {
+        excludes = ["**/libc++_shared.so", "**/libfbjni.so", "**/libjsi.so"]
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        disable 'GradleCompatible'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    configurations {
+        extractHeaders
+        extractJNI
+    }
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+    google()
+
+    def found = false
+    def defaultDir = null
+    def androidSourcesName = 'React Native sources'
+
+    if (rootProject.ext.has('reactNativeAndroidRoot')) {
+        defaultDir = rootProject.ext.get('reactNativeAndroidRoot')
+    } else {
+        defaultDir = new File(
+                projectDir,
+                '/../../../node_modules/react-native/android'
+        )
+    }
+
+    if (defaultDir.exists()) {
+        maven {
+            url defaultDir.toString()
+            name androidSourcesName
+        }
+
+        logger.info(":${project.name}:reactNativeAndroidRoot ${defaultDir.canonicalPath}")
+        found = true
+    } else {
+        def parentDir = rootProject.projectDir
+
+        1.upto(5, {
+            if (found) return true
+            parentDir = parentDir.parentFile
+
+            def androidSourcesDir = new File(
+                    parentDir,
+                    'node_modules/react-native'
+            )
+
+            def androidPrebuiltBinaryDir = new File(
+                    parentDir,
+                    'node_modules/react-native/android'
+            )
+
+            if (androidPrebuiltBinaryDir.exists()) {
+                maven {
+                    url androidPrebuiltBinaryDir.toString()
+                    name androidSourcesName
+                }
+
+                logger.info(":${project.name}:reactNativeAndroidRoot ${androidPrebuiltBinaryDir.canonicalPath}")
+                found = true
+            } else if (androidSourcesDir.exists()) {
+                maven {
+                    url androidSourcesDir.toString()
+                    name androidSourcesName
+                }
+
+                logger.info(":${project.name}:reactNativeAndroidRoot ${androidSourcesDir.canonicalPath}")
+                found = true
+            }
+        })
+    }
+
+    if (!found) {
+        throw new GradleException(
+                "${project.name}: unable to locate React Native android sources. " +
+                        "Ensure you have you installed React Native as a dependency in your project and try again."
+        )
+    }
 }
 
 dependencies {
+    // noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'
+    implementation 'androidx.core:core:1.6.0'
+    implementation project(':react-native-reanimated')
+
+
+    //noinspection GradleDynamicVersion
+    extractHeaders "com.facebook.fbjni:fbjni:+:headers"
+    //noinspection GradleDynamicVersion
+    extractJNI "com.facebook.fbjni:fbjni:+"
+
+    def rnAAR = fileTree("${NODE_MODULES_DIR}/react-native/android").matching({ it.include "**/**/*.aar" }).singleFile
+
+    def inputFile = new File(NODE_MODULES_DIR, '/react-native/package.json')
+    def json = new JsonSlurper().parseText(inputFile.text)
+    def reactNativeVersion = json.version as String
+    def (major, minor, patch) = reactNativeVersion.tokenize('.')
+
+    def jsEngine = FOR_HERMES ? "hermes" : "jsc"
+    def reaAAR = "${NODE_MODULES_DIR}/react-native-reanimated/android/react-native-reanimated-${minor}-${jsEngine}.aar"
+
+    extractJNI(files(rnAAR, reaAAR))
+}
+
+task extractAARHeaders {
+    doLast {
+        configurations.extractHeaders.files.each {
+            def file = it.absoluteFile
+            copy {
+                from zipTree(file)
+                into "$buildDir/$file.name"
+                include "**/*.h"
+            }
+        }
+    }
+}
+
+task extractJNIFiles {
+    doLast {
+        configurations.extractJNI.files.each {
+            def file = it.absoluteFile
+
+            copy {
+                from zipTree(file)
+                into "$buildDir/$file.name"
+                include "jni/**/*"
+            }
+        }
+    }
+}
+
+extractJNIFiles.mustRunAfter extractAARHeaders
+
+// pre-native build pipeline
+
+tasks.whenTaskAdded { task ->
+    if (task.name == 'externalNativeBuildDebug' || task.name == 'externalNativeBuildRelease') {
+        task.dependsOn(extractAARHeaders)
+        task.dependsOn(extractJNIFiles)
+    }
 }

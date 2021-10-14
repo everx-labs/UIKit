@@ -58,7 +58,8 @@ import { Chat } from './screens/Chat';
 import { Carousel } from './screens/Carousel';
 import { Navigation } from './screens/Navigation';
 import { SectionsService } from './Search';
-import { KeyboardScreen } from './screens/Keyboard';
+// import { KeyboardScreen } from './screens/Keyboard';
+import { KeyboardScreen2 } from './screens/Keyboard2';
 import { LargeHeaderScreen } from './screens/LargeHeader';
 import { QRCodeScreen } from './screens/QRCode';
 import { FinancesScreen } from './screens/Finances';
@@ -200,7 +201,7 @@ const Main = ({ navigation }: { navigation: any }) => {
                             onPress={() => navigation.navigate('inputs')}
                             layout={styles.button}
                         />
-                        {/* <UILinkButton
+                        <UILinkButton
                             title="Keyboard"
                             type={UILinkButtonType.Menu}
                             onPress={() => navigation.navigate('keyboard')}
@@ -211,7 +212,7 @@ const Main = ({ navigation }: { navigation: any }) => {
                             type={UILinkButtonType.Menu}
                             onPress={() => navigation.navigate('large-header')}
                             layout={styles.button}
-                        /> */}
+                        />
                         <UILinkButton
                             title="Layouts"
                             type={UILinkButtonType.Menu}
@@ -334,7 +335,7 @@ const App = () => {
                             <Split.Screen name="lists" component={ListsScreen} />
                             <Split.Screen name="images" component={Images} />
                             <Split.Screen name="inputs" component={Inputs} />
-                            <Split.Screen name="keyboard" component={KeyboardScreen} />
+                            <Split.Screen name="keyboard" component={KeyboardScreen2} />
                             <Split.Screen name="large-header" component={LargeHeaderScreen} />
                             <Split.Screen name="layouts" component={Layouts} />
                             <Split.Screen name="main" component={Main} />
