@@ -99,7 +99,9 @@ export function localizedNumberFormat(
 ) {
     'worklet';
 
-    const integer = value.integerValue();
+    // https://mikemcl.github.io/bignumber.js/
+    // NB: Default value: 4 (ROUND_HALF_UP)
+    const integer = value.integerValue(1); // ROUNDING_MODE = 1 (ROUND_DOWN)
     const integerFormatted = `${getIntegerSign(integer, showPositiveSign)}${groupReversed(
         integer.abs().toFixed(0),
         INTEGER_GROUP_SIZE,
@@ -117,7 +119,7 @@ export function localizedNumberFormat(
 
     // decimal at the point would start with `0,` or `0.`
     // if it's negative it would be `-0,` or `-0.`
-    const decimalNumber = value.minus(value.toFixed(0));
+    const decimalNumber = value.minus(value.toFixed(0, 1)); // ROUNDING_MODE = 1 (ROUND_DOWN)
     let decimal = decimalNumber
         .toFixed(DECIMAL_ASPECT_PRECISION)
         .slice(decimalNumber.lt(0) ? 3 : 2)
