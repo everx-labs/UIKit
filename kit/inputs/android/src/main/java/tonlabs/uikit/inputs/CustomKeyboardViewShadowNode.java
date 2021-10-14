@@ -1,4 +1,4 @@
-package tonlabs.uikit.keyboard;
+package tonlabs.uikit.inputs;
 
 import com.facebook.react.uimanager.LayoutShadowNode;
 import com.facebook.react.uimanager.NativeViewHierarchyOptimizer;

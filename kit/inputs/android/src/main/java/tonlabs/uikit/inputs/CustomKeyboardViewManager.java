@@ -1,4 +1,4 @@
-package tonlabs.uikit.keyboard;
+package tonlabs.uikit.inputs;
 
 import androidx.annotation.NonNull;
 

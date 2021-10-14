@@ -4,7 +4,7 @@
     "type": "PACKAGED_MANIFESTS",
     "kind": "Directory"
   },
-  "applicationId": "tonlabs.uikit.keyboard",
+  "applicationId": "tonlabs.uikit.inputs",
   "variantName": "debug",
   "elements": [
     {

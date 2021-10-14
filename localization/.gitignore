@@ -1,6 +1,4 @@
-commonjs/
-module/
-typescript/
+lib/
 
 # Android/IntelliJ
 #

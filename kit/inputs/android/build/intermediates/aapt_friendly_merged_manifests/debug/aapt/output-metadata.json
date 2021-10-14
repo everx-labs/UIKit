@@ -4,7 +4,7 @@
     "type": "AAPT_FRIENDLY_MERGED_MANIFESTS",
     "kind": "Directory"
   },
-  "applicationId": "tonlabs.uikit.keyboard",
+  "applicationId": "tonlabs.uikit.inputs",
   "variantName": "debug",
   "elements": [
     {
