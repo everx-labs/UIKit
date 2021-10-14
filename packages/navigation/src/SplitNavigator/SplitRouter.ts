@@ -324,37 +324,19 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
                         // Recreate the state in order to show the initial route of the navigator
                         const newRoutes = state.routes.map(route => {
                             if (route.key === initialRoute.key) {
-                                // Make initial route show its initial sub-route as well!!!
-                                const newRoute = route;
-                                if (route.state) {
-                                    // Change the initial route state to show its initial sub route
-                                    const initialSubRouteName = route.state.routeNames
-                                        ? route.state.routeNames[0]
-                                        : undefined;
-                                    if (initialSubRouteName) {
-                                        // Filter the sub-routes to leave only an initial sub-route
-                                        // @ts-ignore TODO: investigate why there is a TS issue
-                                        const newSubRoutes = route.state.routes.filter(subRoute => {
-                                            return subRoute.name === initialSubRouteName;
-                                        });
-                                        if (newSubRoutes.length > 0) {
-                                            // Here we can safely re-create the route state
-                                            // with an initial sub-route being shown
-                                            newRoute.state = {
-                                                ...route.state,
-                                                routes: newSubRoutes,
-                                                index: 0, // show the initial sub-route (with 0 index)
-                                            };
-                                        } else {
-                                            // What if there is no initial sub-route found???
-                                        }
-                                    } else {
-                                        // What if there is no initial sub-route name found???
-                                    }
-                                } else {
-                                    // What if there is not `state` for the route???
+                                // Make initial route pop to its initial sub-route as well!!!
+                                if (route.state && route.state.type === 'stack') {
+                                    // Get the initial route state from the nested stack navigator
+                                    // by popping it to the top to its initial sub-route
+                                    return {
+                                        ...route,
+                                        state: stackRouter.getStateForAction(
+                                            route.state as any,
+                                            StackActions.popToTop(),
+                                            options,
+                                        ),
+                                    };
                                 }
-                                return newRoute;
                             }
                             return route;
                         });
@@ -362,7 +344,7 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
                         // Struct a new state to show the truly initial splitted navigator state
                         newState = {
                             ...state,
-                            routes: newRoutes,
+                            routes: newRoutes as any,
                             index: initialRouteIndex,
                             history: [{ type: 'route', key: initialRoute.key }],
                         };
