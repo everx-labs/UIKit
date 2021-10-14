@@ -1,6 +1,7 @@
 import React from 'react';
 import { ListRenderItem, View, StyleSheet } from 'react-native';
-import { FlatList } from '@tonlabs/uikit.scrolls';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { FlatList } from '../FlatList';
 import { UIConstant } from '../constants';
 import type { GridProps } from './types';
 
@@ -29,7 +30,7 @@ export function UIGridList<T>({
 
     const getItemLayout = React.useCallback(
         (_, index: number) => {
-            const itemWithOffset = itemHeight + UIConstant.contentOffset;
+            const itemWithOffset = itemHeight + UILayoutConstant.contentOffset;
             return {
                 length: itemWithOffset,
                 offset: itemWithOffset * index,
@@ -54,12 +55,12 @@ export function UIGridList<T>({
 
 const styles = StyleSheet.create({
     item: {
-        margin: UIConstant.contentOffset / 2,
+        margin: UILayoutConstant.contentOffset / 2,
         flex: 0.5,
     },
     lastItem: {
-        paddingRight: UIConstant.contentOffset,
-        paddingBottom: UIConstant.contentOffset,
+        paddingRight: UILayoutConstant.contentOffset,
+        paddingBottom: UILayoutConstant.contentOffset,
     },
     itemSquare: {
         aspectRatio: 1,

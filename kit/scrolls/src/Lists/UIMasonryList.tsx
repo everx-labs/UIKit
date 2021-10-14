@@ -10,11 +10,10 @@ import {
     NativeSyntheticEvent,
     ScrollViewProps,
 } from 'react-native';
-import { wrapScrollableComponent } from '@tonlabs/uikit.scrolls';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { wrapScrollableComponent } from '../wrapScrollableComponent';
 
-import { UIConstant } from '../constants';
-
-const interColumnOffset = UIConstant.contentOffset / 2;
+const interColumnOffset = UILayoutConstant.contentOffset / 2;
 const interRowsOffset = interColumnOffset;
 
 type MasonryItem<Item> = { key: string; item?: Item; aspectRatio: number };
@@ -39,7 +38,7 @@ function measureList<Item>(cellWidth: number, data: MasonryItem<Item>[], numOfCo
     // be repeated again
     const offsetsByColumn = new Array(numOfColumns).fill(null).map((_, column) => {
         return (
-            UIConstant.contentOffset +
+            UILayoutConstant.contentOffset +
             column * cellWidth +
             (column > 0 ? column * interRowsOffset : 0)
         );
@@ -481,7 +480,9 @@ const UIMasonryListOriginal = React.memo(
 
         const cellWidth = React.useMemo(() => {
             return (
-                (width - 2 * UIConstant.contentOffset - (numOfColumns - 1) * interColumnOffset) /
+                (width -
+                    2 * UILayoutConstant.contentOffset -
+                    (numOfColumns - 1) * interColumnOffset) /
                 numOfColumns
             );
         }, [width, numOfColumns]);
