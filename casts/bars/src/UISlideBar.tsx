@@ -3,8 +3,8 @@ import { StyleSheet, View } from 'react-native';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIBackgroundView, ColorVariants } from '@tonlabs/uikit.themes';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
-import { UIConstant as UINavConstant } from './constants';
 import { UIHeaderItems } from './UIHeaderItems';
 import type { HeaderItem } from './UIHeaderItems';
 import { useNavigationHeaderLeftItems } from './useNavigationHeaderLeftItems';
@@ -68,7 +68,7 @@ export function UISlideBar({
 
 const styles = StyleSheet.create({
     container: {
-        minHeight: UINavConstant.headerHeight,
+        minHeight: UILayoutConstant.headerHeight,
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: UIConstant.smallContentOffset(),

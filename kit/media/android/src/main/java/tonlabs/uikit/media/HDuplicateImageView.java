@@ -1,4 +1,4 @@
-package tonlabs.stories.chats;
+package tonlabs.uikit.media;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

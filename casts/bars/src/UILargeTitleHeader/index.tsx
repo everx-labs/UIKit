@@ -14,6 +14,7 @@ import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UIBackgroundView, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 
 import { useHasScroll, ScrollableContext } from '@tonlabs/uikit.scrolls';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIConstant } from '../constants';
 import type { UINavigationBarProps } from '../UINavigationBar';
 import { UIStackNavigationBar } from '../UIStackNavigationBar';
@@ -388,13 +389,13 @@ const styles = StyleSheet.create({
     inner: {
         flex: 1,
     },
-    mainHeaderFiller: { height: UIConstant.headerHeight },
+    mainHeaderFiller: { height: UILayoutConstant.headerHeight },
     mainHeaderContainer: {
         position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
-        height: UIConstant.headerHeight,
+        height: UILayoutConstant.headerHeight,
     },
     mainHeaderTitleContainer: {
         alignItems: 'center',

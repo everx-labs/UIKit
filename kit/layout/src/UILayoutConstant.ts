@@ -74,4 +74,6 @@ export const UILayoutConstant = {
         toggleHeight: 18,
         togglePadding: 4,
     },
+
+    headerHeight: 56,
 };

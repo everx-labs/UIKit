@@ -20,6 +20,7 @@ import {
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { uiLocalized } from '@tonlabs/localization';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
 import { UIConstant as UINavConstant } from './constants';
 
@@ -199,7 +200,7 @@ export function UISearchBar({
 
 const styles = StyleSheet.create({
     container: {
-        minHeight: UINavConstant.headerHeight,
+        minHeight: UILayoutConstant.headerHeight,
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: UIConstant.smallContentOffset(),

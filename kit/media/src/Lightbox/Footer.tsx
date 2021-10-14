@@ -11,7 +11,6 @@ import {
 } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { VisibilityState } from './constants';
-import { UIConstant } from '../constants';
 
 // @inline
 const VISIBILITY_STATE_CLOSED: VisibilityState = 0;
@@ -70,7 +69,7 @@ const useStyles = makeStyles((theme: Theme, insets: EdgeInsets) => ({
     footer: {
         justifyContent: 'center',
         alignItems: 'flex-start',
-        paddingVertical: UIConstant.contentInsetVerticalX3,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX3,
         paddingHorizontal: UILayoutConstant.contentOffset,
     },
 }));

@@ -1,6 +1,6 @@
 //
 //  HDuplicateImageView.h
-//  uistory.chats
+//  uikit.media
 //
 //  Created by Aleksei Saveliev on 02.08.2021.
 //

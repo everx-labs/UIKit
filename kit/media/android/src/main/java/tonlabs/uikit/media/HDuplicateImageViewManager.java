@@ -1,4 +1,4 @@
-package tonlabs.stories.chats;
+package tonlabs.uikit.media;
 
 import android.widget.ImageView;
 import androidx.annotation.NonNull;

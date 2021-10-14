@@ -44,6 +44,8 @@
         "@tonlabs/uikit.popups": "^2.3.0",
         "@tonlabs/uikit.layout": "^2.3.0",
         "@tonlabs/uikit.assets": "^2.3.0",
+        "@tonlabs/uikit.media": "^2.3.0",
+        "@tonlabs/uikit.inputs": "^2.3.0",
         "@tonlabs/uicast.modal-navigator": "^2.3.0",
         "@tonlabs/localization": "^2.3.0",
         "react-native-safe-area-context": "^3.1.3"

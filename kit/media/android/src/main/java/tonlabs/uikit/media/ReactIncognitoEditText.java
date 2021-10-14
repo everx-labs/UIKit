@@ -1,4 +1,4 @@
-package tonlabs.stories.chats;
+package tonlabs.uikit.media;
 
 import android.content.Context;
 import android.os.Build;

@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIImage } from '@tonlabs/uikit.media';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import {
     UIBackgroundView,
@@ -80,7 +81,7 @@ export function UISearchBarButton({
 
 const styles = StyleSheet.create({
     container: {
-        minHeight: UINavConstant.headerHeight,
+        minHeight: UILayoutConstant.headerHeight,
         paddingVertical: UIConstant.smallContentOffset(),
     },
     touchable: { flex: 1 },

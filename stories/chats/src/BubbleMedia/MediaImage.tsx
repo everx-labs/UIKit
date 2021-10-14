@@ -3,11 +3,11 @@ import { View, Image } from 'react-native';
 import { UIConstant as UICoreConstant } from '@tonlabs/uikit.core';
 import { makeStyles } from '@tonlabs/uikit.themes';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
+import { Lightbox } from '@tonlabs/uikit.media';
 
 import { useBubbleContainerStyle } from '../useBubblePosition';
 import { useBubbleBackgroundColor } from '../useBubbleStyle';
 import type { MediaMessage } from '../types';
-import { Lightbox } from '../Lightbox/Lightbox';
 import { useImageCallback, useImages, useImageSize } from './hooks';
 
 export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {

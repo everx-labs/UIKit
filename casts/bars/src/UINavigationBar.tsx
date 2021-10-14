@@ -13,8 +13,8 @@ import {
     UILabelRoles,
 } from '@tonlabs/uikit.themes';
 
-import { UIConstant as UINavConstant } from './constants';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { UIConstant as UINavConstant } from './constants';
 import { UIHeaderItems } from './UIHeaderItems';
 import type { HeaderItem } from './UIHeaderItems';
 import { useNavigationHeaderLeftItems } from './useNavigationHeaderLeftItems';
@@ -195,7 +195,7 @@ export function UINavigationBar({
 
 const styles = StyleSheet.create({
     container: {
-        height: UINavConstant.headerHeight,
+        height: UILayoutConstant.headerHeight,
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: UILayoutConstant.contentInsetVerticalX2,

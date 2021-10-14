@@ -6,14 +6,13 @@ import Animated, {
     useDerivedValue,
     useSharedValue,
 } from 'react-native-reanimated';
-import { UIImage } from '@tonlabs/uikit.media';
 import { ColorVariants, Theme, useTheme, makeStyles, useStatusBar } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIConstant as UICoreConstant } from '@tonlabs/uikit.core';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import { UIConstant as UIBarConstant } from '@tonlabs/uicast.bars';
 import { useBackHandler } from '@react-native-community/hooks';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { UIImage } from '../UIImage';
 import type { DuplicateContentProps } from './types';
 import {
     useDuplicateState,
@@ -164,10 +163,7 @@ export const DuplicateContent = ({
                             <View onLayout={onLayout}>{previewImage}</View>
                         </Animated.View>
                         {isFullSizeDisplayed ? (
-                            <Animated.View
-                                testID="image_expanded"
-                                style={styles.fullSizeImage}
-                            >
+                            <Animated.View testID="image_expanded" style={styles.fullSizeImage}>
                                 {fullSizeImage}
                             </Animated.View>
                         ) : null}
@@ -205,7 +201,7 @@ const useStyles = makeStyles((theme: Theme, insets: EdgeInsets) => ({
         backgroundColor: theme[ColorVariants.BackgroundOverlay],
     },
     header: {
-        minHeight: UIBarConstant.headerHeight,
+        minHeight: UILayoutConstant.headerHeight,
         justifyContent: 'center',
         alignItems: 'flex-start',
         paddingVertical: UIConstant.lightbox.verticalHeaderPadding,

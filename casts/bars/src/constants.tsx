@@ -4,8 +4,6 @@ export const UIConstant = {
 
     scrollContentInsetHorizontal: 16,
 
-    headerHeight: 56,
-
     elastiicWidthController: 600,
     titleMinimumFontScale: 0.7,
 

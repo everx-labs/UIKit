@@ -36,18 +36,7 @@
         "typescript/",
         "src/"
     ],
-    "dependencies": {
-        "@tonlabs/uikit.assets": "^2.3.0",
-        "@tonlabs/uikit.themes": "^2.3.0",
-        "@tonlabs/uikit.controls": "^2.3.0",
-        "@tonlabs/uikit.media": "^2.3.0",
-        "@tonlabs/uikit.layout": "^2.3.0",
-        "@tonlabs/localization": "^2.3.0",
-        "fontfaceobserver-es": "3.3.3",
-        "nanoid": "^3.1.23",
-        "react-native-indicators": "git+https://github.com/tonlabs/react-native-indicators.git",
-        "bignumber.js": "9.0.0"
-    },
+    "dependencies": {},
     "devDependencies": {
         "@react-native-community/blur": "git+https://github.com/tonlabs/react-native-blur.git",
         "@react-native-community/bob": "0.16.2",
