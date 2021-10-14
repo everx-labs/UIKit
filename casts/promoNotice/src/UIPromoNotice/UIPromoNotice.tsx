@@ -82,7 +82,8 @@ export function UIPromoNotice({
                     </UILabel>
                 </View>
             );
-        } else if (deviceOS === 'android') {
+        }
+        if (deviceOS === 'android') {
             return (
                 <View>
                     <UILinkButton

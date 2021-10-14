@@ -51,7 +51,8 @@ export function QRCodeScanner(props: QRCodeScannerProps) {
                 />
             </View>
         );
-    } else if (qrCodeError === QR_CODE_ERROR.PERMISSION) {
+    }
+    if (qrCodeError === QR_CODE_ERROR.PERMISSION) {
         return (
             <View style={[styles.errorContainer, props.containerStyle]}>
                 <UILabel
@@ -63,7 +64,8 @@ export function QRCodeScanner(props: QRCodeScannerProps) {
                 </UILabel>
             </View>
         );
-    } else if (qrCodeError === QR_CODE_ERROR.UNRECOGNIZED) {
+    }
+    if (qrCodeError === QR_CODE_ERROR.UNRECOGNIZED) {
         return (
             <View style={[styles.errorContainer, props.containerStyle]}>
                 <UILabel

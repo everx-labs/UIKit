@@ -148,6 +148,7 @@ function UISearchControllerContent({
         <Animated.View style={[styles.container, baseStyle, animatedStyle]}>
             <SafeAreaView style={styles.contentInner} edges={['top']}>
                 <UISearchBar
+                    testID="ui-search-bar"
                     autoFocus
                     searching={searching}
                     placeholder={placeholder}

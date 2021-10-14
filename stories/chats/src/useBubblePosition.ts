@@ -27,7 +27,8 @@ export function useBubblePosition(status: MessageStatus): BubblePosition {
 function getBubbleContainerPositionStyle(position: BubblePosition) {
     if (position === BubblePosition.left) {
         return styles.containerLeft;
-    } else if (position === BubblePosition.right) {
+    }
+    if (position === BubblePosition.right) {
         return styles.containerRight;
     }
     return null;

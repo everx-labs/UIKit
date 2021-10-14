@@ -9,6 +9,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import type { UICarouselViewContainerProps, UICarouselViewPageProps } from '../../types';
 import { duration } from '../animations';
+import { Pagination } from '../Pagination';
 
 type PageProps = {
     page: React.ReactElement<UICarouselViewPageProps>;
@@ -34,10 +35,16 @@ const PageView: React.FC<PageProps> = React.memo(
             return { opacity, transform };
         });
 
-        const focused = React.useMemo(() => index === currentIndex.current, [currentIndex]);
+        const focused = React.useMemo(() => index === currentIndex.current, [currentIndex, index]);
 
         const pageWidthStyle = React.useMemo(() => {
-            return width ? { width } : focused ? { ...StyleSheet.absoluteFillObject } : null;
+            if (width) {
+                return { width };
+            }
+            if (focused) {
+                return { ...StyleSheet.absoluteFillObject };
+            }
+            return null;
         }, [width, focused]);
 
         return (
@@ -64,6 +71,7 @@ export function CarouselViewContainer({
     testID,
     shouldPageMoveOnPress = true,
     onPageIndexChange,
+    showPagination,
 }: Props) {
     const [layout, setLayout] = React.useState({ width: 0, height: 0 });
 
@@ -144,7 +152,7 @@ export function CarouselViewContainer({
                 {pages.map((page, index) => {
                     return (
                         <PageView
-                            key={index}
+                            key={page.key}
                             page={page}
                             index={index}
                             currentIndex={currentIndexRef}
@@ -156,6 +164,13 @@ export function CarouselViewContainer({
                     );
                 })}
             </Animated.View>
+            {showPagination && (
+                <Pagination
+                    pages={pages}
+                    activeIndex={currentIndexRef.current}
+                    setPage={jumpToIndex}
+                />
+            )}
         </View>
     );
 }
@@ -169,5 +184,6 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         flexDirection: 'row',
+        alignItems: 'center',
     },
 });

@@ -7,4 +7,5 @@ export function useKeyboardListener(
     _dotsValues: Animated.SharedValue<number>[],
     _dotsAnims: Animated.SharedValue<number>[],
     _dotsCount: number,
+    _disabled: boolean,
 ) {}

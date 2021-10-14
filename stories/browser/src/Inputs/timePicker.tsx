@@ -10,9 +10,11 @@ import {
 
 import { UIDateTimePickerMode } from '@tonlabs/uicast.date-time-picker';
 
-import type { TimeMessage } from '../types';
-import { UIDateTimePicker } from '../UIDateTimePicker';
 import { uiLocalized } from '@tonlabs/localization';
+
+import { UIDateTimePicker } from '../UIDateTimePicker';
+
+import type { TimeMessage } from '../types';
 
 export function TimePicker({ onLayout, ...message }: TimeMessage) {
     const [isPickerVisible, setPickerVisible] = React.useState(false);
@@ -33,7 +35,10 @@ export function TimePicker({ onLayout, ...message }: TimeMessage) {
                         <BubbleSimplePlainText
                             type={ChatMessageType.PlainText}
                             key="time-picker-value-bubble-chosen-time"
-                            text={uiLocalized.formatTime(message.externalState.time)}
+                            text={uiLocalized.formatTime(
+                                message.externalState.time,
+                                message.isAmPmTime ? 'hh:mm A' : 'HH:mm',
+                            )}
                             status={MessageStatus.Sent}
                         />
                     )}
@@ -66,8 +71,9 @@ export function TimePicker({ onLayout, ...message }: TimeMessage) {
                 mode={UIDateTimePickerMode.Time}
                 min={message.minTime}
                 max={message.maxTime}
-                current={message.currentTime}
+                defaultDate={message.currentTime}
                 interval={message.interval}
+                isAmPmTime={message.isAmPmTime}
                 onClose={() => {
                     setPickerVisible(false);
                 }}

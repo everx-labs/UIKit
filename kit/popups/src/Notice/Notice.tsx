@@ -17,8 +17,8 @@ import {
     Theme,
     makeStyles,
 } from '@tonlabs/uikit.themes';
-import { UIConstant } from './constants';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { UIConstant } from '../constants';
 import { NoticeProps, UINoticeType, UINoticeColor, UINoticeActionAttributes } from './types';
 import { Action } from './Action';
 import { CountdownCirlce } from './CountdownCircle';

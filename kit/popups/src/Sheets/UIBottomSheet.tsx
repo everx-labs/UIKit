@@ -9,19 +9,7 @@ export type UIBottomSheetProps = UISheetProps & {
 
 export function UIBottomSheet({ children, style, ...rest }: UIBottomSheetProps) {
     return (
-        <UISheet
-            {...rest}
-            countRubberBandDistance
-            style={[
-                styles.bottom,
-                style,
-                {
-                    paddingBottom:
-                        ((StyleSheet.flatten(style).paddingBottom as number) ?? 0) +
-                        UILayoutConstant.rubberBandEffectDistance,
-                },
-            ]}
-        >
+        <UISheet {...rest} countRubberBandDistance style={[styles.bottom, style]}>
             {children}
         </UISheet>
     );
@@ -34,5 +22,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         left: 'auto',
         right: 'auto',
+        borderTopLeftRadius: UILayoutConstant.alertBorderRadius,
+        borderTopRightRadius: UILayoutConstant.alertBorderRadius,
+        overflow: 'hidden',
     },
 });

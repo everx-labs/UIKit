@@ -215,7 +215,7 @@ export const UIPinCode = React.memo(function UIPinCodeImpl({
     const shakeAnim = useSharedValue<ShakeAnimationStatus>(0);
     const animatedDots = useAnimatedDots(length, dotsAnims, validState);
 
-    useKeyboardListener(activeDotIndex, dotsValues, dotsAnims, length);
+    useKeyboardListener(activeDotIndex, dotsValues, dotsAnims, length, disabled);
 
     const showValidationError = React.useCallback(
         function showValidationErrorImpl() {

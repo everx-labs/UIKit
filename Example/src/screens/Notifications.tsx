@@ -1,13 +1,58 @@
+/* eslint-disable global-require */
 import * as React from 'react';
 import { View } from 'react-native';
 
 import { UILinkButton, UIBoxButton, UIBoxButtonVariant } from '@tonlabs/uikit.controls';
 import { UILabel } from '@tonlabs/uikit.themes';
 import { UIPopup, UINoticeColor } from '@tonlabs/uikit.popups';
+import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
+
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
-export const Notifications = () => {
+function PushPopup() {
+    const [visible, setVisible] = React.useState(false);
+    const [longVisible, setLongVisible] = React.useState(false);
+    return (
+        <>
+            <UIPopup.Push
+                title="Hello!"
+                message="You got a new message!"
+                visible={visible}
+                onClose={() => setVisible(false)}
+                onTap={() => setVisible(false)}
+            />
+            <UIPopup.Push
+                title="Hello!"
+                message="Hey man, long time no see, maybe we can call each other? Come on, just 5-10 minutes, it won't take much time, you'll see."
+                visible={longVisible}
+                onClose={() => setLongVisible(false)}
+                onTap={() => setLongVisible(false)}
+                icon={require('./assets/long-push-icon.png')}
+            />
+            <View
+                style={{
+                    flexDirection: 'column',
+                    paddingBottom: 30,
+                    width: 250,
+                }}
+            >
+                <UILinkButton
+                    testID="show_push_popup"
+                    title={`${visible ? 'Hide' : 'Show'} push popup`}
+                    onPress={() => setVisible(!visible)}
+                />
+                <UILinkButton
+                    testID="show_long_push_popup"
+                    title={`${longVisible ? 'Hide' : 'Show'} long push popup`}
+                    onPress={() => setLongVisible(!longVisible)}
+                />
+            </View>
+        </>
+    );
+}
+
+export function Notifications() {
     const [noticeColor, setNoticeColor] = React.useState<UINoticeColor>(
         UINoticeColor.PrimaryInverted,
     );
@@ -42,7 +87,7 @@ export const Notifications = () => {
                         }}
                     >
                         <UIBoxButton
-                            title={'PrimaryInverted'}
+                            title="PrimaryInverted"
                             variant={
                                 noticeColor === UINoticeColor.PrimaryInverted
                                     ? UIBoxButtonVariant.Positive
@@ -54,7 +99,7 @@ export const Notifications = () => {
                             }}
                         />
                         <UIBoxButton
-                            title={'Negative'}
+                            title="Negative"
                             variant={
                                 noticeColor === UINoticeColor.Negative
                                     ? UIBoxButtonVariant.Positive
@@ -66,7 +111,7 @@ export const Notifications = () => {
                             }}
                         />
                         <UIBoxButton
-                            title={'Secondary'}
+                            title="Secondary"
                             variant={
                                 noticeColor === UINoticeColor.Secondary
                                     ? UIBoxButtonVariant.Positive
@@ -140,6 +185,26 @@ export const Notifications = () => {
                     />
                 </View>
             </ExampleSection>
+            <ExampleSection title="UIPopup.Push">
+                <PushPopup />
+            </ExampleSection>
         </ExampleScreen>
     );
-};
+}
+
+const NotificationsStack = createStackNavigator();
+
+export function NotificationsScreen() {
+    return (
+        <NotificationsStack.Navigator>
+            <NotificationsStack.Screen
+                name="NotificationsWindow"
+                options={{
+                    useHeaderLargeTitle: true,
+                    title: 'Notifications',
+                }}
+                component={Notifications}
+            />
+        </NotificationsStack.Navigator>
+    );
+}

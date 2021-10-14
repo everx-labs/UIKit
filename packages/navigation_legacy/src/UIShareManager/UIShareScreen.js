@@ -1,18 +1,19 @@
 // @flow
 import React from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
-import { UIBoxButton } from '@tonlabs/uikit.controls';
+import { UIBoxButton, TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 import { uiLocalized } from '@tonlabs/localization';
+import { UIPopup } from '@tonlabs/uikit.popups';
 
-import UIModalController from '../UIModalController';
 import type { ModalControllerProps } from '../UIModalController';
+import UIModalController from '../UIModalController';
 
 type Options = {
     message: string,
@@ -66,6 +67,7 @@ export default class UIShareScreen extends UIModalController<Props, State> {
             ...this.state,
             message: '',
             subtitle: '',
+            visibleToast: false,
         };
     }
 
@@ -85,9 +87,7 @@ export default class UIShareScreen extends UIModalController<Props, State> {
 
     // Events
     onCopyPressed = async () => {
-        // Hide the share screen
-        this.hide();
-
+        this.setVisibleToastNotice(true);
         // Copy the message into Clipboard
         Clipboard.setString(this.getMessage());
     };
@@ -118,6 +118,10 @@ export default class UIShareScreen extends UIModalController<Props, State> {
         return UIAssets.icons.ui.buttonClose;
     }
 
+    setVisibleToastNotice(visibleToast: boolean) {
+        this.setState({ visibleToast });
+    }
+
     // Render
 
     renderContentView(contentHeight: number) {
@@ -134,15 +138,29 @@ export default class UIShareScreen extends UIModalController<Props, State> {
                     {this.getSubtitle() || uiLocalized.ShareToTalk}
                 </UILabel>
                 <ScrollView contentContainerStyle={styles.messageContainer}>
-                    <UILabel color={UILabelColors.TextPrimary} role={UILabelRoles.PromoMedium}>
-                        {this.getMessage()}
-                    </UILabel>
+                    <TouchableOpacity onPress={this.onCopyPressed}>
+                        <UILabel color={UILabelColors.TextPrimary} role={UILabelRoles.PromoMedium}>
+                            {this.getMessage()}
+                        </UILabel>
+                    </TouchableOpacity>
                 </ScrollView>
                 <UIBoxButton
                     testID="copy_button"
                     title={uiLocalized.CopyToClipboard}
                     onPress={this.onCopyPressed}
                     layout={UIStyle.margin.topDefault()}
+                />
+                <UIPopup.Notice
+                    type={UIPopup.Notice.Type.Toast}
+                    title={uiLocalized.CopiedToClipboard}
+                    visible={this.state.visibleToast}
+                    onClose={() => {
+                        this.setVisibleToastNotice(false);
+                    }}
+                    onTap={() => {
+                        this.setVisibleToastNotice(false);
+                    }}
+                    duration={UIPopup.Notice.Duration.Long}
                 />
             </View>
         );

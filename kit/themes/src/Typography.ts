@@ -46,6 +46,15 @@ export type Font = {
     light: FontVariant;
 };
 
+// See picture here https://www.npmjs.com/package/font-measure#metrics-
+// Calculated with https://codesandbox.io/s/npm-playground-forked-scqo2?file=/src/index.js
+const interFontBaselineRatio = 0.25 / 1.15;
+const interFontMiddlelineRatio = 0.58 / 1.15;
+const interFontLowerlineRatio = 0.71 / 1.15;
+const interFontUpperlineRatio = 0.92 / 1.15;
+const interFontCapHeightRatio = 0.51;
+const interFontDescentRatio = 1.05 / 1.15;
+
 export const InterFont: Font = {
     semiBold: {
         fontFamily: 'Inter-SemiBold',
@@ -249,3 +258,29 @@ export const Typography: TypographyT = StyleSheet.create({
         letterSpacing: -0.26,
     },
 });
+
+export function getFontMesurements(variant: TypographyVariants) {
+    const { lineHeight } = StyleSheet.flatten(Typography[variant]);
+
+    if (!lineHeight) {
+        return null;
+    }
+
+    const baseline = interFontBaselineRatio * lineHeight;
+    const lowerline = interFontLowerlineRatio * lineHeight;
+    const middleline = interFontMiddlelineRatio * lineHeight;
+    const upperline = interFontUpperlineRatio * lineHeight;
+    const capHeight = interFontCapHeightRatio * lineHeight;
+    const lowerHeight = lowerline - baseline;
+    const descent = interFontDescentRatio * lineHeight;
+    return {
+        capHeight,
+        lowerHeight,
+        baseline,
+        middleline,
+        lowerline,
+        upperline,
+        descent,
+        descentBottom: lineHeight - descent,
+    };
+}

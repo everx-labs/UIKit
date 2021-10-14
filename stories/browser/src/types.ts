@@ -266,6 +266,7 @@ export type DateTimeMessage = InteractiveMessage<
         prompt?: string;
         minDateTime?: Date;
         maxDateTime?: Date;
+        isAmPmTime?: boolean;
         current?: Date;
         interval?: number;
         onSelect: (state: DateTimeExternalState) => void;
@@ -281,6 +282,7 @@ export type TimeMessage = InteractiveMessage<
     InteractiveMessageType.Time,
     {
         prompt?: string;
+        isAmPmTime?: boolean;
         minTime?: Date;
         maxTime?: Date;
         currentTime?: Date;

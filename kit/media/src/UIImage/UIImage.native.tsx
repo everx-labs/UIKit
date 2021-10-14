@@ -6,7 +6,10 @@ import type { UIImageProps } from './types';
 
 const FastImage = require('react-native-fast-image');
 
-export function UIImage({ tintColor, ...rest }: UIImageProps) {
+export const UIImage = React.forwardRef<Image, UIImageProps>(function UIImageForwarded(
+    { tintColor, ...rest }: UIImageProps,
+    ref,
+) {
     const theme = useTheme();
     if (tintColor) {
         /**
@@ -16,10 +19,11 @@ export function UIImage({ tintColor, ...rest }: UIImageProps) {
          */
         return (
             <Image
+                ref={ref}
                 {...rest}
                 style={[rest.style, tintColor != null ? { tintColor: theme[tintColor] } : null]}
             />
         );
     }
-    return React.createElement(FastImage, rest);
-}
+    return React.createElement(FastImage, { ref, ...rest });
+});

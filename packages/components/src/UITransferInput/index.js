@@ -58,6 +58,7 @@ export default class UITransferInput extends UIComponent<Props, State> {
     };
 
     amountInput: ?UIAmountInput;
+
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -336,11 +337,11 @@ export default class UITransferInput extends UIComponent<Props, State> {
 
     render() {
         return (
-            <React.Fragment>
+            <>
                 {this.renderInput()}
                 {this.renderCustomComponent()}
                 {this.renderInfoBlock()}
-            </React.Fragment>
+            </>
         );
     }
 }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ColorValue, Text } from 'react-native';
+import { ColorValue, Platform, Text } from 'react-native';
 
 // @ts-expect-error
 import TextAncestorContext from 'react-native/Libraries/Text/TextAncestor';
@@ -8,7 +8,29 @@ import { Typography, TypographyVariants } from '../Typography';
 import { ColorVariants, useTheme } from '../Colors';
 import type { Props } from './types';
 // @ts-expect-error
+// eslint-disable-next-line import/extensions, import/no-unresolved
 import { useLabelDataSet } from './useLabelDataSet';
+import { makeStyles } from '../makeStyles';
+
+const useStyles = makeStyles((numberOfLines: number): { textMultiLine: any } => {
+    if (Platform.OS !== 'web' || numberOfLines == null) {
+        return {
+            textMultiLine: null,
+        };
+    }
+
+    return {
+        textMultiLine: {
+            // @ts-ignore
+            display: '-webkit-box',
+            maxWidth: '100%',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            WebkitBoxOrient: 'vertical',
+            WebkitLineClamp: numberOfLines,
+        },
+    };
+});
 
 /**
  * https://reactnative.dev/docs/text
@@ -29,6 +51,7 @@ export const UILabel = React.forwardRef<Text, Props>(function UILabelForwarded(
         color: colorProp = ColorVariants.TextPrimary,
         style,
         textComponent,
+        numberOfLines,
         ...rest
     }: Props,
     ref,
@@ -60,19 +83,29 @@ export const UILabel = React.forwardRef<Text, Props>(function UILabelForwarded(
     const TextComponent = textComponent || Text;
 
     const dataSet = useLabelDataSet(rest.children);
+    const styles = useStyles(numberOfLines);
 
     return (
         <TextComponent
             ref={ref}
             {...rest}
+            // It's also part of a fix below with textMultiline
+            numberOfLines={Platform.select({ web: undefined, default: numberOfLines })}
             style={[
                 style,
                 // Override font and color styles
                 // If there were any
                 fontStyle,
                 colorStyle,
+                /**
+                 * Applying a fix until it isn't merged to RNW
+                 * https://github.com/necolas/react-native-web/pull/2113/files
+                 *
+                 * TODO: delete it when update for RNW is there! (fix was for 0.17.1)
+                 */
+                styles.textMultiLine,
             ]}
-            // @ts-expect-error
+            // @ts-ignore
             dataSet={dataSet}
         />
     );

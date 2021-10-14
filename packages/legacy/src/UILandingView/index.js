@@ -46,7 +46,7 @@ export default class UILandingView extends UIComponent<Props, State> {
         const { icon, title, description, content } = this.props;
 
         return (
-            <React.Fragment>
+            <>
                 <ImageComponent style={this.props.iconStyle || styles.icon} source={icon} />
                 <UILabel
                     color={UILabelColors.TextPrimary}
@@ -63,7 +63,7 @@ export default class UILandingView extends UIComponent<Props, State> {
                     {description}
                 </UILabel>
                 {content}
-            </React.Fragment>
+            </>
         );
     }
 }

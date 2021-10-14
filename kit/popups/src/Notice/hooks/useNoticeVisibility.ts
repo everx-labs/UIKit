@@ -8,7 +8,7 @@ import {
     useDerivedValue,
     Easing,
 } from 'react-native-reanimated';
-import { UIConstant } from '../constants';
+import { UIConstant } from '../../constants';
 import { UINoticeDuration } from '../types';
 
 const useNotificationDuration = (duration: UINoticeDuration | undefined) => {
@@ -26,7 +26,7 @@ const useNotificationDuration = (duration: UINoticeDuration | undefined) => {
 export const useNoticeVisibility = (
     onClose: (() => void) | undefined,
     visible: boolean,
-    duration: UINoticeDuration | undefined,
+    duration?: UINoticeDuration,
 ) => {
     const [noticeVisible, setNoticeVisible] = React.useState(visible);
     const notificationDuration = useNotificationDuration(duration);
@@ -40,13 +40,11 @@ export const useNoticeVisibility = (
         () => {
             return {
                 countdownValue: countdownValue.value,
-                visible,
-                onClose,
             };
         },
         state => {
-            if (state.countdownValue === 0 && state.visible && state.onClose) {
-                runOnJS(state.onClose)();
+            if (state.countdownValue === 0 && visible && onClose) {
+                runOnJS(onClose)();
             }
         },
         [visible, onClose],
@@ -58,15 +56,15 @@ export const useNoticeVisibility = (
         if (visible && onClose) {
             onClose();
         }
-    }, [onClose, countdownValue, visible]);
+    }, [onClose, countdownValue, visible, notificationDuration]);
 
     const startCountdown = React.useCallback(() => {
-        const duration = notificationDuration * (1 - countdownProgress.value);
+        const restDuration = notificationDuration * (1 - countdownProgress.value);
         countdownValue.value = withTiming(0, {
-            duration,
+            duration: restDuration,
             easing: Easing.linear,
         });
-    }, [countdownValue, notificationDuration]);
+    }, [countdownValue, notificationDuration, countdownProgress]);
 
     const pauseCountdown = React.useCallback(() => {
         cancelAnimation(countdownValue);

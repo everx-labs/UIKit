@@ -16,8 +16,8 @@ import type { UIImageProps } from './types';
 
 const useImageDimensions = (style: StyleProp<ImageStyle>, source: any) => {
     return React.useMemo(() => {
-        let width: number | string | undefined = undefined;
-        let height: number | string | undefined = undefined;
+        let width: number | string | undefined;
+        let height: number | string | undefined;
         const flatStyle = StyleSheet.flatten(style);
         if (flatStyle) {
             if (flatStyle.width) {
@@ -37,10 +37,13 @@ const useImageDimensions = (style: StyleProp<ImageStyle>, source: any) => {
             width,
             height,
         };
-    }, [style, source && source.uri]);
+    }, [source, style]);
 };
 
-const TintUIImage = ({ tintColor, style, onLoadEnd, onError, ...rest }: UIImageProps) => {
+const TintUIImage = React.forwardRef<View, UIImageProps>(function TintUIImageForwarded(
+    { tintColor, style, onLoadEnd, ...rest }: UIImageProps,
+    ref,
+) {
     const theme = useTheme();
     const tintColorValue: ColorValue | null = tintColor != null ? theme[tintColor] : null;
 
@@ -66,21 +69,35 @@ const TintUIImage = ({ tintColor, style, onLoadEnd, onError, ...rest }: UIImageP
             setHasError(true);
             return;
         }
-        var img = new Image();
-        var currentCanvas = document.getElementById(`${idRef.current}`) as any;
+        const img = new Image();
+        const currentCanvas = document.getElementById(`${idRef.current}`) as HTMLCanvasElement;
         if (!currentCanvas || !currentCanvas.getContext) {
             setHasError(true);
             return;
         }
-        var ctx: CanvasRenderingContext2D | undefined = currentCanvas.getContext('2d');
+
+        const ctx: CanvasRenderingContext2D | null = currentCanvas.getContext('2d');
         if (!ctx) {
             setHasError(true);
             return;
         }
+
         img.onload = () => {
             if (!ctx || !dimensions) {
                 return;
             }
+
+            currentCanvas.style.width = `${dimensions.width}px`;
+            currentCanvas.style.height = `${dimensions.height}px`;
+
+            // https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio#correcting_resolution_in_a_canvas
+            const scale = window.devicePixelRatio;
+
+            currentCanvas.width = Math.floor(dimensions.width * scale);
+            currentCanvas.height = Math.floor(dimensions.height * scale);
+
+            ctx.scale(scale, scale);
+
             // draw image
             ctx.drawImage(img, 0, 0, dimensions.width, dimensions.height);
             // set composite mode
@@ -94,7 +111,7 @@ const TintUIImage = ({ tintColor, style, onLoadEnd, onError, ...rest }: UIImageP
             }
         };
         img.src = uri;
-    }, [uri, dimensions]);
+    }, [uri, dimensions, tintColorValue, width, height, onLoadEnd]);
 
     if (hasError || !tintColorValue || !width || !height || !uri) {
         if (__DEV__) {
@@ -110,6 +127,7 @@ const TintUIImage = ({ tintColor, style, onLoadEnd, onError, ...rest }: UIImageP
 
     return (
         <View
+            ref={ref}
             testID={rest.testID}
             onLayout={onLayout}
             style={[
@@ -123,9 +141,9 @@ const TintUIImage = ({ tintColor, style, onLoadEnd, onError, ...rest }: UIImageP
             <canvas id={`${idRef.current}`} width={dimensions?.width} height={dimensions?.height} />
         </View>
     );
-};
+});
 
-const UIImageImpl = (props: UIImageProps) => {
+const UIImageImpl = React.forwardRef<RNImage, UIImageProps>(function UIImageForwarded(props, ref) {
     const { tintColor, ...rest } = props;
     const theme = useTheme();
 
@@ -134,15 +152,16 @@ const UIImageImpl = (props: UIImageProps) => {
      * https://github.com/necolas/react-native-web/issues/1914
      */
     if (tintColor) {
-        return <TintUIImage {...props} />;
+        return <TintUIImage ref={ref} {...props} />;
     }
 
     return (
         <RNImage
+            ref={ref}
             {...rest}
             style={[rest.style, tintColor != null ? { tintColor: theme[tintColor] } : null]}
         />
     );
-};
+});
 
 export const UIImage = React.memo(UIImageImpl);

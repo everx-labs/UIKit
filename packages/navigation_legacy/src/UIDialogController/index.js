@@ -262,7 +262,7 @@ class UIDialogController extends UIController {
         if (Array.isArray(bottom)) {
             bottom = (
                 <Portal forId="scene">
-                    <React.Fragment>{bottom}</React.Fragment>
+                    <>{bottom}</>
                 </Portal>
             );
         }
@@ -307,7 +307,7 @@ class UIDialogController extends UIController {
     renderContentContainer() {
         let content = this.renderContent();
         if (Array.isArray(content)) {
-            content = <React.Fragment>{content}</React.Fragment>;
+            content = <>{content}</>;
         }
         return content ? (
             <UIBackgroundView
@@ -325,13 +325,13 @@ class UIDialogController extends UIController {
 
     renderSafely() {
         const content = (
-            <React.Fragment>
+            <>
                 {this.renderTitle()}
                 {this.renderTextInput()}
                 {this.renderAuxTextInput()}
                 {this.renderSubtitleContainer()}
                 {this.renderContentContainer()}
-            </React.Fragment>
+            </>
         );
         const testIDProp = this.testID ? { testID: `${this.testID}_wrapper` } : null;
         const wrappedContent = this.wrapContentInScrollView ? (

@@ -1,11 +1,10 @@
 {
     "name": "@tonlabs/localization",
-    "version": "2.3.0",
+    "version": "2.3.2",
     "description": "Localization utilities for Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit",
-        "prepare": "bob build",
-        "postprepare": "cp -R src/languages/en.json lib/typescript/src/languages/"
+        "prepare": "bob build && cp -R src/languages/en.json lib/typescript/src/languages/"
     },
     "publishConfig": {
         "registry": "https://npm.pkg.github.com/"
@@ -41,11 +40,13 @@
     "devDependencies": {
         "@react-native-clipboard/clipboard": "^1.8.4",
         "@react-native-community/bob": "0.16.2",
+        "react-native": "0.65.1",
         "react-native-localization": "2.1.6",
         "typescript": "4.4.3"
     },
     "peerDependencies": {
         "@react-native-clipboard/clipboard": "^1.8.4",
+        "react-native": "^0.65.1",
         "react-native-localization": "^2.1.6"
     },
     "@react-native-community/bob": {

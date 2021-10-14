@@ -184,7 +184,8 @@ export const useButtonChildren = (children: React.ReactNode) => {
 
     if (length === 1) {
         return <View style={styles.singleElementContainer}>{childElements}</View>;
-    } else if (length === 2) {
+    }
+    if (length === 2) {
         // TODO: add checking of child type
         //  & separating Button.Container to icon and title with corresponding alignment
         return (

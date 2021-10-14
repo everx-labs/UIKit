@@ -19,8 +19,9 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import { getYWithRubberBandEffect } from '../../AnimationHelpers/getYWithRubberBandEffect';
 import { useHasScroll } from '@tonlabs/uikit.scrolls';
+
+import { getYWithRubberBandEffect } from '../../AnimationHelpers/getYWithRubberBandEffect';
 import type { OnOpen, OnClose } from './types';
 
 const OpenSpringConfig = {
@@ -51,9 +52,11 @@ enum SHOW_STATES {
 export function usePosition(
     height: Animated.SharedValue<number>,
     keyboardHeight: Animated.SharedValue<number>,
+    bottomInset: number,
     hasOpenAnimation: boolean = true,
     hasCloseAnimation: boolean = true,
     shouldHandleKeyboard: boolean = true,
+    countRubberBandDistance: boolean = false,
     onCloseProp: OnClose | undefined,
     onCloseModal: OnClose,
     onOpenEndProp: OnOpen | undefined,
@@ -76,8 +79,16 @@ export function usePosition(
 
     const snapPointPosition = useDerivedValue(() => {
         let snapPoint = 0 - height.value;
-        if (shouldHandleKeyboard) {
-            snapPoint - keyboardHeight.value;
+        if (shouldHandleKeyboard && keyboardHeight.value !== 0) {
+            snapPoint =
+                snapPoint -
+                keyboardHeight.value +
+                // At this point we don't want inset to be the size of
+                // safe area bottom inset, therefore trying to apply
+                // only `contentOffset`
+                bottomInset -
+                UILayoutConstant.contentOffset -
+                (countRubberBandDistance ? UILayoutConstant.rubberBandEffectDistance : 0);
         }
         return snapPoint;
     });

@@ -1,6 +1,7 @@
 import React from 'react';
-import { UITextInput } from '../../UIKit';
 import { render, fireEvent } from '@testing-library/react-native';
+
+import { UITextInput } from '../../UIKit';
 
 const Component = () => {
     const [name, setUser] = React.useState('');

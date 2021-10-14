@@ -182,8 +182,10 @@ const renderFixedTabBar = (
     indicatorContainerColor: ColorValue,
     type: UIPagerViewContainerType,
 ): React.ReactElement => {
-    const tabBarStyle: StyleProp<ViewStyle> =
-        type === 'FixedPadded' ? styles.fixedPaddedTabBar : styles.fixedTabBar;
+    const tabBarStyle: StyleProp<ViewStyle> = [
+        styles.fixedTabBar,
+        type === 'FixedPadded' && styles.paddedTabBar,
+    ];
     return (
         <TabBar
             {...props}
@@ -343,13 +345,17 @@ const styles = StyleSheet.create({
         shadowColor: 'transparent',
         elevation: 0,
         justifyContent: 'center',
+        bottom: UIConstant.tabBarOffset,
+        /**
+         * The ripple effect on android fills all the available space.
+         * But there was a problem when ripple effect went outside of borders,
+         * it is visible if the page has a transparent background.
+         *
+         * borderWidth: 0 - brings some kind of magic in the form of limiting the effect to visible borders
+         */
+        borderWidth: 0,
     },
-    fixedPaddedTabBar: {
-        height: UIConstant.pagerViewHeight,
-        backgroundColor: 'transparent',
-        shadowColor: 'transparent',
-        elevation: 0,
-        justifyContent: 'center',
+    paddedTabBar: {
         marginHorizontal: UILayoutConstant.contentOffset,
     },
     tab: {
@@ -362,7 +368,6 @@ const styles = StyleSheet.create({
     },
     indicatorContainer: {
         top: undefined,
-        bottom: 16,
         height: 1,
     },
     scrollableTabBar: {
@@ -378,5 +383,6 @@ const styles = StyleSheet.create({
     },
     labelStyle: {
         textAlign: 'center',
+        marginTop: UIConstant.tabBarOffset,
     },
 });

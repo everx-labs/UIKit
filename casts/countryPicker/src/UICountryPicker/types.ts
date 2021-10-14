@@ -1,7 +1,7 @@
 export type Country = {
     code: string;
     name: string;
-    emoji: string;
+    flag: string;
 };
 
 export type CountriesArray = Country[] | [];

@@ -2,17 +2,31 @@ import * as React from 'react';
 import { View, StyleSheet, ViewStyle, StyleProp, Platform, Keyboard } from 'react-native';
 import { PanGestureHandler, TapGestureHandler } from 'react-native-gesture-handler';
 import Animated, { interpolateColor, useAnimatedStyle } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useBackHandler } from '@react-native-community/hooks';
 
-import { Portal } from '@tonlabs/uikit.layout';
+import { Portal, UILayoutConstant } from '@tonlabs/uikit.layout';
 import { ColorVariants, useColorParts, useStatusBar } from '@tonlabs/uikit.themes';
 import { useAnimatedKeyboardHeight } from '@tonlabs/uikit.inputs';
 
-import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { ScrollableContext } from '@tonlabs/uikit.scrolls';
 import { useSheetHeight } from './useSheetHeight';
 import type { OnOpen, OnClose } from './types';
 import { usePosition } from './usePosition';
+
+function useBottomInsetStyle(countRubberBandDistance: boolean = false) {
+    const { bottom } = useSafeAreaInsets();
+
+    return React.useMemo(() => {
+        let paddingBottom = Math.max(bottom, UILayoutConstant.contentOffset);
+        if (countRubberBandDistance) {
+            paddingBottom += UILayoutConstant.rubberBandEffectDistance;
+        }
+        return {
+            paddingBottom,
+        };
+    }, [bottom, countRubberBandDistance]);
+}
 
 export type UISheetProps = {
     /**
@@ -93,6 +107,7 @@ function UISheetPortalContent({
         countRubberBandDistance,
     );
     const keyboardHeight = useAnimatedKeyboardHeight();
+    const contentStyle = useBottomInsetStyle(countRubberBandDistance);
 
     const {
         animate,
@@ -107,9 +122,11 @@ function UISheetPortalContent({
     } = usePosition(
         height,
         keyboardHeight,
+        contentStyle.paddingBottom,
         hasOpenAnimation,
         hasCloseAnimation,
         shouldHandleKeyboard,
+        countRubberBandDistance,
         onClose,
         onClosePortalRequest,
         onOpenEnd,
@@ -220,7 +237,7 @@ function UISheetPortalContent({
                         ? { waitFor: scrollPanGestureHandlerRef }
                         : null)}
                 >
-                    <Animated.View style={style}>
+                    <Animated.View style={[style, contentStyle]}>
                         <ScrollableContext.Provider value={scrollableContextValue}>
                             {children}
                         </ScrollableContext.Provider>

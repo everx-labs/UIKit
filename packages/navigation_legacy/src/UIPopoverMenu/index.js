@@ -4,8 +4,8 @@ import React from 'react';
 import { UIPopup } from '@tonlabs/uikit.popups';
 import { uiLocalized } from '@tonlabs/localization';
 import { UILabelColors, TypographyVariants } from '@tonlabs/uikit.themes';
-import MenuItem from '../UIActionSheet/MenuItem';
-import type { MenuItemType } from '../UIActionSheet/MenuItem';
+import MenuItem from './MenuItem';
+import type { MenuItemType } from './MenuItem';
 import UIPopover from '../UIPopover';
 import type { PopoverProps, PopoverState } from '../UIPopover';
 

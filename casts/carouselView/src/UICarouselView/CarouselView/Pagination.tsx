@@ -3,32 +3,37 @@ import { View, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import { UIConstant } from '../../constants';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
-import { Theme, useTheme } from '@tonlabs/uikit.themes';
+import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.themes';
+import { UIConstant } from '../../constants';
 import { usePaginationStyle } from './animations';
 
 type CircleProps = {
     active: boolean;
     onPress: (event: any) => void;
-    theme: Theme;
 };
 
-function Circle({ active, onPress, theme }: CircleProps) {
-    const { animatedStyles } = usePaginationStyle(active, theme);
+function Circle({ active, onPress }: CircleProps) {
+    const { animatedStyles } = usePaginationStyle(active);
 
     return (
-        <TouchableOpacity hitSlop={UIConstant.carousel.circleHitSlop} onPress={onPress}>
-            <Animated.View style={[styles.circle, animatedStyles]} />
-        </TouchableOpacity>
+        <Animated.View style={[animatedStyles, styles.circle]}>
+            <TouchableOpacity hitSlop={UIConstant.carousel.circleHitSlop} onPress={onPress}>
+                <UIBackgroundView
+                    color={
+                        active
+                            ? UIBackgroundViewColors.BackgroundAccent
+                            : UIBackgroundViewColors.BackgroundNeutral
+                    }
+                    style={styles.circle}
+                />
+            </TouchableOpacity>
+        </Animated.View>
     );
 }
 
 function getPaginationWidth(amount: number) {
-    return (
-        UILayoutConstant.contentOffset +
-        amount * (UIConstant.carousel.circleSize + UILayoutConstant.contentOffset)
-    );
+    return amount * (UIConstant.carousel.circleSize + UILayoutConstant.contentOffset);
 }
 
 type PaginationProps = {
@@ -39,8 +44,6 @@ type PaginationProps = {
 
 export const Pagination: React.FC<PaginationProps> = React.memo(
     ({ pages, setPage, activeIndex }: PaginationProps) => {
-        const theme = useTheme();
-
         const onHandlePress = React.useCallback(
             (index: number) => {
                 setPage(index);
@@ -57,7 +60,6 @@ export const Pagination: React.FC<PaginationProps> = React.memo(
                             key={`Circles_${index}`}
                             active={index === activeIndex}
                             onPress={() => onHandlePress(index)}
-                            theme={theme}
                         />
                     );
                 })}
@@ -76,5 +78,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignSelf: 'center',
+        alignItems: 'center',
     },
 });

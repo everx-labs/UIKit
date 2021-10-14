@@ -1,11 +1,15 @@
 import * as React from 'react';
-import { useAnimatedKeyboardHeight } from '@tonlabs/uikit.inputs';
+
+import { Portal } from '@tonlabs/uikit.layout';
+
 import { UINoticeProps, UINoticeType } from './types';
-import { ToastNotice } from './ToastNotice';
+import { ToastNoticeContainer } from './ToastNoticeContainer';
 import { useNoticeVisibility } from './hooks/useNoticeVisibility';
+import { Notice } from './Notice';
 
 export const UINotice: React.FC<UINoticeProps> = (props: UINoticeProps) => {
-    const { onClose, visible, type, duration } = props;
+    const { onClose, visible, type, duration, title, color, testID, action, hasCountdown, onTap } =
+        props;
 
     const {
         noticeVisible,
@@ -16,8 +20,6 @@ export const UINotice: React.FC<UINoticeProps> = (props: UINoticeProps) => {
         onNoticeCloseAnimationFinished,
     } = useNoticeVisibility(onClose, visible, duration);
 
-    const keyboardHeight = useAnimatedKeyboardHeight();
-
     if (!noticeVisible) {
         return null;
     }
@@ -27,15 +29,32 @@ export const UINotice: React.FC<UINoticeProps> = (props: UINoticeProps) => {
         case UINoticeType.TopToast:
         default:
             return (
-                <ToastNotice
-                    {...props}
-                    onCloseAnimationEnd={onNoticeCloseAnimationFinished}
-                    suspendClosingTimer={clearClosingTimer}
-                    continueClosingTimer={startClosingTimer}
-                    keyboardHeight={keyboardHeight}
-                    countdownValue={countdownValue}
-                    countdownProgress={countdownProgress}
-                />
+                <Portal absoluteFill>
+                    <ToastNoticeContainer
+                        type={type}
+                        visible={visible}
+                        onTap={onTap}
+                        onCloseAnimationEnd={onNoticeCloseAnimationFinished}
+                        suspendClosingTimer={clearClosingTimer}
+                        continueClosingTimer={startClosingTimer}
+                    >
+                        {({ onPress, onLongPress, onPressOut }) => (
+                            <Notice
+                                type={type}
+                                title={title}
+                                color={color}
+                                testID={testID}
+                                onPress={onPress}
+                                onLongPress={onLongPress}
+                                onPressOut={onPressOut}
+                                action={action}
+                                countdownValue={countdownValue}
+                                countdownProgress={countdownProgress}
+                                hasCountdown={hasCountdown}
+                            />
+                        )}
+                    </ToastNoticeContainer>
+                </Portal>
             );
     }
 };

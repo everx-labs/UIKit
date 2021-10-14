@@ -1,2 +1,1 @@
-export * from './UIDateTimePickerView';
-export * from './types';
+export * from './UIDateTimePicker';

@@ -26,7 +26,9 @@ type State = {
 
 export default class UILink extends UIComponent<Props, State> {
     static Size = UILinkButtonSize;
+
     static Type = UILinkButtonType;
+
     static Variant = UILinkButtonVariant;
 
     static defaultProps: Props = {

@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 import image404 from './resources/404/404.png';
 
 import iconCardMaestro from './resources/bank-cards/ico-maestro/maestro.png';
@@ -87,6 +88,7 @@ import iconCloseRemove from './resources/ico-close/remove.png';
 import iconCloudBlack from './resources/ico-cloud-black/cloudBlack.png';
 import iconCloudWhite from './resources/ico-cloud-white/cloudWhite.png';
 import iconDelete from './resources/ico-delete/delete.png';
+import iconChevron from './resources/ico-chevron/chevron-left.png';
 import iconDocBlue from './resources/ico-doc-blue/ico-doc-blue.png';
 import iconDocWhite from './resources/ico-doc-white/ico-doc-white.png';
 import iconFileIncomeBlue from './resources/ico-file-income-blue/fileBlue.png';
@@ -113,6 +115,7 @@ import iconKeyThin from './resources/key-thin/key-thin.png';
 import iconKeyThinDark from './resources/key-thin/key-thin-dark.png';
 import iconKeyThinGrey from './resources/key-thin/key-thin-grey.png';
 import iconKeyThinWhite from './resources/key-thin/key-thin-white.png';
+import iconWarn from './resources/ico-warn/ico-warn.png';
 
 import iconLogoGramLabel from './resources/logo/gram-label/gram-label.png';
 import iconLogoTonLabelWhite from './resources/logo/ton-label/ton-label-white.png';
@@ -220,6 +223,7 @@ export const UIAssets = {
             checkboxSquareActiveAction: iconCheckboxSquareActiveAction,
             checkboxSquareInactive: iconCheckboxSquareInactive,
             checkboxSquareInactiveAction: iconCheckboxSquareInactiveAction,
+            chevron: iconChevron,
             clear: iconClear,
             closeBlack8: iconCloseBlack8,
             closeBlack: iconCloseBlack,
@@ -237,6 +241,7 @@ export const UIAssets = {
             fileIncomeWhite: iconFileIncomeWhite,
             glass: iconGlass,
             info: iconInfo,
+            warn: iconWarn,
             menuContained: iconMenuContained,
             openMenu: iconOpenMenu,
             progress: iconProgress,

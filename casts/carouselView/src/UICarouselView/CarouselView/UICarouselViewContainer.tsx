@@ -4,7 +4,6 @@ import type { UICarouselViewContainerProps, UICarouselViewPageProps } from '../t
 // eslint-disable-next-line import/no-unresolved, import/extensions
 import { CarouselViewContainer } from './CarouselContainer';
 import { usePages } from './usePages';
-import { Pagination } from './Pagination';
 
 export function UICarouselViewContainer({
     testID,
@@ -18,18 +17,9 @@ export function UICarouselViewContainer({
 
     const [currentIndex, setCurrentIndex] = React.useState(initialIndex);
 
-    const onIndexChanged = React.useCallback(
-        (index: number) => {
-            if (index !== currentIndex) {
-                setCurrentIndex(index);
-            }
-        },
-        [setCurrentIndex, currentIndex],
-    );
-
     React.useEffect(() => {
-        onPageIndexChange && onPageIndexChange(currentIndex);
-    }, [onPageIndexChange, currentIndex]);
+        setCurrentIndex(initialIndex);
+    }, [initialIndex]);
 
     if (pages.length === 0) {
         console.error(`UICarouselViewContainer: children must have at least 1 item`);
@@ -37,17 +27,13 @@ export function UICarouselViewContainer({
     }
 
     return (
-        <>
-            <CarouselViewContainer
-                testID={testID}
-                initialIndex={currentIndex}
-                onPageIndexChange={onIndexChanged}
-                pages={pages}
-                shouldPageMoveOnPress={shouldPageMoveOnPress}
-            />
-            {showPagination && (
-                <Pagination pages={pages} activeIndex={currentIndex} setPage={setCurrentIndex} />
-            )}
-        </>
+        <CarouselViewContainer
+            testID={testID}
+            initialIndex={currentIndex}
+            onPageIndexChange={onPageIndexChange}
+            pages={pages}
+            shouldPageMoveOnPress={shouldPageMoveOnPress}
+            showPagination={showPagination}
+        />
     );
 }

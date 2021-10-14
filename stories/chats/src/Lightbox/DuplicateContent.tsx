@@ -164,7 +164,10 @@ export const DuplicateContent = ({
                             <View onLayout={onLayout}>{previewImage}</View>
                         </Animated.View>
                         {isFullSizeDisplayed ? (
-                            <Animated.View style={styles.fullSizeImage}>
+                            <Animated.View
+                                testID="image_expanded"
+                                style={styles.fullSizeImage}
+                            >
                                 {fullSizeImage}
                             </Animated.View>
                         ) : null}
