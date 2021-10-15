@@ -35,7 +35,6 @@
     ],
     "dependencies": {
         "@react-native-community/hooks": "^2.6.0",
-        "@tonlabs/uikit.hydrogen": "^2.3.0",
         "@tonlabs/uikit.themes": "^2.3.0",
         "@tonlabs/uikit.controls": "^2.3.0",
         "@tonlabs/uikit.layout": "^2.3.0",
@@ -48,6 +47,7 @@
     },
     "devDependencies": {
         "@react-native-community/bob": "0.16.2",
+        "@tonlabs/babel-plugin-transform-inline-consts": "*",
         "typescript": "4.4.3",
         "react": "17.0.2",
         "react-dom": "17.0.2",

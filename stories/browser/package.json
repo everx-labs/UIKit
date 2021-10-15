@@ -40,7 +40,6 @@
         "@tonlabs/uicast.date-time-picker": "^2.3.0",
         "@tonlabs/uicast.qr-code-scanner-sheet": "^2.3.0",
         "@tonlabs/uikit.core": "^2.3.0",
-        "@tonlabs/uikit.hydrogen": "^2.3.0",
         "@tonlabs/uikit.themes": "^2.3.0",
         "@tonlabs/uikit.controls": "^2.3.0",
         "@tonlabs/uikit.media": "^2.3.0",
@@ -49,7 +48,6 @@
         "@tonlabs/uikit.scrolls": "^2.3.0",
         "@tonlabs/uikit.popups": "^2.3.0",
         "@tonlabs/localization": "^2.3.0",
-        "@tonlabs/uikit.navigation": "^2.3.0",
         "bignumber.js": "9.0.0",
         "react-native-safe-area-context": "^3.1.3"
     },

@@ -35,12 +35,11 @@
     ],
     "dependencies": {
         "@tonlabs/uikit.assets": "^2.3.0",
-        "@tonlabs/uikit.components": "^2.3.0",
         "@tonlabs/uikit.core": "^2.3.0",
-        "@tonlabs/uikit.hydrogen": "^2.3.0",
         "@tonlabs/uikit.themes": "^2.3.0",
         "@tonlabs/uikit.controls": "^2.3.0",
         "@tonlabs/uikit.media": "^2.3.0",
+        "@tonlabs/uikit.inputs": "^2.3.0",
         "react-native-safe-area-context": "^3.1.3"
     },
     "devDependencies": {

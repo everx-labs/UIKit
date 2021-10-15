@@ -36,11 +36,11 @@
     "dependencies": {
         "@tonlabs/uikit.themes": "^2.3.0",
         "@tonlabs/uikit.core": "^2.3.0",
-        "@tonlabs/uikit.navigation": "^2.3.0",
         "@tonlabs/uikit.controls": "^2.3.0",
         "@tonlabs/uikit.assets": "^2.3.0",
-        "@tonlabs/localization": "^2.3.0",
-        "dayjs": "1.9.1"
+        "@tonlabs/uikit.layout": "^2.3.0",
+        "@tonlabs/uikit.media": "^2.3.0",
+        "@tonlabs/localization": "^2.3.0"
     },
     "devDependencies": {
         "@react-native-community/bob": "0.16.2",

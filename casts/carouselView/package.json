@@ -36,8 +36,6 @@
     "dependencies": {
         "@tonlabs/uikit.layout": "^2.3.0",
         "@tonlabs/uikit.controls": "^2.3.0",
-        "@tonlabs/uikit.assets": "^2.3.0",
-        "@tonlabs/uikit.media": "^2.3.0",
         "@tonlabs/uikit.themes": "^2.3.0",
         "lodash": "^4.17.21"
     },

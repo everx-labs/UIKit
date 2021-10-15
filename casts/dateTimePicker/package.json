@@ -35,8 +35,6 @@
     ],
     "dependencies": {
         "@tonlabs/uikit.themes": "^2.3.0",
-        "@tonlabs/uikit.core": "^2.3.0",
-        "@tonlabs/uikit.navigation": "^2.3.0",
         "@tonlabs/uikit.controls": "^2.3.0",
         "@tonlabs/uikit.layout": "^2.3.0",
         "@tonlabs/uikit.popups": "^2.3.0",

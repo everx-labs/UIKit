@@ -35,16 +35,13 @@
     ],
     "dependencies": {
         "@tonlabs/uikit.themes": "^2.3.0",
-        "@tonlabs/uikit.core": "^2.3.0",
-        "@tonlabs/uikit.navigation": "^2.3.0",
-        "@tonlabs/uikit.controls": "^2.3.0",
+        "@tonlabs/uikit.assets": "^2.3.0",
+        "@tonlabs/uikit.inputs": "^2.3.0",
         "@tonlabs/uicast.qr-code-scanner-sheet": "^2.3.0",
-        "@tonlabs/localization": "^2.3.0",
         "react-native-web-linear-gradient": "^1.1.2"
     },
     "devDependencies": {
         "@react-native-community/bob": "0.16.2",
-        "@tonlabs/babel-plugin-transform-inline-consts": "*",
         "@types/react": "17.0.21",
         "@types/react-native": "0.65.0",
         "react": "17.0.2",

@@ -34,7 +34,6 @@
         "src/"
     ],
     "dependencies": {
-        "@react-native-community/hooks": "^2.6.0",
         "@tonlabs/uikit.themes": "^2.3.0",
         "@tonlabs/uikit.media": "^2.3.0",
         "@tonlabs/localization": "^2.3.0",
