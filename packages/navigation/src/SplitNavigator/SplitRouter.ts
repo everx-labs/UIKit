@@ -328,14 +328,18 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
                                 if (route.state && route.state.type === 'stack') {
                                     // Get the initial route state from the nested stack navigator
                                     // by popping it to the top to its initial sub-route
-                                    return {
-                                        ...route,
-                                        state: stackRouter.getStateForAction(
-                                            route.state as any,
-                                            StackActions.popToTop(),
-                                            options,
-                                        ),
-                                    };
+                                    const stackState = stackRouter.getStateForAction(
+                                        route.state as any,
+                                        StackActions.popToTop(),
+                                        options,
+                                    );
+                                    // If the state presents apply it to the sub-route
+                                    if (stackState != null) {
+                                        return {
+                                            ...route,
+                                            state: stackState,
+                                        };
+                                    }
                                 }
                             }
                             return route;
