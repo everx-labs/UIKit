@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Platform, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import Animated, {
     Easing,
     runOnJS,
@@ -20,6 +20,7 @@ import { useNumberStaticStyles } from './UIStaticNumber';
 import type { UINumberAppearance, UINumberGeneralProps } from './types';
 import { useTextLikeContainer } from './useTextLikeContainer';
 import { DebugGrid } from './DebugGrid';
+import { useNumberStyles } from './useNumberStyles';
 
 Animated.addWhitelistedNativeProps({ text: true });
 
@@ -150,6 +151,8 @@ export function UIAnimatedNumber({
 
     const textLikeContainer = useTextLikeContainer();
 
+    const styles = useNumberStyles(integerVariant, decimalVariant);
+
     return (
         <View
             style={textLikeContainer}
@@ -157,12 +160,12 @@ export function UIAnimatedNumber({
             accessibilityLabel={`${formatted.value.integer}${formatted.value.decimal}`}
         >
             <AnimateableText
-                style={[Typography[integerVariant], integerColorStyle, styles.integerInput]}
+                style={[Typography[integerVariant], integerColorStyle, styles.integer]}
                 animatedProps={animatedIntegerProps}
                 selectable={false}
             />
             <AnimateableText
-                style={[Typography[decimalVariant], decimalColorStyle, styles.decimalInput]}
+                style={[Typography[decimalVariant], decimalColorStyle, styles.decimal]}
                 animatedProps={animatedDecimalProps}
                 selectable={false}
             />
@@ -171,18 +174,3 @@ export function UIAnimatedNumber({
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    integerInput: {
-        fontVariant: ['tabular-nums'],
-        // reset RN styles to have proper vertical alignment
-        padding: 0,
-        ...Platform.select({ web: {}, default: { lineHeight: undefined } }),
-    },
-    decimalInput: {
-        fontVariant: ['tabular-nums'],
-        // reset RN styles to have proper vertical alignment
-        padding: 0,
-        ...Platform.select({ web: {}, default: { lineHeight: undefined } }),
-    },
-});

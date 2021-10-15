@@ -4,20 +4,13 @@ import { Text } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 /**
- * (savelichalex):
- * On web <input /> be default doesn't have intrinsic size
- * unless property `size` is specified, but it also
- * works badly, since it takes "widest" letter from font
- * and uses it to count width, so it looks bad.
+ * Fallback for `react-native-animateable-text`.
  *
- * But as we have to just show numbers, we can easily
- * use regular <Text />.
- *
- * Also as we want to use the component with `useAnimatedProps`
+ * As we want to use the component with `useAnimatedProps`
  * we have to specify `setNativeProps` method, and update
  * needed properties directly on DOM node.
  */
-class TextInputImitator extends React.Component<Text['props'] & { text: string }> {
+class AnimateableTextWeb extends React.Component<Text['props'] & { text: string }> {
     _ref = React.createRef<HTMLSpanElement>();
 
     componentDidMount() {
@@ -46,4 +39,4 @@ class TextInputImitator extends React.Component<Text['props'] & { text: string }
     }
 }
 
-export const AnimateableText = Animated.createAnimatedComponent(TextInputImitator);
+export const AnimateableText = Animated.createAnimatedComponent(AnimateableTextWeb);
