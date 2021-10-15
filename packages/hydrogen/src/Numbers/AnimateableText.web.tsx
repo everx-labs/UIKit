@@ -1,5 +1,6 @@
+/* eslint-disable no-underscore-dangle */
 import * as React from 'react';
-import { Text, TextInput } from 'react-native';
+import { Text } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 /**
@@ -16,12 +17,13 @@ import Animated from 'react-native-reanimated';
  * we have to specify `setNativeProps` method, and update
  * needed properties directly on DOM node.
  */
-class TextInputImitator extends React.Component<TextInput['props']> {
+class TextInputImitator extends React.Component<Text['props'] & { text: string }> {
     _ref = React.createRef<HTMLSpanElement>();
 
     componentDidMount() {
-        if (this.props.defaultValue) {
-            this.setNativeProps({ style: { text: this.props.defaultValue } });
+        const { text } = this.props;
+        if (text != null) {
+            this.setNativeProps({ style: { text } });
         }
     }
 
@@ -35,12 +37,13 @@ class TextInputImitator extends React.Component<TextInput['props']> {
     }
 
     render() {
+        const { text, style } = this.props;
         return (
-            <Text ref={this._ref as any} style={this.props.style}>
-                {this.props.defaultValue}
+            <Text ref={this._ref as any} style={style}>
+                {text}
             </Text>
         );
     }
 }
 
-export const AnimatedTextInput = Animated.createAnimatedComponent(TextInputImitator);
+export const AnimateableText = Animated.createAnimatedComponent(TextInputImitator);

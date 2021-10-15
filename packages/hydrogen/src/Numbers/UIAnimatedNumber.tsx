@@ -14,7 +14,7 @@ import { uiLocalized } from '@tonlabs/uikit.localization';
 
 import { Typography } from '../Typography';
 
-import { AnimatedTextInput } from './AnimatedTextInput';
+import { AnimateableText } from './AnimateableText';
 import { localizedNumberFormat, UINumberDecimalAspect } from './localizedNumberFormat';
 import { useNumberStaticStyles } from './UIStaticNumber';
 import type { UINumberAppearance, UINumberGeneralProps } from './types';
@@ -156,19 +156,15 @@ export function UIAnimatedNumber({
             testID={testID}
             accessibilityLabel={`${formatted.value.integer}${formatted.value.decimal}`}
         >
-            <AnimatedTextInput
+            <AnimateableText
                 style={[Typography[integerVariant], integerColorStyle, styles.integerInput]}
                 animatedProps={animatedIntegerProps}
-                defaultValue={formatted.value.integer}
-                underlineColorAndroid="transparent"
-                editable={false}
+                selectable={false}
             />
-            <AnimatedTextInput
+            <AnimateableText
                 style={[Typography[decimalVariant], decimalColorStyle, styles.decimalInput]}
                 animatedProps={animatedDecimalProps}
-                defaultValue={formatted.value.decimal}
-                underlineColorAndroid="transparent"
-                editable={false}
+                selectable={false}
             />
             {sign}
             {showDebugGrid && <DebugGrid variant={decimalVariant} />}

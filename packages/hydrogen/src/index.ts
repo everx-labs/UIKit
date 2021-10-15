@@ -38,4 +38,4 @@ export * from './makeStyles';
 export * from './Haptics/Haptics';
 export * from './TouchableOpacity';
 
-export { AnimatedTextInput } from './Numbers/AnimatedTextInput';
+export { AnimateableText } from './Numbers/AnimateableText';

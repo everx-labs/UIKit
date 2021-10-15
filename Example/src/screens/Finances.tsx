@@ -12,6 +12,7 @@ import {
     UIBoxButtonType,
     UILabel,
     UILabelColors,
+    TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
 
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -222,6 +223,35 @@ function Currencies() {
     );
 }
 
+/**
+ * There was a bug on Android with previous implementation
+ * that touchable wasn't received press events
+ * when the number itself was touched
+ *
+ * Leave it here to test regression
+ */
+function TouchableUICurrency() {
+    const [val, setVal] = React.useState(new BigNumber(getRandomNum()));
+    return (
+        <View style={{ alignSelf: 'stretch', marginTop: 50 }}>
+            <TouchableOpacity
+                onPress={() => {
+                    setVal(new BigNumber(getRandomNum()));
+                }}
+                style={{ paddingHorizontal: 10, paddingVertical: 20 }}
+            >
+                <UICurrency
+                    animated
+                    signIcon={UIAssets.icons.brand.tonSymbolBlack}
+                    decimalAspect={UINumberDecimalAspect.Precision}
+                >
+                    {val}
+                </UICurrency>
+            </TouchableOpacity>
+        </View>
+    );
+}
+
 function Finances() {
     return (
         <ExampleScreen>
@@ -231,6 +261,10 @@ function Finances() {
             <ExampleSection title="UICurrency">
                 <Currencies />
             </ExampleSection>
+            <ExampleSection title="UICurrency in touchable">
+                <TouchableUICurrency />
+            </ExampleSection>
+            <View style={{ height: 50 }} />
         </ExampleScreen>
     );
 }
