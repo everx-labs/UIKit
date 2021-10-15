@@ -9,7 +9,7 @@ import { useTheme, ColorVariants } from '../Colors';
 import { localizedNumberFormat, UINumberDecimalAspect } from './localizedNumberFormat';
 import type { UINumberAppearance, UINumberGeneralProps } from './types';
 import { DebugGrid } from './DebugGrid';
-import { useNumberStyles } from './useNumberStyles';
+import { styles } from './styles';
 
 export function useNumberStaticStyles(integerColor: ColorVariants, decimalColor: ColorVariants) {
     const theme = useTheme();
@@ -55,14 +55,8 @@ export function UIStaticNumber({
         decimalColor,
     );
 
-    const styles = useNumberStyles(integerVariant, decimalVariant);
-
     return (
-        <Text
-            testID={testID}
-            accessibilityLabel={`${formatted.integer}${formatted.decimal}`}
-            style={styles.integer}
-        >
+        <Text testID={testID} accessibilityLabel={`${formatted.integer}${formatted.decimal}`}>
             <Text style={[Typography[integerVariant], styles.integer, integerColorStyle]}>
                 {formatted.integer}
             </Text>

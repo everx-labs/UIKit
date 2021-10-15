@@ -20,7 +20,7 @@ import { useNumberStaticStyles } from './UIStaticNumber';
 import type { UINumberAppearance, UINumberGeneralProps } from './types';
 import { useTextLikeContainer } from './useTextLikeContainer';
 import { DebugGrid } from './DebugGrid';
-import { useNumberStyles } from './useNumberStyles';
+import { styles } from './styles';
 
 Animated.addWhitelistedNativeProps({ text: true });
 
@@ -150,8 +150,6 @@ export function UIAnimatedNumber({
     );
 
     const textLikeContainer = useTextLikeContainer();
-
-    const styles = useNumberStyles(integerVariant, decimalVariant);
 
     return (
         <View

@@ -13,6 +13,7 @@ import {
     UILabel,
     UILabelColors,
     TouchableOpacity,
+    TypographyVariants,
 } from '@tonlabs/uikit.hydrogen';
 
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -248,6 +249,57 @@ function TouchableUICurrency() {
                     {val}
                 </UICurrency>
             </TouchableOpacity>
+            <View
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginBottom: 10,
+                }}
+            >
+                <UICurrency
+                    animated
+                    signIcon={UIAssets.icons.brand.tonSymbolBlack}
+                    decimalAspect={UINumberDecimalAspect.Short}
+                    integerVariant={TypographyVariants.LightLarge}
+                    decimalVariant={TypographyVariants.LightLarge}
+                >
+                    {val}
+                </UICurrency>
+                <UICurrency
+                    signIcon={UIAssets.icons.brand.tonSymbolBlack}
+                    decimalAspect={UINumberDecimalAspect.Short}
+                    integerVariant={TypographyVariants.LightLarge}
+                    decimalVariant={TypographyVariants.LightLarge}
+                >
+                    {val}
+                </UICurrency>
+            </View>
+            <View
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                }}
+            >
+                <UICurrency
+                    animated
+                    loading
+                    signIcon={UIAssets.icons.brand.tonSymbolBlack}
+                    decimalAspect={UINumberDecimalAspect.Short}
+                    integerVariant={TypographyVariants.LightLarge}
+                    decimalVariant={TypographyVariants.LightLarge}
+                >
+                    {val}
+                </UICurrency>
+                <UICurrency
+                    loading
+                    signIcon={UIAssets.icons.brand.tonSymbolBlack}
+                    decimalAspect={UINumberDecimalAspect.Short}
+                    integerVariant={TypographyVariants.LightLarge}
+                    decimalVariant={TypographyVariants.LightLarge}
+                >
+                    {val}
+                </UICurrency>
+            </View>
         </View>
     );
 }
