@@ -16,13 +16,13 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import {
-    AnimatedTextInput,
     ColorVariants,
     Typography,
     TypographyVariants,
     UILabel,
     UITextView,
     useTheme,
+    AnimateableText,
 } from '@tonlabs/uikit.hydrogen';
 import { ScrollView } from '@tonlabs/uikit.navigation';
 import { uiLocalized } from '@tonlabs/uikit.localization';
@@ -125,37 +125,31 @@ const TimeInput = React.forwardRef<TextInput, TimeInputProps>(function TimeInput
                     }}
                 />
                 <View style={{ flex: 1, alignItems: 'flex-end' }} pointerEvents="none">
-                    <AnimatedTextInput
+                    <AnimateableText
                         style={[
                             Typography[TypographyVariants.Action],
                             { lineHeight: undefined, padding: 0, fontVariant: ['tabular-nums'] },
                         ]}
                         animatedProps={hoursProps}
-                        defaultValue={hours.value}
-                        underlineColorAndroid="transparent"
-                        editable={false}
+                        selectable={false}
                     />
                 </View>
                 <Text
                     style={[
                         Typography[TypographyVariants.Action],
                         { color: theme[ColorVariants.TextSecondary], lineHeight: undefined },
-                        // { backgroundColor: 'rgba(0,255,0,.1)' },
                     ]}
                 >
                     :
                 </Text>
                 <View style={{ flex: 1, alignItems: 'flex-start' }} pointerEvents="none">
-                    <AnimatedTextInput
+                    <AnimateableText
                         style={[
                             Typography[TypographyVariants.Action],
                             { lineHeight: undefined, padding: 0, fontVariant: ['tabular-nums'] },
-                            // { backgroundColor: 'rgba(0,0,255,.1)' },
                         ]}
                         animatedProps={minutesProps}
-                        defaultValue={minutes.value}
-                        underlineColorAndroid="transparent"
-                        editable={false}
+                        selectable={false}
                     />
                 </View>
             </Animated.View>

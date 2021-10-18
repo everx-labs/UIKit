@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { Text } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
@@ -9,6 +9,7 @@ import { useTheme, ColorVariants } from '../Colors';
 import { localizedNumberFormat, UINumberDecimalAspect } from './localizedNumberFormat';
 import type { UINumberAppearance, UINumberGeneralProps } from './types';
 import { DebugGrid } from './DebugGrid';
+import { styles } from './styles';
 
 export function useNumberStaticStyles(integerColor: ColorVariants, decimalColor: ColorVariants) {
     const theme = useTheme();
@@ -56,10 +57,10 @@ export function UIStaticNumber({
 
     return (
         <Text testID={testID} accessibilityLabel={`${formatted.integer}${formatted.decimal}`}>
-            <Text style={[Typography[integerVariant], styles.integerText, integerColorStyle]}>
+            <Text style={[Typography[integerVariant], styles.integer, integerColorStyle]}>
                 {formatted.integer}
             </Text>
-            <Text style={[Typography[decimalVariant], styles.decimalText, decimalColorStyle]}>
+            <Text style={[Typography[decimalVariant], styles.decimal, decimalColorStyle]}>
                 {formatted.decimal}
             </Text>
             {sign}
@@ -67,12 +68,3 @@ export function UIStaticNumber({
         </Text>
     );
 }
-
-const styles = StyleSheet.create({
-    integerText: {
-        fontVariant: ['tabular-nums'],
-    },
-    decimalText: {
-        fontVariant: ['tabular-nums'],
-    },
-});
