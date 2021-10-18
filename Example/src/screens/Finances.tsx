@@ -304,6 +304,62 @@ function TouchableUICurrency() {
     );
 }
 
+const icons = [
+    UIAssets.icons.payment.applepay,
+    UIAssets.icons.payment.googlepay,
+    UIAssets.icons.brand.tonSymbolBlack,
+];
+
+/**
+ * There was a bug on Android, when changing an icon
+ * it was rendered with an inpropper size.
+ *
+ * Leave it here for regression testing
+ */
+function IconsUICurrency() {
+    const [val, setVal] = React.useState(new BigNumber(getRandomNum()));
+    const [icon, setIcon] = React.useState(icons[2]);
+    return (
+        <View style={{ alignSelf: 'stretch', marginTop: 50 }}>
+            <TouchableOpacity
+                onPress={() => {
+                    setVal(new BigNumber(getRandomNum()));
+                    setIcon(icons[Math.trunc(Math.random() * 10) % 3]);
+                }}
+                style={{ paddingHorizontal: 10, paddingVertical: 20 }}
+            >
+                <UICurrency
+                    animated
+                    signIcon={icon}
+                    decimalAspect={UINumberDecimalAspect.Short}
+                    integerVariant={TypographyVariants.LightLarge}
+                    decimalVariant={TypographyVariants.LightLarge}
+                >
+                    {val}
+                </UICurrency>
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => {
+                    setVal(new BigNumber(getRandomNum()));
+                    setIcon(icons[Math.trunc(Math.random() * 10) % 3]);
+                }}
+                style={{ paddingHorizontal: 10, paddingVertical: 20 }}
+            >
+                <UICurrency
+                    animated
+                    loading
+                    signIcon={icon}
+                    decimalAspect={UINumberDecimalAspect.Short}
+                    integerVariant={TypographyVariants.LightLarge}
+                    decimalVariant={TypographyVariants.LightLarge}
+                >
+                    {val}
+                </UICurrency>
+            </TouchableOpacity>
+        </View>
+    );
+}
+
 function Finances() {
     return (
         <ExampleScreen>
@@ -315,6 +371,9 @@ function Finances() {
             </ExampleSection>
             <ExampleSection title="UICurrency in touchable">
                 <TouchableUICurrency />
+            </ExampleSection>
+            <ExampleSection title="UICurrency various icons">
+                <IconsUICurrency />
             </ExampleSection>
             <View style={{ height: 50 }} />
         </ExampleScreen>
