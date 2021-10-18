@@ -14,7 +14,7 @@ import {
 import { UIConstant } from '../constants';
 import { wrapScrollableComponent } from '../Scrollable/wrapScrollableComponent';
 
-const interColumnOffset = UIConstant.contentOffset / 2;
+const interColumnOffset = UIConstant.contentOffset;
 const interRowsOffset = interColumnOffset;
 
 type MasonryItem<Item> = { key: string; item?: Item; aspectRatio: number };
