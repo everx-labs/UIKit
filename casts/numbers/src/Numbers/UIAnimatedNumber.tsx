@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Platform, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import Animated, {
     Easing,
     runOnJS,
@@ -12,14 +12,14 @@ import BigNumber from 'bignumber.js';
 
 import { uiLocalized } from '@tonlabs/localization';
 
-import { Typography } from '@tonlabs/uikit.themes';
+import { Typography, AnimateableText } from '@tonlabs/uikit.themes';
 
-import { AnimatedTextInput } from './AnimatedTextInput';
 import { localizedNumberFormat, UINumberDecimalAspect } from './localizedNumberFormat';
 import { useNumberStaticStyles } from './UIStaticNumber';
 import type { UINumberAppearance, UINumberGeneralProps } from './types';
 import { useTextLikeContainer } from './useTextLikeContainer';
 import { DebugGrid } from './DebugGrid';
+import { styles } from './styles';
 
 Animated.addWhitelistedNativeProps({ text: true });
 
@@ -156,37 +156,18 @@ export function UIAnimatedNumber({
             testID={testID}
             accessibilityLabel={`${formatted.value.integer}${formatted.value.decimal}`}
         >
-            <AnimatedTextInput
-                style={[Typography[integerVariant], integerColorStyle, styles.integerInput]}
+            <AnimateableText
+                style={[Typography[integerVariant], integerColorStyle, styles.integer]}
                 animatedProps={animatedIntegerProps}
-                defaultValue={formatted.value.integer}
-                underlineColorAndroid="transparent"
-                editable={false}
+                selectable={false}
             />
-            <AnimatedTextInput
-                style={[Typography[decimalVariant], decimalColorStyle, styles.decimalInput]}
+            <AnimateableText
+                style={[Typography[decimalVariant], decimalColorStyle, styles.decimal]}
                 animatedProps={animatedDecimalProps}
-                defaultValue={formatted.value.decimal}
-                underlineColorAndroid="transparent"
-                editable={false}
+                selectable={false}
             />
             {sign}
             {showDebugGrid && <DebugGrid variant={decimalVariant} />}
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    integerInput: {
-        fontVariant: ['tabular-nums'],
-        // reset RN styles to have proper vertical alignment
-        padding: 0,
-        ...Platform.select({ web: {}, default: { lineHeight: undefined } }),
-    },
-    decimalInput: {
-        fontVariant: ['tabular-nums'],
-        // reset RN styles to have proper vertical alignment
-        padding: 0,
-        ...Platform.select({ web: {}, default: { lineHeight: undefined } }),
-    },
-});

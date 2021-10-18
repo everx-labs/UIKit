@@ -4,9 +4,9 @@ import BigNumber from 'bignumber.js';
 
 import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UILabel, UILabelColors } from '@tonlabs/uikit.themes';
+import { UILabel, UILabelColors, TypographyVariants } from '@tonlabs/uikit.themes';
 import { UINumber, UICurrency, UINumberDecimalAspect } from '@tonlabs/uicast.numbers';
-import { UIBoxButton, UIBoxButtonType } from '@tonlabs/uikit.controls';
+import { UIBoxButton, UIBoxButtonType, TouchableOpacity } from '@tonlabs/uikit.controls';
 
 import { ExampleScreen } from '../components/ExampleScreen';
 import { ExampleSection } from '../components/ExampleSection';
@@ -216,6 +216,86 @@ function Currencies() {
     );
 }
 
+/**
+ * There was a bug on Android with previous implementation
+ * that touchable wasn't received press events
+ * when the number itself was touched
+ *
+ * Leave it here to test regression
+ */
+function TouchableUICurrency() {
+    const [val, setVal] = React.useState(new BigNumber(getRandomNum()));
+    return (
+        <View style={{ alignSelf: 'stretch', marginTop: 50 }}>
+            <TouchableOpacity
+                onPress={() => {
+                    setVal(new BigNumber(getRandomNum()));
+                }}
+                style={{ paddingHorizontal: 10, paddingVertical: 20 }}
+            >
+                <UICurrency
+                    animated
+                    signIcon={UIAssets.icons.brand.tonSymbolBlack}
+                    decimalAspect={UINumberDecimalAspect.Precision}
+                >
+                    {val}
+                </UICurrency>
+            </TouchableOpacity>
+            <View
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginBottom: 10,
+                }}
+            >
+                <UICurrency
+                    animated
+                    signIcon={UIAssets.icons.brand.tonSymbolBlack}
+                    decimalAspect={UINumberDecimalAspect.Short}
+                    integerVariant={TypographyVariants.LightLarge}
+                    decimalVariant={TypographyVariants.LightLarge}
+                >
+                    {val}
+                </UICurrency>
+                <UICurrency
+                    signIcon={UIAssets.icons.brand.tonSymbolBlack}
+                    decimalAspect={UINumberDecimalAspect.Short}
+                    integerVariant={TypographyVariants.LightLarge}
+                    decimalVariant={TypographyVariants.LightLarge}
+                >
+                    {val}
+                </UICurrency>
+            </View>
+            <View
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                }}
+            >
+                <UICurrency
+                    animated
+                    loading
+                    signIcon={UIAssets.icons.brand.tonSymbolBlack}
+                    decimalAspect={UINumberDecimalAspect.Short}
+                    integerVariant={TypographyVariants.LightLarge}
+                    decimalVariant={TypographyVariants.LightLarge}
+                >
+                    {val}
+                </UICurrency>
+                <UICurrency
+                    loading
+                    signIcon={UIAssets.icons.brand.tonSymbolBlack}
+                    decimalAspect={UINumberDecimalAspect.Short}
+                    integerVariant={TypographyVariants.LightLarge}
+                    decimalVariant={TypographyVariants.LightLarge}
+                >
+                    {val}
+                </UICurrency>
+            </View>
+        </View>
+    );
+}
+
 function Finances() {
     return (
         <ExampleScreen>
@@ -225,6 +305,10 @@ function Finances() {
             <ExampleSection title="UICurrency">
                 <Currencies />
             </ExampleSection>
+            <ExampleSection title="UICurrency in touchable">
+                <TouchableUICurrency />
+            </ExampleSection>
+            <View style={{ height: 50 }} />
         </ExampleScreen>
     );
 }

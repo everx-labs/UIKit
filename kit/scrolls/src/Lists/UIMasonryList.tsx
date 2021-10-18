@@ -13,7 +13,7 @@ import {
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { wrapScrollableComponent } from '../wrapScrollableComponent';
 
-const interColumnOffset = UILayoutConstant.contentOffset / 2;
+const interColumnOffset = UILayoutConstant.contentOffset;
 const interRowsOffset = interColumnOffset;
 
 type MasonryItem<Item> = { key: string; item?: Item; aspectRatio: number };

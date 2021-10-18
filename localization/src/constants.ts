@@ -22,7 +22,7 @@ export const languagesInfo: Record<Language, LanguageInfo> = {
         dayJS: 'fr',
     },
     [Language.PtBR]: {
-        name: 'Português (Br)',
+        name: 'Português brasileiro',
         country: 'BR',
         dayJS: 'pt-br',
     },
@@ -47,7 +47,7 @@ export const languagesInfo: Record<Language, LanguageInfo> = {
         dayJS: 'ja',
     },
     [Language.Tr]: {
-        name: 'Türkçe',
+        name: 'Türk',
         country: 'TR',
         dayJS: 'tr',
     },

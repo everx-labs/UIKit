@@ -8,7 +8,7 @@ import * as UIInputAccessoryView from './UIInputAccessoryView/UIInputAccessoryVi
 
 import * as useClearButton from './UIMaterialTextView/useClearButton';
 import * as useAutogrowTextView from './useAutogrowTextView';
-import * as useCustomKeyboard from './useCustomKeyboard/';
+import * as useCustomKeyboard from './useCustomKeyboard';
 import * as useAnimatedKeyboardHeight from './useAnimatedKeyboardHeight';
 
 export * from './UIMaterialTextView';
@@ -21,7 +21,7 @@ export * from './UIInputAccessoryView/UIInputAccessoryView';
 
 export * from './UIMaterialTextView/useClearButton';
 export * from './useAutogrowTextView';
-export * from './useCustomKeyboard/';
+export * from './useCustomKeyboard';
 export * from './useAnimatedKeyboardHeight';
 
 export const UILayout = {

@@ -43,6 +43,8 @@
         "@testing-library/react-native": "7.2.0",
         "@types/react": "17.0.21",
         "@types/react-native": "0.65.0",
+        "react-native-animateable-text": "0.7.0",
+        "react-native-reanimated": "2.2.1",
         "fontfaceobserver-es": "^3.3.3",
         "react": "17.0.2",
         "react-dom": "17.0.2",
@@ -54,7 +56,9 @@
         "fontfaceobserver-es": "^3.3.3",
         "react": "17.0.2",
         "react-dom": "17.0.2",
-        "react-native": "0.65.1"
+        "react-native": "0.65.1",
+        "react-native-animateable-text": "^0.7.0",
+        "react-native-reanimated": "^2.2.1"
     },
     "@react-native-community/bob": {
         "source": "src",

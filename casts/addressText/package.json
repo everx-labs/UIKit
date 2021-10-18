@@ -37,8 +37,7 @@
         "@tonlabs/uikit.themes": "^2.3.0",
         "@tonlabs/uikit.assets": "^2.3.0",
         "@tonlabs/uikit.inputs": "^2.3.0",
-        "@tonlabs/uicast.qr-code-scanner-sheet": "^2.3.0",
-        "react-native-web-linear-gradient": "^1.1.2"
+        "@tonlabs/uicast.qr-code-scanner-sheet": "^2.3.0"
     },
     "devDependencies": {
         "@react-native-community/bob": "0.16.2",
@@ -47,6 +46,7 @@
         "react": "17.0.2",
         "react-dom": "17.0.2",
         "react-native": "0.65.1",
+        "react-native-animateable-text": "0.7.0",
         "react-native-gesture-handler": "^1.10.3",
         "react-native-linear-gradient": "^2.5.6",
         "react-native-pager-view": "^5.4.4",
@@ -61,6 +61,7 @@
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-native": "^0.65.0",
+        "react-native-animateable-text": "^0.7.0",
         "react-native-gesture-handler": "^1.10.3",
         "react-native-linear-gradient": "^2.5.6",
         "react-native-pager-view": "^5.4.4",

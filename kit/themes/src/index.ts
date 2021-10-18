@@ -1,3 +1,4 @@
+import * as AnimateableText from './AnimateableText';
 import * as Colors from './Colors';
 import * as Typography from './Typography';
 import * as UIBackgroundView from './UIBackgroundView';
@@ -10,6 +11,7 @@ import * as useColorParts from './useColorParts';
 import * as useColorShades from './useColorShades';
 import * as useIsDarkColor from './useIsDarkColor';
 
+export * from './AnimateableText';
 export * from './Colors';
 export * from './Typography';
 export * from './UIBackgroundView';
@@ -23,6 +25,7 @@ export * from './useColorShades';
 export * from './useIsDarkColor';
 
 export const UIThemes = {
+    AnimateableText,
     Colors,
     Typography,
     UIBackgroundView,
