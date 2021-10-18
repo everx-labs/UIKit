@@ -201,10 +201,11 @@ const styles = StyleSheet.create({
     },
     day: {
         paddingVertical: UIConstant.calendar.dayCellPadding,
-        aspectRatio: 1,
         borderRadius: UIConstant.calendar.dayCellPaddingBorderRadius,
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: UIConstant.contentOffset,
+        width: UIConstant.calendar.daySize,
+        height: UIConstant.calendar.daySize,
     },
 });
