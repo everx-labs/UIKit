@@ -82,5 +82,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignSelf: 'center',
         alignItems: 'center',
+        height: UIConstant.carousel.circleSize * 2,
     },
 });
