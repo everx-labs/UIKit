@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     },
     day: {
         paddingVertical: UIConstant.calendar.dayCellPadding,
-        borderRadius: UIConstant.calendar.dayCellPaddingBorderRadius,
+        borderRadius: UIConstant.calendar.daySize,
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: UIConstant.contentOffset,
