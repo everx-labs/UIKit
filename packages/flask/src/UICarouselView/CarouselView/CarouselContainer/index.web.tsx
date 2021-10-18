@@ -78,7 +78,6 @@ export function CarouselViewContainer({
     const carouselOffset = useSharedValue(0);
     const itemOffset = useSharedValue(0);
 
-    const currentIndexRef = React.useRef(0);
     const [currentIndex, setCurrentIndex] = React.useState(initialIndex);
     const maxWidthTranslate = React.useMemo(() => layout.width * pages.length, [layout, pages]);
 
@@ -125,11 +124,11 @@ export function CarouselViewContainer({
     }, [isMoving, pages, currentIndex]);
 
     React.useEffect(() => {
-        if (currentIndexRef.current !== initialIndex) {
-            currentIndexRef.current = initialIndex;
-            jumpToIndex(initialIndex);
+        if (currentIndex !== initialIndex) {
+            setCurrentIndex(initialIndex);
         }
-    }, [initialIndex, jumpToIndex]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [initialIndex]);
 
     const handleLayout = React.useCallback(
         ({
