@@ -3,10 +3,14 @@ import { StyleSheet } from 'react-native';
 import type { StyleProp, ViewStyle } from 'react-native';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.themes';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
-
-import type { ColorVariants } from '@tonlabs/uikit.themes';
+import {
+    UIBackgroundView,
+    UIBackgroundViewColors,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    ColorVariants,
+} from '@tonlabs/uikit.themes';
 
 type Props = {
     text: string;
