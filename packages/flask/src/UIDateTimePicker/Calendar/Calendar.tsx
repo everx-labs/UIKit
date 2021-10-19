@@ -58,14 +58,17 @@ const Column = React.memo(function Column({
      * Safari below 15 version not support aspect-ratio. So we have to provide width/height for day view.
      * To create a smooth circle, we need to get the font height.
      * getFontMesurements() may return undefined, so we must also pass the default value.
-     * The size is calculated for two numbers, so this value needs to be multiplied by two.
+     * Also we have to provide padding size multiplied by two.
      */
-    const fontHeight =
-        getFontMesurements(TypographyVariants.Action)?.upperline ||
-        UIConstant.calendar.dayCellDefaultFontHeight;
-    const daySize = fontHeight * 2;
 
-    console.log(daySize);
+    const dayCellStyle = React.useMemo(() => {
+        const daySize =
+            (getFontMesurements(TypographyVariants.Action)?.upperline ||
+                UIConstant.calendar.dayCellDefaultFontHeight) +
+            UIConstant.calendar.dayCellPadding * 2;
+        return { width: daySize, height: daySize, borderRadius: daySize };
+    }, []);
+
     return (
         <View style={styles.column}>
             {items.map((day, index) => {
@@ -84,10 +87,7 @@ const Column = React.memo(function Column({
                 if (day.type === 'dayFiller') {
                     return (
                         <View
-                            style={[
-                                styles.day,
-                                { width: daySize, height: daySize, borderRadius: daySize },
-                            ]}
+                            style={[styles.day, dayCellStyle]}
                             // eslint-disable-next-line react/no-array-index-key
                             key={`${selectedRow}${index}`}
                         >
@@ -108,7 +108,7 @@ const Column = React.memo(function Column({
                         key={`${selectedRow}${index}`}
                         style={[
                             styles.day,
-                            { width: daySize, height: daySize },
+                            dayCellStyle,
                             isSelected && {
                                 backgroundColor: theme[ColorVariants.StaticBackgroundAccent],
                             },
@@ -222,7 +222,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     day: {
-        paddingVertical: UIConstant.calendar.dayCellPadding,
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: UIConstant.contentOffset,
