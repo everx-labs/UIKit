@@ -152,7 +152,11 @@ export function UIAnimatedNumber({
     const textLikeContainer = useTextLikeContainer();
 
     return (
-        <View style={textLikeContainer}>
+        <View
+            style={textLikeContainer}
+            // TODO: This component contains wrong values after animation 
+            accessibilityLabel={`${formatted.value.integer}${formatted.value.decimal}`}
+        >
             <AnimateableText
                 testID={testID}
                 style={[Typography[integerVariant], integerColorStyle, styles.integer]}
