@@ -21,10 +21,17 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.hydrogen';
 
-import type { BubbleBaseT, ChatMessage, OnLongPressText, OnPressUrl } from './types';
+import type {
+    BubbleBaseT,
+    ChatMessage,
+    OnLongPressText,
+    OnPressUrl,
+    SafeURLs,
+    UrlConfigContextType,
+} from './types';
 
 import { callChatOnScrollListener } from './useChatOnScrollListener';
-import { TextLongPressHandlerContext, UrlPressHandlerContext } from './BubblePlainText';
+import { TextLongPressHandlerContext, UrlConfigContext } from './BubblePlainText';
 
 // Apply overflowY style for web to make the scrollbar appear as an overlay
 // thus not affecting the content width of SectionList to prevent layout issues
@@ -395,6 +402,7 @@ type UICommonChatListProps<ItemT extends BubbleBaseT> = {
     canLoadMore?: boolean;
     onLongPressText?: OnLongPressText;
     onPressUrl?: OnPressUrl;
+    safeURLs?: SafeURLs;
 };
 
 export function UICommonChatList<ItemT extends BubbleBaseT>({
@@ -406,6 +414,7 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
     children,
     onLongPressText,
     onPressUrl,
+    safeURLs,
 }: UICommonChatListProps<ItemT>) {
     const keyboardDismissProp: ScrollViewProps['keyboardDismissMode'] = React.useMemo(() => {
         if (Platform.OS !== 'ios') {
@@ -468,9 +477,11 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
         [onContentSizeChangeMeasureScroll, onContentSizeChangeLines],
     );
 
+    const urlConfigContextValue: UrlConfigContextType = { onPressUrl, safeURLs };
+
     return (
         <>
-            <UrlPressHandlerContext.Provider value={onPressUrl}>
+            <UrlConfigContext.Provider value={urlConfigContextValue}>
                 <TextLongPressHandlerContext.Provider value={onLongPressText}>
                     <Animated.View style={lineStyle} />
                     {children({
@@ -497,7 +508,7 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
                         ...handlers,
                     })}
                 </TextLongPressHandlerContext.Provider>
-            </UrlPressHandlerContext.Provider>
+            </UrlConfigContext.Provider>
         </>
     );
 }

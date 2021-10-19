@@ -15,7 +15,7 @@ export { sectionListGetItemLayout } from './UIChatListLayout';
 
 export {
     BubbleSimplePlainText,
-    UrlPressHandlerContext,
+    UrlConfigContext,
     TextLongPressHandlerContext,
 } from './BubblePlainText';
 export { BubbleActionButton } from './BubbleActionButton';

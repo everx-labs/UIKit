@@ -123,12 +123,15 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
 
     const { height } = useWindowDimensions();
 
+    const safeURLsArray = ['uri.ton.surf'];
+
     return (
         <>
             <UIBrowser
                 messages={messages}
                 onPressUrl={onPressUrl}
                 onLongPressText={onLongPressText}
+                safeURLs={safeURLsArray}
             />
             <UIBottomSheet
                 visible={menuVisible}

@@ -391,6 +391,8 @@ const ChatWindowScreen = () => {
     );
     const stickersKeyboard = useStickers(stickers, onItemSelected);
 
+    const safeURLsArray = ['uri.ton.surf'];
+
     return (
         <>
             <UIChatList
@@ -401,6 +403,7 @@ const ChatWindowScreen = () => {
                 canLoadMore
                 isLoadingMore={false}
                 messages={messages}
+                safeURLs={safeURLsArray}
             />
             <UIChatInput
                 managedScrollViewNativeID="chatSectionList"

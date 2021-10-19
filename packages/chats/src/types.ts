@@ -46,6 +46,16 @@ export enum ChatMessageType {
 
 export type OnPressUrl = ((url: string, index?: number) => void | Promise<void>) | undefined;
 
+/**
+ * Array of URLs that can be rendered without protocol
+ */
+export type SafeURLs = string[] | undefined;
+
+export type UrlConfigContextType = {
+    onPressUrl?: OnPressUrl;
+    safeURLs?: SafeURLs;
+};
+
 export type OnLongPressText = ((text: string) => void | Promise<void>) | undefined;
 
 export type PlainTextMessage = BubbleBaseT & {

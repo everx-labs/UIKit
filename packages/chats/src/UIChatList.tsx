@@ -6,7 +6,7 @@ import { SectionExtra, UIChatListFormatter } from './UIChatListFormatter';
 import { UILoadMoreButton } from './UILoadMoreButton';
 import { UICommonChatList } from './UICommonChatList';
 import { DateSeparator } from './DateSeparator';
-import { ChatMessage, ChatMessageType, OnPressUrl, OnLongPressText } from './types';
+import { ChatMessage, ChatMessageType, OnPressUrl, OnLongPressText, SafeURLs } from './types';
 import { sectionListGetItemLayout } from './UIChatListLayout';
 import { BubbleChatPlainText } from './BubblePlainText';
 import { BubbleSystem } from './BubbleSystem';
@@ -64,6 +64,7 @@ type UIChatListProps = {
     onPressUrl?: OnPressUrl;
     onLongPressText?: OnLongPressText;
     bottomInset?: number;
+    safeURLs?: SafeURLs;
 };
 
 export const UIChatList = React.forwardRef<SectionList, UIChatListProps>(
@@ -76,6 +77,7 @@ export const UIChatList = React.forwardRef<SectionList, UIChatListProps>(
             onLoadEarlierMessages,
             onPressUrl,
             onLongPressText,
+            safeURLs,
         }: UIChatListProps,
         ref,
     ) {
@@ -103,6 +105,7 @@ export const UIChatList = React.forwardRef<SectionList, UIChatListProps>(
                 canLoadMore={canLoadMore}
                 onLongPressText={onLongPressText}
                 onPressUrl={onPressUrl}
+                safeURLs={safeURLs}
             >
                 {chatListProps => (
                     <SectionList

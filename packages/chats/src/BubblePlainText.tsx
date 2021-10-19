@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import * as React from 'react';
 import {
     TouchableWithoutFeedback,
@@ -22,18 +23,28 @@ import {
     hapticImpact,
 } from '@tonlabs/uikit.hydrogen';
 
-import { MessageStatus, OnLongPressText, OnPressUrl } from './types';
-import type { ChatPlainTextMessage, PlainTextMessage } from './types';
+import {
+    ChatPlainTextMessage,
+    PlainTextMessage,
+    MessageStatus,
+    OnLongPressText,
+    UrlConfigContextType,
+} from './types';
 import { useBubblePosition, useBubbleContainerStyle } from './useBubblePosition';
 import { useBubbleBackgroundColor, useBubbleRoundedCornerStyle } from './useBubbleStyle';
-import { URI_TON_SURF, RegExpConstants } from './constants';
+import { RegExpConstants } from './constants';
 
-const renderParsedText = (matchingString: string) => {
-    if (URI_TON_SURF === matchingString.replace(RegExpConstants.domain, '')) {
-        return matchingString.replace(RegExpConstants.protocol, '');
-    }
-    return matchingString;
-};
+export const UrlConfigContext = React.createContext<UrlConfigContextType>({});
+
+export const TextLongPressHandlerContext = React.createContext<OnLongPressText>(undefined);
+
+function useUrlConfig() {
+    return React.useContext(UrlConfigContext);
+}
+
+function useTextLongPressHandler() {
+    return React.useContext(TextLongPressHandlerContext);
+}
 
 const useUrlStyle = (status: MessageStatus) => {
     const theme = useTheme();
@@ -44,18 +55,6 @@ const useUrlStyle = (status: MessageStatus) => {
 
     return [{ color: theme[ColorVariants.StaticTextPrimaryLight] }, styles.urlSent];
 };
-
-export const UrlPressHandlerContext = React.createContext<OnPressUrl>(undefined);
-
-export const TextLongPressHandlerContext = React.createContext<OnLongPressText>(undefined);
-
-function useUrlPressHandler() {
-    return React.useContext(UrlPressHandlerContext);
-}
-
-function useTextLongPressHandler() {
-    return React.useContext(TextLongPressHandlerContext);
-}
 
 const getFontColor = (message: PlainTextMessage) => {
     if (message.status === MessageStatus.Aborted) {
@@ -197,7 +196,14 @@ export function BubbleChatPlainText(props: ChatPlainTextMessage) {
         [props.time],
     );
 
-    const urlPressHandler = useUrlPressHandler();
+    const { onPressUrl, safeURLs } = useUrlConfig();
+
+    const useParsedText = (matchingString: string) => {
+        if (safeURLs?.includes(matchingString.replace(RegExpConstants.domain, ''))) {
+            return matchingString.replace(RegExpConstants.protocol, '');
+        }
+        return matchingString;
+    };
 
     return (
         <PlainTextContainer {...props}>
@@ -212,8 +218,8 @@ export function BubbleChatPlainText(props: ChatPlainTextMessage) {
                         {
                             pattern: RegExpConstants.url,
                             style: urlStyle,
-                            onPress: urlPressHandler,
-                            renderText: renderParsedText,
+                            onPress: onPressUrl,
+                            renderText: useParsedText,
                         },
                     ]}
                 >
@@ -247,7 +253,14 @@ export function BubbleChatPlainText(props: ChatPlainTextMessage) {
 
 export function BubbleSimplePlainText(props: PlainTextMessage) {
     const urlStyle = useUrlStyle(props.status);
-    const urlPressHandler = useUrlPressHandler();
+    const { onPressUrl, safeURLs } = useUrlConfig();
+
+    const useParsedText = (matchingString: string) => {
+        if (safeURLs?.includes(matchingString.replace(RegExpConstants.domain, ''))) {
+            return matchingString.replace(RegExpConstants.protocol, '');
+        }
+        return matchingString;
+    };
 
     return (
         <PlainTextContainer {...props}>
@@ -262,8 +275,8 @@ export function BubbleSimplePlainText(props: PlainTextMessage) {
                         {
                             pattern: RegExpConstants.url,
                             style: urlStyle,
-                            onPress: urlPressHandler,
-                            renderText: renderParsedText,
+                            onPress: onPressUrl,
+                            renderText: useParsedText,
                         },
                     ]}
                 >
