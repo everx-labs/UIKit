@@ -14,7 +14,7 @@ import { Pagination } from '../Pagination';
 type PageProps = {
     page: React.ReactElement<UICarouselViewPageProps>;
     index: number;
-    currentIndex: { current: number };
+    currentIndex: number;
     width: number;
     offset: { value: number };
     onPress: () => void;
@@ -35,7 +35,7 @@ const PageView: React.FC<PageProps> = React.memo(
             return { opacity, transform };
         });
 
-        const focused = React.useMemo(() => index === currentIndex.current, [currentIndex, index]);
+        const focused = React.useMemo(() => index === currentIndex, [currentIndex, index]);
 
         const pageWidthStyle = React.useMemo(() => {
             if (width) {
@@ -78,7 +78,7 @@ export function CarouselViewContainer({
     const carouselOffset = useSharedValue(0);
     const itemOffset = useSharedValue(0);
 
-    const currentIndexRef = React.useRef(0);
+    const [currentIndex, setCurrentIndex] = React.useState(initialIndex);
     const maxWidthTranslate = React.useMemo(() => layout.width * pages.length, [layout, pages]);
 
     const [isMoving, setIsMoving] = React.useState(false);
@@ -111,19 +111,24 @@ export function CarouselViewContainer({
         [carouselOffset, itemOffset, layout.width, onPageIndexChange],
     );
 
+    React.useEffect(() => {
+        jumpToIndex(currentIndex);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentIndex]);
+
     const jumpToNext = React.useCallback(() => {
         if (!isMoving) {
-            const nextIndex = (currentIndexRef.current + 1) % pages.length;
-            jumpToIndex(nextIndex);
+            const nextIndex = (currentIndex + 1) % pages.length;
+            setCurrentIndex(nextIndex);
         }
-    }, [jumpToIndex, isMoving, pages]);
+    }, [isMoving, pages, currentIndex]);
 
     React.useEffect(() => {
-        if (currentIndexRef.current !== initialIndex) {
-            currentIndexRef.current = initialIndex;
-            jumpToIndex(initialIndex);
+        if (currentIndex !== initialIndex) {
+            setCurrentIndex(initialIndex);
         }
-    }, [initialIndex, jumpToIndex]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [initialIndex]);
 
     const handleLayout = React.useCallback(
         ({
@@ -155,7 +160,7 @@ export function CarouselViewContainer({
                             key={index}
                             page={page}
                             index={index}
-                            currentIndex={currentIndexRef}
+                            currentIndex={currentIndex}
                             offset={itemOffset}
                             onPress={jumpToNext}
                             shouldPageMoveOnPress={shouldPageMoveOnPress}
@@ -165,11 +170,7 @@ export function CarouselViewContainer({
                 })}
             </Animated.View>
             {showPagination && (
-                <Pagination
-                    pages={pages}
-                    activeIndex={currentIndexRef.current}
-                    setPage={jumpToIndex}
-                />
+                <Pagination pages={pages} activeIndex={currentIndex} setPage={setCurrentIndex} />
             )}
         </View>
     );
