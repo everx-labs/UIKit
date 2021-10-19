@@ -54,7 +54,7 @@ export const UIConstant = {
         },
         circleScale: {
             notActive: 1,
-            Active: 1.5,
+            active: 1.5,
         },
     },
 
