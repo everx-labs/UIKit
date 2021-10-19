@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { StyleSheet, Text, Platform, ImageSourcePropType, Image as RNImage } from 'react-native';
+import {
+    StyleSheet,
+    Text,
+    Platform,
+    ImageSourcePropType,
+    Image as RNImage,
+    ImageResolvedAssetSource,
+} from 'react-native';
 import Animated, {
     cancelAnimation,
     interpolate,
@@ -191,9 +198,11 @@ function AnimatedCurrencyIcon({
     );
 }
 
-function getDefaultAspectRatio(signIcon?: ImageSourcePropType) {
+function resolveAssetSource(
+    signIcon?: ImageSourcePropType,
+): (ImageResolvedAssetSource & { aspectRatio: number }) | null {
     if (signIcon == null) {
-        return 1;
+        return null;
     }
 
     // For web
@@ -204,23 +213,29 @@ function getDefaultAspectRatio(signIcon?: ImageSourcePropType) {
     }
 
     const source = RNImage.resolveAssetSource(signIcon);
+    let aspectRatio = 1;
 
     if (source.height > 0 && source.width > 0) {
-        return source.width / source.height;
+        aspectRatio = source.width / source.height;
     }
 
-    return 1;
+    return {
+        ...source,
+        aspectRatio,
+    };
 }
 
-export function UICurrencySign({
+export const UICurrencySign = React.memo(function UICurrencySign({
     signChar,
     signVariant,
     loading,
     signIcon,
-    signIconAspectRatio = getDefaultAspectRatio(signIcon),
+    signIconAspectRatio,
     signIconInlineHeight = UICurrencySignIconInlineHeight.CapHeight,
     signIconAlign = UICurrencySignIconAlign.Middle,
 }: UICurrencySignProps) {
+    const assetSource = React.useMemo(() => resolveAssetSource(signIcon), [signIcon]);
+
     if (signChar) {
         return (
             <Text style={[Typography[signVariant], styles.iconTextContainer]}>
@@ -230,16 +245,17 @@ export function UICurrencySign({
         );
     }
 
-    if (signIcon == null) {
+    if (signIcon == null || assetSource == null) {
         return null;
     }
 
     if (loading == null) {
         return (
             <StaticCurrencyIcon
+                key={assetSource.uri}
                 signVariant={signVariant}
                 signIcon={signIcon}
-                signIconAspectRatio={signIconAspectRatio}
+                signIconAspectRatio={signIconAspectRatio || assetSource.aspectRatio}
                 signIconInlineHeight={signIconInlineHeight}
                 signIconAlign={signIconAlign}
             />
@@ -248,15 +264,24 @@ export function UICurrencySign({
 
     return (
         <AnimatedCurrencyIcon
+            /**
+             * The key is important here.
+             *
+             * On Android there was a bug, when changing an icon,
+             * it was rendered with inproper size
+             * (with the one from previous render).
+             * So here we force to re-mount it, to re-render completely.
+             */
+            key={assetSource.uri}
             loading={loading}
             signVariant={signVariant}
             signIcon={signIcon}
-            signIconAspectRatio={signIconAspectRatio}
+            signIconAspectRatio={signIconAspectRatio || assetSource.aspectRatio}
             signIconInlineHeight={signIconInlineHeight}
             signIconAlign={signIconAlign}
         />
     );
-}
+});
 
 const styles = StyleSheet.create({
     iconTextContainer: {

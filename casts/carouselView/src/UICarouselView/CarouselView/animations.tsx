@@ -6,6 +6,7 @@ import Animated, {
     useAnimatedStyle,
     useSharedValue,
 } from 'react-native-reanimated';
+import { UIConstant } from '../../constants';
 
 import { PaginationState } from '../types';
 
@@ -79,7 +80,10 @@ export const usePaginationStyle = (active: boolean) => {
                     scale: interpolate(
                         animatedValue.value,
                         [PaginationState.NotActive, PaginationState.Active],
-                        [1, 1.5],
+                        [
+                            UIConstant.carousel.circleScale.notActive,
+                            UIConstant.carousel.circleScale.active,
+                        ],
                     ),
                 },
             ],

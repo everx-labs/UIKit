@@ -7,5 +7,9 @@ export const UIConstant = {
             right: 8,
             bottom: 8,
         },
+        circleScale: {
+            notActive: 1,
+            active: 1.5,
+        },
     },
 };

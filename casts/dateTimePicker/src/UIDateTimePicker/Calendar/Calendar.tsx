@@ -7,6 +7,8 @@ import {
     UILabelRoles,
     UILabelColors,
     useTheme,
+    TypographyVariants,
+    getFontMesurements,
 } from '@tonlabs/uikit.themes';
 import { PortalManager, UILayoutConstant } from '@tonlabs/uikit.layout';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
@@ -51,6 +53,22 @@ const Column = React.memo(function Column({
     onSelect: (column: number, row: number) => void;
 }) {
     const theme = useTheme();
+
+    /**
+     * Safari below 15 version not support aspect-ratio. So we have to provide width/height for day view.
+     * To create a smooth circle, we need to get the font height.
+     * getFontMesurements() may return undefined, so we must also pass the default value.
+     * Also we have to provide padding size multiplied by two, according to our design.
+     */
+
+    const dayCellStyle = React.useMemo(() => {
+        const daySize =
+            (getFontMesurements(TypographyVariants.Action)?.upperline ||
+                UIConstant.calendar.dayCellDefaultFontHeight) +
+            UIConstant.calendar.dayCellPadding * 2;
+        return { width: daySize, height: daySize, borderRadius: daySize };
+    }, []);
+
     return (
         <View style={styles.column}>
             {items.map((day, index) => {
@@ -68,8 +86,11 @@ const Column = React.memo(function Column({
 
                 if (day.type === 'dayFiller') {
                     return (
-                        // eslint-disable-next-line react/no-array-index-key
-                        <View style={styles.day} key={`${selectedRow}${index}`}>
+                        <View
+                            style={[styles.day, dayCellStyle]}
+                            // eslint-disable-next-line react/no-array-index-key
+                            key={`${selectedRow}${index}`}
+                        >
                             <UILabel role={UILabelRoles.Action} color={UILabelColors.TextPrimary}>
                                 {' '}
                             </UILabel>
@@ -87,6 +108,7 @@ const Column = React.memo(function Column({
                         key={`${selectedRow}${index}`}
                         style={[
                             styles.day,
+                            dayCellStyle,
                             isSelected && {
                                 backgroundColor: theme[ColorVariants.StaticBackgroundAccent],
                             },
@@ -200,9 +222,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     day: {
-        paddingVertical: UIConstant.calendar.dayCellPadding,
-        aspectRatio: 1,
-        borderRadius: UIConstant.calendar.dayCellPaddingBorderRadius,
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: UILayoutConstant.contentOffset,
