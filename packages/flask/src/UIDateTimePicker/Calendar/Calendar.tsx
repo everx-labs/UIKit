@@ -9,6 +9,8 @@ import {
     useTheme,
     TouchableOpacity,
     PortalManager,
+    getFontMesurements,
+    TypographyVariants,
 } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
 
@@ -51,6 +53,19 @@ const Column = React.memo(function Column({
     onSelect: (column: number, row: number) => void;
 }) {
     const theme = useTheme();
+
+    /**
+     * Safari below 15 version not support aspect-ratio. So we have to provide width/height for day view.
+     * To create a smooth circle, we need to get the font height.
+     * getFontMesurements() may return undefined, so we must also pass the default value.
+     * The size is calculated for two numbers, so this value needs to be multiplied by two.
+     */
+    const fontHeight =
+        getFontMesurements(TypographyVariants.Action)?.upperline ||
+        UIConstant.calendar.dayCellDefaultFontHeight;
+    const daySize = fontHeight * 2;
+
+    console.log(daySize);
     return (
         <View style={styles.column}>
             {items.map((day, index) => {
@@ -68,8 +83,14 @@ const Column = React.memo(function Column({
 
                 if (day.type === 'dayFiller') {
                     return (
-                        // eslint-disable-next-line react/no-array-index-key
-                        <View style={styles.day} key={`${selectedRow}${index}`}>
+                        <View
+                            style={[
+                                styles.day,
+                                { width: daySize, height: daySize, borderRadius: daySize },
+                            ]}
+                            // eslint-disable-next-line react/no-array-index-key
+                            key={`${selectedRow}${index}`}
+                        >
                             <UILabel role={UILabelRoles.Action} color={UILabelColors.TextPrimary}>
                                 {' '}
                             </UILabel>
@@ -87,6 +108,7 @@ const Column = React.memo(function Column({
                         key={`${selectedRow}${index}`}
                         style={[
                             styles.day,
+                            { width: daySize, height: daySize },
                             isSelected && {
                                 backgroundColor: theme[ColorVariants.StaticBackgroundAccent],
                             },
@@ -201,11 +223,8 @@ const styles = StyleSheet.create({
     },
     day: {
         paddingVertical: UIConstant.calendar.dayCellPadding,
-        borderRadius: UIConstant.calendar.daySize,
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: UIConstant.contentOffset,
-        width: UIConstant.calendar.daySize,
-        height: UIConstant.calendar.daySize,
     },
 });
