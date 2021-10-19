@@ -58,7 +58,7 @@ const Column = React.memo(function Column({
      * Safari below 15 version not support aspect-ratio. So we have to provide width/height for day view.
      * To create a smooth circle, we need to get the font height.
      * getFontMesurements() may return undefined, so we must also pass the default value.
-     * Also we have to provide padding size multiplied by two.
+     * Also we have to provide padding size multiplied by two, according to our design.
      */
 
     const dayCellStyle = React.useMemo(() => {
