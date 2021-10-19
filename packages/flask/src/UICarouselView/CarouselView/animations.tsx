@@ -82,7 +82,7 @@ export const usePaginationStyle = (active: boolean) => {
                         [PaginationState.NotActive, PaginationState.Active],
                         [
                             UIConstant.carousel.circleScale.notActive,
-                            UIConstant.carousel.circleScale.Active,
+                            UIConstant.carousel.circleScale.active,
                         ],
                     ),
                 },
