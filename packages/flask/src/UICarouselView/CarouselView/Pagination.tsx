@@ -82,6 +82,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignSelf: 'center',
         alignItems: 'center',
-        height: UIConstant.carousel.circleSize * 2,
+        /**
+         * It is necessary to pass the height of the maximum possible point size.
+         * Otherwise the height will be calculated for the minimum dot size and cut off the scaled dot.
+         * So we have to multiply circleSize by max circle scaling
+         */
+        height: UIConstant.carousel.circleSize * UIConstant.carousel.circleScale.Active,
     },
 });
