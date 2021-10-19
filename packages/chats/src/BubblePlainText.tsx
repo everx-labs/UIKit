@@ -198,7 +198,7 @@ export function BubbleChatPlainText(props: ChatPlainTextMessage) {
 
     const { onPressUrl, safeURLs } = useUrlConfig();
 
-    const useParsedText = (matchingString: string) => {
+    const renderParsedText = (matchingString: string) => {
         if (safeURLs?.includes(matchingString.replace(RegExpConstants.domain, ''))) {
             return matchingString.replace(RegExpConstants.protocol, '');
         }
@@ -219,7 +219,7 @@ export function BubbleChatPlainText(props: ChatPlainTextMessage) {
                             pattern: RegExpConstants.url,
                             style: urlStyle,
                             onPress: onPressUrl,
-                            renderText: useParsedText,
+                            renderText: renderParsedText,
                         },
                     ]}
                 >
@@ -255,7 +255,7 @@ export function BubbleSimplePlainText(props: PlainTextMessage) {
     const urlStyle = useUrlStyle(props.status);
     const { onPressUrl, safeURLs } = useUrlConfig();
 
-    const useParsedText = (matchingString: string) => {
+    const renderParsedText = (matchingString: string) => {
         if (safeURLs?.includes(matchingString.replace(RegExpConstants.domain, ''))) {
             return matchingString.replace(RegExpConstants.protocol, '');
         }
@@ -276,7 +276,7 @@ export function BubbleSimplePlainText(props: PlainTextMessage) {
                             pattern: RegExpConstants.url,
                             style: urlStyle,
                             onPress: onPressUrl,
-                            renderText: useParsedText,
+                            renderText: renderParsedText,
                         },
                     ]}
                 >
