@@ -156,14 +156,14 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
 
     renderTextFragment() {
         return (
-            <React.Fragment>
+            <>
                 {this.renderTextInput()}
                 {this.renderInputPlaceholder()}
                 {this.renderTrailingValue()}
                 {this.renderToken()}
                 {this.renderRightButton()}
                 {this.renderArrow()}
-            </React.Fragment>
+            </>
         );
     }
 }

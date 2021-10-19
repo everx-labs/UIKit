@@ -98,7 +98,8 @@ export default class UIDevice {
         if (Platform.OS === 'web') {
             if (UI_IS_MOBILE_WEB_IOS) {
                 return 'ios';
-            } else if (UI_IS_MOBILE_WEB_ANDROID) {
+            }
+            if (UI_IS_MOBILE_WEB_ANDROID) {
                 return 'android';
             }
             return 'web';

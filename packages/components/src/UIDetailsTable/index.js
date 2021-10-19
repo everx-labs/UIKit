@@ -146,33 +146,39 @@ class UIDetailsTable extends UIComponent<Props, State> {
     }
 
     // Getters
+    // eslint-disable-next-line class-methods-use-this
     getTextStyle(type: ?string, value: Value) {
         if (type === UIDetailsTable.cellType.success) {
             return {
                 color: UILabelColors.TextPositive,
                 role: UILabelRoles.ParagraphText,
             };
-        } else if (type === UIDetailsTable.cellType.error) {
+        }
+        if (type === UIDetailsTable.cellType.error) {
             return {
                 color: UILabelColors.TextNegative,
                 role: UILabelRoles.ParagraphText,
             };
-        } else if (type === UIDetailsTable.cellType.accent) {
+        }
+        if (type === UIDetailsTable.cellType.accent) {
             return {
                 color: UILabelColors.TextPrimary,
                 role: UILabelRoles.Action,
             };
-        } else if (type === UIDetailsTable.cellType.disabled) {
+        }
+        if (type === UIDetailsTable.cellType.disabled) {
             return {
                 color: UILabelColors.TextTertiary,
                 role: UILabelRoles.ParagraphText,
             };
-        } else if (type === UIDetailsTable.cellType.number) {
+        }
+        if (type === UIDetailsTable.cellType.number) {
             return {
                 color: UILabelColors.TextPrimary,
                 role: UILabelRoles.MonoText,
             };
-        } else if ((type === UIDetailsTable.cellType.bool && !value) || value === false) {
+        }
+        if ((type === UIDetailsTable.cellType.bool && !value) || value === false) {
             return {
                 color: UILabelColors.TextTertiary,
                 role: UILabelRoles.ParagraphText,
@@ -212,6 +218,7 @@ class UIDetailsTable extends UIComponent<Props, State> {
     };
 
     // Render
+    // eslint-disable-next-line class-methods-use-this
     renderTextCell(value: number | string, details: string) {
         return (
             <UILabel>
@@ -240,7 +247,8 @@ class UIDetailsTable extends UIComponent<Props, State> {
             const formattedPercent = UIFunction.getNumberString(percent);
             const secondary = ` (${formattedPercent} %)`;
             return this.renderTextCell(primary, secondary);
-        } else if (type === UIDetailsTable.cellType.action || onPress) {
+        }
+        if (type === UIDetailsTable.cellType.action || onPress) {
             return (
                 <View>
                     <UILinkButton
@@ -251,7 +259,8 @@ class UIDetailsTable extends UIComponent<Props, State> {
                     />
                 </View>
             );
-        } else if (component) {
+        }
+        if (component) {
             return component;
         }
 

@@ -51,7 +51,12 @@ export function QuickAction(props: Props) {
                     style={[commonStyles.buttonContainer, UIStyle.flex.row()]}
                 >
                     {action.icon != null && (
-                        <UIImage source={action.icon} style={commonStyles.actionIcon} />
+                        <UIImage
+                            // Do now scale the images to preserve their original size
+                            resizeMode="center"
+                            source={action.icon}
+                            style={commonStyles.actionIcon}
+                        />
                     )}
                     {action.title != null && (
                         <UILabel

@@ -2,7 +2,7 @@
 /* eslint-disable react/no-unused-prop-types */
 import * as React from 'react';
 import { Platform, StatusBar, Text, useWindowDimensions, View } from 'react-native';
-import { SafeAreaInsetsContext, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIPopover, UIPopoverMenu } from '@tonlabs/uikit.navigation_legacy';
@@ -112,8 +112,6 @@ function BigBottomSheet() {
                 }}
                 style={{
                     backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                    // padding: 20,
-                    paddingBottom: Math.max(insets?.bottom || 0, UIConstant.contentOffset()),
                     borderRadius: 10,
                 }}
             >
@@ -213,6 +211,7 @@ export const Menus = () => {
     const [cardSheetVisible, setCardSheetVisible] = React.useState(false);
     const [cardSheet2Visible, setCardSheet2Visible] = React.useState(false);
     const [bottomSheetVisible, setBottomSheetVisible] = React.useState(false);
+    const [bottomSheetVisible2, setBottomSheetVisible2] = React.useState(false);
     const [countryPickerVisible, setCountryPickerVisible] = React.useState(false);
 
     const [qrVisible, setQrVisible] = React.useState(false);
@@ -326,33 +325,49 @@ export const Menus = () => {
                             setBottomSheetVisible(true);
                         }}
                     />
-                    <SafeAreaInsetsContext.Consumer>
-                        {insets => (
-                            <UIBottomSheet
-                                visible={bottomSheetVisible}
-                                onClose={() => {
-                                    setBottomSheetVisible(false);
-                                }}
-                                style={{
-                                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                                    padding: 20,
-                                    paddingBottom: Math.max(
-                                        insets?.bottom || 0,
-                                        UIConstant.contentOffset(),
-                                    ),
-                                    borderRadius: 10,
-                                }}
-                            >
-                                <UILabel>Hi there!</UILabel>
-                                <UIBoxButton
-                                    title="close"
-                                    onPress={() => {
-                                        setBottomSheetVisible(false);
-                                    }}
-                                />
-                            </UIBottomSheet>
-                        )}
-                    </SafeAreaInsetsContext.Consumer>
+                    <UIBottomSheet
+                        visible={bottomSheetVisible}
+                        onClose={() => {
+                            setBottomSheetVisible(false);
+                        }}
+                        style={{
+                            backgroundColor: theme[ColorVariants.BackgroundPrimary],
+                            padding: 20,
+                        }}
+                    >
+                        <UILabel>Hi there!</UILabel>
+                        <UIBoxButton
+                            title="close"
+                            onPress={() => {
+                                setBottomSheetVisible(false);
+                            }}
+                        />
+                    </UIBottomSheet>
+                    <UILinkButton
+                        testID="show_uiBottomSheet_with_input"
+                        title="Show UIBottomSheet with input"
+                        onPress={() => {
+                            setBottomSheetVisible2(true);
+                        }}
+                    />
+                    <UIBottomSheet
+                        visible={bottomSheetVisible2}
+                        onClose={() => {
+                            setBottomSheetVisible2(false);
+                        }}
+                        style={{
+                            backgroundColor: theme[ColorVariants.BackgroundPrimary],
+                            padding: 20,
+                        }}
+                    >
+                        <UIMaterialTextView label="Write smth" />
+                        <UIBoxButton
+                            title="close"
+                            onPress={() => {
+                                setBottomSheetVisible2(false);
+                            }}
+                        />
+                    </UIBottomSheet>
                     <BigBottomSheet />
                     <UILinkButton
                         testID="show_uiQRCodeScannerSheet"

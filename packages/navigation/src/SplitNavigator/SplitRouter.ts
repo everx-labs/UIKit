@@ -318,14 +318,39 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
                     if (initialRouteIndex === -1) {
                         newState = state;
                     } else {
-                        const initialRoute = {
-                            type: 'route',
-                            ...state.routes[initialRouteIndex],
-                        };
+                        // Get the initial route
+                        const initialRoute = state.routes[initialRouteIndex];
+
+                        // Recreate the state in order to show the initial route of the navigator
+                        const newRoutes = state.routes.map(route => {
+                            if (route.key === initialRoute.key) {
+                                // Make initial route pop to its initial sub-route as well!!!
+                                if (route.state && route.state.type === 'stack') {
+                                    // Get the initial route state from the nested stack navigator
+                                    // by popping it to the top to its initial sub-route
+                                    const stackState = stackRouter.getStateForAction(
+                                        route.state as any,
+                                        StackActions.popToTop(),
+                                        options,
+                                    );
+                                    // If the state presents apply it to the sub-route
+                                    if (stackState != null) {
+                                        return {
+                                            ...route,
+                                            state: stackState,
+                                        };
+                                    }
+                                }
+                            }
+                            return route;
+                        });
+
+                        // Struct a new state to show the truly initial splitted navigator state
                         newState = {
                             ...state,
+                            routes: newRoutes as any,
                             index: initialRouteIndex,
-                            history: [initialRoute],
+                            history: [{ type: 'route', key: initialRoute.key }],
                         };
                     }
                 } else {

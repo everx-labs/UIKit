@@ -18,6 +18,7 @@ export function useKeyboardListener(
     dotsValues: Animated.SharedValue<number>[],
     dotsAnims: Animated.SharedValue<number>[],
     dotsCount: number,
+    disabled: boolean,
 ) {
     const onWebKeyPressed = React.useCallback(
         (pressedKey: { key: number | string; keyCode: number }) => {
@@ -52,10 +53,16 @@ export function useKeyboardListener(
     );
 
     React.useEffect(() => {
+        if (disabled) {
+            document.removeEventListener('keydown', onWebKeyPressed);
+
+            return;
+        }
+
         document.addEventListener('keydown', onWebKeyPressed);
 
         return () => {
             document.removeEventListener('keydown', onWebKeyPressed);
         };
-    }, [onWebKeyPressed]);
+    }, [onWebKeyPressed, disabled]);
 }

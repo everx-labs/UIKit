@@ -80,7 +80,7 @@ function LineCountdown({
             color={UIBackgroundViewColors.BackgroundTertiary}
             style={styles.countdownContainer}
         >
-            <Animated.View style={[dynamicStyles.countdownLine, countdownStyle]}></Animated.View>
+            <Animated.View style={[dynamicStyles.countdownLine, countdownStyle]} />
         </UIBackgroundView>
     );
 }

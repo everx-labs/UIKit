@@ -85,7 +85,7 @@ export function Notifications() {
                         }}
                     >
                         <UIBoxButton
-                            title={'PrimaryInverted'}
+                            title="PrimaryInverted"
                             variant={
                                 noticeColor === UINoticeColor.PrimaryInverted
                                     ? UIBoxButtonVariant.Positive
@@ -97,7 +97,7 @@ export function Notifications() {
                             }}
                         />
                         <UIBoxButton
-                            title={'Negative'}
+                            title="Negative"
                             variant={
                                 noticeColor === UINoticeColor.Negative
                                     ? UIBoxButtonVariant.Positive
@@ -109,7 +109,7 @@ export function Notifications() {
                             }}
                         />
                         <UIBoxButton
-                            title={'Secondary'}
+                            title="Secondary"
                             variant={
                                 noticeColor === UINoticeColor.Secondary
                                     ? UIBoxButtonVariant.Positive

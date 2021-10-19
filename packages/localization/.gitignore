@@ -1,0 +1,11 @@
+commonjs/
+module/
+typescript/
+
+# Android/IntelliJ
+#
+build/
+.idea
+.gradle
+local.properties
+*.iml

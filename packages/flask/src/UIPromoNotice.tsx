@@ -12,7 +12,7 @@ import {
     UILinkButtonType,
 } from '@tonlabs/uikit.hydrogen';
 import { uiLocalized } from '@tonlabs/uikit.localization';
-import { PromoNotice } from './PromoNotice/';
+import { PromoNotice } from './PromoNotice';
 
 type UIPromoNoticeProps = {
     appStoreUrl: string;
@@ -88,7 +88,8 @@ export function UIPromoNotice({
                     </UILabel>
                 </View>
             );
-        } else if (deviceOS === 'android') {
+        }
+        if (deviceOS === 'android') {
             return (
                 <View>
                     <UILinkButton
