@@ -9,6 +9,7 @@ import {
     UICommonChatList,
     OnPressUrl,
     OnLongPressText,
+    SafeURLs,
 } from '@tonlabs/uikit.chats';
 import { BrowserMessage, InteractiveMessageType } from './types';
 import { getFormattedList } from './getFormattedList';
@@ -32,6 +33,7 @@ type UIBrowserListProps = {
     messages: BrowserMessage[];
     onPressUrl?: OnPressUrl;
     onLongPressText?: OnLongPressText;
+    safeURLs?: SafeURLs;
     bottomInset?: number;
 };
 
@@ -116,7 +118,7 @@ const renderBubble = () => (item: BrowserMessage, onLayout: ViewProps['onLayout'
 
 export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
     function UIBrowserListForwarded(
-        { messages, onPressUrl, onLongPressText }: UIBrowserListProps,
+        { messages, onPressUrl, onLongPressText, safeURLs }: UIBrowserListProps,
         ref,
     ) {
         const formattedMessages = React.useMemo(() => getFormattedList(messages), [messages]);
@@ -128,6 +130,7 @@ export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
                 getItemLayoutFabric={flatListGetItemLayoutFabric}
                 onLongPressText={onLongPressText}
                 onPressUrl={onPressUrl}
+                safeURLs={safeURLs}
             >
                 {(chatListProps: CommonChatListProps<BrowserMessage>) => (
                     <FlatList
