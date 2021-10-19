@@ -63,6 +63,7 @@ export const UIConstant = {
     calendar: {
         dayCellPadding: 5,
         dayCellPaddingBorderRadius: 20,
+        dayCellDefaultFontHeight: 19,
     },
 
     datePicker: {
