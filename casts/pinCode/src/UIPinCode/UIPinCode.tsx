@@ -12,13 +12,14 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { UIConstant } from '@tonlabs/uikit.core';
-import { hapticNotification } from '@tonlabs/uikit.controls';
+import { hapticNotification, UIIndicator } from '@tonlabs/uikit.controls';
 import {
     UILabel,
     UILabelColors,
     UILabelRoles,
     ColorVariants,
     useTheme,
+    UIBackgroundView,
 } from '@tonlabs/uikit.themes';
 import { DotsContext } from './DotsContext';
 import { BiometryKey, BiometryProps, DelKey, Key, useBiometryPasscode } from './Keys';
@@ -190,6 +191,7 @@ export const UIPinCode = React.memo(function UIPinCodeImpl({
     description,
     descriptionTestID,
     disabled = false,
+    loading = false,
     length = DEFAULT_DOTS_COUNT,
     onEnter,
     onSuccess,
@@ -203,6 +205,7 @@ export const UIPinCode = React.memo(function UIPinCodeImpl({
     description?: string;
     descriptionTestID?: string;
     disabled?: boolean;
+    loading?: boolean;
     length?: number;
     onEnter: (pin: string) => Promise<boolean | UIPinCodeEnterValidationResult>;
     onSuccess: (pin: string) => void;
@@ -300,12 +303,15 @@ export const UIPinCode = React.memo(function UIPinCodeImpl({
         if (!autoUnlock) {
             return;
         }
+        if (loading) {
+            return;
+        }
         // Do not open settings if cannot authenticate
         getPasscode({
             skipSettings: true,
             skipPredefined: true,
         });
-    }, [getPasscode, autoUnlock]);
+    }, [getPasscode, autoUnlock, loading]);
 
     useAnimatedReaction(
         () => {
@@ -385,6 +391,13 @@ export const UIPinCode = React.memo(function UIPinCodeImpl({
                             />
                         </Animated.View>
                     ))}
+                    {loading && (
+                        <UIBackgroundView
+                            style={[StyleSheet.absoluteFill, styles.loadingIndicator]}
+                        >
+                            <UIIndicator size={dotSize} />
+                        </UIBackgroundView>
+                    )}
                 </Animated.View>
                 <UIPinCodeDescription
                     ref={descriptionRef}
@@ -446,6 +459,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         height: UIConstant.bigCellHeight(),
         alignItems: 'center',
+        position: 'relative',
     },
     dot: {
         width: dotSize / 2,
@@ -461,4 +475,5 @@ const styles = StyleSheet.create({
     space: {
         flexGrow: 3,
     },
+    loadingIndicator: { flex: 1, alignItems: 'center', justifyContent: 'center' },
 });
