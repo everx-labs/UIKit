@@ -5,9 +5,9 @@ export * from './useHasScroll';
 export * from './wrapScrollableComponent';
 export * from './Lists';
 
+export type { ScrollableParentScrollHandler } from './Context';
 export {
     ScrollableContext,
-    ScrollableParentScrollHandler,
     useScrollable,
     useScrollableParentScrollHandler,
     useScrollableParentGestureHandlerHandler,
