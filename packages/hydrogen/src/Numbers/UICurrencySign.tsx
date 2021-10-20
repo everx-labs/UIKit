@@ -206,11 +206,28 @@ function resolveAssetSource(
         return null;
     }
 
-    // For web
-    // @ts-ignore
-    if (signIcon.height > 0 && signIcon.width > 0) {
-        // @ts-ignore
-        return signIcon.width / signIcon.height;
+    // For web we are to `resolveAssetsSource` manually until `react-native-web` supports it
+    // Check out the following PR: https://github.com/necolas/react-native-web/pull/2144
+    // @ts-ignore (Working with AdaptiveImage instance)
+    const { width, height, uri, data } = signIcon ?? {};
+    if (width != null && width > 0 && height != null && height > 0) {
+        // Find the asset scale
+        let scale = 1.0;
+        if (data != null && uri != null) {
+            if (data['uri@2x'] === uri) {
+                scale = 2.0;
+            } else if (data['uri@3x'] === uri) {
+                scale = 3.0;
+            }
+        }
+        // Return the ImageResolvedAssetSource & { aspectRatio: number } instance
+        return {
+            width,
+            height,
+            aspectRatio: (1.0 * width) / height,
+            scale,
+            uri,
+        };
     }
 
     const source = RNImage.resolveAssetSource(signIcon);
@@ -269,7 +286,7 @@ export const UICurrencySign = React.memo(function UICurrencySign({
              * The key is important here.
              *
              * On Android there was a bug, when changing an icon,
-             * it was rendered with inproper size
+             * it was rendered with improper size
              * (with the one from previous render).
              * So here we force to re-mount it, to re-render completely.
              */
