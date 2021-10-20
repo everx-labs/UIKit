@@ -206,7 +206,8 @@ function resolveAssetSource(
         return null;
     }
 
-    // For web
+    // For web we are to `resolveAssetsSource` manually until `react-native-web` supports it
+    // Check out the following PR: https://github.com/necolas/react-native-web/pull/2144
     // @ts-ignore (Working with AdaptiveImage instance)
     const { width, height, uri, data } = signIcon ?? {};
     if (width != null && width > 0 && height != null && height > 0) {
