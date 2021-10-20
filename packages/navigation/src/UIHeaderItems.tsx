@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { ImageProps, ImageStyle, View, StyleProp, StyleSheet } from 'react-native';
+import {
+    ImageProps,
+    ImageStyle,
+    View,
+    StyleProp,
+    StyleSheet,
+    TouchableOpacity,
+} from 'react-native';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import {
@@ -8,7 +15,6 @@ import {
     UILabel,
     UILabelColors,
     UILabelRoles,
-    TouchableOpacity,
 } from '@tonlabs/uikit.hydrogen';
 
 type OnPress = () => void | Promise<void>;
