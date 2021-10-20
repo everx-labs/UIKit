@@ -154,7 +154,7 @@ export function UIAnimatedNumber({
     return (
         <View
             style={textLikeContainer}
-            // TODO: This component contains wrong values after animation 
+            // TODO: This component contains wrong values after animation
             accessibilityLabel={`${formatted.value.integer}${formatted.value.decimal}`}
         >
             <AnimateableText
