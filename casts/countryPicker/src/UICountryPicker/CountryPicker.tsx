@@ -22,7 +22,7 @@ import { CountryPickerRow } from './CountryPickerRow';
 import { ListEmptyComponent } from './ListEmptyComponent';
 import { CountryPickerContext } from './CountryPickerContext';
 
-const COUNTRIES_URL = 'https://uikit.tonlabs.io/countries.json';
+const COUNTRIES_URL = 'https://ton-uikit-example-7e797.web.app/countries.json';
 
 const fetchJSON = async () => {
     const results = await fetch(COUNTRIES_URL);
