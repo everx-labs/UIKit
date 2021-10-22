@@ -287,7 +287,9 @@ function useVirtualization<Item>(
     const hide = React.useCallback(
         (start: number, end: number) => {
             for (let i = start; i < end; i += 1) {
-                cellsRefs[cellsIndexes[i].key].current?.hide();
+                if (cellsIndexes[i] != null) {
+                    cellsRefs[cellsIndexes[i].key].current?.hide();
+                }
             }
         },
         [cellsIndexes, cellsRefs],
