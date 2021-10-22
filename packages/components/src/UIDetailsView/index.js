@@ -4,7 +4,7 @@ import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleS
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { UIConstant, UIStyle, UIFunction } from '@tonlabs/uikit.core';
-import { UILabel, UILabelRoles, UILabelColors } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelRoles, UILabelColors } from '@tonlabs/uikit.themes';
 
 import UIComponent from '../UIComponent';
 

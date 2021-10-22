@@ -1,0 +1,18 @@
+{
+    "version": "0.0.1",
+    "name": "@tonlabs/babel-plugin-transform-inline-consts",
+    "description": "Babel plugin to inline consts to use them in worklets to reduce memory consumption",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tonlabs/UIKit.git",
+        "directory": "plugins/babel-plugin-transform-inline-consts"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.15.0",
+        "@babel/traverse": "^7.15.0"
+    },
+    "license": "MIT"
+}

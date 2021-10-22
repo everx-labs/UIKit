@@ -6,15 +6,15 @@ import { MaterialIndicator } from 'react-native-indicators';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import {
-    ColorVariants,
     UIBackgroundView,
     UIBackgroundViewColors,
     UILabel,
     UILabelColors,
     UILabelRoles,
+    ColorVariants,
     useTheme,
-} from '@tonlabs/uikit.hydrogen';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+} from '@tonlabs/uikit.themes';
+import { uiLocalized } from '@tonlabs/localization';
 
 import UIComponent from '../UIComponent';
 

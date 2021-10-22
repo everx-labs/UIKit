@@ -85,12 +85,12 @@ project.ext.react = [
     hermesCommand: "../../../node_modules/hermes-engine/osx-bin/hermesc",
 ]
 
-project.ext.hydrogen = [
-    iconFontsDir: "../../../packages/hydrogen/assets/fonts",
+project.ext.themes = [
+    iconFontsDir: "../../../kit/themes/src/assets/fonts",
 ]
 
 apply from: "../../../node_modules/react-native/react.gradle"
-apply from: "../../../packages/hydrogen/fonts.gradle"
+apply from: "../../../kit/themes/fonts.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:

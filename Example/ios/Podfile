@@ -14,10 +14,11 @@ target 'Quiver UI' do
   permissions_path = '../../node_modules/react-native-permissions/ios'
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
 
-  pod 'UIKitKeyboard', :path => "../../packages/keyboard/UIKitKeyboard.podspec"
-  pod 'UIKitHydrogen', :path => "../../packages/hydrogen/UIKitHydrogen.podspec"
-  pod 'UIKitLocalization', :path => "../../packages/localization/UIKitLocalization.podspec"
-
+  pod 'UIKitInputs', :path => "../../kit/inputs/UIKitInputs.podspec"
+  pod 'UIKitControls', :path => "../../kit/controls/UIKitControls.podspec"
+  pod 'UIKitMedia', :path => "../../kit/media/UIKitMedia.podspec"
+  pod 'UIKitLocalization', :path => "../../localization/UIKitLocalization.podspec"
+  
   target 'Quiver UITests' do
     inherit! :complete
     # Pods for testing

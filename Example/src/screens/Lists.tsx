@@ -1,14 +1,10 @@
 import * as React from 'react';
 import { useWindowDimensions, View } from 'react-native';
 
-import { UIGridList, UIMasonryList, createStackNavigator } from '@tonlabs/uikit.navigation';
-import {
-    ColorVariants,
-    TypographyVariants,
-    UILabel,
-    useTheme,
-    UIBoxButton,
-} from '@tonlabs/uikit.hydrogen';
+import { UIGridList, UIMasonryList } from '@tonlabs/uikit.scrolls';
+import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
+import { ColorVariants, TypographyVariants, UILabel, useTheme } from '@tonlabs/uikit.themes';
+import { UIBoxButton } from '@tonlabs/uikit.controls';
 
 import { useNavigation } from '@react-navigation/core';
 import { ExampleSection } from '../components/ExampleSection';

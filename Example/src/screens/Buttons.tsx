@@ -19,8 +19,8 @@ import {
     UIPillButton,
     UIPillButtonIconPosition,
     UIPillButtonVariant,
-} from '@tonlabs/uikit.hydrogen';
-import { createStackNavigator } from '@tonlabs/uikit.navigation';
+} from '@tonlabs/uikit.controls';
+import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';

@@ -22,7 +22,7 @@ typedef facebook::react::JSCExecutorFactory ExecutorFactory;
 
 #import <RNReanimated/REAInitializer.h>
 
-#import <UIKitHydrogen/HHapticJSIExecutorInitializer.h>
+#import <UIKitControls/HHapticJSIExecutorInitializer.h>
 
 #if DEBUG
 #import <FlipperKit/FlipperClient.h>

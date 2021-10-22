@@ -1,5 +1,5 @@
 // @flow
-import { DarkTheme } from '@tonlabs/uikit.hydrogen';
+import { DarkTheme } from '@tonlabs/uikit.themes';
 
 import UIColorPalette from './UIColorPalette';
 import type { UIColorThemeData } from './UIColorTypes';

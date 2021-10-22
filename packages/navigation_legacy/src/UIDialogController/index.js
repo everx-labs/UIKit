@@ -3,15 +3,15 @@ import React from 'react';
 import { View, StyleSheet, Animated, LayoutAnimation } from 'react-native';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { Portal } from '@tonlabs/uikit.layout';
 import {
     UIBackgroundView,
     UIBackgroundViewColors,
     UILabel,
     UILabelColors,
     UILabelRoles,
-    Portal,
-} from '@tonlabs/uikit.hydrogen';
-import { ScrollView } from '@tonlabs/uikit.navigation';
+} from '@tonlabs/uikit.themes';
+import { ScrollView } from '@tonlabs/uikit.scrolls';
 
 import UIController from '../UIController';
 import UIDialogTextInput from './UIDialogTextInput';

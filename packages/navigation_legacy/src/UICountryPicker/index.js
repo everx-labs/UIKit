@@ -5,17 +5,17 @@ import CountryPicker, { getAllCountries } from 'react-native-country-picker-moda
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import { UISearchBar } from '@tonlabs/uikit.navigation';
+import { UISearchBar } from '@tonlabs/uicast.bars';
 import {
-    ColorVariants,
     Typography,
     TypographyVariants,
     UILabel,
     UILabelColors,
     UILabelRoles,
+    ColorVariants,
     useTheme,
-} from '@tonlabs/uikit.hydrogen';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+} from '@tonlabs/uikit.themes';
+import { uiLocalized } from '@tonlabs/localization';
 import { UIAssets } from '@tonlabs/uikit.assets';
 
 import UIModalController from '../UIModalController';
@@ -74,7 +74,6 @@ export type Country = {
     cca2: string,
     name: string,
 };
-
 function Picker({
     pickerRef,
     cca2,

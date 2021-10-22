@@ -2,9 +2,9 @@ import * as React from 'react';
 import { View, Image } from 'react-native';
 
 import { UIActionImage } from '@tonlabs/uikit.components';
-import { UIBoxButton } from '@tonlabs/uikit.hydrogen';
+import { UIBoxButton } from '@tonlabs/uikit.controls';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { DuplicateImage } from '@tonlabs/uikit.chats';
+import { DuplicateImage } from '@tonlabs/uikit.media';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 

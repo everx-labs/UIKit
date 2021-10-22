@@ -6,15 +6,10 @@ import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import {
-    TouchableOpacity,
-    UIBoxButton,
-    UILabel,
-    UILabelColors,
-    UILabelRoles,
-} from '@tonlabs/uikit.hydrogen';
-import { uiLocalized } from '@tonlabs/uikit.localization';
+import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
+import { UIBoxButton, TouchableOpacity } from '@tonlabs/uikit.controls';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
+import { uiLocalized } from '@tonlabs/localization';
 import { UIPopup } from '@tonlabs/uikit.popups';
 
 import type { ModalControllerProps } from '../UIModalController';

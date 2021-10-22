@@ -5,7 +5,7 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 
 import { UIStyle } from '@tonlabs/uikit.core';
 
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 
 import { UIDetailsInput } from '../UIDetailsInput';
 import type { UIDetailsInputProps } from '../UIDetailsInput';

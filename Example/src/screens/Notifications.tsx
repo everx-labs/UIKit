@@ -1,9 +1,11 @@
+/* eslint-disable global-require */
 import * as React from 'react';
 import { View } from 'react-native';
 
-import { UILinkButton, UIBoxButton, UIBoxButtonVariant, UILabel } from '@tonlabs/uikit.hydrogen';
+import { UILinkButton, UIBoxButton, UIBoxButtonVariant } from '@tonlabs/uikit.controls';
+import { UILabel } from '@tonlabs/uikit.themes';
 import { UIPopup, UINoticeColor } from '@tonlabs/uikit.popups';
-import { createStackNavigator } from '@tonlabs/uikit.navigation';
+import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';

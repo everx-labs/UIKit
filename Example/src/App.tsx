@@ -14,30 +14,31 @@ import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-cont
 
 import { UILayoutManager } from '@tonlabs/uikit.components';
 import { UICountryPicker, UIPopoverBackground } from '@tonlabs/uikit.navigation_legacy';
+import { PortalManager } from '@tonlabs/uikit.layout';
 import {
-    ColorVariants,
-    DarkTheme,
-    LightTheme,
-    PortalManager,
-    ThemeContext,
-    UIBackgroundView,
-    UILabel,
     UILinkButton,
     UILinkButtonType,
-    UIStatusBarManager,
-    useTheme,
-    // @ts-ignore
-    useWebFonts,
     UISwitcher,
     UISwitcherVariant,
-} from '@tonlabs/uikit.hydrogen';
+} from '@tonlabs/uikit.controls';
 import {
-    createSplitNavigator,
-    ScrollView,
+    useWebFonts,
+    UIBackgroundView,
+    UILabel,
+    DarkTheme,
+    LightTheme,
+    ColorVariants,
+    ThemeContext,
+    useTheme,
+    UIStatusBarManager,
+} from '@tonlabs/uikit.themes';
+import {
     UIAndroidNavigationBar,
     UILargeTitleHeader,
     UISearchBarButton,
-} from '@tonlabs/uikit.navigation';
+} from '@tonlabs/uicast.bars';
+import { createSplitNavigator } from '@tonlabs/uicast.split-navigator';
+import { ScrollView } from '@tonlabs/uikit.scrolls';
 
 import { ButtonsScreen } from './screens/Buttons';
 import { Checkbox } from './screens/Checkbox';

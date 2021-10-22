@@ -60,7 +60,7 @@ export {
 } from './packages/legacy/src';
 
 // $FlowExpectedError
-export { UIAssets } from './packages/assets/src';
+export { UIAssets } from './kit/assets/src';
 
 // Types
 export type { UIAccountData } from './packages/legacy/src/UIAccountPicker/types/UIAccountData';

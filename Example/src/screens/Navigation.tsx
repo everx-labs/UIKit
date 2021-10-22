@@ -1,15 +1,16 @@
 import * as React from 'react';
 import { View, ColorValue } from 'react-native';
 
-import { ColorVariants, UIBoxButton, UILabel } from '@tonlabs/uikit.hydrogen';
+import { UIBoxButton } from '@tonlabs/uikit.controls';
+import { UILabel, ColorVariants } from '@tonlabs/uikit.themes';
+import { UIPagerView } from '@tonlabs/uicast.pager-view';
 import {
     UIDialogBar,
-    UIPagerView,
     UISearchBar,
     UISearchBarButton,
     UISearchController,
     UISlideBar,
-} from '@tonlabs/uikit.navigation';
+} from '@tonlabs/uicast.bars';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';

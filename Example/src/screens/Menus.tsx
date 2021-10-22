@@ -6,24 +6,15 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIPopover, UIPopoverMenu } from '@tonlabs/uikit.navigation_legacy';
-import {
-    ScrollView,
-    UICardSheet,
-    UIBottomSheet,
-    UIQRCodeScannerSheet,
-    UIFullscreenSheet,
-    UILargeTitleHeader,
-} from '@tonlabs/uikit.navigation';
-import { UIPopup } from '@tonlabs/uikit.popups';
-import {
-    UIMaterialTextView,
-    useTheme,
-    ColorVariants,
-    UIBoxButton,
-    UILinkButton,
-    UILabel,
-} from '@tonlabs/uikit.hydrogen';
-import { UIPinCode, UIPinCodeBiometryType, UICountryPicker } from '@tonlabs/uikit.flask';
+import { UILargeTitleHeader } from '@tonlabs/uicast.bars';
+import { UIQRCodeScannerSheet } from '@tonlabs/uicast.qr-code-scanner-sheet';
+import { UICardSheet, UIBottomSheet, UIFullscreenSheet, UIPopup } from '@tonlabs/uikit.popups';
+import { ScrollView } from '@tonlabs/uikit.scrolls';
+import { UIMaterialTextView } from '@tonlabs/uikit.inputs';
+import { UIBoxButton, UILinkButton } from '@tonlabs/uikit.controls';
+import { UILabel, ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import { UIPinCode, UIPinCodeBiometryType } from '@tonlabs/uicast.pin-code';
+import { UICountryPicker } from '@tonlabs/uicast.country-picker';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 

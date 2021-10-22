@@ -14,7 +14,7 @@ import {
     TimeMessage,
     DateTimeMessage,
     CountryMessage,
-} from '@tonlabs/uikit.browser';
+} from '@tonlabs/uistory.browser';
 import type {
     AddressInputMessage,
     ConfirmMessage,
@@ -23,24 +23,20 @@ import type {
     AmountInputMessage,
     SigningBoxMessage,
     TransactionConfirmationMessage,
-} from '@tonlabs/uikit.browser';
-import { UIPopup } from '@tonlabs/uikit.popups';
-import { uiLocalized } from '@tonlabs/uikit.localization';
-import { ChatMessageType, MessageStatus } from '@tonlabs/uikit.chats';
+} from '@tonlabs/uistory.browser';
+import { UIPopup, UICardSheet, UIBottomSheet } from '@tonlabs/uikit.popups';
+import { uiLocalized } from '@tonlabs/localization';
+import { ChatMessageType, MessageStatus } from '@tonlabs/uistory.chats';
+import { UIBoxButton } from '@tonlabs/uikit.controls';
 import {
-    useTheme,
-    ColorVariants,
-    UIBoxButton,
     UILabel,
     UILabelColors,
     UILabelRoles,
-} from '@tonlabs/uikit.hydrogen';
-import {
-    UICardSheet,
-    UIBottomSheet,
-    createStackNavigator,
-    ScrollView,
-} from '@tonlabs/uikit.navigation';
+    ColorVariants,
+    useTheme,
+} from '@tonlabs/uikit.themes';
+import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
+import { ScrollView } from '@tonlabs/uikit.scrolls';
 
 import { useBase64Image } from './hooks/useBase64Image';
 

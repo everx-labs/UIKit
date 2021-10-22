@@ -2,7 +2,7 @@ import * as React from 'react';
 import BigNumber from 'bignumber.js';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import { ColorVariants } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants } from '@tonlabs/uikit.themes';
 import {
     UIChatInput,
     UIChatList,
@@ -10,11 +10,11 @@ import {
     ChatMessage,
     MessageStatus,
     TransactionType,
-} from '@tonlabs/uikit.chats';
+} from '@tonlabs/uistory.chats';
 import { UIPopup } from '@tonlabs/uikit.popups';
-import { uiLocalized } from '@tonlabs/uikit.localization';
-import { useStickers } from '@tonlabs/uikit.stickers';
-import { createStackNavigator } from '@tonlabs/uikit.navigation';
+import { uiLocalized } from '@tonlabs/localization';
+import { useStickers } from '@tonlabs/uistory.stickers';
+import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 import { useBase64Image } from './hooks/useBase64Image';
 
 const userId = '0:000';
