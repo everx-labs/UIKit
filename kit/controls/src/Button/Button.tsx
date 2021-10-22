@@ -3,6 +3,7 @@ import { Platform, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 // @ts-ignore
 // eslint-disable-next-line import/no-unresolved
+import { ColorVariants } from '@tonlabs/uikit.themes';
 import { TouchableElement } from './TouchableElement';
 import { UIIndicator } from '../UIIndicator';
 
@@ -13,7 +14,6 @@ import {
     ButtonTitle,
     useButtonChildren,
 } from './useButtonChildren';
-import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIConstant } from '../constants';
 import type { ButtonAnimations } from './types';
 

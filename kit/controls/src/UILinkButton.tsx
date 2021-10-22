@@ -2,11 +2,11 @@ import * as React from 'react';
 import { ImageSourcePropType, Platform, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { interpolateColor, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
+import { ColorVariants, useTheme, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 import { Button, UILayout } from './Button';
 import type { ButtonAnimations } from './Button/types';
 
 import { UIConstant } from './constants';
-import { ColorVariants, useTheme, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 
 // eslint-disable-next-line no-shadow
 export enum UILinkButtonType {

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { View, ViewStyle } from 'react-native';
 import { UILabel, UILabelRoles, ColorVariants, useTheme, makeStyles } from '@tonlabs/uikit.themes';
-import { UICardSheet } from '../Sheets';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { UICardSheet } from '../Sheets';
 import { UIActionSheetAction } from './UIActionSheetAction';
 import {
     UIActionSheetActionProps,

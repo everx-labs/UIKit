@@ -15,9 +15,9 @@ import Animated, {
     withSpring,
 } from 'react-native-reanimated';
 import { clamp, snapPoint } from 'react-native-redash';
+import { ColorVariants, Theme } from '@tonlabs/uikit.themes';
 import { IconSwitcherState, PressSwitcherState, SwitcherState } from '../types';
 import { hapticSelection } from '../../Haptics/Haptics';
-import { ColorVariants, Theme } from '@tonlabs/uikit.themes';
 import { UIConstant } from '../../constants';
 
 const springConfig: Animated.WithSpringConfig = {

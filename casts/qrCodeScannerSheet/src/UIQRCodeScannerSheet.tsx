@@ -17,9 +17,9 @@ import {
 
 // @ts-ignore
 // eslint-disable-next-line import/no-unresolved, import/extensions
-import { QRCodeScanner, OnReadEvent } from './QRCodeScanner';
 import { UICardSheet, UICardSheetProps } from '@tonlabs/uikit.popups';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { QRCodeScanner, OnReadEvent } from './QRCodeScanner';
 
 export type UIQRCodeScannerSheetProps = Omit<UICardSheetProps, 'children'> & {
     onRead: (event: OnReadEvent) => void | Promise<void>;

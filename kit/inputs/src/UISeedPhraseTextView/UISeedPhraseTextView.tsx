@@ -3,8 +3,8 @@ import { View, Platform } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/localization';
 
-import { UIMaterialTextView, UIMaterialTextViewRef } from '../UIMaterialTextView';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { UIMaterialTextView, UIMaterialTextViewRef } from '../UIMaterialTextView';
 import { moveCarret } from '../moveCarret';
 
 import { UISeedPhrasePopover } from './UISeedPhrasePopover';

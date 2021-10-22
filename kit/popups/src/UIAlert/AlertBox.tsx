@@ -11,8 +11,8 @@ import Animated, {
     withSpring,
     withTiming,
 } from 'react-native-reanimated';
-import { UIConstant } from '../constants';
 import { TapGestureHandler } from 'react-native-gesture-handler';
+import { UIConstant } from '../constants';
 
 // eslint-disable-next-line no-shadow
 enum DisplayState {
