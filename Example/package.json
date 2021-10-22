@@ -22,7 +22,7 @@
         "@react-native-community/masked-view": "^0.1.10",
         "@react-native-community/netinfo": "^5.9.6",
         "@react-navigation/bottom-tabs": "^5.6.1",
-        "@react-navigation/core": "^5.11.1",
+        "@react-navigation/core": "^5.14.4",
         "@react-navigation/devtools": "^5.1.1",
         "@react-navigation/native": "^5.6.1",
         "@react-navigation/stack": "^5.6.2",

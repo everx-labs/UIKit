@@ -35,7 +35,7 @@
     ],
     "dependencies": {
         "@react-native-community/hooks": "^2.6.0",
-        "@react-navigation/core": "^5.15.3",
+        "@react-navigation/core": "^5.14.4",
         "@tonlabs/uikit.themes": "^2.3.0",
         "@tonlabs/uikit.core": "^2.3.0",
         "@tonlabs/uikit.controls": "^2.3.0",
