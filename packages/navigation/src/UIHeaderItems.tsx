@@ -114,9 +114,10 @@ function UIHeaderItemPressable({
         <>
             <View style={applyMargin ? styles.headerItemMargin : null} />
             {/**
-             * We are should use TouchableOpacity from RN instead of @tonlabs/uikit.hydrogen
-             * Because  of bug in RNGH:
+             * We are using TouchableOpacity from RN instead of @tonlabs/uikit.hydrogen
+             * Because of a bug in RNGH
              * https://github.com/software-mansion/react-native-gesture-handler/issues/1242
+             * but we need to switch it back as soon as we resolve it!
              */}
             <TouchableOpacity
                 testID={testID}
