@@ -1,9 +1,15 @@
 import * as React from 'react';
-import { ImageProps, ImageStyle, View, StyleProp, StyleSheet } from 'react-native';
+import {
+    ImageProps,
+    ImageStyle,
+    View,
+    StyleProp,
+    StyleSheet,
+    TouchableOpacity,
+} from 'react-native';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIImage } from '@tonlabs/uikit.media';
-import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UILabel, UILabelColors, UILabelRoles, ColorVariants } from '@tonlabs/uikit.themes';
 
 type OnPress = () => void | Promise<void>;
@@ -102,6 +108,12 @@ function UIHeaderItemPressable({
     return (
         <>
             <View style={applyMargin ? styles.headerItemMargin : null} />
+            {/**
+             * We are using TouchableOpacity from RN instead of @tonlabs/uikit.hydrogen
+             * Because of a bug in RNGH
+             * https://github.com/software-mansion/react-native-gesture-handler/issues/1242
+             * but we need to switch it back as soon as we resolve it!
+             */}
             <TouchableOpacity
                 testID={testID}
                 hitSlop={{
