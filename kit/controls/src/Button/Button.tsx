@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { Platform, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
-// @ts-ignore
 // eslint-disable-next-line import/no-unresolved
 import { ColorVariants } from '@tonlabs/uikit.themes';
+
+// @ts-ignore
 import { TouchableElement } from './TouchableElement';
 import { UIIndicator } from '../UIIndicator';
 
