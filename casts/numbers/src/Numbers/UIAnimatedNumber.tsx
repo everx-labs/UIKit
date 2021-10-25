@@ -152,12 +152,12 @@ export function UIAnimatedNumber({
 
     return (
         <View
+            testID={testID}
             style={textLikeContainer}
             // TODO: This component contains wrong values after animation
             accessibilityLabel={`${formatted.value.integer}${formatted.value.decimal}`}
         >
             <AnimateableText
-                testID={testID}
                 style={[Typography[integerVariant], integerColorStyle, styles.integer]}
                 animatedProps={animatedIntegerProps}
                 selectable={false}
