@@ -13,7 +13,7 @@ import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UILayoutManager } from '@tonlabs/uikit.components';
-import { UICountryPicker, UIPopoverBackground } from '@tonlabs/uikit.navigation_legacy';
+import { UIPopoverBackground } from '@tonlabs/uikit.navigation_legacy';
 import { PortalManager } from '@tonlabs/uikit.layout';
 import {
     UILinkButton,
@@ -352,7 +352,6 @@ const App = () => {
                         </Split.Navigator>
                     </NavigationContainer>
                     <UILayoutManager />
-                    <UICountryPicker navigation={navRef.current} isShared />
                     <UIAndroidNavigationBar />
                 </PortalManager>
             </SafeAreaProvider>
