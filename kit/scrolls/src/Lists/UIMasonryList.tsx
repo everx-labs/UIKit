@@ -243,9 +243,13 @@ function useVirtualization<Item>(
     onLayoutProp: ScrollViewProps['onLayout'],
     onScrollProp: ScrollViewProps['onScroll'],
     setWidth: (w: number) => void,
+    onEndReached?: (info?: { distanceFromEnd: number }) => void,
+    onEndReachedThreshold?: number,
 ) {
     const lastTopCellIndex = React.useRef(0);
     const lastBottomCellIndex = React.useRef(0);
+
+    const sentEndForContentLength = React.useRef(0);
 
     const cellsRefs = useMasonryCellsRefs(data);
 
@@ -335,6 +339,28 @@ function useVirtualization<Item>(
         [initialWindowHeight, onLayoutProp, setWidth],
     );
 
+    const maybeCallOnEndReached = React.useCallback(
+        (contentLength: number, visibleLength: number) => {
+            const distanceFromEnd = contentLength - visibleLength;
+            const threshold =
+                onEndReachedThreshold != null ? onEndReachedThreshold * contentLength : 2;
+            if (
+                onEndReached &&
+                distanceFromEnd < threshold &&
+                contentLength !== sentEndForContentLength.current
+            ) {
+                // Only call onEndReached once for a given content length
+                sentEndForContentLength.current = contentLength;
+                onEndReached({ distanceFromEnd });
+            } else if (distanceFromEnd > threshold) {
+                // If the user scrolls away from the end and back again cause
+                // an onEndReached to be triggered again
+                sentEndForContentLength.current = 0;
+            }
+        },
+        [onEndReached, onEndReachedThreshold],
+    );
+
     const onScroll = React.useCallback(
         (event: NativeSyntheticEvent<NativeScrollEvent>) => {
             const {
@@ -403,11 +429,21 @@ function useVirtualization<Item>(
             lastTopCellIndex.current = top;
             lastBottomCellIndex.current = bottom;
 
+            maybeCallOnEndReached(event.nativeEvent.contentSize.height, y + windowHeight);
+
             if (onScrollProp) {
                 onScrollProp(event);
             }
         },
-        [cellsIndexes, maxItemHeight, virtualWindowSizeRatio, onScrollProp, show, hide],
+        [
+            virtualWindowSizeRatio,
+            maxItemHeight,
+            cellsIndexes,
+            show,
+            hide,
+            maybeCallOnEndReached,
+            onScrollProp,
+        ],
     );
 
     return {
@@ -459,6 +495,18 @@ type UIMasonryListProps<Item = any> = {
      * Be default is 1.5
      */
     virtualWindowSizeRatio?: number;
+    /**
+     * Called once when the scroll position gets within `onEndReachedThreshold` of the rendered
+     * content.
+     */
+    onEndReached?: () => void;
+    /**
+     * How far from the end (in units of visible length of the list) the bottom edge of the
+     * list must be from the end of the content to trigger the `onEndReached` callback.
+     * Thus a value of 0.5 will trigger `onEndReached` when the end of the content is
+     * within half the visible length of the list.
+     */
+    onEndReachedThreshold?: number;
 } & ScrollViewProps;
 
 /**
@@ -474,6 +522,8 @@ const UIMasonryListOriginal = React.memo(
             numOfColumns = 2,
             renderItem,
             virtualWindowSizeRatio = 1.5,
+            onEndReached,
+            onEndReachedThreshold,
             ...scrollViewProps
         }: UIMasonryListProps<Item>,
         ref: React.ForwardedRef<ScrollView>,
@@ -497,6 +547,8 @@ const UIMasonryListOriginal = React.memo(
             scrollViewProps.onLayout,
             scrollViewProps.onScroll,
             setWidth,
+            onEndReached,
+            onEndReachedThreshold,
         );
 
         const contentContainerStyle: ViewStyle = React.useMemo(
