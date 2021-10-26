@@ -88,7 +88,7 @@ export function CountryPicker({
     const filterCountries = React.useCallback(
         list => {
             const permittedCountries = list.filter((country: any) => checkIncludes(country.code));
-            setFilteredList(permittedCountries);
+            setCountriesList(permittedCountries);
         },
         [checkIncludes],
     );
@@ -106,9 +106,10 @@ export function CountryPicker({
     React.useEffect(() => {
         fetchJSON()
             .then((r: CountriesArray) => {
-                setCountriesList(r);
                 if (permitted.length || banned.length) {
                     filterCountries(r);
+                } else {
+                    setCountriesList(r);
                 }
             })
             .catch((e: Error) => {
