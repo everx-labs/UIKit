@@ -499,7 +499,7 @@ type UIMasonryListProps<Item = any> = {
      * Called once when the scroll position gets within `onEndReachedThreshold` of the rendered
      * content.
      */
-    onEndReached?: () => void;
+    onEndReached?: (info?: { distanceFromEnd: number }) => void;
     /**
      * How far from the end (in units of visible length of the list) the bottom edge of the
      * list must be from the end of the content to trigger the `onEndReached` callback.
