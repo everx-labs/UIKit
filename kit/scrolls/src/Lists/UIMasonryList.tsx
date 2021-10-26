@@ -249,7 +249,7 @@ function useVirtualization<Item>(
     const lastTopCellIndex = React.useRef(0);
     const lastBottomCellIndex = React.useRef(0);
 
-    const sentEndForContentLength = React.useRef(0);
+    const contentLengthOnEndReached = React.useRef(0);
 
     const cellsRefs = useMasonryCellsRefs(data);
 
@@ -340,22 +340,24 @@ function useVirtualization<Item>(
     );
 
     const maybeCallOnEndReached = React.useCallback(
-        (contentLength: number, visibleLength: number) => {
-            const distanceFromEnd = contentLength - visibleLength;
-            const threshold =
-                onEndReachedThreshold != null ? onEndReachedThreshold * contentLength : 2;
+        (scrolledContentLength: number, windowHeight: number, offset: number) => {
+            const scrolledHeight = windowHeight + offset;
+            const distanceFromEnd = scrolledContentLength - scrolledHeight;
+            // Default value of 2 is taken from the SectionList documentation
+            // https://reactnative.dev/docs/sectionlist
+            const threshold = windowHeight * (onEndReachedThreshold ?? 2);
             if (
                 onEndReached &&
                 distanceFromEnd < threshold &&
-                contentLength !== sentEndForContentLength.current
+                threshold !== contentLengthOnEndReached.current
             ) {
                 // Only call onEndReached once for a given content length
-                sentEndForContentLength.current = contentLength;
+                contentLengthOnEndReached.current = threshold;
                 onEndReached({ distanceFromEnd });
             } else if (distanceFromEnd > threshold) {
-                // If the user scrolls away from the end and back again cause
-                // an onEndReached to be triggered again
-                sentEndForContentLength.current = 0;
+                // If the user scrolls away from the end and then returns back again,
+                // it should cause the `onEndReached` callback to be triggered again
+                contentLengthOnEndReached.current = 0;
             }
         },
         [onEndReached, onEndReachedThreshold],
@@ -365,6 +367,7 @@ function useVirtualization<Item>(
         (event: NativeSyntheticEvent<NativeScrollEvent>) => {
             const {
                 nativeEvent: {
+                    contentSize: { height: scrolledContentLength },
                     contentOffset: { y },
                     layoutMeasurement: { height: windowHeight },
                 },
@@ -429,7 +432,7 @@ function useVirtualization<Item>(
             lastTopCellIndex.current = top;
             lastBottomCellIndex.current = bottom;
 
-            maybeCallOnEndReached(event.nativeEvent.contentSize.height, y + windowHeight);
+            maybeCallOnEndReached(scrolledContentLength, windowHeight, y);
 
             if (onScrollProp) {
                 onScrollProp(event);
