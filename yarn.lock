@@ -11984,16 +11984,6 @@ react-native-codegen@0.0.7:
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
 
-"react-native-country-picker-modal@git+https://github.com/tonlabs/react-native-country-picker-modal.git":
-  version "0.6.2"
-  resolved "git+https://github.com/tonlabs/react-native-country-picker-modal.git#028835e8282711979dded79918ea2c41452d2648"
-  dependencies:
-    fuse.js "2.6.2"
-    lodash "^4.17.10"
-    node-emoji "1.8.1"
-    prop-types "15.6.0"
-    world-countries "1.8.0"
-
 react-native-device-info@^5.6.3:
   version "5.6.5"
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-5.6.5.tgz#3f18d7c38b21cfc475163351a9aae6e9037a43a0"
