@@ -42,7 +42,6 @@ export {
 
 export {
     UIController,
-    UICountryPicker,
     UIModalController,
     UIDialogController,
     UIPopover,
@@ -75,5 +74,4 @@ export type { UIActionComponentProps as ActionProps } from './packages/component
 export type { DetailsList } from './packages/components/src/UIDetailsTable';
 export type { MenuItemType } from './packages/navigation_legacy/src/UIPopoverMenu/MenuItem';
 export type { ShareOptions } from './packages/navigation_legacy/src/UIShareManager';
-export type { Country } from './packages/navigation_legacy/src/UICountryPicker';
 export type { ContentInset } from './packages/navigation_legacy/src/UIController';
