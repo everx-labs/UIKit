@@ -354,7 +354,7 @@ function useVirtualization<Item>(
                 // Only call onEndReached once for a given content length
                 contentLengthOnEndReached.current = threshold;
                 onEndReached({ distanceFromEnd });
-            } else if (distanceFromEnd > threshold) {
+            } else if (contentLengthOnEndReached.current !== 0 && distanceFromEnd > threshold) {
                 // If the user scrolls away from the end and then returns back again,
                 // it should cause the `onEndReached` callback to be triggered again
                 contentLengthOnEndReached.current = 0;
