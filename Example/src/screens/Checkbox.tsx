@@ -13,6 +13,7 @@ export const Checkbox = () => {
         <ExampleScreen>
             <ExampleSection title="UISwitcher">
                 <View
+                    testID="checkbox-enabled"
                     style={{
                         width: 100,
                         paddingVertical: 20,
@@ -88,6 +89,7 @@ export const Checkbox = () => {
             </ExampleSection>
             <ExampleSection title="UISwitcher disabled ">
                 <View
+                    testID="checkbox-disabled"
                     style={{
                         width: 100,
                         paddingVertical: 20,
