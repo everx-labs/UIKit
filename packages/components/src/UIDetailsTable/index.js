@@ -325,7 +325,11 @@ class UIDetailsTable extends UIComponent<Props, State> {
                     UIStyle.padding.topHuge();
 
                 return (
-                    <View>
+                    <View
+                        key={`details-table-row-${caption || ''}-${JSON.stringify(value) || ''}-${
+                            key || ''
+                        }-${captionType || ''}`}
+                    >
                         {index > 0 && rowSeparator && (
                             <UIBackgroundView
                                 color={UIBackgroundViewColors.LinePrimary}
@@ -341,9 +345,6 @@ class UIDetailsTable extends UIComponent<Props, State> {
                                 rowContainerStyle,
                                 marginTopStyle,
                             ]}
-                            key={`details-table-row-${caption || ''}-${
-                                JSON.stringify(value) || ''
-                            }-${key || ''}-${captionType || ''}`}
                         >
                             {this.renderCaption(caption, captionType)}
 
