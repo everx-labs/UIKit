@@ -1,6 +1,5 @@
 import * as React from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-
 import { uiLocalized } from '@tonlabs/localization';
 
 import { DateTimeActionType } from '../types';
@@ -48,8 +47,6 @@ function getDaysMatrix(
     const date = dayjs().month(selectedMonth).year(selectedYear);
     const currentMonthDays = date.daysInMonth();
     const firstDayShift = date.date(1).day() - firstDayOfWeek;
-
-    console.log(firstDayOfWeek);
 
     const daysMatrix: DaysMatrix = [];
 
