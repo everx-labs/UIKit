@@ -66,6 +66,7 @@ const QRCode = () => {
                     />
                 </View>
                 <View
+                    testID="qr-code-view"
                     style={{
                         padding: 32,
                         backgroundColor: theme.BackgroundNeutral,
