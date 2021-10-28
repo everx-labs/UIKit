@@ -243,9 +243,13 @@ function useVirtualization<Item>(
     onLayoutProp: ScrollViewProps['onLayout'],
     onScrollProp: ScrollViewProps['onScroll'],
     setWidth: (w: number) => void,
+    onEndReached?: (info?: { distanceFromEnd: number }) => void,
+    onEndReachedThreshold?: number,
 ) {
     const lastTopCellIndex = React.useRef(0);
     const lastBottomCellIndex = React.useRef(0);
+
+    const contentLengthOnEndReached = React.useRef(0);
 
     const cellsRefs = useMasonryCellsRefs(data);
 
@@ -337,10 +341,35 @@ function useVirtualization<Item>(
         [initialWindowHeight, onLayoutProp, setWidth],
     );
 
+    const maybeCallOnEndReached = React.useCallback(
+        (scrolledContentLength: number, windowHeight: number, offset: number) => {
+            const scrolledHeight = windowHeight + offset;
+            const distanceFromEnd = scrolledContentLength - scrolledHeight;
+            // Default value of 2 is taken from the SectionList documentation
+            // https://reactnative.dev/docs/sectionlist
+            const threshold = windowHeight * (onEndReachedThreshold ?? 2);
+            if (
+                onEndReached &&
+                distanceFromEnd < threshold &&
+                threshold !== contentLengthOnEndReached.current
+            ) {
+                // Only call onEndReached once for a given content length
+                contentLengthOnEndReached.current = threshold;
+                onEndReached({ distanceFromEnd });
+            } else if (contentLengthOnEndReached.current !== 0 && distanceFromEnd > threshold) {
+                // If the user scrolls away from the end and then returns back again,
+                // it should cause the `onEndReached` callback to be triggered again
+                contentLengthOnEndReached.current = 0;
+            }
+        },
+        [onEndReached, onEndReachedThreshold],
+    );
+
     const onScroll = React.useCallback(
         (event: NativeSyntheticEvent<NativeScrollEvent>) => {
             const {
                 nativeEvent: {
+                    contentSize: { height: scrolledContentLength },
                     contentOffset: { y },
                     layoutMeasurement: { height: windowHeight },
                 },
@@ -405,11 +434,21 @@ function useVirtualization<Item>(
             lastTopCellIndex.current = top;
             lastBottomCellIndex.current = bottom;
 
+            maybeCallOnEndReached(scrolledContentLength, windowHeight, y);
+
             if (onScrollProp) {
                 onScrollProp(event);
             }
         },
-        [cellsIndexes, maxItemHeight, virtualWindowSizeRatio, onScrollProp, show, hide],
+        [
+            virtualWindowSizeRatio,
+            maxItemHeight,
+            cellsIndexes,
+            show,
+            hide,
+            maybeCallOnEndReached,
+            onScrollProp,
+        ],
     );
 
     return {
@@ -461,6 +500,18 @@ type UIMasonryListProps<Item = any> = {
      * Be default is 1.5
      */
     virtualWindowSizeRatio?: number;
+    /**
+     * Called once when the scroll position gets within `onEndReachedThreshold` of the rendered
+     * content.
+     */
+    onEndReached?: (info?: { distanceFromEnd: number }) => void;
+    /**
+     * How far from the end (in units of visible length of the list) the bottom edge of the
+     * list must be from the end of the content to trigger the `onEndReached` callback.
+     * Thus a value of 0.5 will trigger `onEndReached` when the end of the content is
+     * within half the visible length of the list.
+     */
+    onEndReachedThreshold?: number;
 } & ScrollViewProps;
 
 /**
@@ -476,6 +527,8 @@ const UIMasonryListOriginal = React.memo(
             numOfColumns = 2,
             renderItem,
             virtualWindowSizeRatio = 1.5,
+            onEndReached,
+            onEndReachedThreshold,
             ...scrollViewProps
         }: UIMasonryListProps<Item>,
         ref: React.ForwardedRef<ScrollView>,
@@ -499,6 +552,8 @@ const UIMasonryListOriginal = React.memo(
             scrollViewProps.onLayout,
             scrollViewProps.onScroll,
             setWidth,
+            onEndReached,
+            onEndReachedThreshold,
         );
 
         const contentContainerStyle: ViewStyle = React.useMemo(

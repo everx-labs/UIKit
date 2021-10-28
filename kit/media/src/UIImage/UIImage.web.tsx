@@ -47,38 +47,54 @@ const TintUIImage = React.forwardRef<View, UIImageProps>(function TintUIImageFor
     const theme = useTheme();
     const tintColorValue: ColorValue | null = tintColor != null ? theme[tintColor] : null;
 
+    const isMounted = React.useRef<boolean>(false);
     const idRef = React.useRef(nanoid());
     const [hasError, setHasError] = React.useState<boolean>(false);
+    const [dimensions, setDimensions] = React.useState<LayoutRectangle | null>(null);
+
+    React.useEffect(() => {
+        isMounted.current = true;
+
+        return () => {
+            isMounted.current = false;
+        };
+    }, []);
 
     const source = rest.source as any;
 
     const { uri } = source;
     const { width, height } = useImageDimensions(style, source);
 
-    const [dimensions, setDimensions] = React.useState<LayoutRectangle | null>(null);
-
     const onLayout = (event: LayoutChangeEvent) => {
         if (rest.onLayout) {
             rest.onLayout(event);
         }
-        setDimensions(event.nativeEvent.layout);
+        if (isMounted.current) {
+            setDimensions(event.nativeEvent.layout);
+        }
     };
 
     React.useEffect(() => {
         if (!tintColorValue || !width || !height || !uri) {
-            setHasError(true);
+            if (isMounted.current) {
+                setHasError(true);
+            }
             return;
         }
         const img = new Image();
         const currentCanvas = document.getElementById(`${idRef.current}`) as HTMLCanvasElement;
         if (!currentCanvas || !currentCanvas.getContext) {
-            setHasError(true);
+            if (isMounted.current) {
+                setHasError(true);
+            }
             return;
         }
 
         const ctx: CanvasRenderingContext2D | null = currentCanvas.getContext('2d');
         if (!ctx) {
-            setHasError(true);
+            if (isMounted.current) {
+                setHasError(true);
+            }
             return;
         }
 

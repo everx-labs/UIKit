@@ -90,7 +90,12 @@ function MasonryList() {
                 margin: 8,
             }}
         >
-            <UIMasonryList data={data} numOfColumns={numOfColumns} renderItem={renderItem} />
+            <UIMasonryList
+                data={data}
+                numOfColumns={numOfColumns}
+                onEndReached={() => console.warn('end reached')}
+                renderItem={renderItem}
+            />
         </View>
     );
 }

@@ -18,10 +18,13 @@ export type UIFullscreenSheetProps = Omit<UISheetProps, 'countRubberBandDistance
 
 export function UIFullscreenSheet({ children, style, ...rest }: UIFullscreenSheetProps) {
     const { height } = useWindowDimensions();
-    const { top: topInset } = useSafeAreaInsets();
+    const { top: topInset, bottom: bottomInset } = useSafeAreaInsets();
     const flattenStyle = StyleSheet.flatten(style);
-    const passedPaddingBottom =
-        (flattenStyle.paddingBottom as number) ?? (flattenStyle.padding as number) ?? 0;
+
+    const passedPaddingBottom = Math.max(
+        bottomInset || 0,
+        (flattenStyle.paddingBottom as number) ?? (flattenStyle.padding as number) ?? 0,
+    );
     const passedPaddingTop =
         (flattenStyle.paddingTop as number) ?? (flattenStyle.padding as number) ?? 0;
 

@@ -21,7 +21,6 @@ import { ExampleScreen } from '../components/ExampleScreen';
 function PinCodeMenu() {
     const theme = useTheme();
     const [isVisible, setVisible] = React.useState(false);
-    const insets = useSafeAreaInsets();
     const [attempts, setAttempts] = React.useState(5);
 
     return (
@@ -39,7 +38,7 @@ function PinCodeMenu() {
                 forId="lockScreen"
                 style={{
                     backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                    paddingBottom: Math.max(insets?.bottom || 0, UIConstant.contentOffset()),
+                    padding: UIConstant.contentOffset(),
                     borderRadius: Platform.select({ web: 10, default: 0 }),
                 }}
             >
