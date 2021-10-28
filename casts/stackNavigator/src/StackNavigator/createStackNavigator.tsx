@@ -109,7 +109,9 @@ function ScreenWithHeaderContent({
                         onTitlePress={descriptor.options.onTitlePress}
                         onHeaderLargeTitlePress={descriptor.options.onHeaderLargeTitlePress}
                         label={descriptor.options.label}
+                        labelTestID={descriptor.options.labelTestID}
                         note={descriptor.options.note}
+                        noteTestID={descriptor.options.noteTestID}
                         renderAboveContent={descriptor.options.renderAboveContent}
                         renderBelowContent={descriptor.options.renderBelowContent}
                         headerLeft={descriptor.options.headerLeft}
