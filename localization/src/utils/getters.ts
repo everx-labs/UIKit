@@ -52,9 +52,15 @@ export function getDateFormatInfo(): DateFormatInfo {
     localePattern = `${localePattern}${symbols[components[1]]}`;
     localePattern = `${localePattern}${separator}${symbols[components[2]]}`;
 
+    // Determining the first day of the week by locale when using library can consume too much space,
+    // but without it it will be inaccurate,
+    // so for simplicity we will define that on the web all weeks start on Monday, as the most common day.
+    const dayOfWeek = 1;
+
     return {
         separator,
         localePattern,
         components,
+        dayOfWeek,
     };
 }

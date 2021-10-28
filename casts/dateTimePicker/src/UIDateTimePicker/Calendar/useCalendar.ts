@@ -1,5 +1,6 @@
 import * as React from 'react';
 import dayjs, { Dayjs } from 'dayjs';
+
 import { uiLocalized } from '@tonlabs/localization';
 
 import { DateTimeActionType } from '../types';
@@ -37,6 +38,7 @@ function getDateIsDisabled(date: Dayjs, min?: Date, max?: Date) {
 }
 
 function getDaysMatrix(
+    firstDayOfWeek: number,
     selectedMonth: number,
     selectedYear: number,
     dayNamesShort: string[],
@@ -44,12 +46,10 @@ function getDaysMatrix(
     max?: Date,
 ) {
     const date = dayjs().month(selectedMonth).year(selectedYear);
-    /**
-     * TODO: it's for now starts with Sunday
-     *       this is wrong and should be localized!
-     */
     const currentMonthDays = date.daysInMonth();
-    const firstDayShift = date.date(1).day();
+    const firstDayShift = date.date(1).day() - firstDayOfWeek;
+
+    console.log(firstDayOfWeek);
 
     const daysMatrix: DaysMatrix = [];
 
@@ -100,13 +100,20 @@ export function useDaysCalendar() {
     } = useDateTimeState();
     const date = React.useMemo(() => selectedDate ?? dayjs(), [selectedDate]);
 
-    const dayNamesShort = React.useMemo(
-        () => Object.values(uiLocalized.DateTimePicker.dayNamesShort),
-        [],
-    );
+    // eslint-disable-next-line radix
+    const firstDayOfWeek: number = React.useMemo(() => uiLocalized.getFirstDayOfWeek(), []);
+
+    const dayNamesShort = React.useMemo(() => {
+        const arr = Object.values(uiLocalized.DateTimePicker.dayNamesShort);
+        if (arr && firstDayOfWeek) {
+            const arr2 = arr.shift();
+            arr2 && arr.push(arr2);
+        }
+        return arr;
+    }, [firstDayOfWeek]);
 
     const { firstDayShift, daysMatrix } = React.useMemo(() => {
-        return getDaysMatrix(selectedMonth, selectedYear, dayNamesShort, min, max);
+        return getDaysMatrix(firstDayOfWeek, selectedMonth, selectedYear, dayNamesShort, min, max);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedMonth, selectedYear, dayNamesShort, min, max]);
 

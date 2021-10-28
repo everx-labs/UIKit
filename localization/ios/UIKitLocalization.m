@@ -44,6 +44,7 @@ RCT_EXPORT_MODULE()
                 @"separator": [NSString stringWithFormat:@"%@", dateInfo[@"separator"]],
                 @"localePattern": [NSString stringWithFormat:@"%@", dateInfo[@"localePattern"]],
                 @"components": dateInfo[@"components"],
+                @"dayOfWeek": [NSNumber numberWithUnsignedInteger: [NSCalendar currentCalendar].firstWeekday],
         },
     };
     return localeInfo;
