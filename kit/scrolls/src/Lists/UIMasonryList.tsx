@@ -287,7 +287,7 @@ function useVirtualization<Item>(
         (start: number, end: number) => {
             for (let i = start; i < end; i += 1) {
                 if (cellsIndexes[i] != null) {
-                    cellsRefs[cellsIndexes[i].key].current?.hide();
+                    cellsRefs[cellsIndexes[i].key]?.current?.hide();
                 }
             }
         },
@@ -296,7 +296,9 @@ function useVirtualization<Item>(
     const show = React.useCallback(
         (start: number, end: number) => {
             for (let i = start; i < end; i += 1) {
-                cellsRefs[cellsIndexes[i].key].current?.show();
+                if (cellsIndexes[i] != null) {
+                    cellsRefs[cellsIndexes[i].key]?.current?.show();
+                }
             }
         },
         [cellsIndexes, cellsRefs],
