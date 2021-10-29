@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Image, useWindowDimensions } from 'react-native';
+import { UIImage } from '@tonlabs/uikit.media';
 import type { ImageSize } from './types';
 import { MediaMessageError } from '../types';
 import { UIConstant } from '../constants';
@@ -85,7 +86,7 @@ export const getImage = (
         return null;
     }
     return (
-        <Image
+        <UIImage
             ref={imageRef}
             source={{ uri: sourceUri }}
             style={imageSize}
@@ -119,13 +120,10 @@ export const useImages = (
             previewSourceUri = data;
         }
 
-        const fullSizeImage = getImage(
-            fullSizeSourceUri,
-            imageSize,
-            onErrorCallback,
-            onLoadCallback,
-            null,
-        );
+        const fullSizeImage =
+            fullSizeSourceUri !== previewSourceUri
+                ? getImage(fullSizeSourceUri, imageSize, onErrorCallback, onLoadCallback, null)
+                : null;
         const previewImage = getImage(
             previewSourceUri,
             imageSize,

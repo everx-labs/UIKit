@@ -11,7 +11,7 @@ export type LightboxProps = {
     onClose: () => void;
     imageRef: React.RefObject<Image>;
     imageSize: ImageSize | null;
-    fullSizeImage: React.ReactElement;
+    fullSizeImage?: React.ReactElement | null;
     previewImage: React.ReactElement;
     prompt?: string;
 };
@@ -30,7 +30,7 @@ export type DuplicateProps = DuplicateContentProps & {
 export type DuplicateContentProps = {
     onClose: () => void;
     forwardedRef: React.RefObject<View>;
-    fullSizeImage: React.ReactElement;
+    fullSizeImage?: React.ReactElement | null;
     previewImage: React.ReactElement;
     prompt?: string;
 };
