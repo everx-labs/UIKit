@@ -188,20 +188,6 @@ function getMasonryCellsRefs<Item>(data: MasonryItem<Item>[]) {
     }, {});
 }
 
-function useMasonryCellsRefs<Item>(data: MasonryItem<Item>[]) {
-    const cellsRefs = React.useRef<MasonryCellsRefs>();
-
-    if (cellsRefs.current == null) {
-        cellsRefs.current = getMasonryCellsRefs(data);
-    }
-
-    React.useEffect(() => {
-        cellsRefs.current = getMasonryCellsRefs(data);
-    }, [data]);
-
-    return cellsRefs.current;
-}
-
 function manageTopCells(
     prev: number,
     curr: number,
@@ -251,7 +237,7 @@ function useVirtualization<Item>(
 
     const contentLengthOnEndReached = React.useRef(0);
 
-    const cellsRefs = useMasonryCellsRefs(data);
+    const cellsRefs = React.useMemo(() => getMasonryCellsRefs(data), [data]);
 
     const [initialWindowHeight, setInitialWindowHeight] = React.useState(0);
 
