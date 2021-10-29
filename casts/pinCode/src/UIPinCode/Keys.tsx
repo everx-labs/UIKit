@@ -175,14 +175,20 @@ export function useBiometryPasscode({
             if (!isBiometryEnabled || getPasscodeWithBiometry == null) {
                 return;
             }
-            const passcode = await getPasscodeWithBiometry(options);
+
+            let passcode: string | undefined;
+            try {
+                passcode = await getPasscodeWithBiometry(options);
+            } catch (error) {
+                console.error('Failed to get the passcode with biometry with error:', error);
+            }
 
             if (passcode == null) {
                 return;
             }
 
             dotsValues.forEach((_dot, index) => {
-                dotsValues[index].value = Number(passcode[index]);
+                dotsValues[index].value = Number((passcode as string)[index]);
                 dotsAnims[index].value = withSpring(DOT_ANIMATION_ACTIVE, DOT_WITH_SPRING_CONFIG);
             });
             activeDotIndex.value = dotsCount;
