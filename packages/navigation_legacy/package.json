@@ -45,7 +45,6 @@
         "@tonlabs/uikit.controls": "^2.3.0",
         "@tonlabs/uikit.layout": "^2.3.0",
         "@tonlabs/localization": "^2.3.0",
-        "react-native-country-picker-modal": "git+https://github.com/tonlabs/react-native-country-picker-modal.git",
         "react-native-simple-popover": "git+https://github.com/tonlabs/react-native-simple-popover.git"
     },
     "devDependencies": {

@@ -41,6 +41,7 @@ export const TextScreen = () => (
         </ExampleSection>
         <ExampleSection title="UIListHeader">
             <View
+                testID="uiListHeader_default"
                 style={{
                     minWidth: 300,
                     paddingVertical: 20,
@@ -51,26 +52,26 @@ export const TextScreen = () => (
         </ExampleSection>
         <ExampleSection title="UISectionHeader">
             <View
+                testID="uiSectionHeader_default"
                 style={{
                     minWidth: 300,
                     paddingVertical: 20,
                 }}
             >
                 <UISectionHeader
-                    testID="uiSectionHeader_default"
                     title="Section header"
                     titleRight="Title on the right side" // This will be rendered on the right side of the header
                     containerStyle={{ marginBottom: 16 }}
                 />
             </View>
             <View
+                testID="uiSectionHeader_with_border_on_top"
                 style={{
                     minWidth: 300,
                     paddingVertical: 20,
                 }}
             >
                 <UISectionHeader
-                    testID="uiSectionHeader_with_border_on_top"
                     title="Section header with border on top"
                     needBorder
                 />
