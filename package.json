@@ -2,7 +2,7 @@
     "name": "uikit",
     "version": "1.0.0",
     "description": "",
-    "main": "UIKit.js",
+    "main": "Example/index.js",
     "private": true,
     "workspaces": [
         "packages/*",

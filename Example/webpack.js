@@ -16,7 +16,6 @@ module.exports = {
                     path.resolve(__dirname, './index.web.js'),
                     path.resolve(__dirname, './src/'),
                     path.resolve(__dirname, '../node_modules/react-native-web/'),
-                    // path.resolve(__dirname, "../UIKit.js"),
                     path.resolve(__dirname, '../packages/'),
                     path.resolve(__dirname, '../kit/'),
                     path.resolve(__dirname, '../casts/'),
