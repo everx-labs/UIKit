@@ -103,8 +103,10 @@ export function useDaysCalendar() {
     const dayNamesShort = React.useMemo(() => {
         const arr = Object.values(uiLocalized.DateTimePicker.dayNamesShort);
         if (arr && firstDayOfWeek) {
-            const shifted = arr.shift();
-            shifted && arr.push(shifted);
+            for (let i = 0; i < firstDayOfWeek; i += 1) {
+                const shifted = arr.shift();
+                shifted && arr.push(shifted);
+            }
         }
         return arr;
     }, [firstDayOfWeek]);
