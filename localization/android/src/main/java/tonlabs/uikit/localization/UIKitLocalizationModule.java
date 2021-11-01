@@ -55,7 +55,7 @@ public class UIKitLocalizationModule extends ReactContextBaseJavaModule {
 
         Calendar calendar = Calendar.getInstance();
 
-        dates.put( "dayOfWeek", calendar.getFirstDayOfWeek());
+        dates.put("dayOfWeek", calendar.getFirstDayOfWeek());
 
         final Map<String, Object> localeInfo = new HashMap<>();
         localeInfo.put("numbers", numbers);
