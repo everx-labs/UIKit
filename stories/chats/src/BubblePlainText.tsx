@@ -26,6 +26,11 @@ import { MessageStatus, OnLongPressText, OnPressUrl } from './types';
 import type { ChatPlainTextMessage, PlainTextMessage } from './types';
 import { useBubblePosition, useBubbleContainerStyle } from './useBubblePosition';
 import { useBubbleBackgroundColor, useBubbleRoundedCornerStyle } from './useBubbleStyle';
+import { RegExpConstants } from './constants';
+
+const renderParsedText = (matchingString: string) => {
+    return matchingString.replace(RegExpConstants.protocol, '');
+};
 
 const useUrlStyle = (status: MessageStatus) => {
     const theme = useTheme();
@@ -202,9 +207,10 @@ export function BubbleChatPlainText(props: ChatPlainTextMessage) {
                 <ParsedText
                     parse={[
                         {
-                            type: 'url',
+                            pattern: RegExpConstants.url,
                             style: urlStyle,
                             onPress: urlPressHandler,
+                            renderText: renderParsedText,
                         },
                     ]}
                 >
@@ -251,9 +257,10 @@ export function BubbleSimplePlainText(props: PlainTextMessage) {
                 <ParsedText
                     parse={[
                         {
-                            type: 'url',
+                            pattern: RegExpConstants.url,
                             style: urlStyle,
                             onPress: urlPressHandler,
+                            renderText: renderParsedText,
                         },
                     ]}
                 >
