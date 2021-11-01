@@ -25,7 +25,7 @@ export function useKeyTextView(
         inputValue,
         inputHasValue,
         onChangeText: onChangeTextBase,
-        onKeyPress: onKeyPressBase,
+        onKeyPress,
     } = useUITextViewValue(ref, true, props);
     const { onDone } = props;
 
@@ -49,17 +49,6 @@ export function useKeyTextView(
             }
         },
         [hasInvalidChars, hasProperLength, onChangeTextBase],
-    );
-
-    const onKeyPress = React.useCallback(
-        (e: any) => {
-            const wasClearedWithEnter = onKeyPressBase(e);
-
-            if (wasClearedWithEnter) {
-                onDone(inputValue.current);
-            }
-        },
-        [onDone, onKeyPressBase, inputValue],
     );
 
     const { helperText, error, success } = React.useMemo(() => {
@@ -93,12 +82,22 @@ export function useKeyTextView(
         };
     }, [inputHasValue, hasInvalidChars, hasProperLength, isFocused]);
 
+    const onSubmitEditing = React.useCallback(
+        e => {
+            if (success) {
+                onKeyPress(e);
+                onDone(inputValue.current);
+            }
+        },
+        [inputValue, onDone, onKeyPress, success],
+    );
+
     return {
         helperText,
         error,
         success,
         onChangeText,
-        onKeyPress,
+        onSubmitEditing,
     };
 }
 
@@ -109,7 +108,7 @@ type UIKeyTextViewProps = Omit<UIMaterialTextViewProps, keyof ReturnType<typeof 
 export const UIKeyTextView = React.forwardRef<UIMaterialTextViewRef, UIKeyTextViewProps>(
     function UIKeyTextViewForwarded(props: UIKeyTextViewProps, ref) {
         const { isFocused, onFocus, onBlur } = useFocused(props.onFocus, props.onBlur);
-        const { onChangeText, onKeyPress, helperText, success, error } = useKeyTextView(
+        const { onChangeText, onSubmitEditing, helperText, success, error } = useKeyTextView(
             ref,
             isFocused,
             props,
@@ -122,10 +121,12 @@ export const UIKeyTextView = React.forwardRef<UIMaterialTextViewRef, UIKeyTextVi
                 onFocus={onFocus}
                 onBlur={onBlur}
                 onChangeText={onChangeText}
-                onKeyPress={onKeyPress}
+                onSubmitEditing={onSubmitEditing}
                 helperText={helperText}
                 success={success}
                 error={error}
+                multiline={false}
+                returnKeyType="done"
             />
         );
     },

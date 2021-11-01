@@ -14,7 +14,7 @@ export function useClearButton(
     clear: () => void,
 ) {
     return React.useMemo(() => {
-        if (inputHasValue && (isFocused || isHovered)) {
+        if (inputHasValue) {
             return (
                 <TouchableOpacity
                     testID="clear_btn"
