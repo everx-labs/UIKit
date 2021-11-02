@@ -1,26 +1,21 @@
 /* eslint-disable no-shadow */
 import type { ImageSourcePropType, LayoutChangeEvent, ViewProps } from 'react-native';
 import type BigNumber from 'bignumber.js';
+
 import type { QRCodeError } from '@tonlabs/uikit.media';
+
+import type {
+    ActionButtonVariant,
+    ChatMessageType,
+    MediaMessageError,
+    MessageStatus,
+    TransactionType,
+} from './constants';
 
 /**
  * A string of the form: `data:<data type>;base64,<data in base64>`
  */
 export type DataUrl = string;
-
-// Semantically describe a bubble position
-// By default:
-// Sent is places on the right side
-// Pending is also on the right
-// Received - on the left
-//
-// This could be changed in some global config (not there yet).
-export enum MessageStatus {
-    Sent = 'sent',
-    Pending = 'pending',
-    Received = 'received',
-    Aborted = 'aborted',
-}
 
 export type OnLayoutCell = (key: string, e: LayoutChangeEvent) => void;
 
@@ -31,18 +26,6 @@ export type BubbleBaseT = {
     status: MessageStatus;
     onLayout?: ViewProps['onLayout'];
 };
-
-export enum ChatMessageType {
-    PlainText = 'stm',
-    System = 'sys',
-    Transaction = 'trx',
-    Image = 'aim',
-    Document = 'doc',
-    Sticker = 'stk',
-    ActionButton = 'act',
-    QRCode = 'QRCode',
-    Media = 'Media',
-}
 
 export type OnPressUrl = ((url: string, index?: number) => void | Promise<void>) | undefined;
 
@@ -57,6 +40,7 @@ export type PlainTextMessage = BubbleBaseT & {
 
 export type ActionButtonMessage = BubbleBaseT & {
     type: ChatMessageType.ActionButton;
+    variant?: ActionButtonVariant;
     text: string;
     textMode?: 'ellipsize' | 'fit';
     disabled?: boolean;
@@ -76,11 +60,6 @@ export type SystemMessage = BubbleBaseT &
         type: ChatMessageType.System;
         text: string;
     };
-
-export enum TransactionType {
-    Income = 'income',
-    Expense = 'expense',
-}
 
 export type TransactionComment = {
     text: string;
@@ -139,12 +118,6 @@ export type QRCodeMessage = BubbleBaseT & {
 };
 
 export type ChatQRCodeMessage = ChatMeta & QRCodeMessage;
-
-export enum MediaMessageError {
-    DataIsEmpty,
-    NotSupportedDataFormat,
-    InvalidData,
-}
 
 export type MediaMessage = BubbleBaseT & {
     type: ChatMessageType.Media;

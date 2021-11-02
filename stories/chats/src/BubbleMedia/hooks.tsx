@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Image, Platform, useWindowDimensions } from 'react-native';
 import { UIImage } from '@tonlabs/uikit.media';
+
+import { MediaMessageError, UIConstant } from '../constants';
 import type { ImageSize } from './types';
-import { MediaMessageError } from '../types';
-import { UIConstant } from '../constants';
 
 export const getImageSize = (
     width: number,

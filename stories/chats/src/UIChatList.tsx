@@ -6,7 +6,6 @@ import { SectionExtra, UIChatListFormatter } from './UIChatListFormatter';
 import { UILoadMoreButton } from './UILoadMoreButton';
 import { UICommonChatList } from './UICommonChatList';
 import { DateSeparator } from './DateSeparator';
-import { ChatMessage, ChatMessageType, OnPressUrl, OnLongPressText } from './types';
 import { sectionListGetItemLayout } from './UIChatListLayout';
 import { BubbleChatPlainText } from './BubblePlainText';
 import { BubbleSystem } from './BubbleSystem';
@@ -17,6 +16,8 @@ import { BubbleSticker } from './BubbleSticker';
 import { BubbleActionButton } from './BubbleActionButton';
 import { ChatBubbleQRCode } from './BubbleQRCode';
 import { ChatBubbleMedia } from './BubbleMedia/BubbleMedia';
+import { ChatMessageType } from './constants';
+import type { ChatMessage, OnPressUrl, OnLongPressText } from './types';
 
 const renderSectionTitle = ({
     section,
