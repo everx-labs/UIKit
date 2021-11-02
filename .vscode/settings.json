@@ -18,5 +18,8 @@
     },
     "eslint.options": { "configFile": ".eslintrc", "resolvePluginsRelativeTo": "." },
     "eslint.validate": ["typescript", "typescriptreact", "javascript", "javascriptreact"],
-    "javascript.validate.enable": false
+    "javascript.validate.enable": false,
+    "[java]": {
+        "editor.defaultFormatter": "mwpb.java-prettier-formatter"
+    }
 }
