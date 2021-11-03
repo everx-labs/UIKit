@@ -288,7 +288,7 @@ export default class UIPopover<Props, State> extends UIComponent<
                         {...testIDProp}
                         onPress={this.onShow}
                         onLayout={this.onTriggerLayout}
-                        style={containerStyle}
+                        containerStyle={containerStyle}
                     >
                         <View pointerEvents="none" style={style}>
                             {children}
