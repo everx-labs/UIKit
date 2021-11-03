@@ -92,9 +92,7 @@ export function useMaterialTextViewChildren(
 
     if (onDone) {
         /**
-         * It's wrapped with a View
-         * to stick a action button to the bottom
-         * when an input is multilined
+         * wip
          */
         return (
             <ActionButton
