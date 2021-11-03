@@ -21,7 +21,8 @@ import {
 } from '@tonlabs/uikit.themes';
 import { useBubbleContainerStyle, useBubblePosition } from './useBubblePosition';
 import { useBubbleBackgroundColor, useBubbleRoundedCornerStyle } from './useBubbleStyle';
-import { QRCodeMessage, ChatQRCodeMessage, MessageStatus } from './types';
+import { MessageStatus } from './constants';
+import type { QRCodeMessage, ChatQRCodeMessage } from './types';
 
 export const ChatBubbleQRCode: React.FC<ChatQRCodeMessage> = (message: ChatQRCodeMessage) => {
     return <BubbleQRCode {...message} />;

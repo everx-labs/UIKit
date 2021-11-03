@@ -14,3 +14,46 @@ export const UIConstant = {
 
     contentOffset: 16,
 };
+
+// Semantically describe a bubble position
+// By default:
+// Sent is places on the right side
+// Pending is also on the right
+// Received - on the left
+//
+// This could be changed in some global config (not there yet).
+export enum MessageStatus {
+    Sent = 'sent',
+    Pending = 'pending',
+    Received = 'received',
+    Aborted = 'aborted',
+}
+
+export enum ChatMessageType {
+    PlainText = 'stm',
+    System = 'sys',
+    Transaction = 'trx',
+    Image = 'aim',
+    Document = 'doc',
+    Sticker = 'stk',
+    ActionButton = 'act',
+    QRCode = 'QRCode',
+    Media = 'Media',
+}
+
+export enum ActionButtonVariant {
+    Neutral = 'Neutral',
+    Negative = 'Negative',
+    Positive = 'Positive',
+}
+
+export enum TransactionType {
+    Income = 'income',
+    Expense = 'expense',
+}
+
+export enum MediaMessageError {
+    DataIsEmpty,
+    NotSupportedDataFormat,
+    InvalidData,
+}

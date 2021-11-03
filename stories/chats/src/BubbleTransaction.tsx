@@ -12,7 +12,7 @@ import {
     useTheme,
 } from '@tonlabs/uikit.themes';
 
-import { MessageStatus, TransactionType } from './types';
+import { MessageStatus, TransactionType } from './constants';
 import type { TransactionMessage } from './types';
 import { useBubblePosition, BubblePosition, useBubbleContainerStyle } from './useBubblePosition';
 import { BubbleTransactionComment } from './BubbleTransactionComment';

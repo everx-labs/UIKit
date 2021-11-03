@@ -3,7 +3,8 @@ import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 
-import { BubbleBaseT, MessageStatus } from './types';
+import { MessageStatus } from './constants';
+import type { BubbleBaseT } from './types';
 
 // eslint-disable-next-line no-shadow
 export enum BubblePosition {

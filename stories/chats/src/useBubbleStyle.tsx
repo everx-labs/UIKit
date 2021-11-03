@@ -1,7 +1,9 @@
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import type { StyleProp, ViewStyle } from 'react-native';
-import { BubbleBaseT, MessageStatus } from './types';
+
+import { MessageStatus } from './constants';
+import type { BubbleBaseT } from './types';
 import { BubblePosition } from './useBubblePosition';
 
 export const useBubbleRoundedCornerStyle = (

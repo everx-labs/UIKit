@@ -22,8 +22,8 @@ import {
     useTheme,
 } from '@tonlabs/uikit.themes';
 
-import { MessageStatus, OnLongPressText, OnPressUrl } from './types';
-import type { ChatPlainTextMessage, PlainTextMessage } from './types';
+import { MessageStatus } from './constants';
+import type { OnLongPressText, OnPressUrl, ChatPlainTextMessage, PlainTextMessage } from './types';
 import { useBubblePosition, useBubbleContainerStyle } from './useBubblePosition';
 import { useBubbleBackgroundColor, useBubbleRoundedCornerStyle } from './useBubbleStyle';
 

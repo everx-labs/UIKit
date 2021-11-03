@@ -1,6 +1,7 @@
 import * as React from 'react';
 
-import { ChatMediaMessage, MediaMessageError, MediaMessage } from '../types';
+import { MediaMessageError } from '../constants';
+import type { ChatMediaMessage, MediaMessage } from '../types';
 import { MediaImage } from './MediaImage';
 
 export const ChatBubbleMedia: React.FC<ChatMediaMessage> = (message: ChatMediaMessage) => {
