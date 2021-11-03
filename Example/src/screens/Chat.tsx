@@ -30,8 +30,8 @@ const gifUrl =
     'https://firebasestorage.googleapis.com/v0/b/ton-uikit-example-7e797.appspot.com/o/jim-carrey-yes-sir.gif?alt=media&token=42bb8c1c-ffc7-429d-8838-0436410b1d74';
 
 const useInitialMessages = (): ChatMessage[] => {
-    const base64ImagePreview = useBase64Image(imageUrl.original);
-    const base64Image = useBase64Image(imageUrl.original);
+    const base64ImagePreview = useBase64Image(imageUrl.small);
+    const base64Image = useBase64Image(imageUrl.medium);
     const base64Gif = useBase64Image(gifUrl);
 
     return React.useMemo(() => {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, Platform, useWindowDimensions } from 'react-native';
+import { Image, useWindowDimensions } from 'react-native';
 import { UIImage } from '@tonlabs/uikit.media';
 
 import { MediaMessageError, UIConstant } from '../constants';
@@ -84,19 +84,6 @@ export const getImage = (
 ) => {
     if (!sourceUri) {
         return null;
-    }
-
-    /** TODO Delete when lightbox for ios is made compatible with UIImage */
-    if (Platform.OS === 'ios') {
-        return (
-            <Image
-                ref={imageRef}
-                source={{ uri: sourceUri }}
-                style={imageSize}
-                onError={onErrorCallback}
-                onLoad={onLoadCallback}
-            />
-        );
     }
 
     return (
