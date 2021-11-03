@@ -25,9 +25,9 @@ export function useKeyTextView(
         inputValue,
         inputHasValue,
         onChangeText: onChangeTextBase,
-        onKeyPress,
+        onKeyPress: onKeyPressBase,
     } = useUITextViewValue(ref, true, props);
-    const { onDone } = props;
+    const { onDone: onDoneBase } = props;
 
     const [hasInvalidChars, setHasInvalidChars] = React.useState(false);
     const [hasProperLength, setHasProperLength] = React.useState(false);
@@ -82,14 +82,20 @@ export function useKeyTextView(
         };
     }, [inputHasValue, hasInvalidChars, hasProperLength, isFocused]);
 
-    const onSubmitEditing = React.useCallback(
-        e => {
-            if (success) {
-                onKeyPress(e);
-                onDone(inputValue.current);
+    const onDone = React.useCallback(() => {
+        if (success) {
+            onDoneBase(inputValue.current);
+        }
+    }, [success, onDoneBase, inputValue]);
+
+    const onKeyPress = React.useCallback(
+        (e: any) => {
+            const wasClearedWithEnter = onKeyPressBase(e);
+            if (wasClearedWithEnter) {
+                onDone();
             }
         },
-        [inputValue, onDone, onKeyPress, success],
+        [onDone, onKeyPressBase],
     );
 
     return {
@@ -97,7 +103,8 @@ export function useKeyTextView(
         error,
         success,
         onChangeText,
-        onSubmitEditing,
+        onKeyPress,
+        onDone,
     };
 }
 
@@ -108,7 +115,7 @@ type UIKeyTextViewProps = Omit<UIMaterialTextViewProps, keyof ReturnType<typeof 
 export const UIKeyTextView = React.forwardRef<UIMaterialTextViewRef, UIKeyTextViewProps>(
     function UIKeyTextViewForwarded(props: UIKeyTextViewProps, ref) {
         const { isFocused, onFocus, onBlur } = useFocused(props.onFocus, props.onBlur);
-        const { onChangeText, onSubmitEditing, helperText, success, error } = useKeyTextView(
+        const { onChangeText, onKeyPress, onDone, helperText, success, error } = useKeyTextView(
             ref,
             isFocused,
             props,
@@ -121,12 +128,12 @@ export const UIKeyTextView = React.forwardRef<UIMaterialTextViewRef, UIKeyTextVi
                 onFocus={onFocus}
                 onBlur={onBlur}
                 onChangeText={onChangeText}
-                onSubmitEditing={onSubmitEditing}
+                onKeyPress={onKeyPress}
+                onDone={onDone}
                 helperText={helperText}
                 success={success}
                 error={error}
-                multiline={false}
-                returnKeyType="done"
+                multiline
             />
         );
     },

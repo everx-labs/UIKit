@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 
 import { UIImage } from '@tonlabs/uikit.media';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
@@ -12,15 +12,22 @@ type ActionButtonProps = {
     onPress: () => void | Promise<void>;
     hasError: boolean;
     clear: () => void;
+    styles?: ViewStyle;
 };
 
-export function ActionButton({ inputHasValue, hasError, onPress, clear }: ActionButtonProps) {
+export function ActionButton({
+    inputHasValue,
+    hasError,
+    onPress,
+    clear,
+    styles,
+}: ActionButtonProps) {
     const theme = useTheme();
     if (hasError) {
         return (
             <TouchableOpacity
                 testID="send_btn"
-                style={actionStyles.buttonContainer}
+                style={[actionStyles.buttonContainer, styles]}
                 onPress={clear}
             >
                 <View

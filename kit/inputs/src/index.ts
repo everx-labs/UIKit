@@ -20,6 +20,7 @@ export * from './UITextView';
 export * from './UIInputAccessoryView/UIInputAccessoryView';
 
 export * from './UIMaterialTextView/useClearButton';
+export * from './ActionButton';
 export * from './useAutogrowTextView';
 export * from './useCustomKeyboard';
 export * from './useAnimatedKeyboardHeight';

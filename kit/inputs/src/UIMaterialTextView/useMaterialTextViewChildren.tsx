@@ -5,6 +5,7 @@ import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 
 import { UIImage, UIImageProps } from '@tonlabs/uikit.media';
 import { useClearButton } from './useClearButton';
+import { ActionButton } from '../ActionButton';
 
 export function UIMaterialTextViewIcon({
     onPress,
@@ -84,8 +85,27 @@ export function useMaterialTextViewChildren(
     isFocused: boolean,
     isHovered: boolean,
     clear: () => void,
+    onDone?: () => void,
+    error?: boolean,
 ) {
     const clearButton = useClearButton(inputHasValue, isFocused, isHovered, clear);
+
+    if (onDone) {
+        /**
+         * It's wrapped with a View
+         * to stick a action button to the bottom
+         * when an input is multilined
+         */
+        return (
+            <ActionButton
+                inputHasValue={inputHasValue}
+                onPress={onDone}
+                hasError={!!error}
+                clear={clear}
+                styles={styles.actionButton}
+            />
+        );
+    }
 
     if (clearButton) {
         /**
@@ -174,5 +194,8 @@ const styles = StyleSheet.create({
     },
     clearButtonWrapper: {
         justifyContent: 'flex-end',
+    },
+    actionButton: {
+        padding: 0,
     },
 });
