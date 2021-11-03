@@ -102,7 +102,7 @@
         "react-native-web-modal": "^1.0.1",
         "react-native-web-linear-gradient": "1.1.2",
         "rn-fetch-blob": "git+https://github.com/FactorBench/rn-fetch-blob.git#239d8ab1d26334f98f5dc1b4fac32b7c55cf8d39",
-        "validator": "10.11.0"
+        "validator": "13.7.0"
     },
     "devDependencies": {
         "@babel/core": "^7.15.0",

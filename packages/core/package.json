@@ -42,7 +42,7 @@
         "libphonenumber-js": "1.7.14",
         "mobile-detect": "1.4.3",
         "react-native-status-bar-height": "1.0.1",
-        "validator": "10.11.0"
+        "validator": "13.7.0"
     },
     "devDependencies": {
         "@babel/runtime": "^7.15.0",

@@ -81,7 +81,7 @@
         "react-native-status-bar-height": "1.0.1",
         "react-native-tab-view": "3.0.1",
         "react-qr-reader": "2.2.1",
-        "validator": "10.11.0"
+        "validator": "13.7.0"
     },
     "devDependencies": {
         "@babel/core": "^7.15.0",
