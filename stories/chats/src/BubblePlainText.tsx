@@ -257,6 +257,11 @@ export function BubbleSimplePlainText(props: PlainTextMessage) {
                 <ParsedText
                     parse={[
                         {
+                            /**
+                             * We need to use our RegExp because we must also
+                             * identify links with cyrillic.
+                             * The library doesn't do this.
+                             * */
                             pattern: RegExpConstants.url,
                             style: urlStyle,
                             onPress: urlPressHandler,

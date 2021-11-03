@@ -3,7 +3,6 @@ import { Platform } from 'react-native';
 const GRID_LINE_HEIGHT = 4;
 
 export const RegExpConstants = {
-    domain: /.+\/\/|www.|\/.+/g,
     protocol: /^https?:\/\//,
     url: /(https?:\/\/|www\.)[-а-яА-Яa-zA-Z0-9@:%._\+~#=]{1,256}\.[a-z]{2,6}\b([-а-яА-Яa-zA-Z0-9@:%_\+.~#?&\/=]*[-а-яА-Яa-zA-Z0-9@:%_\+~#?&\/=])*/i,
 };
