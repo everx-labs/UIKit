@@ -39,7 +39,7 @@ export type UIMaterialTextViewCommonProps = UITextViewProps & {
     borderViewRef?: React.Ref<View>;
     children?: React.ReactNode;
     onHeightChange?: OnHeightChange;
-    onDone?: () => void;
+    onDone?: (key: string) => void;
 };
 
 const getBorderColor = (
@@ -358,8 +358,8 @@ const UIMaterialTextViewFloating = React.forwardRef<
                     >
                         {label}
                     </FloatingLabel>
+                    {processedChildren}
                 </UIMaterialTextViewBorder>
-                {processedChildren}
             </View>
         </UIMaterialTextViewComment>
     );

@@ -85,22 +85,23 @@ export function useMaterialTextViewChildren(
     isFocused: boolean,
     isHovered: boolean,
     clear: () => void,
-    onDone?: () => void,
+    onDone?: (key: string) => void,
     error?: boolean,
 ) {
     const clearButton = useClearButton(inputHasValue, isFocused, isHovered, clear);
 
+    const onPress = React.useCallback(() => {
+        onDone && onDone('action button');
+    }, [onDone]);
+
     if (onDone) {
-        /**
-         * wip
-         */
         return (
             <ActionButton
                 inputHasValue={inputHasValue}
-                onPress={onDone}
+                onPress={onPress}
                 hasError={!!error}
                 clear={clear}
-                styles={styles.actionButton}
+                styles={[styles.iconSize, styles.actionButton]}
             />
         );
     }

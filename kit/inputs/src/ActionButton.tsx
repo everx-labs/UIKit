@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { UIImage } from '@tonlabs/uikit.media';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
@@ -12,7 +12,7 @@ type ActionButtonProps = {
     onPress: () => void | Promise<void>;
     hasError: boolean;
     clear: () => void;
-    styles?: ViewStyle;
+    styles?: any;
 };
 
 export function ActionButton({
@@ -51,7 +51,7 @@ export function ActionButton({
         return (
             <TouchableOpacity
                 testID="send_btn"
-                style={actionStyles.buttonContainer}
+                style={[actionStyles.buttonContainer, styles]}
                 onPress={onPress}
             >
                 <UIImage source={UIAssets.icons.ui.buttonMsgSend} style={actionStyles.icon} />
