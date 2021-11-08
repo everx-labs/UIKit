@@ -2,19 +2,11 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import {
-    UIMaterialTextView,
-    UILabel,
-    UIBackgroundView,
-    ColorVariants,
-    UILabelColors,
-} from '@tonlabs/uikit.hydrogen';
-import {
-    ScrollView,
-    FlatList,
-    createStackNavigator,
-    UILargeTitleHeaderRefreshControl,
-} from '@tonlabs/uikit.navigation';
+import { UIMaterialTextView } from '@tonlabs/uikit.inputs';
+import { UIBackgroundView, UILabel, UILabelColors, ColorVariants } from '@tonlabs/uikit.themes';
+import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
+import { UILargeTitleHeaderRefreshControl } from '@tonlabs/uicast.bars';
+import { ScrollView, FlatList } from '@tonlabs/uikit.scrolls';
 
 const CHECK_TITLE = false;
 

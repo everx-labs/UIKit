@@ -2,8 +2,8 @@
 import React from 'react';
 
 import { UIPopup } from '@tonlabs/uikit.popups';
-import { uiLocalized } from '@tonlabs/uikit.localization';
-import { UILabelColors, TypographyVariants } from '@tonlabs/uikit.hydrogen';
+import { uiLocalized } from '@tonlabs/localization';
+import { UILabelColors, TypographyVariants } from '@tonlabs/uikit.themes';
 import MenuItem from './MenuItem';
 import type { MenuItemType } from './MenuItem';
 import UIPopover from '../UIPopover';

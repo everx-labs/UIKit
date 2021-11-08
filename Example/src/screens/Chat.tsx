@@ -2,7 +2,7 @@ import * as React from 'react';
 import BigNumber from 'bignumber.js';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import { ColorVariants } from '@tonlabs/uikit.hydrogen';
+import { ColorVariants } from '@tonlabs/uikit.themes';
 import {
     UIChatInput,
     UIChatList,
@@ -10,11 +10,11 @@ import {
     ChatMessage,
     MessageStatus,
     TransactionType,
-} from '@tonlabs/uikit.chats';
+} from '@tonlabs/uistory.chats';
 import { UIPopup } from '@tonlabs/uikit.popups';
-import { uiLocalized } from '@tonlabs/uikit.localization';
-import { useStickers } from '@tonlabs/uikit.stickers';
-import { createStackNavigator } from '@tonlabs/uikit.navigation';
+import { uiLocalized } from '@tonlabs/localization';
+import { useStickers } from '@tonlabs/uistory.stickers';
+import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 import { useBase64Image } from './hooks/useBase64Image';
 
 const userId = '0:000';
@@ -26,12 +26,26 @@ const imageUrl = {
     medium: 'https://firebasestorage.googleapis.com/v0/b/ton-uikit-example-7e797.appspot.com/o/loon-image-medium.jpeg?alt=media&token=8a2f5747-495e-4aae-a9d0-460f34b12717',
     small: 'https://firebasestorage.googleapis.com/v0/b/ton-uikit-example-7e797.appspot.com/o/loon-image-small.jpeg?alt=media&token=022bc391-19ec-4e7f-94c6-66349f2e212e',
 };
+const gifUrl =
+    'https://firebasestorage.googleapis.com/v0/b/ton-uikit-example-7e797.appspot.com/o/jim-carrey-yes-sir.gif?alt=media&token=42bb8c1c-ffc7-429d-8838-0436410b1d74';
 
 const useInitialMessages = (): ChatMessage[] => {
     const base64ImagePreview = useBase64Image(imageUrl.small);
     const base64Image = useBase64Image(imageUrl.medium);
+    const base64Gif = useBase64Image(gifUrl);
+
     return React.useMemo(() => {
         return [
+            {
+                type: ChatMessageType.Media,
+                data: base64Gif,
+                preview: base64Gif,
+                prompt: 'Yes Sir',
+                time: Math.floor(Date.now() - 4 * 60 * 1000),
+                sender: companionId,
+                status: MessageStatus.Sent,
+                key: '',
+            },
             {
                 type: ChatMessageType.QRCode,
                 data: '',
@@ -316,7 +330,7 @@ const useInitialMessages = (): ChatMessage[] => {
                 key: '',
             },
         ];
-    }, [base64Image, base64ImagePreview]);
+    }, [base64Image, base64ImagePreview, base64Gif]);
 };
 
 const useInitialMessagesWithKeys = (initialMessages: ChatMessage[]) => {

@@ -10,7 +10,7 @@ import {
     UILabel,
     UILabelColors,
     UILabelRoles,
-} from '@tonlabs/uikit.hydrogen';
+} from '@tonlabs/uikit.themes';
 
 import UIComponent from '../UIComponent';
 

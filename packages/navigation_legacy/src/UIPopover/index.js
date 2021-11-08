@@ -7,8 +7,9 @@ import { Popover } from 'react-native-simple-popover';
 
 import { UIDevice, UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { UIComponent } from '@tonlabs/uikit.components';
-import { UIBackgroundView, TouchableOpacity } from '@tonlabs/uikit.hydrogen';
-import { UICardSheet } from '@tonlabs/uikit.navigation';
+import { UIBackgroundView } from '@tonlabs/uikit.themes';
+import { TouchableOpacity } from '@tonlabs/uikit.controls';
+import { UICardSheet } from '@tonlabs/uikit.popups';
 
 import UIPopoverBackground from '../UIPopoverBackground';
 
@@ -287,7 +288,7 @@ export default class UIPopover<Props, State> extends UIComponent<
                         {...testIDProp}
                         onPress={this.onShow}
                         onLayout={this.onTriggerLayout}
-                        style={containerStyle}
+                        containerStyle={containerStyle}
                     >
                         <View pointerEvents="none" style={style}>
                             {children}

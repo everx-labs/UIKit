@@ -5,7 +5,7 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 
 import { UIStyle } from '@tonlabs/uikit.core';
 import { UIActionComponent } from '@tonlabs/uikit.components';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 import type { UIActionComponentProps, UIActionComponentState } from '@tonlabs/uikit.components';
 
 export type MenuItemType = UIActionComponentProps & {

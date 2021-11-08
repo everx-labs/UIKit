@@ -2,7 +2,8 @@ import * as React from 'react';
 import { useState } from 'react';
 import { View } from 'react-native';
 
-import { UILabel, UISwitcher, UISwitcherVariant } from '@tonlabs/uikit.hydrogen';
+import { UISwitcher, UISwitcherVariant } from '@tonlabs/uikit.controls';
+import { UILabel } from '@tonlabs/uikit.themes';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -12,6 +13,7 @@ export const Checkbox = () => {
         <ExampleScreen>
             <ExampleSection title="UISwitcher">
                 <View
+                    testID="checkbox-enabled"
                     style={{
                         width: 100,
                         paddingVertical: 20,
@@ -87,6 +89,7 @@ export const Checkbox = () => {
             </ExampleSection>
             <ExampleSection title="UISwitcher disabled ">
                 <View
+                    testID="checkbox-disabled"
                     style={{
                         width: 100,
                         paddingVertical: 20,

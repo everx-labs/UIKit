@@ -21,12 +21,9 @@ import {
 import { UIConstant, UIDevice, UIFunction, UIStyle } from '@tonlabs/uikit.core';
 import type { SafeAreaInsets } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.hydrogen';
-import {
-    NestedInDismissibleModalContext,
-    useHasScroll,
-    ScrollableContext,
-} from '@tonlabs/uikit.navigation';
+import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.themes';
+import { useHasScroll, ScrollableContext } from '@tonlabs/uikit.scrolls';
+import { NestedInDismissibleModalContext } from '@tonlabs/uicast.modal-navigator';
 
 import type {
     AnimationParameters,

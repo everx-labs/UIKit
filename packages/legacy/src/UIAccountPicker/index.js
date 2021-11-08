@@ -5,7 +5,7 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 
 import { UIComponent } from '@tonlabs/uikit.components';
 import { UIStyle } from '@tonlabs/uikit.core';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 
 import UIAccountPickerCell from './components/UIAccountPickerCell';
 import type { UIAccountData } from './types/UIAccountData';

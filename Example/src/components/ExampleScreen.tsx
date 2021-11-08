@@ -2,9 +2,8 @@ import * as React from 'react';
 import type { ScrollViewProps } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { UIBackgroundView } from '@tonlabs/uikit.hydrogen';
-import type { ColorVariants } from '@tonlabs/uikit.hydrogen';
-import { ScrollView } from '@tonlabs/uikit.navigation';
+import { UIBackgroundView, ColorVariants } from '@tonlabs/uikit.themes';
+import { ScrollView } from '@tonlabs/uikit.scrolls';
 
 export function ExampleScreen({
     children,

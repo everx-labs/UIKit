@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Platform, View } from 'react-native';
-import { ColorVariants, UILinkButton, UILinkButtonSize, useTheme } from '@tonlabs/uikit.hydrogen';
-import { LinearChart, LinearChartPoint } from '@tonlabs/uikit.charts';
+import { UILinkButton, UILinkButtonSize } from '@tonlabs/uikit.controls';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import { LinearChart, LinearChartPoint } from '@tonlabs/uicast.linear-chart';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 

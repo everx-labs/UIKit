@@ -8,7 +8,7 @@ import type { FastImageSource } from 'react-native-fast-image';
 
 import { UIStyle } from '@tonlabs/uikit.core';
 import { UIComponent } from '@tonlabs/uikit.components';
-import { UILabel, UILabelRoles, UILabelColors } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelRoles, UILabelColors } from '@tonlabs/uikit.themes';
 
 const FastImage = Platform.OS !== 'web' ? require('react-native-fast-image') : null;
 

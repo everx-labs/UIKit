@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import { createStackNavigator } from '@tonlabs/uikit.navigation';
-import { UISkeleton } from '@tonlabs/uikit.flask';
-import { UIBoxButton } from '@tonlabs/uikit.hydrogen';
+import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
+import { UISkeleton } from '@tonlabs/uikit.layout';
+import { UIBoxButton } from '@tonlabs/uikit.controls';
 
 import { ExampleScreen } from '../components/ExampleScreen';
 import { ExampleSection } from '../components/ExampleSection';
@@ -16,6 +16,7 @@ function Skeletons() {
         <ExampleScreen>
             <ExampleSection title="UISkeleton">
                 <View
+                    testID='ui-skeleton'
                     style={{
                         maxWidth: 500,
                         width: '100%',

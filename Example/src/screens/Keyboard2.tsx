@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { View, TextInput, ScrollView } from 'react-native';
 
-import { useKeyboardBottom } from '@tonlabs/uikit.keyboard';
+import { useKeyboardBottomInset } from '@tonlabs/uicast.keyboard';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 export function KeyboardScreen2() {
-    const bottom = useKeyboardBottom();
+    const bottom = useKeyboardBottomInset();
 
     const style = useAnimatedStyle(() => {
         return {

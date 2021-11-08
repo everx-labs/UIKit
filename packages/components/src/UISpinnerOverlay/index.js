@@ -5,7 +5,7 @@ import { Platform, StyleSheet, View, Modal } from 'react-native';
 import { WaveIndicator } from 'react-native-indicators';
 
 import { UIColor } from '@tonlabs/uikit.core';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 
 import UIComponent from '../UIComponent';
 

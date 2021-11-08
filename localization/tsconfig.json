@@ -1,0 +1,9 @@
+{
+    "extends": "../tsconfig",
+    "compilerOptions": {
+        "outDir": "./lib/typescript",
+        "experimentalDecorators": true,
+        "resolveJsonModule": true
+    },
+    "include": ["**/*.ts", "**/*.tsx", "**/*.json"]
+}

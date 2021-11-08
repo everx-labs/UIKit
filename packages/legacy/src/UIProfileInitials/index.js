@@ -5,7 +5,7 @@ import type { ViewStyleProp, TextStyleProp } from 'react-native/Libraries/StyleS
 
 import { UIStyle, UIColor, UIConstant } from '@tonlabs/uikit.core';
 import { UIComponent } from '@tonlabs/uikit.components';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 
 type Props = {
     id?: any,

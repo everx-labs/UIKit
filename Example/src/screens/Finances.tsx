@@ -2,19 +2,11 @@ import * as React from 'react';
 import { View, Platform, I18nManager, NativeModules } from 'react-native';
 import BigNumber from 'bignumber.js';
 
-import { createStackNavigator } from '@tonlabs/uikit.navigation';
+import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import {
-    UINumber,
-    UICurrency,
-    UINumberDecimalAspect,
-    UIBoxButton,
-    UIBoxButtonType,
-    UILabel,
-    UILabelColors,
-    TouchableOpacity,
-    TypographyVariants,
-} from '@tonlabs/uikit.hydrogen';
+import { UILabel, UILabelColors, TypographyVariants } from '@tonlabs/uikit.themes';
+import { UINumber, UICurrency, UINumberDecimalAspect } from '@tonlabs/uicast.numbers';
+import { UIBoxButton, UIBoxButtonType, TouchableOpacity } from '@tonlabs/uikit.controls';
 
 import { ExampleScreen } from '../components/ExampleScreen';
 import { ExampleSection } from '../components/ExampleSection';

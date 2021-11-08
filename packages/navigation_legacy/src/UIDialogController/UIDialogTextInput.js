@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Platform } from 'react-native';
 
 import { UIStyle, UITextStyle } from '@tonlabs/uikit.core';
-import { UITextView } from '@tonlabs/uikit.hydrogen';
+import { UITextView } from '@tonlabs/uikit.inputs';
 
 import { UIComponent } from '@tonlabs/uikit.components';
 

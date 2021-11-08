@@ -22,7 +22,7 @@ typedef facebook::react::JSCExecutorFactory ExecutorFactory;
 
 #import <RNReanimated/REAInitializer.h>
 
-#import <UIKitHydrogen/HHapticJSIExecutorInitializer.h>
+#import <UIKitControls/HHapticJSIExecutorInitializer.h>
 #import <UIKitKeyboard/UIKitKeyboardJSIExecutorInstaller.h>
 
 #if DEBUG

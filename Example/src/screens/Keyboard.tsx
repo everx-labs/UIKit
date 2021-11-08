@@ -2,13 +2,9 @@ import * as React from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { UILabel } from '@tonlabs/uikit.hydrogen';
-import {
-    // @ts-ignore
-    UIInputAccessoryView,
-    useCustomKeyboard,
-} from '@tonlabs/uikit.keyboard';
-import { useStickers } from '@tonlabs/uikit.stickers';
+import { UILabel } from '@tonlabs/uikit.themes';
+import { UIInputAccessoryView, useCustomKeyboard } from '@tonlabs/uicast.keyboard';
+import { useStickers } from '@tonlabs/uistory.stickers';
 
 import { ExampleScreen } from '../components/ExampleScreen';
 

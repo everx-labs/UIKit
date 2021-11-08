@@ -3,13 +3,9 @@ import { useState } from 'react';
 import BigNumber from 'bignumber.js';
 import { View } from 'react-native';
 
-import {
-    UIMaterialTextView,
-    UISeedPhraseTextView,
-    UINumberTextView,
-    ColorVariants,
-} from '@tonlabs/uikit.hydrogen';
-import { UIAddressTextView } from '@tonlabs/uikit.flask';
+import { UIMaterialTextView, UISeedPhraseTextView, UINumberTextView } from '@tonlabs/uikit.inputs';
+import { ColorVariants } from '@tonlabs/uikit.themes';
+import { UIAddressTextView } from '@tonlabs/uicast.address-text';
 import {
     UIAmountInput,
     UIDetailsInput,
@@ -269,18 +265,22 @@ export const Inputs = () => {
                 </View>
             </ExampleSection>
             <ExampleSection title="UIDetailsInput">
-                <View style={{ paddingVertical: 20 }}>
+                <View 
+                    style={{ paddingVertical: 20 }}
+                    testID="uiDetailsInput_default"
+                >
                     <UIDetailsInput
-                        testID="uiDetailsInput_default"
                         placeholder="Details"
                         comment="Some comment here"
                         value={details}
                         onChangeText={(newText: string) => setDetails(newText)}
                     />
                 </View>
-                <View style={{ paddingVertical: 20 }}>
+                <View
+                    testID="uiDetailsInput_multiline"
+                    style={{ paddingVertical: 20 }}
+                >
                     <UIDetailsInput
-                        testID="uiDetailsInput_multiline"
                         placeholder="Multiline details"
                         comment="Some comment here"
                         value={details}
@@ -291,9 +291,8 @@ export const Inputs = () => {
                 </View>
             </ExampleSection>
             <ExampleSection title="UITextInput">
-                <View style={{ paddingVertical: 20 }}>
+                <View testID="uiTextInput_default" style={{ paddingVertical: 20 }}>
                     <UITextInput
-                        testID="uiTextInput_default"
                         value={search}
                         placeholder="Your text"
                         beginningTag="@"
@@ -302,9 +301,8 @@ export const Inputs = () => {
                 </View>
             </ExampleSection>
             <ExampleSection title="UITransferInput">
-                <View style={{ paddingVertical: 20 }}>
+                <View testID="uiTransferInput_default" style={{ paddingVertical: 20 }}>
                     <UITransferInput
-                        testID="uiTransferInput_default"
                         value={transfer}
                         placeholder="Your transfer"
                         maxDecimals={3}
