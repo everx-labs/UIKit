@@ -5,7 +5,7 @@
 //  Created by Aleksei Savelev on 20/10/2021
 //
 
-#import "UIKitKeyboardModule.h"
+#include "UIKitKeyboardModule.h"
 
 namespace tonlabs {
 namespace uikit {

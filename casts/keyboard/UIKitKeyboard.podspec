@@ -35,11 +35,11 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/tonlabs/UIKit/casts/keyboard#readme"
   s.license      = "Apache-2.0"
   s.author       = { "author" => "tonlabs.io" }
-  s.platforms    = { :ios => "9.0", :tvos => "11.0" }
+  s.platforms    = { :ios => "10.0", :tvos => "11.0" }
   s.source       = { :git => "https://github.com/tonlabs/UIKit.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm}", "cpp/*.{h,cpp}"
-  s.exclude_files = "cpp/UIKitKeyboardFrameListener.cpp"
+  s.exclude_files = "cpp/UIKitKeyboardAndroidFrameListener.{h,cpp}", "cpp/UIKitKeyboardModule.cpp", "cpp/UIKitKeyboardFrameListener.cpp"
   s.pod_target_xcconfig = {
     :GCC_PREPROCESSOR_DEFINITIONS => "HAVE_FULLFSYNC=1",
     :WARNING_CFLAGS => "-Wno-shorten-64-to-32 -Wno-comma -Wno-unreachable-code -Wno-conditional-uninitialized -Wno-deprecated-declarations",
