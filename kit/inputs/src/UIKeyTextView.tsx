@@ -87,11 +87,11 @@ export function useKeyTextView(
     const onKeyPress = React.useCallback(
         (e: any) => {
             const wasClearedWithEnter = onKeyPressBase(e);
-            if (wasClearedWithEnter) {
+            if (success && wasClearedWithEnter) {
                 onDone();
             }
         },
-        [onDone, onKeyPressBase],
+        [onDone, onKeyPressBase, success],
     );
 
     return {
