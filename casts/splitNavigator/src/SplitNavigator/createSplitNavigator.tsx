@@ -13,10 +13,8 @@ import {
     createNavigatorFactory,
     useTheme,
 } from '@react-navigation/native';
-import type { StackNavigationState, NavigationProp, ParamListBase } from '@react-navigation/native';
+import type { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { screensEnabled, ScreenContainer } from 'react-native-screens';
-import { StackView } from '@react-navigation/stack';
-import { NativeStackView } from 'react-native-screens/native-stack';
 
 import { ResourceSavingScene } from './ResourceSavingScene';
 import { SafeAreaProviderCompat } from './SafeAreaProviderCompat';
@@ -42,6 +40,11 @@ function SceneContent({ isFocused, children }: { isFocused: boolean; children: R
         </View>
     );
 }
+
+const SplitTabBarHeightCallbackContext = React.createContext<((height: number) => void) | null>(
+    null,
+);
+const SplitTabBarHeightContext = React.createContext(0);
 
 type SurfSplitNavigatorProps = {
     children?: React.ReactNode;
@@ -104,6 +107,8 @@ export const SplitNavigator = ({
         }
     }, [state, loaded]);
 
+    const [tabBarHeight, setTabBarHeight] = React.useState(0);
+
     // Access it from the state to re-render a container
     // only when router has processed SET_SPLITTED action
     if (state.isSplitted) {
@@ -119,7 +124,13 @@ export const SplitNavigator = ({
                     <SafeAreaProviderCompat>
                         <View style={splitStyles.body}>
                             <View style={splitStyles.main}>
-                                {descriptors[mainRoute.key].render()}
+                                <SplitTabBarHeightContext.Provider value={tabBarHeight}>
+                                    {descriptors[mainRoute.key].render()}
+                                </SplitTabBarHeightContext.Provider>
+                                <SplitTabBarHeightCallbackContext.Provider value={setTabBarHeight}>
+                                    {/* TODO */}
+                                    <View />
+                                </SplitTabBarHeightCallbackContext.Provider>
                             </View>
                             <View style={splitStyles.detail}>
                                 <ScreenContainer
@@ -167,36 +178,51 @@ export const SplitNavigator = ({
         );
     }
 
-    const stackState: StackNavigationState<ParamListBase> = {
-        ...state,
-        type: 'stack',
-    };
-
-    // TODO: there could be issues on iOS with rendering
-    // need to check it and disable for iOS if it works badly
-    // if (Platform.OS === 'android' && screensEnabled()) {
-    if (doesSupportNative) {
-        return (
-            <NestedInSplitContext.Provider value={{ isSplitted }}>
-                <NativeStackView
-                    state={stackState}
-                    navigation={navigation}
-                    // @ts-ignore
-                    descriptors={descriptors}
-                />
-            </NestedInSplitContext.Provider>
-        );
-    }
     return (
-        <NestedInSplitContext.Provider value={{ isSplitted }}>
-            {/* @ts-ignore */}
-            <StackView
-                headerMode="none"
-                state={stackState}
-                navigation={navigation}
-                descriptors={descriptors}
-            />
-        </NestedInSplitContext.Provider>
+        <NavigationHelpersContext.Provider value={navigation}>
+            <NestedInSplitContext.Provider value={{ isSplitted }}>
+                <SafeAreaProviderCompat>
+                    <ScreenContainer
+                        // If not disabling the container for native, it will crash on iOS.
+                        // It happens due to an error in `react-native-reanimated`:
+                        // https://github.com/software-mansion/react-native-reanimated/issues/216
+                        enabled={!doesSupportNative}
+                        style={styles.pages}
+                    >
+                        {state.routes.map((route, index) => {
+                            const descriptor = descriptors[route.key];
+                            const isFocused = state.index === index;
+
+                            // isFocused check is important here
+                            // as we can try to render a screen before it was put
+                            // to `loaded` screens
+                            if (!loaded.includes(index) && !isFocused) {
+                                // Don't render a screen if we've never navigated to it
+                                return null;
+                            }
+
+                            return (
+                                <ResourceSavingScene
+                                    key={route.key}
+                                    style={StyleSheet.absoluteFill}
+                                    isVisible={isFocused}
+                                >
+                                    <SceneContent isFocused={isFocused}>
+                                        <SplitTabBarHeightContext.Provider value={tabBarHeight}>
+                                            {descriptor.render()}
+                                        </SplitTabBarHeightContext.Provider>
+                                    </SceneContent>
+                                </ResourceSavingScene>
+                            );
+                        })}
+                    </ScreenContainer>
+                    <SplitTabBarHeightCallbackContext.Provider value={setTabBarHeight}>
+                        {/* TODO */}
+                        <View />
+                    </SplitTabBarHeightCallbackContext.Provider>
+                </SafeAreaProviderCompat>
+            </NestedInSplitContext.Provider>
+        </NavigationHelpersContext.Provider>
     );
 };
 
