@@ -14,7 +14,12 @@ import type { MenuMessage } from '../types';
 const ITEMS_TO_FOLD_COUNT = 5;
 
 export function MenuInput({ onLayout, ...message }: MenuMessage) {
-    const [unfolded, setUnfolded] = React.useState(false);
+    const isItemsToFold = React.useMemo(
+        () => message.items.length - ITEMS_TO_FOLD_COUNT < 2,
+        [message.items.length],
+    );
+
+    const [unfolded, setUnfolded] = React.useState(isItemsToFold);
 
     if (message.externalState != null) {
         return (
@@ -71,7 +76,7 @@ export function MenuInput({ onLayout, ...message }: MenuMessage) {
                     lastFromChain={unfolded && index === message.items.length - 1}
                 />
             ))}
-            {!unfolded && message.items.length > ITEMS_TO_FOLD_COUNT && (
+            {!unfolded && !isItemsToFold && (
                 <BubbleActionButton
                     type={ChatMessageType.ActionButton}
                     key="menu-more"
