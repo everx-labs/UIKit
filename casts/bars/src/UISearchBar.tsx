@@ -116,6 +116,10 @@ type UISearchBarProps = Omit<UITextViewProps, 'placeholder'> & {
      * Whether to show indicator animation on the right side of input
      */
     searching?: boolean;
+    /**
+     * Return isFocused value on change
+     */
+    onFocusChanged?: (isFocused: boolean) => void;
 };
 
 export function UISearchBar({
@@ -125,6 +129,7 @@ export function UISearchBar({
     placeholder,
     searching,
     onChangeText: onChangeTextProp,
+    onFocusChanged,
     ...inputProps
 }: UISearchBarProps) {
     const [searchText, setSearchText] = React.useState('');
@@ -163,6 +168,10 @@ export function UISearchBar({
         searching,
         onClear,
     );
+
+    React.useEffect(() => {
+        onFocusChanged && onFocusChanged(isFocused);
+    }, [isFocused, onFocusChanged]);
 
     return (
         <UIBackgroundView

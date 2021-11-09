@@ -1,7 +1,8 @@
 import React from 'react';
 import Fuse from 'fuse.js';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { View, useWindowDimensions } from 'react-native';
+import { View, useWindowDimensions, Platform, Keyboard } from 'react-native';
+import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
@@ -38,6 +39,8 @@ const fuseOptions = {
     keys: ['name'],
 };
 
+const isAndroid = Platform.OS === 'android';
+
 function returnCountryRow({ item }: { item: Country }) {
     return <CountryPickerRow item={item} />;
 }
@@ -57,6 +60,7 @@ export function CountryPicker({
     const [loading, setLoading] = React.useState(true);
 
     const [search, setSearch] = React.useState('');
+    const [focused, setFocused] = React.useState(false);
     const [countriesList, setCountriesList] = React.useState<CountriesArray>([]);
     const [filteredList, setFilteredList] = React.useState(countriesList);
     const fuse = React.useMemo(() => new Fuse(filteredList, fuseOptions), [filteredList]);
@@ -104,6 +108,10 @@ export function CountryPicker({
     }, [search]);
 
     React.useEffect(() => {
+        // We should use react-native-android-keyboard-adjust
+        // to fix android keyboard work with UIBottomSheet
+        isAndroid && AndroidKeyboardAdjust.setAdjustNothing();
+
         fetchJSON()
             .then((r: CountriesArray) => {
                 if (permitted.length || banned.length) {
@@ -121,6 +129,13 @@ export function CountryPicker({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const hideKeyboard = React.useCallback(() => {
+        // react-native-android-keyboard-adjust bug:
+        // Keyboard doesn't want to hide on Android
+        // so we have to forcibly hide the keyboard
+        isAndroid && focused && Keyboard.dismiss();
+    }, [focused]);
+
     const renderSearchHeader = () => {
         return (
             <View style={styles.headerContainer}>
@@ -133,7 +148,12 @@ export function CountryPicker({
                     </UILabel>
                     <View style={styles.sideHeaderView} />
                 </View>
-                <UISearchBar returnKeyType="done" value={search} onChangeText={setSearch} />
+                <UISearchBar
+                    returnKeyType="done"
+                    value={search}
+                    onChangeText={setSearch}
+                    onFocusChanged={setFocused}
+                />
             </View>
         );
     };
@@ -156,6 +176,7 @@ export function CountryPicker({
                     ListEmptyComponent={ListEmptyComponent}
                     keyboardDismissMode="interactive"
                     contentInset={contentInset}
+                    onMomentumScrollBegin={hideKeyboard}
                 />
             </CountryPickerContext.Provider>
         </UIBottomSheet>
