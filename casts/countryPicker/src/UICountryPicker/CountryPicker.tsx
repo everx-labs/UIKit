@@ -60,7 +60,6 @@ export function CountryPicker({
     const [loading, setLoading] = React.useState(true);
 
     const [search, setSearch] = React.useState('');
-    const [focused, setFocused] = React.useState(false);
     const [countriesList, setCountriesList] = React.useState<CountriesArray>([]);
     const [filteredList, setFilteredList] = React.useState(countriesList);
     const fuse = React.useMemo(() => new Fuse(filteredList, fuseOptions), [filteredList]);
@@ -133,8 +132,8 @@ export function CountryPicker({
         // react-native-android-keyboard-adjust bug:
         // Keyboard doesn't want to hide on Android
         // so we have to forcibly hide the keyboard
-        isAndroid && focused && Keyboard.dismiss();
-    }, [focused]);
+        isAndroid && Keyboard.dismiss();
+    }, []);
 
     const renderSearchHeader = () => {
         return (
@@ -148,12 +147,7 @@ export function CountryPicker({
                     </UILabel>
                     <View style={styles.sideHeaderView} />
                 </View>
-                <UISearchBar
-                    returnKeyType="done"
-                    value={search}
-                    onChangeText={setSearch}
-                    onFocusChanged={setFocused}
-                />
+                <UISearchBar returnKeyType="done" value={search} onChangeText={setSearch} />
             </View>
         );
     };
