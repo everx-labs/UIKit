@@ -261,8 +261,8 @@ export default class UIPopover<Props, State> extends UIComponent<
                     UIStyle.border.radiusDefault(),
                     UIStyle.common.cardShadow(),
                     ...menuStyle,
-                    { marginLeft: this.getMarginLeft() },
                     this.props.componentStyle,
+                    { marginLeft: this.getMarginLeft() },
                 ]}
             >
                 {this.props.component || this.renderMenu()}
