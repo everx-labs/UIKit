@@ -39,7 +39,6 @@ export type UIMaterialTextViewCommonProps = UITextViewProps & {
     borderViewRef?: React.Ref<View>;
     children?: React.ReactNode;
     onHeightChange?: OnHeightChange;
-    onDone?: (key: string) => void;
 };
 
 const getBorderColor = (
@@ -286,7 +285,7 @@ const UIMaterialTextViewFloating = React.forwardRef<
     UIMaterialTextViewRef,
     UIMaterialTextViewCommonProps
 >(function UIMaterialTextViewFloatingForwarded(props: UIMaterialTextViewCommonProps, passedRef) {
-    const { label, onLayout, children, onHeightChange, onDone, error, ...rest } = props;
+    const { label, onLayout, children, onHeightChange, ...rest } = props;
     const ref = React.useRef<TextInput>(null);
     const {
         inputHasValue,
@@ -318,8 +317,6 @@ const UIMaterialTextViewFloating = React.forwardRef<
         isFocused,
         isHovered,
         clear,
-        onDone,
-        error,
     );
 
     return (
@@ -369,7 +366,7 @@ const UIMaterialTextViewSimple = React.forwardRef<
     UIMaterialTextViewRef,
     UIMaterialTextViewCommonProps
 >(function UIMaterialTextViewSimpleForwarded(props: UIMaterialTextViewCommonProps, passedRef) {
-    const { label, onLayout, children, onHeightChange, onDone, error, ...rest } = props;
+    const { label, onLayout, children, onHeightChange, ...rest } = props;
     const ref = React.useRef<TextInput>(null);
     const {
         inputHasValue,
@@ -394,8 +391,6 @@ const UIMaterialTextViewSimple = React.forwardRef<
         isFocused,
         isHovered,
         clear,
-        onDone,
-        error,
     );
 
     return (

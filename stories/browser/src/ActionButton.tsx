@@ -12,22 +12,15 @@ type ActionButtonProps = {
     onPress: () => void | Promise<void>;
     hasError: boolean;
     clear: () => void;
-    styles?: any;
 };
 
-export function ActionButton({
-    inputHasValue,
-    hasError,
-    onPress,
-    clear,
-    styles,
-}: ActionButtonProps) {
+export function ActionButton({ inputHasValue, hasError, onPress, clear }: ActionButtonProps) {
     const theme = useTheme();
     if (hasError) {
         return (
             <TouchableOpacity
                 testID="send_btn"
-                style={[actionStyles.buttonContainer, styles]}
+                style={actionStyles.buttonContainer}
                 onPress={clear}
             >
                 <View
@@ -51,7 +44,7 @@ export function ActionButton({
         return (
             <TouchableOpacity
                 testID="send_btn"
-                style={[actionStyles.buttonContainer, styles]}
+                style={actionStyles.buttonContainer}
                 onPress={onPress}
             >
                 <UIImage source={UIAssets.icons.ui.buttonMsgSend} style={actionStyles.icon} />

@@ -1,8 +1,10 @@
 import * as React from 'react';
-import type { TextInput } from 'react-native';
+import { TextInput, StyleSheet } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/localization';
+import { UIConstant } from '@tonlabs/uikit.core';
 
+import { UIAssets } from '@tonlabs/uikit.assets';
 import { useFocused, useUITextViewValue } from './UITextView';
 import {
     UIMaterialTextView,
@@ -11,11 +13,14 @@ import {
 } from './UIMaterialTextView';
 
 const MAX_KEY_LENGTH = 64;
+type OnDone = (key?: string) => void | Promise<void>;
 
 export function useKeyTextView(
     ref: React.Ref<TextInput> | null,
     isFocused: boolean,
-    props: UIMaterialTextViewProps,
+    props: UIMaterialTextViewProps & {
+        onDone: OnDone;
+    },
 ) {
     const {
         inputValue,
@@ -23,7 +28,7 @@ export function useKeyTextView(
         onChangeText: onChangeTextBase,
         onKeyPress: onKeyPressBase,
     } = useUITextViewValue(ref, true, props);
-    const { onDone: onDoneBase } = props;
+    const { onDone } = props;
 
     const [hasInvalidChars, setHasInvalidChars] = React.useState(false);
     const [hasProperLength, setHasProperLength] = React.useState(false);
@@ -78,20 +83,14 @@ export function useKeyTextView(
         };
     }, [inputHasValue, hasInvalidChars, hasProperLength, isFocused]);
 
-    const onDone = React.useCallback(() => {
-        if (success && onDoneBase) {
-            onDoneBase(inputValue.current);
-        }
-    }, [success, onDoneBase, inputValue]);
-
     const onKeyPress = React.useCallback(
-        (e: any) => {
+        (e?: any) => {
             const wasClearedWithEnter = onKeyPressBase(e);
             if (success && wasClearedWithEnter) {
-                onDone();
+                onDone(inputValue.current);
             }
         },
-        [onDone, onKeyPressBase, success],
+        [inputValue, onDone, onKeyPressBase, success],
     );
 
     return {
@@ -100,18 +99,17 @@ export function useKeyTextView(
         success,
         onChangeText,
         onKeyPress,
-        onDone,
     };
 }
 
 type UIKeyTextViewProps = Omit<UIMaterialTextViewProps, keyof ReturnType<typeof useKeyTextView>> & {
-    onDone?: (key: string) => void;
+    onDone: OnDone;
 };
 
 export const UIKeyTextView = React.forwardRef<UIMaterialTextViewRef, UIKeyTextViewProps>(
     function UIKeyTextViewForwarded(props: UIKeyTextViewProps, ref) {
         const { isFocused, onFocus, onBlur } = useFocused(props.onFocus, props.onBlur);
-        const { onChangeText, onKeyPress, onDone, helperText, success, error } = useKeyTextView(
+        const { onChangeText, onKeyPress, helperText, success, error } = useKeyTextView(
             ref,
             isFocused,
             props,
@@ -125,12 +123,25 @@ export const UIKeyTextView = React.forwardRef<UIMaterialTextViewRef, UIKeyTextVi
                 onBlur={onBlur}
                 onChangeText={onChangeText}
                 onKeyPress={onKeyPress}
-                onDone={onDone}
                 helperText={helperText}
                 success={success}
                 error={error}
                 multiline
-            />
+            >
+                <UIMaterialTextView.Icon
+                    testID="send_btn"
+                    source={UIAssets.icons.ui.buttonMsgSend}
+                    onPress={onKeyPress}
+                    style={styles.icon}
+                />
+            </UIMaterialTextView>
         );
     },
 );
+
+const styles = StyleSheet.create({
+    icon: {
+        height: UIConstant.iconSize(),
+        width: UIConstant.iconSize(),
+    },
+});

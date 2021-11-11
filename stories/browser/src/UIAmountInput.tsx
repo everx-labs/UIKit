@@ -4,7 +4,6 @@ import BigNumber from 'bignumber.js';
 
 import { ChatInputContainer } from '@tonlabs/uistory.chats';
 import {
-    ActionButton,
     UITextView,
     useUITextViewValue,
     useNumberFormatting,
@@ -14,6 +13,7 @@ import {
 import { UILabel, UILabelRoles, ColorVariants } from '@tonlabs/uikit.themes';
 import { uiLocalized } from '@tonlabs/localization';
 import type { OnHeightChange, OnSendAmount } from './types';
+import { ActionButton } from './ActionButton';
 
 // eslint-disable-next-line no-shadow
 enum ValidationStatus {

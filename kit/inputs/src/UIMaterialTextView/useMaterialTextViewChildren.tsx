@@ -5,7 +5,6 @@ import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 
 import { UIImage, UIImageProps } from '@tonlabs/uikit.media';
 import { useClearButton } from './useClearButton';
-import { ActionButton } from '../ActionButton';
 
 export function UIMaterialTextViewIcon({
     onPress,
@@ -85,26 +84,8 @@ export function useMaterialTextViewChildren(
     isFocused: boolean,
     isHovered: boolean,
     clear: () => void,
-    onDone?: (key: string) => void,
-    error?: boolean,
 ) {
     const clearButton = useClearButton(inputHasValue, isFocused, isHovered, clear);
-
-    const onPress = React.useCallback(() => {
-        onDone && onDone('action button');
-    }, [onDone]);
-
-    if (onDone) {
-        return (
-            <ActionButton
-                inputHasValue={inputHasValue}
-                onPress={onPress}
-                hasError={!!error}
-                clear={clear}
-                styles={[styles.iconSize, styles.actionButton]}
-            />
-        );
-    }
 
     if (clearButton) {
         /**
@@ -193,8 +174,5 @@ const styles = StyleSheet.create({
     },
     clearButtonWrapper: {
         justifyContent: 'flex-end',
-    },
-    actionButton: {
-        padding: 0,
     },
 });

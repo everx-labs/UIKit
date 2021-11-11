@@ -2,12 +2,7 @@ import * as React from 'react';
 import { Platform, StyleSheet, TextInput } from 'react-native';
 
 import { ChatInputContainer, useChatInputValue } from '@tonlabs/uistory.chats';
-import {
-    ActionButton,
-    UITextView,
-    useAutogrowTextView,
-    UIInputAccessoryView,
-} from '@tonlabs/uikit.inputs';
+import { UITextView, useAutogrowTextView, UIInputAccessoryView } from '@tonlabs/uikit.inputs';
 import { UILabel, UILabelRoles, ColorVariants } from '@tonlabs/uikit.themes';
 import { uiLocalized } from '@tonlabs/localization';
 import { UIPopup } from '@tonlabs/uikit.popups';
@@ -19,6 +14,7 @@ import {
     ValidationResult,
     ValidationResultStatus,
 } from './types';
+import { ActionButton } from './ActionButton';
 
 const MAX_INPUT_LENGTH = 120;
 const MAX_INPUT_NUM_OF_LINES = 5;
