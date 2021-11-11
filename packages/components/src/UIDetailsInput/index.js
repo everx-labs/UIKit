@@ -14,7 +14,12 @@ import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import type { UIColorThemeNameType, EventProps } from '@tonlabs/uikit.core';
 import { UITextView } from '@tonlabs/uikit.inputs';
-import { UILinkButton, UILinkButtonSize, UILinkButtonVariant } from '@tonlabs/uikit.controls';
+import {
+    UILinkButton,
+    UILinkButtonSize,
+    UILinkButtonVariant,
+    TouchableOpacity,
+} from '@tonlabs/uikit.controls';
 import {
     UILabel,
     UILabelColors,
@@ -23,7 +28,6 @@ import {
     useTheme,
 } from '@tonlabs/uikit.themes';
 
-import UIActionImage from '../UIActionImage';
 import { UIActionComponent } from '../UIActionComponent';
 import type { UIActionComponentProps, UIActionComponentState } from '../UIActionComponent';
 
@@ -215,10 +219,6 @@ export type UIDetailsInputProps = UIActionComponentProps & {
     @default null
     */
     maxHeight?: number,
-    /**
-    @ignore
-    */
-    needArrow?: boolean,
     /**
     Callback that is called when the text input is blurred.
     */
@@ -907,30 +907,6 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
         );
     }
 
-    renderArrow() {
-        const { theme, needArrow } = this.props;
-        if (!needArrow) {
-            return null;
-        }
-        let icons = {};
-        if (theme === UIColor.Theme.Action) {
-            icons = {
-                iconEnabled: UIAssets.icons.ui.arrowRightPrimary,
-                iconHovered: UIAssets.icons.ui.arrowRightWhite,
-                iconDisabled: UIAssets.icons.ui.arrowRightPrimaryMinus,
-            };
-        }
-
-        return (
-            <UIActionImage
-                {...icons}
-                source={theme === UIColor.Theme.Light && UIAssets.icons.ui.arrowRight}
-                disabled={this.isSubmitDisabled()}
-                onPress={this.onSubmitEditing}
-            />
-        );
-    }
-
     renderRightComponent() {
         if (this.props.renderRightComponentOnlyOnFocus && !this.isFocused()) {
             return null;
@@ -979,7 +955,6 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
                 {this.renderCounter()}
                 {this.renderToken()}
                 {this.renderButton()}
-                {this.renderArrow()}
                 {this.renderRightComponent()}
             </React.Fragment>
         );
@@ -1137,7 +1112,6 @@ UIDetailsInput.defaultProps = {
     mandatory: false,
     mandatoryColor: ColorVariants.LineNegative,
     maxLines: 1,
-    needArrow: false,
     noPersonalizedLearning: false,
     onBlur: () => {},
     onChangeText: () => {},

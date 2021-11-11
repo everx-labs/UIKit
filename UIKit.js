@@ -8,23 +8,15 @@ export { UIPopoverMenu, UIPopoverBackground, UIMenuBackground, UIMenuView };
 
 export {
     UIActionComponent,
-    UIActionImage,
-    UIAmountInput,
-    UICompatibilityView,
     UIComponent,
-    UIDetailsInput,
     UIDetailsView,
     UIDetailsTable,
-    UILayoutManager,
     UILink,
-    UIListHeader,
     UILoadMoreButton,
     UINetworkStatus,
     UIPureComponent,
     UIScaleButton,
-    UISectionHeader,
     UISpinnerOverlay,
-    UITextInput,
     UITransferInput,
 } from './packages/components/src';
 
@@ -54,7 +46,6 @@ export {
 export {
     UIAccountPicker,
     UIIdleDetector,
-    UILandingView,
     UIProfileInitials,
     UISharedComponents,
 } from './packages/legacy/src';

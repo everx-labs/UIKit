@@ -6,12 +6,7 @@ import { View } from 'react-native';
 import { UIMaterialTextView, UISeedPhraseTextView, UINumberTextView } from '@tonlabs/uikit.inputs';
 import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAddressTextView } from '@tonlabs/uicast.address-text';
-import {
-    UIAmountInput,
-    UIDetailsInput,
-    UITextInput,
-    UITransferInput,
-} from '@tonlabs/uikit.components';
+import { UITransferInput } from '@tonlabs/uikit.components';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -240,60 +235,6 @@ export const Inputs = () => {
                                 );
                             },
                         }}
-                    />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UIAmountInput">
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                    <UIAmountInput
-                        testID="uiAmountInput_default"
-                        placeholder="Amount"
-                        comment="Some comment here"
-                        value={amount}
-                        onChangeText={(newText: string) => setAmount(newText)}
-                    />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                    <UIAmountInput
-                        testID="uiAmountInput_with_trailing_value"
-                        placeholder="Amount"
-                        comment="Some comment here"
-                        value={amount}
-                        trailingValue="$"
-                        onChangeText={(newText: string) => setAmount(newText)}
-                    />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UIDetailsInput">
-                <View style={{ paddingVertical: 20 }}>
-                    <UIDetailsInput
-                        testID="uiDetailsInput_default"
-                        placeholder="Details"
-                        comment="Some comment here"
-                        value={details}
-                        onChangeText={(newText: string) => setDetails(newText)}
-                    />
-                </View>
-                <View style={{ paddingVertical: 20 }}>
-                    <UIDetailsInput
-                        testID="uiDetailsInput_multiline"
-                        placeholder="Multiline details"
-                        comment="Some comment here"
-                        value={details}
-                        onChangeText={(newText: string) => setDetails(newText)}
-                        maxLines={3}
-                        containerStyle={{ marginTop: 16 }}
-                    />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UITextInput">
-                <View style={{ paddingVertical: 20 }}>
-                    <UITextInput
-                        testID="uiTextInput_default"
-                        value={search}
-                        placeholder="Your text"
-                        beginningTag="@"
-                        onChangeText={(newText: string) => setText(newText)}
                     />
                 </View>
             </ExampleSection>
