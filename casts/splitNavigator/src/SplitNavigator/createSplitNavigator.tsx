@@ -47,9 +47,6 @@ function SceneContent({ isFocused, children }: { isFocused: boolean; children: R
     );
 }
 
-const SplitTabBarHeightCallbackContext = React.createContext<((height: number) => void) | null>(
-    null,
-);
 const SplitTabBarHeightContext = React.createContext(0);
 
 type SplitNavigatorProps = {
@@ -73,7 +70,7 @@ type SplitScreenTabBarIconOptions =
     | {
           tabBarIconLottieSource: ImageRequireSource;
       };
-type SplitScreenOptions = SplitScreenTabBarIconOptions | {};
+type SplitScreenOptions = SplitScreenTabBarIconOptions | Record<string, never>;
 
 /**
  * TODO
@@ -281,6 +278,25 @@ export function SplitNavigator({
         main: styles.main,
         detail: styles.detail,
     };
+    const { tabRouteNames, stackRouteNames } = React.Children.toArray(children).reduce<{
+        tabRouteNames: string[];
+        stackRouteNames: string[];
+    }>(
+        (acc, child) => {
+            if (React.isValidElement(child)) {
+                if ('tabBarActiveIcon' in child.props || 'tabBarIconLottieSource' in child.props) {
+                    acc.tabRouteNames.push(child.props.name);
+                } else {
+                    acc.tabRouteNames.push(child.props.name);
+                }
+            }
+            return acc;
+        },
+        {
+            tabRouteNames: [],
+            stackRouteNames: [],
+        },
+    );
     const { state, navigation, descriptors } = useNavigationBuilder<
         SplitNavigationState,
         SplitRouterOptions,
@@ -296,6 +312,8 @@ export function SplitNavigator({
             // but it's needed to turn of header in react-native-screens
             headerShown: false,
         },
+        tabRouteNames,
+        stackRouteNames,
         isSplitted,
     });
 
@@ -337,10 +355,15 @@ export function SplitNavigator({
                 return acc;
             }
             if ('tabBarActiveIcon' in descriptor.options) {
-                acc[key] = descriptor.options;
+                acc[key] = {
+                    tabBarActiveIcon: descriptor.options.tabBarActiveIcon,
+                    tabBarDisabledIcon: descriptor.options.tabBarDisabledIcon,
+                };
             }
             if ('tabBarIconLottieSource' in descriptor.options) {
-                acc[key] = descriptor.options;
+                acc[key] = {
+                    tabBarIconLottieSource: descriptor.options.tabBarIconLottieSource,
+                };
             }
 
             return acc;
@@ -415,10 +438,15 @@ export function SplitNavigator({
             return acc;
         }
         if ('tabBarActiveIcon' in descriptor.options) {
-            acc[key] = descriptor.options;
+            acc[key] = {
+                tabBarActiveIcon: descriptor.options.tabBarActiveIcon,
+                tabBarDisabledIcon: descriptor.options.tabBarDisabledIcon,
+            };
         }
         if ('tabBarIconLottieSource' in descriptor.options) {
-            acc[key] = descriptor.options;
+            acc[key] = {
+                tabBarIconLottieSource: descriptor.options.tabBarIconLottieSource,
+            };
         }
 
         return acc;
