@@ -85,15 +85,6 @@ export type SplitNavigationState<ParamList extends ParamListBase = ParamListBase
      * List of valid route names as defined in the screen components.
      */
     routeNames: string[];
-    /**
-     * List of route names from `routeNames` that have to act as tabs.
-     */
-    tabRouteNames: string[];
-    /**
-     * List of route names from `routeNames`
-     * that have to be places in a nested stack for the main screen.
-     */
-    stackRouteNames: string[];
     // TODO
     // stackRouteNames: Extract<keyof ParamList, string>[];
     /**
@@ -107,13 +98,17 @@ export type SplitNavigationState<ParamList extends ParamListBase = ParamListBase
      */
     type: 'split';
     /**
-     * List of previously visited route keys.
+     * List of previously visited route indexes.
      */
-    history: string[];
+    history: number[];
+    /**
+     * Routes to use in stack
+     */
+    nestedStack?: number[];
     /**
      * List of rendered routes.
      */
-    routes: (MainRoute<ParamList, keyof ParamList> | NavigationRoute<ParamList, keyof ParamList>)[];
+    routes: NavigationRoute<ParamList, keyof ParamList>[];
     /**
      * Whether it's splitted now or not
      */
@@ -123,6 +118,8 @@ export type SplitNavigationState<ParamList extends ParamListBase = ParamListBase
 function fold<ParamList extends ParamListBase>(
     state: SplitNavigationState<ParamList>,
 ): SplitNavigationState<ParamList> {
+    return state;
+    // TODO
     const mainRouteIndex = state.routeNames.indexOf(MAIN_SCREEN_NAME);
     const mainRoute = state.routes[mainRouteIndex];
     const currentRoute = state.routes[state.index];
@@ -191,7 +188,9 @@ function fold<ParamList extends ParamListBase>(
 function unfold<ParamList extends ParamListBase>(
     state: SplitNavigationState,
 ): SplitNavigationState {
-    const mainRouteIndex = state.tabRouteNames.indexOf(MAIN_SCREEN_NAME);
+    return state;
+    // TODO
+    const mainRouteIndex = state.routeNames.indexOf(MAIN_SCREEN_NAME);
     const mainRoute = state.routes[mainRouteIndex] as MainRoute<ParamList, keyof ParamList>;
     const currentRoute = state.routes[state.index];
 
@@ -214,7 +213,7 @@ function unfold<ParamList extends ParamListBase>(
         // TODO
         history: [],
         routes: state.routeNames.map(name => {
-            let routeForNameIndex = state.tabRouteNames.indexOf(name);
+            let routeForNameIndex = state.routeNames.indexOf(name);
             let routeForName: typeof state.routes[0] | null = null;
             if (routeForNameIndex > -1) {
                 routeForName = state.routes[routeForNameIndex];
@@ -243,9 +242,11 @@ function applyTabNavigateActionToState<ParamList extends ParamListBase>(
     if (action.type !== 'NAVIGATE') {
         return null;
     }
+    const history = state.history.filter(r => r !== index).concat([index]);
     return {
         ...state,
         index,
+        history,
         routes:
             action.payload.params == null
                 ? state.routes
@@ -296,22 +297,23 @@ class SplitUnfoldedRouter<ParamList extends ParamListBase = ParamListBase> {
      * `main` is kind of special, as it renders on the left column.
      */
     getInitialState({ routeNames, routeParamList }: RouterConfigOptions): SplitNavigationState {
-        const { initialRouteName, tabRouteNames, stackRouteNames, isSplitted } = this.options;
-        const index =
-            // TODO: do we really need to check for includes, isn't it get -1 another way?
-            initialRouteName != null && routeNames.includes(initialRouteName)
-                ? routeNames.indexOf(initialRouteName)
-                : 0;
+        const { initialRouteName, isSplitted } = this.options;
+        const mainRouteIndex = routeNames.indexOf(MAIN_SCREEN_NAME);
+        let index = mainRouteIndex;
+        const history = [mainRouteIndex];
+        if (initialRouteName != null && routeNames.includes(initialRouteName)) {
+            index = routeNames.indexOf(initialRouteName);
+            history[0] = index;
+        }
+
         return {
             key: `split-${nanoid()}`,
             index,
             routeNames,
-            tabRouteNames,
-            stackRouteNames,
             stale: false,
             type: 'split',
             isSplitted,
-            history: initialRouteName != null ? [initialRouteName] : [routeNames[0]],
+            history,
             routes: routeNames.map(name => {
                 if (name === MAIN_SCREEN_NAME) {
                     return {
@@ -332,8 +334,8 @@ class SplitUnfoldedRouter<ParamList extends ParamListBase = ParamListBase> {
     getRehydratedState(
         partialState: PartialState<SplitNavigationState<ParamList>>,
         { routeNames, routeParamList }: RouterConfigOptions,
-    ): SplitNavigationState<ParamList> {
-        const { initialRouteName, tabRouteNames, stackRouteNames, isSplitted } = this.options;
+    ): SplitNavigationState {
+        const { initialRouteName, isSplitted } = this.options;
 
         const routes = routeNames.map(name => {
             const route = partialState.routes?.find(r => r.name === name) ?? null;
@@ -348,38 +350,30 @@ class SplitUnfoldedRouter<ParamList extends ParamListBase = ParamListBase> {
             };
         });
 
-        let index = 0;
+        const mainRouteIndex = routeNames.indexOf(MAIN_SCREEN_NAME);
+        let index = mainRouteIndex;
+        const history = [mainRouteIndex];
+        const activeRouteIndex = partialState?.index ?? 0;
         const activeRouteName = partialState.routes[partialState?.index ?? 0]?.name;
         if (activeRouteName != null) {
             if (routeNames.includes(activeRouteName)) {
-                // set provided route as initial
-                index = routeNames.indexOf(activeRouteName);
-            } else {
-                /**
-                 * Sth went wrong and provided route wasn't found
-                 * TODO: Maybe it's a good place to redirect to 404
-                 *
-                 * TODO: not sure about main though
-                 */
-                index = routeNames.indexOf(initialRouteName || MAIN_SCREEN_NAME);
+                // set an index for a regular tab route
+                index = activeRouteIndex;
+                history[0] = activeRouteIndex;
+            } else if (initialRouteName != null) {
+                index = routeNames.indexOf(initialRouteName);
+                history[0] = index;
             }
-        } else {
-            // set initial otherwise
-            // TODO: not sure about main though
-            index = routeNames.indexOf(initialRouteName || MAIN_SCREEN_NAME);
         }
 
         return {
             key: `split-${nanoid()}`,
             index,
             routeNames,
-            tabRouteNames,
-            stackRouteNames,
             stale: false,
             type: 'split',
             isSplitted,
-            history: initialRouteName != null ? [initialRouteName] : [routeNames[0]],
-            // @ts-ignore
+            history,
             routes,
         };
     }
@@ -394,16 +388,22 @@ class SplitUnfoldedRouter<ParamList extends ParamListBase = ParamListBase> {
             return state;
         }
         if (action.type === 'GO_BACK') {
-            // TODO
-            return null;
+            if (state.history.length < 2) {
+                return null;
+            }
+            const prevRouteIndex = state.history[state.history.length - 2];
+            return applyTabNavigateActionToState(state, action, options, prevRouteIndex);
         }
         if (action.type === 'NAVIGATE') {
-            const { name } = action.payload;
-            // TODO: should we handle a key?
+            const { key } = action.payload;
+            let { name } = action.payload;
+            if (key != null) {
+                const route = state.routes.find(r => r.key === key);
+                name = route?.name;
+            }
             if (name == null) {
                 return null;
             }
-            // In unfolded mode we always should apply tab navigation
             const index = state.routeNames.indexOf(name);
             return applyTabNavigateActionToState(state, action, options, index);
         }
@@ -432,9 +432,9 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
      *   from main screen with stack navigation.
      */
     getInitialState({ routeNames, routeParamList }: RouterConfigOptions): SplitNavigationState {
-        const { initialRouteName, tabRouteNames, stackRouteNames, isSplitted } = this.options;
+        const { initialRouteName, stackRouteNames, isSplitted } = this.options;
         /**
-         * First challenge is to find index for initialRouteName -
+         * A challenge here is to find index for initialRouteName -
          * it's actually can fall on different states:
          * - If the route is for tab, then we set `index` for root state;
          * - If the route is for stack, then in root state `index` is for main.
@@ -443,179 +443,102 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
          * going to be initial, when in reality it should be `main`, however in splitted mode
          * it's a correct behaviour
          */
-        let index = 0;
-        let stackIndex = 0;
-        let history = [MAIN_SCREEN_NAME];
-        if (initialRouteName == null) {
-            // TODO: no-op?
-        } else if (tabRouteNames.includes(initialRouteName)) {
-            index = tabRouteNames.indexOf(initialRouteName);
-            history = [initialRouteName];
-        } else {
-            // it's a route for stack
-            index = tabRouteNames.indexOf(MAIN_SCREEN_NAME);
-            // It's 1 as nested state will consist of two items:
-            // 0. main screen
-            // 1. initial screen, that is going to be active
-            stackIndex = 1;
-            history = [MAIN_SCREEN_NAME];
+        const mainRouteIndex = routeNames.indexOf(MAIN_SCREEN_NAME);
+        let index = mainRouteIndex;
+        const history = [mainRouteIndex];
+        const nestedStack = [mainRouteIndex];
+        if (initialRouteName != null && routeNames.includes(initialRouteName)) {
+            if (stackRouteNames.includes(initialRouteName)) {
+                // It's a route for nested stack
+                const nestedStackRouteNameIndex = routeNames.indexOf(initialRouteName);
+                nestedStack.push(nestedStackRouteNameIndex);
+            } else {
+                // It's a route for tab navigation
+                index = routeNames.indexOf(initialRouteName);
+                history[0] = index;
+            }
         }
 
         return {
             key: `split-${nanoid()}`,
             index,
             routeNames,
-            tabRouteNames,
-            stackRouteNames,
             stale: false,
             type: 'split',
+            isSplitted,
             history,
-            routes: tabRouteNames.map(name => {
-                if (name === MAIN_SCREEN_NAME) {
-                    /**
-                     * Second challenge is to create a correct state
-                     * for nested stack navigation here
-                     */
-                    const mainStackRouteNames = [MAIN_SCREEN_NAME, ...stackRouteNames];
-                    const mainStackRoutes = [
-                        {
-                            name: MAIN_SCREEN_NAME,
-                            key: `${MAIN_SCREEN_NAME}-${nanoid()}`,
-                            params: routeParamList[MAIN_SCREEN_NAME],
-                        },
-                    ];
-                    // It means that initial route have to be in nested stack
-                    if (initialRouteName != null && stackIndex > 0) {
-                        mainStackRoutes.push({
-                            name: initialRouteName,
-                            key: `${initialRouteName}-${nanoid()}`,
-                            params: routeParamList[initialRouteName],
-                        });
-                    }
-                    return {
-                        name: MAIN_SCREEN_NAME,
-                        key: `${name}-${nanoid()}`,
-                        params: routeParamList[name],
-                        state: {
-                            stale: false,
-                            type: 'stack',
-                            key: `stack-${nanoid()}`,
-                            index: stackIndex,
-                            routeNames: mainStackRouteNames,
-                            routes: mainStackRoutes,
-                        },
-                    };
-                }
+            nestedStack,
+            routes: routeNames.map(name => {
                 return {
                     name,
                     key: `${name}-${nanoid()}`,
                     params: routeParamList[name],
                 };
             }),
-            isSplitted,
         };
     }
 
     getRehydratedState(
         partialState: PartialState<SplitNavigationState<ParamList>>,
         { routeNames, routeParamList }: RouterConfigOptions,
-    ): SplitNavigationState<ParamList> {
+    ): SplitNavigationState {
         const { initialRouteName, tabRouteNames, stackRouteNames, isSplitted } = this.options;
 
-        let rootIndex = 0;
-        let stackIndex = 0;
+        const mainRouteIndex = routeNames.indexOf(MAIN_SCREEN_NAME);
+        let index = mainRouteIndex;
+        const history = [mainRouteIndex];
+        const nestedStack = [mainRouteIndex];
+        const activeRouteIndex = partialState?.index ?? 0;
         const activeRouteName = partialState.routes[partialState?.index ?? 0]?.name;
-        let history = [MAIN_SCREEN_NAME];
         if (activeRouteName != null) {
             if (tabRouteNames.includes(activeRouteName)) {
                 // set an index for a regular tab route
-                rootIndex = tabRouteNames.indexOf(activeRouteName);
-                history = [activeRouteName];
+                index = activeRouteIndex;
+                history[0] = activeRouteIndex;
             } else if (stackRouteNames.includes(activeRouteName)) {
-                // set it as a main and then set index for nested stack
-                rootIndex = tabRouteNames.indexOf(MAIN_SCREEN_NAME);
-                stackIndex = 1;
-                // history is already set
+                // leave it as a main and then set index for nested stack
+                const nestedStackRouteNameIndex = routeNames.indexOf(activeRouteName);
+                nestedStack.push(nestedStackRouteNameIndex);
             } else if (initialRouteName) {
                 // nothing was found in known routes
                 // TODO: Maybe it's a good place to redirect to 404
                 // tring to find initial route
-                if (tabRouteNames.includes(initialRouteName)) {
-                    rootIndex = tabRouteNames.indexOf(initialRouteName);
-                    history = [initialRouteName];
+                if (stackRouteNames.includes(initialRouteName)) {
+                    // It's a route for nested stack
+                    const nestedStackRouteNameIndex = routeNames.indexOf(initialRouteName);
+                    nestedStack.push(nestedStackRouteNameIndex);
                 } else {
-                    // it's a route for stack
-                    rootIndex = tabRouteNames.indexOf(MAIN_SCREEN_NAME);
-                    stackIndex = 1;
-                    // history is already set
+                    // It's a route for tab navigation
+                    index = routeNames.indexOf(initialRouteName);
+                    history[0] = index;
                 }
-            } else {
-                // at last if we found nothing at all, trying to set the main
-                rootIndex = tabRouteNames.indexOf(MAIN_SCREEN_NAME);
-                // history is already set
             }
         }
 
-        const routes = tabRouteNames.map(name => {
-            const route = partialState.routes?.find(r => r.name === name);
-            if (name === MAIN_SCREEN_NAME) {
-                const mainStackRouteNames = [MAIN_SCREEN_NAME, ...stackRouteNames];
-                const mainStackRoutes = [
-                    {
-                        name: MAIN_SCREEN_NAME,
-                        key: `${MAIN_SCREEN_NAME}-${nanoid()}`,
-                        params: routeParamList[MAIN_SCREEN_NAME],
-                    },
-                ];
-                if (activeRouteName != null && stackIndex > 0) {
-                    const activeRoute = partialState.routes?.find(r => r.name === activeRouteName);
-                    mainStackRoutes.push({
-                        ...activeRoute,
-                        name: activeRouteName,
-                        key: `${activeRouteName}-${nanoid()}`,
-                        params:
-                            routeParamList[activeRouteName] != null
-                                ? { ...routeParamList[activeRouteName], ...route?.params }
-                                : route?.params,
-                    });
-                }
-                return {
-                    name: MAIN_SCREEN_NAME,
-                    key: `${name}-${nanoid()}`,
-                    params: routeParamList[name],
-                    state: {
-                        stale: false,
-                        type: 'stack',
-                        key: `stack-${nanoid()}`,
-                        index: stackIndex,
-                        routeNames: mainStackRouteNames,
-                        routes: mainStackRoutes,
-                    },
-                };
-            }
-            return {
-                ...route,
-                name,
-                key: route && route.name === name && route.key ? route.key : `${name}-${nanoid()}`,
-                params:
-                    routeParamList[name] != null
-                        ? { ...routeParamList[name], ...route?.params }
-                        : route?.params,
-            };
-        });
-
         return {
             key: `split-${nanoid()}`,
-            index: rootIndex,
+            index,
             routeNames,
-            tabRouteNames,
-            stackRouteNames,
             stale: false,
             type: 'split',
             isSplitted,
             history,
-            // @ts-ignore
-            routes,
+            nestedStack,
+            routes: routeNames.map(name => {
+                const route = partialState.routes?.find(r => r.name === name);
+                return {
+                    ...route,
+                    name,
+                    key:
+                        route && route.name === name && route.key
+                            ? route.key
+                            : `${name}-${nanoid()}`,
+                    params:
+                        routeParamList[name] != null
+                            ? { ...routeParamList[name], ...route?.params }
+                            : route?.params,
+                };
+            }),
         };
     }
 
@@ -624,48 +547,69 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
         action: CommonNavigationAction | SplitActionType,
         options: RouterConfigOptions,
     ): SplitNavigationState<ParamList> | null {
+        const { tabRouteNames } = this.options;
         if (action.type === 'RESET_TO_INITIAL') {
             // TODO
             return state;
         }
         if (action.type === 'GO_BACK') {
-            // TODO
-            return state;
+            // In folded mode that shouldn't be a case
+            // Suppress TS error
+            if (state.nestedStack == null) {
+                return null;
+            }
+
+            const currentTabRoute = state.routes[state.index];
+            // If it's main, and it has items in stack, try to go_back there
+            if (currentTabRoute.name === MAIN_SCREEN_NAME && state.nestedStack.length > 0) {
+                return {
+                    ...state,
+                    nestedStack: state.nestedStack.slice(0, state.nestedStack.length - 2),
+                };
+            }
+            // If it isn't main, then do the same thing as in unfolded router
+            // TODO: copy/paste from unfolded
+            if (state.history.length < 2) {
+                return null;
+            }
+            const prevRouteIndex = state.history[state.history.length - 2];
+            return applyTabNavigateActionToState(state, action, options, prevRouteIndex);
         }
         if (action.type === 'NAVIGATE') {
-            const { name } = action.payload;
-            // TODO: should we handle a key?
+            // In folded mode that shouldn't be a case
+            // Suppress TS error
+            if (state.nestedStack == null) {
+                return null;
+            }
+
+            const { key } = action.payload;
+            let { name } = action.payload;
+            if (key != null) {
+                const route = state.routes.find(r => r.key === key);
+                name = route?.name;
+            }
             if (name == null) {
                 return null;
             }
-            if (state.tabRouteNames.includes(name)) {
+            const index = state.routeNames.indexOf(name);
+            if (tabRouteNames.includes(name)) {
                 // In shrinked mode need to apply simple tab navigation
                 // only for routes that are in the bar
-                const index = state.tabRouteNames.indexOf(name);
                 return applyTabNavigateActionToState(state, action, options, index);
             }
             // For stack routes in shrinked mode we have to call
             // stack router method on nested navigation in the main route
-            return {
-                ...state,
-                // @ts-ignore
-                routes: state.routes.map(route => {
-                    if (route.name !== MAIN_SCREEN_NAME) {
-                        return route;
-                    }
-                    if (route.state == null) {
-                        return route;
-                    }
-                    return {
-                        ...route,
-                        state: this.stackRouter.getStateForAction(
-                            route.state as any,
-                            action,
-                            options,
-                        ),
-                    };
-                }),
-            };
+            return applyTabNavigateActionToState(
+                {
+                    ...state,
+                    nestedStack: state.nestedStack
+                        .filter(routeIndex => routeIndex !== index)
+                        .concat([index]),
+                },
+                action,
+                options,
+                state.routeNames.indexOf(MAIN_SCREEN_NAME),
+            );
         }
         return null;
     }

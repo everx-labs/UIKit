@@ -19,6 +19,8 @@ import {
 } from '@react-navigation/native';
 import type { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { screensEnabled, ScreenContainer } from 'react-native-screens';
+import { StackView } from '@react-navigation/stack';
+import { NativeStackView } from 'react-native-screens/native-stack';
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { UIImage } from '@tonlabs/uikit.media';
@@ -278,16 +280,21 @@ export function SplitNavigator({
         main: styles.main,
         detail: styles.detail,
     };
+    // TODO: optimise me!
     const { tabRouteNames, stackRouteNames } = React.Children.toArray(children).reduce<{
         tabRouteNames: string[];
         stackRouteNames: string[];
     }>(
         (acc, child) => {
             if (React.isValidElement(child)) {
-                if ('tabBarActiveIcon' in child.props || 'tabBarIconLottieSource' in child.props) {
+                if (
+                    'tabBarActiveIcon' in child.props ||
+                    'tabBarIconLottieSource' in child.props ||
+                    child.props.name === MAIN_SCREEN_NAME
+                ) {
                     acc.tabRouteNames.push(child.props.name);
                 } else {
-                    acc.tabRouteNames.push(child.props.name);
+                    acc.stackRouteNames.push(child.props.name);
                 }
             }
             return acc;
@@ -316,6 +323,8 @@ export function SplitNavigator({
         stackRouteNames,
         isSplitted,
     });
+    console.log(state);
+    console.log(descriptors);
 
     React.useEffect(() => {
         navigation.dispatch(
@@ -335,6 +344,7 @@ export function SplitNavigator({
 
     // Access it from the state to re-render a container
     // only when router has processed SET_SPLITTED action
+
     if (state.isSplitted) {
         const mainRoute = state.routes.find(
             ({ name }: { name: string }) => name === MAIN_SCREEN_NAME,
@@ -342,7 +352,6 @@ export function SplitNavigator({
         if (mainRoute == null) {
             throw new Error(`You should provide ${MAIN_SCREEN_NAME} screen!`);
         }
-
         const tabBarIcons = Object.keys(descriptors).reduce<
             Record<string, SplitScreenTabBarIconOptions>
         >((acc, key) => {
@@ -451,6 +460,13 @@ export function SplitNavigator({
 
         return acc;
     }, {});
+    const stackDescriptors = state.routes.reduce<typeof descriptors>((acc, route, index) => {
+        const descriptor = descriptors[route.key];
+        if (state.nestedStack && state.nestedStack.includes(index)) {
+            acc[route.key] = descriptor;
+        }
+        return acc;
+    }, {});
     return (
         <NavigationHelpersContext.Provider value={navigation}>
             <NestedInSplitContext.Provider value={{ isSplitted }}>
@@ -471,6 +487,95 @@ export function SplitNavigator({
                             // to `loaded` screens
                             if (!loaded.includes(index) && !isFocused) {
                                 // Don't render a screen if we've never navigated to it
+                                return null;
+                            }
+
+                            if (route.name === MAIN_SCREEN_NAME) {
+                                if (doesSupportNative) {
+                                    return (
+                                        <ResourceSavingScene
+                                            key={route.key}
+                                            style={StyleSheet.absoluteFill}
+                                            isVisible={isFocused}
+                                        >
+                                            <SceneContent isFocused={isFocused}>
+                                                <NestedInSplitContext.Provider
+                                                    value={{ isSplitted }}
+                                                >
+                                                    <SplitTabBarHeightContext.Provider
+                                                        value={tabBarHeight}
+                                                    >
+                                                        <NativeStackView
+                                                            state={{
+                                                                stale: false,
+                                                                type: 'stack',
+                                                                key: state.key.replace(
+                                                                    'split',
+                                                                    'stack',
+                                                                ),
+                                                                index: state.nestedStack
+                                                                    ? state.nestedStack.length - 1
+                                                                    : 0,
+                                                                routeNames: stackRouteNames,
+                                                                routes: state.routes.filter(
+                                                                    r =>
+                                                                        stackDescriptors[r.key] ==
+                                                                        null,
+                                                                ),
+                                                            }}
+                                                            navigation={navigation}
+                                                            // @ts-ignore
+                                                            descriptors={stackDescriptors}
+                                                        />
+                                                    </SplitTabBarHeightContext.Provider>
+                                                </NestedInSplitContext.Provider>
+                                            </SceneContent>
+                                        </ResourceSavingScene>
+                                    );
+                                }
+
+                                return (
+                                    <ResourceSavingScene
+                                        key={route.key}
+                                        style={StyleSheet.absoluteFill}
+                                        isVisible={isFocused}
+                                    >
+                                        <SceneContent isFocused={isFocused}>
+                                            <NestedInSplitContext.Provider value={{ isSplitted }}>
+                                                <SplitTabBarHeightContext.Provider
+                                                    value={tabBarHeight}
+                                                >
+                                                    {/* @ts-ignore */}
+                                                    <StackView
+                                                        headerMode="none"
+                                                        state={{
+                                                            stale: false,
+                                                            type: 'stack',
+                                                            key: state.key.replace(
+                                                                'split',
+                                                                'stack',
+                                                            ),
+                                                            index: state.nestedStack
+                                                                ? state.nestedStack.length - 1
+                                                                : 0,
+                                                            routeNames: stackRouteNames,
+                                                            routes: state.routes.filter(
+                                                                r =>
+                                                                    stackDescriptors[r.key] == null,
+                                                            ),
+                                                        }}
+                                                        navigation={navigation}
+                                                        // @ts-ignore
+                                                        descriptors={stackDescriptors}
+                                                    />
+                                                </SplitTabBarHeightContext.Provider>
+                                            </NestedInSplitContext.Provider>
+                                        </SceneContent>
+                                    </ResourceSavingScene>
+                                );
+                            }
+
+                            if (stackDescriptors[route.key] != null) {
                                 return null;
                             }
 
