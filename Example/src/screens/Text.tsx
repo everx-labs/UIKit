@@ -71,10 +71,7 @@ export const TextScreen = () => (
                     paddingVertical: 20,
                 }}
             >
-                <UISectionHeader
-                    title="Section header with border on top"
-                    needBorder
-                />
+                <UISectionHeader title="Section header with border on top" needBorder />
             </View>
         </ExampleSection>
     </ExampleScreen>
