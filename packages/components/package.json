@@ -38,7 +38,6 @@
         "@tonlabs/uikit.inputs": "^2.3.0",
         "@tonlabs/uikit.themes": "^2.3.0",
         "@tonlabs/uikit.controls": "^2.3.0",
-        "@tonlabs/uistory.browser": "^2.3.0",
         "@tonlabs/localization": "^2.3.0",
         "bignumber.js": "9.0.0",
         "bowser": "1.9.4",
