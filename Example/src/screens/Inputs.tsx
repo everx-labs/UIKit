@@ -6,7 +6,12 @@ import { View } from 'react-native';
 import { UIMaterialTextView, UISeedPhraseTextView, UINumberTextView } from '@tonlabs/uikit.inputs';
 import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAddressTextView } from '@tonlabs/uicast.address-text';
-import { UITransferInput, UITextInput } from '@tonlabs/uikit.components';
+import {
+    UIAmountInput,
+    UIDetailsInput,
+    UITextInput,
+    UITransferInput,
+} from '@tonlabs/uikit.components';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -238,15 +243,44 @@ export const Inputs = () => {
                     />
                 </View>
             </ExampleSection>
-            <ExampleSection title="UITransferInput">
-                <View testID="uiTransferInput_default" style={{ paddingVertical: 20 }}>
-                    <UITransferInput
-                        value={transfer}
-                        placeholder="Your transfer"
-                        maxDecimals={3}
-                        minDecimals={3}
-                        onValueChange={(num: BigNumber) => setTransfer(num)}
-                        localeInfo={localeInfo}
+            <ExampleSection title="UIAmountInput">
+                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <UIAmountInput
+                        testID="uiAmountInput_default"
+                        placeholder="Amount"
+                        comment="Some comment here"
+                        value={amount}
+                        onChangeText={(newText: string) => setAmount(newText)}
+                    />
+                </View>
+                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <UIAmountInput
+                        testID="uiAmountInput_with_trailing_value"
+                        placeholder="Amount"
+                        comment="Some comment here"
+                        value={amount}
+                        trailingValue="$"
+                        onChangeText={(newText: string) => setAmount(newText)}
+                    />
+                </View>
+            </ExampleSection>
+            <ExampleSection title="UIDetailsInput">
+                <View style={{ paddingVertical: 20 }} testID="uiDetailsInput_default">
+                    <UIDetailsInput
+                        placeholder="Details"
+                        comment="Some comment here"
+                        value={details}
+                        onChangeText={(newText: string) => setDetails(newText)}
+                    />
+                </View>
+                <View testID="uiDetailsInput_multiline" style={{ paddingVertical: 20 }}>
+                    <UIDetailsInput
+                        placeholder="Multiline details"
+                        comment="Some comment here"
+                        value={details}
+                        onChangeText={(newText: string) => setDetails(newText)}
+                        maxLines={3}
+                        containerStyle={{ marginTop: 16 }}
                     />
                 </View>
             </ExampleSection>
@@ -257,6 +291,18 @@ export const Inputs = () => {
                         placeholder="Your text"
                         beginningTag="@"
                         onChangeText={(newText: string) => setText(newText)}
+                    />
+                </View>
+            </ExampleSection>
+            <ExampleSection title="UITransferInput">
+                <View testID="uiTransferInput_default" style={{ paddingVertical: 20 }}>
+                    <UITransferInput
+                        value={transfer}
+                        placeholder="Your transfer"
+                        maxDecimals={3}
+                        minDecimals={3}
+                        onValueChange={(num: BigNumber) => setTransfer(num)}
+                        localeInfo={localeInfo}
                     />
                 </View>
             </ExampleSection>
