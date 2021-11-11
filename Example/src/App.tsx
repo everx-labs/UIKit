@@ -12,7 +12,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
+<<<<<<< HEAD
 import { UICountryPicker, UIPopoverBackground } from '@tonlabs/uikit.navigation_legacy';
+=======
+import { UILayoutManager } from '@tonlabs/uikit.components';
+import { UIPopoverBackground } from '@tonlabs/uikit.navigation_legacy';
+>>>>>>> 676a56bf3759edebab71b2e76486f6ad9b108cc6
 import { PortalManager } from '@tonlabs/uikit.layout';
 import {
     UILinkButton,

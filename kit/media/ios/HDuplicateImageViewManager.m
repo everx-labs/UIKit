@@ -6,14 +6,14 @@
 //
 
 #import "HDuplicateImageViewManager.h"
-#import "HDuplicateImageView.h"
+#import "HDuplicateFastImageView.h"
 
 @implementation HDuplicateImageViewManager
 
 RCT_EXPORT_MODULE()
 
 - (UIView *)view {
-    return [[HDuplicateImageView alloc] initWithBridge:self.bridge];
+    return [[HDuplicateFastImageView alloc] initWithBridge:self.bridge];
 }
 
 RCT_EXPORT_VIEW_PROPERTY(originalViewRef, NSNumber)

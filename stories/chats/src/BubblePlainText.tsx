@@ -22,10 +22,15 @@ import {
     useTheme,
 } from '@tonlabs/uikit.themes';
 
-import { MessageStatus, OnLongPressText, OnPressUrl } from './types';
-import type { ChatPlainTextMessage, PlainTextMessage } from './types';
+import { MessageStatus } from './constants';
+import type { OnLongPressText, OnPressUrl, ChatPlainTextMessage, PlainTextMessage } from './types';
 import { useBubblePosition, useBubbleContainerStyle } from './useBubblePosition';
 import { useBubbleBackgroundColor, useBubbleRoundedCornerStyle } from './useBubbleStyle';
+import { RegExpConstants } from './constants';
+
+const renderParsedText = (matchingString: string) => {
+    return matchingString.replace(RegExpConstants.protocol, '');
+};
 
 const useUrlStyle = (status: MessageStatus) => {
     const theme = useTheme();
@@ -202,9 +207,15 @@ export function BubbleChatPlainText(props: ChatPlainTextMessage) {
                 <ParsedText
                     parse={[
                         {
-                            type: 'url',
+                            /**
+                             * We need to use our RegExp because we must also
+                             * identify links with cyrillic.
+                             * The library doesn't do this.
+                             * */
+                            pattern: RegExpConstants.url,
                             style: urlStyle,
                             onPress: urlPressHandler,
+                            renderText: renderParsedText,
                         },
                     ]}
                 >
@@ -251,9 +262,10 @@ export function BubbleSimplePlainText(props: PlainTextMessage) {
                 <ParsedText
                     parse={[
                         {
-                            type: 'url',
+                            pattern: RegExpConstants.url,
                             style: urlStyle,
                             onPress: urlPressHandler,
+                            renderText: renderParsedText,
                         },
                     ]}
                 >

@@ -40,7 +40,7 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
         setIsOpen(false);
     }, []);
 
-    if (!previewImage || !fullSizeImage) {
+    if (!previewImage) {
         return null;
     }
 

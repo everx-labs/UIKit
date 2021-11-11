@@ -55,4 +55,5 @@ Pod::Spec.new do |s|
   s.dependency "React-Core"
   s.dependency "ReactCommon/turbomodule/core"
   s.dependency "#{folly_prefix}Folly"
+  s.dependency "RNFastImage"
 end

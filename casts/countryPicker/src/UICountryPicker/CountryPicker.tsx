@@ -88,7 +88,7 @@ export function CountryPicker({
     const filterCountries = React.useCallback(
         list => {
             const permittedCountries = list.filter((country: any) => checkIncludes(country.code));
-            setFilteredList(permittedCountries);
+            setCountriesList(permittedCountries);
         },
         [checkIncludes],
     );

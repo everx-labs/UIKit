@@ -16,6 +16,20 @@ export enum UINumberDecimalAspect {
     ShortEllipsized = DECIMAL_ASPECT_SHORT_ELLIPSIZED,
 }
 
+// https://mikemcl.github.io/bignumber.js/
+// NB: Default value: 4 (ROUND_HALF_UP)
+enum Rounding {
+    RoundUP = 0,
+    RoundDown = 1,
+    RoundCeil = 2,
+    RoundFloor = 3,
+    RoundHalfUp = 4,
+    RoundHalfDown = 5,
+    RoundHalfEven = 6,
+    RoundHalfCeil = 7,
+    RoundHalfFloor = 8,
+}
+
 // TODO: move it to uiLocalized!
 // @inline
 const INTEGER_GROUP_SIZE = 3;
@@ -99,11 +113,9 @@ export function localizedNumberFormat(
 ) {
     'worklet';
 
-    // https://mikemcl.github.io/bignumber.js/
-    // NB: Default value: 4 (ROUND_HALF_UP)
-    const integer = value.integerValue(1); // ROUNDING_MODE = 1 (ROUND_DOWN)
+    const integer = value.integerValue(Rounding.RoundDown);
     const integerFormatted = `${getIntegerSign(integer, showPositiveSign)}${groupReversed(
-        integer.abs().toFixed(0),
+        integer.abs().toFixed(0, Rounding.RoundDown),
         INTEGER_GROUP_SIZE,
         integerGroupChar,
     )}`;
@@ -119,9 +131,9 @@ export function localizedNumberFormat(
 
     // decimal at the point would start with `0,` or `0.`
     // if it's negative it would be `-0,` or `-0.`
-    const decimalNumber = value.minus(value.toFixed(0, 1)); // ROUNDING_MODE = 1 (ROUND_DOWN)
+    const decimalNumber = value.minus(value.toFixed(0, Rounding.RoundDown));
     let decimal = decimalNumber
-        .toFixed(DECIMAL_ASPECT_PRECISION)
+        .toFixed(DECIMAL_ASPECT_PRECISION, Rounding.RoundDown)
         .slice(decimalNumber.lt(0) ? 3 : 2)
         .slice(0, digits);
 

@@ -16,4 +16,5 @@ export {
 } from './BubblePlainText';
 export { BubbleActionButton } from './BubbleActionButton';
 
+export * from './constants';
 export * from './types';

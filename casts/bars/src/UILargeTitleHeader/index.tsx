@@ -70,9 +70,17 @@ export type UILargeTitleHeaderProps = UINavigationBarProps & {
      */
     label?: string;
     /**
+     * testID for label string
+     */
+    labelTestID?: string;
+    /**
      * A note string
      */
     note?: string;
+    /**
+     * testID for note string
+     */
+    noteTestID?: string;
     /**
      * What content to render above large title, if any
      */
@@ -89,7 +97,9 @@ export type UILargeTitleHeaderProps = UINavigationBarProps & {
 
 export function UILargeTitleHeader({
     label,
+    labelTestID,
     note,
+    noteTestID,
     children,
     renderAboveContent,
     renderBelowContent,
@@ -277,6 +287,7 @@ export function UILargeTitleHeader({
                     role={UILabelRoles.ParagraphLabel}
                     color={UILabelColors.TextSecondary}
                     style={styles.label}
+                    testID={labelTestID}
                 >
                     {label}
                 </UILabel>
@@ -294,7 +305,7 @@ export function UILargeTitleHeader({
                     </AnimatedUILabel>
                 ))}
             {note != null && (
-                <UILabel role={UILabelRoles.ParagraphNote} style={styles.note}>
+                <UILabel role={UILabelRoles.ParagraphNote} style={styles.note} testID={noteTestID}>
                     {note}
                 </UILabel>
             )}

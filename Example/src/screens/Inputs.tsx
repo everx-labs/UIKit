@@ -239,9 +239,8 @@ export const Inputs = () => {
                 </View>
             </ExampleSection>
             <ExampleSection title="UITransferInput">
-                <View style={{ paddingVertical: 20 }}>
+                <View testID="uiTransferInput_default" style={{ paddingVertical: 20 }}>
                     <UITransferInput
-                        testID="uiTransferInput_default"
                         value={transfer}
                         placeholder="Your transfer"
                         maxDecimals={3}

@@ -10,9 +10,8 @@ export const Layouts = () => {
     return (
         <ExampleScreen>
             <ExampleSection title="UIDetailsTable">
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <View testID="uiDetailsTable_default" style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIDetailsTable
-                        testID="uiDetailsTable_default"
                         detailsList={[
                             {
                                 caption: 'row 1',
