@@ -131,12 +131,13 @@ export function UISkeleton({
     children,
     show,
     style: styleProp,
+    persistStyles = false,
 }: {
     /**
-     * Your content will be wrapped with View,
-     * so you probably want to give to your content some
-     * dimensions, or if it a text, provide some default one
-     * that is aproximatelly will be the size of real content
+     * Your content will be wrapped with a View,
+     * so you will probably want to give some dimensions to your content
+     * or provide some default value for a text,
+     * that will be approximately of the same size as the real content
      *
      * ```ts
      * // skeleton will hide when data exists
@@ -147,7 +148,7 @@ export function UISkeleton({
      */
     children: React.ReactNode;
     /**
-     * Flag to controll behavior of skeleton
+     * Flag to control behavior of skeleton
      * ```ts
      * // even though data is rendered, show skeleton anyway
      * <Skeleton show>
@@ -155,7 +156,7 @@ export function UISkeleton({
      * </Skeleton>
      * ```
      *
-     * Usefull when you want to controll skeleton visibility
+     * Useful when you want to control skeleton visibility
      * during loading, i.e.
      * ```ts
      * const [isLoading, setIsLoading] = React.useState(true);
@@ -170,6 +171,10 @@ export function UISkeleton({
      * you might want to provide some additional styles
      */
     style?: StyleProp<ViewStyle>;
+    /**
+     * Flag to indicate whether to keep the wrapper styles after hiding the skeleton
+     */
+    persistStyles?: boolean;
 }) {
     const visible = children == null || show;
 
@@ -190,8 +195,13 @@ export function UISkeleton({
 
     const { isVisible, crossDissolveProgress } = useCrossDissolve(visible);
 
+    const containerStyles = [styles.container, styleProp];
+
     return (
-        <View style={isVisible ? [styles.container, styleProp] : null} onLayout={onLayout}>
+        <View
+            style={persistStyles ? containerStyles : isVisible ? containerStyles : null}
+            onLayout={onLayout}
+        >
             {children}
             {isVisible && (
                 <SkeletonAnimatable width={width} crossDissolveProgress={crossDissolveProgress} />
