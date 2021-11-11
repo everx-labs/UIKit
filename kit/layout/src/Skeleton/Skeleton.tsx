@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { LayoutChangeEvent, StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { LayoutChangeEvent, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import Animated, {
     useAnimatedStyle,
     interpolate,
@@ -9,7 +9,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
 
-import { useTheme, ColorVariants, UIBackgroundView } from '@tonlabs/uikit.themes';
+import { useTheme, ColorVariants } from '@tonlabs/uikit.themes';
 import { SkeletonProgress, useSkeletonProgress } from './useSkeletonProgress';
 
 enum CrossDissolveProgress {
@@ -21,7 +21,7 @@ enum CrossDissolveProgress {
  * A *cross dissolve* is a post-production video editing technique
  * in which you gently increase the opacity of one scene over the previous one.
  */
-function useCrossDissolve(visible: boolean) {
+function useCrossDissolve(visible?: boolean) {
     const crossDissolveProgress = useSharedValue(
         visible ? CrossDissolveProgress.Visible : CrossDissolveProgress.Hidden,
     );
@@ -164,7 +164,7 @@ export function UISkeleton({
      * </Skeleton>
      * ```
      */
-    show: boolean;
+    show?: boolean;
     /**
      * Since your content will be wrapped with <View />,
      * you might want to provide some additional styles
@@ -191,12 +191,12 @@ export function UISkeleton({
     const { isVisible, crossDissolveProgress } = useCrossDissolve(visible);
 
     return (
-        <UIBackgroundView style={[styles.container, styleProp]} onLayout={onLayout}>
+        <View style={isVisible ? [styles.container, styleProp] : null} onLayout={onLayout}>
             {children}
             {isVisible && (
                 <SkeletonAnimatable width={width} crossDissolveProgress={crossDissolveProgress} />
             )}
-        </UIBackgroundView>
+        </View>
     );
 }
 
