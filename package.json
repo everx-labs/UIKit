@@ -19,7 +19,7 @@
         "flow": "flow check",
         "tsc": "lerna run tsc",
         "tsc-example": "cd ./Example && yarn run tsc",
-        "test:coveragfe": "jest --coverage",
+        "test:coverage": "jest --coverage",
         "web": "webpack-dev-server -d --config Example/webpack.config.js --progress --colors --host 0.0.0.0 --display-cached",
         "cycles:check": "node scripts/checkCircularDependencies.js",
         "prettier:check": "prettier --check .",
