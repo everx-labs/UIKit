@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { TextInput, StyleSheet } from 'react-native';
 
+import { UIAssets } from '@tonlabs/uikit.assets';
 import { uiLocalized } from '@tonlabs/localization';
 import { UIConstant } from '@tonlabs/uikit.core';
 
-import { UIAssets } from '@tonlabs/uikit.assets';
 import { useFocused, useUITextViewValue } from './UITextView';
 import {
     UIMaterialTextView,
@@ -13,6 +13,7 @@ import {
 } from './UIMaterialTextView';
 
 const MAX_KEY_LENGTH = 64;
+
 type OnDone = (key?: string) => void | Promise<void>;
 
 export function useKeyTextView(
