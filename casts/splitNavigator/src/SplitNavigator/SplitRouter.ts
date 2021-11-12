@@ -381,6 +381,24 @@ class SplitUnfoldedRouter<ParamList extends ParamListBase = ParamListBase> {
         };
     }
 
+    getStateForRouteFocus(
+        state: SplitNavigationState<ParamList>,
+        key: string,
+    ): SplitNavigationState {
+        const index = state.routes.findIndex(r => r.key === key);
+
+        if (index === -1 || index === state.index) {
+            return state;
+        }
+
+        return {
+            ...state,
+            index,
+            tabIndex: index,
+            history: state.history.filter(r => r !== index).concat([index]),
+        };
+    }
+
     getStateForAction(
         state: SplitNavigationState<ParamList>,
         action: CommonNavigationAction | SplitActionType,
@@ -572,6 +590,37 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
         };
     }
 
+    getStateForRouteFocus(
+        state: SplitNavigationState<ParamList>,
+        key: string,
+    ): SplitNavigationState {
+        const index = state.routes.findIndex(r => r.key === key);
+
+        if (index === -1 || index === state.index) {
+            return state;
+        }
+
+        const { stackRouteNames } = this.options;
+        const mainRouteIndex = state.routeNames.indexOf(MAIN_SCREEN_NAME);
+        const routeToFocusName = state.routes[index].name;
+        if (stackRouteNames.includes(routeToFocusName)) {
+            return {
+                ...state,
+                index,
+                tabIndex: mainRouteIndex,
+                nestedStack: [mainRouteIndex, index],
+                history: state.history.filter(r => r !== index).concat([index]),
+            };
+        }
+
+        return {
+            ...state,
+            index,
+            tabIndex: index,
+            history: state.history.filter(r => r !== index).concat([index]),
+        };
+    }
+
     getStateForAction(
         state: SplitNavigationState<ParamList>,
         action: CommonNavigationAction | SplitActionType,
@@ -703,26 +752,14 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
             return (isSplitted ? unfoldedRouter : foldedRouter).getRehydratedState(state, options);
         },
 
-        // TODO
         getStateForRouteNamesChange(state /* , options */) {
-            console.log('getStateForRouteNamesChange');
-            // const newState: SplitNavigationState = isSplitted
-            //     ? (tabRouter.getStateForRouteNamesChange(state as any, options) as any)
-            //     : stackRouter.getStateForRouteNamesChange(state as any, options);
-
-            // Object.assign(newState, { type: router.type, isSplitted });
+            console.warn("Dynamic routes isn't supported yet in SplitRouter");
             return state;
         },
 
         // TODO
-        getStateForRouteFocus(state /* , key */) {
-            console.log('getStateForRouteFocus');
-            // const newState: SplitNavigationState = isSplitted
-            //     ? (tabRouter.getStateForRouteFocus(state as any, key) as any)
-            //     : stackRouter.getStateForRouteFocus(state as any, key);
-
-            // Object.assign(newState, { type: router.type, isSplitted });
-            return state;
+        getStateForRouteFocus(state, key) {
+            return (isSplitted ? unfoldedRouter : foldedRouter).getStateForRouteFocus(state, key);
         },
 
         getStateForAction(state: SplitNavigationState<ParamListBase>, action, options) {
