@@ -59,7 +59,6 @@
         "@tonlabs/localization": "*",
         "@types/qrcode": "1.4.0",
         "bignumber.js": "9.0.0",
-        "bowser": "1.9.4",
         "currency-formatter": "1.5.4",
         "fuse.js": "3.4.6",
         "html2canvas": "1.0.0-rc.7",

@@ -40,7 +40,6 @@
         "@tonlabs/uikit.controls": "^2.3.0",
         "@tonlabs/localization": "^2.3.0",
         "bignumber.js": "9.0.0",
-        "bowser": "1.9.4",
         "react-native-indicators": "git+https://github.com/tonlabs/react-native-indicators.git"
     },
     "devDependencies": {
