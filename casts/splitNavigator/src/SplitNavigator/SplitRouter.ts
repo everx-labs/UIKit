@@ -79,8 +79,16 @@ export type SplitNavigationState<ParamList extends ParamListBase = ParamListBase
     key: string;
     /**
      * Index of the currently focused route.
+     *
+     * We change this index even for nested stack,
+     * to make linking work properly
      */
     index: number;
+    /**
+     * Index of the currently focused tab route.
+     * Since we can't use `index` only for tabs
+     */
+    tabIndex: number;
     /**
      * List of valid route names as defined in the screen components.
      */
@@ -233,55 +241,48 @@ function unfold<ParamList extends ParamListBase>(
     };
 }
 
-function applyTabNavigateActionToState<ParamList extends ParamListBase>(
+function applyTabNavigateActionToRoutes<ParamList extends ParamListBase>(
     state: SplitNavigationState<ParamList>,
     action: CommonNavigationAction,
     options: RouterConfigOptions,
     index: number,
-): SplitNavigationState<ParamList> | null {
+): SplitNavigationState<ParamList>['routes'] {
     if (action.type !== 'NAVIGATE') {
-        return null;
+        return state.routes;
     }
-    const history = state.history.filter(r => r !== index).concat([index]);
-    return {
-        ...state,
-        index,
-        history,
-        routes:
-            action.payload.params == null
-                ? state.routes
-                : state.routes.map((route, i) => {
-                      if (i === index) {
-                          return route;
-                      }
+    return action.payload.params == null
+        ? state.routes
+        : state.routes.map((route, i) => {
+              if (i === index) {
+                  return route;
+              }
 
-                      /**
-                       * Next code up to return is simply copy-pasted
-                       * from TabRouter to support a merge param
-                       * https://github.com/react-navigation/react-navigation/blob/%40react-navigation/core%405.16.1/packages/routers/src/TabRouter.tsx#L317-L341
-                       */
-                      let newParams: any;
+              /**
+               * Next code up to return is simply copy-pasted
+               * from TabRouter to support a merge param
+               * https://github.com/react-navigation/react-navigation/blob/%40react-navigation/core%405.16.1/packages/routers/src/TabRouter.tsx#L317-L341
+               */
+              let newParams: any;
 
-                      if (action.type === 'NAVIGATE' && action.payload.merge === false) {
-                          newParams =
-                              options.routeParamList[route.name] !== undefined
-                                  ? {
-                                        ...options.routeParamList[route.name],
-                                        ...action.payload.params,
-                                    }
-                                  : action.payload.params;
-                      } else {
-                          newParams = action.payload.params
-                              ? {
-                                    ...route.params,
-                                    ...action.payload.params,
-                                }
-                              : route.params;
-                      }
+              if (action.type === 'NAVIGATE' && action.payload.merge === false) {
+                  newParams =
+                      options.routeParamList[route.name] !== undefined
+                          ? {
+                                ...options.routeParamList[route.name],
+                                ...action.payload.params,
+                            }
+                          : action.payload.params;
+              } else {
+                  newParams = action.payload.params
+                      ? {
+                            ...route.params,
+                            ...action.payload.params,
+                        }
+                      : route.params;
+              }
 
-                      return newParams !== route.params ? { ...route, params: newParams } : route;
-                  }),
-    };
+              return newParams !== route.params ? { ...route, params: newParams } : route;
+          });
 }
 
 class SplitUnfoldedRouter<ParamList extends ParamListBase = ParamListBase> {
@@ -309,6 +310,7 @@ class SplitUnfoldedRouter<ParamList extends ParamListBase = ParamListBase> {
         return {
             key: `split-${nanoid()}`,
             index,
+            tabIndex: index,
             routeNames,
             stale: false,
             type: 'split',
@@ -369,6 +371,7 @@ class SplitUnfoldedRouter<ParamList extends ParamListBase = ParamListBase> {
         return {
             key: `split-${nanoid()}`,
             index,
+            tabIndex: index,
             routeNames,
             stale: false,
             type: 'split',
@@ -392,7 +395,13 @@ class SplitUnfoldedRouter<ParamList extends ParamListBase = ParamListBase> {
                 return null;
             }
             const prevRouteIndex = state.history[state.history.length - 2];
-            return applyTabNavigateActionToState(state, action, options, prevRouteIndex);
+            return {
+                ...state,
+                index: prevRouteIndex,
+                tabIndex: prevRouteIndex,
+                history: state.history.filter(r => r !== prevRouteIndex).concat([prevRouteIndex]),
+                routes: applyTabNavigateActionToRoutes(state, action, options, prevRouteIndex),
+            };
         }
         if (action.type === 'NAVIGATE') {
             const { key } = action.payload;
@@ -405,7 +414,13 @@ class SplitUnfoldedRouter<ParamList extends ParamListBase = ParamListBase> {
                 return null;
             }
             const index = state.routeNames.indexOf(name);
-            return applyTabNavigateActionToState(state, action, options, index);
+            return {
+                ...state,
+                index,
+                tabIndex: index,
+                history: state.history.filter(r => r !== index).concat([index]),
+                routes: applyTabNavigateActionToRoutes(state, action, options, index),
+            };
         }
         return null;
     }
@@ -445,16 +460,21 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
          */
         const mainRouteIndex = routeNames.indexOf(MAIN_SCREEN_NAME);
         let index = mainRouteIndex;
+        let tabIndex = mainRouteIndex;
         const history = [mainRouteIndex];
         const nestedStack = [mainRouteIndex];
         if (initialRouteName != null && routeNames.includes(initialRouteName)) {
             if (stackRouteNames.includes(initialRouteName)) {
                 // It's a route for nested stack
                 const nestedStackRouteNameIndex = routeNames.indexOf(initialRouteName);
+                index = nestedStackRouteNameIndex;
+                // tab index is already points to the main
                 nestedStack.push(nestedStackRouteNameIndex);
+                history.push(nestedStackRouteNameIndex);
             } else {
                 // It's a route for tab navigation
                 index = routeNames.indexOf(initialRouteName);
+                tabIndex = index;
                 history[0] = index;
             }
         }
@@ -462,6 +482,7 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
         return {
             key: `split-${nanoid()}`,
             index,
+            tabIndex,
             routeNames,
             stale: false,
             type: 'split',
@@ -486,19 +507,23 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
 
         const mainRouteIndex = routeNames.indexOf(MAIN_SCREEN_NAME);
         let index = mainRouteIndex;
+        let tabIndex = mainRouteIndex;
         const history = [mainRouteIndex];
         const nestedStack = [mainRouteIndex];
-        const activeRouteIndex = partialState?.index ?? 0;
         const activeRouteName = partialState.routes[partialState?.index ?? 0]?.name;
         if (activeRouteName != null) {
             if (tabRouteNames.includes(activeRouteName)) {
                 // set an index for a regular tab route
-                index = activeRouteIndex;
-                history[0] = activeRouteIndex;
+                index = routeNames.indexOf(activeRouteName);
+                tabIndex = index;
+                history[0] = index;
             } else if (stackRouteNames.includes(activeRouteName)) {
                 // leave it as a main and then set index for nested stack
                 const nestedStackRouteNameIndex = routeNames.indexOf(activeRouteName);
+                index = nestedStackRouteNameIndex;
+                // tab index is already points to the main
                 nestedStack.push(nestedStackRouteNameIndex);
+                history.push(nestedStackRouteNameIndex);
             } else if (initialRouteName) {
                 // nothing was found in known routes
                 // TODO: Maybe it's a good place to redirect to 404
@@ -506,10 +531,14 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
                 if (stackRouteNames.includes(initialRouteName)) {
                     // It's a route for nested stack
                     const nestedStackRouteNameIndex = routeNames.indexOf(initialRouteName);
+                    index = nestedStackRouteNameIndex;
+                    // tab index is already points to the main
                     nestedStack.push(nestedStackRouteNameIndex);
+                    history.push(nestedStackRouteNameIndex);
                 } else {
                     // It's a route for tab navigation
                     index = routeNames.indexOf(initialRouteName);
+                    tabIndex = index;
                     history[0] = index;
                 }
             }
@@ -518,6 +547,7 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
         return {
             key: `split-${nanoid()}`,
             index,
+            tabIndex,
             routeNames,
             stale: false,
             type: 'split',
@@ -559,12 +589,15 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
                 return null;
             }
 
-            const currentTabRoute = state.routes[state.index];
+            const currentTabRoute = state.routes[state.tabIndex];
             // If it's main, and it has items in stack, try to go_back there
             if (currentTabRoute.name === MAIN_SCREEN_NAME && state.nestedStack.length > 0) {
+                const nestedStack = state.nestedStack.slice(0, state.nestedStack.length - 1);
                 return {
                     ...state,
-                    nestedStack: state.nestedStack.slice(0, state.nestedStack.length - 2),
+                    nestedStack,
+                    history: state.history.slice(0, history.length - 2),
+                    index: nestedStack[nestedStack.length - 1],
                 };
             }
             // If it isn't main, then do the same thing as in unfolded router
@@ -573,7 +606,13 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
                 return null;
             }
             const prevRouteIndex = state.history[state.history.length - 2];
-            return applyTabNavigateActionToState(state, action, options, prevRouteIndex);
+            return {
+                ...state,
+                index: prevRouteIndex,
+                tabIndex: prevRouteIndex,
+                history: state.history.filter(r => r !== prevRouteIndex).concat([prevRouteIndex]),
+                routes: applyTabNavigateActionToRoutes(state, action, options, prevRouteIndex),
+            };
         }
         if (action.type === 'NAVIGATE') {
             // In folded mode that shouldn't be a case
@@ -595,21 +634,23 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
             if (tabRouteNames.includes(name)) {
                 // In shrinked mode need to apply simple tab navigation
                 // only for routes that are in the bar
-                return applyTabNavigateActionToState(state, action, options, index);
-            }
-            // For stack routes in shrinked mode we have to call
-            // stack router method on nested navigation in the main route
-            return applyTabNavigateActionToState(
-                {
+                return {
                     ...state,
-                    nestedStack: state.nestedStack
-                        .filter(routeIndex => routeIndex !== index)
-                        .concat([index]),
-                },
-                action,
-                options,
-                state.routeNames.indexOf(MAIN_SCREEN_NAME),
-            );
+                    index,
+                    tabIndex: index,
+                    history: state.history.filter(r => r !== index).concat([index]),
+                    routes: applyTabNavigateActionToRoutes(state, action, options, index),
+                };
+            }
+            const mainIndex = state.routeNames.indexOf(MAIN_SCREEN_NAME);
+            return {
+                ...state,
+                index,
+                tabIndex: mainIndex,
+                nestedStack: [mainIndex, index],
+                history: state.history.filter(r => r !== index).concat([index]),
+                routes: applyTabNavigateActionToRoutes(state, action, options, mainIndex),
+            };
         }
         return null;
     }
@@ -631,6 +672,7 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
         type: 'split',
 
         getInitialState(options: RouterConfigOptions) {
+            console.log('getInitialState');
             return (isSplitted ? unfoldedRouter : foldedRouter).getInitialState(options);
         },
 
@@ -657,11 +699,13 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
                 return state;
             }
 
+            console.log('getRehydratedState', state);
             return (isSplitted ? unfoldedRouter : foldedRouter).getRehydratedState(state, options);
         },
 
         // TODO
         getStateForRouteNamesChange(state /* , options */) {
+            console.log('getStateForRouteNamesChange');
             // const newState: SplitNavigationState = isSplitted
             //     ? (tabRouter.getStateForRouteNamesChange(state as any, options) as any)
             //     : stackRouter.getStateForRouteNamesChange(state as any, options);
@@ -672,6 +716,7 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
 
         // TODO
         getStateForRouteFocus(state /* , key */) {
+            console.log('getStateForRouteFocus');
             // const newState: SplitNavigationState = isSplitted
             //     ? (tabRouter.getStateForRouteFocus(state as any, key) as any)
             //     : stackRouter.getStateForRouteFocus(state as any, key);
@@ -681,6 +726,7 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
         },
 
         getStateForAction(state: SplitNavigationState<ParamListBase>, action, options) {
+            console.log('getStateForAction', action);
             if (action.type === 'SET_SPLITTED') {
                 ({ isSplitted } = action.payload);
 
@@ -699,6 +745,9 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
                 }
                 return unfold(state);
             }
+            if (action.type === 'SET_PARAMS' || action.type === 'RESET') {
+                return BaseRouter.getStateForAction(state, action);
+            }
             return (state.isSplitted ? unfoldedRouter : foldedRouter).getStateForAction(
                 state,
                 action,
@@ -707,6 +756,7 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
         },
 
         shouldActionChangeFocus(/* action */) {
+            console.log('shouldActionChangeFocus');
             // TODO
             // return tabRouter.shouldActionChangeFocus(action);
             return false;
@@ -715,75 +765,3 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
 
     return router;
 }
-
-// splitted=true
-// {
-//     stale: false,
-//     type: 'split',
-//     key: `split-${nanoid()}`,
-//     index: 0, // initial
-//     routeNames: ['main', 'buttons', 'carousel'],
-//     // history,
-//     routes: [
-//         {
-//             key: `main-${nanoid()}`,
-//             // name,
-//             // params: routeParamList[name],
-//         },
-//         // for stack
-//         {
-//             key: `buttons-${nanoid()}`,
-//             // name,
-//             // params: routeParamList[name],
-//         },
-//         // for tab
-//         {
-//             key: `carousel-${nanoid()}`,
-//             // name,
-//             // params: routeParamList[name],
-//         },
-//     ],
-// }
-
-// splitted=false
-// {
-//     stale: false,
-//     type: 'split',
-//     key: `split-${nanoid()}`,
-//     index: 0, // initial
-//     routeNames: ['main', 'carousel'],
-//     // history,
-//     routes: [
-//         // main
-//         {
-//             key: `main-${nanoid()}`,
-//             // name,
-//             // params: routeParamList[name],
-//             state: {
-//                 stale: false,
-//                 type: 'stack',
-//                 key: `stack-${nanoid()}`,
-//                 index: 0,
-//                 routeNames: ['main', 'buttons'],
-//                 routes: [
-//                     {
-//                         key: `main-${nanoid()}`,
-//                         // name,
-//                         // params: routeParamList[name],
-//                     },
-//                     {
-//                         key: `buttons-${nanoid()}`,
-//                         // name,
-//                         // params: routeParamList[name],
-//                     },
-//                 ],
-//             }
-//         },
-//         // for tab
-//         {
-//             key: `carousel-${nanoid()}`,
-//             // name,
-//             // params: routeParamList[name],
-//         },
-//     ],
-// }

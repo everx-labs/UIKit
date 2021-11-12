@@ -390,7 +390,7 @@ export function SplitNavigator({
                                 <SplitBottomTabBar
                                     icons={tabBarIcons}
                                     setTabBarHeight={setTabBarHeight}
-                                    activeKey={state.routes[state.index].key}
+                                    activeKey={state.routes[state.tabIndex].key}
                                 />
                             </View>
                             <View style={splitStyles.detail}>
@@ -403,7 +403,7 @@ export function SplitNavigator({
                                 >
                                     {state.routes.map((route, index) => {
                                         const descriptor = descriptors[route.key];
-                                        const isFocused = state.index === index;
+                                        const isFocused = state.tabIndex === index;
 
                                         // Do not render main route
                                         if (route.key === mainRoute.key) {
@@ -480,7 +480,7 @@ export function SplitNavigator({
                     >
                         {state.routes.map((route, index) => {
                             const descriptor = descriptors[route.key];
-                            const isFocused = state.index === index;
+                            const isFocused = state.tabIndex === index;
 
                             // isFocused check is important here
                             // as we can try to render a screen before it was put
@@ -491,6 +491,9 @@ export function SplitNavigator({
                             }
 
                             if (route.name === MAIN_SCREEN_NAME) {
+                                if (state.nestedStack == null) {
+                                    return null;
+                                }
                                 if (doesSupportNative) {
                                     return (
                                         <ResourceSavingScene
@@ -513,14 +516,14 @@ export function SplitNavigator({
                                                                     'split',
                                                                     'stack',
                                                                 ),
-                                                                index: state.nestedStack
-                                                                    ? state.nestedStack.length - 1
-                                                                    : 0,
+                                                                index: state.nestedStack.length - 1,
                                                                 routeNames: stackRouteNames,
-                                                                routes: state.routes.filter(
-                                                                    r =>
-                                                                        stackDescriptors[r.key] ==
-                                                                        null,
+                                                                routes: state.nestedStack.map(
+                                                                    routeIndex => {
+                                                                        return state.routes[
+                                                                            routeIndex
+                                                                        ];
+                                                                    },
                                                                 ),
                                                             }}
                                                             navigation={navigation}
@@ -555,13 +558,12 @@ export function SplitNavigator({
                                                                 'split',
                                                                 'stack',
                                                             ),
-                                                            index: state.nestedStack
-                                                                ? state.nestedStack.length - 1
-                                                                : 0,
+                                                            index: state.nestedStack.length - 1,
                                                             routeNames: stackRouteNames,
-                                                            routes: state.routes.filter(
-                                                                r =>
-                                                                    stackDescriptors[r.key] == null,
+                                                            routes: state.nestedStack.map(
+                                                                routeIndex => {
+                                                                    return state.routes[routeIndex];
+                                                                },
                                                             ),
                                                         }}
                                                         navigation={navigation}
@@ -597,7 +599,7 @@ export function SplitNavigator({
                     <SplitBottomTabBar
                         icons={tabBarIcons}
                         setTabBarHeight={setTabBarHeight}
-                        activeKey={state.routes[state.index].key}
+                        activeKey={state.routes[state.tabIndex].key}
                     />
                 </SafeAreaProviderCompat>
             </NestedInSplitContext.Provider>
