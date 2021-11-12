@@ -289,7 +289,7 @@ const UIMaterialTextViewFloating = React.forwardRef<
     const ref = React.useRef<TextInput>(null);
     const {
         inputHasValue,
-        clear: clearProp,
+        clear: baseClear,
         onChangeText: onChangeTextProp,
     } = useUITextViewValue(ref, false, props);
     useExtendedRef(passedRef, ref, props, onChangeTextProp);
@@ -307,9 +307,9 @@ const UIMaterialTextViewFloating = React.forwardRef<
         onHeightChange,
     );
     const clearInput = React.useCallback(() => {
-        clearProp();
+        baseClear();
         resetInputHeight();
-    }, [clearProp, resetInputHeight]);
+    }, [baseClear, resetInputHeight]);
 
     const clear = React.useMemo(() => {
         /**
@@ -380,7 +380,7 @@ const UIMaterialTextViewSimple = React.forwardRef<
     const ref = React.useRef<TextInput>(null);
     const {
         inputHasValue,
-        clear: clearProp,
+        clear: baseClear,
         onChangeText: onChangeTextProp,
     } = useUITextViewValue(ref, false, props);
     useExtendedRef(passedRef, ref, props, onChangeTextProp);
@@ -391,9 +391,9 @@ const UIMaterialTextViewSimple = React.forwardRef<
         onHeightChange,
     );
     const clearInput = React.useCallback(() => {
-        clearProp();
+        baseClear();
         resetInputHeight();
-    }, [clearProp, resetInputHeight]);
+    }, [baseClear, resetInputHeight]);
 
     const clear = React.useMemo(() => {
         return success ? undefined : clearInput;
