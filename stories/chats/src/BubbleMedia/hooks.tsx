@@ -140,9 +140,11 @@ export const useImages = (
     }, [data, preview, imageRef, imageSize, onErrorCallback, onLoadCallback]);
 };
 
-export const useImageSize = (data: string | null) => {
+export const useImageSize = (data: string | null, originalSize?: ImageSize) => {
     const [imageSize, setImageSize] = React.useState<ImageSize | null>(null);
-    const originalSizeRef = React.useRef<ImageSize | null>(null);
+    const originalSizeRef = React.useRef<ImageSize | null>(
+        originalSize === undefined ? null : originalSize,
+    );
     const windowWidth = useWindowDimensions().width;
     const maxImageSize = useMaxImageSize(windowWidth);
 
@@ -162,9 +164,19 @@ export const useImageSize = (data: string | null) => {
     }, [maxImageSize.width, maxImageSize.height]);
 
     /**
-     * `data` has changed
+     * `originalSize` or `data` has changed
      */
     React.useEffect(() => {
+        if (originalSize && originalSizeRef.current) {
+            const newImageSize = getImageSize(
+                originalSizeRef.current?.width,
+                originalSizeRef.current?.height,
+                maxImageSize.width,
+                maxImageSize.height,
+            );
+            setImageSize(newImageSize);
+            return;
+        }
         if (data) {
             Image.getSize(data, (width, height) => {
                 originalSizeRef.current = {
@@ -186,7 +198,7 @@ export const useImageSize = (data: string | null) => {
          * every time the screen size changes.
          */
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data]);
+    }, [originalSize, data]);
 
     return imageSize;
 };
