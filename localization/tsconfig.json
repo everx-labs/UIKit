@@ -5,5 +5,5 @@
         "experimentalDecorators": true,
         "resolveJsonModule": true
     },
-    "include": ["**/*.ts", "**/*.tsx", "**/*.json"]
+    "include": ["**/*.ts", "**/*.tsx", "**/*.json", "src/DayJSConfig.js"]
 }

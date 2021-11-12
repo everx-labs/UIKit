@@ -1,3 +1,5 @@
+import './DayJSConfig.js';
+
 export { languagesInfo } from './constants';
 export * from './language';
 export * from './LocalizationString';

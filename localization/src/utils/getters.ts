@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 import type { DateFormatInfo, NumberFormatInfo } from '../types';
 
 export function getNumberFormatInfo(): NumberFormatInfo {
@@ -55,7 +57,9 @@ export function getDateFormatInfo(): DateFormatInfo {
     // Determining the first day of the week by locale when using library can consume too much space,
     // but without it it will be inaccurate,
     // so for simplicity we will define that on the web all weeks start on Monday, as the most common day.
-    const dayOfWeek = 1;
+    // @ts-expect-error
+    const dayOfWeek = dayjs().weekday(0);
+    console.log(dayOfWeek);
 
     return {
         separator,
