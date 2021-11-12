@@ -164,20 +164,10 @@ export const useImageSize = (data: string | null, originalSize?: ImageSize) => {
     }, [maxImageSize.width, maxImageSize.height]);
 
     /**
-     * `originalSize` or `data` has changed
+     * `data` has changed
      */
     React.useEffect(() => {
-        if (originalSize && originalSizeRef.current) {
-            const newImageSize = getImageSize(
-                originalSizeRef.current?.width,
-                originalSizeRef.current?.height,
-                maxImageSize.width,
-                maxImageSize.height,
-            );
-            setImageSize(newImageSize);
-            return;
-        }
-        if (data) {
+        if (data && !originalSize) {
             Image.getSize(data, (width, height) => {
                 originalSizeRef.current = {
                     width,
@@ -198,7 +188,7 @@ export const useImageSize = (data: string | null, originalSize?: ImageSize) => {
          * every time the screen size changes.
          */
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [originalSize, data]);
+    }, [data]);
 
     return imageSize;
 };
