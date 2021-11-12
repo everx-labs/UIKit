@@ -312,6 +312,12 @@ const UIMaterialTextViewFloating = React.forwardRef<
     }, [clearProp, resetInputHeight]);
 
     const clear = React.useMemo(() => {
+        /**
+         *  If clearButton is visible it blocks displaying child icons.
+         * So we show it if the input is invalid.
+         * It was made for UIKeyTextView, as for the signing box interface in the browser
+         * we want to show the icon of submitting, when a key is valid, instead of a clear button
+         */
         return success ? undefined : () => clearInput();
     }, [clearInput, success]);
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
