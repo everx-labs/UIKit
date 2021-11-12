@@ -289,7 +289,7 @@ const UIMaterialTextViewFloating = React.forwardRef<
     const ref = React.useRef<TextInput>(null);
     const {
         inputHasValue,
-        clear: clearInput,
+        clear: clearProp,
         onChangeText: onChangeTextProp,
     } = useUITextViewValue(ref, false, props);
     useExtendedRef(passedRef, ref, props, onChangeTextProp);
@@ -306,10 +306,14 @@ const UIMaterialTextViewFloating = React.forwardRef<
         props,
         onHeightChange,
     );
-    const clear = React.useCallback(() => {
-        clearInput();
+    const clearInput = React.useCallback(() => {
+        clearProp();
         resetInputHeight();
-    }, [clearInput, resetInputHeight]);
+    }, [clearProp, resetInputHeight]);
+
+    const clear = React.useMemo(() => {
+        return success ? undefined : () => clearInput();
+    }, [clearInput, success]);
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
     const processedChildren = useMaterialTextViewChildren(
         children,
@@ -317,7 +321,6 @@ const UIMaterialTextViewFloating = React.forwardRef<
         isFocused,
         isHovered,
         clear,
-        success,
     );
 
     return (
@@ -367,11 +370,11 @@ const UIMaterialTextViewSimple = React.forwardRef<
     UIMaterialTextViewRef,
     UIMaterialTextViewCommonProps
 >(function UIMaterialTextViewSimpleForwarded(props: UIMaterialTextViewCommonProps, passedRef) {
-    const { label, onLayout, children, onHeightChange, ...rest } = props;
+    const { label, onLayout, children, success, onHeightChange, ...rest } = props;
     const ref = React.useRef<TextInput>(null);
     const {
         inputHasValue,
-        clear: clearInput,
+        clear: clearProp,
         onChangeText: onChangeTextProp,
     } = useUITextViewValue(ref, false, props);
     useExtendedRef(passedRef, ref, props, onChangeTextProp);
@@ -381,10 +384,14 @@ const UIMaterialTextViewSimple = React.forwardRef<
         props,
         onHeightChange,
     );
-    const clear = React.useCallback(() => {
-        clearInput();
+    const clearInput = React.useCallback(() => {
+        clearProp();
         resetInputHeight();
-    }, [clearInput, resetInputHeight]);
+    }, [clearProp, resetInputHeight]);
+
+    const clear = React.useMemo(() => {
+        return success ? undefined : () => clearInput();
+    }, [clearInput, success]);
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
     const processedChildren = useMaterialTextViewChildren(
         children,

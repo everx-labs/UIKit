@@ -83,19 +83,11 @@ export function useMaterialTextViewChildren(
     inputHasValue: boolean,
     isFocused: boolean,
     isHovered: boolean,
-    clear: () => void,
-    success?: boolean,
+    clear?: () => void,
 ) {
     const clearButton = useClearButton(inputHasValue, isFocused, isHovered, clear);
-    
-    /**
-     * If clearButton is visible it blocks displaying child icons.
-     * So we show it if the input is invalid.
-     *
-     * It was made for UIKeyTextView, as for the signing box interface in the browser
-     * we want to show the icon of submitting, when a key is valid, instead of a clear button
-     */
-    if (clearButton && !success) {
+
+    if (clearButton) {
         /**
          * It's wrapped with a View
          * to stick a clear button to the bottom
