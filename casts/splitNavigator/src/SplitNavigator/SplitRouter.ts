@@ -721,7 +721,6 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
         type: 'split',
 
         getInitialState(options: RouterConfigOptions) {
-            console.log('getInitialState');
             return (isSplitted ? unfoldedRouter : foldedRouter).getInitialState(options);
         },
 

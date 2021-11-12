@@ -37,8 +37,10 @@ import {
     UILargeTitleHeader,
     UISearchBarButton,
 } from '@tonlabs/uicast.bars';
-import { createSplitNavigator } from '@tonlabs/uicast.split-navigator';
+// import { createSplitNavigator } from '@tonlabs/uicast.split-navigator';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
+import { UIAssets } from '@tonlabs/uikit.assets';
+import { createSplitNavigator } from '../../casts/splitNavigator/src';
 
 import { ButtonsScreen } from './screens/Buttons';
 import { Checkbox } from './screens/Checkbox';
@@ -338,7 +340,14 @@ const App = () => {
                             <Split.Screen name="keyboard" component={KeyboardScreen} />
                             <Split.Screen name="large-header" component={LargeHeaderScreen} />
                             <Split.Screen name="layouts" component={Layouts} />
-                            <Split.Screen name="main" component={Main} />
+                            <Split.Screen
+                                name="main"
+                                component={Main}
+                                options={{
+                                    tabBarActiveIcon: UIAssets.icons.ui.buttonPlus,
+                                    tabBarDisabledIcon: UIAssets.icons.ui.buttonPlusDisabled,
+                                }}
+                            />
                             <Split.Screen name="menus" component={Menus} />
                             <Split.Screen name="navigation" component={Navigation} />
                             <Split.Screen name="notifications" component={NotificationsScreen} />
@@ -347,7 +356,14 @@ const App = () => {
                             <Split.Screen name="profile" component={Profile} />
                             <Split.Screen name="qr-code" component={QRCodeScreen} />
                             <Split.Screen name="text" component={TextScreen} />
-                            <Split.Screen name="finances" component={FinancesScreen} />
+                            <Split.Screen
+                                name="finances"
+                                component={FinancesScreen}
+                                options={{
+                                    tabBarActiveIcon: UIAssets.icons.ui.buttonStickerEnabled,
+                                    tabBarDisabledIcon: UIAssets.icons.ui.buttonStickerDisabled,
+                                }}
+                            />
                             <Split.Screen name="skeletons" component={SkeletonsScreen} />
                         </Split.Navigator>
                     </NavigationContainer>
