@@ -142,9 +142,7 @@ export const useImages = (
 
 export const useImageSize = (data: string | null, originalSize?: ImageSize) => {
     const [imageSize, setImageSize] = React.useState<ImageSize | null>(null);
-    const originalSizeRef = React.useRef<ImageSize | null>(
-        originalSize === undefined ? null : originalSize,
-    );
+    const originalSizeRef = React.useRef<ImageSize | null>(originalSize ?? null);
     const windowWidth = useWindowDimensions().width;
     const maxImageSize = useMaxImageSize(windowWidth);
 

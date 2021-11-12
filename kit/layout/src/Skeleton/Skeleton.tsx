@@ -195,13 +195,16 @@ export function UISkeleton({
 
     const { isVisible, crossDissolveProgress } = useCrossDissolve(visible);
 
-    const containerStyles = [styles.container, styleProp];
+    const containerStyles = React.useMemo(() => {
+        const containerStyles = [styles.container, styleProp];
+        if (persistStyles) {
+            return containerStyles;
+        }
+        return isVisible ? containerStyles : null;
+    }, [isVisible, persistStyles]);
 
     return (
-        <View
-            style={persistStyles ? containerStyles : isVisible ? containerStyles : null}
-            onLayout={onLayout}
-        >
+        <View style={containerStyles} onLayout={onLayout}>
             {children}
             {isVisible && (
                 <SkeletonAnimatable width={width} crossDissolveProgress={crossDissolveProgress} />
