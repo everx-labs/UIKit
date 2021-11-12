@@ -84,10 +84,11 @@ export function useMaterialTextViewChildren(
     isFocused: boolean,
     isHovered: boolean,
     clear: () => void,
+    success?: boolean,
 ) {
     const clearButton = useClearButton(inputHasValue, isFocused, isHovered, clear);
 
-    if (clearButton) {
+    if (clearButton && !success) {
         /**
          * It's wrapped with a View
          * to stick a clear button to the bottom

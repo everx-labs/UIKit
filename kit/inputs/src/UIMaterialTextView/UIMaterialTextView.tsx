@@ -285,7 +285,7 @@ const UIMaterialTextViewFloating = React.forwardRef<
     UIMaterialTextViewRef,
     UIMaterialTextViewCommonProps
 >(function UIMaterialTextViewFloatingForwarded(props: UIMaterialTextViewCommonProps, passedRef) {
-    const { label, onLayout, children, onHeightChange, ...rest } = props;
+    const { label, onLayout, children, onHeightChange, success, ...rest } = props;
     const ref = React.useRef<TextInput>(null);
     const {
         inputHasValue,
@@ -317,6 +317,7 @@ const UIMaterialTextViewFloating = React.forwardRef<
         isFocused,
         isHovered,
         clear,
+        success,
     );
 
     return (

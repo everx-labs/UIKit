@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { TextInput, StyleSheet } from 'react-native';
+import type { TextInput } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { uiLocalized } from '@tonlabs/localization';
-import { UIConstant } from '@tonlabs/uikit.core';
 
 import { useFocused, useUITextViewValue } from './UITextView';
 import {
@@ -86,7 +85,7 @@ export function useKeyTextView(
 
     const onKeyPress = React.useCallback(
         (e?: any) => {
-            const wasClearedWithEnter = onKeyPressBase(e);
+            const wasClearedWithEnter = e ? onKeyPressBase(e) : true;
             if (success && wasClearedWithEnter) {
                 onDone(inputValue.current);
             }
@@ -116,6 +115,18 @@ export const UIKeyTextView = React.forwardRef<UIMaterialTextViewRef, UIKeyTextVi
             props,
         );
 
+        const renderButton = React.useMemo(() => {
+            return (
+                success && (
+                    <UIMaterialTextView.Icon
+                        testID="send_btn"
+                        source={UIAssets.icons.ui.buttonMsgSend}
+                        onPress={onKeyPress}
+                    />
+                )
+            );
+        }, [onKeyPress, success]);
+
         return (
             <UIMaterialTextView
                 ref={ref}
@@ -129,20 +140,8 @@ export const UIKeyTextView = React.forwardRef<UIMaterialTextViewRef, UIKeyTextVi
                 error={error}
                 multiline
             >
-                <UIMaterialTextView.Icon
-                    testID="send_btn"
-                    source={UIAssets.icons.ui.buttonMsgSend}
-                    onPress={onKeyPress}
-                    style={styles.icon}
-                />
+                {renderButton}
             </UIMaterialTextView>
         );
     },
 );
-
-const styles = StyleSheet.create({
-    icon: {
-        height: UIConstant.iconSize(),
-        width: UIConstant.iconSize(),
-    },
-});
