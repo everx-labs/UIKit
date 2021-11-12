@@ -87,7 +87,11 @@ export function useMaterialTextViewChildren(
     success?: boolean,
 ) {
     const clearButton = useClearButton(inputHasValue, isFocused, isHovered, clear);
-
+    
+    /**
+     * If clearButton is visible it blocks displaying child icons.
+     * So we show it if the input is invalid.
+     */
     if (clearButton && !success) {
         /**
          * It's wrapped with a View
