@@ -62,7 +62,6 @@
     "dependencies": {
         "@quentin-sommer/react-useragent": "2.0.0",
         "@react-native-community/hooks": "2.6.0",
-        "bowser": "1.9.4",
         "currency-formatter": "1.5.4",
         "fontfaceobserver-es": "3.3.3",
         "fuse.js": "3.4.6",
@@ -80,8 +79,7 @@
         "react-native-simple-popover": "git+https://github.com/tonlabs/react-native-simple-popover.git",
         "react-native-status-bar-height": "1.0.1",
         "react-native-tab-view": "3.0.1",
-        "react-qr-reader": "2.2.1",
-        "validator": "10.11.0"
+        "react-qr-reader": "2.2.1"
     },
     "devDependencies": {
         "@babel/core": "^7.15.0",

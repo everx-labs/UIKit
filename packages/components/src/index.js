@@ -1,20 +1,12 @@
 // @flow
 export * from './UIActionComponent';
-export { default as UIActionImage } from './UIActionImage';
-export { default as UIAmountInput } from './UIAmountInput';
-export { default as UICompatibilityView } from './UICompatibilityView';
 export { default as UIComponent } from './UIComponent';
-export * from './UIDetailsInput';
 export { default as UIDetailsTable } from './UIDetailsTable';
 export { default as UIDetailsView } from './UIDetailsView';
-export { default as UILayoutManager } from './UILayoutManager';
 export { default as UILink } from './UILink';
-export { default as UIListHeader } from './UIListHeader';
 export { default as UILoadMoreButton } from './UILoadMoreButton';
 export { default as UINetworkStatus } from './UINetworkStatus';
 export { default as UIPureComponent } from './UIPureComponent';
 export { default as UIScaleButton } from './UIScaleButton';
-export { default as UISectionHeader } from './UISectionHeader';
 export { default as UISpinnerOverlay } from './UISpinnerOverlay';
-export { default as UITextInput } from './UITextInput';
 export { default as UITransferInput } from './UITransferInput';
