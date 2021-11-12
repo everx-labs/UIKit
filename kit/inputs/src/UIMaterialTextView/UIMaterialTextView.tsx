@@ -318,7 +318,7 @@ const UIMaterialTextViewFloating = React.forwardRef<
          * It was made for UIKeyTextView, as for the signing box interface in the browser
          * we want to show the icon of submitting, when a key is valid, instead of a clear button
          */
-        return success ? undefined : () => clearInput();
+        return success ? undefined : clearInput;
     }, [clearInput, success]);
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
     const processedChildren = useMaterialTextViewChildren(
@@ -396,7 +396,7 @@ const UIMaterialTextViewSimple = React.forwardRef<
     }, [clearProp, resetInputHeight]);
 
     const clear = React.useMemo(() => {
-        return success ? undefined : () => clearInput();
+        return success ? undefined : clearInput;
     }, [clearInput, success]);
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
     const processedChildren = useMaterialTextViewChildren(
