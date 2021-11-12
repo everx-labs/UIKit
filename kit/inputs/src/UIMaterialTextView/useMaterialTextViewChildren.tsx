@@ -91,6 +91,9 @@ export function useMaterialTextViewChildren(
     /**
      * If clearButton is visible it blocks displaying child icons.
      * So we show it if the input is invalid.
+     *
+     * It was made for UIKeyTextView, as for the signing box interface in the browser
+     * we want to show the icon of submitting, when a key is valid, instead of a clear button
      */
     if (clearButton && !success) {
         /**
