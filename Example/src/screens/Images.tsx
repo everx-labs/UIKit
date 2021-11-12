@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { View, Image } from 'react-native';
 
-import { UIActionImage } from '@tonlabs/uikit.components';
 import { UIBoxButton } from '@tonlabs/uikit.controls';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { DuplicateImage } from '@tonlabs/uikit.media';
-import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
 function DuplicateImageCheck() {
@@ -39,25 +37,6 @@ function DuplicateImageCheck() {
 
 export const Images = () => (
     <ExampleScreen>
-        <ExampleSection title="UIActionImage">
-            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIActionImage
-                    testID="uiActionImage_default"
-                    iconEnabled={UIAssets.icons.ui.keyThinDark}
-                    iconDisabled={UIAssets.icons.ui.keyThinGrey}
-                    iconHovered={UIAssets.icons.ui.keyThinWhite}
-                />
-            </View>
-            <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                <UIActionImage
-                    testID="uiActionImage_disabled"
-                    iconEnabled={UIAssets.icons.ui.keyThinDark}
-                    iconDisabled={UIAssets.icons.ui.keyThinGrey}
-                    iconHovered={UIAssets.icons.ui.keyThinWhite}
-                    disabled
-                />
-            </View>
-        </ExampleSection>
         <DuplicateImageCheck />
     </ExampleScreen>
 );
