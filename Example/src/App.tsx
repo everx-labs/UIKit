@@ -40,7 +40,7 @@ import {
 // import { createSplitNavigator } from '@tonlabs/uicast.split-navigator';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { createSplitNavigator } from '../../casts/splitNavigator/src';
+import { createSplitNavigator, useSplitTabBarHeight } from '../../casts/splitNavigator/src';
 
 import { ButtonsScreen } from './screens/Buttons';
 import { Checkbox } from './screens/Checkbox';
@@ -82,6 +82,7 @@ const Main = ({ navigation }: { navigation: any }) => {
     const themeSwitcher = React.useContext(ThemeSwitcher);
     const [isSearchVisible, setIsSearchVisible] = React.useState(false);
     const { top, bottom } = useSafeAreaInsets();
+    const tabBarBottomInset = useSplitTabBarHeight();
     return (
         <UIBackgroundView style={{ flex: 1, paddingTop: top }}>
             <PortalManager id="search">
@@ -142,7 +143,11 @@ const Main = ({ navigation }: { navigation: any }) => {
                             }}
                         </UISearchBarButton>
                     </View>
-                    <ScrollView contentContainerStyle={{ paddingBottom: bottom }}>
+                    <ScrollView
+                        contentContainerStyle={{
+                            paddingBottom: Math.max(bottom, tabBarBottomInset),
+                        }}
+                    >
                         <UILinkButton
                             title="Browser"
                             type={UILinkButtonType.Menu}
@@ -364,7 +369,14 @@ const App = () => {
                                     tabBarDisabledIcon: UIAssets.icons.ui.buttonStickerDisabled,
                                 }}
                             />
-                            <Split.Screen name="skeletons" component={SkeletonsScreen} />
+                            <Split.Screen
+                                name="skeletons"
+                                component={SkeletonsScreen}
+                                options={{
+                                    tabBarActiveIcon: UIAssets.icons.ui.checkboxSquareActive,
+                                    tabBarDisabledIcon: UIAssets.icons.ui.checkboxSquareInactive,
+                                }}
+                            />
                         </Split.Navigator>
                     </NavigationContainer>
                     <UILayoutManager />
