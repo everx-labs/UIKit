@@ -1,5 +1,4 @@
 /* eslint-disable import/no-duplicates */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import type Animated from 'react-native-reanimated';
 import type { useAnimatedGestureHandler } from 'react-native-reanimated';
 import type { ScrollableParentScrollHandler } from '@tonlabs/uikit.scrolls';
