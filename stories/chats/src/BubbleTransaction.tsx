@@ -69,12 +69,10 @@ const getBubbleCornerStyle = (position: BubblePosition) => {
     return null;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getAmountColor = (_message: TransactionMessage) => {
     return UILabelColors.StaticTextPrimaryLight;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getCommentColor = (_message: TransactionMessage) => {
     return UILabelColors.StaticTextOverlayLight;
 };

@@ -156,15 +156,15 @@ export function useHasScroll() {
         hasScrollRef.current = hasScroll;
     }, [hasScroll]);
 
-    const scrollViewOutterHeight = React.useRef(0);
+    const scrollViewOuterHeight = React.useRef(0);
     const scrollViewInnerHeight = React.useRef(0);
 
     const compareHeights = React.useCallback(() => {
-        if (scrollViewInnerHeight.current === 0 || scrollViewOutterHeight.current === 0) {
+        if (scrollViewInnerHeight.current === 0 || scrollViewOuterHeight.current === 0) {
             return;
         }
 
-        setHasScroll(scrollViewInnerHeight.current > scrollViewOutterHeight.current);
+        setHasScroll(scrollViewInnerHeight.current > scrollViewOuterHeight.current);
     }, [setHasScroll]);
 
     const onLayout = React.useCallback(
@@ -173,7 +173,7 @@ export function useHasScroll() {
                 layout: { height },
             },
         }) => {
-            scrollViewOutterHeight.current = height;
+            scrollViewOuterHeight.current = height;
 
             compareHeights();
         },
@@ -197,7 +197,6 @@ export function useHasScroll() {
     };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function useContentInset(ref: React.RefObject<SectionList>, hasScrollOverflow: boolean) {
     const bottomInset = useSafeAreaInsets().bottom;
     const contentInset = React.useMemo(
@@ -232,7 +231,7 @@ function useContentInset(ref: React.RefObject<SectionList>, hasScrollOverflow: b
          * (hasScrollOverflow going to be changed since a data would be [] for a sec)
          *
          * Breadcrumbs:
-         *  - In chats we have UIChatInput, that on iOS manages insets themself
+         *  - In chats we have UIChatInput, that on iOS manages insets themselves
          *    (actually it's UIInputAccessoryView does it in native)
          *    but in debots there could be a situation when we don't have input there
          *    (not a rare situation because actually it starts without any input presented).
