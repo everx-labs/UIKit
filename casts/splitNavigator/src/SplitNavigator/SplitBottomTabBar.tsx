@@ -1,9 +1,18 @@
 import * as React from 'react';
-import { View, Animated, ImageSourcePropType, ImageRequireSource } from 'react-native';
+import {
+    View,
+    Animated,
+    ImageSourcePropType,
+    ImageRequireSource,
+    StyleProp,
+    ViewStyle,
+} from 'react-native';
 import {
     GestureEvent,
     NativeViewGestureHandlerPayload,
+    NativeViewGestureHandlerProps,
     RawButton as GHRawButton,
+    RawButtonProps,
 } from 'react-native-gesture-handler';
 import ReAnimated, {
     runOnJS,
@@ -26,17 +35,6 @@ export type SplitScreenTabBarIconOptions =
     | {
           tabBarIconLottieSource: ImageRequireSource;
       };
-
-/**
- * TODO
- */
-function LottieView(_props: {
-    source: ImageSourcePropType;
-    progress: Animated.Value;
-    style: StyleProp<ViewStyle>;
-}) {
-    return null;
-}
 
 type LottieIconViewProps = {
     activeState: boolean;
@@ -87,6 +85,16 @@ function ImageIconView({ activeState, activeSource, disabledSource }: ImageIconV
     );
 }
 
+export const RawButton: React.FunctionComponent<
+    ReAnimated.AnimateProps<
+        RawButtonProps &
+            NativeViewGestureHandlerProps & {
+                testID?: string;
+                style?: StyleProp<ViewStyle>;
+            }
+    >
+> = Animated.createAnimatedComponent(GHRawButton);
+
 function SplitBottomTabBarItem({
     children,
     keyProp,
@@ -107,7 +115,7 @@ function SplitBottomTabBarItem({
         },
     );
     return (
-        <GHRawButton
+        <RawButton
             enabled
             onGestureEvent={gestureHandler}
             // TODO
@@ -119,7 +127,7 @@ function SplitBottomTabBarItem({
             }}
         >
             {children}
-        </GHRawButton>
+        </RawButton>
     );
 }
 type SplitBottomTabBarDotRef = { moveTo(index: number): void };

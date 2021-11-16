@@ -147,6 +147,16 @@ export function SplitNavigator({
     // Access it from the state to re-render a container
     // only when router has processed SET_SPLITTED action
 
+    const onTabPress = React.useCallback(
+        (key: string) => {
+            if (state.routes[state.index].key === key) {
+                return;
+            }
+            navigation.navigate({ key });
+        },
+        [navigation, state],
+    );
+
     if (state.isSplitted) {
         const mainRoute = state.routes.find(
             ({ name }: { name: string }) => name === MAIN_SCREEN_NAME,
@@ -192,9 +202,7 @@ export function SplitNavigator({
                                 <SplitBottomTabBar
                                     icons={tabBarIcons}
                                     activeKey={state.routes[state.tabIndex].key}
-                                    onPress={key => {
-                                        navigation.navigate({ key });
-                                    }}
+                                    onPress={onTabPress}
                                 />
                             </View>
                             <View style={splitStyles.detail}>
@@ -403,9 +411,7 @@ export function SplitNavigator({
                     <SplitBottomTabBar
                         icons={tabBarIcons}
                         activeKey={state.routes[state.tabIndex].key}
-                        onPress={key => {
-                            navigation.navigate({ key });
-                        }}
+                        onPress={onTabPress}
                     />
                 </SafeAreaProviderCompat>
             </NestedInSplitContext.Provider>

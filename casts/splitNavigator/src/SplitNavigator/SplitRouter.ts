@@ -714,7 +714,6 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
                 return state;
             }
 
-            console.log('getRehydratedState', state);
             return (isSplitted ? unfoldedRouter : foldedRouter).getRehydratedState(state, options);
         },
 
@@ -729,7 +728,6 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
         },
 
         getStateForAction(state: SplitNavigationState<ParamListBase>, action, options) {
-            console.log('getStateForAction', action);
             if (action.type === 'SET_SPLITTED') {
                 ({ isSplitted } = action.payload);
 
@@ -762,11 +760,8 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
             );
         },
 
-        shouldActionChangeFocus(/* action */) {
-            console.log('shouldActionChangeFocus');
-            // TODO
-            // return tabRouter.shouldActionChangeFocus(action);
-            return false;
+        shouldActionChangeFocus(action) {
+            return action.type === 'NAVIGATE';
         },
     };
 
