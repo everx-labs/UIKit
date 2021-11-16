@@ -34,9 +34,6 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/uikit.themes": "^2.3.0",
-        "@tonlabs/uikit.core": "^2.3.0",
-        "@tonlabs/uikit.components": "^2.3.0",
         "react-native-indicators": "git+https://github.com/tonlabs/react-native-indicators.git"
     },
     "devDependencies": {
