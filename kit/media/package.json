@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uikit.media",
-    "version": "2.3.0",
+    "version": "3.0.0",
     "description": "Media for Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit",
@@ -35,20 +35,20 @@
     ],
     "dependencies": {
         "@react-native-community/hooks": "^2.6.0",
-        "@tonlabs/uikit.themes": "^2.3.0",
-        "@tonlabs/uikit.assets": "^2.3.0",
-        "@tonlabs/uikit.core": "^2.3.0",
-        "@tonlabs/uikit.layout": "^2.3.0",
+        "@tonlabs/uikit.assets": "^3.0.0",
+        "@tonlabs/uikit.core": "^3.0.0",
+        "@tonlabs/uikit.layout": "^3.0.0",
+        "@tonlabs/uikit.themes": "^3.0.0",
         "html2canvas": "^1.0.0-rc.7",
         "nanoid": "^3.1.23",
         "qrcode": "^1.4.4"
     },
     "devDependencies": {
         "@react-native-community/bob": "0.16.2",
+        "@types/qrcode": "^1.4.0",
         "@types/react": "17.0.21",
         "@types/react-native": "0.65.0",
         "@types/react-native-video": "^5.0.10",
-        "@types/qrcode": "^1.4.0",
         "react": "17.0.2",
         "react-dom": "17.0.2",
         "react-native": "0.65.1",

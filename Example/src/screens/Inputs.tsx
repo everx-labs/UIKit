@@ -265,10 +265,7 @@ export const Inputs = () => {
                 </View>
             </ExampleSection>
             <ExampleSection title="UIDetailsInput">
-                <View 
-                    style={{ paddingVertical: 20 }}
-                    testID="uiDetailsInput_default"
-                >
+                <View style={{ paddingVertical: 20 }} testID="uiDetailsInput_default">
                     <UIDetailsInput
                         placeholder="Details"
                         comment="Some comment here"
@@ -276,10 +273,7 @@ export const Inputs = () => {
                         onChangeText={(newText: string) => setDetails(newText)}
                     />
                 </View>
-                <View
-                    testID="uiDetailsInput_multiline"
-                    style={{ paddingVertical: 20 }}
-                >
+                <View testID="uiDetailsInput_multiline" style={{ paddingVertical: 20 }}>
                     <UIDetailsInput
                         placeholder="Multiline details"
                         comment="Some comment here"

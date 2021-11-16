@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uicast.split-navigator",
-    "version": "2.3.0",
+    "version": "3.0.0",
     "description": "Split navigator on Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",
@@ -34,8 +34,8 @@
         "src/"
     ],
     "dependencies": {
-        "react-native-safe-area-context": "^3.1.3",
-        "nanoid": "^3.1.23"
+        "nanoid": "^3.1.23",
+        "react-native-safe-area-context": "^3.1.3"
     },
     "devDependencies": {
         "@react-native-community/bob": "0.16.2",
