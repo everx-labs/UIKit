@@ -8,5 +8,4 @@ export { default as UILoadMoreButton } from './UILoadMoreButton';
 export { default as UINetworkStatus } from './UINetworkStatus';
 export { default as UIPureComponent } from './UIPureComponent';
 export { default as UIScaleButton } from './UIScaleButton';
-export { default as UISpinnerOverlay } from './UISpinnerOverlay';
 export { default as UITransferInput } from './UITransferInput';
