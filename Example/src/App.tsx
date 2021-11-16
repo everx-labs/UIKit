@@ -54,6 +54,7 @@ import { Popups } from './screens/Popups';
 import { Products } from './screens/Products';
 import { Profile } from './screens/Profile';
 import { TextScreen } from './screens/Text';
+import { VideoScreen } from './screens/Video';
 import { Browser } from './screens/Browser';
 import { Chat } from './screens/Chat';
 import { Carousel } from './screens/Carousel';
@@ -268,6 +269,12 @@ const Main = ({ navigation }: { navigation: any }) => {
                             layout={styles.button}
                         />
                         <UILinkButton
+                            title="Video"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('video')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
                             title="Finances"
                             type={UILinkButtonType.Menu}
                             onPress={() => navigation.navigate('finances')}
@@ -347,6 +354,7 @@ const App = () => {
                             <Split.Screen name="profile" component={Profile} />
                             <Split.Screen name="qr-code" component={QRCodeScreen} />
                             <Split.Screen name="text" component={TextScreen} />
+                            <Split.Screen name="video" component={VideoScreen} />
                             <Split.Screen name="finances" component={FinancesScreen} />
                             <Split.Screen name="skeletons" component={SkeletonsScreen} />
                         </Split.Navigator>
