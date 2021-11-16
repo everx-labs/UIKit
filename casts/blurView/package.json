@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uicast.blur-view",
-    "version": "2.3.0",
+    "version": "3.0.0",
     "description": "Blur view on Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",
@@ -34,8 +34,8 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/uikit.themes": "^2.3.0",
-        "@tonlabs/uikit.layout": "^2.3.0"
+        "@tonlabs/uikit.layout": "^3.0.0",
+        "@tonlabs/uikit.themes": "^3.0.0"
     },
     "devDependencies": {
         "@react-native-community/blur": "git+https://github.com/tonlabs/react-native-blur.git",
