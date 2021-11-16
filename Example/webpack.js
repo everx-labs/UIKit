@@ -95,6 +95,7 @@ module.exports = {
             'react-native-permissions': 'react', // Hack in order not to load
             'react-native-qrcode-scanner': 'react', // Hack in order not to load
             'react-native-linear-gradient': 'react-native-web-linear-gradient',
+            'react-native-video': 'react', // Hack in order not to load
         },
     },
 };
