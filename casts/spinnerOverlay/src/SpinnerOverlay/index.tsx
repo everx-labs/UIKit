@@ -4,38 +4,29 @@ import { WaveIndicator } from 'react-native-indicators';
 
 type Props = {
     visible: boolean;
-    modal: boolean;
-    color: string;
-    size: number;
-    overlayColor: string;
 };
 
-export function UISpinnerOverlay({
-    visible = false,
-    modal = false,
-    color = 'white',
-    size = 40,
-    overlayColor = 'rgba(0,0,0,0.15)',
-}: Props) {
+const waveConfig = {
+    size: 40,
+    count: 2,
+};
+
+export function UISpinnerOverlay({ visible = false }: Props) {
     const renderSpinner = React.useMemo(() => {
         return (
-            <View
-                testID="spinner_loader"
-                style={[styles.container, { backgroundColor: overlayColor }]}
-                key={`spinner~${Date.now()}`}
-            >
+            <View testID="spinner_loader" style={[styles.container]} key={`spinner~${Date.now()}`}>
                 <View style={styles.background}>
-                    <WaveIndicator color={color} size={size} count={2} />
+                    <WaveIndicator color="white" size={waveConfig.size} count={waveConfig.count} />
                 </View>
             </View>
         );
-    }, [color, overlayColor, size]);
+    }, []);
 
     if (!visible) {
         return null;
     }
 
-    if (Platform.OS === 'web' || !modal) {
+    if (Platform.OS === 'web') {
         return renderSpinner;
     }
 
@@ -59,6 +50,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
+        backgroundColor: 'rgba(0,0,0,0.15)',
     },
     background: {
         position: 'absolute',
