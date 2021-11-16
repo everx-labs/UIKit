@@ -25,6 +25,7 @@ import { SafeAreaProviderCompat } from './SafeAreaProviderCompat';
 import { SplitRouter, SplitActions, MAIN_SCREEN_NAME, SplitActionHelpers } from './SplitRouter';
 import type { SplitNavigationState, SplitRouterOptions } from './SplitRouter';
 import { SplitBottomTabBar, SplitScreenTabBarIconOptions } from './SplitBottomTabBar';
+import { MainAnimatedIcon } from './MainAnimatedIcon';
 
 export const NestedInSplitContext = React.createContext<{
     isSplitted: boolean;
@@ -181,9 +182,9 @@ export function SplitNavigator({
                     tabBarDisabledIcon: descriptor.options.tabBarDisabledIcon,
                 };
             }
-            if ('tabBarIconLottieSource' in descriptor.options) {
+            if ('tabBarAnimatedIcon' in descriptor.options) {
                 acc[key] = {
-                    tabBarIconLottieSource: descriptor.options.tabBarIconLottieSource,
+                    tabBarAnimatedIcon: descriptor.options.tabBarAnimatedIcon,
                 };
             }
 
@@ -251,6 +252,7 @@ export function SplitNavigator({
         );
     }
 
+    const mainRoute = state.routes.find(({ name }: { name: string }) => name === MAIN_SCREEN_NAME);
     const tabBarIcons = Object.keys(descriptors).reduce<
         Record<string, SplitScreenTabBarIconOptions>
     >((acc, key) => {
@@ -263,10 +265,17 @@ export function SplitNavigator({
                 tabBarActiveIcon: descriptor.options.tabBarActiveIcon,
                 tabBarDisabledIcon: descriptor.options.tabBarDisabledIcon,
             };
+            return acc;
         }
-        if ('tabBarIconLottieSource' in descriptor.options) {
+        if ('tabBarAnimatedIcon' in descriptor.options) {
             acc[key] = {
-                tabBarIconLottieSource: descriptor.options.tabBarIconLottieSource,
+                tabBarAnimatedIcon: descriptor.options.tabBarAnimatedIcon,
+            };
+            return acc;
+        }
+        if (mainRoute?.key === key) {
+            acc[key] = {
+                tabBarAnimatedIcon: MainAnimatedIcon,
             };
         }
 

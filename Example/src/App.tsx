@@ -345,14 +345,7 @@ const App = () => {
                             <Split.Screen name="keyboard" component={KeyboardScreen} />
                             <Split.Screen name="large-header" component={LargeHeaderScreen} />
                             <Split.Screen name="layouts" component={Layouts} />
-                            <Split.Screen
-                                name="main"
-                                component={Main}
-                                options={{
-                                    tabBarActiveIcon: UIAssets.icons.ui.buttonPlus,
-                                    tabBarDisabledIcon: UIAssets.icons.ui.buttonPlusDisabled,
-                                }}
-                            />
+                            <Split.Screen name="main" component={Main} />
                             <Split.Screen name="menus" component={Menus} />
                             <Split.Screen name="navigation" component={Navigation} />
                             <Split.Screen name="notifications" component={NotificationsScreen} />

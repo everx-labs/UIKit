@@ -1,12 +1,5 @@
 import * as React from 'react';
-import {
-    View,
-    Animated,
-    ImageSourcePropType,
-    ImageRequireSource,
-    StyleProp,
-    ViewStyle,
-} from 'react-native';
+import { View, ImageSourcePropType, StyleProp, ViewStyle } from 'react-native';
 import {
     GestureEvent,
     NativeViewGestureHandlerPayload,
@@ -27,42 +20,43 @@ import { UIImage } from '@tonlabs/uikit.media';
 import { useTheme, ColorVariants, UIBackgroundView } from '@tonlabs/uikit.themes';
 import { hapticSelection } from '@tonlabs/uikit.controls';
 
+type SplitScreenTabBarAnimatedIconComponent = React.ComponentType<{
+    progress: ReAnimated.SharedValue<number>;
+    style?: StyleProp<ViewStyle>;
+}>;
+
 export type SplitScreenTabBarIconOptions =
     | {
           tabBarActiveIcon: ImageSourcePropType;
           tabBarDisabledIcon: ImageSourcePropType;
       }
     | {
-          tabBarIconLottieSource: ImageRequireSource;
+          tabBarAnimatedIcon: SplitScreenTabBarAnimatedIconComponent;
       };
 
-type LottieIconViewProps = {
+// @inline
+const ANIMATED_ICON_INACTIVE = 0;
+// @inline
+const ANIMATED_ICON_ACTIVE = 1;
+
+type AnimatedIconViewProps = {
     activeState: boolean;
-    source: ImageRequireSource;
+    component: SplitScreenTabBarAnimatedIconComponent;
 };
-function LottieIconView({ activeState, source }: LottieIconViewProps) {
-    const progress = React.useRef(new Animated.Value(activeState ? 1 : 0)).current;
-    // React.useImperativeHandle(ref, () => ({
-    //     activate() {
-    //         /**
-    //          * TODO: maybe linear is better to keep it in sync with the dot?
-    //          */
-    //         Animated.spring(progress, {
-    //             toValue: 1,
-    //             useNativeDriver: true,
-    //         });
-    //     },
-    //     disable() {
-    //         Animated.spring(progress, {
-    //             toValue: 0,
-    //             useNativeDriver: true,
-    //         });
-    //     },
-    // }));
+
+function AnimatedIconView({ activeState, component }: AnimatedIconViewProps) {
+    const progress = useSharedValue(activeState ? ANIMATED_ICON_ACTIVE : ANIMATED_ICON_INACTIVE);
+
+    React.useEffect(() => {
+        progress.value = withSpring(activeState ? ANIMATED_ICON_ACTIVE : ANIMATED_ICON_INACTIVE, {
+            overshootClamping: true,
+        });
+    }, [activeState, progress]);
+
+    const Comp = component;
 
     return (
-        <LottieView
-            source={source}
+        <Comp
             progress={progress}
             // TODO
             style={{ width: 22, height: 22 }}
@@ -93,7 +87,7 @@ export const RawButton: React.FunctionComponent<
                 style?: StyleProp<ViewStyle>;
             }
     >
-> = Animated.createAnimatedComponent(GHRawButton);
+> = ReAnimated.createAnimatedComponent(GHRawButton);
 
 function SplitBottomTabBarItem({
     children,
@@ -258,11 +252,11 @@ export function SplitBottomTabBar({
             >
                 {Object.keys(icons).map(key => {
                     const icon = icons[key];
-                    if ('tabBarIconLottieSource' in icon) {
+                    if ('tabBarAnimatedIcon' in icon) {
                         return (
                             <SplitBottomTabBarItem key={key} keyProp={key} onPress={onPress}>
-                                <LottieIconView
-                                    source={icon.tabBarIconLottieSource}
+                                <AnimatedIconView
+                                    component={icon.tabBarAnimatedIcon}
                                     activeState={key === activeKey}
                                 />
                             </SplitBottomTabBarItem>
