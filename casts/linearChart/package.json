@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uicast.linear-chart",
-    "version": "2.3.0",
+    "version": "3.0.0",
     "description": "Linear Chart on Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",
@@ -34,8 +34,8 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/uikit.themes": "^2.3.0",
-        "@tonlabs/localization": "^2.3.0"
+        "@tonlabs/localization": "^3.0.0",
+        "@tonlabs/uikit.themes": "^3.0.0"
     },
     "devDependencies": {
         "@react-native-community/bob": "0.16.2",

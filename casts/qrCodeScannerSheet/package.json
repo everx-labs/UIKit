@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uicast.qr-code-scanner-sheet",
-    "version": "2.3.0",
+    "version": "3.0.0",
     "description": "QR code scanner sheet on Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",
@@ -34,13 +34,13 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/uikit.themes": "^2.3.0",
-        "@tonlabs/uikit.assets": "^2.3.0",
-        "@tonlabs/uikit.media": "^2.3.0",
-        "@tonlabs/uikit.controls": "^2.3.0",
-        "@tonlabs/uikit.layout": "^2.3.0",
-        "@tonlabs/uikit.popups": "^2.3.0",
-        "@tonlabs/localization": "^2.3.0",
+        "@tonlabs/localization": "^3.0.0",
+        "@tonlabs/uikit.assets": "^3.0.0",
+        "@tonlabs/uikit.controls": "^3.0.0",
+        "@tonlabs/uikit.layout": "^3.0.0",
+        "@tonlabs/uikit.media": "^3.0.0",
+        "@tonlabs/uikit.popups": "^3.0.0",
+        "@tonlabs/uikit.themes": "^3.0.0",
         "react-qr-reader": "^2.2.1"
     },
     "devDependencies": {

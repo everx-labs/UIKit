@@ -66,7 +66,6 @@ export function useAutogrowTextView(
     );
 
     const onChangeOnWeb = React.useCallback(
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         (_event: any) => {
             if (ref && 'current' in ref && ref.current) {
                 // eslint-disable-next-line no-param-reassign

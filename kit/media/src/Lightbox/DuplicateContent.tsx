@@ -160,10 +160,15 @@ export const DuplicateContent = ({
                         pointerEvents="box-none"
                     >
                         <Animated.View style={previewImageStyle}>
-                            <View onLayout={onLayout}>{previewImage}</View>
+                            <View
+                                testID={`image_expanded_${isFullSizeDisplayed}`}
+                                onLayout={onLayout}
+                            >
+                                {previewImage}
+                            </View>
                         </Animated.View>
                         {isFullSizeDisplayed && !!fullSizeImage ? (
-                            <Animated.View testID="image_expanded" style={styles.fullSizeImage}>
+                            <Animated.View style={styles.fullSizeImage}>
                                 {fullSizeImage}
                             </Animated.View>
                         ) : null}
