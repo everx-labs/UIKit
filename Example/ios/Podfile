@@ -18,7 +18,7 @@ target 'Quiver UI' do
   pod 'UIKitControls', :path => "../../kit/controls/UIKitControls.podspec"
   pod 'UIKitMedia', :path => "../../kit/media/UIKitMedia.podspec"
   pod 'UIKitLocalization', :path => "../../localization/UIKitLocalization.podspec"
-  pod 'react-native-video/VideoCaching', :path => '../../node_modules/react-native-video/react-native-video.podspec'
+  pod 'react-native-video/VideoCaching', :path => '../../node_modules/react-native-video'
   
   target 'Quiver UITests' do
     inherit! :complete

@@ -9,7 +9,7 @@
 Add following line to ios/Podfile and replace `${../node_modules}` with the `node_modules` path of your project:
 
 ```
-pod 'react-native-video/VideoCaching', :path => '${../node_modules}/react-native-video/react-native-video.podspec'
+pod 'react-native-video/VideoCaching', :path => '${../node_modules}/react-native-video'
 ```
 
 ### Android

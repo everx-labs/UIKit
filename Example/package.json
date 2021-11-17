@@ -95,7 +95,7 @@
         "react-native-simple-popover": "git+https://github.com/tonlabs/react-native-simple-popover.git",
         "react-native-status-bar-height": "1.0.1",
         "react-native-svg": "^12.1.0",
-        "react-native-video": "^5.2.0",
+        "react-native-video": "git+https://github.com/r0b0t3d/react-native-video.git#feature/android-fullscreen",
         "react-native-view-shot": "3.1.2",
         "react-native-web": "0.17.1",
         "react-native-web-image-loader": "^0.1.1",

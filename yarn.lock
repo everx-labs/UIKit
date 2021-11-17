@@ -12140,10 +12140,9 @@ react-native-tab-view@3.0.1:
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-3.0.1.tgz#7ed8c5c4a0bb48fa8895e612d26e6d545ed03447"
   integrity sha512-L7qXtYz5Z+NdWyu38zaJrlHA/8H6rNFRZXe3ydym12UEEPPoefbVZ71b9YK2O6QP0u4pUlzMpMVM/Lsz2DJ4jg==
 
-react-native-video@^5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-video/-/react-native-video-5.2.0.tgz#c3f2c541775f4fda7e0d26d75a6fb59819b13d5e"
-  integrity sha512-5SK1lxyzrCkZF+WuxUxLR1Pt65E0rsWB1w1GrGxSLdC9zWYBumcmuHl+wPJ7UQvznjaH2Ze7uU1R3arejI7+WQ==
+"react-native-video@git+https://github.com/r0b0t3d/react-native-video.git#feature/android-fullscreen":
+  version "5.1.1"
+  resolved "git+https://github.com/r0b0t3d/react-native-video.git#7c17f5ec96e7913ffe5d97db952c061882ab4681"
   dependencies:
     keymirror "^0.1.1"
     prop-types "^15.7.2"
