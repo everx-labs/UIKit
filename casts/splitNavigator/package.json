@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uicast.split-navigator",
-    "version": "2.3.0",
+    "version": "3.0.0",
     "description": "Split navigator on Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",

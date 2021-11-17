@@ -12,7 +12,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { UILayoutManager } from '@tonlabs/uikit.components';
 import { UIPopoverBackground } from '@tonlabs/uikit.navigation_legacy';
 import { PortalManager } from '@tonlabs/uikit.layout';
 import {
@@ -365,7 +364,6 @@ const App = () => {
                             />
                         </Split.Navigator>
                     </NavigationContainer>
-                    <UILayoutManager />
                     <UIAndroidNavigationBar />
                 </PortalManager>
             </SafeAreaProvider>

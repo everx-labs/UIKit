@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uikit.components",
-    "version": "2.3.0",
+    "version": "3.0.0",
     "description": "Base components for Tonlabs's UIKit",
     "scripts": {
         "prepare": "bob build",
@@ -33,14 +33,13 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/uikit.assets": "^2.3.0",
-        "@tonlabs/uikit.core": "^2.3.0",
-        "@tonlabs/uikit.inputs": "^2.3.0",
-        "@tonlabs/uikit.themes": "^2.3.0",
-        "@tonlabs/uikit.controls": "^2.3.0",
-        "@tonlabs/localization": "^2.3.0",
+        "@tonlabs/localization": "^3.0.0",
+        "@tonlabs/uikit.assets": "^3.0.0",
+        "@tonlabs/uikit.controls": "^3.0.0",
+        "@tonlabs/uikit.core": "^3.0.0",
+        "@tonlabs/uikit.inputs": "^3.0.0",
+        "@tonlabs/uikit.themes": "^3.0.0",
         "bignumber.js": "9.0.0",
-        "bowser": "1.9.4",
         "react-native-indicators": "git+https://github.com/tonlabs/react-native-indicators.git"
     },
     "devDependencies": {

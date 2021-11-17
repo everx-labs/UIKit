@@ -16,7 +16,7 @@ function Skeletons() {
         <ExampleScreen>
             <ExampleSection title="UISkeleton">
                 <View
-                    testID='ui-skeleton'
+                    testID="ui-skeleton"
                     style={{
                         maxWidth: 500,
                         width: '100%',

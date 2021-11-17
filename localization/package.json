@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/localization",
-    "version": "2.3.2",
+    "version": "3.0.0",
     "description": "Localization utilities for Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit",

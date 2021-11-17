@@ -80,6 +80,7 @@ const UI_LARGE_AVATAR_SIZE = 64;
 const UI_TINY_ICON_SIZE = 4;
 const UI_DEFAULT_ICON_SIZE = 24;
 const UI_MEDIUM_ICON_SIZE = 32;
+const UI_LARGE_ICON_SIZE = 128;
 
 const UI_DISABLED_OUTLINE =
     Platform.OS === 'web' && !global.__TEST__ ? { outlineStyle: 'none' } : null;
@@ -477,6 +478,10 @@ export default class UIConstant {
 
     static mediumIconSize() {
         return UI_MEDIUM_ICON_SIZE;
+    }
+
+    static largeIconSize() {
+        return UI_LARGE_ICON_SIZE;
     }
 
     // Styles

@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uikit.navigation_legacy",
-    "version": "2.3.0",
+    "version": "3.0.0",
     "description": "Navigation components for Tonlabs's UIKit",
     "scripts": {
         "prepare": "bob build"
@@ -33,18 +33,18 @@
         "types/"
     ],
     "dependencies": {
-        "@tonlabs/uicast.bars": "^2.3.0",
-        "@tonlabs/uicast.modal-navigator": "^2.3.0",
-        "@tonlabs/uikit.assets": "^2.3.0",
-        "@tonlabs/uikit.components": "^2.3.0",
-        "@tonlabs/uikit.core": "^2.3.0",
-        "@tonlabs/uikit.themes": "^2.3.0",
-        "@tonlabs/uikit.popups": "^2.3.0",
-        "@tonlabs/uikit.scrolls": "^2.3.0",
-        "@tonlabs/uikit.inputs": "^2.3.0",
-        "@tonlabs/uikit.controls": "^2.3.0",
-        "@tonlabs/uikit.layout": "^2.3.0",
-        "@tonlabs/localization": "^2.3.0",
+        "@tonlabs/localization": "^3.0.0",
+        "@tonlabs/uicast.bars": "^3.0.0",
+        "@tonlabs/uicast.modal-navigator": "^3.0.0",
+        "@tonlabs/uikit.assets": "^3.0.0",
+        "@tonlabs/uikit.components": "^3.0.0",
+        "@tonlabs/uikit.controls": "^3.0.0",
+        "@tonlabs/uikit.core": "^3.0.0",
+        "@tonlabs/uikit.inputs": "^3.0.0",
+        "@tonlabs/uikit.layout": "^3.0.0",
+        "@tonlabs/uikit.popups": "^3.0.0",
+        "@tonlabs/uikit.scrolls": "^3.0.0",
+        "@tonlabs/uikit.themes": "^3.0.0",
         "react-native-simple-popover": "git+https://github.com/tonlabs/react-native-simple-popover.git"
     },
     "devDependencies": {

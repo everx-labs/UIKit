@@ -216,7 +216,6 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                     },
                                 },
                                 qrCode: {
-                                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                                     parseData: (_data: any) => {
                                         return Promise.resolve('0:000');
                                     },
@@ -452,10 +451,7 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                 status: MessageStatus.Received,
                                 type: InteractiveMessageType.EncryptionBox,
                                 encryptionBoxes,
-                                onAddEncryptionBox: (
-                                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                                    _privateKey: string,
-                                ) => {
+                                onAddEncryptionBox: (_privateKey: string) => {
                                     const newEncryptionBox = {
                                         id: encryptionBoxes[encryptionBoxes.length - 1].id + 1,
                                         title: 'Cipher key',
@@ -570,7 +566,6 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                         ...messages,
                                     ]);
                                 },
-                                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                                 parseData: (_data: any) => {
                                     return Promise.resolve('0:000');
                                 },
@@ -599,7 +594,6 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
                                         ...messages,
                                     ]);
                                 },
-                                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                                 parseData: (_data: any) => {
                                     return Promise.resolve('0:000');
                                 },
