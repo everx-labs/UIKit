@@ -26,10 +26,11 @@ export const useDimensionsByAspectRatio = (
             };
         }
         if (width && height) {
-            if (height > width / aspectRatio) {
+            const aspectedHeight = width / aspectRatio;
+            if (aspectedHeight < height) {
                 return {
                     width,
-                    height: width / aspectRatio,
+                    height: aspectedHeight,
                 };
             }
             return {
