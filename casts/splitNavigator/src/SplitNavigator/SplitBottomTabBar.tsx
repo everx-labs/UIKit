@@ -1,5 +1,6 @@
+/* eslint-disable react/no-unused-prop-types */
 import * as React from 'react';
-import { View, ImageSourcePropType, StyleProp, ViewStyle } from 'react-native';
+import { View, ImageSourcePropType, StyleProp, ViewStyle, StyleSheet } from 'react-native';
 import {
     GestureEvent,
     NativeViewGestureHandlerPayload,
@@ -17,8 +18,9 @@ import ReAnimated, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIImage } from '@tonlabs/uikit.media';
-import { useTheme, ColorVariants, UIBackgroundView } from '@tonlabs/uikit.themes';
+import { useTheme, ColorVariants } from '@tonlabs/uikit.themes';
 import { hapticSelection } from '@tonlabs/uikit.controls';
+import { ShadowView } from './ShadowView';
 
 type SplitScreenTabBarAnimatedIconComponent = React.ComponentType<{
     progress: ReAnimated.SharedValue<number>;
@@ -38,6 +40,7 @@ export type SplitScreenTabBarIconOptions =
 const ANIMATED_ICON_INACTIVE = 0;
 // @inline
 const ANIMATED_ICON_ACTIVE = 1;
+const TAB_BAR_ICON_SIZE = 22;
 
 type AnimatedIconViewProps = {
     activeState: boolean;
@@ -55,13 +58,7 @@ function AnimatedIconView({ activeState, component }: AnimatedIconViewProps) {
 
     const Comp = component;
 
-    return (
-        <Comp
-            progress={progress}
-            // TODO
-            style={{ width: 22, height: 22 }}
-        />
-    );
+    return <Comp progress={progress} style={styles.icon} />;
 }
 
 type ImageIconViewProps = {
@@ -70,13 +67,7 @@ type ImageIconViewProps = {
     disabledSource: ImageSourcePropType;
 };
 function ImageIconView({ activeState, activeSource, disabledSource }: ImageIconViewProps) {
-    return (
-        <UIImage
-            source={activeState ? activeSource : disabledSource}
-            // TODO
-            style={{ width: 22, height: 22 }}
-        />
-    );
+    return <UIImage source={activeState ? activeSource : disabledSource} style={styles.icon} />;
 }
 
 export const RawButton: React.FunctionComponent<
@@ -109,33 +100,32 @@ function SplitBottomTabBarItem({
         },
     );
     return (
-        <RawButton
-            enabled
-            onGestureEvent={gestureHandler}
-            // TODO
-            style={{
-                height: 64,
-                width: 64,
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}
-        >
+        <RawButton enabled onGestureEvent={gestureHandler} style={styles.iconButton}>
             {children}
         </RawButton>
     );
 }
+
+const TAB_BAR_DOT_SIZE = 4;
+const TAB_BAR_DOT_BOTTOM = 8;
+
 type SplitBottomTabBarDotRef = { moveTo(index: number): void };
 type SplitBottomTabBarDotProps = { initialIndex: number };
 const SplitBottomTabBarDot = React.memo(
     React.forwardRef<SplitBottomTabBarDotRef, SplitBottomTabBarDotProps>(
         function SplitBottomTabBarDot({ initialIndex }: SplitBottomTabBarDotProps, ref) {
             const theme = useTheme();
-            const position = useSharedValue((initialIndex + 1) * 64 - 32 - 4 / 2);
+            const position = useSharedValue(
+                (initialIndex + 1) * TAB_BAR_HEIGHT - TAB_BAR_HEIGHT / 2 - TAB_BAR_DOT_SIZE / 2,
+            );
             React.useImperativeHandle(ref, () => ({
                 moveTo(index: number) {
-                    position.value = withSpring((index + 1) * 64 - 32 - 4 / 2, {
-                        overshootClamping: true,
-                    });
+                    position.value = withSpring(
+                        (index + 1) * TAB_BAR_HEIGHT - TAB_BAR_HEIGHT / 2 - TAB_BAR_DOT_SIZE / 2,
+                        {
+                            overshootClamping: true,
+                        },
+                    );
                 },
             }));
 
@@ -151,12 +141,8 @@ const SplitBottomTabBarDot = React.memo(
             return (
                 <ReAnimated.View
                     style={[
+                        styles.dot,
                         {
-                            position: 'absolute',
-                            bottom: 8, // TODO
-                            width: 4,
-                            height: 4,
-                            borderRadius: 2,
                             backgroundColor: theme[ColorVariants.BackgroundAccent],
                         },
                         style,
@@ -182,38 +168,39 @@ export function SplitBottomTabBar({
     const dotRef = React.useRef<SplitBottomTabBarDotRef>(null);
     const prevActiveKey = React.useRef(activeKey);
     const initialDotIndex = React.useRef(-1);
-    if (initialDotIndex.current === -1) {
-        const iconsArr = Object.keys(icons);
-        for (let i = 0; i < iconsArr.length; i += 1) {
-            if (iconsArr[i] === activeKey) {
-                initialDotIndex.current = i;
-                break;
-            }
-        }
+
+    const prevIconsRef = React.useRef<typeof icons>();
+    const iconsMapRef = React.useRef<Record<string, number>>();
+    if (prevIconsRef.current !== icons || iconsMapRef.current == null) {
+        prevIconsRef.current = icons;
+        iconsMapRef.current = Object.keys(icons).reduce<Record<string, number>>((acc, key, i) => {
+            acc[key] = i;
+            return acc;
+        }, {});
     }
+    const iconsMap = iconsMapRef.current;
+
+    if (initialDotIndex.current === -1 && iconsMap[activeKey] != null) {
+        initialDotIndex.current = iconsMap[activeKey];
+    }
+
     React.useEffect(() => {
         if (activeKey === prevActiveKey.current) {
             return;
         }
 
         prevActiveKey.current = activeKey;
-        const iconsArr = Object.keys(icons);
-        for (let i = 0; i < iconsArr.length; i += 1) {
-            if (iconsArr[i] === activeKey) {
-                dotRef.current?.moveTo(i);
-                break;
-            }
+
+        const index = iconsMap[activeKey];
+        console.log(index);
+        if (index != null) {
+            dotRef.current?.moveTo(index);
         }
-    }, [activeKey, icons]);
+    }, [activeKey, icons, iconsMap]);
+
     const hasIconForActiveKey = React.useMemo(() => {
-        const iconsArr = Object.keys(icons);
-        for (let i = 0; i < iconsArr.length; i += 1) {
-            if (iconsArr[i] === activeKey) {
-                return true;
-            }
-        }
-        return false;
-    }, [icons, activeKey]);
+        return iconsMap[activeKey] != null;
+    }, [activeKey, iconsMap]);
 
     /**
      * Do not show tab bar when there're only
@@ -225,30 +212,22 @@ export function SplitBottomTabBar({
 
     return (
         <View
-            // TODO
-            style={{
-                position: 'absolute',
-                left: 0,
-                right: 0,
-                bottom: 0,
-                paddingBottom: Math.max(insets?.bottom, 32 /* TODO */),
-                alignItems: 'center',
-            }}
+            style={[
+                styles.container,
+                {
+                    paddingBottom: Math.max(insets?.bottom, TAB_BAR_DEFAULT_BOTTOM_INSET),
+                },
+            ]}
             pointerEvents="box-none"
         >
-            <UIBackgroundView
-                style={{
-                    position: 'relative',
-                    flexDirection: 'row',
-                    borderRadius: 32, // TODO
-                    shadowRadius: 48,
-                    shadowOffset: {
-                        width: 0,
-                        height: 16,
+            <ShadowView
+                style={[
+                    styles.iconsBox,
+                    {
+                        shadowColor: theme[ColorVariants.Shadow],
+                        backgroundColor: theme[ColorVariants.BackgroundPrimary],
                     },
-                    shadowColor: theme[ColorVariants.Shadow],
-                    shadowOpacity: 0.08,
-                }}
+                ]}
             >
                 {Object.keys(icons).map(key => {
                     const icon = icons[key];
@@ -275,7 +254,52 @@ export function SplitBottomTabBar({
                 {hasIconForActiveKey && (
                     <SplitBottomTabBarDot ref={dotRef} initialIndex={initialDotIndex.current} />
                 )}
-            </UIBackgroundView>
+            </ShadowView>
         </View>
     );
 }
+
+const TAB_BAR_DEFAULT_BOTTOM_INSET = 32;
+const TAB_BAR_HEIGHT = 64;
+export function useTabBarHeight() {
+    const insets = useSafeAreaInsets();
+    return React.useMemo(
+        () => Math.max(insets.bottom, TAB_BAR_DEFAULT_BOTTOM_INSET) + TAB_BAR_HEIGHT,
+        [insets.bottom],
+    );
+}
+
+const styles = StyleSheet.create({
+    icon: { width: TAB_BAR_ICON_SIZE, height: TAB_BAR_ICON_SIZE },
+    iconButton: {
+        height: TAB_BAR_HEIGHT,
+        width: TAB_BAR_HEIGHT,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    dot: {
+        position: 'absolute',
+        bottom: TAB_BAR_DOT_BOTTOM,
+        width: TAB_BAR_DOT_SIZE,
+        height: TAB_BAR_DOT_SIZE,
+        borderRadius: TAB_BAR_DOT_SIZE / 2,
+    },
+    container: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 0,
+        alignItems: 'center',
+    },
+    iconsBox: {
+        position: 'relative',
+        flexDirection: 'row',
+        borderRadius: TAB_BAR_HEIGHT / 2,
+        shadowRadius: 48,
+        shadowOffset: {
+            width: 0,
+            height: 16,
+        },
+        shadowOpacity: 0.08,
+    },
+});

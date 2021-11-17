@@ -58,10 +58,10 @@ type SplitRouterCustomOptions = {
 export type SplitRouterOptions<ParamList extends ParamListBase = ParamListBase> =
     DefaultRouterOptions<Extract<keyof ParamList, string>> & SplitRouterCustomOptions;
 
-type NavigationRoute<ParamList extends ParamListBase, RouteName extends keyof ParamList> = Route<
-    Extract<RouteName, string>,
-    ParamList[RouteName]
-> & {
+export type NavigationRoute<
+    ParamList extends ParamListBase,
+    RouteName extends keyof ParamList,
+> = Route<Extract<RouteName, string>, ParamList[RouteName]> & {
     state?: NavigationState | PartialState<NavigationState>;
 };
 
@@ -120,8 +120,6 @@ export type SplitNavigationState<ParamList extends ParamListBase = ParamListBase
      * List of valid route names as defined in the screen components.
      */
     routeNames: string[];
-    // TODO
-    // stackRouteNames: Extract<keyof ParamList, string>[];
     /**
      * Whether the navigation state has been rehydrated.
      */
@@ -284,12 +282,13 @@ class SplitUnfoldedRouter<ParamList extends ParamListBase = ParamListBase> {
     }
 
     getRehydratedState(
-        partialState: PartialState<SplitNavigationState<ParamList>>,
+        partialState: SplitNavigationState | PartialState<SplitNavigationState>,
         { routeNames, routeParamList }: RouterConfigOptions,
     ): SplitNavigationState {
         const { initialRouteName, isSplitted } = this.options;
 
         const routes = routeNames.map(name => {
+            // @ts-ignore
             const route = partialState.routes?.find(r => r.name === name) ?? null;
             return {
                 ...route,
@@ -331,10 +330,7 @@ class SplitUnfoldedRouter<ParamList extends ParamListBase = ParamListBase> {
         };
     }
 
-    getStateForRouteFocus(
-        state: SplitNavigationState<ParamList>,
-        key: string,
-    ): SplitNavigationState {
+    getStateForRouteFocus(state: SplitNavigationState, key: string): SplitNavigationState {
         const index = state.routes.findIndex(r => r.key === key);
 
         if (index === -1 || index === state.index) {
@@ -472,7 +468,7 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
     }
 
     getRehydratedState(
-        partialState: PartialState<SplitNavigationState<ParamList>>,
+        partialState: SplitNavigationState | PartialState<SplitNavigationState>,
         { routeNames, routeParamList }: RouterConfigOptions,
     ): SplitNavigationState {
         const { initialRouteName, tabRouteNames, stackRouteNames, isSplitted } = this.options;
@@ -498,8 +494,9 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
                 history.push(nestedStackRouteNameIndex);
             } else if (initialRouteName) {
                 // nothing was found in known routes
-                // TODO: Maybe it's a good place to redirect to 404
                 // tring to find initial route
+                //
+                // (savelichalex): Maybe it's a good place to redirect to 404
                 if (stackRouteNames.includes(initialRouteName)) {
                     // It's a route for nested stack
                     const nestedStackRouteNameIndex = routeNames.indexOf(initialRouteName);
@@ -527,6 +524,7 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
             history,
             nestedStack,
             routes: routeNames.map(name => {
+                // @ts-ignore
                 const route = partialState.routes?.find(r => r.name === name);
                 return {
                     ...route,
@@ -544,10 +542,7 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
         };
     }
 
-    getStateForRouteFocus(
-        state: SplitNavigationState<ParamList>,
-        key: string,
-    ): SplitNavigationState {
+    getStateForRouteFocus(state: SplitNavigationState, key: string): SplitNavigationState {
         const index = state.routes.findIndex(r => r.key === key);
 
         if (index === -1 || index === state.index) {
@@ -612,12 +607,11 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
                 return {
                     ...state,
                     nestedStack,
-                    history: state.history.slice(0, history.length - 2),
+                    history: state.history.slice(0, state.history.length - 2),
                     index: nestedStack[nestedStack.length - 1],
                 };
             }
             // If it isn't main, then do the same thing as in unfolded router
-            // TODO: copy/paste from unfolded
             if (state.history.length < 2) {
                 return null;
             }
@@ -707,11 +701,14 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
          *   }]
          * }
          */
-        getRehydratedState(state, options): SplitNavigationState {
+        getRehydratedState(
+            state: SplitNavigationState | PartialState<SplitNavigationState>,
+            options,
+        ): SplitNavigationState {
             const isStale = state.stale;
 
             if (isStale === false) {
-                return state;
+                return state as SplitNavigationState;
             }
 
             return (isSplitted ? unfoldedRouter : foldedRouter).getRehydratedState(state, options);
@@ -722,7 +719,6 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
             return state;
         },
 
-        // TODO
         getStateForRouteFocus(state, key) {
             return (isSplitted ? unfoldedRouter : foldedRouter).getStateForRouteFocus(state, key);
         },
@@ -736,7 +732,6 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
                     return state;
                 }
 
-                // TODO: what it's for?
                 if (action.payload.initialRouteName) {
                     foldedRouter.options.initialRouteName = action.payload.initialRouteName;
                     unfoldedRouter.options.initialRouteName = action.payload.initialRouteName;

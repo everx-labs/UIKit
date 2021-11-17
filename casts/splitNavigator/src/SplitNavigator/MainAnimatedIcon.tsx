@@ -2,11 +2,7 @@ import * as React from 'react';
 import Animated, { interpolate, interpolateColor, useAnimatedStyle } from 'react-native-reanimated';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
-import {
-    useColorParts,
-    ColorVariants,
-    // useTheme,
-} from '@tonlabs/uikit.themes';
+import { useColorParts, ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 
 // @inline
 const ANIMATED_ICON_INACTIVE = 0;
@@ -22,9 +18,10 @@ type MainAnimatedIconProps = {
 
 export function MainAnimatedIcon({ progress, style }: MainAnimatedIconProps) {
     const { colorParts: bgColorParts } = useColorParts(ColorVariants.BackgroundAccent);
-    const { colorParts: borderColorParts } = useColorParts(
-        ColorVariants.BackgroundTertiaryInverted,
-    );
+    // const { colorParts: borderColorParts } = useColorParts(
+    //     ColorVariants.BackgroundTertiaryInverted,
+    // );
+    const theme = useTheme();
     const circle1 = useAnimatedStyle(() => {
         return {
             backgroundColor: interpolateColor(
@@ -32,16 +29,23 @@ export function MainAnimatedIcon({ progress, style }: MainAnimatedIconProps) {
                 [ANIMATED_ICON_INACTIVE, ANIMATED_ICON_ACTIVE],
                 [`rgba(${bgColorParts}, 0)`, `rgba(${bgColorParts}, 1)`],
             ),
-            borderColor: interpolateColor(
+            borderWidth: interpolate(
                 progress.value,
                 [ANIMATED_ICON_INACTIVE, ANIMATED_ICON_ACTIVE],
-                [`rgba(${borderColorParts}, 1)`, `rgba(${borderColorParts}, 0)`],
+                [4, 0],
             ),
+            // borderColor: interpolateColor(
+            //     progress.value,
+            //     [ANIMATED_ICON_INACTIVE, ANIMATED_ICON_ACTIVE],
+            //     // [`rgba(${borderColorParts}, 1)`, `rgba(${borderColorParts}, 0)`],
+            //     [`rgb(${borderColorParts})`, `rgb(${bgColorParts})`],
+            // ),
             transform: [
                 {
                     scale: interpolate(
                         progress.value,
                         [ANIMATED_ICON_INACTIVE, ANIMATED_ICON_ACTIVE],
+                        // [0.5, 1.5],
                         [0.5, 1],
                     ),
                 },
@@ -55,17 +59,24 @@ export function MainAnimatedIcon({ progress, style }: MainAnimatedIconProps) {
                 [ANIMATED_ICON_INACTIVE, ANIMATED_ICON_ACTIVE],
                 [`rgba(${centerDotColorParts}, 0)`, `rgba(${centerDotColorParts}, 1)`],
             ),
-            borderColor: interpolateColor(
+            borderWidth: interpolate(
                 progress.value,
                 [ANIMATED_ICON_INACTIVE, ANIMATED_ICON_ACTIVE],
-                [`rgba(${borderColorParts}, 1)`, `rgba(${borderColorParts}, 0)`],
+                [2, 0],
             ),
+            // borderColor: interpolateColor(
+            //     progress.value,
+            //     [ANIMATED_ICON_INACTIVE, ANIMATED_ICON_ACTIVE],
+            //     [`rgba(${borderColorParts}, 1)`, `rgba(${borderColorParts}, 1)`],
+            //     // [`rgba(${borderColorParts}, 1)`, `rgba(${centerDotColorParts}, 1)`],
+            // ),
             transform: [
                 {
                     scale: interpolate(
                         progress.value,
                         [ANIMATED_ICON_INACTIVE, ANIMATED_ICON_ACTIVE],
                         [1, 0.4],
+                        // [1, 0.4],
                     ),
                 },
             ],
@@ -74,10 +85,24 @@ export function MainAnimatedIcon({ progress, style }: MainAnimatedIconProps) {
     return (
         <Animated.View style={[style, { position: 'relative' }]}>
             <Animated.View
-                style={[StyleSheet.absoluteFill, { borderWidth: 4, borderRadius: 50 }, circle1]}
+                style={[
+                    StyleSheet.absoluteFill,
+                    {
+                        borderRadius: 50,
+                        borderColor: theme[ColorVariants.BackgroundTertiaryInverted],
+                    },
+                    circle1,
+                ]}
             />
             <Animated.View
-                style={[StyleSheet.absoluteFill, { borderWidth: 2, borderRadius: 50 }, circle2]}
+                style={[
+                    StyleSheet.absoluteFill,
+                    {
+                        borderRadius: 50,
+                        borderColor: theme[ColorVariants.BackgroundTertiaryInverted],
+                    },
+                    circle2,
+                ]}
             />
         </Animated.View>
     );

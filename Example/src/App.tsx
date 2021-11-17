@@ -7,7 +7,7 @@
 
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import React from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -37,10 +37,9 @@ import {
     UILargeTitleHeader,
     UISearchBarButton,
 } from '@tonlabs/uicast.bars';
-// import { createSplitNavigator } from '@tonlabs/uicast.split-navigator';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { createSplitNavigator, useSplitTabBarHeight } from '../../casts/splitNavigator/src';
+import { createSplitNavigator, useSplitTabBarHeight } from '@tonlabs/uicast.split-navigator';
 
 import { ButtonsScreen } from './screens/Buttons';
 import { Checkbox } from './screens/Checkbox';
@@ -323,12 +322,6 @@ const App = () => {
                                         },
                                     ],
                                 },
-                                ...Platform.select({
-                                    android: {
-                                        stackAnimation: 'slide_from_right',
-                                    },
-                                    default: null,
-                                }),
                             }}
                             mainWidth={900}
                         >
