@@ -1,5 +1,6 @@
 import * as UIBoxButton from './UIBoxButton';
 import * as UILinkButton from './UILinkButton';
+import * as UILoadMoreButton from './UILoadMoreButton';
 import * as UIMsgButton from './UIMsgButton';
 import * as UIPillButton from './UIPillButton';
 import * as TouchableOpacity from './TouchableOpacity';
@@ -23,6 +24,7 @@ export * from './useHover';
 export const UIControl = {
     UIBoxButton,
     UILinkButton,
+    UILoadMoreButton,
     UIMsgButton,
     UIPillButton,
     TouchableOpacity,
