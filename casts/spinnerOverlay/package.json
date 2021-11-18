@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uicast.spinner-overlay",
-    "version": "2.3.0",
+    "version": "3.0.0",
     "description": "Spinner overlay on Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",
@@ -34,15 +34,15 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/uikit.themes": "^2.3.0",
-        "@tonlabs/uikit.core": "^2.3.0",
+        "@tonlabs/uikit.themes": "^3.0.0",
+        "@tonlabs/uikit.core": "^3.0.0",
         "react-native-indicators": "git+https://github.com/tonlabs/react-native-indicators.git"
     },
     "devDependencies": {
         "@react-native-community/bob": "0.16.2",
         "@types/react": "17.0.21",
         "@types/react-native": "0.65.0",
-        "@types/react-native-indicators": "git+https://github.com/tonlabs/react-native-indicators.git",
+        "@types/react-native-indicators": "0.16.1",
         "react": "17.0.2",
         "react-dom": "17.0.2",
         "react-native": "0.65.1",

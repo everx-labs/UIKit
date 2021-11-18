@@ -2763,6 +2763,21 @@
   dependencies:
     "@types/node" "*"
 
+"@types/react-native-indicators@0.16.1":
+  version "0.16.1"
+  resolved "https://registry.yarnpkg.com/@types/react-native-indicators/-/react-native-indicators-0.16.1.tgz#9bf7d6d044509f7a4179987a19ceb1603108cd04"
+  integrity sha512-L7SCFjTdDzwNciAYflAdWuSwgj6qP2Zd+uKFcFBkovG/O5qX7P9aKkmzYQz/lXIJtiPWgNEG1xIeJoHLed31Ew==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
+
+"@types/react-native@*":
+  version "0.66.4"
+  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.66.4.tgz#075d9521de1ee53a4f3eff729133d897039c0d7f"
+  integrity sha512-Aby37oZ0S8LS4abOVWbBgChfHLZsx3skcj2QJU9ZHPhA1h6+yBbdBH2wJLxIUXfYT1Ejkwuv8n5u+/VxLzzcmA==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-native@0.65.0":
   version "0.65.0"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.65.0.tgz#bef9ca619f421abafae891ac0629e27cbfe63b42"
