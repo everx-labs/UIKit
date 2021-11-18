@@ -17,8 +17,7 @@ import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
 
 import { UIConstant, UIDevice, UIEventHelper, UIFunction, UIStyle } from '@tonlabs/uikit.core';
 import type { SafeAreaInsets } from '@tonlabs/uikit.core';
-import { UIAlertView, UIComponent } from '@tonlabs/uikit.components';
-import { UISpinnerOverlay } from '@tonlabs/uicast.spinner-overlay';
+import { UIAlertView, UIComponent, UISpinnerOverlay } from '@tonlabs/uikit.components';
 import { UISafeAreaView } from '@tonlabs/uikit.layout';
 import { UIBackgroundViewColors } from '@tonlabs/uikit.themes';
 import { uiLocalized } from '@tonlabs/localization';
@@ -65,8 +64,6 @@ export type ControllerState = {
     contentInset?: ContentInset,
     safeArea?: ContentInset,
     showIndicator?: boolean,
-    spinnerTextContent?: string,
-    spinnerTitleContent?: string,
     spinnerVisible?: boolean,
     runningAsyncOperation?: string,
 };
@@ -394,14 +391,6 @@ export default class UIController<Props, State> extends UIComponent<
         this.setStateSafely({ contentInset });
     }
 
-    setSpinnerTitleContent(spinnerTitleContent: string) {
-        this.setStateSafely({ spinnerTitleContent });
-    }
-
-    setSpinnerTextContent(spinnerTextContent: string) {
-        this.setStateSafely({ spinnerTextContent });
-    }
-
     // Getters
     getSafeAreaInsets(): ContentInset {
         return this.state.safeArea || EmptyInset;
@@ -636,8 +625,6 @@ export default class UIController<Props, State> extends UIComponent<
             return;
         }
         this.showSpinnerOverlay(false);
-        this.setSpinnerTitleContent('');
-        this.setSpinnerTextContent('');
     }
 
     showIndicator(showIndicator: boolean = true) {
@@ -684,14 +671,7 @@ export default class UIController<Props, State> extends UIComponent<
 
     // Render
     renderSpinnerOverlay() {
-        return (
-            <UISpinnerOverlay
-                key="SpinnerOverlay"
-                visible={this.state?.spinnerVisible}
-                titleContent={this.state?.spinnerTitleContent || ''}
-                textContent={this.state?.spinnerTextContent || ''}
-            />
-        );
+        return <UISpinnerOverlay key="SpinnerOverlay" visible={this.state?.spinnerVisible} />;
     }
 
     render(): React$Node {
