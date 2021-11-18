@@ -9,10 +9,11 @@ import Animated, {
 } from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
 
-import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { useTheme, ColorVariants } from '@tonlabs/uikit.themes';
 
 import { SkeletonProgress, useSkeletonProgress } from './useSkeletonProgress';
+
+import { UILayoutConstant } from '../UILayoutConstant';
 
 enum CrossDissolveProgress {
     Visible = 1,
