@@ -23,6 +23,7 @@ export const Video = () => {
                         height={400}
                         aspectRatio={9 / 16}
                         controls
+                        repeat
                     />
                 </View>
             </ExampleSection>

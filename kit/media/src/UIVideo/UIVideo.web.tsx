@@ -6,11 +6,12 @@ import type { UIVideoProps } from './types';
 export const UIVideo: React.FC<UIVideoProps> = ({
     uri,
     controls,
+    repeat,
     width,
     height,
     aspectRatio,
 }: UIVideoProps) => {
     const dimensions = useDimensionsByAspectRatio(width, height, aspectRatio);
 
-    return <ReactPlayer url={uri} controls={controls} {...dimensions} />;
+    return <ReactPlayer url={uri} controls={controls} {...dimensions} loop={repeat} />;
 };
