@@ -1,8 +1,6 @@
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock';
-import mockRNCNetInfo from '@react-native-community/netinfo/jest/netinfo-mock';
 
 jest.mock('@react-native-clipboard/clipboard', () => mockClipboard);
-jest.mock('@react-native-community/netinfo', () => mockRNCNetInfo);
 jest.mock('react-native-device-info', () => {
     return {
         getModel: jest.fn(),
