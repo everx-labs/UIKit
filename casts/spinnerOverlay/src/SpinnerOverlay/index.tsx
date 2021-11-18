@@ -15,9 +15,7 @@ export function UISpinnerOverlay({ visible = false }: Props) {
     const renderSpinner = React.useMemo(() => {
         return (
             <View testID="spinner_loader" style={[styles.container]} key={`spinner~${Date.now()}`}>
-                <View style={styles.background}>
-                    <WaveIndicator color="white" size={waveConfig.size} count={waveConfig.count} />
-                </View>
+                <WaveIndicator color="white" size={waveConfig.size} count={waveConfig.count} />
             </View>
         );
     }, []);
@@ -51,13 +49,6 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         backgroundColor: 'rgba(0,0,0,0.15)',
-    },
-    background: {
-        position: 'absolute',
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
         justifyContent: 'center',
         alignItems: 'center',
     },
