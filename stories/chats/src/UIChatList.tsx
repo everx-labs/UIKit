@@ -2,7 +2,7 @@ import * as React from 'react';
 import { SectionList, ViewProps } from 'react-native';
 import type { SectionListData } from 'react-native';
 
-import UILoadMoreButton from '@tonlabs/uikit.controls';
+import { UILoadMoreButton } from '@tonlabs/uikit.controls';
 import { SectionExtra, UIChatListFormatter } from './UIChatListFormatter';
 import { UICommonChatList } from './UICommonChatList';
 import { DateSeparator } from './DateSeparator';

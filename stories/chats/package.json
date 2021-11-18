@@ -46,7 +46,6 @@
         "@tonlabs/uikit.themes": "^3.0.0",
         "bignumber.js": "9.0.0",
         "dayjs": "1.9.1",
-        "react-native-indicators": "git+https://github.com/tonlabs/react-native-indicators.git",
         "react-native-parsed-text": "git+https://github.com/FactorBench/react-native-parsed-text.git",
         "react-native-safe-area-context": "^3.1.3"
     },
@@ -55,7 +54,6 @@
         "@tonlabs/babel-plugin-transform-inline-consts": "^3.0.0",
         "@types/react": "17.0.21",
         "@types/react-native": "0.65.0",
-        "@types/react-native-indicators": "0.16.1",
         "@types/react-native-video": "^5.0.10",
         "react": "17.0.2",
         "react-dom": "17.0.2",

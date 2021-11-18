@@ -12,6 +12,7 @@ import * as useHover from './useHover';
 
 export * from './UIBoxButton';
 export * from './UILinkButton';
+export * from './UILoadMoreButton';
 export * from './UIMsgButton';
 export * from './UIPillButton';
 export * from './TouchableOpacity';
