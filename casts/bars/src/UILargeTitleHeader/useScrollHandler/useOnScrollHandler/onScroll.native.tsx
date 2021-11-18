@@ -58,7 +58,12 @@ export default function (
             return;
         }
 
-        yIsNegative.value = y <= 0;
+        // yIsNegative.value = y <= 0;
+
+        // TODO: probably unneeded
+        if (ctx.yWithoutRubberBand == null) {
+            ctx.yWithoutRubberBand = 0;
+        }
 
         if (parentScrollHandlerActive) {
             if (
@@ -108,7 +113,12 @@ export default function (
             // scrollTo reset real y, so we need to count it ourselves
             ctx.yWithoutRubberBand -= y;
             shift.value = Math.max(shift.value - y, 0 - largeTitleHeight.value);
-            scrollTo(scrollRef, 0, 0, false);
+            // 1 here is to trick OverScrollView
+            // the algorithm is the following: https://github.com/Mixiaoxiao/OverScroll-Everywhere/blob/master/OverScroll/src/com/mixiaoxiao/overscroll/OverScrollDelegate.java#L360-L368
+            // Basically it tries to understand, is there a room to scroll up and down
+            // so if we set y to 0 the lib would think that it needs to apply
+            // overscroll animation, but in reality we don't want it here
+            scrollTo(scrollRef, 0, 1, false);
         }
     };
 }

@@ -20,14 +20,8 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
 
         const { onLayout, onContentSizeChange } = useHasScroll();
 
-        const {
-            ref,
-            panGestureHandlerRef,
-            scrollHandler,
-            gestureHandler,
-            registerScrollable,
-            unregisterScrollable,
-        } = React.useContext(ScrollableContext);
+        const { ref, scrollHandler, gestureHandler, registerScrollable, unregisterScrollable } =
+            React.useContext(ScrollableContext);
 
         React.useEffect(() => {
             if (registerScrollable) {
@@ -47,31 +41,15 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
         });
 
         return (
-            <PanGestureHandler
-                ref={panGestureHandlerRef}
-                shouldCancelWhenOutside={false}
-                onGestureEvent={gestureHandler}
-                simultaneousHandlers={nativeGestureRef}
-            >
-                <Animated.View style={{ flex: 1 }}>
-                    <NativeViewGestureHandler
-                        ref={nativeGestureRef}
-                        disallowInterruption
-                        shouldCancelWhenOutside={false}
-                    >
-                        {/* @ts-ignore */}
-                        <AnimatedScrollable
-                            {...props}
-                            ref={ref}
-                            overScrollMode="never"
-                            onScrollBeginDrag={scrollHandler}
-                            scrollEventThrottle={16}
-                            onLayout={onLayout}
-                            onContentSizeChange={onContentSizeChange}
-                        />
-                    </NativeViewGestureHandler>
-                </Animated.View>
-            </PanGestureHandler>
+            <AnimatedScrollable
+                {...props}
+                ref={ref}
+                overScrollMode="never"
+                onScrollBeginDrag={scrollHandler}
+                scrollEventThrottle={16}
+                onLayout={onLayout}
+                onContentSizeChange={onContentSizeChange}
+            />
         );
     }
 
