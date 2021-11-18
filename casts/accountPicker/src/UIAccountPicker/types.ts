@@ -1,3 +1,4 @@
+import type React from 'react';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 export type UIAccountData = {
@@ -8,13 +9,17 @@ export type UIAccountData = {
     public: boolean;
 };
 
-export type AccountPickerCellProps = {
-    account: UIAccountData;
+export type CellContainerPropsBase = {
+    notActive?: boolean;
+    containerStyle: ViewStyleProp;
+    onPressAccount?: () => void;
+};
+
+export type AccountPickerCellProps = CellContainerPropsBase & {
+    account?: UIAccountData | null;
     onPressAccount?: () => void;
     displayNameOnly?: boolean;
-    notActive?: boolean;
-    right?: any;
-    containerStyle: ViewStyleProp;
+    right?: React.ReactElement;
 };
 
 export type AccountPickerProps = AccountPickerCellProps & {
