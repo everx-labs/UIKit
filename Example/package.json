@@ -93,11 +93,13 @@
         "react-native-simple-popover": "git+https://github.com/tonlabs/react-native-simple-popover.git",
         "react-native-status-bar-height": "1.0.1",
         "react-native-svg": "^12.1.0",
+        "react-native-video": "git+https://github.com/tonlabs/react-native-video.git#master",
         "react-native-view-shot": "3.1.2",
         "react-native-web": "0.17.1",
         "react-native-web-image-loader": "^0.1.1",
         "react-native-web-modal": "^1.0.1",
         "react-native-web-linear-gradient": "1.1.2",
+        "react-player": "^2.9.0",
         "rn-fetch-blob": "git+https://github.com/FactorBench/rn-fetch-blob.git#239d8ab1d26334f98f5dc1b4fac32b7c55cf8d39"
     },
     "devDependencies": {
