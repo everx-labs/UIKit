@@ -9,7 +9,9 @@ import Animated, {
 } from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
 
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { useTheme, ColorVariants } from '@tonlabs/uikit.themes';
+
 import { SkeletonProgress, useSkeletonProgress } from './useSkeletonProgress';
 
 enum CrossDissolveProgress {
@@ -21,7 +23,7 @@ enum CrossDissolveProgress {
  * A *cross dissolve* is a post-production video editing technique
  * in which you gently increase the opacity of one scene over the previous one.
  */
-function useCrossDissolve(visible?: boolean) {
+function useCrossDissolve(visible: boolean) {
     const crossDissolveProgress = useSharedValue(
         visible ? CrossDissolveProgress.Visible : CrossDissolveProgress.Hidden,
     );
@@ -131,7 +133,6 @@ export function UISkeleton({
     children,
     show,
     style: styleProp,
-    persistStyles = false,
 }: {
     /**
      * Your content will be wrapped with a View,
@@ -165,16 +166,12 @@ export function UISkeleton({
      * </Skeleton>
      * ```
      */
-    show?: boolean;
+    show: boolean;
     /**
      * Since your content will be wrapped with <View />,
      * you might want to provide some additional styles
      */
     style?: StyleProp<ViewStyle>;
-    /**
-     * Flag to indicate whether to keep the wrapper styles after hiding the skeleton
-     */
-    persistStyles?: boolean;
 }) {
     const visible = children == null || show;
 
@@ -195,16 +192,8 @@ export function UISkeleton({
 
     const { isVisible, crossDissolveProgress } = useCrossDissolve(visible);
 
-    const containerStyles = React.useMemo(() => {
-        const containerStyles = [styles.container, styleProp];
-        if (persistStyles) {
-            return containerStyles;
-        }
-        return isVisible ? containerStyles : null;
-    }, [isVisible, persistStyles]);
-
     return (
-        <View style={containerStyles} onLayout={onLayout}>
+        <View style={[styles.container, styleProp]} onLayout={onLayout}>
             {children}
             {isVisible && (
                 <SkeletonAnimatable width={width} crossDissolveProgress={crossDissolveProgress} />
@@ -214,6 +203,10 @@ export function UISkeleton({
 }
 
 const styles = StyleSheet.create({
-    container: { position: 'relative', overflow: 'hidden' },
+    container: {
+        position: 'relative',
+        overflow: 'hidden',
+        borderRadius: UILayoutConstant.alertBorderRadius,
+    },
     gradient: { flex: 1 },
 });
