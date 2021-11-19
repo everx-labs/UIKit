@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uicast.date-time-picker",
-    "version": "2.3.0",
+    "version": "3.0.0",
     "description": "Date/time picker on Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",
@@ -34,16 +34,16 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/uikit.themes": "^2.3.0",
-        "@tonlabs/uikit.controls": "^2.3.0",
-        "@tonlabs/uikit.layout": "^2.3.0",
-        "@tonlabs/uikit.popups": "^2.3.0",
-        "@tonlabs/uikit.media": "^2.3.0",
-        "@tonlabs/uikit.assets": "^2.3.0",
-        "@tonlabs/uikit.scrolls": "^2.3.0",
-        "@tonlabs/uikit.inputs": "^2.3.0",
-        "@tonlabs/uicast.bars": "^2.3.0",
-        "@tonlabs/localization": "^2.3.0",
+        "@tonlabs/localization": "^3.0.0",
+        "@tonlabs/uicast.bars": "^3.0.0",
+        "@tonlabs/uikit.assets": "^3.0.0",
+        "@tonlabs/uikit.controls": "^3.0.0",
+        "@tonlabs/uikit.inputs": "^3.0.0",
+        "@tonlabs/uikit.layout": "^3.0.0",
+        "@tonlabs/uikit.media": "^3.0.0",
+        "@tonlabs/uikit.popups": "^3.0.0",
+        "@tonlabs/uikit.scrolls": "^3.0.0",
+        "@tonlabs/uikit.themes": "^3.0.0",
         "dayjs": "1.9.1"
     },
     "devDependencies": {

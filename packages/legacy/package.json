@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uikit.legacy",
-    "version": "2.3.0",
+    "version": "3.0.0",
     "description": "Legacy components of Tonlabs's UIKit",
     "scripts": {
         "prepare": "bob build"
@@ -32,9 +32,9 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/uikit.components": "^2.3.0",
-        "@tonlabs/uikit.core": "^2.3.0",
-        "@tonlabs/uikit.themes": "^2.3.0"
+        "@tonlabs/uikit.components": "^3.0.0",
+        "@tonlabs/uikit.core": "^3.0.0",
+        "@tonlabs/uikit.themes": "^3.0.0"
     },
     "devDependencies": {
         "@babel/runtime": "^7.15.0",

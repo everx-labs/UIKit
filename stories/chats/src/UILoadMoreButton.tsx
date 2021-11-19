@@ -29,7 +29,7 @@ const Indicator = ({ isLoadingMore }: { isLoadingMore: boolean }) => {
     return (
         <MaterialIndicator
             style={styles.indicator}
-            color={theme[ColorVariants.LinePrimary]}
+            color={theme[ColorVariants.LinePrimary] as string}
             size={20}
         />
     );
