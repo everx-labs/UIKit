@@ -46,7 +46,7 @@ export function UIAccountPicker({
 
     const title2 = title || 'default';
     return (
-        <View testID={`rebalance_asset_picker_${title2}`} style={containerStyle}>
+        <View testID={`rebalance_asset_picker_${title || 'default'}`} style={containerStyle}>
             {renderTitle}
             {renderAccountCell}
         </View>
