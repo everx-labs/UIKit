@@ -1,5 +1,5 @@
 import type React from 'react';
-import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type { ViewStyle, StyleProp } from 'react-native';
 
 export type UIAccountData = {
     address: string;
@@ -11,7 +11,7 @@ export type UIAccountData = {
 
 export type CellContainerPropsBase = {
     notActive?: boolean;
-    containerStyle: ViewStyleProp;
+    containerStyle: StyleProp<ViewStyle>;
     onPressAccount?: () => void;
 };
 
