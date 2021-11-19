@@ -24,6 +24,7 @@ import com.mixiaoxiao.overscroll.PathScroller;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 /**
  * https://github.com/Mixiaoxiao/OverScroll-Everywhere
@@ -33,8 +34,6 @@ import java.lang.reflect.Method;
 public class ReactOverScrollView extends ReactScrollView implements OverScrollable {
 
     private OverScrollDelegate mOverScrollDelegate;
-
-    private boolean mDragging;
 
     // ===========================================================
     // Constructors
@@ -56,76 +55,167 @@ public class ReactOverScrollView extends ReactScrollView implements OverScrollab
     // ===========================================================
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if (!getScrollEnabled()) {
+            return false;
+        }
+
         final int action = MotionEventCompat.getActionMasked(ev);
         if (action == MotionEvent.ACTION_DOWN) {
-            NativeGestureUtil.notifyNativeGestureStarted(this, ev);
-            // TODO: it's fired twice for some reason
-            ReactScrollViewHelper.emitScrollBeginDragEvent(this);
-            mDragging = true;
+            setParentDragging(true);
         }
-        if (mOverScrollDelegate.onInterceptTouchEvent(ev)) {
-            return true;
-        }
-        return super.onInterceptTouchEvent(ev);
+
+        boolean parentIntercepted = super.onInterceptTouchEvent(ev);
+        boolean overScrollIntercepted = mOverScrollDelegate.onInterceptTouchEvent(ev);
+
+        return parentIntercepted || overScrollIntercepted;
     }
 
+    Field parentDraggingField;
 
+    boolean getParentDragging() {
+        try {
+            // TODO: create a wrapper with getter method
+            if (parentDraggingField == null) {
+                parentDraggingField = getClass().getSuperclass().getDeclaredField("mDragging"); //NoSuchFieldException
+                parentDraggingField.setAccessible(true);
+            }
+            return (boolean) parentDraggingField.get(this);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    void setParentDragging(boolean val) {
+        try {
+            // TODO: create a wrapper with getter method
+            if (parentDraggingField == null) {
+                parentDraggingField = getClass().getSuperclass().getDeclaredField("mDragging"); //NoSuchFieldException
+                parentDraggingField.setAccessible(true);
+            }
+            parentDraggingField.set(this, val);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    Field mScrollEnabledField;
+
+    boolean getScrollEnabled() {
+        try {
+            // TODO: create a wrapper with getter method
+            if (mScrollEnabledField == null) {
+                mScrollEnabledField = getClass().getSuperclass().getDeclaredField("mScrollEnabled"); //NoSuchFieldException
+                mScrollEnabledField.setAccessible(true);
+            }
+            return (boolean) mScrollEnabledField.get(this);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        // TODO: mScrollEnabled from ReactScrollView
-        final int action = MotionEventCompat.getActionMasked(event);
-        if (action == MotionEvent.ACTION_UP && mDragging) {
-            // TODO: velocity
-            // TODO: it's fired twice for some reason
-            ReactScrollViewHelper.emitScrollEndDragEvent(this, 0, 0);
-            mDragging = false;
-
-            // TODO: create a wrapper with method invoker
-            try {
-                Method handlePostTouchScrolling = getClass().getSuperclass().getDeclaredMethod("handlePostTouchScrolling", int.class, int.class);
-                handlePostTouchScrolling.setAccessible(true);
-                // TODO: velocity
-                handlePostTouchScrolling.invoke(this, 0, 0);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            }
-//            return true;
+    public boolean onTouchEvent(MotionEvent ev) {
+        if (!getScrollEnabled()) {
+            return false;
         }
-        int offset = this.superComputeVerticalScrollOffset();
-        int range = this.superComputeVerticalScrollRange() - this.superComputeVerticalScrollExtent();
-        Log.d("ReactOverScrollView", String.format("range: %d, offset: %d, canScrollUp: %b, canScrollDown: %b", range, offset, offset > 0, offset < range - 1));
-        if (mOverScrollDelegate.onTouchEvent(event)) {
-            try {
-                // TODO: create a wrapper with getter method
-                Field mStateField = mOverScrollDelegate.getClass().getDeclaredField("mState"); //NoSuchFieldException
-                mStateField.setAccessible(true);
-                int mState = (int) mStateField.get(mOverScrollDelegate);
 
-                // TODO: create a wrapper with getter method
-                Field mOffsetYField = mOverScrollDelegate.getClass().getDeclaredField("mOffsetY"); //NoSuchFieldException
-                mOffsetYField.setAccessible(true);
-                float mOffsetY = (float) mOffsetYField.get(mOverScrollDelegate);
-
-                if (mState == OverScrollDelegate.OS_DRAG_TOP || mState == OverScrollDelegate.OS_DRAG_BOTTOM) {
-                    ReactContext reactContext = (ReactContext) this.getContext();
-                    int surfaceId = UIManagerHelper.getSurfaceId(reactContext);
-                    UIManagerHelper.getEventDispatcherForReactTag(reactContext, this.getId()).dispatchEvent(ScrollEvent.obtain(surfaceId, this.getId(), ScrollEventType.SCROLL, 0, (int) (-1 * mOffsetY), 0, 0, 0, 0, 0, 0));
-                }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            } catch (NullPointerException e) {
-                e.printStackTrace();
+        if (mOverScrollDelegate.onTouchEvent(ev)) {
+            int mState = getOverScrollState();
+            if (mState == OverScrollDelegate.OS_DRAG_TOP || mState == OverScrollDelegate.OS_DRAG_BOTTOM) {
+                ReactContext reactContext = (ReactContext) this.getContext();
+                int surfaceId = UIManagerHelper.getSurfaceId(reactContext);
+                UIManagerHelper
+                        .getEventDispatcherForReactTag(reactContext, this.getId())
+                        .dispatchEvent(
+                                ScrollEvent.obtain(
+                                        surfaceId,
+                                        this.getId(),
+                                        ScrollEventType.SCROLL,
+                                        0,
+                                        (int) (-1 * getOverScrollOffsetY()),
+                                        0,
+                                        0,
+                                        0,
+                                        0,
+                                        0,
+                                        0));
             }
             return true;
         }
-        return super.onTouchEvent(event);
+
+        return super.onTouchEvent(ev);
+    }
+
+    Field overScrollStateField;
+
+    int getOverScrollState() {
+        try {
+            // TODO: create a wrapper with getter method
+            if (overScrollStateField == null) {
+                overScrollStateField = mOverScrollDelegate.getClass().getDeclaredField("mState"); //NoSuchFieldException
+                overScrollStateField.setAccessible(true);
+            }
+            return (int) overScrollStateField.get(mOverScrollDelegate);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    Field overScrollOffsetYField;
+
+    float getOverScrollOffsetY() {
+        try {
+            // TODO: create a wrapper with getter method
+            if (overScrollOffsetYField == null) {
+                overScrollOffsetYField = mOverScrollDelegate.getClass().getDeclaredField("mOffsetY"); //NoSuchFieldException
+                overScrollOffsetYField.setAccessible(true);
+            }
+            return (float) overScrollOffsetYField.get(mOverScrollDelegate);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return 0.0F;
+    }
+
+    Method superHandlePostTouchScrolling;
+
+    public void callSuperHandlePostTouchScrolling(int velocityX, int velocityY) {
+        try {
+            if (superHandlePostTouchScrolling == null) {
+                superHandlePostTouchScrolling = Objects.requireNonNull(getClass().getSuperclass()).getDeclaredMethod("handlePostTouchScrolling", int.class, int.class);
+                superHandlePostTouchScrolling.setAccessible(true);
+            }
+            superHandlePostTouchScrolling.invoke(this, velocityX, velocityY);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
