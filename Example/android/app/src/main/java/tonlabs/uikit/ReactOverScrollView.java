@@ -22,6 +22,8 @@ import com.mixiaoxiao.overscroll.OverScrollDelegate.OverScrollable;
 import com.mixiaoxiao.overscroll.PathScroller;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * https://github.com/Mixiaoxiao/OverScroll-Everywhere
@@ -78,6 +80,20 @@ public class ReactOverScrollView extends ReactScrollView implements OverScrollab
             // TODO: it's fired twice for some reason
             ReactScrollViewHelper.emitScrollEndDragEvent(this, 0, 0);
             mDragging = false;
+
+            // TODO: create a wrapper with method invoker
+            try {
+                Method handlePostTouchScrolling = getClass().getSuperclass().getDeclaredMethod("handlePostTouchScrolling", int.class, int.class);
+                handlePostTouchScrolling.setAccessible(true);
+                // TODO: velocity
+                handlePostTouchScrolling.invoke(this, 0, 0);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
 //            return true;
         }
         int offset = this.superComputeVerticalScrollOffset();
