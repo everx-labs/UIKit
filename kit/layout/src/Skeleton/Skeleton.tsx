@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { LayoutChangeEvent, StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { LayoutChangeEvent, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import Animated, {
     useAnimatedStyle,
     interpolate,
@@ -9,8 +9,11 @@ import Animated, {
 } from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
 
-import { useTheme, ColorVariants, UIBackgroundView } from '@tonlabs/uikit.themes';
+import { useTheme, ColorVariants } from '@tonlabs/uikit.themes';
+
 import { SkeletonProgress, useSkeletonProgress } from './useSkeletonProgress';
+
+import { UILayoutConstant } from '../UILayoutConstant';
 
 enum CrossDissolveProgress {
     Visible = 1,
@@ -133,10 +136,10 @@ export function UISkeleton({
     style: styleProp,
 }: {
     /**
-     * Your content will be wrapped with View,
-     * so you probably want to give to your content some
-     * dimensions, or if it a text, provide some default one
-     * that is aproximatelly will be the size of real content
+     * Your content will be wrapped with a View,
+     * so you will probably want to give some dimensions to your content
+     * or provide some default value for a text,
+     * that will be approximately of the same size as the real content
      *
      * ```ts
      * // skeleton will hide when data exists
@@ -147,7 +150,7 @@ export function UISkeleton({
      */
     children: React.ReactNode;
     /**
-     * Flag to controll behavior of skeleton
+     * Flag to control behavior of skeleton
      * ```ts
      * // even though data is rendered, show skeleton anyway
      * <Skeleton show>
@@ -155,7 +158,7 @@ export function UISkeleton({
      * </Skeleton>
      * ```
      *
-     * Usefull when you want to controll skeleton visibility
+     * Useful when you want to control skeleton visibility
      * during loading, i.e.
      * ```ts
      * const [isLoading, setIsLoading] = React.useState(true);
@@ -191,16 +194,20 @@ export function UISkeleton({
     const { isVisible, crossDissolveProgress } = useCrossDissolve(visible);
 
     return (
-        <UIBackgroundView style={[styles.container, styleProp]} onLayout={onLayout}>
+        <View style={[styles.container, styleProp]} onLayout={onLayout}>
             {children}
             {isVisible && (
                 <SkeletonAnimatable width={width} crossDissolveProgress={crossDissolveProgress} />
             )}
-        </UIBackgroundView>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { position: 'relative', overflow: 'hidden' },
+    container: {
+        position: 'relative',
+        overflow: 'hidden',
+        borderRadius: UILayoutConstant.alertBorderRadius,
+    },
     gradient: { flex: 1 },
 });
