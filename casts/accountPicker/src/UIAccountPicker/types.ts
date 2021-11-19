@@ -4,9 +4,6 @@ import type { ViewStyle, StyleProp } from 'react-native';
 export type UIAccountData = {
     address: string;
     name: string;
-    hdIndex: number;
-    balance: number;
-    public: boolean;
 };
 
 export type CellContainerPropsBase = {
