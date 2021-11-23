@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { Platform } from 'react-native';
 
 import type { DateFormatInfo, NumberFormatInfo } from '../types';
 
@@ -54,12 +55,9 @@ export function getDateFormatInfo(): DateFormatInfo {
     localePattern = `${localePattern}${symbols[components[1]]}`;
     localePattern = `${localePattern}${separator}${symbols[components[2]]}`;
 
-    // Determining the first day of the week by locale when using library can consume too much space,
-    // but without it it will be inaccurate,
-    // so for simplicity we will define that on the web all weeks start on Monday, as the most common day.
-    // @ts-expect-error
-    const dayOfWeek = dayjs().weekday(0);
-    console.log(dayOfWeek);
+    // By default Sunday(0) - start of  week
+    // @ts-expect-error TS doesn't know about importing "weekday" in DayJSConfig.ts for web
+    const dayOfWeek = Platform.OS === 'web' ? dayjs().startOf('w').weekday() : 0;
 
     return {
         separator,

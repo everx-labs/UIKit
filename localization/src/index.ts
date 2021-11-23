@@ -1,4 +1,4 @@
-import './DayJSConfig.js';
+import './DayJSConfig';
 
 export { languagesInfo } from './constants';
 export * from './language';

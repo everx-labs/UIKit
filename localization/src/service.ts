@@ -207,7 +207,7 @@ export class LocalizationService<T> extends (LocalizedStringsService as Localize
     }
 
     getFirstDayOfWeek = (): number => {
-        return this.localeInfo.dates.dayOfWeek || 1;
+        return this.localeInfo.dates.dayOfWeek;
     };
 
     shortenAmount: ShortenAmount = shortenAmount.bind(this, this.ShortenedNumberSuffix);
