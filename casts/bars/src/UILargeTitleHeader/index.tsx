@@ -8,8 +8,8 @@ import Animated, {
     Extrapolate,
     interpolate,
     useAnimatedReaction,
-    scrollTo,
     useDerivedValue,
+    scrollTo,
 } from 'react-native-reanimated';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UIBackgroundView, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
@@ -140,14 +140,13 @@ export function UILargeTitleHeader({
 
     const { hasScroll, hasScrollShared, setHasScroll } = useHasScroll();
 
-    const { scrollInProgress, scrollHandler, gestureHandler, onWheel } = useScrollHandler(
+    const { scrollHandler, onWheel } = useScrollHandler(
         scrollRef,
         largeTitleViewRef,
         shift,
         defaultShift,
         largeTitleHeight,
         hasScrollShared,
-        RUBBER_BAND_EFFECT_DISTANCE,
     );
 
     const translateY = useDerivedValue(() => {
@@ -262,7 +261,8 @@ export function UILargeTitleHeader({
             ref: scrollRef,
             panGestureHandlerRef,
             scrollHandler,
-            gestureHandler,
+            // TODO: remove
+            gestureHandler: null,
             onWheel,
             hasScroll,
             setHasScroll,
@@ -273,7 +273,6 @@ export function UILargeTitleHeader({
             scrollRef,
             panGestureHandlerRef,
             scrollHandler,
-            gestureHandler,
             onWheel,
             hasScroll,
             setHasScroll,
@@ -336,15 +335,15 @@ export function UILargeTitleHeader({
             callback?: ((isFinished: boolean) => void) | undefined,
         ) => {
             // Do not interupt active scroll
-            if (!scrollInProgress.value) {
-                shift.value = withTiming(position, { duration: options.duration ?? 0 }, callback);
-                scrollTo(scrollRef, 0, 0, false);
-            }
+            // if (!scrollInProgress.value) {
+            shift.value = withTiming(position, { duration: options.duration ?? 0 }, callback);
+            scrollTo(scrollRef, 0, 0, false);
+            // }
             if (options.changeDefaultShift) {
                 defaultShift.value = position;
             }
         },
-        [shift, defaultShift, scrollInProgress, scrollRef],
+        [shift, defaultShift, scrollRef],
     );
 
     const positionContext = React.useMemo(

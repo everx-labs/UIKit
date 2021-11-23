@@ -6,7 +6,8 @@ import type { ScrollView as RNScrollView, NativeScrollEvent } from 'react-native
 
 import { getYWithRubberBandEffect } from '@tonlabs/uikit.popups';
 import type { ScrollableParentScrollHandler } from '@tonlabs/uikit.scrolls';
-import type { ScrollHandlerContext } from '../../types';
+import { trackVelocity, isDragging, isFlingReal } from '../scrollContext';
+import type { ScrollHandlerContext } from '../scrollContext';
 
 const isIOS = Platform.OS === 'ios';
 
@@ -107,13 +108,11 @@ function test() {
     assert(getNextPosition({ contentOffset: { y: 5 } } as any, -10, 50), -15);
 }
 
-export default function (
+export default function createOnScroll(
     scrollRef: React.RefObject<RNScrollView>,
     largeTitleViewRef: React.RefObject<Animated.View>,
     largeTitleHeight: Animated.SharedValue<number>,
-    yIsNegative: Animated.SharedValue<boolean>,
     currentPosition: Animated.SharedValue<number>,
-    rubberBandDistance: number,
     parentScrollHandler: ScrollableParentScrollHandler,
     parentScrollHandlerActive: boolean,
 ) {
@@ -129,6 +128,8 @@ export default function (
         }
 
         /**
+         * TODO: rephrase it
+         *
          * The fix is needed only for iOS
          *
          * On iOS `onScroll` event could fire on mount sometimes,
@@ -136,7 +137,7 @@ export default function (
          * To prevent changes when there wasn't onBeginDrag event
          * (so it's likely not an actual scroll) using a guard
          */
-        if (isIOS && ctx != null && !ctx.scrollTouchGuard) {
+        if (!(isDragging(ctx) || isFlingReal(ctx))) {
             return;
         }
 
@@ -156,12 +157,11 @@ export default function (
 
         if (y === 0) {
             // TODO: this is very important!
-            console.log('skipped2');
+            console.log('skipped');
             return;
         }
 
         const nextPosition = getNextPosition(event, currentPosition.value, largeTitleHeight.value);
-
         const diff = nextPosition - currentPosition.value;
 
         // console.log(currentPosition.value, nextPosition, diff, y);
@@ -171,6 +171,7 @@ export default function (
         // regular scroll
         if (currentPosition.value < collapsedEdge && nextPosition < collapsedEdge) {
             currentPosition.value = nextPosition;
+            trackVelocity(diff, ctx as any);
             return;
         }
 
@@ -208,10 +209,12 @@ export default function (
             scrollTo(scrollRef, 0, 1, false);
             // Compensate 1 described above
             currentPosition.value = nextPosition + diff + 1;
+            trackVelocity(diff, ctx as any);
             return;
         }
-        scrollTo(scrollRef, 0, 0, false);
         currentPosition.value = nextPosition + diff;
+        scrollTo(scrollRef, 0, 0, false);
+        trackVelocity(diff, ctx as any);
     };
 }
 
