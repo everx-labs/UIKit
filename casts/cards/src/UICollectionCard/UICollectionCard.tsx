@@ -34,7 +34,7 @@ export const UICollectionCard: React.FC<UICollectionCardProps> = ({
                     style={styles.gradient}
                 />
                 <Title title={title} />
-                <Badge badge={badge} style={styles.badge} />
+                <Badge badge={badge} />
             </TouchableOpacity>
         </UISkeleton>
     );
@@ -59,13 +59,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     imageList: {
         ...StyleSheet.absoluteFillObject,
         zIndex: -20,
-    },
-    badge: {
-        borderRadius: UIConstant.uiCollectionCard.badge.borderRadius,
-        backgroundColor: theme[ColorVariants.BackgroundOverlay],
-        alignSelf: 'flex-end',
-        paddingHorizontal: UIConstant.uiCollectionCard.badge.paddingHorizontal,
-        paddingVertical: UIConstant.uiCollectionCard.badge.paddingVertical,
     },
     gradient: {
         ...StyleSheet.absoluteFillObject,

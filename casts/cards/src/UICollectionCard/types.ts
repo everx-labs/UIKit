@@ -22,5 +22,4 @@ export type TitleProps = {
 
 export type BadgeProps = {
     badge?: number | React.ReactElement<UIImageProps>;
-    style: ViewStyle;
 };

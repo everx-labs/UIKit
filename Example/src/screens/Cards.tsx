@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { UICollectionCard } from '@tonlabs/uicast.cards';
 import { UIBoxButton, UIBoxButtonVariant } from '@tonlabs/uikit.controls';
+import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIImage } from '@tonlabs/uikit.media';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -16,27 +18,37 @@ export function Cards() {
                 <View
                     style={{
                         alignSelf: 'stretch',
-                        maxWidth: 900,
-                        margin: 16,
+                        flexDirection: 'row',
+                        maxWidth: 600,
+                        margin: 8,
                     }}
                 >
-                    <View
-                        style={{
-                            width: 183,
-                            height: 183,
-                        }}
-                    >
+                    <View style={{ flex: 1, margin: 8 }}>
                         <UICollectionCard
                             title="Grandbazar Collection"
-                            badge={12}
+                            badge={1}
                             onPress={() => {
-                                console.log('Press');
+                                console.log('Press 1');
                             }}
-                            imageSourceList={[
-                                {
-                                    uri: IMAGE_URI,
-                                },
-                            ]}
+                            imageSourceList={[{ uri: IMAGE_URI }]}
+                            loading={loading}
+                        />
+                    </View>
+                    <View style={{ flex: 1, margin: 8 }}>
+                        <UICollectionCard
+                            title="Dota2 Pixel Art Heroes"
+                            badge={
+                                <UIImage
+                                    source={UIAssets.icons.ui.keyThinWhite}
+                                    style={{
+                                        width: 24,
+                                        height: 24,
+                                    }}
+                                />
+                            }
+                            onPress={() => {
+                                console.log('Press 2');
+                            }}
                             loading={loading}
                         />
                     </View>
