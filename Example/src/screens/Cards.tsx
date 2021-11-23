@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Platform, View } from 'react-native';
+import { View } from 'react-native';
 import { UICollectionCard } from '@tonlabs/uicast.cards';
 import { UIBoxButton, UIBoxButtonVariant } from '@tonlabs/uikit.controls';
 import { ExampleSection } from '../components/ExampleSection';
@@ -17,8 +17,7 @@ export function Cards() {
                     style={{
                         alignSelf: 'stretch',
                         maxWidth: 900,
-                        marginVertical: 20,
-                        marginHorizontal: Platform.OS === 'web' ? 20 : 0,
+                        margin: 16,
                     }}
                 >
                     <View
