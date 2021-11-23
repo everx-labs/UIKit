@@ -162,7 +162,6 @@ export default class UIAmountInput extends UIDetailsInput<Props, State> {
                 {this.renderTrailingValue()}
                 {this.renderToken()}
                 {this.renderRightButton()}
-                {this.renderArrow()}
             </>
         );
     }
