@@ -46,6 +46,7 @@
         "@tonlabs/uicast.blur-view": "*",
         "@tonlabs/uicast.pager-view": "*",
         "@tonlabs/uicast.numbers": "*",
+        "@tonlabs/uicast.cards": "*",
         "@tonlabs/uikit.components": "*",
         "@tonlabs/uikit.core": "*",
         "@tonlabs/uikit.legacy": "*",
