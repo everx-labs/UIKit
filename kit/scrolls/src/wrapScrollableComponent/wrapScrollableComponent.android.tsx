@@ -1,7 +1,6 @@
 import * as React from 'react';
 import type { ScrollViewProps } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { NativeViewGestureHandler, PanGestureHandler } from 'react-native-gesture-handler';
 
 import { ScrollableContext } from '../Context';
 import { useHasScroll } from './useHasScroll';
@@ -16,11 +15,9 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
         props: Props & { children?: React.ReactNode },
         forwardRef: React.RefObject<typeof AnimatedScrollable>,
     ) {
-        const nativeGestureRef = React.useRef<NativeViewGestureHandler>(null);
-
         const { onLayout, onContentSizeChange } = useHasScroll();
 
-        const { ref, scrollHandler, gestureHandler, registerScrollable, unregisterScrollable } =
+        const { ref, scrollHandler, registerScrollable, unregisterScrollable } =
             React.useContext(ScrollableContext);
 
         React.useEffect(() => {

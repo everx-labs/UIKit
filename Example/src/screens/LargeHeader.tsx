@@ -28,7 +28,7 @@ function LargeHeaderExample() {
                     }}
                 />
             )}
-            {new Array(9)
+            {new Array(19)
                 .fill(null)
                 .map((_el, i) => (i + 1) / 10)
                 .map(opacity => (
@@ -121,10 +121,10 @@ export function LargeHeaderScreen() {
                     //         onPress: () => {},
                     //     },
                     // ],
-                    renderAboveContent: () => {
-                        return <RefreshPageController />;
-                    },
-                    // renderBelowContent,
+                    // renderAboveContent: () => {
+                    //     return <RefreshPageController />;
+                    // },
+                    renderBelowContent,
                 }}
                 component={LargeHeaderExample}
             />

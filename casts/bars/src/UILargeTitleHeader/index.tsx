@@ -9,12 +9,15 @@ import Animated, {
     interpolate,
     useAnimatedReaction,
     scrollTo,
+    useDerivedValue,
 } from 'react-native-reanimated';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UIBackgroundView, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 
 import { useHasScroll, ScrollableContext } from '@tonlabs/uikit.scrolls';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { getYWithRubberBandEffect } from '@tonlabs/uikit.popups';
+
 import { UIConstant } from '../constants';
 import type { UINavigationBarProps } from '../UINavigationBar';
 import { UIStackNavigationBar } from '../UIStackNavigationBar';
@@ -124,7 +127,7 @@ export function UILargeTitleHeader({
             /**
              * Sometimes it's needed to invalidate a height of large title
              */
-            if (largeTitleHeight.value > 0 && largeTitleHeight.value !== height) {
+            if (largeTitleHeight.value !== height) {
                 largeTitleHeight.value = height;
             }
         },
@@ -147,14 +150,26 @@ export function UILargeTitleHeader({
         RUBBER_BAND_EFFECT_DISTANCE,
     );
 
-    const style = useAnimatedStyle(() => {
+    const translateY = useDerivedValue(() => {
+        if (shift.value > 0) {
+            return getYWithRubberBandEffect(shift.value, RUBBER_BAND_EFFECT_DISTANCE);
+        }
+        return Math.max(shift.value, -largeTitleHeight.value);
+    });
+    const headerStyle = useAnimatedStyle(() => {
         return {
             transform: [
                 {
-                    translateY:
-                        largeTitleHeight.value > 0
-                            ? Math.max(shift.value, -largeTitleHeight.value)
-                            : shift.value,
+                    translateY: translateY.value,
+                },
+            ],
+        };
+    });
+    const scrollableStyle = useAnimatedStyle(() => {
+        return {
+            transform: [
+                {
+                    translateY: translateY.value + largeTitleHeight.value,
                 },
             ],
         };
@@ -168,7 +183,7 @@ export function UILargeTitleHeader({
             transform: [
                 {
                     scale: interpolate(
-                        shift.value,
+                        translateY.value,
                         [0, RUBBER_BAND_EFFECT_DISTANCE],
                         [1, LARGE_TITLE_SCALE],
                         {
@@ -178,7 +193,7 @@ export function UILargeTitleHeader({
                 },
                 {
                     translateX: interpolate(
-                        shift.value,
+                        translateY.value,
                         [0, RUBBER_BAND_EFFECT_DISTANCE],
                         [0, (titleWidth.value * LARGE_TITLE_SCALE - titleWidth.value) / 2],
                         {
@@ -343,8 +358,12 @@ export function UILargeTitleHeader({
     return (
         <UIBackgroundView style={styles.container} ref={contentContainerRef} collapsable={false}>
             <View style={styles.mainHeaderFiller} />
-            <Animated.View style={[styles.inner, style]}>
-                <Animated.View ref={largeTitleViewRef} onLayout={onLargeTitleLayout}>
+            <Animated.View style={styles.inner}>
+                <Animated.View
+                    ref={largeTitleViewRef}
+                    onLayout={onLargeTitleLayout}
+                    style={[{ position: 'absolute', left: 0, top: 0, right: 0 }, headerStyle]}
+                >
                     <UILargeTitlePositionContext.Provider value={positionContext}>
                         {renderAboveContent && renderAboveContent()}
                     </UILargeTitlePositionContext.Provider>
@@ -367,19 +386,21 @@ export function UILargeTitleHeader({
 
                 {/* TODO(savelichalex): This is a huge hack for UIController measurement mechanics
                 need to get rid of it as soon as we'll manage to remove UIController  */}
-                <UILargeTitleContainerRefContext.Provider value={contentContainerRef}>
-                    <ScrollableContext.Provider value={scrollableContextValue}>
-                        <Animated.View
-                            style={
-                                hasScroll || hasScrollables
-                                    ? styles.sceneContainerWithScroll
-                                    : styles.sceneContainerWithoutScroll
-                            }
-                        >
-                            {children}
-                        </Animated.View>
-                    </ScrollableContext.Provider>
-                </UILargeTitleContainerRefContext.Provider>
+                <Animated.View style={[styles.inner, scrollableStyle]}>
+                    <UILargeTitleContainerRefContext.Provider value={contentContainerRef}>
+                        <ScrollableContext.Provider value={scrollableContextValue}>
+                            <Animated.View
+                                style={
+                                    hasScroll || hasScrollables
+                                        ? styles.sceneContainerWithScroll
+                                        : styles.sceneContainerWithoutScroll
+                                }
+                            >
+                                {children}
+                            </Animated.View>
+                        </ScrollableContext.Provider>
+                    </UILargeTitleContainerRefContext.Provider>
+                </Animated.View>
             </Animated.View>
             <UIBackgroundView style={styles.mainHeaderContainer}>
                 <UIStackNavigationBar
@@ -399,6 +420,7 @@ const styles = StyleSheet.create({
     },
     inner: {
         flex: 1,
+        position: 'relative',
     },
     mainHeaderFiller: { height: UILayoutConstant.headerHeight },
     mainHeaderContainer: {

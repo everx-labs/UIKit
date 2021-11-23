@@ -29,6 +29,10 @@ function normalizedEnd(
             return (event: NativeScrollEvent, ctx: ScrollHandlerContext) => {
                 'worklet';
 
+                console.log('onBeginEnd', event.contentOffset.y, event.velocity?.y);
+
+                return;
+
                 if (event && parentScrollHandlerActive) {
                     if (ctx.yWithoutRubberBand > 0) {
                         parentScrollHandler(event);

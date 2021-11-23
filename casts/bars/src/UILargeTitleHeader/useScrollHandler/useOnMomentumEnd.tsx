@@ -12,6 +12,8 @@ function withNormalizedMomentumEnd(
     return (event: NativeScrollEvent, ctx: ScrollHandlerContext) => {
         'worklet';
 
+        return;
+
         /**
          * If we got there then there was an end event
          * while scroll view was in motion

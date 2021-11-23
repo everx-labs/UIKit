@@ -1,12 +1,14 @@
 package tonlabs.uikit;
 
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.events.NativeGestureUtil;
 import com.facebook.react.views.scroll.ReactScrollView;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -146,7 +148,7 @@ public class ReactOverScrollView extends ReactScrollView implements OverScrollab
                                         this.getId(),
                                         ScrollEventType.SCROLL,
                                         0,
-                                        (int) (-1 * getOverScrollOffsetY()),
+                                        (int) (-1 * getOverScrollOffsetY() * ev.getYPrecision()),
                                         0,
                                         0,
                                         0,
@@ -295,7 +297,7 @@ public class ReactOverScrollView extends ReactScrollView implements OverScrollab
 
             if (mState == OverScrollDelegate.OS_DRAG_TOP || mState == OverScrollDelegate.OS_DRAG_BOTTOM) {
                 mStateField.set(mOverScrollDelegate, OverScrollDelegate.OS_NONE);
-                mOffsetYField.set(mOverScrollDelegate, 0.0F);
+                mOffsetYField.set(mOverScrollDelegate, y);
                 invalidate();
             }
         } catch (IllegalAccessException e) {
