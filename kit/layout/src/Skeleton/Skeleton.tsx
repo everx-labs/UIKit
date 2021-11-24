@@ -194,7 +194,14 @@ export function UISkeleton({
     const { isVisible, crossDissolveProgress } = useCrossDissolve(visible);
 
     return (
-        <View style={[styles.container, styleProp]} onLayout={onLayout}>
+        <View
+            style={[
+                styles.container,
+                { borderRadius: isVisible ? UILayoutConstant.alertBorderRadius : 0 },
+                styleProp,
+            ]}
+            onLayout={onLayout}
+        >
             {children}
             {isVisible && (
                 <SkeletonAnimatable width={width} crossDissolveProgress={crossDissolveProgress} />
@@ -207,7 +214,6 @@ const styles = StyleSheet.create({
     container: {
         position: 'relative',
         overflow: 'hidden',
-        borderRadius: UILayoutConstant.alertBorderRadius,
     },
     gradient: { flex: 1 },
 });
