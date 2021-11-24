@@ -14,7 +14,7 @@ import { UIImage } from '@tonlabs/uikit.media';
 import type { BadgeProps } from './types';
 import { UIConstant } from '../constants';
 
-export const Badge: React.FC<BadgeProps> = ({ badge }: BadgeProps) => {
+export function Badge({ badge }: BadgeProps) {
     const theme = useTheme();
     const styles = useStyles(theme);
     if (!badge) {
@@ -37,7 +37,7 @@ export const Badge: React.FC<BadgeProps> = ({ badge }: BadgeProps) => {
             <UIImage source={badge} style={styles.image as ImageStyle} />
         </View>
     );
-};
+}
 
 const useStyles = makeStyles((theme: Theme) => ({
     stringBadge: {

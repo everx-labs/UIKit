@@ -10,7 +10,7 @@ import { Title } from './Title';
 import { Badge } from './Badge';
 import { UIConstant } from '../constants';
 
-export const UICollectionCard: React.FC<UICollectionCardProps> = ({
+export function UICollectionCard({
     contentType,
     title,
     badge,
@@ -18,7 +18,7 @@ export const UICollectionCard: React.FC<UICollectionCardProps> = ({
     source,
     loading,
     testID,
-}: UICollectionCardProps) => {
+}: UICollectionCardProps) {
     const theme = useTheme();
     const styles = useStyles(theme);
     return (
@@ -36,7 +36,7 @@ export const UICollectionCard: React.FC<UICollectionCardProps> = ({
             </TouchableOpacity>
         </UISkeleton>
     );
-};
+}
 
 const useStyles = makeStyles((theme: Theme) => ({
     skeleton: {

@@ -3,7 +3,7 @@ import { UILabel, TypographyVariants, ColorVariants } from '@tonlabs/uikit.theme
 
 import type { TitleProps } from './types';
 
-export const Title: React.FC<TitleProps> = ({ title }: TitleProps) => {
+export function Title({ title }: TitleProps) {
     if (!title) {
         return null;
     }
@@ -12,4 +12,4 @@ export const Title: React.FC<TitleProps> = ({ title }: TitleProps) => {
             {title}
         </UILabel>
     );
-};
+}

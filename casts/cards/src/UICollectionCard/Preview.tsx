@@ -4,7 +4,7 @@ import { UIImage } from '@tonlabs/uikit.media';
 
 import type { PreviewProps } from './types';
 
-export const Preview: React.FC<PreviewProps> = ({ source, style, contentType }: PreviewProps) => {
+export function Preview({ source, style, contentType }: PreviewProps) {
     if (contentType !== 'Image' || !source || (Array.isArray(source) && source.length === 0)) {
         return null;
     }
@@ -14,4 +14,4 @@ export const Preview: React.FC<PreviewProps> = ({ source, style, contentType }: 
             <UIImage source={currentSource} style={StyleSheet.absoluteFill} />
         </View>
     );
-};
+}
