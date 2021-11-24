@@ -63,6 +63,24 @@ export function setFlingReal<Context extends { state: ScrollState }>(ctx: Contex
     ctx.state = SCROLL_FLING_REAL;
 }
 
+export function getStateDescription<Context extends { state: ScrollState }>(ctx: Context) {
+    'worklet';
+
+    if (ctx.state === SCROLL_NONE) {
+        return 'none';
+    }
+    if (ctx.state === SCROLL_DRAGGING) {
+        return 'dragging';
+    }
+    if (ctx.state === SCROLL_FLING_EMULATED) {
+        return 'fling emulated';
+    }
+    if (ctx.state === SCROLL_FLING_REAL) {
+        return 'fling real';
+    }
+    return 'unknown';
+}
+
 export function initVelocityTracker<Context extends { lastScrollTimeMs: number }>(ctx: Context) {
     'worklet';
 

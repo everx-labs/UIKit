@@ -6,7 +6,13 @@ import type { ScrollView as RNScrollView, NativeScrollEvent } from 'react-native
 
 import { getYWithRubberBandEffect } from '@tonlabs/uikit.popups';
 import type { ScrollableParentScrollHandler } from '@tonlabs/uikit.scrolls';
-import { trackVelocity, isDragging, isFlingReal } from '../scrollContext';
+import {
+    trackVelocity,
+    isDragging,
+    isFlingReal,
+    getStateDescription,
+    isFlingEmulated,
+} from '../scrollContext';
 import type { ScrollHandlerContext } from '../scrollContext';
 
 const isIOS = Platform.OS === 'ios';
@@ -137,9 +143,10 @@ export default function createOnScroll(
          * To prevent changes when there wasn't onBeginDrag event
          * (so it's likely not an actual scroll) using a guard
          */
-        if (!(isDragging(ctx) || isFlingReal(ctx))) {
-            return;
-        }
+        // if (!(isDragging(ctx) || isFlingReal(ctx))) {
+        //     console.log('weird onScroll', getStateDescription(ctx));
+        //     return;
+        // }
 
         if (largeTitleHeight.value === 0) {
             try {
@@ -170,6 +177,9 @@ export default function createOnScroll(
 
         // regular scroll
         if (currentPosition.value < collapsedEdge && nextPosition < collapsedEdge) {
+            if (isFlingEmulated(ctx)) {
+                return;
+            }
             currentPosition.value = nextPosition;
             trackVelocity(diff, ctx as any);
             return;

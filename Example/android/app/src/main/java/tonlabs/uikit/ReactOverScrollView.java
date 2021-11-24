@@ -50,6 +50,7 @@ public class ReactOverScrollView extends ReactScrollView implements OverScrollab
     // ===========================================================
     private void createOverScrollDelegate(Context context) {
         mOverScrollDelegate = new OverScrollDelegate(this);
+        mOverScrollDelegate.setOverScrollType(true, false);
     }
 
     // ===========================================================

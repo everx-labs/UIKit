@@ -1,11 +1,16 @@
 /* eslint-disable no-param-reassign */
 import * as React from 'react';
-import type { NativeScrollEvent } from 'react-native';
-import Animated, { withSpring, withDecay } from 'react-native-reanimated';
+import type { ScrollView as RNScrollView, NativeScrollEvent } from 'react-native';
+import Animated, { withSpring, withDecay, scrollTo } from 'react-native-reanimated';
 import type { ScrollableParentScrollHandler } from '@tonlabs/uikit.scrolls';
 import type { ScrollHandlerContext } from '../types';
 import { runOnUIPlatformSelect } from './runOnUIPlatformSelect';
-import { isDragging, setFlingEmulated, setFlingReal, setNoScroll } from './scrollContext';
+import {
+    isDragging,
+    setFlingEmulated,
+    setFlingReal,
+    setNoScroll,
+} from './scrollContext';
 
 function normalizedEnd(
     currentPosition: Animated.SharedValue<number>,
@@ -104,8 +109,10 @@ function normalizedEnd(
                     /**
                      * TODO: remove 1.1 ASAP!!!!
                      */
-                    if (event.contentOffset.y > 1.1) {
+                    if (currentPosition.value < -largeTitleHeight.value) {
                         setFlingReal(ctx);
+                        console.log('fling real');
+                        return;
                     }
 
                     /**
@@ -154,6 +161,7 @@ function normalizedEnd(
                 if (isUpMotion) {
                     if (currentPosition.value < -largeTitleHeight.value) {
                         setFlingReal(ctx);
+                        console.log('fling real');
                         return;
                     }
                     // Nothing to do, regular scroll

@@ -5,7 +5,7 @@ import Animated, {
     scrollTo,
 } from 'react-native-reanimated';
 import { useScrollableParentScrollHandler } from '@tonlabs/uikit.scrolls';
-import type { ScrollHandlerContext } from '../types';
+import type { ScrollHandlerContext } from './scrollContext';
 import { useOnScrollHandler } from './useOnScrollHandler';
 import { useOnWheelHandler } from './useOnWheelHandler';
 import { useOnEndDrag } from './useOnEndDrag';
