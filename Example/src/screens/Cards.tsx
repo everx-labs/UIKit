@@ -3,7 +3,6 @@ import { View } from 'react-native';
 import { UICollectionCard } from '@tonlabs/uicast.cards';
 import { UIBoxButton, UIBoxButtonVariant } from '@tonlabs/uikit.controls';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIImage } from '@tonlabs/uikit.media';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -27,7 +26,7 @@ export function Cards() {
                         <UICollectionCard
                             contentType="Image"
                             title="Grandbazar Collection"
-                            badge={1}
+                            badge="1"
                             onPress={() => {
                                 console.log('Press 1');
                             }}
@@ -39,15 +38,7 @@ export function Cards() {
                         <UICollectionCard
                             contentType="Unknown"
                             title="Dota2 Pixel Art Heroes"
-                            badge={
-                                <UIImage
-                                    source={UIAssets.icons.ui.blankMiddle}
-                                    style={{
-                                        width: 24,
-                                        height: 24,
-                                    }}
-                                />
-                            }
+                            badge={UIAssets.icons.ui.blankMiddle}
                             onPress={() => {
                                 console.log('Press 2');
                             }}
