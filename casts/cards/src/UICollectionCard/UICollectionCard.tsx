@@ -24,7 +24,7 @@ export function UICollectionCard({
     return (
         <UISkeleton show={!!loading} style={styles.skeleton}>
             <TouchableOpacity testID={testID} onPress={onPress} style={styles.container}>
-                <Preview source={source} style={styles.imageList} contentType={contentType} />
+                <Preview source={source} style={styles.preview} contentType={contentType} />
                 <LinearGradient
                     start={{ x: 0, y: 0 }}
                     end={{ x: 0, y: 1 }}
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         aspectRatio: 1,
         overflow: 'hidden',
     },
-    imageList: {
+    preview: {
         ...StyleSheet.absoluteFillObject,
         zIndex: -20,
     },
