@@ -39,7 +39,7 @@ export function Cards() {
                             title="Dota2 Pixel Art Heroes"
                             badge={
                                 <UIImage
-                                    source={UIAssets.icons.ui.keyThinWhite}
+                                    source={UIAssets.icons.ui.blankMiddle}
                                     style={{
                                         width: 24,
                                         height: 24,
