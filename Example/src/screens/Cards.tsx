@@ -25,17 +25,19 @@ export function Cards() {
                 >
                     <View style={{ flex: 1, margin: 8 }}>
                         <UICollectionCard
+                            contentType="Image"
                             title="Grandbazar Collection"
                             badge={1}
                             onPress={() => {
                                 console.log('Press 1');
                             }}
-                            imageSourceList={[{ uri: IMAGE_URI }]}
+                            sourceList={[{ uri: IMAGE_URI }]}
                             loading={loading}
                         />
                     </View>
                     <View style={{ flex: 1, margin: 8 }}>
                         <UICollectionCard
+                            contentType="Unknown"
                             title="Dota2 Pixel Art Heroes"
                             badge={
                                 <UIImage

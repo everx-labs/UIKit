@@ -5,19 +5,17 @@ import { ColorVariants, makeStyles, Theme, useTheme } from '@tonlabs/uikit.theme
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UILayoutConstant, UISkeleton } from '@tonlabs/uikit.layout';
 import type { UICollectionCardProps } from './types';
-import { QuickView } from './QuickView';
+import { Preview } from './Preview';
 import { Title } from './Title';
 import { Badge } from './Badge';
 import { UIConstant } from '../constants';
 
-const linearGradientStart = 'rgba(16, 19, 21, 0.8)';
-const linearGradientEnd = 'rgba(16, 19, 21, 0.2)';
-
 export const UICollectionCard: React.FC<UICollectionCardProps> = ({
+    contentType,
     title,
     badge,
     onPress,
-    imageSourceList,
+    sourceList,
     loading,
     testID,
 }: UICollectionCardProps) => {
@@ -26,11 +24,15 @@ export const UICollectionCard: React.FC<UICollectionCardProps> = ({
     return (
         <UISkeleton show={!!loading} style={styles.skeleton}>
             <TouchableOpacity testID={testID} onPress={onPress} style={styles.container}>
-                <QuickView imageSourceList={imageSourceList} style={styles.imageList} />
+                <Preview
+                    sourceList={sourceList}
+                    style={styles.imageList}
+                    contentType={contentType}
+                />
                 <LinearGradient
                     start={{ x: 0, y: 0 }}
                     end={{ x: 0, y: 1 }}
-                    colors={[linearGradientStart, linearGradientEnd]}
+                    colors={[UIConstant.linearGradientStart, UIConstant.linearGradientEnd]}
                     style={styles.gradient}
                 />
                 <Title title={title} />
