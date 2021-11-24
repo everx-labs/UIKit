@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { UICollectionCard } from '@tonlabs/uicast.cards';
+import { UICollectionCard, UIMediaCard } from '@tonlabs/uicast.cards';
 import { UIBoxButton, UIBoxButtonVariant } from '@tonlabs/uikit.controls';
 import { UIAssets } from '@tonlabs/uikit.assets';
+import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -13,7 +14,7 @@ export function Cards() {
     const [loading, setLoading] = useState(false);
     return (
         <ExampleScreen>
-            <ExampleSection title="Cards">
+            <ExampleSection title="UICollectionCard">
                 <View
                     style={{
                         alignSelf: 'stretch',
@@ -52,6 +53,60 @@ export function Cards() {
                     variant={loading ? UIBoxButtonVariant.Negative : UIBoxButtonVariant.Positive}
                 />
             </ExampleSection>
+            <ExampleSection title="UIMediaCard">
+                <View
+                    style={{
+                        alignSelf: 'stretch',
+                        flexDirection: 'row',
+                        maxWidth: 600,
+                        margin: 8,
+                    }}
+                >
+                    <View style={{ flex: 1, margin: 8 }}>
+                        <UIMediaCard
+                            contentType="Image"
+                            title="Virgil"
+                            onPress={() => {
+                                console.log('Press 1');
+                            }}
+                            source={{ uri: IMAGE_URI }}
+                            loading={loading}
+                        />
+                    </View>
+                    <View style={{ flex: 1, margin: 8 }}>
+                        <UIMediaCard
+                            contentType="Unknown"
+                            title="Koko"
+                            onPress={() => {
+                                console.log('Press 2');
+                            }}
+                            loading={loading}
+                        />
+                    </View>
+                </View>
+                <UIBoxButton
+                    title="Loading..."
+                    onPress={() => setLoading(!loading)}
+                    variant={loading ? UIBoxButtonVariant.Negative : UIBoxButtonVariant.Positive}
+                />
+            </ExampleSection>
         </ExampleScreen>
+    );
+}
+
+const CardsStack = createStackNavigator();
+
+export function CardsScreen() {
+    return (
+        <CardsStack.Navigator>
+            <CardsStack.Screen
+                name="CardsWindow"
+                options={{
+                    useHeaderLargeTitle: true,
+                    title: 'Cards',
+                }}
+                component={Cards}
+            />
+        </CardsStack.Navigator>
     );
 }

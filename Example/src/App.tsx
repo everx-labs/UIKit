@@ -45,7 +45,7 @@ import { Inputs } from './screens/Inputs';
 import { Design } from './screens/Design';
 import { ListsScreen } from './screens/Lists';
 import { Chart } from './screens/Chart';
-import { Cards } from './screens/Cards';
+import { CardsScreen } from './screens/Cards';
 import { Images } from './screens/Images';
 import { Layouts } from './screens/Layouts';
 import { Menus } from './screens/Menus';
@@ -342,7 +342,7 @@ const App = () => {
                             <Split.Screen name="buttons" component={ButtonsScreen} />
                             <Split.Screen name="carousel" component={Carousel} />
                             <Split.Screen name="chart" component={Chart} />
-                            <Split.Screen name="cards" component={Cards} />
+                            <Split.Screen name="cards" component={CardsScreen} />
                             <Split.Screen name="chat" component={Chat} />
                             <Split.Screen name="checkbox" component={Checkbox} />
                             <Split.Screen name="design" component={Design} />

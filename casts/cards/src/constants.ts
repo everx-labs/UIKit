@@ -9,4 +9,7 @@ export const UIConstant = {
             paddingVertical: 6,
         },
     },
+    uiMediaCard: {
+        borderRadius: 24,
+    },
 };
