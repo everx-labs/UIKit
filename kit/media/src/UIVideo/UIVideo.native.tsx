@@ -9,6 +9,8 @@ export const UIVideo: React.FC<UIVideoProps> = ({
     width,
     height,
     aspectRatio,
+    onLoad,
+    onError,
 }: UIVideoProps) => {
     return (
         <RNVideo
@@ -20,6 +22,8 @@ export const UIVideo: React.FC<UIVideoProps> = ({
             }}
             controls={controls}
             repeat={repeat}
+            onLoad={onLoad}
+            onError={onError}
         />
     );
 };

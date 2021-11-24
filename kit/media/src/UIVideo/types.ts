@@ -28,6 +28,14 @@ export type UIVideoProps = {
      * Set the aspectRatio of the player
      */
     aspectRatio?: number;
+    /**
+     * Callback function that is called when the media is loaded and ready to play
+     */
+    onLoad?: () => void;
+    /**
+     * Callback function that is called when video cannot be loaded
+     */
+    onError?: () => void;
 };
 
 export type Dimensions = {
