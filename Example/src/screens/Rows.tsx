@@ -11,7 +11,7 @@ const Rows = () => {
     const [loading, setLoading] = React.useState(false);
     return (
         <ExampleScreen>
-            <ExampleSection title="Rows">
+            <ExampleSection title="UILink">
                 <View
                     style={{
                         width: '100%',
