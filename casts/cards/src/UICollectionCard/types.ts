@@ -6,7 +6,7 @@ export type ContentType = 'Image' | 'Video' | 'Unknown';
 
 export type UICollectionCardProps = {
     contentType: ContentType;
-    sourceList?: ImageSourcePropType[];
+    source?: ImageSourcePropType | ImageSourcePropType[];
     title?: string;
     badge?: number | React.ReactElement<UIImageProps>;
     onPress?: () => void;
@@ -16,7 +16,7 @@ export type UICollectionCardProps = {
 
 export type PreviewProps = {
     contentType: ContentType;
-    sourceList?: ImageSourcePropType[];
+    source?: ImageSourcePropType | ImageSourcePropType[];
     style: ViewStyle;
 };
 

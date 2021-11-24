@@ -15,7 +15,7 @@ export const UICollectionCard: React.FC<UICollectionCardProps> = ({
     title,
     badge,
     onPress,
-    sourceList,
+    source,
     loading,
     testID,
 }: UICollectionCardProps) => {
@@ -24,11 +24,7 @@ export const UICollectionCard: React.FC<UICollectionCardProps> = ({
     return (
         <UISkeleton show={!!loading} style={styles.skeleton}>
             <TouchableOpacity testID={testID} onPress={onPress} style={styles.container}>
-                <Preview
-                    sourceList={sourceList}
-                    style={styles.imageList}
-                    contentType={contentType}
-                />
+                <Preview source={source} style={styles.imageList} contentType={contentType} />
                 <LinearGradient
                     start={{ x: 0, y: 0 }}
                     end={{ x: 0, y: 1 }}

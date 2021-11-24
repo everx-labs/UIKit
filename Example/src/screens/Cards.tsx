@@ -31,7 +31,7 @@ export function Cards() {
                             onPress={() => {
                                 console.log('Press 1');
                             }}
-                            sourceList={[{ uri: IMAGE_URI }]}
+                            source={{ uri: IMAGE_URI }}
                             loading={loading}
                         />
                     </View>
