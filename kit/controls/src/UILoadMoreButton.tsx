@@ -4,7 +4,6 @@ import { MaterialIndicator } from 'react-native-indicators';
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
-import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import {
     UILabel,
     UILabelColors,
@@ -12,6 +11,8 @@ import {
     ColorVariants,
     useTheme,
 } from '@tonlabs/uikit.themes';
+
+import { TouchableOpacity } from './TouchableOpacity';
 
 type Props = {
     label?: string;
@@ -29,7 +30,7 @@ const Indicator = ({ isLoadingMore }: { isLoadingMore: boolean }) => {
     return (
         <MaterialIndicator
             style={styles.indicator}
-            color={theme[ColorVariants.LinePrimary]}
+            color={theme[ColorVariants.LinePrimary] as string}
             size={20}
         />
     );
