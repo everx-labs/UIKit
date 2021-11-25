@@ -135,31 +135,31 @@ export function CountryPicker({
          * ??
          */
         if (isAndroid) {
-            (async () => {
-                if (visible) {
-                    if (!initialSoftInputMode.current) {
+            if (visible) {
+                if (!initialSoftInputMode.current) {
+                    (async () => {
                         initialSoftInputMode.current =
                             await AndroidKeyboardAdjust.getSoftInputMode();
-                    }
-                    AndroidKeyboardAdjust.setAdjustNothing();
-                } else if (initialSoftInputMode.current) {
-                    switch (initialSoftInputMode.current) {
-                        case SoftInputMode.NOTHING:
-                            AndroidKeyboardAdjust.setAdjustNothing();
-                            break;
-                        case SoftInputMode.PAN:
-                            AndroidKeyboardAdjust.setAdjustPan();
-                            break;
-                        case SoftInputMode.UNSPECIFIED:
-                            AndroidKeyboardAdjust.setAdjustUnspecified();
-                            break;
-                        case SoftInputMode.RESIZE:
-                        default:
-                            AndroidKeyboardAdjust.setAdjustResize();
-                            break;
-                    }
+                    })();
                 }
-            })();
+                AndroidKeyboardAdjust.setAdjustNothing();
+            } else if (initialSoftInputMode.current) {
+                switch (initialSoftInputMode.current) {
+                    case SoftInputMode.NOTHING:
+                        AndroidKeyboardAdjust.setAdjustNothing();
+                        break;
+                    case SoftInputMode.PAN:
+                        AndroidKeyboardAdjust.setAdjustPan();
+                        break;
+                    case SoftInputMode.UNSPECIFIED:
+                        AndroidKeyboardAdjust.setAdjustUnspecified();
+                        break;
+                    case SoftInputMode.RESIZE:
+                    default:
+                        AndroidKeyboardAdjust.setAdjustResize();
+                        break;
+                }
+            }
         }
     }, [visible]);
 
