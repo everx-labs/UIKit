@@ -1,2 +1,2 @@
 export * from './UIMediaCard';
-export { UIMediaCardProps } from './types';
+export type { UIMediaCardProps } from './types';

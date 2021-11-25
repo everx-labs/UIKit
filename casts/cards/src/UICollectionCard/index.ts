@@ -1,2 +1,2 @@
 export * from './UICollectionCard';
-export { UICollectionCardProps, ContentType } from './types';
+export type { UICollectionCardProps, ContentType } from './types';

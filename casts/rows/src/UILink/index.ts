@@ -1,2 +1,2 @@
 export * from './UILink';
-export { UILinkProps } from './types';
+export type { UILinkProps } from './types';

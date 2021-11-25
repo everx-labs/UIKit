@@ -82,7 +82,6 @@ const localeInfo = {
 export const Inputs = () => {
     const [amount, setAmount] = useState('');
     const [details, setDetails] = useState('');
-    const [search] = useState('');
     const mnemonicWords = ['report', 'replenish', 'meadow', 'village', 'slight'];
     const [text, setText] = useState('test');
     const [transfer, setTransfer] = useState(new BigNumber(0));
