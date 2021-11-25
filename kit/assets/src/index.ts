@@ -68,6 +68,8 @@ import iconArrowRightPrimary from './resources/ico-arrow-right/arrow-right-prima
 import iconArrowRightPrimaryMinus from './resources/ico-arrow-right/arrow-right-primary-minus.png';
 import iconArrowRightWhite from './resources/ico-arrow-right/arrow-right-white.png';
 import iconArrowUpRight from './resources/ico-arrow-up-right/arrow-up-right.png';
+import iconBlankMiddle from './resources/ico-blank-middle/blank-middle.png';
+import iconBlankUp from './resources/ico-blank-up/blank-up.png';
 import iconCamera from './resources/ico-camera/ico-camera.png';
 import iconCheckboxCircleActive from './resources/ico-checkbox-circle-active/ico-checkbox-circle-active.png';
 import iconCheckboxCircleActiveInverted from './resources/ico-checkbox-circle-active/ico-checkbox-circle-active-inverted.png';
@@ -214,6 +216,8 @@ export const UIAssets = {
             arrowRightPrimaryMinus: iconArrowRightPrimaryMinus,
             arrowRightWhite: iconArrowRightWhite,
             arrowUpRight: iconArrowUpRight,
+            blankMiddle: iconBlankMiddle,
+            blankUp: iconBlankUp,
             camera: iconCamera,
             checkboxCircleActive: iconCheckboxCircleActive,
             checkboxCircleActiveInverted: iconCheckboxCircleActiveInverted,
