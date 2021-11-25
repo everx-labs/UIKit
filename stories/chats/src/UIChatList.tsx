@@ -2,8 +2,8 @@ import * as React from 'react';
 import { SectionList, ViewProps } from 'react-native';
 import type { SectionListData } from 'react-native';
 
+import { UILoadMoreButton } from '@tonlabs/uikit.controls';
 import { SectionExtra, UIChatListFormatter } from './UIChatListFormatter';
-import { UILoadMoreButton } from './UILoadMoreButton';
 import { UICommonChatList } from './UICommonChatList';
 import { DateSeparator } from './DateSeparator';
 import { sectionListGetItemLayout } from './UIChatListLayout';

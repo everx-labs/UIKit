@@ -140,9 +140,9 @@ export const useImages = (
     }, [data, preview, imageRef, imageSize, onErrorCallback, onLoadCallback]);
 };
 
-export const useImageSize = (data: string | null) => {
+export const useImageSize = (data: string | null, originalSize?: ImageSize) => {
     const [imageSize, setImageSize] = React.useState<ImageSize | null>(null);
-    const originalSizeRef = React.useRef<ImageSize | null>(null);
+    const originalSizeRef = React.useRef<ImageSize | null>(originalSize ?? null);
     const windowWidth = useWindowDimensions().width;
     const maxImageSize = useMaxImageSize(windowWidth);
 
@@ -165,7 +165,7 @@ export const useImageSize = (data: string | null) => {
      * `data` has changed
      */
     React.useEffect(() => {
-        if (data) {
+        if (data && !originalSize) {
             Image.getSize(data, (width, height) => {
                 originalSizeRef.current = {
                     width,
