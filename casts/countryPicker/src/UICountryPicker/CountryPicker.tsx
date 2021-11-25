@@ -18,7 +18,7 @@ import {
     Theme,
     makeStyles,
 } from '@tonlabs/uikit.themes';
-import type { CountriesArray, Country, WrappedCountryPickerProps } from './types';
+import { CountriesArray, Country, SoftInputMode, WrappedCountryPickerProps } from './types';
 import { CountryPickerRow } from './CountryPickerRow';
 import { ListEmptyComponent } from './ListEmptyComponent';
 import { CountryPickerContext } from './CountryPickerContext';
@@ -58,6 +58,8 @@ export function CountryPicker({
     const styles = useStyles(theme, height);
 
     const [loading, setLoading] = React.useState(true);
+
+    const initialSoftInputMode = React.useRef<null | number>(null);
 
     const [search, setSearch] = React.useState('');
     const [countriesList, setCountriesList] = React.useState<CountriesArray>([]);
@@ -125,15 +127,39 @@ export function CountryPicker({
     }, []);
 
     React.useEffect(() => {
+        /**
+         * We should use react-native-android-keyboard-adjust
+         * to fix android keyboard work with UIBottomSheet
+         * also we have to check if component visible
+         * and only if it showing call setAdjustNothing
+         * ??
+         */
         if (isAndroid) {
-            // We should use react-native-android-keyboard-adjust
-            // to fix android keyboard work with UIBottomSheet
-            // also we have to check if component visible
-            // and only if it showing call setAdjustNothing
-            // because in other cases we may need the default adjust - setAdjustPan
-            visible
-                ? AndroidKeyboardAdjust.setAdjustNothing()
-                : AndroidKeyboardAdjust.setAdjustPan();
+            (async () => {
+                if (visible) {
+                    if (!initialSoftInputMode.current) {
+                        initialSoftInputMode.current =
+                            await AndroidKeyboardAdjust.getSoftInputMode();
+                    }
+                    AndroidKeyboardAdjust.setAdjustNothing();
+                } else if (initialSoftInputMode.current) {
+                    switch (initialSoftInputMode.current) {
+                        case SoftInputMode.NOTHING:
+                            AndroidKeyboardAdjust.setAdjustNothing();
+                            break;
+                        case SoftInputMode.PAN:
+                            AndroidKeyboardAdjust.setAdjustPan();
+                            break;
+                        case SoftInputMode.UNSPECIFIED:
+                            AndroidKeyboardAdjust.setAdjustUnspecified();
+                            break;
+                        case SoftInputMode.RESIZE:
+                        default:
+                            AndroidKeyboardAdjust.setAdjustResize();
+                            break;
+                    }
+                }
+            })();
         }
     }, [visible]);
 
