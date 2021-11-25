@@ -76,7 +76,7 @@ function getNextPosition(event: NativeScrollEvent, currentPosition: number, head
         // (it doesn't save much, but anyway)
         // https://jsbench.me/8ikwaptgyt/1
         // eslint-disable-next-line no-bitwise
-        return ~(y + headerHeight) + 1;
+        return -1 * (y + headerHeight);
     }
     // to bottom, rubber band effect
     // TODO: see above about determenism of scrollTo
@@ -168,6 +168,13 @@ export default function createOnScroll(
             return;
         }
 
+        if (ctx.skipOnNextScroll) {
+            // scrollTo(scrollRef, 0, 0, false);
+            console.log('skipped****');
+            ctx.skipOnNextScroll = false;
+            return;
+        }
+
         const nextPosition = getNextPosition(event, currentPosition.value, largeTitleHeight.value);
         const diff = nextPosition - currentPosition.value;
 
@@ -216,17 +223,51 @@ export default function createOnScroll(
              * so if we set y to 0 the lib would think that it needs to apply
              * overscroll animation, but in reality we don't want it here
              */
-            scrollTo(scrollRef, 0, 1, false);
             // Compensate 1 described above
-            currentPosition.value = nextPosition + diff + 1;
+            // currentPosition.value = nextPosition + diff + 1;
+            // ctx.skipOnNextScroll = true;
+            // scrollTo(scrollRef, 0, -diff, false);
+            currentPosition.value = nextPosition;
+
             trackVelocity(diff, ctx as any);
             return;
         }
         currentPosition.value = nextPosition + diff;
-        scrollTo(scrollRef, 0, 0, false);
+        // currentPosition.value = nextPosition;
+        // scrollTo(scrollRef, 0, 0, false);
         trackVelocity(diff, ctx as any);
     };
 }
+
+/**
+ * ---------------------------
+ *        |         |         |
+ *        |         |  -----  |  -----
+ * -----  |  -----  |         |
+ *        |         |  -----  |
+ *        |  -----  |         |  -----
+ * -----  |         |         |
+ *
+ *
+ *        |         |
+ *        |         |  -----  |
+ * -----  |  -----  |         |
+ *        |         |         |
+ *        |  -----  |  -----  |
+ * -----  |         |         |
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ * -----------------------------
+ */
 
 // eslint-disable-next-line func-names
 function _old(

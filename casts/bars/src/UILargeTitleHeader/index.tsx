@@ -166,6 +166,9 @@ export function UILargeTitleHeader({
     });
     const scrollableStyle = useAnimatedStyle(() => {
         return {
+            marginTop: translateY.value + largeTitleHeight.value,
+        };
+        return {
             transform: [
                 {
                     translateY: translateY.value + largeTitleHeight.value,
@@ -357,11 +360,21 @@ export function UILargeTitleHeader({
     return (
         <UIBackgroundView style={styles.container} ref={contentContainerRef} collapsable={false}>
             <View style={styles.mainHeaderFiller} />
-            <Animated.View style={styles.inner}>
+            <Animated.View style={[styles.inner]}>
                 <Animated.View
                     ref={largeTitleViewRef}
                     onLayout={onLargeTitleLayout}
-                    style={[{ position: 'absolute', left: 0, top: 0, right: 0 }, headerStyle]}
+                    style={[
+                        {
+                            position: 'absolute',
+                            left: 0,
+                            top: 0,
+                            right: 0,
+                            borderColor: 'red',
+                            borderBottomWidth: 1,
+                        },
+                        headerStyle,
+                    ]}
                 >
                     <UILargeTitlePositionContext.Provider value={positionContext}>
                         {renderAboveContent && renderAboveContent()}

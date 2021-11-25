@@ -67,7 +67,7 @@ export function useScrollHandler(
                     scrollRef,
                     0,
                     // eslint-disable-next-line no-bitwise
-                    ~(state.currentPosition + state.largeTitleHeight) + 1,
+                    -1 * (state.currentPosition + state.largeTitleHeight),
                     false,
                 );
             }

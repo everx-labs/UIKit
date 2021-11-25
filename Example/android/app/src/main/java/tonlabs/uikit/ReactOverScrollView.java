@@ -7,6 +7,7 @@ import com.facebook.react.uimanager.events.NativeGestureUtil;
 import com.facebook.react.views.scroll.ReactScrollView;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.os.Build;
 import android.util.DisplayMetrics;
@@ -50,6 +51,7 @@ public class ReactOverScrollView extends ReactScrollView implements OverScrollab
     // ===========================================================
     private void createOverScrollDelegate(Context context) {
         mOverScrollDelegate = new OverScrollDelegate(this);
+        mOverScrollDelegate.setOverScrollStyle(new OverScrollStyle());
         mOverScrollDelegate.setOverScrollType(true, false);
     }
 
@@ -141,6 +143,7 @@ public class ReactOverScrollView extends ReactScrollView implements OverScrollab
             if (mState == OverScrollDelegate.OS_DRAG_TOP || mState == OverScrollDelegate.OS_DRAG_BOTTOM) {
                 ReactContext reactContext = (ReactContext) this.getContext();
                 int surfaceId = UIManagerHelper.getSurfaceId(reactContext);
+                Log.d("ReactOverScrollView", "custom onScroll");
                 UIManagerHelper
                         .getEventDispatcherForReactTag(reactContext, this.getId())
                         .dispatchEvent(
@@ -309,5 +312,11 @@ public class ReactOverScrollView extends ReactScrollView implements OverScrollab
             e.printStackTrace();
         }
         super.scrollTo(x, y);
+    }
+
+    public static class OverScrollStyle extends OverScrollDelegate.OverScrollStyle {
+        public void transformOverScrollCanvas(float offsetY, Canvas canvas, View view) {
+            canvas.translate(0.0F, offsetY);
+        }
     }
 }
