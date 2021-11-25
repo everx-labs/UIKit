@@ -107,10 +107,6 @@ export function CountryPicker({
     }, [search]);
 
     React.useEffect(() => {
-        // We should use react-native-android-keyboard-adjust
-        // to fix android keyboard work with UIBottomSheet
-        isAndroid && AndroidKeyboardAdjust.setAdjustNothing();
-
         fetchJSON()
             .then((r: CountriesArray) => {
                 if (permitted.length || banned.length) {
@@ -125,8 +121,26 @@ export function CountryPicker({
             .finally(() => {
                 setLoading(false);
             });
+
+        () => {
+            isAndroid && AndroidKeyboardAdjust.setAdjustPan();
+            console.warn('!!!');
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    React.useEffect(() => {
+        if (isAndroid) {
+            // We should use react-native-android-keyboard-adjust
+            // to fix android keyboard work with UIBottomSheet
+            // also we have to check if component visible
+            // and only if it showing call setAdjustNothing
+            // because in other cases we may need the default adjust - setAdjustPan
+            visible
+                ? AndroidKeyboardAdjust.setAdjustNothing()
+                : AndroidKeyboardAdjust.setAdjustPan();
+        }
+    }, [visible]);
 
     const hideKeyboard = React.useCallback(() => {
         // react-native-android-keyboard-adjust bug:
