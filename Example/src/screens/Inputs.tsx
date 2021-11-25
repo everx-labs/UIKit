@@ -6,12 +6,7 @@ import { View } from 'react-native';
 import { UIMaterialTextView, UISeedPhraseTextView, UINumberTextView } from '@tonlabs/uikit.inputs';
 import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAddressTextView } from '@tonlabs/uicast.address-text';
-import {
-    UIAmountInput,
-    UIDetailsInput,
-    UITextInput,
-    UITransferInput,
-} from '@tonlabs/uikit.components';
+import { UIAmountInput, UIDetailsInput, UITransferInput } from '@tonlabs/uikit.components';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -281,16 +276,6 @@ export const Inputs = () => {
                         onChangeText={(newText: string) => setDetails(newText)}
                         maxLines={3}
                         containerStyle={{ marginTop: 16 }}
-                    />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UITextInput">
-                <View testID="uiTextInput_default" style={{ paddingVertical: 20 }}>
-                    <UITextInput
-                        value={search}
-                        placeholder="Your text"
-                        beginningTag="@"
-                        onChangeText={(newText: string) => setText(newText)}
                     />
                 </View>
             </ExampleSection>
