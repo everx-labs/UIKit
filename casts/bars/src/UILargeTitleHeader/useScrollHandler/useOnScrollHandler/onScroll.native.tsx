@@ -224,10 +224,11 @@ export default function createOnScroll(
              * overscroll animation, but in reality we don't want it here
              */
             // Compensate 1 described above
-            // currentPosition.value = nextPosition + diff + 1;
+            currentPosition.value = nextPosition + diff;
             // ctx.skipOnNextScroll = true;
             // scrollTo(scrollRef, 0, -diff, false);
-            currentPosition.value = nextPosition;
+            // currentPosition.value = nextPosition;
+            scrollTo(scrollRef, 0, 0, false);
 
             trackVelocity(diff, ctx as any);
             return;

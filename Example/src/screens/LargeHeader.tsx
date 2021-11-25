@@ -142,7 +142,7 @@ export function LargeHeaderScreen() {
                     // renderAboveContent: () => {
                     //     return <RefreshPageController />;
                     // },
-                    // renderBelowContent,
+                    renderBelowContent,
                 }}
                 component={LargeHeaderExample}
             />

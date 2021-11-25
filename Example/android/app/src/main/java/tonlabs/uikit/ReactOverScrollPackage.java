@@ -21,8 +21,9 @@ public class ReactOverScrollPackage implements ReactPackage {
     @Nonnull
     @Override
     public List<ViewManager> createViewManagers(@Nonnull ReactApplicationContext reactContext) {
-        List<ViewManager> modules = new ArrayList<>();
-        modules.add(new ReactOverScrollViewManager());
-        return modules;
+        return Collections.emptyList();
+//        List<ViewManager> modules = new ArrayList<>();
+//        modules.add(new ReactOverScrollViewManager());
+//        return modules;
     }
 }
