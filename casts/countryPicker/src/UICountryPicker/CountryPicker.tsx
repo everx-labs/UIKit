@@ -121,11 +121,6 @@ export function CountryPicker({
             .finally(() => {
                 setLoading(false);
             });
-
-        () => {
-            isAndroid && AndroidKeyboardAdjust.setAdjustPan();
-            console.warn('!!!');
-        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
