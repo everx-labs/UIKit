@@ -20,10 +20,16 @@ const Rows = () => {
                     }}
                 >
                     <UILink
-                        title="Title"
+                        title="Title "
                         description="Description"
-                        logoSource={UIAssets.icons.security.faceId}
-                        iconAfterTitleSource={UIAssets.icons.ui.arrowUpRight}
+                        logo={UIAssets.icons.security.faceId}
+                        loading={loading}
+                        onPress={() => console.log('onPress')}
+                    />
+                    <UILink
+                        title="Let's check out a very long header for this link that you can imagine"
+                        description="Let's check out a very long description for this link that you can imagine"
+                        logo={UIAssets.icons.security.faceId}
                         loading={loading}
                         onPress={() => console.log('onPress')}
                     />

@@ -1,17 +1,25 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { UIImage } from '@tonlabs/uikit.media';
-import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { UILayoutConstant, UISkeleton } from '@tonlabs/uikit.layout';
 import type { LogoProps } from './types';
 import { UIConstant } from '../constants';
 
-export const Logo: React.FC<LogoProps> = ({ logoSource }: LogoProps) => {
-    if (!logoSource) {
-        return <View style={[styles.container, styles.image]} />;
+export const Logo: React.FC<LogoProps> = ({ logo, loading }: LogoProps) => {
+    if (!logo) {
+        return (
+            <View style={styles.container}>
+                <UISkeleton show={!!loading}>
+                    <View style={styles.image} />
+                </UISkeleton>
+            </View>
+        );
     }
     return (
         <View style={styles.container}>
-            <UIImage source={logoSource} style={styles.image} />
+            <UISkeleton show={!!loading}>
+                <UIImage source={logo} style={styles.image} />
+            </UISkeleton>
         </View>
     );
 };
@@ -19,6 +27,9 @@ export const Logo: React.FC<LogoProps> = ({ logoSource }: LogoProps) => {
 const styles = StyleSheet.create({
     container: {
         paddingRight: UILayoutConstant.normalContentOffset,
+    },
+    skeleton: {
+        borderRadius: UIConstant.uiLink.logo.borderRadius,
     },
     image: {
         width: UIConstant.uiLink.logo.size,

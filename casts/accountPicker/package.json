@@ -34,8 +34,8 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/uikit.themes": "^2.3.0",
-        "@tonlabs/uikit.core": "^2.3.0"
+        "@tonlabs/uikit.themes": "^3.0.0",
+        "@tonlabs/uikit.core": "^3.0.0"
     },
     "devDependencies": {
         "@react-native-community/bob": "0.16.2",
