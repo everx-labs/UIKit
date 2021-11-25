@@ -9,7 +9,7 @@ export const Logo: React.FC<LogoProps> = ({ logo, loading }: LogoProps) => {
     if (!logo) {
         return (
             <View style={styles.container}>
-                <UISkeleton show={!!loading}>
+                <UISkeleton show={!!loading} style={styles.skeleton}>
                     <View style={styles.image} />
                 </UISkeleton>
             </View>
@@ -17,7 +17,7 @@ export const Logo: React.FC<LogoProps> = ({ logo, loading }: LogoProps) => {
     }
     return (
         <View style={styles.container}>
-            <UISkeleton show={!!loading}>
+            <UISkeleton show={!!loading} style={styles.skeleton}>
                 <UIImage source={logo} style={styles.image} />
             </UISkeleton>
         </View>
