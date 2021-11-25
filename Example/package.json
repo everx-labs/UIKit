@@ -38,6 +38,7 @@
         "@tonlabs/uicast.qr-code-scanner-sheet": "*",
         "@tonlabs/uicast.pin-code": "*",
         "@tonlabs/uicast.promo-notice": "*",
+        "@tonlabs/uicast.rows": "*",
         "@tonlabs/uicast.split-navigator": "*",
         "@tonlabs/uicast.stack-navigator": "*",
         "@tonlabs/uicast.modal-navigator": "*",

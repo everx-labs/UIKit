@@ -63,6 +63,7 @@ import { SectionsService } from './Search';
 import { KeyboardScreen } from './screens/Keyboard';
 import { LargeHeaderScreen } from './screens/LargeHeader';
 import { QRCodeScreen } from './screens/QRCode';
+import { RowsScreen } from './screens/Rows';
 import { FinancesScreen } from './screens/Finances';
 import { SkeletonsScreen } from './screens/Skeletons';
 
@@ -269,6 +270,12 @@ const Main = ({ navigation }: { navigation: any }) => {
                             layout={styles.button}
                         />
                         <UILinkButton
+                            title="Rows"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('rows')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
                             title="Text"
                             type={UILinkButtonType.Menu}
                             onPress={() => navigation.navigate('text')}
@@ -360,6 +367,7 @@ const App = () => {
                             <Split.Screen name="products" component={Products} />
                             <Split.Screen name="profile" component={Profile} />
                             <Split.Screen name="qr-code" component={QRCodeScreen} />
+                            <Split.Screen name="rows" component={RowsScreen} />
                             <Split.Screen name="text" component={TextScreen} />
                             <Split.Screen name="video" component={VideoScreen} />
                             <Split.Screen name="finances" component={FinancesScreen} />
