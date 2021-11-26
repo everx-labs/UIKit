@@ -37,15 +37,17 @@ export const UILink: React.FC<UILinkProps> = ({
                     {/* TODO switch icon to blankUp */}
                     <Icon source={UIAssets.icons.ui.arrowUpRight} />
                 </View>
-                <View>
-                    <UILabel
-                        role={TypographyVariants.ParagraphFootnote}
-                        color={ColorVariants.TextSecondary}
-                        numberOfLines={1}
-                    >
-                        {description}
-                    </UILabel>
-                </View>
+                {description == null ? null : (
+                    <View>
+                        <UILabel
+                            role={TypographyVariants.ParagraphFootnote}
+                            color={ColorVariants.TextSecondary}
+                            numberOfLines={1}
+                        >
+                            {description}
+                        </UILabel>
+                    </View>
+                )}
             </UISkeleton>
         </TouchableOpacity>
     );
