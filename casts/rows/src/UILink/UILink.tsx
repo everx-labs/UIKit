@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     },
     textContent: {
         flex: 1,
+        borderRadius: 0,
     },
     title: {
         flexDirection: 'row',

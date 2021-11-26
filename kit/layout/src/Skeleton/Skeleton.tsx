@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { LayoutChangeEvent, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { LayoutChangeEvent, StyleProp, StyleSheet, View, ViewStyle, Platform } from 'react-native';
 import Animated, {
     useAnimatedStyle,
     interpolate,
@@ -63,9 +63,11 @@ function useCrossDissolve(visible: boolean) {
 
 function SkeletonAnimatable({
     width,
+    borderRadius,
     crossDissolveProgress,
 }: {
     width: Animated.SharedValue<number>;
+    borderRadius: number;
     crossDissolveProgress: Animated.SharedValue<number>;
 }) {
     const theme = useTheme();
@@ -95,7 +97,11 @@ function SkeletonAnimatable({
         <Animated.View
             style={[
                 StyleSheet.absoluteFill,
-                { backgroundColor: theme[ColorVariants.BackgroundSecondary] as string },
+                styles.skeletonContainer,
+                {
+                    backgroundColor: theme[ColorVariants.BackgroundSecondary] as string,
+                    borderRadius,
+                },
                 backdropStyle,
             ]}
         >
@@ -193,18 +199,28 @@ export function UISkeleton({
 
     const { isVisible, crossDissolveProgress } = useCrossDissolve(visible);
 
+    const { borderRadius: stylePropBorderRadius } = StyleSheet.flatten(styleProp);
+    const skeletonBorderRadius =
+        stylePropBorderRadius !== undefined
+            ? stylePropBorderRadius
+            : UILayoutConstant.alertBorderRadius;
+
     return (
         <View
             style={[
                 styles.container,
-                { borderRadius: isVisible ? UILayoutConstant.alertBorderRadius : 0 },
+                { borderRadius: isVisible ? skeletonBorderRadius : 0 },
                 styleProp,
             ]}
             onLayout={onLayout}
         >
             {children}
             {isVisible && (
-                <SkeletonAnimatable width={width} crossDissolveProgress={crossDissolveProgress} />
+                <SkeletonAnimatable
+                    width={width}
+                    borderRadius={skeletonBorderRadius}
+                    crossDissolveProgress={crossDissolveProgress}
+                />
             )}
         </View>
     );
@@ -213,6 +229,25 @@ export function UISkeleton({
 const styles = StyleSheet.create({
     container: {
         position: 'relative',
+    },
+    skeletonContainer: {
+        /**
+         * It is required so that the content cannot be seen from under the edges of the skeleton
+         */
+        ...Platform.select({
+            web: {
+                top: -1,
+                bottom: -1,
+                left: -1,
+                right: -1,
+            },
+            android: {
+                top: -0.5,
+                bottom: -0.5,
+                left: -0.5,
+                right: -0.5,
+            },
+        }),
         overflow: 'hidden',
     },
     gradient: { flex: 1 },
