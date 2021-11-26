@@ -18,7 +18,7 @@ import {
     Theme,
     makeStyles,
 } from '@tonlabs/uikit.themes';
-import { CountriesArray, Country, SoftInputMode, WrappedCountryPickerProps } from './types';
+import type { CountriesArray, Country, WrappedCountryPickerProps } from './types';
 import { CountryPickerRow } from './CountryPickerRow';
 import { ListEmptyComponent } from './ListEmptyComponent';
 import { CountryPickerContext } from './CountryPickerContext';
@@ -58,8 +58,6 @@ export function CountryPicker({
     const styles = useStyles(theme, height);
 
     const [loading, setLoading] = React.useState(true);
-
-    const initialSoftInputMode = React.useRef<null | number>(null);
 
     const [search, setSearch] = React.useState('');
     const [countriesList, setCountriesList] = React.useState<CountriesArray>([]);
@@ -132,34 +130,13 @@ export function CountryPicker({
          * to fix android keyboard work with UIBottomSheet
          * also we have to check if component visible
          * and only if it showing call setAdjustNothing
-         * ??
+         * Otherwise, since CountryPicker is only used in the browser
+         * we have to call setAdjustResize, because it is default mode for browser
          */
         if (isAndroid) {
-            if (visible) {
-                if (!initialSoftInputMode.current) {
-                    (async () => {
-                        initialSoftInputMode.current =
-                            await AndroidKeyboardAdjust.getSoftInputMode();
-                    })();
-                }
-                AndroidKeyboardAdjust.setAdjustNothing();
-            } else if (initialSoftInputMode.current) {
-                switch (initialSoftInputMode.current) {
-                    case SoftInputMode.NOTHING:
-                        AndroidKeyboardAdjust.setAdjustNothing();
-                        break;
-                    case SoftInputMode.PAN:
-                        AndroidKeyboardAdjust.setAdjustPan();
-                        break;
-                    case SoftInputMode.UNSPECIFIED:
-                        AndroidKeyboardAdjust.setAdjustUnspecified();
-                        break;
-                    case SoftInputMode.RESIZE:
-                    default:
-                        AndroidKeyboardAdjust.setAdjustResize();
-                        break;
-                }
-            }
+            visible
+                ? AndroidKeyboardAdjust.setAdjustNothing()
+                : AndroidKeyboardAdjust.setAdjustResize();
         }
     }, [visible]);
 

@@ -20,10 +20,3 @@ export type CountryPickerProps = {
 export type WrappedCountryPickerProps = CountryPickerProps & {
     visible: boolean;
 };
-
-export enum SoftInputMode {
-    NOTHING = 48,
-    PAN = 32,
-    RESIZE = 16,
-    UNSPECIFIED = 0,
-}
