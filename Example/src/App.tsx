@@ -45,6 +45,7 @@ import { Inputs } from './screens/Inputs';
 import { Design } from './screens/Design';
 import { ListsScreen } from './screens/Lists';
 import { Chart } from './screens/Chart';
+import { CardsScreen } from './screens/Cards';
 import { Images } from './screens/Images';
 import { Layouts } from './screens/Layouts';
 import { Menus } from './screens/Menus';
@@ -62,6 +63,7 @@ import { SectionsService } from './Search';
 import { KeyboardScreen } from './screens/Keyboard';
 import { LargeHeaderScreen } from './screens/LargeHeader';
 import { QRCodeScreen } from './screens/QRCode';
+import { RowsScreen } from './screens/Rows';
 import { FinancesScreen } from './screens/Finances';
 import { SkeletonsScreen } from './screens/Skeletons';
 
@@ -166,6 +168,12 @@ const Main = ({ navigation }: { navigation: any }) => {
                             layout={styles.button}
                         />
                         <UILinkButton
+                            title="Cards"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('cards')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
                             title="Chat"
                             type={UILinkButtonType.Menu}
                             onPress={() => navigation.navigate('chat')}
@@ -262,6 +270,12 @@ const Main = ({ navigation }: { navigation: any }) => {
                             layout={styles.button}
                         />
                         <UILinkButton
+                            title="Rows"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('rows')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
                             title="Text"
                             type={UILinkButtonType.Menu}
                             onPress={() => navigation.navigate('text')}
@@ -335,6 +349,7 @@ const App = () => {
                             <Split.Screen name="buttons" component={ButtonsScreen} />
                             <Split.Screen name="carousel" component={Carousel} />
                             <Split.Screen name="chart" component={Chart} />
+                            <Split.Screen name="cards" component={CardsScreen} />
                             <Split.Screen name="chat" component={Chat} />
                             <Split.Screen name="checkbox" component={Checkbox} />
                             <Split.Screen name="design" component={Design} />
@@ -352,6 +367,7 @@ const App = () => {
                             <Split.Screen name="products" component={Products} />
                             <Split.Screen name="profile" component={Profile} />
                             <Split.Screen name="qr-code" component={QRCodeScreen} />
+                            <Split.Screen name="rows" component={RowsScreen} />
                             <Split.Screen name="text" component={TextScreen} />
                             <Split.Screen name="video" component={VideoScreen} />
                             <Split.Screen name="finances" component={FinancesScreen} />
