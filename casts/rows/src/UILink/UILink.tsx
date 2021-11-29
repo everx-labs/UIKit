@@ -36,15 +36,17 @@ export const UILink: React.FC<UILinkProps> = ({
                     </UILabel>
                     <Icon source={UIAssets.icons.ui.blankUp} />
                 </View>
-                <View>
-                    <UILabel
-                        role={TypographyVariants.NarrowParagraphFootnote}
-                        color={ColorVariants.TextSecondary}
-                        numberOfLines={1}
-                    >
-                        {description}
-                    </UILabel>
-                </View>
+                {description == null ? null : (
+                    <View>
+                        <UILabel
+                            role={TypographyVariants.NarrowParagraphFootnote}
+                            color={ColorVariants.TextSecondary}
+                            numberOfLines={1}
+                        >
+                            {description}
+                        </UILabel>
+                    </View>
+                )}
             </UISkeleton>
         </TouchableOpacity>
     );
