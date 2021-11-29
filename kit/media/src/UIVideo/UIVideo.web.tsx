@@ -10,8 +10,19 @@ export const UIVideo: React.FC<UIVideoProps> = ({
     width,
     height,
     aspectRatio,
+    onLoad,
+    onError,
 }: UIVideoProps) => {
     const dimensions = useDimensionsByAspectRatio(width, height, aspectRatio);
 
-    return <ReactPlayer url={uri} controls={controls} {...dimensions} loop={repeat} />;
+    return (
+        <ReactPlayer
+            url={uri}
+            controls={controls}
+            {...dimensions}
+            loop={repeat}
+            onReady={onLoad}
+            onError={onError}
+        />
+    );
 };
