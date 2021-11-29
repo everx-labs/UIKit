@@ -50,6 +50,5 @@ export function UIListSeparator() {
 const styles = StyleSheet.create({
     separator: {
         borderTopWidth: StyleSheet.hairlineWidth,
-        // borderTopColor:
     },
 });
