@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { LayoutChangeEvent, StyleProp, StyleSheet, View, ViewStyle, Platform } from 'react-native';
+import { LayoutChangeEvent, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import Animated, {
     useAnimatedStyle,
     interpolate,
@@ -206,15 +206,8 @@ export function UISkeleton({
             : UILayoutConstant.alertBorderRadius;
 
     return (
-        <View
-            style={[
-                styles.container,
-                { borderRadius: isVisible ? skeletonBorderRadius : 0 },
-                styleProp,
-            ]}
-            onLayout={onLayout}
-        >
-            {children}
+        <View style={[styles.container, styleProp]} onLayout={onLayout}>
+            <View style={{ opacity: show ? 0 : 1 }}>{children}</View>
             {isVisible && (
                 <SkeletonAnimatable
                     width={width}
@@ -229,25 +222,9 @@ export function UISkeleton({
 const styles = StyleSheet.create({
     container: {
         position: 'relative',
+        overflow: 'hidden',
     },
     skeletonContainer: {
-        /**
-         * It is required so that the content cannot be seen from under the edges of the skeleton
-         */
-        ...Platform.select({
-            web: {
-                top: -1,
-                bottom: -1,
-                left: -1,
-                right: -1,
-            },
-            android: {
-                top: -0.5,
-                bottom: -0.5,
-                left: -0.5,
-                right: -0.5,
-            },
-        }),
         overflow: 'hidden',
     },
     gradient: { flex: 1 },
