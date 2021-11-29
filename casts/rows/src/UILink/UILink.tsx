@@ -34,13 +34,12 @@ export const UILink: React.FC<UILinkProps> = ({
                     >
                         {title}
                     </UILabel>
-                    {/* TODO switch icon to blankUp */}
-                    <Icon source={UIAssets.icons.ui.arrowUpRight} />
+                    <Icon source={UIAssets.icons.ui.blankUp} />
                 </View>
                 {description == null ? null : (
                     <View>
                         <UILabel
-                            role={TypographyVariants.ParagraphFootnote}
+                            role={TypographyVariants.NarrowParagraphFootnote}
                             color={ColorVariants.TextSecondary}
                             numberOfLines={1}
                         >
