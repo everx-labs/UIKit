@@ -207,7 +207,7 @@ export function UISkeleton({
 
     return (
         <View style={[styles.container, styleProp]} onLayout={onLayout}>
-            <View style={{ opacity: show ? 0 : 1 }}>{children}</View>
+            {children}
             {isVisible && (
                 <SkeletonAnimatable
                     width={width}
@@ -222,10 +222,13 @@ export function UISkeleton({
 const styles = StyleSheet.create({
     container: {
         position: 'relative',
-        overflow: 'hidden',
     },
     skeletonContainer: {
         overflow: 'hidden',
+        top: -StyleSheet.hairlineWidth,
+        left: -StyleSheet.hairlineWidth,
+        bottom: -StyleSheet.hairlineWidth,
+        right: -StyleSheet.hairlineWidth,
     },
     gradient: { flex: 1 },
 });
