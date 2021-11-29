@@ -198,11 +198,15 @@ export function UISkeleton({
 
     const { isVisible, crossDissolveProgress } = useCrossDissolve(visible);
 
-    const { borderRadius: stylePropBorderRadius } = StyleSheet.flatten(styleProp);
-    const skeletonBorderRadius =
-        stylePropBorderRadius !== undefined
-            ? stylePropBorderRadius
-            : UILayoutConstant.alertBorderRadius;
+    const skeletonBorderRadius = React.useMemo(() => {
+        if (styleProp) {
+            const { borderRadius: stylePropBorderRadius } = StyleSheet.flatten(styleProp ?? {});
+            if (stylePropBorderRadius !== undefined) {
+                return stylePropBorderRadius;
+            }
+        }
+        return UILayoutConstant.alertBorderRadius;
+    }, [styleProp]);
 
     return (
         <View style={[styles.container, styleProp]} onLayout={onLayout}>
