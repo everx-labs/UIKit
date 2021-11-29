@@ -96,7 +96,6 @@ function SkeletonAnimatable({
     return (
         <Animated.View
             style={[
-                StyleSheet.absoluteFill,
                 styles.skeletonContainer,
                 {
                     backgroundColor: theme[ColorVariants.BackgroundSecondary] as string,
@@ -225,6 +224,13 @@ const styles = StyleSheet.create({
     },
     skeletonContainer: {
         overflow: 'hidden',
+        position: 'absolute',
+        /**
+         * There is a bug with the render when the underlying component
+         * is visible from under the overlying component
+         * if they have the same size or are cut off by `overflow: 'hidden'`.
+         * To avoid this, it is necessary to slightly increase the size of the overlying component
+         */
         top: -StyleSheet.hairlineWidth,
         left: -StyleSheet.hairlineWidth,
         bottom: -StyleSheet.hairlineWidth,
