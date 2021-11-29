@@ -8,7 +8,10 @@ export function Title({ title }: TitleProps) {
         return null;
     }
     return (
-        <UILabel role={TypographyVariants.MonoNote} color={ColorVariants.StaticBackgroundWhite}>
+        <UILabel
+            role={TypographyVariants.NarrowActionText}
+            color={ColorVariants.StaticBackgroundWhite}
+        >
             {title}
         </UILabel>
     );
