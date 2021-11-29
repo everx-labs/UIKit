@@ -7,6 +7,7 @@ import type { QRCodeRef } from '../UIQRCodeView/types';
 import type { ScreenshotViewProps } from './types';
 
 export * from './types';
+export type { QRCodeRef };
 /**
  * This component takes a screenshot of its content in base64 PNG image
  *

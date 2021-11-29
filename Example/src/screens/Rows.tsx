@@ -11,6 +11,8 @@ import { UIListRowKind, UIListRow, renderUIListItem, UIListSeparator } from '@to
 // @ts-ignore
 import everIcon from './assets/ever.png';
 
+import { UICollapsableSectionList } from '../../../kit/scrolls/src/Lists/UICollapsableSectionList';
+
 export function getRandomNum() {
     const num = Math.random();
     const symbols = 10 ** (Math.floor(Math.random() * 10) + 1);
@@ -75,6 +77,36 @@ const Rows = () => {
                 })),
                 ItemSeparatorComponent: UIListSeparator,
             },
+            {
+                title: 'Link',
+                key: 'links2',
+                data: [
+                    {
+                        key: 0,
+                        kind: UIListRowKind.Link,
+                        props: {
+                            title: 'Title ',
+                            description: 'Description',
+                            logo: everIcon,
+                            loading,
+                            onPress: () => console.log('onPress'),
+                        },
+                    },
+                    {
+                        key: 1,
+                        kind: UIListRowKind.Link,
+                        props: {
+                            title: "Let's check out a very long header for this link that you can imagine",
+                            // description:
+                            // "Let's check out a very long description for this link that you can imagine",
+                            logo: everIcon,
+                            loading,
+                            onPress: () => console.log('onPress'),
+                        },
+                    },
+                ],
+                ItemSeparatorComponent: UIListSeparator,
+            },
         ];
     }, [loading]);
 
@@ -88,13 +120,14 @@ const Rows = () => {
                     maxWidth: 400,
                 }}
             >
-                <SectionList
+                <UICollapsableSectionList
                     contentContainerStyle={{ paddingHorizontal: 16 }}
                     sections={sections}
                     renderItem={renderUIListItem}
                     renderSectionHeader={({ section: { title } }) => (
                         <UILabel role={UILabelRoles.HeadlineHead}>{title}</UILabel>
                     )}
+                    stickySectionHeadersEnabled={false}
                 />
                 <UIBoxButton
                     title="Loading..."
