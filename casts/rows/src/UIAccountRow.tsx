@@ -65,7 +65,7 @@ export function UIAccountRow({
                         </UILabel>
                     )}
                 </View>
-                <View>
+                <View style={styles.right}>
                     <UICurrency
                         integerColor={amountColor}
                         decimalColor={amountColor}
@@ -114,5 +114,8 @@ const styles = StyleSheet.create({
     desc: {
         flex: 1,
         marginRight: UILayoutConstant.normalContentOffset,
+    },
+    right: {
+        textAlign: 'right',
     },
 });
