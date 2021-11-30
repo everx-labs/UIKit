@@ -47,50 +47,54 @@ export function Cards() {
         <ExampleScreen>
             <ExampleSection title="UICollectionCard">
                 <View
-                    style={{
-                        alignSelf: 'stretch',
-                        maxWidth: 600,
-                        margin: 8,
-                    }}
+                    style={{ alignSelf: 'stretch', justifyContent: 'center', flexDirection: 'row' }}
                 >
-                    <View style={{ flexDirection: 'row' }}>
-                        <View style={{ flex: 1, margin: 8 }}>
-                            <UICollectionCard
-                                title="Grandbazar Collection"
-                                badge="1"
-                                onPress={() => {
-                                    console.log('Press 1');
-                                }}
-                                contentList={CONTENT}
-                                loading={loading}
-                            />
+                    <View
+                        style={{
+                            flex: 1,
+                            maxWidth: 500,
+                            margin: 8,
+                        }}
+                    >
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={{ flex: 1, margin: 8 }}>
+                                <UICollectionCard
+                                    title="Grandbazar Collection"
+                                    badge="1"
+                                    onPress={() => {
+                                        console.log('Press 1');
+                                    }}
+                                    contentList={CONTENT}
+                                    loading={loading}
+                                />
+                            </View>
+                            <View style={{ flex: 1, margin: 8 }}>
+                                <UICollectionCard
+                                    title="Dota2 Pixel Art Heroes"
+                                    badge={UIAssets.icons.ui.blankMiddle}
+                                    onPress={() => {
+                                        console.log('Press 2');
+                                    }}
+                                    contentList={[CONTENT[0]]}
+                                    loading={loading}
+                                />
+                            </View>
                         </View>
-                        <View style={{ flex: 1, margin: 8 }}>
-                            <UICollectionCard
-                                title="Dota2 Pixel Art Heroes"
-                                badge={UIAssets.icons.ui.blankMiddle}
-                                onPress={() => {
-                                    console.log('Press 2');
-                                }}
-                                contentList={[CONTENT[0]]}
-                                loading={loading}
-                            />
-                        </View>
-                    </View>
 
-                    <View style={{ flexDirection: 'row' }}>
-                        <View style={{ flex: 1, margin: 8 }}>
-                            <UICollectionCard
-                                contentList={null}
-                                title="Dota2 Pixel Art Heroes"
-                                badge={UIAssets.icons.ui.blankMiddle}
-                                onPress={() => {
-                                    console.log('Press 3');
-                                }}
-                                loading={loading}
-                            />
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={{ flex: 1, margin: 8 }}>
+                                <UICollectionCard
+                                    contentList={null}
+                                    title="Dota2 Pixel Art Heroes"
+                                    badge={UIAssets.icons.ui.blankMiddle}
+                                    onPress={() => {
+                                        console.log('Press 3');
+                                    }}
+                                    loading={loading}
+                                />
+                            </View>
+                            <View style={{ flex: 1, margin: 8 }} />
                         </View>
-                        <View style={{ flex: 1, margin: 8 }} />
                     </View>
                 </View>
                 <UIBoxButton
@@ -101,33 +105,38 @@ export function Cards() {
             </ExampleSection>
             <ExampleSection title="UIMediaCard">
                 <View
-                    style={{
-                        alignSelf: 'stretch',
-                        flexDirection: 'row',
-                        maxWidth: 600,
-                        margin: 8,
-                    }}
+                    style={{ alignSelf: 'stretch', justifyContent: 'center', flexDirection: 'row' }}
                 >
-                    <View style={{ flex: 1, margin: 8 }}>
-                        <UIMediaCard
-                            contentType="Image"
-                            title="Virgil"
-                            onPress={() => {
-                                console.log('Press 1');
-                            }}
-                            source={CONTENT[0].source}
-                            loading={loading}
-                        />
-                    </View>
-                    <View style={{ flex: 1, margin: 8 }}>
-                        <UIMediaCard
-                            contentType="Unknown"
-                            title="Koko"
-                            onPress={() => {
-                                console.log('Press 2');
-                            }}
-                            loading={loading}
-                        />
+                    <View
+                        style={{
+                            alignSelf: 'stretch',
+                            flex: 1,
+                            flexDirection: 'row',
+                            maxWidth: 500,
+                            margin: 8,
+                        }}
+                    >
+                        <View style={{ flex: 1, margin: 8 }}>
+                            <UIMediaCard
+                                contentType="Image"
+                                title="Virgil"
+                                onPress={() => {
+                                    console.log('Press 1');
+                                }}
+                                source={CONTENT[0].source}
+                                loading={loading}
+                            />
+                        </View>
+                        <View style={{ flex: 1, margin: 8 }}>
+                            <UIMediaCard
+                                contentType="Unknown"
+                                title="Koko"
+                                onPress={() => {
+                                    console.log('Press 2');
+                                }}
+                                loading={loading}
+                            />
+                        </View>
                     </View>
                 </View>
                 <UIBoxButton
