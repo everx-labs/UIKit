@@ -7,6 +7,7 @@ export * from './UIVideo';
 export * from './UIQRCodeView';
 export * from './DuplicateImage';
 export * from './Lightbox';
+export * from './ScreenshotView';
 
 export const UIMedia = {
     UIImage,
