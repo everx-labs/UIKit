@@ -4,6 +4,7 @@ import BigNumber from 'bignumber.js';
 
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UICurrency } from '@tonlabs/uicast.numbers';
+import type { UICurrencySignProps } from '@tonlabs/uicast.numbers';
 import { UIImage, UIImageProps } from '@tonlabs/uikit.media';
 import { UILabel, UILabelRoles, UILabelColors } from '@tonlabs/uikit.themes';
 import { UILayoutConstant, UISkeleton } from '@tonlabs/uikit.layout';
@@ -16,7 +17,7 @@ export type UIAccountRowProps = {
     name: string;
     description?: string;
     balance: BigNumber;
-    currencySignIcon: any;
+    currencySignProps?: UICurrencySignProps;
     rate?: string;
     loading: boolean;
     onPress?: () => void;
@@ -31,7 +32,7 @@ export function UIAccountRow({
     name,
     description,
     balance,
-    currencySignIcon,
+    currencySignProps,
     rate,
     onPress,
 }: UIAccountRowProps) {
@@ -69,7 +70,7 @@ export function UIAccountRow({
                     <UICurrency
                         integerColor={amountColor}
                         decimalColor={amountColor}
-                        signIcon={currencySignIcon}
+                        signIcon={currencySignProps?.signIcon}
                     >
                         {balance}
                     </UICurrency>
@@ -116,6 +117,6 @@ const styles = StyleSheet.create({
         marginRight: UILayoutConstant.normalContentOffset,
     },
     right: {
-        textAlign: 'right',
+        alignItems: 'flex-end',
     },
 });
