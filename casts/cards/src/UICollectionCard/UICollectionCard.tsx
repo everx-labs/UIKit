@@ -11,11 +11,10 @@ import { Badge } from './Badge';
 import { UIConstant } from '../constants';
 
 export function UICollectionCard({
-    contentType,
+    contentList,
     title,
     badge,
     onPress,
-    source,
     loading,
     testID,
 }: UICollectionCardProps) {
@@ -25,7 +24,7 @@ export function UICollectionCard({
         <UISkeleton show={!!loading} style={styles.skeleton}>
             <TouchableOpacity testID={testID} onPress={onPress} style={styles.touchable}>
                 <View style={styles.container}>
-                    <Preview source={source} style={styles.preview} contentType={contentType} />
+                    <Preview style={styles.preview} contentList={contentList} />
                     <LinearGradient
                         start={{ x: 0, y: 0 }}
                         end={{ x: 0, y: 1 }}

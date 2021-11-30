@@ -17,6 +17,16 @@ export type UIVideoProps = {
      */
     repeat?: boolean;
     /**
+     * Determines whether the video is on pause
+     * `false` by default
+     */
+    paused?: boolean;
+    /**
+     * Determines whether sound is being played
+     * `false` by default
+     */
+    muted?: boolean;
+    /**
      * Set the width of the player
      */
     width?: number;
@@ -28,9 +38,16 @@ export type UIVideoProps = {
      * Set the aspectRatio of the player
      */
     aspectRatio?: number;
+    /**
+     * By analogy with the Image#resizeMode
+     * `contain` by default
+     */
+    resizeMode?: UIVideoResizeMode;
 };
 
 export type Dimensions = {
     width?: number;
     height?: number;
 };
+
+export type UIVideoResizeMode = 'contain' | 'cover';

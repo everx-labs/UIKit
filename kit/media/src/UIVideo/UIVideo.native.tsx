@@ -5,10 +5,13 @@ import type { UIVideoProps } from './types';
 export const UIVideo: React.FC<UIVideoProps> = ({
     uri,
     controls,
+    paused,
+    muted,
     repeat,
     width,
     height,
     aspectRatio,
+    resizeMode = 'contain',
 }: UIVideoProps) => {
     return (
         <RNVideo
@@ -20,6 +23,13 @@ export const UIVideo: React.FC<UIVideoProps> = ({
             }}
             controls={controls}
             repeat={repeat}
+            paused={paused}
+            muted={muted}
+            resizeMode={resizeMode}
+            /**
+             * For playing many videos simultaneously on Android
+             */
+            disableFocus
         />
     );
 };

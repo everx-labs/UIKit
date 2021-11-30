@@ -8,7 +8,8 @@ export const UIConstant = {
             paddingHorizontal: 8,
             paddingVertical: 6,
         },
-        timeToShowOneSlide: 500,
+        timeToShowImage: 500,
+        timeToShowVideo: 2000,
     },
     uiMediaCard: {
         borderRadius: 24,
