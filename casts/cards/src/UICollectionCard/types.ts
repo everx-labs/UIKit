@@ -1,8 +1,8 @@
 import type { ViewStyle, ImageSourcePropType } from 'react-native';
-import type { Content } from '../types';
+import type { MediaCardContent } from '../types';
 
 export type UICollectionCardProps = {
-    contentList: Content[];
+    contentList: MediaCardContent[];
     title?: string;
     badge?: string | ImageSourcePropType;
     onPress?: () => void;
@@ -11,12 +11,8 @@ export type UICollectionCardProps = {
 };
 
 export type PreviewProps = {
-    contentList: Content[];
+    contentList: MediaCardContent[];
     style: ViewStyle;
-};
-
-export type TitleProps = {
-    title?: string;
 };
 
 export type BadgeProps = {
@@ -24,6 +20,6 @@ export type BadgeProps = {
 };
 
 export type CollectionSlideProps = {
-    content: Content;
+    content: MediaCardContent;
     style: ViewStyle;
 };

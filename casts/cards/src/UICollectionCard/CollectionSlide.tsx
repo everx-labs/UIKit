@@ -11,11 +11,34 @@ const defaultDimension: LayoutRectangle = {
     height: 0,
 };
 
-export function CollectionSlide({ content, style }: CollectionSlideProps) {
+function VideoSlide({ content, style }: CollectionSlideProps) {
     const [dimensions, setDimensions] = React.useState<LayoutRectangle>(defaultDimension);
-    const onLayout = (event: LayoutChangeEvent) => {
+
+    const onLayout = React.useCallback((event: LayoutChangeEvent) => {
         setDimensions(event.nativeEvent.layout);
-    };
+    }, []);
+
+    if (!content.source.uri) {
+        return null;
+    }
+
+    return (
+        <View style={[StyleSheet.absoluteFill, style]} onLayout={onLayout}>
+            <UIVideo
+                uri={content.source.uri}
+                height={dimensions.height}
+                width={dimensions.width}
+                muted
+                aspectRatio={1}
+                repeat
+                resizeMode="cover"
+            />
+        </View>
+    );
+}
+
+function CollectionSlideImpl(props: CollectionSlideProps) {
+    const { content, style } = props;
     switch (content.contentType) {
         case 'Image':
             return (
@@ -24,23 +47,10 @@ export function CollectionSlide({ content, style }: CollectionSlideProps) {
                 </View>
             );
         case 'Video':
-            if (!content.source.uri) {
-                return null;
-            }
-            return (
-                <View style={[StyleSheet.absoluteFill, style]} onLayout={onLayout}>
-                    <UIVideo
-                        uri={content.source.uri}
-                        height={dimensions.height}
-                        width={dimensions.width}
-                        muted
-                        aspectRatio={1}
-                        repeat
-                        resizeMode="cover"
-                    />
-                </View>
-            );
+            return <VideoSlide {...props} />;
         default:
             return null;
     }
 }
+
+export const CollectionSlide = React.memo(CollectionSlideImpl);

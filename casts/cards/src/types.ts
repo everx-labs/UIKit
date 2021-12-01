@@ -1,10 +1,10 @@
 import type { ImageURISource } from 'react-native';
 
-export type ContentType = 'Image' | 'Video' | 'Unknown';
+export type MediaCardContentType = 'Image' | 'Video' | 'Unknown';
 
-export type ContentSource = ImageURISource;
+export type MediaCardContentSource = ImageURISource;
 
-export type Content = {
-    contentType: ContentType;
-    source: ContentSource;
+export type MediaCardContent = {
+    contentType: MediaCardContentType;
+    source: MediaCardContentSource;
 };

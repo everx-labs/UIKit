@@ -3,7 +3,7 @@ import ReactPlayer from 'react-player';
 import { useDimensionsByAspectRatio } from './hooks';
 import type { UIVideoProps } from './types';
 
-export const UIVideo: React.FC<UIVideoProps> = ({
+function UIVideoImpl({
     uri,
     controls,
     paused = false,
@@ -15,8 +15,23 @@ export const UIVideo: React.FC<UIVideoProps> = ({
     resizeMode = 'contain',
     onLoad,
     onError,
-}: UIVideoProps) => {
+}: UIVideoProps) {
     const dimensions = useDimensionsByAspectRatio(width, height, aspectRatio);
+
+    const config = React.useMemo(
+        () => ({
+            file: {
+                attributes: {
+                    style: {
+                        height: '100%',
+                        width: '100%',
+                        objectFit: resizeMode,
+                    },
+                },
+            },
+        }),
+        [resizeMode],
+    );
 
     return (
         <ReactPlayer
@@ -29,19 +44,11 @@ export const UIVideo: React.FC<UIVideoProps> = ({
             /**
              * For apply resizeMode
              */
-            config={{
-                file: {
-                    attributes: {
-                        style: {
-                            height: '100%',
-                            width: '100%',
-                            objectFit: resizeMode,
-                        },
-                    },
-                },
-            }}
+            config={config}
             onReady={onLoad}
             onError={onError}
         />
     );
-};
+}
+
+export const UIVideo = React.memo(UIVideoImpl);

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { UIConstant } from '../constants';
-import type { Content, ContentType } from '../types';
+import type { MediaCardContent, MediaCardContentType } from '../types';
 
-function getShowTime(contentType: ContentType) {
+function getShowTime(contentType: MediaCardContentType) {
     switch (contentType) {
         case 'Image':
             return UIConstant.uiCollectionCard.timeToShowImage;
@@ -14,7 +14,7 @@ function getShowTime(contentType: ContentType) {
     }
 }
 
-export function useCurrentSourceItemIndex(content: Content | Content[] | null) {
+export function useCurrentSourceItemIndex(content: MediaCardContent | MediaCardContent[] | null) {
     const [currentSourceItemIndex, setCurrentSourceItemIndex] = React.useState(0);
 
     React.useEffect(() => {

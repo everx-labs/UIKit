@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Image as RNImage } from 'react-native';
-import type { Content } from '../../types';
+import type { MediaCardContent } from '../../types';
 
-export const usePreload = (content: Content[]): void => {
+export function usePreload(content: MediaCardContent[]): void {
     return React.useEffect(() => {
         if (content.length === 0) {
             /**
@@ -11,7 +11,7 @@ export const usePreload = (content: Content[]): void => {
             return;
         }
 
-        content.forEach((contentItem: Content): void => {
+        content.forEach((contentItem: MediaCardContent): void => {
             if (
                 contentItem.contentType === 'Image' &&
                 contentItem.source &&
@@ -21,4 +21,4 @@ export const usePreload = (content: Content[]): void => {
             }
         });
     }, [content]);
-};
+}

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import FastImage, { Source } from 'react-native-fast-image';
-import type { Content } from '../../types';
+import type { MediaCardContent } from '../../types';
 
-export const usePreload = (content: Content[]): void => {
+export function usePreload(content: MediaCardContent[]): void {
     return React.useEffect(() => {
         if (content.length === 0) {
             /**
@@ -13,7 +13,7 @@ export const usePreload = (content: Content[]): void => {
 
         const imageToPreload: Source[] = [];
 
-        content.forEach((contentItem: Content): void => {
+        content.forEach((contentItem: MediaCardContent): void => {
             if (contentItem.contentType === 'Image' && contentItem.source) {
                 imageToPreload.push({ ...contentItem.source, cache: 'immutable' });
             }
@@ -23,4 +23,4 @@ export const usePreload = (content: Content[]): void => {
             FastImage.preload(imageToPreload);
         }
     }, [content]);
-};
+}

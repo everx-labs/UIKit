@@ -2,7 +2,7 @@ import * as React from 'react';
 import RNVideo from 'react-native-video';
 import type { UIVideoProps } from './types';
 
-export const UIVideo: React.FC<UIVideoProps> = ({
+function UIVideoImpl({
     uri,
     controls,
     paused,
@@ -14,7 +14,7 @@ export const UIVideo: React.FC<UIVideoProps> = ({
     resizeMode = 'contain',
     onLoad,
     onError,
-}: UIVideoProps) => {
+}: UIVideoProps) {
     return (
         <RNVideo
             source={{ uri }}
@@ -36,4 +36,6 @@ export const UIVideo: React.FC<UIVideoProps> = ({
             onError={onError}
         />
     );
-};
+}
+
+export const UIVideo = React.memo(UIVideoImpl);

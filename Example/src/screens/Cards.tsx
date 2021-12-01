@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { UICollectionCard, UIMediaCard, Content } from '@tonlabs/uicast.cards';
+import { UICollectionCard, UIMediaCard, MediaCardContent } from '@tonlabs/uicast.cards';
 import { UIBoxButton, UIBoxButtonVariant } from '@tonlabs/uikit.controls';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
-// const anotherVideo: Content = {
+// const anotherVideo: MediaCardContent = {
 //     contentType: 'Video',
 //     source: {
 //         uri: 'https://firebasestorage.googleapis.com/v0/b/lol-videos-8dc74.appspot.com/o/Blog_Images%2Fvideo%3A10142?alt=media&token=9f7734fa-f714-4838-bd65-8a4d594ec2ce',
 //     },
 // };
 
-const CONTENT: Content[] = [
+const CONTENT: MediaCardContent[] = [
     {
         contentType: 'Video',
         source: {

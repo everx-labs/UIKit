@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import type { Content } from '../types';
+import type { MediaCardContent } from '../types';
 import type { PreviewProps } from './types';
 import { CollectionSlide } from './CollectionSlide';
 import { usePreload } from './usePreload';
@@ -11,7 +11,7 @@ export function Preview({ style, contentList }: PreviewProps) {
 
     const currentSourceItemIndex = useCurrentSourceItemIndex(contentList);
 
-    const currentContent: Content | null = React.useMemo(() => {
+    const currentContent: MediaCardContent | null = React.useMemo(() => {
         return contentList[currentSourceItemIndex];
     }, [currentSourceItemIndex, contentList]);
 
