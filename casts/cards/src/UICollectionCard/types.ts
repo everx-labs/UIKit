@@ -1,16 +1,8 @@
-import type { ViewStyle, ImageSourcePropType, ImageURISource } from 'react-native';
-
-export type ContentType = 'Image' | 'Video' | 'Unknown';
-
-export type ContentSource = ImageURISource;
-
-export type Content = {
-    contentType: ContentType;
-    source: ContentSource;
-};
+import type { ViewStyle, ImageSourcePropType } from 'react-native';
+import type { Content } from '../types';
 
 export type UICollectionCardProps = {
-    contentList: Content[] | null;
+    contentList: Content[];
     title?: string;
     badge?: string | ImageSourcePropType;
     onPress?: () => void;
@@ -19,7 +11,7 @@ export type UICollectionCardProps = {
 };
 
 export type PreviewProps = {
-    contentList: Content[] | null;
+    contentList: Content[];
     style: ViewStyle;
 };
 

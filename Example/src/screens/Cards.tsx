@@ -59,7 +59,7 @@ export function Cards() {
                         <View style={{ flexDirection: 'row' }}>
                             <View style={{ flex: 1, margin: 8 }}>
                                 <UICollectionCard
-                                    title="Grandbazar Collection"
+                                    title="Grand Collection"
                                     badge="1"
                                     onPress={() => {
                                         console.log('Press 1');
@@ -70,7 +70,7 @@ export function Cards() {
                             </View>
                             <View style={{ flex: 1, margin: 8 }}>
                                 <UICollectionCard
-                                    title="Dota2 Pixel Art Heroes"
+                                    title="Happy surf cinema production"
                                     badge={UIAssets.icons.ui.blankMiddle}
                                     onPress={() => {
                                         console.log('Press 2');
@@ -84,8 +84,8 @@ export function Cards() {
                         <View style={{ flexDirection: 'row' }}>
                             <View style={{ flex: 1, margin: 8 }}>
                                 <UICollectionCard
-                                    contentList={null}
-                                    title="Dota2 Pixel Art Heroes"
+                                    contentList={[]}
+                                    title="Empty collection"
                                     badge={UIAssets.icons.ui.blankMiddle}
                                     onPress={() => {
                                         console.log('Press 3');
@@ -118,19 +118,18 @@ export function Cards() {
                     >
                         <View style={{ flex: 1, margin: 8 }}>
                             <UIMediaCard
-                                contentType="Image"
-                                title="Virgil"
+                                content={CONTENT[0]}
+                                title="Happy surf"
                                 onPress={() => {
                                     console.log('Press 1');
                                 }}
-                                source={CONTENT[0].source}
                                 loading={loading}
                             />
                         </View>
                         <View style={{ flex: 1, margin: 8 }}>
                             <UIMediaCard
-                                contentType="Unknown"
-                                title="Koko"
+                                content={CONTENT[2]}
+                                title="Choco"
                                 onPress={() => {
                                     console.log('Press 2');
                                 }}

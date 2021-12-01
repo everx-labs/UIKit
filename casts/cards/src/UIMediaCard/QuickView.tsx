@@ -1,16 +1,16 @@
 import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { UIImage } from '@tonlabs/uikit.media';
+// import { View } from 'react-native';
+// import { UIImage } from '@tonlabs/uikit.media';
 
 import type { QuickViewProps } from './types';
+import { CollectionSlide } from '../UICollectionCard/CollectionSlide';
 
-export const QuickView: React.FC<QuickViewProps> = ({ source, style, contentType }: QuickViewProps) => {
-    if (contentType !== 'Image' ||!source) {
+export const QuickView: React.FC<QuickViewProps> = ({ content, style }: QuickViewProps) => {
+    if (!content) {
         return null;
     }
-    return (
-        <View style={style}>
-            <UIImage source={source} style={StyleSheet.absoluteFill} />
-        </View>
-    );
+    /**
+     * TODO It is necessary to implement it's own implementation for quick viewing by long tap
+     */
+    return <CollectionSlide content={content} style={style} />;
 };

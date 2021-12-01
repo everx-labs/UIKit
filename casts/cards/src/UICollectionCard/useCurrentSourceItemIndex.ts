@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { UIConstant } from '../constants';
-import type { Content, ContentType } from './types';
+import type { Content, ContentType } from '../types';
 
 function getShowTime(contentType: ContentType) {
     switch (contentType) {

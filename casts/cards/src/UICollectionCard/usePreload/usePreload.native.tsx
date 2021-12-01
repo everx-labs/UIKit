@@ -1,10 +1,10 @@
 import * as React from 'react';
 import FastImage, { Source } from 'react-native-fast-image';
-import type { Content } from '../types';
+import type { Content } from '../../types';
 
-export const usePreload = (content: Content[] | null): void => {
+export const usePreload = (content: Content[]): void => {
     return React.useEffect(() => {
-        if (!content || content.length === 0) {
+        if (content.length === 0) {
             /**
              * Nothing to preload
              */

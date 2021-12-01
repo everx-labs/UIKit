@@ -1,12 +1,10 @@
-import type { ImageSourcePropType, ViewStyle } from 'react-native';
-
-export type ContentType = 'Image' | 'Video' | 'Unknown';
+import type { ViewStyle } from 'react-native';
+import type { Content } from '../types';
 
 export type UIMediaCardProps = {
-    contentType: ContentType;
+    content?: Content;
     title?: string;
     onPress?: () => void;
-    source?: ImageSourcePropType;
     loading?: boolean;
     testID?: string;
 };
@@ -16,7 +14,6 @@ export type TitleProps = {
 };
 
 export type QuickViewProps = {
-    contentType: ContentType;
-    source?: ImageSourcePropType;
+    content?: Content;
     style: ViewStyle;
 };

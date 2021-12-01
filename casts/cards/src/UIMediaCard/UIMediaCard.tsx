@@ -9,21 +9,14 @@ import { Title } from './Title';
 import { QuickView } from './QuickView';
 import { UIConstant } from '../constants';
 
-export function UIMediaCard({
-    contentType,
-    title,
-    onPress,
-    source,
-    loading,
-    testID,
-}: UIMediaCardProps) {
+export function UIMediaCard({ content, title, onPress, loading, testID }: UIMediaCardProps) {
     const theme = useTheme();
     const styles = useStyles(theme);
     return (
         <UISkeleton show={!!loading} style={styles.skeleton}>
             <TouchableOpacity testID={testID} onPress={onPress} style={styles.touchable}>
                 <View style={styles.container}>
-                    <QuickView style={styles.quickView} source={source} contentType={contentType} />
+                    <QuickView style={styles.quickView} content={content} />
                     <LinearGradient
                         start={{ x: 0, y: 1 }}
                         end={{ x: 0, y: 0 }}
