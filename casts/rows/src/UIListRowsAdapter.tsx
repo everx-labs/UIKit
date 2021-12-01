@@ -5,12 +5,16 @@ import { useTheme, ColorVariants } from '@tonlabs/uikit.themes';
 
 import { UILink } from './UILink';
 import { UICurrencyRow } from './UICurrencyRow';
+import { UIAccountRow } from './UIAccountRow';
 import { UIListRow, UIListRowKind } from './types';
 
 export function renderUIListItem<P, ItemT extends UIListRow<P>>({
     item,
 }: ListRenderItemInfo<ItemT>) {
     const payload = 'payload' in item ? item.payload : undefined;
+    if (item.kind === UIListRowKind.Account) {
+        return <UIAccountRow {...item.props} />;
+    }
     if (item.kind === UIListRowKind.Link) {
         return <UILink {...item.props} />;
     }
