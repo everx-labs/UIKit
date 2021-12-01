@@ -3,12 +3,13 @@ import { StyleSheet, View } from 'react-native';
 import BigNumber from 'bignumber.js';
 
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
-import { UICurrency } from '@tonlabs/uicast.numbers';
+import { UICurrency, UICurrencySignProps } from '@tonlabs/uicast.numbers';
 import { UIImage, UIImageProps } from '@tonlabs/uikit.media';
 import { UILabel, UILabelRoles, UILabelColors } from '@tonlabs/uikit.themes';
 import { UILayoutConstant, UISkeleton } from '@tonlabs/uikit.layout';
 
 import { UIConstant } from './constants';
+import { useUIRowsPressability } from './UIListRowsContext';
 
 export type UICurrencyRowProps = {
     testID?: string;
@@ -16,9 +17,10 @@ export type UICurrencyRowProps = {
     name: string;
     description?: string;
     amount: BigNumber;
-    currencySignChar?: string;
+    currencySignProps?: Partial<UICurrencySignProps>;
     loading: boolean;
     onPress?: () => void;
+    onLongPress?: () => void;
 };
 
 const zeroBigNumber = new BigNumber(0);
@@ -30,9 +32,11 @@ export function UICurrencyRow({
     name,
     description,
     amount,
-    currencySignChar = 'Ē',
-    onPress,
-}: UICurrencyRowProps) {
+    currencySignProps = { signChar: 'Ē' },
+    onPress: onPressProp,
+    onLongPress: onLongPressProp,
+    payload,
+}: UICurrencyRowProps & { payload?: any }) {
     const amountColor = React.useMemo(() => {
         const isAmountZero = zeroBigNumber.isEqualTo(amount);
         if (isAmountZero) {
@@ -40,10 +44,16 @@ export function UICurrencyRow({
         }
         return UILabelColors.TextPrimary;
     }, [amount]);
+    const { onPress, onLongPress } = useUIRowsPressability(payload, onPressProp, onLongPressProp);
     return (
         // TODO: Think later how to pass ref from scroll view
         //       to not animate a row during scroll
-        <TouchableOpacity testID={testID} style={styles.container} onPress={onPress}>
+        <TouchableOpacity
+            testID={testID}
+            style={styles.container}
+            onPress={onPress}
+            onLongPress={onLongPress}
+        >
             <UISkeleton show={loading} style={styles.iconWrapper}>
                 <UIImage source={icon} style={styles.icon} />
             </UISkeleton>
@@ -66,7 +76,7 @@ export function UICurrencyRow({
                 <UICurrency
                     integerColor={amountColor}
                     decimalColor={amountColor}
-                    signChar={currencySignChar}
+                    {...currencySignProps}
                 >
                     {amount}
                 </UICurrency>
