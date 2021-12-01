@@ -8,7 +8,7 @@ import { UICurrencyRow } from './UICurrencyRow';
 import { UIAccountRow } from './UIAccountRow';
 import { UIListRow, UIListRowKind } from './types';
 
-export function renderUIListItem<P, ItemT extends UIListRow<P>>({
+export function renderUIListItem<ItemT extends UIListRow<any>>({
     item,
 }: ListRenderItemInfo<ItemT>) {
     const payload = 'payload' in item ? item.payload : undefined;
