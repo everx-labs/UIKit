@@ -4,4 +4,4 @@ import { usePreload as platformUsePreload } from './usePreload';
 import type { Content } from '../types';
 
 export type { PreviewProps } from '../types';
-export const usePreload: (content: Content | Content[] | null) => void = platformUsePreload;
+export const usePreload: (content: Content[] | null) => void = platformUsePreload;
