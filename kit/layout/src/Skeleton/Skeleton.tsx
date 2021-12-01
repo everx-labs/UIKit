@@ -63,9 +63,11 @@ function useCrossDissolve(visible: boolean) {
 
 function SkeletonAnimatable({
     width,
+    borderRadius,
     crossDissolveProgress,
 }: {
     width: Animated.SharedValue<number>;
+    borderRadius: number;
     crossDissolveProgress: Animated.SharedValue<number>;
 }) {
     const theme = useTheme();
@@ -94,8 +96,11 @@ function SkeletonAnimatable({
     return (
         <Animated.View
             style={[
-                StyleSheet.absoluteFill,
-                { backgroundColor: theme[ColorVariants.BackgroundSecondary] as string },
+                styles.skeletonContainer,
+                {
+                    backgroundColor: theme[ColorVariants.BackgroundSecondary] as string,
+                    borderRadius,
+                },
                 backdropStyle,
             ]}
         >
@@ -193,18 +198,25 @@ export function UISkeleton({
 
     const { isVisible, crossDissolveProgress } = useCrossDissolve(visible);
 
+    const skeletonBorderRadius = React.useMemo(() => {
+        if (styleProp) {
+            const { borderRadius: stylePropBorderRadius } = StyleSheet.flatten(styleProp ?? {});
+            if (stylePropBorderRadius !== undefined) {
+                return stylePropBorderRadius;
+            }
+        }
+        return UILayoutConstant.alertBorderRadius;
+    }, [styleProp]);
+
     return (
-        <View
-            style={[
-                styles.container,
-                { borderRadius: isVisible ? UILayoutConstant.alertBorderRadius : 0 },
-                styleProp,
-            ]}
-            onLayout={onLayout}
-        >
+        <View style={[styles.container, styleProp]} onLayout={onLayout}>
             {children}
             {isVisible && (
-                <SkeletonAnimatable width={width} crossDissolveProgress={crossDissolveProgress} />
+                <SkeletonAnimatable
+                    width={width}
+                    borderRadius={skeletonBorderRadius}
+                    crossDissolveProgress={crossDissolveProgress}
+                />
             )}
         </View>
     );
@@ -213,7 +225,20 @@ export function UISkeleton({
 const styles = StyleSheet.create({
     container: {
         position: 'relative',
+    },
+    skeletonContainer: {
         overflow: 'hidden',
+        position: 'absolute',
+        /**
+         * There is a bug with the render when the underlying component
+         * is visible from under the overlying component
+         * if they have the same size or are cut off by `overflow: 'hidden'`.
+         * To avoid this, it is necessary to slightly increase the size of the overlying component
+         */
+        top: -StyleSheet.hairlineWidth,
+        left: -StyleSheet.hairlineWidth,
+        bottom: -StyleSheet.hairlineWidth,
+        right: -StyleSheet.hairlineWidth,
     },
     gradient: { flex: 1 },
 });

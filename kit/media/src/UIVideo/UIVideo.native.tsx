@@ -12,6 +12,8 @@ export const UIVideo: React.FC<UIVideoProps> = ({
     height,
     aspectRatio,
     resizeMode = 'contain',
+    onLoad,
+    onError,
 }: UIVideoProps) => {
     return (
         <RNVideo
@@ -30,6 +32,8 @@ export const UIVideo: React.FC<UIVideoProps> = ({
              * For playing many videos simultaneously on Android
              */
             disableFocus
+            onLoad={onLoad}
+            onError={onError}
         />
     );
 };

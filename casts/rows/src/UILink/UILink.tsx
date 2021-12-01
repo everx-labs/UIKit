@@ -24,7 +24,7 @@ export const UILink: React.FC<UILinkProps> = ({
             disabled={loading}
         >
             <Logo logo={logo} loading={loading} />
-            <UISkeleton show={!!loading} style={styles.textContent}>
+            <UISkeleton show={!!loading} style={styles.textContentSkeleton}>
                 <View style={styles.title}>
                     <UILabel
                         role={TypographyVariants.Action}
@@ -36,15 +36,17 @@ export const UILink: React.FC<UILinkProps> = ({
                     </UILabel>
                     <Icon source={UIAssets.icons.ui.blankUp} />
                 </View>
-                <View>
-                    <UILabel
-                        role={TypographyVariants.NarrowParagraphFootnote}
-                        color={ColorVariants.TextSecondary}
-                        numberOfLines={1}
-                    >
-                        {description}
-                    </UILabel>
-                </View>
+                {description == null ? null : (
+                    <View>
+                        <UILabel
+                            role={TypographyVariants.NarrowParagraphFootnote}
+                            color={ColorVariants.TextSecondary}
+                            numberOfLines={1}
+                        >
+                            {description}
+                        </UILabel>
+                    </View>
+                )}
             </UISkeleton>
         </TouchableOpacity>
     );
@@ -56,7 +58,7 @@ const styles = StyleSheet.create({
         paddingVertical: UILayoutConstant.contentInsetVerticalX4,
         alignItems: 'center',
     },
-    textContent: {
+    textContentSkeleton: {
         flex: 1,
     },
     title: {

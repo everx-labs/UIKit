@@ -43,6 +43,14 @@ export type UIVideoProps = {
      * `contain` by default
      */
     resizeMode?: UIVideoResizeMode;
+    /**
+     * Callback function that is called when the media is loaded and ready to play
+     */
+    onLoad?: () => void;
+    /**
+     * Callback function that is called when video cannot be loaded
+     */
+    onError?: () => void;
 };
 
 export type Dimensions = {

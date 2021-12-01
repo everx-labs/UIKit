@@ -13,6 +13,8 @@ export const UIVideo: React.FC<UIVideoProps> = ({
     height,
     aspectRatio,
     resizeMode = 'contain',
+    onLoad,
+    onError,
 }: UIVideoProps) => {
     const dimensions = useDimensionsByAspectRatio(width, height, aspectRatio);
 
@@ -38,6 +40,8 @@ export const UIVideo: React.FC<UIVideoProps> = ({
                     },
                 },
             }}
+            onReady={onLoad}
+            onError={onError}
         />
     );
 };
