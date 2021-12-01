@@ -5,8 +5,10 @@ import { useTheme, ColorVariants } from '@tonlabs/uikit.themes';
 
 import { UILink, UILinkProps } from './UILink';
 import { UICurrencyRow, UICurrencyRowProps } from './UICurrencyRow';
+import { UIAccountRow, UIAccountRowProps } from './UIAccountRow';
 
 export enum UIListRowKind {
+    Account = 'account',
     Link = 'link',
     Currency = 'currency',
 }
@@ -19,11 +21,18 @@ type CurrencyRow = {
     kind: UIListRowKind.Currency;
     props: UICurrencyRowProps;
 };
+type AccountRow = {
+    kind: UIListRowKind.Account;
+    props: UIAccountRowProps;
+};
 
-export type UIListRow = LinkRow | CurrencyRow;
+export type UIListRow = LinkRow | CurrencyRow | AccountRow;
 export type UIListRows = UIListRow[];
 
 export function renderUIListItem<ItemT extends UIListRow>({ item }: ListRenderItemInfo<ItemT>) {
+    if (item.kind === UIListRowKind.Account) {
+        return <UIAccountRow {...item.props} />;
+    }
     if (item.kind === UIListRowKind.Link) {
         return <UILink {...item.props} />;
     }

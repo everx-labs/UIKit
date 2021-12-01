@@ -1,3 +1,4 @@
+export * from './UIAccountRow';
 export * from './UILink';
 export * from './UICurrencyRow';
 
