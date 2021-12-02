@@ -27,18 +27,6 @@ export type UIVideoProps = {
      */
     muted?: boolean;
     /**
-     * Set the width of the player
-     */
-    width?: number;
-    /**
-     * Set the height of the player
-     */
-    height?: number;
-    /**
-     * Set the aspectRatio of the player
-     */
-    aspectRatio?: number;
-    /**
      * By analogy with the Image#resizeMode
      * `contain` by default
      */
@@ -54,8 +42,10 @@ export type UIVideoProps = {
 };
 
 export type Dimensions = {
-    width?: number;
-    height?: number;
+    width: number;
+    height: number;
 };
+
+export type VideoProps = UIVideoProps & Dimensions;
 
 export type UIVideoResizeMode = 'contain' | 'cover';
