@@ -15,7 +15,9 @@ export type UICurrencyRowProps = {
     testID?: string;
     icon: UIImageProps['source'];
     name: string;
+    nameTestID?: string;
     description?: string;
+    descriptionTestID?: string;
     amount: BigNumber;
     currencySignProps?: Partial<UICurrencySignProps>;
     loading: boolean;
@@ -30,7 +32,9 @@ export function UICurrencyRow({
     loading,
     icon,
     name,
+    nameTestID,
     description,
+    descriptionTestID,
     amount,
     currencySignProps = { signChar: 'Ē' },
     onPress: onPressProp,
@@ -59,11 +63,17 @@ export function UICurrencyRow({
             </UISkeleton>
             <UISkeleton show={loading} style={styles.inner}>
                 <View style={styles.desc}>
-                    <UILabel role={UILabelRoles.Action} numberOfLines={1} ellipsizeMode="tail">
+                    <UILabel
+                        testID={nameTestID}
+                        role={UILabelRoles.Action}
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                    >
                         {name}
                     </UILabel>
                     {description == null ? null : (
                         <UILabel
+                            testID={descriptionTestID}
                             role={UILabelRoles.ParagraphFootnote}
                             color={UILabelColors.TextSecondary}
                             numberOfLines={1}
