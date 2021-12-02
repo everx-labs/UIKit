@@ -5,6 +5,7 @@ import type { UIVideoProps } from './types';
 export const UIVideo: React.FC<UIVideoProps> = ({
     uri,
     controls,
+    muted,
     repeat,
     width,
     height,
@@ -21,6 +22,7 @@ export const UIVideo: React.FC<UIVideoProps> = ({
                 aspectRatio,
             }}
             controls={controls}
+            muted={muted}
             repeat={repeat}
             onLoad={onLoad}
             onError={onError}

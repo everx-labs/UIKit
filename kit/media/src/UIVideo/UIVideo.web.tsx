@@ -6,6 +6,7 @@ import type { UIVideoProps } from './types';
 export const UIVideo: React.FC<UIVideoProps> = ({
     uri,
     controls,
+    muted,
     repeat,
     width,
     height,
@@ -19,6 +20,7 @@ export const UIVideo: React.FC<UIVideoProps> = ({
         <ReactPlayer
             url={uri}
             controls={controls}
+            muted={muted}
             {...dimensions}
             loop={repeat}
             onReady={onLoad}

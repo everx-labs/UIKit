@@ -12,6 +12,11 @@ export type UIVideoProps = {
      */
     controls?: boolean;
     /**
+     * Determine whether the audio is muted
+     * `false` by default
+     */
+    muted?: boolean;
+    /**
      * Determine whether to repeat the video when the end is reached
      * `false` by default
      */
@@ -35,7 +40,7 @@ export type UIVideoProps = {
     /**
      * Callback function that is called when video cannot be loaded
      */
-    onError?: () => void;
+    onError?: (error: any) => void;
 };
 
 export type Dimensions = {
