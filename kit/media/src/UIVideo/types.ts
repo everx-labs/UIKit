@@ -50,7 +50,7 @@ export type UIVideoProps = {
     /**
      * Callback function that is called when video cannot be loaded
      */
-    onError?: () => void;
+    onError?: (error: any) => void;
 };
 
 export type Dimensions = {
