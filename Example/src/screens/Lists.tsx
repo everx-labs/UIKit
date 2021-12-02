@@ -95,6 +95,14 @@ function MasonryList() {
                 numOfColumns={numOfColumns}
                 onEndReached={() => console.warn('end reached')}
                 renderItem={renderItem}
+                ListFooterComponent={
+                    <View
+                        style={{
+                            height: 100,
+                            backgroundColor: 'red',
+                        }}
+                    />
+                }
             />
         </View>
     );

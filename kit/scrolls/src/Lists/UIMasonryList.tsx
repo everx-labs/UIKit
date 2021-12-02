@@ -498,6 +498,10 @@ type UIMasonryListProps<Item = any> = {
      * within half the visible length of the list.
      */
     onEndReachedThreshold?: number;
+    /**
+     * Rendered at the very end of the list.
+     */
+    ListFooterComponent?: React.ComponentType | React.ReactElement | null;
 } & ScrollViewProps;
 
 /**
@@ -515,6 +519,7 @@ const UIMasonryListOriginal = React.memo(
             virtualWindowSizeRatio = 1.5,
             onEndReached,
             onEndReachedThreshold,
+            ListFooterComponent,
             ...scrollViewProps
         }: UIMasonryListProps<Item>,
         ref: React.ForwardedRef<ScrollView>,
@@ -563,6 +568,17 @@ const UIMasonryListOriginal = React.memo(
                 />
             ));
 
+        const footerElement = React.useMemo(() => {
+            if (ListFooterComponent) {
+                return React.isValidElement(ListFooterComponent) ? (
+                    ListFooterComponent
+                ) : (
+                    <ListFooterComponent />
+                );
+            }
+            return null;
+        }, [ListFooterComponent]);
+
         return (
             <ScrollView
                 {...scrollViewProps}
@@ -572,7 +588,8 @@ const UIMasonryListOriginal = React.memo(
                 onScroll={onScroll}
                 scrollEventThrottle={16}
             >
-                {content}
+                <View>{content}</View>
+                {footerElement}
             </ScrollView>
         );
     }),
