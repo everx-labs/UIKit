@@ -2,7 +2,7 @@ import * as React from 'react';
 import { UIConstant } from '../constants';
 import type { MediaCardContent, MediaCardContentType } from '../types';
 
-function getShowTime(contentType: MediaCardContentType) {
+function getShowTime(contentType: MediaCardContentType): number | null {
     switch (contentType) {
         case 'Image':
             return UIConstant.uiCollectionCard.timeToShowImage;
@@ -10,7 +10,7 @@ function getShowTime(contentType: MediaCardContentType) {
             return UIConstant.uiCollectionCard.timeToShowVideo;
         case 'Unknown':
         default:
-            return Infinity;
+            return null;
     }
 }
 
@@ -24,11 +24,15 @@ export function useCurrentSourceItemIndex(content: MediaCardContent | MediaCardC
             const currentItem = content[currentSourceItemIndex];
             const showTime = getShowTime(currentItem.contentType);
 
-            timeout = setTimeout(() => {
-                const nextIndex =
-                    currentSourceItemIndex >= content.length - 1 ? 0 : currentSourceItemIndex + 1;
-                setCurrentSourceItemIndex(nextIndex);
-            }, showTime);
+            if (showTime !== null) {
+                timeout = setTimeout(() => {
+                    const nextIndex =
+                        currentSourceItemIndex >= content.length - 1
+                            ? 0
+                            : currentSourceItemIndex + 1;
+                    setCurrentSourceItemIndex(nextIndex);
+                }, showTime);
+            }
         }
 
         return () => clearTimeout(timeout);
