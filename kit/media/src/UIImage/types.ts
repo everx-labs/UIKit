@@ -1,4 +1,4 @@
-import type { ImageProps } from 'react-native';
+import type { ImageProps, ImageURISource } from 'react-native';
 import type { ColorVariants } from '@tonlabs/uikit.themes';
 
 export type UIImageProps = ImageProps & {
@@ -15,3 +15,5 @@ export type UIImageProps = ImageProps & {
      */
     tintColor?: ColorVariants | null;
 };
+
+export type Prefetch = (content: ImageURISource[] | ImageURISource) => void;
