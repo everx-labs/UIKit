@@ -5,23 +5,22 @@ import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
-const VideoStack = createStackNavigator();
+const VideosStack = createStackNavigator();
 
-export const Video = () => {
+export const Videos = () => {
     return (
         <ExampleScreen>
             <ExampleSection title="UIVideo">
                 <View
                     style={{
                         width: '100%',
+                        height: 400,
                         alignItems: 'center',
                         paddingVertical: 20,
                     }}
                 >
                     <UIVideo
                         uri="https://firebasestorage.googleapis.com/v0/b/ton-uikit-example-7e797.appspot.com/o/Happy-surf.mp4?alt=media&token=ecb72009-5913-4537-b553-37ec41a99782"
-                        height={400}
-                        aspectRatio={9 / 16}
                         controls
                         repeat
                     />
@@ -31,17 +30,17 @@ export const Video = () => {
     );
 };
 
-export function VideoScreen() {
+export function VideosScreen() {
     return (
-        <VideoStack.Navigator>
-            <VideoStack.Screen
-                name="UIVideoWindow"
+        <VideosStack.Navigator>
+            <VideosStack.Screen
+                name="UIVideosWindow"
                 options={{
                     useHeaderLargeTitle: true,
-                    title: 'UIVideo',
+                    title: 'UIVideos',
                 }}
-                component={Video}
+                component={Videos}
             />
-        </VideoStack.Navigator>
+        </VideosStack.Navigator>
     );
 }

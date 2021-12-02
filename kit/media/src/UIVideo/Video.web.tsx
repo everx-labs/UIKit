@@ -1,23 +1,19 @@
 import * as React from 'react';
 import ReactPlayer from 'react-player';
-import { useDimensionsByAspectRatio } from './hooks';
-import type { UIVideoProps } from './types';
+import type { VideoProps } from './types';
 
-function UIVideoImpl({
+export function Video({
     uri,
     controls,
     paused = false,
     muted,
     repeat,
-    width,
-    height,
-    aspectRatio,
     resizeMode = 'contain',
     onLoad,
     onError,
-}: UIVideoProps) {
-    const dimensions = useDimensionsByAspectRatio(width, height, aspectRatio);
-
+    width,
+    height,
+}: VideoProps) {
     const config = React.useMemo(
         () => ({
             file: {
@@ -33,11 +29,15 @@ function UIVideoImpl({
         [resizeMode],
     );
 
+    if (!width || !height || !uri) {
+        return null;
+    }
     return (
         <ReactPlayer
             url={uri}
             controls={controls}
-            {...dimensions}
+            width={width}
+            height={height}
             loop={repeat}
             playing={!paused}
             muted={muted}
@@ -50,5 +50,3 @@ function UIVideoImpl({
         />
     );
 }
-
-export const UIVideo = React.memo(UIVideoImpl);

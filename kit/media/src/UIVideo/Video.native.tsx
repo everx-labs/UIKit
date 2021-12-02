@@ -1,27 +1,28 @@
 import * as React from 'react';
 import RNVideo from 'react-native-video';
-import type { UIVideoProps } from './types';
+import type { VideoProps } from './types';
 
-function UIVideoImpl({
+export function Video({
     uri,
     controls,
     paused,
     muted,
     repeat,
-    width,
-    height,
-    aspectRatio,
     resizeMode = 'contain',
     onLoad,
     onError,
-}: UIVideoProps) {
+    width,
+    height,
+}: VideoProps) {
+    if (!width || !height || !uri) {
+        return null;
+    }
     return (
         <RNVideo
             source={{ uri }}
             style={{
                 width,
                 height,
-                aspectRatio,
             }}
             controls={controls}
             repeat={repeat}
@@ -37,5 +38,3 @@ function UIVideoImpl({
         />
     );
 }
-
-export const UIVideo = React.memo(UIVideoImpl);
