@@ -13,7 +13,7 @@ export type UICollectionCardProps = {
     /**
      * Displays the number of items in the collection or an image
      */
-    badge?: string | ImageSourcePropType;
+    badge?: string | number | ImageSourcePropType;
     /**
      * Сallback called by clicking/tapping on the card
      */

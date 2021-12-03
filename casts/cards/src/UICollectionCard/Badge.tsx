@@ -20,7 +20,7 @@ export function Badge({ badge }: BadgeProps) {
     if (!badge) {
         return null;
     }
-    if (typeof badge === 'string') {
+    if (typeof badge === 'string' || typeof badge === 'number') {
         return (
             <View style={styles.stringBadge}>
                 <UILabel
