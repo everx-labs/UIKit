@@ -12,19 +12,11 @@ import {
 } from 'react-native';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { wrapScrollableComponent } from '../wrapScrollableComponent';
+import { Footer } from './Footer';
+import type { Layout, LayoutCell, MasonryItem } from './types';
 
 const interColumnOffset = UILayoutConstant.contentOffset;
 const interRowsOffset = interColumnOffset;
-
-type MasonryItem<Item> = { key: string; item?: Item; aspectRatio: number };
-
-type LayoutCell = {
-    height: number;
-    x: number;
-    y: number;
-};
-
-type Layout = Record<string, LayoutCell>;
 
 function measureList<Item>(cellWidth: number, data: MasonryItem<Item>[], numOfColumns: number) {
     const columnsHeights = new Array(numOfColumns).fill(0);
@@ -221,6 +213,33 @@ function manageBottomCells(
     }
 }
 
+function useFooterLayout(
+    ListFooterComponent: React.ComponentType | React.ReactElement | null | undefined,
+) {
+    const [footerHeight, setFooterHeight] = React.useState(0);
+
+    const onLayoutFooter = React.useCallback(
+        (event: LayoutChangeEvent) => {
+            if (ListFooterComponent) {
+                const {
+                    nativeEvent: {
+                        layout: { height: lHeight },
+                    },
+                } = event;
+                setFooterHeight(lHeight);
+            } else {
+                setFooterHeight(0);
+            }
+        },
+        [ListFooterComponent],
+    );
+
+    return {
+        footerHeight,
+        onLayoutFooter,
+    };
+}
+
 function useVirtualization<Item>(
     data: MasonryItem<Item>[],
     cellWidth: number,
@@ -236,6 +255,7 @@ function useVirtualization<Item>(
     const lastBottomCellIndex = React.useRef(0);
 
     const contentLengthOnEndReached = React.useRef(0);
+    const currentCoordinate = React.useRef(0);
 
     const cellsRefs = React.useMemo(() => getMasonryCellsRefs(data), [data]);
 
@@ -297,16 +317,34 @@ function useVirtualization<Item>(
     React.useEffect(() => {
         /**
          * So basically when we render items for the first time,
+         * or when the data has been updated,
          * we have to calculate items that're in virtual window
          */
         const bottom = binarySearch(
-            initialWindowHeight + virtualWindowSizeRatio * initialWindowHeight,
+            initialWindowHeight +
+                virtualWindowSizeRatio * initialWindowHeight +
+                currentCoordinate.current,
             cellsIndexes,
         );
-        manageBottomCells(lastBottomCellIndex.current, bottom, show, hide);
+        const top = binarySearch(
+            currentCoordinate.current -
+                virtualWindowSizeRatio * initialWindowHeight -
+                maxItemHeight,
+            cellsIndexes,
+        );
+
+        manageBottomCells(top, bottom, show, hide);
 
         lastBottomCellIndex.current = bottom;
-    }, [cellsIndexes, initialWindowHeight, cellsRefs, show, hide, virtualWindowSizeRatio]);
+    }, [
+        cellsIndexes,
+        initialWindowHeight,
+        cellsRefs,
+        show,
+        hide,
+        virtualWindowSizeRatio,
+        maxItemHeight,
+    ]);
 
     const onLayout = React.useCallback(
         (event: LayoutChangeEvent) => {
@@ -421,6 +459,8 @@ function useVirtualization<Item>(
             lastBottomCellIndex.current = bottom;
 
             maybeCallOnEndReached(scrolledContentLength, windowHeight, y);
+
+            currentCoordinate.current = y;
 
             if (onScrollProp) {
                 onScrollProp(event);
@@ -547,12 +587,14 @@ const UIMasonryListOriginal = React.memo(
             onEndReachedThreshold,
         );
 
+        const { footerHeight, onLayoutFooter } = useFooterLayout(ListFooterComponent);
+
         const contentContainerStyle: ViewStyle = React.useMemo(
             () => ({
                 position: 'relative',
-                height: contentHeight,
+                height: contentHeight + footerHeight,
             }),
-            [contentHeight],
+            [contentHeight, footerHeight],
         );
 
         const content =
@@ -568,17 +610,6 @@ const UIMasonryListOriginal = React.memo(
                 />
             ));
 
-        const footerElement = React.useMemo(() => {
-            if (ListFooterComponent) {
-                return React.isValidElement(ListFooterComponent) ? (
-                    ListFooterComponent
-                ) : (
-                    <ListFooterComponent />
-                );
-            }
-            return null;
-        }, [ListFooterComponent]);
-
         return (
             <ScrollView
                 {...scrollViewProps}
@@ -588,8 +619,13 @@ const UIMasonryListOriginal = React.memo(
                 onScroll={onScroll}
                 scrollEventThrottle={16}
             >
-                <View>{content}</View>
-                {footerElement}
+                {content}
+                <Footer
+                    ListFooterComponent={ListFooterComponent}
+                    onLayout={onLayoutFooter}
+                    yCoordinate={contentHeight}
+                    width={width}
+                />
             </ScrollView>
         );
     }),
