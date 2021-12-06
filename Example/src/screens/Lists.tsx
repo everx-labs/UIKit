@@ -55,7 +55,7 @@ function generateData(page: number): MasonryItem<Item>[] {
         return {
             key: `${page}_${index}`,
             item: { page, index },
-            aspectRatio: 0.5 + (index % 5),
+            aspectRatio: 0.5 + (index % 9) / 9,
         };
     });
     return newData;
@@ -67,16 +67,25 @@ const Footer = React.memo(() => {
             style={{
                 height: 100,
                 backgroundColor: 'red',
+                alignItems: 'center',
+                justifyContent: 'center',
             }}
-        />
+        >
+            <UILabel
+                role={TypographyVariants.HeadersHuge}
+                color={ColorVariants.TextPrimaryInverted}
+            >
+                Loading...
+            </UILabel>
+        </View>
     );
 });
 
 function MasonryList() {
     const { width: windowWidth } = useWindowDimensions();
-    const width = Math.max(850, windowWidth);
+    const width = Math.min(500, windowWidth);
 
-    const numOfColumns = Math.trunc(width / 180);
+    const numOfColumns = Math.trunc(width / 100);
 
     const [page, setPage] = React.useState(0);
 
