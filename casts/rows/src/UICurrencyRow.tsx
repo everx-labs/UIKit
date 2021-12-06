@@ -101,8 +101,7 @@ export function UICurrencyRow({
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        paddingTop: 15,
-        paddingBottom: UILayoutConstant.contentInsetVerticalX4,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX4,
         alignItems: 'center',
     },
     inner: {
