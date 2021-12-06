@@ -20,6 +20,10 @@ function FooterImpl({ onLayout, yCoordinate, ListFooterComponent, width }: Foote
         return null;
     }, [ListFooterComponent]);
 
+    if (!footerElement) {
+        return null;
+    }
+
     return (
         <View
             style={{

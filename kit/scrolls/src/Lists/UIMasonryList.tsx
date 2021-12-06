@@ -255,7 +255,11 @@ function useVirtualization<Item>(
     const lastBottomCellIndex = React.useRef(0);
 
     const contentLengthOnEndReached = React.useRef(0);
-    const currentCoordinate = React.useRef(0);
+    /**
+     * Y value of the current scroll.
+     * We need to remember scroll value when the data has been updated.
+     */
+    const currentScrollValue = React.useRef(0);
 
     const cellsRefs = React.useMemo(() => getMasonryCellsRefs(data), [data]);
 
@@ -323,11 +327,11 @@ function useVirtualization<Item>(
         const bottom = binarySearch(
             initialWindowHeight +
                 virtualWindowSizeRatio * initialWindowHeight +
-                currentCoordinate.current,
+                currentScrollValue.current,
             cellsIndexes,
         );
         const top = binarySearch(
-            currentCoordinate.current -
+            currentScrollValue.current -
                 virtualWindowSizeRatio * initialWindowHeight -
                 maxItemHeight,
             cellsIndexes,
@@ -460,7 +464,7 @@ function useVirtualization<Item>(
 
             maybeCallOnEndReached(scrolledContentLength, windowHeight, y);
 
-            currentCoordinate.current = y;
+            currentScrollValue.current = y;
 
             if (onScrollProp) {
                 onScrollProp(event);
