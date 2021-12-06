@@ -19,6 +19,7 @@ export type UICurrencyRowProps = {
     description?: string;
     descriptionTestID?: string;
     amount: BigNumber;
+    amountTestID?: string;
     currencySignProps?: Partial<UICurrencySignProps>;
     loading: boolean;
     onPress?: () => void;
@@ -36,6 +37,7 @@ export function UICurrencyRow({
     description,
     descriptionTestID,
     amount,
+    amountTestID,
     currencySignProps = { signChar: 'Ē' },
     onPress: onPressProp,
     onLongPress: onLongPressProp,
@@ -84,6 +86,7 @@ export function UICurrencyRow({
                     )}
                 </View>
                 <UICurrency
+                    testID={amountTestID}
                     integerColor={amountColor}
                     decimalColor={amountColor}
                     {...currencySignProps}
