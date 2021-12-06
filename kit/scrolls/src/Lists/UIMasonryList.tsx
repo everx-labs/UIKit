@@ -257,7 +257,9 @@ function useVirtualization<Item>(
     const contentLengthOnEndReached = React.useRef(0);
     /**
      * Y value of the current scroll.
-     * We need to remember scroll value when the data has been updated.
+     * We need to remember scroll value 
+     * to properly recalculate the virtual window
+     * when a data has been updated.
      */
     const currentScrollValue = React.useRef(0);
 
