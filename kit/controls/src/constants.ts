@@ -13,6 +13,11 @@ export const UIConstant = {
     pillButtonHeight: 32,
     linkButtonHeight: 48,
 
+    showMoreButtonIndicatorSizeMedium: 18,
+    showMoreButtonIndicatorSizeSmall: 12,
+    showMoreButtonSizeMedium: 40,
+    showMoreButtonSizeSmall: 32,
+
     tinyContentOffset: 4,
     smallContentOffset: 8,
     normalContentOffset: 12,
