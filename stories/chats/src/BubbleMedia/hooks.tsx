@@ -166,19 +166,25 @@ export const useImageSize = (data: string | null, originalSize?: ImageSize) => {
      */
     React.useEffect(() => {
         if (data && !originalSize) {
-            Image.getSize(data, (width, height) => {
-                originalSizeRef.current = {
-                    width,
-                    height,
-                };
-                const newImageSize = getImageSize(
-                    originalSizeRef.current?.width,
-                    originalSizeRef.current?.height,
-                    maxImageSize.width,
-                    maxImageSize.height,
-                );
-                setImageSize(newImageSize);
-            });
+            Image.getSize(
+                data,
+                (width, height) => {
+                    originalSizeRef.current = {
+                        width,
+                        height,
+                    };
+                    const newImageSize = getImageSize(
+                        originalSizeRef.current?.width,
+                        originalSizeRef.current?.height,
+                        maxImageSize.width,
+                        maxImageSize.height,
+                    );
+                    setImageSize(newImageSize);
+                },
+                () => {
+                    setImageSize(maxImageSize);
+                },
+            );
         }
         /**
          * `maxImageSize` is not added to the list of dependencies,
