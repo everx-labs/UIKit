@@ -5,6 +5,7 @@ import {
     ColorValue,
     Image as RNImage,
     ImageStyle,
+    ImageURISource,
     LayoutChangeEvent,
     LayoutRectangle,
     StyleProp,
@@ -13,6 +14,25 @@ import {
 } from 'react-native';
 import { useTheme } from '@tonlabs/uikit.themes';
 import type { UIImageProps } from './types';
+
+export function prefetch(content: ImageURISource[] | ImageURISource): void {
+    if (!content || (Array.isArray(content) && content.length === 0)) {
+        /**
+         * Nothing to prefetch
+         */
+        return;
+    }
+
+    if (Array.isArray(content)) {
+        content.forEach((contentItem: ImageURISource): void => {
+            if (contentItem.uri) {
+                RNImage.prefetch(contentItem.uri);
+            }
+        });
+    } else if (content.uri) {
+        RNImage.prefetch(content.uri);
+    }
+}
 
 const useImageDimensions = (style: StyleProp<ImageStyle>, source: any) => {
     return React.useMemo(() => {

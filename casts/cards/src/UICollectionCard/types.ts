@@ -1,27 +1,43 @@
 import type { ViewStyle, ImageSourcePropType } from 'react-native';
-
-export type ContentType = 'Image' | 'Video' | 'Unknown';
+import type { MediaCardContent } from '../types';
 
 export type UICollectionCardProps = {
-    contentType: ContentType;
-    source?: ImageSourcePropType | ImageSourcePropType[];
+    /**
+     * Media content array
+     */
+    contentList: MediaCardContent[];
+    /**
+     * Card title
+     */
     title?: string;
+    /**
+     * Displays the number of items in the collection or an image
+     */
     badge?: string | ImageSourcePropType;
+    /**
+     * Сallback called by clicking/tapping on the card
+     */
     onPress?: () => void;
+    /**
+     * Used to display the data loading process
+     */
     loading?: boolean;
+    /**
+     * ID for usage in tests
+     */
     testID?: string;
 };
 
 export type PreviewProps = {
-    contentType: ContentType;
-    source?: ImageSourcePropType | ImageSourcePropType[];
+    contentList: MediaCardContent[];
     style: ViewStyle;
-};
-
-export type TitleProps = {
-    title?: string;
 };
 
 export type BadgeProps = {
     badge?: string | ImageSourcePropType;
+};
+
+export type CollectionSlideProps = {
+    content: MediaCardContent;
+    style: ViewStyle;
 };

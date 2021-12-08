@@ -1,36 +1,42 @@
 import * as React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { ColorVariants, makeStyles, Theme, useTheme } from '@tonlabs/uikit.themes';
+import {
+    ColorVariants,
+    makeStyles,
+    Theme,
+    useTheme,
+    UILabel,
+    TypographyVariants,
+} from '@tonlabs/uikit.themes';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UILayoutConstant, UISkeleton } from '@tonlabs/uikit.layout';
 import type { UIMediaCardProps } from './types';
-import { Title } from './Title';
-import { QuickView } from './QuickView';
 import { UIConstant } from '../constants';
+import { CollectionSlide } from '../UICollectionCard/CollectionSlide';
 
-export function UIMediaCard({
-    contentType,
-    title,
-    onPress,
-    source,
-    loading,
-    testID,
-}: UIMediaCardProps) {
+export function UIMediaCard({ content, title, onPress, loading, testID }: UIMediaCardProps) {
     const theme = useTheme();
     const styles = useStyles(theme);
     return (
         <UISkeleton show={!!loading} style={styles.skeleton}>
             <TouchableOpacity testID={testID} onPress={onPress} style={styles.touchable}>
                 <View style={styles.container}>
-                    <QuickView style={styles.quickView} source={source} contentType={contentType} />
+                    {content ? (
+                        <CollectionSlide style={styles.quickView} content={content} />
+                    ) : null}
                     <LinearGradient
                         start={{ x: 0, y: 1 }}
                         end={{ x: 0, y: 0 }}
                         colors={[UIConstant.linearGradientStart, UIConstant.linearGradientEnd]}
                         style={styles.gradient}
                     />
-                    <Title title={title} />
+                    <UILabel
+                        role={TypographyVariants.MonoNote}
+                        color={ColorVariants.StaticBackgroundWhite}
+                    >
+                        {title}
+                    </UILabel>
                 </View>
             </TouchableOpacity>
         </UISkeleton>

@@ -24,7 +24,7 @@ export function Badge({ badge }: BadgeProps) {
         return (
             <View style={styles.stringBadge}>
                 <UILabel
-                    role={TypographyVariants.ParagraphLabel}
+                    role={TypographyVariants.NarrowMonoLabel}
                     color={ColorVariants.StaticTextPrimaryLight}
                 >
                     {badge}

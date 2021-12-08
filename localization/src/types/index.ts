@@ -58,6 +58,7 @@ export type DateFormatInfo = {
     separator: string;
     localePattern: string;
     components: string[];
+    dayOfWeek: number;
 };
 
 export type StringLocaleInfo = {

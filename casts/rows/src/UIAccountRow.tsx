@@ -3,79 +3,60 @@ import { StyleSheet, View } from 'react-native';
 import BigNumber from 'bignumber.js';
 
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
-import { UICurrency, UICurrencySignProps } from '@tonlabs/uicast.numbers';
+import { UICurrency } from '@tonlabs/uicast.numbers';
+import type { UICurrencySignProps } from '@tonlabs/uicast.numbers';
 import { UIImage, UIImageProps } from '@tonlabs/uikit.media';
 import { UILabel, UILabelRoles, UILabelColors } from '@tonlabs/uikit.themes';
 import { UILayoutConstant, UISkeleton } from '@tonlabs/uikit.layout';
 
 import { UIConstant } from './constants';
-import { useUIRowsPressability } from './UIListRowsContext';
 
-export type UICurrencyRowProps = {
+export type UIAccountRowProps = {
     testID?: string;
     icon: UIImageProps['source'];
     name: string;
-    nameTestID?: string;
     description?: string;
-    descriptionTestID?: string;
-    amount: BigNumber;
-    amountTestID?: string;
-    currencySignProps?: Partial<UICurrencySignProps>;
+    balance: BigNumber;
+    currencySignProps?: UICurrencySignProps;
+    rate?: string;
     loading: boolean;
     onPress?: () => void;
-    onLongPress?: () => void;
 };
 
 const zeroBigNumber = new BigNumber(0);
 
-export function UICurrencyRow({
+export function UIAccountRow({
     testID,
     loading,
     icon,
     name,
-    nameTestID,
     description,
-    descriptionTestID,
-    amount,
-    amountTestID,
-    currencySignProps = { signChar: 'Ē' },
-    onPress: onPressProp,
-    onLongPress: onLongPressProp,
-    payload,
-}: UICurrencyRowProps & { payload?: any }) {
+    balance,
+    currencySignProps,
+    rate,
+    onPress,
+}: UIAccountRowProps) {
     const amountColor = React.useMemo(() => {
-        const isAmountZero = zeroBigNumber.isEqualTo(amount);
+        const isAmountZero = zeroBigNumber.isEqualTo(balance);
         if (isAmountZero) {
             return UILabelColors.TextSecondary;
         }
         return UILabelColors.TextPrimary;
-    }, [amount]);
-    const { onPress, onLongPress } = useUIRowsPressability(payload, onPressProp, onLongPressProp);
+    }, [balance]);
     return (
         // TODO: Think later how to pass ref from scroll view
         //       to not animate a row during scroll
-        <TouchableOpacity
-            testID={testID}
-            style={styles.container}
-            onPress={onPress}
-            onLongPress={onLongPress}
-        >
+        <TouchableOpacity testID={testID} style={styles.container} onPress={onPress}>
             <UISkeleton show={loading} style={styles.iconWrapper}>
                 <UIImage source={icon} style={styles.icon} />
             </UISkeleton>
             <UISkeleton show={loading} style={styles.inner}>
                 <View style={styles.desc}>
-                    <UILabel
-                        testID={nameTestID}
-                        role={UILabelRoles.Action}
-                        numberOfLines={1}
-                        ellipsizeMode="tail"
-                    >
+                    <UILabel role={UILabelRoles.Action} numberOfLines={1} ellipsizeMode="tail">
                         {name}
                     </UILabel>
                     {description == null ? null : (
                         <UILabel
-                            testID={descriptionTestID}
                             role={UILabelRoles.ParagraphFootnote}
                             color={UILabelColors.TextSecondary}
                             numberOfLines={1}
@@ -85,14 +66,25 @@ export function UICurrencyRow({
                         </UILabel>
                     )}
                 </View>
-                <UICurrency
-                    testID={amountTestID}
-                    integerColor={amountColor}
-                    decimalColor={amountColor}
-                    {...currencySignProps}
-                >
-                    {amount}
-                </UICurrency>
+                <View style={styles.right}>
+                    <UICurrency
+                        integerColor={amountColor}
+                        decimalColor={amountColor}
+                        signIcon={currencySignProps?.signIcon}
+                    >
+                        {balance}
+                    </UICurrency>
+                    {rate == null ? null : (
+                        <UILabel
+                            role={UILabelRoles.ParagraphFootnote}
+                            color={UILabelColors.TextSecondary}
+                            numberOfLines={1}
+                            ellipsizeMode="tail"
+                        >
+                            {rate}
+                        </UILabel>
+                    )}
+                </View>
             </UISkeleton>
         </TouchableOpacity>
     );
@@ -101,7 +93,8 @@ export function UICurrencyRow({
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        paddingVertical: UILayoutConstant.contentInsetVerticalX4,
+        paddingTop: 15,
+        paddingBottom: UILayoutConstant.contentInsetVerticalX4,
         alignItems: 'center',
     },
     inner: {
@@ -122,5 +115,8 @@ const styles = StyleSheet.create({
     desc: {
         flex: 1,
         marginRight: UILayoutConstant.normalContentOffset,
+    },
+    right: {
+        alignItems: 'flex-end',
     },
 });

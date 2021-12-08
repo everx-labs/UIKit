@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js';
 
 import { UIBoxButton, UIBoxButtonVariant } from '@tonlabs/uikit.controls';
 import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
-import { SectionList } from '@tonlabs/uikit.scrolls';
+// import { SectionList } from '@tonlabs/uikit.scrolls';
 import { UILabel, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UIListRowKind, UIListRow, renderUIListItem, UIListSeparator } from '@tonlabs/uicast.rows';
 

@@ -24,7 +24,7 @@ export const UILink: React.FC<UILinkProps> = ({
             disabled={loading}
         >
             <Logo logo={logo} loading={loading} />
-            <UISkeleton show={!!loading} style={styles.textContent}>
+            <UISkeleton show={!!loading} style={styles.textContentSkeleton}>
                 <View style={styles.title}>
                     <UILabel
                         role={TypographyVariants.Action}
@@ -34,13 +34,12 @@ export const UILink: React.FC<UILinkProps> = ({
                     >
                         {title}
                     </UILabel>
-                    {/* TODO switch icon to blankUp */}
-                    <Icon source={UIAssets.icons.ui.arrowUpRight} />
+                    <Icon source={UIAssets.icons.ui.blankUp} />
                 </View>
                 {description == null ? null : (
                     <View>
                         <UILabel
-                            role={TypographyVariants.ParagraphFootnote}
+                            role={TypographyVariants.NarrowParagraphFootnote}
                             color={ColorVariants.TextSecondary}
                             numberOfLines={1}
                         >
@@ -59,7 +58,7 @@ const styles = StyleSheet.create({
         paddingVertical: UILayoutConstant.contentInsetVerticalX4,
         alignItems: 'center',
     },
-    textContent: {
+    textContentSkeleton: {
         flex: 1,
     },
     title: {

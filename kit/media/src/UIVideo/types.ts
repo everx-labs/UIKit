@@ -17,20 +17,35 @@ export type UIVideoProps = {
      */
     repeat?: boolean;
     /**
-     * Set the width of the player
+     * Determines whether the video is on pause
+     * `false` by default
      */
-    width?: number;
+    paused?: boolean;
     /**
-     * Set the height of the player
+     * Determines whether sound is being played
+     * `false` by default
      */
-    height?: number;
+    muted?: boolean;
     /**
-     * Set the aspectRatio of the player
+     * By analogy with the Image#resizeMode
+     * `contain` by default
      */
-    aspectRatio?: number;
+    resizeMode?: UIVideoResizeMode;
+    /**
+     * Callback function that is called when the media is loaded and ready to play
+     */
+    onLoad?: () => void;
+    /**
+     * Callback function that is called when video cannot be loaded
+     */
+    onError?: (error: any) => void;
 };
 
 export type Dimensions = {
-    width?: number;
-    height?: number;
+    width: number;
+    height: number;
 };
+
+export type VideoProps = UIVideoProps & Dimensions;
+
+export type UIVideoResizeMode = 'contain' | 'cover';

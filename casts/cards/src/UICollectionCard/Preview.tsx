@@ -1,17 +1,32 @@
 import * as React from 'react';
-import { View, StyleSheet, ImageSourcePropType } from 'react-native';
 import { UIImage } from '@tonlabs/uikit.media';
+import type { ImageURISource } from 'react-native';
 
+import type { MediaCardContent } from '../types';
 import type { PreviewProps } from './types';
+import { CollectionSlide } from './CollectionSlide';
+import { useCurrentSourceItemIndex } from './useCurrentSourceItemIndex';
 
-export function Preview({ source, style, contentType }: PreviewProps) {
-    if (contentType !== 'Image' || !source || (Array.isArray(source) && source.length === 0)) {
+export function Preview({ style, contentList }: PreviewProps) {
+    React.useEffect(() => {
+        const imageList: ImageURISource[] = [];
+        contentList.forEach((value: MediaCardContent) => {
+            if (value.contentType === 'Image') {
+                imageList.push(value.source);
+            }
+        });
+        UIImage.prefetch(imageList);
+    }, [contentList]);
+
+    const currentSourceItemIndex = useCurrentSourceItemIndex(contentList);
+
+    const currentContent: MediaCardContent | null = React.useMemo(() => {
+        return contentList[currentSourceItemIndex];
+    }, [currentSourceItemIndex, contentList]);
+
+    if (contentList.length === 0 || !currentContent) {
         return null;
     }
-    const currentSource: ImageSourcePropType = Array.isArray(source) ? source[0] : source;
-    return (
-        <View style={style}>
-            <UIImage source={currentSource} style={StyleSheet.absoluteFill} />
-        </View>
-    );
+
+    return <CollectionSlide content={contentList[currentSourceItemIndex]} style={style} />;
 }
