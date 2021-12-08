@@ -5,7 +5,7 @@
  * @format
  */
 
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import { FlatList, TouchableOpacity, GestureHandlerRootView } from 'react-native-gesture-handler';
 import React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -392,20 +392,22 @@ const AppWrapper = () => {
     }
 
     return (
-        <ThemeContext.Provider value={isDarkTheme ? DarkTheme : LightTheme}>
-            <ThemeSwitcher.Provider
-                value={{
-                    isDarkTheme,
-                    toggleTheme: () => {
-                        setIsDarkTheme(!isDarkTheme);
-                        setIsHidden(true);
-                        setImmediate(() => setIsHidden(false));
-                    },
-                }}
-            >
-                <App />
-            </ThemeSwitcher.Provider>
-        </ThemeContext.Provider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+            <ThemeContext.Provider value={isDarkTheme ? DarkTheme : LightTheme}>
+                <ThemeSwitcher.Provider
+                    value={{
+                        isDarkTheme,
+                        toggleTheme: () => {
+                            setIsDarkTheme(!isDarkTheme);
+                            setIsHidden(true);
+                            setImmediate(() => setIsHidden(false));
+                        },
+                    }}
+                >
+                    <App />
+                </ThemeSwitcher.Provider>
+            </ThemeContext.Provider>
+        </GestureHandlerRootView>
     );
 };
 
