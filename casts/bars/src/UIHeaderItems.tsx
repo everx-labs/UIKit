@@ -178,7 +178,7 @@ export function UIHeaderItems({ items = [] }: { items?: HeaderItem[] }) {
  * RNGH implementation is actually adaptation of native touch handling.
  *
  * In most cases that works identical, but in case of hitSlops Android steps up.
- * Actually in Android views intercept events when they're happen inside bounds,
+ * Actually in Android views intercept events when they happen inside bounds,
  * and to intercept it over bounds you have to listen for all events in an activity,
  * that isn't trivial to make as a general case.
  * Actually even doc suggest not to use positive hitSlop for gesture handlers
