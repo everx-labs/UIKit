@@ -7,7 +7,6 @@ import {
     // UIManager,
     TouchableOpacity,
     LayoutChangeEvent,
-    StyleSheet,
     // StyleSheet,
 } from 'react-native';
 import Animated, {
@@ -20,6 +19,8 @@ import Animated, {
 import { ScreenshotView, UIImage, QRCodeRef } from '@tonlabs/uikit.media';
 
 import VirtualizedSectionList from 'react-native/Libraries/Lists/VirtualizedSectionList';
+
+import { ScreenshotImageView, ScreenshotImageViewRef } from './ScreenshotImageView';
 
 /**
  * Leave it just in case I would need to measure list again,
@@ -103,11 +104,7 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
         }
     }
 
-    const ref = React.useRef<QRCodeRef>(null);
-    const snapshotRef = React.useRef<string>('');
-    const [isSnapshotShown, setShowSnapshot] = React.useState(false);
-
-    const edgeToCut = React.useRef();
+    const ref = React.useRef<ScreenshotImageViewRef>(null);
 
     const renderCollapsableSectionHeader = React.useCallback(
         (info: { section: SectionListData<ItemT, SectionT> }) => {
@@ -120,26 +117,26 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
                 <TouchableOpacity
                     onPress={async () => {
                         now = Date.now();
-                        const snapshotPng = await ref.current?.getPng();
-                        if (snapshotPng == null) {
-                            return;
-                        }
-                        snapshotRef.current = snapshotPng;
+
                         if (sectionsMapping.current[sectionKey] != null) {
-                            console.log('section to animate', sectionsMapping.current[sectionKey]);
                             sectionToAnimateKey.current = sectionsMapping.current[sectionKey];
                         }
                         const currentSectionFrame =
                             listRef.current.getListRef()._frames[sectionKey];
 
-                        const edge =
-                            currentSectionFrame.offset +
-                            currentSectionFrame.length -
-                            listRef.current.getListRef()._scrollMetrics.offset;
+                        // const edge =
+                        //     currentSectionFrame.offset +
+                        //     currentSectionFrame.length -
+                        //     listRef.current.getListRef()._scrollMetrics.offset;
 
-                        edgeToCut.current = edge;
+                        // edgeToCut.current = edge;
 
-                        setShowSnapshot(true);
+                        const sectionEndY = currentSectionFrame.offset + currentSectionFrame.length;
+                        ref.current?.show(
+                            sectionEndY,
+                            sectionEndY + listRef.current.getListRef()._scrollMetrics.visibleLength,
+                        );
+
                         setFoldedSections({
                             ...foldedSections,
                             [sectionKey]: !foldedSections[sectionKey],
@@ -156,27 +153,14 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
     const listRef = React.useRef<VirtualizedSectionList<ItemT, SectionT>>(null);
     const listSize = React.useRef<{ width: number; height: number }>({ width: 0, height: 0 });
 
-    const snapBottomTranslateY = useSharedValue(0);
-    const snapBottomStyle = useAnimatedStyle(() => {
-        return {
-            transform: [
-                {
-                    translateY: snapBottomTranslateY.value,
-                },
-            ],
-        };
-    });
-
-    const hideSnap = React.useCallback(() => {
-        setShowSnapshot(false);
-    }, []);
+    // const snapBottomTranslateY = useSharedValue(0);
 
     return (
         <View
             style={{ position: 'relative', backgroundColor: 'white', flex: 1, overflow: 'hidden' }}
         >
             <Animated.View style={{ flex: 1 }}>
-                <ScreenshotView ref={ref}>
+                <ScreenshotImageView ref={ref}>
                     <VirtualizedSectionList
                         ref={listRef}
                         {...props}
@@ -205,22 +189,22 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
                                 console.log(frame);
                                 console.log(prev);
 
-                                if (
-                                    prev.inLayout !== frame.inLayout ||
-                                    prev.offset !== frame.offset
-                                ) {
-                                    console.log('changed!', Date.now() - now);
-                                    if (frame.inLayout) {
-                                        snapBottomTranslateY.value = 0;
-                                        snapBottomTranslateY.value = withSpring(
-                                            frame.offset - prev.offset,
-                                            { overshootClamping: true },
-                                            isFinished => {
-                                                runOnJS(hideSnap)();
-                                            },
-                                        );
-                                    }
-                                }
+                                // if (
+                                //     prev.inLayout !== frame.inLayout ||
+                                //     prev.offset !== frame.offset
+                                // ) {
+                                //     console.log('changed!', Date.now() - now);
+                                //     if (frame.inLayout) {
+                                //         snapBottomTranslateY.value = 0;
+                                //         snapBottomTranslateY.value = withSpring(
+                                //             frame.offset - prev.offset,
+                                //             { overshootClamping: true },
+                                //             isFinished => {
+                                //                 runOnJS(hideSnap)();
+                                //             },
+                                //         );
+                                //     }
+                                // }
                             }
 
                             Object.keys(sectionsMapping.current).forEach(sectionKey => {
@@ -236,69 +220,13 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
                             listSize.current.height = height;
                         }}
                         style={{ backgroundColor: 'white' }}
-                    />
-                </ScreenshotView>
-            </Animated.View>
-            {isSnapshotShown && (
-                <>
-                    <Animated.View
-                        style={[
-                            {
-                                position: 'absolute',
-                                top: edgeToCut.current,
-                                left: 0,
-                                right: 0,
-                                bottom: 0,
-                                overflow: 'hidden',
-                                // borderWidth: 1,
-                                borderColor: 'red',
-                            },
-                            snapBottomStyle,
-                        ]}
-                    >
-                        <UIImage
-                            onLoad={() => console.log('time to show snap', Date.now() - now)}
-                            source={{ uri: snapshotRef.current }}
-                            // resizeMode="contain"
-                            // height={listRef.current.getListRef()._scrollMetrics.visibleLength}
-                            style={{
-                                position: 'absolute',
-                                top: -edgeToCut.current,
-                                left: 0,
-                                right: 0,
-                                width: listSize.current.width,
-                                height: listSize.current.height,
-                            }}
-                        />
-                    </Animated.View>
-                    <View
-                        style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            height: edgeToCut.current,
-                            overflow: 'hidden',
-                            // borderWidth: 1,
-                            borderColor: 'blue',
+                        contentContainerStyle={{
+                            backgroundColor: 'white',
+                            ...props.contentContainerStyle,
                         }}
-                    >
-                        <UIImage
-                            onLoad={() => console.log('time to show snap', Date.now() - now)}
-                            source={{ uri: snapshotRef.current }}
-                            // height={listRef.current.getListRef()._scrollMetrics.visibleLength}
-                            style={{
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                right: 0,
-                                width: listSize.current.width,
-                                height: listSize.current.height,
-                            }}
-                        />
-                    </View>
-                </>
-            )}
+                    />
+                </ScreenshotImageView>
+            </Animated.View>
         </View>
     );
 }

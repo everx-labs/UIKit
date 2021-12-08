@@ -111,8 +111,6 @@ export function useCustomKeyboard(
 
             const shouldDismiss = cKeyboard?.onEvent(...args);
 
-            console.log(args, cKeyboard.onEvent, shouldDismiss);
-
             if (shouldDismiss) {
                 dismiss();
             }

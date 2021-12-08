@@ -179,13 +179,9 @@ public class UIKitScreenshotImageViewManager extends ViewGroupManager<ReactViewG
 
     BitmapDrawable takeScrollViewScreenshot(ScrollView scrollView, int startY, int endY) {
         int width = scrollView.getWidth();
-        int height = 0;
+        int height = scrollView.getChildAt(0).getHeight();
 
-        for (int i = 0; i < scrollView.getChildCount(); i++) {
-            height += scrollView.getChildAt(i).getHeight();
-        }
-
-        return takeScreenshot(scrollView, startY, endY, width, height);
+        return takeScreenshot(scrollView.getChildAt(0), startY, endY, width, height);
     }
 
     BitmapDrawable takeScreenshot(View view, int startY, int endY, int width, int height) {
@@ -201,34 +197,35 @@ public class UIKitScreenshotImageViewManager extends ViewGroupManager<ReactViewG
 
         view.draw(c);
 
+        // TODO: do we need it?
         //after view is drawn, go through children
-        final List<View> childrenList = getAllChildren(view);
-
-        for (final View child : childrenList) {
-            // skip any child that we don't know how to process
-            if (!(child instanceof TextureView)) continue;
-
-            // skip all invisible to user child views
-            if (child.getVisibility() != VISIBLE) continue;
-
-            final TextureView tvChild = (TextureView) child;
-            tvChild.setOpaque(false); // <-- switch off background fill
-
-            if (child.getBottom() < startY || child.getTop() > endY) continue;
-
-            // TODO: might be a good idea to re-use from pool
-            final Bitmap childBitmapBuffer = Bitmap.createBitmap(child.getWidth(), child.getHeight(), Bitmap.Config.ARGB_8888);
-
-            final int countCanvasSave = c.save();
-            // TODO: should we do the same?
-            // applyTransformations(c, view, child);
-
-            // TODO: actually no re-use here yet
-            // due to re-use of bitmaps for screenshot, we can get bitmap that is bigger in size than requested
-            c.drawBitmap(childBitmapBuffer, 0, 0, paint);
-
-            c.restoreToCount(countCanvasSave);
-        }
+//        final List<View> childrenList = getAllChildren(view);
+//
+//        for (final View child : childrenList) {
+//            // skip any child that we don't know how to process
+//            if (!(child instanceof TextureView)) continue;
+//
+//            // skip all invisible to user child views
+//            if (child.getVisibility() != VISIBLE) continue;
+//
+//            final TextureView tvChild = (TextureView) child;
+//            tvChild.setOpaque(false); // <-- switch off background fill
+//
+//            if (child.getBottom() < startY || child.getTop() > endY) continue;
+//
+//            // TODO: might be a good idea to re-use from pool
+//            final Bitmap childBitmapBuffer = Bitmap.createBitmap(child.getWidth(), child.getHeight(), Bitmap.Config.ARGB_8888);
+//
+//            final int countCanvasSave = c.save();
+//            // TODO: should we do the same?
+//            // applyTransformations(c, view, child);
+//
+//            // TODO: actually no re-use here yet
+//            // due to re-use of bitmaps for screenshot, we can get bitmap that is bigger in size than requested
+//            c.drawBitmap(childBitmapBuffer, 0, 0, paint);
+//
+//            c.restoreToCount(countCanvasSave);
+//        }
 
         int croppedHeight = endY - startY;
         if (croppedHeight < height) {
