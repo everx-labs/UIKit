@@ -106,7 +106,6 @@ function UIHeaderItemPressable({
                 containerStyle={styles.headerItemTouchable}
                 disabled={disabled}
                 onPress={onPress}
-                hitSlop={hitSlop}
             >
                 {children}
             </TouchableOpacity>
