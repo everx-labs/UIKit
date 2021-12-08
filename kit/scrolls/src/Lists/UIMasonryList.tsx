@@ -142,10 +142,14 @@ const UIMasonryListCell = React.memo(
         const [isVisible, setIsVisible] = React.useState(false);
         React.useImperativeHandle(ref, () => ({
             show() {
-                setIsVisible(true);
+                if (!isVisible) {
+                    setIsVisible(true);
+                }
             },
             hide() {
-                setIsVisible(false);
+                if (isVisible) {
+                    setIsVisible(false);
+                }
             },
         }));
 
@@ -257,7 +261,7 @@ function useVirtualization<Item>(
     const contentLengthOnEndReached = React.useRef(0);
     /**
      * Y value of the current scroll.
-     * We need to remember scroll value 
+     * We need to remember scroll value
      * to properly recalculate the virtual window
      * when a data has been updated.
      */
@@ -339,8 +343,11 @@ function useVirtualization<Item>(
             cellsIndexes,
         );
 
-        manageBottomCells(top, bottom, show, hide);
+        hide(0, top - 1);
+        show(top, bottom);
+        hide(bottom + 1, data.length);
 
+        lastTopCellIndex.current = top;
         lastBottomCellIndex.current = bottom;
     }, [
         cellsIndexes,
@@ -350,6 +357,7 @@ function useVirtualization<Item>(
         hide,
         virtualWindowSizeRatio,
         maxItemHeight,
+        data.length,
     ]);
 
     const onLayout = React.useCallback(
