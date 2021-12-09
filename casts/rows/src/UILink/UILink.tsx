@@ -8,14 +8,14 @@ import type { UILinkProps } from './types';
 import { Logo } from './Logo';
 import { Icon } from './Icon';
 
-export const UILink: React.FC<UILinkProps> = ({
+export const UILink = React.memo(function UILink({
     title,
     description,
     logo,
     onPress,
     loading,
     testID,
-}: UILinkProps) => {
+}: UILinkProps) {
     return (
         <TouchableOpacity
             testID={testID}
@@ -50,7 +50,7 @@ export const UILink: React.FC<UILinkProps> = ({
             </UISkeleton>
         </TouchableOpacity>
     );
-};
+});
 
 const styles = StyleSheet.create({
     container: {

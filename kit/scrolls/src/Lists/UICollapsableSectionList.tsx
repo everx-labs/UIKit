@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-underscore-dangle */
 import * as React from 'react';
 import {
     DefaultSectionT,
@@ -7,6 +9,8 @@ import {
     // UIManager,
     TouchableOpacity,
     LayoutChangeEvent,
+    StyleSheet,
+    VirtualizedList,
     // StyleSheet,
 } from 'react-native';
 import Animated, {
@@ -21,6 +25,59 @@ import { ScreenshotView, UIImage, QRCodeRef } from '@tonlabs/uikit.media';
 import VirtualizedSectionList from 'react-native/Libraries/Lists/VirtualizedSectionList';
 
 import { ScreenshotImageView, ScreenshotImageViewRef } from './ScreenshotImageView';
+
+const originalCompDidMount = VirtualizedList.prototype.componentDidMount;
+
+VirtualizedList.prototype.componentDidMount = function componentDidMount(...args) {
+    if (originalCompDidMount) {
+        originalCompDidMount.apply(this, args);
+    }
+    if ('patchedFrames' in this.props && this.props.patchedFrames != null) {
+        this._frames = this.props.patchedFrames;
+    }
+};
+
+type VirtualizedListFrame = { inLayout: boolean; index: number; length: number; offset: number };
+
+function useFramesProxyListener(
+    keysToListen: Record<string, any>,
+    listener: (key: string, prev: VirtualizedListFrame, next: VirtualizedListFrame) => void,
+) {
+    const proxyRef = React.useRef<typeof Proxy>();
+    if (proxyRef.current == null) {
+        const frameTarget = {
+            set(obj: VirtualizedListFrame, key: string, value: any) {
+                if (obj[prop] !== value) {
+                    listener(this.key, obj, { ...obj, [key]: value });
+                }
+                obj[key] = value;
+                return true;
+            },
+        };
+        const target = {
+            set(
+                obj: Record<string, VirtualizedListFrame>,
+                key: string,
+                value: VirtualizedListFrame,
+            ) {
+                if (!(key in keysToListen)) {
+                    obj[key] = value;
+                    return true;
+                }
+                const prev = obj[key];
+                if (prev != null) {
+                    listener(key, prev, value);
+                }
+
+                obj[key] = new Proxy(value, { ...frameTarget, key });
+                return true;
+            },
+        };
+        // @ts-expect-error
+        proxyRef.current = new Proxy({}, target);
+    }
+    return proxyRef.current;
+}
 
 /**
  * Leave it just in case I would need to measure list again,
@@ -55,16 +112,28 @@ import { ScreenshotImageView, ScreenshotImageViewRef } from './ScreenshotImageVi
 //     // listRef.current?.
 // }, []);
 
-type VirtualizedListFrame = { inLayout: boolean; index: number; length: number; offset: number };
-
 let now: number;
-export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
-    props: SectionListProps<ItemT, SectionT>,
-) {
-    // const sectionsCoords = React.useRef<Record<string, number>>({});
 
-    const { renderSectionHeader, sections } = props;
+const emptyArray: any = [];
 
+/**
+ * The component is separated to call as less hooks as possible
+ * when section is toggled
+ */
+function UICollapsableSectionListInner<ItemT, SectionT = DefaultSectionT>({
+    screenshotRef,
+    listRef,
+    sectionsMapping,
+    sectionToAnimateKey,
+    sections,
+    renderSectionHeader,
+    ...rest
+}: {
+    screenshotRef: React.RefObject<ScreenshotImageViewRef>;
+    listRef: React.RefObject<VirtualizedSectionList<ItemT, SectionT>>;
+    sectionsMapping: React.RefObject<Record<string, string>>;
+    sectionToAnimateKey: React.RefObject<string | undefined>;
+} & SectionListProps<ItemT, SectionT>) {
     const [foldedSections, setFoldedSections] = React.useState<Record<string, boolean>>({});
 
     const processedSections = React.useMemo(() => {
@@ -76,15 +145,78 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
             if (foldedSections[`${key}:header`]) {
                 return {
                     ...section,
-                    data: [],
+                    data: emptyArray as ItemT[],
                 };
             }
             return section;
         });
     }, [sections, foldedSections]);
 
+    const renderCollapsableSectionHeader = React.useCallback(
+        (info: { section: SectionListData<ItemT, SectionT> }) => {
+            if (info.section.key == null) {
+                // TODO: can we do sth with it or better to throw an error?
+                return null;
+            }
+            const sectionKey = `${info.section.key}:header`;
+            return (
+                <TouchableOpacity
+                    onPress={async () => {
+                        now = Date.now();
+
+                        const list = listRef.current.getListRef();
+
+                        sectionToAnimateKey.current = sectionsMapping.current[sectionKey];
+                        const currentSectionFrame: VirtualizedListFrame = list._frames[sectionKey];
+
+                        const sectionEndY = currentSectionFrame.offset + currentSectionFrame.length;
+                        screenshotRef.current?.show(
+                            sectionEndY,
+                            sectionEndY + list._scrollMetrics.visibleLength,
+                        );
+
+                        setFoldedSections({
+                            ...foldedSections,
+                            [sectionKey]: !foldedSections[sectionKey],
+                        });
+                    }}
+                >
+                    {renderSectionHeader?.(info)}
+                </TouchableOpacity>
+            );
+        },
+        [
+            renderSectionHeader,
+            foldedSections,
+            listRef,
+            screenshotRef,
+            sectionsMapping,
+            sectionToAnimateKey,
+        ],
+    );
+
+    return (
+        <ScreenshotImageView ref={screenshotRef} style={rest.style}>
+            <VirtualizedSectionList
+                ref={listRef}
+                {...rest}
+                sections={processedSections}
+                // extraData={processedSections.reduce(
+                //     (acc, { data }) => acc + data.length,
+                //     0,
+                // )}
+                renderSectionHeader={renderCollapsableSectionHeader}
+            />
+        </ScreenshotImageView>
+    );
+}
+
+export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
+    props: SectionListProps<ItemT, SectionT>,
+) {
+    const { sections, contentContainerStyle } = props;
+
     const sectionsMapping = React.useRef<Record<string, string>>({});
-    const sectionsFrames = React.useRef<Record<string, VirtualizedListFrame>>({});
     const prevSections = React.useRef<typeof props['sections']>().current;
 
     const sectionToAnimateKey = React.useRef<string | undefined>();
@@ -102,131 +234,54 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
             }
             prevSectionKey = sectionKey;
         }
+        if (prevSectionKey != null) {
+            sectionsMapping.current[prevSectionKey] = undefined;
+        }
     }
 
     const ref = React.useRef<ScreenshotImageViewRef>(null);
 
-    const renderCollapsableSectionHeader = React.useCallback(
-        (info: { section: SectionListData<ItemT, SectionT> }) => {
-            if (info.section.key == null) {
-                // TODO: can we do sth with it or better to throw an error?
-                return null;
-            }
-            const sectionKey = `${info.section.key}:header`;
-            return (
-                <TouchableOpacity
-                    onPress={async () => {
-                        now = Date.now();
-
-                        if (sectionsMapping.current[sectionKey] != null) {
-                            sectionToAnimateKey.current = sectionsMapping.current[sectionKey];
-                        }
-                        const currentSectionFrame =
-                            listRef.current.getListRef()._frames[sectionKey];
-
-                        // const edge =
-                        //     currentSectionFrame.offset +
-                        //     currentSectionFrame.length -
-                        //     listRef.current.getListRef()._scrollMetrics.offset;
-
-                        // edgeToCut.current = edge;
-
-                        const sectionEndY = currentSectionFrame.offset + currentSectionFrame.length;
-                        ref.current?.show(
-                            sectionEndY,
-                            sectionEndY + listRef.current.getListRef()._scrollMetrics.visibleLength,
-                        );
-
-                        setFoldedSections({
-                            ...foldedSections,
-                            [sectionKey]: !foldedSections[sectionKey],
-                        });
-                    }}
-                >
-                    {renderSectionHeader?.(info)}
-                </TouchableOpacity>
-            );
-        },
-        [renderSectionHeader, foldedSections],
-    );
-
     const listRef = React.useRef<VirtualizedSectionList<ItemT, SectionT>>(null);
-    const listSize = React.useRef<{ width: number; height: number }>({ width: 0, height: 0 });
+
+    const framesProxy = useFramesProxyListener(
+        sectionsMapping.current,
+        (sectionKey, prev, next) => {
+            if (sectionToAnimateKey.current == null) {
+                return;
+            }
+            if (sectionKey !== sectionToAnimateKey.current) {
+                return;
+            }
+            if (prev.inLayout !== next.inLayout || prev.offset !== next.offset) {
+                console.log('changed!', Date.now() - now, next.offset - prev.offset);
+
+                if (next.inLayout) {
+                    ref.current?.moveAndHide(next.offset - prev.offset, 1000);
+                }
+            }
+            sectionToAnimateKey.current = undefined;
+        },
+    );
 
     // const snapBottomTranslateY = useSharedValue(0);
 
     return (
-        <View
-            style={{ position: 'relative', backgroundColor: 'white', flex: 1, overflow: 'hidden' }}
-        >
-            <Animated.View style={{ flex: 1 }}>
-                <ScreenshotImageView ref={ref}>
-                    <VirtualizedSectionList
-                        ref={listRef}
-                        {...props}
-                        sections={processedSections}
-                        extraData={processedSections.reduce(
-                            (acc, { data }) => acc + data.length,
-                            0,
-                        )}
-                        renderSectionHeader={renderCollapsableSectionHeader}
-                        getItemCount={items => items.length}
-                        getItem={(items, index) => items[index]}
-                        onViewableItemsChanged={() => {
-                            const list = listRef.current.getListRef();
-                            if (sectionToAnimateKey.current) {
-                                /**
-                                 * It looks like that if I extracted that coords
-                                 * every time I would distinct when it has changed
-                                 * and run animation after that
-                                 */
-                                const frame = list._frames[
-                                    sectionToAnimateKey.current
-                                ] as VirtualizedListFrame;
-
-                                const prev = sectionsFrames.current[sectionToAnimateKey.current];
-
-                                console.log(frame);
-                                console.log(prev);
-
-                                // if (
-                                //     prev.inLayout !== frame.inLayout ||
-                                //     prev.offset !== frame.offset
-                                // ) {
-                                //     console.log('changed!', Date.now() - now);
-                                //     if (frame.inLayout) {
-                                //         snapBottomTranslateY.value = 0;
-                                //         snapBottomTranslateY.value = withSpring(
-                                //             frame.offset - prev.offset,
-                                //             { overshootClamping: true },
-                                //             isFinished => {
-                                //                 runOnJS(hideSnap)();
-                                //             },
-                                //         );
-                                //     }
-                                // }
-                            }
-
-                            Object.keys(sectionsMapping.current).forEach(sectionKey => {
-                                sectionsFrames.current[sectionKey] = list._frames[sectionKey];
-                            });
-                        }}
-                        onLayout={({
-                            nativeEvent: {
-                                layout: { width, height },
-                            },
-                        }: LayoutChangeEvent) => {
-                            listSize.current.width = width;
-                            listSize.current.height = height;
-                        }}
-                        style={{ backgroundColor: 'white' }}
-                        contentContainerStyle={{
-                            backgroundColor: 'white',
-                            ...props.contentContainerStyle,
-                        }}
-                    />
-                </ScreenshotImageView>
-            </Animated.View>
-        </View>
+        <UICollapsableSectionListInner
+            {...props}
+            screenshotRef={ref}
+            listRef={listRef}
+            sectionsMapping={sectionsMapping}
+            sectionToAnimateKey={sectionToAnimateKey}
+            getItemCount={items => items.length}
+            getItem={(items, index) => items[index]}
+            // onViewableItemsChanged={onViewableItemsChanged}
+            style={{ backgroundColor: 'white', flex: 1 }}
+            contentContainerStyle={{
+                backgroundColor: 'white',
+                // TODO
+                ...StyleSheet.flatten(contentContainerStyle),
+            }}
+            patchedFrames={framesProxy}
+        />
     );
 }

@@ -6,13 +6,13 @@ const NativeScreenshotImageView = requireNativeComponent('UIKitScreenshotImageVi
 type ScreenshotImageViewProps = React.PropsWithRef<React.PropsWithChildren<Record<string, never>>>;
 export type ScreenshotImageViewRef = {
     show(startY: number, endY: number): void;
-    hide(): void;
+    moveAndHide(shiftY: number): void;
 };
 
 export const ScreenshotImageView = React.forwardRef<
     ScreenshotImageViewRef,
     ScreenshotImageViewProps
->(function ScreenshotImageView({ children }: ScreenshotImageViewProps, ref) {
+>(function ScreenshotImageView({ children, style }: ScreenshotImageViewProps, ref) {
     const nativeRef = React.useRef(null);
 
     React.useImperativeHandle(ref, () => ({
@@ -25,13 +25,20 @@ export const ScreenshotImageView = React.forwardRef<
                 endY,
             ]);
         },
-        hide() {
+        moveAndHide(shiftY: number, duration?: number) {
             if (nativeRef.current == null) {
                 return;
             }
-            UIManager.dispatchViewManagerCommand(findNodeHandle(nativeRef.current), 'hide');
+            UIManager.dispatchViewManagerCommand(findNodeHandle(nativeRef.current), 'moveAndHide', [
+                shiftY,
+                duration || 100,
+            ]);
         },
     }));
 
-    return <NativeScreenshotImageView ref={nativeRef}>{children}</NativeScreenshotImageView>;
+    return (
+        <NativeScreenshotImageView ref={nativeRef} style={style}>
+            {children}
+        </NativeScreenshotImageView>
+    );
 });

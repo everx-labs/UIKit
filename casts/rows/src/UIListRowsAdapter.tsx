@@ -24,7 +24,7 @@ export function renderUIListItem<ItemT extends UIListRow<any>>({
     return null;
 }
 
-export function UIListSeparator() {
+export const UIListSeparator = React.memo(function UIListSeparator() {
     const theme = useTheme();
     return (
         <View
@@ -36,7 +36,7 @@ export function UIListSeparator() {
             ]}
         />
     );
-}
+});
 
 const styles = StyleSheet.create({
     separator: {

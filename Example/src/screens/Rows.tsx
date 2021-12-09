@@ -20,6 +20,14 @@ export function getRandomNum() {
     return Math.floor(num * symbols) / 100;
 }
 
+function renderSectionHeader({ section: { title } }: any) {
+    return (
+        <UILabel role={UILabelRoles.HeadlineHead} style={{ paddingVertical: 10 }}>
+            {title}
+        </UILabel>
+    );
+}
+
 const Rows = () => {
     const [loading, setLoading] = React.useState(false);
 
@@ -58,7 +66,7 @@ const Rows = () => {
             {
                 title: 'Currency',
                 key: 'currencies',
-                data: new Array(100).fill(null).map((_, index) => ({
+                data: new Array(3).fill(null).map((_, index) => ({
                     key: index,
                     kind: UIListRowKind.Currency,
                     props: {
@@ -124,16 +132,15 @@ const Rows = () => {
                     contentContainerStyle={{ paddingHorizontal: 16 }}
                     sections={sections}
                     renderItem={renderUIListItem}
-                    renderSectionHeader={({ section: { title } }) => (
-                        <UILabel role={UILabelRoles.HeadlineHead}>{title}</UILabel>
-                    )}
+                    renderSectionHeader={renderSectionHeader}
                     stickySectionHeadersEnabled={false}
+                    keyExtractor={item => item.key}
                 />
-                <UIBoxButton
+                {/* <UIBoxButton
                     title="Loading..."
                     variant={loading ? UIBoxButtonVariant.Negative : UIBoxButtonVariant.Positive}
                     onPress={() => setLoading(!loading)}
-                />
+                /> */}
             </View>
         </View>
         // </ExampleSection>
