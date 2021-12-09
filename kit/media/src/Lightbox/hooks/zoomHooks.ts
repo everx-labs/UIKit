@@ -12,10 +12,11 @@ import Animated, {
     withDecay,
     withSpring,
 } from 'react-native-reanimated';
+import type { WithSpringConfig } from 'react-native-reanimated';
 import type { PanGestureEventContext } from '../types';
 import { UIConstant } from '../../constants';
 
-const springConfig: Animated.WithSpringConfig = {
+const springConfig: WithSpringConfig = {
     overshootClamping: true,
     stiffness: 100,
 };
@@ -62,7 +63,7 @@ const runUIGetMaxTranslation = (
 const applyAnimationEndCallback = (callback: () => void) => {
     'worklet';
 
-    return (isFinished: boolean) => {
+    return (isFinished?: boolean) => {
         'worklet';
 
         if (isFinished) {

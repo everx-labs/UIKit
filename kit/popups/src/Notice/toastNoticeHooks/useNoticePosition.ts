@@ -49,7 +49,7 @@ type MoveType = 'Open' | 'Close';
 const moveWithSpring = (
     moveType: MoveType,
     toValue: number,
-    onAnimationEnd: (isFinished: boolean) => void,
+    onAnimationEnd: (isFinished?: boolean) => void,
     onClose?: () => void,
 ): number => {
     'worklet';
@@ -57,7 +57,7 @@ const moveWithSpring = (
     if (moveType === 'Open') {
         return withSpring(toValue, OpenSpringConfig, onAnimationEnd);
     }
-    return withSpring(toValue, CloseSpringConfig, (isFinished: boolean) => {
+    return withSpring(toValue, CloseSpringConfig, (isFinished?: boolean) => {
         onAnimationEnd(isFinished);
         if (isFinished && onClose) {
             runOnJS(onClose)();
@@ -93,7 +93,7 @@ export const useNoticePosition = (
         }
     }, [visible, toastNoticeState, suspendClosingTimer]);
 
-    const onAnimationEnd = useWorkletCallback((isFinished: boolean) => {
+    const onAnimationEnd = useWorkletCallback((isFinished?: boolean) => {
         if (isFinished && swipeDirection.value !== 'None') {
             swipeDirection.value = 'None';
         }
