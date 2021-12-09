@@ -28,7 +28,7 @@ const Rows = () => {
                 key: 'links',
                 data: [
                     {
-                        key: 0,
+                        key: `0`,
                         kind: UIListRowKind.Link,
                         props: {
                             title: 'Title ',
@@ -39,7 +39,7 @@ const Rows = () => {
                         },
                     },
                     {
-                        key: 1,
+                        key: `1`,
                         kind: UIListRowKind.Link,
                         props: {
                             title: "Let's check out a very long header for this link that you can imagine",
@@ -57,7 +57,7 @@ const Rows = () => {
                 title: 'Currency',
                 key: 'currencies',
                 data: new Array(100).fill(null).map((_, index) => ({
-                    key: index,
+                    key: index.toString(),
                     kind: UIListRowKind.Currency,
                     props: {
                         name: "Let's check out a very long header for this link that you can imagine",

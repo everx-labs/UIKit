@@ -8,7 +8,9 @@ export enum UIListRowKind {
     Account = 'account',
 }
 
-type UIListRowWithPayload<T, P = void> = P extends void ? T : T & { payload: P };
+type UIListRowWithPayload<T, P = void> = P extends void
+    ? T & { key: string }
+    : T & { key: string; payload: P };
 
 type LinkRow = {
     kind: UIListRowKind.Link;
