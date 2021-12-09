@@ -1,5 +1,5 @@
 import type { ViewStyle } from 'react-native';
-import type Animated from 'react-native-reanimated';
+import type { AnimatedStyleProp } from 'react-native-reanimated';
 
 export type LinearChartDimensions = {
     width: number;
@@ -12,12 +12,12 @@ export type LinearChartAnimatedState = {
 };
 
 export type LinearChartLabelData = {
-    leftLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
-    rightLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
-    maximumLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
-    maximumLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
-    minimumLabelContainerStyle: Animated.AnimatedStyleProp<ViewStyle>;
-    minimumLabelStyle: Animated.AnimatedStyleProp<ViewStyle>;
+    leftLabelContainerStyle: AnimatedStyleProp<ViewStyle>;
+    rightLabelContainerStyle: AnimatedStyleProp<ViewStyle>;
+    maximumLabelContainerStyle: AnimatedStyleProp<ViewStyle>;
+    maximumLabelStyle: AnimatedStyleProp<ViewStyle>;
+    minimumLabelContainerStyle: AnimatedStyleProp<ViewStyle>;
+    minimumLabelStyle: AnimatedStyleProp<ViewStyle>;
     maximumValue: number | null;
     minimumValue: number | null;
 };

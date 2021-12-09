@@ -9,6 +9,7 @@ import Animated, {
     useSharedValue,
     withSpring,
 } from 'react-native-reanimated';
+import type { WithSpringConfig } from 'react-native-reanimated';
 
 import { ColorVariants, useTheme, Typography, TypographyVariants } from '@tonlabs/uikit.themes';
 
@@ -35,7 +36,7 @@ const POSITION_EXPANDED: number = 1;
 
 const LEFT_OFFSET_OF_UI_LABEL_TEXT_FROM_EDGE: number = 1;
 
-const withSpringConfig: Animated.WithSpringConfig = {
+const withSpringConfig: WithSpringConfig = {
     damping: 17,
     stiffness: 150,
 };
@@ -108,7 +109,7 @@ const useAnimatedPosition = (
     }, [isFolded, position]);
 
     const animationCallback = React.useCallback(
-        (isFinished: boolean): void => {
+        (isFinished?: boolean): void => {
             'worklet';
 
             if (isFinished && position.value === POSITION_FOLDED) {

@@ -1,11 +1,12 @@
 import React from 'react';
-import Animated, {
+import {
     withSpring,
     useDerivedValue,
     interpolate,
     useAnimatedStyle,
     useSharedValue,
 } from 'react-native-reanimated';
+import type { WithSpringConfig } from 'react-native-reanimated';
 import { UIConstant } from '../../constants';
 
 import { PaginationState } from '../types';
@@ -18,7 +19,7 @@ export const duration = 400;
 /**
  * Config of any spring animations in component
  */
-const springConfig: Animated.WithSpringConfig = {
+const springConfig: WithSpringConfig = {
     damping: 10,
     stiffness: 100,
     mass: 1,
