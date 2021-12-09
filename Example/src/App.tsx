@@ -11,6 +11,7 @@ import { Platform, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { enableFreeze } from 'react-native-screens';
 
 import { UIPopoverBackground } from '@tonlabs/uikit.navigation_legacy';
 import { PortalManager } from '@tonlabs/uikit.layout';
@@ -66,6 +67,9 @@ import { QRCodeScreen } from './screens/QRCode';
 import { RowsScreen } from './screens/Rows';
 import { FinancesScreen } from './screens/Finances';
 import { SkeletonsScreen } from './screens/Skeletons';
+
+// Optimize React rendering
+enableFreeze();
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
 useWebFonts();
