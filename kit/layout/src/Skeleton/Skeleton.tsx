@@ -111,16 +111,19 @@ function SkeletonAnimatable({
                     style,
                 ]}
             >
-                <LinearGradient
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    colors={[
-                        theme[ColorVariants.BackgroundSecondary] as string,
-                        theme[ColorVariants.BackgroundNeutral] as string,
-                        theme[ColorVariants.BackgroundSecondary] as string,
-                    ]}
-                    style={styles.gradient}
-                />
+                {/** Make it faster by rasterizing the View with its content */}
+                <View shouldRasterizeIOS renderToHardwareTextureAndroid style={styles.gradient}>
+                    <LinearGradient
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 0 }}
+                        colors={[
+                            theme[ColorVariants.BackgroundSecondary] as string,
+                            theme[ColorVariants.BackgroundNeutral] as string,
+                            theme[ColorVariants.BackgroundSecondary] as string,
+                        ]}
+                        style={styles.gradient}
+                    />
+                </View>
             </Animated.View>
         </Animated.View>
     );
