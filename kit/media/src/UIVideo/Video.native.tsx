@@ -6,7 +6,7 @@ export function Video({
     uri,
     controls,
     paused,
-    muted,
+    muted: mutedProp,
     repeat,
     resizeMode = 'contain',
     onLoad,
@@ -14,6 +14,20 @@ export function Video({
     width,
     height,
 }: VideoProps) {
+    const [muted, setMuted] = React.useState<boolean>(!!mutedProp);
+
+    const onFullscreenOpen = React.useCallback(() => {
+        if (muted) {
+            setMuted(false);
+        }
+    }, [muted]);
+
+    const onFullscreenClose = React.useCallback(() => {
+        if (mutedProp) {
+            setMuted(true);
+        }
+    }, [mutedProp]);
+
     if (!width || !height || !uri) {
         return null;
     }
@@ -35,6 +49,8 @@ export function Video({
             disableFocus
             onLoad={onLoad}
             onError={onError}
+            onFullscreenPlayerWillPresent={onFullscreenOpen}
+            onFullscreenPlayerWillDismiss={onFullscreenClose}
         />
     );
 }
