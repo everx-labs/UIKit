@@ -23,6 +23,19 @@ export type VirtualizedListFrame = {
     offset: number;
 };
 
+export type VirtualizedListScrollMetrics = {
+    // Overall height
+    contentLength: number;
+    dOffset: number;
+    dt: number;
+    // Scroll offset
+    offset: number;
+    timestamp: number;
+    velocity: number;
+    // Height of visible area
+    visibleLength: number;
+};
+
 /**
  * VirtualizedList do a lot of work under the hood,
  * what is the most important for us - it track coordinates

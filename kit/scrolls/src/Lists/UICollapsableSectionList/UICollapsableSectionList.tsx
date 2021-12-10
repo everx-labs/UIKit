@@ -15,6 +15,7 @@ import { ScreenshotImageView, ScreenshotImageViewRef } from './ScreenshotImageVi
 import {
     useVirtualizedListFramesListener,
     VirtualizedListFrame,
+    VirtualizedListScrollMetrics,
 } from './useVirtualizedListFramesListener';
 
 let now: number;
@@ -36,7 +37,8 @@ async function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
 
     sectionToAnimateKey.current = sectionsMapping.current[sectionKey];
     const currentSectionFrame: VirtualizedListFrame = list._frames[sectionKey];
-    const { visibleLength, offset, contentLength } = list._scrollMetrics;
+    const { visibleLength, offset, contentLength } =
+        list._scrollMetrics as VirtualizedListScrollMetrics;
     const realBottomOffset = Math.min(offset + visibleLength, contentLength);
     const visibleBottomOffset = offset + visibleLength;
     const sectionEndY = currentSectionFrame.offset + currentSectionFrame.length;
@@ -245,7 +247,8 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
              */
             if ((prev == null || !prev.inLayout) && next.inLayout) {
                 const list = listRef.current.getListRef();
-                const { visibleLength, offset } = list._scrollMetrics;
+                const { visibleLength, offset } =
+                    list._scrollMetrics as VirtualizedListScrollMetrics;
 
                 await ref.current?.append(next.offset, offset + visibleLength);
                 ref.current?.moveAndHide(-visibleLength, duration);
@@ -264,7 +267,7 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
              */
             if (prev.inLayout && !next.inLayout) {
                 const list = listRef.current.getListRef();
-                const { visibleLength } = list._scrollMetrics;
+                const { visibleLength } = list._scrollMetrics as VirtualizedListScrollMetrics;
 
                 ref.current?.moveAndHide(visibleLength - prev.offset, duration);
 
