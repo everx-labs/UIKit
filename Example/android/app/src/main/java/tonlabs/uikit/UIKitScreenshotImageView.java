@@ -15,11 +15,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import com.facebook.imagepipeline.memory.BitmapPool;
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.PixelUtil;
@@ -27,17 +24,15 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
-import com.facebook.react.uimanager.events.RCTEventEmitter;
-import com.facebook.react.uimanager.events.RCTModernEventEmitter;
 import com.facebook.react.views.scroll.ReactScrollView;
 import com.facebook.react.views.view.ReactViewGroup;
 
 @SuppressLint("LongLogTag")
 public class UIKitScreenshotImageView extends ReactViewGroup {
-    private FrameLayout mOverlayContainer;
-    private ImageView mOverlayImage;
-    private Animator.AnimatorListener mOverlayImageAnimatorListener;
-    private EventDispatcher mEventDispatcher;
+    private final FrameLayout mOverlayContainer;
+    private final ImageView mOverlayImage;
+    private final Animator.AnimatorListener mOverlayImageAnimatorListener;
+    private final EventDispatcher mEventDispatcher;
 
     public static final String EVENT_COMMAND_FINISHED = "onCommandFinished";
     public static final String REACT_CLASS = "UIKitScreenshotImageView";
@@ -231,6 +226,7 @@ public class UIKitScreenshotImageView extends ReactViewGroup {
     private BitmapDrawable takeScreenshot(View view, int startY, int endY, int width, int height) {
         int lHeight = Math.max(height, getHeight());
         // TODO: might be a good idea to re-use from pool
+        // may use - https://github.com/facebook/fresco/blob/a5456ad2cdb9214ebefaf11128d18e1c9edc7784/imagepipeline/src/main/java/com/facebook/imagepipeline/memory/DummyTrackingInUseBitmapPool.java
         Bitmap fullBitmap = Bitmap.createBitmap(width, lHeight, Bitmap.Config.ARGB_8888);
 
         final Paint paint = new Paint();
@@ -253,7 +249,7 @@ public class UIKitScreenshotImageView extends ReactViewGroup {
         return new BitmapDrawable(getReactContext().getResources(), fullBitmap);
     }
 
-    // MARK:- React
+    // MARK:- React related
 
     private ThemedReactContext getReactContext() {
         return (ThemedReactContext)getContext();
