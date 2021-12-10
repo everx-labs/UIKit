@@ -39,6 +39,21 @@ VirtualizedList.prototype.componentDidMount = function componentDidMount(...args
 
 type VirtualizedListFrame = { inLayout: boolean; index: number; length: number; offset: number };
 
+/**
+ * VirtualizedList do a lot of work under the hood,
+ * what is the most important for us - it track coordinates
+ * for cells, that it manages.
+ *
+ * Unfortunatelly though, it doesn't have a way to notify
+ * somehow about the changes in that frames.
+ * VirtualizedList has `onViewableItemsChanged`, but it doesn't have
+ * coords in event payload.
+ *
+ * So how it works?
+ * We just replace internal object, with proxy object,
+ * that intercept mutations, and if a key of changed frame
+ * is the one that we want to track, it notifies about changes.
+ */
 function useFramesProxyListener(
     keysToListen: Record<string, any>,
     listener: (key: string, prev: VirtualizedListFrame, next: VirtualizedListFrame) => void,
@@ -79,46 +94,81 @@ function useFramesProxyListener(
     return proxyRef.current;
 }
 
-/**
- * Leave it just in case I would need to measure list again,
- * though it looks like I can extract all necessary info from VirtualizedList
- */
-// const coordsToNormalize = React.useRef<{ y: number; cb: (y: number) => void }[]>([]);
-
-// React.useLayoutEffect(() => {
-//     function measureList() {
-//         const scrollNode = listRef.current?.getListRef().getScrollableNode();
-//         if (scrollNode == null) {
-//             return;
-//         }
-//         UIManager.measureInWindow(scrollNode, (_x, y, _width, height) => {
-//             if (height === 0) {
-//                 requestAnimationFrame(measureList);
-//                 return;
-//             }
-//             listCoords.current.y = y;
-//             listCoords.current.height = height;
-//             if (coordsToNormalize.current.length > 0) {
-//                 coordsToNormalize.current.forEach(({ y: rawY, cb }) => {
-//                     cb(rawY - y);
-//                 });
-//                 coordsToNormalize.current = [];
-//             }
-
-//             // console.log(JSON.stringify(listRef.current.getListRef()._frames, null, '  '));
-//         });
-//     }
-//     measureList();
-//     // listRef.current?.
-// }, []);
-
 let now: number;
 
 const emptyArray: any = [];
+type LastSection = -1;
+const LAST_SECTION_TAG: LastSection = -1;
+const duration = 1000;
+
+async function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
+    sectionKey: string,
+    foldedSections: Record<string, boolean>,
+    screenshotRef: { current: ScreenshotImageViewRef },
+    listRef: { current: VirtualizedSectionList<ItemT, SectionT> },
+    sectionsMapping: { current: Record<string, string> },
+    sectionToAnimateKey: { current: string | LastSection | undefined },
+) {
+    const list = listRef.current.getListRef();
+
+    sectionToAnimateKey.current = sectionsMapping.current[sectionKey];
+    const currentSectionFrame: VirtualizedListFrame = list._frames[sectionKey];
+    const { visibleLength, offset, contentLength } = list._scrollMetrics;
+    const realBottomOffset = Math.min(offset + visibleLength, contentLength);
+    const visibleBottomOffset = offset + visibleLength;
+    const sectionEndY = currentSectionFrame.offset + currentSectionFrame.length;
+    const isFolded = foldedSections[sectionKey];
+
+    if (sectionToAnimateKey.current !== LAST_SECTION_TAG) {
+        /**
+         * Just show a screenshot above
+         * Animation is handled later in frame change listener
+         */
+        screenshotRef.current?.show(sectionEndY, sectionEndY + visibleLength);
+        return;
+    }
+
+    /**
+     * Handle a special case, when the tapped section is the last one.
+     * Since we don't need to wait for changes in next section coordinates
+     * (as it obviously doesn't even exist)
+     * we can start the animation straight away
+     *
+     * Here we actually have 2 scenarios:
+     *
+     * One thing to notice before we proceed.
+     * When the content is big (there is room to scroll it)
+     * and the last section is collapsing, it's the only case
+     * when the current position will change their position
+     * during the next re-render.
+     * It will actually move to the bottom a scroll view.
+     * So handle this case first.
+     */
+    if (currentSectionFrame.offset > visibleLength && !isFolded) {
+        await screenshotRef.current?.show(
+            sectionEndY - visibleLength,
+            offset + visibleLength - sectionEndY,
+        );
+        screenshotRef.current?.moveAndHide(offset + visibleLength - sectionEndY, duration);
+
+        return;
+    }
+    /**
+     * The second case is actually like the regular one,
+     * except change event won't fire, so we have to call
+     * animation manually.
+     */
+    await screenshotRef.current?.show(sectionEndY, visibleBottomOffset);
+    screenshotRef.current?.moveAndHide(
+        isFolded ? visibleBottomOffset - sectionEndY : sectionEndY - realBottomOffset,
+        duration,
+    );
+}
 
 /**
  * The component is separated to call as less hooks as possible
- * when section is toggled
+ * when section is toggled, since animation is depend on how
+ * fast the list is re-rendered
  */
 function UICollapsableSectionListInner<ItemT, SectionT = DefaultSectionT>({
     screenshotRef,
@@ -129,10 +179,10 @@ function UICollapsableSectionListInner<ItemT, SectionT = DefaultSectionT>({
     renderSectionHeader,
     ...rest
 }: {
-    screenshotRef: React.RefObject<ScreenshotImageViewRef>;
-    listRef: React.RefObject<VirtualizedSectionList<ItemT, SectionT>>;
-    sectionsMapping: React.RefObject<Record<string, string>>;
-    sectionToAnimateKey: React.RefObject<string | undefined>;
+    screenshotRef: { current: ScreenshotImageViewRef };
+    listRef: { current: VirtualizedSectionList<ItemT, SectionT> };
+    sectionsMapping: { current: Record<string, string> };
+    sectionToAnimateKey: { current: string | LastSection | undefined };
 } & SectionListProps<ItemT, SectionT>) {
     const [foldedSections, setFoldedSections] = React.useState<Record<string, boolean>>({});
 
@@ -164,15 +214,13 @@ function UICollapsableSectionListInner<ItemT, SectionT = DefaultSectionT>({
                     onPress={async () => {
                         now = Date.now();
 
-                        const list = listRef.current.getListRef();
-
-                        sectionToAnimateKey.current = sectionsMapping.current[sectionKey];
-                        const currentSectionFrame: VirtualizedListFrame = list._frames[sectionKey];
-
-                        const sectionEndY = currentSectionFrame.offset + currentSectionFrame.length;
-                        screenshotRef.current?.show(
-                            sectionEndY,
-                            sectionEndY + list._scrollMetrics.visibleLength,
+                        prepareAnimation(
+                            sectionKey,
+                            foldedSections,
+                            screenshotRef,
+                            listRef,
+                            sectionsMapping,
+                            sectionToAnimateKey,
                         );
 
                         setFoldedSections({
@@ -216,10 +264,10 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
 ) {
     const { sections, contentContainerStyle } = props;
 
-    const sectionsMapping = React.useRef<Record<string, string>>({});
+    const sectionsMapping = React.useRef<Record<string, string | LastSection>>({});
     const prevSections = React.useRef<typeof props['sections']>().current;
 
-    const sectionToAnimateKey = React.useRef<string | undefined>();
+    const sectionToAnimateKey = React.useRef<string | LastSection | undefined>();
 
     if (prevSections !== sections) {
         let prevSectionKey: string | undefined;
@@ -235,7 +283,8 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
             prevSectionKey = sectionKey;
         }
         if (prevSectionKey != null) {
-            sectionsMapping.current[prevSectionKey] = undefined;
+            // A special flag to tell that it's a last section
+            sectionsMapping.current[prevSectionKey] = LAST_SECTION_TAG;
         }
     }
 
@@ -252,11 +301,45 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
             if (sectionKey !== sectionToAnimateKey.current) {
                 return;
             }
-            if (prev.inLayout !== next.inLayout || prev.offset !== next.offset) {
+            /**
+             * The case is when section is expanded, and it's so big,
+             * that the next section being unmounted in the process.
+             * The animation for that case is to simply move
+             * the screenshot below bounds
+             */
+            if (prev.inLayout && !next.inLayout) {
+                const list = listRef.current.getListRef();
+                const { visibleLength } = list._scrollMetrics;
+
+                ref.current?.moveAndHide(visibleLength - prev.offset, duration);
+                return;
+            }
+            /**
+             * The following case is a situation when the big section
+             * is collapsed, and it was so big, that the next section wasn't
+             * mounted (because of virtualization).
+             *
+             * This is a special case, because beside simple movement of a screenshot
+             * we actually have to take an additional screenshot at the moment
+             * and append it to a previous one. And then start animation from the lower bound
+             */
+            if ((prev == null || !prev.inLayout) && next.inLayout) {
+                const list = listRef.current.getListRef();
+                const { visibleLength } = list._scrollMetrics;
+
+                // TODO: should they be sequential?
+                // ref.current?.appendAdditional(next.offset);
+                ref.current?.moveAndHide(-visibleLength, duration);
+                return;
+            }
+            /**
+             * The regular and the most simple case, when both sections are mounted
+             */
+            if (prev.inLayout && next.inLayout && prev.offset !== next.offset) {
                 console.log('changed!', Date.now() - now, next.offset - prev.offset);
 
                 if (next.inLayout) {
-                    ref.current?.moveAndHide(next.offset - prev.offset, 1000);
+                    ref.current?.moveAndHide(next.offset - prev.offset, duration);
                 }
             }
             sectionToAnimateKey.current = undefined;
