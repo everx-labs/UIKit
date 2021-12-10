@@ -5,94 +5,17 @@ import {
     DefaultSectionT,
     SectionListData,
     SectionListProps,
-    View,
-    // UIManager,
     TouchableOpacity,
-    LayoutChangeEvent,
     StyleSheet,
-    VirtualizedList,
-    // StyleSheet,
 } from 'react-native';
-import Animated, {
-    runOnJS,
-    useAnimatedStyle,
-    useSharedValue,
-    withSpring,
-} from 'react-native-reanimated';
-
-import { ScreenshotView, UIImage, QRCodeRef } from '@tonlabs/uikit.media';
-
+// TODO: it won't work on web. Consider to do sth with it, when do implementation for web.
 import VirtualizedSectionList from 'react-native/Libraries/Lists/VirtualizedSectionList';
 
 import { ScreenshotImageView, ScreenshotImageViewRef } from './ScreenshotImageView';
-
-const originalCompDidMount = VirtualizedList.prototype.componentDidMount;
-
-VirtualizedList.prototype.componentDidMount = function componentDidMount(...args) {
-    if (originalCompDidMount) {
-        originalCompDidMount.apply(this, args);
-    }
-    if ('patchedFrames' in this.props && this.props.patchedFrames != null) {
-        this._frames = this.props.patchedFrames;
-    }
-};
-
-type VirtualizedListFrame = { inLayout: boolean; index: number; length: number; offset: number };
-
-/**
- * VirtualizedList do a lot of work under the hood,
- * what is the most important for us - it track coordinates
- * for cells, that it manages.
- *
- * Unfortunatelly though, it doesn't have a way to notify
- * somehow about the changes in that frames.
- * VirtualizedList has `onViewableItemsChanged`, but it doesn't have
- * coords in event payload.
- *
- * So how it works?
- * We just replace internal object, with proxy object,
- * that intercept mutations, and if a key of changed frame
- * is the one that we want to track, it notifies about changes.
- */
-function useFramesProxyListener(
-    keysToListen: Record<string, any>,
-    listener: (key: string, prev: VirtualizedListFrame, next: VirtualizedListFrame) => void,
-) {
-    const proxyRef = React.useRef<typeof Proxy>();
-    if (proxyRef.current == null) {
-        const frameTarget = {
-            set(obj: VirtualizedListFrame, key: string, value: any) {
-                if (obj[prop] !== value) {
-                    listener(this.key, obj, { ...obj, [key]: value });
-                }
-                obj[key] = value;
-                return true;
-            },
-        };
-        const target = {
-            set(
-                obj: Record<string, VirtualizedListFrame>,
-                key: string,
-                value: VirtualizedListFrame,
-            ) {
-                if (!(key in keysToListen)) {
-                    obj[key] = value;
-                    return true;
-                }
-                const prev = obj[key];
-                if (prev != null) {
-                    listener(key, prev, value);
-                }
-
-                obj[key] = new Proxy(value, { ...frameTarget, key });
-                return true;
-            },
-        };
-        // @ts-expect-error
-        proxyRef.current = new Proxy({}, target);
-    }
-    return proxyRef.current;
-}
+import {
+    useVirtualizedListFramesListener,
+    VirtualizedListFrame,
+} from './useVirtualizedListFramesListener';
 
 let now: number;
 
@@ -118,6 +41,17 @@ async function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
     const visibleBottomOffset = offset + visibleLength;
     const sectionEndY = currentSectionFrame.offset + currentSectionFrame.length;
     const isFolded = foldedSections[sectionKey];
+
+    /**
+     * TODO:
+     * There're 3 things left
+     * 1. It's not crashing on last element with a message that height must be > 0
+     * 2. What if last section is very big, will it work?
+     * 3. When last section is expanding it seems that nothing happen, when in reality
+     *    the section was at the very bottom of scroll view, and after re-rendering
+     *    the position wasn't changed, therefore one have to scroll further to see the content.
+     *    That might be not super frendly.
+     */
 
     if (sectionToAnimateKey.current !== LAST_SECTION_TAG) {
         /**
@@ -288,30 +222,16 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
         }
     }
 
-    const ref = React.useRef<ScreenshotImageViewRef>(null);
+    const ref = React.useRef<ScreenshotImageViewRef>();
+    const listRef = React.useRef<VirtualizedSectionList<ItemT, SectionT>>();
 
-    const listRef = React.useRef<VirtualizedSectionList<ItemT, SectionT>>(null);
-
-    const framesProxy = useFramesProxyListener(
+    const framesProxy = useVirtualizedListFramesListener(
         sectionsMapping.current,
-        (sectionKey, prev, next) => {
+        async (sectionKey, prev, next) => {
             if (sectionToAnimateKey.current == null) {
                 return;
             }
             if (sectionKey !== sectionToAnimateKey.current) {
-                return;
-            }
-            /**
-             * The case is when section is expanded, and it's so big,
-             * that the next section being unmounted in the process.
-             * The animation for that case is to simply move
-             * the screenshot below bounds
-             */
-            if (prev.inLayout && !next.inLayout) {
-                const list = listRef.current.getListRef();
-                const { visibleLength } = list._scrollMetrics;
-
-                ref.current?.moveAndHide(visibleLength - prev.offset, duration);
                 return;
             }
             /**
@@ -325,11 +245,30 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
              */
             if ((prev == null || !prev.inLayout) && next.inLayout) {
                 const list = listRef.current.getListRef();
+                const { visibleLength, offset } = list._scrollMetrics;
+
+                await ref.current?.append(next.offset, offset + visibleLength);
+                ref.current?.moveAndHide(-visibleLength, duration);
+
+                sectionToAnimateKey.current = undefined;
+                return;
+            }
+            if (prev == null) {
+                return;
+            }
+            /**
+             * The case is when section is expanded, and it's so big,
+             * that the next section being unmounted in the process.
+             * The animation for that case is to simply move
+             * the screenshot below bounds
+             */
+            if (prev.inLayout && !next.inLayout) {
+                const list = listRef.current.getListRef();
                 const { visibleLength } = list._scrollMetrics;
 
-                // TODO: should they be sequential?
-                // ref.current?.appendAdditional(next.offset);
-                ref.current?.moveAndHide(-visibleLength, duration);
+                ref.current?.moveAndHide(visibleLength - prev.offset, duration);
+
+                sectionToAnimateKey.current = undefined;
                 return;
             }
             /**
@@ -338,15 +277,14 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
             if (prev.inLayout && next.inLayout && prev.offset !== next.offset) {
                 console.log('changed!', Date.now() - now, next.offset - prev.offset);
 
-                if (next.inLayout) {
-                    ref.current?.moveAndHide(next.offset - prev.offset, duration);
-                }
+                ref.current?.moveAndHide(next.offset - prev.offset, duration);
+
+                sectionToAnimateKey.current = undefined;
+                return;
             }
-            sectionToAnimateKey.current = undefined;
+            console.log('4');
         },
     );
-
-    // const snapBottomTranslateY = useSharedValue(0);
 
     return (
         <UICollapsableSectionListInner
@@ -357,7 +295,6 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
             sectionToAnimateKey={sectionToAnimateKey}
             getItemCount={items => items.length}
             getItem={(items, index) => items[index]}
-            // onViewableItemsChanged={onViewableItemsChanged}
             style={{ backgroundColor: 'white', flex: 1 }}
             contentContainerStyle={{
                 backgroundColor: 'white',

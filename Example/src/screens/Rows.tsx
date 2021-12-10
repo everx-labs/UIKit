@@ -8,10 +8,10 @@ import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 import { UILabel, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UIListRowKind, UIListRow, renderUIListItem, UIListSeparator } from '@tonlabs/uicast.rows';
 
+// TODO: apply proper import
 // @ts-ignore
+import { UICollapsableSectionList } from '@tonlabs/uikit.scrolls/src/Lists/UICollapsableSectionList/UICollapsableSectionList';
 import everIcon from './assets/ever.png';
-
-import { UICollapsableSectionList } from '../../../kit/scrolls/src/Lists/UICollapsableSectionList';
 
 export function getRandomNum() {
     const num = Math.random();
@@ -66,7 +66,7 @@ const Rows = () => {
             {
                 title: 'Currency',
                 key: 'currencies',
-                data: new Array(3).fill(null).map((_, index) => ({
+                data: new Array(100).fill(null).map((_, index) => ({
                     key: index,
                     kind: UIListRowKind.Currency,
                     props: {

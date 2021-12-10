@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.facebook.imagepipeline.memory.BitmapPool;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
@@ -142,7 +143,28 @@ public class UIKitScreenshotImageView extends ReactViewGroup {
     }
 
     public void append(ReadableArray args) {
+        int startY = (int) PixelUtil.toPixelFromDIP(args.getInt(0));
+        int endY = (int) PixelUtil.toPixelFromDIP(args.getInt(1));
 
+        BitmapDrawable screenshot = takeScreenshot(startY, endY);
+        BitmapDrawable prevScreenshot = (BitmapDrawable) mOverlayImage.getDrawable();
+
+        Bitmap combinedScreenshotBitmap = Bitmap.createBitmap(
+                prevScreenshot.getIntrinsicWidth(),
+                prevScreenshot.getIntrinsicHeight() + screenshot.getIntrinsicHeight(),
+                Bitmap.Config.ARGB_8888);
+
+        final Canvas c = new Canvas(combinedScreenshotBitmap);
+        final Paint paint = new Paint();
+
+        c.drawBitmap(prevScreenshot.getBitmap(), 0.0f, 0.0f, paint);
+        c.drawBitmap(screenshot.getBitmap(), 0.0f, prevScreenshot.getIntrinsicHeight(), paint);
+
+        BitmapDrawable combinedScreenshot = new BitmapDrawable(getReactContext().getResources(), combinedScreenshotBitmap);
+
+        mOverlayImage.setImageDrawable(combinedScreenshot);
+        mOverlayContainer.measure(combinedScreenshot.getIntrinsicWidth(), combinedScreenshot.getIntrinsicHeight());
+        mOverlayContainer.layout(0, 0, combinedScreenshot.getIntrinsicWidth(), combinedScreenshot.getIntrinsicHeight());
     }
 
     public void dispatchEvent(String commandKey) {
@@ -208,7 +230,6 @@ public class UIKitScreenshotImageView extends ReactViewGroup {
 
     private BitmapDrawable takeScreenshot(View view, int startY, int endY, int width, int height) {
         int lHeight = Math.max(height, getHeight());
-        int lEndY = Math.max(lHeight, endY);
         // TODO: might be a good idea to re-use from pool
         Bitmap fullBitmap = Bitmap.createBitmap(width, lHeight, Bitmap.Config.ARGB_8888);
 
@@ -223,7 +244,7 @@ public class UIKitScreenshotImageView extends ReactViewGroup {
 
         view.draw(c);
 
-        int croppedHeight = Math.min(lEndY - startY, lHeight - startY);
+        int croppedHeight = Math.min(endY - startY, lHeight - startY);
         if (croppedHeight < lHeight) {
             Bitmap croppedBitmap = Bitmap.createBitmap(fullBitmap, 0, startY, width, croppedHeight);
             return new BitmapDrawable(getReactContext().getResources(), croppedBitmap);

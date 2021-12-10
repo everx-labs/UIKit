@@ -1,9 +1,17 @@
 import * as React from 'react';
-import { UIManager, findNodeHandle, requireNativeComponent } from 'react-native';
+import {
+    UIManager,
+    findNodeHandle,
+    requireNativeComponent,
+    StyleProp,
+    ViewStyle,
+} from 'react-native';
 
 const NativeScreenshotImageView = requireNativeComponent('UIKitScreenshotImageView');
 
-type ScreenshotImageViewProps = React.PropsWithRef<React.PropsWithChildren<Record<string, never>>>;
+type ScreenshotImageViewProps = React.PropsWithRef<
+    React.PropsWithChildren<{ style?: StyleProp<ViewStyle> }>
+>;
 export type ScreenshotImageViewRef = {
     show(startY: number, endY: number): Promise<void>;
     append(startY: number, endY: number): Promise<void>;
@@ -40,7 +48,7 @@ export const ScreenshotImageView = React.forwardRef<
                 return Promise.resolve();
             }
             return new Promise(resolve => {
-                UIManager.dispatchViewManagerCommand(findNodeHandle(nativeRef.current), 'show', [
+                UIManager.dispatchViewManagerCommand(findNodeHandle(nativeRef.current), 'append', [
                     startY,
                     endY,
                 ]);
