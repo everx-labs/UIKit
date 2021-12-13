@@ -25,6 +25,22 @@ type LastSection = -1;
 const LAST_SECTION_TAG: LastSection = -1;
 const duration = 1000;
 
+/**
+ * TODO: known problems.
+ * This is was caught on Android:
+ * - when a list has scroll (content is bigger than a visible area)
+ *   and if one tries to collaps a section, after re-render, content become
+ *   less than a visible area, that shifts it's position
+ *   (actually it's reseted to 0) that breaks everything
+ *
+ * - (minor and I don't want to address it right now)
+ *   If one tried to expand section that is the last one
+ *   it won't change the position of the section,
+ *   therefore there wouldn't be any visual feedback
+ *   that it's expanded and one have to scroll manually
+ *   to see some items in the expanded section
+ */
+
 async function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
     sectionKey: string,
     foldedSections: Record<string, boolean>,
@@ -43,17 +59,6 @@ async function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
     const visibleBottomOffset = offset + visibleLength;
     const sectionEndY = currentSectionFrame.offset + currentSectionFrame.length;
     const isFolded = foldedSections[sectionKey];
-
-    /**
-     * TODO:
-     * There're 3 things left
-     * 1. It's not crashing on last element with a message that height must be > 0
-     * 2. What if last section is very big, will it work?
-     * 3. When last section is expanding it seems that nothing happen, when in reality
-     *    the section was at the very bottom of scroll view, and after re-rendering
-     *    the position wasn't changed, therefore one have to scroll further to see the content.
-     *    That might be not super frendly.
-     */
 
     if (sectionToAnimateKey.current !== LAST_SECTION_TAG) {
         /**
@@ -81,10 +86,7 @@ async function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
      * So handle this case first.
      */
     if (currentSectionFrame.offset > visibleLength && !isFolded) {
-        await screenshotRef.current?.show(
-            sectionEndY - visibleLength,
-            offset + visibleLength - sectionEndY,
-        );
+        await screenshotRef.current?.show(sectionEndY - visibleLength, realBottomOffset);
         screenshotRef.current?.moveAndHide(offset + visibleLength - sectionEndY, duration);
 
         return;
@@ -94,6 +96,18 @@ async function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
      * except change event won't fire, so we have to call
      * animation manually.
      */
+
+    /**
+     * Actually if statement should be `sectionEndY === visibleBottomOffset`
+     * But in reality they might be not equal, with a diff less then 1.
+     * Since values less than 1 (i.e 0.9) will be casted to `int` in native
+     * we treat it as equality
+     */
+    if (Math.abs(sectionEndY - visibleBottomOffset) < 1) {
+        // Do not animate here for now,
+        // it's a special case
+        return;
+    }
     await screenshotRef.current?.show(sectionEndY, visibleBottomOffset);
     screenshotRef.current?.moveAndHide(
         isFolded ? visibleBottomOffset - sectionEndY : sectionEndY - realBottomOffset,

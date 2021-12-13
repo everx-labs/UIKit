@@ -88,31 +88,22 @@ const Rows = () => {
             {
                 title: 'Link',
                 key: 'links2',
-                data: [
-                    {
-                        key: 0,
-                        kind: UIListRowKind.Link,
-                        props: {
-                            title: 'Title ',
-                            description: 'Description',
-                            logo: everIcon,
-                            loading,
-                            onPress: () => console.log('onPress'),
-                        },
+                data: new Array(100).fill(null).map((_, index) => ({
+                    key: index,
+                    kind: UIListRowKind.Link,
+                    props: {
+                        title: "Let's check out a very long header for this link that you can imagine",
+                        ...(index % 2 === 0
+                            ? {
+                                  description:
+                                      "Let's check out a very long description for this link that you can imagine",
+                              }
+                            : {}),
+                        logo: everIcon,
+                        loading,
+                        onPress: () => console.log('onPress'),
                     },
-                    {
-                        key: 1,
-                        kind: UIListRowKind.Link,
-                        props: {
-                            title: "Let's check out a very long header for this link that you can imagine",
-                            // description:
-                            // "Let's check out a very long description for this link that you can imagine",
-                            logo: everIcon,
-                            loading,
-                            onPress: () => console.log('onPress'),
-                        },
-                    },
-                ],
+                })),
                 ItemSeparatorComponent: UIListSeparator,
             },
         ];
