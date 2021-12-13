@@ -12,7 +12,7 @@ import {
 // @ts-ignore
 import VirtualizedSectionList from 'react-native/Libraries/Lists/VirtualizedSectionList';
 
-import { ScreenshotImageView, ScreenshotImageViewRef } from './ScreenshotImageView';
+import { AccordionOverlayView, AccordionOverlayViewRef } from './AccordionOverlayView';
 import {
     useVirtualizedListFramesListener,
     VirtualizedListFrame,
@@ -22,7 +22,7 @@ import {
 let now: number;
 
 const emptyArray: any = [];
-const LAST_SECTION_TAG = 'LAST_SECTION_TAG_DO_NOT_USE_THIS';
+const LAST_SECTION_TAG = 'LAST_SECTION_TAG_DO_NOT_USE_THIS_EXTERNALLY';
 const duration = 1000;
 
 /**
@@ -44,7 +44,7 @@ const duration = 1000;
 async function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
     sectionKey: string,
     foldedSections: Record<string, boolean>,
-    screenshotRef: { current: ScreenshotImageViewRef | null },
+    screenshotRef: { current: AccordionOverlayViewRef | null },
     listRef: { current: VirtualizedSectionList<ItemT, SectionT> },
     sectionsMapping: { current: Record<string, string> },
     sectionToAnimateKey: { current: string | undefined },
@@ -129,7 +129,7 @@ function UICollapsableSectionListInner<ItemT, SectionT = DefaultSectionT>({
     renderSectionHeader,
     ...rest
 }: {
-    screenshotRef: { current: ScreenshotImageViewRef | null };
+    screenshotRef: { current: AccordionOverlayViewRef | null };
     listRef: { current: VirtualizedSectionList<ItemT, SectionT> };
     sectionsMapping: { current: Record<string, string> };
     sectionToAnimateKey: { current: string | undefined };
@@ -194,7 +194,7 @@ function UICollapsableSectionListInner<ItemT, SectionT = DefaultSectionT>({
     );
 
     return (
-        <ScreenshotImageView ref={screenshotRef} style={rest.style}>
+        <AccordionOverlayView ref={screenshotRef} style={rest.style}>
             <VirtualizedSectionList
                 ref={listRef}
                 {...rest}
@@ -205,7 +205,7 @@ function UICollapsableSectionListInner<ItemT, SectionT = DefaultSectionT>({
                 // )}
                 renderSectionHeader={renderCollapsableSectionHeader}
             />
-        </ScreenshotImageView>
+        </AccordionOverlayView>
     );
 }
 
@@ -238,7 +238,7 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
         }
     }
 
-    const ref = React.useRef<ScreenshotImageViewRef>(null);
+    const ref = React.useRef<AccordionOverlayViewRef>(null);
     const listRef = React.useRef<VirtualizedSectionList<ItemT, SectionT>>();
 
     const framesProxy = useVirtualizedListFramesListener(

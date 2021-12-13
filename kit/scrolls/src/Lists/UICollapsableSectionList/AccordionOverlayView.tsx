@@ -7,21 +7,21 @@ import {
     ViewStyle,
 } from 'react-native';
 
-const NativeScreenshotImageView = requireNativeComponent('UIKitScreenshotImageView');
+const NativeAccordionOverlayView = requireNativeComponent('UIKitAccordionOverlayView');
 
-export type ScreenshotImageViewRef = {
+export type AccordionOverlayViewRef = {
     show(startY: number, endY: number): Promise<void>;
     append(startY: number, endY: number): Promise<void>;
     moveAndHide(shiftY: number, duration?: number): void;
 };
-type ScreenshotImageViewProps = React.PropsWithChildren<{ style?: StyleProp<ViewStyle> }>;
+type AccordionOverlayViewProps = React.PropsWithChildren<{ style?: StyleProp<ViewStyle> }>;
 
-type CommandFinishedEvent = { nativeEvent: { finishedCommand: keyof ScreenshotImageViewRef } };
+type CommandFinishedEvent = { nativeEvent: { finishedCommand: keyof AccordionOverlayViewRef } };
 
-export const ScreenshotImageView = React.forwardRef<
-    ScreenshotImageViewRef,
-    ScreenshotImageViewProps
->(function ScreenshotImageView({ children, style }: ScreenshotImageViewProps, ref) {
+export const AccordionOverlayView = React.forwardRef<
+    AccordionOverlayViewRef,
+    AccordionOverlayViewProps
+>(function AccordionOverlayView({ children, style }: AccordionOverlayViewProps, ref) {
     const nativeRef = React.useRef(null);
     const resolversRef = React.useRef<{
         resolveShow?: (value: void | PromiseLike<void>) => void;
@@ -81,13 +81,13 @@ export const ScreenshotImageView = React.forwardRef<
     );
 
     return (
-        <NativeScreenshotImageView
+        <NativeAccordionOverlayView
             ref={nativeRef}
             // @ts-ignore
             style={style}
             onCommandFinished={onCommandFinished}
         >
             {children}
-        </NativeScreenshotImageView>
+        </NativeAccordionOverlayView>
     );
 });
