@@ -9,6 +9,7 @@ import {
     StyleSheet,
 } from 'react-native';
 // TODO: it won't work on web. Consider to do sth with it, when do implementation for web.
+// @ts-ignore
 import VirtualizedSectionList from 'react-native/Libraries/Lists/VirtualizedSectionList';
 
 import { ScreenshotImageView, ScreenshotImageViewRef } from './ScreenshotImageView';
@@ -21,8 +22,7 @@ import {
 let now: number;
 
 const emptyArray: any = [];
-type LastSection = -1;
-const LAST_SECTION_TAG: LastSection = -1;
+const LAST_SECTION_TAG = 'LAST_SECTION_TAG_DO_NOT_USE_THIS';
 const duration = 1000;
 
 /**
@@ -44,10 +44,10 @@ const duration = 1000;
 async function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
     sectionKey: string,
     foldedSections: Record<string, boolean>,
-    screenshotRef: { current: ScreenshotImageViewRef },
+    screenshotRef: { current: ScreenshotImageViewRef | null },
     listRef: { current: VirtualizedSectionList<ItemT, SectionT> },
     sectionsMapping: { current: Record<string, string> },
-    sectionToAnimateKey: { current: string | LastSection | undefined },
+    sectionToAnimateKey: { current: string | undefined },
 ) {
     const list = listRef.current.getListRef();
 
@@ -129,10 +129,10 @@ function UICollapsableSectionListInner<ItemT, SectionT = DefaultSectionT>({
     renderSectionHeader,
     ...rest
 }: {
-    screenshotRef: { current: ScreenshotImageViewRef };
+    screenshotRef: { current: ScreenshotImageViewRef | null };
     listRef: { current: VirtualizedSectionList<ItemT, SectionT> };
     sectionsMapping: { current: Record<string, string> };
-    sectionToAnimateKey: { current: string | LastSection | undefined };
+    sectionToAnimateKey: { current: string | undefined };
 } & SectionListProps<ItemT, SectionT>) {
     const [foldedSections, setFoldedSections] = React.useState<Record<string, boolean>>({});
 
@@ -214,10 +214,10 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
 ) {
     const { sections, contentContainerStyle } = props;
 
-    const sectionsMapping = React.useRef<Record<string, string | LastSection>>({});
+    const sectionsMapping = React.useRef<Record<string, string>>({});
     const prevSections = React.useRef<typeof props['sections']>().current;
 
-    const sectionToAnimateKey = React.useRef<string | LastSection | undefined>();
+    const sectionToAnimateKey = React.useRef<string | undefined>();
 
     if (prevSections !== sections) {
         let prevSectionKey: string | undefined;
@@ -238,7 +238,7 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
         }
     }
 
-    const ref = React.useRef<ScreenshotImageViewRef>();
+    const ref = React.useRef<ScreenshotImageViewRef>(null);
     const listRef = React.useRef<VirtualizedSectionList<ItemT, SectionT>>();
 
     const framesProxy = useVirtualizedListFramesListener(
@@ -318,6 +318,7 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
                 // TODO
                 ...StyleSheet.flatten(contentContainerStyle),
             }}
+            // @ts-expect-error
             patchedFrames={framesProxy}
         />
     );

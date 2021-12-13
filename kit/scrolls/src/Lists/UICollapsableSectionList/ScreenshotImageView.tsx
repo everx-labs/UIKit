@@ -9,14 +9,12 @@ import {
 
 const NativeScreenshotImageView = requireNativeComponent('UIKitScreenshotImageView');
 
-type ScreenshotImageViewProps = React.PropsWithRef<
-    React.PropsWithChildren<{ style?: StyleProp<ViewStyle> }>
->;
 export type ScreenshotImageViewRef = {
     show(startY: number, endY: number): Promise<void>;
     append(startY: number, endY: number): Promise<void>;
     moveAndHide(shiftY: number, duration?: number): void;
 };
+type ScreenshotImageViewProps = React.PropsWithChildren<{ style?: StyleProp<ViewStyle> }>;
 
 type CommandFinishedEvent = { nativeEvent: { finishedCommand: keyof ScreenshotImageViewRef } };
 
@@ -85,6 +83,7 @@ export const ScreenshotImageView = React.forwardRef<
     return (
         <NativeScreenshotImageView
             ref={nativeRef}
+            // @ts-ignore
             style={style}
             onCommandFinished={onCommandFinished}
         >
