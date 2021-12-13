@@ -1,3 +1,4 @@
+import * as UIActionButton from './UIActionButton';
 import * as UIBoxButton from './UIBoxButton';
 import * as UILinkButton from './UILinkButton';
 import * as UILoadMoreButton from './UILoadMoreButton';
@@ -11,6 +12,7 @@ import * as UISwitcher from './UISwitcher';
 import * as Haptics from './Haptics/Haptics';
 import * as useHover from './useHover';
 
+export * from './UIActionButton';
 export * from './UIBoxButton';
 export * from './UILinkButton';
 export * from './UILoadMoreButton';
@@ -25,6 +27,7 @@ export * from './Haptics/Haptics';
 export * from './useHover';
 
 export const UIControl = {
+    UIActionButton,
     UIBoxButton,
     UILinkButton,
     UILoadMoreButton,

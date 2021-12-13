@@ -4,6 +4,8 @@ import { Text, View } from 'react-native';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIScaleButton } from '@tonlabs/uikit.components';
 import {
+    UIActionButton,
+    UIActionButtonType,
     UIBoxButton,
     UIBoxButtonIconPosition,
     UIBoxButtonType,
@@ -22,6 +24,7 @@ import {
     UIShowMoreButton,
     UIShowMoreButtonHeight,
 } from '@tonlabs/uikit.controls';
+import { UILabel } from '@tonlabs/uikit.themes';
 import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 
 import { ExampleSection } from '../components/ExampleSection';
@@ -33,10 +36,109 @@ const Buttons = () => {
         setProgress(true);
         setTimeout(() => {
             setProgress(false);
-        }, 2000);
+        }, 3000);
     }, []);
     return (
         <ExampleScreen>
+            <ExampleSection title="UIActionButton">
+                <View
+                    style={{
+                        maxWidth: 600,
+                        paddingVertical: 20,
+                        flexDirection: 'row',
+                        paddingHorizontal: 4,
+                    }}
+                >
+                    <View
+                        style={{
+                            maxWidth: 300,
+                            paddingHorizontal: 4,
+                            flex: 1,
+                            alignItems: 'center',
+                        }}
+                    >
+                        <UILabel style={{ paddingBottom: 8 }}>Primary:</UILabel>
+                        <UIActionButton
+                            type={UIActionButtonType.Primary}
+                            testID="uiActionButton_primary_default"
+                            title="Title"
+                            icon={UIAssets.icons.ui.plus}
+                            onPress={onPress}
+                            loading={progress}
+                        />
+                        <View style={{ height: 8 }} />
+                        <UIActionButton
+                            type={UIActionButtonType.Primary}
+                            testID="uiActionButton_primary_default"
+                            icon={UIAssets.icons.ui.plus}
+                            onPress={onPress}
+                            loading={progress}
+                        />
+                        <View style={{ height: 8 }} />
+                        <UIActionButton
+                            type={UIActionButtonType.Primary}
+                            testID="uiActionButton_primary_default"
+                            title="Title"
+                            onPress={onPress}
+                            loading={progress}
+                        />
+                        <View style={{ height: 8 }} />
+                        <UIActionButton
+                            type={UIActionButtonType.Primary}
+                            testID="uiActionButton_primary_default"
+                            title="Disabled"
+                            onPress={() => console.log('Pressed UIActionButton primary')}
+                            icon={UIAssets.icons.ui.plus}
+                            loading={progress}
+                            disabled
+                        />
+                    </View>
+                    <View
+                        style={{
+                            maxWidth: 300,
+                            paddingHorizontal: 8,
+                            flex: 1,
+                            alignItems: 'center',
+                        }}
+                    >
+                        <UILabel style={{ paddingBottom: 8 }}>Accent:</UILabel>
+                        <UIActionButton
+                            type={UIActionButtonType.Accent}
+                            testID="uiActionButton_accent_default"
+                            title="Title"
+                            icon={UIAssets.icons.ui.plus}
+                            onPress={onPress}
+                            loading={progress}
+                        />
+                        <View style={{ height: 8 }} />
+                        <UIActionButton
+                            type={UIActionButtonType.Accent}
+                            testID="uiActionButton_accent_default"
+                            icon={UIAssets.icons.ui.plus}
+                            onPress={onPress}
+                            loading={progress}
+                        />
+                        <View style={{ height: 8 }} />
+                        <UIActionButton
+                            type={UIActionButtonType.Accent}
+                            testID="uiActionButton_accent_default"
+                            title="Title"
+                            onPress={onPress}
+                            loading={progress}
+                        />
+                        <View style={{ height: 8 }} />
+                        <UIActionButton
+                            type={UIActionButtonType.Accent}
+                            testID="uiActionButton_primary_default"
+                            title="Disabled"
+                            icon={UIAssets.icons.ui.plus}
+                            onPress={() => console.log('Pressed UIActionButton accent')}
+                            loading={progress}
+                            disabled
+                        />
+                    </View>
+                </View>
+            </ExampleSection>
             <ExampleSection title="UIShowMoreButton">
                 <View
                     style={{

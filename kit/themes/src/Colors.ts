@@ -41,6 +41,8 @@ export enum ColorVariants {
     LinePositive = 'LinePositive',
     LineOverlayLight = 'LineOverlayLight',
     LineOverlayDark = 'LineOverlayDark',
+    SpecialAccentLight = 'SpecialAccentLight',
+    SpecialAccentDark = 'SpecialAccentDark',
     IconAccent = 'IconAccent',
     // IconPrimary = 'IconPrimary',
     IconSecondary = 'IconSecondary',
@@ -126,6 +128,9 @@ export const LightTheme: Theme = {
     [ColorVariants.LineOverlayDark]: 'rgba(255,255,255,.08)',
     [ColorVariants.LineOverlayLight]: 'rgba(0,0,0,.04)',
 
+    [ColorVariants.SpecialAccentLight]: '#339CE6',
+    [ColorVariants.SpecialAccentDark]: '#0069B3',
+
     [ColorVariants.IconAccent]: '#0073C4',
     // [ColorVariants.IconPrimary]: '#20262A',
     [ColorVariants.IconSecondary]: '#707376',
@@ -175,6 +180,9 @@ export const DarkTheme: Theme = {
     [ColorVariants.LinePositive]: '#36C05C',
     [ColorVariants.LineOverlayDark]: 'rgba(0,0,0,.08)',
     [ColorVariants.LineOverlayLight]: 'rgba(255,255,255,.08)',
+
+    [ColorVariants.SpecialAccentLight]: '#338FD0',
+    [ColorVariants.SpecialAccentDark]: '#005C9D',
 
     [ColorVariants.IconAccent]: '#0073C4',
     [ColorVariants.IconSecondary]: '#ADB0B1',
