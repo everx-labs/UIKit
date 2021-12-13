@@ -250,6 +250,8 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
             if (sectionKey !== sectionToAnimateKey.current) {
                 return;
             }
+            const list = listRef.current.getListRef();
+            const { visibleLength, offset } = list._scrollMetrics as VirtualizedListScrollMetrics;
             /**
              * The following case is a situation when the big section
              * is collapsed, and it was so big, that the next section wasn't
@@ -260,10 +262,6 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
              * and append it to a previous one. And then start animation from the lower bound
              */
             if ((prev == null || !prev.inLayout) && next.inLayout) {
-                const list = listRef.current.getListRef();
-                const { visibleLength, offset } =
-                    list._scrollMetrics as VirtualizedListScrollMetrics;
-
                 await ref.current?.append(next.offset, offset + visibleLength);
                 ref.current?.moveAndHide(-visibleLength, duration);
 
@@ -280,10 +278,7 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
              * the screenshot below bounds
              */
             if (prev.inLayout && !next.inLayout) {
-                const list = listRef.current.getListRef();
-                const { visibleLength } = list._scrollMetrics as VirtualizedListScrollMetrics;
-
-                ref.current?.moveAndHide(visibleLength - prev.offset, duration);
+                ref.current?.moveAndHide(visibleLength - (prev.offset - offset), duration);
 
                 sectionToAnimateKey.current = undefined;
                 return;
@@ -294,12 +289,10 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
             if (prev.inLayout && next.inLayout && prev.offset !== next.offset) {
                 console.log('changed!', Date.now() - now, next.offset - prev.offset);
 
-                ref.current?.moveAndHide(next.offset - prev.offset, duration);
+                ref.current?.moveAndHide(next.offset - (prev.offset - offset), duration);
 
                 sectionToAnimateKey.current = undefined;
-                return;
             }
-            console.log('4');
         },
     );
 
