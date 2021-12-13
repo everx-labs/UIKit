@@ -126,6 +126,7 @@ const Rows = () => {
                     renderSectionHeader={renderSectionHeader}
                     stickySectionHeadersEnabled={false}
                     keyExtractor={item => item.key}
+                    windowSize={5}
                 />
                 {/* <UIBoxButton
                     title="Loading..."

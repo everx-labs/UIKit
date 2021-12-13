@@ -28,13 +28,8 @@ const duration = 1000;
 /**
  * TODO: known problems.
  * This is was caught on Android:
- * - when a list has scroll (content is bigger than a visible area)
- *   and if one tries to collaps a section, after re-render, content become
- *   less than a visible area, that shifts it's position
- *   (actually it's reseted to 0) that breaks everything
- *
  * - (minor and I don't want to address it right now)
- *   If one tried to expand section that is the last one
+ *   If one tries to expand a section that is the last one
  *   it won't change the position of the section,
  *   therefore there wouldn't be any visual feedback
  *   that it's expanded and one have to scroll manually
@@ -262,6 +257,10 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
              * and append it to a previous one. And then start animation from the lower bound
              */
             if ((prev == null || !prev.inLayout) && next.inLayout) {
+                if (process.env.NODE_ENV === 'development') {
+                    console.log('before animation time ms:', Date.now() - now);
+                }
+
                 await ref.current?.append(next.offset, offset + visibleLength);
                 ref.current?.moveAndHide(-visibleLength, duration);
 
@@ -278,6 +277,10 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
              * the screenshot below bounds
              */
             if (prev.inLayout && !next.inLayout) {
+                if (process.env.NODE_ENV === 'development') {
+                    console.log('before animation time ms:', Date.now() - now);
+                }
+
                 ref.current?.moveAndHide(visibleLength - (prev.offset - offset), duration);
 
                 sectionToAnimateKey.current = undefined;
@@ -287,7 +290,9 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
              * The regular and the most simple case, when both sections are mounted
              */
             if (prev.inLayout && next.inLayout && prev.offset !== next.offset) {
-                console.log('changed!', Date.now() - now, next.offset - prev.offset);
+                if (process.env.NODE_ENV === 'development') {
+                    console.log('before animation time ms:', Date.now() - now);
+                }
 
                 ref.current?.moveAndHide(next.offset - (prev.offset - offset), duration);
 

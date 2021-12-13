@@ -25,6 +25,8 @@ import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.views.scroll.ReactScrollView;
+import com.facebook.react.views.scroll.ReactScrollViewHelper;
+import com.facebook.react.views.scroll.ScrollEventType;
 import com.facebook.react.views.view.ReactViewGroup;
 
 @SuppressLint("LongLogTag")
@@ -33,6 +35,9 @@ public class UIKitAccordionOverlayView extends ReactViewGroup {
     private final ImageView mOverlayImage;
     private final Animator.AnimatorListener mOverlayImageAnimatorListener;
     private final EventDispatcher mEventDispatcher;
+    // ScrollView related
+    private final ReactScrollViewHelper.ScrollListener mScrollListener;
+    private int prevScrollY = 0;
 
     public static final String EVENT_COMMAND_FINISHED = "onCommandFinished";
     public static final String REACT_CLASS = "UIKitAccordionOverlayView";
@@ -77,6 +82,39 @@ public class UIKitAccordionOverlayView extends ReactViewGroup {
         };
 
         mEventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+
+        /**
+         * Even though we disable scroll during animation
+         * ScrollView might change it's `scrollY` position.
+         * Imagine you had a big section that allow you to scroll,
+         * then when it's collapsed the size of the content would become lesser
+         * than the visible are. That force ScrollView to reset scroll position to 0
+         * to adjust content position.
+         * Here we intercept this moment and adjust position of the overlay.
+         */
+        mScrollListener = new ReactScrollViewHelper.ScrollListener() {
+            @Override
+            public void onScroll(ViewGroup scrollView, ScrollEventType scrollEventType, float xVelocity, float yVelocity) {
+                int scrollYDiff = prevScrollY - scrollView.getScrollY();
+                if (scrollYDiff == 0) {
+                    return;
+                }
+                adjustContainerPositionWhenScrollHappened(scrollYDiff);
+                prevScrollY = scrollView.getScrollY();
+                Log.d(REACT_CLASS, String.format("scrollY change during animation: %d", scrollYDiff));
+            }
+
+            @Override
+            public void onLayout(ViewGroup scrollView) {
+                int scrollYDiff = prevScrollY - scrollView.getScrollY();
+                if (scrollYDiff == 0) {
+                    return;
+                }
+                adjustContainerPositionWhenScrollHappened(scrollYDiff);
+                prevScrollY = scrollView.getScrollY();
+                Log.d(REACT_CLASS, String.format("scrollY change during animation: %d", scrollYDiff));
+            }
+        };
     }
 
     // MARK:- commands
@@ -91,6 +129,10 @@ public class UIKitAccordionOverlayView extends ReactViewGroup {
          * and remove edge cases
          */
         disableScrollViewIfAny();
+        /**
+         * See a description of `mScrollListener` for a rationale
+         */
+        listenToScrollChangesIfAny();
 
         BitmapDrawable screenshot = takeScreenshot(startY, endY);
 
@@ -135,6 +177,7 @@ public class UIKitAccordionOverlayView extends ReactViewGroup {
         removeView(mOverlayContainer);
 
         enableScrollViewIfAny();
+        unlistenToScrollChangesIfAny();
     }
 
     public void append(ReadableArray args) {
@@ -186,6 +229,33 @@ public class UIKitAccordionOverlayView extends ReactViewGroup {
         }
 
         ((ReactScrollView)view).setScrollEnabled(true);
+    }
+
+    private void listenToScrollChangesIfAny() {
+        View view = getChildAt(0);
+
+        if (!(view instanceof ReactScrollView)) {
+            return;
+        }
+
+        ReactScrollViewHelper.addScrollListener(mScrollListener);
+        prevScrollY = view.getScrollY();
+    }
+
+    private void unlistenToScrollChangesIfAny() {
+        View view = getChildAt(0);
+
+        if (!(view instanceof ReactScrollView)) {
+            return;
+        }
+
+        ReactScrollViewHelper.removeScrollListener(mScrollListener);
+        prevScrollY = 0;
+    }
+
+    private void adjustContainerPositionWhenScrollHappened(float shift) {
+        float currentPosition = mOverlayContainer.getTranslationY();
+        mOverlayContainer.setTranslationY(currentPosition + shift);
     }
 
     private int getImageTop(int startY) {

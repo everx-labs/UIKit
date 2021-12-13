@@ -53,13 +53,13 @@ export const AccordionOverlayView = React.forwardRef<
                 resolversRef.current.resolveAppend = resolve;
             });
         },
-        moveAndHide(shiftY: number, duration?: number) {
+        moveAndHide(shiftY: number, duration: number = 100) {
             if (nativeRef.current == null) {
                 return;
             }
             UIManager.dispatchViewManagerCommand(findNodeHandle(nativeRef.current), 'moveAndHide', [
                 shiftY,
-                duration || 100,
+                duration,
             ]);
         },
     }));
