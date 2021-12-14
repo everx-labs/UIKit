@@ -112,7 +112,6 @@ export function useButtonAnimations(
 
     const hoverAnim = useSharedValue(0);
     const backgroundColorValue = useDerivedValue(() => {
-        console.log({ hoverAnim: hoverAnim.value });
         return interpolateColor(
             hoverAnim.value,
             [0, 1],
@@ -130,7 +129,6 @@ export function useButtonAnimations(
 
     const pressAnim = useSharedValue(0);
     const pressOverlayValue = useDerivedValue(() => {
-        console.log({ pressAnim: pressAnim.value });
         return interpolateColor(
             pressAnim.value,
             [0, 1],
