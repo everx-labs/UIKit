@@ -11,7 +11,7 @@ export type UIIndicatorProps = {
     style?: StyleProp<ViewStyle>;
 };
 
-export function UIIndicator({
+export const UIIndicator = React.memo(function UIIndicator({
     color = ColorVariants.LineAccent,
     size,
     trackWidth,
@@ -27,4 +27,4 @@ export function UIIndicator({
             style={style}
         />
     );
-}
+});
