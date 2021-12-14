@@ -4,7 +4,7 @@ import Animated from 'react-native-reanimated';
 import type { AnimatedStyleProp } from 'react-native-reanimated';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { UIConstant } from '../constants';
-import { UIIndicator } from '..';
+import { UIIndicator } from '../UIIndicator';
 import type { UIActionButtonIconProps } from './types';
 
 function ActionButtonIconImpl({

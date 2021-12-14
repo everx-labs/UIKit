@@ -1,27 +1,19 @@
 import * as React from 'react';
-import {
-    ColorValue,
-    ImageSourcePropType,
-    StyleSheet,
-    TouchableWithoutFeedback,
-    View,
-} from 'react-native';
-import {
-    interpolateColor,
-    useAnimatedStyle,
-    useDerivedValue,
-    useSharedValue,
-} from 'react-native-reanimated';
+import { ImageSourcePropType, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 
-import { ColorVariants, useTheme, TypographyVariants, makeStyles } from '@tonlabs/uikit.themes';
+import { TypographyVariants, makeStyles } from '@tonlabs/uikit.themes';
 
 import { UIConstant } from '../constants';
 import { ActionButtonIcon } from './ActionButtonIcon';
 import { ButtonTitle } from '../Button/useButtonChildren';
 import { TouchableElement } from '../Button/TouchableElement';
 import { ActionButtonAnimations, ContentAnimations, UIActionButtonType } from './types';
-import { useContentAnimatedStyles } from './hooks';
-import { runUIGetTransparentColor } from './runUIGetTransparentColor';
+import {
+    useButtonAnimations,
+    useButtonColorScheme,
+    useButtonStyles,
+    useContentAnimatedStyles,
+} from './hooks';
 
 export type UIActionButtonProps = {
     /**
@@ -58,123 +50,6 @@ export type UIActionButtonProps = {
     type?: UIActionButtonType;
 };
 
-const getButtonStates = (type: UIActionButtonType) => {
-    switch (type) {
-        case UIActionButtonType.Primary:
-            return {
-                hoverOverlayColor: ColorVariants.BackgroundPrimary,
-                pressOverlayColor: ColorVariants.BackgroundPrimary,
-                hoverContentColor: ColorVariants.SpecialAccentLight,
-                pressContentColor: ColorVariants.SpecialAccentDark,
-            };
-        case UIActionButtonType.Accent:
-        default:
-            return {
-                hoverOverlayColor: ColorVariants.SpecialAccentLight,
-                pressOverlayColor: ColorVariants.SpecialAccentDark,
-                hoverContentColor: ColorVariants.TextPrimary,
-                pressContentColor: ColorVariants.TextPrimary,
-            };
-    }
-};
-
-function useButtonAnimations(
-    hoverOverlayColor: ColorVariants,
-    pressOverlayColor: ColorVariants,
-): ActionButtonAnimations {
-    const theme = useTheme();
-
-    const hoverAnim = useSharedValue(0);
-    const hoverOverlayValue = useDerivedValue(() => {
-        return interpolateColor(
-            hoverAnim.value,
-            [0, 1],
-            [
-                runUIGetTransparentColor(theme[ColorVariants[hoverOverlayColor]] as string),
-                theme[ColorVariants[hoverOverlayColor]] as string,
-            ],
-        );
-    });
-    const hoverOverlayStyle = useAnimatedStyle(() => {
-        return {
-            backgroundColor: hoverOverlayValue.value,
-        };
-    });
-
-    const pressAnim = useSharedValue(0);
-    const pressOverlayValue = useDerivedValue(() => {
-        return interpolateColor(
-            pressAnim.value,
-            [0, 1],
-            [
-                runUIGetTransparentColor(theme[ColorVariants[pressOverlayColor]] as string),
-                theme[ColorVariants[pressOverlayColor]] as string,
-            ],
-        );
-    });
-    const pressOverlayStyle = useAnimatedStyle(() => {
-        return {
-            backgroundColor: pressOverlayValue.value,
-        };
-    });
-
-    return {
-        hover: {
-            animationParam: hoverAnim,
-            backgroundStyle: undefined,
-            overlayStyle: hoverOverlayStyle,
-        },
-        press: {
-            animationParam: pressAnim,
-            backgroundStyle: undefined,
-            overlayStyle: pressOverlayStyle,
-        },
-    };
-}
-
-function useButtonStyles(type: UIActionButtonType, disabled?: boolean) {
-    let backgroundColor: ColorVariants = ColorVariants.Transparent;
-    let contentColor: ColorVariants = ColorVariants.TextAccent;
-
-    if (type === UIActionButtonType.Primary) {
-        // primary background color
-        backgroundColor = ColorVariants.BackgroundPrimary;
-
-        // primary content color (title, icons)
-        if (disabled) {
-            contentColor = ColorVariants.TextTertiary;
-        } else {
-            contentColor = ColorVariants.TextAccent;
-        }
-    } else if (type === UIActionButtonType.Accent) {
-        // secondary background color
-        if (disabled) {
-            backgroundColor = ColorVariants.BackgroundNeutral;
-        } else {
-            backgroundColor = ColorVariants.BackgroundAccent;
-        }
-
-        // secondary content color (title, icons)
-        if (disabled) {
-            contentColor = ColorVariants.TextTertiary;
-        } else {
-            contentColor = ColorVariants.TextPrimary;
-        }
-    }
-
-    const theme = useTheme();
-
-    const buttonStyle = {
-        backgroundColor: theme[ColorVariants[backgroundColor]] as ColorValue,
-        borderRadius: UIConstant.alertBorderRadius,
-    };
-
-    return {
-        buttonStyle,
-        contentColor,
-    };
-}
-
 export const UIActionButton = React.forwardRef<TouchableWithoutFeedback, UIActionButtonProps>(
     (
         {
@@ -188,21 +63,20 @@ export const UIActionButton = React.forwardRef<TouchableWithoutFeedback, UIActio
         }: UIActionButtonProps,
         ref,
     ) => {
-        const { buttonStyle, contentColor } = useButtonStyles(type, disabled);
-        const { hoverOverlayColor, pressOverlayColor, hoverContentColor, pressContentColor } =
-            getButtonStates(type);
+        const { overlay, content } = useButtonColorScheme(type);
+        const { buttonStyle, contentColor } = useButtonStyles(disabled, overlay, content);
 
         const buttonAnimations: ActionButtonAnimations = useButtonAnimations(
-            hoverOverlayColor,
-            pressOverlayColor,
+            overlay.hover,
+            overlay.pressed,
         );
 
         const сontentAnimations: ContentAnimations = useContentAnimatedStyles(
-            contentColor,
             buttonAnimations.hover.animationParam,
             buttonAnimations.press.animationParam,
-            hoverContentColor,
-            pressContentColor,
+            content.hover,
+            content.pressed,
+            contentColor,
         );
         const styles = useStyles(icon, loading);
 
@@ -251,7 +125,6 @@ const useStyles = makeStyles((icon: ImageSourcePropType | undefined, loading: bo
     container: {
         height: UIConstant.actionButtonHeight,
         minWidth: UIConstant.actionButtonHeight,
-        borderWidth: StyleSheet.hairlineWidth,
         overflow: 'hidden',
     },
     content: {

@@ -31,3 +31,15 @@ export type ContentAnimations = {
         pressStyle: AnimatedStyleProp<ImageStyle>;
     };
 };
+
+export type ActionButtonColors = {
+    normal: ColorVariants;
+    hover: ColorVariants;
+    pressed: ColorVariants;
+    disabled: ColorVariants;
+};
+
+export type ActionButtonColorScheme = {
+    overlay: ActionButtonColors;
+    content: ActionButtonColors;
+};
