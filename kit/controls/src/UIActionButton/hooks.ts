@@ -1,5 +1,4 @@
 import * as React from 'react';
-import type { ColorValue } from 'react-native';
 import Animated, {
     interpolateColor,
     useAnimatedStyle,
@@ -15,7 +14,6 @@ import {
     ActionButtonColors,
 } from './types';
 import { runUIGetTransparentColor } from './runUIGetTransparentColor';
-import { UIConstant } from '../constants';
 
 export const useButtonColorScheme = (type: UIActionButtonType): ActionButtonColorScheme => {
     return React.useMemo((): ActionButtonColorScheme => {
@@ -79,12 +77,8 @@ export function useContentAnimatedStyles(
     });
 
     const titleColorAnimValue = useDerivedValue(() => {
-        console.log({
-            hover: hoverAnimValue.value,
-            press: pressAnimValue.value,
-        });
         return interpolateColor(
-            -hoverAnimValue.value + pressAnimValue.value * 1000,
+            -hoverAnimValue.value + pressAnimValue.value * 1001,
             [-1, 0, 1000],
             [
                 theme[ColorVariants[hoverOverlayColor]] as string,
@@ -110,30 +104,33 @@ export function useContentAnimatedStyles(
 }
 
 export function useButtonAnimations(
+    backgroundColor: ColorVariants,
     hoverOverlayColor: ColorVariants,
     pressOverlayColor: ColorVariants,
 ): ActionButtonAnimations {
     const theme = useTheme();
 
     const hoverAnim = useSharedValue(0);
-    const hoverOverlayValue = useDerivedValue(() => {
+    const backgroundColorValue = useDerivedValue(() => {
+        console.log({ hoverAnim: hoverAnim.value });
         return interpolateColor(
             hoverAnim.value,
             [0, 1],
             [
-                runUIGetTransparentColor(theme[ColorVariants[hoverOverlayColor]] as string),
+                theme[ColorVariants[backgroundColor]] as string,
                 theme[ColorVariants[hoverOverlayColor]] as string,
             ],
         );
     });
-    const hoverOverlayStyle = useAnimatedStyle(() => {
+    const backgroundStyle = useAnimatedStyle(() => {
         return {
-            backgroundColor: hoverOverlayValue.value,
+            backgroundColor: backgroundColorValue.value,
         };
     });
 
     const pressAnim = useSharedValue(0);
     const pressOverlayValue = useDerivedValue(() => {
+        console.log({ pressAnim: pressAnim.value });
         return interpolateColor(
             pressAnim.value,
             [0, 1],
@@ -152,8 +149,8 @@ export function useButtonAnimations(
     return {
         hover: {
             animationParam: hoverAnim,
-            backgroundStyle: undefined,
-            overlayStyle: hoverOverlayStyle,
+            backgroundStyle,
+            overlayStyle: undefined,
         },
         press: {
             animationParam: pressAnim,
@@ -163,31 +160,26 @@ export function useButtonAnimations(
     };
 }
 
-export function useButtonStyles(
+export function useButtonColors(
     disabled: boolean | undefined,
     overlay: ActionButtonColors,
     content: ActionButtonColors,
 ) {
-    let backgroundColor: ColorVariants = overlay.normal;
-    let contentColor: ColorVariants = content.normal;
+    return React.useMemo(() => {
+        let backgroundColor: ColorVariants = overlay.normal;
+        let contentColor: ColorVariants = content.normal;
 
-    if (disabled) {
-        backgroundColor = overlay.disabled;
-    }
+        if (disabled) {
+            backgroundColor = overlay.disabled;
+        }
 
-    if (disabled) {
-        contentColor = content.disabled;
-    }
+        if (disabled) {
+            contentColor = content.disabled;
+        }
 
-    const theme = useTheme();
-
-    const buttonStyle = {
-        backgroundColor: theme[ColorVariants[backgroundColor]] as ColorValue,
-        borderRadius: UIConstant.alertBorderRadius,
-    };
-
-    return {
-        buttonStyle,
-        contentColor,
-    };
+        return {
+            contentColor,
+            backgroundColor,
+        };
+    }, [disabled, overlay, content]);
 }

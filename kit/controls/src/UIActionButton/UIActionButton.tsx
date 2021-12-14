@@ -11,7 +11,7 @@ import { ActionButtonAnimations, ContentAnimations, UIActionButtonType } from '.
 import {
     useButtonAnimations,
     useButtonColorScheme,
-    useButtonStyles,
+    useButtonColors,
     useContentAnimatedStyles,
 } from './hooks';
 
@@ -64,9 +64,10 @@ export const UIActionButton = React.forwardRef<TouchableWithoutFeedback, UIActio
         ref,
     ) => {
         const { overlay, content } = useButtonColorScheme(type);
-        const { buttonStyle, contentColor } = useButtonStyles(disabled, overlay, content);
+        const { contentColor, backgroundColor } = useButtonColors(disabled, overlay, content);
 
         const buttonAnimations: ActionButtonAnimations = useButtonAnimations(
+            backgroundColor,
             overlay.hover,
             overlay.pressed,
         );
@@ -78,6 +79,7 @@ export const UIActionButton = React.forwardRef<TouchableWithoutFeedback, UIActio
             content.pressed,
             contentColor,
         );
+
         const styles = useStyles(icon, loading);
 
         const handleOnPress = React.useCallback(() => {
@@ -93,7 +95,7 @@ export const UIActionButton = React.forwardRef<TouchableWithoutFeedback, UIActio
                 animations={buttonAnimations}
                 disabled={disabled || loading}
                 loading={loading}
-                style={[styles.container, buttonStyle]}
+                style={[styles.container]}
                 testID={testID}
             >
                 <View style={styles.content}>
@@ -125,6 +127,7 @@ const useStyles = makeStyles((icon: ImageSourcePropType | undefined, loading: bo
     container: {
         height: UIConstant.actionButtonHeight,
         minWidth: UIConstant.actionButtonHeight,
+        borderRadius: UIConstant.alertBorderRadius,
         overflow: 'hidden',
     },
     content: {
