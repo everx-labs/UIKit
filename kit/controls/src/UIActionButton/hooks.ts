@@ -6,6 +6,7 @@ import Animated, {
     useSharedValue,
 } from 'react-native-reanimated';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import { Platform } from 'react-native';
 import {
     ContentAnimations,
     ActionButtonColorScheme,
@@ -152,7 +153,7 @@ export function useButtonAnimations(
         },
         press: {
             animationParam: pressAnim,
-            backgroundStyle: undefined,
+            backgroundStyle: Platform.OS === 'web' ? undefined : backgroundStyle,
             overlayStyle: pressOverlayStyle,
         },
     };

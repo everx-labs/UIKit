@@ -14,6 +14,7 @@ function ActionButtonIconImpl({
     initialColor,
 }: UIActionButtonIconProps) {
     const theme = useTheme();
+
     const indicator = React.useMemo(() => {
         return (
             <View style={styles.icon}>
@@ -22,17 +23,22 @@ function ActionButtonIconImpl({
         );
     }, [initialColor]);
 
-    if (loading) {
-        return indicator;
-    }
-    if (icon) {
+    const tintColor = React.useMemo(
+        () => theme[ColorVariants[initialColor as ColorVariants]],
+        [theme, initialColor],
+    );
+
+    const iconMemoized = React.useMemo(() => {
+        if (!icon) {
+            return null;
+        }
         return (
             <View>
                 <Animated.Image
                     source={icon}
                     style={[
                         {
-                            tintColor: theme[ColorVariants[initialColor as ColorVariants]],
+                            tintColor,
                         },
                         styles.icon,
                     ]}
@@ -55,8 +61,18 @@ function ActionButtonIconImpl({
                 />
             </View>
         );
+        /**
+         * To prevent unnecessary re-renderings, we don't add `animStyles` to dependencies,
+         * because `animStyles` is changed by mutation
+         */
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [icon, tintColor]);
+
+    if (loading) {
+        return indicator;
     }
-    return null;
+
+    return iconMemoized;
 }
 
 const styles = StyleSheet.create({
