@@ -36,7 +36,7 @@ const duration = 1000;
  *   to see some items in the expanded section
  */
 
-async function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
+function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
     sectionKey: string,
     foldedSections: Record<string, boolean>,
     screenshotRef: { current: AccordionOverlayViewRef | null },
@@ -60,6 +60,13 @@ async function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
          * Just show a screenshot above
          * Animation is handled later in frame change listener
          */
+        /**
+         * Actually endY coordinate isn't correct
+         * when we know the coords of the next section,
+         * it should be visibleLength - sectionEndY - offset + offsetDifference.
+         *
+         * And also we can start animation right away if we know it's position too!
+         */
         screenshotRef.current?.show(sectionEndY, sectionEndY + visibleLength);
         return;
     }
@@ -81,8 +88,9 @@ async function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
      * So handle this case first.
      */
     if (currentSectionFrame.offset > visibleLength && !isFolded) {
-        await screenshotRef.current?.show(sectionEndY - visibleLength, realBottomOffset);
-        screenshotRef.current?.moveAndHide(offset + visibleLength - sectionEndY, duration);
+        screenshotRef.current?.show(sectionEndY - visibleLength, realBottomOffset).then(() => {
+            screenshotRef.current?.moveAndHide(offset + visibleLength - sectionEndY, duration);
+        });
 
         return;
     }
@@ -103,11 +111,12 @@ async function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
         // it's a special case
         return;
     }
-    await screenshotRef.current?.show(sectionEndY, visibleBottomOffset);
-    screenshotRef.current?.moveAndHide(
-        isFolded ? visibleBottomOffset - sectionEndY : sectionEndY - realBottomOffset,
-        duration,
-    );
+    screenshotRef.current?.show(sectionEndY, visibleBottomOffset).then(() => {
+        screenshotRef.current?.moveAndHide(
+            isFolded ? visibleBottomOffset - sectionEndY : sectionEndY - realBottomOffset,
+            duration,
+        );
+    });
 }
 
 /**
@@ -239,7 +248,6 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
     const framesProxy = useVirtualizedListFramesListener(
         sectionsMapping.current,
         async (sectionKey, prev, next) => {
-            console.log(sectionKey, prev, next);
             if (sectionToAnimateKey.current == null) {
                 return;
             }
