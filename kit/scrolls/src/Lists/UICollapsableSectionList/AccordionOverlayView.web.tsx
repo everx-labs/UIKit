@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleProp, ViewStyle, View } from 'react-native';
+import { StyleProp, ViewStyle, View, StyleSheet } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 export type AccordionOverlayViewRef = {
@@ -46,8 +46,8 @@ function takeScreenshot(contentContainerElement: Element, startY: number, endY: 
         const nextHeight = height + containerChildren[i].clientHeight;
 
         if (nextHeight > croppedHeight) {
-            copiedNode.style.height = `${croppedHeight - height}px`;
-            copiedNode.style.overflow = 'hidden';
+            (copiedNode as HTMLDivElement).style.height = `${croppedHeight - height}px`;
+            (copiedNode as HTMLDivElement).style.overflow = 'hidden';
             height = croppedHeight;
             result.push(copiedNode);
             break;
@@ -91,13 +91,14 @@ export const AccordionOverlayView = React.forwardRef<
     });
 
     const hideOverlay = React.useCallback(() => {
-        console.log('hide');
+        // As we got to this point, then it's exist, only to silence TS
         if (overlayRef.current == null) {
-            return Promise.reject(new Error('Overlay not ready yet'));
+            return;
         }
         const overlayInner = overlayRef.current.firstElementChild;
+        // As we got to this point, then it's exist, only to silence TS
         if (overlayInner == null) {
-            return Promise.reject(new Error('Unexpected overlay structure'));
+            return;
         }
 
         overlayRef.current.style.removeProperty('top');
@@ -121,7 +122,7 @@ export const AccordionOverlayView = React.forwardRef<
             if (contentContainerElement == null) {
                 return Promise.reject(new Error('Unexpected ScrollView structure'));
             }
-            const overlayInner = overlayRef.current.firstElementChild;
+            const overlayInner = overlayRef.current.firstElementChild as HTMLDivElement | null;
             if (overlayInner == null) {
                 return Promise.reject(new Error('Unexpected overlay structure'));
             }
@@ -182,16 +183,25 @@ export const AccordionOverlayView = React.forwardRef<
     }));
 
     return (
-        <View ref={wrapperRef} style={[style, { position: 'relative' }]}>
+        <View
+            // @ts-ignore can't use View type for ref, as I need HTMLDivElement to take screenshot
+            ref={wrapperRef}
+            style={[style, styles.container]}
+        >
             {children}
             <View
+                // @ts-ignore can't use View type for ref, as I need HTMLDivElement to take screenshot
                 ref={overlayRef}
-                style={{ position: 'absolute', left: 0, right: 0, bottom: 0, overflow: 'hidden' }}
+                style={styles.overlayContainer}
             >
-                <Animated.View
-                    style={[{ position: 'absolute', left: 0, right: 0 }, overlayInnerStyle]}
-                />
+                <Animated.View style={[styles.overlayInner, overlayInnerStyle]} />
             </View>
         </View>
     );
+});
+
+const styles = StyleSheet.create({
+    container: { position: 'relative' },
+    overlayContainer: { position: 'absolute', left: 0, right: 0, bottom: 0, overflow: 'hidden' },
+    overlayInner: { position: 'absolute', left: 0, right: 0 },
 });

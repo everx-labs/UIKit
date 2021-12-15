@@ -57,15 +57,32 @@ function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
 
     if (sectionToAnimateKey.current !== LAST_SECTION_TAG) {
         /**
+         * There is a special case when the section is unfolded
+         * and we know the coords for the next section
+         *
+         * First of all, the area of the screenshot is not equal
+         * to visible area.
+         * Second, as we know everything we need, we can start
+         * animation as soon as possible.
+         */
+        if (!isFolded) {
+            const nextSectionFrame: VirtualizedListFrame =
+                list._frames[sectionToAnimateKey.current];
+            if (nextSectionFrame != null && nextSectionFrame.inLayout) {
+                const offsetDiff = nextSectionFrame.offset - sectionEndY;
+                screenshotRef.current
+                    ?.show(sectionEndY, visibleLength - (sectionEndY - offset) + offsetDiff)
+                    .then(() => {
+                        screenshotRef.current?.moveAndHide(-offsetDiff, duration);
+                    });
+                // Disable frame tracking
+                sectionToAnimateKey.current = undefined;
+                return;
+            }
+        }
+        /**
          * Just show a screenshot above
          * Animation is handled later in frame change listener
-         */
-        /**
-         * Actually endY coordinate isn't correct
-         * when we know the coords of the next section,
-         * it should be visibleLength - sectionEndY - offset + offsetDifference.
-         *
-         * And also we can start animation right away if we know it's position too!
          */
         screenshotRef.current?.show(sectionEndY, sectionEndY + visibleLength);
         return;
