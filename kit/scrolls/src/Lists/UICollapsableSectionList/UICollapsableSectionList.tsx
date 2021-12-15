@@ -8,7 +8,6 @@ import {
     TouchableOpacity,
     StyleSheet,
 } from 'react-native';
-// TODO: it won't work on web. Consider to do sth with it, when do implementation for web.
 // @ts-ignore
 import VirtualizedSectionList from 'react-native/Libraries/Lists/VirtualizedSectionList';
 
@@ -18,6 +17,7 @@ import {
     VirtualizedListFrame,
     VirtualizedListScrollMetrics,
 } from './useVirtualizedListFramesListener';
+import { CellRendererComponent } from './CellRendererComponent';
 
 let now: number;
 
@@ -239,6 +239,7 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
     const framesProxy = useVirtualizedListFramesListener(
         sectionsMapping.current,
         async (sectionKey, prev, next) => {
+            console.log(sectionKey, prev, next);
             if (sectionToAnimateKey.current == null) {
                 return;
             }
@@ -318,6 +319,7 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
             }}
             // @ts-expect-error
             patchedFrames={framesProxy}
+            CellRendererComponent={CellRendererComponent}
         />
     );
 }
