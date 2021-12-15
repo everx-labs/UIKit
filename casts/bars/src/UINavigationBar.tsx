@@ -169,7 +169,7 @@ export function UINavigationBar({
     let headerRightElement = null;
 
     if (headerRight != null) {
-        headerRightElement = headerRight();
+        headerRightElement = <View style={styles.headerRightElement}>{headerRight()}</View>;
     } else if (headerRightItems != null && headerRightItems.length > 0) {
         headerRightElement = <UIHeaderItems items={headerRightItems} />;
     }
@@ -244,5 +244,10 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         overflow: 'hidden',
         paddingRight: UINavConstant.scrollContentInsetHorizontal - hitSlop.right,
+    },
+    headerRightElement: {
+        justifyContent: 'center',
+        paddingLeft: hitSlop.left,
+        paddingRight: hitSlop.right,
     },
 });
