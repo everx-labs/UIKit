@@ -32,7 +32,7 @@ function UIImageCellImpl({ image, title, caption, onPress, loading, testID }: UI
     }
     return (
         <TouchableOpacity testID={testID} onPress={onPress}>
-            <View style={styles.container}>
+            <View style={styles.container} testID={testID}>
                 <UIImage source={image} style={styles.image as StyleProp<ImageStyle>} />
                 <View style={styles.textContainer}>
                     {title ? (

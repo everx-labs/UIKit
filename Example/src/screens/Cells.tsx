@@ -57,7 +57,7 @@ export function Cells() {
                         loading={loading}
                     />
                     <UIImageCell
-                        image={UIAssets.icons.brand.tonSymbol}
+                        image={UIAssets.icons.brand.tonwallet}
                         caption="Looooooooooooong super title"
                         onPress={() => console.log('Tap')}
                         loading={loading}
