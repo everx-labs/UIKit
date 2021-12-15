@@ -19,23 +19,7 @@ import { runUIGetTransparentColor } from './runUIGetTransparentColor';
 export const useButtonColorScheme = (type: UIActionButtonType): ActionButtonColorScheme => {
     return React.useMemo((): ActionButtonColorScheme => {
         switch (type) {
-            case UIActionButtonType.Primary:
-                return {
-                    overlay: {
-                        normal: ColorVariants.BackgroundBW,
-                        hover: ColorVariants.BackgroundBW,
-                        pressed: ColorVariants.BackgroundBW,
-                        disabled: ColorVariants.BackgroundBW,
-                    },
-                    content: {
-                        normal: ColorVariants.TextAccent,
-                        hover: ColorVariants.SpecialAccentLight,
-                        pressed: ColorVariants.SpecialAccentDark,
-                        disabled: ColorVariants.TextTertiary,
-                    },
-                };
             case UIActionButtonType.Accent:
-            default:
                 return {
                     overlay: {
                         normal: ColorVariants.BackgroundAccent,
@@ -47,6 +31,22 @@ export const useButtonColorScheme = (type: UIActionButtonType): ActionButtonColo
                         normal: ColorVariants.TextPrimary,
                         hover: ColorVariants.TextPrimary,
                         pressed: ColorVariants.TextPrimary,
+                        disabled: ColorVariants.TextTertiary,
+                    },
+                };
+            case UIActionButtonType.Primary:
+            default:
+                return {
+                    overlay: {
+                        normal: ColorVariants.BackgroundBW,
+                        hover: ColorVariants.BackgroundBW,
+                        pressed: ColorVariants.BackgroundBW,
+                        disabled: ColorVariants.BackgroundBW,
+                    },
+                    content: {
+                        normal: ColorVariants.TextAccent,
+                        hover: ColorVariants.SpecialAccentLight,
+                        pressed: ColorVariants.SpecialAccentDark,
                         disabled: ColorVariants.TextTertiary,
                     },
                 };

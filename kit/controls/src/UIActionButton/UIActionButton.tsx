@@ -42,10 +42,8 @@ export type UIActionButtonProps = {
     title?: string;
     /**
      * Type of the button; specific type allows to set the corresponding accent
-     * - `UIActionButtonType.Primary` - button with current theme accent background color (default)
-     * - `UIActionButtonType.Secondary` - button with current theme primary inverted background color
-     * - `UIActionButtonType.Tertiary` - button with 1 px border style
-     * - `UIActionButtonType.Nulled` - button without visible borders and background color
+     * - `UIActionButtonType.Primary` - button with current theme background BW color (default)
+     * - `UIActionButtonType.Accent` - button with current theme background accent color
      */
     type?: UIActionButtonType;
 };
