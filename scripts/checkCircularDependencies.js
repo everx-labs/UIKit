@@ -24,7 +24,9 @@ const checkCircularDependencies = async () => {
             'casts/banner/src/index.ts',
             'casts/bars/src/index.ts',
             'casts/blurView/src/index.ts',
+            'casts/cards/src/index.ts',
             'casts/carouselView/src/index.ts',
+            'casts/cells/src/index.ts',
             'casts/countryPicker/src/index.ts',
             'casts/dateTimePicker/src/index.ts',
             'casts/linearChart/src/index.ts',
@@ -34,6 +36,7 @@ const checkCircularDependencies = async () => {
             'casts/pinCode/src/index.ts',
             'casts/promoNotice/src/index.ts',
             'casts/qrCodeScannerSheet/src/index.ts',
+            'casts/rows/src/index.ts',
             'casts/splitNavigator/src/index.ts',
             'casts/stackNavigator/src/index.ts',
 
