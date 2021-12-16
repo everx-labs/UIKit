@@ -71,11 +71,26 @@ function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
                 list._frames[sectionToAnimateKey.current];
             if (nextSectionFrame != null && nextSectionFrame.inLayout) {
                 const offsetDiff = nextSectionFrame.offset - sectionEndY;
-                overlayRef.current
-                    ?.show(sectionEndY, visibleLength - (sectionEndY - offset) + offsetDiff)
-                    .then(() => {
-                        overlayRef.current?.moveAndHide(-offsetDiff, duration);
-                    });
+                /**
+                 * It's easier to explain then to get proper naming for a variable.
+                 * So here we trying to calculate, how much space it is
+                 * in the visible area from it's top to the bottom point of
+                 * the current section frame
+                 */
+                const currentFrameSpace = sectionEndY - offset;
+                /**
+                 * Here we calculate a size for area
+                 * that will be visible when the animation
+                 * is ended, from the point where the next section starts.
+                 *
+                 * This is all space that goes from the current frame
+                 * bottom point, to the end of the visible area.
+                 */
+                const nextSectionSpace = visibleLength - currentFrameSpace;
+                const endY = sectionEndY + nextSectionSpace + offsetDiff;
+                overlayRef.current?.show(sectionEndY, endY).then(() => {
+                    overlayRef.current?.moveAndHide(-offsetDiff, duration);
+                });
                 // Disable frame tracking
                 sectionToAnimateKey.current = undefined;
                 return;
