@@ -10,7 +10,7 @@ import { UIListRowKind, UIListRow, renderUIListItem, UIListSeparator } from '@to
 
 // TODO: apply proper import
 // @ts-ignore
-import { UICollapsableSectionList } from '@tonlabs/uikit.scrolls/src/Lists/UICollapsableSectionList/UICollapsableSectionList';
+import { UIAccordionSectionList } from '@tonlabs/uikit.scrolls/src/Lists/UIAccordionSectionList/UIAccordionSectionList';
 import everIcon from './assets/ever.png';
 
 export function getRandomNum() {
@@ -119,13 +119,15 @@ const Rows = () => {
                     maxWidth: 400,
                 }}
             >
-                <UICollapsableSectionList
+                <UIAccordionSectionList
                     contentContainerStyle={{ paddingHorizontal: 16 }}
                     sections={sections}
                     renderItem={renderUIListItem}
                     renderSectionHeader={renderSectionHeader}
                     stickySectionHeadersEnabled={false}
                     keyExtractor={item => item.key}
+                    getItemCount={items => items.length}
+                    getItem={(items, index) => items[index]}
                     windowSize={5}
                 />
                 {/* <UIBoxButton

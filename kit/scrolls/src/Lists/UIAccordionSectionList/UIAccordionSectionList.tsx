@@ -1,15 +1,12 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 import * as React from 'react';
-import {
-    DefaultSectionT,
-    SectionListData,
-    SectionListProps,
-    TouchableOpacity,
-    StyleSheet,
-} from 'react-native';
+import { DefaultSectionT, SectionListData, SectionListProps, StyleSheet } from 'react-native';
 // @ts-ignore
 import VirtualizedSectionList from 'react-native/Libraries/Lists/VirtualizedSectionList';
+
+import { ColorVariants, UILabel, UILabelRoles, useTheme } from '@tonlabs/uikit.themes';
+import { TouchableOpacity } from '@tonlabs/uikit.controls';
 
 import { AccordionOverlayView, AccordionOverlayViewRef } from './AccordionOverlayView';
 import {
@@ -136,82 +133,108 @@ function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
     });
 }
 
+type UIAccordionSection<ItemT> = {
+    /**
+     * Items that will be rendered in a section
+     */
+    data: ReadonlyArray<ItemT>;
+    /**
+     * The unique key to identify section.
+     * NB - This is a mandatory field!
+     */
+    key: string;
+    /**
+     * Title that will be rendered in UILabel inside a section
+     */
+    title: string;
+    /**
+     * Used to control the default visiblity of a section
+     */
+    isFolded?: boolean;
+};
+
 /**
  * The component is separated to call as less hooks as possible
  * when section is toggled, since animation is depend on how
- * fast the list is re-rendered
+ * fast the list is re-rendered.
  */
-function UICollapsableSectionListInner<ItemT, SectionT = DefaultSectionT>({
+function UIAccordionSectionListInner<ItemT>({
     screenshotRef,
     listRef,
     sectionsMapping,
     sectionToAnimateKey,
     sections,
-    renderSectionHeader,
     ...rest
 }: {
     screenshotRef: { current: AccordionOverlayViewRef | null };
-    listRef: { current: VirtualizedSectionList<ItemT, SectionT> };
+    listRef: { current: VirtualizedSectionList<ItemT, UIAccordionSection<ItemT>> };
     sectionsMapping: { current: Record<string, string> };
     sectionToAnimateKey: { current: string | undefined };
-} & SectionListProps<ItemT, SectionT>) {
+} & SectionListProps<ItemT, UIAccordionSection<ItemT>>) {
     const [foldedSections, setFoldedSections] = React.useState<Record<string, boolean>>({});
+    // This is used to reduce re-creation of a press callback
+    const foldedSectionsHolderRef = React.useRef<Record<string, boolean>>(foldedSections);
+    React.useEffect(() => {
+        foldedSectionsHolderRef.current = foldedSections;
+    }, [foldedSections]);
 
     const processedSections = React.useMemo(() => {
         return sections.map(section => {
-            const { key } = section;
+            const { key, isFolded, data } = section;
             if (!key) {
                 return section;
             }
-            if (foldedSections[`${key}:header`]) {
-                return {
-                    ...section,
-                    data: emptyArray as ItemT[],
-                };
+            if (!(`${key}:header` in foldedSections)) {
+                if (isFolded) {
+                    return {
+                        ...section,
+                        data: emptyArray as ItemT[],
+                    };
+                }
+                return section;
             }
-            return section;
+            return {
+                ...section,
+                data: foldedSections[`${key}:header`] ? (emptyArray as ItemT[]) : data,
+                isFolded: foldedSections[`${key}:header`],
+            };
         });
     }, [sections, foldedSections]);
 
+    const onSectionHeaderPress = React.useCallback(
+        (sectionKey: string) => {
+            now = Date.now();
+
+            prepareAnimation(
+                sectionKey,
+                foldedSectionsHolderRef.current,
+                screenshotRef,
+                listRef,
+                sectionsMapping,
+                sectionToAnimateKey,
+            );
+
+            setFoldedSections({
+                ...foldedSectionsHolderRef.current,
+                [sectionKey]: !foldedSectionsHolderRef.current[sectionKey],
+            });
+        },
+        [listRef, screenshotRef, sectionsMapping, sectionToAnimateKey],
+    );
+
     const renderCollapsableSectionHeader = React.useCallback(
-        (info: { section: SectionListData<ItemT, SectionT> }) => {
-            if (info.section.key == null) {
-                // TODO: can we do sth with it or better to throw an error?
-                return null;
-            }
+        (info: { section: SectionListData<ItemT, UIAccordionSection<ItemT>> }) => {
             const sectionKey = `${info.section.key}:header`;
             return (
                 <TouchableOpacity
-                    onPress={async () => {
-                        now = Date.now();
-
-                        prepareAnimation(
-                            sectionKey,
-                            foldedSections,
-                            screenshotRef,
-                            listRef,
-                            sectionsMapping,
-                            sectionToAnimateKey,
-                        );
-
-                        setFoldedSections({
-                            ...foldedSections,
-                            [sectionKey]: !foldedSections[sectionKey],
-                        });
-                    }}
+                    onPress={() => onSectionHeaderPress(sectionKey)}
+                    style={styles.sectionHeader}
                 >
-                    {renderSectionHeader?.(info)}
+                    <UILabel role={UILabelRoles.HeadlineHead}>{info.section.title}</UILabel>
                 </TouchableOpacity>
             );
         },
-        [
-            renderSectionHeader,
-            foldedSections,
-            listRef,
-            screenshotRef,
-            sectionsMapping,
-            sectionToAnimateKey,
-        ],
+        [onSectionHeaderPress],
     );
 
     return (
@@ -220,20 +243,34 @@ function UICollapsableSectionListInner<ItemT, SectionT = DefaultSectionT>({
                 ref={listRef}
                 {...rest}
                 sections={processedSections}
-                // extraData={processedSections.reduce(
-                //     (acc, { data }) => acc + data.length,
-                //     0,
-                // )}
                 renderSectionHeader={renderCollapsableSectionHeader}
             />
         </AccordionOverlayView>
     );
 }
 
-export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
-    props: SectionListProps<ItemT, SectionT>,
+/**
+ * A component whose sections can expand and collapse with animation.
+ * The component is almost identical to [SectionList](https://reactnative.dev/docs/sectionlist),
+ * except few things that important to consider of:
+ * - `stickySectionHeadersEnabled` is set to `false`,
+ *    the animation doesn't work properly with it;
+ * - `renderSectionHeader` won't give any effect,
+ *    instead title from a section will be used.
+ */
+
+export function UIAccordionSectionList<ItemT>(
+    props: SectionListProps<ItemT, UIAccordionSection<ItemT>>,
 ) {
     const { sections, contentContainerStyle } = props;
+
+    const theme = useTheme();
+    const bgStyle = React.useMemo(
+        () => ({
+            backgroundColor: theme[ColorVariants.BackgroundPrimary],
+        }),
+        [theme],
+    );
 
     const sectionsMapping = React.useRef<Record<string, string>>({});
     const prevSections = React.useRef<typeof props['sections']>().current;
@@ -243,10 +280,6 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
     if (prevSections !== sections) {
         let prevSectionKey: string | undefined;
         for (let i = 0; i < sections.length; i += 1) {
-            if (sections[i].key == null) {
-                // TODO: can we do sth with it or better to throw an error?
-                break;
-            }
             const sectionKey = `${sections[i].key}:header`;
             if (sectionKey && prevSectionKey != null) {
                 sectionsMapping.current[prevSectionKey] = sectionKey;
@@ -260,7 +293,7 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
     }
 
     const ref = React.useRef<AccordionOverlayViewRef>(null);
-    const listRef = React.useRef<VirtualizedSectionList<ItemT, SectionT>>();
+    const listRef = React.useRef<VirtualizedSectionList<ItemT, UIAccordionSection<ItemT>>>();
 
     const framesProxy = useVirtualizedListFramesListener(
         sectionsMapping.current,
@@ -328,23 +361,26 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
     );
 
     return (
-        <UICollapsableSectionListInner
+        <UIAccordionSectionListInner
             {...props}
             screenshotRef={ref}
             listRef={listRef}
             sectionsMapping={sectionsMapping}
             sectionToAnimateKey={sectionToAnimateKey}
-            getItemCount={items => items.length}
-            getItem={(items, index) => items[index]}
-            style={{ backgroundColor: 'white', flex: 1 }}
-            contentContainerStyle={{
-                backgroundColor: 'white',
-                // TODO
-                ...StyleSheet.flatten(contentContainerStyle),
-            }}
+            style={[bgStyle, styles.container]}
+            contentContainerStyle={[bgStyle, contentContainerStyle]}
+            CellRendererComponent={CellRendererComponent}
+            stickySectionHeadersEnabled={false}
             // @ts-expect-error
             patchedFrames={framesProxy}
-            CellRendererComponent={CellRendererComponent}
         />
     );
 }
+
+const styles = StyleSheet.create({
+    container: { flex: 1 },
+    sectionHeader: {
+        paddingTop: 20,
+        paddingBottom: 16,
+    },
+});

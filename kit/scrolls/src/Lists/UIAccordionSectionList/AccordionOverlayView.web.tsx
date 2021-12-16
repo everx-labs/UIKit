@@ -90,6 +90,23 @@ export const AccordionOverlayView = React.forwardRef<
         };
     });
 
+    const prevScrollTop = React.useRef(0);
+    const scrollListener = React.useCallback(event => {
+        // As we got to this point, then it's exist, only to silence TS
+        if (overlayRef.current == null) {
+            return;
+        }
+
+        const scrollTopDiff = prevScrollTop.current - event.target.scrollTop;
+        if (scrollTopDiff === 0) {
+            return;
+        }
+
+        const newOffset = prevScrollTop.current + scrollTopDiff;
+        overlayRef.current.style.top = `${newOffset}px`;
+        prevScrollTop.current = newOffset;
+    }, []);
+
     const hideOverlay = React.useCallback(() => {
         // As we got to this point, then it's exist, only to silence TS
         if (overlayRef.current == null) {
@@ -103,11 +120,20 @@ export const AccordionOverlayView = React.forwardRef<
 
         overlayRef.current.style.removeProperty('top');
         overlayInner.innerHTML = '';
-    }, []);
+
+        if (wrapperRef.current == null) {
+            return;
+        }
+        const containerElement = wrapperRef.current.firstElementChild;
+        if (containerElement == null) {
+            return;
+        }
+
+        containerElement.removeEventListener('scroll', scrollListener);
+    }, [scrollListener]);
 
     React.useImperativeHandle(ref, () => ({
         show(startY: number, endY: number) {
-            console.log(startY, endY, endY - startY);
             if (wrapperRef.current == null) {
                 return Promise.reject(new Error('Overlay not ready yet'));
             }
@@ -129,6 +155,10 @@ export const AccordionOverlayView = React.forwardRef<
 
             // Reset tranlsation if any
             overlayInnerTranslationY.value = 0;
+            // Listen to scroll changes
+            // in case it's changed during the animation
+            // to adjust position of the overlay
+            containerElement.addEventListener('scroll', scrollListener);
 
             const { screenshot, correction } = takeScreenshot(
                 contentContainerElement,
@@ -140,14 +170,16 @@ export const AccordionOverlayView = React.forwardRef<
             overlayInner.style.top = `${correction}px`;
             overlayInner.style.paddingLeft = paddingLeft;
             overlayInner.style.paddingRight = paddingRight;
-            // TODO
-            overlayInner.style.backgroundColor = `white`;
+
+            const { backgroundColor } = getComputedStyle(wrapperRef.current);
+            overlayInner.style.backgroundColor = backgroundColor;
 
             screenshot.forEach(node => overlayInner.append(node));
 
             const { scrollTop } = containerElement;
 
             overlayRef.current.style.top = `${startY - scrollTop}px`;
+            prevScrollTop.current = scrollTop;
 
             return Promise.resolve();
         },
