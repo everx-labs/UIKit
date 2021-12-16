@@ -300,8 +300,7 @@ public class UIKitAccordionOverlayView extends ReactViewGroup {
         Bitmap fullBitmap = Bitmap.createBitmap(width, lHeight, Bitmap.Config.ARGB_8888);
 
         final Paint paint = new Paint();
-        // TODO
-        paint.setColor(Color.WHITE);
+        paint.setColor(getBackgroundColor());
         paint.setStyle(Paint.Style.FILL);
 
         final Canvas c = new Canvas(fullBitmap);

@@ -232,8 +232,10 @@
     
     CGContextRef context = UIGraphicsGetCurrentContext();
 
-    // TODO
-    [[UIColor whiteColor] setFill];
+    // Not sure if we should copy it though,
+    // did it just not to mess with original `backgroundColor`
+    UIColor *bgColor = [self.backgroundColor copy];
+    [bgColor setFill];
     CGContextFillRect(context, CGRectMake(0, 0, size.width, size.height));
     
     BOOL success = [view drawViewHierarchyInRect:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height) afterScreenUpdates:NO];
