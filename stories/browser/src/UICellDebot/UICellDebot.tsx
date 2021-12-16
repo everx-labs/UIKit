@@ -10,10 +10,10 @@ import {
 import { UIImage } from '@tonlabs/uikit.media';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UILayoutConstant, UISkeleton } from '@tonlabs/uikit.layout';
-import type { UIImageCellProps } from './types';
+import type { UICellDebotProps } from './types';
 import { UIConstant } from '../constants';
 
-function UIImageCellImpl({ image, title, caption, onPress, loading, testID }: UIImageCellProps) {
+function UICellDebotImpl({ image, title, caption, onPress, loading, testID }: UICellDebotProps) {
     const theme = useTheme();
     const styles = useStyles(theme);
     if (loading) {
@@ -83,4 +83,4 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-export const UIImageCell = React.memo(UIImageCellImpl);
+export const UICellDebot = React.memo(UICellDebotImpl);

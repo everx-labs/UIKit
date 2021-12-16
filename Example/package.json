@@ -44,7 +44,6 @@
         "@tonlabs/uicast.modal-navigator": "*",
         "@tonlabs/uicast.bars": "*",
         "@tonlabs/uicast.carousel-view": "*",
-        "@tonlabs/uicast.cells": "*",
         "@tonlabs/uicast.blur-view": "*",
         "@tonlabs/uicast.pager-view": "*",
         "@tonlabs/uicast.numbers": "*",

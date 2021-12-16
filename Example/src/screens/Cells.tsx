@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { UIImageCell } from '@tonlabs/uicast.cells';
+import { UICellDebot } from '@tonlabs/uistory.browser';
 import { UIBoxButton, UIBoxButtonVariant } from '@tonlabs/uikit.controls';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
@@ -15,7 +15,7 @@ export function Cells() {
     const [loading, setLoading] = useState(false);
     return (
         <ExampleScreen>
-            <ExampleSection title="UIImageCell">
+            <ExampleSection title="UICellDebot">
                 <View
                     style={{
                         alignSelf: 'stretch',
@@ -25,38 +25,38 @@ export function Cells() {
                         flexWrap: 'wrap',
                     }}
                 >
-                    <UIImageCell
+                    <UICellDebot
                         image={CONTENT}
                         title="Title"
                         caption="Caption"
                         onPress={() => console.log('Tap')}
                         loading={loading}
                     />
-                    <UIImageCell
+                    <UICellDebot
                         image={UIAssets.icons.logo.tonlabsPrimary}
                         title="Title"
                         onPress={() => console.log('Tap')}
                         loading={loading}
                     />
-                    <UIImageCell
+                    <UICellDebot
                         image={CONTENT}
                         onPress={() => console.log('Tap')}
                         loading={loading}
                     />
-                    <UIImageCell
+                    <UICellDebot
                         image={UIAssets.icons.logo.tonlabsBlack}
                         title="Looooooong title"
                         caption="Looooooong caption"
                         onPress={() => console.log('Tap')}
                         loading={loading}
                     />
-                    <UIImageCell
+                    <UICellDebot
                         image={CONTENT}
                         title="Looooooooooooong super title"
                         onPress={() => console.log('Tap')}
                         loading={loading}
                     />
-                    <UIImageCell
+                    <UICellDebot
                         image={UIAssets.icons.brand.tonwallet}
                         caption="Looooooooooooong super title"
                         onPress={() => console.log('Tap')}

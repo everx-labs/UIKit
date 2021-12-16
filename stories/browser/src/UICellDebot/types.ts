@@ -1,16 +1,16 @@
 import type { ImageSourcePropType } from 'react-native';
 
-export type UIImageCellProps = {
+export type UICellDebotProps = {
     /**
      * Source of the image
      */
     image: ImageSourcePropType;
     /**
-     * UIImageCell title
+     * UICellDebot title
      */
     title?: string;
     /**
-     * UIImageCell caption
+     * UICellDebot caption
      */
     caption?: string;
     /**

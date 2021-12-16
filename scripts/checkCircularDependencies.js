@@ -26,7 +26,6 @@ const checkCircularDependencies = async () => {
             'casts/blurView/src/index.ts',
             'casts/cards/src/index.ts',
             'casts/carouselView/src/index.ts',
-            'casts/cells/src/index.ts',
             'casts/countryPicker/src/index.ts',
             'casts/dateTimePicker/src/index.ts',
             'casts/linearChart/src/index.ts',
