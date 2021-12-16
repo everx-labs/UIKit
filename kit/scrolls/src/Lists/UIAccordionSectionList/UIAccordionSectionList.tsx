@@ -4,6 +4,8 @@ import * as React from 'react';
 import { DefaultSectionT, SectionListData, SectionListProps, StyleSheet } from 'react-native';
 // @ts-ignore
 import VirtualizedSectionList from 'react-native/Libraries/Lists/VirtualizedSectionList';
+// @ts-ignore
+import setAndForwardRef from 'react-native-reanimated/lib/setAndForwardRef';
 
 import { ColorVariants, UILabel, UILabelRoles, useTheme } from '@tonlabs/uikit.themes';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
@@ -15,6 +17,8 @@ import {
     VirtualizedListScrollMetrics,
 } from './useVirtualizedListFramesListener';
 import { CellRendererComponent } from './CellRendererComponent';
+
+import { wrapScrollableComponent } from '../../wrapScrollableComponent';
 
 let now: number;
 
@@ -36,7 +40,7 @@ const duration = 1000;
 function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
     sectionKey: string,
     foldedSections: Record<string, boolean>,
-    screenshotRef: { current: AccordionOverlayViewRef | null },
+    overlayRef: { current: AccordionOverlayViewRef | null },
     listRef: { current: VirtualizedSectionList<ItemT, SectionT> },
     sectionsMapping: { current: Record<string, string> },
     sectionToAnimateKey: { current: string | undefined },
@@ -67,10 +71,10 @@ function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
                 list._frames[sectionToAnimateKey.current];
             if (nextSectionFrame != null && nextSectionFrame.inLayout) {
                 const offsetDiff = nextSectionFrame.offset - sectionEndY;
-                screenshotRef.current
+                overlayRef.current
                     ?.show(sectionEndY, visibleLength - (sectionEndY - offset) + offsetDiff)
                     .then(() => {
-                        screenshotRef.current?.moveAndHide(-offsetDiff, duration);
+                        overlayRef.current?.moveAndHide(-offsetDiff, duration);
                     });
                 // Disable frame tracking
                 sectionToAnimateKey.current = undefined;
@@ -81,7 +85,7 @@ function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
          * Just show a screenshot above
          * Animation is handled later in frame change listener
          */
-        screenshotRef.current?.show(sectionEndY, sectionEndY + visibleLength);
+        overlayRef.current?.show(sectionEndY, sectionEndY + visibleLength);
         return;
     }
 
@@ -102,8 +106,8 @@ function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
      * So handle this case first.
      */
     if (currentSectionFrame.offset > visibleLength && !isFolded) {
-        screenshotRef.current?.show(sectionEndY - visibleLength, realBottomOffset).then(() => {
-            screenshotRef.current?.moveAndHide(offset + visibleLength - sectionEndY, duration);
+        overlayRef.current?.show(sectionEndY - visibleLength, realBottomOffset).then(() => {
+            overlayRef.current?.moveAndHide(offset + visibleLength - sectionEndY, duration);
         });
 
         return;
@@ -125,8 +129,8 @@ function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
         // it's a special case
         return;
     }
-    screenshotRef.current?.show(sectionEndY, visibleBottomOffset).then(() => {
-        screenshotRef.current?.moveAndHide(
+    overlayRef.current?.show(sectionEndY, visibleBottomOffset).then(() => {
+        overlayRef.current?.moveAndHide(
             isFolded ? visibleBottomOffset - sectionEndY : sectionEndY - realBottomOffset,
             duration,
         );
@@ -159,14 +163,16 @@ type UIAccordionSection<ItemT> = {
  * fast the list is re-rendered.
  */
 function UIAccordionSectionListInner<ItemT>({
-    screenshotRef,
+    forwardedRef,
+    overlayRef,
     listRef,
     sectionsMapping,
     sectionToAnimateKey,
     sections,
     ...rest
 }: {
-    screenshotRef: { current: AccordionOverlayViewRef | null };
+    forwardedRef: React.ForwardedRef<VirtualizedSectionList<ItemT, UIAccordionSection<ItemT>>>;
+    overlayRef: { current: AccordionOverlayViewRef | null };
     listRef: { current: VirtualizedSectionList<ItemT, UIAccordionSection<ItemT>> };
     sectionsMapping: { current: Record<string, string> };
     sectionToAnimateKey: { current: string | undefined };
@@ -208,7 +214,7 @@ function UIAccordionSectionListInner<ItemT>({
             prepareAnimation(
                 sectionKey,
                 foldedSectionsHolderRef.current,
-                screenshotRef,
+                overlayRef,
                 listRef,
                 sectionsMapping,
                 sectionToAnimateKey,
@@ -219,7 +225,7 @@ function UIAccordionSectionListInner<ItemT>({
                 [sectionKey]: !foldedSectionsHolderRef.current[sectionKey],
             });
         },
-        [listRef, screenshotRef, sectionsMapping, sectionToAnimateKey],
+        [listRef, overlayRef, sectionsMapping, sectionToAnimateKey],
     );
 
     const renderCollapsableSectionHeader = React.useCallback(
@@ -238,9 +244,9 @@ function UIAccordionSectionListInner<ItemT>({
     );
 
     return (
-        <AccordionOverlayView ref={screenshotRef} style={rest.style}>
+        <AccordionOverlayView ref={overlayRef} style={rest.style}>
             <VirtualizedSectionList
-                ref={listRef}
+                ref={forwardedRef}
                 {...rest}
                 sections={processedSections}
                 renderSectionHeader={renderCollapsableSectionHeader}
@@ -258,124 +264,152 @@ function UIAccordionSectionListInner<ItemT>({
  * - `renderSectionHeader` won't give any effect,
  *    instead title from a section will be used.
  */
+const UIAccordionSectionListOriginal = React.memo(
+    React.forwardRef<
+        VirtualizedSectionList<any, UIAccordionSection<any>>,
+        SectionListProps<any, UIAccordionSection<any>>
+    >(function UIAccordionSectionListOriginal<ItemT>(
+        props: SectionListProps<ItemT, UIAccordionSection<ItemT>>,
+        ref: React.ForwardedRef<VirtualizedSectionList<ItemT, UIAccordionSection<ItemT>>>,
+    ) {
+        const { sections, contentContainerStyle } = props;
 
-export function UIAccordionSectionList<ItemT>(
+        const theme = useTheme();
+        const bgStyle = React.useMemo(
+            () => ({
+                backgroundColor: theme[ColorVariants.BackgroundPrimary],
+            }),
+            [theme],
+        );
+
+        const sectionsMapping = React.useRef<Record<string, string>>({});
+        const prevSections = React.useRef<typeof props['sections']>().current;
+
+        const sectionToAnimateKey = React.useRef<string | undefined>();
+
+        if (prevSections !== sections) {
+            let prevSectionKey: string | undefined;
+            for (let i = 0; i < sections.length; i += 1) {
+                const sectionKey = `${sections[i].key}:header`;
+                if (sectionKey && prevSectionKey != null) {
+                    sectionsMapping.current[prevSectionKey] = sectionKey;
+                }
+                prevSectionKey = sectionKey;
+            }
+            if (prevSectionKey != null) {
+                // A special flag to tell that it's a last section
+                sectionsMapping.current[prevSectionKey] = LAST_SECTION_TAG;
+            }
+        }
+
+        const overlayRef = React.useRef<AccordionOverlayViewRef>(null);
+        const listRefLocal =
+            React.useRef<VirtualizedSectionList<ItemT, UIAccordionSection<ItemT>>>();
+        const setListRef = React.useMemo(
+            () =>
+                setAndForwardRef({
+                    getForwardedRef: () => ref,
+                    setLocalRef: (localRef: any) => {
+                        listRefLocal.current = localRef;
+                    },
+                }),
+            [ref],
+        );
+
+        const framesProxy = useVirtualizedListFramesListener(
+            sectionsMapping.current,
+            async (sectionKey, prev, next) => {
+                if (sectionToAnimateKey.current == null) {
+                    return;
+                }
+                if (sectionKey !== sectionToAnimateKey.current) {
+                    return;
+                }
+                const list = listRefLocal.current.getListRef();
+                const { visibleLength, offset } =
+                    list._scrollMetrics as VirtualizedListScrollMetrics;
+                /**
+                 * The following case is a situation when the big section
+                 * is collapsed, and it was so big, that the next section wasn't
+                 * mounted (because of virtualization).
+                 *
+                 * This is a special case, because beside simple movement of a screenshot
+                 * we actually have to take an additional screenshot at the moment
+                 * and append it to a previous one. And then start animation from the lower bound
+                 */
+                if ((prev == null || !prev.inLayout) && next.inLayout) {
+                    if (process.env.NODE_ENV === 'development') {
+                        console.log('before animation time ms:', Date.now() - now);
+                    }
+
+                    await overlayRef.current?.append(next.offset, offset + visibleLength);
+                    overlayRef.current?.moveAndHide(-visibleLength, duration);
+
+                    sectionToAnimateKey.current = undefined;
+                    return;
+                }
+                if (prev == null) {
+                    return;
+                }
+                /**
+                 * The case is when section is expanded, and it's so big,
+                 * that the next section being unmounted in the process.
+                 * The animation for that case is to simply move
+                 * the screenshot below bounds
+                 */
+                if (prev.inLayout && !next.inLayout) {
+                    if (process.env.NODE_ENV === 'development') {
+                        console.log('before animation time ms:', Date.now() - now);
+                    }
+
+                    overlayRef.current?.moveAndHide(
+                        visibleLength - (prev.offset - offset),
+                        duration,
+                    );
+
+                    sectionToAnimateKey.current = undefined;
+                    return;
+                }
+                /**
+                 * The regular and the most simple case, when both sections are mounted
+                 */
+                if (prev.inLayout && next.inLayout && prev.offset !== next.offset) {
+                    if (process.env.NODE_ENV === 'development') {
+                        console.log('before animation time ms:', Date.now() - now);
+                    }
+
+                    overlayRef.current?.moveAndHide(next.offset - (prev.offset - offset), duration);
+
+                    sectionToAnimateKey.current = undefined;
+                }
+            },
+        );
+
+        return (
+            <UIAccordionSectionListInner
+                {...props}
+                forwardedRef={setListRef}
+                overlayRef={overlayRef}
+                listRef={listRefLocal}
+                sectionsMapping={sectionsMapping}
+                sectionToAnimateKey={sectionToAnimateKey}
+                style={[bgStyle, styles.container]}
+                contentContainerStyle={[bgStyle, contentContainerStyle]}
+                CellRendererComponent={CellRendererComponent}
+                stickySectionHeadersEnabled={false}
+                // @ts-expect-error
+                patchedFrames={framesProxy}
+            />
+        );
+    }),
+);
+
+export const UIAccordionSectionList: <ItemT>(
     props: SectionListProps<ItemT, UIAccordionSection<ItemT>>,
-) {
-    const { sections, contentContainerStyle } = props;
-
-    const theme = useTheme();
-    const bgStyle = React.useMemo(
-        () => ({
-            backgroundColor: theme[ColorVariants.BackgroundPrimary],
-        }),
-        [theme],
-    );
-
-    const sectionsMapping = React.useRef<Record<string, string>>({});
-    const prevSections = React.useRef<typeof props['sections']>().current;
-
-    const sectionToAnimateKey = React.useRef<string | undefined>();
-
-    if (prevSections !== sections) {
-        let prevSectionKey: string | undefined;
-        for (let i = 0; i < sections.length; i += 1) {
-            const sectionKey = `${sections[i].key}:header`;
-            if (sectionKey && prevSectionKey != null) {
-                sectionsMapping.current[prevSectionKey] = sectionKey;
-            }
-            prevSectionKey = sectionKey;
-        }
-        if (prevSectionKey != null) {
-            // A special flag to tell that it's a last section
-            sectionsMapping.current[prevSectionKey] = LAST_SECTION_TAG;
-        }
-    }
-
-    const ref = React.useRef<AccordionOverlayViewRef>(null);
-    const listRef = React.useRef<VirtualizedSectionList<ItemT, UIAccordionSection<ItemT>>>();
-
-    const framesProxy = useVirtualizedListFramesListener(
-        sectionsMapping.current,
-        async (sectionKey, prev, next) => {
-            if (sectionToAnimateKey.current == null) {
-                return;
-            }
-            if (sectionKey !== sectionToAnimateKey.current) {
-                return;
-            }
-            const list = listRef.current.getListRef();
-            const { visibleLength, offset } = list._scrollMetrics as VirtualizedListScrollMetrics;
-            /**
-             * The following case is a situation when the big section
-             * is collapsed, and it was so big, that the next section wasn't
-             * mounted (because of virtualization).
-             *
-             * This is a special case, because beside simple movement of a screenshot
-             * we actually have to take an additional screenshot at the moment
-             * and append it to a previous one. And then start animation from the lower bound
-             */
-            if ((prev == null || !prev.inLayout) && next.inLayout) {
-                if (process.env.NODE_ENV === 'development') {
-                    console.log('before animation time ms:', Date.now() - now);
-                }
-
-                await ref.current?.append(next.offset, offset + visibleLength);
-                ref.current?.moveAndHide(-visibleLength, duration);
-
-                sectionToAnimateKey.current = undefined;
-                return;
-            }
-            if (prev == null) {
-                return;
-            }
-            /**
-             * The case is when section is expanded, and it's so big,
-             * that the next section being unmounted in the process.
-             * The animation for that case is to simply move
-             * the screenshot below bounds
-             */
-            if (prev.inLayout && !next.inLayout) {
-                if (process.env.NODE_ENV === 'development') {
-                    console.log('before animation time ms:', Date.now() - now);
-                }
-
-                ref.current?.moveAndHide(visibleLength - (prev.offset - offset), duration);
-
-                sectionToAnimateKey.current = undefined;
-                return;
-            }
-            /**
-             * The regular and the most simple case, when both sections are mounted
-             */
-            if (prev.inLayout && next.inLayout && prev.offset !== next.offset) {
-                if (process.env.NODE_ENV === 'development') {
-                    console.log('before animation time ms:', Date.now() - now);
-                }
-
-                ref.current?.moveAndHide(next.offset - (prev.offset - offset), duration);
-
-                sectionToAnimateKey.current = undefined;
-            }
-        },
-    );
-
-    return (
-        <UIAccordionSectionListInner
-            {...props}
-            screenshotRef={ref}
-            listRef={listRef}
-            sectionsMapping={sectionsMapping}
-            sectionToAnimateKey={sectionToAnimateKey}
-            style={[bgStyle, styles.container]}
-            contentContainerStyle={[bgStyle, contentContainerStyle]}
-            CellRendererComponent={CellRendererComponent}
-            stickySectionHeadersEnabled={false}
-            // @ts-expect-error
-            patchedFrames={framesProxy}
-        />
-    );
-}
+) => React.ReactNode = wrapScrollableComponent(
+    UIAccordionSectionListOriginal,
+    'UIAccordionSectionList',
+);
 
 const styles = StyleSheet.create({
     container: { flex: 1 },
