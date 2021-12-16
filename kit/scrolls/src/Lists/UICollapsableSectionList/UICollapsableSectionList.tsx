@@ -8,7 +8,6 @@ import {
     TouchableOpacity,
     StyleSheet,
 } from 'react-native';
-// TODO: it won't work on web. Consider to do sth with it, when do implementation for web.
 // @ts-ignore
 import VirtualizedSectionList from 'react-native/Libraries/Lists/VirtualizedSectionList';
 
@@ -18,6 +17,7 @@ import {
     VirtualizedListFrame,
     VirtualizedListScrollMetrics,
 } from './useVirtualizedListFramesListener';
+import { CellRendererComponent } from './CellRendererComponent';
 
 let now: number;
 
@@ -36,7 +36,7 @@ const duration = 1000;
  *   to see some items in the expanded section
  */
 
-async function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
+function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
     sectionKey: string,
     foldedSections: Record<string, boolean>,
     screenshotRef: { current: AccordionOverlayViewRef | null },
@@ -56,6 +56,30 @@ async function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
     const isFolded = foldedSections[sectionKey];
 
     if (sectionToAnimateKey.current !== LAST_SECTION_TAG) {
+        /**
+         * There is a special case when the section is unfolded
+         * and we know the coords for the next section
+         *
+         * First of all, the area of the screenshot is not equal
+         * to visible area.
+         * Second, as we know everything we need, we can start
+         * animation as soon as possible.
+         */
+        if (!isFolded) {
+            const nextSectionFrame: VirtualizedListFrame =
+                list._frames[sectionToAnimateKey.current];
+            if (nextSectionFrame != null && nextSectionFrame.inLayout) {
+                const offsetDiff = nextSectionFrame.offset - sectionEndY;
+                screenshotRef.current
+                    ?.show(sectionEndY, visibleLength - (sectionEndY - offset) + offsetDiff)
+                    .then(() => {
+                        screenshotRef.current?.moveAndHide(-offsetDiff, duration);
+                    });
+                // Disable frame tracking
+                sectionToAnimateKey.current = undefined;
+                return;
+            }
+        }
         /**
          * Just show a screenshot above
          * Animation is handled later in frame change listener
@@ -81,8 +105,9 @@ async function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
      * So handle this case first.
      */
     if (currentSectionFrame.offset > visibleLength && !isFolded) {
-        await screenshotRef.current?.show(sectionEndY - visibleLength, realBottomOffset);
-        screenshotRef.current?.moveAndHide(offset + visibleLength - sectionEndY, duration);
+        screenshotRef.current?.show(sectionEndY - visibleLength, realBottomOffset).then(() => {
+            screenshotRef.current?.moveAndHide(offset + visibleLength - sectionEndY, duration);
+        });
 
         return;
     }
@@ -103,11 +128,12 @@ async function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
         // it's a special case
         return;
     }
-    await screenshotRef.current?.show(sectionEndY, visibleBottomOffset);
-    screenshotRef.current?.moveAndHide(
-        isFolded ? visibleBottomOffset - sectionEndY : sectionEndY - realBottomOffset,
-        duration,
-    );
+    screenshotRef.current?.show(sectionEndY, visibleBottomOffset).then(() => {
+        screenshotRef.current?.moveAndHide(
+            isFolded ? visibleBottomOffset - sectionEndY : sectionEndY - realBottomOffset,
+            duration,
+        );
+    });
 }
 
 /**
@@ -318,6 +344,7 @@ export function UICollapsableSectionList<ItemT, SectionT = DefaultSectionT>(
             }}
             // @ts-expect-error
             patchedFrames={framesProxy}
+            CellRendererComponent={CellRendererComponent}
         />
     );
 }
