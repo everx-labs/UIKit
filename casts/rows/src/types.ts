@@ -11,14 +11,17 @@ export enum UIListRowKind {
 type UIListRowWithPayload<T, P = void> = P extends void ? T : T & { payload: P };
 
 type LinkRow = {
+    key: string;
     kind: UIListRowKind.Link;
     props: UILinkProps;
 };
 type CurrencyRow = {
+    key: string;
     kind: UIListRowKind.Currency;
     props: UICurrencyRowProps;
 };
 type AccountRow = {
+    key: string;
     kind: UIListRowKind.Account;
     props: UIAccountRowProps;
 };

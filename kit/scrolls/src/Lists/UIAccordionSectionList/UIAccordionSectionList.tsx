@@ -174,7 +174,7 @@ type UIAccordionSection<ItemT> = {
 
 /**
  * The component is separated to call as less hooks as possible
- * when section is toggled, since animation is depend on how
+ * when a section is toggled, since the animation depends on how
  * fast the list is re-rendered.
  */
 function UIAccordionSectionListInner<ItemT>({
@@ -202,9 +202,6 @@ function UIAccordionSectionListInner<ItemT>({
     const processedSections = React.useMemo(() => {
         return sections.map(section => {
             const { key, isFolded, data } = section;
-            if (!key) {
-                return section;
-            }
             if (!(`${key}:header` in foldedSections)) {
                 if (isFolded) {
                     return {
@@ -367,7 +364,7 @@ const UIAccordionSectionListOriginal = React.memo(
                     return;
                 }
                 /**
-                 * The case is when section is expanded, and it's so big,
+                 * The case is when the section is expanded, and it's so big,
                  * that the next section being unmounted in the process.
                  * The animation for that case is to simply move
                  * the screenshot below bounds
@@ -421,7 +418,7 @@ const UIAccordionSectionListOriginal = React.memo(
 
 export const UIAccordionSectionList: <ItemT>(
     props: SectionListProps<ItemT, UIAccordionSection<ItemT>>,
-) => React.ReactNode = wrapScrollableComponent(
+) => JSX.Element = wrapScrollableComponent(
     UIAccordionSectionListOriginal,
     'UIAccordionSectionList',
 );

@@ -88,7 +88,7 @@ public class UIKitAccordionOverlayView extends ReactViewGroup {
          * ScrollView might change it's `scrollY` position.
          * Imagine you had a big section that allow you to scroll,
          * then when it's collapsed the size of the content would become lesser
-         * than the visible are. That force ScrollView to reset scroll position to 0
+         * than the visible are. That forces ScrollView to reset scroll position to 0
          * to adjust content position.
          * Here we intercept this moment and adjust position of the overlay.
          */
@@ -155,7 +155,7 @@ public class UIKitAccordionOverlayView extends ReactViewGroup {
         int shiftY = (int) PixelUtil.toPixelFromDIP(args.getInt(0));
         int duration = args.getInt(1);
 
-        Log.d(REACT_CLASS, String.format("move with  shift: %d", shiftY));
+        Log.d(REACT_CLASS, String.format("move with shift: %d", shiftY));
 
         /**
          * (savelichalex):

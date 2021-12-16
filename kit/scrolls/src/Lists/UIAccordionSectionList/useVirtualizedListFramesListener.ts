@@ -38,7 +38,7 @@ export type VirtualizedListScrollMetrics = {
 
 /**
  * VirtualizedList do a lot of work under the hood,
- * what is the most important for us - it track coordinates
+ * what is the most important for us - it tracks coordinates
  * for cells, that it manages.
  *
  * Unfortunatelly though, it doesn't have a way to notify
