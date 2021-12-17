@@ -147,6 +147,12 @@ const Main = ({ navigation }: { navigation: any }) => {
                         }}
                     >
                         <UILinkButton
+                            title="Large header"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('large-header')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
                             title="Browser"
                             type={UILinkButtonType.Menu}
                             onPress={() => navigation.navigate('browser')}
@@ -211,13 +217,8 @@ const Main = ({ navigation }: { navigation: any }) => {
                             type={UILinkButtonType.Menu}
                             onPress={() => navigation.navigate('keyboard')}
                             layout={styles.button}
-                        />
-                        <UILinkButton
-                            title="Large header"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('large-header')}
-                            layout={styles.button}
                         /> */}
+
                         <UILinkButton
                             title="Layouts"
                             type={UILinkButtonType.Menu}

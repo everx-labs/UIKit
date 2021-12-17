@@ -5,73 +5,85 @@ import Animated, {
     scrollTo,
 } from 'react-native-reanimated';
 import { useScrollableParentScrollHandler } from '@tonlabs/uikit.scrolls';
-import type { ScrollHandlerContext } from '../types';
+import type { ScrollHandlerContext } from './scrollContext';
 import { useOnScrollHandler } from './useOnScrollHandler';
 import { useOnWheelHandler } from './useOnWheelHandler';
 import { useOnEndDrag } from './useOnEndDrag';
-import { useScrollFallbackGestureHandler } from './useScrollFallbackGestureHandler';
 import { useOnMomentumEnd } from './useOnMomentumEnd';
 import { useOnBeginDrag } from './useOnBeginDrag';
 
 export function useScrollHandler(
     scrollRef: React.RefObject<Animated.ScrollView>,
     largeTitleViewRef: React.RefObject<Animated.View>,
-    shift: Animated.SharedValue<number>,
-    defaultShift: Animated.SharedValue<number>,
+    currentPosition: Animated.SharedValue<number>,
+    defaultPosition: Animated.SharedValue<number>,
     largeTitleHeight: Animated.SharedValue<number>,
     hasScrollShared: Animated.SharedValue<boolean>,
-    rubberBandDistance: number,
 ) {
-    const scrollInProgress = useSharedValue(false);
     // see `useAnimatedGestureHandler` and `onWheel`
     const yIsNegative = useSharedValue(true);
 
     const { parentHandler: parentScrollHandler, parentHandlerActive: parentScrollHandlerActive } =
         useScrollableParentScrollHandler();
 
-    const onBeginDrag = useOnBeginDrag(shift, scrollInProgress, parentScrollHandler);
+    const mightApplyShiftToScrollView = useSharedValue(false);
+
+    const onBeginDrag = useOnBeginDrag(
+        currentPosition,
+        mightApplyShiftToScrollView,
+        parentScrollHandler,
+    );
 
     const onScroll = useOnScrollHandler(
         scrollRef,
         largeTitleViewRef,
         largeTitleHeight,
-        yIsNegative,
-        shift,
-        rubberBandDistance,
+        currentPosition,
         parentScrollHandler,
         parentScrollHandlerActive,
     );
 
-    const mightApplyShiftToScrollView = useSharedValue(false);
-
     useAnimatedReaction(
         () => {
             return {
-                shift: shift.value,
+                currentPosition: currentPosition.value,
                 largeTitleHeight: largeTitleHeight.value,
                 mightApplyShiftToScrollView: mightApplyShiftToScrollView.value,
             };
         },
         state => {
+            // console.log(state.currentPosition, state.largeTitleHeight);
             if (!state.mightApplyShiftToScrollView) {
                 return;
             }
 
-            scrollTo(scrollRef, 0, 0 - state.shift - state.largeTitleHeight, false);
+            if (state.currentPosition < 0 - state.largeTitleHeight) {
+                // console.log(
+                //     state.currentPosition,
+                //     // eslint-disable-next-line no-bitwise
+                //     ~(state.currentPosition + state.largeTitleHeight) + 1,
+                // );
+                scrollTo(
+                    scrollRef,
+                    0,
+                    // eslint-disable-next-line no-bitwise
+                    -1 * (state.currentPosition + state.largeTitleHeight),
+                    false,
+                );
+            }
         },
     );
 
     const onEndDrag = useOnEndDrag(
-        shift,
-        scrollInProgress,
+        currentPosition,
         largeTitleHeight,
-        defaultShift,
+        defaultPosition,
         mightApplyShiftToScrollView,
         parentScrollHandler,
         parentScrollHandlerActive,
     );
 
-    const onMomentumEnd = useOnMomentumEnd(shift, scrollInProgress, defaultShift, largeTitleHeight);
+    const onMomentumEnd = useOnMomentumEnd(currentPosition, defaultPosition, largeTitleHeight);
 
     const scrollHandler = useAnimatedScrollHandler<ScrollHandlerContext>({
         onBeginDrag,
@@ -79,12 +91,6 @@ export function useScrollHandler(
         onEndDrag,
         onMomentumEnd,
     });
-
-    const gestureHandler = useScrollFallbackGestureHandler(
-        hasScrollShared,
-        yIsNegative,
-        scrollHandler as any,
-    );
 
     /**
      * On web listening to `scroll` events is not enough,
@@ -99,9 +105,7 @@ export function useScrollHandler(
     const onWheel = useOnWheelHandler(yIsNegative, hasScrollShared, scrollHandler as any);
 
     return {
-        scrollInProgress,
         scrollHandler,
-        gestureHandler,
         onWheel,
     };
 }

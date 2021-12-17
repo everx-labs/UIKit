@@ -2,15 +2,14 @@
 import * as React from 'react';
 import type { NativeScrollEvent } from 'react-native';
 import Animated, { withSpring, withDecay } from 'react-native-reanimated';
-import type { ScrollHandlerContext } from '../types';
+import type { ScrollHandlerContext } from './scrollContext';
 import { runOnUIPlatformSelect } from './runOnUIPlatformSelect';
 
-function withNormalizedMomentumEnd(
-    scrollInProgress: Animated.SharedValue<boolean>,
-    cb: (velocity: number, velocityFactor: number) => void,
-) {
+function withNormalizedMomentumEnd(cb: (velocity: number, velocityFactor: number) => void) {
     return (event: NativeScrollEvent, ctx: ScrollHandlerContext) => {
         'worklet';
+
+        return;
 
         /**
          * If we got there then there was an end event
@@ -24,7 +23,6 @@ function withNormalizedMomentumEnd(
              * ScrollView already did all the necessary work.
              */
             if (event.contentOffset.y > 0) {
-                scrollInProgress.value = false;
                 return;
             }
             /**
@@ -64,9 +62,8 @@ function withNormalizedMomentumEnd(
 }
 
 export function useOnMomentumEnd(
-    shift: Animated.SharedValue<number>,
-    scrollInProgress: Animated.SharedValue<boolean>,
-    defaultShift: Animated.SharedValue<number>,
+    currentPosition: Animated.SharedValue<number>,
+    defaultPosition: Animated.SharedValue<number>,
     largeTitleHeight: Animated.SharedValue<number>,
 ) {
     const onMomentumEndRef = React.useRef<
@@ -74,39 +71,35 @@ export function useOnMomentumEnd(
     >(null);
 
     if (onMomentumEndRef.current == null) {
-        onMomentumEndRef.current = withNormalizedMomentumEnd(
-            scrollInProgress,
-            (velocity, velocityFactor) => {
-                'worklet';
+        onMomentumEndRef.current = withNormalizedMomentumEnd((velocity, velocityFactor) => {
+            'worklet';
 
-                /**
-                 * At the point `shift` might be not synced with actual position,
-                 * but fortunately we can sync it right now.
-                 * We know that `onMomuntumEnd` was fired
-                 * when scroll view had reached 0 y coordinate.
-                 * Hence the shift should be the size of largeTitleHeader.
-                 * Since animation will be fired only on the next frame, to not skip frame
-                 * and make it smoother also applying current velocity now.
-                 */
-                shift.value = -largeTitleHeight.value + velocity;
-                shift.value = withDecay(
-                    {
-                        velocity,
-                        velocityFactor,
-                        clamp: [0 - largeTitleHeight.value, 0],
-                    },
-                    isFinished => {
-                        if (isFinished) {
-                            shift.value = withSpring(defaultShift.value, {
-                                velocity: 1,
-                                overshootClamping: true,
-                            });
-                        }
-                        scrollInProgress.value = false;
-                    },
-                );
-            },
-        );
+            /**
+             * At the point `shift` might be not synced with actual position,
+             * but fortunately we can sync it right now.
+             * We know that `onMomuntumEnd` was fired
+             * when scroll view had reached 0 y coordinate.
+             * Hence the shift should be the size of largeTitleHeader.
+             * Since animation will be fired only on the next frame, to not skip frame
+             * and make it smoother also applying current velocity now.
+             */
+            currentPosition.value = -largeTitleHeight.value + velocity;
+            currentPosition.value = withDecay(
+                {
+                    velocity,
+                    velocityFactor,
+                    clamp: [0 - largeTitleHeight.value, 0],
+                },
+                isFinished => {
+                    // if (isFinished) {
+                    //     currentPosition.value = withSpring(defaultPosition.value, {
+                    //         velocity: 1,
+                    //         overshootClamping: true,
+                    //     });
+                    // }
+                },
+            );
+        });
     }
 
     return onMomentumEndRef.current || undefined;

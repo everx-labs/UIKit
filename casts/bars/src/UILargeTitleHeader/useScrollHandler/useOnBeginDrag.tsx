@@ -3,11 +3,12 @@ import * as React from 'react';
 import type { NativeScrollEvent } from 'react-native';
 import Animated, { cancelAnimation } from 'react-native-reanimated';
 import type { ScrollableParentScrollHandler } from '@tonlabs/uikit.scrolls';
-import type { ScrollHandlerContext } from '../types';
+import { initVelocityTracker, setDragging } from './scrollContext';
+import type { ScrollHandlerContext } from './scrollContext';
 
 export function useOnBeginDrag(
-    shift: Animated.SharedValue<number>,
-    scrollInProgress: Animated.SharedValue<boolean>,
+    currentPosition: Animated.SharedValue<number>,
+    mightApplyShiftToScrollView: Animated.SharedValue<boolean>,
     parentScrollHandler: ScrollableParentScrollHandler,
 ) {
     const onBeginHandlerRef = React.useRef<
@@ -18,13 +19,15 @@ export function useOnBeginDrag(
         onBeginHandlerRef.current = (_event: NativeScrollEvent, ctx: ScrollHandlerContext) => {
             'worklet';
 
-            cancelAnimation(shift);
+            console.log('onBeginDrag');
 
-            ctx.scrollTouchGuard = true;
-            ctx.continueResetOnMomentumEnd = false;
-            ctx.yWithoutRubberBand = shift.value;
-            scrollInProgress.value = true;
+            cancelAnimation(currentPosition);
 
+            setDragging(ctx);
+            initVelocityTracker(ctx);
+            mightApplyShiftToScrollView.value = false;
+
+            // TODO: check it
             parentScrollHandler(_event);
         };
     }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { UIMaterialTextView } from '@tonlabs/uikit.inputs';
@@ -28,17 +28,35 @@ function LargeHeaderExample() {
                     }}
                 />
             )}
-            {new Array(9)
+            {new Array(19)
                 .fill(null)
-                .map((_el, i) => (i + 1) / 10)
+                .map((_el, i) => (i + 1) / 19)
                 .map(opacity => (
                     <View
                         key={opacity}
                         style={{
                             height: 100,
                             backgroundColor: `rgba(255,0,0,${opacity})`,
+                            position: 'relative',
                         }}
-                    />
+                    >
+                        {new Array(5)
+                            .fill(null)
+                            .map((_el, i) => (i + 1) / 5)
+                            .map(opacity => (
+                                <View
+                                    key={opacity}
+                                    style={{
+                                        ...StyleSheet.absoluteFillObject,
+                                        height: 1,
+                                        backgroundColor: `rgba(255,0,0,${opacity})`,
+                                        left: 0,
+                                        right: 0,
+                                        top: opacity * 100,
+                                    }}
+                                />
+                            ))}
+                    </View>
                 ))}
         </ScrollView>
     );
@@ -110,7 +128,7 @@ export function LargeHeaderScreen() {
                     // onTitlePress: () => {
                     //     console.log('sdfsdf');
                     // },
-                    // caption: 'caption',
+                    caption: 'caption',
                     // headerRightItems: [
                     //     {
                     //         label: 'Action1',
@@ -121,10 +139,10 @@ export function LargeHeaderScreen() {
                     //         onPress: () => {},
                     //     },
                     // ],
-                    renderAboveContent: () => {
-                        return <RefreshPageController />;
-                    },
-                    // renderBelowContent,
+                    // renderAboveContent: () => {
+                    //     return <RefreshPageController />;
+                    // },
+                    renderBelowContent,
                 }}
                 component={LargeHeaderExample}
             />
