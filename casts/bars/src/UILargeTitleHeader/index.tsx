@@ -44,7 +44,7 @@ const UILargeTitlePositionContext = React.createContext<{
     forceChangePosition?: (
         position: number,
         options: { duration?: number; changeDefaultShift?: boolean },
-        callback?: ((isFinished: boolean) => void) | undefined,
+        callback?: ((isFinished?: boolean) => void) | undefined,
     ) => void;
 }>({});
 
@@ -318,7 +318,7 @@ export function UILargeTitleHeader({
         (
             position: number,
             options: { duration?: number; changeDefaultShift?: boolean } = {},
-            callback?: ((isFinished: boolean) => void) | undefined,
+            callback?: ((isFinished?: boolean) => void) | undefined,
         ) => {
             // Do not interupt active scroll
             if (!scrollInProgress.value) {

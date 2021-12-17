@@ -39,7 +39,7 @@ const Rows = React.memo(function Rows({ loading }: { loading: boolean }) {
                 key: 'links',
                 data: [
                     {
-                        key: '0',
+                        key: `0`,
                         kind: UIListRowKind.Link,
                         props: {
                             title: 'Title ',
@@ -50,7 +50,7 @@ const Rows = React.memo(function Rows({ loading }: { loading: boolean }) {
                         },
                     },
                     {
-                        key: '1',
+                        key: `1`,
                         kind: UIListRowKind.Link,
                         props: {
                             title: "Let's check out a very long header for this link that you can imagine",

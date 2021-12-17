@@ -49,7 +49,7 @@
         "react-native-fast-image": "^8.3.4",
         "react-native-gesture-handler": "^1.10.3",
         "react-native-linear-gradient": "^2.5.6",
-        "react-native-reanimated": "2.2.1",
+        "react-native-reanimated": "2.3.1",
         "typescript": "4.4.3"
     },
     "peerDependencies": {
@@ -59,7 +59,7 @@
         "react-native-fast-image": "^8.3.4",
         "react-native-gesture-handler": "^1.10.3",
         "react-native-linear-gradient": "^2.5.6",
-        "react-native-reanimated": "^2.2.1"
+        "react-native-reanimated": "^2.3.0"
     },
     "@react-native-community/bob": {
         "source": "src",

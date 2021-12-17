@@ -11,7 +11,9 @@ import Animated, {
     withSpring,
     withTiming,
 } from 'react-native-reanimated';
+import type { WithSpringConfig } from 'react-native-reanimated';
 import { TapGestureHandler } from 'react-native-gesture-handler';
+
 import { UIConstant } from '../constants';
 
 // eslint-disable-next-line no-shadow
@@ -21,7 +23,7 @@ enum DisplayState {
 }
 
 const DURATION_OF_LINEAR_ANIMATION = 150;
-const springConfig: Animated.WithSpringConfig = {
+const springConfig: WithSpringConfig = {
     damping: 20,
     stiffness: 300,
 };
@@ -87,7 +89,7 @@ const Content: React.FC<ContentProps> = ({
         return withTiming(
             displayState.value,
             { duration: DURATION_OF_LINEAR_ANIMATION },
-            (isFinished: boolean) => {
+            (isFinished?: boolean) => {
                 if (isFinished) {
                     runOnJS(onAnimationEnd)();
                 }

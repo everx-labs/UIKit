@@ -53,7 +53,7 @@ export function UIAnimatedNumber({
     );
 
     const updateRefs = React.useCallback(
-        (isFinished: boolean) => {
+        (isFinished?: boolean) => {
             if (isFinished) {
                 prevValueHolder.current = valueHolder.current;
                 formatted.value = localizedNumberFormat(
@@ -85,7 +85,7 @@ export function UIAnimatedNumber({
                 duration: 400,
                 easing: Easing.inOut(Easing.ease),
             },
-            (isFinished: boolean) => {
+            (isFinished?: boolean) => {
                 runOnJS(updateRefs)(isFinished);
             },
         );

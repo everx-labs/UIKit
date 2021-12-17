@@ -10,4 +10,6 @@ export const UIConstant = {
     refreshControlHeight: 50,
     refreshControlLoaderSize: 20,
     refreshControlPositioningDuration: 200,
+
+    headerItemHorizontalInset: 13,
 };

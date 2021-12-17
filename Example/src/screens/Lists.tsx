@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useWindowDimensions, View } from 'react-native';
 
-import { UIGridList, UIMasonryList } from '@tonlabs/uikit.scrolls';
+import { UIGridList, UIMasonryList, MasonryItem } from '@tonlabs/uikit.scrolls';
 import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 import { ColorVariants, TypographyVariants, UILabel, useTheme } from '@tonlabs/uikit.themes';
 import { UIBoxButton } from '@tonlabs/uikit.controls';
@@ -9,6 +9,8 @@ import { UIBoxButton } from '@tonlabs/uikit.controls';
 import { useNavigation } from '@react-navigation/core';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
+
+type Item = { page: number; index: number };
 
 function GridList() {
     const theme = useTheme();
@@ -48,39 +50,76 @@ function GridList() {
     );
 }
 
-export function getRandomNum() {
-    const num = Math.random();
-    const symbols = 10 ** (Math.floor(Math.random() * 10) + 1);
-
-    return Math.floor(num * symbols) / 100;
+function generateData(page: number): MasonryItem<Item>[] {
+    const newData = new Array(123).fill(null).map((_, index) => {
+        return {
+            key: `${page}_${index}`,
+            item: { page, index },
+            aspectRatio: 0.5 + (index % 9) / 9,
+        };
+    });
+    return newData;
 }
+
+const Footer = React.memo(() => {
+    return (
+        <View
+            style={{
+                height: 100,
+                backgroundColor: 'red',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}
+        >
+            <UILabel
+                role={TypographyVariants.HeadersHuge}
+                color={ColorVariants.TextPrimaryInverted}
+            >
+                Loading...
+            </UILabel>
+        </View>
+    );
+});
 
 function MasonryList() {
     const { width: windowWidth } = useWindowDimensions();
-    const width = Math.max(850, windowWidth);
+    const width = Math.min(500, windowWidth);
 
-    const numOfColumns = Math.trunc(width / 180);
+    const numOfColumns = Math.trunc(width / 100);
 
-    const [data] = React.useState(() => {
-        return new Array(100 * Math.trunc(Math.random() * 10)).fill(null).map((_, index) => {
-            return {
-                key: `${index}`,
-                aspectRatio: Math.random() * 2,
-            };
-        });
-    });
+    const [page, setPage] = React.useState(0);
 
-    const renderItem = React.useCallback(() => {
-        return (
-            <View
-                style={{
-                    flex: 1,
-                    backgroundColor: `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${
-                        Math.random() * 255
-                    }, ${0.5 + 0.5 * Math.random()})`,
-                }}
-            />
-        );
+    const [data, setData] = React.useState<MasonryItem<Item>[]>([]);
+
+    React.useEffect(() => {
+        setData(oldData => [...oldData, ...generateData(page)]);
+    }, [page]);
+
+    const [isFooterVisible, setIsFooterVisible] = React.useState(false);
+
+    const renderItem = React.useCallback(({ item }: MasonryItem<Item>) => {
+        if (item) {
+            return (
+                <View
+                    style={{
+                        flex: 1,
+                        backgroundColor: `rgb(${item.page * item.index}, ${
+                            item.page + item.index
+                        }, ${item.index ** item.page})`,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <UILabel
+                        role={TypographyVariants.HeadersHuge}
+                        color={ColorVariants.TextPrimaryInverted}
+                    >
+                        {item.index}
+                    </UILabel>
+                </View>
+            );
+        }
+        return null;
     }, []);
     return (
         <View
@@ -93,8 +132,17 @@ function MasonryList() {
             <UIMasonryList
                 data={data}
                 numOfColumns={numOfColumns}
-                onEndReached={() => console.warn('end reached')}
+                onEndReached={() => {
+                    if (page < 5) {
+                        setIsFooterVisible(true);
+                        setTimeout(() => {
+                            setPage(page + 1);
+                            setIsFooterVisible(false);
+                        }, 4000);
+                    }
+                }}
                 renderItem={renderItem}
+                ListFooterComponent={isFooterVisible ? Footer : null}
             />
         </View>
     );

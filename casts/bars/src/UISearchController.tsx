@@ -8,6 +8,7 @@ import Animated, {
     interpolate,
     runOnJS,
 } from 'react-native-reanimated';
+import type { WithSpringConfig } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useBackHandler } from '@react-native-community/hooks';
 
@@ -37,7 +38,7 @@ type UISearchControllerContentProps = Omit<UISearchControllerProps, 'forId'> & {
     progress: Readonly<Animated.SharedValue<number>>;
 };
 
-const withSpringConfig: Animated.WithSpringConfig = {
+const withSpringConfig: WithSpringConfig = {
     damping: 16,
     stiffness: 200,
 };
@@ -67,7 +68,7 @@ const useProgress = (
     }, [visible, visibleState, isFirstRender]);
 
     const onAnimation = React.useCallback(
-        (isFinished: boolean): void => {
+        (isFinished?: boolean): void => {
             'worklet';
 
             if (
