@@ -62,14 +62,14 @@ function UICellDebotImpl({ image, title, caption, onPress, loading, testID }: UI
 const useStyles = makeStyles(() => ({
     container: {
         paddingTop: UILayoutConstant.contentInsetVerticalX2,
-        height: UIConstant.uiImageCell.height,
-        width: UIConstant.uiImageCell.width,
+        height: UIConstant.uiCellDebot.height,
+        width: UIConstant.uiCellDebot.width,
         alignItems: 'center',
     },
     image: {
-        width: UIConstant.uiImageCell.imageSize,
-        height: UIConstant.uiImageCell.imageSize,
-        borderRadius: UIConstant.uiImageCell.borderRadius,
+        width: UIConstant.uiCellDebot.imageSize,
+        height: UIConstant.uiCellDebot.imageSize,
+        borderRadius: UIConstant.uiCellDebot.borderRadius,
     },
     textContainer: {
         paddingTop: UILayoutConstant.contentInsetVerticalX2,
@@ -77,9 +77,9 @@ const useStyles = makeStyles(() => ({
         alignItems: 'center',
     },
     textSkeleton: {
-        height: UIConstant.uiImageCell.textSkeleton.height,
-        width: UIConstant.uiImageCell.textSkeleton.width,
-        borderRadius: UIConstant.uiImageCell.textSkeleton.borderRadius,
+        height: UIConstant.uiCellDebot.textSkeleton.height,
+        width: UIConstant.uiCellDebot.textSkeleton.width,
+        borderRadius: UIConstant.uiCellDebot.textSkeleton.borderRadius,
     },
 }));
 

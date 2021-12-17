@@ -1,5 +1,5 @@
 export const UIConstant = {
-    uiImageCell: {
+    uiCellDebot: {
         height: 132,
         width: 80,
         imageSize: 72,
