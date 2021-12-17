@@ -1,10 +1,16 @@
 import * as React from 'react';
-import { Platform, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import {
+    Platform,
+    StyleProp,
+    StyleSheet,
+    TouchableWithoutFeedback,
+    View,
+    ViewStyle,
+} from 'react-native';
 
 // eslint-disable-next-line import/no-unresolved
 import { ColorVariants } from '@tonlabs/uikit.themes';
 
-// @ts-ignore
 import { TouchableElement } from './TouchableElement';
 import { UIIndicator } from '../UIIndicator';
 
@@ -37,7 +43,7 @@ type ButtonProps = {
     testID?: string;
 };
 
-const ButtonForward = React.forwardRef<typeof TouchableElement, ButtonProps>(
+const ButtonForward = React.forwardRef<TouchableWithoutFeedback, ButtonProps>(
     function ButtonForwarded(
         {
             animations,

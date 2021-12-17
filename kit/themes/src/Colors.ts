@@ -30,8 +30,8 @@ export enum ColorVariants {
     BackgroundTertiaryInverted = 'BackgroundTertiaryInverted',
     BackgroundOverlay = 'BackgroundOverlay',
     BackgroundOverlayInverted = 'BackgroundOverlayInverted',
+    BackgroundBW = 'BackgroundBW',
     // BackgroundNulled = 'BackgroundNulled',
-    // BackgroundBAndW = 'BackgroundBAndW',
     LinePrimary = 'LinePrimary',
     LineSecondary = 'LineSecondary',
     LineTertiary = 'LineTertiary',
@@ -41,6 +41,8 @@ export enum ColorVariants {
     LinePositive = 'LinePositive',
     LineOverlayLight = 'LineOverlayLight',
     LineOverlayDark = 'LineOverlayDark',
+    SpecialAccentLight = 'SpecialAccentLight',
+    SpecialAccentDark = 'SpecialAccentDark',
     IconAccent = 'IconAccent',
     // IconPrimary = 'IconPrimary',
     IconSecondary = 'IconSecondary',
@@ -115,6 +117,7 @@ export const LightTheme: Theme = {
     [ColorVariants.BackgroundTertiaryInverted]: '#B6B8BA',
     [ColorVariants.BackgroundOverlay]: 'rgba(0, 0, 0, 0.6)',
     [ColorVariants.BackgroundOverlayInverted]: 'rgba(255, 255, 255, 0.4)',
+    [ColorVariants.BackgroundBW]: '#FFFFFF',
 
     [ColorVariants.LinePrimary]: '#F4F4F5',
     [ColorVariants.LineSecondary]: '#EBECEC',
@@ -125,6 +128,9 @@ export const LightTheme: Theme = {
     [ColorVariants.LinePositive]: '#2FA851',
     [ColorVariants.LineOverlayDark]: 'rgba(255,255,255,.08)',
     [ColorVariants.LineOverlayLight]: 'rgba(0,0,0,.04)',
+
+    [ColorVariants.SpecialAccentLight]: '#339CE6',
+    [ColorVariants.SpecialAccentDark]: '#0069B3',
 
     [ColorVariants.IconAccent]: '#0073C4',
     // [ColorVariants.IconPrimary]: '#20262A',
@@ -165,6 +171,7 @@ export const DarkTheme: Theme = {
     [ColorVariants.BackgroundTertiaryInverted]: '#676B6E',
     [ColorVariants.BackgroundOverlay]: 'rgba(0, 0, 0, 0.8)',
     [ColorVariants.BackgroundOverlayInverted]: 'rgba(255, 255, 255, 0.2)',
+    [ColorVariants.BackgroundBW]: '#1C2125',
 
     [ColorVariants.LinePrimary]: '#292F32',
     [ColorVariants.LineSecondary]: '#32373B',
@@ -175,6 +182,9 @@ export const DarkTheme: Theme = {
     [ColorVariants.LinePositive]: '#36C05C',
     [ColorVariants.LineOverlayDark]: 'rgba(0,0,0,.08)',
     [ColorVariants.LineOverlayLight]: 'rgba(255,255,255,.08)',
+
+    [ColorVariants.SpecialAccentLight]: '#338FD0',
+    [ColorVariants.SpecialAccentDark]: '#005C9D',
 
     [ColorVariants.IconAccent]: '#0073C4',
     [ColorVariants.IconSecondary]: '#ADB0B1',

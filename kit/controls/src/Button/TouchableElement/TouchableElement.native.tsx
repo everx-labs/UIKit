@@ -1,23 +1,11 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 import Animated, { withSpring } from 'react-native-reanimated';
 
-import { BUTTON_WITH_SPRING_CONFIG } from '../constants';
+import { BUTTON_WITH_SPRING_CONFIG } from '../../constants';
 
-import type { ButtonAnimations } from './types';
-
-type TouchableElementProps = {
-    animations: ButtonAnimations;
-    children: React.ReactNode;
-    disabled?: boolean;
-    loading?: boolean;
-    onLongPress: () => void;
-    onPress: () => void;
-    style?: StyleProp<ViewStyle>;
-    contentStyle?: StyleProp<ViewStyle>;
-    testID?: string;
-};
+import type { TouchableElementProps } from './types';
 
 export const TouchableElement = ({
     animations,
