@@ -71,7 +71,12 @@ public class UIKitAccordionOverlayViewManager extends ViewGroupManager<UIKitAcco
             }
             case COMMAND_MOVE_AND_HIDE_ID:
             {
-                root.moveAndHide(args);
+                root.moveAndHide(args, new Runnable() {
+                    @Override
+                    public void run() {
+                        root.dispatchEvent(COMMAND_MOVE_AND_HIDE_KEY);
+                    }
+                });
                 return;
             }
 
@@ -104,7 +109,12 @@ public class UIKitAccordionOverlayViewManager extends ViewGroupManager<UIKitAcco
             }
             case COMMAND_MOVE_AND_HIDE_KEY:
             {
-                root.moveAndHide(args);
+                root.moveAndHide(args, new Runnable() {
+                    @Override
+                    public void run() {
+                        root.dispatchEvent(COMMAND_MOVE_AND_HIDE_KEY);
+                    }
+                });
                 return;
             }
 

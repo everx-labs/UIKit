@@ -58,7 +58,11 @@ RCT_EXPORT_METHOD(moveAndHide:(nonnull NSNumber*)reactTag shiftY:(nonnull NSNumb
         if (!view || ![view isKindOfClass:[UIKitAccordionOverlayView class]]) {
             return;
         }
-        [view moveAndHide:shiftY duration:duration];
+        [view moveAndHide:shiftY duration:duration onFinish:^() {
+            view.onCommandFinished(@{
+                @"finishedCommand": @"moveAndHide",
+            });
+        }];
     }];
 })
 

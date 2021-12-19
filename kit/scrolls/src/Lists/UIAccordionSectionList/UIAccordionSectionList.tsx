@@ -7,8 +7,7 @@ import VirtualizedSectionList from 'react-native/Libraries/Lists/VirtualizedSect
 // @ts-ignore
 import setAndForwardRef from 'react-native-reanimated/lib/setAndForwardRef';
 
-import { ColorVariants, UILabel, UILabelRoles, useTheme } from '@tonlabs/uikit.themes';
-import { TouchableOpacity } from '@tonlabs/uikit.controls';
+import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 
 import { AccordionOverlayView, AccordionOverlayViewRef } from './AccordionOverlayView';
 import {
@@ -19,12 +18,13 @@ import {
 import { CellRendererComponent } from './CellRendererComponent';
 
 import { wrapScrollableComponent } from '../../wrapScrollableComponent';
+import { AccordionSectionHeader } from './AccordionSectionHeader';
 
 let now: number;
 
 const emptyArray: any = [];
 const LAST_SECTION_TAG = 'LAST_SECTION_TAG_DO_NOT_USE_THIS_EXTERNALLY';
-const duration = 1000;
+const duration = 250;
 
 /**
  * TODO: known problems.
@@ -44,6 +44,7 @@ function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
     listRef: { current: VirtualizedSectionList<ItemT, SectionT> },
     sectionsMapping: { current: Record<string, string> },
     sectionToAnimateKey: { current: string | undefined },
+    animationInProgress: { current: boolean },
 ) {
     const list = listRef.current.getListRef();
 
@@ -87,10 +88,17 @@ function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
                  * bottom point, to the end of the visible area.
                  */
                 const nextSectionSpace = visibleLength - currentFrameSpace;
-                const endY = sectionEndY + nextSectionSpace + offsetDiff;
-                overlayRef.current?.show(sectionEndY, endY).then(() => {
-                    overlayRef.current?.moveAndHide(-offsetDiff, duration);
-                });
+                const endY = sectionEndY + Math.max(nextSectionSpace + offsetDiff, visibleLength);
+
+                animationInProgress.current = true;
+                overlayRef.current
+                    ?.show(sectionEndY, endY)
+                    .then(() => {
+                        return overlayRef.current?.moveAndHide(-offsetDiff, duration);
+                    })
+                    .finally(() => {
+                        animationInProgress.current = false;
+                    });
                 // Disable frame tracking
                 sectionToAnimateKey.current = undefined;
                 return;
@@ -100,6 +108,7 @@ function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
          * Just show a screenshot above
          * Animation is handled later in frame change listener
          */
+        animationInProgress.current = true;
         overlayRef.current?.show(sectionEndY, sectionEndY + visibleLength);
         return;
     }
@@ -121,9 +130,18 @@ function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
      * So handle this case first.
      */
     if (currentSectionFrame.offset > visibleLength && !isFolded) {
-        overlayRef.current?.show(sectionEndY - visibleLength, realBottomOffset).then(() => {
-            overlayRef.current?.moveAndHide(offset + visibleLength - sectionEndY, duration);
-        });
+        animationInProgress.current = true;
+        overlayRef.current
+            ?.show(sectionEndY - visibleLength, realBottomOffset)
+            .then(() => {
+                return overlayRef.current?.moveAndHide(
+                    offset + visibleLength - sectionEndY,
+                    duration,
+                );
+            })
+            .finally(() => {
+                animationInProgress.current = false;
+            });
 
         return;
     }
@@ -144,12 +162,18 @@ function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
         // it's a special case
         return;
     }
-    overlayRef.current?.show(sectionEndY, visibleBottomOffset).then(() => {
-        overlayRef.current?.moveAndHide(
-            isFolded ? visibleBottomOffset - sectionEndY : sectionEndY - realBottomOffset,
-            duration,
-        );
-    });
+    animationInProgress.current = true;
+    overlayRef.current
+        ?.show(sectionEndY, visibleBottomOffset)
+        .then(() => {
+            return overlayRef.current?.moveAndHide(
+                isFolded ? visibleBottomOffset - sectionEndY : sectionEndY - realBottomOffset,
+                duration,
+            );
+        })
+        .finally(() => {
+            animationInProgress.current = false;
+        });
 }
 
 type UIAccordionSection<ItemT> = {
@@ -183,6 +207,7 @@ function UIAccordionSectionListInner<ItemT>({
     listRef,
     sectionsMapping,
     sectionToAnimateKey,
+    animationInProgress,
     sections,
     ...rest
 }: {
@@ -191,6 +216,7 @@ function UIAccordionSectionListInner<ItemT>({
     listRef: { current: VirtualizedSectionList<ItemT, UIAccordionSection<ItemT>> };
     sectionsMapping: { current: Record<string, string> };
     sectionToAnimateKey: { current: string | undefined };
+    animationInProgress: { current: boolean };
 } & SectionListProps<ItemT, UIAccordionSection<ItemT>>) {
     const [foldedSections, setFoldedSections] = React.useState<Record<string, boolean>>({});
     // This is used to reduce re-creation of a press callback
@@ -221,6 +247,10 @@ function UIAccordionSectionListInner<ItemT>({
 
     const onSectionHeaderPress = React.useCallback(
         (sectionKey: string) => {
+            if (animationInProgress.current) {
+                return;
+            }
+
             now = Date.now();
 
             prepareAnimation(
@@ -230,6 +260,7 @@ function UIAccordionSectionListInner<ItemT>({
                 listRef,
                 sectionsMapping,
                 sectionToAnimateKey,
+                animationInProgress,
             );
 
             setFoldedSections({
@@ -237,19 +268,20 @@ function UIAccordionSectionListInner<ItemT>({
                 [sectionKey]: !foldedSectionsHolderRef.current[sectionKey],
             });
         },
-        [listRef, overlayRef, sectionsMapping, sectionToAnimateKey],
+        [listRef, overlayRef, sectionsMapping, sectionToAnimateKey, animationInProgress],
     );
 
     const renderCollapsableSectionHeader = React.useCallback(
         (info: { section: SectionListData<ItemT, UIAccordionSection<ItemT>> }) => {
             const sectionKey = `${info.section.key}:header`;
             return (
-                <TouchableOpacity
-                    onPress={() => onSectionHeaderPress(sectionKey)}
-                    style={styles.sectionHeader}
-                >
-                    <UILabel role={UILabelRoles.HeadlineHead}>{info.section.title}</UILabel>
-                </TouchableOpacity>
+                <AccordionSectionHeader
+                    title={info.section.title}
+                    isFolded={info.section.isFolded}
+                    sectionKey={sectionKey}
+                    onSectionHeaderPress={onSectionHeaderPress}
+                    duration={duration}
+                />
             );
         },
         [onSectionHeaderPress],
@@ -266,6 +298,10 @@ function UIAccordionSectionListInner<ItemT>({
         </AccordionOverlayView>
     );
 }
+
+const defaultKeyExtractor = (item: any) => item.key;
+const defaultGetItemCount = (items: any) => items.length;
+const defaultGetItem = (items: any, index: number) => items[index];
 
 /**
  * A component whose sections can expand and collapse with animation.
@@ -284,7 +320,7 @@ const UIAccordionSectionListOriginal = React.memo(
         props: SectionListProps<ItemT, UIAccordionSection<ItemT>>,
         ref: React.ForwardedRef<VirtualizedSectionList<ItemT, UIAccordionSection<ItemT>>>,
     ) {
-        const { sections, contentContainerStyle } = props;
+        const { sections, contentContainerStyle, keyExtractor, getItemCount, getItem } = props;
 
         const theme = useTheme();
         const bgStyle = React.useMemo(
@@ -328,6 +364,8 @@ const UIAccordionSectionListOriginal = React.memo(
             [ref],
         );
 
+        const animationInProgress = React.useRef(false);
+
         const framesProxy = useVirtualizedListFramesListener(
             sectionsMapping.current,
             async (sectionKey, prev, next) => {
@@ -355,9 +393,10 @@ const UIAccordionSectionListOriginal = React.memo(
                     }
 
                     await overlayRef.current?.append(next.offset, offset + visibleLength);
-                    overlayRef.current?.moveAndHide(-visibleLength, duration);
+                    await overlayRef.current?.moveAndHide(-visibleLength, duration);
 
                     sectionToAnimateKey.current = undefined;
+                    animationInProgress.current = false;
                     return;
                 }
                 if (prev == null) {
@@ -374,12 +413,13 @@ const UIAccordionSectionListOriginal = React.memo(
                         console.log('before animation time ms:', Date.now() - now);
                     }
 
-                    overlayRef.current?.moveAndHide(
+                    await overlayRef.current?.moveAndHide(
                         visibleLength - (prev.offset - offset),
                         duration,
                     );
 
                     sectionToAnimateKey.current = undefined;
+                    animationInProgress.current = false;
                     return;
                 }
                 /**
@@ -390,9 +430,13 @@ const UIAccordionSectionListOriginal = React.memo(
                         console.log('before animation time ms:', Date.now() - now);
                     }
 
-                    overlayRef.current?.moveAndHide(next.offset - (prev.offset - offset), duration);
+                    await overlayRef.current?.moveAndHide(
+                        next.offset - (prev.offset - offset),
+                        duration,
+                    );
 
                     sectionToAnimateKey.current = undefined;
+                    animationInProgress.current = false;
                 }
             },
         );
@@ -405,10 +449,16 @@ const UIAccordionSectionListOriginal = React.memo(
                 listRef={listRefLocal}
                 sectionsMapping={sectionsMapping}
                 sectionToAnimateKey={sectionToAnimateKey}
+                animationInProgress={animationInProgress}
                 style={[bgStyle, styles.container]}
                 contentContainerStyle={[bgStyle, contentContainerStyle]}
                 CellRendererComponent={CellRendererComponent}
                 stickySectionHeadersEnabled={false}
+                // SectionList does the same under the hood
+                // since we use VirtualizedSectionList need to do the same
+                keyExtractor={keyExtractor || defaultKeyExtractor}
+                getItemCount={getItemCount || defaultGetItemCount}
+                getItem={getItem || defaultGetItem}
                 // @ts-expect-error
                 patchedFrames={framesProxy}
             />
@@ -425,8 +475,4 @@ export const UIAccordionSectionList: <ItemT>(
 
 const styles = StyleSheet.create({
     container: { flex: 1 },
-    sectionHeader: {
-        paddingTop: 20,
-        paddingBottom: 16,
-    },
 });

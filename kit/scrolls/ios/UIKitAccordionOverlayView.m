@@ -93,7 +93,7 @@
     overlayImageView.frame = [self getDownscaledRect:CGRectMake(0, 0, size.width, size.height)];
 }
 
-- (void)moveAndHide:(NSNumber *)shiftY duration:(NSNumber *)duration {
+- (void)moveAndHide:(NSNumber *)shiftY duration:(NSNumber *)duration onFinish:(onFinishCb)onFinish {
     RCTLogInfo(@"move accordion overlay with shiftY: %@, duration: %@", shiftY, duration);
     
     __weak UIImageView *weakOverlayImageView = overlayImageView;
@@ -114,16 +114,17 @@
             return;
         }
         RCTLogInfo(@"completing...");
-        [strongSelf hide];
+        [strongSelf hide:onFinish];
     }];
 }
 
-- (void)hide {
+- (void)hide:(onFinishCb)onFinish {
     RCTLogInfo(@"hide accordion overlay");
     [overlayContainerView removeFromSuperview];
     
     [self enableScrollViewIfAny];
     [self unlistenToScrollChangesIfAny];
+    onFinish();
 }
 
 // MARK:- helpers

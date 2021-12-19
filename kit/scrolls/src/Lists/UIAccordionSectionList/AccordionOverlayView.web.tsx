@@ -5,7 +5,7 @@ import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-na
 export type AccordionOverlayViewRef = {
     show(startY: number, endY: number): Promise<void>;
     append(startY: number, endY: number): Promise<void>;
-    moveAndHide(shiftY: number, duration?: number): void;
+    moveAndHide(shiftY: number, duration?: number): Promise<void>;
 };
 type AccordionOverlayViewProps = React.PropsWithChildren<{ style?: StyleProp<ViewStyle> }>;
 
@@ -210,7 +210,12 @@ export const AccordionOverlayView = React.forwardRef<
             return Promise.resolve();
         },
         moveAndHide(shiftY: number, duration: number = 100) {
-            overlayInnerTranslationY.value = withTiming(shiftY, { duration }, hideOverlay);
+            return new Promise(resolve => {
+                overlayInnerTranslationY.value = withTiming(shiftY, { duration }, () => {
+                    hideOverlay();
+                    resolve();
+                });
+            });
         },
     }));
 

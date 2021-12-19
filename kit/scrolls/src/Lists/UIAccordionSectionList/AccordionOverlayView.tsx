@@ -12,7 +12,7 @@ const NativeAccordionOverlayView = requireNativeComponent('UIKitAccordionOverlay
 export type AccordionOverlayViewRef = {
     show(startY: number, endY: number): Promise<void>;
     append(startY: number, endY: number): Promise<void>;
-    moveAndHide(shiftY: number, duration?: number): void;
+    moveAndHide(shiftY: number, duration?: number): Promise<void>;
 };
 type AccordionOverlayViewProps = React.PropsWithChildren<{ style?: StyleProp<ViewStyle> }>;
 
@@ -26,6 +26,7 @@ export const AccordionOverlayView = React.forwardRef<
     const resolversRef = React.useRef<{
         resolveShow?: (value: void | PromiseLike<void>) => void;
         resolveAppend?: (value: void | PromiseLike<void>) => void;
+        resolveMoveAndHide?: (value: void | PromiseLike<void>) => void;
     }>({});
 
     React.useImperativeHandle(ref, () => ({
@@ -55,12 +56,16 @@ export const AccordionOverlayView = React.forwardRef<
         },
         moveAndHide(shiftY: number, duration: number = 100) {
             if (nativeRef.current == null) {
-                return;
+                return Promise.resolve();
             }
-            UIManager.dispatchViewManagerCommand(findNodeHandle(nativeRef.current), 'moveAndHide', [
-                shiftY,
-                duration,
-            ]);
+            return new Promise(resolve => {
+                UIManager.dispatchViewManagerCommand(
+                    findNodeHandle(nativeRef.current),
+                    'moveAndHide',
+                    [shiftY, duration],
+                );
+                resolversRef.current.resolveMoveAndHide = resolve;
+            });
         },
     }));
 
@@ -74,6 +79,11 @@ export const AccordionOverlayView = React.forwardRef<
             if (finishedCommand === 'append') {
                 if (resolversRef.current.resolveAppend != null) {
                     resolversRef.current.resolveAppend();
+                }
+            }
+            if (finishedCommand === 'moveAndHide') {
+                if (resolversRef.current.resolveMoveAndHide != null) {
+                    resolversRef.current.resolveMoveAndHide();
                 }
             }
         },

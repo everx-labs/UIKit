@@ -33,7 +33,6 @@ import com.facebook.react.views.view.ReactViewGroup;
 public class UIKitAccordionOverlayView extends ReactViewGroup {
     private final FrameLayout mOverlayContainer;
     private final ImageView mOverlayImage;
-    private final Animator.AnimatorListener mOverlayImageAnimatorListener;
     private final EventDispatcher mEventDispatcher;
     // ScrollView related
     private final ReactScrollViewHelper.ScrollListener mScrollListener;
@@ -58,28 +57,6 @@ public class UIKitAccordionOverlayView extends ReactViewGroup {
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
         mOverlayContainer.addView(mOverlayImage, lp);
-
-        mOverlayImageAnimatorListener = new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                // no-op
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                hide();
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                hide();
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-                // no-op
-            }
-        };
 
         mEventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
 
@@ -151,7 +128,7 @@ public class UIKitAccordionOverlayView extends ReactViewGroup {
         addView(mOverlayContainer);
     }
 
-    public void moveAndHide(ReadableArray args) {
+    public void moveAndHide(ReadableArray args, Runnable cb) {
         int shiftY = (int) PixelUtil.toPixelFromDIP(args.getInt(0));
         int duration = args.getInt(1);
 
@@ -167,17 +144,38 @@ public class UIKitAccordionOverlayView extends ReactViewGroup {
          * that helps to emulate 'overflow: hidden'
          */
         ObjectAnimator animator = ObjectAnimator.ofInt(mOverlayImage, "scrollY", -1 * shiftY);
-        animator.addListener(mOverlayImageAnimatorListener);
+        animator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                // no-op
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                hide(cb);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                hide(cb);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+                // no-op
+            }
+        });
         animator.setDuration(duration);
         animator.start();
     }
 
-    private void hide() {
+    private void hide(Runnable cb) {
         Log.d(REACT_CLASS, "hide");
         removeView(mOverlayContainer);
 
         enableScrollViewIfAny();
         unlistenToScrollChangesIfAny();
+        cb.run();
     }
 
     public void append(ReadableArray args) {

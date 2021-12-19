@@ -11,6 +11,8 @@
 
 @class RCTBridge;
 
+typedef void (^onFinishCb)(void);
+
 @interface UIKitAccordionOverlayView : RCTView
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge;
@@ -20,6 +22,6 @@
 
 - (void)show:(NSNumber *)startY endY:(NSNumber *)endY;
 - (void)append:(NSNumber *)startY endY:(NSNumber *)endY;
-- (void)moveAndHide:(NSNumber *)shiftY duration:(NSNumber *)duration;
+- (void)moveAndHide:(NSNumber *)shiftY duration:(NSNumber *)duration onFinish:(onFinishCb)onFinish;
 
 @end
