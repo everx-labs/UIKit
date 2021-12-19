@@ -28,9 +28,9 @@ export const useButtonColorScheme = (type: UIActionButtonType): ActionButtonColo
                         disabled: ColorVariants.BackgroundNeutral,
                     },
                     content: {
-                        normal: ColorVariants.TextPrimary,
-                        hover: ColorVariants.TextPrimary,
-                        pressed: ColorVariants.TextPrimary,
+                        normal: ColorVariants.TextPrimaryInverted,
+                        hover: ColorVariants.TextPrimaryInverted,
+                        pressed: ColorVariants.TextPrimaryInverted,
                         disabled: ColorVariants.TextTertiary,
                     },
                 };
