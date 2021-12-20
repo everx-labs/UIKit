@@ -16,6 +16,7 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
         props: Props & { children?: React.ReactNode },
         forwardRef: React.RefObject<typeof AnimatedScrollable>,
     ) {
+        const { horizontal } = props;
         const nativeGestureRef = React.useRef<NativeViewGestureHandler>(null);
 
         const { onLayout, onContentSizeChange } = useHasScroll();
@@ -50,7 +51,7 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
             <PanGestureHandler
                 ref={panGestureHandlerRef}
                 shouldCancelWhenOutside={false}
-                onGestureEvent={gestureHandler}
+                onGestureEvent={horizontal ? undefined : gestureHandler}
                 simultaneousHandlers={nativeGestureRef}
             >
                 <Animated.View style={{ flex: 1 }}>
@@ -64,10 +65,10 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
                             {...props}
                             ref={ref}
                             overScrollMode="never"
-                            onScrollBeginDrag={scrollHandler}
+                            onScrollBeginDrag={horizontal ? undefined : scrollHandler}
                             scrollEventThrottle={16}
-                            onLayout={onLayout}
-                            onContentSizeChange={onContentSizeChange}
+                            onLayout={horizontal ? undefined : onLayout}
+                            onContentSizeChange={horizontal ? undefined : onContentSizeChange}
                         />
                     </NativeViewGestureHandler>
                 </Animated.View>
