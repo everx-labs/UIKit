@@ -28,7 +28,7 @@ export type UICurrencyRowProps = {
 
 const zeroBigNumber = new BigNumber(0);
 
-export function UICurrencyRow({
+export const UICurrencyRow = React.memo(function UICurrencyRow({
     testID,
     loading,
     icon,
@@ -96,7 +96,7 @@ export function UICurrencyRow({
             </UISkeleton>
         </TouchableOpacity>
     );
-}
+});
 
 const styles = StyleSheet.create({
     container: {

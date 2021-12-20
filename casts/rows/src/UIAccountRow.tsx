@@ -25,7 +25,7 @@ export type UIAccountRowProps = {
 
 const zeroBigNumber = new BigNumber(0);
 
-export function UIAccountRow({
+export const UIAccountRow = React.memo(function UIAccountRow({
     testID,
     loading,
     icon,
@@ -88,7 +88,7 @@ export function UIAccountRow({
             </UISkeleton>
         </TouchableOpacity>
     );
-}
+});
 
 const styles = StyleSheet.create({
     container: {

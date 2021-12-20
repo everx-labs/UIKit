@@ -1,13 +1,13 @@
 import React from 'react';
-import { SectionListData, View } from 'react-native';
+import { View } from 'react-native';
 import BigNumber from 'bignumber.js';
 
-import { UIBoxButton, UIBoxButtonVariant } from '@tonlabs/uikit.controls';
 import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
-import { SectionList } from '@tonlabs/uikit.scrolls';
+// import { SectionList } from '@tonlabs/uikit.scrolls';
 import { UILabel, UILabelRoles } from '@tonlabs/uikit.themes';
-import { UIListRowKind, UIListRow, renderUIListItem, UIListSeparator } from '@tonlabs/uicast.rows';
+import { UIListRowKind, UIListRows, renderUIListItem, UIListSeparator } from '@tonlabs/uicast.rows';
 
+import { UIAccordionSectionList } from '@tonlabs/uikit.scrolls';
 // @ts-ignore
 import everIcon from './assets/ever.png';
 
@@ -18,10 +18,21 @@ export function getRandomNum() {
     return Math.floor(num * symbols) / 100;
 }
 
-const Rows = () => {
-    const [loading, setLoading] = React.useState(false);
+function renderSectionHeader({ section: { title } }: any) {
+    return (
+        <UILabel role={UILabelRoles.HeadlineHead} style={{ paddingVertical: 10 }}>
+            {title}
+        </UILabel>
+    );
+}
 
-    const sections: SectionListData<UIListRow, { title: string }>[] = React.useMemo(() => {
+const Rows = React.memo(function Rows({ loading }: { loading: boolean }) {
+    const sections: Array<{
+        title: string;
+        key: string;
+        ItemSeparatorComponent: any;
+        data: UIListRows;
+    }> = React.useMemo(() => {
         return [
             {
                 title: 'Link',
@@ -57,7 +68,7 @@ const Rows = () => {
                 title: 'Currency',
                 key: 'currencies',
                 data: new Array(100).fill(null).map((_, index) => ({
-                    key: index.toString(),
+                    key: `${index}`,
                     kind: UIListRowKind.Currency,
                     props: {
                         name: "Let's check out a very long header for this link that you can imagine",
@@ -75,11 +86,31 @@ const Rows = () => {
                 })),
                 ItemSeparatorComponent: UIListSeparator,
             },
+            {
+                title: 'Link',
+                key: 'links2',
+                data: new Array(100).fill(null).map((_, index) => ({
+                    key: `${index}`,
+                    kind: UIListRowKind.Link,
+                    props: {
+                        title: "Let's check out a very long header for this link that you can imagine",
+                        ...(index % 2 === 0
+                            ? {
+                                  description:
+                                      "Let's check out a very long description for this link that you can imagine",
+                              }
+                            : {}),
+                        logo: everIcon,
+                        loading,
+                        onPress: () => console.log('onPress'),
+                    },
+                })),
+                ItemSeparatorComponent: UIListSeparator,
+            },
         ];
     }, [loading]);
 
     return (
-        // <ExampleSection title="UILink">
         <View style={{ flex: 1, alignItems: 'center' }}>
             <View
                 style={{
@@ -88,28 +119,26 @@ const Rows = () => {
                     maxWidth: 400,
                 }}
             >
-                <SectionList
+                <UIAccordionSectionList
                     contentContainerStyle={{ paddingHorizontal: 16 }}
                     sections={sections}
                     renderItem={renderUIListItem}
-                    renderSectionHeader={({ section: { title } }) => (
-                        <UILabel role={UILabelRoles.HeadlineHead}>{title}</UILabel>
-                    )}
-                />
-                <UIBoxButton
-                    title="Loading..."
-                    variant={loading ? UIBoxButtonVariant.Negative : UIBoxButtonVariant.Positive}
-                    onPress={() => setLoading(!loading)}
+                    renderSectionHeader={renderSectionHeader}
+                    stickySectionHeadersEnabled={false}
+                    keyExtractor={item => item.key}
+                    getItemCount={items => items.length}
+                    getItem={(items, index) => items[index]}
+                    windowSize={5}
                 />
             </View>
         </View>
-        // </ExampleSection>
     );
-};
+});
 
 const RowsStack = createStackNavigator();
 
 export const RowsScreen = () => {
+    const [loading, setLoading] = React.useState(false);
     return (
         <RowsStack.Navigator>
             <RowsStack.Screen
@@ -117,9 +146,16 @@ export const RowsScreen = () => {
                 options={{
                     useHeaderLargeTitle: true,
                     title: 'Rows',
+                    headerRightItems: [
+                        {
+                            label: 'Loading',
+                            onPress: () => setLoading(!loading),
+                        },
+                    ],
                 }}
-                component={Rows}
-            />
+            >
+                {() => <Rows loading={loading} />}
+            </RowsStack.Screen>
         </RowsStack.Navigator>
     );
 };

@@ -90,6 +90,8 @@ module.exports = {
                 'react-native-web/dist/exports/Text/TextAncestorContext',
             'react-native/Libraries/Animated/SpringConfig':
                 'react-native-web/dist/vendor/react-native/Animated/SpringConfig',
+            'react-native/Libraries/Lists/VirtualizedSectionList':
+                'react-native-web/dist/vendor/react-native/VirtualizedSectionList',
             'react-native/Libraries/Components/View/ReactNativeStyleAttributes': 'react',
             'react-native': 'react-native-web',
             'react-native-localization': 'react-localization',
