@@ -9,6 +9,7 @@ import Animated, {
     runOnJS,
     useWorkletCallback,
 } from 'react-native-reanimated';
+import type { WithSpringConfig } from 'react-native-reanimated';
 import { UIConstant } from '../../constants';
 import type { VisibilityState, DuplicateState } from '../constants';
 
@@ -26,7 +27,7 @@ const VISIBILITY_STATE_CLOSED: VisibilityState = 0;
 // @inline
 const VISIBILITY_STATE_OPENED: VisibilityState = 1;
 
-const springConfig: Animated.WithSpringConfig = {
+const springConfig: WithSpringConfig = {
     overshootClamping: true,
     stiffness: 100,
 };
@@ -36,7 +37,7 @@ export const useVisibilityState = (
     onAnimationEnd: (visibilityState: VisibilityState) => void,
 ) => {
     const runUIAnimationEndCallback = useWorkletCallback(
-        (isFinished: boolean) => {
+        (isFinished?: boolean) => {
             if (isFinished) {
                 if (duplicateState.value === DUPLICATE_STATE_CLOSED) {
                     runOnJS(onAnimationEnd)(VISIBILITY_STATE_CLOSED);

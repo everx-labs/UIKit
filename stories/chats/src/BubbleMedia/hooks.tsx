@@ -140,9 +140,9 @@ export const useImages = (
     }, [data, preview, imageRef, imageSize, onErrorCallback, onLoadCallback]);
 };
 
-export const useImageSize = (data: string | null) => {
+export const useImageSize = (data: string | null, originalSize?: ImageSize) => {
     const [imageSize, setImageSize] = React.useState<ImageSize | null>(null);
-    const originalSizeRef = React.useRef<ImageSize | null>(null);
+    const originalSizeRef = React.useRef<ImageSize | null>(originalSize ?? null);
     const windowWidth = useWindowDimensions().width;
     const maxImageSize = useMaxImageSize(windowWidth);
 
@@ -165,20 +165,31 @@ export const useImageSize = (data: string | null) => {
      * `data` has changed
      */
     React.useEffect(() => {
-        if (data) {
-            Image.getSize(data, (width, height) => {
-                originalSizeRef.current = {
-                    width,
-                    height,
-                };
-                const newImageSize = getImageSize(
-                    originalSizeRef.current?.width,
-                    originalSizeRef.current?.height,
-                    maxImageSize.width,
-                    maxImageSize.height,
-                );
-                setImageSize(newImageSize);
-            });
+        if (data && !originalSize) {
+            Image.getSize(
+                data,
+                (width, height) => {
+                    originalSizeRef.current = {
+                        width,
+                        height,
+                    };
+                    const newImageSize = getImageSize(
+                        originalSizeRef.current?.width,
+                        originalSizeRef.current?.height,
+                        maxImageSize.width,
+                        maxImageSize.height,
+                    );
+                    setImageSize(newImageSize);
+                },
+                /**
+                 * Support the failure callback and return maxImageSize here for the cases
+                 * when we want to use some placeholder instead of the failed image
+                 * and provide it with some sizes
+                 */
+                () => {
+                    setImageSize(maxImageSize);
+                },
+            );
         }
         /**
          * `maxImageSize` is not added to the list of dependencies,

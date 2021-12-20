@@ -3,32 +3,65 @@ import type { TextStyle } from 'react-native';
 
 // eslint-disable-next-line no-shadow
 export enum TypographyVariants {
+    HeadersHuge = 'HeadersHuge',
+    HeadersLarge = 'HeadersLarge',
+    HeadersMedium = 'HeadersMedium',
+    HeadersSmall = 'HeadersSmall',
+
     TitleHuge = 'TitleHuge',
     TitleLarge = 'TitleLarge',
     TitleMedium = 'TitleMedium',
     TitleSmall = 'TitleSmall',
+
     PromoHuge = 'PromoHuge',
     PromoLarge = 'PromoLarge',
     PromoMedium = 'PromoMedium',
     PromoSmall = 'PromoSmall',
+
     HeadlineHead = 'HeadlineHead',
     HeadlineSubhead = 'HeadlineSubhead',
     HeadlineFootnote = 'HeadlineFootnote',
     HeadlineLabel = 'HeadlineLabel',
+
     Action = 'Action',
     ActionCallout = 'ActionCallout',
     ActionFootnote = 'ActionFootnote',
     ActionLabel = 'ActionLabel',
+
     ParagraphText = 'ParagraphText',
     ParagraphNote = 'ParagraphNote',
     ParagraphFootnote = 'ParagraphFootnote',
     ParagraphLabel = 'ParagraphLabel',
+
     MonoText = 'MonoText',
     MonoNote = 'MonoNote',
+    MonoFootnote = 'MonoFootnote',
+    MonoLabel = 'MonoLabel',
+
     LightHuge = 'LightHuge',
     LightLarge = 'LightLarge',
     LightMedium = 'LightMedium',
     LightSmall = 'LightSmall',
+
+    NarrowHeadlineText = 'NarrowHeadlineText',
+    NarrowHeadlineNote = 'NarrowHeadlineNote',
+    NarrowHeadlineFootnote = 'NarrowHeadlineFootnote',
+    NarrowHeadlineLabel = 'NarrowHeadlineLabel',
+
+    NarrowActionText = 'NarrowActionText',
+    NarrowActionNote = 'NarrowActionNote',
+    NarrowActionFootnote = 'NarrowActionFootnote',
+    NarrowActionLabel = 'NarrowActionLabel',
+
+    NarrowParagraphText = 'NarrowParagraphText',
+    NarrowParagraphNote = 'NarrowParagraphNote',
+    NarrowParagraphFootnote = 'NarrowParagraphFootnote',
+    NarrowParagraphLabel = 'NarrowParagraphLabel',
+
+    NarrowMonoText = 'NarrowMonoText',
+    NarrowMonoNote = 'NarrowMonoNote',
+    NarrowMonoFootnote = 'NarrowMonoFootnote',
+    NarrowMonoLabel = 'NarrowMonoLabel',
 }
 
 export type TypographyT = {
@@ -98,6 +131,31 @@ const InterFontNormalLight: TextStyle = {
 };
 
 export const Typography: TypographyT = StyleSheet.create({
+    [TypographyVariants.HeadersHuge]: {
+        ...InterFontNormalMedium,
+        fontSize: 33,
+        lineHeight: 48,
+        letterSpacing: -0.72,
+    },
+    [TypographyVariants.HeadersLarge]: {
+        ...InterFontNormalMedium,
+        fontSize: 29,
+        lineHeight: 40,
+        letterSpacing: -0.61,
+    },
+    [TypographyVariants.HeadersMedium]: {
+        ...InterFontNormalMedium,
+        fontSize: 25,
+        lineHeight: 32,
+        letterSpacing: -0.5,
+    },
+    [TypographyVariants.HeadersSmall]: {
+        ...InterFontNormalMedium,
+        fontSize: 21,
+        lineHeight: 24,
+        letterSpacing: -0.37,
+    },
+
     [TypographyVariants.TitleHuge]: {
         ...InterFontNormalSemiBold,
         fontSize: 36,
@@ -122,6 +180,7 @@ export const Typography: TypographyT = StyleSheet.create({
         lineHeight: 24,
         letterSpacing: -0.26,
     },
+
     [TypographyVariants.PromoHuge]: {
         ...InterFontNormalRegular,
         fontSize: 36,
@@ -146,6 +205,7 @@ export const Typography: TypographyT = StyleSheet.create({
         lineHeight: 24,
         letterSpacing: -0.26,
     },
+
     [TypographyVariants.HeadlineHead]: {
         ...InterFontNormalSemiBold,
         fontSize: 17,
@@ -170,6 +230,7 @@ export const Typography: TypographyT = StyleSheet.create({
         lineHeight: 16,
         letterSpacing: 0.05,
     },
+
     [TypographyVariants.Action]: {
         ...InterFontNormalMedium,
         fontSize: 17,
@@ -225,12 +286,28 @@ export const Typography: TypographyT = StyleSheet.create({
         fontSize: 17,
         lineHeight: 24,
         letterSpacing: -0.22,
+        fontVariant: ['tabular-nums'],
     },
     [TypographyVariants.MonoNote]: {
         ...InterFontNormalRegular,
         fontSize: 15,
         lineHeight: 20,
         letterSpacing: -0.13,
+        fontVariant: ['tabular-nums'],
+    },
+    [TypographyVariants.MonoFootnote]: {
+        ...InterFontNormalRegular,
+        fontSize: 13,
+        lineHeight: 20,
+        letterSpacing: -0.04,
+        fontVariant: ['tabular-nums'],
+    },
+    [TypographyVariants.MonoLabel]: {
+        ...InterFontNormalRegular,
+        fontSize: 11,
+        lineHeight: 16,
+        letterSpacing: 0.05,
+        fontVariant: ['tabular-nums'],
     },
 
     [TypographyVariants.LightHuge]: {
@@ -257,6 +334,110 @@ export const Typography: TypographyT = StyleSheet.create({
         lineHeight: 24,
         letterSpacing: -0.26,
     },
+
+    [TypographyVariants.NarrowHeadlineText]: {
+        ...InterFontNormalSemiBold,
+        fontSize: 17,
+        lineHeight: 20,
+        letterSpacing: -0.22,
+    },
+    [TypographyVariants.NarrowHeadlineNote]: {
+        ...InterFontNormalSemiBold,
+        fontSize: 15,
+        lineHeight: 16,
+        letterSpacing: -0.13,
+    },
+    [TypographyVariants.NarrowHeadlineFootnote]: {
+        ...InterFontNormalSemiBold,
+        fontSize: 13,
+        lineHeight: 16,
+        letterSpacing: -0.04,
+    },
+    [TypographyVariants.NarrowHeadlineLabel]: {
+        ...InterFontNormalSemiBold,
+        fontSize: 11,
+        lineHeight: 12,
+        letterSpacing: 0.05,
+    },
+
+    [TypographyVariants.NarrowActionText]: {
+        ...InterFontNormalMedium,
+        fontSize: 17,
+        lineHeight: 20,
+        letterSpacing: -0.22,
+    },
+    [TypographyVariants.NarrowActionNote]: {
+        ...InterFontNormalMedium,
+        fontSize: 15,
+        lineHeight: 16,
+        letterSpacing: -0.13,
+    },
+    [TypographyVariants.NarrowActionFootnote]: {
+        ...InterFontNormalMedium,
+        fontSize: 13,
+        lineHeight: 16,
+        letterSpacing: -0.04,
+    },
+    [TypographyVariants.NarrowActionLabel]: {
+        ...InterFontNormalMedium,
+        fontSize: 11,
+        lineHeight: 12,
+        letterSpacing: 0.05,
+    },
+
+    [TypographyVariants.NarrowParagraphText]: {
+        ...InterFontNormalRegular,
+        fontSize: 17,
+        lineHeight: 20,
+        letterSpacing: -0.22,
+    },
+    [TypographyVariants.NarrowParagraphNote]: {
+        ...InterFontNormalRegular,
+        fontSize: 15,
+        lineHeight: 16,
+        letterSpacing: -0.13,
+    },
+    [TypographyVariants.NarrowParagraphFootnote]: {
+        ...InterFontNormalRegular,
+        fontSize: 13,
+        lineHeight: 16,
+        letterSpacing: -0.04,
+    },
+    [TypographyVariants.NarrowParagraphLabel]: {
+        ...InterFontNormalRegular,
+        fontSize: 11,
+        lineHeight: 12,
+        letterSpacing: 0.05,
+    },
+
+    [TypographyVariants.NarrowMonoText]: {
+        ...InterFontNormalRegular,
+        fontSize: 17,
+        lineHeight: 20,
+        letterSpacing: -0.22,
+        fontVariant: ['tabular-nums'],
+    },
+    [TypographyVariants.NarrowMonoNote]: {
+        ...InterFontNormalRegular,
+        fontSize: 15,
+        lineHeight: 16,
+        letterSpacing: -0.13,
+        fontVariant: ['tabular-nums'],
+    },
+    [TypographyVariants.NarrowMonoFootnote]: {
+        ...InterFontNormalRegular,
+        fontSize: 13,
+        lineHeight: 16,
+        letterSpacing: -0.04,
+        fontVariant: ['tabular-nums'],
+    },
+    [TypographyVariants.NarrowMonoLabel]: {
+        ...InterFontNormalRegular,
+        fontSize: 11,
+        lineHeight: 12,
+        letterSpacing: 0.05,
+        fontVariant: ['tabular-nums'],
+    },
 });
 
 export function getFontMesurements(variant: TypographyVariants) {
@@ -274,6 +455,7 @@ export function getFontMesurements(variant: TypographyVariants) {
     const lowerHeight = lowerline - baseline;
     const descent = interFontDescentRatio * lineHeight;
     return {
+        lineHeight,
         capHeight,
         lowerHeight,
         baseline,

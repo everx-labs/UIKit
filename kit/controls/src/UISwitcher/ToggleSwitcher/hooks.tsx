@@ -14,13 +14,16 @@ import Animated, {
     useSharedValue,
     withSpring,
 } from 'react-native-reanimated';
+import type { WithSpringConfig } from 'react-native-reanimated';
 import { clamp, snapPoint } from 'react-native-redash';
+
 import { ColorVariants, Theme } from '@tonlabs/uikit.themes';
+
 import { IconSwitcherState, PressSwitcherState, SwitcherState } from '../types';
 import { hapticSelection } from '../../Haptics/Haptics';
 import { UIConstant } from '../../constants';
 
-const springConfig: Animated.WithSpringConfig = {
+const springConfig: WithSpringConfig = {
     damping: 100,
     stiffness: 500,
 };

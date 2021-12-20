@@ -1,5 +1,4 @@
-// import { Platform } from 'react-native';
-import type Animated from 'react-native-reanimated';
+import type { WithSpringConfig } from 'react-native-reanimated';
 
 export const UIConstant = {
     iconSize: 24,
@@ -12,46 +11,19 @@ export const UIConstant = {
     msgButtonHeight: 40,
     pillButtonHeight: 32,
     linkButtonHeight: 48,
+    actionButtonHeight: 40,
+    actionButtonIconSize: 16,
 
-    // smallCellHeight: 24,
-    // defaultCellHeight: 48,
-
-    // minimumWidthToShowFoldingNotice: 400,
-    // minNoticeSize: 88,
-    // minNoticeIconSize: 64,
-    // maxNoticeIconSize: 88,
+    showMoreButtonIndicatorSizeMedium: 18,
+    showMoreButtonIndicatorSizeSmall: 12,
+    showMoreButtonSizeMedium: 40,
+    showMoreButtonSizeSmall: 32,
 
     tinyContentOffset: 4,
     smallContentOffset: 8,
     normalContentOffset: 12,
-    // contentOffset: 16,
-    // borderRadius: 8,
     alertBorderRadius: 12,
     pillButtonBorderRadius: 20,
-
-    // cardShadow:
-    //     Platform.OS === 'android'
-    //         ? {
-    //               elevation: 8,
-    //           }
-    //         : {
-    //               shadowColor: '#000000',
-    //               shadowOpacity: 0.2,
-    //               shadowRadius: 20,
-    //               shadowOffset: {
-    //                   width: 0,
-    //                   height: 4,
-    //               },
-    //           },
-
-    // dashSymbol: '\u2014',
-
-    // hitSlop: {
-    //     top: 24,
-    //     bottom: 24,
-    //     left: 24,
-    //     right: 24,
-    // },
 
     switcher: {
         circlePadding: 2,
@@ -67,7 +39,7 @@ export const UIConstant = {
     },
 };
 
-export const BUTTON_WITH_SPRING_CONFIG: Animated.WithSpringConfig = {
+export const BUTTON_WITH_SPRING_CONFIG: WithSpringConfig = {
     damping: 100,
     stiffness: 500,
 };

@@ -1,7 +1,8 @@
 import React from 'react';
 import Fuse from 'fuse.js';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { View, useWindowDimensions } from 'react-native';
+import { View, useWindowDimensions, Platform, Keyboard } from 'react-native';
+import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
@@ -37,6 +38,8 @@ const fuseOptions = {
     minMatchCharLength: 1,
     keys: ['name'],
 };
+
+const isAndroid = Platform.OS === 'android';
 
 function returnCountryRow({ item }: { item: Country }) {
     return <CountryPickerRow item={item} />;
@@ -121,6 +124,29 @@ export function CountryPicker({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    React.useEffect(() => {
+        /**
+         * We should use react-native-android-keyboard-adjust
+         * to fix android keyboard work with UIBottomSheet
+         * also we have to check if component visible
+         * and only if it showing call setAdjustNothing
+         * Otherwise, since CountryPicker is only used in the browser
+         * we have to call setAdjustResize, because it is default mode for browser
+         */
+        if (isAndroid) {
+            visible
+                ? AndroidKeyboardAdjust.setAdjustNothing()
+                : AndroidKeyboardAdjust.setAdjustResize();
+        }
+    }, [visible]);
+
+    const hideKeyboard = React.useCallback(() => {
+        // react-native-android-keyboard-adjust bug:
+        // Keyboard doesn't want to hide on Android
+        // so we have to forcibly hide the keyboard
+        isAndroid && Keyboard.dismiss();
+    }, []);
+
     const renderSearchHeader = () => {
         return (
             <View style={styles.headerContainer}>
@@ -156,6 +182,7 @@ export function CountryPicker({
                     ListEmptyComponent={ListEmptyComponent}
                     keyboardDismissMode="interactive"
                     contentInset={contentInset}
+                    onMomentumScrollBegin={hideKeyboard}
                 />
             </CountryPickerContext.Provider>
         </UIBottomSheet>

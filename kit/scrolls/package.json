@@ -34,7 +34,9 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/uikit.layout": "^3.0.0"
+        "@tonlabs/uikit.layout": "^3.0.0",
+        "@tonlabs/uikit.themes": "^3.0.0",
+        "@tonlabs/uikit.controls": "^3.0.0"
     },
     "devDependencies": {
         "@react-native-community/bob": "0.16.2",
@@ -43,7 +45,7 @@
         "react-dom": "17.0.2",
         "react-native": "0.65.1",
         "react-native-gesture-handler": "^1.10.3",
-        "react-native-reanimated": "2.2.1",
+        "react-native-reanimated": "2.3.1",
         "react-native-safe-area-context": "^3.1.3",
         "typescript": "4.4.3"
     },
@@ -52,7 +54,7 @@
         "react-dom": "^17.0.2",
         "react-native": "^0.65.0",
         "react-native-gesture-handler": "^1.10.3",
-        "react-native-reanimated": "^2.2.1",
+        "react-native-reanimated": "^2.3.0",
         "react-native-safe-area-context": "^3.1.3",
         "react-native-svg": "^12.1.0"
     },

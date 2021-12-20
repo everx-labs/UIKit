@@ -15,6 +15,7 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
         props: Props & { children?: React.ReactNode },
         forwardRef: React.RefObject<typeof AnimatedScrollable>,
     ) {
+        const { horizontal } = props;
         const { onLayout, onContentSizeChange } = useHasScroll();
 
         const { ref, scrollHandler, registerScrollable, unregisterScrollable } =
@@ -43,10 +44,10 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
                 <AnimatedScrollable
                     {...props}
                     ref={ref}
-                    onScrollBeginDrag={scrollHandler}
+                    onScrollBeginDrag={horizontal ? undefined : scrollHandler}
                     scrollEventThrottle={16}
-                    onLayout={onLayout}
-                    onContentSizeChange={onContentSizeChange}
+                    onLayout={horizontal ? undefined : onLayout}
+                    onContentSizeChange={horizontal ? undefined : onContentSizeChange}
                 />
             </Animated.View>
         );

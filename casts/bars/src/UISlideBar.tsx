@@ -5,9 +5,10 @@ import { UIConstant } from '@tonlabs/uikit.core';
 import { UIBackgroundView, ColorVariants } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
-import { UIHeaderItems } from './UIHeaderItems';
+import { UIHeaderItems, hitSlop } from './UIHeaderItems';
 import type { HeaderItem } from './UIHeaderItems';
 import { useNavigationHeaderLeftItems } from './useNavigationHeaderLeftItems';
+import { UIConstant as UINavConstant } from './constants';
 
 type UISlideBarProps = {
     testID?: string;
@@ -68,17 +69,16 @@ export function UISlideBar({
 
 const styles = StyleSheet.create({
     container: {
-        minHeight: UILayoutConstant.headerHeight,
+        height: UILayoutConstant.headerHeight,
         flexDirection: 'row',
-        alignItems: 'center',
-        paddingVertical: UIConstant.smallContentOffset(),
-        paddingHorizontal: 16,
+        flexWrap: 'nowrap',
     },
     puller: {
         width: 64,
         height: 2,
         borderRadius: 2,
         marginHorizontal: UIConstant.smallContentOffset(),
+        alignSelf: 'center',
     },
     emptyDivider: {
         marginHorizontal: UIConstant.smallContentOffset(),
@@ -87,11 +87,20 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         overflow: 'hidden',
+        // Since we don't use real hitSlop
+        // but padding instead,
+        // need to apply padding here to compensate
+        // applied insets for UIHeaderItem
+        // e.g. it's 13 for a button,
+        // and since we have 16 by design here
+        // it should be 16 - 13 = 3
+        paddingLeft: UINavConstant.scrollContentInsetHorizontal - hitSlop.left,
     },
     headerRightItems: {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-end',
         overflow: 'hidden',
+        paddingRight: UINavConstant.scrollContentInsetHorizontal - hitSlop.right,
     },
 });

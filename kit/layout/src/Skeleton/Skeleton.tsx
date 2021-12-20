@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { LayoutChangeEvent, StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { LayoutChangeEvent, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import Animated, {
     useAnimatedStyle,
     interpolate,
@@ -9,8 +9,11 @@ import Animated, {
 } from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
 
-import { useTheme, ColorVariants, UIBackgroundView } from '@tonlabs/uikit.themes';
+import { useTheme, ColorVariants } from '@tonlabs/uikit.themes';
+
 import { SkeletonProgress, useSkeletonProgress } from './useSkeletonProgress';
+
+import { UILayoutConstant } from '../UILayoutConstant';
 
 enum CrossDissolveProgress {
     Visible = 1,
@@ -60,9 +63,11 @@ function useCrossDissolve(visible: boolean) {
 
 function SkeletonAnimatable({
     width,
+    borderRadius,
     crossDissolveProgress,
 }: {
     width: Animated.SharedValue<number>;
+    borderRadius: number;
     crossDissolveProgress: Animated.SharedValue<number>;
 }) {
     const theme = useTheme();
@@ -91,8 +96,11 @@ function SkeletonAnimatable({
     return (
         <Animated.View
             style={[
-                StyleSheet.absoluteFill,
-                { backgroundColor: theme[ColorVariants.BackgroundSecondary] as string },
+                styles.skeletonContainer,
+                {
+                    backgroundColor: theme[ColorVariants.BackgroundSecondary] as string,
+                    borderRadius,
+                },
                 backdropStyle,
             ]}
         >
@@ -103,16 +111,19 @@ function SkeletonAnimatable({
                     style,
                 ]}
             >
-                <LinearGradient
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    colors={[
-                        theme[ColorVariants.BackgroundSecondary] as string,
-                        theme[ColorVariants.BackgroundNeutral] as string,
-                        theme[ColorVariants.BackgroundSecondary] as string,
-                    ]}
-                    style={styles.gradient}
-                />
+                {/** Make it faster by rasterizing the View with its content */}
+                <View shouldRasterizeIOS renderToHardwareTextureAndroid style={styles.gradient}>
+                    <LinearGradient
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 0 }}
+                        colors={[
+                            theme[ColorVariants.BackgroundSecondary] as string,
+                            theme[ColorVariants.BackgroundNeutral] as string,
+                            theme[ColorVariants.BackgroundSecondary] as string,
+                        ]}
+                        style={styles.gradient}
+                    />
+                </View>
             </Animated.View>
         </Animated.View>
     );
@@ -133,10 +144,10 @@ export function UISkeleton({
     style: styleProp,
 }: {
     /**
-     * Your content will be wrapped with View,
-     * so you probably want to give to your content some
-     * dimensions, or if it a text, provide some default one
-     * that is aproximatelly will be the size of real content
+     * Your content will be wrapped with a View,
+     * so you will probably want to give some dimensions to your content
+     * or provide some default value for a text,
+     * that will be approximately of the same size as the real content
      *
      * ```ts
      * // skeleton will hide when data exists
@@ -147,7 +158,7 @@ export function UISkeleton({
      */
     children: React.ReactNode;
     /**
-     * Flag to controll behavior of skeleton
+     * Flag to control behavior of skeleton
      * ```ts
      * // even though data is rendered, show skeleton anyway
      * <Skeleton show>
@@ -155,7 +166,7 @@ export function UISkeleton({
      * </Skeleton>
      * ```
      *
-     * Usefull when you want to controll skeleton visibility
+     * Useful when you want to control skeleton visibility
      * during loading, i.e.
      * ```ts
      * const [isLoading, setIsLoading] = React.useState(true);
@@ -190,17 +201,47 @@ export function UISkeleton({
 
     const { isVisible, crossDissolveProgress } = useCrossDissolve(visible);
 
+    const skeletonBorderRadius = React.useMemo(() => {
+        if (styleProp) {
+            const { borderRadius: stylePropBorderRadius } = StyleSheet.flatten(styleProp ?? {});
+            if (stylePropBorderRadius !== undefined) {
+                return stylePropBorderRadius;
+            }
+        }
+        return UILayoutConstant.alertBorderRadius;
+    }, [styleProp]);
+
     return (
-        <UIBackgroundView style={[styles.container, styleProp]} onLayout={onLayout}>
+        <View style={[styles.container, styleProp]} onLayout={onLayout}>
             {children}
             {isVisible && (
-                <SkeletonAnimatable width={width} crossDissolveProgress={crossDissolveProgress} />
+                <SkeletonAnimatable
+                    width={width}
+                    borderRadius={skeletonBorderRadius}
+                    crossDissolveProgress={crossDissolveProgress}
+                />
             )}
-        </UIBackgroundView>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { position: 'relative', overflow: 'hidden' },
+    container: {
+        position: 'relative',
+    },
+    skeletonContainer: {
+        overflow: 'hidden',
+        position: 'absolute',
+        /**
+         * There is a bug with the render when the underlying component
+         * is visible from under the overlying component
+         * if they have the same size or are cut off by `overflow: 'hidden'`.
+         * To avoid this, it is necessary to slightly increase the size of the overlying component
+         */
+        top: -StyleSheet.hairlineWidth,
+        left: -StyleSheet.hairlineWidth,
+        bottom: -StyleSheet.hairlineWidth,
+        right: -StyleSheet.hairlineWidth,
+    },
     gradient: { flex: 1 },
 });

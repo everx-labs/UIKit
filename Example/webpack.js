@@ -34,6 +34,10 @@ module.exports = {
                     path.resolve(__dirname, '../node_modules/react-native-reanimated/'),
                     path.resolve(__dirname, '../node_modules/react-native-view-shot/'),
                     path.resolve(__dirname, '../node_modules/react-native-web-linear-gradient/'),
+                    path.resolve(
+                        __dirname,
+                        '../node_modules/react-native-android-keyboard-adjust/',
+                    ),
                 ],
                 loader: 'babel-loader',
                 query: {
@@ -86,6 +90,8 @@ module.exports = {
                 'react-native-web/dist/exports/Text/TextAncestorContext',
             'react-native/Libraries/Animated/SpringConfig':
                 'react-native-web/dist/vendor/react-native/Animated/SpringConfig',
+            'react-native/Libraries/Lists/VirtualizedSectionList':
+                'react-native-web/dist/vendor/react-native/VirtualizedSectionList',
             'react-native/Libraries/Components/View/ReactNativeStyleAttributes': 'react',
             'react-native': 'react-native-web',
             'react-native-localization': 'react-localization',
@@ -95,6 +101,8 @@ module.exports = {
             'react-native-permissions': 'react', // Hack in order not to load
             'react-native-qrcode-scanner': 'react', // Hack in order not to load
             'react-native-linear-gradient': 'react-native-web-linear-gradient',
+            'react-native-video': 'react', // Hack in order not to load,
+            'react-native-android-keyboard-adjust': 'react', // Hack in order not to load,
         },
     },
 };

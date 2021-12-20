@@ -5,12 +5,13 @@
  * @format
  */
 
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import { FlatList, TouchableOpacity, GestureHandlerRootView } from 'react-native-gesture-handler';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { enableFreeze } from 'react-native-screens';
 
 import { UIPopoverBackground } from '@tonlabs/uikit.navigation_legacy';
 import { PortalManager } from '@tonlabs/uikit.layout';
@@ -46,6 +47,7 @@ import { Inputs } from './screens/Inputs';
 import { Design } from './screens/Design';
 import { ListsScreen } from './screens/Lists';
 import { Chart } from './screens/Chart';
+import { CardsScreen } from './screens/Cards';
 import { Images } from './screens/Images';
 import { Layouts } from './screens/Layouts';
 import { Menus } from './screens/Menus';
@@ -54,16 +56,22 @@ import { Popups } from './screens/Popups';
 import { Products } from './screens/Products';
 import { Profile } from './screens/Profile';
 import { TextScreen } from './screens/Text';
+import { VideosScreen } from './screens/Videos';
 import { Browser } from './screens/Browser';
 import { Chat } from './screens/Chat';
 import { Carousel } from './screens/Carousel';
+import { CellsScreen } from './screens/Cells';
 import { Navigation } from './screens/Navigation';
 import { SectionsService } from './Search';
 import { KeyboardScreen } from './screens/Keyboard';
 import { LargeHeaderScreen } from './screens/LargeHeader';
 import { QRCodeScreen } from './screens/QRCode';
+import { RowsScreen } from './screens/Rows';
 import { FinancesScreen } from './screens/Finances';
 import { SkeletonsScreen } from './screens/Skeletons';
+
+// Optimize React rendering
+enableFreeze();
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
 useWebFonts();
@@ -165,9 +173,21 @@ const Main = ({ navigation }: { navigation: any }) => {
                             layout={styles.button}
                         />
                         <UILinkButton
+                            title="Cells"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('cells')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
                             title="Chart"
                             type={UILinkButtonType.Menu}
                             onPress={() => navigation.navigate('chart')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
+                            title="Cards"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('cards')}
                             layout={styles.button}
                         />
                         <UILinkButton
@@ -267,9 +287,21 @@ const Main = ({ navigation }: { navigation: any }) => {
                             layout={styles.button}
                         />
                         <UILinkButton
+                            title="Rows"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('rows')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
                             title="Text"
                             type={UILinkButtonType.Menu}
                             onPress={() => navigation.navigate('text')}
+                            layout={styles.button}
+                        />
+                        <UILinkButton
+                            title="Videos"
+                            type={UILinkButtonType.Menu}
+                            onPress={() => navigation.navigate('videos')}
                             layout={styles.button}
                         />
                         <UILinkButton
@@ -327,7 +359,9 @@ const App = () => {
                             <Split.Screen name="browser" component={Browser} />
                             <Split.Screen name="buttons" component={ButtonsScreen} />
                             <Split.Screen name="carousel" component={Carousel} />
+                            <Split.Screen name="cells" component={CellsScreen} />
                             <Split.Screen name="chart" component={Chart} />
+                            <Split.Screen name="cards" component={CardsScreen} />
                             <Split.Screen name="chat" component={Chat} />
                             <Split.Screen name="checkbox" component={Checkbox} />
                             <Split.Screen name="design" component={Design} />
@@ -345,6 +379,7 @@ const App = () => {
                             <Split.Screen name="products" component={Products} />
                             <Split.Screen name="profile" component={Profile} />
                             <Split.Screen name="qr-code" component={QRCodeScreen} />
+                            <Split.Screen name="rows" component={RowsScreen} />
                             <Split.Screen name="text" component={TextScreen} />
                             <Split.Screen
                                 name="finances"
@@ -362,6 +397,7 @@ const App = () => {
                                     tabBarDisabledIcon: UIAssets.icons.ui.checkboxSquareInactive,
                                 }}
                             />
+                            <Split.Screen name="videos" component={VideosScreen} />
                         </Split.Navigator>
                     </NavigationContainer>
                     <UIAndroidNavigationBar />
@@ -382,20 +418,22 @@ const AppWrapper = () => {
     }
 
     return (
-        <ThemeContext.Provider value={isDarkTheme ? DarkTheme : LightTheme}>
-            <ThemeSwitcher.Provider
-                value={{
-                    isDarkTheme,
-                    toggleTheme: () => {
-                        setIsDarkTheme(!isDarkTheme);
-                        setIsHidden(true);
-                        setImmediate(() => setIsHidden(false));
-                    },
-                }}
-            >
-                <App />
-            </ThemeSwitcher.Provider>
-        </ThemeContext.Provider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+            <ThemeContext.Provider value={isDarkTheme ? DarkTheme : LightTheme}>
+                <ThemeSwitcher.Provider
+                    value={{
+                        isDarkTheme,
+                        toggleTheme: () => {
+                            setIsDarkTheme(!isDarkTheme);
+                            setIsHidden(true);
+                            setImmediate(() => setIsHidden(false));
+                        },
+                    }}
+                >
+                    <App />
+                </ThemeSwitcher.Provider>
+            </ThemeContext.Provider>
+        </GestureHandlerRootView>
     );
 };
 
