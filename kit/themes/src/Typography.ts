@@ -455,6 +455,7 @@ export function getFontMesurements(variant: TypographyVariants) {
     const lowerHeight = lowerline - baseline;
     const descent = interFontDescentRatio * lineHeight;
     return {
+        lineHeight,
         capHeight,
         lowerHeight,
         baseline,

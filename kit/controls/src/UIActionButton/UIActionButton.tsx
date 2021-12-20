@@ -14,6 +14,7 @@ import {
     useButtonColors,
     useContentAnimatedStyles,
 } from './hooks';
+import type { UILayout } from '../Button';
 
 export type UIActionButtonProps = {
     /**
@@ -24,6 +25,10 @@ export type UIActionButtonProps = {
      * Source for the button icon
      */
     icon?: ImageSourcePropType;
+    /**
+     * Allows to set top, right, bottom and left margins to the button container
+     */
+    layout?: UILayout;
     /**
      * Whether to display a loading indicator instead of button content or not
      */
@@ -49,10 +54,11 @@ export type UIActionButtonProps = {
 };
 
 export const UIActionButton = React.forwardRef<TouchableWithoutFeedback, UIActionButtonProps>(
-    (
+    function UIActionButton(
         {
             disabled,
             icon,
+            layout,
             loading,
             onPress,
             testID,
@@ -60,7 +66,7 @@ export const UIActionButton = React.forwardRef<TouchableWithoutFeedback, UIActio
             type = UIActionButtonType.Primary,
         }: UIActionButtonProps,
         ref,
-    ) => {
+    ) {
         const { overlay, content } = useButtonColorScheme(type);
         const { contentColor, backgroundColor } = useButtonColors(disabled, overlay, content);
 
@@ -93,7 +99,7 @@ export const UIActionButton = React.forwardRef<TouchableWithoutFeedback, UIActio
                 animations={buttonAnimations}
                 disabled={disabled || loading}
                 loading={loading}
-                style={[styles.container]}
+                style={[styles.container, layout]}
                 testID={testID}
             >
                 <View style={styles.content}>
