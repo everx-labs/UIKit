@@ -28,7 +28,6 @@ export function AccordionSectionHeader({
 }) {
     const chevronProgress = useSharedValue(isFolded ? SECTION_FOLDED : SECTION_UNFOLDED);
     const chevronStyle = useAnimatedStyle(() => {
-        console.log(chevronProgress.value);
         return {
             transform: [
                 {
@@ -39,7 +38,6 @@ export function AccordionSectionHeader({
     });
 
     React.useEffect(() => {
-        console.log(isFolded ? SECTION_FOLDED : SECTION_UNFOLDED);
         chevronProgress.value = withTiming(isFolded ? SECTION_FOLDED : SECTION_UNFOLDED, {
             duration,
         });
