@@ -201,7 +201,7 @@ function applyTabNavigateActionToRoutes<ParamList extends ParamListBase>(
     return action.payload.params == null
         ? state.routes
         : state.routes.map((route, i) => {
-              if (i === index) {
+              if (i !== index) {
                   return route;
               }
 
@@ -305,12 +305,12 @@ class SplitUnfoldedRouter<ParamList extends ParamListBase = ParamListBase> {
         let index = mainRouteIndex;
         const history = [mainRouteIndex];
         const activeRouteIndex = partialState?.index ?? 0;
-        const activeRouteName = partialState.routes[partialState?.index ?? 0]?.name;
+        const activeRouteName = partialState.routes[activeRouteIndex]?.name;
         if (activeRouteName != null) {
             if (routeNames.includes(activeRouteName)) {
                 // set an index for a regular tab route
-                index = activeRouteIndex;
-                history[0] = activeRouteIndex;
+                index = routeNames.indexOf(activeRouteName);
+                history[0] = index;
             } else if (initialRouteName != null) {
                 index = routeNames.indexOf(initialRouteName);
                 history[0] = index;
@@ -659,7 +659,7 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
                 tabIndex: mainIndex,
                 nestedStack: [mainIndex, index],
                 history: state.history.filter(r => r !== index).concat([index]),
-                routes: applyTabNavigateActionToRoutes(state, action, options, mainIndex),
+                routes: applyTabNavigateActionToRoutes(state, action, options, index),
             };
         }
         return null;
