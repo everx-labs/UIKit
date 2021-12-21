@@ -34,6 +34,7 @@ export function UIMediaCard({ content, title, onPress, loading, testID }: UIMedi
                     <UILabel
                         role={TypographyVariants.MonoNote}
                         color={ColorVariants.StaticBackgroundWhite}
+                        numberOfLines={UIConstant.uiMediaCard.numberOfLinesInTitle}
                     >
                         {title}
                     </UILabel>
