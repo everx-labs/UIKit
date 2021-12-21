@@ -17,6 +17,7 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
     ) {
         const {
             horizontal,
+            // @ts-ignore
             onWheel: onWheelProp,
             onLayout: onLayoutProp,
             onContentSizeChange: onContentSizeChangeProp,
