@@ -5,7 +5,7 @@ export type UICollectionCardProps = {
     /**
      * Media content array
      */
-    contentList: MediaCardContent[];
+    contentList?: MediaCardContent[];
     /**
      * Card title
      */
@@ -29,7 +29,7 @@ export type UICollectionCardProps = {
 };
 
 export type PreviewProps = {
-    contentList: MediaCardContent[];
+    contentList?: MediaCardContent[];
     style: ViewStyle;
 };
 

@@ -14,7 +14,7 @@ function getShowTime(contentType: MediaCardContentType): number | null {
     }
 }
 
-export function useCurrentSourceItemIndex(content: MediaCardContent | MediaCardContent[] | null) {
+export function useCurrentSourceItemIndex(content?: MediaCardContent | MediaCardContent[] | null) {
     const [currentSourceItemIndex, setCurrentSourceItemIndex] = React.useState(0);
 
     React.useEffect(() => {

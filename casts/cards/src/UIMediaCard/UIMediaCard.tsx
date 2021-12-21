@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         overflow: 'hidden',
     },
     container: {
-        backgroundColor: theme[ColorVariants.BackgroundOverlay],
+        backgroundColor: theme[ColorVariants.StaticBackgroundOverlay],
         padding: UILayoutConstant.contentOffset,
         justifyContent: 'flex-end',
         aspectRatio: 1,

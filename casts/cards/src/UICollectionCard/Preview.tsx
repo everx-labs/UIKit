@@ -10,7 +10,7 @@ import { useCurrentSourceItemIndex } from './useCurrentSourceItemIndex';
 export function Preview({ style, contentList }: PreviewProps) {
     React.useEffect(() => {
         const imageList: ImageURISource[] = [];
-        contentList.forEach((value: MediaCardContent) => {
+        contentList?.forEach((value: MediaCardContent) => {
             if (value.contentType === 'Image') {
                 imageList.push(value.source);
             }
@@ -21,10 +21,10 @@ export function Preview({ style, contentList }: PreviewProps) {
     const currentSourceItemIndex = useCurrentSourceItemIndex(contentList);
 
     const currentContent: MediaCardContent | null = React.useMemo(() => {
-        return contentList[currentSourceItemIndex];
+        return contentList ? contentList[currentSourceItemIndex] : null;
     }, [currentSourceItemIndex, contentList]);
 
-    if (contentList.length === 0 || !currentContent) {
+    if (!contentList || contentList.length === 0 || !currentContent) {
         return null;
     }
 

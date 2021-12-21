@@ -11,6 +11,7 @@ import {
 } from '@tonlabs/uikit.themes';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UILayoutConstant, UISkeleton } from '@tonlabs/uikit.layout';
+import { uiLocalized } from '@tonlabs/localization';
 import type { UICollectionCardProps } from './types';
 import { Preview } from './Preview';
 import { Badge } from './Badge';
@@ -26,6 +27,12 @@ export function UICollectionCard({
 }: UICollectionCardProps) {
     const theme = useTheme();
     const styles = useStyles(theme);
+    const [isError, setIsError] = React.useState<boolean>(false);
+    React.useEffect(() => {
+        if (!contentList || contentList.length === 0) {
+            setIsError(true);
+        }
+    }, [contentList]);
     return (
         <UISkeleton show={!!loading} style={styles.skeleton}>
             <TouchableOpacity testID={testID} onPress={onPress} style={styles.touchable}>
@@ -37,13 +44,25 @@ export function UICollectionCard({
                         colors={[UIConstant.linearGradientStart, UIConstant.linearGradientEnd]}
                         style={styles.gradient}
                     />
-                    <UILabel
-                        role={TypographyVariants.NarrowActionText}
-                        color={ColorVariants.StaticBackgroundWhite}
-                        numberOfLines={UIConstant.uiCollectionCard.numberOfLinesInTitle}
-                    >
-                        {title}
-                    </UILabel>
+                    <View>
+                        <UILabel
+                            role={TypographyVariants.NarrowActionText}
+                            color={ColorVariants.StaticBackgroundWhite}
+                            numberOfLines={UIConstant.uiCollectionCard.numberOfLinesInTitle}
+                        >
+                            {title}
+                        </UILabel>
+                        {isError ? (
+                            <UILabel
+                                style={styles.description}
+                                role={TypographyVariants.NarrowParagraphFootnote}
+                                color={ColorVariants.TextSecondary}
+                                numberOfLines={UIConstant.uiCollectionCard.numberOfLinesInTitle}
+                            >
+                                {isError ? uiLocalized.TnftNotSupportedMedia : null}
+                            </UILabel>
+                        ) : null}
+                    </View>
                     <Badge badge={badge} />
                 </View>
             </TouchableOpacity>
@@ -60,7 +79,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         overflow: 'hidden',
     },
     container: {
-        backgroundColor: theme[ColorVariants.BackgroundOverlay],
+        backgroundColor: theme[ColorVariants.StaticBackgroundOverlay],
         padding: UILayoutConstant.contentOffset,
         justifyContent: 'space-between',
         aspectRatio: 1,
@@ -80,5 +99,8 @@ const useStyles = makeStyles((theme: Theme) => ({
                 zIndex: -10,
             },
         }),
+    },
+    description: {
+        paddingTop: 4,
     },
 }));
