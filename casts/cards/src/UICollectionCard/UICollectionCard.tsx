@@ -40,6 +40,7 @@ export function UICollectionCard({
                     <UILabel
                         role={TypographyVariants.NarrowActionText}
                         color={ColorVariants.StaticBackgroundWhite}
+                        numberOfLines={UIConstant.uiCollectionCard.numberOfLinesInTitle}
                     >
                         {title}
                     </UILabel>

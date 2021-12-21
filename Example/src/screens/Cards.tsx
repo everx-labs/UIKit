@@ -70,7 +70,7 @@ export function Cards() {
                             </View>
                             <View style={{ flex: 1, margin: 8 }}>
                                 <UICollectionCard
-                                    title="Happy surf cinema production"
+                                    title="Happy surf cinema production present you the most popular video about happy dog"
                                     badge={UIAssets.icons.ui.blankMiddle}
                                     onPress={() => {
                                         console.log('Press 2');
@@ -119,7 +119,7 @@ export function Cards() {
                         <View style={{ flex: 1, margin: 8 }}>
                             <UIMediaCard
                                 content={CONTENT[0]}
-                                title="Happy surf"
+                                title="Happy surf cinema production present you the most popular video about happy dog"
                                 onPress={() => {
                                     console.log('Press 1');
                                 }}
