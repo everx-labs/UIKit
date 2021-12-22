@@ -27,17 +27,26 @@ export function UICollectionCard({
 }: UICollectionCardProps) {
     const theme = useTheme();
     const styles = useStyles(theme);
-    const [isError, setIsError] = React.useState<boolean>(false);
-    React.useEffect(() => {
-        if (!contentList || contentList.length === 0) {
-            setIsError(true);
-        }
-    }, [contentList]);
+    const isEmptyList = React.useMemo(
+        () => !contentList || contentList.length === 0,
+        [contentList],
+    );
+
+    const [isLoadingFailure, setIsLoadingFailure] = React.useState<boolean>(false);
+
+    const onFailure = React.useCallback(function onFailure() {
+        setIsLoadingFailure(true);
+    }, []);
+
     return (
         <UISkeleton show={!!loading} style={styles.skeleton}>
             <TouchableOpacity testID={testID} onPress={onPress} style={styles.touchable}>
                 <View style={styles.container}>
-                    <Preview style={styles.preview} contentList={contentList} />
+                    <Preview
+                        style={styles.preview}
+                        contentList={contentList}
+                        onFailure={onFailure}
+                    />
                     <LinearGradient
                         start={{ x: 0, y: 0 }}
                         end={{ x: 0, y: 1 }}
@@ -47,19 +56,19 @@ export function UICollectionCard({
                     <View>
                         <UILabel
                             role={TypographyVariants.NarrowActionText}
-                            color={ColorVariants.StaticBackgroundWhite}
+                            color={ColorVariants.StaticTextPrimaryLight}
                             numberOfLines={UIConstant.uiCollectionCard.numberOfLinesInTitle}
                         >
                             {title}
                         </UILabel>
-                        {isError ? (
+                        {isEmptyList || isLoadingFailure ? (
                             <UILabel
                                 style={styles.description}
                                 role={TypographyVariants.NarrowParagraphFootnote}
                                 color={ColorVariants.TextSecondary}
                                 numberOfLines={UIConstant.uiCollectionCard.numberOfLinesInTitle}
                             >
-                                {isError ? uiLocalized.TnftNotSupportedMedia : null}
+                                {uiLocalized.TnftNotSupportedMedia}
                             </UILabel>
                         ) : null}
                     </View>

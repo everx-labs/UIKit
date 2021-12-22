@@ -30,6 +30,10 @@ export type UICollectionCardProps = {
 
 export type PreviewProps = {
     contentList?: MediaCardContent[];
+    /**
+     * The callback is called when all content elements fail
+     */
+    onFailure: () => void;
     style: ViewStyle;
 };
 
@@ -40,4 +44,7 @@ export type BadgeProps = {
 export type CollectionSlideProps = {
     content: MediaCardContent;
     style: ViewStyle;
+    isVisible: boolean;
+    onLoad: () => void;
+    onError: () => void;
 };

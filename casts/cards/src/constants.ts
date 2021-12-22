@@ -15,5 +15,6 @@ export const UIConstant = {
     uiMediaCard: {
         numberOfLinesInTitle: 3,
         borderRadius: 24,
+        descriptionPaddingVertical: 4,
     },
 };
