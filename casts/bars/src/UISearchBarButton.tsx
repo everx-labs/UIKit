@@ -19,15 +19,16 @@ import { UIConstant as UINavConstant } from './constants';
 import { UISearchController } from './UISearchController';
 
 export function UISearchBarButton({
-    visible,
-    onOpen,
-    onClose,
     forId,
     placeholder,
     searchBarPlaceholder,
-    children,
-    onChangeText,
     searching,
+    visible,
+    onOpen,
+    onClose,
+    onChangeText,
+    onDidHide,
+    children,
 }: {
     forId?: string;
     placeholder?: string;
@@ -37,6 +38,7 @@ export function UISearchBarButton({
     onOpen: () => void | Promise<void>;
     onClose: () => void | Promise<void>;
     onChangeText?: React.ComponentProps<typeof UISearchController>['onChangeText'];
+    onDidHide?: () => void | Promise<void>;
     children: ((searchText: string) => React.ReactNode) | React.ReactNode;
 }) {
     return (
@@ -70,8 +72,9 @@ export function UISearchBarButton({
                 forId={forId}
                 visible={visible}
                 onCancel={onClose}
-                searching={searching}
                 onChangeText={onChangeText}
+                onDidHide={onDidHide}
+                searching={searching}
             >
                 {children}
             </UISearchController>
