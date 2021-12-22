@@ -1,9 +1,10 @@
 import * as React from 'react';
 import Animated, { interpolate, interpolateColor, useAnimatedProps } from 'react-native-reanimated';
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { StyleSheet, ViewStyle } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 
 import { useColorParts, ColorVariants } from '@tonlabs/uikit.themes';
+import type { SplitScreenTabBarAnimatedIconComponentProps } from './SplitBottomTabBar';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
@@ -16,16 +17,12 @@ const centerDotColorParts = '150,196,228';
 // @inline
 const STROKE_SIZE = 1.75;
 
-type MainAnimatedIconProps = {
-    progress: Animated.SharedValue<number>;
-    // eslint-disable-next-line react/no-unused-prop-types
-    style?: StyleProp<ViewStyle>;
-};
-
 function MainAnimatedIconInner({
     progress,
     s,
-}: MainAnimatedIconProps & { s: ViewStyle & { width: number; height: number } }) {
+}: SplitScreenTabBarAnimatedIconComponentProps & {
+    s: ViewStyle & { width: number; height: number };
+}) {
     const cx = s.width / 2;
     const cy = cx;
     const bigCircleRadius = cx;
@@ -95,7 +92,7 @@ function MainAnimatedIconInner({
 export const MainAnimatedIcon = React.memo(function MainAnimatedIcon({
     progress,
     style,
-}: MainAnimatedIconProps) {
+}: SplitScreenTabBarAnimatedIconComponentProps) {
     if (style == null) {
         return null;
     }

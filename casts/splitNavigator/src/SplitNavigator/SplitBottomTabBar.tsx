@@ -22,10 +22,12 @@ import { useTheme, ColorVariants } from '@tonlabs/uikit.themes';
 import { hapticSelection } from '@tonlabs/uikit.controls';
 import { ShadowView } from './ShadowView';
 
-type SplitScreenTabBarAnimatedIconComponent = React.ComponentType<{
+export type SplitScreenTabBarAnimatedIconComponentProps = {
     progress: ReAnimated.SharedValue<number>;
     style?: StyleProp<ViewStyle>;
-}>;
+};
+type SplitScreenTabBarAnimatedIconComponent =
+    React.ComponentType<SplitScreenTabBarAnimatedIconComponentProps>;
 
 export type SplitScreenTabBarIconOptions =
     | {
