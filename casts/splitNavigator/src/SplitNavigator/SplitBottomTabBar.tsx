@@ -192,7 +192,6 @@ export function SplitBottomTabBar({
         prevActiveKey.current = activeKey;
 
         const index = iconsMap[activeKey];
-        console.log(index);
         if (index != null) {
             dotRef.current?.moveTo(index);
         }
@@ -263,10 +262,18 @@ const TAB_BAR_DEFAULT_BOTTOM_INSET = 32;
 const TAB_BAR_HEIGHT = 64;
 export function useTabBarHeight() {
     const insets = useSafeAreaInsets();
-    return React.useMemo(
+    const tabBarHeight = React.useMemo(
         () => Math.max(insets.bottom, TAB_BAR_DEFAULT_BOTTOM_INSET) + TAB_BAR_HEIGHT,
         [insets.bottom],
     );
+    const insetsWithTabBar = React.useMemo(
+        () => ({ ...insets, bottom: insets.bottom + tabBarHeight }),
+        [insets, tabBarHeight],
+    );
+    return {
+        tabBarHeight,
+        insetsWithTabBar,
+    };
 }
 
 const styles = StyleSheet.create({

@@ -1,8 +1,11 @@
 import * as React from 'react';
-import Animated, { interpolate, interpolateColor, useAnimatedStyle } from 'react-native-reanimated';
+import Animated, { interpolate, interpolateColor, useAnimatedProps } from 'react-native-reanimated';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import Svg, { Circle } from 'react-native-svg';
 
-import { useColorParts, ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import { useColorParts, ColorVariants } from '@tonlabs/uikit.themes';
+
+const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 // @inline
 const ANIMATED_ICON_INACTIVE = 0;
@@ -10,100 +13,108 @@ const ANIMATED_ICON_INACTIVE = 0;
 const ANIMATED_ICON_ACTIVE = 1;
 // @inline
 const centerDotColorParts = '150,196,228';
+// @inline
+const STROKE_SIZE = 1.75;
 
 type MainAnimatedIconProps = {
     progress: Animated.SharedValue<number>;
+    // eslint-disable-next-line react/no-unused-prop-types
     style?: StyleProp<ViewStyle>;
 };
 
-export function MainAnimatedIcon({ progress, style }: MainAnimatedIconProps) {
+function MainAnimatedIconInner({
+    progress,
+    s,
+}: MainAnimatedIconProps & { s: ViewStyle & { width: number; height: number } }) {
+    const cx = s.width / 2;
+    const cy = cx;
+    const bigCircleRadius = cx;
+    const bigCircleRadiusWithStroke = bigCircleRadius - STROKE_SIZE / 2;
+    const smallCircleRadius = (cx + 1) / 2;
+    const smallCircleRadiusWithStroke = smallCircleRadius - STROKE_SIZE / 2;
     const { colorParts: bgColorParts } = useColorParts(ColorVariants.BackgroundAccent);
-    // const { colorParts: borderColorParts } = useColorParts(
-    //     ColorVariants.BackgroundTertiaryInverted,
-    // );
-    const theme = useTheme();
-    const circle1 = useAnimatedStyle(() => {
+    const { colorParts: borderColorParts } = useColorParts(
+        ColorVariants.BackgroundTertiaryInverted,
+    );
+    const circle2Props = useAnimatedProps(() => {
         return {
-            backgroundColor: interpolateColor(
+            r: interpolate(
                 progress.value,
                 [ANIMATED_ICON_INACTIVE, ANIMATED_ICON_ACTIVE],
-                [`rgba(${bgColorParts}, 0)`, `rgba(${bgColorParts}, 1)`],
+                [bigCircleRadiusWithStroke, smallCircleRadiusWithStroke],
             ),
-            borderWidth: interpolate(
-                progress.value,
-                [ANIMATED_ICON_INACTIVE, ANIMATED_ICON_ACTIVE],
-                [4, 0],
-            ),
-            // borderColor: interpolateColor(
-            //     progress.value,
-            //     [ANIMATED_ICON_INACTIVE, ANIMATED_ICON_ACTIVE],
-            //     // [`rgba(${borderColorParts}, 1)`, `rgba(${borderColorParts}, 0)`],
-            //     [`rgb(${borderColorParts})`, `rgb(${bgColorParts})`],
-            // ),
-            transform: [
-                {
-                    scale: interpolate(
-                        progress.value,
-                        [ANIMATED_ICON_INACTIVE, ANIMATED_ICON_ACTIVE],
-                        // [0.5, 1.5],
-                        [0.5, 1],
-                    ),
-                },
-            ],
-        };
-    });
-    const circle2 = useAnimatedStyle(() => {
-        return {
-            backgroundColor: interpolateColor(
+            fill: interpolateColor(
                 progress.value,
                 [ANIMATED_ICON_INACTIVE, ANIMATED_ICON_ACTIVE],
                 [`rgba(${centerDotColorParts}, 0)`, `rgba(${centerDotColorParts}, 1)`],
             ),
-            borderWidth: interpolate(
+            stroke: interpolateColor(
                 progress.value,
                 [ANIMATED_ICON_INACTIVE, ANIMATED_ICON_ACTIVE],
-                [2, 0],
+                [`rgba(${borderColorParts}, 1)`, `rgba(${borderColorParts}, 0)`],
             ),
-            // borderColor: interpolateColor(
-            //     progress.value,
-            //     [ANIMATED_ICON_INACTIVE, ANIMATED_ICON_ACTIVE],
-            //     [`rgba(${borderColorParts}, 1)`, `rgba(${borderColorParts}, 1)`],
-            //     // [`rgba(${borderColorParts}, 1)`, `rgba(${centerDotColorParts}, 1)`],
-            // ),
-            transform: [
-                {
-                    scale: interpolate(
-                        progress.value,
-                        [ANIMATED_ICON_INACTIVE, ANIMATED_ICON_ACTIVE],
-                        [1, 0.4],
-                        // [1, 0.4],
-                    ),
-                },
-            ],
+        };
+    });
+    const circle1Props = useAnimatedProps(() => {
+        return {
+            r: interpolate(
+                progress.value,
+                [ANIMATED_ICON_INACTIVE, ANIMATED_ICON_ACTIVE],
+                [smallCircleRadiusWithStroke, bigCircleRadius],
+            ),
+            fill: interpolateColor(
+                progress.value,
+                [ANIMATED_ICON_INACTIVE, ANIMATED_ICON_ACTIVE],
+                [`rgba(${bgColorParts}, 0)`, `rgba(${bgColorParts}, 1)`],
+            ),
+            stroke: interpolateColor(
+                progress.value,
+                [ANIMATED_ICON_INACTIVE, ANIMATED_ICON_ACTIVE],
+                [`rgba(${borderColorParts}, 1)`, `rgba(${borderColorParts}, 0)`],
+            ),
         };
     });
     return (
-        <Animated.View style={[style, { position: 'relative' }]}>
-            <Animated.View
-                style={[
-                    StyleSheet.absoluteFill,
-                    {
-                        borderRadius: 50,
-                        borderColor: theme[ColorVariants.BackgroundTertiaryInverted],
-                    },
-                    circle1,
-                ]}
+        <Svg width={s.width} height={s.height}>
+            <AnimatedCircle
+                animatedProps={circle1Props}
+                strokeWidth={STROKE_SIZE}
+                cx={cx}
+                cy={cy}
             />
-            <Animated.View
-                style={[
-                    StyleSheet.absoluteFill,
-                    {
-                        borderRadius: 50,
-                        borderColor: theme[ColorVariants.BackgroundTertiaryInverted],
-                    },
-                    circle2,
-                ]}
+            <AnimatedCircle
+                animatedProps={circle2Props}
+                strokeWidth={STROKE_SIZE}
+                cx={cx}
+                cy={cy}
             />
-        </Animated.View>
+        </Svg>
     );
 }
+
+export const MainAnimatedIcon = React.memo(function MainAnimatedIcon({
+    progress,
+    style,
+}: MainAnimatedIconProps) {
+    if (style == null) {
+        return null;
+    }
+    const s = StyleSheet.flatten(style);
+    if (
+        s.width == null ||
+        typeof s.width !== 'number' ||
+        s.height == null ||
+        typeof s.height !== 'number'
+    ) {
+        return null;
+    }
+
+    return (
+        <MainAnimatedIconInner
+            progress={progress}
+            style={style}
+            // @ts-expect-error (we actually have all the necessary checks but TS doesn't understand them)
+            s={s}
+        />
+    );
+});

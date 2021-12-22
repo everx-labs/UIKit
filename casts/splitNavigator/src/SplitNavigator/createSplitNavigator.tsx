@@ -18,6 +18,7 @@ import { screensEnabled, ScreenContainer } from 'react-native-screens';
 import { StackView, TransitionPresets } from '@react-navigation/stack';
 import { NativeStackView } from 'react-native-screens/native-stack';
 
+import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
 import { ResourceSavingScene } from './ResourceSavingScene';
 import { SafeAreaProviderCompat } from './SafeAreaProviderCompat';
 import {
@@ -37,6 +38,11 @@ import { MainAnimatedIcon } from './MainAnimatedIcon';
 import { TabScreen } from './TabScreen';
 
 export const NestedInSplitContext = React.createContext<boolean>(false);
+
+export function useIsSplitted() {
+    const isSplitted = React.useContext(NestedInSplitContext);
+    return isSplitted;
+}
 
 const getIsSplitted = ({ width }: { width: number }, mainWidth: number) => width > mainWidth;
 
@@ -129,7 +135,7 @@ function UnfoldedSplitNavigator({
     );
 
     const doesSupportNative = Platform.OS !== 'web' && screensEnabled?.();
-    const tabBarHeight = useTabBarHeight();
+    const { tabBarHeight, insetsWithTabBar } = useTabBarHeight();
 
     return (
         <NavigationHelpersContext.Provider value={navigation}>
@@ -138,7 +144,9 @@ function UnfoldedSplitNavigator({
                     <View style={splitStyles.body}>
                         <View style={splitStyles.main}>
                             <SplitTabBarHeightContext.Provider value={tabBarHeight}>
-                                {descriptors[mainRoute.key].render()}
+                                <SafeAreaInsetsContext.Provider value={insetsWithTabBar}>
+                                    {descriptors[mainRoute.key].render()}
+                                </SafeAreaInsetsContext.Provider>
                             </SplitTabBarHeightContext.Provider>
                             <SplitBottomTabBar
                                 icons={tabBarIcons}
@@ -261,6 +269,8 @@ function FoldedSplitNavigator({
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [tabRouteNamesMap, mainRoute.key, state.routes],
     );
+    const { tabBarHeight, insetsWithTabBar } = useTabBarHeight();
+
     const stackDescriptors = (state.nestedStack ?? []).reduce<typeof descriptors>(
         (acc, routeIndex) => {
             const route = state.routes[routeIndex];
@@ -297,7 +307,11 @@ function FoldedSplitNavigator({
                                             style={StyleSheet.absoluteFill}
                                             isVisible={isFocused}
                                         >
-                                            {tabDescriptor.render()}
+                                            <SafeAreaInsetsContext.Provider
+                                                value={insetsWithTabBar}
+                                            >
+                                                {tabDescriptor.render()}
+                                            </SafeAreaInsetsContext.Provider>
                                         </TabScreen>
                                     );
                                 })}
@@ -333,7 +347,6 @@ function FoldedSplitNavigator({
     );
 
     const doesSupportNative = Platform.OS !== 'web' && screensEnabled?.();
-    const tabBarHeight = useTabBarHeight();
 
     if (doesSupportNative) {
         return (
