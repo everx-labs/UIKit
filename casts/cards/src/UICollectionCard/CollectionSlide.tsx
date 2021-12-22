@@ -54,7 +54,7 @@ function CollectionSlideImpl(props: CollectionSlideProps) {
         case 'Video':
             return <VideoSlide {...props} />;
         default:
-            onError();
+            setTimeout(() => onError());
             return null;
     }
 }
