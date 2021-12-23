@@ -61,10 +61,7 @@ export function Preview({ style, contentList, onFailure }: PreviewProps) {
                     setAvailableIndexList(newAvailableIndexList);
                 }
                 if (failureIndexList.length === contentList?.length) {
-                    /**
-                     * All elements failed
-                     */
-                    onFailure();
+                    onFailure(new Error('All elements failed'));
                 }
             };
         },

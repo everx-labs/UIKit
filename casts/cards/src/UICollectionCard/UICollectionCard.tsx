@@ -20,6 +20,7 @@ import { UIConstant } from '../constants';
 export function UICollectionCard({
     contentList,
     title,
+    notSupportedMessage,
     badge,
     onPress,
     loading,
@@ -68,7 +69,7 @@ export function UICollectionCard({
                                 color={ColorVariants.TextSecondary}
                                 numberOfLines={UIConstant.uiCollectionCard.numberOfLinesInTitle}
                             >
-                                {uiLocalized.TnftNotSupportedMedia}
+                                {notSupportedMessage || uiLocalized.NotSupportedMedia}
                             </UILabel>
                         ) : null}
                     </View>

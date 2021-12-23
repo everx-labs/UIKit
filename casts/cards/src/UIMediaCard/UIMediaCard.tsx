@@ -16,7 +16,14 @@ import type { UIMediaCardProps } from './types';
 import { UIConstant } from '../constants';
 import { CollectionSlide } from '../UICollectionCard/CollectionSlide';
 
-export function UIMediaCard({ content, title, onPress, loading, testID }: UIMediaCardProps) {
+export function UIMediaCard({
+    content,
+    title,
+    notSupportedMessage,
+    onPress,
+    loading,
+    testID,
+}: UIMediaCardProps) {
     const theme = useTheme();
     const styles = useStyles(theme);
     const [isContentLoaded, setIsContentLoaded] = React.useState<boolean>(false);
@@ -54,7 +61,9 @@ export function UIMediaCard({ content, title, onPress, loading, testID }: UIMedi
                         color={ColorVariants.TextSecondary}
                         numberOfLines={UIConstant.uiCollectionCard.numberOfLinesInTitle}
                     >
-                        {!content || isError ? uiLocalized.TnftNotSupportedMedia : ''}
+                        {!content || isError
+                            ? notSupportedMessage || uiLocalized.NotSupportedMedia
+                            : ''}
                     </UILabel>
                     <UILabel
                         role={TypographyVariants.MonoNote}

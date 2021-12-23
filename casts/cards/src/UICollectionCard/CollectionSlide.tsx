@@ -5,6 +5,10 @@ import { UIImage, UIVideo } from '@tonlabs/uikit.media';
 import type { CollectionSlideProps } from './types';
 
 function VideoSlide({ content, style, onLoad, isVisible, onError }: CollectionSlideProps) {
+    const onVideoLoadError = React.useCallback(() => {
+        onError(new Error(`The video can't be loaded`));
+    }, [onError]);
+
     if (!content.source.uri) {
         return null;
     }
@@ -25,7 +29,7 @@ function VideoSlide({ content, style, onLoad, isVisible, onError }: CollectionSl
                     repeat
                     resizeMode="cover"
                     onLoad={onLoad}
-                    onError={onError}
+                    onError={onVideoLoadError}
                 />
             </View>
         </View>
@@ -38,9 +42,13 @@ function CollectionSlideImpl(props: CollectionSlideProps) {
 
     React.useEffect(() => {
         if (contentType === 'Unknown') {
-            onError();
+            onError(new Error('The content type is unknown'));
         }
     }, [contentType, onError]);
+
+    const onImageLoadError = React.useCallback(() => {
+        onError(new Error(`The image can't be loaded`));
+    }, [onError]);
 
     switch (contentType) {
         case 'Image':
@@ -55,7 +63,7 @@ function CollectionSlideImpl(props: CollectionSlideProps) {
                             },
                         ]}
                         onLoad={onLoad}
-                        onError={onError}
+                        onError={onImageLoadError}
                     />
                 </View>
             );
