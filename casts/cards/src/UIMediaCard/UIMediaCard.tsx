@@ -51,7 +51,7 @@ export function UIMediaCard({ content, title, onPress, loading, testID }: UIMedi
                     <UILabel
                         style={styles.description}
                         role={TypographyVariants.NarrowParagraphFootnote}
-                        color={ColorVariants.TextTertiary}
+                        color={ColorVariants.TextSecondary}
                         numberOfLines={UIConstant.uiCollectionCard.numberOfLinesInTitle}
                     >
                         {!content || isError ? uiLocalized.TnftNotSupportedMedia : null}
@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         overflow: 'hidden',
     },
     container: {
-        backgroundColor: theme[ColorVariants.StaticBackgroundOverlay],
+        backgroundColor: theme[ColorVariants.StaticTextOverlayDark],
         padding: UILayoutConstant.contentOffset,
         justifyContent: 'space-between',
         aspectRatio: 1,
