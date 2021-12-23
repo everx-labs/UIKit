@@ -16,24 +16,28 @@ import { ExampleScreen } from '../components/ExampleScreen';
 
 const CONTENT: MediaCardContent[] = [
     {
+        id: '1',
         contentType: 'Video',
         source: {
             uri: 'https://firebasestorage.googleapis.com/v0/b/ton-uikit-example-7e797.appspot.com/o/Happy-surf.mp4?alt=media&token=ecb72009-5913-4537-b553-37ec41a99782',
         },
     },
     {
+        id: '2',
         contentType: 'Image',
         source: {
             uri: 'https://firebasestorage.googleapis.com/v0/b/ton-uikit-example-7e797.appspot.com/o/jim-carrey-yes-sir.gif?alt=media&token=42bb8c1c-ffc7-429d-8838-0436410b1d74',
         },
     },
     {
+        id: '3',
         contentType: 'Image',
         source: {
             uri: 'https://firebasestorage.googleapis.com/v0/b/ton-uikit-example-7e797.appspot.com/o/loon-image-small.jpeg?alt=media&token=022bc391-19ec-4e7f-94c6-66349f2e212e',
         },
     },
     {
+        id: '4',
         contentType: 'Image',
         source: {
             uri: 'https://firebasestorage.googleapis.com/v0/b/ton-uikit-example-7e797.appspot.com/o/webpImage.webp?alt=media&token=0d308353-5332-483b-a5dd-0bbce2b5e4bc',
@@ -60,7 +64,7 @@ export function Cards() {
                             <View style={{ flex: 1, margin: 8 }}>
                                 <UICollectionCard
                                     title="Grand Collection"
-                                    badge="1"
+                                    badge="4"
                                     onPress={() => {
                                         console.log('Press 1');
                                     }}

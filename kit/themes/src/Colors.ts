@@ -67,6 +67,7 @@ export enum ColorVariants {
     StaticBackgroundAccent = 'StaticBackgroundAccent',
     StaticBackgroundNegative = 'StaticBackgroundNegative',
     StaticBackgroundPositive = 'StaticBackgroundPositive',
+    StaticBackgroundOverlay = 'StaticBackgroundOverlay',
     Shadow = 'Shadow',
 }
 
@@ -89,6 +90,7 @@ const StaticTheme = {
     [ColorVariants.StaticBackgroundAccent]: 'rgba(0, 131, 224, 0.12)',
     [ColorVariants.StaticBackgroundNegative]: 'rgba(231, 23, 23, 0.12)',
     [ColorVariants.StaticBackgroundPositive]: 'rgba(54, 192, 92, 0.12)',
+    [ColorVariants.StaticBackgroundOverlay]: 'rgba(4, 4, 4, 0.4)',
 };
 
 export const LightTheme: Theme = {
@@ -115,7 +117,7 @@ export const LightTheme: Theme = {
     [ColorVariants.BackgroundWarning]: '#FFC043',
     [ColorVariants.BackgroundPrimaryInverted]: '#20262A',
     [ColorVariants.BackgroundTertiaryInverted]: '#B6B8BA',
-    [ColorVariants.BackgroundOverlay]: 'rgba(0, 0, 0, 0.6)',
+    [ColorVariants.BackgroundOverlay]: 'rgba(4, 4, 4, 0.4)',
     [ColorVariants.BackgroundOverlayInverted]: 'rgba(255, 255, 255, 0.4)',
     [ColorVariants.BackgroundBW]: '#FFFFFF',
 
@@ -169,7 +171,7 @@ export const DarkTheme: Theme = {
     [ColorVariants.BackgroundWarning]: '#B08229',
     [ColorVariants.BackgroundPrimaryInverted]: '#FAFAFA',
     [ColorVariants.BackgroundTertiaryInverted]: '#676B6E',
-    [ColorVariants.BackgroundOverlay]: 'rgba(0, 0, 0, 0.8)',
+    [ColorVariants.BackgroundOverlay]: 'rgba(4, 4, 4, 0.6)',
     [ColorVariants.BackgroundOverlayInverted]: 'rgba(255, 255, 255, 0.2)',
     [ColorVariants.BackgroundBW]: '#1C2125',
 

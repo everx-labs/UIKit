@@ -5,11 +5,17 @@ export type UICollectionCardProps = {
     /**
      * Media content array
      */
-    contentList: MediaCardContent[];
+    contentList?: MediaCardContent[];
     /**
      * Card title
      */
     title?: string;
+    /**
+     * This is the message displayed when it is not possible
+     * to load any of the media content elements
+     * default: the phrase from `uiLocalized.NotSupportedMedia`
+     */
+    notSupportedMessage?: string;
     /**
      * Displays the number of items in the collection or an image
      */
@@ -29,7 +35,11 @@ export type UICollectionCardProps = {
 };
 
 export type PreviewProps = {
-    contentList: MediaCardContent[];
+    contentList?: MediaCardContent[];
+    /**
+     * The callback is called when all content elements fail
+     */
+    onFailure: (error: Error) => void;
     style: ViewStyle;
 };
 
@@ -40,4 +50,7 @@ export type BadgeProps = {
 export type CollectionSlideProps = {
     content: MediaCardContent;
     style: ViewStyle;
+    isVisible: boolean;
+    onLoad: () => void;
+    onError: (error: Error) => void;
 };

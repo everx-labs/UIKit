@@ -14,29 +14,37 @@ function getShowTime(contentType: MediaCardContentType): number | null {
     }
 }
 
-export function useCurrentSourceItemIndex(content: MediaCardContent | MediaCardContent[] | null) {
-    const [currentSourceItemIndex, setCurrentSourceItemIndex] = React.useState(0);
+export function useCurrentSourceItemIndex(
+    content: MediaCardContent | MediaCardContent[] | null | undefined,
+    availableList: number[],
+) {
+    const [currentAvailableListIndex, setCurrentAvailableListIndex] = React.useState(-1);
 
     React.useEffect(() => {
         let timeout: NodeJS.Timeout;
 
-        if (Array.isArray(content) && content.length > 1) {
-            const currentItem = content[currentSourceItemIndex];
-            const showTime = getShowTime(currentItem.contentType);
+        if (Array.isArray(content) && content.length > 0) {
+            const currentItem: MediaCardContent | undefined =
+                content[availableList[currentAvailableListIndex]];
+            if (currentItem) {
+                const showTime = getShowTime(currentItem.contentType);
 
-            if (showTime !== null) {
-                timeout = setTimeout(() => {
-                    const nextIndex =
-                        currentSourceItemIndex >= content.length - 1
-                            ? 0
-                            : currentSourceItemIndex + 1;
-                    setCurrentSourceItemIndex(nextIndex);
-                }, showTime);
+                if (showTime !== null) {
+                    timeout = setTimeout(() => {
+                        const nextIndex =
+                            currentAvailableListIndex >= availableList.length - 1
+                                ? 0
+                                : currentAvailableListIndex + 1;
+                        setCurrentAvailableListIndex(nextIndex);
+                    }, showTime);
+                }
+            } else if (availableList.length > 0) {
+                setCurrentAvailableListIndex(0);
             }
         }
 
         return () => clearTimeout(timeout);
-    }, [content, currentSourceItemIndex]);
+    }, [content, availableList, currentAvailableListIndex]);
 
-    return currentSourceItemIndex;
+    return availableList[currentAvailableListIndex];
 }

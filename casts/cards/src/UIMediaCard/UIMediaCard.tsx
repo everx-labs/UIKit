@@ -11,19 +11,43 @@ import {
 } from '@tonlabs/uikit.themes';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UILayoutConstant, UISkeleton } from '@tonlabs/uikit.layout';
+import { uiLocalized } from '@tonlabs/localization';
 import type { UIMediaCardProps } from './types';
 import { UIConstant } from '../constants';
 import { CollectionSlide } from '../UICollectionCard/CollectionSlide';
 
-export function UIMediaCard({ content, title, onPress, loading, testID }: UIMediaCardProps) {
+export function UIMediaCard({
+    content,
+    title,
+    notSupportedMessage,
+    onPress,
+    loading,
+    testID,
+}: UIMediaCardProps) {
     const theme = useTheme();
     const styles = useStyles(theme);
+    const [isContentLoaded, setIsContentLoaded] = React.useState<boolean>(false);
+    const [isError, setIsError] = React.useState<boolean>(false);
+
+    const onLoad = React.useCallback(function onLoad() {
+        setIsContentLoaded(true);
+    }, []);
+    const onError = React.useCallback(function onError() {
+        setIsError(true);
+    }, []);
+
     return (
         <UISkeleton show={!!loading} style={styles.skeleton}>
             <TouchableOpacity testID={testID} onPress={onPress} style={styles.touchable}>
                 <View style={styles.container}>
                     {content ? (
-                        <CollectionSlide style={styles.quickView} content={content} />
+                        <CollectionSlide
+                            style={styles.quickView}
+                            content={content}
+                            isVisible={isContentLoaded && !isError}
+                            onLoad={onLoad}
+                            onError={onError}
+                        />
                     ) : null}
                     <LinearGradient
                         start={{ x: 0, y: 1 }}
@@ -32,8 +56,18 @@ export function UIMediaCard({ content, title, onPress, loading, testID }: UIMedi
                         style={styles.gradient}
                     />
                     <UILabel
+                        style={styles.description}
+                        role={TypographyVariants.NarrowParagraphFootnote}
+                        color={ColorVariants.TextSecondary}
+                        numberOfLines={UIConstant.uiCollectionCard.numberOfLinesInTitle}
+                    >
+                        {!content || isError
+                            ? notSupportedMessage || uiLocalized.NotSupportedMedia
+                            : ''}
+                    </UILabel>
+                    <UILabel
                         role={TypographyVariants.MonoNote}
-                        color={ColorVariants.StaticBackgroundWhite}
+                        color={ColorVariants.StaticTextPrimaryLight}
                         numberOfLines={UIConstant.uiMediaCard.numberOfLinesInTitle}
                     >
                         {title}
@@ -53,9 +87,9 @@ const useStyles = makeStyles((theme: Theme) => ({
         overflow: 'hidden',
     },
     container: {
-        backgroundColor: theme[ColorVariants.BackgroundOverlay],
+        backgroundColor: theme[ColorVariants.StaticTextOverlayDark],
         padding: UILayoutConstant.contentOffset,
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
         aspectRatio: 1,
     },
     quickView: {
@@ -73,5 +107,8 @@ const useStyles = makeStyles((theme: Theme) => ({
                 zIndex: -10,
             },
         }),
+    },
+    description: {
+        paddingVertical: UIConstant.uiMediaCard.descriptionPaddingVertical,
     },
 }));

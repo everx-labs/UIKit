@@ -42,7 +42,7 @@ export function Badge({ badge }: BadgeProps) {
 const useStyles = makeStyles((theme: Theme) => ({
     stringBadge: {
         borderRadius: UIConstant.uiCollectionCard.badge.borderRadius,
-        backgroundColor: theme[ColorVariants.BackgroundOverlay],
+        backgroundColor: theme[ColorVariants.StaticBackgroundOverlay],
         alignSelf: 'flex-end',
         paddingHorizontal: UIConstant.uiCollectionCard.badge.paddingHorizontal,
         paddingVertical: UIConstant.uiCollectionCard.badge.paddingVertical,
@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     imageBadge: {
         borderRadius: UILayoutConstant.iconSize / 2,
-        backgroundColor: theme[ColorVariants.BackgroundOverlay],
+        backgroundColor: theme[ColorVariants.StaticBackgroundOverlay],
         alignSelf: 'flex-end',
     },
     image: {

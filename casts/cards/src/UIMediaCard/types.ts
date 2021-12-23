@@ -11,6 +11,11 @@ export type UIMediaCardProps = {
      */
     title?: string;
     /**
+     * This is the message displayed when it is not possible to load media content
+     * default: the phrase from `uiLocalized.NotSupportedMedia`
+     */
+    notSupportedMessage?: string;
+    /**
      * Сallback called by clicking/tapping on the card
      */
     onPress?: () => void;
