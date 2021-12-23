@@ -34,7 +34,15 @@ function VideoSlide({ content, style, onLoad, isVisible, onError }: CollectionSl
 
 function CollectionSlideImpl(props: CollectionSlideProps) {
     const { content, style, onLoad, isVisible, onError } = props;
-    switch (content.contentType) {
+    const { contentType } = content;
+
+    React.useEffect(() => {
+        if (contentType === 'Unknown') {
+            onError();
+        }
+    }, [contentType, onError]);
+
+    switch (contentType) {
         case 'Image':
             return (
                 <View style={[StyleSheet.absoluteFill, style]}>
@@ -54,7 +62,6 @@ function CollectionSlideImpl(props: CollectionSlideProps) {
         case 'Video':
             return <VideoSlide {...props} />;
         default:
-            setTimeout(() => onError());
             return null;
     }
 }
