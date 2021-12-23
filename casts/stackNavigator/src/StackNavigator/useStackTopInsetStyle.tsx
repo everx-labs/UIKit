@@ -6,7 +6,7 @@ import { NestedInSplitContext } from '@tonlabs/uicast.split-navigator';
 
 export function useStackTopInsetStyle() {
     const { top } = useSafeAreaInsets();
-    const { isSplitted } = React.useContext(NestedInSplitContext);
+    const isSplitted = React.useContext(NestedInSplitContext);
     const closeModal = React.useContext(NestedInModalContext);
 
     const topInsetStyle = React.useMemo(() => {

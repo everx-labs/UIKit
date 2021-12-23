@@ -93,6 +93,7 @@
         "react-native-screens": "3.10.1",
         "react-native-share": "^3.8.3",
         "react-native-simple-popover": "git+https://github.com/tonlabs/react-native-simple-popover.git",
+        "react-native-simple-shadow-view": "1.6.3",
         "react-native-status-bar-height": "1.0.1",
         "react-native-svg": "^12.1.0",
         "react-native-video": "git+https://github.com/tonlabs/react-native-video.git#master",

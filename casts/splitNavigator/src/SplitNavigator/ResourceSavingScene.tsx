@@ -24,6 +24,8 @@ export const ResourceSavingScene = ({ isVisible, children, style }: Props) => {
                 Platform.OS === 'ios' ? !isVisible : true
             }
             pointerEvents={isVisible ? 'auto' : 'none'}
+            accessibilityElementsHidden={!isVisible}
+            importantForAccessibility={isVisible ? 'auto' : 'no-hide-descendants'}
         >
             <View style={isVisible ? styles.attached : styles.detached}>{children}</View>
         </View>

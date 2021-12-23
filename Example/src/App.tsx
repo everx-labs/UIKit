@@ -7,7 +7,7 @@
 
 import { FlatList, TouchableOpacity, GestureHandlerRootView } from 'react-native-gesture-handler';
 import React from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -37,8 +37,9 @@ import {
     UILargeTitleHeader,
     UISearchBarButton,
 } from '@tonlabs/uicast.bars';
-import { createSplitNavigator } from '@tonlabs/uicast.split-navigator';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
+import { UIAssets } from '@tonlabs/uikit.assets';
+import { createSplitNavigator, useSplitTabBarHeight } from '@tonlabs/uicast.split-navigator';
 
 import { ButtonsScreen } from './screens/Buttons';
 import { Checkbox } from './screens/Checkbox';
@@ -87,6 +88,7 @@ const Main = ({ navigation }: { navigation: any }) => {
     const themeSwitcher = React.useContext(ThemeSwitcher);
     const [isSearchVisible, setIsSearchVisible] = React.useState(false);
     const { top, bottom } = useSafeAreaInsets();
+    const tabBarBottomInset = useSplitTabBarHeight();
     return (
         <UIBackgroundView style={{ flex: 1, paddingTop: top }}>
             <PortalManager id="search">
@@ -147,7 +149,11 @@ const Main = ({ navigation }: { navigation: any }) => {
                             }}
                         </UISearchBarButton>
                     </View>
-                    <ScrollView contentContainerStyle={{ paddingBottom: bottom }}>
+                    <ScrollView
+                        contentContainerStyle={{
+                            paddingBottom: Math.max(bottom, tabBarBottomInset),
+                        }}
+                    >
                         <UILinkButton
                             title="Browser"
                             type={UILinkButtonType.Menu}
@@ -347,12 +353,6 @@ const App = () => {
                                         },
                                     ],
                                 },
-                                ...Platform.select({
-                                    android: {
-                                        stackAnimation: 'slide_from_right',
-                                    },
-                                    default: null,
-                                }),
                             }}
                             mainWidth={900}
                         >
@@ -381,9 +381,23 @@ const App = () => {
                             <Split.Screen name="qr-code" component={QRCodeScreen} />
                             <Split.Screen name="rows" component={RowsScreen} />
                             <Split.Screen name="text" component={TextScreen} />
+                            <Split.Screen
+                                name="finances"
+                                component={FinancesScreen}
+                                options={{
+                                    tabBarActiveIcon: UIAssets.icons.ui.buttonStickerEnabled,
+                                    tabBarDisabledIcon: UIAssets.icons.ui.buttonStickerDisabled,
+                                }}
+                            />
+                            <Split.Screen
+                                name="skeletons"
+                                component={SkeletonsScreen}
+                                options={{
+                                    tabBarActiveIcon: UIAssets.icons.ui.checkboxSquareActive,
+                                    tabBarDisabledIcon: UIAssets.icons.ui.checkboxSquareInactive,
+                                }}
+                            />
                             <Split.Screen name="videos" component={VideosScreen} />
-                            <Split.Screen name="finances" component={FinancesScreen} />
-                            <Split.Screen name="skeletons" component={SkeletonsScreen} />
                         </Split.Navigator>
                     </NavigationContainer>
                     <UIAndroidNavigationBar />
