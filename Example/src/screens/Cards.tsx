@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { UICollectionCard, UIMediaCard, MediaCardContent } from '@tonlabs/uicast.cards';
 import { UIBoxButton, UIBoxButtonVariant } from '@tonlabs/uikit.controls';
 import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIMasonryList, MasonryItem } from '@tonlabs/uikit.scrolls';
 import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -45,8 +46,56 @@ const CONTENT: MediaCardContent[] = [
     },
 ];
 
+type Item = { index: number; title: string };
+
+const getTitle = (id: string | undefined) => {
+    switch (id) {
+        case '1':
+            return 'Happy surf cinema production present you the most popular video about happy dog';
+        case '2':
+            return 'Jim Carrey greets you!';
+        case '3':
+            return 'Choco';
+        case '4':
+            return 'Relaxation';
+        default:
+            return 'Empty card';
+    }
+};
+
+const arrayLength = 5;
+const data = new Array(arrayLength).fill(null).map((_, index): MasonryItem<Item> => {
+    const title = getTitle(CONTENT[index]?.id);
+    return {
+        key: `${index}`,
+        item: { index, title },
+        aspectRatio: 0.5 + (index % arrayLength) / (arrayLength * 2),
+    };
+});
+
 export function Cards() {
     const [loading, setLoading] = useState(false);
+
+    const renderItem = React.useCallback(
+        ({ item, aspectRatio }: MasonryItem<Item>) => {
+            if (item) {
+                return (
+                    <View style={{ flex: 1 }}>
+                        <UIMediaCard
+                            content={CONTENT[item.index]}
+                            title={item.title}
+                            loading={loading}
+                            aspectRatio={aspectRatio}
+                            onPress={() => console.log(item.index)}
+                        />
+                    </View>
+                );
+            }
+            return null;
+        },
+        [loading],
+    );
+
     return (
         <ExampleScreen>
             <ExampleSection title="UICollectionCard">
@@ -115,31 +164,11 @@ export function Cards() {
                         style={{
                             alignSelf: 'stretch',
                             flex: 1,
-                            flexDirection: 'row',
                             maxWidth: 500,
                             margin: 8,
                         }}
                     >
-                        <View style={{ flex: 1, margin: 8 }}>
-                            <UIMediaCard
-                                content={CONTENT[0]}
-                                title="Happy surf cinema production present you the most popular video about happy dog"
-                                onPress={() => {
-                                    console.log('Press 1');
-                                }}
-                                loading={loading}
-                            />
-                        </View>
-                        <View style={{ flex: 1, margin: 8 }}>
-                            <UIMediaCard
-                                content={CONTENT[2]}
-                                title="Choco"
-                                onPress={() => {
-                                    console.log('Press 2');
-                                }}
-                                loading={loading}
-                            />
-                        </View>
+                        <UIMasonryList data={data} numOfColumns={2} renderItem={renderItem} />
                     </View>
                 </View>
                 <UIBoxButton
