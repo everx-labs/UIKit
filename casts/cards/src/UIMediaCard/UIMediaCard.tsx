@@ -54,7 +54,7 @@ export function UIMediaCard({ content, title, onPress, loading, testID }: UIMedi
                         color={ColorVariants.TextSecondary}
                         numberOfLines={UIConstant.uiCollectionCard.numberOfLinesInTitle}
                     >
-                        {!content || isError ? uiLocalized.TnftNotSupportedMedia : null}
+                        {!content || isError ? uiLocalized.TnftNotSupportedMedia : ''}
                     </UILabel>
                     <UILabel
                         role={TypographyVariants.MonoNote}
