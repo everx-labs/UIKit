@@ -4,10 +4,13 @@ import { View } from 'react-native';
 import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UIExpandableText } from '@tonlabs/uicast.texts';
 import { UIBoxButton } from '@tonlabs/uikit.controls';
+import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
-export const TextScreen = () => {
+const TextStack = createStackNavigator();
+
+export const Text = () => {
     const [textRendered, setTextRendered] = React.useState<boolean>(true);
     return (
         <ExampleScreen>
@@ -79,3 +82,18 @@ export const TextScreen = () => {
         </ExampleScreen>
     );
 };
+
+export function TextScreen() {
+    return (
+        <TextStack.Navigator>
+            <TextStack.Screen
+                name="UITextWindow"
+                options={{
+                    useHeaderLargeTitle: true,
+                    title: 'UIText',
+                }}
+                component={Text}
+            />
+        </TextStack.Navigator>
+    );
+}
