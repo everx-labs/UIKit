@@ -13,6 +13,7 @@ import type {
     Router,
     RouterConfigOptions,
 } from '@react-navigation/core';
+import type { StackActionType } from '@react-navigation/routers';
 
 type SplitActionType =
     | {
@@ -575,7 +576,7 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
 
     getStateForAction(
         state: SplitNavigationState<ParamList>,
-        action: CommonNavigationAction | SplitActionType,
+        action: CommonNavigationAction | SplitActionType | StackActionType,
         options: RouterConfigOptions,
     ): SplitNavigationState<ParamList> | null {
         const { tabRouteNames } = this.options;
@@ -657,6 +658,21 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
                 nestedStack: [mainIndex, index],
                 history: state.history.filter(r => r !== index).concat([index]),
                 routes: applyTabNavigateActionToRoutes(state, action, options, index),
+            };
+        }
+        if (action.type === 'POP') {
+            // In folded mode that shouldn't be a case
+            // Suppress TS error
+            if (state.nestedStack == null) {
+                return null;
+            }
+            const indexInStack = Math.max(state.nestedStack.length - action.payload.count - 1, 0);
+
+            return {
+                ...state,
+                index: state.nestedStack[indexInStack],
+                nestedStack: state.nestedStack.slice(0, indexInStack + 1),
+                history: state.history.slice(0, indexInStack + 1),
             };
         }
         return null;
@@ -755,6 +771,8 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
         shouldActionChangeFocus(action) {
             return action.type === 'NAVIGATE';
         },
+
+        actionCreators: SplitActions,
     };
 
     return router;

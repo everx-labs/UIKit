@@ -14,9 +14,11 @@ export function useColorParts(color: ColorVariants) {
             const [, red, green, blue] = currentColor.match(hexRegex);
 
             const colorPartsArray = [parseInt(red, 16), parseInt(green, 16), parseInt(blue, 16)];
+            const colorParts = colorPartsArray.join(', ');
 
             return {
-                colorParts: colorPartsArray.join(', '),
+                color: `rgb(${colorParts})`,
+                colorParts,
                 colorPartsArray,
                 opacity: 1,
             };
@@ -29,9 +31,11 @@ export function useColorParts(color: ColorVariants) {
             const [, red, green, blue] = currentColor.match(rgbRegex);
 
             const colorPartsArray = [Number(red), Number(green), Number(blue)];
+            const colorParts = colorPartsArray.join(', ');
 
             return {
-                colorParts: colorPartsArray.join(', '),
+                color: `rgb(${colorParts})`,
+                colorParts,
                 colorPartsArray,
                 opacity: 1,
             };
@@ -44,9 +48,11 @@ export function useColorParts(color: ColorVariants) {
             const [, red, green, blue, opacity] = currentColor.match(rgbaRegex);
 
             const colorPartsArray = [Number(red), Number(green), Number(blue)];
+            const colorParts = colorPartsArray.join(', ');
 
             return {
-                colorParts: colorPartsArray.join(', '),
+                color: `rgb(${colorParts})`,
+                colorParts,
                 colorPartsArray,
                 opacity: Number(opacity),
             };
