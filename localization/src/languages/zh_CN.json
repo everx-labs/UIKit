@@ -195,6 +195,9 @@
     "Exchange": "兑换",
     "ExchangeFrom": "从",
     "ExchangeTo": "至",
+    "ExpandableText": {
+        "more": "more..."
+    },
     "ExportingBackupPhrase": "正在导出备份词组...",
     "fee": "Network fees",
     "feeAmount": "≈ {0}",

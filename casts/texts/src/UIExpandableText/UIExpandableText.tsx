@@ -2,30 +2,42 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { makeStyles, useTheme, UILabel, ColorVariants } from '@tonlabs/uikit.themes';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
+import { uiLocalized } from '@tonlabs/localization';
 import type { UIExpandableTextProps } from './types';
+import { UILayout } from '../constants';
 
-export function UIExpandableText(props: UIExpandableTextProps) {
-    const { numberOfLines } = props;
+function UIExpandableTextImpl(props: UIExpandableTextProps) {
+    const { numberOfLines, testID } = props;
     const theme = useTheme();
     const styles = useStyles(theme);
-    const [isExpandable, setIsExpandable] = React.useState<boolean>(false);
+
+    const [isExpanded, setIsExpanded] = React.useState<boolean>(false);
+
     const onExpand = React.useCallback(() => {
-        setIsExpandable(true);
+        setIsExpanded(true);
     }, []);
+
     return (
-        <View style={styles.container}>
-            <UILabel {...props} numberOfLines={isExpandable ? undefined : numberOfLines} />
-            {isExpandable || (
-                <TouchableOpacity onPress={onExpand}>
+        <View style={styles.container} testID={testID}>
+            <UILabel {...props} numberOfLines={isExpanded ? undefined : numberOfLines} />
+            {!isExpanded ? (
+                <TouchableOpacity onPress={onExpand} style={styles.moreButton}>
                     <UILabel {...props} color={ColorVariants.TextAccent}>
-                        more
+                        {uiLocalized.ExpandableText.more}
                     </UILabel>
                 </TouchableOpacity>
-            )}
+            ) : null}
         </View>
     );
 }
 
 const useStyles = makeStyles(() => ({
-    container: {},
+    container: {
+        alignItems: 'flex-start',
+    },
+    moreButton: {
+        paddingRight: UILayout.expandableText.moreButtonRightHitSlop,
+    },
 }));
+
+export const UIExpandableText = React.memo(UIExpandableTextImpl);
