@@ -351,11 +351,14 @@ class SplitUnfoldedRouter<ParamList extends ParamListBase = ParamListBase> {
         options: RouterConfigOptions,
     ): SplitNavigationState<ParamList> | null {
         if (action.type === 'RESET_TO_INITIAL') {
-            const mainRouteIndex = state.routeNames.indexOf(MAIN_SCREEN_NAME);
+            const initialState = this.getInitialState({
+                routeNames: state.routeNames,
+                routeParamList: {},
+            });
             return {
-                ...state,
-                tabIndex: mainRouteIndex,
-                history: [mainRouteIndex],
+                ...initialState,
+                key: state.key,
+                routes: state.routes,
             };
         }
         if (action.type === 'GO_BACK') {
@@ -575,22 +578,16 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
         action: CommonNavigationAction | SplitActionType,
         options: RouterConfigOptions,
     ): SplitNavigationState<ParamList> | null {
-        const { tabRouteNames, stackRouteNames } = this.options;
+        const { tabRouteNames } = this.options;
         if (action.type === 'RESET_TO_INITIAL') {
-            const mainRouteIndex = state.routeNames.indexOf(MAIN_SCREEN_NAME);
-            if (stackRouteNames.includes(state.routes[state.index].name)) {
-                return {
-                    ...state,
-                    index: mainRouteIndex,
-                    // tab is already set to main
-                    history: [mainRouteIndex],
-                    nestedStack: [mainRouteIndex],
-                };
-            }
+            const initialState = this.getInitialState({
+                routeNames: state.routeNames,
+                routeParamList: {},
+            });
             return {
-                ...state,
-                tabIndex: mainRouteIndex,
-                history: [mainRouteIndex],
+                ...initialState,
+                key: state.key,
+                routes: state.routes,
             };
         }
         if (action.type === 'GO_BACK') {
