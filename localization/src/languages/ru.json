@@ -196,7 +196,7 @@
     "ExchangeFrom": "С",
     "ExchangeTo": "На",
     "ExpandableText": {
-        "more": "далее..."
+        "more": "Подробнее..."
     },
     "ExportingBackupPhrase": "Экспорт бэкап-фразы...",
     "fee": "Network fees",
