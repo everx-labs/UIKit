@@ -16,8 +16,8 @@ function getShowTime(contentType: MediaCardContentType): number | null {
 
 /**
  * Hook to get the current source item index
- * @param contentList - a list of all content previews
- * @param availableList - a React reference to the list of available previews
+ * @param contentList - a items of all content previews
+ * @param availableList - a React reference to the items of available previews
  * @returns an index of the current source
  */
 export function useCurrentSourceItem(
@@ -25,6 +25,8 @@ export function useCurrentSourceItem(
     availableList: React.MutableRefObject<number[]>,
     failureIndexList: React.MutableRefObject<number[]>,
 ): MediaCardContent | undefined {
+    const isMounted = React.useRef<boolean>(false);
+
     const [currentAvailableListIndex, setCurrentAvailableListIndex] = React.useState(0);
 
     const currentItemIndex = React.useMemo<number>(() => {
@@ -33,24 +35,29 @@ export function useCurrentSourceItem(
     }, [availableList, currentAvailableListIndex]);
 
     React.useEffect(() => {
+        isMounted.current = true;
+        () => {
+            isMounted.current = false;
+        };
+    }, []);
+
+    React.useEffect(() => {
         let timeout: NodeJS.Timeout | undefined;
 
-        if (!contentList || contentList.length < 2) {
-            // No need to iterate through the items
-        } else {
+        function iterateThroughItems(items: MediaCardContent[]) {
             const index = availableList.current[currentAvailableListIndex];
             if (index == null) {
                 // No items are available yet... Need to wait until they appear.
                 // Note: if items do not appear, they should automatically fill `failureIndexList`.
                 // Hence there is no need to wait if all of them fail to load!.
-                if (failureIndexList.current.length !== contentList?.length) {
-                    // Trigger the effect one more time in a sec to check the available list again
-                    timeout = setTimeout(() => setCurrentAvailableListIndex(0), 1000);
+                if (failureIndexList.current.length !== items.length) {
+                    // Trigger the effect one more time in a sec to check the available items again
+                    timeout = setTimeout(() => iterateThroughItems(items), 1000);
                 } else {
                     // No need to iterate through failed items
                 }
             } else {
-                const currentItem: MediaCardContent | undefined = contentList[index];
+                const currentItem: MediaCardContent | undefined = items[index];
                 if (!currentItem) {
                     throw new Error('Current item is not found among available items');
                 }
@@ -59,6 +66,10 @@ export function useCurrentSourceItem(
                 const showTime = getShowTime(currentItem.contentType);
                 if (showTime !== null) {
                     timeout = setTimeout(() => {
+                        if (!isMounted.current) {
+                            return;
+                        }
+
                         const nextIndex =
                             currentAvailableListIndex >= availableList.current.length - 1
                                 ? 0
@@ -69,6 +80,12 @@ export function useCurrentSourceItem(
                     // Stop the iteration
                 }
             }
+        }
+
+        if (!contentList || contentList.length < 2) {
+            // No need to iterate through the items
+        } else {
+            iterateThroughItems(contentList);
         }
 
         return () => {
