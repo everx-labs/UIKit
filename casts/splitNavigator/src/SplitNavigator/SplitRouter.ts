@@ -354,6 +354,7 @@ class SplitUnfoldedRouter<ParamList extends ParamListBase = ParamListBase> {
             const initialState = this.getInitialState({
                 routeNames: state.routeNames,
                 routeParamList: {},
+                routeGetIdList: {},
             });
             return {
                 ...initialState,
@@ -583,6 +584,7 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
             const initialState = this.getInitialState({
                 routeNames: state.routeNames,
                 routeParamList: {},
+                routeGetIdList: {},
             });
             return {
                 ...initialState,

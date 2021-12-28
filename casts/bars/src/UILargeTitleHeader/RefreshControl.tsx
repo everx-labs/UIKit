@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
-import Animated, { runOnJS, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
+import { View } from 'react-native';
+import { runOnJS, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 
 import { hapticImpact, UIIndicator } from '@tonlabs/uikit.controls';
 import { UIImage } from '@tonlabs/uikit.media';
-import { UILabel, ColorVariants } from '@tonlabs/uikit.themes';
+import { ColorVariants, useTheme, Theme, makeStyles } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
 
 import { useLargeTitlePosition } from './index';
@@ -12,9 +12,12 @@ import { UIConstant } from '../constants';
 
 export function UILargeTitleHeaderRefreshControl({
     onRefresh,
+    background,
 }: {
     onRefresh: () => Promise<void>;
+    background?: boolean;
 }) {
+    const theme = useTheme();
     const { position, forceChangePosition } = useLargeTitlePosition();
     const [refreshing, setRefreshing] = React.useState(false);
     const refreshingGuard = useSharedValue(false);
@@ -25,7 +28,7 @@ export function UILargeTitleHeaderRefreshControl({
         }
 
         requestAnimationFrame(() => {
-            forceChangePosition(-1 * UIConstant.refreshControlHeight, {
+            forceChangePosition(-1 * UIConstant.refreshControlSize, {
                 duration: 0,
                 changeDefaultShift: true,
             });
@@ -45,7 +48,7 @@ export function UILargeTitleHeaderRefreshControl({
         }
 
         forceChangePosition(
-            -1 * UIConstant.refreshControlHeight,
+            -1 * UIConstant.refreshControlSize,
             { duration: UIConstant.refreshControlPositioningDuration },
             () => {
                 'worklet';
@@ -84,28 +87,41 @@ export function UILargeTitleHeaderRefreshControl({
         [position, refreshing, runOnRefresh],
     );
 
+    const styles = useStyles(theme, background);
+
+    const color = React.useMemo(() => {
+        return background ? ColorVariants.StaticTextPrimaryLight : ColorVariants.TextPrimary;
+    }, [background]);
+
     return (
         <View style={styles.container}>
-            <UILabel>
+            <View style={styles.control}>
                 {refreshing ? (
-                    <UIIndicator size={UIConstant.refreshControlLoaderSize} />
+                    <UIIndicator
+                        size={UIConstant.refreshControlLoaderSize}
+                        color={color}
+                        trackWidth={UIConstant.refreshControlTrackWidth}
+                    />
                 ) : (
-                    <Animated.View style={{ transform: [{ rotate: '-90deg' }] }}>
-                        <UIImage
-                            source={UIAssets.icons.ui.arrowLeftBlack}
-                            tintColor={ColorVariants.IconAccent}
-                        />
-                    </Animated.View>
+                    <View style={{}}>
+                        <UIImage source={UIAssets.icons.ui.arrowDownWhite} tintColor={color} />
+                    </View>
                 )}
-            </UILabel>
+            </View>
         </View>
     );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme: Theme, background: boolean) => ({
     container: {
-        height: UIConstant.refreshControlHeight,
+        alignItems: 'center',
+    },
+    control: {
+        height: UIConstant.refreshControlSize,
+        width: UIConstant.refreshControlSize,
+        borderRadius: UIConstant.refreshControlSize,
+        backgroundColor: background ? theme[ColorVariants.BackgroundOverlay] : undefined,
         alignItems: 'center',
         justifyContent: 'center',
     },
-});
+}));
