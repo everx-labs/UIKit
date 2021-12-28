@@ -12,8 +12,11 @@ import {
     StyleSheet,
     View,
 } from 'react-native';
+import Animated from 'react-native-reanimated';
+
 import { useTheme } from '@tonlabs/uikit.themes';
-import type { UIImageProps } from './types';
+
+import type { UIImageProps, UIImageSimpleProps } from './types';
 
 export function prefetch(content: ImageURISource[] | ImageURISource): void {
     if (!content || (Array.isArray(content) && content.length === 0)) {
@@ -60,17 +63,48 @@ const useImageDimensions = (style: StyleProp<ImageStyle>, source: any) => {
     }, [source, style]);
 };
 
-const TintUIImage = React.forwardRef<View, UIImageProps>(function TintUIImageForwarded(
-    { tintColor, style, onLoadEnd, ...rest }: UIImageProps,
+const TintUIImage = React.forwardRef<View, UIImageSimpleProps>(function TintUIImage(
+    { tintColor, style, onLoadEnd, ...rest }: UIImageSimpleProps,
     ref,
 ) {
-    const theme = useTheme();
-    const tintColorValue: ColorValue | null = tintColor != null ? theme[tintColor] : null;
-
     const isMounted = React.useRef<boolean>(false);
     const idRef = React.useRef(nanoid());
     const [hasError, setHasError] = React.useState<boolean>(false);
     const [dimensions, setDimensions] = React.useState<LayoutRectangle | null>(null);
+
+    const localRef = React.useRef<View>(null);
+    const canvasCtxHolder = React.useRef<CanvasRenderingContext2D>();
+
+    React.useImperativeHandle(ref, () => ({
+        setNativeProps(nativeProps: { style?: { tintColor?: ColorValue } }) {
+            if (nativeProps.style != null && nativeProps.style.tintColor != null) {
+                if (canvasCtxHolder.current != null && dimensions != null) {
+                    canvasCtxHolder.current.fillStyle = nativeProps.style.tintColor as string;
+                    canvasCtxHolder.current.fillRect(0, 0, dimensions.width, dimensions.height);
+                }
+            }
+            return localRef.current?.setNativeProps(nativeProps);
+        },
+        measure(...args) {
+            return localRef.current?.measure(...args);
+        },
+        measureInWindow(...args) {
+            return localRef.current?.measureInWindow(...args);
+        },
+        measureLayout(...args) {
+            return localRef.current?.measureLayout(...args);
+        },
+        focus(...args) {
+            return localRef.current?.focus(...args);
+        },
+        blur(...args) {
+            return localRef.current?.blur(...args);
+        },
+        // @ts-ignore
+        get refs() {
+            return localRef.current?.refs;
+        },
+    }));
 
     React.useEffect(() => {
         isMounted.current = true;
@@ -95,7 +129,7 @@ const TintUIImage = React.forwardRef<View, UIImageProps>(function TintUIImageFor
     };
 
     React.useEffect(() => {
-        if (!tintColorValue || !width || !height || !uri) {
+        if (!tintColor || !width || !height || !uri) {
             if (isMounted.current) {
                 setHasError(true);
             }
@@ -139,17 +173,21 @@ const TintUIImage = React.forwardRef<View, UIImageProps>(function TintUIImageFor
             // set composite mode
             ctx.globalCompositeOperation = 'source-in';
             // draw color
-            ctx.fillStyle = tintColorValue as string;
+            ctx.fillStyle = tintColor as string;
             ctx.fillRect(0, 0, dimensions.width, dimensions.height);
 
             if (onLoadEnd) {
                 onLoadEnd();
             }
+
+            // It's in the very end, to not apply animated tint color
+            // until image isn't loaded
+            canvasCtxHolder.current = ctx;
         };
         img.src = uri;
-    }, [uri, dimensions, tintColorValue, width, height, onLoadEnd]);
+    }, [uri, dimensions, tintColor, width, height, onLoadEnd]);
 
-    if (hasError || !tintColorValue || !width || !height || !uri) {
+    if (hasError || !tintColor || !width || !height || !uri) {
         if (__DEV__) {
             console.error(
                 `UIImage.web.tsx: there was tintColor provided for image, ` +
@@ -163,7 +201,7 @@ const TintUIImage = React.forwardRef<View, UIImageProps>(function TintUIImageFor
 
     return (
         <View
-            ref={ref}
+            ref={localRef}
             testID={rest.testID}
             onLayout={onLayout}
             style={[
@@ -179,9 +217,11 @@ const TintUIImage = React.forwardRef<View, UIImageProps>(function TintUIImageFor
     );
 });
 
-const UIImageImpl = React.forwardRef<RNImage, UIImageProps>(function UIImageForwarded(props, ref) {
+const UIImageSimple = React.forwardRef<RNImage, UIImageSimpleProps>(function UIImageSimple(
+    props,
+    ref,
+) {
     const { tintColor, ...rest } = props;
-    const theme = useTheme();
 
     /**
      * Delete TintUIImage and "if" block below when the issue is fixed:
@@ -191,13 +231,19 @@ const UIImageImpl = React.forwardRef<RNImage, UIImageProps>(function UIImageForw
         return <TintUIImage ref={ref} {...props} />;
     }
 
-    return (
-        <RNImage
-            ref={ref}
-            {...rest}
-            style={[rest.style, tintColor != null ? { tintColor: theme[tintColor] } : null]}
-        />
-    );
+    return <RNImage ref={ref} {...rest} />;
 });
 
-export const UIImage = React.memo(UIImageImpl);
+export const UIImage = React.memo(
+    React.forwardRef<RNImage, UIImageProps>(function UIImageForwarded(props, ref) {
+        const theme = useTheme();
+
+        return React.createElement(UIImageSimple, {
+            ...props,
+            ref,
+            tintColor: props.tintColor != null ? theme[props.tintColor] : null,
+        });
+    }),
+);
+
+export const UIAnimatedImage = Animated.createAnimatedComponent(UIImageSimple);
