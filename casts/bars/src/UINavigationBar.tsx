@@ -104,7 +104,7 @@ type PrivateProps = {
     headerTitleOpacity?: Animated.SharedValue<number>;
 };
 
-export function UINavigationBar({
+export const UINavigationBar = React.memo(function UINavigationBar({
     testID,
     headerLeft,
     headerLeftItems,
@@ -191,7 +191,7 @@ export function UINavigationBar({
             </View>
         </UIBackgroundView>
     );
-}
+});
 
 const styles = StyleSheet.create({
     container: {

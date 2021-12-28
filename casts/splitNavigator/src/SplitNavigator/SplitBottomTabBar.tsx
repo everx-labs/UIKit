@@ -1,6 +1,13 @@
 /* eslint-disable react/no-unused-prop-types */
 import * as React from 'react';
-import { View, ImageSourcePropType, StyleProp, ViewStyle, StyleSheet } from 'react-native';
+import {
+    View,
+    ImageSourcePropType,
+    StyleProp,
+    ViewStyle,
+    StyleSheet,
+    PixelRatio,
+} from 'react-native';
 import {
     GestureEvent,
     NativeViewGestureHandlerPayload,
@@ -18,7 +25,7 @@ import ReAnimated, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIImage } from '@tonlabs/uikit.media';
-import { useTheme, ColorVariants } from '@tonlabs/uikit.themes';
+import { useTheme, ColorVariants, useColorParts } from '@tonlabs/uikit.themes';
 import { hapticSelection } from '@tonlabs/uikit.controls';
 import { ShadowView } from './ShadowView';
 
@@ -203,6 +210,10 @@ export function SplitBottomTabBar({
         return iconsMap[activeKey] != null;
     }, [activeKey, iconsMap]);
 
+    const { color: shadowColor, opacity: shadowOpacity } = useColorParts(
+        ColorVariants.ShadowOpaque,
+    );
+
     /**
      * Do not show tab bar when there're only
      * 0 or 1 icon available, as it won't do anything useful anyway
@@ -225,7 +236,8 @@ export function SplitBottomTabBar({
                 style={[
                     styles.iconsBox,
                     {
-                        shadowColor: theme[ColorVariants.Shadow],
+                        shadowColor,
+                        shadowOpacity,
                         backgroundColor: theme[ColorVariants.BackgroundPrimary],
                     },
                 ]}
@@ -269,7 +281,7 @@ export function useTabBarHeight() {
         [insets.bottom],
     );
     const insetsWithTabBar = React.useMemo(
-        () => ({ ...insets, bottom: insets.bottom + tabBarHeight }),
+        () => ({ ...insets, bottom: tabBarHeight }),
         [insets, tabBarHeight],
     );
     return {
@@ -304,11 +316,10 @@ const styles = StyleSheet.create({
         position: 'relative',
         flexDirection: 'row',
         borderRadius: TAB_BAR_HEIGHT / 2,
-        shadowRadius: 48,
+        shadowRadius: 48 / PixelRatio.get(),
         shadowOffset: {
             width: 0,
-            height: 16,
+            height: 32 / PixelRatio.get(),
         },
-        shadowOpacity: 0.08,
     },
 });
