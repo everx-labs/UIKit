@@ -50,10 +50,11 @@ function findIfCanGoBackForStack(state: NavigationState, parentState?: Navigatio
     if (parentState != null && parentState.type === 'split') {
         const { index, nestedStack } = parentState as any as {
             index: number;
-            nestedStack: number[];
+            nestedStack?: number[];
         };
         if (
             // It's stack screen in stack context
+            nestedStack &&
             nestedStack.indexOf(index) !== -1
         ) {
             return true;

@@ -345,6 +345,31 @@ function FoldedSplitNavigator({
         }),
         [stackRouteNames, state.nestedStack, state.routes, state.key],
     );
+    /**
+     * react-native-screens rely on original struct navigation
+     * and tries to set source and target for actions
+     * https://github.com/software-mansion/react-native-screens/blob/6c87d7749ec62fbb51fb4ec50af1fa8733ebae86/src/native-stack/views/NativeStackView.tsx#L256-L260
+     *
+     * But this way it won't be handled by our router,
+     * so we have to exclude it from an action
+     */
+    const stackNavigation = React.useMemo(() => {
+        const originalDispatch = navigation.dispatch;
+        return {
+            ...navigation,
+            dispatch<Op = Record<string, unknown>>(op: Op | ((op: Op) => void)) {
+                if (typeof op === 'function') {
+                    return originalDispatch.call(navigation, op);
+                }
+
+                // @ts-ignore
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                const { source, target, ...action } = op;
+
+                return originalDispatch.call(navigation, action);
+            },
+        };
+    }, [navigation]);
 
     const doesSupportNative = Platform.OS !== 'web' && screensEnabled?.();
 
@@ -356,7 +381,7 @@ function FoldedSplitNavigator({
                         <NativeStackView
                             // @ts-ignore
                             state={stackState}
-                            navigation={navigation}
+                            navigation={stackNavigation}
                             // @ts-ignore
                             descriptors={stackDescriptors}
                         />
@@ -375,7 +400,7 @@ function FoldedSplitNavigator({
                         headerMode="none"
                         // @ts-ignore
                         state={stackState}
-                        navigation={navigation}
+                        navigation={stackNavigation}
                         // @ts-ignore
                         descriptors={stackDescriptors}
                     />
