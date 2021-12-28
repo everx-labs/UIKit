@@ -46,8 +46,9 @@ export function useCurrentSourceItem(
 
         function iterateThroughItems(items: MediaCardContent[]) {
             const index = availableList.current[currentAvailableListIndex];
-            if (index == null) {
-                // No items are available yet... Need to wait until they appear.
+            if (index == null || availableList.current.length === 1) {
+                // No items are available yet or only one item is loaded...
+                // Need to wait until more are loaded in order to change the current item.
                 // Note: if items do not appear, they should automatically fill `failureIndexList`.
                 // Hence there is no need to wait if all of them fail to load!.
                 if (failureIndexList.current.length !== items.length) {
@@ -62,7 +63,7 @@ export function useCurrentSourceItem(
                     throw new Error('Current item is not found among available items');
                 }
 
-                // Change the current available index in a while if possible
+                // Change the current available item in a while (if possible)
                 const showTime = getShowTime(currentItem.contentType);
                 if (showTime !== null) {
                     timeout = setTimeout(() => {
@@ -77,7 +78,7 @@ export function useCurrentSourceItem(
                         setCurrentAvailableListIndex(nextIndex);
                     }, showTime);
                 } else {
-                    // Stop the iteration
+                    // Stop the items iteration
                 }
             }
         }
