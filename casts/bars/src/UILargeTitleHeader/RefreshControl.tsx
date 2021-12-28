@@ -103,9 +103,7 @@ export function UILargeTitleHeaderRefreshControl({
                         trackWidth={UIConstant.refreshControlTrackWidth}
                     />
                 ) : (
-                    <View style={{}}>
-                        <UIImage source={UIAssets.icons.ui.arrowDownWhite} tintColor={color} />
-                    </View>
+                    <UIImage source={UIAssets.icons.ui.arrowDownWhite} tintColor={color} />
                 )}
             </View>
         </View>
