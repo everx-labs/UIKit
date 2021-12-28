@@ -59,7 +59,7 @@ import { TextScreen } from './screens/Text';
 import { VideosScreen } from './screens/Videos';
 import { Browser } from './screens/Browser';
 import { Chat } from './screens/Chat';
-import { Carousel } from './screens/Carousel';
+import { CarouselScreen } from './screens/Carousel';
 import { CellsScreen } from './screens/Cells';
 import { Navigation } from './screens/Navigation';
 import { SectionsService } from './Search';
@@ -358,7 +358,7 @@ const App = () => {
                         >
                             <Split.Screen name="browser" component={Browser} />
                             <Split.Screen name="buttons" component={ButtonsScreen} />
-                            <Split.Screen name="carousel" component={Carousel} />
+                            <Split.Screen name="carousel" component={CarouselScreen} />
                             <Split.Screen name="cells" component={CellsScreen} />
                             <Split.Screen name="chart" component={Chart} />
                             <Split.Screen name="cards" component={CardsScreen} />
