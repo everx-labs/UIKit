@@ -73,7 +73,7 @@ function CollectionSlideImpl({ content, onLoad, onError, style, isVisible }: Col
     }, [content, contentType, onError]);
 
     const visibility = React.useMemo<StyleProp<ViewStyle>>(() => {
-        return { display: isVisible ? 'flex' : 'none' };
+        return { opacity: isVisible ? 1 : 0 };
     }, [isVisible]);
 
     return (
