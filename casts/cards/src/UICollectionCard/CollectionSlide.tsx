@@ -1,77 +1,91 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
+import type { ViewStyle, StyleProp } from 'react-native';
 import { UIImage, UIVideo } from '@tonlabs/uikit.media';
 
 import type { CollectionSlideProps } from './types';
 
-function VideoSlide({ content, style, onLoad, isVisible, onError }: CollectionSlideProps) {
-    const onVideoLoadError = React.useCallback(() => {
-        onError(new Error(`The video can't be loaded`));
-    }, [onError]);
+const ImageSlide = React.memo(function ImageSlide({
+    content,
+    onLoad,
+    onError,
+}: Pick<CollectionSlideProps, 'content' | 'onLoad' | 'onError'>) {
+    const onImageLoad = React.useCallback(() => {
+        onLoad(content);
+    }, [content, onLoad]);
+
+    const onImageLoadError = React.useCallback(() => {
+        onError(new Error(`The image can't be loaded`), content);
+    }, [content, onError]);
 
     if (!content.source.uri) {
         return null;
     }
 
     return (
-        <View style={[StyleSheet.absoluteFill, style]}>
-            <View
-                style={[
-                    StyleSheet.absoluteFill,
-                    {
-                        opacity: isVisible ? 1 : 0,
-                    },
-                ]}
-            >
-                <UIVideo
-                    uri={content.source.uri}
-                    muted
-                    repeat
-                    resizeMode="cover"
-                    onLoad={onLoad}
-                    onError={onVideoLoadError}
-                />
-            </View>
+        <UIImage
+            source={content.source}
+            style={StyleSheet.absoluteFill}
+            onLoad={onImageLoad}
+            onError={onImageLoadError}
+        />
+    );
+});
+
+const VideoSlide = React.memo(function VideoSlide({
+    content,
+    onLoad,
+    onError,
+}: Pick<CollectionSlideProps, 'content' | 'onLoad' | 'onError'>) {
+    const onVideoLoad = React.useCallback(() => {
+        onLoad(content);
+    }, [content, onLoad]);
+
+    const onVideoLoadError = React.useCallback(() => {
+        onError(new Error(`The video can't be loaded`), content);
+    }, [content, onError]);
+
+    if (!content.source.uri) {
+        return null;
+    }
+
+    return (
+        <View style={StyleSheet.absoluteFill}>
+            <UIVideo
+                uri={content.source.uri}
+                muted
+                repeat
+                resizeMode="cover"
+                onLoad={onVideoLoad}
+                onError={onVideoLoadError}
+            />
         </View>
     );
-}
+});
 
-function CollectionSlideImpl(props: CollectionSlideProps) {
-    const { content, style, onLoad, isVisible, onError } = props;
+function CollectionSlideImpl({ content, onLoad, onError, style, isVisible }: CollectionSlideProps) {
     const { contentType } = content;
 
     React.useEffect(() => {
         if (contentType === 'Unknown') {
-            onError(new Error('The content type is unknown'));
+            onError(new Error('The content type is unknown'), content);
         }
-    }, [contentType, onError]);
+    }, [content, contentType, onError]);
 
-    const onImageLoadError = React.useCallback(() => {
-        onError(new Error(`The image can't be loaded`));
-    }, [onError]);
+    const visibility = React.useMemo<StyleProp<ViewStyle>>(() => {
+        return { display: isVisible ? 'flex' : 'none' };
+    }, [isVisible]);
 
-    switch (contentType) {
-        case 'Image':
-            return (
-                <View style={[StyleSheet.absoluteFill, style]}>
-                    <UIImage
-                        source={content.source}
-                        style={[
-                            StyleSheet.absoluteFill,
-                            {
-                                opacity: isVisible ? 1 : 0,
-                            },
-                        ]}
-                        onLoad={onLoad}
-                        onError={onImageLoadError}
-                    />
-                </View>
-            );
-        case 'Video':
-            return <VideoSlide {...props} />;
-        default:
-            return null;
-    }
+    return (
+        <View style={[StyleSheet.absoluteFill, style, visibility]}>
+            {contentType === 'Image' && (
+                <ImageSlide content={content} onLoad={onLoad} onError={onError} />
+            )}
+            {contentType === 'Video' && (
+                <VideoSlide content={content} onLoad={onLoad} onError={onError} />
+            )}
+        </View>
+    );
 }
 
 export const CollectionSlide = React.memo(CollectionSlideImpl);
