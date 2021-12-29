@@ -4,14 +4,13 @@ import { UITextView } from '@tonlabs/uikit.inputs';
 import { UIBoxButton } from '@tonlabs/uikit.controls';
 import { useTheme } from '@tonlabs/uikit.themes';
 import { UIQRCodeView, QRCodeType, QRCodeRef, QRCodeSize } from '@tonlabs/uikit.media';
-import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const logo = require('../../assets/icons/ico-crystal/crystal-fill-L.png');
 
-const QRCode = () => {
+export function QRCodeScreen() {
     const theme = useTheme();
     const [base64Image, setBase64Image] = React.useState<string>('');
     const [type, setType] = React.useState<QRCodeType>(QRCodeType.Circle);
@@ -114,21 +113,4 @@ const QRCode = () => {
             </ExampleSection>
         </ExampleScreen>
     );
-};
-
-const QRCodeStack = createStackNavigator();
-
-export const QRCodeScreen = () => {
-    return (
-        <QRCodeStack.Navigator>
-            <QRCodeStack.Screen
-                name="QRCodeWindow"
-                options={{
-                    useHeaderLargeTitle: true,
-                    title: 'QR code',
-                }}
-                component={QRCode}
-            />
-        </QRCodeStack.Navigator>
-    );
-};
+}

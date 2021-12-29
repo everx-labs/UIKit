@@ -3,7 +3,6 @@ import { View } from 'react-native';
 import { UICellDebot } from '@tonlabs/uistory.browser';
 import { UIBoxButton, UIBoxButtonVariant } from '@tonlabs/uikit.controls';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -11,7 +10,7 @@ const CONTENT = {
     uri: 'https://firebasestorage.googleapis.com/v0/b/ton-uikit-example-7e797.appspot.com/o/webpImage.webp?alt=media&token=0d308353-5332-483b-a5dd-0bbce2b5e4bc',
 };
 
-export function Cells() {
+export function CellsScreen() {
     const [loading, setLoading] = useState(false);
     return (
         <ExampleScreen>
@@ -70,22 +69,5 @@ export function Cells() {
                 />
             </ExampleSection>
         </ExampleScreen>
-    );
-}
-
-const CellsStack = createStackNavigator();
-
-export function CellsScreen() {
-    return (
-        <CellsStack.Navigator>
-            <CellsStack.Screen
-                name="CellsWindow"
-                options={{
-                    useHeaderLargeTitle: true,
-                    title: 'Cells',
-                }}
-                component={Cells}
-            />
-        </CellsStack.Navigator>
     );
 }

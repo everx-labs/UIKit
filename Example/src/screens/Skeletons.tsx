@@ -1,16 +1,13 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 import { UISkeleton } from '@tonlabs/uikit.layout';
 import { UIBoxButton } from '@tonlabs/uikit.controls';
 
 import { ExampleScreen } from '../components/ExampleScreen';
 import { ExampleSection } from '../components/ExampleSection';
 
-const SkeletonsStack = createStackNavigator();
-
-function Skeletons() {
+export function SkeletonsScreen() {
     const [isActive, setIsActive] = React.useState(true);
     return (
         <ExampleScreen>
@@ -58,20 +55,5 @@ function Skeletons() {
                 <UIBoxButton title="Toggle skeletons" onPress={() => setIsActive(!isActive)} />
             </ExampleSection>
         </ExampleScreen>
-    );
-}
-
-export function SkeletonsScreen() {
-    return (
-        <SkeletonsStack.Navigator>
-            <SkeletonsStack.Screen
-                name="SkeletonsWindow"
-                options={{
-                    useHeaderLargeTitle: true,
-                    title: 'Skeletons',
-                }}
-                component={Skeletons}
-            />
-        </SkeletonsStack.Navigator>
     );
 }

@@ -25,12 +25,11 @@ import {
     UIShowMoreButtonHeight,
 } from '@tonlabs/uikit.controls';
 import { UILabel } from '@tonlabs/uikit.themes';
-import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
-const Buttons = () => {
+export function ButtonsScreen() {
     const [progress, setProgress] = React.useState<boolean>(false);
     const onPress = React.useCallback(() => {
         setProgress(true);
@@ -631,22 +630,5 @@ const Buttons = () => {
                 </View>
             </ExampleSection>
         </ExampleScreen>
-    );
-};
-
-const ButtonsStack = createStackNavigator();
-
-export function ButtonsScreen() {
-    return (
-        <ButtonsStack.Navigator>
-            <ButtonsStack.Screen
-                name="ButtonsWindow"
-                options={{
-                    useHeaderLargeTitle: true,
-                    title: 'Buttons',
-                }}
-                component={Buttons}
-            />
-        </ButtonsStack.Navigator>
     );
 }

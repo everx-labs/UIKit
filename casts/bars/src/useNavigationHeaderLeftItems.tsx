@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/core';
 import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { NestedInModalContext } from '@tonlabs/uicast.modal-navigator';
+import type { SplitNavigationState } from '@tonlabs/uicast.split-navigator';
 
 import { HeaderItem, UIHeaderItems } from './UIHeaderItems';
 
@@ -12,6 +13,11 @@ type NavigationState = ReturnType<ReturnType<typeof useNavigation>['dangerouslyG
 function findIfCanGoBackForStack(state: NavigationState, parentState?: NavigationState) {
     if (state == null) {
         return false;
+    }
+
+    if (state.type === 'split') {
+        const { nestedStack } = state as SplitNavigationState;
+        return nestedStack != null && nestedStack.length > 1;
     }
 
     if (state.type !== 'stack') {

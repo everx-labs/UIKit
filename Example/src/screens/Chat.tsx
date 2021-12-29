@@ -2,7 +2,6 @@ import * as React from 'react';
 import BigNumber from 'bignumber.js';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import { ColorVariants } from '@tonlabs/uikit.themes';
 import {
     UIChatInput,
     UIChatList,
@@ -14,7 +13,6 @@ import {
 import { UIPopup } from '@tonlabs/uikit.popups';
 import { uiLocalized } from '@tonlabs/localization';
 import { useStickers } from '@tonlabs/uistory.stickers';
-import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 import { useBase64Image } from './hooks/useBase64Image';
 
 const userId = '0:000';
@@ -354,9 +352,7 @@ const stickers = new Array(10).fill(null).map((_a, i) => ({
     })),
 }));
 
-const ChatStack = createStackNavigator();
-
-const ChatWindowScreen = () => {
+export function Chat() {
     const [isNoticeVisible, setNoticeVisible] = React.useState(false);
     const initialMessages = useInitialMessages();
     const initialMessagesWithKeys = useInitialMessagesWithKeys(initialMessages);
@@ -445,20 +441,4 @@ const ChatWindowScreen = () => {
             />
         </>
     );
-};
-
-export const Chat = () => {
-    return (
-        <ChatStack.Navigator>
-            <ChatStack.Screen
-                name="ChatWindow"
-                options={{
-                    // headerVisible: false,
-                    title: 'Chat',
-                    backgroundColor: ColorVariants.BackgroundPrimary,
-                }}
-                component={ChatWindowScreen}
-            />
-        </ChatStack.Navigator>
-    );
-};
+}

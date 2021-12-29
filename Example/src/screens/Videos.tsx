@@ -1,13 +1,10 @@
 import * as React from 'react';
 import { View } from 'react-native';
 import { UIVideo } from '@tonlabs/uikit.media';
-import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
-const VideosStack = createStackNavigator();
-
-export const Videos = () => {
+export function VideosScreen() {
     return (
         <ExampleScreen>
             <ExampleSection title="UIVideo">
@@ -27,20 +24,5 @@ export const Videos = () => {
                 </View>
             </ExampleSection>
         </ExampleScreen>
-    );
-};
-
-export function VideosScreen() {
-    return (
-        <VideosStack.Navigator>
-            <VideosStack.Screen
-                name="UIVideosWindow"
-                options={{
-                    useHeaderLargeTitle: true,
-                    title: 'UIVideos',
-                }}
-                component={Videos}
-            />
-        </VideosStack.Navigator>
     );
 }

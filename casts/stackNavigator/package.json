@@ -36,7 +36,6 @@
     "dependencies": {
         "@tonlabs/uicast.bars": "^3.0.0",
         "@tonlabs/uicast.modal-navigator": "^3.0.0",
-        "@tonlabs/uicast.split-navigator": "^3.0.0",
         "@tonlabs/uikit.layout": "^3.0.0",
         "@tonlabs/uikit.themes": "^3.0.0",
         "react-native-safe-area-context": "^3.1.3"

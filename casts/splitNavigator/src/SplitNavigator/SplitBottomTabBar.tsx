@@ -36,14 +36,18 @@ export type SplitScreenTabBarAnimatedIconComponentProps = {
 type SplitScreenTabBarAnimatedIconComponent =
     React.ComponentType<SplitScreenTabBarAnimatedIconComponentProps>;
 
+export type SplitScreenTabBarStaticIconOptions = {
+    tabBarActiveIcon: ImageSourcePropType;
+    tabBarDisabledIcon: ImageSourcePropType;
+};
+
+export type SplitScreenTabBarAnimatedIconOptions = {
+    tabBarAnimatedIcon: SplitScreenTabBarAnimatedIconComponent;
+};
+
 export type SplitScreenTabBarIconOptions =
-    | {
-          tabBarActiveIcon: ImageSourcePropType;
-          tabBarDisabledIcon: ImageSourcePropType;
-      }
-    | {
-          tabBarAnimatedIcon: SplitScreenTabBarAnimatedIconComponent;
-      };
+    | SplitScreenTabBarStaticIconOptions
+    | SplitScreenTabBarAnimatedIconOptions;
 
 // @inline
 const ANIMATED_ICON_INACTIVE = 0;

@@ -2,14 +2,13 @@ import React from 'react';
 import { View } from 'react-native';
 import BigNumber from 'bignumber.js';
 
-import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
-// import { SectionList } from '@tonlabs/uikit.scrolls';
 import { UILabel, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UIListRowKind, UIListRows, renderUIListItem, UIListSeparator } from '@tonlabs/uicast.rows';
 
 import { UIAccordionSectionList } from '@tonlabs/uikit.scrolls';
 // @ts-ignore
 import everIcon from './assets/ever.png';
+import { useStore } from '../useStore';
 
 export function getRandomNum() {
     const num = Math.random();
@@ -26,7 +25,10 @@ function renderSectionHeader({ section: { title } }: any) {
     );
 }
 
-const Rows = React.memo(function Rows({ loading }: { loading: boolean }) {
+const keyExtractor = (item: any) => item.key;
+
+export const RowsScreen = React.memo(function Rows() {
+    const loading = useStore(({ rowsLoading }) => rowsLoading);
     const sections: Array<{
         title: string;
         key: string;
@@ -125,7 +127,7 @@ const Rows = React.memo(function Rows({ loading }: { loading: boolean }) {
                     renderItem={renderUIListItem}
                     renderSectionHeader={renderSectionHeader}
                     stickySectionHeadersEnabled={false}
-                    keyExtractor={item => item.key}
+                    keyExtractor={keyExtractor}
                     getItemCount={items => items.length}
                     getItem={(items, index) => items[index]}
                     windowSize={5}
@@ -134,28 +136,3 @@ const Rows = React.memo(function Rows({ loading }: { loading: boolean }) {
         </View>
     );
 });
-
-const RowsStack = createStackNavigator();
-
-export const RowsScreen = () => {
-    const [loading, setLoading] = React.useState(false);
-    return (
-        <RowsStack.Navigator>
-            <RowsStack.Screen
-                name="RowsWindow"
-                options={{
-                    useHeaderLargeTitle: true,
-                    title: 'Rows',
-                    headerRightItems: [
-                        {
-                            label: 'Loading',
-                            onPress: () => setLoading(!loading),
-                        },
-                    ],
-                }}
-            >
-                {() => <Rows loading={loading} />}
-            </RowsStack.Screen>
-        </RowsStack.Navigator>
-    );
-};

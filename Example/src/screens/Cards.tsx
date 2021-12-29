@@ -4,7 +4,6 @@ import { UICollectionCard, UIMediaCard, MediaCardContent } from '@tonlabs/uicast
 import { UIBoxButton, UIBoxButtonVariant } from '@tonlabs/uikit.controls';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIMasonryList, MasonryItem } from '@tonlabs/uikit.scrolls';
-import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -73,7 +72,7 @@ const data = new Array(arrayLength).fill(null).map((_, index): MasonryItem<Item>
     };
 });
 
-export function Cards() {
+export function CardsScreen() {
     const [loading, setLoading] = useState(false);
 
     const renderItem = React.useCallback(
@@ -178,22 +177,5 @@ export function Cards() {
                 />
             </ExampleSection>
         </ExampleScreen>
-    );
-}
-
-const CardsStack = createStackNavigator();
-
-export function CardsScreen() {
-    return (
-        <CardsStack.Navigator>
-            <CardsStack.Screen
-                name="CardsWindow"
-                options={{
-                    useHeaderLargeTitle: true,
-                    title: 'Cards',
-                }}
-                component={Cards}
-            />
-        </CardsStack.Navigator>
     );
 }
