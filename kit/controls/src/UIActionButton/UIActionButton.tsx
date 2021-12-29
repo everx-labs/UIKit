@@ -107,7 +107,7 @@ export const UIActionButton = React.forwardRef<TouchableWithoutFeedback, UIActio
                         <ActionButtonIcon
                             icon={icon}
                             loading={loading}
-                            animStyles={contentAnimations.icon}
+                            animatedProps={contentAnimations.iconProps}
                             initialColor={contentColor}
                         />
                     </View>

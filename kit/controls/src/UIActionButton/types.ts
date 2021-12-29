@@ -1,5 +1,5 @@
 import type { ColorVariants } from '@tonlabs/uikit.themes';
-import type { ImageSourcePropType, ImageStyle, TextStyle } from 'react-native';
+import type { ColorValue, ImageSourcePropType, TextStyle } from 'react-native';
 import type { AnimatedStyleProp } from 'react-native-reanimated';
 import type { BackgroundParams } from '../Button/types';
 
@@ -17,19 +17,13 @@ export enum UIActionButtonType {
 export type UIActionButtonIconProps = {
     icon?: ImageSourcePropType;
     loading?: boolean;
-    animStyles: {
-        hoverStyle: AnimatedStyleProp<ImageStyle>;
-        pressStyle: AnimatedStyleProp<ImageStyle>;
-    };
+    animatedProps: { tintColor?: ColorValue };
     initialColor?: ColorVariants;
 };
 
 export type ContentAnimations = {
     titleStyle: AnimatedStyleProp<TextStyle>;
-    icon: {
-        hoverStyle: AnimatedStyleProp<ImageStyle>;
-        pressStyle: AnimatedStyleProp<ImageStyle>;
-    };
+    iconProps: { tintColor?: ColorValue };
 };
 
 export type ActionButtonColors = {
