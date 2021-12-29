@@ -63,9 +63,19 @@ const VideoSlide = React.memo(function VideoSlide({
     );
 });
 
+const FAR_FAR_AWAY = 30000; // this should be big enough to move the whole view out of its container
+
 const styles = StyleSheet.create({
-    slideVisible: { transform: [{ translateX: 0 }, { translateY: 0 }] },
-    slideInvisible: { transform: [{ translateX: -9999 }, { translateY: -9999 }] },
+    // Make it invisible my moving out of the screen to reduce GPU work:
+    // https://www.objc.io/issues/3-views/moving-pixels-onto-the-screen/
+    slideInvisible: {
+        position: 'absolute',
+        top: -FAR_FAR_AWAY,
+        left: -FAR_FAR_AWAY,
+        right: FAR_FAR_AWAY,
+        bottom: FAR_FAR_AWAY,
+    },
+    slideVisible: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
 });
 
 function CollectionSlideImpl({ content, onLoad, onError, style, isVisible }: CollectionSlideProps) {
@@ -82,7 +92,7 @@ function CollectionSlideImpl({ content, onLoad, onError, style, isVisible }: Col
     }, [isVisible]);
 
     return (
-        <View style={[StyleSheet.absoluteFill, style, visibility]}>
+        <View style={[style, visibility]}>
             {contentType === 'Image' && (
                 <ImageSlide content={content} onLoad={onLoad} onError={onError} />
             )}
