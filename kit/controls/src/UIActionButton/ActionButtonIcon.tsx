@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { ImageStyle, StyleSheet, View } from 'react-native';
-import Animated from 'react-native-reanimated';
-import type { AnimatedStyleProp } from 'react-native-reanimated';
+import { StyleSheet, View } from 'react-native';
 import { ColorVariants, useTheme, makeStyles } from '@tonlabs/uikit.themes';
+import { UIAnimatedImage } from '@tonlabs/uikit.media';
 import { UIConstant } from '../constants';
 import { UIIndicator } from '../UIIndicator';
 import type { UIActionButtonIconProps } from './types';
@@ -10,7 +9,7 @@ import type { UIActionButtonIconProps } from './types';
 function ActionButtonIconImpl({
     icon,
     loading,
-    animStyles,
+    animatedProps,
     initialColor,
 }: UIActionButtonIconProps) {
     const theme = useTheme();
@@ -28,30 +27,10 @@ function ActionButtonIconImpl({
         }
         return (
             <View>
-                <Animated.Image
+                <UIAnimatedImage
                     source={icon}
-                    style={[
-                        {
-                            tintColor,
-                        },
-                        styles.iconSize as AnimatedStyleProp<ImageStyle>,
-                    ]}
-                />
-                <Animated.Image
-                    source={icon}
-                    style={[
-                        styles.iconSize as AnimatedStyleProp<ImageStyle>,
-                        styles.clone as AnimatedStyleProp<ImageStyle>,
-                        animStyles.hoverStyle as AnimatedStyleProp<ImageStyle>,
-                    ]}
-                />
-                <Animated.Image
-                    source={icon}
-                    style={[
-                        styles.iconSize as AnimatedStyleProp<ImageStyle>,
-                        styles.clone as AnimatedStyleProp<ImageStyle>,
-                        animStyles.pressStyle as AnimatedStyleProp<ImageStyle>,
-                    ]}
+                    animatedProps={animatedProps}
+                    style={styles.iconSize}
                 />
             </View>
         );

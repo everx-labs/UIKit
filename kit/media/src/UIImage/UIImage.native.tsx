@@ -1,9 +1,15 @@
 import * as React from 'react';
 
-import { Image, ImageURISource } from 'react-native';
-import { useTheme } from '@tonlabs/uikit.themes';
+import type { Image as RNImage, ImageURISource } from 'react-native';
 import FastImage, { Source } from 'react-native-fast-image';
-import type { UIImageProps } from './types';
+import Animated from 'react-native-reanimated';
+
+import { useTheme } from '@tonlabs/uikit.themes';
+
+// @ts-expect-error
+// eslint-disable-next-line import/extensions, import/no-unresolved
+import { Image } from './Image';
+import type { UIImageProps, UIImageSimpleProps } from './types';
 
 export function prefetch(content: ImageURISource[] | ImageURISource): void {
     if (!content || (Array.isArray(content) && content.length === 0)) {
@@ -26,25 +32,31 @@ export function prefetch(content: ImageURISource[] | ImageURISource): void {
     }
 }
 
-export const UIImage = React.forwardRef<Image, UIImageProps>(function UIImageForwarded(
-    { tintColor, ...rest }: UIImageProps,
+const UIImageSimple = React.forwardRef<RNImage, UIImageSimpleProps>(function UIImageSimple(
+    props: UIImageSimpleProps,
     ref,
 ) {
-    const theme = useTheme();
-    if (tintColor) {
+    if (props.tintColor) {
         /**
          * tintColor for some reason don't work properly with
          * react-native-fast-image, hence passing this prop
          * we force to use default <Image /> from RN
          */
-        return (
-            <Image
-                ref={ref}
-                {...rest}
-                style={[rest.style, tintColor != null ? { tintColor: theme[tintColor] } : null]}
-            />
-        );
+        return React.createElement(Image, { ...props, ref });
     }
     // @ts-expect-error
-    return React.createElement(FastImage, { ref, ...rest });
+    return React.createElement(FastImage, { ref, ...props });
 });
+
+export const UIImage = React.memo(
+    React.forwardRef<RNImage, UIImageProps>(function UIImage(props: UIImageProps, ref) {
+        const theme = useTheme();
+        return React.createElement(UIImageSimple, {
+            ...props,
+            ref,
+            tintColor: props.tintColor != null ? theme[props.tintColor] : null,
+        });
+    }),
+);
+
+export const UIAnimatedImage = Animated.createAnimatedComponent(UIImageSimple);

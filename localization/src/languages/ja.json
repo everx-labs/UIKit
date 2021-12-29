@@ -195,6 +195,9 @@
     "Exchange": "両替",
     "ExchangeFrom": "差出人",
     "ExchangeTo": "宛先",
+    "ExpandableText": {
+        "more": "more..."
+    },
     "ExportingBackupPhrase": "バックアップ・フレーズはエクスポート中...",
     "fee": "Network fees",
     "feeAmount": "≈ {0}",

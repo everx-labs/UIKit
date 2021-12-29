@@ -195,6 +195,9 @@
     "Exchange": "Compra e Venda",
     "ExchangeFrom": "De",
     "ExchangeTo": "Para",
+    "ExpandableText": {
+        "more": "more..."
+    },
     "ExportingBackupPhrase": "Exportando frase de backup…",
     "fee": "Network fees",
     "feeAmount": "≈ {0}",

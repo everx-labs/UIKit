@@ -55,7 +55,7 @@ import { TextScreen } from './screens/Text';
 import { VideosScreen } from './screens/Videos';
 import { Browser } from './screens/Browser';
 import { Chat } from './screens/Chat';
-import { Carousel } from './screens/Carousel';
+import { CarouselScreen } from './screens/Carousel';
 import { CellsScreen } from './screens/Cells';
 import { Navigation } from './screens/Navigation';
 import { SectionsService } from './Search';
@@ -364,7 +364,7 @@ const App = () => {
                         />
                         <Split.Screen
                             name="carousel"
-                            component={Carousel}
+                            component={CarouselScreen}
                             options={{
                                 useHeaderLargeTitle: true,
                                 title: 'Cells',
@@ -581,7 +581,13 @@ const App = () => {
                                 tabBarDisabledIcon: UIAssets.icons.ui.checkboxSquareInactive,
                             }}
                         />
-                        <Split.Screen name="videos" component={VideosScreen} />
+                        <Split.Screen
+                            name="videos"
+                            component={VideosScreen}
+                            options={{
+                                title: 'Videos',
+                            }}
+                        />
                     </Split.Navigator>
                 </NavigationContainer>
                 <UIAndroidNavigationBar />

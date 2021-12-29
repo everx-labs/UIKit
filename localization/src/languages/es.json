@@ -195,6 +195,9 @@
     "Exchange": "Intercambiar",
     "ExchangeFrom": "Desde",
     "ExchangeTo": "Para",
+    "ExpandableText": {
+        "more": "more..."
+    },
     "ExportingBackupPhrase": "Exportación de frase de copia de seguridad...",
     "fee": "Network fees",
     "feeAmount": "≈ {0}",

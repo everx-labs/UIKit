@@ -51,6 +51,6 @@ export type CollectionSlideProps = {
     content: MediaCardContent;
     style: ViewStyle;
     isVisible: boolean;
-    onLoad: () => void;
-    onError: (error: Error) => void;
+    onLoad: (content: MediaCardContent) => void;
+    onError: (error: Error, content: MediaCardContent) => void;
 };
