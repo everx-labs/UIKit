@@ -195,6 +195,9 @@
     "Exchange": "Échange",
     "ExchangeFrom": "De",
     "ExchangeTo": "À",
+    "ExpandableText": {
+        "more": "more..."
+    },
     "ExportingBackupPhrase": "Exportation de la phrase de sauvegarde ...",
     "fee": "Network fees",
     "feeAmount": "≈ {0}",

@@ -195,6 +195,9 @@
     "Exchange": "Обмен",
     "ExchangeFrom": "С",
     "ExchangeTo": "На",
+    "ExpandableText": {
+        "more": "Подробнее..."
+    },
     "ExportingBackupPhrase": "Экспорт бэкап-фразы...",
     "fee": "Network fees",
     "feeAmount": "≈ {0}",

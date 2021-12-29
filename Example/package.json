@@ -48,6 +48,7 @@
         "@tonlabs/uicast.pager-view": "*",
         "@tonlabs/uicast.numbers": "*",
         "@tonlabs/uicast.cards": "*",
+        "@tonlabs/uicast.texts": "*",
         "@tonlabs/uikit.components": "*",
         "@tonlabs/uikit.core": "*",
         "@tonlabs/uikit.legacy": "*",

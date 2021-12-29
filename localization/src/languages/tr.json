@@ -195,6 +195,9 @@
     "Exchange": "Borsa",
     "ExchangeFrom": "Sat",
     "ExchangeTo": "Al",
+    "ExpandableText": {
+        "more": "more..."
+    },
     "ExportingBackupPhrase": "Yedek kelime cümlesi dışa aktarılıyor...",
     "fee": "Network fees",
     "feeAmount": "≈ {0}",
