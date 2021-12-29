@@ -16,7 +16,7 @@ export type UIMediaCardProps = {
      */
     notSupportedMessage?: string;
     /**
-     * Сallback called by clicking/tapping on the card
+     * Callback called by clicking/tapping on the card
      */
     onPress?: () => void;
     /**

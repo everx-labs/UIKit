@@ -3,7 +3,7 @@ import { Platform, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedProps, useAnimatedReaction, runOnJS } from 'react-native-reanimated';
 import Svg, { Circle } from 'react-native-svg';
 import { UILabel, TypographyVariants, useTheme } from '@tonlabs/uikit.themes';
-import { addNativeProps } from '@tonlabs/uicast.linear-chart';
+import { addNativeProps } from '@tonlabs/uikit.controls';
 import type { CountdownCirlceProps } from './types';
 import { UIConstant } from '../constants';
 

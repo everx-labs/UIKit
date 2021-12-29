@@ -18,7 +18,7 @@ export type UICellDebotProps = {
      */
     loading?: boolean;
     /**
-     * Сallback called by clicking/tapping on the cell
+     * Callback called by clicking/tapping on the cell
      */
     onPress?: () => void;
     /**

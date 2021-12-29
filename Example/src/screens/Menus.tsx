@@ -190,7 +190,7 @@ function BigBottomLargeTitleSheet() {
 
 const getCallback = (message: string, setVisible: (visible: boolean) => void) => () => {
     console.log(message);
-    if (message.includes('Сancel')) {
+    if (message.includes('Cancel')) {
         setVisible(false);
     }
 };

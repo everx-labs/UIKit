@@ -3,7 +3,7 @@ import { View, StyleSheet, LayoutChangeEvent } from 'react-native';
 import Svg, { Path as SvgPath } from 'react-native-svg';
 import Animated, { useAnimatedProps, useSharedValue } from 'react-native-reanimated';
 import { TypographyVariants, UILabel, ColorVariants, useTheme } from '@tonlabs/uikit.themes';
-import { addNativeProps } from '../addNativeProps';
+import { addNativeProps } from '@tonlabs/uikit.controls';
 import {
     LINEAR_CHART_CONTENT_HORIZONTAL_OFFSET,
     LINEAR_CHART_STROKE_WIDTH,
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: LINEAR_CHART_HORIZONTAL_OFFSET_FROM_CHART_TO_THE_EDGE,
         paddingVertical: LINEAR_CHART_VERTICAL_OFFSET_FROM_CHART_TO_THE_EDGE,
     },
-    chartСontainer: {
+    chartContainer: {
         flex: 1,
         overflow: 'visible',
     },
@@ -134,7 +134,7 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
 
     return (
         <View testID={props.testID} style={styles.container}>
-            <View onLayout={onLayout} style={styles.chartСontainer}>
+            <View onLayout={onLayout} style={styles.chartContainer}>
                 <AnimatedSvg animatedProps={animatedSvgProps}>
                     <AnimatedPath
                         animatedProps={animatedPathProps}
