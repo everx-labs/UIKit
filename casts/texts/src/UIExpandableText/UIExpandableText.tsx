@@ -25,7 +25,11 @@ function UIExpandableTextImpl(props: UIExpandableTextProps) {
                 testID={`UIExpandableText.Text:${testID}`}
             />
             {!isExpanded ? (
-                <TouchableOpacity onPress={onExpand} style={styles.moreButton}>
+                <TouchableOpacity
+                    onPress={onExpand}
+                    style={styles.moreButton}
+                    testID={`UIExpandableText.MoreButton:${testID}`}
+                >
                     <UILabel {...rest} color={ColorVariants.TextAccent}>
                         {uiLocalized.ExpandableText.more}
                     </UILabel>
