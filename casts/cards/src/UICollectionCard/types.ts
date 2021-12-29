@@ -21,7 +21,7 @@ export type UICollectionCardProps = {
      */
     badge?: string | ImageSourcePropType;
     /**
-     * Сallback called by clicking/tapping on the card
+     * Callback called by clicking/tapping on the card
      */
     onPress?: () => void;
     /**

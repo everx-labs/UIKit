@@ -76,7 +76,7 @@ export const UIActionButton = React.forwardRef<TouchableWithoutFeedback, UIActio
             overlay.pressed,
         );
 
-        const сontentAnimations: ContentAnimations = useContentAnimatedStyles(
+        const contentAnimations: ContentAnimations = useContentAnimatedStyles(
             buttonAnimations.hover.animationParam,
             buttonAnimations.press.animationParam,
             content.hover,
@@ -107,7 +107,7 @@ export const UIActionButton = React.forwardRef<TouchableWithoutFeedback, UIActio
                         <ActionButtonIcon
                             icon={icon}
                             loading={loading}
-                            animStyles={сontentAnimations.icon}
+                            animStyles={contentAnimations.icon}
                             initialColor={contentColor}
                         />
                     </View>
@@ -116,7 +116,7 @@ export const UIActionButton = React.forwardRef<TouchableWithoutFeedback, UIActio
                             style={styles.title}
                             titleRole={TypographyVariants.NarrowActionNote}
                             titleColor={contentColor}
-                            titleAnimStyle={сontentAnimations.titleStyle}
+                            titleAnimStyle={contentAnimations.titleStyle}
                         >
                             {title}
                         </ButtonTitle>
