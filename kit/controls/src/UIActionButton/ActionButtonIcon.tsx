@@ -65,18 +65,18 @@ function ActionButtonIconImpl({
 
     return (
         <View style={styles.iconSize}>
-            <View style={styles.indicator}>
-                <UIIndicator color={initialColor} size={UIConstant.actionButtonIconSize} />
-            </View>
-            <View style={styles.icon}>{iconMemoized}</View>
+            {loading ? (
+                <View style={styles.indicator}>
+                    <UIIndicator color={initialColor} size={UIConstant.actionButtonIconSize} />
+                </View>
+            ) : (
+                iconMemoized
+            )}
         </View>
     );
 }
 
-const useStyles = makeStyles((loading: boolean) => ({
-    icon: {
-        opacity: loading ? 0 : 1,
-    },
+const useStyles = makeStyles(() => ({
     iconSize: {
         height: UIConstant.actionButtonIconSize,
         width: UIConstant.actionButtonIconSize,
@@ -86,7 +86,6 @@ const useStyles = makeStyles((loading: boolean) => ({
     },
     indicator: {
         ...StyleSheet.absoluteFillObject,
-        opacity: loading ? 1 : 0,
     },
 }));
 

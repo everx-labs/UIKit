@@ -35,6 +35,7 @@
     ],
     "dependencies": {
         "@tonlabs/localization": "^3.0.0",
+        "@tonlabs/uikit.controls": "^3.0.0",
         "@tonlabs/uikit.themes": "^3.0.0"
     },
     "devDependencies": {

@@ -25,6 +25,7 @@ export * from './UISwitcher';
 
 export * from './Haptics/Haptics';
 export * from './useHover';
+export * from './addNativeProps';
 
 export const UIControl = {
     UIActionButton,

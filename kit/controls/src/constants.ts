@@ -37,6 +37,10 @@ export const UIConstant = {
         toggleHeight: 18,
         togglePadding: 4,
     },
+    indicator: {
+        defaultSize: 20,
+        defaultTrackWidth: 1.75,
+    },
 };
 
 export const BUTTON_WITH_SPRING_CONFIG: WithSpringConfig = {

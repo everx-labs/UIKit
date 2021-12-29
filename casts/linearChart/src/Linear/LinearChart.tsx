@@ -3,7 +3,7 @@ import { View, StyleSheet, LayoutChangeEvent } from 'react-native';
 import Svg, { Path as SvgPath } from 'react-native-svg';
 import Animated, { useAnimatedProps, useSharedValue } from 'react-native-reanimated';
 import { TypographyVariants, UILabel, ColorVariants, useTheme } from '@tonlabs/uikit.themes';
-import { addNativeProps } from '../addNativeProps';
+import { addNativeProps } from '@tonlabs/uikit.controls';
 import {
     LINEAR_CHART_CONTENT_HORIZONTAL_OFFSET,
     LINEAR_CHART_STROKE_WIDTH,
