@@ -29,11 +29,29 @@ function useCrossDissolve(visible: boolean) {
         visible ? CrossDissolveProgress.Visible : CrossDissolveProgress.Hidden,
     );
 
+    const isMounted = React.useRef<boolean>(false);
+    React.useEffect(() => {
+        isMounted.current = true;
+        return () => {
+            isMounted.current = false;
+        };
+    }, []);
+
     const [isVisible, setIsVisible] = React.useState(visible);
+
     const turnOff = React.useCallback(() => {
+        if (!isMounted.current) {
+            return;
+        }
+
         setIsVisible(false);
     }, []);
+
     React.useEffect(() => {
+        if (!isMounted.current) {
+            return;
+        }
+
         if (visible === isVisible) {
             return;
         }

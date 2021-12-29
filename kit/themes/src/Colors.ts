@@ -69,6 +69,7 @@ export enum ColorVariants {
     StaticBackgroundPositive = 'StaticBackgroundPositive',
     StaticBackgroundOverlay = 'StaticBackgroundOverlay',
     Shadow = 'Shadow',
+    ShadowOpaque = 'ShadowOpaque',
 }
 
 export type Theme = {
@@ -145,6 +146,7 @@ export const LightTheme: Theme = {
     [ColorVariants.KeyboardStyle]: 'light',
 
     [ColorVariants.Shadow]: 'rgb(32, 38, 42)',
+    [ColorVariants.ShadowOpaque]: 'rgba(32, 38, 42, 0.08)',
 };
 
 export const DarkTheme: Theme = {
@@ -195,7 +197,8 @@ export const DarkTheme: Theme = {
     [ColorVariants.Transparent]: 'rgba(0,0,0,0)',
     [ColorVariants.KeyboardStyle]: 'dark',
 
-    [ColorVariants.Shadow]: 'rgb(32, 38, 42)',
+    [ColorVariants.Shadow]: 'rgb(19, 23, 25)',
+    [ColorVariants.ShadowOpaque]: 'rgba(19, 23, 25, 0.4)',
 };
 
 export const ThemeContext = React.createContext(LightTheme);

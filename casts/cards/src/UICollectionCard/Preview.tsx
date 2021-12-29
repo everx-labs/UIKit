@@ -4,8 +4,9 @@ import type { ImageURISource } from 'react-native';
 
 import type { MediaCardContent } from '../types';
 import type { PreviewProps } from './types';
+
 import { CollectionSlide } from './CollectionSlide';
-import { useCurrentSourceItemIndex } from './useCurrentSourceItemIndex';
+import { useCurrentSourceItem } from './useCurrentSourceItem';
 
 export function Preview({ style, contentList, onFailure }: PreviewProps) {
     React.useEffect(() => {
@@ -20,52 +21,73 @@ export function Preview({ style, contentList, onFailure }: PreviewProps) {
 
     /**
      * The list of indexes of elements from array `contentList` that are ready for display
+     *
+     * Note: There is not need to put it in state as each list change will require the component
+     * to rerender, which is actually almost useless since `useCurrentSourceItem` hook will change
+     * the component state anyway in some short time.
+     * Most important is to keep the list ref actual in order to let the hook process it properly
+     * when iterating through the previews on each time slice.
      */
-    const [availableIndexList, setAvailableIndexList] = React.useState<number[]>([]);
+    const availableIndexList = React.useRef<number[]>([]);
+
     /**
      * The list of indexes of elements from array `contentList` for which onError was called
      * and cannot be displayed
      */
-    const [failureIndexList, setFailureIndexList] = React.useState<number[]>([]);
+    const failureIndexList = React.useRef<number[]>([]);
 
-    const currentSourceItemIndex = useCurrentSourceItemIndex(contentList, availableIndexList);
+    const currentSourceItem = useCurrentSourceItem(
+        contentList,
+        availableIndexList,
+        failureIndexList,
+    );
 
     const onLoadSourceItem = React.useCallback(
-        function onLoadSourceItem(sourceItemIndex: number) {
-            return function onLoad() {
-                if (
-                    !availableIndexList.includes(sourceItemIndex) &&
-                    !failureIndexList.includes(sourceItemIndex)
-                ) {
-                    setAvailableIndexList(availableIndexList.concat(sourceItemIndex));
-                }
-            };
+        (content: MediaCardContent) => {
+            const sourceItemIndex = contentList?.indexOf(content);
+            if (sourceItemIndex == null || sourceItemIndex < 0) {
+                return;
+            }
+
+            if (
+                !availableIndexList.current.includes(sourceItemIndex) &&
+                !failureIndexList.current.includes(sourceItemIndex)
+            ) {
+                availableIndexList.current = availableIndexList.current.concat(sourceItemIndex);
+            }
         },
-        [availableIndexList, failureIndexList],
+        [contentList],
     );
 
     const onErrorSourceItem = React.useCallback(
-        function onErrorSourceItem(sourceItemIndex: number) {
-            return function onError() {
-                if (!failureIndexList.includes(sourceItemIndex)) {
-                    setFailureIndexList(failureIndexList.concat(sourceItemIndex));
-                }
-                if (availableIndexList.includes(sourceItemIndex)) {
-                    /**
-                     * Remove this index from `availableIndexList`
-                     * because an element with this index can't be displayed
-                     */
-                    const newAvailableIndexList = availableIndexList.filter(
-                        (availableIndex: number) => sourceItemIndex !== availableIndex,
-                    );
-                    setAvailableIndexList(newAvailableIndexList);
-                }
-                if (failureIndexList.length === contentList?.length) {
-                    onFailure(new Error('All elements failed'));
-                }
-            };
+        (error: Error, content: MediaCardContent) => {
+            console.warn('[UICollectionCard] Failed to load preview with error:', error);
+
+            const sourceItemIndex = contentList?.indexOf(content);
+            if (sourceItemIndex == null || sourceItemIndex < 0) {
+                return;
+            }
+
+            if (!failureIndexList.current.includes(sourceItemIndex)) {
+                failureIndexList.current = failureIndexList.current.concat(sourceItemIndex);
+            }
+
+            if (availableIndexList.current.includes(sourceItemIndex)) {
+                /**
+                 * Remove this index from `availableIndexList`
+                 * because an element with this index can't be displayed
+                 */
+                const newAvailableIndexList = availableIndexList.current.filter(
+                    (availableIndex: number) => sourceItemIndex !== availableIndex,
+                );
+                availableIndexList.current = newAvailableIndexList;
+            }
+
+            if (failureIndexList.current.length === contentList?.length) {
+                onFailure(new Error('All elements failed'));
+            }
         },
-        [availableIndexList, failureIndexList, contentList, onFailure],
+        [contentList, onFailure],
     );
 
     if (!contentList || contentList.length === 0) {
@@ -74,14 +96,14 @@ export function Preview({ style, contentList, onFailure }: PreviewProps) {
 
     return (
         <>
-            {contentList.map((content: MediaCardContent, index: number) => (
+            {contentList.map((content: MediaCardContent) => (
                 <CollectionSlide
                     key={content.id}
                     content={content}
                     style={style}
-                    onLoad={onLoadSourceItem(index)}
-                    onError={onErrorSourceItem(index)}
-                    isVisible={index === currentSourceItemIndex}
+                    isVisible={currentSourceItem === content}
+                    onLoad={onLoadSourceItem}
+                    onError={onErrorSourceItem}
                 />
             ))}
         </>

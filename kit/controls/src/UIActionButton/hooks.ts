@@ -1,12 +1,13 @@
 import * as React from 'react';
 import Animated, {
     interpolateColor,
+    useAnimatedProps,
     useAnimatedStyle,
     useDerivedValue,
     useSharedValue,
 } from 'react-native-reanimated';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
-import { Platform } from 'react-native';
+import { Platform, ColorValue } from 'react-native';
 import {
     ContentAnimations,
     ActionButtonColorScheme,
@@ -63,20 +64,6 @@ export function useContentAnimatedStyles(
 ): ContentAnimations {
     const theme = useTheme();
 
-    const hoverIconAnimStyle = useAnimatedStyle(() => {
-        return {
-            tintColor: theme[ColorVariants[hoverOverlayColor]] as string,
-            opacity: hoverAnimValue.value,
-        };
-    });
-
-    const pressIconAnimStyle = useAnimatedStyle(() => {
-        return {
-            tintColor: theme[ColorVariants[pressOverlayColor]] as string,
-            opacity: pressAnimValue.value,
-        };
-    });
-
     const titleColorAnimValue = useDerivedValue(() => {
         return interpolateColor(
             -hoverAnimValue.value + pressAnimValue.value * 1001,
@@ -95,12 +82,15 @@ export function useContentAnimatedStyles(
         };
     });
 
+    const iconProps = useAnimatedProps(() => {
+        return {
+            tintColor: titleColorAnimValue.value as ColorValue,
+        };
+    });
+
     return {
         titleStyle,
-        icon: {
-            hoverStyle: hoverIconAnimStyle,
-            pressStyle: pressIconAnimStyle,
-        },
+        iconProps,
     };
 }
 
@@ -129,7 +119,7 @@ export function useButtonAnimations(
     });
 
     const pressAnim = useSharedValue(0);
-    const pressOverlayValue = useDerivedValue(() => {
+    const pressOverlayColorValue = useDerivedValue(() => {
         return interpolateColor(
             pressAnim.value,
             [0, 1],
@@ -141,7 +131,7 @@ export function useButtonAnimations(
     });
     const pressOverlayStyle = useAnimatedStyle(() => {
         return {
-            backgroundColor: pressOverlayValue.value,
+            backgroundColor: pressOverlayColorValue.value,
         };
     });
 

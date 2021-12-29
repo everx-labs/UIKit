@@ -22,10 +22,11 @@ export function UIMediaCard({
     notSupportedMessage,
     onPress,
     loading,
+    aspectRatio,
     testID,
 }: UIMediaCardProps) {
     const theme = useTheme();
-    const styles = useStyles(theme);
+    const styles = useStyles(theme, aspectRatio);
     const [isContentLoaded, setIsContentLoaded] = React.useState<boolean>(false);
     const [isError, setIsError] = React.useState<boolean>(false);
 
@@ -38,7 +39,12 @@ export function UIMediaCard({
 
     return (
         <UISkeleton show={!!loading} style={styles.skeleton}>
-            <TouchableOpacity testID={testID} onPress={onPress} style={styles.touchable}>
+            <TouchableOpacity
+                testID={testID}
+                onPress={onPress}
+                disabled={!onPress}
+                style={styles.touchable}
+            >
                 <View style={styles.container}>
                     {content ? (
                         <CollectionSlide
@@ -78,7 +84,7 @@ export function UIMediaCard({
     );
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme: Theme, aspectRatio: number | undefined) => ({
     skeleton: {
         borderRadius: UIConstant.uiMediaCard.borderRadius,
     },
@@ -90,7 +96,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         backgroundColor: theme[ColorVariants.StaticTextOverlayDark],
         padding: UILayoutConstant.contentOffset,
         justifyContent: 'space-between',
-        aspectRatio: 1,
+        aspectRatio: aspectRatio ? 1 / aspectRatio : 1,
     },
     quickView: {
         ...StyleSheet.absoluteFillObject,
@@ -110,5 +116,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     description: {
         paddingVertical: UIConstant.uiMediaCard.descriptionPaddingVertical,
+        flex: 1,
     },
 }));

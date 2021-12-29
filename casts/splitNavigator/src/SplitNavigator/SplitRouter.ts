@@ -13,6 +13,7 @@ import type {
     Router,
     RouterConfigOptions,
 } from '@react-navigation/core';
+import type { StackActionType } from '@react-navigation/routers';
 
 type SplitActionType =
     | {
@@ -351,11 +352,15 @@ class SplitUnfoldedRouter<ParamList extends ParamListBase = ParamListBase> {
         options: RouterConfigOptions,
     ): SplitNavigationState<ParamList> | null {
         if (action.type === 'RESET_TO_INITIAL') {
-            const mainRouteIndex = state.routeNames.indexOf(MAIN_SCREEN_NAME);
+            const initialState = this.getInitialState({
+                routeNames: state.routeNames,
+                routeParamList: {},
+                routeGetIdList: {},
+            });
             return {
-                ...state,
-                tabIndex: mainRouteIndex,
-                history: [mainRouteIndex],
+                ...initialState,
+                key: state.key,
+                routes: state.routes,
             };
         }
         if (action.type === 'GO_BACK') {
@@ -572,25 +577,20 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
 
     getStateForAction(
         state: SplitNavigationState<ParamList>,
-        action: CommonNavigationAction | SplitActionType,
+        action: CommonNavigationAction | SplitActionType | StackActionType,
         options: RouterConfigOptions,
     ): SplitNavigationState<ParamList> | null {
-        const { tabRouteNames, stackRouteNames } = this.options;
+        const { tabRouteNames } = this.options;
         if (action.type === 'RESET_TO_INITIAL') {
-            const mainRouteIndex = state.routeNames.indexOf(MAIN_SCREEN_NAME);
-            if (stackRouteNames.includes(state.routes[state.index].name)) {
-                return {
-                    ...state,
-                    index: mainRouteIndex,
-                    // tab is already set to main
-                    history: [mainRouteIndex],
-                    nestedStack: [mainRouteIndex],
-                };
-            }
+            const initialState = this.getInitialState({
+                routeNames: state.routeNames,
+                routeParamList: {},
+                routeGetIdList: {},
+            });
             return {
-                ...state,
-                tabIndex: mainRouteIndex,
-                history: [mainRouteIndex],
+                ...initialState,
+                key: state.key,
+                routes: state.routes,
             };
         }
         if (action.type === 'GO_BACK') {
@@ -660,6 +660,21 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
                 nestedStack: [mainIndex, index],
                 history: state.history.filter(r => r !== index).concat([index]),
                 routes: applyTabNavigateActionToRoutes(state, action, options, index),
+            };
+        }
+        if (action.type === 'POP') {
+            // In folded mode that shouldn't be a case
+            // Suppress TS error
+            if (state.nestedStack == null) {
+                return null;
+            }
+            const indexInStack = Math.max(state.nestedStack.length - action.payload.count - 1, 0);
+
+            return {
+                ...state,
+                index: state.nestedStack[indexInStack],
+                nestedStack: state.nestedStack.slice(0, indexInStack + 1),
+                history: state.history.slice(0, indexInStack + 1),
             };
         }
         return null;
@@ -758,6 +773,8 @@ export function SplitRouter(routerOptions: SplitRouterOptions) {
         shouldActionChangeFocus(action) {
             return action.type === 'NAVIGATE';
         },
+
+        actionCreators: SplitActions,
     };
 
     return router;

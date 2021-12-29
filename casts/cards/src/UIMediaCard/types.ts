@@ -24,6 +24,12 @@ export type UIMediaCardProps = {
      */
     loading?: boolean;
     /**
+     * Aspect ratio of the content to help determine height of the card.
+     * (the width is equal to the width of the parent container)
+     * Default value is 1.
+     */
+    aspectRatio?: number;
+    /**
      * ID for usage in tests
      */
     testID?: string;
