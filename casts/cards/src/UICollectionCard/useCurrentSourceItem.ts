@@ -98,7 +98,7 @@ export function useCurrentSourceItem(
         }
 
         return () => {
-            if (timeout != null) {
+            if (timeout) {
                 clearTimeout(timeout);
             }
         };
