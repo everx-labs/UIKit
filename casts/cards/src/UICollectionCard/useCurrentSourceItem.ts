@@ -45,19 +45,27 @@ export function useCurrentSourceItem(
         let timeout: NodeJS.Timeout | undefined;
 
         function iterateThroughItems(items: MediaCardContent[]) {
-            const index = availableList.current[currentAvailableListIndex];
-            if (index == null || availableList.current.length === 1) {
-                // No items are available yet or only one item is loaded...
+            if (availableList.current.length < 2) {
+                // Either no items are available yet or only one item is loaded...
                 // Need to wait until more are loaded in order to change the current item.
+
                 // Note: if items do not appear, they should automatically fill `failureIndexList`.
-                // Hence there is no need to wait if all of them fail to load!.
-                if (failureIndexList.current.length !== items.length) {
+                // Hence there is no need to wait if all the rest items fail to load!.
+                if (
+                    items.length !==
+                    availableList.current.length + failureIndexList.current.length
+                ) {
                     // Trigger the effect one more time in a sec to check the available items again
                     timeout = setTimeout(() => iterateThroughItems(items), 1000);
                 } else {
-                    // No need to iterate through failed items
+                    // No need to iterate through failed items or a single one available
                 }
             } else {
+                const index = availableList.current[currentAvailableListIndex];
+                if (index == null) {
+                    throw new Error('Current available item is not defined');
+                }
+
                 const currentItem: MediaCardContent | undefined = items[index];
                 if (!currentItem) {
                     throw new Error('Current item is not found among available items');

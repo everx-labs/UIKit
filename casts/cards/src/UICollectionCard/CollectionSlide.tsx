@@ -63,6 +63,11 @@ const VideoSlide = React.memo(function VideoSlide({
     );
 });
 
+const styles = StyleSheet.create({
+    slideVisible: { transform: [{ translateX: 0 }, { translateY: 0 }] },
+    slideInvisible: { transform: [{ translateX: -9999 }, { translateY: -9999 }] },
+});
+
 function CollectionSlideImpl({ content, onLoad, onError, style, isVisible }: CollectionSlideProps) {
     const { contentType } = content;
 
@@ -73,7 +78,7 @@ function CollectionSlideImpl({ content, onLoad, onError, style, isVisible }: Col
     }, [content, contentType, onError]);
 
     const visibility = React.useMemo<StyleProp<ViewStyle>>(() => {
-        return { opacity: isVisible ? 1 : 0 };
+        return isVisible ? styles.slideVisible : styles.slideInvisible;
     }, [isVisible]);
 
     return (
