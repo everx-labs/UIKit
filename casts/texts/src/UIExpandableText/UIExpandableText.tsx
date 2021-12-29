@@ -7,7 +7,7 @@ import type { UIExpandableTextProps } from './types';
 import { UILayout } from '../constants';
 
 function UIExpandableTextImpl(props: UIExpandableTextProps) {
-    const { numberOfLines, testID } = props;
+    const { numberOfLines, testID, ...rest } = props;
     const theme = useTheme();
     const styles = useStyles(theme);
 
@@ -19,10 +19,14 @@ function UIExpandableTextImpl(props: UIExpandableTextProps) {
 
     return (
         <View style={styles.container} testID={testID}>
-            <UILabel {...props} numberOfLines={isExpanded ? undefined : numberOfLines} />
+            <UILabel
+                {...rest}
+                numberOfLines={isExpanded ? undefined : numberOfLines}
+                testID={`UIExpandableText.Text:${testID}`}
+            />
             {!isExpanded ? (
                 <TouchableOpacity onPress={onExpand} style={styles.moreButton}>
-                    <UILabel {...props} color={ColorVariants.TextAccent}>
+                    <UILabel {...rest} color={ColorVariants.TextAccent}>
                         {uiLocalized.ExpandableText.more}
                     </UILabel>
                 </TouchableOpacity>
