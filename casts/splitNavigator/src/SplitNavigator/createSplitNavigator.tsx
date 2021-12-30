@@ -22,6 +22,7 @@ import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
 import {
     useWrapScreensWithUILargeTitleHeader,
     StackNavigationOptions,
+    filterDescriptorOptionsForOriginalImplementation,
 } from '@tonlabs/uicast.stack-navigator';
 
 import { ResourceSavingScene } from './ResourceSavingScene';
@@ -64,7 +65,7 @@ type SplitStyles = {
     detail?: StyleProp<ViewStyle>;
 };
 
-type SplitScreenOptions =
+export type SplitScreenOptions =
     | (SplitScreenTabBarStaticIconOptions & StackNavigationOptions)
     | (SplitScreenTabBarAnimatedIconOptions & StackNavigationOptions)
     | StackNavigationOptions;
@@ -385,6 +386,8 @@ function FoldedSplitNavigator({
     const doesSupportNative = Platform.OS !== 'web' && screensEnabled?.();
 
     if (doesSupportNative) {
+        const descriptorsFiltered =
+            filterDescriptorOptionsForOriginalImplementation(stackDescriptors);
         return (
             <NavigationHelpersContext.Provider value={navigation}>
                 <NestedInSplitContext.Provider value={false}>
@@ -394,7 +397,7 @@ function FoldedSplitNavigator({
                             state={stackState}
                             navigation={stackNavigation}
                             // @ts-ignore
-                            descriptors={stackDescriptors}
+                            descriptors={descriptorsFiltered}
                         />
                     </SplitTabBarHeightContext.Provider>
                 </NestedInSplitContext.Provider>
