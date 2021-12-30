@@ -1,4 +1,7 @@
 export * from './createStackNavigator';
 export * from './useStackTopInsetStyle';
-export { useWrapScreensWithUILargeTitleHeader } from './useWrapScreensWithUILargeTitleHeader';
+export {
+    useWrapScreensWithUILargeTitleHeader,
+    filterDescriptorOptionsForOriginalImplementation,
+} from './useWrapScreensWithUILargeTitleHeader';
 export * from './types';

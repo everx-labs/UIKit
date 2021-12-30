@@ -146,6 +146,27 @@ export function useWrapScreensWithUILargeTitleHeader<
     );
 }
 
+export function filterDescriptorOptionsForOriginalImplementation<
+    Options extends StackNavigationOptions = StackNavigationOptions,
+    NavState extends NavigationState<ParamListBase> = NavigationState<ParamListBase>,
+>(descriptors: StackLikeDescriptors<Options, NavState>) {
+    return Object.keys(descriptors).reduce<Record<string, any>>((acc, key) => {
+        const originalDescriptor = descriptors[key];
+
+        const { headerShown, stackAnimation } = originalDescriptor.options as any;
+
+        acc[key] = {
+            ...originalDescriptor,
+            options: {
+                headerShown,
+                stackAnimation,
+            },
+        };
+
+        return acc;
+    }, {});
+}
+
 const styles = StyleSheet.create({
     screenContainer: {
         flex: 1,

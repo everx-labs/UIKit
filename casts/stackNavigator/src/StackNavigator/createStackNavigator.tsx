@@ -16,30 +16,10 @@ import { NativeStackView } from 'react-native-screens/native-stack';
 import type { StackNavigationEventMap } from '@react-navigation/stack/lib/typescript/src/types';
 
 import {
-    StackDescriptor,
+    filterDescriptorOptionsForOriginalImplementation,
     useWrapScreensWithUILargeTitleHeader,
 } from './useWrapScreensWithUILargeTitleHeader';
 import type { StackNavigationOptions } from './types';
-
-export function filterDescriptorOptionsForOriginalImplementation(
-    descriptors: Record<string, StackDescriptor>,
-) {
-    return Object.keys(descriptors).reduce<Record<string, any>>((acc, key) => {
-        const originalDescriptor = descriptors[key];
-
-        const { headerShown, stackAnimation } = originalDescriptor.options as any;
-
-        acc[key] = {
-            ...originalDescriptor,
-            options: {
-                headerShown,
-                stackAnimation,
-            },
-        };
-
-        return acc;
-    }, {});
-}
 
 type SurfSplitNavigatorProps = {
     children?: React.ReactNode;
