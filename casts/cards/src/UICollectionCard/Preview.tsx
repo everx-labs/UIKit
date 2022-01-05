@@ -12,7 +12,8 @@ export function Preview({ style, contentList, onFailure }: PreviewProps) {
     React.useEffect(() => {
         const imageList: ImageURISource[] = [];
         contentList?.forEach((value: MediaCardContent) => {
-            if (value.contentType === 'Image') {
+            if (value.contentType === 'Image' && value.source.uri) {
+                // Important to ensure that source has `uri` to prefetch, otherwise it will crash!
                 imageList.push(value.source);
             }
         });
