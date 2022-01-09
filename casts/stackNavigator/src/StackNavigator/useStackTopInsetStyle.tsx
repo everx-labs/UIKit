@@ -2,15 +2,13 @@ import * as React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { NestedInModalContext } from '@tonlabs/uicast.modal-navigator';
-import { NestedInSplitContext } from '@tonlabs/uicast.split-navigator';
 
-export function useStackTopInsetStyle() {
+export function useStackTopInsetStyle(hasTopInset: boolean) {
     const { top } = useSafeAreaInsets();
-    const isSplitted = React.useContext(NestedInSplitContext);
     const closeModal = React.useContext(NestedInModalContext);
 
     const topInsetStyle = React.useMemo(() => {
-        if (isSplitted) {
+        if (!hasTopInset) {
             return null;
         }
         if (closeModal) {
@@ -20,7 +18,7 @@ export function useStackTopInsetStyle() {
         return {
             paddingTop: top,
         };
-    }, [isSplitted, closeModal, top]);
+    }, [hasTopInset, closeModal, top]);
 
     return topInsetStyle;
 }

@@ -652,12 +652,10 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
                     routes: applyTabNavigateActionToRoutes(state, action, options, index),
                 };
             }
-            const mainIndex = state.routeNames.indexOf(MAIN_SCREEN_NAME);
             return {
                 ...state,
                 index,
-                tabIndex: mainIndex,
-                nestedStack: [mainIndex, index],
+                nestedStack: [state.tabIndex, index],
                 history: state.history.filter(r => r !== index).concat([index]),
                 routes: applyTabNavigateActionToRoutes(state, action, options, index),
             };

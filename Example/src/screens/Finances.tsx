@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { View, Platform, I18nManager, NativeModules } from 'react-native';
+import { View } from 'react-native';
 import BigNumber from 'bignumber.js';
 
-import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UILabel, UILabelColors, TypographyVariants } from '@tonlabs/uikit.themes';
 import { UINumber, UICurrency, UINumberDecimalAspect } from '@tonlabs/uicast.numbers';
@@ -352,7 +351,7 @@ function IconsUICurrency() {
     );
 }
 
-function Finances() {
+export function FinancesScreen() {
     return (
         <ExampleScreen>
             <ExampleSection title="UINumber">
@@ -369,31 +368,5 @@ function Finances() {
             </ExampleSection>
             <View style={{ height: 50 }} />
         </ExampleScreen>
-    );
-}
-
-const FinancesStack = createStackNavigator();
-
-export function FinancesScreen() {
-    return (
-        <FinancesStack.Navigator>
-            <FinancesStack.Screen
-                name="FinancesWindow"
-                options={{
-                    useHeaderLargeTitle: true,
-                    title: 'Finances',
-                    headerRightItems: [
-                        Platform.OS === 'ios' && {
-                            label: `${I18nManager.isRTL ? 'Disable' : 'Enable'} RTL`,
-                            onPress: () => {
-                                I18nManager.forceRTL(!I18nManager.isRTL);
-                                NativeModules.DevSettings.reload();
-                            },
-                        },
-                    ],
-                }}
-                component={Finances}
-            />
-        </FinancesStack.Navigator>
     );
 }

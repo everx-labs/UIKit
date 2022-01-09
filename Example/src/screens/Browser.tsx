@@ -35,10 +35,10 @@ import {
     ColorVariants,
     useTheme,
 } from '@tonlabs/uikit.themes';
-import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
 
 import { useBase64Image } from './hooks/useBase64Image';
+import { useStore, updateStore } from '../useStore';
 
 const imageUrl = {
     original:
@@ -47,11 +47,11 @@ const imageUrl = {
     small: 'https://firebasestorage.googleapis.com/v0/b/ton-uikit-example-7e797.appspot.com/o/loon-image-small.jpeg?alt=media&token=022bc391-19ec-4e7f-94c6-66349f2e212e',
 };
 
-const BrowserStack = createStackNavigator();
+function setMenuVisible(visible: boolean) {
+    updateStore(() => ({ menuVisible: visible }));
+}
 
-type BrowserScreenRef = { toggleMenu(): void };
-
-const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
+export function Browser() {
     const theme = useTheme();
 
     const base64Image = useBase64Image(imageUrl.original);
@@ -95,13 +95,7 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
         },
     ]);
 
-    const [menuVisible, setMenuVisible] = React.useState(false);
-
-    React.useImperativeHandle(ref, () => ({
-        toggleMenu: () => {
-            setMenuVisible(!menuVisible);
-        },
-    }));
+    const menuVisible = useStore(({ menuVisible: _menuVisible }) => _menuVisible);
 
     const onPressUrl = React.useCallback(url => {
         console.log('url handled', url);
@@ -782,32 +776,4 @@ const BrowserScreen = React.forwardRef<BrowserScreenRef>((_props, ref) => {
             />
         </>
     );
-});
-
-export const Browser = React.memo(() => {
-    const screenRef = React.useRef<BrowserScreenRef>(null);
-    return (
-        <BrowserStack.Navigator>
-            <BrowserStack.Screen
-                name="BrowserScreen"
-                options={{
-                    // headerVisible: false,
-                    title: 'Browser',
-                    headerRightItems: [
-                        {
-                            label: 'Add',
-                            onPress: () => {
-                                screenRef.current?.toggleMenu();
-                            },
-                        },
-                    ],
-                }}
-                initialParams={{
-                    menuVisible: false,
-                }}
-            >
-                {() => <BrowserScreen ref={screenRef} />}
-            </BrowserStack.Screen>
-        </BrowserStack.Navigator>
-    );
-});
+}

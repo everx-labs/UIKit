@@ -7,7 +7,7 @@
 
 import { FlatList, TouchableOpacity, GestureHandlerRootView } from 'react-native-gesture-handler';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { I18nManager, NativeModules, Platform, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -32,11 +32,7 @@ import {
     useTheme,
     UIStatusBarManager,
 } from '@tonlabs/uikit.themes';
-import {
-    UIAndroidNavigationBar,
-    UILargeTitleHeader,
-    UISearchBarButton,
-} from '@tonlabs/uicast.bars';
+import { UIAndroidNavigationBar, UISearchBarButton } from '@tonlabs/uicast.bars';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { createSplitNavigator, useSplitTabBarHeight } from '@tonlabs/uicast.split-navigator';
@@ -70,6 +66,8 @@ import { RowsScreen } from './screens/Rows';
 import { FinancesScreen } from './screens/Finances';
 import { SkeletonsScreen } from './screens/Skeletons';
 
+import { StoreProvider, updateStore } from './useStore';
+
 // Optimize React rendering
 enableFreeze();
 
@@ -85,148 +83,135 @@ const ThemeSwitcher = React.createContext({
 });
 
 const Main = ({ navigation }: { navigation: any }) => {
-    const themeSwitcher = React.useContext(ThemeSwitcher);
     const [isSearchVisible, setIsSearchVisible] = React.useState(false);
-    const { top, bottom } = useSafeAreaInsets();
+    const { bottom } = useSafeAreaInsets();
     const tabBarBottomInset = useSplitTabBarHeight();
     return (
-        <UIBackgroundView style={{ flex: 1, paddingTop: top }}>
+        <UIBackgroundView style={{ flex: 1 }}>
             <PortalManager id="search">
-                <UILargeTitleHeader
-                    title="Main"
-                    headerRight={() => (
-                        <View testID="theme_switcher">
-                            <UISwitcher
-                                variant={UISwitcherVariant.Toggle}
-                                active={themeSwitcher.isDarkTheme}
-                                onPress={() => themeSwitcher.toggleTheme()}
-                            />
-                        </View>
-                    )}
-                >
-                    <View style={{ paddingHorizontal: 10 }}>
-                        <UISearchBarButton
-                            forId="search"
-                            visible={isSearchVisible}
-                            onOpen={() => {
-                                setIsSearchVisible(true);
-                            }}
-                            onClose={() => {
-                                setIsSearchVisible(false);
-                            }}
-                        >
-                            {(searchText: string) => {
-                                return (
-                                    <FlatList
-                                        style={{ flex: 1 }}
-                                        data={SectionsService.shared.find(searchText)}
-                                        keyExtractor={({ item: { title } }) => title}
-                                        renderItem={({
-                                            item: {
-                                                item: { title, routeKey },
-                                            },
-                                        }) => {
-                                            return (
-                                                <TouchableOpacity
-                                                    key={title}
-                                                    style={{
-                                                        width: '100%',
-                                                        padding: 10,
-                                                    }}
-                                                    onPress={() => {
-                                                        navigation.navigate({
-                                                            key: routeKey,
-                                                        });
-                                                        setIsSearchVisible(false);
-                                                    }}
-                                                >
-                                                    <UILabel>{title}</UILabel>
-                                                </TouchableOpacity>
-                                            );
-                                        }}
-                                    />
-                                );
-                            }}
-                        </UISearchBarButton>
-                    </View>
-                    <ScrollView
-                        contentContainerStyle={{
-                            paddingBottom: Math.max(bottom, tabBarBottomInset),
+                <View style={{ paddingHorizontal: 10 }}>
+                    <UISearchBarButton
+                        forId="search"
+                        visible={isSearchVisible}
+                        onOpen={() => {
+                            setIsSearchVisible(true);
+                        }}
+                        onClose={() => {
+                            setIsSearchVisible(false);
                         }}
                     >
-                        <UILinkButton
-                            title="Browser"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('browser')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
-                            title="Buttons"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('buttons')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
-                            title="Carousel"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('carousel')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
-                            title="Cells"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('cells')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
-                            title="Chart"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('chart')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
-                            title="Cards"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('cards')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
-                            title="Chat"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('chat')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
-                            title="Checkbox"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('checkbox')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
-                            title="Design"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('design')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
-                            title="Lists"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('lists')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
-                            title="Images"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('images')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
-                            title="Inputs"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('inputs')}
-                            layout={styles.button}
-                        />
-                        {/* <UILinkButton
+                        {(searchText: string) => {
+                            return (
+                                <FlatList
+                                    style={{ flex: 1 }}
+                                    data={SectionsService.shared.find(searchText)}
+                                    keyExtractor={({ item: { title } }) => title}
+                                    renderItem={({
+                                        item: {
+                                            item: { title, routeKey },
+                                        },
+                                    }) => {
+                                        return (
+                                            <TouchableOpacity
+                                                key={title}
+                                                style={{
+                                                    width: '100%',
+                                                    padding: 10,
+                                                }}
+                                                onPress={() => {
+                                                    navigation.navigate({
+                                                        key: routeKey,
+                                                    });
+                                                    setIsSearchVisible(false);
+                                                }}
+                                            >
+                                                <UILabel>{title}</UILabel>
+                                            </TouchableOpacity>
+                                        );
+                                    }}
+                                />
+                            );
+                        }}
+                    </UISearchBarButton>
+                </View>
+                <ScrollView
+                    contentContainerStyle={{
+                        paddingBottom: Math.max(bottom, tabBarBottomInset),
+                    }}
+                >
+                    <UILinkButton
+                        title="Browser"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('browser')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="Buttons"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('buttons')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="Carousel"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('carousel')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="Cells"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('cells')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="Chart"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('chart')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="Cards"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('cards')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="Chat"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('chat')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="Checkbox"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('checkbox')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="Design"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('design')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="Lists"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('lists')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="Images"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('images')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="Inputs"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('inputs')}
+                        layout={styles.button}
+                    />
+                    {/* <UILinkButton
                             title="Keyboard"
                             type={UILinkButtonType.Menu}
                             onPress={() => navigation.navigate('keyboard')}
@@ -238,86 +223,85 @@ const Main = ({ navigation }: { navigation: any }) => {
                             onPress={() => navigation.navigate('large-header')}
                             layout={styles.button}
                         /> */}
-                        <UILinkButton
-                            title="Layouts"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('layouts')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
-                            title="Menus"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('menus')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
-                            title="Navigation"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('navigation')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
-                            title="Notifications"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('notifications')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
-                            title="Popups"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('popups')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
-                            title="Products"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('products')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
-                            title="Profile"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('profile')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
-                            title="QR code"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('qr-code')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
-                            title="Rows"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('rows')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
-                            title="Text"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('text')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
-                            title="Videos"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('videos')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
-                            title="Finances"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('finances')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
-                            title="Skeletons"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('skeletons')}
-                            layout={styles.button}
-                        />
-                    </ScrollView>
-                </UILargeTitleHeader>
+                    <UILinkButton
+                        title="Layouts"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('layouts')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="Menus"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('menus')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="Navigation"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('navigation')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="Notifications"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('notifications')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="Popups"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('popups')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="Products"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('products')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="Profile"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('profile')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="QR code"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('qr-code')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="Rows"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('rows')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="Text"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('text')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="Videos"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('videos')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="Finances"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('finances')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="Skeletons"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('skeletons')}
+                        layout={styles.button}
+                    />
+                </ScrollView>
             </PortalManager>
         </UIBackgroundView>
     );
@@ -328,85 +312,288 @@ const App = () => {
     useReduxDevToolsExtension(navRef);
 
     const theme = useTheme();
+    const themeSwitcher = React.useContext(ThemeSwitcher);
 
-    const main = (
-        <UIStatusBarManager>
-            <SafeAreaProvider>
-                <PortalManager>
-                    <NavigationContainer ref={navRef} linking={{ prefixes: ['/'] }}>
-                        <Split.Navigator
-                            initialRouteName="browser"
-                            screenOptions={{
-                                splitStyles: {
-                                    body: [
-                                        styles.body,
-                                        {
-                                            backgroundColor:
-                                                theme[ColorVariants.BackgroundTertiary],
-                                        },
-                                    ],
-                                    main: [styles.main],
-                                    detail: [
-                                        styles.detail,
-                                        {
-                                            backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                                        },
-                                    ],
+    return (
+        <StoreProvider>
+            <PortalManager>
+                <NavigationContainer ref={navRef} linking={{ prefixes: ['/'] }}>
+                    <Split.Navigator
+                        initialRouteName="browser"
+                        styles={{
+                            body: [
+                                styles.body,
+                                {
+                                    backgroundColor: theme[ColorVariants.BackgroundTertiary],
                                 },
+                            ],
+                            main: [styles.main],
+                            detail: [
+                                styles.detail,
+                                {
+                                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
+                                },
+                            ],
+                        }}
+                        mainWidth={900}
+                    >
+                        <Split.Screen
+                            name="browser"
+                            component={Browser}
+                            options={{
+                                title: 'Browser',
+                                headerRightItems: [
+                                    {
+                                        label: 'Add',
+                                        onPress: () => {
+                                            updateStore(({ menuVisible }) => ({
+                                                menuVisible: !menuVisible,
+                                            }));
+                                        },
+                                    },
+                                ],
                             }}
-                            mainWidth={900}
-                        >
-                            <Split.Screen name="browser" component={Browser} />
-                            <Split.Screen name="buttons" component={ButtonsScreen} />
-                            <Split.Screen name="carousel" component={CarouselScreen} />
-                            <Split.Screen name="cells" component={CellsScreen} />
-                            <Split.Screen name="chart" component={Chart} />
-                            <Split.Screen name="cards" component={CardsScreen} />
-                            <Split.Screen name="chat" component={Chat} />
-                            <Split.Screen name="checkbox" component={Checkbox} />
-                            <Split.Screen name="design" component={Design} />
-                            <Split.Screen name="lists" component={ListsScreen} />
-                            <Split.Screen name="images" component={Images} />
-                            <Split.Screen name="inputs" component={Inputs} />
-                            <Split.Screen name="keyboard" component={KeyboardScreen} />
-                            <Split.Screen name="large-header" component={LargeHeaderScreen} />
-                            <Split.Screen name="layouts" component={Layouts} />
-                            <Split.Screen name="main" component={Main} />
-                            <Split.Screen name="menus" component={Menus} />
-                            <Split.Screen name="navigation" component={Navigation} />
-                            <Split.Screen name="notifications" component={NotificationsScreen} />
-                            <Split.Screen name="popups" component={Popups} />
-                            <Split.Screen name="products" component={Products} />
-                            <Split.Screen name="profile" component={Profile} />
-                            <Split.Screen name="qr-code" component={QRCodeScreen} />
-                            <Split.Screen name="rows" component={RowsScreen} />
-                            <Split.Screen name="text" component={TextScreen} />
-                            <Split.Screen
-                                name="finances"
-                                component={FinancesScreen}
-                                options={{
-                                    tabBarActiveIcon: UIAssets.icons.ui.buttonStickerEnabled,
-                                    tabBarDisabledIcon: UIAssets.icons.ui.buttonStickerDisabled,
-                                }}
-                            />
-                            <Split.Screen
-                                name="skeletons"
-                                component={SkeletonsScreen}
-                                options={{
-                                    tabBarActiveIcon: UIAssets.icons.ui.checkboxSquareActive,
-                                    tabBarDisabledIcon: UIAssets.icons.ui.checkboxSquareInactive,
-                                }}
-                            />
-                            <Split.Screen name="videos" component={VideosScreen} />
-                        </Split.Navigator>
-                    </NavigationContainer>
-                    <UIAndroidNavigationBar />
-                </PortalManager>
-            </SafeAreaProvider>
-        </UIStatusBarManager>
+                        />
+                        <Split.Screen
+                            name="buttons"
+                            component={ButtonsScreen}
+                            options={{
+                                useHeaderLargeTitle: true,
+                                title: 'Buttons',
+                            }}
+                        />
+                        <Split.Screen
+                            name="carousel"
+                            component={CarouselScreen}
+                            options={{
+                                useHeaderLargeTitle: true,
+                                title: 'Cells',
+                            }}
+                        />
+                        <Split.Screen
+                            name="cells"
+                            component={CellsScreen}
+                            options={{
+                                useHeaderLargeTitle: true,
+                                title: 'Cells',
+                            }}
+                        />
+                        <Split.Screen
+                            name="chart"
+                            component={Chart}
+                            options={{
+                                useHeaderLargeTitle: true,
+                                title: 'Chart',
+                            }}
+                        />
+                        <Split.Screen
+                            name="cards"
+                            component={CardsScreen}
+                            options={{
+                                useHeaderLargeTitle: true,
+                                title: 'Cards',
+                            }}
+                        />
+                        <Split.Screen
+                            name="chat"
+                            component={Chat}
+                            options={{
+                                title: 'Chat',
+                                backgroundColor: ColorVariants.BackgroundPrimary,
+                            }}
+                        />
+                        <Split.Screen
+                            name="checkbox"
+                            component={Checkbox}
+                            options={{
+                                title: 'Checkbox',
+                            }}
+                        />
+                        <Split.Screen
+                            name="design"
+                            component={Design}
+                            options={{
+                                title: 'Design',
+                            }}
+                        />
+                        <Split.Screen
+                            name="lists"
+                            component={ListsScreen}
+                            options={{
+                                headerVisible: false,
+                            }}
+                        />
+                        <Split.Screen
+                            name="images"
+                            component={Images}
+                            options={{
+                                title: 'Images',
+                            }}
+                        />
+                        <Split.Screen
+                            name="inputs"
+                            component={Inputs}
+                            options={{
+                                title: 'Inputs',
+                            }}
+                        />
+                        <Split.Screen
+                            name="keyboard"
+                            component={KeyboardScreen}
+                            options={{
+                                title: 'Keyboard',
+                            }}
+                        />
+                        <Split.Screen
+                            name="large-header"
+                            component={LargeHeaderScreen}
+                            options={{ headerVisible: false }}
+                        />
+                        <Split.Screen
+                            name="layouts"
+                            component={Layouts}
+                            options={{
+                                title: 'Layouts',
+                            }}
+                        />
+                        <Split.Screen
+                            name="main"
+                            component={Main}
+                            options={{
+                                useHeaderLargeTitle: true,
+                                title: 'Main',
+                                headerRightItems: [
+                                    {
+                                        iconElement: (
+                                            <View testID="theme_switcher">
+                                                <UISwitcher
+                                                    variant={UISwitcherVariant.Toggle}
+                                                    active={themeSwitcher.isDarkTheme}
+                                                    onPress={() => themeSwitcher.toggleTheme()}
+                                                />
+                                            </View>
+                                        ),
+                                    },
+                                ],
+                            }}
+                        />
+                        <Split.Screen
+                            name="menus"
+                            component={Menus}
+                            options={{
+                                title: 'Menus',
+                            }}
+                        />
+                        <Split.Screen
+                            name="navigation"
+                            component={Navigation}
+                            options={{
+                                title: 'Navigation',
+                            }}
+                        />
+                        <Split.Screen
+                            name="notifications"
+                            component={NotificationsScreen}
+                            options={{
+                                useHeaderLargeTitle: true,
+                                title: 'Notifications',
+                            }}
+                        />
+                        <Split.Screen
+                            name="popups"
+                            component={Popups}
+                            options={{
+                                title: 'Popups',
+                            }}
+                        />
+                        <Split.Screen
+                            name="products"
+                            component={Products}
+                            options={{
+                                title: 'Products',
+                            }}
+                        />
+                        <Split.Screen
+                            name="profile"
+                            component={Profile}
+                            options={{
+                                title: 'Profile',
+                            }}
+                        />
+                        <Split.Screen
+                            name="qr-code"
+                            component={QRCodeScreen}
+                            options={{
+                                useHeaderLargeTitle: true,
+                                title: 'QR code',
+                            }}
+                        />
+                        <Split.Screen
+                            name="rows"
+                            component={RowsScreen}
+                            options={{
+                                useHeaderLargeTitle: true,
+                                title: 'Rows',
+                                headerRightItems: [
+                                    {
+                                        label: 'Loading',
+                                        onPress: () =>
+                                            updateStore(({ rowsLoading }) => ({
+                                                rowsLoading: !rowsLoading,
+                                            })),
+                                    },
+                                ],
+                            }}
+                        />
+                        <Split.Screen name="text" component={TextScreen} />
+                        <Split.Screen
+                            name="finances"
+                            component={FinancesScreen}
+                            options={{
+                                useHeaderLargeTitle: true,
+                                title: 'Finances',
+                                ...(Platform.OS === 'ios'
+                                    ? {
+                                          headerRightItems: [
+                                              {
+                                                  label: `${
+                                                      I18nManager.isRTL ? 'Disable' : 'Enable'
+                                                  } RTL`,
+                                                  onPress: () => {
+                                                      I18nManager.forceRTL(!I18nManager.isRTL);
+                                                      NativeModules.DevSettings.reload();
+                                                  },
+                                              },
+                                          ],
+                                      }
+                                    : {}),
+                                tabBarActiveIcon: UIAssets.icons.ui.buttonStickerEnabled,
+                                tabBarDisabledIcon: UIAssets.icons.ui.buttonStickerDisabled,
+                            }}
+                        />
+                        <Split.Screen
+                            name="skeletons"
+                            component={SkeletonsScreen}
+                            options={{
+                                useHeaderLargeTitle: true,
+                                title: 'Skeletons',
+                                tabBarActiveIcon: UIAssets.icons.ui.checkboxSquareActive,
+                                tabBarDisabledIcon: UIAssets.icons.ui.checkboxSquareInactive,
+                            }}
+                        />
+                        <Split.Screen
+                            name="videos"
+                            component={VideosScreen}
+                            options={{
+                                title: 'Videos',
+                            }}
+                        />
+                    </Split.Navigator>
+                </NavigationContainer>
+                <UIAndroidNavigationBar />
+            </PortalManager>
+        </StoreProvider>
     );
-
-    return <UIPopoverBackground>{main}</UIPopoverBackground>;
 };
 
 const AppWrapper = () => {
@@ -430,7 +617,13 @@ const AppWrapper = () => {
                         },
                     }}
                 >
-                    <App />
+                    <UIPopoverBackground>
+                        <UIStatusBarManager>
+                            <SafeAreaProvider>
+                                <App />
+                            </SafeAreaProvider>
+                        </UIStatusBarManager>
+                    </UIPopoverBackground>
                 </ThemeSwitcher.Provider>
             </ThemeContext.Provider>
         </GestureHandlerRootView>

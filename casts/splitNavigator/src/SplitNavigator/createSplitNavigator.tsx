@@ -17,8 +17,14 @@ import type { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { screensEnabled, ScreenContainer } from 'react-native-screens';
 import { StackView, TransitionPresets } from '@react-navigation/stack';
 import { NativeStackView } from 'react-native-screens/native-stack';
-
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
+
+import {
+    useWrapScreensWithUILargeTitleHeader,
+    StackNavigationOptions,
+    filterDescriptorOptionsForOriginalImplementation,
+} from '@tonlabs/uicast.stack-navigator';
+
 import { ResourceSavingScene } from './ResourceSavingScene';
 import { SafeAreaProviderCompat } from './SafeAreaProviderCompat';
 import {
@@ -31,7 +37,9 @@ import {
 import type { SplitNavigationState, SplitRouterOptions } from './SplitRouter';
 import {
     SplitBottomTabBar,
+    SplitScreenTabBarAnimatedIconOptions,
     SplitScreenTabBarIconOptions,
+    SplitScreenTabBarStaticIconOptions,
     useTabBarHeight,
 } from './SplitBottomTabBar';
 import { MainAnimatedIcon } from './MainAnimatedIcon';
@@ -56,15 +64,19 @@ type SplitStyles = {
     main?: StyleProp<ViewStyle>;
     detail?: StyleProp<ViewStyle>;
 };
+
+export type SplitScreenOptions =
+    | (SplitScreenTabBarStaticIconOptions & StackNavigationOptions)
+    | (SplitScreenTabBarAnimatedIconOptions & StackNavigationOptions)
+    | StackNavigationOptions;
+
 type SplitNavigatorProps = {
-    children?: React.ReactNode;
     initialRouteName: string;
     mainWidth: number;
-    screenOptions: {
-        splitStyles?: SplitStyles;
-    } & SplitRouterOptions;
+    screenOptions?: SplitScreenOptions;
+    styles?: SplitStyles;
+    children?: React.ReactNode;
 };
-type SplitScreenOptions = SplitScreenTabBarIconOptions | Record<string, any>;
 
 function UnfoldedSplitNavigator({
     navigation,
@@ -374,6 +386,8 @@ function FoldedSplitNavigator({
     const doesSupportNative = Platform.OS !== 'web' && screensEnabled?.();
 
     if (doesSupportNative) {
+        const descriptorsFiltered =
+            filterDescriptorOptionsForOriginalImplementation(stackDescriptors);
         return (
             <NavigationHelpersContext.Provider value={navigation}>
                 <NestedInSplitContext.Provider value={false}>
@@ -383,7 +397,7 @@ function FoldedSplitNavigator({
                             state={stackState}
                             navigation={stackNavigation}
                             // @ts-ignore
-                            descriptors={stackDescriptors}
+                            descriptors={descriptorsFiltered}
                         />
                     </SplitTabBarHeightContext.Provider>
                 </NestedInSplitContext.Provider>
@@ -410,18 +424,7 @@ function FoldedSplitNavigator({
     );
 }
 
-export function SplitNavigator({
-    children,
-    initialRouteName,
-    mainWidth,
-    screenOptions,
-}: SplitNavigatorProps) {
-    const dimensions = useWindowDimensions();
-    const isSplitted = getIsSplitted(dimensions, mainWidth);
-
-    const { splitStyles: splitStylesFromOptions, ...restScreenOptions } = screenOptions || {};
-    const splitStyles = splitStylesFromOptions || defaultSplitStyles;
-
+function useSplitTabsAndStacksScreens(children: React.ReactNode) {
     // A little optimisation to not create it with every render
     const prevChildren = React.useRef<React.ReactNode>(null);
     const tabRouteNamesRef = React.useRef<string[]>();
@@ -463,13 +466,35 @@ export function SplitNavigator({
         stackRouteNamesRef.current = stackRouteNames;
     }
 
-    const tabRouteNames = tabRouteNamesRef.current;
-    const tabRouteNamesMap = tabRouteNamesMapRef.current;
-    const stackRouteNames = stackRouteNamesRef.current;
+    return {
+        tabRouteNames: tabRouteNamesRef.current,
+        tabRouteNamesMap: tabRouteNamesMapRef.current,
+        stackRouteNames: stackRouteNamesRef.current,
+    };
+}
+
+export function SplitNavigator({
+    children,
+    initialRouteName,
+    mainWidth,
+    screenOptions,
+    styles,
+}: SplitNavigatorProps) {
+    const dimensions = useWindowDimensions();
+    const isSplitted = getIsSplitted(dimensions, mainWidth);
+
+    const splitStyles = styles || defaultSplitStyles;
+
+    const { tabRouteNames, tabRouteNamesMap, stackRouteNames } =
+        useSplitTabsAndStacksScreens(children);
 
     const doesSupportNative = Platform.OS !== 'web' && screensEnabled?.();
 
-    const { state, navigation, descriptors } = useNavigationBuilder<
+    const {
+        state,
+        navigation,
+        descriptors: rawDescriptors,
+    } = useNavigationBuilder<
         SplitNavigationState,
         SplitRouterOptions,
         SplitActionHelpers,
@@ -479,7 +504,7 @@ export function SplitNavigator({
         children,
         initialRouteName: isSplitted ? initialRouteName : MAIN_SCREEN_NAME,
         screenOptions: {
-            ...restScreenOptions,
+            ...screenOptions,
             // @ts-ignore it's doesn't exist in our options
             // but it's needed to turn of header in react-native-screens
             headerShown: false,
@@ -526,6 +551,11 @@ export function SplitNavigator({
         },
         [navigation, state.routes, state.index],
     );
+
+    const descriptors = useWrapScreensWithUILargeTitleHeader<
+        SplitScreenOptions,
+        SplitNavigationState
+    >(rawDescriptors, !isSplitted);
 
     const mainRoute = state.routes.find(({ name }: { name: string }) => name === MAIN_SCREEN_NAME);
     if (mainRoute == null) {
