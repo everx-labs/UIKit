@@ -15,7 +15,16 @@ function findIfCanGoBackForStack(state: NavigationState, parentState?: Navigatio
     }
 
     if (state.type === 'split') {
-        const { nestedStack } = state as { nestedStack?: number[] };
+        const { nestedStack, isSplitted, history } = state as any as {
+            nestedStack?: number[];
+            isSplitted: boolean;
+            history: number[];
+        };
+
+        if (isSplitted) {
+            return history.length > 1;
+        }
+
         return nestedStack != null && nestedStack.length > 1;
     }
 

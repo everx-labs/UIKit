@@ -372,7 +372,7 @@ class SplitUnfoldedRouter<ParamList extends ParamListBase = ParamListBase> {
                 ...state,
                 index: prevRouteIndex,
                 tabIndex: prevRouteIndex,
-                history: state.history.filter(r => r !== prevRouteIndex).concat([prevRouteIndex]),
+                history: state.history.filter(r => r !== state.index),
                 routes: applyTabNavigateActionToRoutes(state, action, options, prevRouteIndex),
             };
         }
