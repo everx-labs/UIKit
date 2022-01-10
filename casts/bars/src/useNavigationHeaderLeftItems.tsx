@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/core';
 import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { NestedInModalContext } from '@tonlabs/uicast.modal-navigator';
-import type { SplitNavigationState } from '@tonlabs/uicast.split-navigator';
 
 import { HeaderItem, UIHeaderItems } from './UIHeaderItems';
 
@@ -16,7 +15,7 @@ function findIfCanGoBackForStack(state: NavigationState, parentState?: Navigatio
     }
 
     if (state.type === 'split') {
-        const { nestedStack } = state as SplitNavigationState;
+        const { nestedStack } = state as { nestedStack?: number[] };
         return nestedStack != null && nestedStack.length > 1;
     }
 
