@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { LayoutChangeEvent, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import Animated, {
     useAnimatedStyle,
     interpolate,
@@ -10,6 +10,7 @@ import Animated, {
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme, ColorVariants } from '@tonlabs/uikit.themes';
 import { SkeletonProgress, useSkeletonProgress } from './useSkeletonProgress';
+import type { UISkeletonProps } from './types';
 
 enum CrossDissolveProgress {
     Visible = 1,
@@ -152,50 +153,7 @@ function SkeletonAnimatable({
  * https://github.com/nandorojo/moti/blob/master/packages/skeleton/src/skeleton.tsx
  * @returns
  */
-export function UISkeleton({
-    children,
-    show,
-    style: styleProp,
-}: {
-    /**
-     * Your content will be wrapped with a View,
-     * so you will probably want to give some dimensions to your content
-     * or provide some default value for a text,
-     * that will be approximately of the same size as the real content
-     *
-     * ```ts
-     * // skeleton will hide when data exists
-     * <Skeleton>
-     *   {data ? <Data /> : null}
-     * </Skeleton>
-     * ```
-     */
-    children?: React.ReactNode;
-    /**
-     * Flag to control behavior of skeleton
-     * ```ts
-     * // even though data is rendered, show skeleton anyway
-     * <Skeleton show>
-     *   <Data />
-     * </Skeleton>
-     * ```
-     *
-     * Useful when you want to control skeleton visibility
-     * during loading, i.e.
-     * ```ts
-     * const [isLoading, setIsLoading] = React.useState(true);
-     * <Skeleton show={isLoading}>
-     *   <UIImage source={...} onLoadEnd={() => setIsLoading(false)} />
-     * </Skeleton>
-     * ```
-     */
-    show: boolean;
-    /**
-     * Since your content will be wrapped with <View />,
-     * you might want to provide some additional styles
-     */
-    style?: StyleProp<ViewStyle>;
-}) {
+export function UISkeleton({ children, show, style: styleProp }: UISkeletonProps) {
     const visible = children == null || show;
 
     const width = useSharedValue(0);
