@@ -8,12 +8,8 @@ import Animated, {
     withSpring,
 } from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
-
 import { useTheme, ColorVariants } from '@tonlabs/uikit.themes';
-
 import { SkeletonProgress, useSkeletonProgress } from './useSkeletonProgress';
-
-import { UILayoutConstant } from '../UILayoutConstant';
 
 enum CrossDissolveProgress {
     Visible = 1,
@@ -174,7 +170,7 @@ export function UISkeleton({
      * </Skeleton>
      * ```
      */
-    children: React.ReactNode;
+    children?: React.ReactNode;
     /**
      * Flag to control behavior of skeleton
      * ```ts
@@ -226,7 +222,7 @@ export function UISkeleton({
                 return stylePropBorderRadius;
             }
         }
-        return UILayoutConstant.alertBorderRadius;
+        return 0;
     }, [styleProp]);
 
     return (
@@ -245,6 +241,7 @@ export function UISkeleton({
 
 const styles = StyleSheet.create({
     container: {
+        overflow: 'hidden',
         position: 'relative',
     },
     skeletonContainer: {
