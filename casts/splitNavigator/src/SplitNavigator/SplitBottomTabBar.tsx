@@ -58,6 +58,7 @@ const TAB_BAR_ICON_SIZE = 22;
 type AnimatedIconViewProps = {
     activeState: boolean;
     component: SplitScreenTabBarAnimatedIconComponent;
+    testID: string;
 };
 
 function AnimatedIconView({ activeState, component }: AnimatedIconViewProps) {
@@ -104,6 +105,7 @@ function SplitBottomTabBarItem({
     keyProp: string;
     onPress: (key: string) => void;
 }) {
+    const handledTestID = `tab_bar_item_${keyProp.split('-')[0]}`
     const gestureHandler = useAnimatedGestureHandler<GestureEvent<NativeViewGestureHandlerPayload>>(
         {
             onFinish: () => {
@@ -113,7 +115,12 @@ function SplitBottomTabBarItem({
         },
     );
     return (
-        <RawButton enabled onGestureEvent={gestureHandler} style={styles.iconButton}>
+        <RawButton
+            testID={handledTestID}
+            enabled
+            onGestureEvent={gestureHandler}
+            style={styles.iconButton}
+        >
             {children}
         </RawButton>
     );
@@ -252,6 +259,7 @@ export function SplitBottomTabBar({
                         return (
                             <SplitBottomTabBarItem key={key} keyProp={key} onPress={onPress}>
                                 <AnimatedIconView
+                                    testID={`tab_bar_item_${key}`}
                                     component={icon.tabBarAnimatedIcon}
                                     activeState={key === activeKey}
                                 />
