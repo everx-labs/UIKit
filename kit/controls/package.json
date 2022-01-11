@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uikit.controls",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "description": "Controls for Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit",
