@@ -1,46 +1,67 @@
 import * as React from 'react';
-import { StyleSheet, ViewStyle, StyleProp } from 'react-native';
-import { Freeze } from 'react-freeze';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-
-import { ResourceSavingScene } from './ResourceSavingScene';
+import { StyleSheet, Animated as RNAnimated } from 'react-native';
+import { MaybeScreen } from './ScreenFallback';
 
 type TabScreenProps = {
     isVisible: boolean;
     children: React.ReactNode;
-    style?: StyleProp<ViewStyle>;
 };
-export function TabScreen({ isVisible, style, children }: TabScreenProps) {
-    const visible = useSharedValue(false);
-    const opacity = useSharedValue(0);
+
+function useLazyRef<T>(init: () => T): T {
+    const ref = React.useRef<T>(null);
+    if (ref.current == null) {
+        // @ts-ignore
+        ref.current = init();
+    }
+    return ref.current;
+}
+
+export function TabScreen({ isVisible, children }: TabScreenProps) {
+    /**
+     * Reanimated had a bug (possibly due to Freeze) on web
+     * when after stack push animation a screen become invisible
+     * (opacity was set to 0, even though a SharedValue wasn't 0).
+     */
+    const opacity = useLazyRef(() => new RNAnimated.Value(0));
+    /**
+     * The state is needed to pass it to MaybeScreen,
+     * that has Freeze (from react-freeze) under the hood
+     * to set it only when animation is finished
+     */
+    const [visible, setVisible] = React.useState(false);
+
+    const hide = React.useCallback(() => {
+        setVisible(false);
+    }, []);
 
     React.useEffect(() => {
-        if (visible.value === false && isVisible === true) {
-            opacity.value = withSpring(1, { overshootClamping: true });
-            visible.value = true;
+        if (visible === isVisible) {
             return;
         }
-        if (visible.value === true && isVisible === false) {
-            opacity.value = withSpring(0, { overshootClamping: true }, isFinished => {
-                if (isFinished) {
-                    visible.value = false;
-                }
+        if (visible === false && isVisible === true) {
+            RNAnimated.spring(opacity, {
+                toValue: 1,
+                overshootClamping: true,
+                useNativeDriver: true,
+            }).start();
+            setVisible(true);
+        } else {
+            RNAnimated.spring(opacity, {
+                toValue: 0,
+                overshootClamping: true,
+                useNativeDriver: true,
+            }).start(({ finished }) => {
+                if (finished) hide();
             });
         }
-    }, [isVisible, visible, opacity]);
+    }, [isVisible, opacity, hide, visible]);
 
-    const fadeStyle = useAnimatedStyle(() => {
-        return {
-            opacity: opacity.value,
-        };
-    });
+    const fadeStyle = React.useMemo(() => [styles.container, { opacity }], [opacity]);
 
     return (
-        <ResourceSavingScene isVisible={isVisible} style={style}>
-            <Freeze freeze={!isVisible}>
-                <Animated.View style={[styles.container, fadeStyle]}>{children}</Animated.View>
-            </Freeze>
-        </ResourceSavingScene>
+        <MaybeScreen enabled visible={visible} style={StyleSheet.absoluteFill}>
+            <RNAnimated.View style={fadeStyle}>{children}</RNAnimated.View>
+        </MaybeScreen>
     );
 }
 
