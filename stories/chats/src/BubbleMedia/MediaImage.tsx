@@ -3,7 +3,7 @@ import { View, Image } from 'react-native';
 import { UIConstant as UICoreConstant } from '@tonlabs/uikit.core';
 import { makeStyles } from '@tonlabs/uikit.themes';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
-import { Lightbox } from '@tonlabs/uikit.media';
+import { UILightbox } from '@tonlabs/uikit.media';
 
 import { useBubbleContainerStyle } from '../useBubblePosition';
 import { useBubbleBackgroundColor } from '../useBubbleStyle';
@@ -51,7 +51,7 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
                 style={[bubbleBackgroundColor, styles.bubble]}
                 onPress={onPress}
             >
-                <Lightbox
+                <UILightbox
                     imageRef={imageRef}
                     isOpen={isOpen}
                     onClose={onClose}

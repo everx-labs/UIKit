@@ -4,9 +4,9 @@ import { useAnimatedRef } from 'react-native-reanimated';
 import { makeStyles } from '@tonlabs/uikit.themes';
 import { Duplicate } from './Duplicate';
 import { DuplicateImage } from '../DuplicateImage';
-import type { LightboxProps } from './types';
+import type { UILightboxProps } from './types';
 
-export const Lightbox = ({
+export const UILightbox = ({
     onClose,
     previewImage,
     imageRef,
@@ -14,7 +14,7 @@ export const Lightbox = ({
     isOpen,
     fullSizeImage,
     prompt,
-}: LightboxProps) => {
+}: UILightboxProps) => {
     const ref = useAnimatedRef<View>();
 
     const copyOfPreviewImage = React.useMemo(() => {

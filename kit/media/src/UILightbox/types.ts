@@ -6,7 +6,7 @@ export type ImageSize = {
     height: number;
 };
 
-export type LightboxProps = {
+export type UILightboxProps = {
     isOpen: boolean;
     onClose: () => void;
     imageRef: React.RefObject<Image>;
