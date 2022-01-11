@@ -7,7 +7,7 @@ import {
     Platform,
     StyleProp,
 } from 'react-native';
-import type { Descriptor, EventMapBase, NavigationState } from '@react-navigation/core';
+import type { Descriptor, EventMapBase, NavigationState, RouteProp } from '@react-navigation/core';
 import {
     NavigationHelpersContext,
     useNavigationBuilder,
@@ -598,6 +598,19 @@ export const createSplitNavigator = createNavigatorFactory<
     EventMapBase,
     React.ComponentType<any>
 >(SplitNavigator);
+
+export type SplitNavigationProp<
+    ParamList extends ParamListBase,
+    RouteName extends keyof ParamList = string,
+> = NavigationProp<ParamList, RouteName, SplitNavigationState<ParamList>, StackNavigationOptions> &
+    SplitActionHelpers;
+export type SplitScreenProps<
+    ParamList extends ParamListBase,
+    RouteName extends keyof ParamList = string,
+> = {
+    navigation: SplitNavigationProp<ParamList, RouteName>;
+    route: RouteProp<ParamList, RouteName>;
+};
 
 const styles = StyleSheet.create({
     body: {
