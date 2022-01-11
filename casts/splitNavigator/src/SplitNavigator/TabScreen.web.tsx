@@ -1,11 +1,5 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
-import ReAnimated, {
-    runOnJS,
-    useAnimatedStyle,
-    useSharedValue,
-    withSpring,
-} from 'react-native-reanimated';
+import { StyleSheet, Animated as RNAnimated } from 'react-native';
 import { MaybeScreen } from './ScreenFallback';
 
 type TabScreenProps = {
@@ -13,8 +7,22 @@ type TabScreenProps = {
     children: React.ReactNode;
 };
 
+function useLazyRef<T>(init: () => T): T {
+    const ref = React.useRef<T>(null);
+    if (ref.current == null) {
+        // @ts-ignore
+        ref.current = init();
+    }
+    return ref.current;
+}
+
+/**
+ * Reanimated had a bug (possibly due to Freeze) on web
+ * when after stack push animation a screen become invisible
+ * (opacity was set to 0, even though a SharedValue wasn't 0).
+ */
 export function TabScreen({ isVisible, children }: TabScreenProps) {
-    const opacity = useSharedValue(0);
+    const opacity = useLazyRef(() => new RNAnimated.Value(0));
     /**
      * The state is needed to pass it to MaybeScreen,
      * that has Freeze (from react-freeze) under the hood
@@ -31,33 +39,34 @@ export function TabScreen({ isVisible, children }: TabScreenProps) {
             return;
         }
         if (visible === false && isVisible === true) {
-            opacity.value = withSpring(1, { overshootClamping: true });
+            RNAnimated.spring(opacity, {
+                toValue: 1,
+                overshootClamping: true,
+                useNativeDriver: true,
+            }).start();
             setVisible(true);
         } else {
-            opacity.value = withSpring(0, { overshootClamping: true }, finished => {
-                if (finished) {
-                    runOnJS(hide)();
-                }
+            RNAnimated.spring(opacity, {
+                toValue: 0,
+                overshootClamping: true,
+                useNativeDriver: true,
+            }).start(({ finished }) => {
+                if (finished) hide();
             });
         }
     }, [isVisible, opacity, hide, visible]);
 
-    const fadeOpacityStyle = useAnimatedStyle(() => {
-        return {
-            opacity: opacity.value,
-        };
-    }, []);
-    const fadeStyle = React.useMemo(() => [styles.container, fadeOpacityStyle], [fadeOpacityStyle]);
+    const fadeStyle = React.useMemo(() => [styles.container, { opacity }], [opacity]);
 
     return (
         <MaybeScreen enabled visible={visible} style={StyleSheet.absoluteFill}>
-            <ReAnimated.View
+            <RNAnimated.View
                 accessibilityElementsHidden={!visible}
                 importantForAccessibility={visible ? 'auto' : 'no-hide-descendants'}
                 style={fadeStyle}
             >
                 {children}
-            </ReAnimated.View>
+            </RNAnimated.View>
         </MaybeScreen>
     );
 }

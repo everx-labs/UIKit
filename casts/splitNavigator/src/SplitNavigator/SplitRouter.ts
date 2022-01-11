@@ -599,9 +599,8 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
             if (state.nestedStack == null) {
                 return null;
             }
-
             // If it has items in stack, try to go_back there
-            if (state.nestedStack.length > 0) {
+            if (state.nestedStack.length > 1) {
                 const nestedStack = state.nestedStack.slice(0, state.nestedStack.length - 1);
                 return {
                     ...state,

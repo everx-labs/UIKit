@@ -148,7 +148,6 @@ function UnfoldedSplitNavigator({
         [tabRouteNamesMap, mainRoute.key, state.routes],
     );
 
-    // const doesSupportNative = Platform.OS !== 'web' && screensEnabled?.();
     const { tabBarHeight, insetsWithTabBar } = useTabBarHeight();
 
     return (
@@ -169,14 +168,7 @@ function UnfoldedSplitNavigator({
                             />
                         </View>
                         <View style={splitStyles.detail}>
-                            <MaybeScreenContainer
-                                // If not disabling the container for native, it will crash on iOS.
-                                // It happens due to an error in `react-native-reanimated`:
-                                // https://github.com/software-mansion/react-native-reanimated/issues/216
-                                // enabled={!doesSupportNative}
-                                enabled
-                                style={styles.pages}
-                            >
+                            <MaybeScreenContainer enabled style={styles.pages}>
                                 {state.routes.map((route, index) => {
                                     // Do not render main route
                                     if (route.key === mainRoute.key) {
@@ -292,14 +284,7 @@ function FoldedSplitNavigator({
                     ...descriptor,
                     render: () => {
                         return (
-                            <MaybeScreenContainer
-                                // If not disabling the container for native, it will crash on iOS.
-                                // It happens due to an error in `react-native-reanimated`:
-                                // https://github.com/software-mansion/react-native-reanimated/issues/216
-                                // enabled={!doesSupportNative}
-                                enabled
-                                style={styles.pages}
-                            >
+                            <>
                                 {tabRouteNames.map(tabName => {
                                     const tabRouteIndex = state.routeNames.indexOf(tabName);
                                     const tabRoute = state.routes[tabRouteIndex];
@@ -314,11 +299,13 @@ function FoldedSplitNavigator({
                                         return null;
                                     }
                                     return (
-                                        <SafeAreaInsetsContext.Provider value={insetsWithTabBar}>
-                                            <TabScreen key={tabRoute.key} isVisible={isFocused}>
+                                        <TabScreen key={tabRoute.key} isVisible={isFocused}>
+                                            <SafeAreaInsetsContext.Provider
+                                                value={insetsWithTabBar}
+                                            >
                                                 {tabDescriptor.render()}
-                                            </TabScreen>
-                                        </SafeAreaInsetsContext.Provider>
+                                            </SafeAreaInsetsContext.Provider>
+                                        </TabScreen>
                                     );
                                 })}
                                 <SplitBottomTabBar
@@ -326,7 +313,7 @@ function FoldedSplitNavigator({
                                     activeKey={state.routes[state.tabIndex].key}
                                     onPress={onTabPress}
                                 />
-                            </MaybeScreenContainer>
+                            </>
                         );
                     },
                 };
