@@ -25,7 +25,7 @@
         "@react-navigation/devtools": "^5.1.26",
         "@react-navigation/native": "^5.9.8",
         "@react-navigation/stack": "^5.14.9",
-        "@react-navigation/elements": "1.2.1",
+        "@react-navigation/elements": "^1.2.1",
         "@tonlabs/uikit.assets": "*",
         "@tonlabs/uikit.controls": "*",
         "@tonlabs/uikit.media": "*",
