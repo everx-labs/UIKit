@@ -112,35 +112,40 @@ function UnfoldedSplitNavigator({
 }) {
     const tabBarIcons = React.useMemo(
         () =>
-            state.routes.reduce<Record<string, SplitScreenTabBarIconOptions>>((acc, route) => {
-                if (!tabRouteNamesMap.has(route.name)) {
-                    return acc;
-                }
+            state.routes.reduce<Record<string, Required<SplitScreenTabBarIconOptions>>>(
+                (acc, route) => {
+                    if (!tabRouteNamesMap.has(route.name)) {
+                        return acc;
+                    }
 
-                if (route.key === mainRoute.key) {
-                    return acc;
-                }
+                    if (route.key === mainRoute.key) {
+                        return acc;
+                    }
 
-                const descriptor = descriptors[route.key];
-                if (descriptor.options == null) {
-                    return acc;
-                }
-                if ('tabBarActiveIcon' in descriptor.options) {
-                    acc[route.key] = {
-                        tabBarActiveIcon: descriptor.options.tabBarActiveIcon,
-                        tabBarDisabledIcon: descriptor.options.tabBarDisabledIcon,
-                    };
-                    return acc;
-                }
-                if ('tabBarAnimatedIcon' in descriptor.options) {
-                    acc[route.key] = {
-                        tabBarAnimatedIcon: descriptor.options.tabBarAnimatedIcon,
-                    };
-                    return acc;
-                }
+                    const descriptor = descriptors[route.key];
+                    if (descriptor.options == null) {
+                        return acc;
+                    }
+                    if ('tabBarActiveIcon' in descriptor.options) {
+                        acc[route.key] = {
+                            tabBarTestID: descriptor.options.tabBarTestID || route.name,
+                            tabBarActiveIcon: descriptor.options.tabBarActiveIcon,
+                            tabBarDisabledIcon: descriptor.options.tabBarDisabledIcon,
+                        };
+                        return acc;
+                    }
+                    if ('tabBarAnimatedIcon' in descriptor.options) {
+                        acc[route.key] = {
+                            tabBarTestID: descriptor.options.tabBarTestID || route.name,
+                            tabBarAnimatedIcon: descriptor.options.tabBarAnimatedIcon,
+                        };
+                        return acc;
+                    }
 
-                return acc;
-            }, {}),
+                    return acc;
+                },
+                {},
+            ),
         // The rule is disabled to not include `descriptors` as a dep
         // because descriptors going to be changed every render
         // and will ruin the optimisation
