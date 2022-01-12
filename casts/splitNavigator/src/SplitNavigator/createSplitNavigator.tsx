@@ -14,7 +14,7 @@ import {
     createNavigatorFactory,
 } from '@react-navigation/native';
 import type { NavigationProp, ParamListBase } from '@react-navigation/native';
-import { screensEnabled, ScreenContainer } from 'react-native-screens';
+import { screensEnabled, enableScreens } from 'react-native-screens';
 import { StackView, TransitionPresets } from '@react-navigation/stack';
 import { NativeStackView } from 'react-native-screens/native-stack';
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
@@ -25,7 +25,6 @@ import {
     filterDescriptorOptionsForOriginalImplementation,
 } from '@tonlabs/uicast.stack-navigator';
 
-import { ResourceSavingScene } from './ResourceSavingScene';
 import { SafeAreaProviderCompat } from './SafeAreaProviderCompat';
 import {
     SplitRouter,
@@ -44,6 +43,9 @@ import {
 } from './SplitBottomTabBar';
 import { MainAnimatedIcon } from './MainAnimatedIcon';
 import { TabScreen } from './TabScreen';
+import { MaybeScreenContainer } from './ScreenFallback';
+
+enableScreens(Platform.OS !== 'web');
 
 export const NestedInSplitContext = React.createContext<boolean>(false);
 
@@ -105,7 +107,7 @@ function UnfoldedSplitNavigator({
     state: SplitNavigationState<ParamListBase>;
     mainRoute: NavigationRoute<ParamListBase, string>;
     tabRouteNamesMap: Set<string>;
-    loaded: number[];
+    loaded: React.RefObject<number[]>;
     onTabPress: (key: string) => void;
 }) {
     const tabBarIcons = React.useMemo(
@@ -146,7 +148,6 @@ function UnfoldedSplitNavigator({
         [tabRouteNamesMap, mainRoute.key, state.routes],
     );
 
-    const doesSupportNative = Platform.OS !== 'web' && screensEnabled?.();
     const { tabBarHeight, insetsWithTabBar } = useTabBarHeight();
 
     return (
@@ -167,13 +168,7 @@ function UnfoldedSplitNavigator({
                             />
                         </View>
                         <View style={splitStyles.detail}>
-                            <ScreenContainer
-                                // If not disabling the container for native, it will crash on iOS.
-                                // It happens due to an error in `react-native-reanimated`:
-                                // https://github.com/software-mansion/react-native-reanimated/issues/216
-                                enabled={!doesSupportNative}
-                                style={styles.pages}
-                            >
+                            <MaybeScreenContainer enabled style={styles.pages}>
                                 {state.routes.map((route, index) => {
                                     // Do not render main route
                                     if (route.key === mainRoute.key) {
@@ -186,22 +181,18 @@ function UnfoldedSplitNavigator({
                                     // isFocused check is important here
                                     // as we can try to render a screen before it was put
                                     // to `loaded` screens
-                                    if (!loaded.includes(index) && !isFocused) {
+                                    if (!loaded.current?.includes(index) && !isFocused) {
                                         // Don't render a screen if we've never navigated to it
                                         return null;
                                     }
 
                                     return (
-                                        <ResourceSavingScene
-                                            key={route.key}
-                                            style={StyleSheet.absoluteFill}
-                                            isVisible={isFocused}
-                                        >
+                                        <TabScreen key={route.key} isVisible={isFocused}>
                                             {descriptor.render()}
-                                        </ResourceSavingScene>
+                                        </TabScreen>
                                     );
                                 })}
-                            </ScreenContainer>
+                            </MaybeScreenContainer>
                         </View>
                     </View>
                 </SafeAreaProviderCompat>
@@ -239,7 +230,7 @@ function FoldedSplitNavigator({
     tabRouteNames: string[];
     tabRouteNamesMap: Set<string>;
     stackRouteNames: string[];
-    loaded: number[];
+    loaded: React.RefObject<number[]>;
     onTabPress: (key: string) => void;
 }) {
     const tabBarIcons = React.useMemo(
@@ -299,13 +290,7 @@ function FoldedSplitNavigator({
                     ...descriptor,
                     render: () => {
                         return (
-                            <ScreenContainer
-                                // If not disabling the container for native, it will crash on iOS.
-                                // It happens due to an error in `react-native-reanimated`:
-                                // https://github.com/software-mansion/react-native-reanimated/issues/216
-                                enabled={!doesSupportNative}
-                                style={styles.pages}
-                            >
+                            <>
                                 {tabRouteNames.map(tabName => {
                                     const tabRouteIndex = state.routeNames.indexOf(tabName);
                                     const tabRoute = state.routes[tabRouteIndex];
@@ -315,16 +300,12 @@ function FoldedSplitNavigator({
                                     // isFocused check is important here
                                     // as we can try to render a screen before it was put
                                     // to `loaded` screens
-                                    if (!loaded.includes(tabRouteIndex) && !isFocused) {
+                                    if (!loaded.current?.includes(tabRouteIndex) && !isFocused) {
                                         // Don't render a screen if we've never navigated to it
                                         return null;
                                     }
                                     return (
-                                        <TabScreen
-                                            key={tabRoute.key}
-                                            style={StyleSheet.absoluteFill}
-                                            isVisible={isFocused}
-                                        >
+                                        <TabScreen key={tabRoute.key} isVisible={isFocused}>
                                             <SafeAreaInsetsContext.Provider
                                                 value={insetsWithTabBar}
                                             >
@@ -338,7 +319,7 @@ function FoldedSplitNavigator({
                                     activeKey={state.routes[state.tabIndex].key}
                                     onPress={onTabPress}
                                 />
-                            </ScreenContainer>
+                            </>
                         );
                     },
                 };
@@ -364,7 +345,7 @@ function FoldedSplitNavigator({
         [stackRouteNames, state.nestedStack, state.routes, state.key],
     );
     /**
-     * react-native-screens rely on original struct navigation
+     * react-native-screens rely on original navigation structure
      * and tries to set source and target for actions
      * https://github.com/software-mansion/react-native-screens/blob/6c87d7749ec62fbb51fb4ec50af1fa8733ebae86/src/native-stack/views/NativeStackView.tsx#L256-L260
      *
@@ -389,9 +370,7 @@ function FoldedSplitNavigator({
         };
     }, [navigation]);
 
-    const doesSupportNative = Platform.OS !== 'web' && screensEnabled?.();
-
-    if (doesSupportNative) {
+    if (screensEnabled?.()) {
         const descriptorsFiltered =
             filterDescriptorOptionsForOriginalImplementation(stackDescriptors);
         return (
@@ -537,25 +516,23 @@ export function SplitNavigator({
         );
     }, [isSplitted, initialRouteName, navigation]);
 
-    const [loaded, setLoaded] = React.useState<Array<number>>([]);
+    const loadedRef = React.useRef<number[]>([]);
 
-    React.useEffect(() => {
-        if (!loaded.includes(state.index)) {
-            setLoaded([...loaded, state.index]);
-        }
-    }, [state, loaded]);
+    if (!loadedRef.current.includes(state.index)) {
+        loadedRef.current = [...loadedRef.current, state.index];
+    }
 
     // Access it from the state to re-render a container
     // only when router has processed SET_SPLITTED action
 
     const onTabPress = React.useCallback(
         (key: string) => {
-            if (state.routes[state.index].key === key) {
+            if (state.routes[state.tabIndex].key === key) {
                 return;
             }
             navigation.navigate({ key });
         },
-        [navigation, state.routes, state.index],
+        [navigation, state.routes, state.tabIndex],
     );
 
     const descriptors = useWrapScreensWithUILargeTitleHeader<
@@ -577,7 +554,7 @@ export function SplitNavigator({
                 mainRoute={mainRoute}
                 splitStyles={splitStyles}
                 tabRouteNamesMap={tabRouteNamesMap}
-                loaded={loaded}
+                loaded={loadedRef}
                 onTabPress={onTabPress}
             />
         );
@@ -592,7 +569,7 @@ export function SplitNavigator({
             tabRouteNames={tabRouteNames}
             tabRouteNamesMap={tabRouteNamesMap}
             stackRouteNames={stackRouteNames}
-            loaded={loaded}
+            loaded={loadedRef}
             onTabPress={onTabPress}
         />
     );
@@ -637,6 +614,7 @@ const styles = StyleSheet.create({
     },
     pages: {
         flex: 1,
+        overflow: 'hidden',
     },
     content: {
         flex: 1,
