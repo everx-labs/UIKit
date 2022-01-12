@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, LayoutChangeEvent, View } from 'react-native';
+import { Image, View } from 'react-native';
 import { useAnimatedRef } from 'react-native-reanimated';
 import { makeStyles } from '@tonlabs/uikit.themes';
 import { UISkeleton } from '@tonlabs/uikit.layout';
@@ -8,6 +8,7 @@ import { Duplicate } from './Duplicate';
 import type { UILightboxProps } from './types';
 import { useImages } from './hooks/useImages';
 import { useImageSize } from './hooks/useImageSize';
+import { UIConstant } from '../constants';
 
 export const UILightbox = ({
     image,
@@ -15,6 +16,8 @@ export const UILightbox = ({
     prompt,
     isLoading,
     originalSize,
+    maxHeight = UIConstant.lightbox.defaultMaxSize,
+    maxWidth,
     testID,
 }: UILightboxProps) => {
     const ref = useAnimatedRef<View>();
@@ -25,8 +28,7 @@ export const UILightbox = ({
     const [loadError, setLoadError] = React.useState<boolean>(false);
     loadError;
 
-    const [containerWidth, setContainerWidth] = React.useState<number>(0);
-    const imageSize = useImageSize(image, originalSize, containerWidth);
+    const imageSize = useImageSize(image, originalSize, maxHeight, maxWidth);
 
     const onLoadCallback = React.useCallback(function onLoadCallback() {
         setImageLoading(false);
@@ -50,14 +52,10 @@ export const UILightbox = ({
         onLoadCallback,
     );
 
-    const styles = useStyles();
-
-    const onLayout = React.useCallback(function onLayout(event: LayoutChangeEvent) {
-        setContainerWidth(event.nativeEvent.layout.width);
-    }, []);
+    const styles = useStyles(maxHeight, maxWidth);
 
     return (
-        <View onLayout={onLayout}>
+        <View>
             <UISkeleton show={isLoading || imageLoading} style={styles.skeleton}>
                 <TouchableOpacity testID={testID} activeOpacity={1} onPress={onPress}>
                     <View ref={ref} style={styles.originalContainer}>
@@ -77,8 +75,10 @@ export const UILightbox = ({
     );
 };
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((maxHeight: number, maxWidth: number | undefined) => ({
     skeleton: {
+        maxHeight,
+        maxWidth,
         alignItems: 'center',
     },
     originalContainer: {

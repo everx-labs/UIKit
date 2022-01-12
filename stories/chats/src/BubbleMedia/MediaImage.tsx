@@ -1,66 +1,36 @@
 import * as React from 'react';
-import { View, Image } from 'react-native';
+import { View } from 'react-native';
 import { UIConstant as UICoreConstant } from '@tonlabs/uikit.core';
 import { makeStyles } from '@tonlabs/uikit.themes';
-import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UILightbox } from '@tonlabs/uikit.media';
 
 import { useBubbleContainerStyle } from '../useBubblePosition';
 import { useBubbleBackgroundColor } from '../useBubbleStyle';
 import type { MediaMessage } from '../types';
-import { useImageCallback, useImages, useImageSize } from './hooks';
+import { useMaxImageSize } from './hooks';
 
 export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
-    const imageRef = React.useRef<Image>(null);
     const { onError, onLoad, preview, data, onLayout, prompt } = message;
     const containerStyle = useBubbleContainerStyle(message);
     const bubbleBackgroundColor = useBubbleBackgroundColor(message);
+    const maxImageSize = useMaxImageSize();
     const styles = useStyles();
 
-    const imageSize = useImageSize(data);
-
-    const { onErrorCallback, onLoadCallback } = useImageCallback(data, onError, onLoad);
-
-    const [isOpen, setIsOpen] = React.useState<boolean>(false);
-
-    const { fullSizeImage, previewImage } = useImages(
-        data,
-        preview,
-        imageRef,
-        imageSize,
-        onErrorCallback,
-        onLoadCallback,
-    );
-
-    const onPress = React.useCallback(() => {
-        setIsOpen(prevIsOpen => !prevIsOpen);
-    }, []);
-
-    const onClose = React.useCallback(() => {
-        setIsOpen(false);
-    }, []);
-
-    if (!previewImage) {
+    if (!data) {
         return null;
     }
 
     return (
         <View style={[containerStyle, styles.container]} onLayout={onLayout}>
-            <TouchableOpacity
-                activeOpacity={1}
-                style={[bubbleBackgroundColor, styles.bubble]}
-                onPress={onPress}
-            >
+            <View style={[bubbleBackgroundColor, styles.bubble]}>
                 <UILightbox
-                    imageRef={imageRef}
-                    isOpen={isOpen}
-                    onClose={onClose}
-                    imageSize={imageSize}
-                    fullSizeImage={fullSizeImage}
-                    previewImage={previewImage}
+                    image={{ uri: data }}
+                    preview={{ uri: preview || undefined }}
                     prompt={prompt}
+                    maxHeight={maxImageSize.height}
+                    maxWidth={maxImageSize.width}
                 />
-            </TouchableOpacity>
+            </View>
         </View>
     );
 };

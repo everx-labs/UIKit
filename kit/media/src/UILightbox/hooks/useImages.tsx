@@ -6,7 +6,7 @@ import { DuplicateImage } from '../../DuplicateImage';
 
 const getImage = (
     imageSource: ImageSourcePropType,
-    imageSize: ImageSize | null,
+    imageSize: ImageSize | undefined,
     onErrorCallback: () => void,
     onLoadCallback: () => void,
     previewRef: React.RefObject<Image> | null,
@@ -26,7 +26,7 @@ export const useImages = (
     image: ImageSourcePropType,
     preview: ImageSourcePropType | undefined,
     previewRef: React.RefObject<Image>,
-    imageSize: ImageSize | null,
+    imageSize: ImageSize | undefined,
     onErrorCallback: () => void,
     onLoadCallback: () => void,
 ) => {

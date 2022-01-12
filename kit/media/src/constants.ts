@@ -1,6 +1,6 @@
 export const UIConstant = {
     lightbox: {
-        placeholderMaxSize: 400,
+        defaultMaxSize: 400,
         animationDisplayDelay: 50,
         verticalHeaderPadding: 6,
         hitSlop: {

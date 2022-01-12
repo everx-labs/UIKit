@@ -22,12 +22,24 @@ export type UILightboxProps = {
     prompt?: string;
     /**
      * Used to display the data loading process
+     * Default: false
      */
     isLoading?: boolean;
     /**
      * Original dimensions of the image
+     * Default: original size of the image
      */
     originalSize?: ImageSize;
+    /**
+     * The maximum height of the image. The skeleton will have this height.
+     * Default: `UIConstant.lightbox.defaultMaxSize`
+     */
+    maxHeight?: number;
+    /**
+     * The maximum width of the image. The skeleton will have this width.
+     * Default: container width
+     */
+    maxWidth?: number;
     /**
      * ID for usage in tests
      */
