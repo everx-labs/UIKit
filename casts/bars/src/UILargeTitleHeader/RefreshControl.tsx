@@ -1,73 +1,108 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { runOnJS, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
+import Animated, {
+    runOnJS,
+    scrollTo,
+    useAnimatedReaction,
+    useSharedValue,
+    withTiming,
+} from 'react-native-reanimated';
 
 import { hapticImpact, UIIndicator } from '@tonlabs/uikit.controls';
 import { UIImage } from '@tonlabs/uikit.media';
 import { ColorVariants, useTheme, Theme, makeStyles } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
 
-import { useLargeTitlePosition } from './index';
 import { UIConstant } from '../constants';
+import { NON_UI_RUBBER_BAND_EFFECT_DISTANCE } from './useRubberBandEffectDistance';
 
-export function UILargeTitleHeaderRefreshControl({
+export type OnRefresh = () => Promise<void>;
+
+export function RefreshControl({
     onRefresh,
     background,
+    scrollRef,
+    currentPosition,
+    scrollInProgress,
 }: {
     onRefresh: () => Promise<void>;
     background?: boolean;
+    scrollRef: React.RefObject<Animated.ScrollView>;
+    currentPosition: Animated.SharedValue<number>;
+    scrollInProgress: Animated.SharedValue<boolean>;
 }) {
     const theme = useTheme();
-    const { position, forceChangePosition } = useLargeTitlePosition();
     const [refreshing, setRefreshing] = React.useState(false);
     const refreshingGuard = useSharedValue(false);
-
-    React.useLayoutEffect(() => {
-        if (forceChangePosition == null) {
-            return;
-        }
-
-        requestAnimationFrame(() => {
-            forceChangePosition(-1 * UIConstant.refreshControlSize, {
-                duration: 0,
-                changeDefaultShift: true,
-            });
-        });
-    }, [forceChangePosition]);
+    const waitForScrollEnd = useSharedValue(false);
 
     const stopRefreshing = React.useCallback(() => {
         setRefreshing(false);
     }, []);
 
     const runOnRefresh = React.useCallback(async () => {
-        setRefreshing(true);
-        await onRefresh();
-
-        if (forceChangePosition == null) {
+        if (refreshingGuard.value) {
             return;
         }
+        refreshingGuard.value = true;
+        setRefreshing(true);
 
-        forceChangePosition(
-            -1 * UIConstant.refreshControlSize,
-            { duration: UIConstant.refreshControlPositioningDuration },
-            () => {
-                'worklet';
+        // If onResresh is blocking it can prevent loader to draw
+        // so that start it only when update is done
+        await new Promise(res => requestAnimationFrame(res));
 
-                refreshingGuard.value = false;
-                runOnJS(stopRefreshing)();
-            },
-        );
-    }, [onRefresh, forceChangePosition, refreshingGuard, stopRefreshing]);
+        try {
+            await Promise.all([
+                onRefresh(),
+                // An artificial timeout is needed
+                // in case the refresh is super fast
+                // to not break animation
+                new Promise(resolve => {
+                    setTimeout(resolve, 1000);
+                }),
+            ]);
+        } catch (err) {
+            if (process.env.NODE_ENV === 'development') {
+                console.warn('Unhandled error has been caught during the refresh:', err);
+            }
+        } finally {
+            // Do not interupt active scroll
+            if (scrollInProgress.value) {
+                stopRefreshing();
+                waitForScrollEnd.value = true;
+            } else {
+                // eslint-disable-next-line no-param-reassign
+                currentPosition.value = withTiming(
+                    -NON_UI_RUBBER_BAND_EFFECT_DISTANCE,
+                    { duration: UIConstant.refreshControlPositioningDuration },
+                    () => {
+                        refreshingGuard.value = false;
+                        runOnJS(stopRefreshing)();
+                    },
+                );
+                scrollTo(scrollRef, 0, 0, false);
+            }
+        }
+    }, [
+        onRefresh,
+        refreshingGuard,
+        stopRefreshing,
+        currentPosition,
+        scrollInProgress,
+        waitForScrollEnd,
+        scrollRef,
+    ]);
 
     useAnimatedReaction(
         () => {
             return {
-                position: position?.value,
+                currentPosition: currentPosition?.value,
                 refreshingGuard: refreshingGuard.value,
+                scrollInProgress: scrollInProgress.value,
             };
         },
         state => {
-            if (state.position == null) {
+            if (state.currentPosition == null) {
                 return;
             }
 
@@ -78,13 +113,34 @@ export function UILargeTitleHeaderRefreshControl({
              * And that means that position 0 is when RefreshControl will be visible again
              * and by our logic it's a point when refreshing should be done
              */
-            if (state.position > 0 && !state.refreshingGuard) {
-                refreshingGuard.value = true;
+            if (scrollInProgress.value && state.currentPosition > 0 && !state.refreshingGuard) {
                 hapticImpact('medium');
                 runOnJS(runOnRefresh)();
             }
         },
-        [position, refreshing, runOnRefresh],
+        [currentPosition, refreshing, runOnRefresh],
+    );
+
+    useAnimatedReaction(
+        () => {
+            return scrollInProgress.value === false && waitForScrollEnd.value === true;
+        },
+        (stopRefreshAnimation, prevStopRefreshAnimation) => {
+            if (stopRefreshAnimation === prevStopRefreshAnimation) {
+                return;
+            }
+
+            // eslint-disable-next-line no-param-reassign
+            currentPosition.value = withTiming(
+                -NON_UI_RUBBER_BAND_EFFECT_DISTANCE,
+                { duration: UIConstant.refreshControlPositioningDuration },
+                () => {
+                    refreshingGuard.value = false;
+                    waitForScrollEnd.value = false;
+                },
+            );
+            scrollTo(scrollRef, 0, 0, false);
+        },
     );
 
     const styles = useStyles(theme, background);
@@ -113,6 +169,8 @@ export function UILargeTitleHeaderRefreshControl({
 const useStyles = makeStyles((theme: Theme, background: boolean) => ({
     container: {
         alignItems: 'center',
+        justifyContent: 'flex-end',
+        height: NON_UI_RUBBER_BAND_EFFECT_DISTANCE,
     },
     control: {
         height: UIConstant.refreshControlSize,

@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/native';
 import { UIMaterialTextView } from '@tonlabs/uikit.inputs';
 import { UIBackgroundView, UILabel, UILabelColors, ColorVariants } from '@tonlabs/uikit.themes';
 import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
-import { UILargeTitleHeaderRefreshControl } from '@tonlabs/uicast.bars';
 import { ScrollView, FlatList } from '@tonlabs/uikit.scrolls';
 
 const CHECK_TITLE = false;
@@ -64,16 +63,12 @@ function LargeHeaderExampleFlatList() {
 
 const LargeHeaderStack = createStackNavigator();
 
-function RefreshPageController() {
-    const turnOnRefreshing = React.useCallback(() => {
-        return new Promise<void>(resolve => {
-            setTimeout(() => {
-                resolve(undefined);
-            }, 1000);
-        });
-    }, []);
-
-    return <UILargeTitleHeaderRefreshControl onRefresh={turnOnRefreshing} />;
+function refresh() {
+    return new Promise<void>(resolve => {
+        setTimeout(() => {
+            resolve(undefined);
+        }, 1000);
+    });
 }
 
 // @ts-ignore
@@ -121,9 +116,7 @@ export function LargeHeaderScreen() {
                     //         onPress: () => {},
                     //     },
                     // ],
-                    renderAboveContent: () => {
-                        return <RefreshPageController />;
-                    },
+                    onRefresh: refresh,
                     // renderBelowContent,
                 }}
                 component={LargeHeaderExample}

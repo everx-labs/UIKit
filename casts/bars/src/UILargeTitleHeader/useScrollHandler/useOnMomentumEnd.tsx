@@ -64,9 +64,9 @@ function withNormalizedMomentumEnd(
 }
 
 export function useOnMomentumEnd(
+    defaultShift: number,
     shift: Animated.SharedValue<number>,
     scrollInProgress: Animated.SharedValue<boolean>,
-    defaultShift: Animated.SharedValue<number>,
     largeTitleHeight: Animated.SharedValue<number>,
 ) {
     const onMomentumEndRef = React.useRef<
@@ -97,7 +97,7 @@ export function useOnMomentumEnd(
                     },
                     isFinished => {
                         if (isFinished) {
-                            shift.value = withSpring(defaultShift.value, {
+                            shift.value = withSpring(defaultShift, {
                                 velocity: 1,
                                 overshootClamping: true,
                             });
