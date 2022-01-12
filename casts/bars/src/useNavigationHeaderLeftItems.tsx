@@ -32,10 +32,6 @@ function findIfCanGoBackForStack(state: NavigationState, parentState?: Navigatio
         return false;
     }
 
-    if (parentState == null) {
-        return false;
-    }
-
     if (state.routes.length > 1) {
         return true;
     }
