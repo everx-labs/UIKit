@@ -6,7 +6,7 @@ export * from './UISlideBar';
 export * from './UIAndroidNavigationBar';
 export * from './UINavigationBar';
 export * from './UILargeTitleHeader';
-export * from './UILargeTitleHeader/RefreshControl';
+export type { UILargeTitleHeaderProps } from './UILargeTitleHeader/types';
 export * from './UIStackNavigationBar';
 
 export * from './constants';

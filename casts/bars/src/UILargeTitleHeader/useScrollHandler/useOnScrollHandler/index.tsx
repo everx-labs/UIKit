@@ -6,6 +6,7 @@ import type { ScrollableParentScrollHandler } from '@tonlabs/uikit.scrolls';
 // @ts-ignore
 // eslint-disable-next-line import/no-unresolved, import/extensions
 import createOnScroll from './onScroll';
+import { useRubberBandEffectDistance } from '../../useRubberBandEffectDistance';
 
 export function useOnScrollHandler(
     scrollRef: React.RefObject<Animated.ScrollView>,
@@ -13,11 +14,11 @@ export function useOnScrollHandler(
     largeTitleHeight: Animated.SharedValue<number>,
     yIsNegative: Animated.SharedValue<boolean>,
     shift: Animated.SharedValue<number>,
-    rubberBandDistance: number,
     parentScrollHandler: ScrollableParentScrollHandler,
     parentScrollHandlerActive: boolean,
 ) {
     const onScrollCbRef = React.useRef<((event: NativeScrollEvent) => void) | null>(null);
+    const rubberBandDistance = useRubberBandEffectDistance();
 
     if (onScrollCbRef.current == null) {
         onScrollCbRef.current = createOnScroll(
@@ -26,7 +27,7 @@ export function useOnScrollHandler(
             largeTitleHeight,
             yIsNegative,
             shift,
-            rubberBandDistance,
+            rubberBandDistance.value,
             parentScrollHandler,
             parentScrollHandlerActive,
         ) as (event: NativeScrollEvent) => void;

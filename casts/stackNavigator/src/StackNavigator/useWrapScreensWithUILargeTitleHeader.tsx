@@ -77,6 +77,8 @@ function ScreenWithHeaderContent({
                         captionTestID={descriptor.options.captionTestID}
                         onTitlePress={descriptor.options.onTitlePress}
                         onHeaderLargeTitlePress={descriptor.options.onHeaderLargeTitlePress}
+                        onHeaderLargeTitleLongPress={descriptor.options.onHeaderLargeTitleLongPress}
+                        onRefresh={descriptor.options.onRefresh}
                         label={descriptor.options.label}
                         labelTestID={descriptor.options.labelTestID}
                         note={descriptor.options.note}

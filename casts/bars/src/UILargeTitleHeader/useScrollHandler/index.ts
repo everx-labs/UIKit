@@ -16,11 +16,10 @@ import { useOnBeginDrag } from './useOnBeginDrag';
 export function useScrollHandler(
     scrollRef: React.RefObject<Animated.ScrollView>,
     largeTitleViewRef: React.RefObject<Animated.View>,
+    defaultShift: number,
     shift: Animated.SharedValue<number>,
-    defaultShift: Animated.SharedValue<number>,
     largeTitleHeight: Animated.SharedValue<number>,
     hasScrollShared: Animated.SharedValue<boolean>,
-    rubberBandDistance: number,
 ) {
     const scrollInProgress = useSharedValue(false);
     // see `useAnimatedGestureHandler` and `onWheel`
@@ -37,7 +36,6 @@ export function useScrollHandler(
         largeTitleHeight,
         yIsNegative,
         shift,
-        rubberBandDistance,
         parentScrollHandler,
         parentScrollHandlerActive,
     );
@@ -62,16 +60,16 @@ export function useScrollHandler(
     );
 
     const onEndDrag = useOnEndDrag(
+        defaultShift,
         shift,
         scrollInProgress,
         largeTitleHeight,
-        defaultShift,
         mightApplyShiftToScrollView,
         parentScrollHandler,
         parentScrollHandlerActive,
     );
 
-    const onMomentumEnd = useOnMomentumEnd(shift, scrollInProgress, defaultShift, largeTitleHeight);
+    const onMomentumEnd = useOnMomentumEnd(defaultShift, shift, scrollInProgress, largeTitleHeight);
 
     const scrollHandler = useAnimatedScrollHandler<ScrollHandlerContext>({
         onBeginDrag,
