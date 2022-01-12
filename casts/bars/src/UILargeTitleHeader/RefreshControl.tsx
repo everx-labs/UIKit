@@ -47,8 +47,20 @@ export function RefreshControl({
         refreshingGuard.value = true;
         setRefreshing(true);
 
+        // If onResresh is blocking it can prevent loader to draw
+        // so that start it only when update is done
+        await new Promise(res => requestAnimationFrame(res));
+
         try {
-            await onRefresh();
+            await Promise.all([
+                onRefresh(),
+                // An artificial timeout is needed
+                // in case the refresh is super fast
+                // to not break animation
+                new Promise(resolve => {
+                    setTimeout(resolve, 1000);
+                }),
+            ]);
         } catch (err) {
             if (process.env.NODE_ENV === 'development') {
                 console.warn('Unhandled error has been caught during the refresh:', err);
