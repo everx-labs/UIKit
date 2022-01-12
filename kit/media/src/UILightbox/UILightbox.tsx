@@ -1,51 +1,92 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { Image, LayoutChangeEvent, View } from 'react-native';
 import { useAnimatedRef } from 'react-native-reanimated';
 import { makeStyles } from '@tonlabs/uikit.themes';
+import { UISkeleton } from '@tonlabs/uikit.layout';
+import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { Duplicate } from './Duplicate';
-import { DuplicateImage } from '../DuplicateImage';
 import type { UILightboxProps } from './types';
+import { useImages } from './hooks/useImages';
+import { useImageSize } from './hooks/useImageSize';
 
 export const UILightbox = ({
-    onClose,
-    previewImage,
-    imageRef,
-    imageSize,
-    isOpen,
-    fullSizeImage,
+    image,
+    preview,
     prompt,
+    isLoading,
+    originalSize,
+    testID,
 }: UILightboxProps) => {
     const ref = useAnimatedRef<View>();
+    const previewRef = React.useRef<Image>(null);
+    const [isImageOpen, setImageOpen] = React.useState<boolean>(false);
+    const [imageLoading, setImageLoading] = React.useState<boolean>(true);
+    // TODO ошибки внутри
+    const [loadError, setLoadError] = React.useState<boolean>(false);
+    loadError;
 
-    const copyOfPreviewImage = React.useMemo(() => {
-        return (
-            <DuplicateImage source={imageRef} style={imageSize}>
-                {previewImage}
-            </DuplicateImage>
-        );
-    }, [previewImage, imageRef, imageSize]);
+    const [containerWidth, setContainerWidth] = React.useState<number>(0);
+    const imageSize = useImageSize(image, originalSize, containerWidth);
+
+    const onLoadCallback = React.useCallback(function onLoadCallback() {
+        setImageLoading(false);
+    }, []);
+    const onErrorCallback = React.useCallback(function onErrorCallback() {
+        setLoadError(true);
+    }, []);
+    const onPress = React.useCallback(function onPress() {
+        setImageOpen(prevIsOpen => !prevIsOpen);
+    }, []);
+    const onClose = React.useCallback(function onClose() {
+        setImageOpen(false);
+    }, []);
+
+    const { fullSizeImage, previewImage, duplicateOfPreviewImage } = useImages(
+        image,
+        preview,
+        previewRef,
+        imageSize,
+        onErrorCallback,
+        onLoadCallback,
+    );
 
     const styles = useStyles();
 
+    const onLayout = React.useCallback(function onLayout(event: LayoutChangeEvent) {
+        setContainerWidth(event.nativeEvent.layout.width);
+    }, []);
+
     return (
-        <>
-            <View ref={ref} style={styles.originalContainer}>
-                {previewImage}
-            </View>
+        <View onLayout={onLayout}>
+            <UISkeleton show={isLoading || imageLoading} style={styles.skeleton}>
+                <TouchableOpacity testID={testID} activeOpacity={1} onPress={onPress}>
+                    <View ref={ref} style={styles.originalContainer}>
+                        {previewImage}
+                    </View>
+                </TouchableOpacity>
+            </UISkeleton>
             <Duplicate
-                isOpen={isOpen}
+                isOpen={isImageOpen}
                 onClose={onClose}
                 forwardedRef={ref}
                 fullSizeImage={fullSizeImage}
-                previewImage={copyOfPreviewImage}
+                previewImage={duplicateOfPreviewImage}
                 prompt={prompt}
             />
-        </>
+        </View>
     );
 };
 
 const useStyles = makeStyles(() => ({
+    skeleton: {
+        alignItems: 'center',
+    },
     originalContainer: {
-        zIndex: -10,
+        /**
+         * It is not clear for what reason, but if you do not set
+         * somekind of appearance-changing style, then measurement of the original image
+         * in the Duplicate component does not work properly on Android.
+         */
+        backgroundColor: 'transparent',
     },
 }));

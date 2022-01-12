@@ -11,3 +11,9 @@ export type DuplicateState =
 const VISIBILITY_STATE_CLOSED = 0;
 const VISIBILITY_STATE_OPENED = 1;
 export type VisibilityState = typeof VISIBILITY_STATE_CLOSED | typeof VISIBILITY_STATE_OPENED;
+
+export enum MediaMessageError {
+    DataIsEmpty,
+    NotSupportedDataFormat,
+    InvalidData,
+}

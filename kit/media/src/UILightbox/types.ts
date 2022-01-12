@@ -1,5 +1,6 @@
-import type { Image, View } from 'react-native';
+import type { View } from 'react-native';
 import type Animated from 'react-native-reanimated';
+import type { UIImageProps } from '../UIImage';
 
 export type ImageSize = {
     width: number;
@@ -7,13 +8,30 @@ export type ImageSize = {
 };
 
 export type UILightboxProps = {
-    isOpen: boolean;
-    onClose: () => void;
-    imageRef: React.RefObject<Image>;
-    imageSize: ImageSize | null;
-    fullSizeImage?: React.ReactElement | null;
-    previewImage: React.ReactElement;
+    /**
+     * The source of the image in HIGH resolution
+     */
+    image: UIImageProps['source'];
+    /**
+     * The source of the image in LOW resolution
+     */
+    preview?: UIImageProps['source'];
+    /**
+     * Description under the picture, which is displayed in full-screen mode
+     */
     prompt?: string;
+    /**
+     * Used to display the data loading process
+     */
+    isLoading?: boolean;
+    /**
+     * Original dimensions of the image
+     */
+    originalSize?: ImageSize;
+    /**
+     * ID for usage in tests
+     */
+    testID?: string;
 };
 
 export type Dimensions = {

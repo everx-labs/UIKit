@@ -31,6 +31,8 @@ export const useDimensions = (
                 ) {
                     const measurements = measure(state.forwardedRef);
 
+                    console.log({ measurements });
+
                     width.value = measurements.width;
                     height.value = measurements.height;
                     pageY.value = measurements.pageY;
@@ -42,7 +44,7 @@ export const useDimensions = (
                 console.error(`useDimensions.native.tsx: Measuring is failed - ${e}`);
             }
         },
-        [forwardedRef],
+        [forwardedRef.current],
     );
 
     return {

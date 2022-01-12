@@ -37,6 +37,8 @@
         "@react-native-community/hooks": "^2.6.0",
         "@tonlabs/uikit.assets": "^3.0.0",
         "@tonlabs/uikit.core": "^3.0.0",
+        "@tonlabs/uikit.controls": "^3.0.0",
+        "@tonlabs/uikit.media": "^3.0.0",
         "@tonlabs/uikit.layout": "^3.0.0",
         "@tonlabs/uikit.themes": "^3.0.0",
         "html2canvas": "^1.0.0-rc.7",
