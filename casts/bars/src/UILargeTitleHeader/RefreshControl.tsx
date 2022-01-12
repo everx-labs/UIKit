@@ -51,7 +51,7 @@ export function RefreshControl({
             await onRefresh();
         } catch (err) {
             if (process.env.NODE_ENV === 'development') {
-                console.warn('Unhandled error catched during refresh:', err);
+                console.warn('Unhandled error has been caught during the refresh:', err);
             }
         } finally {
             // Do not interupt active scroll
