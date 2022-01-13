@@ -31,8 +31,6 @@ export const useDimensions = (
                 ) {
                     const measurements = measure(state.forwardedRef);
 
-                    console.log({ measurements });
-
                     width.value = measurements.width;
                     height.value = measurements.height;
                     pageY.value = measurements.pageY;
