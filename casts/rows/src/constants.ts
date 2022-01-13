@@ -4,5 +4,8 @@ export const UIConstant = {
             size: 40,
             borderRadius: 13,
         },
+        row: {
+            borderRadius: 12,
+        },
     },
 };
