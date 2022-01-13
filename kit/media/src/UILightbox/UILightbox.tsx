@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, View } from 'react-native';
+import { Image, ImageErrorEventData, NativeSyntheticEvent, View } from 'react-native';
 import { useAnimatedRef } from 'react-native-reanimated';
 import { makeStyles } from '@tonlabs/uikit.themes';
 import { UISkeleton } from '@tonlabs/uikit.layout';
@@ -18,24 +18,36 @@ export const UILightbox = ({
     originalSize,
     maxHeight = UIConstant.lightbox.defaultMaxSize,
     maxWidth,
+    onLoad,
+    onError,
     testID,
 }: UILightboxProps) => {
     const ref = useAnimatedRef<View>();
     const previewRef = React.useRef<Image>(null);
     const [isImageOpen, setImageOpen] = React.useState<boolean>(false);
     const [imageLoading, setImageLoading] = React.useState<boolean>(true);
-    // TODO ошибки внутри
-    const [loadError, setLoadError] = React.useState<boolean>(false);
-    loadError;
+    const [isError, setIsError] = React.useState<boolean>(false);
 
     const imageSize = useImageSize(image, originalSize, maxHeight, maxWidth);
 
-    const onLoadCallback = React.useCallback(function onLoadCallback() {
-        setImageLoading(false);
-    }, []);
-    const onErrorCallback = React.useCallback(function onErrorCallback() {
-        setLoadError(true);
-    }, []);
+    const onLoadCallback = React.useCallback(
+        function onLoadCallback() {
+            if (imageLoading) {
+                onLoad && onLoad();
+                setImageLoading(false);
+            }
+        },
+        [onLoad, imageLoading],
+    );
+    const onErrorCallback = React.useCallback(
+        function onErrorCallback(error: NativeSyntheticEvent<ImageErrorEventData>) {
+            if (!isError) {
+                onError && onError(error.nativeEvent.error);
+                setIsError(true);
+            }
+        },
+        [onError, isError],
+    );
     const onPress = React.useCallback(function onPress() {
         setImageOpen(prevIsOpen => !prevIsOpen);
     }, []);
@@ -80,6 +92,7 @@ const useStyles = makeStyles((maxHeight: number, maxWidth: number | undefined) =
         maxHeight,
         maxWidth,
         alignItems: 'center',
+        overflow: 'hidden',
     },
     originalContainer: {
         /**

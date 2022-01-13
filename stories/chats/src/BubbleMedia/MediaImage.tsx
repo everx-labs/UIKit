@@ -8,12 +8,21 @@ import { useBubbleContainerStyle } from '../useBubblePosition';
 import { useBubbleBackgroundColor } from '../useBubbleStyle';
 import type { MediaMessage } from '../types';
 import { useMaxImageSize } from './hooks';
+import { MediaMessageError } from '../constants';
 
 export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
     const { onError, onLoad, preview, data, onLayout, prompt } = message;
     const containerStyle = useBubbleContainerStyle(message);
     const bubbleBackgroundColor = useBubbleBackgroundColor(message);
     const maxImageSize = useMaxImageSize();
+
+    const onErrorCallback = React.useCallback(
+        function onErrorCallback() {
+            onError && onError(MediaMessageError.InvalidData);
+        },
+        [onError],
+    );
+
     const styles = useStyles();
 
     if (!data) {
@@ -29,6 +38,8 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
                     prompt={prompt}
                     maxHeight={maxImageSize.height}
                     maxWidth={maxImageSize.width}
+                    onError={onErrorCallback}
+                    onLoad={onLoad}
                 />
             </View>
         </View>

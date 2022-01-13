@@ -1,5 +1,10 @@
 import * as React from 'react';
-import type { Image, ImageSourcePropType } from 'react-native';
+import type {
+    Image,
+    ImageErrorEventData,
+    ImageSourcePropType,
+    NativeSyntheticEvent,
+} from 'react-native';
 import type { ImageSize } from '../types';
 import { UIImage, UIImageProps } from '../../UIImage';
 import { DuplicateImage } from '../../DuplicateImage';
@@ -7,7 +12,7 @@ import { DuplicateImage } from '../../DuplicateImage';
 const getImage = (
     imageSource: ImageSourcePropType,
     imageSize: ImageSize | undefined,
-    onErrorCallback: () => void,
+    onErrorCallback: (error: NativeSyntheticEvent<ImageErrorEventData>) => void,
     onLoadCallback: () => void,
     previewRef: React.RefObject<Image> | null,
 ): React.ReactElement<UIImageProps> => {
@@ -27,7 +32,7 @@ export const useImages = (
     preview: ImageSourcePropType | undefined,
     previewRef: React.RefObject<Image>,
     imageSize: ImageSize | undefined,
-    onErrorCallback: () => void,
+    onErrorCallback: (error: NativeSyntheticEvent<ImageErrorEventData>) => void,
     onLoadCallback: () => void,
 ) => {
     return React.useMemo(() => {

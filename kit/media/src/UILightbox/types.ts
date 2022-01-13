@@ -41,6 +41,14 @@ export type UILightboxProps = {
      */
     maxWidth?: number;
     /**
+     * Callback function that is called when the image is loaded and ready to render
+     */
+    onLoad?: () => void;
+    /**
+     * Callback function that is called when the image cannot be loaded
+     */
+    onError?: (error: any) => void;
+    /**
      * ID for usage in tests
      */
     testID?: string;
