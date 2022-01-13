@@ -1,9 +1,14 @@
 import * as React from 'react';
-import { Image, ImageErrorEventData, NativeSyntheticEvent, View } from 'react-native';
+import {
+    Image,
+    ImageErrorEventData,
+    NativeSyntheticEvent,
+    View,
+    TouchableOpacity,
+} from 'react-native';
 import { useAnimatedRef } from 'react-native-reanimated';
 import { makeStyles } from '@tonlabs/uikit.themes';
 import { UISkeleton } from '@tonlabs/uikit.layout';
-import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { Duplicate } from './Duplicate';
 import type { UILightboxProps } from './types';
 import { useImages } from './hooks/useImages';

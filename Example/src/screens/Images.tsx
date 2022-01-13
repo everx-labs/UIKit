@@ -24,15 +24,12 @@ function DuplicateImageCheck() {
         />
     );
     return (
-        <View style={{ width: '100%', height: 500, padding: 16, borderWidth: 1 }}>
+        <View style={{ width: '100%', padding: 16, borderWidth: 1, alignItems: 'center' }}>
             <UILightbox
                 image={{ uri: imageUrl.original }}
                 preview={{ uri: imageUrl.medium }}
                 prompt="Awesome picture"
-                originalSize={{
-                    width: 200,
-                    height: 300,
-                }}
+                maxWidth={400}
                 isLoading={!showDuplicate}
             />
             {image}

@@ -101,10 +101,7 @@ export const useImageSize = (
                 const uri = (imageSource as any)?.uri;
                 const height = (imageSource as any)?.height;
                 const width = (imageSource as any)?.width;
-                if (height && width) {
-                    // DO NOTHING
-                    console.log('DO NOTHING');
-                } else {
+                if (!height || !width) {
                     calculateSize(uri);
                 }
             }
