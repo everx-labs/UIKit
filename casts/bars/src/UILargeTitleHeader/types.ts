@@ -1,3 +1,4 @@
+import type * as React from 'react';
 import type { UINavigationBarProps } from '../UINavigationBar';
 import type { OnRefresh } from './RefreshControl';
 
@@ -11,6 +12,10 @@ export type ScrollHandlerContext = {
 };
 
 export type UILargeTitleHeaderProps = UINavigationBarProps & {
+    /**
+     * Use it to override the default header with custom element
+     */
+    headerNavigationBar?: () => React.ReactNode;
     /**
      * A title to use only for collapsible title
      */

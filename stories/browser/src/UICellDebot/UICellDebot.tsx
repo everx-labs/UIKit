@@ -19,13 +19,9 @@ function UICellDebotImpl({ image, title, caption, onPress, loading, testID }: UI
     if (loading) {
         return (
             <View style={styles.container}>
-                <UISkeleton show style={styles.image}>
-                    <View />
-                </UISkeleton>
+                <UISkeleton show style={styles.image} />
                 <View style={styles.textContainer}>
-                    <UISkeleton show style={styles.textSkeleton}>
-                        <View />
-                    </UISkeleton>
+                    <UISkeleton show style={styles.textSkeleton} />
                 </View>
             </View>
         );

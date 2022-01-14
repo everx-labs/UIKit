@@ -1,5 +1,4 @@
 import { Platform } from 'react-native';
-// @flow
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import calendar from 'dayjs/plugin/calendar';
