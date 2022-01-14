@@ -98,7 +98,9 @@ function ScreenWithHeaderContent({
             ) : (
                 <PortalManager id="scene">
                     {descriptor.options.headerNavigationBar != null ? (
-                        <View>{descriptor.options.headerNavigationBar()}</View>
+                        <View style={styles.navBar}>
+                            {descriptor.options.headerNavigationBar()}
+                        </View>
                     ) : (
                         <UIStackNavigationBar
                             testID={descriptor.options.testID}
@@ -179,10 +181,6 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     navBar: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
         height: UILayoutConstant.headerHeight,
     },
 });
