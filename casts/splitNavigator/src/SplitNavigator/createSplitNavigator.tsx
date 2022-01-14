@@ -296,29 +296,34 @@ function FoldedSplitNavigator({
                     render: () => {
                         return (
                             <>
-                                {tabRouteNames.map(tabName => {
-                                    const tabRouteIndex = state.routeNames.indexOf(tabName);
-                                    const tabRoute = state.routes[tabRouteIndex];
-                                    const tabDescriptor = descriptors[tabRoute.key];
-                                    const isFocused = state.tabIndex === tabRouteIndex;
+                                <MaybeScreenContainer enabled style={styles.pages}>
+                                    {tabRouteNames.map(tabName => {
+                                        const tabRouteIndex = state.routeNames.indexOf(tabName);
+                                        const tabRoute = state.routes[tabRouteIndex];
+                                        const tabDescriptor = descriptors[tabRoute.key];
+                                        const isFocused = state.tabIndex === tabRouteIndex;
 
-                                    // isFocused check is important here
-                                    // as we can try to render a screen before it was put
-                                    // to `loaded` screens
-                                    if (!loaded.current?.includes(tabRouteIndex) && !isFocused) {
-                                        // Don't render a screen if we've never navigated to it
-                                        return null;
-                                    }
-                                    return (
-                                        <TabScreen key={tabRoute.key} isVisible={isFocused}>
-                                            <SafeAreaInsetsContext.Provider
-                                                value={insetsWithTabBar}
-                                            >
-                                                {tabDescriptor.render()}
-                                            </SafeAreaInsetsContext.Provider>
-                                        </TabScreen>
-                                    );
-                                })}
+                                        // isFocused check is important here
+                                        // as we can try to render a screen before it was put
+                                        // to `loaded` screens
+                                        if (
+                                            !loaded.current?.includes(tabRouteIndex) &&
+                                            !isFocused
+                                        ) {
+                                            // Don't render a screen if we've never navigated to it
+                                            return null;
+                                        }
+                                        return (
+                                            <TabScreen key={tabRoute.key} isVisible={isFocused}>
+                                                <SafeAreaInsetsContext.Provider
+                                                    value={insetsWithTabBar}
+                                                >
+                                                    {tabDescriptor.render()}
+                                                </SafeAreaInsetsContext.Provider>
+                                            </TabScreen>
+                                        );
+                                    })}
+                                </MaybeScreenContainer>
                                 <SplitBottomTabBar
                                     icons={tabBarIcons}
                                     activeKey={state.routes[state.tabIndex].key}
