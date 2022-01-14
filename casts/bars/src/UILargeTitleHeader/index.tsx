@@ -117,6 +117,7 @@ function useLargeTitleHeaderOpacity(
 }
 
 export function UILargeTitleHeader({
+    headerNavigationBar,
     label,
     labelTestID,
     note,
@@ -272,10 +273,12 @@ export function UILargeTitleHeader({
                 </UILargeTitleContainerRefContext.Provider>
             </Animated.View>
             <UIBackgroundView style={styles.mainHeaderContainer}>
-                <UIStackNavigationBar
-                    {...navigationBarProps}
-                    headerTitleOpacity={headerTitleOpacity}
-                />
+                {headerNavigationBar?.() ?? (
+                    <UIStackNavigationBar
+                        {...navigationBarProps}
+                        headerTitleOpacity={headerTitleOpacity}
+                    />
+                )}
             </UIBackgroundView>
         </UIBackgroundView>
     );

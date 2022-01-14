@@ -167,7 +167,7 @@ export function UISearchBar({
     return (
         <UIBackgroundView
             style={styles.container}
-            // @ts-expect-error
+            // @ts-ignore
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
         >
