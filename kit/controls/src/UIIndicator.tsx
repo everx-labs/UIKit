@@ -9,7 +9,7 @@ import Animated, {
     withTiming,
 } from 'react-native-reanimated';
 import Svg, { Circle } from 'react-native-svg';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import { ColorVariants, useTheme, makeStyles } from '@tonlabs/uikit.themes';
 import { addNativeProps } from './addNativeProps';
 import { UIConstant } from './constants';
 
@@ -78,8 +78,10 @@ export const UIIndicator = React.memo(function UIIndicator({
 
     const radius = React.useMemo(() => (size - trackWidth) / 2, [size, trackWidth]);
 
+    const styles = useStyles(size);
+
     return (
-        <Animated.View style={[style, animatedStyle]}>
+        <Animated.View style={[styles.container, style, animatedStyle]}>
             <Svg width={size} height={size}>
                 <AnimatedCircle
                     animatedProps={animatedProps}
@@ -97,3 +99,10 @@ export const UIIndicator = React.memo(function UIIndicator({
         </Animated.View>
     );
 });
+
+const useStyles = makeStyles((size: number) => ({
+    container: {
+        width: size,
+        aspectRatio: 1,
+    },
+}));

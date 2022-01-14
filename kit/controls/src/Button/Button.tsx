@@ -124,5 +124,6 @@ const styles = StyleSheet.create({
     },
     content: {
         flexShrink: 1,
+        alignItems: 'center',
     },
 });
