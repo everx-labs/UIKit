@@ -7,6 +7,7 @@ import { UILayoutConstant, UISkeleton } from '@tonlabs/uikit.layout';
 import type { UILinkProps } from './types';
 import { Logo } from './Logo';
 import { Icon } from './Icon';
+import { UIConstant } from '../constants';
 
 export const UILink = React.memo(function UILink({
     title,
@@ -60,6 +61,7 @@ const styles = StyleSheet.create({
     },
     textContentSkeleton: {
         flex: 1,
+        borderRadius: UIConstant.uiLink.row.borderRadius,
     },
     title: {
         flexDirection: 'row',
