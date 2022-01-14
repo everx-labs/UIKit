@@ -14,7 +14,7 @@ import { UIImage } from '@tonlabs/uikit.media';
 import type { BadgeProps } from './types';
 import { UIConstant } from '../constants';
 
-export function Badge({ badge }: BadgeProps) {
+export function Badge({ badge, testID }: BadgeProps) {
     const theme = useTheme();
     const styles = useStyles(theme);
     if (!badge) {
@@ -22,7 +22,7 @@ export function Badge({ badge }: BadgeProps) {
     }
     if (typeof badge === 'string') {
         return (
-            <View style={styles.stringBadge}>
+            <View style={styles.stringBadge} testID={testID}>
                 <UILabel
                     role={TypographyVariants.NarrowMonoLabel}
                     color={ColorVariants.StaticTextPrimaryLight}
