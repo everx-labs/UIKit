@@ -73,7 +73,9 @@ export function UICollectionCard({
                             </UILabel>
                         ) : null}
                     </View>
-                    <Badge badge={badge} />
+                    <View testID={`collection_badge_${title}${typeof badge === 'string' ? '_balance_' + badge :  ''}`}>
+                        <Badge badge={badge} />
+                    </View>
                 </View>
             </TouchableOpacity>
         </UISkeleton>
