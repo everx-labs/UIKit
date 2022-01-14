@@ -46,9 +46,11 @@ function MaybeNativeScreen({ visible, children, ...rest }: Props) {
 
 export function MaybeScreen({ visible, children, ...rest }: Props) {
     if (Screens?.screensEnabled?.()) {
-        <MaybeNativeScreen visible={visible} {...rest}>
-            {children}
-        </MaybeNativeScreen>;
+        return (
+            <MaybeNativeScreen visible={visible} {...rest}>
+                {children}
+            </MaybeNativeScreen>
+        );
     }
 
     return (
