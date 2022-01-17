@@ -47,7 +47,7 @@ export function UISearchBarButton({
         <>
             <UIBackgroundView style={styles.container}>
                 <TouchableOpacity
-                    testID={testID || null}
+                    testID={testID || 'ui_search_bar_button'}
                     containerStyle={styles.touchable}
                     style={styles.touchable}
                     onPress={onOpen}
