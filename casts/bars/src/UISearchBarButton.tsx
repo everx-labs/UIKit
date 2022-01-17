@@ -19,6 +19,7 @@ import { UIConstant as UINavConstant } from './constants';
 import { UISearchController } from './UISearchController';
 
 export function UISearchBarButton({
+    testID,
     forId,
     placeholder,
     searchBarPlaceholder,
@@ -30,6 +31,7 @@ export function UISearchBarButton({
     onDidHide,
     children,
 }: {
+    testID?: string;
     forId?: string;
     placeholder?: string;
     searchBarPlaceholder?: string;
@@ -45,6 +47,7 @@ export function UISearchBarButton({
         <>
             <UIBackgroundView style={styles.container}>
                 <TouchableOpacity
+                    testID={testID || null}
                     containerStyle={styles.touchable}
                     style={styles.touchable}
                     onPress={onOpen}
