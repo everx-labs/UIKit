@@ -1,42 +1,7 @@
 import type React from 'react';
 import type { ImageSourcePropType } from 'react-native';
 
-export type ContainerProps = {
-    /** only UIForeground Parts can be passed to children */
-    children:
-        | React.ReactElement<PrimaryPartProps>
-        | [React.ReactElement<PrimaryPartProps>, React.ReactElement<SecondaryPartProps>];
-};
-
-// ================== Start of Parts Props: ==================
-
-export type UIForegroundPrimaryElements =
-    | React.ReactElement<UIForegroundActionProps>
-    | React.ReactElement<UIForegroundSectionProps>
-    | React.ReactElement<UIForegroundTextProps>;
-
-export type PrimaryPartProps = {
-    /** only UIForeground Elements can be passed to children */
-    children:
-        | UIForegroundPrimaryElements
-        | [React.ReactElement<UIForegroundIconProps>, UIForegroundPrimaryElements];
-};
-
-export type UIForegroundSecondaryElements =
-    | React.ReactElement<UIForegroundActionProps>
-    | React.ReactElement<UIForegroundIconProps>
-    | React.ReactElement<UIForegroundNumberProps>
-    | React.ReactElement<UIForegroundTextProps>;
-
-export type SecondaryPartProps = {
-    /** only UIForeground Elements can be passed to children */
-    children:
-        | UIForegroundSecondaryElements
-        | [UIForegroundSecondaryElements, React.ReactElement<UIForegroundIconProps>];
-};
-// ================== End of Parts Props ==================
-
-// ================== Start of Elements Props: ==================
+// ================== Start of Elements Types: ==================
 
 export type UIForegroundTextProps = {
     /**
@@ -94,7 +59,39 @@ export type UIForegroundIconProps = {
      */
     children?: undefined;
 };
-// ================== End of Elements Props ==================
+
+type ActionElement = React.ReactElement<UIForegroundActionProps>;
+type IconElement = React.ReactElement<UIForegroundIconProps>;
+type NumberElement = React.ReactElement<UIForegroundNumberProps>;
+type SectionElement = React.ReactElement<UIForegroundSectionProps>;
+type TextElement = React.ReactElement<UIForegroundTextProps>;
+// ================== End of Elements Types ==================
+
+// ================== Start of Parts Types: ==================
+
+export type ForegroundPrimaryElements = ActionElement | SectionElement | TextElement;
+
+export type PrimaryPartProps = {
+    /** only UIForeground Elements can be passed to children */
+    children: ForegroundPrimaryElements | [IconElement, ForegroundPrimaryElements];
+};
+
+export type ForegroundSecondaryElements = ActionElement | IconElement | NumberElement | TextElement;
+
+export type SecondaryPartProps = {
+    /** only UIForeground Elements can be passed to children */
+    children: ForegroundSecondaryElements | [ForegroundSecondaryElements, IconElement];
+};
+
+type PrimaryPart = React.ReactElement<PrimaryPartProps>;
+type SecondaryPart = React.ReactElement<SecondaryPartProps>;
+
+// ================== End of Parts Types ==================
+
+export type ContainerProps = {
+    /** only UIForeground Parts can be passed to children */
+    children: PrimaryPart | [PrimaryPart, SecondaryPart];
+};
 
 export type UIForegroundType = {
     /**
