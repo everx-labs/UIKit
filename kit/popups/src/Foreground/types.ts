@@ -63,7 +63,7 @@ export type UIForegroundActionProps = {
     /**
      * The callback that is called when the action is tapped/clicked
      */
-    onTap: () => void;
+    onPress: () => void;
     /**
      * Whether the press behavior is disabled
      * Default: `false`
