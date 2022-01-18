@@ -1,7 +1,7 @@
 import type React from 'react';
 import type { ImageSourcePropType } from 'react-native';
 
-type UIForegroundParts =
+export type UIForegroundParts =
     | React.ReactElement<PrimaryPartProps>
     | React.ReactElement<SecondaryPartProps>;
 
@@ -12,26 +12,26 @@ export type ContainerProps = {
 
 // ================== Start of Parts Props: ==================
 
-type UIForegroundPrimaryElements =
+export type UIForegroundPrimaryElements =
     | React.ReactElement<UIForegroundActionProps>
     | React.ReactElement<UIForegroundIconProps>
     | React.ReactElement<UIForegroundSectionProps>
     | React.ReactElement<UIForegroundTextProps>;
 
-type PrimaryPartProps = {
+export type PrimaryPartProps = {
     /** only UIForeground Elements can be passed to children */
     children:
         | UIForegroundPrimaryElements
         | [UIForegroundPrimaryElements, UIForegroundPrimaryElements];
 };
 
-type UIForegroundSecondaryElements =
+export type UIForegroundSecondaryElements =
     | React.ReactElement<UIForegroundActionProps>
     | React.ReactElement<UIForegroundIconProps>
     | React.ReactElement<UIForegroundNumberProps>
     | React.ReactElement<UIForegroundTextProps>;
 
-type SecondaryPartProps = {
+export type SecondaryPartProps = {
     /** only UIForeground Elements can be passed to children */
     children:
         | UIForegroundSecondaryElements
@@ -45,14 +45,14 @@ export type UIForegroundTextProps = {
     /**
      * Text content
      */
-    title: string;
+    children: string;
 };
 
 export type UIForegroundSectionProps = {
     /**
      * Text content
      */
-    title: string;
+    children: string;
 };
 
 export type UIForegroundActionProps = {
@@ -74,13 +74,17 @@ export type UIForegroundActionProps = {
      * Default: `false`
      */
     negative?: boolean;
+    /**
+     * There can be no children here
+     */
+    children?: undefined;
 };
 
 export type UIForegroundNumberProps = {
     /**
      * Numerical value
      */
-    value: number;
+    children: number;
 };
 
 export type UIForegroundIconProps = {
@@ -88,6 +92,10 @@ export type UIForegroundIconProps = {
      * Icon source
      */
     source?: ImageSourcePropType;
+    /**
+     * There can be no children here
+     */
+    children?: undefined;
 };
 // ================== End of Elements Props ==================
 
