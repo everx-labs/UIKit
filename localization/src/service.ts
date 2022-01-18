@@ -53,9 +53,7 @@ type LanguageServiceOptions<T> = {
     localeInfo?: StringLocaleInfo;
 };
 
-export type LocalizedStrings<T> = LocalizationServiceMethods & T;
-
-export type LocalizedInstance<T> = LocalizedStrings<T>;
+export type LocalizedInstance<T> = LocalizationServiceMethods & T;
 
 export class LocalizationService<T> extends LocalizedStringsService<any> {
     languages: Language[];
@@ -210,7 +208,7 @@ export class LocalizationService<T> extends LocalizedStringsService<any> {
     };
 }
 
-interface UIKitLocalizedInstance extends LocalizedStrings<UILocalizedData> {
+interface UIKitLocalizedInstance extends LocalizedInstance<UILocalizedData> {
     shortenAmount: ShortenAmount;
 }
 
