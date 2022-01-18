@@ -55,10 +55,9 @@ type LanguageServiceOptions<T> = {
 
 export type LocalizedStrings<T> = LocalizationServiceMethods & T;
 
-export type LocalizedInstance<T> = LocalizedStrings<T> & LocalizationService<T>;
+export type LocalizedInstance<T> = LocalizedStrings<T>;
 
-// @ts-ignore
-export class LocalizationService<T> extends (LocalizedStringsService as LocalizedStrings<T>) {
+export class LocalizationService<T> extends LocalizedStringsService<any> {
     languages: Language[];
 
     localeInfo: StringLocaleInfo;
@@ -209,11 +208,18 @@ export class LocalizationService<T> extends (LocalizedStringsService as Localize
     getFirstDayOfWeek = (): number => {
         return this.localeInfo.dates.dayOfWeek;
     };
+}
 
+interface UIKitLocalizedInstance extends LocalizedStrings<UILocalizedData> {
+    shortenAmount: ShortenAmount;
+}
+
+class UIKitLocalizationService extends LocalizationService<UILocalizedData> {
     shortenAmount: ShortenAmount = shortenAmount.bind(this, this.ShortenedNumberSuffix);
 }
 
-export const uiLocalized: LocalizedInstance<UILocalizedData> =
-    new LocalizationService<UILocalizedData>({ languages: preparedLanguages }) as any;
+export const uiLocalized: UIKitLocalizedInstance = new UIKitLocalizationService({
+    languages: preparedLanguages,
+}) as any;
 
 export const TIME_FORMAT = 'HH:mm';
