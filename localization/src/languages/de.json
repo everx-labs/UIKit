@@ -499,5 +499,6 @@
         "Warning": "Choose a time between {0} and {1}",
         "WarningAfter": "Choose a time after {0}",
         "WarningBefore": "Choose a time before {0}"
-    }
+    },
+    "ShowMore": "Show more"
 }
