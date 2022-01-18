@@ -7,14 +7,15 @@ export type UIForegroundParts =
 
 export type ContainerProps = {
     /** only UIForeground Parts can be passed to children */
-    children: UIForegroundParts | [UIForegroundParts, UIForegroundParts];
+    children:
+        | UIForegroundParts
+        | [React.ReactElement<PrimaryPartProps>, React.ReactElement<SecondaryPartProps>];
 };
 
 // ================== Start of Parts Props: ==================
 
 export type UIForegroundPrimaryElements =
     | React.ReactElement<UIForegroundActionProps>
-    | React.ReactElement<UIForegroundIconProps>
     | React.ReactElement<UIForegroundSectionProps>
     | React.ReactElement<UIForegroundTextProps>;
 
@@ -22,7 +23,7 @@ export type PrimaryPartProps = {
     /** only UIForeground Elements can be passed to children */
     children:
         | UIForegroundPrimaryElements
-        | [UIForegroundPrimaryElements, UIForegroundPrimaryElements];
+        | [React.ReactElement<UIForegroundIconProps>, UIForegroundPrimaryElements];
 };
 
 export type UIForegroundSecondaryElements =
@@ -35,7 +36,7 @@ export type SecondaryPartProps = {
     /** only UIForeground Elements can be passed to children */
     children:
         | UIForegroundSecondaryElements
-        | [UIForegroundSecondaryElements, UIForegroundSecondaryElements];
+        | [UIForegroundSecondaryElements, React.ReactElement<UIForegroundIconProps>];
 };
 // ================== End of Parts Props ==================
 
