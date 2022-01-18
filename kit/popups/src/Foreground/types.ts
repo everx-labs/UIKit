@@ -1,14 +1,10 @@
 import type React from 'react';
 import type { ImageSourcePropType } from 'react-native';
 
-export type UIForegroundParts =
-    | React.ReactElement<PrimaryPartProps>
-    | React.ReactElement<SecondaryPartProps>;
-
 export type ContainerProps = {
     /** only UIForeground Parts can be passed to children */
     children:
-        | UIForegroundParts
+        | React.ReactElement<PrimaryPartProps>
         | [React.ReactElement<PrimaryPartProps>, React.ReactElement<SecondaryPartProps>];
 };
 
