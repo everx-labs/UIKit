@@ -1,31 +1,55 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import type { UIForegroundType } from './types';
+import { UILabel, ColorVariants, TypographyVariants } from '@tonlabs/uikit.themes';
+import type {
+    UIForegroundType,
+    ContainerProps,
+    SecondaryPartProps,
+    UIForegroundActionProps,
+} from './types';
+import { PrimaryPart } from './PrimaryPart';
 
-export function Container() {
+const getActionColor = (
+    negative: boolean | undefined,
+    disabled: boolean | undefined,
+): ColorVariants => {
+    if (disabled) {
+        return ColorVariants.TextTertiary;
+    }
+    if (negative) {
+        return ColorVariants.TextNegative;
+    }
+    return ColorVariants.TextPrimary;
+};
+
+export function ActionElement({ title, disabled, negative }: UIForegroundActionProps) {
+    const actionColor = getActionColor(negative, disabled);
+    return (
+        <View testID={`${title}_action_button`}>
+            <UILabel role={TypographyVariants.Action} color={actionColor}>
+                {title}
+            </UILabel>
+        </View>
+    );
+}
+export function IconElement() {
     return <View />;
 }
-export function PrimaryPart() {
+export function NumberElement() {
     return <View />;
 }
-export function SecondaryPart() {
+export function SectionElement() {
+    return <View />;
+}
+export function TextElement() {
     return <View />;
 }
 
-export function Action() {
-    return <View />;
+export function Container({ children }: ContainerProps) {
+    return <View>{children}</View>;
 }
-export function Icon() {
-    return <View />;
-}
-export function Number() {
-    return <View />;
-}
-export function Section() {
-    return <View />;
-}
-export function Text() {
-    return <View />;
+export function SecondaryPart({ children }: SecondaryPartProps) {
+    return <View>{children}</View>;
 }
 
 const UIForeground: UIForegroundType = {
@@ -34,11 +58,11 @@ const UIForeground: UIForegroundType = {
     PrimaryPart,
     SecondaryPart,
 
-    Action,
-    Icon,
-    Number,
-    Section,
-    Text,
+    ActionElement,
+    IconElement,
+    NumberElement,
+    SectionElement,
+    TextElement,
 };
 
 export default UIForeground;
@@ -46,12 +70,12 @@ export default UIForeground;
 /*
     <UIForeground.Container>
         <UIForeground.PrimaryPart>
-            <UIForeground.Icon source={UIAssets.icons.ui.search} />
-            <UIForeground.Action title="asd" onTap={() => null} negative disabled />
+            <UIForeground.IconElement source={UIAssets.icons.ui.search} />
+            <UIForeground.ActionElement title="asd" onPress={() => null} negative disabled />
         </UIForeground.PrimaryPart>
         <UIForeground.SecondaryPart>
-            <UIForeground.Action title="asd" onTap={() => null} negative disabled />
-            <UIForeground.Icon source={UIAssets.icons.ui.search} />
+            <UIForeground.TextElement>Text</UIForeground.TextElement>
+            <UIForeground.IconElement source={UIAssets.icons.ui.search} />
         </UIForeground.SecondaryPart>
     </UIForeground.Container>;
 */

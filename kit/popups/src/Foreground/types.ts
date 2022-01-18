@@ -60,11 +60,11 @@ export type UIForegroundIconProps = {
     children?: undefined;
 };
 
-type ActionElement = React.ReactElement<UIForegroundActionProps>;
-type IconElement = React.ReactElement<UIForegroundIconProps>;
-type NumberElement = React.ReactElement<UIForegroundNumberProps>;
-type SectionElement = React.ReactElement<UIForegroundSectionProps>;
-type TextElement = React.ReactElement<UIForegroundTextProps>;
+export type ActionElement = React.ReactElement<UIForegroundActionProps>;
+export type IconElement = React.ReactElement<UIForegroundIconProps>;
+export type NumberElement = React.ReactElement<UIForegroundNumberProps>;
+export type SectionElement = React.ReactElement<UIForegroundSectionProps>;
+export type TextElement = React.ReactElement<UIForegroundTextProps>;
 // ================== End of Elements Types ==================
 
 // ================== Start of Parts Types: ==================
@@ -113,21 +113,21 @@ export type UIForegroundType = {
     /**
      * Pressable element (Button) of the UIForeground
      */
-    Action: React.FC<UIForegroundActionProps>;
+    ActionElement: React.FC<UIForegroundActionProps>;
     /**
      * Icon of the UIForeground
      */
-    Icon: React.FC<UIForegroundIconProps>;
+    IconElement: React.FC<UIForegroundIconProps>;
     /**
      * Numerical value of the UIForeground
      */
-    Number: React.FC<UIForegroundNumberProps>;
+    NumberElement: React.FC<UIForegroundNumberProps>;
     /**
      * Bold text content of the UIForeground
      */
-    Section: React.FC<UIForegroundSectionProps>;
+    SectionElement: React.FC<UIForegroundSectionProps>;
     /**
      * Text content of the UIForeground
      */
-    Text: React.FC<UIForegroundTextProps>;
+    TextElement: React.FC<UIForegroundTextProps>;
 };
