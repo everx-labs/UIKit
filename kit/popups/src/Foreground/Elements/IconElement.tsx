@@ -1,21 +1,26 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIImage } from '@tonlabs/uikit.media';
 import type { UIForegroundIconProps } from '../types';
 import { PartStatusContext } from '../Container';
-import { useColorByPartStatus } from '../hooks';
+import { useColorByPartStatus, useMergedPartStatus } from '../hooks';
 
-export function IconElement({ source }: UIForegroundIconProps) {
+export function IconElement({ source, onPress, disabled, negative }: UIForegroundIconProps) {
     const partStatus = React.useContext(PartStatusContext);
-    const tintColor = useColorByPartStatus(partStatus);
+    const mergedPartStatus = useMergedPartStatus(partStatus, disabled, negative, onPress);
+    const tintColor = useColorByPartStatus(mergedPartStatus);
     if (!source) {
         return null;
     }
     return (
-        <View style={styles.container}>
+        <TouchableOpacity
+            disabled={partStatus.partState === 'Pressable' || !onPress || disabled}
+            onPress={onPress}
+            style={styles.container}
+        >
             <UIImage source={source} tintColor={tintColor} style={styles.image} />
-        </View>
+        </TouchableOpacity>
     );
 }
 

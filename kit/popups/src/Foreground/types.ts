@@ -17,11 +17,7 @@ export type UIForegroundSectionProps = {
     children: string;
 };
 
-export type UIForegroundActionProps = {
-    /**
-     * Text content of the action
-     */
-    title: string;
+type PressableProps = {
     /**
      * The callback that is called when the action is tapped/clicked
      */
@@ -36,6 +32,13 @@ export type UIForegroundActionProps = {
      * Default: `false`
      */
     negative?: boolean;
+};
+
+export type UIForegroundActionProps = PressableProps & {
+    /**
+     * Text content of the action
+     */
+    title: string;
     /**
      * There can be no children here
      */
@@ -49,7 +52,7 @@ export type UIForegroundNumberProps = {
     children: number;
 };
 
-export type UIForegroundIconProps = {
+export type UIForegroundIconProps = PressableProps & {
     /**
      * Icon source
      */
@@ -69,29 +72,12 @@ export type TextElementComponent = React.ReactElement<UIForegroundTextProps>;
 
 // ================== Start of Parts Types: ==================
 
-type CommonPartProps = {
-    /**
-     * The callback that is called when the Part is tapped/clicked
-     */
-    onPress?: () => void;
-    /**
-     * Whether the press behavior is disabled
-     * Default: `false`
-     */
-    disabled?: boolean;
-    /**
-     * Is the Part negative?
-     * Default: `false`
-     */
-    negative?: boolean;
-};
-
 export type ForegroundPrimaryElements =
     | ActionElementComponent
     | SectionElementComponent
     | TextElementComponent;
 
-export type PrimaryPartProps = CommonPartProps & {
+export type PrimaryPartProps = PressableProps & {
     /** only UIForeground Elements can be passed to children */
     children: ForegroundPrimaryElements | [IconElementComponent, ForegroundPrimaryElements];
 };
@@ -102,7 +88,7 @@ export type ForegroundSecondaryElements =
     | NumberElementComponent
     | TextElementComponent;
 
-export type SecondaryPartProps = CommonPartProps & {
+export type SecondaryPartProps = PressableProps & {
     /** only UIForeground Elements can be passed to children */
     children: ForegroundSecondaryElements | [ForegroundSecondaryElements, IconElementComponent];
 };

@@ -3,20 +3,14 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import { UILabel, TypographyVariants } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UIForegroundActionProps } from '../types';
-import { useColorByPartStatus } from '../hooks';
+import { useColorByPartStatus, useMergedPartStatus } from '../hooks';
 import { PartStatusContext } from '../Container';
 
 export function ActionElement({ title, onPress, disabled, negative }: UIForegroundActionProps) {
     const partStatus = React.useContext(PartStatusContext);
 
-    const actualPartStatus = React.useMemo(() => {
-        if (partStatus.partState === 'Pressable') {
-            return partStatus;
-        }
-        return { ...partStatus, disabled, negative, onPress };
-    }, [disabled, negative, partStatus, onPress]);
-
-    const actionColor = useColorByPartStatus(actualPartStatus);
+    const mergedPartStatus = useMergedPartStatus(partStatus, disabled, negative, onPress);
+    const actionColor = useColorByPartStatus(mergedPartStatus);
 
     return (
         <TouchableOpacity
