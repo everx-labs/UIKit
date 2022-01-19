@@ -38,7 +38,7 @@ export function NumberElement({ children }: UIForegroundNumberProps) {
 const styles = StyleSheet.create({
     container: {
         paddingVertical: UILayoutConstant.contentInsetVerticalX4,
-        paddingRight: UILayoutConstant.contentInsetVerticalX3,
+        paddingHorizontal: UILayoutConstant.contentInsetVerticalX3 / 2,
     },
     primaryContainer: {
         flex: 1,

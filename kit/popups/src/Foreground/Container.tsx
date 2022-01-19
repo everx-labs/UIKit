@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
          * The negative right margin is used to set the right padding of all child elements
          * and not to think about the presence of an element on the right side.
          */
-        marginRight: -UILayoutConstant.contentInsetVerticalX3,
+        marginHorizontal: -UILayoutConstant.contentInsetVerticalX3 / 2,
         flexDirection: 'row',
         alignItems: 'center',
     },
