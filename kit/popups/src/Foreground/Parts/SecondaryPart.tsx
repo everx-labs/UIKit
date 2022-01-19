@@ -9,7 +9,7 @@ export function SecondaryPart({ children, onPress, disabled, negative }: Seconda
             disabled,
             negative,
             partType: 'Secondary',
-            partState: onPress ? 'Pressable' : 'NonPressable',
+            partState: onPress || disabled !== undefined ? 'Pressable' : 'NonPressable',
         };
     }, [disabled, negative, onPress]);
 

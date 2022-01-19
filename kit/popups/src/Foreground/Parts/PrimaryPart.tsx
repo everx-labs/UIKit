@@ -9,7 +9,7 @@ export function PrimaryPart({ children, onPress, disabled, negative }: PrimaryPa
             disabled,
             negative,
             partType: 'Primary',
-            partState: onPress ? 'Pressable' : 'NonPressable',
+            partState: onPress || disabled !== undefined ? 'Pressable' : 'NonPressable',
         };
     }, [disabled, negative, onPress]);
 
