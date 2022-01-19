@@ -28,9 +28,11 @@ export function UIBottomSheet({ children, style, ...rest }: UIBottomSheetProps) 
     return (
         <UISheet.Container visible={visible} forId={forId}>
             <UISheet.KeyboardAware defaultShift={-UILayoutConstant.rubberBandEffectDistance}>
-                <UISheet.Content {...rest} style={[styles.bottom, style, sheetStyle]}>
-                    {children}
-                </UISheet.Content>
+                <UISheet.IntrinsicSize>
+                    <UISheet.Content {...rest} style={[styles.bottom, style, sheetStyle]}>
+                        {children}
+                    </UISheet.Content>
+                </UISheet.IntrinsicSize>
             </UISheet.KeyboardAware>
         </UISheet.Container>
     );

@@ -13,6 +13,14 @@ export function UIFullscreenSheet({ children, style, ...rest }: UIFullscreenShee
     const { height } = useWindowDimensions();
     const { top: topInset } = useSafeAreaInsets();
 
+    const fullscreenHeight = React.useMemo(
+        () =>
+            height -
+            Math.max(StatusBar.currentHeight ?? 0, topInset) +
+            UILayoutConstant.rubberBandEffectDistance,
+        [height, topInset],
+    );
+
     const sheetStyle = React.useMemo(() => {
         const flattenStyle = StyleSheet.flatten(style);
         const paddingBottom =
@@ -21,20 +29,19 @@ export function UIFullscreenSheet({ children, style, ...rest }: UIFullscreenShee
 
         return {
             paddingBottom,
-            height:
-                height -
-                Math.max(StatusBar.currentHeight ?? 0, topInset) +
-                UILayoutConstant.rubberBandEffectDistance,
+            height: fullscreenHeight,
         };
-    }, [style, height, topInset]);
+    }, [style, fullscreenHeight]);
 
     const { visible, forId } = rest;
     return (
         <UISheet.Container visible={visible} forId={forId}>
             <UISheet.KeyboardUnaware defaultShift={-UILayoutConstant.rubberBandEffectDistance}>
-                <UISheet.Content {...rest} style={[styles.bottom, style, sheetStyle]}>
-                    {children}
-                </UISheet.Content>
+                <UISheet.FixedSize height={fullscreenHeight}>
+                    <UISheet.Content {...rest} style={[styles.bottom, style, sheetStyle]}>
+                        {children}
+                    </UISheet.Content>
+                </UISheet.FixedSize>
             </UISheet.KeyboardUnaware>
         </UISheet.Container>
     );
@@ -46,5 +53,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         left: 'auto',
         right: 'auto',
+        overflow: 'hidden',
     },
 });
