@@ -25,7 +25,7 @@ export type UIForegroundActionProps = {
     /**
      * The callback that is called when the action is tapped/clicked
      */
-    onPress: () => void;
+    onPress?: () => void;
     /**
      * Whether the press behavior is disabled
      * Default: `false`
@@ -60,32 +60,57 @@ export type UIForegroundIconProps = {
     children?: undefined;
 };
 
-export type ActionElement = React.ReactElement<UIForegroundActionProps>;
-export type IconElement = React.ReactElement<UIForegroundIconProps>;
-export type NumberElement = React.ReactElement<UIForegroundNumberProps>;
-export type SectionElement = React.ReactElement<UIForegroundSectionProps>;
-export type TextElement = React.ReactElement<UIForegroundTextProps>;
+export type ActionElementComponent = React.ReactElement<UIForegroundActionProps>;
+export type IconElementComponent = React.ReactElement<UIForegroundIconProps>;
+export type NumberElementComponent = React.ReactElement<UIForegroundNumberProps>;
+export type SectionElementComponent = React.ReactElement<UIForegroundSectionProps>;
+export type TextElementComponent = React.ReactElement<UIForegroundTextProps>;
 // ================== End of Elements Types ==================
 
 // ================== Start of Parts Types: ==================
 
-export type ForegroundPrimaryElements = ActionElement | SectionElement | TextElement;
+export type ForegroundPrimaryElements =
+    | ActionElementComponent
+    | SectionElementComponent
+    | TextElementComponent;
 
 export type PrimaryPartProps = {
     /** only UIForeground Elements can be passed to children */
-    children: ForegroundPrimaryElements | [IconElement, ForegroundPrimaryElements];
+    children: ForegroundPrimaryElements | [IconElementComponent, ForegroundPrimaryElements];
+    /**
+     * The callback that is called when the PrimaryPart is tapped/clicked
+     */
+    onPress?: () => void;
+    /**
+     * Whether the press behavior is disabled
+     * Default: `false`
+     */
+    disabled?: boolean;
+    /**
+     * Is the PrimaryPart negative?
+     * Default: `false`
+     */
+    negative?: boolean;
 };
 
-export type ForegroundSecondaryElements = ActionElement | IconElement | NumberElement | TextElement;
+export type ForegroundSecondaryElements =
+    | ActionElementComponent
+    | IconElementComponent
+    | NumberElementComponent
+    | TextElementComponent;
 
 export type SecondaryPartProps = {
     /** only UIForeground Elements can be passed to children */
-    children: ForegroundSecondaryElements | [ForegroundSecondaryElements, IconElement];
+    children: ForegroundSecondaryElements | [ForegroundSecondaryElements, IconElementComponent];
 };
 
 type PrimaryPart = React.ReactElement<PrimaryPartProps>;
 type SecondaryPart = React.ReactElement<SecondaryPartProps>;
 
+export type PartStatus = {
+    disabled: boolean | undefined;
+    negative: boolean | undefined;
+};
 // ================== End of Parts Types ==================
 
 export type ContainerProps = {
