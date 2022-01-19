@@ -2,16 +2,10 @@ import * as React from 'react';
 import { View } from 'react-native';
 import type { UIForegroundType } from './types';
 import { PrimaryPart, SecondaryPart } from './Parts';
-import { ActionElement, IconElement } from './Elements';
+import { ActionElement, IconElement, TextElement, NumberElement } from './Elements';
 import { Container } from './Container';
 
-export function NumberElement() {
-    return <View />;
-}
 export function SectionElement() {
-    return <View />;
-}
-export function TextElement() {
     return <View />;
 }
 

@@ -1,22 +1,17 @@
 import * as React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { UILabel, TypographyVariants } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import type { UIForegroundActionProps } from '../types';
-import { usePressableElementColorByPartStatus, useMergedPartStatus } from '../hooks';
+import type { UIForegroundTextProps } from '../types';
+import { useTextColorByPartStatus } from '../hooks';
 import { PartStatusContext } from '../Container';
 
-export function ActionElement({ title, onPress, disabled, negative }: UIForegroundActionProps) {
+export function TextElement({ children }: UIForegroundTextProps) {
     const partStatus = React.useContext(PartStatusContext);
-
-    const mergedPartStatus = useMergedPartStatus(partStatus, disabled, negative, onPress);
-    const actionColor = usePressableElementColorByPartStatus(mergedPartStatus);
+    const color = useTextColorByPartStatus(partStatus);
 
     return (
-        <TouchableOpacity
-            testID={`${title}_action_button`}
-            disabled={partStatus.partState === 'Pressable' || !onPress || disabled}
-            onPress={onPress}
+        <View
             style={[
                 styles.container,
                 partStatus.partType === 'Primary'
@@ -25,16 +20,16 @@ export function ActionElement({ title, onPress, disabled, negative }: UIForegrou
             ]}
         >
             <UILabel
-                role={TypographyVariants.Action}
-                color={actionColor}
+                role={TypographyVariants.ParagraphText}
+                color={color}
                 numberOfLines={3}
                 style={
                     partStatus.partType === 'Primary' ? styles.primaryText : styles.secondaryText
                 }
             >
-                {title}
+                {children}
             </UILabel>
-        </TouchableOpacity>
+        </View>
     );
 }
 

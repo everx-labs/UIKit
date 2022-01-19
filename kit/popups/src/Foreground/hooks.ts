@@ -2,7 +2,10 @@ import * as React from 'react';
 import { ColorVariants } from '@tonlabs/uikit.themes';
 import type { PartStatus } from './types';
 
-export function useColorByPartStatus({ disabled, negative }: PartStatus): ColorVariants {
+export function usePressableElementColorByPartStatus({
+    disabled,
+    negative,
+}: PartStatus): ColorVariants {
     return React.useMemo(() => {
         if (disabled) {
             return ColorVariants.TextTertiary;
@@ -12,6 +15,15 @@ export function useColorByPartStatus({ disabled, negative }: PartStatus): ColorV
         }
         return ColorVariants.TextPrimary;
     }, [disabled, negative]);
+}
+
+export function useTextColorByPartStatus({ partType }: PartStatus): ColorVariants {
+    return React.useMemo(() => {
+        if (partType === 'Primary') {
+            return ColorVariants.TextSecondary;
+        }
+        return ColorVariants.TextTertiary;
+    }, [partType]);
 }
 
 export function useMergedPartStatus(

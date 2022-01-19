@@ -1,6 +1,4 @@
-import { UIForeground } from './UIForeground';
-
-export default UIForeground;
+export * from './UIForeground';
 export * from './Parts';
 export * from './Elements';
 

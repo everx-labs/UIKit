@@ -1,22 +1,17 @@
 import * as React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { UILabel, TypographyVariants } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import type { UIForegroundActionProps } from '../types';
-import { usePressableElementColorByPartStatus, useMergedPartStatus } from '../hooks';
+import type { UIForegroundNumberProps } from '../types';
+import { useTextColorByPartStatus } from '../hooks';
 import { PartStatusContext } from '../Container';
 
-export function ActionElement({ title, onPress, disabled, negative }: UIForegroundActionProps) {
+export function NumberElement({ children }: UIForegroundNumberProps) {
     const partStatus = React.useContext(PartStatusContext);
-
-    const mergedPartStatus = useMergedPartStatus(partStatus, disabled, negative, onPress);
-    const actionColor = usePressableElementColorByPartStatus(mergedPartStatus);
+    const color = useTextColorByPartStatus(partStatus);
 
     return (
-        <TouchableOpacity
-            testID={`${title}_action_button`}
-            disabled={partStatus.partState === 'Pressable' || !onPress || disabled}
-            onPress={onPress}
+        <View
             style={[
                 styles.container,
                 partStatus.partType === 'Primary'
@@ -25,16 +20,18 @@ export function ActionElement({ title, onPress, disabled, negative }: UIForegrou
             ]}
         >
             <UILabel
-                role={TypographyVariants.Action}
-                color={actionColor}
+                role={TypographyVariants.MonoText}
+                color={color}
                 numberOfLines={3}
                 style={
-                    partStatus.partType === 'Primary' ? styles.primaryText : styles.secondaryText
+                    partStatus.partType === 'Primary'
+                        ? styles.primaryNumber
+                        : styles.secondaryNumber
                 }
             >
-                {title}
+                {children}
             </UILabel>
-        </TouchableOpacity>
+        </View>
     );
 }
 
@@ -49,8 +46,8 @@ const styles = StyleSheet.create({
     secondaryContainer: {
         flexShrink: 1,
     },
-    primaryText: {},
-    secondaryText: {
+    primaryNumber: {},
+    secondaryNumber: {
         textAlign: 'right',
     },
 });

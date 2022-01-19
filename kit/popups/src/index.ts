@@ -11,6 +11,7 @@ export * from './ActionSheet/types';
 export * from './UIAlert/types';
 export * from './Sheets';
 export * from './UIPushNotice';
+export * from './Foreground';
 
 export * from './AnimationHelpers';
 
