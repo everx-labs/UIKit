@@ -11,29 +11,53 @@ export function ActionElement({ title, disabled, negative }: UIForegroundActionP
         function renderLabel(partStatus: PartStatus) {
             let actionColor: ColorVariants;
             if (disabled !== undefined || negative !== undefined) {
-                actionColor = getColorByPartStatus({ disabled, negative });
+                actionColor = getColorByPartStatus({ ...partStatus, disabled, negative });
             } else {
                 actionColor = getColorByPartStatus(partStatus);
             }
             return (
-                <UILabel role={TypographyVariants.Action} color={actionColor}>
-                    {title}
-                </UILabel>
+                <View
+                    testID={`${title}_action_button`}
+                    style={[
+                        styles.container,
+                        partStatus.partType === 'Primary'
+                            ? styles.primaryContainer
+                            : styles.secondaryContainer,
+                    ]}
+                >
+                    <UILabel
+                        role={TypographyVariants.Action}
+                        color={actionColor}
+                        numberOfLines={3}
+                        style={
+                            partStatus.partType === 'Primary'
+                                ? styles.primaryText
+                                : styles.secondaryText
+                        }
+                    >
+                        {title}
+                    </UILabel>
+                </View>
             );
         },
         [title, disabled, negative],
     );
-    return (
-        <View testID={`${title}_action_button`} style={styles.container}>
-            <PartStatusConsumer>{renderLabel}</PartStatusConsumer>
-        </View>
-    );
+    return <PartStatusConsumer>{renderLabel}</PartStatusConsumer>;
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         paddingVertical: UILayoutConstant.contentInsetVerticalX4,
         paddingRight: UILayoutConstant.contentInsetVerticalX3,
+    },
+    primaryContainer: {
+        flex: 1,
+    },
+    secondaryContainer: {
+        flexShrink: 1,
+    },
+    primaryText: {},
+    secondaryText: {
+        textAlign: 'right',
     },
 });

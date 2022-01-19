@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import type { UIForegroundType, SecondaryPartProps } from './types';
-import { PrimaryPart } from './Parts';
+import type { UIForegroundType } from './types';
+import { PrimaryPart, SecondaryPart } from './Parts';
 import { ActionElement, IconElement } from './Elements';
 import { Container } from './Container';
 
@@ -13,10 +13,6 @@ export function SectionElement() {
 }
 export function TextElement() {
     return <View />;
-}
-
-export function SecondaryPart({ children }: SecondaryPartProps) {
-    return <View>{children}</View>;
 }
 
 export const UIForeground: UIForegroundType = {

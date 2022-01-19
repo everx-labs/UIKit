@@ -69,16 +69,9 @@ export type TextElementComponent = React.ReactElement<UIForegroundTextProps>;
 
 // ================== Start of Parts Types: ==================
 
-export type ForegroundPrimaryElements =
-    | ActionElementComponent
-    | SectionElementComponent
-    | TextElementComponent;
-
-export type PrimaryPartProps = {
-    /** only UIForeground Elements can be passed to children */
-    children: ForegroundPrimaryElements | [IconElementComponent, ForegroundPrimaryElements];
+type CommonPartProps = {
     /**
-     * The callback that is called when the PrimaryPart is tapped/clicked
+     * The callback that is called when the Part is tapped/clicked
      */
     onPress?: () => void;
     /**
@@ -87,10 +80,20 @@ export type PrimaryPartProps = {
      */
     disabled?: boolean;
     /**
-     * Is the PrimaryPart negative?
+     * Is the Part negative?
      * Default: `false`
      */
     negative?: boolean;
+};
+
+export type ForegroundPrimaryElements =
+    | ActionElementComponent
+    | SectionElementComponent
+    | TextElementComponent;
+
+export type PrimaryPartProps = CommonPartProps & {
+    /** only UIForeground Elements can be passed to children */
+    children: ForegroundPrimaryElements | [IconElementComponent, ForegroundPrimaryElements];
 };
 
 export type ForegroundSecondaryElements =
@@ -99,7 +102,7 @@ export type ForegroundSecondaryElements =
     | NumberElementComponent
     | TextElementComponent;
 
-export type SecondaryPartProps = {
+export type SecondaryPartProps = CommonPartProps & {
     /** only UIForeground Elements can be passed to children */
     children: ForegroundSecondaryElements | [ForegroundSecondaryElements, IconElementComponent];
 };
@@ -107,9 +110,11 @@ export type SecondaryPartProps = {
 type PrimaryPart = React.ReactElement<PrimaryPartProps>;
 type SecondaryPart = React.ReactElement<SecondaryPartProps>;
 
+export type PartType = 'Primary' | 'Secondary';
 export type PartStatus = {
     disabled: boolean | undefined;
     negative: boolean | undefined;
+    partType: PartType;
 };
 // ================== End of Parts Types ==================
 
