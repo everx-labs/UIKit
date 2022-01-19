@@ -111,7 +111,6 @@ export default class UIDetailsView extends UIComponent<Props, State> {
         const testIDProp = testID ? { testID } : null;
         return (
             <Wrapper
-                {...testIDProp}
                 {...onPressProp}
                 style={UIFunction.combineStyles([
                     (styles.container: ViewStyleProp),
