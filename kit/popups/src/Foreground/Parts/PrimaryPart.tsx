@@ -5,11 +5,20 @@ import type { PrimaryPartProps, PartStatus } from '../types';
 
 export function PrimaryPart({ children, onPress, disabled, negative }: PrimaryPartProps) {
     const partStatus: PartStatus = React.useMemo((): PartStatus => {
-        return { disabled, negative, partType: 'Primary' };
-    }, [disabled, negative]);
+        return {
+            disabled,
+            negative,
+            partType: 'Primary',
+            partState: onPress ? 'Pressable' : 'NonPressable',
+        };
+    }, [disabled, negative, onPress]);
 
     return (
-        <TouchableOpacity style={styles.primaryPart} disabled={disabled} onPress={onPress}>
+        <TouchableOpacity
+            style={styles.primaryPart}
+            disabled={!onPress || disabled}
+            onPress={onPress}
+        >
             <PartStatusContext.Provider value={partStatus}>{children}</PartStatusContext.Provider>
         </TouchableOpacity>
     );

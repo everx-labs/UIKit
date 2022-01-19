@@ -1,26 +1,28 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { UILabel, TypographyVariants } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UIForegroundActionProps } from '../types';
 import { useColorByPartStatus } from '../hooks';
 import { PartStatusContext } from '../Container';
 
-export function ActionElement({ title, disabled, negative }: UIForegroundActionProps) {
+export function ActionElement({ title, onPress, disabled, negative }: UIForegroundActionProps) {
     const partStatus = React.useContext(PartStatusContext);
 
     const actualPartStatus = React.useMemo(() => {
-        if (disabled !== undefined || negative !== undefined) {
-            return { ...partStatus, disabled, negative };
+        if (partStatus.partState === 'Pressable') {
+            return partStatus;
         }
-        return partStatus;
-    }, [disabled, negative, partStatus]);
+        return { ...partStatus, disabled, negative, onPress };
+    }, [disabled, negative, partStatus, onPress]);
 
     const actionColor = useColorByPartStatus(actualPartStatus);
 
     return (
-        <View
+        <TouchableOpacity
             testID={`${title}_action_button`}
+            disabled={partStatus.partState === 'Pressable' || !onPress || disabled}
+            onPress={onPress}
             style={[
                 styles.container,
                 partStatus.partType === 'Primary'
@@ -38,7 +40,7 @@ export function ActionElement({ title, disabled, negative }: UIForegroundActionP
             >
                 {title}
             </UILabel>
-        </View>
+        </TouchableOpacity>
     );
 }
 

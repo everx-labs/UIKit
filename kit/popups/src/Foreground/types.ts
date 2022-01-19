@@ -111,10 +111,12 @@ type PrimaryPart = React.ReactElement<PrimaryPartProps>;
 type SecondaryPart = React.ReactElement<SecondaryPartProps>;
 
 export type PartType = 'Primary' | 'Secondary';
+export type PartState = 'Pressable' | 'NonPressable';
 export type PartStatus = {
     disabled: boolean | undefined;
     negative: boolean | undefined;
     partType: PartType;
+    partState: PartState;
 };
 // ================== End of Parts Types ==================
 

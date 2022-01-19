@@ -7,6 +7,7 @@ export const PartStatusContext = React.createContext<PartStatus>({
     disabled: undefined,
     negative: undefined,
     partType: 'Primary',
+    partState: 'NonPressable',
 });
 
 export function Container({ children }: ContainerProps) {
