@@ -34,7 +34,10 @@ export function useMergedPartStatus(
 ): PartStatus {
     return React.useMemo(() => {
         if (partStatus.partState === 'Pressable') {
-            return partStatus;
+            return {
+                ...partStatus,
+                negative: negative !== undefined ? negative : partStatus.negative,
+            };
         }
         return { ...partStatus, disabled, negative, onPress };
     }, [disabled, negative, partStatus, onPress]);
