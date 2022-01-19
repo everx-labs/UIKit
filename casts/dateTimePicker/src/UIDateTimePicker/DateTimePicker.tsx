@@ -7,6 +7,7 @@ import { UIBottomSheet } from '@tonlabs/uikit.popups';
 import { UINavigationBar } from '@tonlabs/uicast.bars';
 import { uiLocalized } from '@tonlabs/localization';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { ScrollView } from '@tonlabs/uikit.scrolls';
 
 import { Calendar } from './Calendar/Calendar';
 import { DateTimeStateProvider, useDateTimeState } from './useDateTimeState';
@@ -75,23 +76,27 @@ function Content() {
         default:
         case UIDateTimePickerMode.DateTime:
             return (
-                <>
+                <ScrollView keyboardShouldPersistTaps="handled">
                     <Calendar />
                     <UIBackgroundView color={ColorVariants.LineTertiary} style={styles.divider} />
                     <Time />
-                </>
+                </ScrollView>
             );
         // TODO!!!!
         // case UIDateTimePickerMode.MonthYear:
         //     return <SelectMonth />;
         case UIDateTimePickerMode.Date:
             return (
-                <>
+                <ScrollView keyboardShouldPersistTaps="handled">
                     <Calendar />
-                </>
+                </ScrollView>
             );
         case UIDateTimePickerMode.Time:
-            return <Time />;
+            return (
+                <ScrollView keyboardShouldPersistTaps="handled">
+                    <Time />
+                </ScrollView>
+            );
     }
 }
 
