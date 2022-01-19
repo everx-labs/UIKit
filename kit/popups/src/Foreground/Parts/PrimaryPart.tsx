@@ -19,6 +19,6 @@ const styles = StyleSheet.create({
     primaryPart: {
         flex: 1,
         flexDirection: 'row',
-        borderWidth: 1,
+        alignItems: 'center',
     },
 });
