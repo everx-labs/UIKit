@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
-import { PartStatusProvider } from '../Container';
+import { PartStatusContext } from '../Container';
 import type { SecondaryPartProps, PartStatus } from '../types';
 
 export function SecondaryPart({ children, onPress, disabled, negative }: SecondaryPartProps) {
@@ -10,7 +10,7 @@ export function SecondaryPart({ children, onPress, disabled, negative }: Seconda
 
     return (
         <TouchableOpacity style={styles.secondaryPart} disabled={disabled} onPress={onPress}>
-            <PartStatusProvider value={partStatus}>{children}</PartStatusProvider>
+            <PartStatusContext.Provider value={partStatus}>{children}</PartStatusContext.Provider>
         </TouchableOpacity>
     );
 }

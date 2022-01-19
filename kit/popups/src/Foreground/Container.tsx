@@ -3,12 +3,11 @@ import { StyleSheet, View } from 'react-native';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { ContainerProps, PartStatus } from './types';
 
-export const { Provider: PartStatusProvider, Consumer: PartStatusConsumer } =
-    React.createContext<PartStatus>({
-        disabled: undefined,
-        negative: undefined,
-        partType: 'Primary',
-    });
+export const PartStatusContext = React.createContext<PartStatus>({
+    disabled: undefined,
+    negative: undefined,
+    partType: 'Primary',
+});
 
 export function Container({ children }: ContainerProps) {
     return <View style={styles.container}>{children}</View>;

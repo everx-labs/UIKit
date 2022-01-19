@@ -2,27 +2,19 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIImage } from '@tonlabs/uikit.media';
-import type { UIForegroundIconProps, PartStatus } from '../types';
-import { PartStatusConsumer } from '../Container';
-import getColorByPartStatus from '../getColorByPartStatus';
+import type { UIForegroundIconProps } from '../types';
+import { PartStatusContext } from '../Container';
+import { useColorByPartStatus } from '../hooks';
 
 export function IconElement({ source }: UIForegroundIconProps) {
-    const renderImage = React.useCallback(
-        function renderImage(partStatus: PartStatus) {
-            const tintColor = getColorByPartStatus(partStatus);
-            if (!source) {
-                return null;
-            }
-            return <UIImage source={source} tintColor={tintColor} style={styles.image} />;
-        },
-        [source],
-    );
+    const partStatus = React.useContext(PartStatusContext);
+    const tintColor = useColorByPartStatus(partStatus);
     if (!source) {
         return null;
     }
     return (
         <View style={styles.container}>
-            <PartStatusConsumer>{renderImage}</PartStatusConsumer>
+            <UIImage source={source} tintColor={tintColor} style={styles.image} />
         </View>
     );
 }

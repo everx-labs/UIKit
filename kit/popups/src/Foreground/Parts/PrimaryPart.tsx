@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
-import { PartStatusProvider } from '../Container';
+import { PartStatusContext } from '../Container';
 import type { PrimaryPartProps, PartStatus } from '../types';
 
 export function PrimaryPart({ children, onPress, disabled, negative }: PrimaryPartProps) {
@@ -10,7 +10,7 @@ export function PrimaryPart({ children, onPress, disabled, negative }: PrimaryPa
 
     return (
         <TouchableOpacity style={styles.primaryPart} disabled={disabled} onPress={onPress}>
-            <PartStatusProvider value={partStatus}>{children}</PartStatusProvider>
+            <PartStatusContext.Provider value={partStatus}>{children}</PartStatusContext.Provider>
         </TouchableOpacity>
     );
 }
