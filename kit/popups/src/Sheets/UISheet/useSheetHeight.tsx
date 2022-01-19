@@ -1,10 +1,7 @@
 import * as React from 'react';
 import { useSharedValue } from 'react-native-reanimated';
 
-export function useSheetHeight(
-    rubberBandEffectDistance: number,
-    countRubberBandDistance?: boolean,
-) {
+export function useSheetHeight() {
     const height = useSharedValue(0);
     const onSheetLayout = React.useCallback(
         ({
@@ -12,12 +9,9 @@ export function useSheetHeight(
                 layout: { height: lHeight },
             },
         }) => {
-            const newHeight = countRubberBandDistance
-                ? lHeight - rubberBandEffectDistance
-                : lHeight;
-            height.value = newHeight;
+            height.value = lHeight;
         },
-        [height, countRubberBandDistance, rubberBandEffectDistance],
+        [height],
     );
 
     return {

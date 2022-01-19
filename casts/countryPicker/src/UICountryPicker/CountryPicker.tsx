@@ -1,13 +1,13 @@
 import React from 'react';
 import Fuse from 'fuse.js';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { View, useWindowDimensions, Platform, Keyboard } from 'react-native';
+import { View, Platform, Keyboard } from 'react-native';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
 import { UISearchBar } from '@tonlabs/uicast.bars';
-import { UIBottomSheet } from '@tonlabs/uikit.popups';
+import { UIFullscreenSheet } from '@tonlabs/uikit.popups';
 import { FlatList } from '@tonlabs/uikit.scrolls';
 import { UILinkButton } from '@tonlabs/uikit.controls';
 import {
@@ -52,10 +52,8 @@ export function CountryPicker({
     banned = [],
     permitted = [],
 }: WrappedCountryPickerProps) {
-    const { height } = useWindowDimensions();
-
     const theme = useTheme();
-    const styles = useStyles(theme, height);
+    const styles = useStyles(theme);
 
     const [loading, setLoading] = React.useState(true);
 
@@ -167,12 +165,7 @@ export function CountryPicker({
     const keyExtractor = React.useCallback((item: Country) => item.code, []);
 
     return (
-        <UIBottomSheet
-            onClose={onClose}
-            visible={visible}
-            style={styles.sheet}
-            shouldHandleKeyboard={false}
-        >
+        <UIFullscreenSheet onClose={onClose} visible={visible} style={styles.sheet}>
             {renderSearchHeader()}
             <CountryPickerContext.Provider value={{ loading, onSelect }}>
                 <FlatList
@@ -185,15 +178,14 @@ export function CountryPicker({
                     onMomentumScrollBegin={hideKeyboard}
                 />
             </CountryPickerContext.Provider>
-        </UIBottomSheet>
+        </UIFullscreenSheet>
     );
 }
 
-const useStyles = makeStyles((theme: Theme, height: number) => ({
+const useStyles = makeStyles((theme: Theme) => ({
     sheet: {
         backgroundColor: theme[ColorVariants.BackgroundPrimary] as string,
         borderRadius: 10,
-        height,
     },
     headerContainer: {
         backgroundColor: theme[ColorVariants.BackgroundPrimary] as string,

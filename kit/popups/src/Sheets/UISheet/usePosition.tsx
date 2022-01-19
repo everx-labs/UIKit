@@ -40,57 +40,50 @@ const CloseSpringConfig = {
     ...SpringConfig.fromBouncinessAndSpeed(1, 12),
 };
 
-// eslint-disable-next-line no-shadow
-enum SHOW_STATES {
-    CLOSE = 0,
-    CLOSING = 1,
-    OPEN = 2,
-    OPENING = 3,
-    DRAG = 4,
-}
+// @inline
+const SHOW_STATE_CLOSE = 0;
+// @inline
+const SHOW_STATE_CLOSING = 1;
+// @inline
+const SHOW_STATE_OPEN = 2;
+// @inline
+const SHOW_STATE_OPENING = 3;
+// @inline
+// const SHOW_STATE_DRAG = 4;
+
+type ShowStates = 0 | 1 | 2 | 3 | 4;
+
+// @inline
+const SWIPE_THRESHOLD = 50; // UILayoutConstant.swipeThreshold
 
 export function usePosition(
     height: Animated.SharedValue<number>,
-    keyboardHeight: Animated.SharedValue<number>,
-    bottomInset: number,
+    origin: Animated.SharedValue<number>,
+    bottomInset: Animated.SharedValue<number>,
     hasOpenAnimation: boolean = true,
     hasCloseAnimation: boolean = true,
-    shouldHandleKeyboard: boolean = true,
-    countRubberBandDistance: boolean = false,
     onCloseProp: OnClose | undefined,
     onCloseModal: OnClose,
     onOpenEndProp: OnOpen | undefined,
     onCloseEndProp: OnClose | undefined,
 ) {
-    const showState = useSharedValue<SHOW_STATES>(SHOW_STATES.CLOSING);
+    const showState = useSharedValue<ShowStates>(SHOW_STATE_CLOSING);
 
     const animate = React.useCallback(
         (isShow: boolean) => {
             if (isShow) {
-                showState.value = SHOW_STATES.OPEN;
+                showState.value = SHOW_STATE_OPEN;
                 return;
             }
-            showState.value = SHOW_STATES.CLOSE;
+            showState.value = SHOW_STATE_CLOSE;
         },
         [showState],
     );
 
     const position = useSharedValue(0);
 
-    const snapPointPosition = useDerivedValue(() => {
-        let snapPoint = 0 - height.value;
-        if (shouldHandleKeyboard && keyboardHeight.value !== 0) {
-            snapPoint =
-                snapPoint -
-                keyboardHeight.value +
-                // At this point we don't want inset to be the size of
-                // safe area bottom inset, therefore trying to apply
-                // only `contentOffset`
-                bottomInset -
-                UILayoutConstant.contentOffset -
-                (countRubberBandDistance ? UILayoutConstant.rubberBandEffectDistance : 0);
-        }
-        return snapPoint;
+    const snapPoint = useDerivedValue(() => {
+        return origin.value - height.value - bottomInset.value;
     });
 
     useAnimatedReaction(
@@ -98,8 +91,7 @@ export function usePosition(
             return {
                 showState: showState.value,
                 height: height.value,
-                keyboardHeight: keyboardHeight.value,
-                snapPointPosition: snapPointPosition.value,
+                snapPoint: snapPoint.value,
             };
         },
         (currentState, prevState) => {
@@ -109,11 +101,11 @@ export function usePosition(
             // so to prevent opening this guard is needed
             // (due to the fact that when sheet is open it's in OPENING state)
             if (
-                currentState.showState === SHOW_STATES.OPENING &&
-                prevState?.keyboardHeight !== currentState.keyboardHeight
+                currentState.showState === SHOW_STATE_OPENING &&
+                prevState?.snapPoint !== currentState.snapPoint
             ) {
                 cancelAnimation(position);
-                showState.value = SHOW_STATES.OPEN;
+                showState.value = SHOW_STATE_OPEN;
 
                 return;
             }
@@ -123,19 +115,19 @@ export function usePosition(
             }
 
             if (
-                currentState.showState === SHOW_STATES.OPENING &&
+                currentState.showState === SHOW_STATE_OPENING &&
                 prevState?.height !== currentState.height
             ) {
                 cancelAnimation(position);
-                showState.value = SHOW_STATES.OPEN;
+                showState.value = SHOW_STATE_OPEN;
 
                 return;
             }
 
-            if (currentState.showState === SHOW_STATES.OPEN) {
+            if (currentState.showState === SHOW_STATE_OPEN) {
                 if (hasOpenAnimation) {
                     position.value = withSpring(
-                        currentState.snapPointPosition,
+                        currentState.snapPoint,
                         OpenSpringConfig,
                         isFinished => {
                             if (isFinished && onOpenEndProp) {
@@ -144,40 +136,36 @@ export function usePosition(
                         },
                     );
                 } else {
-                    position.value = currentState.snapPointPosition;
+                    position.value = currentState.snapPoint;
                     if (onOpenEndProp) {
                         runOnJS(onOpenEndProp)();
                     }
                 }
 
-                showState.value = SHOW_STATES.OPENING;
+                showState.value = SHOW_STATE_OPENING;
 
                 return;
             }
 
-            if (currentState.showState === SHOW_STATES.CLOSE) {
+            if (currentState.showState === SHOW_STATE_CLOSE) {
                 if (hasCloseAnimation) {
-                    position.value = withSpring(
-                        0 - currentState.keyboardHeight,
-                        CloseSpringConfig,
-                        isFinished => {
-                            if (isFinished) {
-                                if (onCloseEndProp) {
-                                    runOnJS(onCloseEndProp)();
-                                }
-                                runOnJS(onCloseModal)();
+                    position.value = withSpring(origin.value, CloseSpringConfig, isFinished => {
+                        if (isFinished) {
+                            if (onCloseEndProp) {
+                                runOnJS(onCloseEndProp)();
                             }
-                        },
-                    );
+                            runOnJS(onCloseModal)();
+                        }
+                    });
                 } else {
-                    position.value = 0 - currentState.keyboardHeight;
+                    position.value = origin.value;
                     if (onCloseEndProp) {
                         runOnJS(onCloseEndProp)();
                     }
                     runOnJS(onCloseModal)();
                 }
 
-                showState.value = SHOW_STATES.CLOSING;
+                showState.value = SHOW_STATE_CLOSING;
             }
         },
     );
@@ -186,7 +174,7 @@ export function usePosition(
 
     const onTapGestureHandler = useAnimatedGestureHandler<TapGestureHandlerGestureEvent>({
         onActive: () => {
-            showState.value = SHOW_STATES.CLOSE;
+            showState.value = SHOW_STATE_CLOSE;
             if (onCloseProp) {
                 runOnJS(onCloseProp)();
             }
@@ -200,10 +188,10 @@ export function usePosition(
 
         const intermediatePosition = position.value - y;
 
-        if (y > 0 && intermediatePosition < snapPointPosition.value) {
+        if (y > 0 && intermediatePosition < snapPoint.value) {
             positionWithoutRubberBand.value += y;
             position.value =
-                snapPointPosition.value -
+                snapPoint.value -
                 getYWithRubberBandEffect(
                     positionWithoutRubberBand.value,
                     UILayoutConstant.rubberBandEffectDistance,
@@ -219,14 +207,14 @@ export function usePosition(
     const resetPosition = () => {
         'worklet';
 
-        if (position.value - snapPointPosition.value > UILayoutConstant.swipeThreshold) {
-            showState.value = SHOW_STATES.CLOSE;
+        if (position.value - snapPoint.value > SWIPE_THRESHOLD) {
+            showState.value = SHOW_STATE_CLOSE;
             if (onCloseProp) {
                 runOnJS(onCloseProp)();
             }
             return;
         }
-        showState.value = SHOW_STATES.OPEN;
+        showState.value = SHOW_STATE_OPEN;
     };
 
     const scrollRef = useAnimatedRef<Animated.ScrollView>();
@@ -239,7 +227,7 @@ export function usePosition(
 
             const intermediatePosition = position.value - y;
 
-            if (y <= 0 || intermediatePosition > snapPointPosition.value) {
+            if (y <= 0 || intermediatePosition > snapPoint.value) {
                 adjustPosition(y);
                 scrollTo(scrollRef, 0, 0, false);
             }
@@ -266,7 +254,7 @@ export function usePosition(
             const intermediatePosition = position.value - y;
 
             if (!hasScrollShared.value) {
-                if (y <= 0 || intermediatePosition > snapPointPosition.value) {
+                if (y <= 0 || intermediatePosition > snapPoint.value) {
                     adjustPosition(y);
                     scrollTo(scrollRef, 0, 0, false);
                     return;
