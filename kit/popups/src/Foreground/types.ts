@@ -1,5 +1,6 @@
 import type React from 'react';
 import type { ImageSourcePropType } from 'react-native';
+import type { ColorVariants } from '@tonlabs/uikit.themes';
 
 // ================== Start of Elements Types: ==================
 
@@ -57,6 +58,11 @@ export type UIForegroundIconProps = PressableProps & {
      * Icon source
      */
     source?: ImageSourcePropType;
+    /**
+     * tintColor of the Icon
+     * By default, tintcolor is set accordingly to the ActionElement
+     */
+    tintColor?: ColorVariants;
     /**
      * There can be no children here
      */

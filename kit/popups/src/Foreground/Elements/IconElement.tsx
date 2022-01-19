@@ -6,7 +6,13 @@ import type { UIForegroundIconProps } from '../types';
 import { PartStatusContext } from '../Container';
 import { usePressableElementColorByPartStatus, useMergedPartStatus } from '../hooks';
 
-export function IconElement({ source, onPress, disabled, negative }: UIForegroundIconProps) {
+export function IconElement({
+    source,
+    onPress,
+    disabled,
+    negative,
+    tintColor: tintColorProp,
+}: UIForegroundIconProps) {
     const partStatus = React.useContext(PartStatusContext);
     const mergedPartStatus = useMergedPartStatus(partStatus, disabled, negative, onPress);
     const tintColor = usePressableElementColorByPartStatus(mergedPartStatus);
@@ -19,7 +25,7 @@ export function IconElement({ source, onPress, disabled, negative }: UIForegroun
             onPress={onPress}
             style={styles.container}
         >
-            <UIImage source={source} tintColor={tintColor} style={styles.image} />
+            <UIImage source={source} tintColor={tintColorProp || tintColor} style={styles.image} />
         </TouchableOpacity>
     );
 }
