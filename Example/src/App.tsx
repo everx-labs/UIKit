@@ -64,6 +64,7 @@ import { LargeHeaderScreen } from './screens/LargeHeader';
 import { QRCodeScreen } from './screens/QRCode';
 import { RowsScreen } from './screens/Rows';
 import { FinancesScreen } from './screens/Finances';
+import { ForegroundsScreen } from './screens/Foregrounds';
 import { SkeletonsScreen } from './screens/Skeletons';
 
 import { StoreProvider, updateStore } from './useStore';
@@ -293,6 +294,12 @@ const Main = ({ navigation }: { navigation: any }) => {
                         title="Finances"
                         type={UILinkButtonType.Menu}
                         onPress={() => navigation.navigate('finances')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="Foregrounds"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('foregrounds')}
                         layout={styles.button}
                     />
                     <UILinkButton
@@ -569,6 +576,13 @@ const App = () => {
                                     : {}),
                                 tabBarActiveIcon: UIAssets.icons.ui.buttonStickerEnabled,
                                 tabBarDisabledIcon: UIAssets.icons.ui.buttonStickerDisabled,
+                            }}
+                        />
+                        <Split.Screen
+                            name="foregrounds"
+                            component={ForegroundsScreen}
+                            options={{
+                                title: 'Foregrounds',
                             }}
                         />
                         <Split.Screen
