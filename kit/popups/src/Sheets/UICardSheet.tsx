@@ -24,9 +24,11 @@ export function UICardSheet({ children, style, ...rest }: UICardSheetProps) {
     return (
         <UISheet.Container visible={visible} forId={forId}>
             <UISheet.KeyboardAware getBottomInset={getCardSheetBottomInset}>
-                <UISheet.Content {...rest} style={styles.card}>
-                    <View style={[style, styles.cardInner]}>{children}</View>
-                </UISheet.Content>
+                <UISheet.IntrinsicSize>
+                    <UISheet.Content {...rest} style={styles.card}>
+                        <View style={[style, styles.cardInner]}>{children}</View>
+                    </UISheet.Content>
+                </UISheet.IntrinsicSize>
             </UISheet.KeyboardAware>
         </UISheet.Container>
     );

@@ -8,14 +8,11 @@ import { Portal } from '@tonlabs/uikit.layout';
 import { ColorVariants, useColorParts, useStatusBar } from '@tonlabs/uikit.themes';
 
 import { ScrollableContext } from '@tonlabs/uikit.scrolls';
-import { useSheetHeight } from './useSheetHeight';
 import type { OnOpen, OnClose } from './types';
-import { usePosition } from './usePosition';
-import {
-    KeyboardAwareSheet,
-    KeyboardUnawareSheet,
-    useKeyboardAwareSheet,
-} from './KeyboardAwareSheet';
+import { SheetReadyContext, usePosition } from './usePosition';
+import { KeyboardAwareSheet, KeyboardUnawareSheet } from './KeyboardAwareSheet';
+import { useSheetOrigin } from './SheetOriginContext';
+import { FixedSizeSheet, IntrinsicSizeSheet, useSheetSize } from './SheetSize';
 
 export type UISheetProps = {
     /**
@@ -87,16 +84,8 @@ function SheetContent({
     hasCloseAnimation,
 }: UISheetProps) {
     const onClosePortalRequest = useSheetClosePortalRequest();
-    const { origin, bottomInset } = useKeyboardAwareSheet();
-
-    /**
-     * TODO: looks like it's not needed for UIFullscreenSheet,
-     * as it's height can be calculated from insets
-     *
-     * Maybe it's a good idea to split this logic too, and pass
-     * it from the outside
-     */
-    const { height, onSheetLayout } = useSheetHeight();
+    const origin = useSheetOrigin();
+    const { height, onSheetLayout, style: cardSizeStyle } = useSheetSize();
 
     const {
         animate,
@@ -108,10 +97,10 @@ function SheetContent({
         hasScroll,
         setHasScroll,
         position,
+        ready,
     } = usePosition(
         height,
         origin,
-        bottomInset,
         hasOpenAnimation,
         hasCloseAnimation,
         onClose,
@@ -211,11 +200,7 @@ function SheetContent({
                     </PanGestureHandler>
                 </Animated.View>
             </TapGestureHandler>
-            <Animated.View
-                style={[styles.sheet, cardStyle]}
-                onLayout={onSheetLayout}
-                pointerEvents="box-none"
-            >
+            <Animated.View style={[styles.sheet, cardStyle]} pointerEvents="box-none">
                 <PanGestureHandler
                     maxPointers={1}
                     enabled={onClose != null}
@@ -224,9 +209,11 @@ function SheetContent({
                         ? { waitFor: scrollPanGestureHandlerRef }
                         : null)}
                 >
-                    <Animated.View style={style}>
+                    <Animated.View onLayout={onSheetLayout} style={[style, cardSizeStyle]}>
                         <ScrollableContext.Provider value={scrollableContextValue}>
-                            {children}
+                            <SheetReadyContext.Provider value={ready}>
+                                {children}
+                            </SheetReadyContext.Provider>
                         </ScrollableContext.Provider>
                     </Animated.View>
                 </PanGestureHandler>
@@ -274,6 +261,8 @@ export const UISheet = {
     Content: SheetContent,
     KeyboardAware: KeyboardAwareSheet,
     KeyboardUnaware: KeyboardUnawareSheet,
+    IntrinsicSize: IntrinsicSizeSheet,
+    FixedSize: FixedSizeSheet,
 };
 
 const styles = StyleSheet.create({

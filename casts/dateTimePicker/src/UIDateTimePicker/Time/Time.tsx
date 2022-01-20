@@ -24,7 +24,7 @@ import {
     AnimateableText,
 } from '@tonlabs/uikit.themes';
 import { UITextView } from '@tonlabs/uikit.inputs';
-import { ScrollView } from '@tonlabs/uikit.scrolls';
+
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { uiLocalized } from '@tonlabs/localization';
 
@@ -174,11 +174,8 @@ export function Time() {
             : inputRef.current?.focus();
     }, []);
 
-    // TODO: move ScrollView to DatePicker to cover date/time mode
-    // TODO: don't forget to set maxHeight for it, to cover small screens
-    //       when date/time won't fit with keyboard open!
     return (
-        <ScrollView contentContainerStyle={styles.wrapper} keyboardShouldPersistTaps="handled">
+        <View style={styles.wrapper}>
             <View style={styles.selectTimeInputContainer}>
                 <UILabel role={TypographyVariants.TitleMedium}>
                     {uiLocalized.DateTimePicker.Time}
@@ -189,7 +186,7 @@ export function Time() {
                 </View>
             </View>
             {haveValidation && <TimeInputWarning isValidTime={isValid} />}
-        </ScrollView>
+        </View>
     );
 }
 

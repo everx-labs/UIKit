@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import * as React from 'react';
 // @ts-expect-error
 import SpringConfig from 'react-native/Libraries/Animated/SpringConfig';
@@ -56,10 +57,66 @@ type ShowStates = 0 | 1 | 2 | 3 | 4;
 // @inline
 const SWIPE_THRESHOLD = 50; // UILayoutConstant.swipeThreshold
 
+function adjustPosition(
+    y: number,
+    normalizedPosition: Animated.SharedValue<number>,
+    positionWithoutRubberBand: Animated.SharedValue<number>,
+    snapPoint: number,
+    hasScroll: boolean,
+) {
+    'worklet';
+
+    const intermediatePosition = normalizedPosition.value - y;
+
+    if (y > 0 && intermediatePosition < snapPoint && !hasScroll) {
+        positionWithoutRubberBand.value += y;
+        normalizedPosition.value =
+            snapPoint -
+            getYWithRubberBandEffect(
+                positionWithoutRubberBand.value,
+                UILayoutConstant.rubberBandEffectDistance,
+            );
+
+        return;
+    }
+
+    positionWithoutRubberBand.value = Math.max(positionWithoutRubberBand.value + y, 0);
+    normalizedPosition.value = intermediatePosition;
+}
+
+function resetPosition(
+    normalizedPosition: Animated.SharedValue<number>,
+    showState: Animated.SharedValue<number>,
+    snapPoint: number,
+    onCloseProp: OnClose | undefined,
+) {
+    'worklet';
+
+    if (normalizedPosition.value - snapPoint > SWIPE_THRESHOLD) {
+        showState.value = SHOW_STATE_CLOSE;
+        if (onCloseProp) {
+            runOnJS(onCloseProp)();
+        }
+        return;
+    }
+    showState.value = SHOW_STATE_OPEN;
+}
+
+export const SheetReadyContext = React.createContext<Animated.SharedValue<boolean> | null>(null);
+
+export function useSheetReady() {
+    const ready = React.useContext(SheetReadyContext);
+
+    if (ready == null) {
+        throw new Error('Are you using `useIntrinsicSizeScrollView` not in `UISheet` context?');
+    }
+
+    return ready;
+}
+
 export function usePosition(
     height: Animated.SharedValue<number>,
     origin: Animated.SharedValue<number>,
-    bottomInset: Animated.SharedValue<number>,
     hasOpenAnimation: boolean = true,
     hasCloseAnimation: boolean = true,
     onCloseProp: OnClose | undefined,
@@ -80,11 +137,30 @@ export function usePosition(
         [showState],
     );
 
-    const position = useSharedValue(0);
+    /**
+     * A position from y=0, to not involve origin here,
+     * as it can be animated separately
+     */
+    const normalizedPosition = useSharedValue(0);
 
     const snapPoint = useDerivedValue(() => {
-        return origin.value - height.value - bottomInset.value;
+        return 0 - height.value;
     });
+
+    /**
+     * Position starting from origin,
+     * that is used in animated `style`
+     */
+    const position = useDerivedValue(() => {
+        return origin.value + normalizedPosition.value;
+    });
+
+    /**
+     * A guard that is used to wait for some calculations
+     * that can influence animation.
+     * For example see `useIntrinsicSizeScrollView`
+     */
+    const ready = useSharedValue(true);
 
     useAnimatedReaction(
         () => {
@@ -92,21 +168,11 @@ export function usePosition(
                 showState: showState.value,
                 height: height.value,
                 snapPoint: snapPoint.value,
+                ready: ready.value,
             };
         },
         (currentState, prevState) => {
-            // Sometimes we could be caught in a situation
-            // when UISheet was asked to be closed (via visible=false)
-            // and at the same time a keyboard was opened
-            // so to prevent opening this guard is needed
-            // (due to the fact that when sheet is open it's in OPENING state)
-            if (
-                currentState.showState === SHOW_STATE_OPENING &&
-                prevState?.snapPoint !== currentState.snapPoint
-            ) {
-                cancelAnimation(position);
-                showState.value = SHOW_STATE_OPEN;
-
+            if (!currentState.ready) {
                 return;
             }
 
@@ -116,17 +182,17 @@ export function usePosition(
 
             if (
                 currentState.showState === SHOW_STATE_OPENING &&
-                prevState?.height !== currentState.height
+                prevState?.snapPoint !== currentState.snapPoint
             ) {
-                cancelAnimation(position);
-                showState.value = SHOW_STATE_OPEN;
+                cancelAnimation(normalizedPosition);
+                normalizedPosition.value = currentState.snapPoint;
 
                 return;
             }
 
             if (currentState.showState === SHOW_STATE_OPEN) {
                 if (hasOpenAnimation) {
-                    position.value = withSpring(
+                    normalizedPosition.value = withSpring(
                         currentState.snapPoint,
                         OpenSpringConfig,
                         isFinished => {
@@ -136,7 +202,7 @@ export function usePosition(
                         },
                     );
                 } else {
-                    position.value = currentState.snapPoint;
+                    normalizedPosition.value = currentState.snapPoint;
                     if (onOpenEndProp) {
                         runOnJS(onOpenEndProp)();
                     }
@@ -149,7 +215,7 @@ export function usePosition(
 
             if (currentState.showState === SHOW_STATE_CLOSE) {
                 if (hasCloseAnimation) {
-                    position.value = withSpring(origin.value, CloseSpringConfig, isFinished => {
+                    normalizedPosition.value = withSpring(0, CloseSpringConfig, isFinished => {
                         if (isFinished) {
                             if (onCloseEndProp) {
                                 runOnJS(onCloseEndProp)();
@@ -158,7 +224,7 @@ export function usePosition(
                         }
                     });
                 } else {
-                    position.value = origin.value;
+                    normalizedPosition.value = origin.value;
                     if (onCloseEndProp) {
                         runOnJS(onCloseEndProp)();
                     }
@@ -183,41 +249,9 @@ export function usePosition(
 
     const yIsNegative = useSharedValue<boolean>(true);
 
-    const adjustPosition = (y: number) => {
-        'worklet';
-
-        const intermediatePosition = position.value - y;
-
-        if (y > 0 && intermediatePosition < snapPoint.value) {
-            positionWithoutRubberBand.value += y;
-            position.value =
-                snapPoint.value -
-                getYWithRubberBandEffect(
-                    positionWithoutRubberBand.value,
-                    UILayoutConstant.rubberBandEffectDistance,
-                );
-
-            return;
-        }
-
-        positionWithoutRubberBand.value = Math.max(positionWithoutRubberBand.value + y, 0);
-        position.value = intermediatePosition;
-    };
-
-    const resetPosition = () => {
-        'worklet';
-
-        if (position.value - snapPoint.value > SWIPE_THRESHOLD) {
-            showState.value = SHOW_STATE_CLOSE;
-            if (onCloseProp) {
-                runOnJS(onCloseProp)();
-            }
-            return;
-        }
-        showState.value = SHOW_STATE_OPEN;
-    };
-
     const scrollRef = useAnimatedRef<Animated.ScrollView>();
+
+    const { hasScroll, hasScrollShared, setHasScroll } = useHasScroll();
 
     const scrollHandler = useAnimatedScrollHandler({
         onScroll: event => {
@@ -228,18 +262,23 @@ export function usePosition(
             const intermediatePosition = position.value - y;
 
             if (y <= 0 || intermediatePosition > snapPoint.value) {
-                adjustPosition(y);
+                adjustPosition(
+                    y,
+                    normalizedPosition,
+                    positionWithoutRubberBand,
+                    snapPoint.value,
+                    hasScrollShared.value,
+                );
                 scrollTo(scrollRef, 0, 0, false);
             }
         },
         onBeginDrag: () => {
             positionWithoutRubberBand.value = 0;
         },
-        onEndDrag: resetPosition,
-        onMomentumEnd: resetPosition,
+        onEndDrag: () => resetPosition(normalizedPosition, showState, snapPoint.value, onCloseProp),
+        onMomentumEnd: () =>
+            resetPosition(normalizedPosition, showState, snapPoint.value, onCloseProp),
     });
-
-    const { hasScroll, hasScrollShared, setHasScroll } = useHasScroll();
 
     const scrollGestureHandler = useAnimatedGestureHandler<
         PanGestureHandlerGestureEvent,
@@ -251,18 +290,30 @@ export function usePosition(
             const y = ctx.translationY - event.translationY;
             ctx.translationY = event.translationY;
 
-            const intermediatePosition = position.value - y;
+            const intermediatePosition = normalizedPosition.value - y;
 
             if (!hasScrollShared.value) {
                 if (y <= 0 || intermediatePosition > snapPoint.value) {
-                    adjustPosition(y);
+                    adjustPosition(
+                        y,
+                        normalizedPosition,
+                        positionWithoutRubberBand,
+                        snapPoint.value,
+                        hasScrollShared.value,
+                    );
                     scrollTo(scrollRef, 0, 0, false);
                     return;
                 }
             }
 
             if (yIsNegative.value && y <= 0) {
-                adjustPosition(y);
+                adjustPosition(
+                    y,
+                    normalizedPosition,
+                    positionWithoutRubberBand,
+                    snapPoint.value,
+                    hasScrollShared.value,
+                );
             }
         },
         onStart: (_event, ctx) => {
@@ -270,7 +321,7 @@ export function usePosition(
             positionWithoutRubberBand.value = 0;
         },
         onEnd: () => {
-            resetPosition();
+            resetPosition(normalizedPosition, showState, snapPoint.value, onCloseProp);
         },
     });
 
@@ -284,14 +335,20 @@ export function usePosition(
             const y = ctx.translationY - event.translationY;
             ctx.translationY = event.translationY;
 
-            adjustPosition(y);
+            adjustPosition(
+                y,
+                normalizedPosition,
+                positionWithoutRubberBand,
+                snapPoint.value,
+                hasScrollShared.value,
+            );
         },
         onStart: (_event, ctx) => {
             ctx.translationY = 0;
             positionWithoutRubberBand.value = 0;
         },
         onEnd: () => {
-            resetPosition();
+            resetPosition(normalizedPosition, showState, snapPoint.value, onCloseProp);
         },
     });
 
@@ -305,5 +362,6 @@ export function usePosition(
         hasScroll,
         setHasScroll,
         position,
+        ready,
     };
 }
