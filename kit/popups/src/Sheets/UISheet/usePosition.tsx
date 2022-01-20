@@ -102,6 +102,18 @@ function resetPosition(
     showState.value = SHOW_STATE_OPEN;
 }
 
+export const SheetReadyContext = React.createContext<Animated.SharedValue<boolean> | null>(null);
+
+export function useSheetReady() {
+    const ready = React.useContext(SheetReadyContext);
+
+    if (ready == null) {
+        throw new Error('Are you using `useIntrinsicSizeScrollView` not in `UISheet` context?');
+    }
+
+    return ready;
+}
+
 export function usePosition(
     height: Animated.SharedValue<number>,
     origin: Animated.SharedValue<number>,
@@ -143,15 +155,27 @@ export function usePosition(
         return origin.value + normalizedPosition.value;
     });
 
+    /**
+     * A guard that is used to wait for some calculations
+     * that can influence animation.
+     * For example see `useIntrinsicSizeScrollView`
+     */
+    const ready = useSharedValue(true);
+
     useAnimatedReaction(
         () => {
             return {
                 showState: showState.value,
                 height: height.value,
                 snapPoint: snapPoint.value,
+                ready: ready.value,
             };
         },
         (currentState, prevState) => {
+            if (!currentState.ready) {
+                return;
+            }
+
             if (currentState.height === 0) {
                 return;
             }
@@ -338,5 +362,6 @@ export function usePosition(
         hasScroll,
         setHasScroll,
         position,
+        ready,
     };
 }

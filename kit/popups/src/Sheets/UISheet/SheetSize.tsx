@@ -10,6 +10,7 @@ import { useSheetOrigin } from './SheetOriginContext';
 
 type SheetSizeContextT = {
     height: Animated.SharedValue<number>;
+    maxPossibleHeight: Animated.SharedValue<number>;
     onSheetLayout?: (ev: LayoutChangeEvent) => void;
     style?: ViewStyle;
 };
@@ -52,6 +53,7 @@ function calcTopSpace(topInset: number) {
 export function IntrinsicSizeSheet({ children }: { children: React.ReactNode }) {
     const { height: cardHeight, onSheetLayout } = useSheetHeight();
 
+    const { height } = useWindowDimensions();
     const insets = useSafeAreaInsets();
     const topSpace = useSharedValue(calcTopSpace(insets.top));
 
@@ -60,7 +62,6 @@ export function IntrinsicSizeSheet({ children }: { children: React.ReactNode }) 
     }, [insets.top, topSpace]);
 
     const origin = useSheetOrigin();
-    const { height } = useWindowDimensions();
 
     const maxPossibleHeight = useDerivedValue(() => {
         return height + origin.value - topSpace.value;
@@ -79,6 +80,7 @@ export function IntrinsicSizeSheet({ children }: { children: React.ReactNode }) 
 
     if (sizeContextValue.current == null) {
         sizeContextValue.current = {
+            maxPossibleHeight,
             height: constrainedHeight,
             onSheetLayout,
             style: cardStyle,
@@ -103,6 +105,7 @@ export function FixedSizeSheet({
 
     if (sizeSizeContextValue.current == null) {
         sizeSizeContextValue.current = {
+            maxPossibleHeight: { value: height },
             height: { value: height },
         };
     }

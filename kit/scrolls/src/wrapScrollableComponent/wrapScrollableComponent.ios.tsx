@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ScrollViewProps } from 'react-native';
+import type { ScrollViewProps, StyleProp, ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { ScrollableContext } from '../Context';
@@ -12,11 +12,21 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
     const AnimatedScrollable = Animated.createAnimatedComponent(ScrollableComponent);
 
     function ScrollableForwarded(
-        props: Props & { children?: React.ReactNode },
+        {
+            containerStyle = { flex: 1 },
+            ...props
+        }: Props & { children?: React.ReactNode; containerStyle: StyleProp<ViewStyle> },
         forwardRef: React.RefObject<typeof AnimatedScrollable>,
     ) {
-        const { horizontal } = props;
-        const { onLayout, onContentSizeChange } = useHasScroll();
+        const {
+            horizontal,
+            onLayout: onLayoutProp,
+            onContentSizeChange: onContentSizeChangeProp,
+        } = props;
+        const { onLayout, onContentSizeChange } = useHasScroll(
+            onLayoutProp,
+            onContentSizeChangeProp,
+        );
 
         const { ref, scrollHandler, registerScrollable, unregisterScrollable } =
             React.useContext(ScrollableContext);
@@ -39,7 +49,7 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
         });
 
         return (
-            <Animated.View style={{ flex: 1 }}>
+            <Animated.View style={containerStyle}>
                 {/* @ts-ignore */}
                 <AnimatedScrollable
                     {...props}

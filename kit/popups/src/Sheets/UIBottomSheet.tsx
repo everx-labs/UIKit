@@ -8,22 +8,37 @@ import { UISheet, UISheetProps } from './UISheet/UISheet';
 
 export type UIBottomSheetProps = UISheetProps & {
     style?: StyleProp<ViewStyle>;
+    hasDefaultInset?: boolean;
 };
 
-export function UIBottomSheet({ children, style, ...rest }: UIBottomSheetProps) {
+export function UIBottomSheet({
+    children,
+    style,
+    hasDefaultInset = true,
+    ...rest
+}: UIBottomSheetProps) {
     const { visible, forId } = rest;
 
     const { bottom: bottomInset } = useSafeAreaInsets();
 
-    const sheetStyle = React.useMemo(() => {
-        const flattenStyle = StyleSheet.flatten(style);
+    const defaultPadding = React.useMemo(() => {
+        if (!hasDefaultInset) {
+            return 0;
+        }
 
+        const flattenStyle = StyleSheet.flatten(style);
+        return Math.max(
+            bottomInset || 0,
+            UILayoutConstant.contentOffset,
+            (flattenStyle?.paddingBottom as number) ?? 0,
+        );
+    }, [style, bottomInset, hasDefaultInset]);
+
+    const sheetStyle = React.useMemo(() => {
         return {
-            paddingBottom:
-                Math.max(bottomInset || 0, (flattenStyle.paddingBottom as number) ?? 0) +
-                UILayoutConstant.rubberBandEffectDistance,
+            paddingBottom: defaultPadding + UILayoutConstant.rubberBandEffectDistance,
         };
-    }, [style, bottomInset]);
+    }, [defaultPadding]);
 
     return (
         <UISheet.Container visible={visible} forId={forId}>

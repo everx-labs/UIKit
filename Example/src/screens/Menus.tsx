@@ -2,19 +2,26 @@
 /* eslint-disable react/no-unused-prop-types */
 import * as React from 'react';
 import { Platform, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIPopover, UIPopoverMenu } from '@tonlabs/uikit.navigation_legacy';
 import { UILargeTitleHeader } from '@tonlabs/uicast.bars';
 import { UIQRCodeScannerSheet } from '@tonlabs/uicast.qr-code-scanner-sheet';
-import { UICardSheet, UIBottomSheet, UIFullscreenSheet, UIPopup } from '@tonlabs/uikit.popups';
+import {
+    UICardSheet,
+    UIBottomSheet,
+    UIFullscreenSheet,
+    UIPopup,
+    useIntrinsicSizeScrollView,
+} from '@tonlabs/uikit.popups';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
 import { UIMaterialTextView } from '@tonlabs/uikit.inputs';
 import { UIBoxButton, UILinkButton } from '@tonlabs/uikit.controls';
 import { UILabel, ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { UIPinCode, UIPinCodeBiometryType } from '@tonlabs/uicast.pin-code';
 import { UICountryPicker } from '@tonlabs/uicast.country-picker';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -134,16 +141,19 @@ function FlexibleSizeBottomSheetContent({
 }: {
     setSheetVisible: (val: boolean) => void;
 }) {
-    const [blocksCount, setBlocksCount] = React.useState(8);
+    const [blocksCount, setBlocksCount] = React.useState(1);
+    const { style: scrollIntrinsicStyle, onContentSizeChange } = useIntrinsicSizeScrollView();
     const insets = useSafeAreaInsets();
 
     return (
         <ScrollView
-            style={{ flex: 1 }}
             contentContainerStyle={{
                 paddingHorizontal: 20,
-                ...Platform.select({ ios: { paddingBottom: insets.bottom }, default: null }),
+                paddingBottom: insets.bottom,
             }}
+            // @ts-expect-error
+            containerStyle={scrollIntrinsicStyle}
+            onContentSizeChange={onContentSizeChange}
         >
             {new Array(blocksCount).fill(null).map((_, index) => (
                 <View
@@ -205,6 +215,7 @@ function FlexibleSizeBottomSheet() {
                     backgroundColor: theme[ColorVariants.BackgroundPrimary],
                     paddingTop: 20,
                 }}
+                hasDefaultInset={false}
             >
                 <FlexibleSizeBottomSheetContent setSheetVisible={setSheetVisible} />
             </UIBottomSheet>

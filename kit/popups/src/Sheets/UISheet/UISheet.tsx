@@ -9,7 +9,7 @@ import { ColorVariants, useColorParts, useStatusBar } from '@tonlabs/uikit.theme
 
 import { ScrollableContext } from '@tonlabs/uikit.scrolls';
 import type { OnOpen, OnClose } from './types';
-import { usePosition } from './usePosition';
+import { SheetReadyContext, usePosition } from './usePosition';
 import { KeyboardAwareSheet, KeyboardUnawareSheet } from './KeyboardAwareSheet';
 import { useSheetOrigin } from './SheetOriginContext';
 import { FixedSizeSheet, IntrinsicSizeSheet, useSheetSize } from './SheetSize';
@@ -97,6 +97,7 @@ function SheetContent({
         hasScroll,
         setHasScroll,
         position,
+        ready,
     } = usePosition(
         height,
         origin,
@@ -199,10 +200,7 @@ function SheetContent({
                     </PanGestureHandler>
                 </Animated.View>
             </TapGestureHandler>
-            <Animated.View
-                style={[styles.sheet, cardStyle, cardSizeStyle]}
-                pointerEvents="box-none"
-            >
+            <Animated.View style={[styles.sheet, cardStyle]} pointerEvents="box-none">
                 <PanGestureHandler
                     maxPointers={1}
                     enabled={onClose != null}
@@ -211,9 +209,11 @@ function SheetContent({
                         ? { waitFor: scrollPanGestureHandlerRef }
                         : null)}
                 >
-                    <Animated.View onLayout={onSheetLayout} style={style}>
+                    <Animated.View onLayout={onSheetLayout} style={[style, cardSizeStyle]}>
                         <ScrollableContext.Provider value={scrollableContextValue}>
-                            {children}
+                            <SheetReadyContext.Provider value={ready}>
+                                {children}
+                            </SheetReadyContext.Provider>
                         </ScrollableContext.Provider>
                     </Animated.View>
                 </PanGestureHandler>

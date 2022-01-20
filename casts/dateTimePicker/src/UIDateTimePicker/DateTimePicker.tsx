@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import dayjs from 'dayjs';
 
 import { useTheme, ColorVariants, UIBackgroundView } from '@tonlabs/uikit.themes';
-import { UIBottomSheet } from '@tonlabs/uikit.popups';
+import { UIBottomSheet, useIntrinsicSizeScrollView } from '@tonlabs/uikit.popups';
 import { UINavigationBar } from '@tonlabs/uicast.bars';
 import { uiLocalized } from '@tonlabs/localization';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
@@ -72,30 +72,31 @@ const headerTitles: Record<UIDateTimePickerMode, string> = {
 
 function Content() {
     const { mode } = useDateTimeState();
+
     switch (mode) {
         default:
         case UIDateTimePickerMode.DateTime:
             return (
-                <ScrollView keyboardShouldPersistTaps="handled">
+                <>
                     <Calendar />
                     <UIBackgroundView color={ColorVariants.LineTertiary} style={styles.divider} />
                     <Time />
-                </ScrollView>
+                </>
             );
         // TODO!!!!
         // case UIDateTimePickerMode.MonthYear:
         //     return <SelectMonth />;
         case UIDateTimePickerMode.Date:
             return (
-                <ScrollView keyboardShouldPersistTaps="handled">
+                <>
                     <Calendar />
-                </ScrollView>
+                </>
             );
         case UIDateTimePickerMode.Time:
             return (
-                <ScrollView keyboardShouldPersistTaps="handled">
+                <>
                     <Time />
-                </ScrollView>
+                </>
             );
     }
 }
@@ -136,6 +137,8 @@ function DatePickerContent(props: UIDateTimePickerProps) {
         isTimeValid,
     };
 
+    const { style, onContentSizeChange } = useIntrinsicSizeScrollView();
+
     return (
         <DateTimeStateProvider value={contextValue}>
             <UINavigationBar
@@ -164,7 +167,14 @@ function DatePickerContent(props: UIDateTimePickerProps) {
                 ]}
             />
             <UIBackgroundView color={ColorVariants.BackgroundTertiary} style={styles.underline} />
-            <Content />
+            <ScrollView
+                // @ts-expect-error
+                containerStyle={style}
+                onContentSizeChange={onContentSizeChange}
+                keyboardShouldPersistTaps="handled"
+            >
+                <Content />
+            </ScrollView>
         </DateTimeStateProvider>
     );
 }
@@ -175,13 +185,12 @@ export function DatePicker(props: UIDateTimePickerProps) {
 
     return (
         <UIBottomSheet
-            style={[
-                {
-                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                },
-            ]}
+            style={{
+                backgroundColor: theme[ColorVariants.BackgroundPrimary],
+            }}
             visible={visible}
             onClose={onClose}
+            hasDefaultInset={false}
         >
             <DatePickerContent {...props} />
         </UIBottomSheet>
