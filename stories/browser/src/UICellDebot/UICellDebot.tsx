@@ -71,6 +71,7 @@ const useStyles = makeStyles(() => ({
         paddingTop: UILayoutConstant.contentInsetVerticalX2,
         alignSelf: 'stretch',
         alignItems: 'center',
+        textAlign: 'center',
     },
     textSkeleton: {
         height: UIConstant.uiCellDebot.textSkeleton.height,
