@@ -59,7 +59,7 @@ export const paddingStyles = {
     },
     paddingTopTiny: {
         // 4
-        paddingTop: UIConstant.smallContentOffset(),
+        paddingTop: UIConstant.tinyContentOffset(),
     },
     paddingTopSmall: {
         // 8
