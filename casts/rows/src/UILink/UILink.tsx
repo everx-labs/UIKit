@@ -25,30 +25,34 @@ export const UILink = React.memo(function UILink({
             disabled={loading}
         >
             <Logo logo={logo} loading={loading} />
-            <UISkeleton show={!!loading} style={styles.textContentSkeleton}>
-                <View style={styles.title}>
-                    <UILabel
-                        role={TypographyVariants.Action}
-                        color={ColorVariants.TextPrimary}
-                        numberOfLines={1}
-                        style={styles.titleLabel}
-                    >
-                        {title}
-                    </UILabel>
-                    <Icon source={UIAssets.icons.ui.blankUp} />
-                </View>
-                {description == null ? null : (
-                    <View>
+            {loading ? (
+                <UISkeleton show style={styles.textContentSkeleton} />
+            ) : (
+                <View style={styles.textContainer}>
+                    <View style={styles.title}>
                         <UILabel
-                            role={TypographyVariants.NarrowParagraphFootnote}
-                            color={ColorVariants.TextSecondary}
+                            role={TypographyVariants.Action}
+                            color={ColorVariants.TextPrimary}
                             numberOfLines={1}
+                            style={styles.titleLabel}
                         >
-                            {description}
+                            {title}
                         </UILabel>
+                        <Icon source={UIAssets.icons.ui.blankUp} />
                     </View>
-                )}
-            </UISkeleton>
+                    {description == null ? null : (
+                        <View>
+                            <UILabel
+                                role={TypographyVariants.NarrowParagraphFootnote}
+                                color={ColorVariants.TextSecondary}
+                                numberOfLines={1}
+                            >
+                                {description}
+                            </UILabel>
+                        </View>
+                    )}
+                </View>
+            )}
         </TouchableOpacity>
     );
 });
@@ -59,9 +63,13 @@ const styles = StyleSheet.create({
         paddingVertical: UILayoutConstant.contentInsetVerticalX4,
         alignItems: 'center',
     },
+    textContainer: {
+        flex: 1,
+    },
     textContentSkeleton: {
         flex: 1,
         borderRadius: UIConstant.uiLink.row.borderRadius,
+        alignSelf: 'stretch',
     },
     title: {
         flexDirection: 'row',
