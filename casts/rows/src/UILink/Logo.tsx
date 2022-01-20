@@ -6,20 +6,25 @@ import type { LogoProps } from './types';
 import { UIConstant } from '../constants';
 
 export const Logo: React.FC<LogoProps> = ({ logo, loading }: LogoProps) => {
-    if (!logo) {
+    if (loading) {
         return (
             <View style={styles.container}>
-                <UISkeleton show={!!loading} style={styles.skeleton}>
+                <UISkeleton show style={styles.skeleton}>
                     <View style={styles.image} />
                 </UISkeleton>
             </View>
         );
     }
+    if (!logo) {
+        return (
+            <View style={styles.container}>
+                <View style={styles.image} />
+            </View>
+        );
+    }
     return (
         <View style={styles.container}>
-            <UISkeleton show={!!loading} style={styles.skeleton}>
-                <UIImage source={logo} style={styles.image} />
-            </UISkeleton>
+            <UIImage source={logo} style={styles.image} />
         </View>
     );
 };
