@@ -10,8 +10,12 @@ export const ColumnStatusContext = React.createContext<ColumnStatus>({
     columnState: 'NonPressable',
 });
 
-export function Container({ children }: ContainerProps) {
-    return <View style={styles.container}>{children}</View>;
+export function Container({ children, id }: ContainerProps) {
+    return (
+        <View key={id} style={styles.container}>
+            {children}
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({

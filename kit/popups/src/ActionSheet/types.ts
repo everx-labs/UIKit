@@ -1,3 +1,6 @@
+import type React from 'react';
+import type { ContainerProps, UIForegroundType } from '../UIForeground';
+
 // eslint-disable-next-line no-shadow
 export enum UIActionSheetActionType {
     Neutral = 'Neutral',
@@ -21,6 +24,10 @@ export type UIActionSheetActionProps = {
     onPress: () => void;
 };
 
+export type UIActionSheetContainerChildType = React.ReactElement<
+    UIActionSheetActionProps | ContainerProps
+>;
+
 export type UIActionSheetContainerProps = {
     /**
      * State of visibility
@@ -35,8 +42,8 @@ export type UIActionSheetContainerProps = {
      * There can be no more than one child with the "Cancel" UIActionSheetActionType.
      */
     children:
-        | React.ReactElement<UIActionSheetActionProps>
-        | React.ReactElement<UIActionSheetActionProps>[];
+        | UIActionSheetContainerChildType
+        | (UIActionSheetContainerChildType | UIActionSheetContainerChildType[])[];
     /**
      * ID for usage in tests
      */
@@ -49,4 +56,6 @@ export type UIActionSheetContainerProps = {
 export type IUIActionSheet = React.FC<UIActionSheetContainerProps> & {
     /** Action component */
     Action: React.FC<UIActionSheetActionProps> & { Type: typeof UIActionSheetActionType };
-};
+    /** CustomAction component */
+    CustomAction: UIForegroundType['Container'];
+} & Omit<UIForegroundType, 'Container'>;

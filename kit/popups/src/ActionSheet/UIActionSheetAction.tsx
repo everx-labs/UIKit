@@ -1,29 +1,20 @@
 import * as React from 'react';
-import { View } from 'react-native';
-import { UIBoxButton, UIBoxButtonType, UIBoxButtonVariant } from '@tonlabs/uikit.controls';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { UILabel, TypographyVariants, ColorVariants } from '@tonlabs/uikit.themes';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIActionSheetActionProps, UIActionSheetActionType } from './types';
 
-const getActionVariant = (type: UIActionSheetActionType): UIBoxButtonVariant => {
+const getColor = (type: UIActionSheetActionType): ColorVariants => {
     switch (type) {
         case UIActionSheetActionType.Negative:
-            return UIBoxButtonVariant.Negative;
+            return ColorVariants.TextNegative;
         case UIActionSheetActionType.Cancel:
-        case UIActionSheetActionType.Neutral:
+            return ColorVariants.TextSecondary;
         case UIActionSheetActionType.Disabled:
-        default:
-            return UIBoxButtonVariant.Neutral;
-    }
-};
-
-const getBoxButtonType = (type: UIActionSheetActionType): UIBoxButtonType => {
-    switch (type) {
-        case UIActionSheetActionType.Cancel:
-            return UIBoxButtonType.Nulled;
-        case UIActionSheetActionType.Negative:
+            return ColorVariants.TextTertiary;
         case UIActionSheetActionType.Neutral:
-        case UIActionSheetActionType.Disabled:
         default:
-            return UIBoxButtonType.Tertiary;
+            return ColorVariants.TextPrimary;
     }
 };
 
@@ -32,18 +23,25 @@ export const UIActionSheetAction: React.FC<UIActionSheetActionProps> = ({
     title,
     onPress,
 }: UIActionSheetActionProps) => {
-    const variant: UIBoxButtonVariant = getActionVariant(type);
-    const boxButtonType: UIBoxButtonType = getBoxButtonType(type);
+    const color = getColor(type);
+
     return (
-        <View key={title}>
-            <UIBoxButton
-                testID={`${title}_action_button`}
-                type={boxButtonType}
-                variant={variant}
-                disabled={type === 'Disabled'}
-                title={title}
-                onPress={onPress}
-            />
-        </View>
+        <TouchableOpacity
+            key={title}
+            testID={`${title}_action_button`}
+            disabled={type === 'Disabled'}
+            onPress={onPress}
+            style={styles.container}
+        >
+            <UILabel role={TypographyVariants.Action} color={color} numberOfLines={3}>
+                {title}
+            </UILabel>
+        </TouchableOpacity>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        paddingVertical: UILayoutConstant.contentInsetVerticalX4,
+    },
+});

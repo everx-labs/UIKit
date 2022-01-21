@@ -115,6 +115,10 @@ export type ColumnStatus = {
 export type ContainerProps = {
     /** only UIForeground Columns can be passed to children */
     children: PrimaryColumn | [PrimaryColumn, SecondaryColumn];
+    /**
+     * The unique id
+     */
+    id?: string;
 };
 
 export type UIForegroundType = {

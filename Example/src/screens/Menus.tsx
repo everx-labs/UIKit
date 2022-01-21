@@ -8,15 +8,117 @@ import { UIConstant } from '@tonlabs/uikit.core';
 import { UIPopover, UIPopoverMenu } from '@tonlabs/uikit.navigation_legacy';
 import { UILargeTitleHeader } from '@tonlabs/uicast.bars';
 import { UIQRCodeScannerSheet } from '@tonlabs/uicast.qr-code-scanner-sheet';
-import { UICardSheet, UIBottomSheet, UIFullscreenSheet, UIPopup } from '@tonlabs/uikit.popups';
+import {
+    UICardSheet,
+    UIBottomSheet,
+    UIFullscreenSheet,
+    UIPopup,
+    UIActionSheetContainerChildType,
+} from '@tonlabs/uikit.popups';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
 import { UIMaterialTextView } from '@tonlabs/uikit.inputs';
 import { UIBoxButton, UILinkButton } from '@tonlabs/uikit.controls';
 import { UILabel, ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIPinCode, UIPinCodeBiometryType } from '@tonlabs/uicast.pin-code';
 import { UICountryPicker } from '@tonlabs/uicast.country-picker';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
+
+const foregroundList: UIActionSheetContainerChildType[] = [
+    <UIPopup.ActionSheet.CustomAction>
+        <UIPopup.ActionSheet.PrimaryColumn>
+            <UIPopup.ActionSheet.ActionCell onPress={() => null} title="Action" />
+        </UIPopup.ActionSheet.PrimaryColumn>
+    </UIPopup.ActionSheet.CustomAction>,
+
+    <UIPopup.ActionSheet.CustomAction>
+        <UIPopup.ActionSheet.PrimaryColumn>
+            <UIPopup.ActionSheet.ActionCell title="Section" />
+        </UIPopup.ActionSheet.PrimaryColumn>
+        <UIPopup.ActionSheet.SecondaryColumn>
+            <UIPopup.ActionSheet.TextCell>Text</UIPopup.ActionSheet.TextCell>
+        </UIPopup.ActionSheet.SecondaryColumn>
+    </UIPopup.ActionSheet.CustomAction>,
+
+    <UIPopup.ActionSheet.CustomAction>
+        <UIPopup.ActionSheet.PrimaryColumn>
+            <UIPopup.ActionSheet.TextCell>Text</UIPopup.ActionSheet.TextCell>
+        </UIPopup.ActionSheet.PrimaryColumn>
+        <UIPopup.ActionSheet.SecondaryColumn>
+            <UIPopup.ActionSheet.ActionCell title="Action" onPress={() => null} />
+        </UIPopup.ActionSheet.SecondaryColumn>
+    </UIPopup.ActionSheet.CustomAction>,
+
+    <UIPopup.ActionSheet.CustomAction>
+        <UIPopup.ActionSheet.PrimaryColumn onPress={() => null} negative>
+            <UIPopup.ActionSheet.ActionCell title="Negative" />
+        </UIPopup.ActionSheet.PrimaryColumn>
+        <UIPopup.ActionSheet.SecondaryColumn>
+            <UIPopup.ActionSheet.NumberCell>{1234567890}</UIPopup.ActionSheet.NumberCell>
+        </UIPopup.ActionSheet.SecondaryColumn>
+    </UIPopup.ActionSheet.CustomAction>,
+
+    <UIPopup.ActionSheet.CustomAction>
+        <UIPopup.ActionSheet.PrimaryColumn onPress={() => null}>
+            <UIPopup.ActionSheet.ActionCell title="Action" />
+        </UIPopup.ActionSheet.PrimaryColumn>
+        <UIPopup.ActionSheet.SecondaryColumn>
+            <UIPopup.ActionSheet.IconCell source={UIAssets.icons.ui.camera} onPress={() => null} />
+        </UIPopup.ActionSheet.SecondaryColumn>
+    </UIPopup.ActionSheet.CustomAction>,
+
+    <UIPopup.ActionSheet.CustomAction>
+        <UIPopup.ActionSheet.PrimaryColumn>
+            <UIPopup.ActionSheet.IconCell source={UIAssets.icons.ui.camera} />
+            <UIPopup.ActionSheet.ActionCell title="Section" />
+        </UIPopup.ActionSheet.PrimaryColumn>
+        <UIPopup.ActionSheet.SecondaryColumn>
+            <UIPopup.ActionSheet.TextCell>Text</UIPopup.ActionSheet.TextCell>
+            <UIPopup.ActionSheet.IconCell source={UIAssets.icons.ui.camera} disabled />
+        </UIPopup.ActionSheet.SecondaryColumn>
+    </UIPopup.ActionSheet.CustomAction>,
+
+    <UIPopup.ActionSheet.CustomAction>
+        <UIPopup.ActionSheet.PrimaryColumn>
+            <UIPopup.ActionSheet.IconCell
+                source={UIAssets.icons.ui.camera}
+                tintColor={ColorVariants.TextAccent}
+            />
+            <UIPopup.ActionSheet.TextCell>Text</UIPopup.ActionSheet.TextCell>
+        </UIPopup.ActionSheet.PrimaryColumn>
+        <UIPopup.ActionSheet.SecondaryColumn>
+            <UIPopup.ActionSheet.ActionCell title="Action" onPress={() => null} />
+            <UIPopup.ActionSheet.IconCell source={UIAssets.icons.ui.camera} onPress={() => null} />
+        </UIPopup.ActionSheet.SecondaryColumn>
+    </UIPopup.ActionSheet.CustomAction>,
+
+    <UIPopup.ActionSheet.CustomAction>
+        <UIPopup.ActionSheet.PrimaryColumn onPress={() => null} negative>
+            <UIPopup.ActionSheet.IconCell source={UIAssets.icons.ui.camera} />
+            <UIPopup.ActionSheet.ActionCell title="Negative" />
+        </UIPopup.ActionSheet.PrimaryColumn>
+        <UIPopup.ActionSheet.SecondaryColumn>
+            <UIPopup.ActionSheet.NumberCell>{1234567890}</UIPopup.ActionSheet.NumberCell>
+            <UIPopup.ActionSheet.IconCell source={UIAssets.icons.ui.camera} onPress={() => null} />
+        </UIPopup.ActionSheet.SecondaryColumn>
+    </UIPopup.ActionSheet.CustomAction>,
+
+    <UIPopup.ActionSheet.CustomAction>
+        <UIPopup.ActionSheet.PrimaryColumn onPress={() => null}>
+            <UIPopup.ActionSheet.IconCell source={UIAssets.icons.ui.camera} />
+            <UIPopup.ActionSheet.ActionCell title="Action" />
+        </UIPopup.ActionSheet.PrimaryColumn>
+        <UIPopup.ActionSheet.SecondaryColumn>
+            <UIPopup.ActionSheet.IconCell source={UIAssets.icons.ui.camera} onPress={() => null} />
+            <UIPopup.ActionSheet.IconCell
+                source={UIAssets.icons.ui.camera}
+                onPress={() => null}
+                tintColor={ColorVariants.TextAccent}
+            />
+        </UIPopup.ActionSheet.SecondaryColumn>
+    </UIPopup.ActionSheet.CustomAction>,
+];
 
 function PinCodeMenu() {
     const theme = useTheme();
@@ -188,13 +290,6 @@ function BigBottomLargeTitleSheet() {
     );
 }
 
-const getCallback = (message: string, setVisible: (visible: boolean) => void) => () => {
-    console.log(message);
-    if (message.includes('Cancel')) {
-        setVisible(false);
-    }
-};
-
 export const Menus = () => {
     const theme = useTheme();
     const [actionSheetVisible, setActionSheetVisible] = React.useState(false);
@@ -203,6 +298,24 @@ export const Menus = () => {
     const [bottomSheetVisible, setBottomSheetVisible] = React.useState(false);
     const [bottomSheetVisible2, setBottomSheetVisible2] = React.useState(false);
     const [countryPickerVisible, setCountryPickerVisible] = React.useState(false);
+
+    const [visibleActionStartIndex, setVisibleActionStartIndex] = React.useState<number>(0);
+
+    const getCallback = React.useCallback(
+        (message: string) => () => {
+            console.log(message);
+            if (message.includes('Cancel')) {
+                setActionSheetVisible(false);
+            }
+            setVisibleActionStartIndex(prev => {
+                if (prev > foregroundList.length - 4) {
+                    return 0;
+                }
+                return prev + 3;
+            });
+        },
+        [],
+    );
 
     const [qrVisible, setQrVisible] = React.useState(false);
     return (
@@ -218,25 +331,26 @@ export const Menus = () => {
                         visible={actionSheetVisible}
                         note="A short description of the actions goes here."
                     >
+                        {foregroundList.slice(visibleActionStartIndex, visibleActionStartIndex + 3)}
                         <UIPopup.ActionSheet.Action
                             type={UIPopup.ActionSheet.Action.Type.Disabled}
                             title="Disabled Action"
-                            onPress={getCallback('Disabled Action', setActionSheetVisible)}
+                            onPress={getCallback('Disabled Action')}
                         />
                         <UIPopup.ActionSheet.Action
                             type={UIPopup.ActionSheet.Action.Type.Neutral}
                             title="Neutral Action"
-                            onPress={getCallback('Neutral Action', setActionSheetVisible)}
+                            onPress={getCallback('Neutral Action')}
                         />
                         <UIPopup.ActionSheet.Action
                             type={UIPopup.ActionSheet.Action.Type.Negative}
                             title="Negative Action"
-                            onPress={getCallback('Negative Action', setActionSheetVisible)}
+                            onPress={getCallback('Negative Action')}
                         />
                         <UIPopup.ActionSheet.Action
                             type={UIPopup.ActionSheet.Action.Type.Cancel}
                             title="Cancel Action"
-                            onPress={getCallback('Cancel Action', setActionSheetVisible)}
+                            onPress={getCallback('Cancel Action')}
                         />
                     </UIPopup.ActionSheet>
                 </View>
