@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { PartStatusContext } from '../Container';
+import { TouchableWrapper } from '../TouchableWrapper';
 import type { PrimaryPartProps, PartStatus } from '../types';
 
 export function PrimaryPart({ children, onPress, disabled, negative }: PrimaryPartProps) {
@@ -14,13 +15,9 @@ export function PrimaryPart({ children, onPress, disabled, negative }: PrimaryPa
     }, [disabled, negative, onPress]);
 
     return (
-        <TouchableOpacity
-            style={styles.primaryPart}
-            disabled={!onPress || disabled}
-            onPress={onPress}
-        >
+        <TouchableWrapper style={styles.primaryPart} disabled={disabled} onPress={onPress}>
             <PartStatusContext.Provider value={partStatus}>{children}</PartStatusContext.Provider>
-        </TouchableOpacity>
+        </TouchableWrapper>
     );
 }
 

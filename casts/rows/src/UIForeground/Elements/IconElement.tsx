@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIImage } from '@tonlabs/uikit.media';
 import type { UIForegroundIconProps } from '../types';
 import { PartStatusContext } from '../Container';
 import { usePressableElementColorByPartStatus, useMergedPartStatus } from '../hooks';
+import { TouchableWrapper } from '../TouchableWrapper';
 
 export function IconElement({
     source,
@@ -20,13 +21,13 @@ export function IconElement({
         return null;
     }
     return (
-        <TouchableOpacity
-            disabled={partStatus.partState === 'Pressable' || !onPress || disabled}
+        <TouchableWrapper
+            disabled={partStatus.partState === 'Pressable' || disabled}
             onPress={onPress}
             style={styles.container}
         >
             <UIImage source={source} tintColor={tintColorProp || tintColor} style={styles.image} />
-        </TouchableOpacity>
+        </TouchableWrapper>
     );
 }
 

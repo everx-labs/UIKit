@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { UILabel, TypographyVariants } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UIForegroundActionProps } from '../types';
 import { usePressableElementColorByPartStatus, useMergedPartStatus } from '../hooks';
 import { PartStatusContext } from '../Container';
+import { TouchableWrapper } from '../TouchableWrapper';
 
 export function ActionElement({ title, onPress, disabled, negative }: UIForegroundActionProps) {
     const partStatus = React.useContext(PartStatusContext);
@@ -13,9 +14,9 @@ export function ActionElement({ title, onPress, disabled, negative }: UIForegrou
     const actionColor = usePressableElementColorByPartStatus(mergedPartStatus);
 
     return (
-        <TouchableOpacity
+        <TouchableWrapper
             testID={`${title}_action_button`}
-            disabled={partStatus.partState === 'Pressable' || !onPress || disabled}
+            disabled={partStatus.partState === 'Pressable' || disabled}
             onPress={onPress}
             style={[
                 styles.container,
@@ -34,7 +35,7 @@ export function ActionElement({ title, onPress, disabled, negative }: UIForegrou
             >
                 {title}
             </UILabel>
-        </TouchableOpacity>
+        </TouchableWrapper>
     );
 }
 
