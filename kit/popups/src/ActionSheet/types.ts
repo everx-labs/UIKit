@@ -1,13 +1,3 @@
-import type {
-    PrimaryColumnProps,
-    SecondaryColumnProps,
-    UIForegroundActionProps,
-    UIForegroundIconProps,
-    UIForegroundNumberProps,
-    UIForegroundSectionProps,
-    UIForegroundTextProps,
-} from '../UIForeground';
-
 // eslint-disable-next-line no-shadow
 export enum UIActionSheetActionType {
     Neutral = 'Neutral',
@@ -59,36 +49,4 @@ export type UIActionSheetContainerProps = {
 export type IUIActionSheet = React.FC<UIActionSheetContainerProps> & {
     /** Action component */
     Action: React.FC<UIActionSheetActionProps> & { Type: typeof UIActionSheetActionType };
-
-    // ================== Columns: ==================
-    /**
-     * Container of the Primary (Left) column of the UIForeground
-     */
-    PrimaryColumn: React.FC<PrimaryColumnProps>;
-    /**
-     * Container of the Secondary (Right) column of the UIForeground
-     */
-    SecondaryColumn: React.FC<SecondaryColumnProps>;
-
-    // ================== Cells: ==================
-    /**
-     * Pressable cell (Button)
-     */
-    ActionCell: React.FC<UIForegroundActionProps>;
-    /**
-     * Icon of the UIForeground
-     */
-    IconCell: React.FC<UIForegroundIconProps>;
-    /**
-     * Numerical value of the UIForeground
-     */
-    NumberCell: React.FC<UIForegroundNumberProps>;
-    /**
-     * Bold text content of the UIForeground
-     */
-    SectionCell: React.FC<UIForegroundSectionProps>;
-    /**
-     * Text content of the UIForeground
-     */
-    TextCell: React.FC<UIForegroundTextProps>;
 };
