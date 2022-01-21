@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import type { ContainerProps, PartStatus } from './types';
+import type { ContainerProps, ColumnStatus } from './types';
 
-export const PartStatusContext = React.createContext<PartStatus>({
+export const ColumnStatusContext = React.createContext<ColumnStatus>({
     disabled: undefined,
     negative: undefined,
-    partType: 'Primary',
-    partState: 'NonPressable',
+    columnType: 'Primary',
+    columnState: 'NonPressable',
 });
 
 export function Container({ children }: ContainerProps) {

@@ -1,5 +1,5 @@
 export * from './UIForeground';
-export * from './Parts';
-export * from './Elements';
+export * from './Columns';
+export * from './Cells';
 
 export * from './types';

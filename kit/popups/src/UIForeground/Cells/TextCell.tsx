@@ -2,31 +2,31 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { UILabel, TypographyVariants } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import type { UIForegroundNumberProps } from '../types';
-import { useTextColorByPartStatus } from '../hooks';
-import { PartStatusContext } from '../Container';
+import type { UIForegroundTextProps } from '../types';
+import { useTextColorByColumnStatus } from '../hooks';
+import { ColumnStatusContext } from '../Container';
 
-export function NumberElement({ children }: UIForegroundNumberProps) {
-    const partStatus = React.useContext(PartStatusContext);
-    const color = useTextColorByPartStatus(partStatus);
+export function TextCell({ children }: UIForegroundTextProps) {
+    const columnStatus = React.useContext(ColumnStatusContext);
+    const color = useTextColorByColumnStatus(columnStatus);
 
     return (
         <View
             style={[
                 styles.container,
-                partStatus.partType === 'Primary'
+                columnStatus.columnType === 'Primary'
                     ? styles.primaryContainer
                     : styles.secondaryContainer,
             ]}
         >
             <UILabel
-                role={TypographyVariants.MonoText}
+                role={TypographyVariants.ParagraphText}
                 color={color}
                 numberOfLines={3}
                 style={
-                    partStatus.partType === 'Primary'
-                        ? styles.primaryNumber
-                        : styles.secondaryNumber
+                    columnStatus.columnType === 'Primary'
+                        ? styles.primaryText
+                        : styles.secondaryText
                 }
             >
                 {children}
@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
     secondaryContainer: {
         flexShrink: 1,
     },
-    primaryNumber: {},
-    secondaryNumber: {
+    primaryText: {},
+    secondaryText: {
         textAlign: 'right',
     },
 });

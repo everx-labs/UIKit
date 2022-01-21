@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { ColorVariants } from '@tonlabs/uikit.themes';
-import type { PartStatus } from './types';
+import type { ColumnStatus } from './types';
 
-export function usePressableElementColorByPartStatus({
+export function usePressableCellColorByColumnStatus({
     disabled,
     negative,
-}: PartStatus): ColorVariants {
+}: ColumnStatus): ColorVariants {
     return React.useMemo(() => {
         if (disabled) {
             return ColorVariants.TextTertiary;
@@ -17,28 +17,28 @@ export function usePressableElementColorByPartStatus({
     }, [disabled, negative]);
 }
 
-export function useTextColorByPartStatus({ partType }: PartStatus): ColorVariants {
+export function useTextColorByColumnStatus({ columnType }: ColumnStatus): ColorVariants {
     return React.useMemo(() => {
-        if (partType === 'Primary') {
+        if (columnType === 'Primary') {
             return ColorVariants.TextSecondary;
         }
         return ColorVariants.TextTertiary;
-    }, [partType]);
+    }, [columnType]);
 }
 
-export function useMergedPartStatus(
-    partStatus: PartStatus,
+export function useMergedColumnStatus(
+    columnStatus: ColumnStatus,
     disabled: boolean | undefined,
     negative: boolean | undefined,
     onPress: (() => void) | undefined,
-): PartStatus {
+): ColumnStatus {
     return React.useMemo(() => {
-        if (partStatus.partState === 'Pressable') {
+        if (columnStatus.columnState === 'Pressable') {
             return {
-                ...partStatus,
-                negative: negative !== undefined ? negative : partStatus.negative,
+                ...columnStatus,
+                negative: negative !== undefined ? negative : columnStatus.negative,
             };
         }
-        return { ...partStatus, disabled, negative, onPress };
-    }, [disabled, negative, partStatus, onPress]);
+        return { ...columnStatus, disabled, negative, onPress };
+    }, [disabled, negative, columnStatus, onPress]);
 }

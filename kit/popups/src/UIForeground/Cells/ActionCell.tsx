@@ -3,24 +3,24 @@ import { StyleSheet } from 'react-native';
 import { UILabel, TypographyVariants } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UIForegroundActionProps } from '../types';
-import { usePressableElementColorByPartStatus, useMergedPartStatus } from '../hooks';
-import { PartStatusContext } from '../Container';
+import { usePressableCellColorByColumnStatus, useMergedColumnStatus } from '../hooks';
+import { ColumnStatusContext } from '../Container';
 import { TouchableWrapper } from '../TouchableWrapper';
 
-export function ActionElement({ title, onPress, disabled, negative }: UIForegroundActionProps) {
-    const partStatus = React.useContext(PartStatusContext);
+export function ActionCell({ title, onPress, disabled, negative }: UIForegroundActionProps) {
+    const columnStatus = React.useContext(ColumnStatusContext);
 
-    const mergedPartStatus = useMergedPartStatus(partStatus, disabled, negative, onPress);
-    const actionColor = usePressableElementColorByPartStatus(mergedPartStatus);
+    const mergedColumnStatus = useMergedColumnStatus(columnStatus, disabled, negative, onPress);
+    const actionColor = usePressableCellColorByColumnStatus(mergedColumnStatus);
 
     return (
         <TouchableWrapper
             testID={`${title}_action_button`}
-            disabled={partStatus.partState === 'Pressable' || disabled}
+            disabled={columnStatus.columnState === 'Pressable' || disabled}
             onPress={onPress}
             style={[
                 styles.container,
-                partStatus.partType === 'Primary'
+                columnStatus.columnType === 'Primary'
                     ? styles.primaryContainer
                     : styles.secondaryContainer,
             ]}
@@ -30,7 +30,9 @@ export function ActionElement({ title, onPress, disabled, negative }: UIForegrou
                 color={actionColor}
                 numberOfLines={3}
                 style={
-                    partStatus.partType === 'Primary' ? styles.primaryText : styles.secondaryText
+                    columnStatus.columnType === 'Primary'
+                        ? styles.primaryText
+                        : styles.secondaryText
                 }
             >
                 {title}

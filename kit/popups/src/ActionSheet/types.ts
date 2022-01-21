@@ -1,6 +1,6 @@
 import type {
-    PrimaryPartProps,
-    SecondaryPartProps,
+    PrimaryColumnProps,
+    SecondaryColumnProps,
     UIForegroundActionProps,
     UIForegroundIconProps,
     UIForegroundNumberProps,
@@ -60,35 +60,35 @@ export type IUIActionSheet = React.FC<UIActionSheetContainerProps> & {
     /** Action component */
     Action: React.FC<UIActionSheetActionProps> & { Type: typeof UIActionSheetActionType };
 
-    // ================== Parts: ==================
+    // ================== Columns: ==================
     /**
-     * Container of the Primary (Left) part of the UIForeground
+     * Container of the Primary (Left) column of the UIForeground
      */
-    PrimaryPart: React.FC<PrimaryPartProps>;
+    PrimaryColumn: React.FC<PrimaryColumnProps>;
     /**
-     * Container of the Secondary (Right) part of the UIForeground
+     * Container of the Secondary (Right) column of the UIForeground
      */
-    SecondaryPart: React.FC<SecondaryPartProps>;
+    SecondaryColumn: React.FC<SecondaryColumnProps>;
 
-    // ================== Elements: ==================
+    // ================== Cells: ==================
     /**
-     * Pressable element (Button) of the UIForeground
+     * Pressable cell (Button)
      */
-    ActionElement: React.FC<UIForegroundActionProps>;
+    ActionCell: React.FC<UIForegroundActionProps>;
     /**
      * Icon of the UIForeground
      */
-    IconElement: React.FC<UIForegroundIconProps>;
+    IconCell: React.FC<UIForegroundIconProps>;
     /**
      * Numerical value of the UIForeground
      */
-    NumberElement: React.FC<UIForegroundNumberProps>;
+    NumberCell: React.FC<UIForegroundNumberProps>;
     /**
      * Bold text content of the UIForeground
      */
-    SectionElement: React.FC<UIForegroundSectionProps>;
+    SectionCell: React.FC<UIForegroundSectionProps>;
     /**
      * Text content of the UIForeground
      */
-    TextElement: React.FC<UIForegroundTextProps>;
+    TextCell: React.FC<UIForegroundTextProps>;
 };

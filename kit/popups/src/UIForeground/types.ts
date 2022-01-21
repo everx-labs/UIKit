@@ -76,14 +76,14 @@ export type SectionElementComponent = React.ReactElement<UIForegroundSectionProp
 export type TextElementComponent = React.ReactElement<UIForegroundTextProps>;
 // ================== End of Elements Types ==================
 
-// ================== Start of Parts Types: ==================
+// ================== Start of Columns Types: ==================
 
 export type ForegroundPrimaryElements =
     | ActionElementComponent
     | SectionElementComponent
     | TextElementComponent;
 
-export type PrimaryPartProps = PressableProps & {
+export type PrimaryColumnProps = PressableProps & {
     /** only UIForeground Elements can be passed to children */
     children: ForegroundPrimaryElements | [IconElementComponent, ForegroundPrimaryElements];
 };
@@ -94,27 +94,27 @@ export type ForegroundSecondaryElements =
     | NumberElementComponent
     | TextElementComponent;
 
-export type SecondaryPartProps = PressableProps & {
+export type SecondaryColumnProps = PressableProps & {
     /** only UIForeground Elements can be passed to children */
     children: ForegroundSecondaryElements | [ForegroundSecondaryElements, IconElementComponent];
 };
 
-type PrimaryPart = React.ReactElement<PrimaryPartProps>;
-type SecondaryPart = React.ReactElement<SecondaryPartProps>;
+type PrimaryColumn = React.ReactElement<PrimaryColumnProps>;
+type SecondaryColumn = React.ReactElement<SecondaryColumnProps>;
 
-export type PartType = 'Primary' | 'Secondary';
-export type PartState = 'Pressable' | 'NonPressable';
-export type PartStatus = {
+export type ColumnType = 'Primary' | 'Secondary';
+export type ColumnState = 'Pressable' | 'NonPressable';
+export type ColumnStatus = {
     disabled: boolean | undefined;
     negative: boolean | undefined;
-    partType: PartType;
-    partState: PartState;
+    columnType: ColumnType;
+    columnState: ColumnState;
 };
-// ================== End of Parts Types ==================
+// ================== End of Columns Types ==================
 
 export type ContainerProps = {
-    /** only UIForeground Parts can be passed to children */
-    children: PrimaryPart | [PrimaryPart, SecondaryPart];
+    /** only UIForeground Columns can be passed to children */
+    children: PrimaryColumn | [PrimaryColumn, SecondaryColumn];
 };
 
 export type UIForegroundType = {
@@ -123,35 +123,31 @@ export type UIForegroundType = {
      */
     Container: React.FC<ContainerProps>;
 
-    // ================== Parts: ==================
+    // ================== Columns: ==================
     /**
-     * Container of the Primary (Left) part of the UIForeground
+     * Container of the Primary (Left) column of the UIForeground
      */
-    PrimaryPart: React.FC<PrimaryPartProps>;
+    PrimaryColumn: React.FC<PrimaryColumnProps>;
     /**
-     * Container of the Secondary (Right) part of the UIForeground
+     * Container of the Secondary (Right) column of the UIForeground
      */
-    SecondaryPart: React.FC<SecondaryPartProps>;
+    SecondaryColumn: React.FC<SecondaryColumnProps>;
 
-    // ================== Elements: ==================
+    // ================== Cells: ==================
     /**
      * Pressable element (Button) of the UIForeground
      */
-    ActionElement: React.FC<UIForegroundActionProps>;
+    ActionCell: React.FC<UIForegroundActionProps>;
     /**
      * Icon of the UIForeground
      */
-    IconElement: React.FC<UIForegroundIconProps>;
+    IconCell: React.FC<UIForegroundIconProps>;
     /**
      * Numerical value of the UIForeground
      */
-    NumberElement: React.FC<UIForegroundNumberProps>;
-    /**
-     * Bold text content of the UIForeground
-     */
-    SectionElement: React.FC<UIForegroundSectionProps>;
+    NumberCell: React.FC<UIForegroundNumberProps>;
     /**
      * Text content of the UIForeground
      */
-    TextElement: React.FC<UIForegroundTextProps>;
+    TextCell: React.FC<UIForegroundTextProps>;
 };
