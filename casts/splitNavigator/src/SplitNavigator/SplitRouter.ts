@@ -372,7 +372,7 @@ class SplitUnfoldedRouter<ParamList extends ParamListBase = ParamListBase> {
                 ...state,
                 index: prevRouteIndex,
                 tabIndex: prevRouteIndex,
-                history: state.history.filter(r => r !== prevRouteIndex).concat([prevRouteIndex]),
+                history: state.history.filter(r => r !== state.index),
                 routes: applyTabNavigateActionToRoutes(state, action, options, prevRouteIndex),
             };
         }
@@ -599,19 +599,17 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
             if (state.nestedStack == null) {
                 return null;
             }
-
-            const currentTabRoute = state.routes[state.tabIndex];
-            // If it's main, and it has items in stack, try to go_back there
-            if (currentTabRoute.name === MAIN_SCREEN_NAME && state.nestedStack.length > 0) {
+            // If it has items in stack, try to go_back there
+            if (state.nestedStack.length > 1) {
                 const nestedStack = state.nestedStack.slice(0, state.nestedStack.length - 1);
                 return {
                     ...state,
                     nestedStack,
-                    history: state.history.slice(0, state.history.length - 2),
+                    history: state.history.slice(0, state.history.length - 1),
                     index: nestedStack[nestedStack.length - 1],
                 };
             }
-            // If it isn't main, then do the same thing as in unfolded router
+            // If it isn't stack, then do the same thing as in unfolded router
             if (state.history.length < 2) {
                 return null;
             }
@@ -620,7 +618,7 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
                 ...state,
                 index: prevRouteIndex,
                 tabIndex: prevRouteIndex,
-                history: state.history.filter(r => r !== prevRouteIndex).concat([prevRouteIndex]),
+                history: state.history.filter(r => r !== prevRouteIndex),
                 routes: applyTabNavigateActionToRoutes(state, action, options, prevRouteIndex),
             };
         }
@@ -652,10 +650,16 @@ class SplitFoldedRouter<ParamList extends ParamListBase = ParamListBase> {
                     routes: applyTabNavigateActionToRoutes(state, action, options, index),
                 };
             }
+            if (state.nestedStack != null && state.nestedStack.includes(index)) {
+                return state;
+            }
             return {
                 ...state,
                 index,
-                nestedStack: [state.tabIndex, index],
+                nestedStack: [
+                    ...(state.nestedStack != null ? state.nestedStack : [state.tabIndex]),
+                    index,
+                ],
                 history: state.history.filter(r => r !== index).concat([index]),
                 routes: applyTabNavigateActionToRoutes(state, action, options, index),
             };

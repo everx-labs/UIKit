@@ -144,10 +144,10 @@ function normalizedEnd(
 }
 
 export function useOnEndDrag(
+    defaultShift: number,
     shift: Animated.SharedValue<number>,
     scrollInProgress: Animated.SharedValue<boolean>,
     largeTitleHeight: Animated.SharedValue<number>,
-    defaultShift: Animated.SharedValue<number>,
     mightApplyShiftToScrollView: Animated.SharedValue<boolean>,
     parentScrollHandler: ScrollableParentScrollHandler,
     parentScrollHandlerActive: boolean,
@@ -184,7 +184,7 @@ export function useOnEndDrag(
                     },
                     isFinished => {
                         if (isFinished) {
-                            shift.value = withSpring(defaultShift.value, {
+                            shift.value = withSpring(defaultShift, {
                                 velocity: 1,
                                 overshootClamping: true,
                             });
@@ -270,9 +270,9 @@ export function useOnEndDrag(
                  * If we are somewhere in between of a large title header
                  * trying to find a nearest edge and move there
                  */
-                if (shift.value > (defaultShift.value - largeTitleHeight.value) / 2) {
+                if (shift.value > (defaultShift - largeTitleHeight.value) / 2) {
                     shift.value = withSpring(
-                        defaultShift.value,
+                        defaultShift,
                         {
                             overshootClamping: true,
                         },

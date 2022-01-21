@@ -7,14 +7,14 @@ import {
     Platform,
     StyleProp,
 } from 'react-native';
-import type { Descriptor, EventMapBase, NavigationState } from '@react-navigation/core';
+import type { Descriptor, EventMapBase, NavigationState, RouteProp } from '@react-navigation/core';
 import {
     NavigationHelpersContext,
     useNavigationBuilder,
     createNavigatorFactory,
 } from '@react-navigation/native';
 import type { NavigationProp, ParamListBase } from '@react-navigation/native';
-import { screensEnabled, ScreenContainer } from 'react-native-screens';
+import { screensEnabled, enableScreens } from 'react-native-screens';
 import { StackView, TransitionPresets } from '@react-navigation/stack';
 import { NativeStackView } from 'react-native-screens/native-stack';
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
@@ -25,7 +25,6 @@ import {
     filterDescriptorOptionsForOriginalImplementation,
 } from '@tonlabs/uicast.stack-navigator';
 
-import { ResourceSavingScene } from './ResourceSavingScene';
 import { SafeAreaProviderCompat } from './SafeAreaProviderCompat';
 import {
     SplitRouter,
@@ -44,6 +43,9 @@ import {
 } from './SplitBottomTabBar';
 import { MainAnimatedIcon } from './MainAnimatedIcon';
 import { TabScreen } from './TabScreen';
+import { MaybeScreenContainer } from './ScreenFallback';
+
+enableScreens(Platform.OS !== 'web');
 
 export const NestedInSplitContext = React.createContext<boolean>(false);
 
@@ -105,40 +107,45 @@ function UnfoldedSplitNavigator({
     state: SplitNavigationState<ParamListBase>;
     mainRoute: NavigationRoute<ParamListBase, string>;
     tabRouteNamesMap: Set<string>;
-    loaded: number[];
+    loaded: React.RefObject<number[]>;
     onTabPress: (key: string) => void;
 }) {
     const tabBarIcons = React.useMemo(
         () =>
-            state.routes.reduce<Record<string, SplitScreenTabBarIconOptions>>((acc, route) => {
-                if (!tabRouteNamesMap.has(route.name)) {
-                    return acc;
-                }
+            state.routes.reduce<Record<string, Required<SplitScreenTabBarIconOptions>>>(
+                (acc, route) => {
+                    if (!tabRouteNamesMap.has(route.name)) {
+                        return acc;
+                    }
 
-                if (route.key === mainRoute.key) {
-                    return acc;
-                }
+                    if (route.key === mainRoute.key) {
+                        return acc;
+                    }
 
-                const descriptor = descriptors[route.key];
-                if (descriptor.options == null) {
-                    return acc;
-                }
-                if ('tabBarActiveIcon' in descriptor.options) {
-                    acc[route.key] = {
-                        tabBarActiveIcon: descriptor.options.tabBarActiveIcon,
-                        tabBarDisabledIcon: descriptor.options.tabBarDisabledIcon,
-                    };
-                    return acc;
-                }
-                if ('tabBarAnimatedIcon' in descriptor.options) {
-                    acc[route.key] = {
-                        tabBarAnimatedIcon: descriptor.options.tabBarAnimatedIcon,
-                    };
-                    return acc;
-                }
+                    const descriptor = descriptors[route.key];
+                    if (descriptor.options == null) {
+                        return acc;
+                    }
+                    if ('tabBarActiveIcon' in descriptor.options) {
+                        acc[route.key] = {
+                            tabBarTestID: descriptor.options.tabBarTestID || route.name,
+                            tabBarActiveIcon: descriptor.options.tabBarActiveIcon,
+                            tabBarDisabledIcon: descriptor.options.tabBarDisabledIcon,
+                        };
+                        return acc;
+                    }
+                    if ('tabBarAnimatedIcon' in descriptor.options) {
+                        acc[route.key] = {
+                            tabBarTestID: descriptor.options.tabBarTestID || route.name,
+                            tabBarAnimatedIcon: descriptor.options.tabBarAnimatedIcon,
+                        };
+                        return acc;
+                    }
 
-                return acc;
-            }, {}),
+                    return acc;
+                },
+                {},
+            ),
         // The rule is disabled to not include `descriptors` as a dep
         // because descriptors going to be changed every render
         // and will ruin the optimisation
@@ -146,7 +153,6 @@ function UnfoldedSplitNavigator({
         [tabRouteNamesMap, mainRoute.key, state.routes],
     );
 
-    const doesSupportNative = Platform.OS !== 'web' && screensEnabled?.();
     const { tabBarHeight, insetsWithTabBar } = useTabBarHeight();
 
     return (
@@ -167,13 +173,7 @@ function UnfoldedSplitNavigator({
                             />
                         </View>
                         <View style={splitStyles.detail}>
-                            <ScreenContainer
-                                // If not disabling the container for native, it will crash on iOS.
-                                // It happens due to an error in `react-native-reanimated`:
-                                // https://github.com/software-mansion/react-native-reanimated/issues/216
-                                enabled={!doesSupportNative}
-                                style={styles.pages}
-                            >
+                            <MaybeScreenContainer enabled style={styles.pages}>
                                 {state.routes.map((route, index) => {
                                     // Do not render main route
                                     if (route.key === mainRoute.key) {
@@ -186,22 +186,18 @@ function UnfoldedSplitNavigator({
                                     // isFocused check is important here
                                     // as we can try to render a screen before it was put
                                     // to `loaded` screens
-                                    if (!loaded.includes(index) && !isFocused) {
+                                    if (!loaded.current?.includes(index) && !isFocused) {
                                         // Don't render a screen if we've never navigated to it
                                         return null;
                                     }
 
                                     return (
-                                        <ResourceSavingScene
-                                            key={route.key}
-                                            style={StyleSheet.absoluteFill}
-                                            isVisible={isFocused}
-                                        >
+                                        <TabScreen key={route.key} isVisible={isFocused}>
                                             {descriptor.render()}
-                                        </ResourceSavingScene>
+                                        </TabScreen>
                                     );
                                 })}
-                            </ScreenContainer>
+                            </MaybeScreenContainer>
                         </View>
                     </View>
                 </SafeAreaProviderCompat>
@@ -239,42 +235,48 @@ function FoldedSplitNavigator({
     tabRouteNames: string[];
     tabRouteNamesMap: Set<string>;
     stackRouteNames: string[];
-    loaded: number[];
+    loaded: React.RefObject<number[]>;
     onTabPress: (key: string) => void;
 }) {
     const tabBarIcons = React.useMemo(
         () =>
-            state.routes.reduce<Record<string, SplitScreenTabBarIconOptions>>((acc, route) => {
-                if (!tabRouteNamesMap.has(route.name)) {
-                    return acc;
-                }
+            state.routes.reduce<Record<string, Required<SplitScreenTabBarIconOptions>>>(
+                (acc, route) => {
+                    if (!tabRouteNamesMap.has(route.name)) {
+                        return acc;
+                    }
 
-                const descriptor = descriptors[route.key];
-                if (descriptor.options == null) {
-                    return acc;
-                }
-                if ('tabBarActiveIcon' in descriptor.options) {
-                    acc[route.key] = {
-                        tabBarActiveIcon: descriptor.options.tabBarActiveIcon,
-                        tabBarDisabledIcon: descriptor.options.tabBarDisabledIcon,
-                    };
-                    return acc;
-                }
-                if ('tabBarAnimatedIcon' in descriptor.options) {
-                    acc[route.key] = {
-                        tabBarAnimatedIcon: descriptor.options.tabBarAnimatedIcon,
-                    };
-                    return acc;
-                }
-                if (mainRoute.key === route.key) {
-                    acc[route.key] = {
-                        tabBarAnimatedIcon: MainAnimatedIcon,
-                    };
-                    return acc;
-                }
+                    const descriptor = descriptors[route.key];
+                    if (descriptor.options == null) {
+                        return acc;
+                    }
+                    if ('tabBarActiveIcon' in descriptor.options) {
+                        acc[route.key] = {
+                            tabBarTestID: descriptor.options.tabBarTestID || route.name,
+                            tabBarActiveIcon: descriptor.options.tabBarActiveIcon,
+                            tabBarDisabledIcon: descriptor.options.tabBarDisabledIcon,
+                        };
+                        return acc;
+                    }
+                    if ('tabBarAnimatedIcon' in descriptor.options) {
+                        acc[route.key] = {
+                            tabBarTestID: descriptor.options.tabBarTestID || route.name,
+                            tabBarAnimatedIcon: descriptor.options.tabBarAnimatedIcon,
+                        };
+                        return acc;
+                    }
+                    if (mainRoute.key === route.key) {
+                        acc[route.key] = {
+                            tabBarTestID: MAIN_SCREEN_NAME,
+                            tabBarAnimatedIcon: MainAnimatedIcon,
+                        };
+                        return acc;
+                    }
 
-                return acc;
-            }, {}),
+                    return acc;
+                },
+                {},
+            ),
         // The rule is disabled to not include `descriptors` as a dep
         // because descriptors going to be changed every render
         // and will ruin the optimisation
@@ -293,46 +295,41 @@ function FoldedSplitNavigator({
                     ...descriptor,
                     render: () => {
                         return (
-                            <ScreenContainer
-                                // If not disabling the container for native, it will crash on iOS.
-                                // It happens due to an error in `react-native-reanimated`:
-                                // https://github.com/software-mansion/react-native-reanimated/issues/216
-                                enabled={!doesSupportNative}
-                                style={styles.pages}
-                            >
-                                {tabRouteNames.map(tabName => {
-                                    const tabRouteIndex = state.routeNames.indexOf(tabName);
-                                    const tabRoute = state.routes[tabRouteIndex];
-                                    const tabDescriptor = descriptors[tabRoute.key];
-                                    const isFocused = state.tabIndex === tabRouteIndex;
+                            <>
+                                <MaybeScreenContainer enabled style={styles.pages}>
+                                    {tabRouteNames.map(tabName => {
+                                        const tabRouteIndex = state.routeNames.indexOf(tabName);
+                                        const tabRoute = state.routes[tabRouteIndex];
+                                        const tabDescriptor = descriptors[tabRoute.key];
+                                        const isFocused = state.tabIndex === tabRouteIndex;
 
-                                    // isFocused check is important here
-                                    // as we can try to render a screen before it was put
-                                    // to `loaded` screens
-                                    if (!loaded.includes(tabRouteIndex) && !isFocused) {
-                                        // Don't render a screen if we've never navigated to it
-                                        return null;
-                                    }
-                                    return (
-                                        <TabScreen
-                                            key={tabRoute.key}
-                                            style={StyleSheet.absoluteFill}
-                                            isVisible={isFocused}
-                                        >
-                                            <SafeAreaInsetsContext.Provider
-                                                value={insetsWithTabBar}
-                                            >
-                                                {tabDescriptor.render()}
-                                            </SafeAreaInsetsContext.Provider>
-                                        </TabScreen>
-                                    );
-                                })}
+                                        // isFocused check is important here
+                                        // as we can try to render a screen before it was put
+                                        // to `loaded` screens
+                                        if (
+                                            !loaded.current?.includes(tabRouteIndex) &&
+                                            !isFocused
+                                        ) {
+                                            // Don't render a screen if we've never navigated to it
+                                            return null;
+                                        }
+                                        return (
+                                            <TabScreen key={tabRoute.key} isVisible={isFocused}>
+                                                <SafeAreaInsetsContext.Provider
+                                                    value={insetsWithTabBar}
+                                                >
+                                                    {tabDescriptor.render()}
+                                                </SafeAreaInsetsContext.Provider>
+                                            </TabScreen>
+                                        );
+                                    })}
+                                </MaybeScreenContainer>
                                 <SplitBottomTabBar
                                     icons={tabBarIcons}
                                     activeKey={state.routes[state.tabIndex].key}
                                     onPress={onTabPress}
                                 />
-                            </ScreenContainer>
+                            </>
                         );
                     },
                 };
@@ -358,7 +355,7 @@ function FoldedSplitNavigator({
         [stackRouteNames, state.nestedStack, state.routes, state.key],
     );
     /**
-     * react-native-screens rely on original struct navigation
+     * react-native-screens rely on original navigation structure
      * and tries to set source and target for actions
      * https://github.com/software-mansion/react-native-screens/blob/6c87d7749ec62fbb51fb4ec50af1fa8733ebae86/src/native-stack/views/NativeStackView.tsx#L256-L260
      *
@@ -383,9 +380,7 @@ function FoldedSplitNavigator({
         };
     }, [navigation]);
 
-    const doesSupportNative = Platform.OS !== 'web' && screensEnabled?.();
-
-    if (doesSupportNative) {
+    if (screensEnabled?.()) {
         const descriptorsFiltered =
             filterDescriptorOptionsForOriginalImplementation(stackDescriptors);
         return (
@@ -531,25 +526,23 @@ export function SplitNavigator({
         );
     }, [isSplitted, initialRouteName, navigation]);
 
-    const [loaded, setLoaded] = React.useState<Array<number>>([]);
+    const loadedRef = React.useRef<number[]>([]);
 
-    React.useEffect(() => {
-        if (!loaded.includes(state.index)) {
-            setLoaded([...loaded, state.index]);
-        }
-    }, [state, loaded]);
+    if (!loadedRef.current.includes(state.index)) {
+        loadedRef.current = [...loadedRef.current, state.index];
+    }
 
     // Access it from the state to re-render a container
     // only when router has processed SET_SPLITTED action
 
     const onTabPress = React.useCallback(
         (key: string) => {
-            if (state.routes[state.index].key === key) {
+            if (state.routes[state.tabIndex].key === key) {
                 return;
             }
             navigation.navigate({ key });
         },
-        [navigation, state.routes, state.index],
+        [navigation, state.routes, state.tabIndex],
     );
 
     const descriptors = useWrapScreensWithUILargeTitleHeader<
@@ -571,7 +564,7 @@ export function SplitNavigator({
                 mainRoute={mainRoute}
                 splitStyles={splitStyles}
                 tabRouteNamesMap={tabRouteNamesMap}
-                loaded={loaded}
+                loaded={loadedRef}
                 onTabPress={onTabPress}
             />
         );
@@ -586,7 +579,7 @@ export function SplitNavigator({
             tabRouteNames={tabRouteNames}
             tabRouteNamesMap={tabRouteNamesMap}
             stackRouteNames={stackRouteNames}
-            loaded={loaded}
+            loaded={loadedRef}
             onTabPress={onTabPress}
         />
     );
@@ -598,6 +591,19 @@ export const createSplitNavigator = createNavigatorFactory<
     EventMapBase,
     React.ComponentType<any>
 >(SplitNavigator);
+
+export type SplitNavigationProp<
+    ParamList extends ParamListBase,
+    RouteName extends keyof ParamList = string,
+> = NavigationProp<ParamList, RouteName, SplitNavigationState<ParamList>, StackNavigationOptions> &
+    SplitActionHelpers;
+export type SplitScreenProps<
+    ParamList extends ParamListBase,
+    RouteName extends keyof ParamList = string,
+> = {
+    navigation: SplitNavigationProp<ParamList, RouteName>;
+    route: RouteProp<ParamList, RouteName>;
+};
 
 const styles = StyleSheet.create({
     body: {
@@ -618,6 +624,7 @@ const styles = StyleSheet.create({
     },
     pages: {
         flex: 1,
+        overflow: 'hidden',
     },
     content: {
         flex: 1,

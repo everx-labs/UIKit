@@ -45,6 +45,10 @@ export type PreviewProps = {
 
 export type BadgeProps = {
     badge?: string | ImageSourcePropType;
+    /**
+     * ID for usage in tests
+     */
+    testID?: string;
 };
 
 export type CollectionSlideProps = {

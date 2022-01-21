@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ScrollViewProps } from 'react-native';
+import type { ScrollViewProps, StyleProp, ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { ScrollableContext } from '../Context';
@@ -12,7 +12,10 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
     const AnimatedScrollable = Animated.createAnimatedComponent(ScrollableComponent);
 
     function ScrollableForwarded(
-        props: Props & { children?: React.ReactNode },
+        {
+            containerStyle = { flex: 1 },
+            ...props
+        }: Props & { children?: React.ReactNode; containerStyle: StyleProp<ViewStyle> },
         forwardRef: React.RefObject<typeof AnimatedScrollable>,
     ) {
         const {
@@ -22,7 +25,10 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
             onLayout: onLayoutProp,
             onContentSizeChange: onContentSizeChangeProp,
         } = props;
-        const { onLayout, onContentSizeChange } = useHasScroll();
+        const { onLayout, onContentSizeChange } = useHasScroll(
+            onLayoutProp,
+            onContentSizeChangeProp,
+        );
 
         const { ref, scrollHandler, onWheel, registerScrollable, unregisterScrollable } =
             React.useContext(ScrollableContext);
@@ -45,7 +51,7 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
         });
 
         return (
-            <Animated.View style={{ flex: 1 }}>
+            <Animated.View style={containerStyle}>
                 {/* @ts-ignore */}
                 <AnimatedScrollable
                     {...props}
@@ -55,8 +61,8 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
                     scrollEventThrottle={16}
                     // @ts-ignore
                     onWheel={horizontal ? onWheelProp : onWheel}
-                    onLayout={horizontal ? onLayoutProp : onLayout}
-                    onContentSizeChange={horizontal ? onContentSizeChangeProp : onContentSizeChange}
+                    onLayout={onLayout}
+                    onContentSizeChange={onContentSizeChange}
                 />
             </Animated.View>
         );

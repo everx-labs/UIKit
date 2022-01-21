@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { NavigationContext, NavigationState } from '@react-navigation/native';
 import type { Descriptor, StackNavigationState, ParamListBase } from '@react-navigation/native';
 
 import { UIBackgroundView, ColorVariants } from '@tonlabs/uikit.themes';
-import { PortalManager } from '@tonlabs/uikit.layout';
+import { PortalManager, UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UILargeTitleHeader, UIStackNavigationBar } from '@tonlabs/uicast.bars';
 
 import { useStackTopInsetStyle } from './useStackTopInsetStyle';
@@ -69,6 +69,7 @@ function ScreenWithHeaderContent({
             {descriptor.options.useHeaderLargeTitle ? (
                 <PortalManager id="scene">
                     <UILargeTitleHeader
+                        headerNavigationBar={descriptor.options.headerNavigationBar}
                         testID={descriptor.options.testID}
                         title={descriptor.options.title}
                         titleTestID={descriptor.options.titleTestID}
@@ -77,6 +78,8 @@ function ScreenWithHeaderContent({
                         captionTestID={descriptor.options.captionTestID}
                         onTitlePress={descriptor.options.onTitlePress}
                         onHeaderLargeTitlePress={descriptor.options.onHeaderLargeTitlePress}
+                        onHeaderLargeTitleLongPress={descriptor.options.onHeaderLargeTitleLongPress}
+                        onRefresh={descriptor.options.onRefresh}
                         label={descriptor.options.label}
                         labelTestID={descriptor.options.labelTestID}
                         note={descriptor.options.note}
@@ -94,19 +97,25 @@ function ScreenWithHeaderContent({
                 </PortalManager>
             ) : (
                 <PortalManager id="scene">
-                    <UIStackNavigationBar
-                        testID={descriptor.options.testID}
-                        title={descriptor.options.title}
-                        titleTestID={descriptor.options.titleTestID}
-                        caption={descriptor.options.caption}
-                        captionTestID={descriptor.options.captionTestID}
-                        onTitlePress={descriptor.options.onTitlePress}
-                        headerLeft={descriptor.options.headerLeft}
-                        headerLeftItems={descriptor.options.headerLeftItems}
-                        headerBackButton={descriptor.options.headerBackButton}
-                        headerRight={descriptor.options.headerRight}
-                        headerRightItems={descriptor.options.headerRightItems}
-                    />
+                    {descriptor.options.headerNavigationBar != null ? (
+                        <View style={styles.navBar}>
+                            {descriptor.options.headerNavigationBar()}
+                        </View>
+                    ) : (
+                        <UIStackNavigationBar
+                            testID={descriptor.options.testID}
+                            title={descriptor.options.title}
+                            titleTestID={descriptor.options.titleTestID}
+                            caption={descriptor.options.caption}
+                            captionTestID={descriptor.options.captionTestID}
+                            onTitlePress={descriptor.options.onTitlePress}
+                            headerLeft={descriptor.options.headerLeft}
+                            headerLeftItems={descriptor.options.headerLeftItems}
+                            headerBackButton={descriptor.options.headerBackButton}
+                            headerRight={descriptor.options.headerRight}
+                            headerRightItems={descriptor.options.headerRightItems}
+                        />
+                    )}
                     {children}
                 </PortalManager>
             )}
@@ -170,5 +179,8 @@ export function filterDescriptorOptionsForOriginalImplementation<
 const styles = StyleSheet.create({
     screenContainer: {
         flex: 1,
+    },
+    navBar: {
+        height: UILayoutConstant.headerHeight,
     },
 });

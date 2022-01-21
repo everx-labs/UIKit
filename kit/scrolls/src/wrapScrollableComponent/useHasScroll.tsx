@@ -1,8 +1,12 @@
 import * as React from 'react';
+import type { ScrollViewProps } from 'react-native';
 
 import { ScrollableContext } from '../Context';
 
-export function useHasScroll() {
+export function useHasScroll(
+    onLayoutProp?: ScrollViewProps['onLayout'],
+    onContentSizeChangeProp?: ScrollViewProps['onContentSizeChange'],
+) {
     const { hasScroll, setHasScroll } = React.useContext(ScrollableContext);
 
     const scrollViewOutterHeight = React.useRef(0);
@@ -20,26 +24,35 @@ export function useHasScroll() {
         setHasScroll(scrollViewInnerHeight.current > scrollViewOutterHeight.current);
     }, [setHasScroll]);
 
-    const onLayout = React.useCallback(
-        ({
-            nativeEvent: {
-                layout: { height },
-            },
-        }) => {
+    const onLayout: ScrollViewProps['onLayout'] = React.useCallback(
+        event => {
+            const {
+                nativeEvent: {
+                    layout: { height },
+                },
+            } = event;
+            if (onLayoutProp) {
+                onLayoutProp(event);
+            }
+
             scrollViewOutterHeight.current = height;
 
             compareHeights();
         },
-        [compareHeights],
+        [compareHeights, onLayoutProp],
     );
 
-    const onContentSizeChange = React.useCallback(
-        (_width, height) => {
+    const onContentSizeChange: ScrollViewProps['onContentSizeChange'] = React.useCallback(
+        (width, height) => {
+            if (onContentSizeChangeProp) {
+                onContentSizeChangeProp(width, height);
+            }
+
             scrollViewInnerHeight.current = height;
 
             compareHeights();
         },
-        [compareHeights],
+        [compareHeights, onContentSizeChangeProp],
     );
 
     return {

@@ -37,11 +37,13 @@ type SplitScreenTabBarAnimatedIconComponent =
     React.ComponentType<SplitScreenTabBarAnimatedIconComponentProps>;
 
 export type SplitScreenTabBarStaticIconOptions = {
+    tabBarTestID?: string;
     tabBarActiveIcon: ImageSourcePropType;
     tabBarDisabledIcon: ImageSourcePropType;
 };
 
 export type SplitScreenTabBarAnimatedIconOptions = {
+    tabBarTestID?: string;
     tabBarAnimatedIcon: SplitScreenTabBarAnimatedIconComponent;
 };
 
@@ -58,6 +60,7 @@ const TAB_BAR_ICON_SIZE = 22;
 type AnimatedIconViewProps = {
     activeState: boolean;
     component: SplitScreenTabBarAnimatedIconComponent;
+    testID: string;
 };
 
 function AnimatedIconView({ activeState, component }: AnimatedIconViewProps) {
@@ -78,9 +81,16 @@ type ImageIconViewProps = {
     activeState: boolean;
     activeSource: ImageSourcePropType;
     disabledSource: ImageSourcePropType;
+    testID: string;
 };
-function ImageIconView({ activeState, activeSource, disabledSource }: ImageIconViewProps) {
-    return <UIImage source={activeState ? activeSource : disabledSource} style={styles.icon} />;
+function ImageIconView({ activeState, activeSource, disabledSource, testID }: ImageIconViewProps) {
+    return (
+        <UIImage
+            testID={testID}
+            source={activeState ? activeSource : disabledSource}
+            style={styles.icon}
+        />
+    );
 }
 
 export const RawButton: React.FunctionComponent<
@@ -96,12 +106,14 @@ export const RawButton: React.FunctionComponent<
 function SplitBottomTabBarItem({
     children,
     keyProp,
+    testID,
     onPress,
 }: {
     children: React.ReactNode;
     // key is reserved prop in React,
     // therefore had to call it this way
     keyProp: string;
+    testID: string;
     onPress: (key: string) => void;
 }) {
     const gestureHandler = useAnimatedGestureHandler<GestureEvent<NativeViewGestureHandlerPayload>>(
@@ -113,7 +125,12 @@ function SplitBottomTabBarItem({
         },
     );
     return (
-        <RawButton enabled onGestureEvent={gestureHandler} style={styles.iconButton}>
+        <RawButton
+            testID={testID}
+            enabled
+            onGestureEvent={gestureHandler}
+            style={styles.iconButton}
+        >
             {children}
         </RawButton>
     );
@@ -250,8 +267,14 @@ export function SplitBottomTabBar({
                     const icon = icons[key];
                     if ('tabBarAnimatedIcon' in icon) {
                         return (
-                            <SplitBottomTabBarItem key={key} keyProp={key} onPress={onPress}>
+                            <SplitBottomTabBarItem
+                                testID={`tab_bar_item_${icon.tabBarTestID}`}
+                                key={key}
+                                keyProp={key}
+                                onPress={onPress}
+                            >
                                 <AnimatedIconView
+                                    testID={`tab_bar_icon_${icon.tabBarTestID}`}
                                     component={icon.tabBarAnimatedIcon}
                                     activeState={key === activeKey}
                                 />
@@ -259,8 +282,14 @@ export function SplitBottomTabBar({
                         );
                     }
                     return (
-                        <SplitBottomTabBarItem key={key} keyProp={key} onPress={onPress}>
+                        <SplitBottomTabBarItem
+                            testID={`tab_bar_item_${icon.tabBarTestID}`}
+                            key={key}
+                            keyProp={key}
+                            onPress={onPress}
+                        >
                             <ImageIconView
+                                testID={`tab_bar_icon_${icon.tabBarTestID}`}
                                 activeSource={icon.tabBarActiveIcon}
                                 disabledSource={icon.tabBarDisabledIcon}
                                 activeState={key === activeKey}

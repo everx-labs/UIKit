@@ -34,7 +34,7 @@ const usePages = (
                 testID={page.props.testID}
                 onPress={onPressPage}
             >
-                <Animated.View style={pageStyle}>
+                <Animated.View style={[styles.page, pageStyle]}>
                     <ChildView />
                 </Animated.View>
             </Pressable>
@@ -122,5 +122,8 @@ const styles = StyleSheet.create({
     carouselView: {
         width: '100%',
         height: '100%',
+    },
+    page: {
+        flex: 1,
     },
 });
