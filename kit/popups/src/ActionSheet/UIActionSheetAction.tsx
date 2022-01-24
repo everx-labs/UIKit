@@ -3,40 +3,44 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import { UILabel, TypographyVariants, ColorVariants } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIActionSheetActionProps, UIActionSheetActionType } from './types';
-
-const getColor = (type: UIActionSheetActionType): ColorVariants => {
-    switch (type) {
-        case UIActionSheetActionType.Negative:
-            return ColorVariants.TextNegative;
-        case UIActionSheetActionType.Cancel:
-            return ColorVariants.TextSecondary;
-        case UIActionSheetActionType.Disabled:
-            return ColorVariants.TextTertiary;
-        case UIActionSheetActionType.Neutral:
-        default:
-            return ColorVariants.TextPrimary;
-    }
-};
+import { UIForeground } from '../UIForeground';
 
 export const UIActionSheetAction: React.FC<UIActionSheetActionProps> = ({
     type,
     title,
     onPress,
 }: UIActionSheetActionProps) => {
-    const color = getColor(type);
+    if (type === UIActionSheetActionType.Cancel) {
+        return (
+            <TouchableOpacity
+                key={title}
+                testID={`${title}_action_button`}
+                onPress={onPress}
+                style={styles.container}
+            >
+                <UILabel
+                    role={TypographyVariants.Action}
+                    color={ColorVariants.TextSecondary}
+                    numberOfLines={3}
+                >
+                    {title}
+                </UILabel>
+            </TouchableOpacity>
+        );
+    }
 
     return (
-        <TouchableOpacity
-            key={title}
-            testID={`${title}_action_button`}
-            disabled={type === 'Disabled'}
-            onPress={onPress}
-            style={styles.container}
-        >
-            <UILabel role={TypographyVariants.Action} color={color} numberOfLines={3}>
-                {title}
-            </UILabel>
-        </TouchableOpacity>
+        <UIForeground.Container key={title}>
+            <UIForeground.PrimaryColumn>
+                <UIForeground.ActionCell
+                    testID={`${title}_action_button`}
+                    disabled={type === UIActionSheetActionType.Disabled}
+                    negative={type === UIActionSheetActionType.Negative}
+                    onPress={onPress}
+                    title={title}
+                />
+            </UIForeground.PrimaryColumn>
+        </UIForeground.Container>
     );
 };
 

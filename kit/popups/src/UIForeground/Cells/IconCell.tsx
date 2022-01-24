@@ -13,6 +13,7 @@ export function IconCell({
     disabled,
     negative,
     tintColor: tintColorProp,
+    testID,
 }: UIForegroundIconProps) {
     const columnStatus = React.useContext(ColumnStatusContext);
     const mergedColumnStatus = useMergedColumnStatus(columnStatus, disabled, negative, onPress);
@@ -22,6 +23,7 @@ export function IconCell({
     }
     return (
         <TouchableWrapper
+            testID={testID}
             disabled={columnStatus.columnState === 'Pressable' || disabled}
             onPress={onPress}
             style={styles.container}

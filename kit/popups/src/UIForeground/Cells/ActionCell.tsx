@@ -7,7 +7,13 @@ import { usePressableCellColorByColumnStatus, useMergedColumnStatus } from '../h
 import { ColumnStatusContext } from '../Container';
 import { TouchableWrapper } from '../TouchableWrapper';
 
-export function ActionCell({ title, onPress, disabled, negative }: UIForegroundActionProps) {
+export function ActionCell({
+    title,
+    onPress,
+    disabled,
+    negative,
+    testID,
+}: UIForegroundActionProps) {
     const columnStatus = React.useContext(ColumnStatusContext);
 
     const mergedColumnStatus = useMergedColumnStatus(columnStatus, disabled, negative, onPress);
@@ -15,7 +21,7 @@ export function ActionCell({ title, onPress, disabled, negative }: UIForegroundA
 
     return (
         <TouchableWrapper
-            testID={`${title}_action_button`}
+            testID={testID}
             disabled={columnStatus.columnState === 'Pressable' || disabled}
             onPress={onPress}
             style={[

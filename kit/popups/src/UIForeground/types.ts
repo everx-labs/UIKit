@@ -33,6 +33,10 @@ type PressableProps = {
      * Default: `false`
      */
     negative?: boolean;
+    /**
+     * ID for usage in tests
+     */
+    testID?: string;
 };
 
 export type UIForegroundActionProps = PressableProps & {

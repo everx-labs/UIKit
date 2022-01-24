@@ -4,7 +4,13 @@ import { ColumnStatusContext } from '../Container';
 import { TouchableWrapper } from '../TouchableWrapper';
 import type { SecondaryColumnProps, ColumnStatus } from '../types';
 
-export function SecondaryColumn({ children, onPress, disabled, negative }: SecondaryColumnProps) {
+export function SecondaryColumn({
+    children,
+    onPress,
+    disabled,
+    negative,
+    testID,
+}: SecondaryColumnProps) {
     const columnStatus: ColumnStatus = React.useMemo((): ColumnStatus => {
         return {
             disabled,
@@ -15,7 +21,12 @@ export function SecondaryColumn({ children, onPress, disabled, negative }: Secon
     }, [disabled, negative, onPress]);
 
     return (
-        <TouchableWrapper style={styles.secondaryColumn} disabled={disabled} onPress={onPress}>
+        <TouchableWrapper
+            testID={testID}
+            style={styles.secondaryColumn}
+            disabled={disabled}
+            onPress={onPress}
+        >
             <ColumnStatusContext.Provider value={columnStatus}>
                 {children}
             </ColumnStatusContext.Provider>
