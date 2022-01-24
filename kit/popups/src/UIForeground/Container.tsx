@@ -17,10 +17,10 @@ export function Container({ children }: ContainerProps) {
 const styles = StyleSheet.create({
     container: {
         /**
-         * The negative right margin is used to set the right padding of all child elements
-         * and not to think about the presence of an element on the right side.
+         * The negative horizontal margin is used to set the horizontal padding of all child elements
+         * and not to think about the presence of an element on the left or right side.
          */
-        marginHorizontal: -UILayoutConstant.contentInsetVerticalX3 / 2,
+        marginHorizontal: -UILayoutConstant.normalContentOffset / 2,
         flexDirection: 'row',
         alignItems: 'center',
     },

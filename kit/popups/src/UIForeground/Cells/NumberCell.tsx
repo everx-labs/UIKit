@@ -38,7 +38,7 @@ export function NumberCell({ children }: UIForegroundNumberProps) {
 const styles = StyleSheet.create({
     container: {
         paddingVertical: UILayoutConstant.contentInsetVerticalX4,
-        paddingHorizontal: UILayoutConstant.contentInsetVerticalX3 / 2,
+        paddingHorizontal: UILayoutConstant.normalContentOffset / 2,
     },
     primaryContainer: {
         flex: 1,
