@@ -12008,10 +12008,6 @@ react-native-gesture-handler@1.10.3, react-native-gesture-handler@^1.10.3:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
-"react-native-image-picker@git+https://github.com/FactorBench/react-native-image-picker.git#develop":
-  version "0.26.7"
-  resolved "git+https://github.com/FactorBench/react-native-image-picker.git#4a747a72317b428a5d135372e19a0b5c4fc38e89"
-
 "react-native-indicators@git+https://github.com/tonlabs/react-native-indicators.git":
   version "0.17.0"
   resolved "git+https://github.com/tonlabs/react-native-indicators.git#2303a7fe88d6a9b751648afdee8266485a145687"

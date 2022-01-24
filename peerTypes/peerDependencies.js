@@ -72,10 +72,6 @@ declare module 'react-native-gesture-handler' {
     declare module.exports: any;
 }
 
-declare module 'react-native-image-picker' {
-    declare module.exports: any;
-}
-
 declare module 'react-native-share' {
     declare module.exports: any;
 }
