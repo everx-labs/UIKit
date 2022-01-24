@@ -41,7 +41,7 @@
         "react-native-safe-area-context": "^3.3.2"
     },
     "devDependencies": {
-        "@react-native-community/bob": "0.16.2",
+        "react-native-builder-bob": "^0.18.2",
         "@react-navigation/native": "^5.9.8",
         "@react-navigation/stack": "^5.14.9",
         "@types/react": "17.0.21",
@@ -68,7 +68,7 @@
         "react-native-screens": "^3.10.2",
         "react-native-svg": "^12.1.1"
     },
-    "@react-native-community/bob": {
+    "react-native-builder-bob": {
         "source": "src",
         "output": "lib",
         "targets": [
