@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { TouchableOpacity, StyleProp, ViewStyle, View } from 'react-native';
+import { hapticSelection } from '@tonlabs/uikit.controls';
+import { runOnUI } from 'react-native-reanimated';
 
 type TouchableWrapperProps = {
     onPress?: () => void;
@@ -16,9 +18,21 @@ export function TouchableWrapper({
     style,
     testID,
 }: TouchableWrapperProps) {
+    const onPressWithHaptic = React.useCallback(() => {
+        if (onPress) {
+            runOnUI(hapticSelection)();
+            onPress();
+        }
+    }, [onPress]);
     if (onPress) {
         return (
-            <TouchableOpacity testID={testID} style={style} disabled={disabled} onPress={onPress}>
+            <TouchableOpacity
+                testID={testID}
+                disabled={disabled}
+                onPress={onPressWithHaptic}
+                style={style}
+                activeOpacity={1}
+            >
                 {children}
             </TouchableOpacity>
         );

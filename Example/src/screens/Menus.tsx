@@ -25,10 +25,14 @@ import { UICountryPicker } from '@tonlabs/uicast.country-picker';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
+const onPress = () => {
+    console.log('Action');
+};
+
 const foregroundList: UIActionSheetContainerChildType[] = [
     <UIPopup.ActionSheet.CustomAction key="1">
         <UIPopup.ActionSheet.PrimaryColumn>
-            <UIPopup.ActionSheet.ActionCell onPress={() => null} title="Action" />
+            <UIPopup.ActionSheet.ActionCell onPress={onPress} title="Action" />
         </UIPopup.ActionSheet.PrimaryColumn>
     </UIPopup.ActionSheet.CustomAction>,
 
@@ -46,12 +50,12 @@ const foregroundList: UIActionSheetContainerChildType[] = [
             <UIPopup.ActionSheet.TextCell>Text</UIPopup.ActionSheet.TextCell>
         </UIPopup.ActionSheet.PrimaryColumn>
         <UIPopup.ActionSheet.SecondaryColumn>
-            <UIPopup.ActionSheet.ActionCell title="Action" onPress={() => null} />
+            <UIPopup.ActionSheet.ActionCell title="Action" onPress={onPress} />
         </UIPopup.ActionSheet.SecondaryColumn>
     </UIPopup.ActionSheet.CustomAction>,
 
     <UIPopup.ActionSheet.CustomAction key="4">
-        <UIPopup.ActionSheet.PrimaryColumn onPress={() => null} negative>
+        <UIPopup.ActionSheet.PrimaryColumn onPress={onPress} negative>
             <UIPopup.ActionSheet.ActionCell title="Negative" />
         </UIPopup.ActionSheet.PrimaryColumn>
         <UIPopup.ActionSheet.SecondaryColumn>
@@ -60,11 +64,11 @@ const foregroundList: UIActionSheetContainerChildType[] = [
     </UIPopup.ActionSheet.CustomAction>,
 
     <UIPopup.ActionSheet.CustomAction key="5">
-        <UIPopup.ActionSheet.PrimaryColumn onPress={() => null}>
+        <UIPopup.ActionSheet.PrimaryColumn onPress={onPress}>
             <UIPopup.ActionSheet.ActionCell title="Action" />
         </UIPopup.ActionSheet.PrimaryColumn>
         <UIPopup.ActionSheet.SecondaryColumn>
-            <UIPopup.ActionSheet.IconCell source={UIAssets.icons.ui.camera} onPress={() => null} />
+            <UIPopup.ActionSheet.IconCell source={UIAssets.icons.ui.camera} onPress={onPress} />
         </UIPopup.ActionSheet.SecondaryColumn>
     </UIPopup.ActionSheet.CustomAction>,
 
@@ -88,32 +92,32 @@ const foregroundList: UIActionSheetContainerChildType[] = [
             <UIPopup.ActionSheet.TextCell>Text</UIPopup.ActionSheet.TextCell>
         </UIPopup.ActionSheet.PrimaryColumn>
         <UIPopup.ActionSheet.SecondaryColumn>
-            <UIPopup.ActionSheet.ActionCell title="Action" onPress={() => null} />
-            <UIPopup.ActionSheet.IconCell source={UIAssets.icons.ui.camera} onPress={() => null} />
+            <UIPopup.ActionSheet.ActionCell title="Action" onPress={onPress} />
+            <UIPopup.ActionSheet.IconCell source={UIAssets.icons.ui.camera} onPress={onPress} />
         </UIPopup.ActionSheet.SecondaryColumn>
     </UIPopup.ActionSheet.CustomAction>,
 
     <UIPopup.ActionSheet.CustomAction key="8">
-        <UIPopup.ActionSheet.PrimaryColumn onPress={() => null} negative>
+        <UIPopup.ActionSheet.PrimaryColumn onPress={onPress} negative>
             <UIPopup.ActionSheet.IconCell source={UIAssets.icons.ui.camera} />
             <UIPopup.ActionSheet.ActionCell title="Negative" />
         </UIPopup.ActionSheet.PrimaryColumn>
         <UIPopup.ActionSheet.SecondaryColumn>
             <UIPopup.ActionSheet.NumberCell>{1234567890}</UIPopup.ActionSheet.NumberCell>
-            <UIPopup.ActionSheet.IconCell source={UIAssets.icons.ui.camera} onPress={() => null} />
+            <UIPopup.ActionSheet.IconCell source={UIAssets.icons.ui.camera} onPress={onPress} />
         </UIPopup.ActionSheet.SecondaryColumn>
     </UIPopup.ActionSheet.CustomAction>,
 
     <UIPopup.ActionSheet.CustomAction key="9">
-        <UIPopup.ActionSheet.PrimaryColumn onPress={() => null}>
+        <UIPopup.ActionSheet.PrimaryColumn onPress={onPress}>
             <UIPopup.ActionSheet.IconCell source={UIAssets.icons.ui.camera} />
             <UIPopup.ActionSheet.ActionCell title="Action" />
         </UIPopup.ActionSheet.PrimaryColumn>
         <UIPopup.ActionSheet.SecondaryColumn>
-            <UIPopup.ActionSheet.IconCell source={UIAssets.icons.ui.camera} onPress={() => null} />
+            <UIPopup.ActionSheet.IconCell source={UIAssets.icons.ui.camera} onPress={onPress} />
             <UIPopup.ActionSheet.IconCell
                 source={UIAssets.icons.ui.camera}
-                onPress={() => null}
+                onPress={() => onPress}
                 tintColor={ColorVariants.TextAccent}
             />
         </UIPopup.ActionSheet.SecondaryColumn>
