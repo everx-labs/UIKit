@@ -12,7 +12,6 @@ buildscript {
         google()
         mavenCentral()
         jcenter() // TODO: jcenter is deprecated, to be removed soon (Feb 2022)!
-        // TODO: need to update or get rid from `react-native-image-picker` to remove jcenter
     }
     dependencies {
         classpath("com.android.tools.build:gradle:4.2.1")
@@ -27,7 +26,6 @@ allprojects {
         google()
         mavenCentral()
         jcenter() // TODO: jcenter is deprecated, to be removed soon (Feb 2022)!
-        // TODO: need to update or get rid from `react-native-image-picker` to remove jcenter
         mavenLocal()
         maven { url 'https://www.jitpack.io' }
         maven {
