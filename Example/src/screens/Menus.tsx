@@ -26,13 +26,13 @@ import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
 const foregroundList: UIActionSheetContainerChildType[] = [
-    <UIPopup.ActionSheet.CustomAction>
+    <UIPopup.ActionSheet.CustomAction key="1">
         <UIPopup.ActionSheet.PrimaryColumn>
             <UIPopup.ActionSheet.ActionCell onPress={() => null} title="Action" />
         </UIPopup.ActionSheet.PrimaryColumn>
     </UIPopup.ActionSheet.CustomAction>,
 
-    <UIPopup.ActionSheet.CustomAction>
+    <UIPopup.ActionSheet.CustomAction key="2">
         <UIPopup.ActionSheet.PrimaryColumn>
             <UIPopup.ActionSheet.ActionCell title="Section" />
         </UIPopup.ActionSheet.PrimaryColumn>
@@ -41,7 +41,7 @@ const foregroundList: UIActionSheetContainerChildType[] = [
         </UIPopup.ActionSheet.SecondaryColumn>
     </UIPopup.ActionSheet.CustomAction>,
 
-    <UIPopup.ActionSheet.CustomAction>
+    <UIPopup.ActionSheet.CustomAction key="3">
         <UIPopup.ActionSheet.PrimaryColumn>
             <UIPopup.ActionSheet.TextCell>Text</UIPopup.ActionSheet.TextCell>
         </UIPopup.ActionSheet.PrimaryColumn>
@@ -50,7 +50,7 @@ const foregroundList: UIActionSheetContainerChildType[] = [
         </UIPopup.ActionSheet.SecondaryColumn>
     </UIPopup.ActionSheet.CustomAction>,
 
-    <UIPopup.ActionSheet.CustomAction>
+    <UIPopup.ActionSheet.CustomAction key="4">
         <UIPopup.ActionSheet.PrimaryColumn onPress={() => null} negative>
             <UIPopup.ActionSheet.ActionCell title="Negative" />
         </UIPopup.ActionSheet.PrimaryColumn>
@@ -59,7 +59,7 @@ const foregroundList: UIActionSheetContainerChildType[] = [
         </UIPopup.ActionSheet.SecondaryColumn>
     </UIPopup.ActionSheet.CustomAction>,
 
-    <UIPopup.ActionSheet.CustomAction>
+    <UIPopup.ActionSheet.CustomAction key="5">
         <UIPopup.ActionSheet.PrimaryColumn onPress={() => null}>
             <UIPopup.ActionSheet.ActionCell title="Action" />
         </UIPopup.ActionSheet.PrimaryColumn>
@@ -68,7 +68,7 @@ const foregroundList: UIActionSheetContainerChildType[] = [
         </UIPopup.ActionSheet.SecondaryColumn>
     </UIPopup.ActionSheet.CustomAction>,
 
-    <UIPopup.ActionSheet.CustomAction>
+    <UIPopup.ActionSheet.CustomAction key="6">
         <UIPopup.ActionSheet.PrimaryColumn>
             <UIPopup.ActionSheet.IconCell source={UIAssets.icons.ui.camera} />
             <UIPopup.ActionSheet.ActionCell title="Section" />
@@ -79,7 +79,7 @@ const foregroundList: UIActionSheetContainerChildType[] = [
         </UIPopup.ActionSheet.SecondaryColumn>
     </UIPopup.ActionSheet.CustomAction>,
 
-    <UIPopup.ActionSheet.CustomAction>
+    <UIPopup.ActionSheet.CustomAction key="7">
         <UIPopup.ActionSheet.PrimaryColumn>
             <UIPopup.ActionSheet.IconCell
                 source={UIAssets.icons.ui.camera}
@@ -93,7 +93,7 @@ const foregroundList: UIActionSheetContainerChildType[] = [
         </UIPopup.ActionSheet.SecondaryColumn>
     </UIPopup.ActionSheet.CustomAction>,
 
-    <UIPopup.ActionSheet.CustomAction>
+    <UIPopup.ActionSheet.CustomAction key="8">
         <UIPopup.ActionSheet.PrimaryColumn onPress={() => null} negative>
             <UIPopup.ActionSheet.IconCell source={UIAssets.icons.ui.camera} />
             <UIPopup.ActionSheet.ActionCell title="Negative" />
@@ -104,7 +104,7 @@ const foregroundList: UIActionSheetContainerChildType[] = [
         </UIPopup.ActionSheet.SecondaryColumn>
     </UIPopup.ActionSheet.CustomAction>,
 
-    <UIPopup.ActionSheet.CustomAction>
+    <UIPopup.ActionSheet.CustomAction key="9">
         <UIPopup.ActionSheet.PrimaryColumn onPress={() => null}>
             <UIPopup.ActionSheet.IconCell source={UIAssets.icons.ui.camera} />
             <UIPopup.ActionSheet.ActionCell title="Action" />
