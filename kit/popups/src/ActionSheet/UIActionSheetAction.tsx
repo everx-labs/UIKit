@@ -4,7 +4,7 @@ import { UILabel, TypographyVariants, ColorVariants } from '@tonlabs/uikit.theme
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIActionSheetActionProps, UIActionSheetActionType } from './types';
 import { UIForeground } from '../UIForeground';
-import { TouchableWrapper } from '../UIForeground/TouchableWrapper';
+import { TouchableWrapper } from '../TouchableWrapper';
 
 export const UIActionSheetAction: React.FC<UIActionSheetActionProps> = ({
     type,

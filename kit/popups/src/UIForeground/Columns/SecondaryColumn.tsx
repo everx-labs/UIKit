@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { ColumnStatusContext } from '../Container';
-import { TouchableWrapper } from '../TouchableWrapper';
+import { TouchableWrapper } from '../../TouchableWrapper';
 import type { SecondaryColumnProps, ColumnStatus } from '../types';
 
 export function SecondaryColumn({

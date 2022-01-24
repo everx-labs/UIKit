@@ -5,7 +5,7 @@ import { UIImage } from '@tonlabs/uikit.media';
 import type { UIForegroundIconProps } from '../types';
 import { ColumnStatusContext } from '../Container';
 import { usePressableCellColorByColumnStatus, useMergedColumnStatus } from '../hooks';
-import { TouchableWrapper } from '../TouchableWrapper';
+import { TouchableWrapper } from '../../TouchableWrapper';
 
 export function IconCell({
     source,

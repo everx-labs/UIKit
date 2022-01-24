@@ -5,7 +5,7 @@ import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UIForegroundActionProps } from '../types';
 import { usePressableCellColorByColumnStatus, useMergedColumnStatus } from '../hooks';
 import { ColumnStatusContext } from '../Container';
-import { TouchableWrapper } from '../TouchableWrapper';
+import { TouchableWrapper } from '../../TouchableWrapper';
 
 export function ActionCell({
     title,
