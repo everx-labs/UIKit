@@ -41,7 +41,7 @@
         "react-native-android-keyboard-adjust": "^1.2.0",
         "react-native-codegen": "^0.0.7",
         "react-native-device-info": "^5.6.3",
-        "react-native-fast-image": "^8.3.4",
+        "react-native-fast-image": "^8.5.11",
         "react-native-gesture-handler": "^1.10.3",
         "react-native-navigation-bar-color": "^2.0.1",
         "react-native-pager-view": "^5.4.4",
