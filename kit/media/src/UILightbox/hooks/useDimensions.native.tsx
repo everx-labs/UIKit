@@ -42,7 +42,7 @@ export const useDimensions = (
                 console.error(`useDimensions.native.tsx: Measuring is failed - ${e}`);
             }
         },
-        [forwardedRef],
+        [forwardedRef.current],
     );
 
     return {
