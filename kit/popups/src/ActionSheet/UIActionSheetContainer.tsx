@@ -97,12 +97,12 @@ export const UIActionSheetContainer: React.FC<UIActionSheetContainerProps> = ({
 const useStyles = makeStyles(theme => ({
     container: {
         paddingHorizontal: UILayoutConstant.contentOffset,
-        paddingVertical: UILayoutConstant.contentInsetVerticalX3,
+        paddingTop: UILayoutConstant.contentInsetVerticalX2,
         backgroundColor: theme[ColorVariants.BackgroundPrimary],
         borderRadius: UILayoutConstant.alertBorderRadius,
     },
     header: {
-        paddingVertical: UILayoutConstant.contentInsetVerticalX3,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX2,
     },
     actionsContainer: {
         flexDirection: 'column',
