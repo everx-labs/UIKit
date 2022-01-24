@@ -15,8 +15,8 @@ sed -i '' -e '8s/.*/    classpath("com.android.tools.build:gradle:4.2.2")/' ./no
 sed -i '' -e '7s/.*/    mavenCentral()/' ./node_modules/react-native-animateable-text/android/build.gradle
 
 ### Patch `react-native-camera`
-sed -i '' -e '13d' ./node_modules/react-native-camera/android/build.gradle
-sed -i '' -e '58d' ./node_modules/react-native-camera/android/build.gradle
+sed -i '' -e '13s/.*//' ./node_modules/react-native-camera/android/build.gradle
+sed -i '' -e '58s/.*//' ./node_modules/react-native-camera/android/build.gradle
 
 ## Jetify Android dependencies
 ./node_modules/.bin/jetify
