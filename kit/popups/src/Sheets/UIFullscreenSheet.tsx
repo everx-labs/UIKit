@@ -1,12 +1,5 @@
 import * as React from 'react';
-import {
-    StyleProp,
-    StyleSheet,
-    ViewStyle,
-    View,
-    StatusBar,
-    useWindowDimensions,
-} from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle, StatusBar, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
@@ -18,38 +11,39 @@ export type UIFullscreenSheetProps = Omit<UISheetProps, 'countRubberBandDistance
 
 export function UIFullscreenSheet({ children, style, ...rest }: UIFullscreenSheetProps) {
     const { height } = useWindowDimensions();
-    const { top: topInset, bottom: bottomInset } = useSafeAreaInsets();
-    const flattenStyle = StyleSheet.flatten(style);
+    const { top: topInset } = useSafeAreaInsets();
 
-    const passedPaddingBottom = Math.max(
-        bottomInset || 0,
-        (flattenStyle.paddingBottom as number) ?? (flattenStyle.padding as number) ?? 0,
-    );
-    const passedPaddingTop =
-        (flattenStyle.paddingTop as number) ?? (flattenStyle.padding as number) ?? 0;
-
-    const sheetStyle = React.useMemo(
-        () => ({
-            paddingBottom: passedPaddingBottom + UILayoutConstant.rubberBandEffectDistance,
-        }),
-        [passedPaddingBottom],
+    const fullscreenHeight = React.useMemo(
+        () =>
+            height -
+            Math.max(StatusBar.currentHeight ?? 0, topInset) +
+            UILayoutConstant.rubberBandEffectDistance,
+        [height, topInset],
     );
 
-    const innerStyle = React.useMemo(
-        () => ({
-            height:
-                height -
-                Math.max(StatusBar.currentHeight ?? 0, topInset) -
-                passedPaddingBottom -
-                passedPaddingTop,
-        }),
-        [height, topInset, passedPaddingBottom, passedPaddingTop],
-    );
+    const sheetStyle = React.useMemo(() => {
+        const flattenStyle = StyleSheet.flatten(style);
+        const paddingBottom =
+            Math.max((flattenStyle.paddingBottom as number) ?? 0) +
+            UILayoutConstant.rubberBandEffectDistance;
 
+        return {
+            paddingBottom,
+            height: fullscreenHeight,
+        };
+    }, [style, fullscreenHeight]);
+
+    const { visible, forId } = rest;
     return (
-        <UISheet {...rest} countRubberBandDistance style={[styles.bottom, style, sheetStyle]}>
-            <View style={innerStyle}>{children}</View>
-        </UISheet>
+        <UISheet.Container visible={visible} forId={forId}>
+            <UISheet.KeyboardUnaware defaultShift={-UILayoutConstant.rubberBandEffectDistance}>
+                <UISheet.FixedSize height={fullscreenHeight}>
+                    <UISheet.Content {...rest} style={[styles.bottom, style, sheetStyle]}>
+                        {children}
+                    </UISheet.Content>
+                </UISheet.FixedSize>
+            </UISheet.KeyboardUnaware>
+        </UISheet.Container>
     );
 }
 
@@ -59,5 +53,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         left: 'auto',
         right: 'auto',
+        overflow: 'hidden',
     },
 });

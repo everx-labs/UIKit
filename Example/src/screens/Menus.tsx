@@ -1,7 +1,7 @@
 /* eslint-disable no-alert */
 /* eslint-disable react/no-unused-prop-types */
 import * as React from 'react';
-import { Platform, StatusBar, Text, useWindowDimensions, View } from 'react-native';
+import { Platform, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant } from '@tonlabs/uikit.core';
@@ -14,6 +14,7 @@ import {
     UIFullscreenSheet,
     UIPopup,
     UIActionSheetContainerChildType,
+    useIntrinsicSizeScrollView,
 } from '@tonlabs/uikit.popups';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
 import { UIMaterialTextView } from '@tonlabs/uikit.inputs';
@@ -22,6 +23,7 @@ import { UILabel, ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIPinCode, UIPinCodeBiometryType } from '@tonlabs/uicast.pin-code';
 import { UICountryPicker } from '@tonlabs/uicast.country-picker';
+
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -145,7 +147,7 @@ function PinCodeMenu() {
                 style={{
                     backgroundColor: theme[ColorVariants.BackgroundPrimary],
                     padding: UIConstant.contentOffset(),
-                    borderRadius: Platform.select({ web: 10, default: 0 }),
+                    borderRadius: Platform.select({ web: 10, default: 10 }),
                 }}
             >
                 <UIPinCode
@@ -187,64 +189,6 @@ function PinCodeMenu() {
 
 export const actionSheet = React.createRef<typeof UIPopup.ActionSheet>();
 
-function BigBottomSheet() {
-    const theme = useTheme();
-    const [bigBottomSheetVisible, setBigBottomSheetVisible] = React.useState(false);
-    const { height } = useWindowDimensions();
-    const insets = useSafeAreaInsets();
-    return (
-        <>
-            <UILinkButton
-                testID="show_big_uiBottomSheet"
-                title="Show Big UIBottomSheet"
-                onPress={() => {
-                    setBigBottomSheetVisible(true);
-                }}
-            />
-            <UIBottomSheet
-                visible={bigBottomSheetVisible}
-                onClose={() => {
-                    setBigBottomSheetVisible(false);
-                }}
-                style={{
-                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                    borderRadius: 10,
-                }}
-            >
-                <View
-                    style={{
-                        height: 100,
-                    }}
-                />
-                <ScrollView
-                    style={{
-                        height:
-                            height -
-                            (StatusBar.currentHeight ?? 0) -
-                            insets.top -
-                            Math.max(insets?.bottom ?? 0, UIConstant.contentOffset()) -
-                            100,
-                    }}
-                >
-                    <UILabel>Hello!</UILabel>
-                    {new Array(9)
-                        .fill(null)
-                        .map((_el, i) => (i + 1) / 10)
-                        .map(opacity => (
-                            <View
-                                key={opacity}
-                                style={{
-                                    height: 100,
-                                    backgroundColor: `rgba(255,0,0,${opacity})`,
-                                }}
-                            />
-                        ))}
-                </ScrollView>
-            </UIBottomSheet>
-        </>
-    );
-}
-
 function BigBottomLargeTitleSheet() {
     const theme = useTheme();
     const [bigBottomSheetVisible, setBigBottomSheetVisible] = React.useState(false);
@@ -264,8 +208,7 @@ function BigBottomLargeTitleSheet() {
                 }}
                 style={{
                     backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                    borderRadius: Platform.select({ web: 10, default: 10 }),
-                    overflow: 'hidden',
+                    borderRadius: 10,
                 }}
             >
                 <UILargeTitleHeader title="Very long title">
@@ -290,6 +233,93 @@ function BigBottomLargeTitleSheet() {
                     </ScrollView>
                 </UILargeTitleHeader>
             </UIFullscreenSheet>
+        </>
+    );
+}
+
+function FlexibleSizeBottomSheetContent({
+    setSheetVisible,
+}: {
+    setSheetVisible: (val: boolean) => void;
+}) {
+    const [blocksCount, setBlocksCount] = React.useState(1);
+    const { style: scrollIntrinsicStyle, onContentSizeChange } = useIntrinsicSizeScrollView();
+    const insets = useSafeAreaInsets();
+
+    return (
+        <ScrollView
+            contentContainerStyle={{
+                paddingHorizontal: 20,
+                paddingBottom: insets.bottom,
+            }}
+            // @ts-expect-error
+            containerStyle={scrollIntrinsicStyle}
+            onContentSizeChange={onContentSizeChange}
+        >
+            {new Array(blocksCount).fill(null).map((_, index) => (
+                <View
+                    // eslint-disable-next-line react/no-array-index-key
+                    key={index}
+                    style={{
+                        height: 100,
+                        marginBottom: 10,
+                        borderRadius: 10,
+                        backgroundColor: `rgba(255,0,0,${(index + 1) / 10})`,
+                    }}
+                />
+            ))}
+            <UIBoxButton
+                title="increase"
+                disabled={blocksCount > 9}
+                layout={{ marginBottom: 10 }}
+                onPress={() => {
+                    setBlocksCount(Math.min(blocksCount + 1, 10));
+                }}
+            />
+            <UIBoxButton
+                disabled={blocksCount < 2}
+                title="decrease"
+                layout={{ marginBottom: 10 }}
+                onPress={() => {
+                    setBlocksCount(Math.max(blocksCount - 1, 0));
+                }}
+            />
+            <UIBoxButton
+                title="close"
+                onPress={() => {
+                    setSheetVisible(false);
+                }}
+            />
+        </ScrollView>
+    );
+}
+
+function FlexibleSizeBottomSheet() {
+    const theme = useTheme();
+    const [sheetVisible, setSheetVisible] = React.useState(false);
+
+    return (
+        <>
+            <UILinkButton
+                testID="show_flexible_uibottomsheet"
+                title="Show flexible size UIBottomSheet"
+                onPress={() => {
+                    setSheetVisible(true);
+                }}
+            />
+            <UIBottomSheet
+                visible={sheetVisible}
+                onClose={() => {
+                    setSheetVisible(false);
+                }}
+                style={{
+                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
+                    paddingTop: 20,
+                }}
+                hasDefaultInset={false}
+            >
+                <FlexibleSizeBottomSheetContent setSheetVisible={setSheetVisible} />
+            </UIBottomSheet>
         </>
     );
 }
@@ -476,7 +506,6 @@ export const Menus = () => {
                             }}
                         />
                     </UIBottomSheet>
-                    <BigBottomSheet />
                     <UILinkButton
                         testID="show_uiQRCodeScannerSheet"
                         title="Show UIQRcodeScannerSheet"
@@ -495,6 +524,7 @@ export const Menus = () => {
                     />
                     <PinCodeMenu />
                     <BigBottomLargeTitleSheet />
+                    <FlexibleSizeBottomSheet />
                 </View>
             </ExampleSection>
             <ExampleSection title="UIPopover">

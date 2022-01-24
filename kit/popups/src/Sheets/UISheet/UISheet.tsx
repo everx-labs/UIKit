@@ -2,31 +2,17 @@ import * as React from 'react';
 import { View, StyleSheet, ViewStyle, StyleProp, Platform, Keyboard } from 'react-native';
 import { PanGestureHandler, TapGestureHandler } from 'react-native-gesture-handler';
 import Animated, { interpolateColor, useAnimatedStyle } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useBackHandler } from '@react-native-community/hooks';
 
-import { Portal, UILayoutConstant } from '@tonlabs/uikit.layout';
+import { Portal } from '@tonlabs/uikit.layout';
 import { ColorVariants, useColorParts, useStatusBar } from '@tonlabs/uikit.themes';
-import { useAnimatedKeyboardHeight } from '@tonlabs/uikit.inputs';
 
 import { ScrollableContext } from '@tonlabs/uikit.scrolls';
-import { useSheetHeight } from './useSheetHeight';
 import type { OnOpen, OnClose } from './types';
-import { usePosition } from './usePosition';
-
-function useBottomInsetStyle(countRubberBandDistance: boolean = false) {
-    const { bottom } = useSafeAreaInsets();
-
-    return React.useMemo(() => {
-        let paddingBottom = Math.max(bottom, UILayoutConstant.contentOffset);
-        if (countRubberBandDistance) {
-            paddingBottom += UILayoutConstant.rubberBandEffectDistance;
-        }
-        return {
-            paddingBottom,
-        };
-    }, [bottom, countRubberBandDistance]);
-}
+import { SheetReadyContext, usePosition } from './usePosition';
+import { KeyboardAwareSheet, KeyboardUnawareSheet } from './KeyboardAwareSheet';
+import { useSheetOrigin } from './SheetOriginContext';
+import { FixedSizeSheet, IntrinsicSizeSheet, useSheetSize } from './SheetSize';
 
 export type UISheetProps = {
     /**
@@ -56,9 +42,6 @@ export type UISheetProps = {
      * Styles for container
      */
     style?: StyleProp<ViewStyle>;
-    // advanced
-    // not for public use
-    countRubberBandDistance?: boolean;
     /**
      * Whether UISheet has open animation or not
      */
@@ -68,46 +51,41 @@ export type UISheetProps = {
      */
     hasCloseAnimation?: boolean;
     /**
-     * Whether UISheet should react on keyboard opening
-     *
-     * TODO(savelichalex): I was thinking maybe do it a bit smarter,
-     * but for now left it simple. So the idea was:
-     * Maybe measure the size of the container somehow and see if it
-     * can fit into the area between top safe area edge and bottom when
-     * keyboard is opened, and if it can't fit, disable reacting on keyboard.
-     * But it actually produces new question, like what if the conditions are met
-     * but I want the container to be shrinked instead and still react on keyboard?
-     */
-    shouldHandleKeyboard?: boolean;
-    /**
-     * See Portal
+     * Sheet uses <Portal /> to put itself on top of
+     * current components, like a layer.
+     * Use the ID if you want to change destination where
+     * Sheet should be put (i.e. you have another <PortalManager />)
      */
     forId?: string;
 };
 
-type UISheetPortalContentProps = UISheetProps & {
-    onClosePortalRequest: () => void;
-};
+const SheetClosePortalRequestContext = React.createContext(() => {
+    /* no-op */
+});
 
-function UISheetPortalContent({
+function useSheetClosePortalRequest() {
+    const onClose = React.useContext(SheetClosePortalRequestContext);
+
+    if (onClose == null) {
+        throw new Error('Have you forgot to wrap <UISheet.Content /> with <UISheet.Container /> ?');
+    }
+
+    return onClose;
+}
+
+function SheetContent({
     visible,
     onClose,
     onOpenEnd,
     onCloseEnd,
     children,
-    onClosePortalRequest,
     style,
-    countRubberBandDistance,
     hasOpenAnimation,
     hasCloseAnimation,
-    shouldHandleKeyboard,
-}: UISheetPortalContentProps) {
-    const { height, onSheetLayout } = useSheetHeight(
-        UILayoutConstant.rubberBandEffectDistance,
-        countRubberBandDistance,
-    );
-    const keyboardHeight = useAnimatedKeyboardHeight();
-    const contentStyle = useBottomInsetStyle(countRubberBandDistance);
+}: UISheetProps) {
+    const onClosePortalRequest = useSheetClosePortalRequest();
+    const origin = useSheetOrigin();
+    const { height, onSheetLayout, style: cardSizeStyle } = useSheetSize();
 
     const {
         animate,
@@ -119,14 +97,12 @@ function UISheetPortalContent({
         hasScroll,
         setHasScroll,
         position,
+        ready,
     } = usePosition(
         height,
-        keyboardHeight,
-        contentStyle.paddingBottom,
+        origin,
         hasOpenAnimation,
         hasCloseAnimation,
-        shouldHandleKeyboard,
-        countRubberBandDistance,
         onClose,
         onClosePortalRequest,
         onOpenEnd,
@@ -151,13 +127,13 @@ function UISheetPortalContent({
         return false;
     });
 
-    const { colorParts: overlayColorParts, opacity: overlayOpacity } = useColorParts(
-        ColorVariants.BackgroundOverlay,
-    );
-
     useStatusBar({
         backgroundColor: ColorVariants.BackgroundOverlay,
     });
+
+    const { colorParts: overlayColorParts, opacity: overlayOpacity } = useColorParts(
+        ColorVariants.BackgroundOverlay,
+    );
 
     const overlayStyle = useAnimatedStyle(() => {
         return {
@@ -224,11 +200,7 @@ function UISheetPortalContent({
                     </PanGestureHandler>
                 </Animated.View>
             </TapGestureHandler>
-            <Animated.View
-                style={[styles.sheet, cardStyle]}
-                onLayout={onSheetLayout}
-                pointerEvents="box-none"
-            >
+            <Animated.View style={[styles.sheet, cardStyle]} pointerEvents="box-none">
                 <PanGestureHandler
                     maxPointers={1}
                     enabled={onClose != null}
@@ -237,9 +209,11 @@ function UISheetPortalContent({
                         ? { waitFor: scrollPanGestureHandlerRef }
                         : null)}
                 >
-                    <Animated.View style={[style, contentStyle]}>
+                    <Animated.View onLayout={onSheetLayout} style={[style, cardSizeStyle]}>
                         <ScrollableContext.Provider value={scrollableContextValue}>
-                            {children}
+                            <SheetReadyContext.Provider value={ready}>
+                                {children}
+                            </SheetReadyContext.Provider>
                         </ScrollableContext.Provider>
                     </Animated.View>
                 </PanGestureHandler>
@@ -248,8 +222,10 @@ function UISheetPortalContent({
     );
 }
 
-export function UISheet(props: UISheetProps) {
-    const { visible, forId } = props;
+function SheetContainer(
+    props: Pick<UISheetProps, 'visible' | 'forId'> & { children: React.ReactNode },
+) {
+    const { visible, forId, children } = props;
     const [isVisible, setIsVisible] = React.useState(false);
 
     React.useEffect(() => {
@@ -273,10 +249,21 @@ export function UISheet(props: UISheetProps) {
 
     return (
         <Portal absoluteFill forId={forId}>
-            <UISheetPortalContent {...props} onClosePortalRequest={onClosePortalRequest} />
+            <SheetClosePortalRequestContext.Provider value={onClosePortalRequest}>
+                {children}
+            </SheetClosePortalRequestContext.Provider>
         </Portal>
     );
 }
+
+export const UISheet = {
+    Container: SheetContainer,
+    Content: SheetContent,
+    KeyboardAware: KeyboardAwareSheet,
+    KeyboardUnaware: KeyboardUnawareSheet,
+    IntrinsicSize: IntrinsicSizeSheet,
+    FixedSize: FixedSizeSheet,
+};
 
 const styles = StyleSheet.create({
     container: {
