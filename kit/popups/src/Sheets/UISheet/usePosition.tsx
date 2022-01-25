@@ -19,7 +19,6 @@ import Animated, {
     scrollTo,
 } from 'react-native-reanimated';
 
-import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { useHasScroll } from '@tonlabs/uikit.scrolls';
 
 import { getYWithRubberBandEffect } from '../../AnimationHelpers/getYWithRubberBandEffect';
@@ -56,33 +55,8 @@ type ShowStates = 0 | 1 | 2 | 3 | 4;
 
 // @inline
 const SWIPE_THRESHOLD = 50; // UILayoutConstant.swipeThreshold
-
-function adjustPosition(
-    y: number,
-    normalizedPosition: Animated.SharedValue<number>,
-    positionWithoutRubberBand: Animated.SharedValue<number>,
-    snapPoint: number,
-    hasScroll: boolean,
-) {
-    'worklet';
-
-    const intermediatePosition = normalizedPosition.value - y;
-
-    if (y > 0 && intermediatePosition < snapPoint && !hasScroll) {
-        positionWithoutRubberBand.value += y;
-        normalizedPosition.value =
-            snapPoint -
-            getYWithRubberBandEffect(
-                positionWithoutRubberBand.value,
-                UILayoutConstant.rubberBandEffectDistance,
-            );
-
-        return;
-    }
-
-    positionWithoutRubberBand.value = Math.max(positionWithoutRubberBand.value + y, 0);
-    normalizedPosition.value = intermediatePosition;
-}
+// @inline
+const RUBBER_BAND_EFFECT_DISTANCE = 50; // UILayoutConstant.rubberBandEffectDistance
 
 function resetPosition(
     normalizedPosition: Animated.SharedValue<number>,
@@ -147,11 +121,27 @@ export function usePosition(
         return 0 - height.value;
     });
 
+    const { hasScroll, hasScrollShared, setHasScroll } = useHasScroll();
+
     /**
      * Position starting from origin,
      * that is used in animated `style`
      */
     const position = useDerivedValue(() => {
+        if (normalizedPosition.value < snapPoint.value) {
+            if (hasScrollShared.value) {
+                return origin.value + snapPoint.value;
+            }
+            return (
+                origin.value +
+                snapPoint.value -
+                getYWithRubberBandEffect(
+                    snapPoint.value - normalizedPosition.value,
+                    RUBBER_BAND_EFFECT_DISTANCE,
+                )
+            );
+        }
+
         return origin.value + normalizedPosition.value;
     });
 
@@ -236,8 +226,6 @@ export function usePosition(
         },
     );
 
-    const positionWithoutRubberBand = useSharedValue(0);
-
     const onTapGestureHandler = useAnimatedGestureHandler<TapGestureHandlerGestureEvent>({
         onActive: () => {
             showState.value = SHOW_STATE_CLOSE;
@@ -247,33 +235,29 @@ export function usePosition(
         },
     });
 
-    const yIsNegative = useSharedValue<boolean>(true);
-
     const scrollRef = useAnimatedRef<Animated.ScrollView>();
 
-    const { hasScroll, hasScrollShared, setHasScroll } = useHasScroll();
+    const scrollHandler = useAnimatedScrollHandler<{
+        translationY: number;
+    }>({
+        onScroll: (event, ctx) => {
+            const y = event.contentOffset.y - ctx.translationY;
+            ctx.translationY = event.contentOffset.y;
 
-    const scrollHandler = useAnimatedScrollHandler({
-        onScroll: event => {
-            const { y } = event.contentOffset;
+            normalizedPosition.value -= y;
 
-            yIsNegative.value = y <= 0;
-
-            const intermediatePosition = position.value - y;
-
-            if (y <= 0 || intermediatePosition > snapPoint.value) {
-                adjustPosition(
-                    y,
-                    normalizedPosition,
-                    positionWithoutRubberBand,
-                    snapPoint.value,
-                    hasScrollShared.value,
-                );
+            if (normalizedPosition.value > snapPoint.value) {
+                ctx.translationY = 0;
+                /**
+                 * Be careful with scrollTo, as while call is executing
+                 * there could be run another handler on the thread,
+                 * that's why context reset is set BEFORE call
+                 */
                 scrollTo(scrollRef, 0, 0, false);
             }
         },
-        onBeginDrag: () => {
-            positionWithoutRubberBand.value = 0;
+        onBeginDrag: (_event, ctx) => {
+            ctx.translationY = 0;
         },
         onEndDrag: () => resetPosition(normalizedPosition, showState, snapPoint.value, onCloseProp),
         onMomentumEnd: () =>
@@ -290,35 +274,14 @@ export function usePosition(
             const y = ctx.translationY - event.translationY;
             ctx.translationY = event.translationY;
 
-            const intermediatePosition = normalizedPosition.value - y;
+            normalizedPosition.value -= y;
 
-            if (!hasScrollShared.value) {
-                if (y <= 0 || intermediatePosition > snapPoint.value) {
-                    adjustPosition(
-                        y,
-                        normalizedPosition,
-                        positionWithoutRubberBand,
-                        snapPoint.value,
-                        hasScrollShared.value,
-                    );
-                    scrollTo(scrollRef, 0, 0, false);
-                    return;
-                }
-            }
-
-            if (yIsNegative.value && y <= 0) {
-                adjustPosition(
-                    y,
-                    normalizedPosition,
-                    positionWithoutRubberBand,
-                    snapPoint.value,
-                    hasScrollShared.value,
-                );
+            if (normalizedPosition.value > snapPoint.value) {
+                scrollTo(scrollRef, 0, 0, false);
             }
         },
         onStart: (_event, ctx) => {
             ctx.translationY = 0;
-            positionWithoutRubberBand.value = 0;
         },
         onEnd: () => {
             resetPosition(normalizedPosition, showState, snapPoint.value, onCloseProp);
@@ -335,17 +298,10 @@ export function usePosition(
             const y = ctx.translationY - event.translationY;
             ctx.translationY = event.translationY;
 
-            adjustPosition(
-                y,
-                normalizedPosition,
-                positionWithoutRubberBand,
-                snapPoint.value,
-                hasScrollShared.value,
-            );
+            normalizedPosition.value -= y;
         },
         onStart: (_event, ctx) => {
             ctx.translationY = 0;
-            positionWithoutRubberBand.value = 0;
         },
         onEnd: () => {
             resetPosition(normalizedPosition, showState, snapPoint.value, onCloseProp);

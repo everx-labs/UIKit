@@ -7142,18 +7142,6 @@ glob-to-regexp@^0.3.0:
   resolved "https://registry.yarnpkg.com/glob-to-regexp/-/glob-to-regexp-0.3.0.tgz#8c5a1494d2066c570cc3bfe4496175acc4d502ab"
   integrity sha1-jFoUlNIGbFcMw7/kSWF1rMTVAqs=
 
-glob@7.0.6:
-  version "7.0.6"
-  resolved "https://registry.yarnpkg.com/glob/-/glob-7.0.6.tgz#211bafaf49e525b8cd93260d14ab136152b3f57a"
-  integrity sha1-IRuvr0nlJbjNkyYNFKsTYVKz9Xo=
-  dependencies:
-    fs.realpath "^1.0.0"
-    inflight "^1.0.4"
-    inherits "2"
-    minimatch "^3.0.2"
-    once "^1.3.0"
-    path-is-absolute "^1.0.0"
-
 glob@^7.0.3, glob@^7.1.1, glob@^7.1.2, glob@^7.1.3, glob@^7.1.4, glob@^7.1.6, glob@^7.1.7:
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/glob/-/glob-7.2.0.tgz#d15535af7732e02e948f4c41628bd910293f6023"
@@ -11774,6 +11762,14 @@ react-native-awesome-alerts@1.3.2:
   dependencies:
     prop-types "^15.7.2"
 
+react-native-blob-util@^0.13.18:
+  version "0.13.18"
+  resolved "https://registry.yarnpkg.com/react-native-blob-util/-/react-native-blob-util-0.13.18.tgz#7b924d55607bda380d6e9862b621ed1ac0c007ec"
+  integrity sha512-f9NyydQKMd24QiyW+LZmDg2rjCTi4GBff3UJzP1BDgEQ8aoHMs4MZmPs5erNH4E577qhEFp5v7HGzXVRQL8SnQ==
+  dependencies:
+    base-64 "0.1.0"
+    glob "^7.1.6"
+
 react-native-builder-bob@^0.18.2:
   version "0.18.2"
   resolved "https://registry.yarnpkg.com/react-native-builder-bob/-/react-native-builder-bob-0.18.2.tgz#e3a96abe3ead84b167c1c1ea97747ef8ffc2a9f4"
@@ -11942,14 +11938,14 @@ react-native-screens@3.10.2, react-native-screens@^3.4.0:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
-react-native-share@^3.8.3:
-  version "3.8.5"
-  resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-3.8.5.tgz#e74ed39401b9fceef700435cef7c28bc37c7e267"
-  integrity sha512-GjMI2NwUvi8zC7JHWk6NIcg/gFJmK/+cAQ8VStvfy4/kOiXYE5YnpPjvKs/K1Aun0HqYi2vjvZruL5ouDEWxmg==
+react-native-share@^7.3.3:
+  version "7.3.3"
+  resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-7.3.3.tgz#7c44b1dd20dae50db8c6455fdfc4882533e5542b"
+  integrity sha512-46JW7lfZMy7Xcw/wOXUtjgoioEJ0IAEmm4bK01M4wt/lVCntxZ0IVXUA6vWSnxN66p51bNywZMxPV1zqRSDxPQ==
 
 "react-native-simple-popover@git+https://github.com/tonlabs/react-native-simple-popover.git":
   version "2.1.0"
-  resolved "git+https://github.com/tonlabs/react-native-simple-popover.git#0899e70c93a779d9b665060fdaec37b90097c402"
+  resolved "git+https://github.com/tonlabs/react-native-simple-popover.git#ab26d96fc36ca43ab152df864ffe5b5571e370d5"
   dependencies:
     prop-types "*"
     uuid "^3.1.0"
@@ -11966,15 +11962,7 @@ react-native-status-bar-height@1.0.1:
   dependencies:
     react-native-iphone-x-helper "^1.0.1"
 
-react-native-svg@12.1.0:
-  version "12.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-12.1.0.tgz#acfe48c35cd5fca3d5fd767abae0560c36cfc03d"
-  integrity sha512-1g9qBRci7man8QsHoXn6tP3DhCDiypGgc6+AOWq+Sy+PmP6yiyf8VmvKuoqrPam/tf5x+ZaBT2KI0gl7bptZ7w==
-  dependencies:
-    css-select "^2.1.0"
-    css-tree "^1.0.0-alpha.39"
-
-react-native-svg@^12.1.0, react-native-svg@^12.1.1:
+react-native-svg@^12.1.1:
   version "12.1.1"
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-12.1.1.tgz#5f292410b8bcc07bbc52b2da7ceb22caf5bcaaee"
   integrity sha512-NIAJ8jCnXGCqGWXkkJ1GTzO4a3Md5at5sagYV8Vh4MXYnL4z5Rh428Wahjhh+LIjx40EE5xM5YtwyJBqOIba2Q==
@@ -11987,9 +11975,9 @@ react-native-tab-view@3.0.1:
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-3.0.1.tgz#7ed8c5c4a0bb48fa8895e612d26e6d545ed03447"
   integrity sha512-L7qXtYz5Z+NdWyu38zaJrlHA/8H6rNFRZXe3ydym12UEEPPoefbVZ71b9YK2O6QP0u4pUlzMpMVM/Lsz2DJ4jg==
 
-"react-native-video@git+https://github.com/tonlabs/react-native-video.git#master":
+"react-native-video@git+https://github.com/tonlabs/react-native-video.git":
   version "5.2.0"
-  resolved "git+https://github.com/tonlabs/react-native-video.git#f3487e8b73f86d9dbe610b5ca85cee2027cb61ce"
+  resolved "git+https://github.com/tonlabs/react-native-video.git#eab4a4ed782ca170bf4dd7397c853e1b65564b38"
   dependencies:
     keymirror "^0.1.1"
     prop-types "^15.7.2"
@@ -12604,13 +12592,6 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
   dependencies:
     hash-base "^3.0.0"
     inherits "^2.0.1"
-
-"rn-fetch-blob@git+https://github.com/FactorBench/rn-fetch-blob.git#239d8ab1d26334f98f5dc1b4fac32b7c55cf8d39":
-  version "0.10.16"
-  resolved "git+https://github.com/FactorBench/rn-fetch-blob.git#239d8ab1d26334f98f5dc1b4fac32b7c55cf8d39"
-  dependencies:
-    base-64 "0.1.0"
-    glob "7.0.6"
 
 rsvp@^4.8.4:
   version "4.8.5"
