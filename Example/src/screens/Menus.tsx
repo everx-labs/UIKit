@@ -366,6 +366,7 @@ export const Menus = () => {
     const [bottomSheetVisible, setBottomSheetVisible] = React.useState(false);
     const [bottomSheetVisible2, setBottomSheetVisible2] = React.useState(false);
     const [countryPickerVisible, setCountryPickerVisible] = React.useState(false);
+    const [isUIAlertViewVisible, setIsUIAlertViewVisible] = React.useState(false);
 
     const [visibleActionStartIndex, setVisibleActionStartIndex] = React.useState<number>(0);
 
@@ -384,10 +385,52 @@ export const Menus = () => {
         },
         [],
     );
+    const getAlertCallback = React.useCallback(
+        (message: string) => () => {
+            console.log(message);
+            if (message.includes('Cancel')) {
+                setIsUIAlertViewVisible(false);
+            }
+        },
+        [],
+    );
 
     const [qrVisible, setQrVisible] = React.useState(false);
     return (
         <ExampleScreen>
+            <ExampleSection title="UIAlertView">
+                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <UILinkButton
+                        title="Show UIAlertView"
+                        onPress={() => setIsUIAlertViewVisible(true)}
+                    />
+                    <UIPopup.AlertView
+                        visible={isUIAlertViewVisible}
+                        title="Please select your action"
+                        note="You can select it later"
+                        icon={{
+                            source: UIAssets.icons.ui.search,
+                            tintColor: ColorVariants.TextAccent,
+                        }}
+                    >
+                        <UIPopup.AlertView.Action
+                            type={UIPopup.AlertView.Action.Type.Neutral}
+                            title="Neutral Action"
+                            onPress={getAlertCallback('Neutral Action')}
+                        />
+                        <UIPopup.AlertView.Action
+                            type={UIPopup.AlertView.Action.Type.Negative}
+                            title="Negative Action"
+                            onPress={getAlertCallback('Negative Action')}
+                        />
+                        <UIPopup.AlertView.Action
+                            type={UIPopup.AlertView.Action.Type.Cancel}
+                            title="Cancel Action"
+                            onPress={getAlertCallback('Cancel Action')}
+                        />
+                    </UIPopup.AlertView>
+                </View>
+            </ExampleSection>
             <ExampleSection title="UIActionSheet">
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UILinkButton
