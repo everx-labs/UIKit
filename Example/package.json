@@ -85,7 +85,7 @@
         "react-native-navigation-bar-color": "2.0.1",
         "react-native-pager-view": "^5.4.9",
         "react-native-parsed-text": "git+https://github.com/FactorBench/react-native-parsed-text.git",
-        "react-native-qrcode-scanner": "1.5.4",
+        "react-native-qrcode-scanner": "git+https://github.com/tonlabs/react-native-qrcode-scanner.git",
         "react-native-reanimated": "2.3.1",
         "react-native-safe-area-context": "^3.3.2",
         "react-native-screens": "3.10.2",
