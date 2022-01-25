@@ -14,12 +14,13 @@ node_modules/react-native/Libraries/polyfills/.*
 ; Flow doesn't support platforms
 .*/Libraries/Utilities/LoadingView.js
 
+; Ignore next due to: https://github.com/browserify/resolve/issues/262
+.*/node_modules/resolve/.*
+
 [untyped]
 .*/lib/commonjs/.*
 .*/lib/module/.*
 .*/node_modules/@react-native-community/cli/.*/.*
-.*/node_modules/react-native-share/.*
-.*/node_modules/@react-native-clipboard/.*
 
 ; TODO: migrate the following packages on TS or remove as the current flow annotation is not actual; TODO: migrate the following packages on TS or remove as the current flow annotation is not actual
 .*/packages/core/.*

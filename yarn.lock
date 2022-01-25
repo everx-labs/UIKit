@@ -11942,10 +11942,10 @@ react-native-screens@3.10.2, react-native-screens@^3.4.0:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
-react-native-share@^3.8.3:
-  version "3.8.5"
-  resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-3.8.5.tgz#e74ed39401b9fceef700435cef7c28bc37c7e267"
-  integrity sha512-GjMI2NwUvi8zC7JHWk6NIcg/gFJmK/+cAQ8VStvfy4/kOiXYE5YnpPjvKs/K1Aun0HqYi2vjvZruL5ouDEWxmg==
+react-native-share@^7.3.3:
+  version "7.3.3"
+  resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-7.3.3.tgz#7c44b1dd20dae50db8c6455fdfc4882533e5542b"
+  integrity sha512-46JW7lfZMy7Xcw/wOXUtjgoioEJ0IAEmm4bK01M4wt/lVCntxZ0IVXUA6vWSnxN66p51bNywZMxPV1zqRSDxPQ==
 
 "react-native-simple-popover@git+https://github.com/tonlabs/react-native-simple-popover.git":
   version "2.1.0"

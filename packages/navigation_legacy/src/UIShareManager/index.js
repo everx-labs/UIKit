@@ -1,8 +1,6 @@
 // @flow
 import { Platform, Share } from 'react-native';
 
-import Clipboard from '@react-native-clipboard/clipboard';
-
 import UIShareScreen from './UIShareScreen';
 
 const RNShare = Platform.OS === 'web' ? undefined : require('react-native-share').default;
