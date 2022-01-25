@@ -13,6 +13,7 @@ sed -i '' -e '7s/.*/    classpath("com.android.tools.build:gradle:4.2.2")/' ./no
 
 ### Patch `react-native-animateable-text`
 sed -i '' -e '7s/.*/    mavenCentral()/' ./node_modules/react-native-animateable-text/android/build.gradle
+sed -i '' -e '51s/.*//' ./node_modules/react-native-animateable-text/android/build.gradle
 
 ### Patch `react-native-camera`
 sed -i '' -e '13s/.*//' ./node_modules/react-native-camera/android/build.gradle
