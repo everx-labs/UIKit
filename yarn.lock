@@ -11949,7 +11949,7 @@ react-native-share@^7.3.3:
 
 "react-native-simple-popover@git+https://github.com/tonlabs/react-native-simple-popover.git":
   version "2.1.0"
-  resolved "git+https://github.com/tonlabs/react-native-simple-popover.git#0899e70c93a779d9b665060fdaec37b90097c402"
+  resolved "git+https://github.com/tonlabs/react-native-simple-popover.git#ab26d96fc36ca43ab152df864ffe5b5571e370d5"
   dependencies:
     prop-types "*"
     uuid "^3.1.0"
