@@ -29,7 +29,6 @@ module.exports = {
                     path.resolve(__dirname, '../node_modules/react-native-fast-image/'),
                     path.resolve(__dirname, '../node_modules/react-native-gesture-handler/'),
                     path.resolve(__dirname, '../node_modules/react-native-share/'),
-                    path.resolve(__dirname, '../node_modules/react-native-document-picker/'),
                     path.resolve(__dirname, '../node_modules/rn-fetch-blob/'),
                     path.resolve(__dirname, '../node_modules/react-native-reanimated/'),
                     path.resolve(__dirname, '../node_modules/react-native-view-shot/'),
@@ -95,7 +94,6 @@ module.exports = {
             'react-native/Libraries/Components/View/ReactNativeStyleAttributes': 'react',
             'react-native': 'react-native-web',
             'react-native-localization': 'react-localization',
-            'react-native-document-picker': 'react', // Hack in order not to load
             'rn-fetch-blob': 'react', // Hack in order not to load
             'react-native-camera': 'react', // Hack in order not to load
             'react-native-permissions': 'react', // Hack in order not to load
