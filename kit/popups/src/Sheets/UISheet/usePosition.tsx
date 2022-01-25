@@ -176,7 +176,7 @@ export function usePosition(
                 return;
             }
 
-            if (currentState.height === 0) {
+            if (currentState.snapPoint === 0) {
                 return;
             }
 
