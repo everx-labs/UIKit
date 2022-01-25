@@ -4,7 +4,7 @@ import { UILabel, TypographyVariants } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UIForegroundActionProps } from '../types';
 import { usePressableCellColorByColumnStatus, useMergedColumnStatus } from '../hooks';
-import { ColumnStatusContext } from '../Container';
+import { ColumnStatusContext } from '../Context';
 import { TouchableWrapper } from '../../TouchableWrapper';
 
 export function ActionCell({

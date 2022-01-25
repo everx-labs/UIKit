@@ -147,16 +147,20 @@ export type ContainerProps = {
 export type UIForegroundType = {
     /**
      * Root container of the UIForeground
+     * This component accepts only Column (`PrimaryColumn`
+     * or `SecondaryColumn`) components as children.
      */
     Container: React.FC<ContainerProps>;
 
     // ================== Columns: ==================
     /**
      * Container of the Primary (Left) column of the UIForeground
+     * This component accepts only Cells (e.g. ActionCell) components as children.
      */
     PrimaryColumn: React.FC<PrimaryColumnProps>;
     /**
      * Container of the Secondary (Right) column of the UIForeground
+     * This component accepts only Cells (e.g. ActionCell) components as children.
      */
     SecondaryColumn: React.FC<SecondaryColumnProps>;
 

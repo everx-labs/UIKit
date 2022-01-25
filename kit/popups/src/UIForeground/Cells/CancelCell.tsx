@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { UILabel, TypographyVariants, ColorVariants } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UIForegroundCancelProps } from '../types';
-import { ColumnStatusContext } from '../Container';
+import { ColumnStatusContext } from '../Context';
 import { TouchableWrapper } from '../../TouchableWrapper';
 
 export function CancelCell({ title, onPress, testID }: UIForegroundCancelProps) {

@@ -32,7 +32,7 @@ const onPress = () => {
     console.log('Action');
 };
 
-const foregroundList: UIActionSheetContainerChildType[] = [
+const customActionList: UIActionSheetContainerChildType[] = [
     <UIPopup.ActionSheet.CustomAction key="1">
         <UIPopup.ActionSheet.PrimaryColumn>
             <UIPopup.ActionSheet.ActionCell onPress={onPress} title="Action" />
@@ -377,7 +377,7 @@ export const Menus = () => {
                 setActionSheetVisible(false);
             }
             setVisibleActionStartIndex(prev => {
-                if (prev > foregroundList.length - 4) {
+                if (prev > customActionList.length - 4) {
                     return 0;
                 }
                 return prev + 3;
@@ -442,7 +442,10 @@ export const Menus = () => {
                         visible={actionSheetVisible}
                         note="A short description of the actions goes here."
                     >
-                        {foregroundList.slice(visibleActionStartIndex, visibleActionStartIndex + 3)}
+                        {customActionList.slice(
+                            visibleActionStartIndex,
+                            visibleActionStartIndex + 3,
+                        )}
                         <UIPopup.ActionSheet.Action
                             type={UIPopup.ActionSheet.Action.Type.Disabled}
                             title="Disabled Action"
