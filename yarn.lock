@@ -11979,9 +11979,9 @@ react-native-tab-view@3.0.1:
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-3.0.1.tgz#7ed8c5c4a0bb48fa8895e612d26e6d545ed03447"
   integrity sha512-L7qXtYz5Z+NdWyu38zaJrlHA/8H6rNFRZXe3ydym12UEEPPoefbVZ71b9YK2O6QP0u4pUlzMpMVM/Lsz2DJ4jg==
 
-"react-native-video@git+https://github.com/tonlabs/react-native-video.git#master":
+"react-native-video@git+https://github.com/tonlabs/react-native-video.git":
   version "5.2.0"
-  resolved "git+https://github.com/tonlabs/react-native-video.git#f3487e8b73f86d9dbe610b5ca85cee2027cb61ce"
+  resolved "git+https://github.com/tonlabs/react-native-video.git#eab4a4ed782ca170bf4dd7397c853e1b65564b38"
   dependencies:
     keymirror "^0.1.1"
     prop-types "^15.7.2"

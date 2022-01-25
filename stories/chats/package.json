@@ -61,7 +61,7 @@
         "react-native-reanimated": "2.3.1",
         "react-native-safe-area-context": "^3.3.2",
         "react-native-svg": "^12.1.1",
-        "react-native-video": "git+https://github.com/tonlabs/react-native-video.git#master",
+        "react-native-video": "git+https://github.com/tonlabs/react-native-video.git",
         "react-player": "^2.9.0",
         "rn-fetch-blob": "git+https://github.com/FactorBench/rn-fetch-blob.git#239d8ab1d26334f98f5dc1b4fac32b7c55cf8d39",
         "typescript": "4.4.3"
@@ -74,7 +74,7 @@
         "react-native-reanimated": "^2.3.0",
         "react-native-safe-area-context": "^3.3.2",
         "react-native-svg": "^12.1.1",
-        "react-native-video": "git+https://github.com/tonlabs/react-native-video.git#master",
+        "react-native-video": "git+https://github.com/tonlabs/react-native-video.git",
         "react-player": "^2.9.0",
         "rn-fetch-blob": "git+https://github.com/FactorBench/rn-fetch-blob.git#239d8ab1d26334f98f5dc1b4fac32b7c55cf8d39"
     },
