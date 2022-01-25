@@ -19,7 +19,6 @@ function WindowRelativeHeight({
 }) {
     const { height } = useWindowDimensions();
 
-    // TODO
     const bottomInset = React.useMemo(() => ((1 - PAGE_SHEET_HEIGHT_RATIO) / 2) * height, [height]);
     const relativeHeight = React.useMemo(
         () => Math.round(PAGE_SHEET_HEIGHT_RATIO * height),
