@@ -16,7 +16,7 @@ export function ActionCell({
 }: UIForegroundActionProps) {
     const columnStatus = React.useContext(ColumnStatusContext);
 
-    const mergedColumnStatus = useMergedColumnStatus(columnStatus, disabled, negative, onPress);
+    const mergedColumnStatus = useMergedColumnStatus(columnStatus, disabled, negative);
     const actionColor = usePressableCellColorByColumnStatus(mergedColumnStatus);
 
     return (

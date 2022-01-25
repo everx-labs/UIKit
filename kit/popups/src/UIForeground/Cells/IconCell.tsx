@@ -16,7 +16,7 @@ export function IconCell({
     testID,
 }: UIForegroundIconProps) {
     const columnStatus = React.useContext(ColumnStatusContext);
-    const mergedColumnStatus = useMergedColumnStatus(columnStatus, disabled, negative, onPress);
+    const mergedColumnStatus = useMergedColumnStatus(columnStatus, disabled, negative);
     const tintColor = usePressableCellColorByColumnStatus(mergedColumnStatus);
     if (!source) {
         return null;

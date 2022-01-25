@@ -30,7 +30,6 @@ export function useMergedColumnStatus(
     columnStatus: ColumnStatus,
     disabled: boolean | undefined,
     negative: boolean | undefined,
-    onPress: (() => void) | undefined,
 ): ColumnStatus {
     return React.useMemo(() => {
         if (columnStatus.columnState === 'Pressable') {
@@ -39,6 +38,6 @@ export function useMergedColumnStatus(
                 negative: negative !== undefined ? negative : columnStatus.negative,
             };
         }
-        return { ...columnStatus, disabled, negative, onPress };
-    }, [disabled, negative, columnStatus, onPress]);
+        return { ...columnStatus, disabled, negative };
+    }, [disabled, negative, columnStatus]);
 }

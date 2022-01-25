@@ -1,6 +1,6 @@
 import type { UIForegroundType } from './types';
 import { PrimaryColumn, SecondaryColumn } from './Columns';
-import { ActionCell, IconCell, TextCell, NumberCell } from './Cells';
+import { ActionCell, IconCell, TextCell, NumberCell, CancelCell } from './Cells';
 import { Container } from './Container';
 
 export const UIForeground: UIForegroundType = {
@@ -13,4 +13,5 @@ export const UIForeground: UIForegroundType = {
     IconCell,
     NumberCell,
     TextCell,
+    CancelCell,
 };

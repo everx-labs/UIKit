@@ -50,6 +50,25 @@ export type UIForegroundActionProps = PressableProps & {
     children?: undefined;
 };
 
+export type UIForegroundCancelProps = {
+    /**
+     * Text content of the action
+     */
+    title: string;
+    /**
+     * The callback that is called when the action is tapped/clicked
+     */
+    onPress?: () => void;
+    /**
+     * ID for usage in tests
+     */
+    testID?: string;
+    /**
+     * There can be no children here
+     */
+    children?: undefined;
+};
+
 export type UIForegroundNumberProps = {
     /**
      * Numerical value
@@ -158,4 +177,9 @@ export type UIForegroundType = {
      * Text content of the UIForeground
      */
     TextCell: React.FC<UIForegroundTextProps>;
+    /**
+     * Simple Cancel action of the UIForeground.
+     * It should only be used in PrimaryAction as an only child.
+     */
+    CancelCell: React.FC<UIForegroundCancelProps>;
 };

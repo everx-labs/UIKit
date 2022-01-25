@@ -1,10 +1,6 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
-import { UILabel, TypographyVariants, ColorVariants } from '@tonlabs/uikit.themes';
-import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIActionSheetActionProps, UIActionSheetActionType } from './types';
 import { UIForeground } from '../UIForeground';
-import { TouchableWrapper } from '../TouchableWrapper';
 
 export const UIActionSheetAction: React.FC<UIActionSheetActionProps> = ({
     type,
@@ -13,20 +9,15 @@ export const UIActionSheetAction: React.FC<UIActionSheetActionProps> = ({
 }: UIActionSheetActionProps) => {
     if (type === UIActionSheetActionType.Cancel) {
         return (
-            <TouchableWrapper
-                key={title}
-                testID={`${title}_action_button`}
-                onPress={onPress}
-                style={styles.container}
-            >
-                <UILabel
-                    role={TypographyVariants.Action}
-                    color={ColorVariants.TextSecondary}
-                    numberOfLines={3}
-                >
-                    {title}
-                </UILabel>
-            </TouchableWrapper>
+            <UIForeground.Container key={title}>
+                <UIForeground.PrimaryColumn>
+                    <UIForeground.CancelCell
+                        testID={`${title}_action_button`}
+                        onPress={onPress}
+                        title={title}
+                    />
+                </UIForeground.PrimaryColumn>
+            </UIForeground.Container>
         );
     }
 
@@ -44,9 +35,3 @@ export const UIActionSheetAction: React.FC<UIActionSheetActionProps> = ({
         </UIForeground.Container>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        paddingVertical: UILayoutConstant.contentInsetVerticalX4,
-    },
-});
