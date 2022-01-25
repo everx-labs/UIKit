@@ -58,7 +58,7 @@
         "react-native-gesture-handler": "^1.10.3",
         "react-native-safe-area-context": "^3.3.2",
         "react-native-share": "^7.3.3",
-        "react-native-svg": "^12.1.0"
+        "react-native-svg": "^12.1.1"
     },
     "peerDependencies": {
         "@react-native-clipboard/clipboard": "^1.8.5",
@@ -69,7 +69,7 @@
         "react-native-gesture-handler": "^1.10.3",
         "react-native-safe-area-context": "^3.3.2",
         "react-native-share": "^7.3.3",
-        "react-native-svg": "^12.1.0"
+        "react-native-svg": "^12.1.1"
     },
     "react-native-builder-bob": {
         "source": "src",
