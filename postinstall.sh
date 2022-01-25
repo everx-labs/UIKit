@@ -23,5 +23,8 @@ sed -i '' -e '3s/.*/    google()/' ./node_modules/react-native-navigation-bar-co
 sed -i '' -e '4s/.*/    mavenCentral() }/' ./node_modules/react-native-navigation-bar-color/android/build.gradle
 sed -i '' -e '7s/.*/    classpath("com.android.tools.build:gradle:4.2.2")/' ./node_modules/react-native-navigation-bar-color/android/build.gradle
 
+### Patch `react-native-pager-view`
+sed -i '' -e '7s/.*/    mavenCentral()/' ./node_modules/react-native-pager-view/android/build.gradle
+
 ## Jetify Android dependencies
 ./node_modules/.bin/jetify
