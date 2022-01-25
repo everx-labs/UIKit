@@ -96,7 +96,6 @@ module.exports = {
             'react-native-localization': 'react-localization',
             'rn-fetch-blob': 'react', // Hack in order not to load
             'react-native-camera': 'react', // Hack in order not to load
-            'react-native-permissions': 'react', // Hack in order not to load
             'react-native-qrcode-scanner': 'react', // Hack in order not to load
             'react-native-linear-gradient': 'react-native-web-linear-gradient',
             'react-native-video': 'react', // Hack in order not to load,
