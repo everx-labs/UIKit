@@ -52,7 +52,7 @@
         "react-native": "0.65.1",
         "react-native-camera": "^3.44.3",
         "react-native-gesture-handler": "^1.10.3",
-        "react-native-qrcode-scanner": "^1.5.4",
+        "react-native-qrcode-scanner": "git+https://github.com/tonlabs/react-native-qrcode-scanner.git",
         "react-native-reanimated": "2.3.1",
         "react-native-redash": "^16.0.11",
         "react-native-svg": "^12.1.1",
