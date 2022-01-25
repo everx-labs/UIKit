@@ -107,6 +107,7 @@ export function FixedSizeSheet({
         sizeSizeContextValue.current = {
             maxPossibleHeight: { value: height },
             height: { value: height },
+            style: { height },
         };
     }
 

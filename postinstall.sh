@@ -7,16 +7,25 @@ sed -i '' -e '195s/.*/      } else if (typeof strings[key] !== "string" \&\& typ
 ## Remove `jcenter` in favour of `google` or `mavenCentral`
 
 ### Patch `react-native-android-keyboard-adjust`
-sed -i '' -e '3s/.*/    google()\
-    mavenCentral()/' ./node_modules/react-native-android-keyboard-adjust/android/build.gradle
-sed -i '' -e '8s/.*/    classpath("com.android.tools.build:gradle:4.2.2")/' ./node_modules/react-native-android-keyboard-adjust/android/build.gradle
+sed -i '' -e '3s/.*/    google()/' ./node_modules/react-native-android-keyboard-adjust/android/build.gradle
+sed -i '' -e '4s/.*/    mavenCentral() }/' ./node_modules/react-native-android-keyboard-adjust/android/build.gradle
+sed -i '' -e '7s/.*/    classpath("com.android.tools.build:gradle:4.2.2")/' ./node_modules/react-native-android-keyboard-adjust/android/build.gradle
 
 ### Patch `react-native-animateable-text`
 sed -i '' -e '7s/.*/    mavenCentral()/' ./node_modules/react-native-animateable-text/android/build.gradle
+sed -i '' -e '51s/.*//' ./node_modules/react-native-animateable-text/android/build.gradle
 
 ### Patch `react-native-camera`
 sed -i '' -e '13s/.*//' ./node_modules/react-native-camera/android/build.gradle
 sed -i '' -e '58s/.*//' ./node_modules/react-native-camera/android/build.gradle
+
+### Patch `react-native-navigation-bar-color`
+sed -i '' -e '3s/.*/    google()/' ./node_modules/react-native-navigation-bar-color/android/build.gradle
+sed -i '' -e '4s/.*/    mavenCentral() }/' ./node_modules/react-native-navigation-bar-color/android/build.gradle
+sed -i '' -e '7s/.*/    classpath("com.android.tools.build:gradle:4.2.2")/' ./node_modules/react-native-navigation-bar-color/android/build.gradle
+
+### Patch `react-native-pager-view`
+sed -i '' -e '7s/.*/    mavenCentral()/' ./node_modules/react-native-pager-view/android/build.gradle
 
 ## Jetify Android dependencies
 ./node_modules/.bin/jetify
