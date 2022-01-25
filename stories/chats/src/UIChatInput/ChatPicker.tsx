@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
-import RNFetchBlob from 'rn-fetch-blob';
+import BlobUtil from 'react-native-blob-util';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIAlertView } from '@tonlabs/uikit.navigation_legacy';
@@ -40,13 +40,13 @@ const onPickDocument = async (doc: any, name: string, onSendDocument?: OnSendDoc
     };
     try {
         // TODO: I don't like it, can we do it without base64?
-        const data = await RNFetchBlob.fs.readFile(decodeURI(doc), 'base64');
+        const data = await BlobUtil.fs.readFile(decodeURI(doc), 'base64');
         processData(data);
     } catch (decError) {
         // Failed to load the data from the decoded URI, try the plain one
         try {
             // TODO: I don't like it, can we do it without base64?
-            const data = await RNFetchBlob.fs.readFile(doc, 'base64');
+            const data = await BlobUtil.fs.readFile(doc, 'base64');
             processData(data);
         } catch (error) {
             console.error('Failed to pick the document with error:', error, decError);
