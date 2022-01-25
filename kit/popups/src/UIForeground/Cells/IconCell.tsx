@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIImage } from '@tonlabs/uikit.media';
 import type { UIForegroundIconProps } from '../types';
-import { ColumnStatusContext } from '../Container';
+import { ColumnStatusContext } from '../Context';
 import { usePressableCellColorByColumnStatus, useMergedColumnStatus } from '../hooks';
 import { TouchableWrapper } from '../../TouchableWrapper';
 
