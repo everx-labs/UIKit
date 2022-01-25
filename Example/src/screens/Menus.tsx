@@ -12,6 +12,7 @@ import {
     UICardSheet,
     UIBottomSheet,
     UIFullscreenSheet,
+    UIPageSheet,
     UIPopup,
     useIntrinsicSizeScrollView,
 } from '@tonlabs/uikit.popups';
@@ -88,6 +89,32 @@ function PinCodeMenu() {
 
 export const actionSheet = React.createRef<typeof UIPopup.ActionSheet>();
 
+function LargeTitleSheetExample() {
+    return (
+        <UILargeTitleHeader title="Very long title">
+            <ScrollView
+                style={{
+                    flex: 1,
+                }}
+            >
+                <UILabel>Hello!</UILabel>
+                {new Array(9)
+                    .fill(null)
+                    .map((_el, i) => (i + 1) / 10)
+                    .map(opacity => (
+                        <View
+                            key={opacity}
+                            style={{
+                                height: 100,
+                                backgroundColor: `rgba(255,0,0,${opacity})`,
+                            }}
+                        />
+                    ))}
+            </ScrollView>
+        </UILargeTitleHeader>
+    );
+}
+
 function BigBottomLargeTitleSheet() {
     const theme = useTheme();
     const [bigBottomSheetVisible, setBigBottomSheetVisible] = React.useState(false);
@@ -107,30 +134,9 @@ function BigBottomLargeTitleSheet() {
                 }}
                 style={{
                     backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                    borderRadius: 10,
                 }}
             >
-                <UILargeTitleHeader title="Very long title">
-                    <ScrollView
-                        style={{
-                            flex: 1,
-                        }}
-                    >
-                        <UILabel>Hello!</UILabel>
-                        {new Array(9)
-                            .fill(null)
-                            .map((_el, i) => (i + 1) / 10)
-                            .map(opacity => (
-                                <View
-                                    key={opacity}
-                                    style={{
-                                        height: 100,
-                                        backgroundColor: `rgba(255,0,0,${opacity})`,
-                                    }}
-                                />
-                            ))}
-                    </ScrollView>
-                </UILargeTitleHeader>
+                <LargeTitleSheetExample />
             </UIFullscreenSheet>
         </>
     );
@@ -219,6 +225,34 @@ function FlexibleSizeBottomSheet() {
             >
                 <FlexibleSizeBottomSheetContent setSheetVisible={setSheetVisible} />
             </UIBottomSheet>
+        </>
+    );
+}
+
+function PageWithLargeTitleSheet() {
+    const theme = useTheme();
+    const [visible, setVisible] = React.useState(false);
+    return (
+        <>
+            <UILinkButton
+                testID="show_page_with_largeTitleHeader"
+                title="Show UIPageSheet with UILargeTitleHeader"
+                onPress={() => {
+                    setVisible(true);
+                }}
+            />
+            <UIPageSheet
+                visible={visible}
+                onClose={() => {
+                    setVisible(false);
+                }}
+                style={{
+                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
+                    borderRadius: 10,
+                }}
+            >
+                <LargeTitleSheetExample />
+            </UIPageSheet>
         </>
     );
 }
@@ -412,6 +446,7 @@ export const Menus = () => {
                     <PinCodeMenu />
                     <BigBottomLargeTitleSheet />
                     <FlexibleSizeBottomSheet />
+                    <PageWithLargeTitleSheet />
                 </View>
             </ExampleSection>
             <ExampleSection title="UIPopover">

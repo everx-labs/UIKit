@@ -11,7 +11,7 @@ function getZeroBottomInset() {
     return 0;
 }
 
-type KeyboardAwareSheetProps = {
+export type KeyboardAwareSheetProps = {
     children: React.ReactNode;
     defaultShift?: number;
     /**
