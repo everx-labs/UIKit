@@ -1,11 +1,14 @@
 import * as React from 'react';
-import { LayoutChangeEvent, StatusBar, useWindowDimensions, ViewStyle } from 'react-native';
+import { LayoutChangeEvent, useWindowDimensions, ViewStyle } from 'react-native';
 import Animated, {
     useAnimatedStyle,
     useDerivedValue,
     useSharedValue,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
+
 import { useSheetOrigin } from './SheetOriginContext';
 
 type SheetSizeContextT = {
@@ -47,7 +50,7 @@ function useSheetHeight() {
 }
 
 function calcTopSpace(topInset: number) {
-    return Math.max(StatusBar.currentHeight ?? 0, topInset);
+    return Math.max(topInset, UILayoutConstant.contentInsetVerticalX4);
 }
 
 export function IntrinsicSizeSheet({ children }: { children: React.ReactNode }) {

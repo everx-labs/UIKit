@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, ViewStyle, StatusBar, useWindowDimensions } from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
@@ -41,7 +41,7 @@ export function UIFullscreenSheet({ children, style, ...rest }: UIFullscreenShee
     const fullscreenHeight = React.useMemo(
         () =>
             height -
-            Math.max(StatusBar.currentHeight ?? 0, topInset) +
+            Math.max(topInset, UILayoutConstant.contentInsetVerticalX4) +
             UILayoutConstant.rubberBandEffectDistance -
             // iOS has a very small indent after when borderRadius ends
             // do here the same, it's not exact, just was done with eye test
