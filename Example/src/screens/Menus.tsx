@@ -134,6 +134,7 @@ function BigBottomLargeTitleSheet() {
                 }}
                 style={{
                     backgroundColor: theme[ColorVariants.BackgroundPrimary],
+                    borderRadius: 10,
                 }}
             >
                 <LargeTitleSheetExample />

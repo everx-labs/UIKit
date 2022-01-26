@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 
+type WrapperComponent = React.ComponentType<{
+    children: React.ReactNode;
+    portals: React.ReactNode;
+}>;
+
 type PortalMethods = {
     mount: (children: React.ReactNode, forId?: string, absoluteFill?: boolean) => number;
     update: (
@@ -12,7 +17,7 @@ type PortalMethods = {
     unmount: (key: number, forId?: string) => void;
 };
 
-const PortalContext = React.createContext<PortalMethods | null>(null);
+const PortalContext = React.createContext<PortalMethods | undefined>(undefined);
 
 type PortalConsumerProps = {
     forId?: string;
@@ -71,22 +76,140 @@ type PortalItem = {
 };
 
 type PortalManagerState = {
-    [key: number]: PortalItem | null;
+    [key: string]: PortalItem | null;
 };
 
 type PortalManagerProps = {
     id?: string;
     renderOnlyLastPortal?: boolean;
     children: React.ReactNode;
+    contentWrapperComponent: WrapperComponent;
 };
 
+const PortalView = React.memo<PortalItem>(function PortalView({
+    absoluteFill,
+    children,
+}: PortalItem) {
+    if (absoluteFill) {
+        return (
+            <View
+                collapsable={false}
+                pointerEvents="box-none"
+                // Pick `zIndex` for PortalManager thus to overlap all components
+                // http://softwareas.com/whats-the-maximum-z-index (as per Safari 0-3 threshold)
+                style={[StyleSheet.absoluteFill, { zIndex: 16777271 }]}
+            >
+                {children}
+            </View>
+        );
+    }
+
+    return children;
+});
+
+type PortalsViewProps = {
+    renderOnlyLastPortal: boolean;
+    // Sorted by priority array of portals
+    portalKeys: string[];
+    portals: { [key: string]: PortalItem | null };
+};
+
+const PortalsView = React.memo<PortalsViewProps>(function PortalsView({
+    renderOnlyLastPortal,
+    portalKeys,
+    portals,
+}) {
+    if (!renderOnlyLastPortal) {
+        return portalKeys.map(key => {
+            const portal = portals[key];
+
+            if (portal == null) {
+                return null;
+            }
+
+            return <PortalView key={`portal_${key}`} {...portal} />;
+        });
+    }
+
+    const maxMountedKey = portalKeys[portalKeys.length - 1];
+
+    if (portals[maxMountedKey] == null) {
+        return null;
+    }
+
+    return <PortalView key={`portal_${maxMountedKey}`} {...portals[maxMountedKey]} />;
+});
+
+const MaybeParentManager = React.memo(function MaybeParentManager({
+    setParentManager,
+}: {
+    setParentManager: (parentManager: PortalMethods) => void;
+}) {
+    const parentManager = React.useContext(PortalContext);
+
+    React.useEffect(() => {
+        if (parentManager == null) {
+            return;
+        }
+
+        setParentManager(parentManager);
+    }, [parentManager, setParentManager]);
+
+    return null;
+});
+
+type MaybePortalContentWrapperProps = {
+    wrapperComponent: WrapperComponent | null;
+    children: React.ReactNode;
+    portals: React.ReactNode;
+};
+
+const MaybePortalContentWrapper = React.memo<MaybePortalContentWrapperProps>(
+    function MaybePortalContentWrapper({
+        wrapperComponent: ContentWrapperComponent,
+        children,
+        portals,
+    }) {
+        if (ContentWrapperComponent == null) {
+            return (
+                <>
+                    {children}
+                    {portals}
+                </>
+            );
+        }
+
+        return <ContentWrapperComponent portals={portals}>{children}</ContentWrapperComponent>;
+    },
+);
+
 export class PortalManager extends React.PureComponent<PortalManagerProps, PortalManagerState> {
-    state: PortalManagerState = {};
+    parentManager?: PortalMethods;
+
+    counter: number = 0;
+
+    manager: PortalMethods;
+
+    constructor(props: PortalManagerProps) {
+        super(props);
+
+        this.state = {};
+        this.manager = {
+            mount: this.mount,
+            update: this.update,
+            unmount: this.unmount,
+        };
+    }
 
     getMaxMountedKey() {
-        return Object.keys(this.state)
-            .sort((a, b) => Number(b) - Number(a)) // reversed order by keys
-            .find(key => !!this.state[Number(key)]); // find the first (max) key
+        const portals = this.state;
+        return (
+            Object.keys(portals)
+                .filter(portalKey => portals[Number(portalKey)] != null)
+                .sort((a, b) => Number(b) - Number(a)) // reversed order by keys
+                // eslint-disable-next-line react/destructuring-assignment
+                .find(key => !!portals[Number(key)])
+        ); // find the first (max) key
     }
 
     getKey(): number {
@@ -100,12 +223,9 @@ export class PortalManager extends React.PureComponent<PortalManagerProps, Porta
         return this.counter;
     }
 
-    parentManager: PortalMethods | null = null;
-
-    counter: number = 0;
-
     mount = (children: React.ReactNode, forId?: string, absoluteFill?: boolean) => {
-        if (this.props.id != null && this.parentManager && this.props.id !== forId) {
+        const { id } = this.props;
+        if (id != null && this.parentManager && id !== forId) {
             return this.parentManager.mount(children, forId, absoluteFill);
         }
         const key = this.getKey();
@@ -120,7 +240,8 @@ export class PortalManager extends React.PureComponent<PortalManagerProps, Porta
     };
 
     update = (key: number, children: React.ReactNode, forId?: string, absoluteFill?: boolean) => {
-        if (this.props.id != null && this.parentManager && this.props.id !== forId) {
+        const { id } = this.props;
+        if (id != null && this.parentManager && id !== forId) {
             this.parentManager.update(key, children, forId, absoluteFill);
             return;
         }
@@ -136,7 +257,8 @@ export class PortalManager extends React.PureComponent<PortalManagerProps, Porta
     };
 
     unmount = (key: number, forId?: string) => {
-        if (this.props.id != null && this.parentManager && this.props.id !== forId) {
+        const { id } = this.props;
+        if (id != null && this.parentManager && id !== forId) {
             this.parentManager.unmount(key, forId);
             return;
         }
@@ -146,70 +268,35 @@ export class PortalManager extends React.PureComponent<PortalManagerProps, Porta
         }));
     };
 
-    manager = {
-        mount: this.mount,
-        update: this.update,
-        unmount: this.unmount,
+    setParentManager = (parentManager: PortalMethods) => {
+        this.parentManager = parentManager;
     };
 
-    renderPortal(key: string | undefined) {
-        const portal = this.state[Number(key)];
-
-        if (portal == null) {
-            return null;
-        }
-
-        if (portal.absoluteFill) {
-            return (
-                <View
-                    key={`portal_${key}`}
-                    collapsable={false}
-                    pointerEvents="box-none"
-                    // Pick `zIndex` for PortalManager thus to overlap all components
-                    // http://softwareas.com/whats-the-maximum-z-index (as per Safari 0-3 threshold)
-                    style={[StyleSheet.absoluteFill, { zIndex: 16777271 }]}
-                >
-                    {portal.children}
-                </View>
-            );
-        }
-
-        return portal.children;
-    }
-
-    renderLastPortal() {
-        const maxMountedKey = this.getMaxMountedKey();
-
-        if (maxMountedKey == null) {
-            return null;
-        }
-
-        return this.renderPortal(maxMountedKey);
-    }
-
-    renderAllPortals() {
-        return Object.keys(this.state)
-            .sort((a, b) => Number(a) - Number(b)) // ordered by keys
-            .map((key: string) => {
-                return this.renderPortal(key);
-            });
-    }
-
     render() {
+        const { children, renderOnlyLastPortal, contentWrapperComponent } = this.props;
+        const portals = this.state;
+        const portalKeys = Object.keys(portals)
+            .filter(portalKey => portals[Number(portalKey)] != null)
+            .sort((a, b) => Number(a) - Number(b)); // ordered by keys
+
         return (
-            <PortalContext.Consumer>
-                {manager => {
-                    this.parentManager = manager;
-                    return (
-                        <PortalContext.Provider value={this.manager}>
-                            {this.props.children}
-                            {this.props.renderOnlyLastPortal
-                                ? this.renderLastPortal()
-                                : this.renderAllPortals()}
-                        </PortalContext.Provider>
-                    );
-                }}
-            </PortalContext.Consumer>
+            <>
+                <MaybeParentManager setParentManager={this.setParentManager} />
+                <PortalContext.Provider value={this.manager}>
+                    <MaybePortalContentWrapper
+                        wrapperComponent={contentWrapperComponent}
+                        portals={
+                            <PortalsView
+                                renderOnlyLastPortal={!!renderOnlyLastPortal}
+                                portalKeys={portalKeys}
+                                portals={portals}
+                            />
+                        }
+                    >
+                        {children}
+                    </MaybePortalContentWrapper>
+                </PortalContext.Provider>
+            </>
         );
     }
 }

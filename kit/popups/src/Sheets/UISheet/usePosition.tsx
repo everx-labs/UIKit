@@ -23,6 +23,7 @@ import { useHasScroll } from '@tonlabs/uikit.scrolls';
 
 import { getYWithRubberBandEffect } from '../../AnimationHelpers/getYWithRubberBandEffect';
 import type { OnOpen, OnClose } from './types';
+import { useShrinkContentUnderSheetContextProgress } from './ShrinkContentUnderSheet';
 
 const OpenSpringConfig = {
     overshootClamping: false,
@@ -144,6 +145,28 @@ export function usePosition(
 
         return origin.value + normalizedPosition.value;
     });
+
+    // TODO:
+    // Probably better to pass it with context somehow
+    // than tightly couple it with the current code
+    //
+    // This is actually MUST be moved out,
+    // as it isn't required for all sheets
+    const contentUnderSheetProgress = useShrinkContentUnderSheetContextProgress();
+
+    useAnimatedReaction(
+        () => {
+            // to a range 0-1 be starting from half of the snapPoint to the end of it
+            return (normalizedPosition.value / snapPoint.value) * 2 - 1;
+        },
+        progress => {
+            if (!contentUnderSheetProgress) {
+                return;
+            }
+
+            contentUnderSheetProgress.value = progress;
+        },
+    );
 
     /**
      * A guard that is used to wait for some calculations

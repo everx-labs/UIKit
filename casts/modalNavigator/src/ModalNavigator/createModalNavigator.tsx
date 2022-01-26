@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 /* eslint-disable react/no-multi-comp */
 import * as React from 'react';
 import { Keyboard } from 'react-native';

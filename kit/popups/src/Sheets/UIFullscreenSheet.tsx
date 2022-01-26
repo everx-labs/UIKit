@@ -17,7 +17,9 @@ export function UIFullscreenSheet({ children, style, ...rest }: UIFullscreenShee
         () =>
             height -
             Math.max(StatusBar.currentHeight ?? 0, topInset) +
-            UILayoutConstant.rubberBandEffectDistance,
+            UILayoutConstant.rubberBandEffectDistance -
+            // TODO: borderRadius + some indent
+            (10 + 2),
         [height, topInset],
     );
 
