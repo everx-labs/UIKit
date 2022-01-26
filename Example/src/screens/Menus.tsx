@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIPopover, UIPopoverMenu } from '@tonlabs/uikit.navigation_legacy';
-import { UILargeTitleHeader } from '@tonlabs/uicast.bars';
+import { UILargeTitleHeader, UIDialogBar } from '@tonlabs/uicast.bars';
 import { UIQRCodeScannerSheet } from '@tonlabs/uicast.qr-code-scanner-sheet';
 import {
     UICardSheet,
@@ -24,6 +24,7 @@ import { UILabel, ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIPinCode, UIPinCodeBiometryType } from '@tonlabs/uicast.pin-code';
 import { UICountryPicker } from '@tonlabs/uicast.country-picker';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -498,10 +499,12 @@ export const Menus = () => {
                         }}
                         style={{
                             backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                            padding: 20,
-                            borderRadius: 10,
+                            paddingHorizontal: UILayoutConstant.contentOffset,
+                            paddingBottom: UILayoutConstant.contentOffset,
+                            borderRadius: UILayoutConstant.alertBorderRadius,
                         }}
                     >
+                        <UIDialogBar hasPuller />
                         <UILabel>Hi there!</UILabel>
                         <UIBoxButton
                             title="close"
@@ -524,10 +527,12 @@ export const Menus = () => {
                         }}
                         style={{
                             backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                            padding: 20,
-                            borderRadius: 10,
+                            paddingHorizontal: UILayoutConstant.contentOffset,
+                            paddingBottom: UILayoutConstant.contentOffset,
+                            borderRadius: UILayoutConstant.alertBorderRadius,
                         }}
                     >
+                        <UIDialogBar hasPuller />
                         <UIMaterialTextView label="Write smth" />
                         <UIBoxButton
                             title="close"
@@ -550,9 +555,12 @@ export const Menus = () => {
                         }}
                         style={{
                             backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                            padding: 20,
+                            paddingHorizontal: UILayoutConstant.contentOffset,
+                            paddingBottom: UILayoutConstant.contentOffset,
+                            borderRadius: UILayoutConstant.alertBorderRadius,
                         }}
                     >
+                        <UIDialogBar hasPuller />
                         <UILabel>Hi there!</UILabel>
                         <UIBoxButton
                             title="close"
@@ -575,9 +583,12 @@ export const Menus = () => {
                         }}
                         style={{
                             backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                            padding: 20,
+                            paddingHorizontal: UILayoutConstant.contentOffset,
+                            paddingBottom: UILayoutConstant.contentOffset,
+                            borderRadius: UILayoutConstant.alertBorderRadius,
                         }}
                     >
+                        <UIDialogBar hasPuller />
                         <UIMaterialTextView label="Write smth" />
                         <UIBoxButton
                             title="close"
