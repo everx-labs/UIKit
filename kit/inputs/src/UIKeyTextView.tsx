@@ -13,12 +13,16 @@ import {
 const MAX_KEY_LENGTH = 64;
 
 type OnDone = (key: string) => void | Promise<void>;
+type OnSuccess = (success: boolean) => void | Promise<void>;
+type OnError = (error: boolean) => void | Promise<void>;
 
 export function useKeyTextView(
     ref: React.Ref<TextInput> | null,
     isFocused: boolean,
     props: UIMaterialTextViewProps & {
         onDone: OnDone;
+        onSuccess?: OnSuccess;
+        onError?: OnError;
     },
 ) {
     const {
@@ -27,7 +31,7 @@ export function useKeyTextView(
         onChangeText: onChangeTextBase,
         onKeyPress: onKeyPressBase,
     } = useUITextViewValue(ref, true, props);
-    const { onDone } = props;
+    const { onDone, onError, onSuccess } = props;
 
     const [hasInvalidChars, setHasInvalidChars] = React.useState(false);
     const [hasProperLength, setHasProperLength] = React.useState(false);
@@ -49,17 +53,6 @@ export function useKeyTextView(
             }
         },
         [hasInvalidChars, hasProperLength, onChangeTextBase],
-    );
-
-    const onKeyPress = React.useCallback(
-        (e: any) => {
-            const wasClearedWithEnter = onKeyPressBase(e);
-
-            if (wasClearedWithEnter) {
-                onDone(inputValue.current);
-            }
-        },
-        [onDone, onKeyPressBase, inputValue],
     );
 
     const { helperText, error, success } = React.useMemo(() => {
@@ -93,6 +86,29 @@ export function useKeyTextView(
         };
     }, [inputHasValue, hasInvalidChars, hasProperLength, isFocused]);
 
+    const onKeyPress = React.useCallback(
+        (e: any) => {
+            const wasClearedWithEnter = onKeyPressBase(e);
+
+            if (success && wasClearedWithEnter) {
+                onDone(inputValue.current);
+            }
+        },
+        [onDone, onKeyPressBase, inputValue, success],
+    );
+
+    React.useEffect(() => {
+        if (onSuccess) {
+            onSuccess(success);
+        }
+    }, [success]);
+
+    React.useEffect(() => {
+        if (onError) {
+            onError(error);
+        }
+    }, [error]);
+
     return {
         helperText,
         error,
@@ -102,8 +118,13 @@ export function useKeyTextView(
     };
 }
 
-type UIKeyTextViewProps = Omit<UIMaterialTextViewProps, keyof ReturnType<typeof useKeyTextView>> & {
+type UIKeyTextViewProps = Omit<
+    UIMaterialTextViewProps,
+    Exclude<keyof ReturnType<typeof useKeyTextView>, 'onChangeText'>
+> & {
     onDone: OnDone;
+    onSuccess?: OnSuccess;
+    onError?: OnError;
 };
 
 export const UIKeyTextView = React.forwardRef<UIMaterialTextViewRef, UIKeyTextViewProps>(
