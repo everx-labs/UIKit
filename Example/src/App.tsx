@@ -36,7 +36,7 @@ import { UIAndroidNavigationBar, UISearchBarButton } from '@tonlabs/uicast.bars'
 import { ScrollView } from '@tonlabs/uikit.scrolls';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { createSplitNavigator, useSplitTabBarHeight } from '@tonlabs/uicast.split-navigator';
-import { ShrinkContentUnderSheet } from '@tonlabs/uikit.popups';
+import { UIModalPortalManager } from '@tonlabs/uikit.popups';
 
 import { ButtonsScreen } from './screens/Buttons';
 import { Checkbox } from './screens/Checkbox';
@@ -317,7 +317,7 @@ const App = () => {
 
     return (
         <StoreProvider>
-            <PortalManager contentWrapperComponent={ShrinkContentUnderSheet}>
+            <UIModalPortalManager>
                 <NavigationContainer ref={navRef} linking={{ prefixes: ['/'] }}>
                     <Split.Navigator
                         initialRouteName="browser"
@@ -592,7 +592,7 @@ const App = () => {
                     </Split.Navigator>
                 </NavigationContainer>
                 <UIAndroidNavigationBar />
-            </PortalManager>
+            </UIModalPortalManager>
         </StoreProvider>
     );
 };

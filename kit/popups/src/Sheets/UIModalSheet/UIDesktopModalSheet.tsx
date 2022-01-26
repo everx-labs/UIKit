@@ -2,10 +2,10 @@ import * as React from 'react';
 import { StyleProp, StyleSheet, ViewStyle, useWindowDimensions } from 'react-native';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
-import { UISheet, UISheetProps } from './UISheet/UISheet';
-import type { KeyboardAwareSheetProps } from './UISheet/KeyboardAwareSheet';
+import { UISheet, UISheetProps } from '../UISheet/UISheet';
+import type { KeyboardAwareSheetProps } from '../UISheet/KeyboardAwareSheet';
 
-export type UIPageSheetProps = UISheetProps & { style?: StyleProp<ViewStyle> };
+export type UIDesktopModalSheetProps = UISheetProps & { style?: StyleProp<ViewStyle> };
 
 const PAGE_SHEET_HEIGHT_RATIO = 0.8;
 
@@ -36,7 +36,7 @@ function WindowRelativeHeight({
     return children(relativeHeight, getBottomInset);
 }
 
-export function UIPageSheet({ children, style, ...rest }: UIPageSheetProps) {
+export function UIDesktopModalSheet({ children, style, ...rest }: UIDesktopModalSheetProps) {
     const { visible, forId } = rest;
     return (
         <UISheet.Container visible={visible} forId={forId}>
