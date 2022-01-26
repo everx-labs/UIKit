@@ -4,18 +4,24 @@ import { UILabel, TypographyVariants } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UIForegroundActionProps } from '../types';
 import { usePressableCellColorByColumnStatus, useMergedColumnStatus } from '../hooks';
-import { ColumnStatusContext } from '../Container';
-import { TouchableWrapper } from '../TouchableWrapper';
+import { ColumnStatusContext } from '../Context';
+import { TouchableWrapper } from '../../TouchableWrapper';
 
-export function ActionCell({ title, onPress, disabled, negative }: UIForegroundActionProps) {
+export function ActionCell({
+    title,
+    onPress,
+    disabled,
+    negative,
+    testID,
+}: UIForegroundActionProps) {
     const columnStatus = React.useContext(ColumnStatusContext);
 
-    const mergedColumnStatus = useMergedColumnStatus(columnStatus, disabled, negative, onPress);
+    const mergedColumnStatus = useMergedColumnStatus(columnStatus, disabled, negative);
     const actionColor = usePressableCellColorByColumnStatus(mergedColumnStatus);
 
     return (
         <TouchableWrapper
-            testID={`${title}_action_button`}
+            testID={testID}
             disabled={columnStatus.columnState === 'Pressable' || disabled}
             onPress={onPress}
             style={[
