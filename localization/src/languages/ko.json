@@ -53,7 +53,8 @@
             "CipherKeys": "암호화 키",
             "EnterKey": "수동으로 암호화 키 입력",
             "PickCipher": "암호화 키에서 선택",
-            "Prompt": "암호화 키 선택:"
+            "Prompt": "암호화 키 선택:",
+            "Encrypt": "Encrypt"
         },
         "Menu": {
             "More": "더..."
@@ -66,7 +67,8 @@
             "Prompt": "어떻게 서명하시겠습니까?",
             "SecurityCards": "보안 카드",
             "Signatures": "서명",
-            "UseSecurityCard": "보안 카드 사용"
+            "UseSecurityCard": "보안 카드 사용",
+            "Sign": "Sign"
         },
         "TransactionConfirmation": {
             "Attention": "주의 사항",

@@ -229,10 +229,10 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
                             });
                         }
 
-                        /** 
+                        /**
                          * Comment the code bellow, we might want to return it later once we learn how
                          * to deal with several security card related signing boxes on a single usage!
-                         * 
+                         *
                         const isSuccessful = await message.onUseSecurityCard();
 
                         if (!isSuccessful) {
@@ -309,6 +309,7 @@ export function SigningBox({ onLayout, ...message }: SigningBoxMessage) {
                     });
                 }}
                 label={uiLocalized.Browser.SigningBox.PrivateKey}
+                buttonTitle={uiLocalized.Browser.SigningBox.Sign}
             />
         </View>
     );

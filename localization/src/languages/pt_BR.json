@@ -54,7 +54,8 @@
             "SecurityCards": "Security cards",
             "Signatures": "Signatures",
             "AddSignature": "Add signature",
-            "PrivateKey": "Private key"
+            "PrivateKey": "Private key",
+            "Sign": "Sign"
         },
         "Approve": {
             "Title": "Transaction confirmation",
@@ -89,7 +90,8 @@
             "PickCipher": "Pick from encryption keys",
             "CipherKeys": "Encryption keys",
             "AddCipherKey": "Add an encryption key",
-            "CipherKeyLabel": "Encryption key"
+            "CipherKeyLabel": "Encryption key",
+            "Encrypt": "Encrypt"
         }
     },
     "Cancel": "Cancelar",

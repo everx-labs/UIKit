@@ -13,12 +13,16 @@ import {
 const MAX_KEY_LENGTH = 64;
 
 type OnDone = (key: string) => void | Promise<void>;
+type OnSuccess = (success: boolean) => void | Promise<void>;
+type OnError = (error: boolean) => void | Promise<void>;
 
 export function useKeyTextView(
     ref: React.Ref<TextInput> | null,
     isFocused: boolean,
     props: UIMaterialTextViewProps & {
         onDone: OnDone;
+        onSuccess: OnSuccess;
+        onError: OnError;
     },
 ) {
     const {
@@ -93,6 +97,16 @@ export function useKeyTextView(
         };
     }, [inputHasValue, hasInvalidChars, hasProperLength, isFocused]);
 
+    React.useEffect(() => {
+        if (props.onSuccess) {
+            props.onSuccess(success);
+        }
+
+        if (props.onError) {
+            props.onError(error);
+        }
+    }, [success, error]);
+
     return {
         helperText,
         error,
@@ -104,6 +118,8 @@ export function useKeyTextView(
 
 type UIKeyTextViewProps = Omit<UIMaterialTextViewProps, keyof ReturnType<typeof useKeyTextView>> & {
     onDone: OnDone;
+    onSuccess: OnSuccess;
+    onError: OnError;
 };
 
 export const UIKeyTextView = React.forwardRef<UIMaterialTextViewRef, UIKeyTextViewProps>(
