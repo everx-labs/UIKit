@@ -54,7 +54,7 @@ function UIKeySheetContent({
                 onDone={onKeyRetrieved}
                 onSuccess={setSuccess}
                 onError={setError}
-                onChangeText={setKey}
+                onChangeKey={setKey}
             />
             <UIBoxButton onPress={onSend} disabled={!success || error} title={buttonTitle} />
         </View>
