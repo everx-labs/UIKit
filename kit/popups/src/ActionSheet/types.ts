@@ -73,7 +73,7 @@ export type IUIActionSheet = React.FC<UIActionSheetContainerProps> & {
      */
     CustomAction: UIForegroundType['Container'];
 
-    // ================== Columns: ==================
+    // Columns:
     /**
      * Container of the Primary (Left) column of the CustomAction.
      * This component accepts only Cells (e.g. UIActionSheet.ActionCell) components as children.
@@ -85,7 +85,7 @@ export type IUIActionSheet = React.FC<UIActionSheetContainerProps> & {
      */
     SecondaryColumn: React.FC<SecondaryColumnProps>;
 
-    // ================== Cells: ==================
+    // Cells:
     /**
      * Pressable element (Button) of the CustomAction.
      */
