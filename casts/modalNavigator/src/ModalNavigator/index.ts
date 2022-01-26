@@ -1,6 +1,5 @@
 export {
     createModalNavigator,
-    withModalSceneWrapper,
     NestedInModalContext,
     NestedInDismissibleModalContext,
 } from './createModalNavigator';

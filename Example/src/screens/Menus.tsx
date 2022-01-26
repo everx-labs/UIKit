@@ -12,7 +12,7 @@ import {
     UICardSheet,
     UIBottomSheet,
     UIFullscreenSheet,
-    UIPageSheet,
+    UIModalSheet,
     UIPopup,
     useIntrinsicSizeScrollView,
 } from '@tonlabs/uikit.popups';
@@ -115,30 +115,26 @@ function LargeTitleSheetExample() {
     );
 }
 
-function BigBottomLargeTitleSheet() {
-    const theme = useTheme();
-    const [bigBottomSheetVisible, setBigBottomSheetVisible] = React.useState(false);
+function ModalWithLargeTitleSheet() {
+    const [visible, setVisible] = React.useState(false);
     return (
         <>
             <UILinkButton
-                testID="show_big_uiBottomSheet_largeTitleHeader"
-                title="Show Big UIBottomSheet with UILargeTitleHeader"
+                testID="show_modal_largeTitleHeader"
+                title="Show Modal with UILargeTitleHeader"
                 onPress={() => {
-                    setBigBottomSheetVisible(true);
+                    setVisible(true);
                 }}
             />
-            <UIFullscreenSheet
-                visible={bigBottomSheetVisible}
+            <UIModalSheet
+                visible={visible}
                 onClose={() => {
-                    setBigBottomSheetVisible(false);
+                    setVisible(false);
                 }}
-                style={{
-                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                    borderRadius: 10,
-                }}
+                maxMobileWidth={900}
             >
                 <LargeTitleSheetExample />
-            </UIFullscreenSheet>
+            </UIModalSheet>
         </>
     );
 }
@@ -226,34 +222,6 @@ function FlexibleSizeBottomSheet() {
             >
                 <FlexibleSizeBottomSheetContent setSheetVisible={setSheetVisible} />
             </UIBottomSheet>
-        </>
-    );
-}
-
-function PageWithLargeTitleSheet() {
-    const theme = useTheme();
-    const [visible, setVisible] = React.useState(false);
-    return (
-        <>
-            <UILinkButton
-                testID="show_page_with_largeTitleHeader"
-                title="Show UIPageSheet with UILargeTitleHeader"
-                onPress={() => {
-                    setVisible(true);
-                }}
-            />
-            <UIPageSheet
-                visible={visible}
-                onClose={() => {
-                    setVisible(false);
-                }}
-                style={{
-                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                    borderRadius: 10,
-                }}
-            >
-                <LargeTitleSheetExample />
-            </UIPageSheet>
         </>
     );
 }
@@ -445,9 +413,8 @@ export const Menus = () => {
                         }}
                     />
                     <PinCodeMenu />
-                    <BigBottomLargeTitleSheet />
                     <FlexibleSizeBottomSheet />
-                    <PageWithLargeTitleSheet />
+                    <ModalWithLargeTitleSheet />
                 </View>
             </ExampleSection>
             <ExampleSection title="UIPopover">
