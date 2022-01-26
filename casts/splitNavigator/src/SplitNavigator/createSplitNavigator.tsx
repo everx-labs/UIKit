@@ -25,6 +25,8 @@ import {
     filterDescriptorOptionsForOriginalImplementation,
 } from '@tonlabs/uicast.stack-navigator';
 
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
+
 import { SafeAreaProviderCompat } from './SafeAreaProviderCompat';
 import {
     SplitRouter,
@@ -52,6 +54,43 @@ export const NestedInSplitContext = React.createContext<boolean>(false);
 export function useIsSplitted() {
     const isSplitted = React.useContext(NestedInSplitContext);
     return isSplitted;
+}
+
+export function useSplitNavigatorDetailsWidth() {
+    const { width } = useWindowDimensions();
+
+    const isSplitted = useIsSplitted();
+
+    if (!isSplitted) {
+        return width;
+    }
+
+    const mVCStyle = StyleSheet.flatten(UIStyle.masterViewController);
+    const sVCStyle = StyleSheet.flatten(UIStyle.splitViewController);
+
+    if (width <= mVCStyle.maxWidth) {
+        return width;
+    }
+
+    if (width <= sVCStyle.maxWidth) {
+        return (
+            width -
+            mVCStyle.maxWidth -
+            // UIStyle.splitViewController.padding from left and right
+            2 * UIConstant.contentOffset() -
+            // UIStyle.detailViewController.marginLeft
+            UIConstant.contentOffset()
+        );
+    }
+
+    return (
+        sVCStyle.maxWidth -
+        mVCStyle.maxWidth -
+        // UIStyle.splitViewController.padding from left and right
+        2 * UIConstant.contentOffset() -
+        // UIStyle.detailViewController.marginLeft
+        UIConstant.contentOffset()
+    );
 }
 
 const getIsSplitted = ({ width }: { width: number }, mainWidth: number) => width > mainWidth;
