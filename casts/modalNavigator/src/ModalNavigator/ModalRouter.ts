@@ -97,12 +97,13 @@ type ModalRouterOptions = {
     childrenForConfigs: React.ReactNode;
 };
 
-type ModalNavigationRoute<
+export type ModalNavigationRoute<
     ParamList extends ParamListBase,
     RouteName extends keyof ParamList,
 > = Route<Extract<RouteName, string>, ParamList[RouteName]> & {
     state?: NavigationState | PartialState<NavigationState>;
     order: number;
+    visible: boolean;
 };
 
 export type ModalNavigationState<ParamList extends ParamListBase = ParamListBase> = {
@@ -138,6 +139,7 @@ export function ModalRouter(routerOptions: ModalRouterOptions) {
                 key: `${name}-${nanoid()}`,
                 params: routeParamList[name],
                 order: 0,
+                visible: false,
             }));
 
             return {
@@ -180,6 +182,7 @@ export function ModalRouter(routerOptions: ModalRouterOptions) {
                             : `${name}-${nanoid()}`,
                     params,
                     order: 0,
+                    visible: false,
                 };
             });
 
@@ -201,6 +204,7 @@ export function ModalRouter(routerOptions: ModalRouterOptions) {
                         key: `${name}-${nanoid()}`,
                         params: routeParamList[name],
                         order: 0,
+                        visible: false,
                     },
             );
 
@@ -264,10 +268,7 @@ export function ModalRouter(routerOptions: ModalRouterOptions) {
                     const routes = sortBy(
                         state.routes.map((route, i) => {
                             let order = route.order ?? 0;
-                            let params = {
-                                ...route.params,
-                                visible: order > 0,
-                            };
+                            let { params } = route;
 
                             if (modalRouteIndex === i) {
                                 orderCounter += 1;
@@ -275,7 +276,6 @@ export function ModalRouter(routerOptions: ModalRouterOptions) {
                                 params = {
                                     ...modalRouteConfig?.defaultProps,
                                     ...action.payload.params,
-                                    visible: true,
                                 };
                             }
 
@@ -283,6 +283,7 @@ export function ModalRouter(routerOptions: ModalRouterOptions) {
                                 ...route,
                                 params,
                                 order,
+                                visible: order > 0,
                             };
                         }),
                         'order',
@@ -310,10 +311,7 @@ export function ModalRouter(routerOptions: ModalRouterOptions) {
                             return {
                                 ...route,
                                 order: 0,
-                                params: {
-                                    ...route.params,
-                                    visible: false,
-                                },
+                                visible: false,
                             };
                         }
                         return route;
@@ -335,10 +333,8 @@ export function ModalRouter(routerOptions: ModalRouterOptions) {
                 case 'HIDE_ALL': {
                     const routes = state.routes.map(route => ({
                         ...route,
-                        params: {
-                            ...route.params,
-                            visible: false,
-                        },
+                        order: 0,
+                        visible: false,
                     }));
 
                     return {
@@ -364,10 +360,7 @@ export function ModalRouter(routerOptions: ModalRouterOptions) {
                             return {
                                 ...route,
                                 order: 0,
-                                params: {
-                                    ...route,
-                                    visible: false,
-                                },
+                                visible: false,
                             };
                         }
                         return route;
