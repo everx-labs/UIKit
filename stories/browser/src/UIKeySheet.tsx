@@ -52,6 +52,8 @@ function UIKeySheetContent({
         }
     }, [key, success]);
 
+    const disabled = React.useMemo(() => !success || error, [success, error])
+
     return (
         <View style={styles.wrapper}>
             <UIKeyTextView
@@ -62,7 +64,7 @@ function UIKeySheetContent({
                 onError={setError}
                 onChangeText={setKey}
             />
-            <UIBoxButton onPress={onSend} disabled={!success || error} title={buttonTitle} />
+            <UIBoxButton onPress={onSend} disabled={disabled} title={buttonTitle} />
         </View>
     );
 }
