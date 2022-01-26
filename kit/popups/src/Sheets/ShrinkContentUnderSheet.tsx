@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useWindowDimensions, View } from 'react-native';
+import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import Animated, {
     Extrapolate,
     interpolate,
@@ -7,6 +7,9 @@ import Animated, {
     useSharedValue,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { useTheme, ColorVariants } from '@tonlabs/uikit.themes';
 
 const ShrinkContentUnderSheetContext = React.createContext<
     Animated.SharedValue<number> | undefined
@@ -18,6 +21,8 @@ export function useShrinkContentUnderSheetContextProgress() {
 
 // @inline
 const SCALE_FACTOR = 0.9;
+// @inline
+const SHRINKED_CONTENT_BR = 12; // UILayoutConstant.alertBorderRadius
 
 export function ShrinkContentUnderSheet({
     children,
@@ -35,7 +40,7 @@ export function ShrinkContentUnderSheet({
 
         const scaledTopInset = (height - scaledHeight) / 2;
 
-        return insets.top - scaledTopInset;
+        return Math.max(insets.top, UILayoutConstant.contentInsetVerticalX4) - scaledTopInset;
     }, [height, insets.top]);
 
     const style = useAnimatedStyle(() => {
@@ -52,23 +57,23 @@ export function ShrinkContentUnderSheet({
                     translateY: interpolate(progress.value, [0, 1], [0, topModifier], options),
                 },
             ],
-            // TODO: decide whether to apply `interpolate` here or not
-            borderRadius: progress.value > 0 ? 10 : 0,
-            // borderRadius: interpolate(
-            //     progress.value,
-            //     [0, 1],
-            //     [0, Math.round(10 + 10 * (1 - SCALE_FACTOR))],
-            //     options,
-            // ),
+            borderRadius: progress.value > 0 ? SHRINKED_CONTENT_BR : 0,
         };
     });
 
+    const theme = useTheme();
+
     return (
         <>
-            <View style={{ flex: 1, backgroundColor: 'black' }}>
-                <Animated.View style={[{ flex: 1, overflow: 'hidden' }, style]}>
-                    {children}
-                </Animated.View>
+            <View
+                style={[
+                    styles.contentBackdrop,
+                    {
+                        backgroundColor: theme[ColorVariants.StaticBlack],
+                    },
+                ]}
+            >
+                <Animated.View style={[styles.contentAnimated, style]}>{children}</Animated.View>
             </View>
             <ShrinkContentUnderSheetContext.Provider value={progress}>
                 {portals}
@@ -76,3 +81,10 @@ export function ShrinkContentUnderSheet({
         </>
     );
 }
+
+const styles = StyleSheet.create({
+    contentBackdrop: {
+        flex: 1,
+    },
+    contentAnimated: { flex: 1, overflow: 'hidden' },
+});

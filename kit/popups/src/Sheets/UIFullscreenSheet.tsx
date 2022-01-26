@@ -19,7 +19,7 @@ function MoveContentUnderSheet() {
 
     useAnimatedReaction(
         () => {
-            // to a range 0-1 be starting from half of the snapPoint to the end of it
+            // to a range 0-1 be starting from half of the progress to the end of it
             return positionProgress.value * 2 - 1;
         },
         progress => {
@@ -43,8 +43,9 @@ export function UIFullscreenSheet({ children, style, ...rest }: UIFullscreenShee
             height -
             Math.max(StatusBar.currentHeight ?? 0, topInset) +
             UILayoutConstant.rubberBandEffectDistance -
-            // TODO: borderRadius + some indent
-            (10 + 2),
+            // iOS has a very small indent after when borderRadius ends
+            // do here the same, it's not exact, just was done with eye test
+            (UILayoutConstant.alertBorderRadius + 2),
         [height, topInset],
     );
 
