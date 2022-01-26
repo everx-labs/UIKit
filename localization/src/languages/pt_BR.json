@@ -91,7 +91,7 @@
             "CipherKeys": "Encryption keys",
             "AddCipherKey": "Add an encryption key",
             "CipherKeyLabel": "Encryption key",
-            "Encrypt": "Encrypt"
+            "UseKey": "Use key"
         }
     },
     "Cancel": "Cancelar",

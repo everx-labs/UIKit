@@ -191,7 +191,7 @@ export function EncryptionBox({ onLayout, ...message }: EncryptionBoxMessage) {
                     });
                 }}
                 label={uiLocalized.Browser.EncryptionBox.CipherKeyLabel}
-                buttonTitle={uiLocalized.Browser.EncryptionBox.Encrypt}
+                buttonTitle={uiLocalized.Browser.EncryptionBox.UseKey}
             />
         </View>
     );

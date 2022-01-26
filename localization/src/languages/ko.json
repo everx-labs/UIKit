@@ -54,7 +54,7 @@
             "EnterKey": "수동으로 암호화 키 입력",
             "PickCipher": "암호화 키에서 선택",
             "Prompt": "암호화 키 선택:",
-            "Encrypt": "Encrypt"
+            "UseKey": "Use key"
         },
         "Menu": {
             "More": "더..."

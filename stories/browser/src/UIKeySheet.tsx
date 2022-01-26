@@ -9,7 +9,11 @@ import { UIPullerSheet } from './UIPullerSheet';
 function useKeySheetContent() {
     const [error, setError] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
-    const [key, setKey] = React.useState('');
+
+    const key = React.useRef('');
+    const setKey = React.useCallback((val: string) => {
+        key.current = val;
+    }, []);
 
     return { error, setError, success, setSuccess, key, setKey };
 }
@@ -43,8 +47,10 @@ function UIKeySheetContent({
     }, []);
 
     const onSend = React.useCallback(() => {
-        onKeyRetrieved(key);
-    }, [key]);
+        if (success) {
+            onKeyRetrieved(key.current);
+        }
+    }, [key, success]);
 
     return (
         <View style={styles.wrapper}>
@@ -54,7 +60,7 @@ function UIKeySheetContent({
                 onDone={onKeyRetrieved}
                 onSuccess={setSuccess}
                 onError={setError}
-                onChangeKey={setKey}
+                onChangeText={setKey}
             />
             <UIBoxButton onPress={onSend} disabled={!success || error} title={buttonTitle} />
         </View>
