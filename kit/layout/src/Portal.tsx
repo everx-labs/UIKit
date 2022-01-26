@@ -83,7 +83,7 @@ type PortalManagerProps = {
     id?: string;
     renderOnlyLastPortal?: boolean;
     children: React.ReactNode;
-    contentWrapperComponent: WrapperComponent;
+    contentWrapperComponent?: WrapperComponent;
 };
 
 const PortalView = React.memo<PortalItem>(function PortalView({
@@ -104,7 +104,7 @@ const PortalView = React.memo<PortalItem>(function PortalView({
         );
     }
 
-    return children;
+    return <>{children}</>;
 });
 
 type PortalsViewProps = {
@@ -120,24 +120,30 @@ const PortalsView = React.memo<PortalsViewProps>(function PortalsView({
     portals,
 }) {
     if (!renderOnlyLastPortal) {
-        return portalKeys.map(key => {
-            const portal = portals[key];
+        return (
+            <>
+                {portalKeys.map(key => {
+                    const portal = portals[key];
 
-            if (portal == null) {
-                return null;
-            }
+                    if (portal == null) {
+                        return null;
+                    }
 
-            return <PortalView key={`portal_${key}`} {...portal} />;
-        });
+                    return <PortalView key={`portal_${key}`} {...portal} />;
+                })}
+            </>
+        );
     }
 
     const maxMountedKey = portalKeys[portalKeys.length - 1];
 
-    if (portals[maxMountedKey] == null) {
+    const lastPortal = portals[maxMountedKey];
+
+    if (lastPortal == null) {
         return null;
     }
 
-    return <PortalView key={`portal_${maxMountedKey}`} {...portals[maxMountedKey]} />;
+    return <PortalView key={`portal_${maxMountedKey}`} {...lastPortal} />;
 });
 
 const MaybeParentManager = React.memo(function MaybeParentManager({
@@ -159,29 +165,27 @@ const MaybeParentManager = React.memo(function MaybeParentManager({
 });
 
 type MaybePortalContentWrapperProps = {
-    wrapperComponent: WrapperComponent | null;
+    wrapperComponent?: WrapperComponent | null;
     children: React.ReactNode;
     portals: React.ReactNode;
 };
 
-const MaybePortalContentWrapper = React.memo<MaybePortalContentWrapperProps>(
-    function MaybePortalContentWrapper({
-        wrapperComponent: ContentWrapperComponent,
-        children,
-        portals,
-    }) {
-        if (ContentWrapperComponent == null) {
-            return (
-                <>
-                    {children}
-                    {portals}
-                </>
-            );
-        }
+function MaybePortalContentWrapper({
+    wrapperComponent: ContentWrapperComponent,
+    children,
+    portals,
+}: MaybePortalContentWrapperProps) {
+    if (ContentWrapperComponent == null) {
+        return (
+            <>
+                {children}
+                {portals}
+            </>
+        );
+    }
 
-        return <ContentWrapperComponent portals={portals}>{children}</ContentWrapperComponent>;
-    },
-);
+    return <ContentWrapperComponent portals={portals}>{children}</ContentWrapperComponent>;
+}
 
 export class PortalManager extends React.PureComponent<PortalManagerProps, PortalManagerState> {
     parentManager?: PortalMethods;

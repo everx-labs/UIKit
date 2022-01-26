@@ -3,11 +3,36 @@ import { StyleProp, StyleSheet, ViewStyle, StatusBar, useWindowDimensions } from
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { useAnimatedReaction } from 'react-native-reanimated';
 import { UISheet, UISheetProps } from './UISheet/UISheet';
+
+import { useShrinkContentUnderSheetContextProgress } from './ShrinkContentUnderSheet';
+import { useSheetProgress } from './UISheet/usePosition';
 
 export type UIFullscreenSheetProps = Omit<UISheetProps, 'countRubberBandDistance'> & {
     style?: StyleProp<ViewStyle>;
 };
+
+function MoveContentUnderSheet() {
+    const contentUnderSheetProgress = useShrinkContentUnderSheetContextProgress();
+    const positionProgress = useSheetProgress();
+
+    useAnimatedReaction(
+        () => {
+            // to a range 0-1 be starting from half of the snapPoint to the end of it
+            return positionProgress.value * 2 - 1;
+        },
+        progress => {
+            if (!contentUnderSheetProgress) {
+                return;
+            }
+
+            contentUnderSheetProgress.value = progress;
+        },
+    );
+
+    return null;
+}
 
 export function UIFullscreenSheet({ children, style, ...rest }: UIFullscreenSheetProps) {
     const { height } = useWindowDimensions();
@@ -41,6 +66,7 @@ export function UIFullscreenSheet({ children, style, ...rest }: UIFullscreenShee
             <UISheet.KeyboardUnaware defaultShift={-UILayoutConstant.rubberBandEffectDistance}>
                 <UISheet.FixedSize height={fullscreenHeight}>
                     <UISheet.Content {...rest} style={[styles.bottom, style, sheetStyle]}>
+                        <MoveContentUnderSheet />
                         {children}
                     </UISheet.Content>
                 </UISheet.FixedSize>

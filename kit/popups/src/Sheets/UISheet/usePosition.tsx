@@ -23,7 +23,6 @@ import { useHasScroll } from '@tonlabs/uikit.scrolls';
 
 import { getYWithRubberBandEffect } from '../../AnimationHelpers/getYWithRubberBandEffect';
 import type { OnOpen, OnClose } from './types';
-import { useShrinkContentUnderSheetContextProgress } from './ShrinkContentUnderSheet';
 
 const OpenSpringConfig = {
     overshootClamping: false,
@@ -89,6 +88,25 @@ export function useSheetReady() {
     return ready;
 }
 
+export const SheetProgressContext = React.createContext<Animated.SharedValue<number> | null>(null);
+
+/**
+ * Use it to get a relative progress of sheet placement
+ * without specific knowledge, like a sheet height or any other variables.
+ * The progress is a range from 0 to 1.
+ * 0 means a sheet is closed
+ * 1 means a sheet is open
+ */
+export function useSheetProgress() {
+    const progress = React.useContext(SheetProgressContext);
+
+    if (progress == null) {
+        throw new Error('Are you using `useSheetProgress` not in `UISheet` context?');
+    }
+
+    return progress;
+}
+
 export function usePosition(
     height: Animated.SharedValue<number>,
     origin: Animated.SharedValue<number>,
@@ -146,27 +164,10 @@ export function usePosition(
         return origin.value + normalizedPosition.value;
     });
 
-    // TODO:
-    // Probably better to pass it with context somehow
-    // than tightly couple it with the current code
-    //
-    // This is actually MUST be moved out,
-    // as it isn't required for all sheets
-    const contentUnderSheetProgress = useShrinkContentUnderSheetContextProgress();
-
-    useAnimatedReaction(
-        () => {
-            // to a range 0-1 be starting from half of the snapPoint to the end of it
-            return (normalizedPosition.value / snapPoint.value) * 2 - 1;
-        },
-        progress => {
-            if (!contentUnderSheetProgress) {
-                return;
-            }
-
-            contentUnderSheetProgress.value = progress;
-        },
-    );
+    // See `useSheetProgress`
+    const positionProgress = useDerivedValue(() => {
+        return Math.min(Math.max(normalizedPosition.value / snapPoint.value, 0), 1);
+    });
 
     /**
      * A guard that is used to wait for some calculations
@@ -341,6 +342,7 @@ export function usePosition(
         hasScroll,
         setHasScroll,
         position,
+        positionProgress,
         ready,
     };
 }
