@@ -1,7 +1,7 @@
 /* eslint-disable no-alert */
 /* eslint-disable react/no-unused-prop-types */
 import * as React from 'react';
-import { Platform, Text, View } from 'react-native';
+import { Platform, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant } from '@tonlabs/uikit.core';
@@ -20,7 +20,7 @@ import {
 import { ScrollView } from '@tonlabs/uikit.scrolls';
 import { UIMaterialTextView } from '@tonlabs/uikit.inputs';
 import { UIBoxButton, UILinkButton } from '@tonlabs/uikit.controls';
-import { UILabel, ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import { UILabel, ColorVariants, useTheme, TypographyVariants } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIPinCode, UIPinCodeBiometryType } from '@tonlabs/uicast.pin-code';
 import { UICountryPicker } from '@tonlabs/uicast.country-picker';
@@ -366,6 +366,9 @@ export const Menus = () => {
     const [bottomSheetVisible, setBottomSheetVisible] = React.useState(false);
     const [bottomSheetVisible2, setBottomSheetVisible2] = React.useState(false);
     const [countryPickerVisible, setCountryPickerVisible] = React.useState(false);
+    const [isUIMenuVisible, setIsUIMenuVisible] = React.useState(false);
+
+    const targetRef = React.useRef<TouchableOpacity>(null);
 
     const [visibleActionStartIndex, setVisibleActionStartIndex] = React.useState<number>(0);
 
@@ -563,6 +566,44 @@ export const Menus = () => {
                     <BigBottomLargeTitleSheet />
                     <FlexibleSizeBottomSheet />
                     <PageWithLargeTitleSheet />
+                </View>
+            </ExampleSection>
+            <ExampleSection title="UIMenu">
+                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <TouchableOpacity ref={targetRef} onPress={() => setIsUIMenuVisible(true)}>
+                        <UILabel color={ColorVariants.TextAccent} role={TypographyVariants.Action}>
+                            Show UIMenu
+                        </UILabel>
+                    </TouchableOpacity>
+
+                    <UIPopup.Menu
+                        visible={isUIMenuVisible}
+                        targetRef={targetRef}
+                        onClose={() => setIsUIMenuVisible(false)}
+                    >
+                        <View
+                            style={{
+                                height: 200,
+                                width: '100%',
+                                backgroundColor: 'red',
+                            }}
+                        />
+                        {/* <UIPopup.Menu.Action
+                            type={UIPopup.Menu.Action.Type.Neutral}
+                            title="Neutral Action"
+                            onPress={getAlertCallback('Neutral Action')}
+                        />
+                        <UIPopup.Menu.Action
+                            type={UIPopup.Menu.Action.Type.Negative}
+                            title="Negative Action"
+                            onPress={getAlertCallback('Negative Action')}
+                        />
+                        <UIPopup.Menu.Action
+                            type={UIPopup.Menu.Action.Type.Cancel}
+                            title="Cancel Action"
+                            onPress={getAlertCallback('Cancel Action')}
+                        /> */}
+                    </UIPopup.Menu>
                 </View>
             </ExampleSection>
             <ExampleSection title="UIPopover">

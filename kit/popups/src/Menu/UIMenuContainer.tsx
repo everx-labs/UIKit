@@ -29,12 +29,6 @@ type Dimensions = {
     height: number;
 };
 
-const initialDimensions: Dimensions = {
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0,
-};
 const initialSize: Size = {
     width: 0,
     height: 0,
@@ -43,8 +37,9 @@ const initialSize: Size = {
 function useTargetDimensions(
     visible: boolean,
     targetRef: React.RefObject<NativeMethods>,
-): Dimensions {
-    const [dimensions, setDimensions] = React.useState<Dimensions>(initialDimensions);
+    windowDimensions: ScaledSize,
+): Dimensions | null {
+    const [dimensions, setDimensions] = React.useState<Dimensions | null>(null);
 
     React.useEffect(() => {
         if (visible) {
@@ -65,8 +60,10 @@ function useTargetDimensions(
                     });
                 },
             );
+        } else {
+            setDimensions(null);
         }
-    }, [targetRef, visible]);
+    }, [targetRef, visible, windowDimensions]);
 
     return dimensions;
 }
@@ -81,20 +78,18 @@ function getBoundaries(windowDimensions: ScaledSize, menuSize: Size) {
 }
 
 function useMenuLocation(
-    targetDimensions: Dimensions,
+    targetDimensions: Dimensions | null,
     windowDimensions: ScaledSize,
     menuSize: Size,
 ): Location | null {
     return React.useMemo(() => {
-        const { x: targetX, y: targetY, height: targetHeight } = targetDimensions;
-
-        if (!menuSize.height || !menuSize.width) {
+        if (!menuSize.height || !menuSize.width || !targetDimensions) {
             return null;
         }
 
-        let top: number | undefined = targetY + targetHeight;
+        let top: number | undefined = targetDimensions.y + targetDimensions.height;
         let bottom: number | undefined;
-        let left: number | undefined = targetX;
+        let left: number = targetDimensions.x;
 
         const boundaries = getBoundaries(windowDimensions, menuSize);
 
@@ -119,19 +114,16 @@ function useMenuLocation(
 }
 
 export function UIMenuContainer({ children, visible, targetRef, onClose }: UIMenuContainerProps) {
-    // const measuredRef = React.useRef(false);
     const theme = useTheme();
     const windowDimensions = useWindowDimensions();
-    const targetDimensions = useTargetDimensions(visible, targetRef);
+    const targetDimensions = useTargetDimensions(visible, targetRef, windowDimensions);
 
     const [menuSize, setMenuSize] = React.useState<Size>(initialSize);
     const onLayout = React.useCallback(
         function onLayout(event: LayoutChangeEvent) {
-            // if (!measuredRef.current) {
-            //     measuredRef.current = true;
-            // }
-            const { width, height } = event.nativeEvent.layout;
-            if (width !== menuSize.width || height !== menuSize.height) {
+            const width = Math.round(event.nativeEvent.layout.width);
+            const height = Math.round(event.nativeEvent.layout.height);
+            if (menuSize.width !== width || menuSize.height !== height) {
                 setMenuSize({ width, height });
             }
         },
@@ -153,16 +145,9 @@ export function UIMenuContainer({ children, visible, targetRef, onClose }: UIMen
 
     return (
         <Portal absoluteFill>
-            {/* <TapGestureHandler
-                onBegan={() => console.log('onBegan')}
-            >
-                <View style={StyleSheet.absoluteFill} />
-            </TapGestureHandler> */}
             <TouchableOpacity onPressIn={onPressIn} style={StyleSheet.absoluteFill} />
-            {/* <View style={StyleSheet.absoluteFill} {...panResponder.panHandlers} /> */}
-
             <Animated.View
-                style={[styles.container]}
+                style={styles.container}
                 entering={FadeInUp}
                 exiting={FadeOutDown}
                 onLayout={onLayout}
@@ -176,8 +161,9 @@ export function UIMenuContainer({ children, visible, targetRef, onClose }: UIMen
 const useStyles = makeStyles((theme: Theme, location: Location | null) => ({
     container: {
         position: 'absolute',
+        top: -10000,
+        left: -10000,
         ...location,
-        opacity: location ? 1 : 0,
         backgroundColor: theme[ColorVariants.BackgroundPrimary],
         borderRadius: UILayoutConstant.alertBorderRadius,
         overflow: 'hidden',
