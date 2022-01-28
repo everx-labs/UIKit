@@ -120,8 +120,6 @@ import iconKeyThinGrey from './resources/key-thin/key-thin-grey.png';
 import iconKeyThinWhite from './resources/key-thin/key-thin-white.png';
 import iconWarn from './resources/ico-warn/ico-warn.png';
 
-import iconLogoGramLabel from './resources/logo/gram-label/gram-label.png';
-import iconLogoTonLabelWhite from './resources/logo/ton-label/ton-label-white.png';
 import iconLogoTonlabsBlack from './resources/logo/tonlabs/tonlabs-black.png';
 import iconLogoTonlabsPrimaryMinus from './resources/logo/tonlabs/tonlabs-primary-minus.png';
 
@@ -271,8 +269,6 @@ export const UIAssets = {
         },
 
         logo: {
-            gramLabel: iconLogoGramLabel,
-            tonLabel: iconLogoTonLabelWhite,
             tonlabsBlack: iconLogoTonlabsBlack,
             tonlabsPrimary: iconLogoTonlabsPrimaryMinus,
         },
