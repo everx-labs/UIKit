@@ -616,6 +616,11 @@ export const Menus = () => {
                             title="Negative Action"
                             onPress={getMenuCallback('Negative Action')}
                         />
+                        <UIPopup.Menu.Action
+                            type={UIPopup.Menu.Action.Type.Disabled}
+                            title="Disabled Action"
+                            onPress={getMenuCallback('Disabled Action')}
+                        />
                     </UIPopup.Menu>
                 </View>
             </ExampleSection>
