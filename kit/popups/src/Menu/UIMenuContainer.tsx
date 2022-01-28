@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Animated, { FadeInUp, FadeOutDown } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { ColorVariants, useTheme, Theme, makeStyles } from '@tonlabs/uikit.themes';
 import { Portal, UILayoutConstant } from '@tonlabs/uikit.layout';
 import {
@@ -148,8 +148,8 @@ export function UIMenuContainer({ children, visible, targetRef, onClose }: UIMen
             <TouchableOpacity onPressIn={onPressIn} style={StyleSheet.absoluteFill} />
             <Animated.View
                 style={styles.container}
-                entering={FadeInUp}
-                exiting={FadeOutDown}
+                entering={FadeIn.duration(UIConstant.menu.animationTime)}
+                exiting={FadeOut.duration(UIConstant.menu.animationTime)}
                 onLayout={onLayout}
             >
                 {children}
@@ -167,6 +167,6 @@ const useStyles = makeStyles((theme: Theme, location: Location | null) => ({
         backgroundColor: theme[ColorVariants.BackgroundPrimary],
         borderRadius: UILayoutConstant.alertBorderRadius,
         overflow: 'hidden',
-        width: UIConstant.menuWidth,
+        width: UIConstant.menu.width,
     },
 }));
