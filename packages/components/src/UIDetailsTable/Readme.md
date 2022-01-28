@@ -26,11 +26,6 @@ const detailsList = [
         value: '7,900,404 (98.8 %)',
         type: UIDetailsTable.CellType.NumberPercent,
     },
-    {
-        caption: 'row 6',
-        value: '100.00000000',
-        type: UIDetailsTable.CellType.Gram,
-    },
 ];
 
 <UIDetailsTable detailsList={detailsList} />;
