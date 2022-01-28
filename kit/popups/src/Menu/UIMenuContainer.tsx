@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
-import { ColorVariants, useTheme, Theme, makeStyles } from '@tonlabs/uikit.themes';
+import { ColorVariants, useTheme, Theme, makeStyles, useColorParts } from '@tonlabs/uikit.themes';
 import { Portal, UILayoutConstant } from '@tonlabs/uikit.layout';
 import {
     LayoutChangeEvent,
@@ -9,9 +9,11 @@ import {
     StyleSheet,
     useWindowDimensions,
     TouchableOpacity,
+    PixelRatio,
 } from 'react-native';
 import type { UIMenuContainerProps } from './types';
 import { UIConstant } from '../constants';
+import { ShadowView } from '../ShadowView';
 
 type Location = {
     left: number;
@@ -130,7 +132,6 @@ export function UIMenuContainer({ children, visible, targetRef, onClose }: UIMen
         [menuSize],
     );
     const menuLocation = useMenuLocation(targetDimensions, windowDimensions, menuSize);
-    const styles = useStyles(theme, menuLocation);
 
     const onPressIn = React.useCallback(
         function onPressIn() {
@@ -138,6 +139,11 @@ export function UIMenuContainer({ children, visible, targetRef, onClose }: UIMen
         },
         [onClose],
     );
+
+    const { color: shadowColor, opacity: shadowOpacity } = useColorParts(
+        ColorVariants.BackgroundOverlay,
+    );
+    const styles = useStyles(theme, menuLocation, shadowColor, shadowOpacity);
 
     if (!visible) {
         return null;
@@ -152,21 +158,32 @@ export function UIMenuContainer({ children, visible, targetRef, onClose }: UIMen
                 exiting={FadeOut.duration(UIConstant.menu.animationTime)}
                 onLayout={onLayout}
             >
-                {children}
+                <ShadowView style={styles.shadowContainer}>{children}</ShadowView>
             </Animated.View>
         </Portal>
     );
 }
 
-const useStyles = makeStyles((theme: Theme, location: Location | null) => ({
-    container: {
-        position: 'absolute',
-        top: -10000,
-        left: -10000,
-        ...location,
-        backgroundColor: theme[ColorVariants.BackgroundPrimary],
-        borderRadius: UILayoutConstant.alertBorderRadius,
-        overflow: 'hidden',
-        width: UIConstant.menu.width,
-    },
-}));
+const useStyles = makeStyles(
+    (theme: Theme, location: Location | null, shadowColor: string, shadowOpacity: number) => ({
+        container: {
+            position: 'absolute',
+            top: -10000,
+            left: -10000,
+            ...location,
+        },
+        shadowContainer: {
+            backgroundColor: theme[ColorVariants.BackgroundPrimary],
+            borderRadius: UILayoutConstant.alertBorderRadius,
+            width: UIConstant.menu.width,
+            paddingHorizontal: UILayoutConstant.contentOffset,
+            shadowRadius: 48 / PixelRatio.get(),
+            shadowOffset: {
+                width: 0,
+                height: 32 / PixelRatio.get(),
+            },
+            shadowColor,
+            shadowOpacity,
+        },
+    }),
+);

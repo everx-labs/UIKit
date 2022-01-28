@@ -120,7 +120,7 @@ const customActionList: UIActionSheetContainerChildType[] = [
             <UIPopup.ActionSheet.IconCell source={UIAssets.icons.ui.camera} onPress={onPress} />
             <UIPopup.ActionSheet.IconCell
                 source={UIAssets.icons.ui.camera}
-                onPress={() => onPress}
+                onPress={onPress}
                 tintColor={ColorVariants.TextAccent}
             />
         </UIPopup.ActionSheet.SecondaryColumn>
@@ -372,7 +372,7 @@ export const Menus = () => {
 
     const [visibleActionStartIndex, setVisibleActionStartIndex] = React.useState<number>(0);
 
-    const getCallback = React.useCallback(
+    const getActionSheetCallback = React.useCallback(
         (message: string) => () => {
             console.log(message);
             if (message.includes('Cancel')) {
@@ -384,6 +384,14 @@ export const Menus = () => {
                 }
                 return prev + 3;
             });
+        },
+        [],
+    );
+
+    const getMenuCallback = React.useCallback(
+        (message: string) => () => {
+            console.log(message);
+            setIsUIMenuVisible(false);
         },
         [],
     );
@@ -409,22 +417,22 @@ export const Menus = () => {
                         <UIPopup.ActionSheet.Action
                             type={UIPopup.ActionSheet.Action.Type.Disabled}
                             title="Disabled Action"
-                            onPress={getCallback('Disabled Action')}
+                            onPress={getActionSheetCallback('Disabled Action')}
                         />
                         <UIPopup.ActionSheet.Action
                             type={UIPopup.ActionSheet.Action.Type.Neutral}
                             title="Neutral Action"
-                            onPress={getCallback('Neutral Action')}
+                            onPress={getActionSheetCallback('Neutral Action')}
                         />
                         <UIPopup.ActionSheet.Action
                             type={UIPopup.ActionSheet.Action.Type.Negative}
                             title="Negative Action"
-                            onPress={getCallback('Negative Action')}
+                            onPress={getActionSheetCallback('Negative Action')}
                         />
                         <UIPopup.ActionSheet.Action
                             type={UIPopup.ActionSheet.Action.Type.Cancel}
                             title="Cancel Action"
-                            onPress={getCallback('Cancel Action')}
+                            onPress={getActionSheetCallback('Cancel Action')}
                         />
                     </UIPopup.ActionSheet>
                 </View>
@@ -581,28 +589,33 @@ export const Menus = () => {
                         targetRef={targetRef}
                         onClose={() => setIsUIMenuVisible(false)}
                     >
-                        <View
-                            style={{
-                                height: 200,
-                                width: '100%',
-                                backgroundColor: 'red',
-                            }}
-                        />
-                        {/* <UIPopup.Menu.Action
+                        <UIPopup.Menu.CustomAction key="9">
+                            <UIPopup.Menu.PrimaryColumn onPress={getMenuCallback('PrimaryColumn')}>
+                                <UIPopup.Menu.IconCell source={UIAssets.icons.ui.camera} />
+                                <UIPopup.Menu.ActionCell title="Action" />
+                            </UIPopup.Menu.PrimaryColumn>
+                            <UIPopup.Menu.SecondaryColumn>
+                                <UIPopup.Menu.IconCell
+                                    source={UIAssets.icons.ui.camera}
+                                    onPress={getMenuCallback('First IconCell')}
+                                />
+                                <UIPopup.Menu.IconCell
+                                    source={UIAssets.icons.ui.camera}
+                                    onPress={getMenuCallback('Second IconCell')}
+                                    tintColor={ColorVariants.TextAccent}
+                                />
+                            </UIPopup.Menu.SecondaryColumn>
+                        </UIPopup.Menu.CustomAction>
+                        <UIPopup.Menu.Action
                             type={UIPopup.Menu.Action.Type.Neutral}
                             title="Neutral Action"
-                            onPress={getAlertCallback('Neutral Action')}
+                            onPress={getMenuCallback('Neutral Action')}
                         />
                         <UIPopup.Menu.Action
                             type={UIPopup.Menu.Action.Type.Negative}
                             title="Negative Action"
-                            onPress={getAlertCallback('Negative Action')}
+                            onPress={getMenuCallback('Negative Action')}
                         />
-                        <UIPopup.Menu.Action
-                            type={UIPopup.Menu.Action.Type.Cancel}
-                            title="Cancel Action"
-                            onPress={getAlertCallback('Cancel Action')}
-                        /> */}
                     </UIPopup.Menu>
                 </View>
             </ExampleSection>
