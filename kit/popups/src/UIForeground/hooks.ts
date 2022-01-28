@@ -80,10 +80,13 @@ export function useCheckChildren(
     errorMessage: string,
 ): boolean {
     return React.useMemo(() => {
-        const isValidChildren =
-            React.Children.toArray(children).findIndex(
-                getIsInvalidChild(allowedChildrenComponents, errorMessage),
-            ) === -1;
-        return isValidChildren;
+        if (__DEV__) {
+            const isValidChildren =
+                React.Children.toArray(children).findIndex(
+                    getIsInvalidChild(allowedChildrenComponents, errorMessage),
+                ) === -1;
+            return isValidChildren;
+        }
+        return true;
     }, [children, allowedChildrenComponents, errorMessage]);
 }
