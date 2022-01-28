@@ -4,7 +4,6 @@ import type {
     PrimaryColumnProps,
     SecondaryColumnProps,
     UIForegroundActionProps,
-    UIForegroundCancelProps,
     UIForegroundIconProps,
     UIForegroundNumberProps,
     UIForegroundTextProps,
@@ -102,9 +101,4 @@ export type IUIActionSheet = React.FC<UIActionSheetContainerProps> & {
      * Text content of the CustomAction.
      */
     TextCell: React.FC<UIForegroundTextProps>;
-    /**
-     * Simple Cancel action of the CustomAction.
-     * It should only be used in PrimaryAction as an only child.
-     */
-    CancelCell: React.FC<UIForegroundCancelProps>;
 };
