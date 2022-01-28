@@ -60,7 +60,7 @@ type ModalActionType =
     | {
           type: 'HIDE';
           payload: {
-              name: string;
+              name?: string;
           };
       }
     | {
@@ -77,7 +77,7 @@ export const ModalActions = {
             },
         };
     },
-    hide(name: string): ModalActionType {
+    hide(name?: string): ModalActionType {
         return {
             type: 'HIDE',
             payload: {
@@ -90,6 +90,12 @@ export const ModalActions = {
             type: 'HIDE_ALL',
         };
     },
+};
+
+export type ModalActionHelpers = {
+    show(name: string, params?: Record<string, unknown>): ModalActionType;
+    hide(name?: string): ModalActionType;
+    hideAll(): ModalActionType;
 };
 
 type ModalRouterOptions = {
@@ -297,9 +303,12 @@ export function ModalRouter(routerOptions: ModalRouterOptions) {
                 }
 
                 case 'HIDE': {
-                    const activeRouteIndex = state.routes.findIndex(
-                        route => route.name === action.payload.name,
-                    );
+                    let activeRouteIndex = state.index;
+                    if (action.payload.name != null) {
+                        activeRouteIndex = state.routes.findIndex(
+                            route => route.name === action.payload.name,
+                        );
+                    }
 
                     if (activeRouteIndex === -1) {
                         return null;

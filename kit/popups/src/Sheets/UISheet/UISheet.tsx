@@ -169,7 +169,7 @@ function SheetContent({
         () => ({
             ref: scrollRef,
             panGestureHandlerRef: scrollPanGestureHandlerRef,
-            scrollHandler,
+            scrollHandler: Platform.OS === 'web' ? undefined : scrollHandler,
             gestureHandler: scrollGestureHandler,
             onWheel: null,
             hasScroll,

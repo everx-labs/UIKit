@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Keyboard } from 'react-native';
+import type { NavigationProp, RouteProp } from '@react-navigation/core';
 import {
     NavigationHelpersContext,
     useNavigationBuilder,
@@ -7,9 +8,10 @@ import {
 } from '@react-navigation/native';
 import type { Descriptor, ParamListBase, EventMapBase } from '@react-navigation/native';
 
+import { PortalManager } from '@tonlabs/uikit.layout';
 import { UIModalSheet } from '@tonlabs/uikit.popups';
 
-import { ModalRouter, ModalActions } from './ModalRouter';
+import { ModalRouter, ModalActions, ModalActionHelpers } from './ModalRouter';
 import type { ModalNavigationState, ModalNavigationRoute } from './ModalRouter';
 
 export const NestedInModalContext = React.createContext<(() => void) | null>(null);
@@ -33,7 +35,12 @@ function ModalScreen<ParamList extends ParamListBase = ParamListBase>({
     }, [name, descriptor.navigation]);
 
     return (
-        <UIModalSheet visible={route.visible} onClose={hide} maxMobileWidth={maxMobileWidth}>
+        <UIModalSheet
+            forId="modal"
+            visible={route.visible}
+            onClose={hide}
+            maxMobileWidth={maxMobileWidth}
+        >
             <NestedInModalContext.Provider value={hide}>
                 {descriptor.render()}
             </NestedInModalContext.Provider>
@@ -54,29 +61,44 @@ const ModalNavigator = ({
     });
 
     return (
-        <NavigationHelpersContext.Provider value={navigation}>
-            {state.routes.map<React.ReactNode>(route => {
-                const descriptor = descriptors[route.key];
+        <PortalManager id="modal">
+            <NavigationHelpersContext.Provider value={navigation}>
+                {state.routes.map<React.ReactNode>(route => {
+                    const descriptor = descriptors[route.key];
 
-                if (descriptor == null) {
-                    return null;
-                }
+                    if (descriptor == null) {
+                        return null;
+                    }
 
-                return (
-                    <ModalScreen
-                        key={route.key}
-                        route={route}
-                        descriptor={descriptor}
-                        maxMobileWidth={maxMobileWidth}
-                    />
-                );
-            })}
-        </NavigationHelpersContext.Provider>
+                    return (
+                        <ModalScreen
+                            key={route.key}
+                            route={route}
+                            descriptor={descriptor}
+                            maxMobileWidth={maxMobileWidth}
+                        />
+                    );
+                })}
+            </NavigationHelpersContext.Provider>
+        </PortalManager>
     );
 };
 
 type ModalScreenOptions = {
     defaultProps: Record<string, unknown>;
+};
+
+export type ModalNavigationProp<
+    ParamList extends ParamListBase,
+    RouteName extends keyof ParamList = string,
+> = NavigationProp<ParamList, RouteName, ModalNavigationState<ParamList>, /* TODO */ any> &
+    ModalActionHelpers;
+export type ModalScreenProps<
+    ParamList extends ParamListBase,
+    RouteName extends keyof ParamList = string,
+> = {
+    navigation: ModalNavigationProp<ParamList, RouteName>;
+    route: RouteProp<ParamList, RouteName>;
 };
 
 export const createModalNavigator = createNavigatorFactory<
