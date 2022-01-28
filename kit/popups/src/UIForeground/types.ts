@@ -2,7 +2,7 @@ import type React from 'react';
 import type { ImageSourcePropType } from 'react-native';
 import type { ColorVariants } from '@tonlabs/uikit.themes';
 
-// ================== Start of Elements Types: ==================
+// Start of Elements Types:
 
 export type UIForegroundTextProps = {
     /**
@@ -97,9 +97,9 @@ export type IconElementComponent = React.ReactElement<UIForegroundIconProps>;
 export type NumberElementComponent = React.ReactElement<UIForegroundNumberProps>;
 export type SectionElementComponent = React.ReactElement<UIForegroundSectionProps>;
 export type TextElementComponent = React.ReactElement<UIForegroundTextProps>;
-// ================== End of Elements Types ==================
+// End of Elements Types
 
-// ================== Start of Columns Types: ==================
+// Start of Columns Types:
 
 export type ForegroundPrimaryElements =
     | ActionElementComponent
@@ -133,7 +133,7 @@ export type ColumnStatus = {
     columnType: ColumnType;
     columnState: ColumnState;
 };
-// ================== End of Columns Types ==================
+// End of Columns Types
 
 export type ContainerProps = {
     /** only UIForeground Columns can be passed to children */
@@ -152,7 +152,7 @@ export type UIForegroundType = {
      */
     Container: React.FC<ContainerProps>;
 
-    // ================== Columns: ==================
+    // Columns:
     /**
      * Container of the Primary (Left) column of the UIForeground
      * This component accepts only Cells (e.g. ActionCell) components as children.
@@ -164,7 +164,7 @@ export type UIForegroundType = {
      */
     SecondaryColumn: React.FC<SecondaryColumnProps>;
 
-    // ================== Cells: ==================
+    // Cells:
     /**
      * Pressable element (Button) of the UIForeground
      */
