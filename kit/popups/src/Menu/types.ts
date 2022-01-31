@@ -56,6 +56,13 @@ export type UIMenuContainerProps = {
      */
     children: UIMenuContainerChildType | (UIMenuContainerChildType | UIMenuContainerChildType[])[];
     /**
+     * UIMenu uses <Portal /> to put itself on top of
+     * current components, like a layer.
+     * Use the ID if you want to change destination where
+     * UIMenu should be put (i.e. you have another <PortalManager />)
+     */
+    forId?: string;
+    /**
      * ID for usage in tests
      */
     testID?: string;

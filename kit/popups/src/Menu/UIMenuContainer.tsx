@@ -121,6 +121,8 @@ export function UIMenuContainer({
     visible,
     targetRef,
     onClose: onCloseProp,
+    forId,
+    testID,
 }: UIMenuContainerProps) {
     const theme = useTheme();
     const windowDimensions = useWindowDimensions();
@@ -156,7 +158,7 @@ export function UIMenuContainer({
     }
 
     return (
-        <Portal absoluteFill>
+        <Portal absoluteFill forId={forId}>
             <TapGestureHandler onEnded={onClose}>
                 <View style={StyleSheet.absoluteFill} />
             </TapGestureHandler>
@@ -165,6 +167,7 @@ export function UIMenuContainer({
                 entering={FadeIn.duration(UIConstant.menu.animationTime)}
                 exiting={FadeOut.duration(UIConstant.menu.animationTime)}
                 onLayout={onLayout}
+                testID={testID}
             >
                 <ShadowView style={styles.shadowContainer}>{children}</ShadowView>
             </Animated.View>
