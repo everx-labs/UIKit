@@ -13,14 +13,19 @@ type TabScreenProps = {
     children: React.ReactNode;
 };
 
+// @inline
+const TAB_VISIBLE = 1;
+// @inline
+const TAB_INVISIBLE = 0;
+
 export function TabScreen({ isVisible, children }: TabScreenProps) {
-    const opacity = useSharedValue(0);
+    const opacity = useSharedValue(isVisible ? TAB_VISIBLE : TAB_INVISIBLE);
     /**
      * The state is needed to pass it to MaybeScreen,
      * that has Freeze (from react-freeze) under the hood
      * to set it only when animation is finished
      */
-    const [visible, setVisible] = React.useState(false);
+    const [visible, setVisible] = React.useState(isVisible);
 
     const hide = React.useCallback(() => {
         setVisible(false);
@@ -31,10 +36,10 @@ export function TabScreen({ isVisible, children }: TabScreenProps) {
             return;
         }
         if (visible === false && isVisible === true) {
-            opacity.value = withSpring(1, { overshootClamping: true });
+            opacity.value = withSpring(TAB_VISIBLE, { overshootClamping: true });
             setVisible(true);
         } else {
-            opacity.value = withSpring(0, { overshootClamping: true }, finished => {
+            opacity.value = withSpring(TAB_INVISIBLE, { overshootClamping: true }, finished => {
                 if (finished) {
                     runOnJS(hide)();
                 }
