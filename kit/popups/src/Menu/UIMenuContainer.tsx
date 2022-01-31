@@ -1,16 +1,17 @@
 import * as React from 'react';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
-import { ColorVariants, useTheme, Theme, makeStyles, useColorParts } from '@tonlabs/uikit.themes';
-import { Portal, UILayoutConstant } from '@tonlabs/uikit.layout';
 import {
     LayoutChangeEvent,
     NativeMethods,
     ScaledSize,
     StyleSheet,
     useWindowDimensions,
-    TouchableOpacity,
     PixelRatio,
+    View,
 } from 'react-native';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import { TapGestureHandler } from 'react-native-gesture-handler';
+import { ColorVariants, useTheme, Theme, makeStyles, useColorParts } from '@tonlabs/uikit.themes';
+import { Portal, UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UIMenuContainerProps } from './types';
 import { UIConstant } from '../constants';
 import { ShadowView } from '../ShadowView';
@@ -115,7 +116,12 @@ function useMenuLocation(
     }, [targetDimensions, windowDimensions, menuSize]);
 }
 
-export function UIMenuContainer({ children, visible, targetRef, onClose }: UIMenuContainerProps) {
+export function UIMenuContainer({
+    children,
+    visible,
+    targetRef,
+    onClose: onCloseProp,
+}: UIMenuContainerProps) {
     const theme = useTheme();
     const windowDimensions = useWindowDimensions();
     const targetDimensions = useTargetDimensions(visible, targetRef, windowDimensions);
@@ -133,11 +139,11 @@ export function UIMenuContainer({ children, visible, targetRef, onClose }: UIMen
     );
     const menuLocation = useMenuLocation(targetDimensions, windowDimensions, menuSize);
 
-    const onPressIn = React.useCallback(
-        function onPressIn() {
-            onClose();
+    const onClose = React.useCallback(
+        function onClose() {
+            onCloseProp();
         },
-        [onClose],
+        [onCloseProp],
     );
 
     const { color: shadowColor, opacity: shadowOpacity } = useColorParts(
@@ -151,7 +157,9 @@ export function UIMenuContainer({ children, visible, targetRef, onClose }: UIMen
 
     return (
         <Portal absoluteFill>
-            <TouchableOpacity onPressIn={onPressIn} style={StyleSheet.absoluteFill} />
+            <TapGestureHandler onEnded={onClose}>
+                <View style={StyleSheet.absoluteFill} />
+            </TapGestureHandler>
             <Animated.View
                 style={styles.container}
                 entering={FadeIn.duration(UIConstant.menu.animationTime)}
