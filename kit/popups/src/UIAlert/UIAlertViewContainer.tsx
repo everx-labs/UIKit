@@ -1,11 +1,17 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ImageStyle, View } from 'react-native';
 import { UILabel, UILabelRoles, makeStyles } from '@tonlabs/uikit.themes';
+import { UIImage } from '@tonlabs/uikit.media';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { useBackHandler } from '@react-native-community/hooks';
 import { AlertBox } from './AlertBox';
 import { UIAlertViewAction } from './UIAlertViewAction';
-import { UIAlertViewActionProps, UIAlertViewContainerProps, UIAlertViewActionType } from './types';
+import {
+    UIAlertViewActionProps,
+    UIAlertViewContainerProps,
+    UIAlertViewActionType,
+    UIAlertViewIcon,
+} from './types';
 
 type AlertViewActions = {
     actionList: React.ReactElement<UIAlertViewActionProps>[];
@@ -64,46 +70,43 @@ const getAlertViewActions = (children: React.ReactNode): AlertViewActions => {
     };
 };
 
-const renderTitleLabel = (title?: string): React.ReactElement<typeof UILabel> | null => {
-    if (!title) {
-        return null;
-    }
-    return (
-        <UILabel role={UILabelRoles.TitleSmall} style={headerStyles.headerTitle}>
-            {title}
-        </UILabel>
-    );
+type HeaderProps = {
+    title: string | undefined;
+    note: string | undefined;
+    icon: UIAlertViewIcon | undefined;
 };
 
-const renderNoteLabel = (note?: string): React.ReactElement<typeof UILabel> | null => {
-    if (!note) {
-        return null;
-    }
-    return <UILabel role={UILabelRoles.ParagraphFootnote}>{note}</UILabel>;
-};
-const renderHeader = (
-    title: string | undefined,
-    note: string | undefined,
-): React.ReactElement<View> | null => {
-    if (!title && !note) {
+function Header({ title, note, icon }: HeaderProps): React.ReactElement<View> | null {
+    const headerStyles = useHeaderStyles(!!note);
+    if (!title && !note && !icon) {
         return null;
     }
     return (
         <View style={headerStyles.header}>
-            {renderTitleLabel(title)}
-            {renderNoteLabel(note)}
+            <View style={headerStyles.textContainer}>
+                {title ? (
+                    <UILabel role={UILabelRoles.TitleSmall} style={headerStyles.headerTitle}>
+                        {title}
+                    </UILabel>
+                ) : null}
+                {note ? <UILabel role={UILabelRoles.ParagraphFootnote}>{note}</UILabel> : null}
+            </View>
+            {icon ? <UIImage {...icon} style={headerStyles.icon as ImageStyle} /> : null}
         </View>
     );
-};
+}
 
-export const UIAlertViewContainer: React.FC<UIAlertViewContainerProps> = (
-    props: UIAlertViewContainerProps,
-) => {
-    const { visible, title, note, testID } = props;
-
+export const UIAlertViewContainer: React.FC<UIAlertViewContainerProps> = ({
+    visible,
+    title,
+    note,
+    icon,
+    testID,
+    children,
+}: UIAlertViewContainerProps) => {
     const alertViewActions: AlertViewActions = React.useMemo(
-        () => getAlertViewActions(props.children),
-        [props.children],
+        () => getAlertViewActions(children),
+        [children],
     );
 
     useBackHandler(() => {
@@ -123,7 +126,7 @@ export const UIAlertViewContainer: React.FC<UIAlertViewContainerProps> = (
             testID={testID}
         >
             <View style={styles.container}>
-                {renderHeader(title, note)}
+                <Header title={title} note={note} icon={icon} />
                 <View style={styles.actionsContainer}>{alertViewActions.actionList}</View>
             </View>
         </AlertBox>
@@ -132,8 +135,7 @@ export const UIAlertViewContainer: React.FC<UIAlertViewContainerProps> = (
 
 const useStyles = makeStyles((actionCount: number) => ({
     container: {
-        paddingHorizontal: 24,
-        paddingVertical: 12,
+        paddingHorizontal: UILayoutConstant.contentOffset,
     },
     actionsContainer: {
         flexDirection: actionCount === 2 ? 'row-reverse' : 'column',
@@ -142,11 +144,20 @@ const useStyles = makeStyles((actionCount: number) => ({
     },
 }));
 
-const headerStyles = StyleSheet.create({
+const useHeaderStyles = makeStyles((hasNote: boolean) => ({
     header: {
         paddingVertical: UILayoutConstant.contentInsetVerticalX4,
+        flexDirection: 'row',
+    },
+    textContainer: {
+        flex: 1,
     },
     headerTitle: {
-        paddingBottom: 4,
+        paddingBottom: hasNote ? UILayoutConstant.contentInsetVerticalX2 : 0,
     },
-});
+    icon: {
+        width: UILayoutConstant.iconSize,
+        aspectRatio: 1,
+        marginLeft: UILayoutConstant.contentOffset,
+    },
+}));
