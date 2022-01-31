@@ -90,18 +90,14 @@ function useMenuLocation(
             return null;
         }
 
-        let top: number | undefined = targetDimensions.y + targetDimensions.height;
-        let bottom: number | undefined;
-        let left: number = targetDimensions.x;
-
         const boundaries = getBoundaries(windowDimensions, menuSize);
 
-        if (left > boundaries.right) {
-            left = boundaries.right;
-        }
-        if (left < boundaries.left) {
-            left = boundaries.left;
-        }
+        let top: number | undefined = targetDimensions.y + targetDimensions.height;
+        let bottom: number | undefined;
+        const left: number = Math.max(
+            boundaries.left,
+            Math.min(boundaries.right, targetDimensions.x),
+        );
 
         if (top > boundaries.bottom) {
             top = undefined;
