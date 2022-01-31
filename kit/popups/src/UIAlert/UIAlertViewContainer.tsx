@@ -144,7 +144,7 @@ const useStyles = makeStyles((actionCount: number) => ({
     },
 }));
 
-const useHeaderStyles = makeStyles((isNote: boolean) => ({
+const useHeaderStyles = makeStyles((hasNote: boolean) => ({
     header: {
         paddingVertical: UILayoutConstant.contentInsetVerticalX4,
         flexDirection: 'row',
@@ -153,7 +153,7 @@ const useHeaderStyles = makeStyles((isNote: boolean) => ({
         flex: 1,
     },
     headerTitle: {
-        paddingBottom: isNote ? UILayoutConstant.contentInsetVerticalX2 : 0,
+        paddingBottom: hasNote ? UILayoutConstant.contentInsetVerticalX2 : 0,
     },
     icon: {
         width: UILayoutConstant.iconSize,
