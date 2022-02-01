@@ -9,12 +9,21 @@ import {
 } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { TapGestureHandler } from 'react-native-gesture-handler';
-import { ColorVariants, useTheme, Theme, makeStyles, useColorParts } from '@tonlabs/uikit.themes';
-import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import type { UIMenuContainerContentProps } from './types';
+import {
+    ColorVariants,
+    useTheme,
+    Theme,
+    makeStyles,
+    useColorParts,
+    UILabel,
+    TypographyVariants,
+    UILabelColors,
+} from '@tonlabs/uikit.themes';
+import { UILayoutConstant, Portal } from '@tonlabs/uikit.layout';
+import type { UITooltipContentProps } from './types';
 import { UIConstant } from '../constants';
 import { ShadowView } from '../ShadowView';
-import { useTargetDimensions, TargetDimensions } from '../useTargetDimensions';
+import { TargetDimensions, useTargetDimensions } from '../useTargetDimensions';
 
 type Location = {
     left: number;
@@ -25,37 +34,38 @@ type Size = {
     width: number;
     height: number;
 };
-
 const initialSize: Size = {
     width: 0,
     height: 0,
 };
 
-function getBoundaries(windowDimensions: ScaledSize, menuSize: Size) {
+function getBoundaries(windowDimensions: ScaledSize, tooltipSize: Size) {
     return {
-        right: windowDimensions.width - UILayoutConstant.contentOffset - menuSize.width,
-        bottom: windowDimensions.height - UILayoutConstant.contentOffset - menuSize.height,
+        right: windowDimensions.width - UILayoutConstant.contentOffset - tooltipSize.width,
+        bottom: windowDimensions.height - UILayoutConstant.contentOffset - tooltipSize.height,
         left: UILayoutConstant.contentOffset,
     };
 }
 
-function useMenuLocation(
+function useTooltipLocation(
     targetDimensions: TargetDimensions | null,
     windowDimensions: ScaledSize,
-    menuSize: Size,
+    tooltipSize: Size,
 ): Location | null {
     return React.useMemo(() => {
-        if (!menuSize.height || !menuSize.width || !targetDimensions) {
+        if (!tooltipSize.height || !tooltipSize.width || !targetDimensions) {
             return null;
         }
 
-        const boundaries = getBoundaries(windowDimensions, menuSize);
+        const horizontalOffsetToCenterTooltip = (targetDimensions.width - tooltipSize.width) / 2;
+
+        const boundaries = getBoundaries(windowDimensions, tooltipSize);
 
         let top: number | undefined = targetDimensions.y + targetDimensions.height;
         let bottom: number | undefined;
         const left: number = Math.max(
             boundaries.left,
-            Math.min(boundaries.right, targetDimensions.x),
+            Math.min(boundaries.right, targetDimensions.x + horizontalOffsetToCenterTooltip),
         );
 
         if (top > boundaries.bottom) {
@@ -68,31 +78,32 @@ function useMenuLocation(
             top,
             bottom,
         };
-    }, [targetDimensions, windowDimensions, menuSize]);
+    }, [targetDimensions, windowDimensions, tooltipSize]);
 }
 
-export function UIMenuContainerContent({
-    children,
+export function UITooltipContent({
+    message,
     targetRef,
     onClose: onCloseProp,
+    forId,
     testID,
-}: UIMenuContainerContentProps) {
+}: UITooltipContentProps) {
     const theme = useTheme();
     const windowDimensions = useWindowDimensions();
     const targetDimensions = useTargetDimensions(targetRef, windowDimensions);
 
-    const [menuSize, setMenuSize] = React.useState<Size>(initialSize);
+    const [tooltipSize, setTooltipSize] = React.useState<Size>(initialSize);
     const onLayout = React.useCallback(
         function onLayout(event: LayoutChangeEvent) {
             const width = Math.round(event.nativeEvent.layout.width);
             const height = Math.round(event.nativeEvent.layout.height);
-            if (menuSize.width !== width || menuSize.height !== height) {
-                setMenuSize({ width, height });
+            if (tooltipSize.width !== width || tooltipSize.height !== height) {
+                setTooltipSize({ width, height });
             }
         },
-        [menuSize],
+        [tooltipSize],
     );
-    const menuLocation = useMenuLocation(targetDimensions, windowDimensions, menuSize);
+    const tooltipLocation = useTooltipLocation(targetDimensions, windowDimensions, tooltipSize);
 
     const onClose = React.useCallback(
         function onClose() {
@@ -104,23 +115,30 @@ export function UIMenuContainerContent({
     const { color: shadowColor, opacity: shadowOpacity } = useColorParts(
         ColorVariants.BackgroundOverlay,
     );
-    const styles = useStyles(theme, menuLocation, shadowColor, shadowOpacity);
+    const styles = useStyles(theme, tooltipLocation, shadowColor, shadowOpacity);
 
     return (
-        <>
+        <Portal absoluteFill forId={forId}>
             <TapGestureHandler onEnded={onClose}>
                 <View style={StyleSheet.absoluteFill} />
             </TapGestureHandler>
             <Animated.View
                 style={styles.container}
-                entering={FadeIn.duration(UIConstant.menu.animationTime)}
-                exiting={FadeOut.duration(UIConstant.menu.animationTime)}
+                entering={FadeIn.duration(UIConstant.tooltip.animationTime)}
+                exiting={FadeOut.duration(UIConstant.tooltip.animationTime)}
                 onLayout={onLayout}
                 testID={testID}
             >
-                <ShadowView style={styles.shadowContainer}>{children}</ShadowView>
+                <ShadowView style={styles.shadowContainer}>
+                    <UILabel
+                        role={TypographyVariants.NarrowParagraphFootnote}
+                        color={UILabelColors.TextPrimary}
+                    >
+                        {message}
+                    </UILabel>
+                </ShadowView>
             </Animated.View>
-        </>
+        </Portal>
     );
 }
 
@@ -133,14 +151,14 @@ const useStyles = makeStyles(
             ...location,
         },
         shadowContainer: {
-            backgroundColor: theme[ColorVariants.BackgroundPrimary],
-            borderRadius: UILayoutConstant.alertBorderRadius,
-            width: UIConstant.menu.width,
-            paddingHorizontal: UILayoutConstant.contentOffset,
-            shadowRadius: 48 / PixelRatio.get(),
+            backgroundColor: theme[ColorVariants.BackgroundBW],
+            borderRadius: UIConstant.tooltip.borderRadius,
+            maxWidth: UIConstant.tooltip.maxWidth,
+            padding: UILayoutConstant.smallContentOffset,
+            shadowRadius: 24 / PixelRatio.get(),
             shadowOffset: {
                 width: 0,
-                height: 32 / PixelRatio.get(),
+                height: 16 / PixelRatio.get(),
             },
             shadowColor,
             shadowOpacity,

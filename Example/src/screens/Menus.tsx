@@ -630,6 +630,15 @@ export const Menus = () => {
                     <PageWithLargeTitleSheet />
                 </View>
             </ExampleSection>
+            <ExampleSection title="UITooltip">
+                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <UIPopup.Tooltip message="message">
+                        <UILabel color={ColorVariants.TextAccent} role={TypographyVariants.Action}>
+                            Show UITooltip
+                        </UILabel>
+                    </UIPopup.Tooltip>
+                </View>
+            </ExampleSection>
             <ExampleSection title="UIMenu">
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <TouchableOpacity ref={menuTargetRef} onPress={() => setIsUIMenuVisible(true)}>
