@@ -38,6 +38,10 @@ export function UITooltip({ children, style: styleProp, hitSlop, ...restProps }:
 
     const styles = useStyles(hitSlop);
 
+    /**
+     * Disabled `TouchableOpacity` is used here instead of `View` because the `onMeasure` method
+     * for the `ref` of the `View` does not return values on Android.
+     */
     return (
         <TouchableOpacity style={styleProp} ref={containerRef} disabled>
             {children}
