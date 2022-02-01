@@ -3,7 +3,7 @@ import { IUIActionSheet, UIActionSheet } from './UIActionSheet';
 import { IUINotice, UINotice } from './UINotice';
 import { UICardSheet, UIBottomSheet, UIFullscreenSheet, UISheet } from './Sheets';
 import { UIPushNotice } from './UIPushNotice';
-import { UIMenu } from './UIMenu';
+import { IUIMenu, UIMenu } from './UIMenu';
 
 export type { UIPushNoticeContentPublicProps } from './UIPushNotice';
 
@@ -19,7 +19,7 @@ const Notice: IUINotice = UINotice;
 const ActionSheet: IUIActionSheet = UIActionSheet;
 const AlertView: IUIAlertView = UIAlertView;
 const Push: typeof UIPushNotice = UIPushNotice;
-const Menu: typeof UIMenu = UIMenu;
+const Menu: IUIMenu = UIMenu;
 
 export const UIPopup = {
     ActionSheet,
