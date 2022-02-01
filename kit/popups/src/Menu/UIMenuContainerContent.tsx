@@ -38,35 +38,30 @@ const initialSize: Size = {
 };
 
 function useTargetDimensions(
-    visible: boolean,
     targetRef: React.RefObject<NativeMethods>,
     windowDimensions: ScaledSize,
 ): Dimensions | null {
     const [dimensions, setDimensions] = React.useState<Dimensions | null>(null);
 
     React.useEffect(() => {
-        if (visible) {
-            targetRef.current?.measure(
-                (
-                    _x: number,
-                    _y: number,
-                    width: number,
-                    height: number,
-                    pageX: number,
-                    pageY: number,
-                ) => {
-                    setDimensions({
-                        x: pageX,
-                        y: pageY,
-                        width,
-                        height,
-                    });
-                },
-            );
-        } else {
-            setDimensions(null);
-        }
-    }, [targetRef, visible, windowDimensions]);
+        targetRef.current?.measure(
+            (
+                _x: number,
+                _y: number,
+                width: number,
+                height: number,
+                pageX: number,
+                pageY: number,
+            ) => {
+                setDimensions({
+                    x: pageX,
+                    y: pageY,
+                    width,
+                    height,
+                });
+            },
+        );
+    }, [targetRef, windowDimensions]);
 
     return dimensions;
 }
@@ -113,14 +108,13 @@ function useMenuLocation(
 
 export function UIMenuContainerContent({
     children,
-    visible,
     targetRef,
     onClose: onCloseProp,
     testID,
 }: UIMenuContainerContentProps) {
     const theme = useTheme();
     const windowDimensions = useWindowDimensions();
-    const targetDimensions = useTargetDimensions(visible, targetRef, windowDimensions);
+    const targetDimensions = useTargetDimensions(targetRef, windowDimensions);
 
     const [menuSize, setMenuSize] = React.useState<Size>(initialSize);
     const onLayout = React.useCallback(
@@ -146,10 +140,6 @@ export function UIMenuContainerContent({
         ColorVariants.BackgroundOverlay,
     );
     const styles = useStyles(theme, menuLocation, shadowColor, shadowOpacity);
-
-    if (!visible) {
-        return null;
-    }
 
     return (
         <>

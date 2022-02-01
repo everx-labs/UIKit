@@ -35,6 +35,10 @@ export type UIMenuActionProps = {
 export type UIMenuContainerChildType = React.ReactElement<UIMenuActionProps>;
 export type UIMenuContainerProps = UIMenuContainerContentProps & {
     /**
+     * State of visibility
+     */
+    visible: boolean;
+    /**
      * UIMenu uses <Portal /> to put itself on top of
      * current components, like a layer.
      * Use the ID if you want to change destination where
@@ -44,10 +48,6 @@ export type UIMenuContainerProps = UIMenuContainerContentProps & {
 };
 
 export type UIMenuContainerContentProps = {
-    /**
-     * State of visibility
-     */
-    visible: boolean;
     /**
      * A callback that is called when the menu wants to be closed.
      *
