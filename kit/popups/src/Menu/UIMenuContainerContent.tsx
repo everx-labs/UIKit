@@ -73,7 +73,6 @@ function useTargetDimensions(
 
 function getBoundaries(windowDimensions: ScaledSize, menuSize: Size) {
     return {
-        top: UILayoutConstant.contentOffset,
         right: windowDimensions.width - UILayoutConstant.contentOffset - menuSize.width,
         bottom: windowDimensions.height - UILayoutConstant.contentOffset - menuSize.height,
         left: UILayoutConstant.contentOffset,
