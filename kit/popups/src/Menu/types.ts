@@ -33,7 +33,17 @@ export type UIMenuActionProps = {
 };
 
 export type UIMenuContainerChildType = React.ReactElement<UIMenuActionProps>;
-export type UIMenuContainerProps = {
+export type UIMenuContainerProps = UIMenuContainerContentProps & {
+    /**
+     * UIMenu uses <Portal /> to put itself on top of
+     * current components, like a layer.
+     * Use the ID if you want to change destination where
+     * UIMenu should be put (i.e. you have another <PortalManager />)
+     */
+    forId?: string;
+};
+
+export type UIMenuContainerContentProps = {
     /**
      * State of visibility
      */
@@ -55,13 +65,6 @@ export type UIMenuContainerProps = {
      * There can be no more than one child with the "Cancel" UIMenuActionType.
      */
     children: UIMenuContainerChildType | (UIMenuContainerChildType | UIMenuContainerChildType[])[];
-    /**
-     * UIMenu uses <Portal /> to put itself on top of
-     * current components, like a layer.
-     * Use the ID if you want to change destination where
-     * UIMenu should be put (i.e. you have another <PortalManager />)
-     */
-    forId?: string;
     /**
      * ID for usage in tests
      */
