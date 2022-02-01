@@ -2,34 +2,19 @@ import type { UILinkProps } from './UILink';
 import type { UICurrencyRowProps } from './UICurrencyRow';
 import type { UIAccountRowProps } from './UIAccountRow';
 
-export enum UIListRowKind {
+export enum UIKitListRowKind {
     Link = 'link',
     Currency = 'currency',
     Account = 'account',
 }
 
-type UIListRowWithPayload<T, P = void> = P extends void
-    ? T & { key: string }
-    : T & { key: string; payload: P };
+export type UIListRow<Kind, Props, Payload = void> = Payload extends void
+    ? { kind: Kind; props: Props; key: string }
+    : { kind: Kind; props: Props; key: string; payload: Payload };
 
-type LinkRow = {
-    key: string;
-    kind: UIListRowKind.Link;
-    props: UILinkProps;
-};
-type CurrencyRow = {
-    key: string;
-    kind: UIListRowKind.Currency;
-    props: UICurrencyRowProps;
-};
-type AccountRow = {
-    key: string;
-    kind: UIListRowKind.Account;
-    props: UIAccountRowProps;
-};
+export type UIKitListRow<P = void> =
+    | UIListRow<UIKitListRowKind.Link, UILinkProps, P>
+    | UIListRow<UIKitListRowKind.Currency, UICurrencyRowProps, P>
+    | UIListRow<UIKitListRowKind.Account, UIAccountRowProps, P>;
 
-export type UIListRow<P = void> =
-    | UIListRowWithPayload<LinkRow, P>
-    | UIListRowWithPayload<CurrencyRow, P>
-    | UIListRowWithPayload<AccountRow, P>;
-export type UIListRows<P = void> = UIListRow<P>[];
+export type UIKitListRows<P = void> = UIKitListRow<P>[];
