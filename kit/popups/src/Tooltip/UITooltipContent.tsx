@@ -119,7 +119,7 @@ export function UITooltipContent({
 
     return (
         <Portal absoluteFill forId={forId}>
-            <TapGestureHandler onEnded={onClose}>
+            <TapGestureHandler onHandlerStateChange={onClose}>
                 <View style={StyleSheet.absoluteFill} />
             </TapGestureHandler>
             <Animated.View

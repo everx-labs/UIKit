@@ -39,17 +39,22 @@ export function UITooltip({ children, style: styleProp, hitSlop, ...restProps }:
     const styles = useStyles(hitSlop);
 
     /**
-     * Disabled `TouchableOpacity` is used here instead of `View` because the `onMeasure` method
+     * Disabled `Pressable` is used here instead of `View` because the `onMeasure` method
      * for the `ref` of the `View` does not return values on Android.
      */
     return (
-        <TouchableOpacity style={styleProp} ref={containerRef} disabled>
+        <Pressable style={styleProp} ref={containerRef} disabled>
             {children}
             {visible ? (
                 <UITooltipContent {...restProps} targetRef={containerRef} onClose={onClose} />
             ) : null}
-            <Pressable onPress={onOpen} style={styles.pressableOverlay} />
-        </TouchableOpacity>
+            <Pressable
+                onPress={onOpen}
+                style={styles.pressableOverlay}
+                onFocus={() => console.log('onFocus Pressable')}
+                onBlur={() => console.log('onBlur Pressable')}
+            />
+        </Pressable>
     );
 }
 

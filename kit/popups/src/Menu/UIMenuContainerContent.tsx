@@ -108,7 +108,7 @@ export function UIMenuContainerContent({
 
     return (
         <>
-            <TapGestureHandler onEnded={onClose}>
+            <TapGestureHandler onHandlerStateChange={onClose}>
                 <View style={StyleSheet.absoluteFill} />
             </TapGestureHandler>
             <Animated.View
