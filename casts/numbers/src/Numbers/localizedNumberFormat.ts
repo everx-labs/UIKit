@@ -84,11 +84,11 @@ const groupReversed = (rawString: string, groupSize: number, groupSeparator: str
 function getIntegerSign(integer: BigNumber, showPositiveSign?: boolean) {
     'worklet';
 
-    if (integer.lt(0)) {
+    if (showPositiveSign && integer.lt(0)) {
         return '-';
     }
 
-    if (showPositiveSign) {
+    if (showPositiveSign && integer.gt(0)) {
         return '+';
     }
 
@@ -114,7 +114,7 @@ export function localizedNumberFormat(
     'worklet';
 
     const integer = value.integerValue(Rounding.RoundDown);
-    const integerFormatted = `${getIntegerSign(integer, showPositiveSign)}${groupReversed(
+    const integerFormatted = `${getIntegerSign(value, showPositiveSign)}${groupReversed(
         integer.abs().toFixed(0, Rounding.RoundDown),
         INTEGER_GROUP_SIZE,
         integerGroupChar,
@@ -133,7 +133,7 @@ export function localizedNumberFormat(
     // if it's negative it would be `-0,` or `-0.`
     const decimalNumber = value.minus(value.toFixed(0, Rounding.RoundDown));
     let decimal = decimalNumber
-        .toFixed(DECIMAL_ASPECT_PRECISION, Rounding.RoundDown)
+        .toFixed(digits, Rounding.RoundDown)
         .slice(decimalNumber.lt(0) ? 3 : 2)
         .slice(0, digits);
 
