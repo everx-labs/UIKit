@@ -46,14 +46,9 @@ export function UITooltip({ children, style: styleProp, hitSlop, ...restProps }:
         <Pressable style={[styles.container, styleProp]} ref={containerRef} disabled>
             {children}
             {visible ? (
-                <UITooltipBox {...restProps} targetRef={containerRef} onClose={onClose} />
+                <UITooltipBox {...restProps} triggerRef={containerRef} onClose={onClose} />
             ) : null}
-            <Pressable
-                onPress={onOpen}
-                style={styles.pressableOverlay}
-                onFocus={() => console.log('onFocus Pressable')}
-                onBlur={() => console.log('onBlur Pressable')}
-            />
+            <Pressable onPress={onOpen} style={styles.pressableOverlay} />
         </Pressable>
     );
 }

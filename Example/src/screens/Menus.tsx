@@ -632,7 +632,7 @@ export const Menus = () => {
             </ExampleSection>
             <ExampleSection title="UITooltip">
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                    <UIPopup.Tooltip message="message">
+                    <UIPopup.Tooltip message="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.">
                         <UILabel color={ColorVariants.TextAccent} role={TypographyVariants.Action}>
                             Show UITooltip
                         </UILabel>
@@ -649,7 +649,7 @@ export const Menus = () => {
 
                     <UIPopup.Menu
                         visible={isUIMenuVisible}
-                        targetRef={menuTargetRef}
+                        triggerRef={menuTargetRef}
                         onClose={() => setIsUIMenuVisible(false)}
                     >
                         <UIPopup.Menu.CustomAction key="9">

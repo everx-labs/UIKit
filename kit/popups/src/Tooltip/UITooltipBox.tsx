@@ -8,7 +8,6 @@ import {
     View,
 } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { TapGestureHandler } from 'react-native-gesture-handler';
 import { ColorVariants, useTheme, Theme, makeStyles, useColorParts } from '@tonlabs/uikit.themes';
 import { UILayoutConstant, Portal } from '@tonlabs/uikit.layout';
 import type { UITooltipBoxProps } from './types';
@@ -17,6 +16,7 @@ import { ShadowView } from '../ShadowView';
 import { TargetDimensions, useTargetDimensions } from '../useTargetDimensions';
 import { usePopupLayoutAnimationFunctions } from '../usePopupLayoutAnimationFunctions';
 import { UITooltipContent } from './UITooltipContent';
+import { UITooltipBackdrop } from './UITooltipBackdrop';
 
 type Location = {
     left: number;
@@ -89,15 +89,16 @@ function useTooltipMeasuring() {
     return { tooltipSize, onLayout };
 }
 
-export function UITooltipBox({ message, targetRef, onClose, forId, testID }: UITooltipBoxProps) {
+export function UITooltipBox({ message, triggerRef, onClose, forId, testID }: UITooltipBoxProps) {
+    const contentRef = React.useRef<View>(null);
     const theme = useTheme();
     const { entering, exiting } = usePopupLayoutAnimationFunctions();
     const windowDimensions = useWindowDimensions();
-    const targetDimensions = useTargetDimensions(targetRef, windowDimensions);
+    const triggerDimensions = useTargetDimensions(triggerRef, windowDimensions);
 
     const { tooltipSize, onLayout } = useTooltipMeasuring();
 
-    const tooltipLocation = useTooltipLocation(targetDimensions, windowDimensions, tooltipSize);
+    const tooltipLocation = useTooltipLocation(triggerDimensions, windowDimensions, tooltipSize);
 
     const { color: shadowColor, opacity: shadowOpacity } = useColorParts(
         ColorVariants.BackgroundOverlay,
@@ -115,9 +116,7 @@ export function UITooltipBox({ message, targetRef, onClose, forId, testID }: UIT
 
     return (
         <Portal absoluteFill forId={forId}>
-            <TapGestureHandler onHandlerStateChange={onClose}>
-                <View style={styles.underlay} />
-            </TapGestureHandler>
+            <UITooltipBackdrop onTap={onClose} triggerRef={triggerRef} contentRef={contentRef} />
             <Animated.View
                 style={styles.container}
                 entering={entering}
@@ -125,7 +124,9 @@ export function UITooltipBox({ message, targetRef, onClose, forId, testID }: UIT
                 testID={testID}
             >
                 <ShadowView style={styles.shadowContainer}>
-                    <UITooltipContent onLayout={onLayout}>{message}</UITooltipContent>
+                    <UITooltipContent onLayout={onLayout} ref={contentRef}>
+                        {message}
+                    </UITooltipContent>
                 </ShadowView>
             </Animated.View>
         </Portal>

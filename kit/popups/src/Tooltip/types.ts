@@ -29,10 +29,16 @@ export type UITooltipProps = {
 
 export type UITooltipBoxProps = Omit<UITooltipProps, 'children'> & {
     onClose: () => void;
-    targetRef: React.RefObject<NativeMethods>;
+    triggerRef: React.RefObject<NativeMethods>;
 };
 
 export type UITooltipContentProps = {
     onLayout: ViewProps['onLayout'];
     children: string;
+};
+
+export type UITooltipBackdropProps = {
+    onTap: () => void;
+    triggerRef: React.RefObject<NativeMethods>;
+    contentRef: React.RefObject<NativeMethods>;
 };

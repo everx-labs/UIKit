@@ -74,14 +74,14 @@ function useMenuLocation(
 
 export function UIMenuContainerContent({
     children,
-    targetRef,
+    triggerRef,
     onClose,
     testID,
 }: UIMenuContainerContentProps) {
     const theme = useTheme();
     const { entering, exiting } = usePopupLayoutAnimationFunctions();
     const windowDimensions = useWindowDimensions();
-    const targetDimensions = useTargetDimensions(targetRef, windowDimensions);
+    const triggerDimensions = useTargetDimensions(triggerRef, windowDimensions);
 
     const [menuSize, setMenuSize] = React.useState<Size>(initialSize);
     const onLayout = React.useCallback(
@@ -94,7 +94,7 @@ export function UIMenuContainerContent({
         },
         [menuSize],
     );
-    const menuLocation = useMenuLocation(targetDimensions, windowDimensions, menuSize);
+    const menuLocation = useMenuLocation(triggerDimensions, windowDimensions, menuSize);
 
     const { color: shadowColor, opacity: shadowOpacity } = useColorParts(
         ColorVariants.BackgroundOverlay,
