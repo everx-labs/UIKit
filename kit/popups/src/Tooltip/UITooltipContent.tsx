@@ -6,8 +6,11 @@ import {
     useWindowDimensions,
     PixelRatio,
     View,
+    ViewProps,
+    ViewStyle,
+    StyleProp,
 } from 'react-native';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import { TapGestureHandler } from 'react-native-gesture-handler';
 import {
     ColorVariants,
@@ -24,6 +27,7 @@ import type { UITooltipContentProps } from './types';
 import { UIConstant } from '../constants';
 import { ShadowView } from '../ShadowView';
 import { TargetDimensions, useTargetDimensions } from '../useTargetDimensions';
+import { usePopupLayoutAnimationFunctions } from '../usePopupLayoutAnimationFunctions';
 
 type Location = {
     left: number;
@@ -81,17 +85,7 @@ function useTooltipLocation(
     }, [targetDimensions, windowDimensions, tooltipSize]);
 }
 
-export function UITooltipContent({
-    message,
-    targetRef,
-    onClose: onCloseProp,
-    forId,
-    testID,
-}: UITooltipContentProps) {
-    const theme = useTheme();
-    const windowDimensions = useWindowDimensions();
-    const targetDimensions = useTargetDimensions(targetRef, windowDimensions);
-
+function useTooltipMeasuring() {
     const [tooltipSize, setTooltipSize] = React.useState<Size>(initialSize);
     const onLayout = React.useCallback(
         function onLayout(event: LayoutChangeEvent) {
@@ -103,39 +97,77 @@ export function UITooltipContent({
         },
         [tooltipSize],
     );
-    const tooltipLocation = useTooltipLocation(targetDimensions, windowDimensions, tooltipSize);
+    return { tooltipSize, onLayout };
+}
 
-    const onClose = React.useCallback(
-        function onClose() {
-            onCloseProp();
-        },
-        [onCloseProp],
+const Content = React.memo(function Content({
+    onLayout,
+    children,
+    style,
+}: {
+    onLayout: ViewProps['onLayout'];
+    children: string;
+    style?: StyleProp<ViewStyle>;
+}) {
+    return (
+        <View style={style} onLayout={onLayout}>
+            <UILabel
+                role={TypographyVariants.NarrowParagraphFootnote}
+                color={UILabelColors.TextPrimary}
+            >
+                {children}
+            </UILabel>
+        </View>
     );
+});
+
+export function UITooltipContent({
+    message,
+    targetRef,
+    onClose,
+    forId,
+    testID,
+}: UITooltipContentProps) {
+    const theme = useTheme();
+    const { entering, exiting } = usePopupLayoutAnimationFunctions();
+    const windowDimensions = useWindowDimensions();
+    const targetDimensions = useTargetDimensions(targetRef, windowDimensions);
+
+    const { tooltipSize, onLayout } = useTooltipMeasuring();
+
+    const tooltipLocation = useTooltipLocation(targetDimensions, windowDimensions, tooltipSize);
 
     const { color: shadowColor, opacity: shadowOpacity } = useColorParts(
         ColorVariants.BackgroundOverlay,
     );
+
     const styles = useStyles(theme, tooltipLocation, shadowColor, shadowOpacity);
+
+    if (!tooltipLocation) {
+        return (
+            <View style={styles.measureContainer}>
+                <Content onLayout={onLayout} style={styles.content}>
+                    {message}
+                </Content>
+            </View>
+        );
+    }
 
     return (
         <Portal absoluteFill forId={forId}>
             <TapGestureHandler onHandlerStateChange={onClose}>
-                <View style={StyleSheet.absoluteFill} />
+                <View style={styles.underlay} />
             </TapGestureHandler>
             <Animated.View
                 style={styles.container}
-                entering={FadeIn.duration(UIConstant.tooltip.animationTime)}
-                exiting={FadeOut.duration(UIConstant.tooltip.animationTime)}
-                onLayout={onLayout}
+                entering={entering}
+                exiting={exiting}
                 testID={testID}
             >
                 <ShadowView style={styles.shadowContainer}>
-                    <UILabel
-                        role={TypographyVariants.NarrowParagraphFootnote}
-                        color={UILabelColors.TextPrimary}
-                    >
+                    <Content onLayout={onLayout} style={styles.content}>
                         {message}
-                    </UILabel>
+                    </Content>
                 </ShadowView>
             </Animated.View>
         </Portal>
@@ -143,18 +175,25 @@ export function UITooltipContent({
 }
 
 const useStyles = makeStyles(
-    (theme: Theme, location: Location | null, shadowColor: string, shadowOpacity: number) => ({
+    (
+        theme: Theme,
+        tooltipLocation: Location | null,
+        shadowColor: string,
+        shadowOpacity: number,
+    ) => ({
+        measureContainer: {
+            position: 'absolute',
+            width: UIConstant.tooltip.maxWidth,
+            alignItems: 'flex-start',
+            opacity: 0,
+        },
         container: {
             position: 'absolute',
-            top: -10000,
-            left: -10000,
-            ...location,
+            ...tooltipLocation,
         },
         shadowContainer: {
             backgroundColor: theme[ColorVariants.BackgroundBW],
             borderRadius: UIConstant.tooltip.borderRadius,
-            maxWidth: UIConstant.tooltip.maxWidth,
-            padding: UILayoutConstant.smallContentOffset,
             shadowRadius: 24 / PixelRatio.get(),
             shadowOffset: {
                 width: 0,
@@ -162,6 +201,13 @@ const useStyles = makeStyles(
             },
             shadowColor,
             shadowOpacity,
+        },
+        content: {
+            maxWidth: UIConstant.tooltip.maxWidth,
+            padding: UILayoutConstant.smallContentOffset,
+        },
+        underlay: {
+            ...StyleSheet.absoluteFillObject,
         },
     }),
 );

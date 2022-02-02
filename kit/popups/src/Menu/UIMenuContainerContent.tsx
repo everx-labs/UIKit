@@ -7,7 +7,7 @@ import {
     PixelRatio,
     View,
 } from 'react-native';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import { TapGestureHandler } from 'react-native-gesture-handler';
 import { ColorVariants, useTheme, Theme, makeStyles, useColorParts } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
@@ -15,6 +15,7 @@ import type { UIMenuContainerContentProps } from './types';
 import { UIConstant } from '../constants';
 import { ShadowView } from '../ShadowView';
 import { useTargetDimensions, TargetDimensions } from '../useTargetDimensions';
+import { usePopupLayoutAnimationFunctions } from '../usePopupLayoutAnimationFunctions';
 
 type Location = {
     left: number;
@@ -74,10 +75,11 @@ function useMenuLocation(
 export function UIMenuContainerContent({
     children,
     targetRef,
-    onClose: onCloseProp,
+    onClose,
     testID,
 }: UIMenuContainerContentProps) {
     const theme = useTheme();
+    const { entering, exiting } = usePopupLayoutAnimationFunctions();
     const windowDimensions = useWindowDimensions();
     const targetDimensions = useTargetDimensions(targetRef, windowDimensions);
 
@@ -94,13 +96,6 @@ export function UIMenuContainerContent({
     );
     const menuLocation = useMenuLocation(targetDimensions, windowDimensions, menuSize);
 
-    const onClose = React.useCallback(
-        function onClose() {
-            onCloseProp();
-        },
-        [onCloseProp],
-    );
-
     const { color: shadowColor, opacity: shadowOpacity } = useColorParts(
         ColorVariants.BackgroundOverlay,
     );
@@ -113,8 +108,8 @@ export function UIMenuContainerContent({
             </TapGestureHandler>
             <Animated.View
                 style={styles.container}
-                entering={FadeIn.duration(UIConstant.menu.animationTime)}
-                exiting={FadeOut.duration(UIConstant.menu.animationTime)}
+                entering={entering}
+                exiting={exiting}
                 onLayout={onLayout}
                 testID={testID}
             >

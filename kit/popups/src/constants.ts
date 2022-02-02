@@ -20,11 +20,9 @@ export const UIConstant = {
     iconPushSize: 40,
     menu: {
         width: 256,
-        animationTime: 100,
     },
     tooltip: {
         maxWidth: 256,
-        animationTime: 100,
         borderRadius: 12,
     },
 };
