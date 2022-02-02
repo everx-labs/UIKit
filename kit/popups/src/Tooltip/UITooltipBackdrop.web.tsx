@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { UITooltipBackdropProps } from './types';
 
-export const UITooltipBackdrop = React.memo(function Backdrop({
+export const UITooltipBackdrop = React.memo(function UITooltipBackdrop({
     onTap,
     triggerRef,
     contentRef,
