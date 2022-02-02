@@ -1,11 +1,6 @@
 import * as React from 'react';
-import {
-    Image,
-    ImageErrorEventData,
-    ImageSourcePropType,
-    NativeSyntheticEvent,
-    Platform,
-} from 'react-native';
+import type { ImageErrorEventData, ImageSourcePropType, NativeSyntheticEvent } from 'react-native';
+import { Image, Platform } from 'react-native';
 import type { ImageSize } from '../types';
 import { UIImage, UIImageProps } from '../../UIImage';
 import { DuplicateImage } from '../../DuplicateImage';
