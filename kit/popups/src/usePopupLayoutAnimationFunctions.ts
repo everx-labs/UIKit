@@ -30,7 +30,7 @@ const OPENED_OPACITY = 1;
 
 export function usePopupLayoutAnimationFunctions(): LayoutAnimationFunctions {
     return React.useMemo(() => {
-        const entering: EntryExitAnimationFunction = (): LayoutAnimation => {
+        function entering(): LayoutAnimation {
             'worklet';
 
             const animations: StyleProps = {
@@ -46,16 +46,16 @@ export function usePopupLayoutAnimationFunctions(): LayoutAnimationFunctions {
                 initialValues,
                 animations,
             };
-        };
+        }
 
-        const exiting: EntryExitAnimationFunction = () => {
+        function exiting(): LayoutAnimation {
             'worklet';
 
-            const animations = {
+            const animations: StyleProps = {
                 opacity: withTiming(CLOSED_OPACITY, withTimingConfig),
                 transform: [{ scale: withSpring(CLOSED_SCALE, withSpringConfig) }],
             };
-            const initialValues = {
+            const initialValues: StyleProps = {
                 opacity: OPENED_OPACITY,
                 transform: [{ scale: OPENED_SCALE }],
             };
@@ -63,7 +63,7 @@ export function usePopupLayoutAnimationFunctions(): LayoutAnimationFunctions {
                 initialValues,
                 animations,
             };
-        };
+        }
 
         return { entering, exiting };
     }, []);
