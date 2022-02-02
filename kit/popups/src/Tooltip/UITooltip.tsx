@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Insets, Pressable, StyleSheet, TouchableOpacity } from 'react-native';
+import { Insets, Platform, Pressable, StyleSheet, TouchableOpacity } from 'react-native';
 import { makeStyles } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UITooltipProps } from './types';
-import { UITooltipContent } from './UITooltipContent';
+import { UITooltipBox } from './UITooltipBox';
 
 const defaultHitSlop: Insets = {
     top: -UILayoutConstant.smallContentOffset,
@@ -43,10 +43,10 @@ export function UITooltip({ children, style: styleProp, hitSlop, ...restProps }:
      * for the `ref` of the `View` does not return values on Android.
      */
     return (
-        <Pressable style={styleProp} ref={containerRef} disabled>
+        <Pressable style={[styles.container, styleProp]} ref={containerRef} disabled>
             {children}
             {visible ? (
-                <UITooltipContent {...restProps} targetRef={containerRef} onClose={onClose} />
+                <UITooltipBox {...restProps} targetRef={containerRef} onClose={onClose} />
             ) : null}
             <Pressable
                 onPress={onOpen}
@@ -59,6 +59,16 @@ export function UITooltip({ children, style: styleProp, hitSlop, ...restProps }:
 }
 
 const useStyles = makeStyles((hitSlop: Insets | undefined) => ({
+    container: {
+        // The typescript requires the presence of any style attribute, in addition to the `userSelect`
+        display: 'flex',
+        ...Platform.select({
+            web: {
+                userSelect: 'none',
+            },
+            default: null,
+        }),
+    },
     pressableOverlay: {
         ...StyleSheet.absoluteFillObject,
         ...convertHitSlopToPaddings(hitSlop),

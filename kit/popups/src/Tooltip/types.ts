@@ -27,7 +27,12 @@ export type UITooltipProps = {
     testID?: string;
 } & Pick<ViewProps, 'hitSlop'>;
 
-export type UITooltipContentProps = Omit<UITooltipProps, 'children'> & {
+export type UITooltipBoxProps = Omit<UITooltipProps, 'children'> & {
     onClose: () => void;
     targetRef: React.RefObject<NativeMethods>;
+};
+
+export type UITooltipContentProps = {
+    onLayout: ViewProps['onLayout'];
+    children: string;
 };
