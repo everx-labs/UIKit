@@ -1,9 +1,10 @@
 import * as React from 'react';
-import type {
+import {
     Image,
     ImageErrorEventData,
     ImageSourcePropType,
     NativeSyntheticEvent,
+    Platform,
 } from 'react-native';
 import type { ImageSize } from '../types';
 import { UIImage, UIImageProps } from '../../UIImage';
@@ -27,6 +28,16 @@ const getImage = (
     );
 };
 
+function getIsPreviewEmpty(preview: ImageSourcePropType | undefined): boolean {
+    if (!preview) {
+        return true;
+    }
+    if (Platform.OS === 'web') {
+        return !(preview as any)?.uri;
+    }
+    return !Image.resolveAssetSource(preview).uri;
+}
+
 export const useImages = (
     image: ImageSourcePropType,
     preview: ImageSourcePropType | undefined,
@@ -34,18 +45,29 @@ export const useImages = (
     imageSize: ImageSize | undefined,
     onErrorCallback: (error: NativeSyntheticEvent<ImageErrorEventData>) => void,
     onLoadCallback: () => void,
-) => {
+): {
+    fullSizeImage: React.ReactElement | null;
+    previewImage: React.ReactElement;
+    duplicateOfPreviewImage: React.ReactElement;
+} => {
     return React.useMemo(() => {
-        const fullSizeImage = getImage(image, imageSize, onErrorCallback, onLoadCallback, null);
-        const previewImage = getImage(
-            preview || image,
+        /**
+         * If `preview` is empty, then the `image` will be displayed as a previewImage,
+         * and we don't need the `fullSizeImage`, because we have only one image source.
+         */
+        const isPreviewEmpty = getIsPreviewEmpty(preview);
+        const fullSizeImage: React.ReactElement | null = isPreviewEmpty
+            ? null
+            : getImage(image, imageSize, onErrorCallback, onLoadCallback, null);
+        const previewImage: React.ReactElement = getImage(
+            isPreviewEmpty ? image : preview || image,
             imageSize,
             onErrorCallback,
             onLoadCallback,
             previewRef,
         );
 
-        const duplicateOfPreviewImage = (
+        const duplicateOfPreviewImage: React.ReactElement = (
             <DuplicateImage source={previewRef} style={imageSize}>
                 {previewImage}
             </DuplicateImage>
