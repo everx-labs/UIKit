@@ -53,13 +53,14 @@ function setMenuVisible(visible: boolean) {
 function BrowserAddMenu({
     addMessage,
     setUsingSecCard,
+    base64Image,
+    base64PreviewImage,
 }: {
     addMessage: (message: BrowserMessage) => void;
     setUsingSecCard: (using: boolean) => void;
+    base64Image: string | null;
+    base64PreviewImage: string | null;
 }) {
-    const base64Image = useBase64Image(imageUrl.original);
-    const base64PreviewImage = useBase64Image(imageUrl.small);
-
     const [signingBoxes, setSigningBoxes] = React.useState([
         {
             id: 1,
@@ -667,6 +668,9 @@ export function Browser() {
         setNoticeVisible(false);
     }, []);
 
+    const base64Image = useBase64Image(imageUrl.medium);
+    const base64PreviewImage = useBase64Image(imageUrl.small);
+
     return (
         <>
             <UIBrowser
@@ -690,6 +694,8 @@ export function Browser() {
                         setMessages([message, ...messages]);
                     }}
                     setUsingSecCard={setUsingSecCard}
+                    base64Image={base64Image}
+                    base64PreviewImage={base64PreviewImage}
                 />
             </UIFullscreenSheet>
             <UICardSheet
