@@ -191,6 +191,7 @@ export function DatePicker(props: UIDateTimePickerProps) {
             visible={visible}
             onClose={onClose}
             hasDefaultInset={false}
+            hasHeader={false}
         >
             <DatePickerContent {...props} />
         </UIBottomSheet>

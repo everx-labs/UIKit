@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIPopover, UIPopoverMenu } from '@tonlabs/uikit.navigation_legacy';
-import { UILargeTitleHeader, UIDialogBar } from '@tonlabs/uicast.bars';
+import { UILargeTitleHeader } from '@tonlabs/uicast.bars';
 import { UIQRCodeScannerSheet } from '@tonlabs/uicast.qr-code-scanner-sheet';
 import {
     UICardSheet,
@@ -559,14 +559,7 @@ export const Menus = () => {
                         onClose={() => {
                             setBottomSheetVisible(false);
                         }}
-                        style={{
-                            backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                            paddingHorizontal: UILayoutConstant.contentOffset,
-                            paddingBottom: UILayoutConstant.contentOffset,
-                            borderRadius: UILayoutConstant.alertBorderRadius,
-                        }}
                     >
-                        <UIDialogBar hasPuller />
                         <UILabel>Hi there!</UILabel>
                         <UIBoxButton
                             title="close"
@@ -588,13 +581,9 @@ export const Menus = () => {
                             setBottomSheetVisible2(false);
                         }}
                         style={{
-                            backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                            paddingHorizontal: UILayoutConstant.contentOffset,
                             paddingBottom: UILayoutConstant.contentOffset,
-                            borderRadius: UILayoutConstant.alertBorderRadius,
                         }}
                     >
-                        <UIDialogBar hasPuller />
                         <UIMaterialTextView label="Write smth" />
                         <UIBoxButton
                             title="close"
