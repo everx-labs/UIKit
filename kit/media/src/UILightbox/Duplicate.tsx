@@ -4,7 +4,8 @@ import type { DuplicateProps } from './types';
 import { DuplicateContent } from './DuplicateContent';
 
 export const Duplicate = (props: DuplicateProps) => {
-    if (!props.isOpen) {
+    const { isOpen } = props;
+    if (!isOpen) {
         return null;
     }
 
