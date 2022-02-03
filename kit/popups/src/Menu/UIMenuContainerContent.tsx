@@ -41,27 +41,27 @@ function getBoundaries(windowDimensions: ScaledSize, menuSize: Size) {
 }
 
 function useMenuLocation(
-    targetDimensions: TargetDimensions | null,
+    triggerDimensions: TargetDimensions | null,
     windowDimensions: ScaledSize,
     menuSize: Size,
 ): Location | null {
     return React.useMemo(() => {
-        if (!menuSize.height || !menuSize.width || !targetDimensions) {
+        if (!menuSize.height || !menuSize.width || !triggerDimensions) {
             return null;
         }
 
         const boundaries = getBoundaries(windowDimensions, menuSize);
 
-        let top: number | undefined = targetDimensions.y + targetDimensions.height;
+        let top: number | undefined = triggerDimensions.y + triggerDimensions.height;
         let bottom: number | undefined;
         const left: number = Math.max(
             boundaries.left,
-            Math.min(boundaries.right, targetDimensions.x),
+            Math.min(boundaries.right, triggerDimensions.x),
         );
 
         if (top > boundaries.bottom) {
             top = undefined;
-            bottom = windowDimensions.height - targetDimensions.y;
+            bottom = windowDimensions.height - triggerDimensions.y;
         }
 
         return {
@@ -69,7 +69,7 @@ function useMenuLocation(
             top,
             bottom,
         };
-    }, [targetDimensions, windowDimensions, menuSize]);
+    }, [triggerDimensions, windowDimensions, menuSize]);
 }
 
 export function UIMenuContainerContent({

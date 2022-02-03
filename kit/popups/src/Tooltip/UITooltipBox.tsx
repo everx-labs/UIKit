@@ -41,29 +41,29 @@ function getBoundaries(windowDimensions: ScaledSize, tooltipSize: Size) {
 }
 
 function useTooltipLocation(
-    targetDimensions: TargetDimensions | null,
+    triggerDimensions: TargetDimensions | null,
     windowDimensions: ScaledSize,
     tooltipSize: Size,
 ): Location | null {
     return React.useMemo(() => {
-        if (!tooltipSize.height || !tooltipSize.width || !targetDimensions) {
+        if (!tooltipSize.height || !tooltipSize.width || !triggerDimensions) {
             return null;
         }
 
-        const horizontalOffsetToCenterTooltip = (targetDimensions.width - tooltipSize.width) / 2;
+        const horizontalOffsetToCenterTooltip = (triggerDimensions.width - tooltipSize.width) / 2;
 
         const boundaries = getBoundaries(windowDimensions, tooltipSize);
 
-        let top: number | undefined = targetDimensions.y + targetDimensions.height;
+        let top: number | undefined = triggerDimensions.y + triggerDimensions.height;
         let bottom: number | undefined;
         const left: number = Math.max(
             boundaries.left,
-            Math.min(boundaries.right, targetDimensions.x + horizontalOffsetToCenterTooltip),
+            Math.min(boundaries.right, triggerDimensions.x + horizontalOffsetToCenterTooltip),
         );
 
         if (top > boundaries.bottom) {
             top = undefined;
-            bottom = windowDimensions.height - targetDimensions.y;
+            bottom = windowDimensions.height - triggerDimensions.y;
         }
 
         return {
@@ -71,7 +71,7 @@ function useTooltipLocation(
             top,
             bottom,
         };
-    }, [targetDimensions, windowDimensions, tooltipSize]);
+    }, [triggerDimensions, windowDimensions, tooltipSize]);
 }
 
 function useTooltipMeasuring() {
