@@ -1,8 +1,8 @@
 {
-    "Account": "Аккаунт",
+    "Account": "Счет",
     "AccountAddress": "Адрес",
-    "Accounts": "Аккаунты",
-    "AccountTypeHint": "Когда вы делаете адрес аккаунта публичным, он отображается в вашем профиле",
+    "Accounts": "Счета",
+    "AccountTypeHint": "Когда вы делаете адрес счета публичным, он отображается в вашем профиле",
     "Add": "Добавить",
     "Address": "Адрес",
     "Addresses": "Адреса",
@@ -10,87 +10,87 @@
     "AddressURLHint": "На этой странице ваши друзья могут пополнить ваш кошелёк",
     "AddSubscribers": "Добавить подписчиков",
     "Amount": "Сумма",
-    "Apartment": "Apt / Ste / Unit",
+    "Apartment": "Квартира / Офис",
     "AtTime": "в",
     "BackToHome": "На главную",
-    "BackupAccount": "Резервная копия аккаунта",
+    "BackupAccount": "Резервная копия",
     "BackupNow": "Сделать копию сейчас",
     "Balance": "Баланс",
     "Blacklist": "Черный список",
     "BlockUser": "Заблокировать пользователя",
     "Browser": {
         "AddressInput": {
-            "Placeholder": "Wallet address…"
+            "Placeholder": "Адрес…"
         },
         "AddressInputBubble": {
-            "EnterManually": "Enter manually",
-            "MainAccount": "Main account",
-            "ScanQR": "Scan QR code",
+            "EnterManually": "Ввести вручную",
+            "MainAccount": "Основной счет",
+            "ScanQR": "Сканировать QR-код",
             "SelectAsset": "Select asset"
         },
         "AmountInput": {
-            "Placeholder": "Amount…",
-            "ErrorLess": "The amount is less than {0}",
-            "ErrorBigger": "The amount is bigger than {0}",
-            "HintMin": "min.",
-            "HintMax": "max."
+            "Placeholder": "Сумма…",
+            "ErrorLess": "Сумма меньше {0}",
+            "ErrorBigger": "Сумма превышает {0}",
+            "HintMin": "мин.",
+            "HintMax": "маск."
         },
         "DateTimeInput": {
             "DoYouWantChooseDate": "Хотите выбрать дату?",
             "DoYouWantChooseTime": "Хотите выбрать время?",
             "ChooseDate": "Выбрать дату",
             "ChooseTime": "Выбрать время",
-            "YouHaveChosenTheDate": "Вы выбрали дату: ",
-            "YouHaveChosenTheTime": "Вы выбрали время: ",
-            "DoYouWantChooseDateTime": "Do you want to choose date and time?",
-            "ChooseDateTime": "Choose date and time",
-            "YouHaveChosenTheDateTime": "You have chosen date and time: "
+            "YouHaveChosenTheDate": "Выбранная дата: ",
+            "YouHaveChosenTheTime": "Выбранное время: ",
+            "DoYouWantChooseDateTime": "Хотите выбрать дату и время?",
+            "ChooseDateTime": "Выбор даты и времени",
+            "YouHaveChosenTheDateTime": "Выбранные дата и время: "
         },
         "SigningBox": {
-            "Prompt": "How would you like to sign?",
-            "EnterKey": "Enter Key",
-            "PickSignature": "Pick a signature",
-            "UseSecurityCard": "Use Security Card",
-            "SecurityCards": "Security cards",
-            "Signatures": "Signatures",
-            "AddSignature": "Add signature",
-            "PrivateKey": "Private key",
+            "Prompt": "Как хотите подписать транзакцию?",
+            "EnterKey": "Ввести ключ",
+            "PickSignature": "Выбрать подпись",
+            "UseSecurityCard": "Картой безопасности",
+            "SecurityCards": "Карты безопасности",
+            "Signatures": "Подписи",
+            "AddSignature": "Добавить подпись",
+            "PrivateKey": "Приватный ключ",
             "Sign": "Подписать"
         },
         "Approve": {
-            "Title": "Transaction confirmation",
-            "To": "To",
-            "Recipients": "Recipients",
-            "Total": "Total",
-            "Fees": "Fees",
-            "Signature": "Signature",
-            "Attention": "Attention",
+            "Title": "Подтверждение транзакции",
+            "To": "Кому",
+            "Recipients": "Получатели",
+            "Total": "Всего",
+            "Fees": "Сбор",
+            "Signature": "Подпись",
+            "Attention": "Внимание",
             "AttentionDesc": "This transaction is trying to change the contract and will not be performed",
-            "Confirm": "Confirm",
-            "Cancel": "Cancel"
+            "Confirm": "Подтвердить",
+            "Cancel": "Отмена"
         },
         "TransactionConfirmation": {
-            "Title": "Transaction confirmation",
-            "To": "To",
-            "Recipients": "Recipients",
-            "Total": "Total",
-            "Fees": "Fees",
-            "Signature": "Signature",
-            "Attention": "Attention",
-            "AttentionDesc": "This transaction is trying to change the contract and will not be performed",
-            "Confirm": "Confirm",
-            "Cancel": "Cancel"
+            "Title": "Подтверждение транзакции",
+            "To": "Кому",
+            "Recipients": "Получатели",
+            "Total": "Всего",
+            "Fees": "Сбор",
+            "Signature": "Подпись",
+            "Attention": "Внимание",
+            "AttentionDesc": "Транзакция не будет выполнена, потому что ",
+            "Confirm": "Подтвердить",
+            "Cancel": "Отмена"
         },
         "Menu": {
-            "More": "More..."
+            "More": "Еще..."
         },
         "EncryptionBox": {
-            "Prompt": "Select an encryption key:",
-            "EnterKey": "Enter an encryption key manually",
-            "PickCipher": "Pick from encryption keys",
-            "CipherKeys": "Encryption keys",
-            "AddCipherKey": "Add an encryption key",
-            "CipherKeyLabel": "Encryption key",
+            "Prompt": "Выберите ключ шифрования:",
+            "EnterKey": "Ввести вручную",
+            "PickCipher": "Выбрать из списка ключей",
+            "CipherKeys": "Ключи шифрования",
+            "AddCipherKey": "Добавить ключ шифрования",
+            "CipherKeyLabel": "Ключ шифрованияy",
             "UseKey": "Использовать ключ"
         }
     },
@@ -114,8 +114,8 @@
             "Yesterday": "Вчера"
         },
         "QRCode": {
-            "errorReceived": "Не удалось сгенерировать QR код",
-            "errorSent": "Не удалось сгенерировать QR код.\nПопробуйте ещё раз"
+            "errorReceived": "Не удалось сгенерировать QR-код",
+            "errorSent": "Не удалось сгенерировать QR-код.\nПопробуйте ещё раз"
         }
     },
     "ChatWith": "Чат с",
@@ -126,7 +126,7 @@
     "Code": "Код",
     "ConfirmAndTransfer": "Подтвердить и перевести",
     "Confirmed": "Подтвержденный",
-    "ConfirmIdentity": "Для продолжения необходимо подтвердить вашу личность. Мы отправим SMS с кодом на ваш номер телефона",
+    "ConfirmIdentity": "Для продолжения необходимо подтвердить вашу личность. Мы отправим СМС с кодом на ваш номер телефона",
     "ConfirmPassword": "Подтвердите пароль",
     "ConnectionHasBeenLost": "Соединение потеряно",
     "ConnectionStatus": "Статус соединения",
@@ -142,9 +142,9 @@
     "CopyToClipboard": "Скопировать",
     "Country": "Страна",
     "CountryPicker": {
-        "Title": "Choose a Country",
-        "CountryNotFindTitle": "We didn't find your country",
-        "CountryNotFindDetails": "Try again or select from the list"
+        "Title": "Выбор страны",
+        "CountryNotFindTitle": "Такая страна не найдена",
+        "CountryNotFindDetails": "Введите снова или выберите из списка"
     },
     "Create": "Создать",
     "CreateNewAccount": "Создать новый аккаунт",
@@ -176,7 +176,7 @@
     "Description": "Описание",
     "DeselectAll": "Отменить выбор",
     "Details": "Детали",
-    "Disclaimer": "Disclaimer",
+    "Disclaimer": "Предупреждение",
     "DiscoverBots": "Обнаружить ботов",
     "DoB": "Дата рождения",
     "DoBMax": "Должен быть младше",
@@ -189,8 +189,8 @@
     "EditIdentityCard": "Измените данные удостоверения личности",
     "EditLimit": "Изменить лимит",
     "EditProfile": "Изменить профиль",
-    "EditResidencePermit": "Edit Residence Permit",
-    "EmailAddress": "Email",
+    "EditResidencePermit": "Изменить данные вида на жительство",
+    "EmailAddress": "Электронная почта",
     "EnterCorrectDataToField": "Введите правильные данные",
     "Error": "Ошибка",
     "Events": "События",
@@ -201,10 +201,10 @@
         "more": "Подробнее..."
     },
     "ExportingBackupPhrase": "Экспорт бэкап-фразы...",
-    "fee": "Network fees",
+    "fee": "Сборы сети",
     "feeAmount": "≈ {0}",
     "Female": "Женщина",
-    "FileIsTooBig": "Извините, мы не можем это обработать. Файл слишком большой (лимит: {0} MB).",
+    "FileIsTooBig": "Извините, мы не можем это обработать. Файл слишком большой (лимит: {0} МБ).",
     "FillInInformation": "Заполните требуемую информацию ниже",
     "FillInPersonalDetails": "Заполните Ваши личные данные",
     "FirstName": "Имя",
@@ -219,7 +219,7 @@
     "Group": "Группа",
     "GroupName": "Название группы",
     "GroupPhotoUpdated": "изменил(а) фото группы",
-    "HashCopiedToClipboard": "Hash copied to clipboard.",
+    "HashCopiedToClipboard": "Скопировано в буфер",
     "Here": "здесь",
     "Hide": "Скрыть",
     "hours": "часов",
@@ -241,7 +241,7 @@
     "LastWeek": "был(а) на этой неделе",
     "Later": "Позже",
     "LeaveGroup": "Покинуть группу",
-    "LegalNotes": "Legal Notes",
+    "LegalNotes": "Правовая информация",
     "LimitRemoveSuccess": "Лимит удален",
     "Limits": "Лимиты",
     "LimitSetSuccess": "Лимит установлен",
@@ -316,7 +316,7 @@
     "PublicAddress": "Публичный адрес",
     "PublicAddressCopiedToClipboard": "Адрес аккаунта скопирован в буфер",
     "QRCodeScanner": {
-        "ErrorOnRead": "Couldn't read QR code",
+        "ErrorOnRead": "Не удалось считать QR-код",
         "ErrorPermissions": "Чтобы сканировать QR-коды, разрешите доступ к камере вашего устройства",
         "ErrorUnexpected": "Непредвиденная ошибка сканирования"
     },
@@ -331,15 +331,15 @@
     "RequestedFiles": "Запрашиваемые файлы",
     "RequestingContactsPermission": "Доступ к контактам закрыт",
     "Residence": "Страна проживания",
-    "ResidencePermit": "Residence Permit",
+    "ResidencePermit": "Вид на жительство",
     "RestoreFrom12Words": "Восстановить из 12 слов",
     "ReviewAndConfirm": "Проверить и подтвердить",
     "RevokeLink": "Аннулировать ссылку",
-    "rounds": "rounds",
-    "rounds01": "round",
-    "rounds11": "rounds",
-    "rounds24": "rounds",
-    "rounds50": "rounds",
+    "rounds": "раунды",
+    "rounds01": "раунд",
+    "rounds11": "раундов",
+    "rounds24": "раунда",
+    "rounds50": "раундов",
     "SayHello": "Скажи \"Привет\"",
     "Search": "Искать",
     "Sec": "сек",
@@ -363,7 +363,7 @@
     "TotalBalance": "Общий Баланс",
     "Transaction": "Транзакция",
     "TransactionError": ["-", "Превышен лимит операции", "Доступ запрещен", "Неизвестная ошибка"],
-    "TransactionFrom": "You have received a transaction from",
+    "TransactionFrom": "Вы получили перевод от",
     "Transactions": "Транзакции",
     "TransactionStatus": {
         "aborted": "Прервана в {0}",
@@ -383,12 +383,12 @@
     "WalletIsNotInitialized": "Кошелек не инициализирован",
     "WalletSetup": {
         "ConfirmLocalPassword": "Confirm Login Method",
-        "ConfirmLocalPasswordContinue": "OK, let’s go",
-        "ConfirmLocalPasswordDetails": "Set a Passcode to enter the wallet and confirm your transactions. It will work only on this device.",
+        "ConfirmLocalPasswordContinue": "Продолжить",
+        "ConfirmLocalPasswordDetails": "Настройте код доступа для входа в кошелек и подтверждения транзакций. Он будет действовать только на этом устройстве.",
         "ConfirmLocalPasswordHint": "",
-        "ConfirmLocalPasswordPlaceholder": "Repeat Passcode",
+        "ConfirmLocalPasswordPlaceholder": "Введите код повторно",
         "ConfirmLocalPasswordSuccess": "Успешно",
-        "ConfirmLocalPasswordWarning": "Attention! To access the wallet on another device, you will need a Key Phrase.",
+        "ConfirmLocalPasswordWarning": "Внимание! Для доступа к кошельку с другого устройства вам понадобится сид-фраза.",
         "CreateANew": "Создать новый",
         "EncodePhrase": "Получить фразу",
         "IHaveWrittenAndRemembered": "Я записал и запомнил",
@@ -412,11 +412,11 @@
         "RestoreWalletDetails": "Впишите ключевую фразу, которую вы получили при создании кошелька.",
         "Seconds": "с",
         "SetLocalPassword": "Create Login Method",
-        "SetLocalPasswordContinue": "Continue",
-        "SetLocalPasswordDetails": "Set a Passcode to enter the wallet and confirm your transactions. It will work only on this device.",
+        "SetLocalPasswordContinue": "Продолжить",
+        "SetLocalPasswordDetails": "Настройте код доступа для входа в кошелек и подтверждения транзакций. Он будет действовать только на этом устройстве.",
         "SetLocalPasswordHint": "Минимум 8 символов",
-        "SetLocalPasswordPlaceholder": "New Passcode",
-        "SetLocalPasswordWarning": "Attention! To access the wallet on another device, you will need a Key Phrase."
+        "SetLocalPasswordPlaceholder": "Новый код доступа",
+        "SetLocalPasswordWarning": "Внимание! Для доступа к кошельку с другого устройства вам понадобится сид-фраза."
     },
     "Warning": "Предупреждение",
     "Was": "был(а)",
@@ -437,9 +437,9 @@
     "You": "Вы",
     "YourEmail": "Ваш адрес электронной почты",
     "KeyTextView": {
-        "InvalidChars": "The key isn't in HEX format",
-        "InproperLength": "The key should be 64 symbols long",
-        "Valid": "Looks good"
+        "InvalidChars": "Подходит ключ только в формате HEX",
+        "InproperLength": "В ключе должно быть 64 символа",
+        "Valid": "Подходит"
     },
     "DateTimePicker": {
         "dayNames": {
@@ -487,9 +487,9 @@
         "Time": "Время",
         "AM": "AM",
         "PM": "PM",
-        "Warning": "Choose a time between {0} and {1}",
-        "WarningAfter": "Choose a time after {0}",
-        "WarningBefore": "Choose a time before {0}"
+        "Warning": "Выберите время между {0} и {1}",
+        "WarningAfter": "Выберите время после {0}",
+        "WarningBefore": "Выберите время до {0}"
     },
-    "ShowMore": "Show more"
+    "ShowMore": "Показать еще"
 }
