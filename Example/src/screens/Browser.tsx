@@ -702,7 +702,7 @@ export function Browser() {
                 visible={isUsingSecCard}
                 style={{
                     backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                    padding: 20,
+                    paddingVertical: 16,
                     borderRadius: 10,
                     alignItems: 'center',
                     justifyContent: 'center',

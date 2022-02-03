@@ -12,9 +12,11 @@ import {
 // @ts-expect-error
 import SpringConfig from 'react-native/Libraries/Animated/SpringConfig';
 
-import { getYWithRubberBandEffect } from '../../AnimationHelpers';
+import { AnimationHelpers } from '@tonlabs/uikit.layout';
 
 import type { SnapPoints } from '../types';
+
+const { getYWithRubberBandEffect } = AnimationHelpers;
 
 const Y_THRESHOLD = 20;
 const X_THRESHOLD = 50;

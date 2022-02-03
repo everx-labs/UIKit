@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, ViewStyle, View } from 'react-native';
+import { StyleProp, ViewStyle, View } from 'react-native';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { useTheme, Theme, makeStyles, ColorVariants } from '@tonlabs/uikit.themes';
+import { UIDialogBar } from '@tonlabs/uicast.bars';
 
 import { UISheet, UISheetProps } from './UISheet/UISheet';
 
@@ -19,14 +21,23 @@ function getCardSheetBottomInset(bottomInset: number, keyboardHeight: number) {
     return Math.max(CARD_SHEET_DEFAULT_BOTTOM_INSET, bottomInset);
 }
 
-export function UICardSheet({ children, style, ...rest }: UICardSheetProps) {
+export function UICardSheet({
+    children,
+    style,
+    hasHeader = true,
+    headerOptions,
+    ...rest
+}: UICardSheetProps) {
+    const theme = useTheme();
     const { visible, forId } = rest;
+    const styles = useStyles(theme);
     return (
         <UISheet.Container visible={visible} forId={forId}>
             <UISheet.KeyboardAware getBottomInset={getCardSheetBottomInset}>
                 <UISheet.IntrinsicSize>
                     <UISheet.Content {...rest} style={styles.card}>
-                        <View style={[style, styles.cardInner]}>{children}</View>
+                        {hasHeader ? <UIDialogBar hasPuller {...headerOptions} /> : null}
+                        <View style={[styles.cardContent, style]}>{children}</View>
                     </UISheet.Content>
                 </UISheet.IntrinsicSize>
             </UISheet.KeyboardAware>
@@ -34,14 +45,17 @@ export function UICardSheet({ children, style, ...rest }: UICardSheetProps) {
     );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme: Theme) => ({
     card: {
-        width: '100%',
+        alignSelf: 'stretch',
         maxWidth: UILayoutConstant.elasticWidthCardSheet,
-        alignSelf: 'center',
+        marginHorizontal: UILayoutConstant.contentOffset,
+        borderRadius: UILayoutConstant.alertBorderRadius,
+        alignItems: 'stretch',
+        overflow: 'hidden',
+        backgroundColor: theme[ColorVariants.BackgroundPrimary],
+    },
+    cardContent: {
         paddingHorizontal: UILayoutConstant.contentOffset,
     },
-    cardInner: {
-        width: '100%',
-    },
-});
+}));

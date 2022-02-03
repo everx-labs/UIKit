@@ -509,13 +509,9 @@ export const Menus = () => {
                             setCardSheetVisible(false);
                         }}
                         style={{
-                            backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                            paddingHorizontal: UILayoutConstant.contentOffset,
                             paddingBottom: UILayoutConstant.contentOffset,
-                            borderRadius: UILayoutConstant.alertBorderRadius,
                         }}
                     >
-                        <UIDialogBar hasPuller />
                         <UILabel>Hi there!</UILabel>
                         <UIBoxButton
                             title="close"
@@ -543,7 +539,6 @@ export const Menus = () => {
                             borderRadius: UILayoutConstant.alertBorderRadius,
                         }}
                     >
-                        <UIDialogBar hasPuller />
                         <UIMaterialTextView label="Write smth" />
                         <UIBoxButton
                             title="close"

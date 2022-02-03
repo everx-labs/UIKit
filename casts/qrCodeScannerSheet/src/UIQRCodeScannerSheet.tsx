@@ -200,7 +200,7 @@ export function UIQRCodeScannerSheet({
     );
 
     return (
-        <UICardSheet {...rest} onClose={onClose} style={styles.cardContainer}>
+        <UICardSheet {...rest} onClose={onClose} style={styles.cardContainer} hasHeader={false}>
             <QRCodeScanner
                 onRead={onRead}
                 reactivate
@@ -250,8 +250,7 @@ const styles = StyleSheet.create({
     cardContainer: {
         height: SCANNER_HEIGHT,
         position: 'relative',
-        borderRadius: UILayoutConstant.alertBorderRadius,
-        overflow: 'hidden',
+        paddingHorizontal: 0,
     },
     closeButtonContainer: {
         position: 'absolute',

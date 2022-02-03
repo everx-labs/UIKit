@@ -4,11 +4,12 @@ import Animated, { /* measure, */ scrollTo } from 'react-native-reanimated';
 import { Platform } from 'react-native';
 import type { ScrollView as RNScrollView, NativeScrollEvent } from 'react-native';
 
-import { getYWithRubberBandEffect } from '@tonlabs/uikit.popups';
+import { AnimationHelpers } from '@tonlabs/uikit.layout';
 import type { ScrollableParentScrollHandler } from '@tonlabs/uikit.scrolls';
 import type { ScrollHandlerContext } from '../../types';
 
 const isIOS = Platform.OS === 'ios';
+const { getYWithRubberBandEffect } = AnimationHelpers;
 
 // eslint-disable-next-line func-names
 export default function (
