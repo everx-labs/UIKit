@@ -33,7 +33,7 @@
             "ErrorLess": "Сумма меньше {0}",
             "ErrorBigger": "Сумма превышает {0}",
             "HintMin": "мин.",
-            "HintMax": "маск."
+            "HintMax": "макс."
         },
         "DateTimeInput": {
             "DoYouWantChooseDate": "Хотите выбрать дату?",
