@@ -7,7 +7,6 @@ import { useBackHandler } from '@react-native-community/hooks';
 import { Portal } from '@tonlabs/uikit.layout';
 import { ColorVariants, useColorParts, useStatusBar } from '@tonlabs/uikit.themes';
 import { ScrollableContext } from '@tonlabs/uikit.scrolls';
-import type { UIDialogBarProps } from '@tonlabs/uicast.bars';
 import type { OnOpen, OnClose } from './types';
 import { SheetReadyContext, usePosition } from './usePosition';
 import { KeyboardAwareSheet, KeyboardUnawareSheet } from './KeyboardAwareSheet';
@@ -50,15 +49,6 @@ export type UISheetProps = {
      * Whether UISheet has close animation or not
      */
     hasCloseAnimation?: boolean;
-    /**
-     * Whether UISheet has a header
-     * Default: true
-     */
-    hasHeader?: boolean;
-    /**
-     * You can use it if you need a header customization
-     */
-    headerOptions?: Pick<UIDialogBarProps, 'headerLeftItems' | 'headerRightItems'>;
     /**
      * Sheet uses <Portal /> to put itself on top of
      * current components, like a layer.
