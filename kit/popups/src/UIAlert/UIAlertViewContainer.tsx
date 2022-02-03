@@ -117,7 +117,7 @@ export const UIAlertViewContainer: React.FC<UIAlertViewContainerProps> = ({
         return false;
     });
 
-    const styles = useStyles(alertViewActions.actionList.length);
+    const styles = useStyles();
 
     return (
         <AlertBox
@@ -133,13 +133,13 @@ export const UIAlertViewContainer: React.FC<UIAlertViewContainerProps> = ({
     );
 };
 
-const useStyles = makeStyles((actionCount: number) => ({
+const useStyles = makeStyles(() => ({
     container: {
         paddingHorizontal: UILayoutConstant.contentOffset,
     },
     actionsContainer: {
-        flexDirection: actionCount === 2 ? 'row-reverse' : 'column',
-        flexWrap: actionCount === 2 ? 'wrap' : 'nowrap',
+        flexDirection: 'column',
+        flexWrap: 'nowrap',
         justifyContent: 'space-around',
     },
 }));
