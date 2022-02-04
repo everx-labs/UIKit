@@ -1,23 +1,35 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { useTheme, Theme, makeStyles, ColorVariants } from '@tonlabs/uikit.themes';
+import { UIDialogBar, UIDialogBarProps } from '@tonlabs/uicast.bars';
 
 import { UISheet, UISheetProps } from './UISheet/UISheet';
 
-export type UIBottomSheetProps = UISheetProps & {
-    style?: StyleProp<ViewStyle>;
+export type UIBottomSheetProps = Omit<UISheetProps, 'style'> & {
     hasDefaultInset?: boolean;
+    /**
+     * Whether UIBottomSheet has a header
+     * Default: true
+     */
+    hasHeader?: boolean;
+    /**
+     * You can use it if you need a header customization
+     */
+    headerOptions?: Pick<UIDialogBarProps, 'headerLeftItems' | 'headerRightItems'>;
 };
 
 export function UIBottomSheet({
     children,
-    style,
     hasDefaultInset = true,
+    hasHeader = true,
+    headerOptions,
     ...rest
 }: UIBottomSheetProps) {
     const { visible, forId } = rest;
+    const theme = useTheme();
 
     const { bottom: bottomInset } = useSafeAreaInsets();
 
@@ -26,26 +38,20 @@ export function UIBottomSheet({
             return 0;
         }
 
-        const flattenStyle = StyleSheet.flatten(style);
-        return Math.max(
-            bottomInset || 0,
-            UILayoutConstant.contentOffset,
-            (flattenStyle?.paddingBottom as number) ?? 0,
-        );
-    }, [style, bottomInset, hasDefaultInset]);
+        return Math.max(bottomInset || 0, UILayoutConstant.contentOffset);
+    }, [bottomInset, hasDefaultInset]);
 
-    const sheetStyle = React.useMemo(() => {
-        return {
-            paddingBottom: defaultPadding + UILayoutConstant.rubberBandEffectDistance,
-        };
-    }, [defaultPadding]);
+    const styles = useStyles(defaultPadding, theme);
 
     return (
         <UISheet.Container visible={visible} forId={forId}>
             <UISheet.KeyboardAware defaultShift={-UILayoutConstant.rubberBandEffectDistance}>
                 <UISheet.IntrinsicSize>
-                    <UISheet.Content {...rest} style={[styles.bottom, style, sheetStyle]}>
-                        {children}
+                    <UISheet.Content {...rest} style={styles.sheet}>
+                        <View style={styles.card}>
+                            {hasHeader ? <UIDialogBar hasPuller {...headerOptions} /> : null}
+                            {children}
+                        </View>
                     </UISheet.Content>
                 </UISheet.IntrinsicSize>
             </UISheet.KeyboardAware>
@@ -53,15 +59,18 @@ export function UIBottomSheet({
     );
 }
 
-const styles = StyleSheet.create({
-    bottom: {
-        width: '100%',
-        maxWidth: UILayoutConstant.elasticWidthBottomSheet,
-        alignSelf: 'center',
-        left: 'auto',
-        right: 'auto',
+const useStyles = makeStyles((defaultPadding: number, theme: Theme) => ({
+    sheet: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
+    card: {
+        flex: 1,
+        maxWidth: UILayoutConstant.elasticWidthCardSheet,
         borderTopLeftRadius: UILayoutConstant.alertBorderRadius,
         borderTopRightRadius: UILayoutConstant.alertBorderRadius,
         overflow: 'hidden',
+        backgroundColor: theme[ColorVariants.BackgroundPrimary],
+        paddingBottom: defaultPadding + UILayoutConstant.rubberBandEffectDistance,
     },
-});
+}));

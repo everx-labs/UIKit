@@ -298,6 +298,7 @@ export default class UIPopover<Props, State> extends UIComponent<
                 <UICardSheet
                     visible={this.state.cardVisible}
                     onClose={() => this.setCardVisible(false)}
+                    hasHeader={false}
                 >
                     <UIBackgroundView style={this.props.narrowContainerStyle}>
                         {this.props.component}

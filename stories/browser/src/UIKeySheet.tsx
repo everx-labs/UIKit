@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
 
 import { UIKeyTextView, UIMaterialTextViewRef } from '@tonlabs/uikit.inputs';
 import { UIBoxButton } from '@tonlabs/uikit.controls';
@@ -50,12 +49,13 @@ function UIKeySheetContent({
         if (success) {
             onKeyRetrieved(key.current);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [key, success]);
 
-    const disabled = React.useMemo(() => !success || error, [success, error])
+    const disabled = React.useMemo(() => !success || error, [success, error]);
 
     return (
-        <View style={styles.wrapper}>
+        <>
             <UIKeyTextView
                 ref={keyRef}
                 label={label}
@@ -65,7 +65,7 @@ function UIKeySheetContent({
                 onChangeText={setKey}
             />
             <UIBoxButton onPress={onSend} disabled={disabled} title={buttonTitle} />
-        </View>
+        </>
     );
 }
 
@@ -92,9 +92,3 @@ export function UIKeySheet({
         </UIPullerSheet>
     );
 }
-
-const styles = StyleSheet.create({
-    wrapper: {
-        paddingHorizontal: 16,
-    },
-});
