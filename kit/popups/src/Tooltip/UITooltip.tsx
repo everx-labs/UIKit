@@ -4,7 +4,7 @@ import { makeStyles } from '@tonlabs/uikit.themes';
 import type { UITooltipProps } from './types';
 import { UITooltipBox } from './UITooltipBox';
 
-export function UITooltip({ children, style: styleProp, ...restProps }: UITooltipProps) {
+export function UITooltip({ children, ...restProps }: UITooltipProps) {
     const containerRef = React.useRef<TouchableOpacity>(null);
     const [visible, setVisible] = React.useState(false);
 
@@ -19,7 +19,7 @@ export function UITooltip({ children, style: styleProp, ...restProps }: UIToolti
     const styles = useStyles();
 
     return (
-        <Pressable style={[styles.container, styleProp]} ref={containerRef} onPress={onOpen}>
+        <Pressable style={styles.container} ref={containerRef} onPress={onOpen}>
             {children}
             {visible ? (
                 <UITooltipBox {...restProps} triggerRef={containerRef} onClose={onClose} />

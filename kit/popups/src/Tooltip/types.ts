@@ -1,5 +1,5 @@
 import type React from 'react';
-import type { NativeMethods, StyleProp, ViewProps, ViewStyle } from 'react-native';
+import type { NativeMethods, ViewProps } from 'react-native';
 
 export type UITooltipProps = {
     /**
@@ -10,10 +10,6 @@ export type UITooltipProps = {
      * What should serve as the tooltip trigger, basically any React element (e.g. UIImage, UILabel)
      */
     children: React.ReactElement;
-    /**
-     * Since the tooltip has a container for it's children, you may want to set styles for it
-     */
-    style?: StyleProp<ViewStyle>;
     /**
      * UITooltip uses <Portal /> to put itself on top of
      * current components, like a layer.
