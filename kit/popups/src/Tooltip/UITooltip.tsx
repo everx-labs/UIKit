@@ -48,6 +48,12 @@ export function UITooltip({ children, style: styleProp, hitSlop, ...restProps }:
             {visible ? (
                 <UITooltipBox {...restProps} triggerRef={containerRef} onClose={onClose} />
             ) : null}
+            {/**
+             * We have to position this pressable overlay in an absolute position
+             * due to the fact that we need to implement hitSlop by paddings,
+             * and the total size of the component should remain unchanged
+             * (the same size as children has)
+             */}
             <Pressable onPress={onOpen} style={styles.pressableOverlay} />
         </Pressable>
     );
