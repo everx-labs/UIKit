@@ -3,7 +3,7 @@
 
 import { Text, TextInput } from 'react-native';
 import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
-import { parsePhoneNumberFromString } from 'libphonenumber-js';
+import { parseDigits, parsePhoneNumberFromString } from 'libphonenumber-js';
 import BigNumber from 'bignumber.js';
 
 import type { BigNum } from '../types/BigNum';
@@ -43,6 +43,15 @@ export type StringLocaleInfo = {
     dates: DateFormatInfo,
 };
 
+function removeCallingCode(phone: string, callingCode: string) {
+    if (callingCode) {
+        // remove `+`, `countryCallingCode` and ` `
+        if (phone.startsWith('+')) {
+            return phone.substring(1 + callingCode.length).trim();
+        }
+    }
+    return phone;
+}
 export default class UIFunction {
     // Async Helpers
     /** Converts callback style function into Promise */
@@ -172,16 +181,6 @@ export default class UIFunction {
         return result;
     }
 
-    static removeCallingCode(phone: string, callingCode: string) {
-        if (callingCode) {
-            // remove `+`, `countryCallingCode` and ` `
-            if (phone.startsWith('+')) {
-                return phone.substring(1 + callingCode.length).trim();
-            }
-        }
-        return phone;
-    }
-
     static formatPhoneText(
         text: string,
         removeCountryCode: boolean = false,
@@ -189,12 +188,12 @@ export default class UIFunction {
     ) {
         // If validation for text is not there, the app crashes when sending
         // a profile without phone number to UserInfoScreen.
-        let phone = text ? `+${this.numericText(text)}` : '';
+        let phone = text ? `+${parseDigits(text)}` : '';
         try {
             const parsedPhone = parsePhoneNumberFromString(phone);
             phone = parsedPhone.formatInternational();
             if (removeCountryCode) {
-                phone = this.removeCallingCode(phone, parsedPhone.countryCallingCode);
+                phone = removeCallingCode(phone, parsedPhone.countryCallingCode);
             }
         } catch (exception) {
             console.log(`[UIFunction] Failed to parse phone ${phone} with exception`, exception);
