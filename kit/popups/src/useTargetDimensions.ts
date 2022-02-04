@@ -15,36 +15,27 @@ export function useTargetDimensions(
     const [targetDimensions, setTargetDimensions] = React.useState<TargetDimensions | null>(null);
 
     React.useEffect(() => {
-        if (!targetRef.current || !targetRef.current.measure) {
+        if (!targetRef.current || !targetRef.current.measureInWindow) {
             console.error(
-                `[UITooltipContent]: [useTargetDimensions]: targetRef does not have a 'measure' method`,
+                `[UITooltipContent]: [useTargetDimensions]: targetRef does not have a 'measureInWindow' method`,
             );
             return;
         }
-        targetRef.current.measure(
-            (
-                _x: number,
-                _y: number,
-                width: number,
-                height: number,
-                pageX: number,
-                pageY: number,
-            ) => {
-                if (width == null || height == null || pageX == null || pageY == null) {
-                    console.error(
-                        `[UITooltipContent]: [useTargetDimensions]: fail of measuring by targetRef`,
-                    );
-                    setTargetDimensions(null);
-                    return;
-                }
-                setTargetDimensions({
-                    x: pageX,
-                    y: pageY,
-                    width,
-                    height,
-                });
-            },
-        );
+        targetRef.current.measureInWindow((x: number, y: number, width: number, height: number) => {
+            if (width == null || height == null || x == null || y == null) {
+                console.error(
+                    `[UITooltipContent]: [useTargetDimensions]: fail of measuring by targetRef`,
+                );
+                setTargetDimensions(null);
+                return;
+            }
+            setTargetDimensions({
+                x,
+                y,
+                width,
+                height,
+            });
+        });
     }, [targetRef, windowDimensions]);
 
     return targetDimensions;
