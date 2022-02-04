@@ -302,7 +302,6 @@ function FlexibleSizeBottomSheetContent({
 }
 
 function FlexibleSizeBottomSheet() {
-    const theme = useTheme();
     const [sheetVisible, setSheetVisible] = React.useState(false);
 
     return (
@@ -318,10 +317,6 @@ function FlexibleSizeBottomSheet() {
                 visible={sheetVisible}
                 onClose={() => {
                     setSheetVisible(false);
-                }}
-                style={{
-                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                    paddingTop: 20,
                 }}
                 hasDefaultInset={false}
             >
@@ -564,13 +559,19 @@ export const Menus = () => {
                             setBottomSheetVisible(false);
                         }}
                     >
-                        <UILabel>Hi there!</UILabel>
-                        <UIBoxButton
-                            title="close"
-                            onPress={() => {
-                                setBottomSheetVisible(false);
+                        <View
+                            style={{
+                                paddingHorizontal: UILayoutConstant.contentOffset,
                             }}
-                        />
+                        >
+                            <UILabel>Hi there!</UILabel>
+                            <UIBoxButton
+                                title="close"
+                                onPress={() => {
+                                    setBottomSheetVisible(false);
+                                }}
+                            />
+                        </View>
                     </UIBottomSheet>
                     <UILinkButton
                         testID="show_uiBottomSheet_with_input"
@@ -584,17 +585,20 @@ export const Menus = () => {
                         onClose={() => {
                             setBottomSheetVisible2(false);
                         }}
-                        style={{
-                            paddingBottom: UILayoutConstant.contentOffset,
-                        }}
                     >
-                        <UIMaterialTextView label="Write smth" />
-                        <UIBoxButton
-                            title="close"
-                            onPress={() => {
-                                setBottomSheetVisible2(false);
+                        <View
+                            style={{
+                                paddingHorizontal: UILayoutConstant.contentOffset,
                             }}
-                        />
+                        >
+                            <UIMaterialTextView label="Write smth" />
+                            <UIBoxButton
+                                title="close"
+                                onPress={() => {
+                                    setBottomSheetVisible2(false);
+                                }}
+                            />
+                        </View>
                     </UIBottomSheet>
                     <UILinkButton
                         testID="show_uiQRCodeScannerSheet"

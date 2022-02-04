@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant } from '@tonlabs/uikit.core';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIBottomSheet, useIntrinsicSizeScrollView } from '@tonlabs/uikit.popups';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
 
@@ -15,6 +16,7 @@ function SheetContent({ children }: { children: React.ReactNode }) {
             bounces={false}
             contentContainerStyle={{
                 paddingBottom,
+                paddingHorizontal: UILayoutConstant.contentOffset,
             }}
             // @ts-expect-error
             containerStyle={scrollIntrinsicStyle}

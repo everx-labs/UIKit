@@ -2,7 +2,7 @@ import React, { useReducer } from 'react';
 import { StyleSheet } from 'react-native';
 import dayjs from 'dayjs';
 
-import { useTheme, ColorVariants, UIBackgroundView } from '@tonlabs/uikit.themes';
+import { ColorVariants, UIBackgroundView } from '@tonlabs/uikit.themes';
 import { UIBottomSheet, useIntrinsicSizeScrollView } from '@tonlabs/uikit.popups';
 import { UINavigationBar } from '@tonlabs/uicast.bars';
 import { uiLocalized } from '@tonlabs/localization';
@@ -181,13 +181,9 @@ function DatePickerContent(props: UIDateTimePickerProps) {
 
 export function DatePicker(props: UIDateTimePickerProps) {
     const { visible, onClose } = props;
-    const theme = useTheme();
 
     return (
         <UIBottomSheet
-            style={{
-                backgroundColor: theme[ColorVariants.BackgroundPrimary],
-            }}
             visible={visible}
             onClose={onClose}
             hasDefaultInset={false}
