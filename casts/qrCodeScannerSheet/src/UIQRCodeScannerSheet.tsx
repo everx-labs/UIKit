@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { StyleSheet, Vibration } from 'react-native';
+import { StyleSheet, Vibration, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
@@ -200,46 +200,48 @@ export function UIQRCodeScannerSheet({
     );
 
     return (
-        <UICardSheet {...rest} onClose={onClose} style={styles.cardContainer} hasHeader={false}>
-            <QRCodeScanner
-                onRead={onRead}
-                reactivate
-                reactivateTimeout={ERROR_DURATION}
-                containerStyle={[
-                    {
-                        backgroundColor: theme[ColorVariants.StaticBackgroundBlack],
-                    },
-                ]}
-            />
-            <TouchableOpacity
-                onPress={onClose}
-                hitSlop={{
-                    top: UILayoutConstant.contentOffset,
-                    left: UILayoutConstant.contentOffset,
-                    right: UILayoutConstant.contentOffset,
-                    bottom: UILayoutConstant.contentOffset,
-                }}
-                containerStyle={[styles.closeButtonContainer]}
-                style={[
-                    styles.closeButton,
-                    {
-                        backgroundColor: theme[ColorVariants.StaticBackgroundWhite],
-                    },
-                ]}
-            >
-                <UIImage
-                    source={UIAssets.icons.ui.closeDarkThemeSecondary}
-                    style={styles.closeIcon}
-                    tintColor={ColorVariants.StaticIconPrimaryDark}
+        <UICardSheet {...rest} onClose={onClose} hasHeader={false}>
+            <View style={styles.cardContainer}>
+                <QRCodeScanner
+                    onRead={onRead}
+                    reactivate
+                    reactivateTimeout={ERROR_DURATION}
+                    containerStyle={[
+                        {
+                            backgroundColor: theme[ColorVariants.StaticBackgroundBlack],
+                        },
+                    ]}
                 />
-            </TouchableOpacity>
-            {isErrorVisible ? (
-                <UIQRCodeError
-                    onClose={() => {
-                        setIsErrorVisible(false);
+                <TouchableOpacity
+                    onPress={onClose}
+                    hitSlop={{
+                        top: UILayoutConstant.contentOffset,
+                        left: UILayoutConstant.contentOffset,
+                        right: UILayoutConstant.contentOffset,
+                        bottom: UILayoutConstant.contentOffset,
                     }}
-                />
-            ) : null}
+                    containerStyle={[styles.closeButtonContainer]}
+                    style={[
+                        styles.closeButton,
+                        {
+                            backgroundColor: theme[ColorVariants.StaticBackgroundWhite],
+                        },
+                    ]}
+                >
+                    <UIImage
+                        source={UIAssets.icons.ui.closeDarkThemeSecondary}
+                        style={styles.closeIcon}
+                        tintColor={ColorVariants.StaticIconPrimaryDark}
+                    />
+                </TouchableOpacity>
+                {isErrorVisible ? (
+                    <UIQRCodeError
+                        onClose={() => {
+                            setIsErrorVisible(false);
+                        }}
+                    />
+                ) : null}
+            </View>
         </UICardSheet>
     );
 }
@@ -250,7 +252,6 @@ const styles = StyleSheet.create({
     cardContainer: {
         height: SCANNER_HEIGHT,
         position: 'relative',
-        paddingHorizontal: 0,
     },
     closeButtonContainer: {
         position: 'absolute',

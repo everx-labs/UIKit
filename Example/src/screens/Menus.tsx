@@ -360,7 +360,6 @@ function PageWithLargeTitleSheet() {
 }
 
 export const Menus = () => {
-    const theme = useTheme();
     const [actionSheetVisible, setActionSheetVisible] = React.useState(false);
     const [cardSheetVisible, setCardSheetVisible] = React.useState(false);
     const [cardSheet2Visible, setCardSheet2Visible] = React.useState(false);
@@ -508,17 +507,21 @@ export const Menus = () => {
                         onClose={() => {
                             setCardSheetVisible(false);
                         }}
-                        style={{
-                            paddingBottom: UILayoutConstant.contentOffset,
-                        }}
                     >
-                        <UILabel>Hi there!</UILabel>
-                        <UIBoxButton
-                            title="close"
-                            onPress={() => {
-                                setCardSheetVisible(false);
+                        <View
+                            style={{
+                                paddingBottom: UILayoutConstant.contentOffset,
+                                paddingHorizontal: UILayoutConstant.contentOffset,
                             }}
-                        />
+                        >
+                            <UILabel>Hi there!</UILabel>
+                            <UIBoxButton
+                                title="close"
+                                onPress={() => {
+                                    setCardSheetVisible(false);
+                                }}
+                            />
+                        </View>
                     </UICardSheet>
                     <UILinkButton
                         testID="show_uiCardSheet_with_input"
@@ -532,17 +535,21 @@ export const Menus = () => {
                         onClose={() => {
                             setCardSheet2Visible(false);
                         }}
-                        style={{
-                            paddingBottom: UILayoutConstant.contentOffset,
-                        }}
                     >
-                        <UIMaterialTextView label="Write smth" />
-                        <UIBoxButton
-                            title="close"
-                            onPress={() => {
-                                setCardSheet2Visible(false);
+                        <View
+                            style={{
+                                paddingBottom: UILayoutConstant.contentOffset,
+                                paddingHorizontal: UILayoutConstant.contentOffset,
                             }}
-                        />
+                        >
+                            <UIMaterialTextView label="Write smth" />
+                            <UIBoxButton
+                                title="close"
+                                onPress={() => {
+                                    setCardSheet2Visible(false);
+                                }}
+                            />
+                        </View>
                     </UICardSheet>
                     <UILinkButton
                         testID="show_uiBottomSheet"

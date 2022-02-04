@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { StyleProp, ViewStyle, View } from 'react-native';
+import { View } from 'react-native';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { useTheme, Theme, makeStyles, ColorVariants } from '@tonlabs/uikit.themes';
 import { UIDialogBar, UIDialogBarProps } from '@tonlabs/uicast.bars';
 
 import { UISheet, UISheetProps } from './UISheet/UISheet';
 
-export type UICardSheetProps = UISheetProps & {
-    style?: StyleProp<ViewStyle>;
+export type UICardSheetProps = Omit<UISheetProps, 'style'> & {
     /**
      * Whether UICardSheet has a header
      * Default: true
@@ -34,7 +33,6 @@ function getCardSheetBottomInset(bottomInset: number, keyboardHeight: number) {
 
 export function UICardSheet({
     children,
-    style,
     hasHeader = true,
     headerOptions,
     ...rest
@@ -49,7 +47,7 @@ export function UICardSheet({
                     <UISheet.Content {...rest} style={styles.sheet}>
                         <View style={styles.card}>
                             {hasHeader ? <UIDialogBar hasPuller {...headerOptions} /> : null}
-                            <View style={[styles.cardContent, style]}>{children}</View>
+                            {children}
                         </View>
                     </UISheet.Content>
                 </UISheet.IntrinsicSize>
@@ -68,11 +66,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         maxWidth: UILayoutConstant.elasticWidthCardSheet,
         marginHorizontal: UILayoutConstant.contentOffset,
         borderRadius: UILayoutConstant.alertBorderRadius,
-        alignItems: 'stretch',
         overflow: 'hidden',
         backgroundColor: theme[ColorVariants.BackgroundPrimary],
-    },
-    cardContent: {
-        paddingHorizontal: UILayoutConstant.contentOffset,
     },
 }));
