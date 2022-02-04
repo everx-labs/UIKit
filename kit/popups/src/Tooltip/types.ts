@@ -25,7 +25,7 @@ export type UITooltipProps = {
      * ID for usage in tests
      */
     testID?: string;
-} & Pick<ViewProps, 'hitSlop'>;
+};
 
 export type UITooltipBoxProps = Omit<UITooltipProps, 'children'> & {
     onClose: () => void;
