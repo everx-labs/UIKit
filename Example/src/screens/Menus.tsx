@@ -18,6 +18,7 @@ import {
 } from '@tonlabs/uikit.popups';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
 import { UIMaterialTextView } from '@tonlabs/uikit.inputs';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIBoxButton, UILinkButton } from '@tonlabs/uikit.controls';
 import { UILabel, ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { UIPinCode, UIPinCodeBiometryType } from '@tonlabs/uicast.pin-code';
@@ -200,7 +201,6 @@ function FlexibleSizeBottomSheetContent({
 }
 
 function FlexibleSizeBottomSheet() {
-    const theme = useTheme();
     const [sheetVisible, setSheetVisible] = React.useState(false);
 
     return (
@@ -216,10 +216,6 @@ function FlexibleSizeBottomSheet() {
                 visible={sheetVisible}
                 onClose={() => {
                     setSheetVisible(false);
-                }}
-                style={{
-                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                    paddingTop: 20,
                 }}
                 hasDefaultInset={false}
             >
@@ -265,7 +261,6 @@ const getCallback = (message: string, setVisible: (visible: boolean) => void) =>
 };
 
 export const Menus = () => {
-    const theme = useTheme();
     const [actionSheetVisible, setActionSheetVisible] = React.useState(false);
     const [cardSheetVisible, setCardSheetVisible] = React.useState(false);
     const [cardSheet2Visible, setCardSheet2Visible] = React.useState(false);
@@ -337,19 +332,21 @@ export const Menus = () => {
                         onClose={() => {
                             setCardSheetVisible(false);
                         }}
-                        style={{
-                            backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                            padding: 20,
-                            borderRadius: 10,
-                        }}
                     >
-                        <UILabel>Hi there!</UILabel>
-                        <UIBoxButton
-                            title="close"
-                            onPress={() => {
-                                setCardSheetVisible(false);
+                        <View
+                            style={{
+                                paddingBottom: UILayoutConstant.contentOffset,
+                                paddingHorizontal: UILayoutConstant.contentOffset,
                             }}
-                        />
+                        >
+                            <UILabel>Hi there!</UILabel>
+                            <UIBoxButton
+                                title="close"
+                                onPress={() => {
+                                    setCardSheetVisible(false);
+                                }}
+                            />
+                        </View>
                     </UICardSheet>
                     <UILinkButton
                         testID="show_uiCardSheet_with_input"
@@ -363,19 +360,21 @@ export const Menus = () => {
                         onClose={() => {
                             setCardSheet2Visible(false);
                         }}
-                        style={{
-                            backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                            padding: 20,
-                            borderRadius: 10,
-                        }}
                     >
-                        <UIMaterialTextView label="Write smth" />
-                        <UIBoxButton
-                            title="close"
-                            onPress={() => {
-                                setCardSheet2Visible(false);
+                        <View
+                            style={{
+                                paddingBottom: UILayoutConstant.contentOffset,
+                                paddingHorizontal: UILayoutConstant.contentOffset,
                             }}
-                        />
+                        >
+                            <UIMaterialTextView label="Write smth" />
+                            <UIBoxButton
+                                title="close"
+                                onPress={() => {
+                                    setCardSheet2Visible(false);
+                                }}
+                            />
+                        </View>
                     </UICardSheet>
                     <UILinkButton
                         testID="show_uiBottomSheet"
@@ -389,18 +388,20 @@ export const Menus = () => {
                         onClose={() => {
                             setBottomSheetVisible(false);
                         }}
-                        style={{
-                            backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                            padding: 20,
-                        }}
                     >
-                        <UILabel>Hi there!</UILabel>
-                        <UIBoxButton
-                            title="close"
-                            onPress={() => {
-                                setBottomSheetVisible(false);
+                        <View
+                            style={{
+                                paddingHorizontal: UILayoutConstant.contentOffset,
                             }}
-                        />
+                        >
+                            <UILabel>Hi there!</UILabel>
+                            <UIBoxButton
+                                title="close"
+                                onPress={() => {
+                                    setBottomSheetVisible(false);
+                                }}
+                            />
+                        </View>
                     </UIBottomSheet>
                     <UILinkButton
                         testID="show_uiBottomSheet_with_input"
@@ -414,18 +415,20 @@ export const Menus = () => {
                         onClose={() => {
                             setBottomSheetVisible2(false);
                         }}
-                        style={{
-                            backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                            padding: 20,
-                        }}
                     >
-                        <UIMaterialTextView label="Write smth" />
-                        <UIBoxButton
-                            title="close"
-                            onPress={() => {
-                                setBottomSheetVisible2(false);
+                        <View
+                            style={{
+                                paddingHorizontal: UILayoutConstant.contentOffset,
                             }}
-                        />
+                        >
+                            <UIMaterialTextView label="Write smth" />
+                            <UIBoxButton
+                                title="close"
+                                onPress={() => {
+                                    setBottomSheetVisible2(false);
+                                }}
+                            />
+                        </View>
                     </UIBottomSheet>
                     <UILinkButton
                         testID="show_uiQRCodeScannerSheet"

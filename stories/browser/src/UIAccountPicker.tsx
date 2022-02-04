@@ -87,11 +87,9 @@ export function UIAccountPicker({
 const styles = StyleSheet.create({
     sectionHeader: {
         paddingVertical: 8,
-        paddingHorizontal: 16,
     },
     item: {
         paddingVertical: 12,
-        paddingHorizontal: 16,
     },
     itemBalance: {
         marginBottom: 4,

@@ -12,8 +12,6 @@ export * from './UIAlert/types';
 export * from './Sheets';
 export * from './UIPushNotice';
 
-export * from './AnimationHelpers';
-
 const Notice: IUINotice = UINotice;
 const ActionSheet: IUIActionSheet = UIActionSheet;
 const AlertView: IUIAlertView = UIAlertView;

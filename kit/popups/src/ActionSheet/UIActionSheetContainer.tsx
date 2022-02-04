@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, ViewStyle } from 'react-native';
-import { UILabel, UILabelRoles, ColorVariants, useTheme, makeStyles } from '@tonlabs/uikit.themes';
+import { UILabel, UILabelRoles, ColorVariants, makeStyles } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UICardSheet } from '../Sheets';
 import { UIActionSheetAction } from './UIActionSheetAction';
@@ -97,11 +97,14 @@ export const UIActionSheetContainer: React.FC<UIActionSheetContainerProps> = ({
         [children],
     );
 
-    const theme = useTheme();
-    const styles = useStyles(theme);
+    const styles = useStyles();
 
     return (
-        <UICardSheet visible={visible} onClose={actionSheetActions.cancelAction?.props.onPress}>
+        <UICardSheet
+            visible={visible}
+            onClose={actionSheetActions.cancelAction?.props.onPress}
+            hasHeader={false}
+        >
             <View style={styles.container} testID={testID}>
                 {renderHeader(note, styles.header as ViewStyle)}
                 <View style={styles.actionsContainer}>{actionSheetActions.actionList}</View>
@@ -110,12 +113,9 @@ export const UIActionSheetContainer: React.FC<UIActionSheetContainerProps> = ({
     );
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
     container: {
-        paddingHorizontal: UILayoutConstant.contentOffset,
-        paddingVertical: UILayoutConstant.contentInsetVerticalX3,
-        backgroundColor: theme[ColorVariants.BackgroundPrimary],
-        borderRadius: UILayoutConstant.alertBorderRadius,
+        paddingTop: UILayoutConstant.contentInsetVerticalX2,
     },
     header: {
         paddingVertical: UILayoutConstant.contentInsetVerticalX3,
