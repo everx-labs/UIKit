@@ -533,10 +533,7 @@ export const Menus = () => {
                             setCardSheet2Visible(false);
                         }}
                         style={{
-                            backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                            paddingHorizontal: UILayoutConstant.contentOffset,
                             paddingBottom: UILayoutConstant.contentOffset,
-                            borderRadius: UILayoutConstant.alertBorderRadius,
                         }}
                     >
                         <UIMaterialTextView label="Write smth" />
