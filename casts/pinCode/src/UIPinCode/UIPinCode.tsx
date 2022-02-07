@@ -33,7 +33,8 @@ import { useKeyboardListener } from './UIPinCodeKeyboardListener';
 
 export type UIPinCodeEnterValidationResult = {
     valid: boolean;
-    description: string;
+    description?: string;
+    payload?: any;
 };
 
 // @inline
@@ -185,7 +186,7 @@ function useAnimatedDots(
     return animatedDots.current;
 }
 
-export const UIPinCode = React.memo(function UIPinCodeImpl({
+function UIPinCodeImpl<Validation extends boolean | UIPinCodeEnterValidationResult>({
     label,
     labelTestID,
     description,
@@ -207,8 +208,10 @@ export const UIPinCode = React.memo(function UIPinCodeImpl({
     disabled?: boolean;
     loading?: boolean;
     length?: number;
-    onEnter: (pin: string) => Promise<boolean | UIPinCodeEnterValidationResult>;
-    onSuccess: (pin: string) => void;
+    onEnter: (pin: string) => Promise<Validation>;
+    onSuccess: Validation extends { payload: any }
+        ? (pin: string, payload: Validation['payload']) => void
+        : (pin: string) => void;
     autoUnlock?: boolean;
 } & BiometryProps) {
     const dotsValues = useDotsValues(length);
@@ -238,10 +241,12 @@ export const UIPinCode = React.memo(function UIPinCodeImpl({
         (pin: string) => {
             onEnter(pin).then(result => {
                 let isValid: boolean;
-                let validationDescription: string | null = null;
+                let validationDescription: string | undefined;
+                let payload: any;
                 if (typeof result === 'object') {
                     isValid = result.valid;
                     validationDescription = result.description;
+                    payload = result.payload;
                 } else {
                     isValid = result;
                 }
@@ -274,7 +279,12 @@ export const UIPinCode = React.memo(function UIPinCodeImpl({
                     validState.value = VALIDATION_STATE_NONE;
 
                     if (isValid) {
-                        onSuccess(pin);
+                        if (payload == null) {
+                            onSuccess(pin);
+                        } else {
+                            // @ts-ignore
+                            onSuccess(pin, payload);
+                        }
                     }
                 }, DOTS_STATE_PRESENTATION_DURATION);
             });
@@ -437,7 +447,9 @@ export const UIPinCode = React.memo(function UIPinCodeImpl({
             <View style={styles.bottomSpacer} />
         </View>
     );
-});
+}
+
+export const UIPinCode = React.memo(UIPinCodeImpl) as typeof UIPinCodeImpl;
 
 const dotSize = UIConstant.tinyCellHeight();
 

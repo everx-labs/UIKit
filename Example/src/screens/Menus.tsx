@@ -60,7 +60,7 @@ function PinCodeMenu() {
                         return Promise.resolve('123123');
                     }}
                     onEnter={(pin: string) => {
-                        return new Promise(resolve => {
+                        return new Promise<{ valid: boolean; description: string }>(resolve => {
                             setTimeout(() => {
                                 if (pin === '123123') {
                                     setAttempts(5);
