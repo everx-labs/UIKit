@@ -49,7 +49,6 @@ import { Images } from './screens/Images';
 import { Layouts } from './screens/Layouts';
 import { Menus } from './screens/Menus';
 import { NotificationsScreen } from './screens/Notifications';
-import { Popups } from './screens/Popups';
 import { Products } from './screens/Products';
 import { Profile } from './screens/Profile';
 import { TextScreen } from './screens/Text';
@@ -246,12 +245,6 @@ const Main = ({ navigation }: { navigation: any }) => {
                         title="Notifications"
                         type={UILinkButtonType.Menu}
                         onPress={() => navigation.navigate('notifications')}
-                        layout={styles.button}
-                    />
-                    <UILinkButton
-                        title="Popups"
-                        type={UILinkButtonType.Menu}
-                        onPress={() => navigation.navigate('popups')}
                         layout={styles.button}
                     />
                     <UILinkButton
@@ -498,13 +491,6 @@ const App = () => {
                             options={{
                                 useHeaderLargeTitle: true,
                                 title: 'Notifications',
-                            }}
-                        />
-                        <Split.Screen
-                            name="popups"
-                            component={Popups}
-                            options={{
-                                title: 'Popups',
                             }}
                         />
                         <Split.Screen

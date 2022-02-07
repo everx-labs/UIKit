@@ -8,7 +8,7 @@ import { UIHeaderItems, hitSlop } from './UIHeaderItems';
 import type { HeaderItem } from './UIHeaderItems';
 import { UIConstant as UINavConstant } from './constants';
 
-type UIDialogBarProps = {
+export type UIDialogBarProps = {
     testID?: string;
     headerLeftItems?: HeaderItem[];
     headerRightItems?: HeaderItem[];

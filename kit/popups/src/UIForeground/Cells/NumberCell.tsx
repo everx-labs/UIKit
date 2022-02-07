@@ -4,7 +4,7 @@ import { UILabel, TypographyVariants } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UIForegroundNumberProps } from '../types';
 import { useTextColorByColumnStatus } from '../hooks';
-import { ColumnStatusContext } from '../Container';
+import { ColumnStatusContext } from '../Context';
 
 export function NumberCell({ children }: UIForegroundNumberProps) {
     const columnStatus = React.useContext(ColumnStatusContext);

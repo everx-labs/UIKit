@@ -2,7 +2,7 @@ import type React from 'react';
 import type { ImageSourcePropType } from 'react-native';
 import type { ColorVariants } from '@tonlabs/uikit.themes';
 
-// ================== Start of Elements Types: ==================
+// Start of Elements Types:
 
 export type UIForegroundTextProps = {
     /**
@@ -33,6 +33,10 @@ type PressableProps = {
      * Default: `false`
      */
     negative?: boolean;
+    /**
+     * ID for usage in tests
+     */
+    testID?: string;
 };
 
 export type UIForegroundActionProps = PressableProps & {
@@ -40,6 +44,25 @@ export type UIForegroundActionProps = PressableProps & {
      * Text content of the action
      */
     title: string;
+    /**
+     * There can be no children here
+     */
+    children?: undefined;
+};
+
+export type UIForegroundCancelProps = {
+    /**
+     * Text content of the action
+     */
+    title: string;
+    /**
+     * The callback that is called when the action is tapped/clicked
+     */
+    onPress?: () => void;
+    /**
+     * ID for usage in tests
+     */
+    testID?: string;
     /**
      * There can be no children here
      */
@@ -74,9 +97,9 @@ export type IconElementComponent = React.ReactElement<UIForegroundIconProps>;
 export type NumberElementComponent = React.ReactElement<UIForegroundNumberProps>;
 export type SectionElementComponent = React.ReactElement<UIForegroundSectionProps>;
 export type TextElementComponent = React.ReactElement<UIForegroundTextProps>;
-// ================== End of Elements Types ==================
+// End of Elements Types
 
-// ================== Start of Columns Types: ==================
+// Start of Columns Types:
 
 export type ForegroundPrimaryElements =
     | ActionElementComponent
@@ -110,30 +133,38 @@ export type ColumnStatus = {
     columnType: ColumnType;
     columnState: ColumnState;
 };
-// ================== End of Columns Types ==================
+// End of Columns Types
 
 export type ContainerProps = {
     /** only UIForeground Columns can be passed to children */
     children: PrimaryColumn | [PrimaryColumn, SecondaryColumn];
+    /**
+     * The unique id
+     */
+    id?: string;
 };
 
 export type UIForegroundType = {
     /**
      * Root container of the UIForeground
+     * This component accepts only Column (`PrimaryColumn`
+     * or `SecondaryColumn`) components as children.
      */
     Container: React.FC<ContainerProps>;
 
-    // ================== Columns: ==================
+    // Columns:
     /**
      * Container of the Primary (Left) column of the UIForeground
+     * This component accepts only Cells (e.g. ActionCell) components as children.
      */
     PrimaryColumn: React.FC<PrimaryColumnProps>;
     /**
      * Container of the Secondary (Right) column of the UIForeground
+     * This component accepts only Cells (e.g. ActionCell) components as children.
      */
     SecondaryColumn: React.FC<SecondaryColumnProps>;
 
-    // ================== Cells: ==================
+    // Cells:
     /**
      * Pressable element (Button) of the UIForeground
      */
@@ -150,4 +181,9 @@ export type UIForegroundType = {
      * Text content of the UIForeground
      */
     TextCell: React.FC<UIForegroundTextProps>;
+    /**
+     * Simple Cancel action of the UIForeground.
+     * It should only be used in PrimaryAction as an only child.
+     */
+    CancelCell: React.FC<UIForegroundCancelProps>;
 };

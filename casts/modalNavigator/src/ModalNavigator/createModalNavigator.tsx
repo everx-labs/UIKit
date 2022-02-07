@@ -14,10 +14,6 @@ import { UIModalSheet } from '@tonlabs/uikit.popups';
 import { ModalRouter, ModalActions, ModalActionHelpers } from './ModalRouter';
 import type { ModalNavigationState, ModalNavigationRoute } from './ModalRouter';
 
-export const NestedInModalContext = React.createContext<(() => void) | null>(null);
-
-export const NestedInDismissibleModalContext = React.createContext<boolean>(false);
-
 function ModalScreen<ParamList extends ParamListBase = ParamListBase>({
     route,
     descriptor,
@@ -41,9 +37,7 @@ function ModalScreen<ParamList extends ParamListBase = ParamListBase>({
             onClose={hide}
             maxMobileWidth={maxMobileWidth}
         >
-            <NestedInModalContext.Provider value={hide}>
-                {descriptor.render()}
-            </NestedInModalContext.Provider>
+            {descriptor.render()}
         </UIModalSheet>
     );
 }

@@ -3,9 +3,9 @@ import { StyleSheet } from 'react-native';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIImage } from '@tonlabs/uikit.media';
 import type { UIForegroundIconProps } from '../types';
-import { ColumnStatusContext } from '../Container';
+import { ColumnStatusContext } from '../Context';
 import { usePressableCellColorByColumnStatus, useMergedColumnStatus } from '../hooks';
-import { TouchableWrapper } from '../TouchableWrapper';
+import { TouchableWrapper } from '../../TouchableWrapper';
 
 export function IconCell({
     source,
@@ -13,15 +13,17 @@ export function IconCell({
     disabled,
     negative,
     tintColor: tintColorProp,
+    testID,
 }: UIForegroundIconProps) {
     const columnStatus = React.useContext(ColumnStatusContext);
-    const mergedColumnStatus = useMergedColumnStatus(columnStatus, disabled, negative, onPress);
+    const mergedColumnStatus = useMergedColumnStatus(columnStatus, disabled, negative);
     const tintColor = usePressableCellColorByColumnStatus(mergedColumnStatus);
     if (!source) {
         return null;
     }
     return (
         <TouchableWrapper
+            testID={testID}
             disabled={columnStatus.columnState === 'Pressable' || disabled}
             onPress={onPress}
             style={styles.container}

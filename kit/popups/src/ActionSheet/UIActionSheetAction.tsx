@@ -1,49 +1,37 @@
 import * as React from 'react';
-import { View } from 'react-native';
-import { UIBoxButton, UIBoxButtonType, UIBoxButtonVariant } from '@tonlabs/uikit.controls';
 import { UIActionSheetActionProps, UIActionSheetActionType } from './types';
-
-const getActionVariant = (type: UIActionSheetActionType): UIBoxButtonVariant => {
-    switch (type) {
-        case UIActionSheetActionType.Negative:
-            return UIBoxButtonVariant.Negative;
-        case UIActionSheetActionType.Cancel:
-        case UIActionSheetActionType.Neutral:
-        case UIActionSheetActionType.Disabled:
-        default:
-            return UIBoxButtonVariant.Neutral;
-    }
-};
-
-const getBoxButtonType = (type: UIActionSheetActionType): UIBoxButtonType => {
-    switch (type) {
-        case UIActionSheetActionType.Cancel:
-            return UIBoxButtonType.Nulled;
-        case UIActionSheetActionType.Negative:
-        case UIActionSheetActionType.Neutral:
-        case UIActionSheetActionType.Disabled:
-        default:
-            return UIBoxButtonType.Tertiary;
-    }
-};
+import { UIForeground } from '../UIForeground';
 
 export const UIActionSheetAction: React.FC<UIActionSheetActionProps> = ({
     type,
     title,
     onPress,
 }: UIActionSheetActionProps) => {
-    const variant: UIBoxButtonVariant = getActionVariant(type);
-    const boxButtonType: UIBoxButtonType = getBoxButtonType(type);
+    if (type === UIActionSheetActionType.Cancel) {
+        return (
+            <UIForeground.Container key={title}>
+                <UIForeground.PrimaryColumn>
+                    <UIForeground.CancelCell
+                        testID={`${title}_action_button`}
+                        onPress={onPress}
+                        title={title}
+                    />
+                </UIForeground.PrimaryColumn>
+            </UIForeground.Container>
+        );
+    }
+
     return (
-        <View key={title}>
-            <UIBoxButton
-                testID={`${title}_action_button`}
-                type={boxButtonType}
-                variant={variant}
-                disabled={type === 'Disabled'}
-                title={title}
-                onPress={onPress}
-            />
-        </View>
+        <UIForeground.Container key={title}>
+            <UIForeground.PrimaryColumn>
+                <UIForeground.ActionCell
+                    testID={`${title}_action_button`}
+                    disabled={type === UIActionSheetActionType.Disabled}
+                    negative={type === UIActionSheetActionType.Negative}
+                    onPress={onPress}
+                    title={title}
+                />
+            </UIForeground.PrimaryColumn>
+        </UIForeground.Container>
     );
 };

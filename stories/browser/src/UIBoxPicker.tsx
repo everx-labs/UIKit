@@ -3,13 +3,13 @@ import { StyleSheet, View } from 'react-native';
 
 import { UIImage } from '@tonlabs/uikit.media';
 import { TouchableOpacity, UIBoxButton, UIBoxButtonType } from '@tonlabs/uikit.controls';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import {
     UIBackgroundView,
     UILabel,
     UILabelColors,
     UILabelRoles,
     ColorVariants,
-    useTheme,
 } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
 
@@ -30,16 +30,9 @@ function UIBoxPickerItem<Box extends AbstractBox>({
     box: Box;
     onSelect: OnSelect<Box>;
 }) {
-    const theme = useTheme();
-
     return (
         <TouchableOpacity
-            style={[
-                styles.item,
-                {
-                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                },
-            ]}
+            style={[styles.item]}
             onPress={() => {
                 onSelect(box);
             }}
@@ -118,13 +111,11 @@ export function UIBoxPicker<Box extends AbstractBox>({
 const styles = StyleSheet.create({
     sectionHeader: {
         paddingVertical: 8,
-        paddingHorizontal: 16,
     },
     item: {
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: 12,
-        paddingHorizontal: 16,
     },
     itemTitle: {
         flex: 1,
@@ -141,6 +132,6 @@ const styles = StyleSheet.create({
     addButtonContainer: {
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        paddingHorizontal: 4,
+        marginLeft: -UILayoutConstant.contentOffset + 4,
     },
 });

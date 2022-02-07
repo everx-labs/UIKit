@@ -21,8 +21,10 @@ import Animated, {
 
 import { useHasScroll } from '@tonlabs/uikit.scrolls';
 
-import { getYWithRubberBandEffect } from '../../AnimationHelpers/getYWithRubberBandEffect';
+import { AnimationHelpers } from '@tonlabs/uikit.layout';
 import type { OnOpen, OnClose } from './types';
+
+const { getYWithRubberBandEffect } = AnimationHelpers;
 
 const OpenSpringConfig = {
     overshootClamping: false,
