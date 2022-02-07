@@ -116,6 +116,7 @@ export const UIActionSheetContainer: React.FC<UIActionSheetContainerProps> = ({
 const useStyles = makeStyles(() => ({
     container: {
         paddingTop: UILayoutConstant.contentInsetVerticalX2,
+        paddingHorizontal: UILayoutConstant.contentOffset,
     },
     header: {
         paddingVertical: UILayoutConstant.contentInsetVerticalX3,
