@@ -129,7 +129,6 @@ function ModalControllerContainer({
     onPanHandlerStateChange,
     onLayout,
     marginBottom,
-    spinnerOverlay,
     children,
 }: {
     testID: ?string,
@@ -145,7 +144,6 @@ function ModalControllerContainer({
     onPan: any,
     onLayout: any,
     marginBottom: Animated.Value,
-    spinnerOverlay: any,
     children: any,
 }) {
     const testIDProp = React.useMemo(
@@ -229,7 +227,6 @@ function ModalControllerContainer({
                                 </ScrollableContext.Provider>
                             </View>
                         </Animated.View>
-                        {spinnerOverlay}
                     </AnimatedViewWithColor>
                 </PanGestureHandler>
             </Animated.View>
@@ -271,7 +268,6 @@ export default class UIModalController<Props, State> extends UIController<
     constructor(props: ModalControllerProps & Props) {
         super(props);
         this.testID = '[UIModalController]';
-        this.hasSpinnerOverlay = true;
         this.fullscreen = false;
         this.dismissible = true;
         this.adjustBottomSafeAreaInsetDynamically = true;
@@ -733,7 +729,6 @@ export default class UIModalController<Props, State> extends UIController<
                 onPan={this.onPan}
                 onLayout={this.onLayout}
                 marginBottom={this.marginBottom}
-                spinnerOverlay={this.renderSpinnerOverlay()}
             >
                 {this.renderContentView(contentHeight)}
             </ModalControllerContainer>

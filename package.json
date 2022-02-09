@@ -38,7 +38,6 @@
         "@react-native-clipboard/clipboard": "^1.8.5",
         "bignumber.js": "^9.0.0",
         "dayjs": "^1.9.1",
-        "libphonenumber-js": "^1.7.14",
         "lodash": "^4.17.21",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",

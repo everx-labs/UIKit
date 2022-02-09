@@ -36,7 +36,6 @@
         "@tonlabs/localization": "^3.0.0",
         "@tonlabs/uicast.bars": "^3.0.0",
         "@tonlabs/uicast.modal-navigator": "^3.0.0",
-        "@tonlabs/uicast.spinner-overlay": "^3.0.0",
         "@tonlabs/uikit.assets": "^3.0.0",
         "@tonlabs/uikit.components": "^3.0.0",
         "@tonlabs/uikit.controls": "^3.0.0",
