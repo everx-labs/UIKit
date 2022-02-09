@@ -2772,14 +2772,6 @@
   dependencies:
     "@types/node" "*"
 
-"@types/react-native-indicators@0.16.1":
-  version "0.16.1"
-  resolved "https://registry.yarnpkg.com/@types/react-native-indicators/-/react-native-indicators-0.16.1.tgz#9bf7d6d044509f7a4179987a19ceb1603108cd04"
-  integrity sha512-L7SCFjTdDzwNciAYflAdWuSwgj6qP2Zd+uKFcFBkovG/O5qX7P9aKkmzYQz/lXIJtiPWgNEG1xIeJoHLed31Ew==
-  dependencies:
-    "@types/react" "*"
-    "@types/react-native" "*"
-
 "@types/react-native-video@^5.0.10":
   version "5.0.12"
   resolved "https://registry.yarnpkg.com/@types/react-native-video/-/react-native-video-5.0.12.tgz#a90c00ec222923430d5f576cca337f49d11c148a"
@@ -11805,12 +11797,6 @@ react-native-gesture-handler@1.10.3, react-native-gesture-handler@^1.10.3:
     hoist-non-react-statics "^3.3.0"
     invariant "^2.2.4"
     prop-types "^15.7.2"
-
-"react-native-indicators@git+https://github.com/tonlabs/react-native-indicators.git":
-  version "0.17.0"
-  resolved "git+https://github.com/tonlabs/react-native-indicators.git#a8186a592c968e06e798000a08dbd74129da9b0f"
-  dependencies:
-    prop-types "^15.5.10"
 
 react-native-iphone-x-helper@1.3.1, react-native-iphone-x-helper@^1.0.1, react-native-iphone-x-helper@^1.3.0, react-native-iphone-x-helper@^1.3.1:
   version "1.3.1"

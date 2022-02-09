@@ -409,7 +409,7 @@ export function Chat() {
                 onPressUrl={onPressUrl}
                 onLongPressText={onLongPressText}
                 canLoadMore
-                isLoadingMore={false}
+                isLoadingMore
                 messages={messages}
             />
             <UIChatInput
