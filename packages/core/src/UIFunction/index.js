@@ -3,7 +3,6 @@
 
 import { Text, TextInput } from 'react-native';
 import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
-import { parseDigits, parsePhoneNumberFromString } from 'libphonenumber-js';
 import BigNumber from 'bignumber.js';
 
 import type { BigNum } from '../types/BigNum';
@@ -170,39 +169,6 @@ export default class UIFunction {
         result.valueString = `${integerString}${separatorString}${decFormatted}`;
         // Return result
         return result;
-    }
-
-    static removeCallingCode(phone: string, callingCode: string) {
-        if (callingCode) {
-            // remove `+`, `countryCallingCode` and ` `
-            if (phone.startsWith('+')) {
-                return phone.substring(1 + callingCode.length).trim();
-            }
-        }
-        return phone;
-    }
-
-    static formatPhoneText(
-        text: string,
-        removeCountryCode: boolean = false,
-        cleanIfFailed: boolean = false,
-    ) {
-        // If validation for text is not there, the app crashes when sending
-        // a profile without phone number to UserInfoScreen.
-        let phone = text ? `+${parseDigits(text)}` : '';
-        try {
-            const parsedPhone = parsePhoneNumberFromString(phone);
-            phone = parsedPhone.formatInternational();
-            if (removeCountryCode) {
-                phone = this.removeCallingCode(phone, parsedPhone.countryCallingCode);
-            }
-        } catch (exception) {
-            console.log(`[UIFunction] Failed to parse phone ${phone} with exception`, exception);
-            if (cleanIfFailed) {
-                phone = '';
-            }
-        }
-        return phone;
     }
 
     static combineStyles(stylesArray: (ViewStyleProp | TextStyleProp)[]) {
