@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { MaterialIndicator } from 'react-native-indicators';
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
@@ -13,27 +12,12 @@ import {
 } from '@tonlabs/uikit.themes';
 
 import { TouchableOpacity } from './TouchableOpacity';
+import { UIIndicator } from './UIIndicator';
 
 type Props = {
     label?: string;
     isLoadingMore: boolean;
     onLoadMore?: () => void;
-};
-
-const Indicator = ({ isLoadingMore }: { isLoadingMore: boolean }) => {
-    const theme = useTheme();
-
-    if (!isLoadingMore) {
-        return null;
-    }
-
-    return (
-        <MaterialIndicator
-            style={styles.indicator}
-            color={theme[ColorVariants.LinePrimary] as string}
-            size={20}
-        />
-    );
 };
 
 export const UILoadMoreButton: React.FunctionComponent<Props> = ({
@@ -68,7 +52,13 @@ export const UILoadMoreButton: React.FunctionComponent<Props> = ({
                         {label}
                     </UILabel>
                 )}
-                <Indicator isLoadingMore={isLoadingMore} />
+                {isLoadingMore && (
+                    <UIIndicator
+                        color={ColorVariants.LinePrimary}
+                        size={20}
+                        style={styles.indicator}
+                    />
+                )}
             </View>
         </TouchableOpacity>
     );
