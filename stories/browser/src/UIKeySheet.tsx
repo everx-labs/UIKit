@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { UIKeyTextView, UIMaterialTextViewRef } from '@tonlabs/uikit.inputs';
 import { UIBoxButton } from '@tonlabs/uikit.controls';
 
-import { UIPullerSheet } from './UIPullerSheet';
+import { UIBottomSheet } from '@tonlabs/uikit.popups';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
 function useKeySheetContent() {
     const [error, setError] = React.useState(false);
@@ -50,12 +51,13 @@ function UIKeySheetContent({
         if (success) {
             onKeyRetrieved(key.current);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [key, success]);
 
-    const disabled = React.useMemo(() => !success || error, [success, error])
+    const disabled = React.useMemo(() => !success || error, [success, error]);
 
     return (
-        <View style={styles.wrapper}>
+        <View style={styles.content}>
             <UIKeyTextView
                 ref={keyRef}
                 label={label}
@@ -83,18 +85,18 @@ export function UIKeySheet({
     buttonTitle: string;
 }) {
     return (
-        <UIPullerSheet visible={visible} onClose={onClose}>
+        <UIBottomSheet visible={visible} onClose={onClose}>
             <UIKeySheetContent
                 onKeyRetrieved={onKeyRetrieved}
                 label={label}
                 buttonTitle={buttonTitle}
             />
-        </UIPullerSheet>
+        </UIBottomSheet>
     );
 }
 
 const styles = StyleSheet.create({
-    wrapper: {
-        paddingHorizontal: 16,
+    content: {
+        paddingHorizontal: UILayoutConstant.contentOffset,
     },
 });

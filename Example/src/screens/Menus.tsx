@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import { UIPopover, UIPopoverMenu } from '@tonlabs/uikit.navigation_legacy';
-import { UILargeTitleHeader, UIDialogBar } from '@tonlabs/uicast.bars';
+import { UILargeTitleHeader } from '@tonlabs/uicast.bars';
 import { UIQRCodeScannerSheet } from '@tonlabs/uicast.qr-code-scanner-sheet';
 import {
     UICardSheet,
@@ -19,12 +19,12 @@ import {
 } from '@tonlabs/uikit.popups';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
 import { UIMaterialTextView } from '@tonlabs/uikit.inputs';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIBoxButton, UILinkButton } from '@tonlabs/uikit.controls';
 import { UILabel, ColorVariants, useTheme, TypographyVariants } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIPinCode, UIPinCodeBiometryType } from '@tonlabs/uicast.pin-code';
 import { UICountryPicker } from '@tonlabs/uicast.country-picker';
-import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -302,7 +302,6 @@ function FlexibleSizeBottomSheetContent({
 }
 
 function FlexibleSizeBottomSheet() {
-    const theme = useTheme();
     const [sheetVisible, setSheetVisible] = React.useState(false);
 
     return (
@@ -318,10 +317,6 @@ function FlexibleSizeBottomSheet() {
                 visible={sheetVisible}
                 onClose={() => {
                     setSheetVisible(false);
-                }}
-                style={{
-                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                    paddingTop: 20,
                 }}
                 hasDefaultInset={false}
             >
@@ -360,7 +355,6 @@ function PageWithLargeTitleSheet() {
 }
 
 export const Menus = () => {
-    const theme = useTheme();
     const [actionSheetVisible, setActionSheetVisible] = React.useState(false);
     const [cardSheetVisible, setCardSheetVisible] = React.useState(false);
     const [cardSheet2Visible, setCardSheet2Visible] = React.useState(false);
@@ -508,21 +502,21 @@ export const Menus = () => {
                         onClose={() => {
                             setCardSheetVisible(false);
                         }}
-                        style={{
-                            backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                            paddingHorizontal: UILayoutConstant.contentOffset,
-                            paddingBottom: UILayoutConstant.contentOffset,
-                            borderRadius: UILayoutConstant.alertBorderRadius,
-                        }}
                     >
-                        <UIDialogBar hasPuller />
-                        <UILabel>Hi there!</UILabel>
-                        <UIBoxButton
-                            title="close"
-                            onPress={() => {
-                                setCardSheetVisible(false);
+                        <View
+                            style={{
+                                paddingBottom: UILayoutConstant.contentOffset,
+                                paddingHorizontal: UILayoutConstant.contentOffset,
                             }}
-                        />
+                        >
+                            <UILabel>Hi there!</UILabel>
+                            <UIBoxButton
+                                title="close"
+                                onPress={() => {
+                                    setCardSheetVisible(false);
+                                }}
+                            />
+                        </View>
                     </UICardSheet>
                     <UILinkButton
                         testID="show_uiCardSheet_with_input"
@@ -536,21 +530,21 @@ export const Menus = () => {
                         onClose={() => {
                             setCardSheet2Visible(false);
                         }}
-                        style={{
-                            backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                            paddingHorizontal: UILayoutConstant.contentOffset,
-                            paddingBottom: UILayoutConstant.contentOffset,
-                            borderRadius: UILayoutConstant.alertBorderRadius,
-                        }}
                     >
-                        <UIDialogBar hasPuller />
-                        <UIMaterialTextView label="Write smth" />
-                        <UIBoxButton
-                            title="close"
-                            onPress={() => {
-                                setCardSheet2Visible(false);
+                        <View
+                            style={{
+                                paddingBottom: UILayoutConstant.contentOffset,
+                                paddingHorizontal: UILayoutConstant.contentOffset,
                             }}
-                        />
+                        >
+                            <UIMaterialTextView label="Write smth" />
+                            <UIBoxButton
+                                title="close"
+                                onPress={() => {
+                                    setCardSheet2Visible(false);
+                                }}
+                            />
+                        </View>
                     </UICardSheet>
                     <UILinkButton
                         testID="show_uiBottomSheet"
@@ -564,21 +558,20 @@ export const Menus = () => {
                         onClose={() => {
                             setBottomSheetVisible(false);
                         }}
-                        style={{
-                            backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                            paddingHorizontal: UILayoutConstant.contentOffset,
-                            paddingBottom: UILayoutConstant.contentOffset,
-                            borderRadius: UILayoutConstant.alertBorderRadius,
-                        }}
                     >
-                        <UIDialogBar hasPuller />
-                        <UILabel>Hi there!</UILabel>
-                        <UIBoxButton
-                            title="close"
-                            onPress={() => {
-                                setBottomSheetVisible(false);
+                        <View
+                            style={{
+                                paddingHorizontal: UILayoutConstant.contentOffset,
                             }}
-                        />
+                        >
+                            <UILabel>Hi there!</UILabel>
+                            <UIBoxButton
+                                title="close"
+                                onPress={() => {
+                                    setBottomSheetVisible(false);
+                                }}
+                            />
+                        </View>
                     </UIBottomSheet>
                     <UILinkButton
                         testID="show_uiBottomSheet_with_input"
@@ -592,21 +585,20 @@ export const Menus = () => {
                         onClose={() => {
                             setBottomSheetVisible2(false);
                         }}
-                        style={{
-                            backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                            paddingHorizontal: UILayoutConstant.contentOffset,
-                            paddingBottom: UILayoutConstant.contentOffset,
-                            borderRadius: UILayoutConstant.alertBorderRadius,
-                        }}
                     >
-                        <UIDialogBar hasPuller />
-                        <UIMaterialTextView label="Write smth" />
-                        <UIBoxButton
-                            title="close"
-                            onPress={() => {
-                                setBottomSheetVisible2(false);
+                        <View
+                            style={{
+                                paddingHorizontal: UILayoutConstant.contentOffset,
                             }}
-                        />
+                        >
+                            <UIMaterialTextView label="Write smth" />
+                            <UIBoxButton
+                                title="close"
+                                onPress={() => {
+                                    setBottomSheetVisible2(false);
+                                }}
+                            />
+                        </View>
                     </UIBottomSheet>
                     <UILinkButton
                         testID="show_uiQRCodeScannerSheet"

@@ -10,11 +10,18 @@ import {
     ColorVariants,
     useTheme,
 } from '@tonlabs/uikit.themes';
+import { ScrollView } from '@tonlabs/uikit.scrolls';
+import { UIBottomSheet, useIntrinsicSizeScrollView } from '@tonlabs/uikit.popups';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
 import type { AddressInputAccount, AddressInputAccountData } from './types';
-import { UIPullerSheet } from './UIPullerSheet';
 
 type OnSelect = (address: string) => void;
+
+type UIAccountPickerCommonProps = {
+    onSelect: OnSelect;
+    sections: AddressInputAccountData[];
+};
 
 function UIAccountPickerItem({
     onSelect,
@@ -48,19 +55,15 @@ function UIAccountPickerItem({
     );
 }
 
-export function UIAccountPicker({
-    visible,
-    onClose,
-    onSelect,
-    sections,
-}: {
-    visible: boolean;
-    onClose: () => void;
-    onSelect: OnSelect;
-    sections: AddressInputAccountData[];
-}) {
+function UIAccountPickerSheetContent({ sections, onSelect }: UIAccountPickerCommonProps) {
+    const { style: scrollIntrinsicStyle, onContentSizeChange } = useIntrinsicSizeScrollView();
     return (
-        <UIPullerSheet visible={visible} onClose={onClose}>
+        <ScrollView
+            contentContainerStyle={styles.itemContentContainerStyle}
+            // @ts-expect-error
+            containerStyle={scrollIntrinsicStyle}
+            onContentSizeChange={onContentSizeChange}
+        >
             {sections.map(({ title, data }) => (
                 <React.Fragment key={title}>
                     <UIBackgroundView style={styles.sectionHeader}>
@@ -80,18 +83,34 @@ export function UIAccountPicker({
                     ))}
                 </React.Fragment>
             ))}
-        </UIPullerSheet>
+        </ScrollView>
+    );
+}
+
+export function UIAccountPicker({
+    visible,
+    onClose,
+    ...accountPickerProps
+}: {
+    visible: boolean;
+    onClose: () => void;
+} & UIAccountPickerCommonProps) {
+    return (
+        <UIBottomSheet visible={visible} onClose={onClose}>
+            <UIAccountPickerSheetContent {...accountPickerProps} />
+        </UIBottomSheet>
     );
 }
 
 const styles = StyleSheet.create({
     sectionHeader: {
         paddingVertical: 8,
-        paddingHorizontal: 16,
+    },
+    itemContentContainerStyle: {
+        paddingHorizontal: UILayoutConstant.contentOffset,
     },
     item: {
         paddingVertical: 12,
-        paddingHorizontal: 16,
     },
     itemBalance: {
         marginBottom: 4,
