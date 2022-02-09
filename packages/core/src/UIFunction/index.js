@@ -3,7 +3,7 @@
 
 import { Text, TextInput } from 'react-native';
 import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
-import { parsePhoneNumberFromString } from 'libphonenumber-js';
+import { parseDigits, parsePhoneNumberFromString } from 'libphonenumber-js';
 import BigNumber from 'bignumber.js';
 
 import type { BigNum } from '../types/BigNum';
@@ -189,7 +189,7 @@ export default class UIFunction {
     ) {
         // If validation for text is not there, the app crashes when sending
         // a profile without phone number to UserInfoScreen.
-        let phone = text ? `+${this.numericText(text)}` : '';
+        let phone = text ? `+${parseDigits(text)}` : '';
         try {
             const parsedPhone = parsePhoneNumberFromString(phone);
             phone = parsedPhone.formatInternational();
