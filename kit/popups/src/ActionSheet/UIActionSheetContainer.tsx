@@ -3,7 +3,6 @@ import { View, ViewStyle } from 'react-native';
 import { UILabel, UILabelRoles, ColorVariants, makeStyles } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UICardSheet } from '../Sheets';
-import { UIActionSheetAction } from './UIActionSheetAction';
 import {
     UIActionSheetActionProps,
     UIActionSheetContainerProps,
@@ -11,38 +10,27 @@ import {
 } from './types';
 
 type ActionSheetActions = {
-    actionList: React.ReactElement<UIActionSheetActionProps>[];
+    actionList: React.ReactNode[];
     cancelAction: React.ReactElement<UIActionSheetActionProps> | undefined;
 };
 const getActionSheetActions = (children: React.ReactNode): ActionSheetActions => {
+    const actions: React.ReactNode[] = [];
+
     /** cancelAction can be only one or less */
     let cancelAction: React.ReactElement<UIActionSheetActionProps> | undefined;
-    const negativeActions: React.ReactElement<UIActionSheetActionProps>[] = [];
-    const neutralActions: React.ReactElement<UIActionSheetActionProps>[] = [];
-    const sortAction = (action: React.ReactElement<UIActionSheetActionProps>) => {
-        if (action.props.type === UIActionSheetActionType.Cancel) {
-            cancelAction = action;
-        }
-        if (action.props.type === UIActionSheetActionType.Negative) {
-            negativeActions.push(action);
-        }
-        if (
-            action.props.type === UIActionSheetActionType.Neutral ||
-            action.props.type === UIActionSheetActionType.Disabled
-        ) {
-            neutralActions.push(action);
-        }
-    };
+
     React.Children.toArray(children).forEach((child: React.ReactNode): void => {
         if (React.isValidElement(child)) {
-            if (child.type === UIActionSheetAction) {
-                sortAction(child);
-            }
             if (child.type === React.Fragment) {
                 const actionSheetActions: ActionSheetActions = getActionSheetActions(
                     child.props.children,
                 );
-                actionSheetActions.actionList.forEach(sortAction);
+                actions.concat(actionSheetActions.actionList);
+            } else {
+                if (child.props.type === UIActionSheetActionType.Cancel) {
+                    cancelAction = child;
+                }
+                actions.push(child);
             }
         } else if (__DEV__) {
             throw new Error(
@@ -57,15 +45,8 @@ const getActionSheetActions = (children: React.ReactNode): ActionSheetActions =>
             );
         }
     });
-    const result: React.ReactElement<UIActionSheetActionProps>[] = [
-        ...neutralActions,
-        ...negativeActions,
-    ];
-    if (cancelAction) {
-        result.push(cancelAction);
-    }
     return {
-        actionList: result,
+        actionList: actions,
         cancelAction,
     };
 };
@@ -79,7 +60,10 @@ const renderHeader = (
     }
     return (
         <View style={headerStyle}>
-            <UILabel role={UILabelRoles.ParagraphFootnote} color={ColorVariants.TextSecondary}>
+            <UILabel
+                role={UILabelRoles.NarrowParagraphFootnote}
+                color={ColorVariants.TextSecondary}
+            >
                 {note}
             </UILabel>
         </View>
@@ -119,9 +103,7 @@ const useStyles = makeStyles(() => ({
         paddingHorizontal: UILayoutConstant.contentOffset,
     },
     header: {
-        paddingVertical: UILayoutConstant.contentInsetVerticalX3,
-        paddingHorizontal: UILayoutConstant.contentOffset,
-        alignItems: 'center',
+        paddingVertical: UILayoutConstant.contentInsetVerticalX2,
     },
     actionsContainer: {
         flexDirection: 'column',

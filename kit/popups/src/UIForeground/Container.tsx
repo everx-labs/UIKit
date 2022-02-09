@@ -1,17 +1,24 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import type { ContainerProps, ColumnStatus } from './types';
+import type { ContainerProps } from './types';
+import * as Columns from './Columns';
+import { useCheckChildren } from './hooks';
 
-export const ColumnStatusContext = React.createContext<ColumnStatus>({
-    disabled: undefined,
-    negative: undefined,
-    columnType: 'Primary',
-    columnState: 'NonPressable',
-});
-
-export function Container({ children }: ContainerProps) {
-    return <View style={styles.container}>{children}</View>;
+export function Container({ children, id }: ContainerProps) {
+    const isValid = useCheckChildren(
+        children,
+        Columns,
+        `'Container' can only contain 'Column' components as its direct children`,
+    );
+    if (!isValid) {
+        return null;
+    }
+    return (
+        <View key={id} style={styles.container}>
+            {children}
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({

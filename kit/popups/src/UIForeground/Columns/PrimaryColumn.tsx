@@ -1,10 +1,18 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import { ColumnStatusContext } from '../Container';
-import { TouchableWrapper } from '../TouchableWrapper';
+import { ColumnStatusContext } from '../Context';
+import { TouchableWrapper } from '../../TouchableWrapper';
 import type { PrimaryColumnProps, ColumnStatus } from '../types';
+import { useCheckChildren } from '../hooks';
+import * as Cells from '../Cells';
 
-export function PrimaryColumn({ children, onPress, disabled, negative }: PrimaryColumnProps) {
+export function PrimaryColumn({
+    children,
+    onPress,
+    disabled,
+    negative,
+    testID,
+}: PrimaryColumnProps) {
     const columnStatus: ColumnStatus = React.useMemo((): ColumnStatus => {
         return {
             disabled,
@@ -14,8 +22,22 @@ export function PrimaryColumn({ children, onPress, disabled, negative }: Primary
         };
     }, [disabled, negative, onPress]);
 
+    const isValid = useCheckChildren(
+        children,
+        Cells,
+        `'Column' can only contain 'Cell' components as its direct children`,
+    );
+    if (!isValid) {
+        return null;
+    }
+
     return (
-        <TouchableWrapper style={styles.primaryColumn} disabled={disabled} onPress={onPress}>
+        <TouchableWrapper
+            testID={testID}
+            style={styles.primaryColumn}
+            disabled={disabled}
+            onPress={onPress}
+        >
             <ColumnStatusContext.Provider value={columnStatus}>
                 {children}
             </ColumnStatusContext.Provider>

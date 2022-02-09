@@ -30,7 +30,7 @@ export const UILayoutConstant = {
     contentInsetVerticalX3: 3 * GRID_LINE_HEIGHT,
     contentInsetVerticalX4: 4 * GRID_LINE_HEIGHT,
     borderRadius: 8,
-    alertBorderRadius: 12,
+    alertBorderRadius: 16,
     pillButtonBorderRadius: 20,
 
     elasticWidthCardSheet: 414,
