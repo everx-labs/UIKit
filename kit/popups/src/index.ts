@@ -7,8 +7,9 @@ import { IUIMenu, UIMenu } from './UIMenu';
 
 export type { UIPushNoticeContentPublicProps } from './UIPushNotice';
 
-export * from './Notice/types';
 export * from './ActionSheet/types';
+export * from './Notice/types';
+export * from './Menu/types';
 export * from './UIAlert/types';
 export * from './Sheets';
 export * from './UIPushNotice';
