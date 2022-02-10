@@ -50,7 +50,6 @@
         "@tonlabs/uikit.core": "*",
         "@tonlabs/uikit.inputs": "*",
         "@tonlabs/uikit.layout": "*",
-        "@tonlabs/uikit.legacy": "*",
         "@tonlabs/uikit.media": "*",
         "@tonlabs/uikit.navigation_legacy": "*",
         "@tonlabs/uikit.popups": "*",
