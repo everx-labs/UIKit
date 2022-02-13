@@ -195,7 +195,7 @@ function SheetContent({
                         enabled={onClose != null}
                         onGestureEvent={onPanGestureHandler}
                     >
-                        <Animated.View style={overlayStyle} />
+                        <Animated.View style={overlayStyle as StyleProp<ViewStyle>} />
                     </PanGestureHandler>
                 </Animated.View>
             </TapGestureHandler>

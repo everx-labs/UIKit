@@ -71,15 +71,13 @@ function useCircleAboveStyle(circleAnimProgress: Animated.SharedValue<CircleAnim
     });
 }
 
-export const RawButton: React.FunctionComponent<
-    Animated.AnimateProps<
-        RawButtonProps &
-            NativeViewGestureHandlerProps & {
-                testID?: string;
-                style?: StyleProp<ViewStyle>;
-            }
-    >
-> = Animated.createAnimatedComponent(GHRawButton);
+export const RawButton = Animated.createAnimatedComponent<
+    RawButtonProps &
+        NativeViewGestureHandlerProps & {
+            testID?: string;
+            style?: StyleProp<ViewStyle>;
+        }
+>(GHRawButton);
 
 export function Key({ num }: { num: number }) {
     const { activeDotIndex, dotsValues, dotsAnims, dotsCount, disabled } =

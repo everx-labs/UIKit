@@ -93,15 +93,13 @@ function ImageIconView({ activeState, activeSource, disabledSource, testID }: Im
     );
 }
 
-export const RawButton: React.FunctionComponent<
-    ReAnimated.AnimateProps<
-        RawButtonProps &
-            NativeViewGestureHandlerProps & {
-                testID?: string;
-                style?: StyleProp<ViewStyle>;
-            }
-    >
-> = ReAnimated.createAnimatedComponent(GHRawButton);
+export const RawButton = ReAnimated.createAnimatedComponent<
+    RawButtonProps &
+        NativeViewGestureHandlerProps & {
+            testID?: string;
+            style?: StyleProp<ViewStyle>;
+        }
+>(GHRawButton);
 
 function SplitBottomTabBarItem({
     children,
