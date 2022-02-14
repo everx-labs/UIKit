@@ -179,8 +179,9 @@ export function useNumberFormatting(ref: React.Ref<TextInput> | null, decimals?:
 
             result.push(groupedIntegerPart);
 
+            const mayContainFractionalPart = decimals === undefined || decimals > 0;
             // Normalize and group fractional part
-            if (fractionalPart != null) {
+            if (mayContainFractionalPart && fractionalPart != null) {
                 let normalizedFractionalPart = fractionalPart.replace(notNumbersRegexp, '');
 
                 if (decimals) {
