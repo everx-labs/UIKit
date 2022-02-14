@@ -129,7 +129,7 @@ function getNewCarretPosition(
     return newCarretPosition;
 }
 
-export function useNumberFormatting(ref: React.Ref<TextInput> | null, decimals?: number) {
+export function useNumberFormatting(ref: React.Ref<TextInput> | null, decimals: number = Infinity) {
     const selectionStart = React.useRef(0);
     const selectionEnd = React.useRef(0);
 
@@ -161,7 +161,7 @@ export function useNumberFormatting(ref: React.Ref<TextInput> | null, decimals?:
 
     const onChangeText = React.useCallback(
         (rawNumber: string) => {
-            const [integerPart, fractionalPart] = rawNumber.split(delimeter);
+            const [integerPart, decimalPart] = rawNumber.split(delimeter);
             let normalizedText = '';
             const result: string[] = [];
             const notNumbersRegexp = /[^0-9]/g;
@@ -180,23 +180,21 @@ export function useNumberFormatting(ref: React.Ref<TextInput> | null, decimals?:
             result.push(groupedIntegerPart);
 
             // Normalize and group fractional part
-            if (fractionalPart != null) {
-                let normalizedFractionalPart = fractionalPart.replace(notNumbersRegexp, '');
+            if (decimals > 0 && decimalPart != null) {
+                let normalizedDecimalPart = decimalPart.replace(notNumbersRegexp, '');
 
-                if (decimals) {
-                    normalizedFractionalPart = normalizedFractionalPart.slice(0, decimals);
-                }
+                normalizedDecimalPart = normalizedDecimalPart.slice(0, decimals);
 
                 normalizedText += delimeter;
-                normalizedText += normalizedFractionalPart;
+                normalizedText += normalizedDecimalPart;
 
-                const groupedFractionalPart = group(
-                    normalizedFractionalPart,
+                const groupedDecimalPart = group(
+                    normalizedDecimalPart,
                     fractionalGroupSize,
                     fractionalSeparator,
                 );
 
-                result.push(groupedFractionalPart);
+                result.push(groupedDecimalPart);
             }
 
             const formattedNumber = result.join(delimeter);
