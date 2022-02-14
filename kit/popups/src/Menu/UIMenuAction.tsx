@@ -11,7 +11,7 @@ export const UIMenuAction: React.FC<UIMenuActionProps> = ({
         <UIForeground.Container key={title}>
             <UIForeground.PrimaryColumn>
                 <UIForeground.ActionCell
-                    testID={`${title}_menu_action_button`}
+                    testID={`${title}_action_button`}
                     disabled={type === UIMenuActionType.Disabled}
                     negative={type === UIMenuActionType.Negative}
                     onPress={onPress}
