@@ -15,35 +15,24 @@ import {
 import type { KeyboardEvent } from 'react-native/Libraries/Components/Keyboard/Keyboard';
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
 
-import { UIConstant, UIDevice, UIEventHelper, UIFunction, UIStyle } from '@tonlabs/uikit.core';
+import { UIConstant, UIFunction, UIStyle } from '@tonlabs/uikit.core';
 import type { SafeAreaInsets } from '@tonlabs/uikit.core';
-import { UIAlertView, UIComponent } from '@tonlabs/uikit.components';
-import { UISpinnerOverlay } from '@tonlabs/uicast.spinner-overlay';
+import { UIComponent } from '@tonlabs/uikit.components';
 import { UISafeAreaView } from '@tonlabs/uikit.layout';
 import { UIBackgroundViewColors } from '@tonlabs/uikit.themes';
-import { uiLocalized } from '@tonlabs/localization';
 import { UILargeTitleContainerRefContext } from '@tonlabs/uicast.bars';
 
 const AndroidKeyboardAdjust =
     Platform.OS === 'android'
         ? require('react-native-android-keyboard-adjust')
         : {
-              setAdjustPan() {},
-              setAdjustResize() {},
+              setAdjustPan() {
+                  //
+              },
+              setAdjustResize() {
+                  //
+              },
           };
-
-type Params = {
-    [string]: string,
-};
-
-type PathAndParams = {
-    path: string,
-    params: Params,
-};
-
-const pathAndParamsForScreens: {
-    [string]: PathAndParams,
-} = {};
 
 export type ContentInset = {
     left: number,
@@ -64,8 +53,6 @@ export type ControllerProps = {
 export type ControllerState = {
     contentInset?: ContentInset,
     safeArea?: ContentInset,
-    showIndicator?: boolean,
-    spinnerVisible?: boolean,
     runningAsyncOperation?: string,
 };
 
@@ -78,16 +65,12 @@ const EmptyInset: ContentInset = Object.freeze({
 
 const keyboardPanningScreens = [];
 
-const configuration = {
-    navigationVersion: 2,
-};
-
 export default class UIController<Props, State> extends UIComponent<
     Props & ControllerProps,
     State & ControllerState,
 > {
-    static configureNavigationVersion(version: number) {
-        configuration.navigationVersion = version;
+    static configureNavigationVersion(_version: number) {
+        // nothing (to avoid breaking changes)
     }
 
     static onGetAndroidDisplayCutout = (): * => {
@@ -98,6 +81,7 @@ export default class UIController<Props, State> extends UIComponent<
             bottom: 0,
         };
     };
+
     static AndroidKeyboardAdjust = {
         Pan: 'pan',
         Resize: 'resize',
@@ -119,57 +103,6 @@ export default class UIController<Props, State> extends UIComponent<
 
     static isKeyboardPanning() {
         return keyboardPanningScreens.length > 0;
-    }
-
-    static showAlertWithTitleAndMessage(title: string, message: string, callback?: () => void) {
-        UIAlertView.showAlert(title, message, [
-            {
-                title: uiLocalized.OK,
-                onPress: () => {
-                    if (callback) {
-                        callback();
-                    }
-                },
-            },
-        ]);
-    }
-
-    static showErrorWithMessage(message: string, callback?: () => void) {
-        this.showAlertWithTitleAndMessage(uiLocalized.Error, message, callback);
-    }
-
-    static showSuccessWithMessage(message: string, callback?: () => void) {
-        this.showAlertWithTitleAndMessage(uiLocalized.Success, message, callback);
-    }
-
-    static showCannotDoActionError(action: string, error: any) {
-        setTimeout(() => {
-            const message = uiLocalized.formatString(
-                uiLocalized.SorryWeCannotDoActionAtTheMoment,
-                action,
-            );
-            const errorText = JSON.stringify(error);
-            UIController.showErrorWithMessage(`${message}\n\n${errorText}`);
-        }, 500);
-    }
-
-    static setPathAndParamsForScreen(pathAndParams: PathAndParams, screen: string) {
-        pathAndParamsForScreens[screen] = pathAndParams;
-    }
-
-    static getParametersFromString(string: string): ?Params {
-        const index = string.indexOf('?');
-        const parametersString = index >= 0 ? string.substring(index + 1) : '';
-        if (parametersString.length > 0) {
-            // has parameters
-            return parametersString.split('&').reduce((object, keyValue) => {
-                const [key, value] = keyValue.split('=');
-                const newObject = object;
-                newObject[key] = value;
-                return newObject;
-            }, {});
-        }
-        return null;
     }
 
     static getEasingFunction(easing: string): (t: number) => number {
@@ -197,7 +130,7 @@ export default class UIController<Props, State> extends UIComponent<
     static contextType: typeof SafeAreaInsetsContext = SafeAreaInsetsContext;
 
     // constructor
-    hasSpinnerOverlay: boolean;
+
     trackKeyboard: boolean;
 
     // Guard for react-navigation v5 first mount focus event
@@ -207,12 +140,7 @@ export default class UIController<Props, State> extends UIComponent<
         super(props);
 
         this.androidKeyboardAdjust = UIController.AndroidKeyboardAdjust.Resize;
-        this.hasSpinnerOverlay = false;
         this.trackKeyboard = false;
-
-        if (configuration.navigationVersion < 5) {
-            this.handlePathAndParams();
-        }
 
         this.listenToNavigation();
 
@@ -224,11 +152,7 @@ export default class UIController<Props, State> extends UIComponent<
         super.componentDidMount();
         this.initSequence();
 
-        if (
-            configuration.navigationVersion >= 5 &&
-            this.props.navigation &&
-            this.props.navigation.isFocused()
-        ) {
+        if (this.props.navigation && this.props.navigation.isFocused()) {
             this.isFocused = true;
             this.componentWillFocus();
         }
@@ -239,16 +163,13 @@ export default class UIController<Props, State> extends UIComponent<
         this.deinitKeyboardListeners();
         this.stopListeningToNavigation();
 
-        if (configuration.navigationVersion >= 5 && this.isFocused) {
+        if (this.isFocused) {
             this.componentWillBlur();
         }
     }
 
     componentWillFocus() {
         this.isFocused = true;
-        if (configuration.navigationVersion < 5) {
-            this.pushStateIfNeeded();
-        }
     }
 
     componentWillBlur() {
@@ -267,11 +188,7 @@ export default class UIController<Props, State> extends UIComponent<
     }
 
     // Virtual
-    renderOverlay(): React$Node {
-        return null;
-    }
-
-    renderSafely(): React$Node {
+    renderSafely() {
         return null;
     }
 
@@ -294,6 +211,7 @@ export default class UIController<Props, State> extends UIComponent<
         // so, it's better to check that keyboard is still open during measurement
         maybeCall(fn: (...args: any[]) => any): () => any {
             return (...args) => {
+                // eslint-disable-next-line react/no-this-in-sfc
                 if (this.value) {
                     return fn(...args);
                 }
@@ -303,7 +221,7 @@ export default class UIController<Props, State> extends UIComponent<
     };
 
     adjustBottomInset(
-        keyboardFrame: $ReadOnly<{ screenY: number, height: number }>,
+        keyboardFrame: { screenY: number, height: number },
         animation: ?AnimationParameters,
     ) {
         // (savelichalex):
@@ -388,7 +306,7 @@ export default class UIController<Props, State> extends UIComponent<
         );
     }
 
-    setContentInset(contentInset: ContentInset, animation: ?AnimationParameters) {
+    setContentInset(contentInset: ContentInset, _animation: ?AnimationParameters) {
         this.setStateSafely({ contentInset });
     }
 
@@ -402,85 +320,19 @@ export default class UIController<Props, State> extends UIComponent<
     }
 
     getNavigationState() {
-        if (configuration.navigationVersion >= 5) {
-            // $FlowFixMe
-            return this.props.route?.state || {};
-        }
-
-        const { navigation } = this.props;
-        if (navigation) {
-            return navigation.state || {};
-        }
-        return {};
+        // $FlowFixMe
+        return this.props.route?.state || {};
     }
 
     getNavigationParams() {
-        if (configuration.navigationVersion >= 5) {
-            // $FlowFixMe
-            return this.props.route?.params || {};
-        }
-        const state = this.getNavigationState();
-        if (state) {
-            return state.params || {};
-        }
-        return {};
-    }
-
-    shouldShowIndicator(): ?boolean {
-        return this.state.showIndicator;
-    }
-
-    doesPathExist(): boolean {
-        return this.path !== undefined && this.path !== null;
+        // $FlowFixMe
+        return this.props.route?.params || {};
     }
 
     // Navigation
-    handlePathAndParams(paramsArg?: any) {
-        const { routeName } = this.getNavigationState();
-        const pathAndParams = pathAndParamsForScreens[routeName];
-        if (pathAndParams) {
-            this.path = pathAndParams.path;
-            this.params = pathAndParams.params;
-            // Add current parameters to the path if needed
-            if (this.params) {
-                const params = paramsArg || this.getNavigationParams();
-                const parameters = {};
-                Object.keys(params).forEach(key => {
-                    if (this.params[key]) {
-                        parameters[key] = params[key];
-                    }
-                });
-                this.addParametersToPath(parameters);
-            }
-            console.log(
-                `[UIController] Succeeded to handle a path "/${this.path}" for class:`,
-                this.constructor.name,
-            );
-        } else {
-            console.log('[UIController] Failed to handle a path for class:', this.constructor.name);
-        }
-    }
-
-    addParametersToPath(parameters: Params) {
-        if (!this.doesPathExist()) {
-            console.warn(`[UIController] URL Path is not set for ${this.constructor.name}`);
-            return;
-        }
-        const pathParameters = UIController.getParametersFromString(this.path);
-        Object.keys(parameters).forEach(key => {
-            if (!pathParameters || !pathParameters[key]) {
-                const symbol = this.path.includes('?') ? '&' : '?';
-                this.path += `${symbol}${key}=${parameters[key]}`;
-            }
-        });
-    }
-
-    pushParams(paramsArg: any) {
-        this.handlePathAndParams(paramsArg);
-        this.pushStateIfNeeded();
-    }
 
     navigationListeners: { remove(): void }[];
+
     listenToNavigation() {
         if (!this.props.navigation) {
             return;
@@ -539,17 +391,6 @@ export default class UIController<Props, State> extends UIComponent<
                     unsubscribe();
                 }
             });
-        }
-    }
-
-    pushStateIfNeeded() {
-        if (!this.mounted || Platform.OS !== 'web') {
-            return;
-        }
-        if (this.doesPathExist()) {
-            UIEventHelper.pushHistory(this.path);
-        } else {
-            console.warn(`[UIController] URL Path is not set for ${this.constructor.name}`);
         }
     }
 
@@ -616,26 +457,6 @@ export default class UIController<Props, State> extends UIComponent<
         }
     }
 
-    // Actions
-    showSpinnerOverlay(show: boolean = true) {
-        this.setStateSafely({ spinnerVisible: show });
-    }
-
-    hideSpinnerOverlay() {
-        if (!this.mounted) {
-            return;
-        }
-        this.showSpinnerOverlay(false);
-    }
-
-    showIndicator(showIndicator: boolean = true) {
-        this.setStateSafely({ showIndicator });
-    }
-
-    hideIndicator() {
-        this.showIndicator(false);
-    }
-
     // Async Operations
     getRunningAsyncOperation(): string {
         return this.state.runningAsyncOperation || '';
@@ -671,14 +492,10 @@ export default class UIController<Props, State> extends UIComponent<
     }
 
     // Render
-    renderSpinnerOverlay() {
-        return <UISpinnerOverlay key="SpinnerOverlay" visible={this.state?.spinnerVisible} />;
-    }
-
-    render(): React$Node {
+    render() {
         const contentInSafeArea = this.renderSafely();
 
-        const main = (
+        return (
             <UISafeAreaView
                 color={UIBackgroundViewColors.BackgroundPrimary}
                 style={UIStyle.container.screen()}
@@ -704,29 +521,17 @@ export default class UIController<Props, State> extends UIComponent<
                 </UILargeTitleContainerRefContext.Consumer>
             </UISafeAreaView>
         );
-        const overlays = [].concat(
-            this.renderOverlay() || [],
-            this.hasSpinnerOverlay ? this.renderSpinnerOverlay() : [],
-        );
-        if (overlays.length === 0) {
-            return main;
-        }
-        return (
-            <View style={UIStyle.common.flex()}>
-                {main}
-                {overlays.length > 1 ? <React.Fragment>{overlays}</React.Fragment> : overlays[0]}
-            </View>
-        );
     }
 
     // Internals
     mounted: boolean;
+
     androidKeyboardAdjust: string;
+
     keyboardWillShowListener: { remove(): void };
+
     keyboardWillHideListener: { remove(): void };
-    path: string;
-    params: Params;
 
     // $FlowExpectedError: flow don't see a type for View for some reason
-    containerRef = React.createRef<View>();
+    containerRef = React.createRef();
 }

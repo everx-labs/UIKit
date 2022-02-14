@@ -36,6 +36,7 @@ import {
 } from '@tonlabs/uikit.themes';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
 
+import { View } from 'react-native';
 import { useBase64Image } from './hooks/useBase64Image';
 import { useStore, updateStore } from '../useStore';
 
@@ -698,17 +699,18 @@ export function Browser() {
                     base64PreviewImage={base64PreviewImage}
                 />
             </UIFullscreenSheet>
-            <UICardSheet
-                visible={isUsingSecCard}
-                style={{
-                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                    padding: 20,
-                    borderRadius: 10,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
-                <UILabel>Pretending to using a security card...</UILabel>
+            <UICardSheet visible={isUsingSecCard}>
+                <View
+                    style={{
+                        backgroundColor: theme[ColorVariants.BackgroundPrimary],
+                        paddingVertical: 16,
+                        paddingHorizontal: 16,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <UILabel>Pretending to using a security card...</UILabel>
+                </View>
             </UICardSheet>
             <UIPopup.Notice
                 visible={isNoticeVisible}

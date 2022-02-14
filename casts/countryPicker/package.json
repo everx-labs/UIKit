@@ -34,6 +34,7 @@
         "src/"
     ],
     "dependencies": {
+        "@react-native-community/hooks": "^2.6.0",
         "@tonlabs/localization": "^3.0.0",
         "@tonlabs/uicast.bars": "^3.0.0",
         "@tonlabs/uikit.controls": "^3.0.0",

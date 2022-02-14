@@ -1,24 +1,7 @@
 {
     "Account": "계정",
-    "AccountAddress": "주소",
-    "AccountTypeHint": "계정 주소를 공개로 설정하면 프로필에 표시됩니다",
-    "Accounts": "계정",
     "Add": "추가하기",
-    "AddSubscribers": "구독자 추가하기",
-    "AddedBy": "{0}이(가) 추가했습니다",
-    "Address": "주소",
-    "AddressShare": "공유하기",
-    "AddressURLHint": "이 웹페이지에서 귀하의 친구들이 귀하의 지갑을 입금할 수 있습니다",
-    "Addresses": "주소",
     "Amount": "액수",
-    "Apartment": "Apartment/Suite/Unit",
-    "AtTime": "",
-    "BackToHome": "홈으로 돌아가기",
-    "BackupAccount": "백업 계정",
-    "BackupNow": "지금 백업하기",
-    "Balance": "잔액",
-    "Blacklist": "블랙리스트",
-    "BlockUser": "사용자 차단하기",
     "Browser": {
         "AddressInput": {
             "Placeholder": "지갑 주소…"
@@ -54,7 +37,7 @@
             "EnterKey": "수동으로 암호화 키 입력",
             "PickCipher": "암호화 키에서 선택",
             "Prompt": "암호화 키 선택:",
-            "UseKey": "키 이용"
+            "UseKey": "키 사용"
         },
         "Menu": {
             "More": "더..."
@@ -66,13 +49,13 @@
             "PrivateKey": "개인 키",
             "Prompt": "어떻게 서명하시겠습니까?",
             "SecurityCards": "보안 카드",
+            "Sign": "서명",
             "Signatures": "서명",
-            "UseSecurityCard": "보안 카드 사용",
-            "Sign": "서명"
+            "UseSecurityCard": "보안 카드 사용"
         },
         "TransactionConfirmation": {
             "Attention": "주의 사항",
-            "AttentionDesc": "This transaction is trying to change the contract and will not be performed",
+            "AttentionDesc": "이 트랜잭션은 계약을 변경하려고 하며 수행되지 않습니다",
             "Cancel": "취소",
             "Confirm": "확인",
             "Fees": "수수료",
@@ -104,8 +87,8 @@
             "Yesterday": "어제"
         },
         "QRCode": {
-            "errorReceived": "QR-code was not generated",
-            "errorSent": "QR-code was not generated.\nTry again"
+            "errorReceived": "QR 코드가 생성되지 않았습니다",
+            "errorSent": "QR 코드가 생성되지 않았습니다.\n다시 시도하십시오"
         }
     },
     "Citizenship": "시민권",
@@ -166,14 +149,7 @@
             "3": "수요일",
             "4": "목요일",
             "5": "금요일",
-            "6": "토요일",
-            "Friday": "금요일",
-            "Monday": "월요일",
-            "Saturday": "토요일",
-            "Sunday": "일요일",
-            "Thursday": "목요일",
-            "Tuesday": "화요일",
-            "Wednesday": "수요일"
+            "6": "토요일"
         },
         "dayNamesShort": {
             "0": "일",
@@ -182,14 +158,7 @@
             "3": "수",
             "4": "목",
             "5": "금",
-            "6": "토",
-            "Friday": "금",
-            "Monday": "월",
-            "Saturday": "토",
-            "Sunday": "일",
-            "Thursday": "목",
-            "Tuesday": "화",
-            "Wednesday": "수"
+            "6": "토"
         },
         "hour": "시간",
         "minute": "분",
@@ -205,19 +174,7 @@
             "6": "7월",
             "7": "8월",
             "8": "9월",
-            "9": "10월",
-            "April": "4월",
-            "August": "8월",
-            "December": "12월",
-            "February": "2월",
-            "January": "1월",
-            "July": "7월",
-            "June": "6월",
-            "March": "3월",
-            "May": "5월",
-            "November": "11월",
-            "October": "10월",
-            "September": "9월"
+            "9": "10월"
         },
         "select": "선택"
     },
@@ -238,20 +195,13 @@
     "Download": "다운로드",
     "DriversLicense": "운전 면허증",
     "Edit": "수정하기",
-    "EditDriversLicense": "운전면허증 편집",
-    "EditIdentityCard": "신분증 편집",
-    "EditLimit": "한도 수정",
-    "EditProfile": "프로필 수정하기",
-    "EditResidencePermit": "거주 허가 편집",
-    "EmailAddress": "이메일",
-    "EnterCorrectDataToField": "필드에 올바른 데이터 입력해 주세요",
     "Error": "오류",
     "Events": "이벤트",
     "Exchange": "교환",
     "ExchangeFrom": "보낸 사람",
     "ExchangeTo": "받는 사람",
     "ExpandableText": {
-        "more": "더 보기"
+        "more": "더..."
     },
     "ExportingBackupPhrase": "백업 구문을 내보내는 중...",
     "Female": "여성",
@@ -302,7 +252,7 @@
     "Manage": "관리하기",
     "MasterPassword": "시드키",
     "Member01": "멤버",
-    "Member11": "멤버",
+    "Member21": "멤버",
     "Member24": "멤버",
     "Member50": "멤버",
     "Members": "멤버",
@@ -317,33 +267,13 @@
     "NotChosen": "선택되지 않음",
     "NotDefined": "정의되지 않음",
     "NotFound": "찾을 수 없음",
-    "NotSupportedMedia": "내용을 표시하지 못했습니다.",
+    "NotSupportedMedia": "콘텐츠를 표시하지 못했습니다",
     "NumberOccupied": "이 전화 번호가 사용됩니다",
     "OK": "좋아요",
     "Online": "온라인",
     "OpenSettings": "설정 열기",
     "OutOf": "밖에",
-    "Password": "암호",
-    "Pay": "지불",
-    "Period": "기간",
-    "PersonalDetails": "개인 정보",
-    "Phone": "전화",
-    "PhoneNumber": "전화 번호",
-    "PleaseDoNotCloseTheApp": "앱을 닫지 마세요",
-    "PleaseGoOnline": "온라인으로 이동하십시오",
-    "PleaseSelectAChatToStartMessaging": "메시지를 시작하려면 채팅을 선택하세요",
-    "PleaseTryAgain": "다시 시도하십시오",
-    "PleaseTryLater": "나중에 시도하십시오",
     "PleaseUpdate": "업데이트해 주세요",
-    "PostalCode": "우편 번호",
-    "Prev": "이전",
-    "Private": "개인",
-    "Profile": "프로필",
-    "Public": "공개",
-    "PublicAccount": "공개 계정",
-    "PublicAccountWarning": "주목! 공개 주소를 제3자에게 제공하면 비공개로 설정한 후에도 제3자가 볼 수 있습니다",
-    "PublicAddress": "공개 주소",
-    "PublicAddressCopiedToClipboard": "클립보드에 복사된 공개 주소",
     "QRCodeScanner": {
         "ErrorOnRead": "QR 코드를 인식할 수 없습니다",
         "ErrorPermissions": "카메라 권한을 '허용'으로 변경해서 QR 코드를 스캔할 수 있습니다",
@@ -384,6 +314,7 @@
         "6": "M",
         "9": "B"
     },
+    "ShowMore": "더 보기",
     "SingleOperationLimit": "최대 단일 작업",
     "Skip": "건너뛰기",
     "SomethingWentWrong": "문제가 발생했습니다. 나중에 다시 시도하십시오.",
@@ -454,8 +385,7 @@
         "SetLocalPasswordWarning": "주목! 다른 장치에서 지갑에 액세스하려면 시드 프레이즈가 필요합니다."
     },
     "Warning": "경고",
-    "Was": "was",
-    "WeAreSorryButYourBrowserVersionIsNotCompatible": "죄송합니다. 귀하의 브라우저 버전이 당사 애플리케이션과 호환되지 않습니다.\n최신 브라우저(Chrome, Safari, Edge, Firefox 등)를 대신 사용하세요.",
+    "Was": "",
     "WeCanTFindThePageYouReLookingFor": "찾고 있는 페이지를 찾을 수 없습니다",
     "WeUseContactsToAllowYouToInviteFriends": "연락처를 사용하여 친구를 초대할 수 있습니다",
     "WelcomeTo000": "000에 오신 것을 환영합니다",
@@ -473,7 +403,7 @@
     "greatMemory": "기억력이 좋습니다!",
     "hours": "시간",
     "hours01": "시간",
-    "hours11": "시간",
+    "hours21": "시간",
     "hours24": "시간",
     "hours50": "시간",
     "immediately": "즉시",
@@ -483,11 +413,11 @@
     },
     "minutes": "분",
     "minutes01": "분",
-    "minutes11": "분",
+    "minutes21": "분",
     "minutes24": "분",
     "minutes50": "분",
     "moreWords01": "더 많은 단어",
-    "moreWords11": "더 많은 단어",
+    "moreWords21": "더 많은 단어",
     "moreWords24": "더 많은 단어",
     "moreWords50": "더 많은 단어",
     "operationTime": "작동 시간",
@@ -499,13 +429,12 @@
     },
     "rounds": "라운드",
     "rounds01": "라운드",
-    "rounds11": "라운드",
+    "rounds21": "라운드",
     "rounds24": "라운드",
     "rounds50": "라운드",
     "seedPhraseTypo": "여기에 오타가 있는 것 같습니다. 다시 시도하십시오",
     "words01": "단어",
-    "words11": "단어",
+    "words21": "단어",
     "words24": "단어",
-    "words50": "단어",
-    "ShowMore": "Show more"
+    "words50": "단어"
 }

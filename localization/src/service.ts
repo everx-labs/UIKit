@@ -122,7 +122,7 @@ export class LocalizationService<T> extends LocalizedStringsService<any> {
             if (remainder < 11 || remainder > 14) {
                 remainder %= 10;
                 if (remainder === 1) {
-                    const key = `${base}11`;
+                    const key = `${base}21`;
                     localizedString = this[key];
                 } else if (remainder >= 2 && remainder <= 4) {
                     const key = `${base}24`;

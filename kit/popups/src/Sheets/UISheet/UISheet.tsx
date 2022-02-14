@@ -6,7 +6,6 @@ import { useBackHandler } from '@react-native-community/hooks';
 
 import { Portal } from '@tonlabs/uikit.layout';
 import { ColorVariants, useColorParts, useStatusBar } from '@tonlabs/uikit.themes';
-
 import { ScrollableContext } from '@tonlabs/uikit.scrolls';
 import type { OnOpen, OnClose } from './types';
 import { SheetReadyContext, usePosition } from './usePosition';
@@ -196,7 +195,7 @@ function SheetContent({
                         enabled={onClose != null}
                         onGestureEvent={onPanGestureHandler}
                     >
-                        <Animated.View style={overlayStyle} />
+                        <Animated.View style={overlayStyle as StyleProp<ViewStyle>} />
                     </PanGestureHandler>
                 </Animated.View>
             </TapGestureHandler>
