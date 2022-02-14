@@ -214,23 +214,23 @@ function UIMaterialTextViewBorder(
         isHovered: boolean;
     },
 ) {
+    const { borderViewRef, onMouseEnter, onMouseLeave, isFocused, isHovered, children } = props;
     const theme = useTheme();
 
     return (
         <View
-            ref={props.borderViewRef}
+            ref={borderViewRef}
             // @ts-expect-error
-            onMouseEnter={props.onMouseEnter}
-            onMouseLeave={props.onMouseLeave}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
             style={[
                 styles.inputWrapper,
                 {
-                    borderBottomColor:
-                        theme[getBorderColor(props, props.isFocused, props.isHovered)],
+                    borderBottomColor: theme[getBorderColor(props, isFocused, isHovered)],
                 },
             ]}
         >
-            {props.children}
+            {children}
         </View>
     );
 }

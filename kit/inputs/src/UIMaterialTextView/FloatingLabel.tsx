@@ -8,6 +8,7 @@ import Animated, {
     useDerivedValue,
     useSharedValue,
     withSpring,
+    withTiming,
 } from 'react-native-reanimated';
 import type { WithSpringConfig } from 'react-native-reanimated';
 
@@ -31,9 +32,12 @@ export const foldedLabelLineHeight: number = labelTextStyle.lineHeight
     : 16;
 const FOLDED_LABEL_SCALE: number = foldedLabelLineHeight / expandedLabelLineHeight;
 
+// @inline
 const POSITION_FOLDED: number = 0;
+// @inline
 const POSITION_EXPANDED: number = 1;
 
+// @inline
 const LEFT_OFFSET_OF_UI_LABEL_TEXT_FROM_EDGE: number = 1;
 
 const withSpringConfig: WithSpringConfig = {
@@ -58,16 +62,11 @@ const getPosition = (isFolded: boolean): number => {
 type LabelProps = {
     children: string;
     animatedPosition: Readonly<Animated.SharedValue<number>>;
-    labelOpacity: Animated.SharedValue<number>;
+    onLabelLayout: (layoutChangeEvent: LayoutChangeEvent) => void;
 };
 const Label: React.FC<LabelProps> = (props: LabelProps) => {
-    const { children, animatedPosition, labelOpacity } = props;
+    const { children, animatedPosition, onLabelLayout } = props;
     const theme = useTheme();
-    const labelContainerStyle = useAnimatedStyle(() => {
-        return {
-            opacity: labelOpacity.value,
-        };
-    });
     const labelStyle = useAnimatedStyle(() => {
         return {
             color: interpolateColor(
@@ -80,16 +79,16 @@ const Label: React.FC<LabelProps> = (props: LabelProps) => {
             ),
         };
     });
+
     return (
-        <Animated.View style={labelContainerStyle}>
-            <Animated.Text
-                style={[Typography[TypographyVariants.ParagraphText], labelStyle]}
-                numberOfLines={1}
-                lineBreakMode="tail"
-            >
-                {children}
-            </Animated.Text>
-        </Animated.View>
+        <Animated.Text
+            style={[Typography[TypographyVariants.ParagraphText], labelStyle]}
+            numberOfLines={1}
+            lineBreakMode="tail"
+            onLayout={onLabelLayout}
+        >
+            {children}
+        </Animated.Text>
     );
 };
 
@@ -138,12 +137,19 @@ const useOnLabelLayout = (
     return React.useCallback(
         (layoutChangeEvent: LayoutChangeEvent) => {
             if (expandedLabelWidth.value !== layoutChangeEvent.nativeEvent.layout.width) {
+                /** Direct assignment of a value does not change the layout for an unknown reason */
                 // eslint-disable-next-line no-param-reassign
-                expandedLabelWidth.value = layoutChangeEvent.nativeEvent.layout.width;
+                expandedLabelWidth.value = withTiming(layoutChangeEvent.nativeEvent.layout.width, {
+                    duration: 0,
+                });
             }
             if (expandedLabelHeight.value !== layoutChangeEvent.nativeEvent.layout.height) {
+                /** Direct assignment of a value does not change the layout for an unknown reason */
                 // eslint-disable-next-line no-param-reassign
-                expandedLabelHeight.value = layoutChangeEvent.nativeEvent.layout.height;
+                expandedLabelHeight.value = withTiming(
+                    layoutChangeEvent.nativeEvent.layout.height,
+                    { duration: 0 },
+                );
             }
         },
         [expandedLabelWidth, expandedLabelHeight],
@@ -161,7 +167,7 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (props: FloatingLabel
 
     const labelOpacity: Animated.SharedValue<number> = useDerivedValue<number>(() => {
         return expandedLabelWidth.value && expandedLabelHeight.value ? 1 : 0;
-    }, [expandedLabelWidth, expandedLabelHeight]);
+    });
 
     const animatedPosition: Readonly<Animated.SharedValue<number>> = useAnimatedPosition(
         isFolded,
@@ -196,19 +202,23 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (props: FloatingLabel
             ],
         };
     });
+    const labelContainerOpacityStyle = useAnimatedStyle(() => {
+        return {
+            opacity: labelOpacity.value,
+        };
+    });
 
     if (!validateChildren(children)) {
         return null;
     }
     return (
         <View style={styles.container} pointerEvents="none">
-            <Animated.View
-                style={[styles.floatingLabel, labelContainerStyle]}
-                onLayout={onLabelLayout}
-            >
-                <Label animatedPosition={animatedPosition} labelOpacity={labelOpacity}>
-                    {children}
-                </Label>
+            <Animated.View style={labelContainerOpacityStyle}>
+                <Animated.View style={labelContainerStyle}>
+                    <Label animatedPosition={animatedPosition} onLabelLayout={onLabelLayout}>
+                        {children}
+                    </Label>
+                </Animated.View>
             </Animated.View>
         </View>
     );
@@ -216,9 +226,6 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (props: FloatingLabel
 
 const styles = StyleSheet.create({
     container: {
-        position: 'absolute',
-    },
-    floatingLabel: {
         position: 'absolute',
     },
 });
