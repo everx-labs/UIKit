@@ -200,10 +200,6 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (props: FloatingLabel
                     ),
                 },
             ],
-        };
-    });
-    const labelContainerOpacityStyle = useAnimatedStyle(() => {
-        return {
             opacity: labelOpacity.value,
         };
     });
@@ -214,11 +210,9 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (props: FloatingLabel
     return (
         <View style={styles.container} pointerEvents="none">
             <Animated.View style={labelContainerStyle}>
-                <Animated.View style={labelContainerOpacityStyle}>
-                    <Label animatedPosition={animatedPosition} onLabelLayout={onLabelLayout}>
-                        {children}
-                    </Label>
-                </Animated.View>
+                <Label animatedPosition={animatedPosition} onLabelLayout={onLabelLayout}>
+                    {children}
+                </Label>
             </Animated.View>
         </View>
     );
