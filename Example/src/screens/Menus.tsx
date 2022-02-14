@@ -363,7 +363,7 @@ export const Menus = () => {
     const [countryPickerVisible, setCountryPickerVisible] = React.useState(false);
     const [isUIMenuVisible, setIsUIMenuVisible] = React.useState(false);
 
-    const menuTargetRef = React.useRef<TouchableOpacity>(null);
+    const menuTriggerRef = React.useRef<TouchableOpacity>(null);
     const [isUIAlertViewVisible, setIsUIAlertViewVisible] = React.useState(false);
 
     const [visibleActionStartIndex, setVisibleActionStartIndex] = React.useState<number>(0);
@@ -622,9 +622,18 @@ export const Menus = () => {
                     <PageWithLargeTitleSheet />
                 </View>
             </ExampleSection>
+            <ExampleSection title="UITooltip">
+                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <UIPopup.Tooltip message="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.">
+                        <UILabel color={ColorVariants.TextAccent} role={TypographyVariants.Action}>
+                            Show UITooltip
+                        </UILabel>
+                    </UIPopup.Tooltip>
+                </View>
+            </ExampleSection>
             <ExampleSection title="UIMenu">
                 <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                    <TouchableOpacity ref={menuTargetRef} onPress={() => setIsUIMenuVisible(true)}>
+                    <TouchableOpacity ref={menuTriggerRef} onPress={() => setIsUIMenuVisible(true)}>
                         <UILabel color={ColorVariants.TextAccent} role={TypographyVariants.Action}>
                             Show UIMenu
                         </UILabel>
@@ -632,7 +641,7 @@ export const Menus = () => {
 
                     <UIPopup.Menu
                         visible={isUIMenuVisible}
-                        targetRef={menuTargetRef}
+                        triggerRef={menuTriggerRef}
                         onClose={() => setIsUIMenuVisible(false)}
                     >
                         <UIPopup.Menu.CustomAction key="9">
