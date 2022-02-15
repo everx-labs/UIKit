@@ -6,16 +6,13 @@ export const UIActionSheetAction: React.FC<UIActionSheetActionProps> = ({
     type,
     title,
     onPress,
+    testID,
 }: UIActionSheetActionProps) => {
     if (type === UIActionSheetActionType.Cancel) {
         return (
             <UIForeground.Container key={title}>
                 <UIForeground.PrimaryColumn>
-                    <UIForeground.CancelCell
-                        testID={`${title}_action_button`}
-                        onPress={onPress}
-                        title={title}
-                    />
+                    <UIForeground.CancelCell testID={testID} onPress={onPress} title={title} />
                 </UIForeground.PrimaryColumn>
             </UIForeground.Container>
         );
@@ -25,7 +22,7 @@ export const UIActionSheetAction: React.FC<UIActionSheetActionProps> = ({
         <UIForeground.Container key={title}>
             <UIForeground.PrimaryColumn>
                 <UIForeground.ActionCell
-                    testID={`${title}_action_button`}
+                    testID={testID}
                     disabled={type === UIActionSheetActionType.Disabled}
                     negative={type === UIActionSheetActionType.Negative}
                     onPress={onPress}

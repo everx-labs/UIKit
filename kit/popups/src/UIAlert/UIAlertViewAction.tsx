@@ -6,16 +6,13 @@ export const UIAlertViewAction: React.FC<UIAlertViewActionProps> = ({
     type,
     title,
     onPress,
+    testID,
 }: UIAlertViewActionProps) => {
     if (type === UIAlertViewActionType.Cancel) {
         return (
             <UIForeground.Container key={title}>
                 <UIForeground.PrimaryColumn>
-                    <UIForeground.CancelCell
-                        testID={`${title}_cancel_button`}
-                        onPress={onPress}
-                        title={title}
-                    />
+                    <UIForeground.CancelCell testID={testID} onPress={onPress} title={title} />
                 </UIForeground.PrimaryColumn>
             </UIForeground.Container>
         );
@@ -25,7 +22,7 @@ export const UIAlertViewAction: React.FC<UIAlertViewActionProps> = ({
         <UIForeground.Container key={title}>
             <UIForeground.PrimaryColumn>
                 <UIForeground.ActionCell
-                    testID={`${title}_action_button`}
+                    testID={testID}
                     negative={type === UIAlertViewActionType.Negative}
                     onPress={onPress}
                     title={title}
