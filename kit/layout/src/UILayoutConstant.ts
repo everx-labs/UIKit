@@ -76,4 +76,8 @@ export const UILayoutConstant = {
     },
 
     headerHeight: 56,
+
+    input: {
+        borderRadius: 12,
+    },
 };

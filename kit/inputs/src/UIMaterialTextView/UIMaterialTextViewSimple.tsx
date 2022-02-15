@@ -9,7 +9,7 @@ import type { UIMaterialTextViewCommonProps, UIMaterialTextViewRef } from './typ
 import { useExtendedRef } from './useExtendedRef';
 import { useAutogrow } from './useAutogrow';
 import { UIMaterialTextViewComment } from './UIMaterialTextViewComment';
-import { UIMaterialTextViewBorder } from './UIMaterialTextViewBorder';
+import { UIMaterialTextViewBackground } from './UIMaterialTextViewBackground';
 
 export const UIMaterialTextViewSimple = React.forwardRef<
     UIMaterialTextViewRef,
@@ -45,12 +45,12 @@ export const UIMaterialTextViewSimple = React.forwardRef<
     return (
         <UIMaterialTextViewComment {...props}>
             <View style={styles.container} onLayout={onLayout}>
-                <UIMaterialTextViewBorder
+                <UIMaterialTextViewBackground
                     {...props}
-                    isFocused={isFocused}
+                    // isFocused={isFocused}
                     onMouseEnter={onMouseEnter}
                     onMouseLeave={onMouseLeave}
-                    isHovered={isHovered}
+                    // isHovered={isHovered}
                 >
                     <UITextView
                         ref={ref}
@@ -65,7 +65,7 @@ export const UIMaterialTextViewSimple = React.forwardRef<
                         style={style}
                     />
                     {processedChildren}
-                </UIMaterialTextViewBorder>
+                </UIMaterialTextViewBackground>
             </View>
         </UIMaterialTextViewComment>
     );

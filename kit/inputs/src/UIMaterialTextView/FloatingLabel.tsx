@@ -3,21 +3,18 @@ import { LayoutChangeEvent, StyleSheet, View, TextStyle, ViewStyle, StyleProp } 
 import Animated, {
     interpolate,
     interpolateColor,
-    runOnJS,
     useAnimatedStyle,
     useDerivedValue,
     useSharedValue,
-    withSpring,
     withTiming,
 } from 'react-native-reanimated';
-import type { WithSpringConfig } from 'react-native-reanimated';
 
 import { ColorVariants, useTheme, Typography, TypographyVariants } from '@tonlabs/uikit.themes';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
 export type FloatingLabelProps = {
     children: string;
-    isFolded: boolean;
-    onFolded: () => void;
+    expandingValue: Readonly<Animated.SharedValue<number>>;
 };
 
 const paragraphTextStyle: TextStyle = StyleSheet.flatten(
@@ -40,11 +37,6 @@ const POSITION_EXPANDED: number = 1;
 // @inline
 const LEFT_OFFSET_OF_UI_LABEL_TEXT_FROM_EDGE: number = 1;
 
-const withSpringConfig: WithSpringConfig = {
-    damping: 17,
-    stiffness: 150,
-};
-
 const validateChildren = (children: string): boolean => {
     if (typeof children !== 'string') {
         if (__DEV__) {
@@ -55,22 +47,18 @@ const validateChildren = (children: string): boolean => {
     return true;
 };
 
-const getPosition = (isFolded: boolean): number => {
-    return isFolded ? POSITION_FOLDED : POSITION_EXPANDED;
-};
-
 type LabelProps = {
     children: string;
-    animatedPosition: Readonly<Animated.SharedValue<number>>;
+    expandingValue: Readonly<Animated.SharedValue<number>>;
     onLabelLayout: (layoutChangeEvent: LayoutChangeEvent) => void;
 };
 const Label: React.FC<LabelProps> = (props: LabelProps) => {
-    const { children, animatedPosition, onLabelLayout } = props;
+    const { children, expandingValue, onLabelLayout } = props;
     const theme = useTheme();
     const labelStyle = useAnimatedStyle(() => {
         return {
             color: interpolateColor(
-                animatedPosition.value,
+                expandingValue.value,
                 [POSITION_FOLDED, POSITION_EXPANDED],
                 [
                     theme[ColorVariants.TextTertiary] as string,
@@ -90,38 +78,6 @@ const Label: React.FC<LabelProps> = (props: LabelProps) => {
             {children}
         </Animated.Text>
     );
-};
-
-/**
- * Returns animated label position.
- * It can be in the range from POSITION_FOLDED to POSITION_EXPANDED
- */
-const useAnimatedPosition = (
-    isFolded: boolean,
-    onFolded: () => void,
-): Readonly<Animated.SharedValue<number>> => {
-    /** Label position switcher (POSITION_FOLDED/POSITION_EXPANDED) */
-    const position: Animated.SharedValue<number> = useSharedValue<number>(getPosition(isFolded));
-
-    React.useEffect(() => {
-        position.value = getPosition(isFolded);
-    }, [isFolded, position]);
-
-    const animationCallback = React.useCallback(
-        (isFinished?: boolean): void => {
-            'worklet';
-
-            if (isFinished && position.value === POSITION_FOLDED) {
-                runOnJS(onFolded)();
-            }
-        },
-        [position.value, onFolded],
-    );
-
-    const animatedPosition: Readonly<Animated.SharedValue<number>> = useDerivedValue(() => {
-        return withSpring(position.value, withSpringConfig, animationCallback);
-    });
-    return animatedPosition;
 };
 
 const getFoldedX = (width: number): number => {
@@ -157,7 +113,7 @@ const useOnLabelLayout = (
 };
 
 export const FloatingLabel: React.FC<FloatingLabelProps> = (props: FloatingLabelProps) => {
-    const { isFolded, onFolded, children } = props;
+    const { expandingValue, children } = props;
 
     /** Dimensions of label in the expanded state */
     const expandedLabelWidth: Animated.SharedValue<number> = useSharedValue<number>(0);
@@ -169,34 +125,31 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (props: FloatingLabel
         return expandedLabelWidth.value && expandedLabelHeight.value ? 1 : 0;
     });
 
-    const animatedPosition: Readonly<Animated.SharedValue<number>> = useAnimatedPosition(
-        isFolded,
-        onFolded,
-    );
-
     const labelContainerStyle: StyleProp<ViewStyle> = useAnimatedStyle(() => {
         const foldedX: number = getFoldedX(expandedLabelWidth.value);
+        const expandedYValue =
+            (expandedLabelHeight.value * (1 - FOLDED_LABEL_SCALE)) / 2 - expandedLabelHeight.value;
         return {
             transform: [
                 {
                     translateX: interpolate(
-                        animatedPosition.value,
+                        expandingValue.value,
                         [POSITION_FOLDED, POSITION_EXPANDED],
-                        [-foldedX, 0],
+                        [0, -foldedX],
                     ),
                 },
                 {
                     translateY: interpolate(
-                        animatedPosition.value,
+                        expandingValue.value,
                         [POSITION_FOLDED, POSITION_EXPANDED],
-                        [-expandedLabelHeight.value, 0],
+                        [0, expandedYValue],
                     ),
                 },
                 {
                     scale: interpolate(
-                        animatedPosition.value,
+                        expandingValue.value,
                         [POSITION_FOLDED, POSITION_EXPANDED],
-                        [FOLDED_LABEL_SCALE, 1],
+                        [1, FOLDED_LABEL_SCALE],
                     ),
                 },
             ],
@@ -210,7 +163,7 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (props: FloatingLabel
     return (
         <View style={styles.container} pointerEvents="none">
             <Animated.View style={labelContainerStyle}>
-                <Label animatedPosition={animatedPosition} onLabelLayout={onLabelLayout}>
+                <Label expandingValue={expandingValue} onLabelLayout={onLabelLayout}>
                     {children}
                 </Label>
             </Animated.View>
@@ -221,5 +174,7 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (props: FloatingLabel
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
+        left: UILayoutConstant.contentOffset,
+        top: UILayoutConstant.contentInsetVerticalX4,
     },
 });

@@ -2,48 +2,51 @@ import * as React from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import { useHover } from '@tonlabs/uikit.controls';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import { UITextView, useFocused, useUITextViewValue } from '../UITextView';
 
 import { useMaterialTextViewChildren } from './useMaterialTextViewChildren';
 
-import { FloatingLabel, expandedLabelLineHeight, foldedLabelLineHeight } from './FloatingLabel';
+import { FloatingLabel } from './FloatingLabel';
 import type { UIMaterialTextViewCommonProps, UIMaterialTextViewRef } from './types';
 import { useExtendedRef } from './useExtendedRef';
 import { useAutogrow } from './useAutogrow';
 import { UIMaterialTextViewComment } from './UIMaterialTextViewComment';
-import { UIMaterialTextViewBorder } from './UIMaterialTextViewBorder';
+import { UIMaterialTextViewBackground } from './UIMaterialTextViewBackground';
+import { useExpandingValue } from './useExpandingValue';
 
-const topOffsetForLabel: number =
-    (expandedLabelLineHeight - foldedLabelLineHeight) / 2 + // space between input and folded label (by design mockups)
-    foldedLabelLineHeight;
+// @inline
+const POSITION_FOLDED: number = 0;
+// @inline
+const POSITION_EXPANDED: number = 1;
 
-const getIsFolded = (
-    isFocused: boolean,
-    inputHasValue: boolean,
-    value: string | undefined,
-): boolean => {
-    return Boolean(isFocused || inputHasValue || value);
+// EXPANDED_INPUT_OFFSET = UILayoutConstant.contentOffset - UILayoutConstant.contentInsetVerticalX2
+// @inline
+const EXPANDED_INPUT_OFFSET: number = 8;
+
+const getIsExpanded = (isFocused: boolean, inputHasValue: boolean): boolean => {
+    return isFocused || inputHasValue;
 };
 
 function useFloatingLabelAttribute(props: UIMaterialTextViewCommonProps, inputHasValue: boolean) {
-    const { value } = props;
+    const { onFocus: onFocusProp, onBlur: onBlurProp } = props;
 
-    const { isFocused, onFocus, onBlur } = useFocused(props.onFocus, props.onBlur);
+    const { isFocused, onFocus, onBlur } = useFocused(onFocusProp, onBlurProp);
 
-    const isLabelFolded: boolean = getIsFolded(isFocused, inputHasValue, value);
+    const isExpanded: boolean = getIsExpanded(isFocused, inputHasValue);
 
-    const [isDefaultPlaceholderVisible, setDefaultPlaceholderVisible] =
-        React.useState(isLabelFolded);
+    const [isDefaultPlaceholderVisible, setDefaultPlaceholderVisible] = React.useState(isExpanded);
 
     const markDefaultPlacehoderAsVisible = React.useCallback(() => {
         setDefaultPlaceholderVisible(true);
     }, []);
 
     React.useEffect(() => {
-        if (!isLabelFolded) {
+        if (!isExpanded) {
             setDefaultPlaceholderVisible(false);
         }
-    }, [isLabelFolded]);
+    }, [isExpanded]);
 
     return {
         isFocused,
@@ -51,7 +54,7 @@ function useFloatingLabelAttribute(props: UIMaterialTextViewCommonProps, inputHa
         onBlur,
         isDefaultPlaceholderVisible,
         markDefaultPlacehoderAsVisible,
-        isLabelFolded,
+        isExpanded,
     };
 }
 
@@ -73,7 +76,7 @@ export const UIMaterialTextViewFloating = React.forwardRef<
         onBlur,
         isDefaultPlaceholderVisible,
         markDefaultPlacehoderAsVisible,
-        isLabelFolded,
+        isExpanded,
     } = useFloatingLabelAttribute(props, inputHasValue);
     const { onContentSizeChange, onChange, numberOfLines, style, resetInputHeight } = useAutogrow(
         ref,
@@ -93,44 +96,55 @@ export const UIMaterialTextViewFloating = React.forwardRef<
         clear,
     );
 
+    const expandingValue: Readonly<Animated.SharedValue<number>> = useExpandingValue(
+        isExpanded,
+        markDefaultPlacehoderAsVisible,
+    );
+
+    const inputStyle = useAnimatedStyle(() => {
+        return {
+            flex: 1,
+            transform: [
+                {
+                    translateY: interpolate(
+                        expandingValue.value,
+                        [POSITION_FOLDED, POSITION_EXPANDED],
+                        [0, EXPANDED_INPUT_OFFSET],
+                    ),
+                },
+            ],
+        };
+    });
+
     return (
         <UIMaterialTextViewComment {...props}>
-            <View
-                style={[
-                    styles.container,
-                    {
-                        paddingTop: label ? topOffsetForLabel : 0,
-                    },
-                ]}
-                onLayout={onLayout}
-            >
-                <UIMaterialTextViewBorder
+            <View style={[styles.container]} onLayout={onLayout}>
+                <UIMaterialTextViewBackground
                     {...props}
-                    isFocused={isFocused}
+                    // isFocused={isFocused}
                     onMouseEnter={onMouseEnter}
                     onMouseLeave={onMouseLeave}
-                    isHovered={isHovered}
+                    // isHovered={isHovered}
                 >
-                    <UITextView
-                        ref={ref}
-                        {...rest}
-                        placeholder={isDefaultPlaceholderVisible ? props.placeholder : undefined}
-                        onFocus={onFocus}
-                        onBlur={onBlur}
-                        onChangeText={onChangeTextProp}
-                        onContentSizeChange={onContentSizeChange}
-                        onChange={onChange}
-                        numberOfLines={numberOfLines}
-                        style={style}
-                    />
-                    <FloatingLabel
-                        isFolded={isLabelFolded}
-                        onFolded={markDefaultPlacehoderAsVisible}
-                    >
-                        {label}
-                    </FloatingLabel>
+                    <Animated.View style={inputStyle}>
+                        <UITextView
+                            ref={ref}
+                            {...rest}
+                            placeholder={
+                                isDefaultPlaceholderVisible ? props.placeholder : undefined
+                            }
+                            onFocus={onFocus}
+                            onBlur={onBlur}
+                            onChangeText={onChangeTextProp}
+                            onContentSizeChange={onContentSizeChange}
+                            onChange={onChange}
+                            numberOfLines={numberOfLines}
+                            style={[styles.input, style]}
+                        />
+                        <FloatingLabel expandingValue={expandingValue}>{label}</FloatingLabel>
+                    </Animated.View>
                     {processedChildren}
-                </UIMaterialTextViewBorder>
+                </UIMaterialTextViewBackground>
             </View>
         </UIMaterialTextViewComment>
     );
@@ -139,5 +153,9 @@ export const UIMaterialTextViewFloating = React.forwardRef<
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
+    },
+    input: {
+        paddingVertical: UILayoutConstant.contentInsetVerticalX4,
+        paddingLeft: UILayoutConstant.contentOffset,
     },
 });
