@@ -30,6 +30,10 @@ export type UIMenuActionProps = {
      * The callback that is called when tapping on the action
      */
     onPress: () => void;
+    /**
+     * ID for usage in tests
+     */
+    testID?: string;
 };
 
 export type UIMenuContainerChildType = React.ReactElement<UIMenuActionProps>;

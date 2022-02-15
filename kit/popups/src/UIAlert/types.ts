@@ -20,6 +20,10 @@ export type UIAlertViewActionProps = {
      * The callback that is called when tapping on the action
      */
     onPress: () => void;
+    /**
+     * ID for usage in tests
+     */
+    testID?: string;
 };
 
 export type UIAlertViewIcon = Pick<UIImageProps, 'source' | 'tintColor'>;
