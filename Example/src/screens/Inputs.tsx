@@ -222,7 +222,7 @@ export const Inputs = () => {
                 </View>
             </ExampleSection>
             <ExampleSection title="UIAddressInput">
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <View style={{ width: 300, paddingVertical: 20 }}>
                     <UIAddressTextView
                         testID="uiAddressInput_default"
                         label="Type address"
@@ -238,7 +238,7 @@ export const Inputs = () => {
                 </View>
             </ExampleSection>
             <ExampleSection title="UIAmountInput">
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <View style={{ width: 300, paddingVertical: 20 }}>
                     <UIAmountInput
                         testID="uiAmountInput_default"
                         placeholder="Amount"
@@ -247,7 +247,7 @@ export const Inputs = () => {
                         onChangeText={(newText: string) => setAmount(newText)}
                     />
                 </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <View style={{ width: 300, paddingVertical: 20 }}>
                     <UIAmountInput
                         testID="uiAmountInput_with_trailing_value"
                         placeholder="Amount"
@@ -259,7 +259,7 @@ export const Inputs = () => {
                 </View>
             </ExampleSection>
             <ExampleSection title="UIDetailsInput">
-                <View style={{ paddingVertical: 20 }} testID="uiDetailsInput_default">
+                <View style={{ width: 300, paddingVertical: 20 }} testID="uiDetailsInput_default">
                     <UIDetailsInput
                         placeholder="Details"
                         comment="Some comment here"
@@ -267,7 +267,7 @@ export const Inputs = () => {
                         onChangeText={(newText: string) => setDetails(newText)}
                     />
                 </View>
-                <View testID="uiDetailsInput_multiline" style={{ paddingVertical: 20 }}>
+                <View testID="uiDetailsInput_multiline" style={{ width: 300, paddingVertical: 20 }}>
                     <UIDetailsInput
                         placeholder="Multiline details"
                         comment="Some comment here"
@@ -279,7 +279,7 @@ export const Inputs = () => {
                 </View>
             </ExampleSection>
             <ExampleSection title="UITransferInput">
-                <View testID="uiTransferInput_default" style={{ paddingVertical: 20 }}>
+                <View testID="uiTransferInput_default" style={{ width: 300, paddingVertical: 20 }}>
                     <UITransferInput
                         value={transfer}
                         placeholder="Your transfer"
