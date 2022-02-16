@@ -65,6 +65,7 @@ import { FinancesScreen } from './screens/Finances';
 import { SkeletonsScreen } from './screens/Skeletons';
 
 import { StoreProvider, updateStore } from './useStore';
+import { AutomaticInsetsTest } from './screens/AutomaticInsetsTest';
 
 // Optimize React rendering
 enableFreeze();
@@ -287,6 +288,12 @@ const Main = ({ navigation }: { navigation: any }) => {
                         onPress={() => navigation.navigate('skeletons')}
                         layout={styles.button}
                     />
+                    {/* <UILinkButton
+                        title="Automatic insets test"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('automatic-insets-test')}
+                        layout={styles.button}
+                    /> */}
                 </ScrollView>
             </PortalManager>
         </UIBackgroundView>
@@ -357,7 +364,7 @@ const App = () => {
                             component={CarouselScreen}
                             options={{
                                 useHeaderLargeTitle: true,
-                                title: 'Cells',
+                                title: 'Carousel',
                             }}
                         />
                         <Split.Screen
@@ -562,6 +569,15 @@ const App = () => {
                             component={VideosScreen}
                             options={{
                                 title: 'Videos',
+                            }}
+                        />
+                        <Split.Screen
+                            name="automatic-insets-test"
+                            component={AutomaticInsetsTest}
+                            options={{
+                                // headerVisible: false,
+                                useHeaderLargeTitle: true,
+                                title: 'Carousel',
                             }}
                         />
                     </Split.Navigator>

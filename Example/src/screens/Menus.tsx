@@ -256,7 +256,6 @@ function FlexibleSizeBottomSheetContent({
                 paddingHorizontal: 20,
                 paddingBottom: insets.bottom,
             }}
-            // @ts-expect-error
             containerStyle={scrollIntrinsicStyle}
             onContentSizeChange={onContentSizeChange}
         >

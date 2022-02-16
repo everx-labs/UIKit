@@ -35,6 +35,12 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
 }
 
 - (void)didMoveToWindow {
+    /**
+     * It's actually a very fragile way to access a scroll view
+     * but I had to use it, as refs and nativeID looks to be
+     * even worse in this particular situation.
+     * Hence it is very important to place the component as it is now!
+     */
     UIView *view = self.superview.subviews[0];
     
     if (![view isKindOfClass:[RCTScrollView class]]) {
