@@ -4,7 +4,7 @@ import { TextInput, View } from 'react-native';
 import { useHover } from '@tonlabs/uikit.controls';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { makeStyles, useTheme, Theme, ColorVariants } from '@tonlabs/uikit.themes';
-import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
+import Animated, { interpolate, useAnimatedStyle, Layout } from 'react-native-reanimated';
 import { UITextView, useFocused, useUITextViewValue } from '../UITextView';
 
 import { useMaterialTextViewChildren } from './useMaterialTextViewChildren';
@@ -24,6 +24,8 @@ const POSITION_EXPANDED: number = 1;
 // EXPANDED_INPUT_OFFSET = UILayoutConstant.contentOffset - UILayoutConstant.contentInsetVerticalX2
 // @inline
 const EXPANDED_INPUT_OFFSET: number = 8;
+
+const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
 
 const getIsExpanded = (isFocused: boolean, inputHasValue: boolean): boolean => {
     return isFocused || inputHasValue;
@@ -109,7 +111,6 @@ export const UIMaterialTextViewFloating = React.forwardRef<
 
     const inputStyle = useAnimatedStyle(() => {
         return {
-            flex: 1,
             transform: [
                 {
                     translateY: interpolate(
@@ -134,8 +135,8 @@ export const UIMaterialTextViewFloating = React.forwardRef<
                 onMouseLeave={onMouseLeave}
                 ref={borderViewRef}
             >
-                <Animated.View style={inputStyle}>
-                    <UITextView
+                <Animated.View style={[styles.input, inputStyle]}>
+                    <UITextViewAnimated
                         ref={ref}
                         {...rest}
                         placeholder={isDefaultPlaceholderVisible ? props.placeholder : undefined}
@@ -145,7 +146,8 @@ export const UIMaterialTextViewFloating = React.forwardRef<
                         onContentSizeChange={onContentSizeChange}
                         onChange={onChange}
                         numberOfLines={numberOfLines}
-                        style={[styles.input, style]}
+                        style={style}
+                        layout={Layout}
                     />
                     <FloatingLabel expandingValue={expandingValue} isHovered={isHovered}>
                         {label}
@@ -165,6 +167,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         backgroundColor: theme[ColorVariants.BackgroundBW],
     },
     input: {
+        flex: 1,
         paddingVertical: UILayoutConstant.contentInsetVerticalX4,
         paddingLeft: UILayoutConstant.contentOffset,
     },
