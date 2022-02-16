@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAnimatedReaction } from 'react-native-reanimated';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { useAndroidNavigationBarHeight } from '@tonlabs/uikit.inputs';
 
 import { UISheet, UISheetProps } from '../UISheet/UISheet';
 import { useShrinkContentUnderSheetContextProgress } from './ShrinkContentUnderSheet';
@@ -37,16 +38,18 @@ const MoveContentUnderSheet = React.memo(function MoveContentUnderSheet() {
 export function UIMobileModalSheet({ children, style, ...rest }: UIMobileModalSheetProps) {
     const { height } = useWindowDimensions();
     const { top: topInset } = useSafeAreaInsets();
+    const { height: androidNavigationBarHeight } = useAndroidNavigationBarHeight();
 
     const fullscreenHeight = React.useMemo(
         () =>
-            height -
+            height +
+            androidNavigationBarHeight -
             Math.max(topInset, UILayoutConstant.contentInsetVerticalX4) +
             UILayoutConstant.rubberBandEffectDistance -
             // iOS has a very small indent after when borderRadius ends
             // do here the same, it's not exact, just was done with eye test
             (UILayoutConstant.alertBorderRadius + 2),
-        [height, topInset],
+        [height, topInset, androidNavigationBarHeight],
     );
 
     const sheetStyle = React.useMemo(() => {

@@ -2,7 +2,7 @@ import * as React from 'react';
 import Animated, { useDerivedValue, withSpring } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useAnimatedKeyboardHeight } from '@tonlabs/uikit.inputs';
+import { useAnimatedKeyboardHeight, useAndroidNavigationBarHeight } from '@tonlabs/uikit.inputs';
 import { SheetOriginContext } from './SheetOriginContext';
 
 function getZeroBottomInset() {
@@ -41,6 +41,7 @@ export function KeyboardAwareSheet({
 }: KeyboardAwareSheetProps) {
     const insets = useSafeAreaInsets();
     const keyboardHeight = useAnimatedKeyboardHeight();
+    const { shared: androidNavigationBarHeightShared } = useAndroidNavigationBarHeight();
 
     const bottomInset = useDerivedValue(() => {
         return withSpring(getBottomInset(insets.bottom, keyboardHeight.value), {
@@ -49,7 +50,13 @@ export function KeyboardAwareSheet({
     });
 
     const origin = useDerivedValue(() => {
-        return 0 - defaultShift - keyboardHeight.value - bottomInset.value;
+        return (
+            0 -
+            defaultShift -
+            keyboardHeight.value -
+            (keyboardHeight.value > 0 ? androidNavigationBarHeightShared.value : 0) -
+            bottomInset.value
+        );
     });
 
     return (

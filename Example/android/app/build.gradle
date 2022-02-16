@@ -242,6 +242,8 @@ dependencies {
 
     implementation project(":react-native-android-keyboard-adjust")
 
+    implementation 'androidx.core:core:1.6.0'
+
     if (enableHermes) {
         def hermesPath = "../../../node_modules/hermes-engine/android/";
         debugImplementation files(hermesPath + "hermes-debug.aar")

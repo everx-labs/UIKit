@@ -7,7 +7,7 @@
 
 import { FlatList, TouchableOpacity, GestureHandlerRootView } from 'react-native-gesture-handler';
 import React from 'react';
-import { I18nManager, NativeModules, Platform, StyleSheet, View } from 'react-native';
+import { I18nManager, NativeModules, Platform, StyleSheet, View, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -30,9 +30,8 @@ import {
     ColorVariants,
     ThemeContext,
     useTheme,
-    UIStatusBarManager,
 } from '@tonlabs/uikit.themes';
-import { UIAndroidNavigationBar, UISearchBarButton } from '@tonlabs/uicast.bars';
+import { UISearchBarButton } from '@tonlabs/uicast.bars';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { createSplitNavigator, useSplitTabBarHeight } from '@tonlabs/uicast.split-navigator';
@@ -308,6 +307,10 @@ const App = () => {
     const theme = useTheme();
     const themeSwitcher = React.useContext(ThemeSwitcher);
 
+    React.useEffect(() => {
+        StatusBar.setTranslucent(true);
+    }, []);
+
     return (
         <StoreProvider>
             <UIModalPortalManager>
@@ -577,7 +580,6 @@ const App = () => {
                         />
                     </Split.Navigator>
                 </NavigationContainer>
-                <UIAndroidNavigationBar />
             </UIModalPortalManager>
         </StoreProvider>
     );
@@ -605,11 +607,9 @@ const AppWrapper = () => {
                     }}
                 >
                     <UIPopoverBackground>
-                        <UIStatusBarManager>
-                            <SafeAreaProvider>
-                                <App />
-                            </SafeAreaProvider>
-                        </UIStatusBarManager>
+                        <SafeAreaProvider>
+                            <App />
+                        </SafeAreaProvider>
                     </UIPopoverBackground>
                 </ThemeSwitcher.Provider>
             </ThemeContext.Provider>

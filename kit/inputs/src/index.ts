@@ -23,6 +23,7 @@ export * from './UIMaterialTextView/useClearButton';
 export * from './useAutogrowTextView';
 export * from './useCustomKeyboard';
 export * from './useAnimatedKeyboardHeight';
+export * from './useAndroidNavigationBarHeight';
 
 export const UILayout = {
     UIMaterialTextView,

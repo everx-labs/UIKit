@@ -128,7 +128,10 @@ export function UIChatInput(props: UIChatInputProps) {
                 quickActions={props.quickActions}
                 customKeyboardVisible={customKeyboardView != null}
                 onCustomKeyboardPress={toggleKeyboard}
-                customKeyboardButton={props.customKeyboard?.button}
+                customKeyboardButton={
+                    // It is broken on Android, I have temporarely hide it
+                    Platform.OS === 'android' ? undefined : props.customKeyboard?.button
+                }
                 onSendText={props.onSendText}
                 onFocus={dismissKeyboard}
                 onMaxLength={props.onMaxLength}
