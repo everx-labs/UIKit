@@ -6,6 +6,7 @@ export type UIMaterialTextViewProps = UITextViewProps & {
     label: string;
     helperText?: string;
     error?: boolean;
+    warning?: boolean;
     success?: boolean;
     onLayout?: Pick<UITextViewProps, 'onLayout'>;
     borderViewRef?: React.Ref<View>;

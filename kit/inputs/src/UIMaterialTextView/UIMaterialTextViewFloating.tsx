@@ -140,6 +140,9 @@ export const UIMaterialTextViewFloating = React.forwardRef<
                         ref={ref}
                         {...rest}
                         placeholder={isDefaultPlaceholderVisible ? props.placeholder : undefined}
+                        placeholderTextColor={
+                            isHovered ? ColorVariants.TextSecondary : ColorVariants.TextTertiary
+                        }
                         onFocus={onFocus}
                         onBlur={onBlur}
                         onChangeText={onChangeTextProp}

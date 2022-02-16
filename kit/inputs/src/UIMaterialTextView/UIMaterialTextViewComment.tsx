@@ -2,21 +2,26 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { ColorVariants, UILabel, TypographyVariants } from '@tonlabs/uikit.themes';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UITextViewProps } from '../UITextView';
 
 import type { UIMaterialTextViewProps } from './types';
 
 const getCommentColor = (
     success: boolean | undefined,
+    warning: boolean | undefined,
     error: boolean | undefined,
 ): ColorVariants => {
-    if (success) {
-        return ColorVariants.TextPositive;
-    }
     if (error) {
         return ColorVariants.TextNegative;
     }
-    return ColorVariants.TextSecondary;
+    if (warning) {
+        return ColorVariants.TextPrimary;
+    }
+    if (success) {
+        return ColorVariants.TextPositive;
+    }
+    return ColorVariants.TextTertiary;
 };
 
 export function UIMaterialTextViewComment(
@@ -25,41 +30,32 @@ export function UIMaterialTextViewComment(
         children: React.ReactNode;
     },
 ) {
-    const { helperText, onLayout, children, success, error } = props;
-
-    if (!helperText) {
-        return (
-            <View style={styles.withoutCommentContainer} onLayout={onLayout}>
-                {children}
-            </View>
-        );
-    }
+    const { helperText, onLayout, children, success, warning, error } = props;
 
     return (
-        <View style={styles.withCommentContainer} onLayout={onLayout}>
+        <View style={styles.container} onLayout={onLayout}>
             {children}
-            <UILabel
-                role={TypographyVariants.ParagraphNote}
-                color={getCommentColor(success, error)}
-                style={styles.comment}
-            >
-                {helperText}
-            </UILabel>
+            {helperText ? (
+                <UILabel
+                    role={TypographyVariants.ParagraphLabel}
+                    color={getCommentColor(success, warning, error)}
+                    style={styles.comment}
+                >
+                    {helperText}
+                </UILabel>
+            ) : null}
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    withoutCommentContainer: {
-        paddingTop: 12,
-        paddingBottom: 18,
-    },
-    withCommentContainer: {
+    container: {
         flexDirection: 'column',
-        paddingTop: 12,
-        paddingBottom: 12,
+        paddingBottom: 20,
     },
     comment: {
-        marginTop: 10,
+        position: 'absolute',
+        bottom: 0,
+        left: UILayoutConstant.contentOffset,
     },
 });

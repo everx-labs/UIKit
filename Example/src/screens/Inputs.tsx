@@ -99,31 +99,35 @@ export const Inputs = () => {
                         label="Label with initial value"
                         value={text}
                         onChangeText={setText}
-                        helperText="Hint"
+                        helperText="Caption"
                     />
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
                         testID="uiMaterialTextView_with_placeholder"
                         label="Label with placeholder"
                         onChangeText={setText}
-                        helperText="Hint"
+                        helperText="Success"
+                        success
                         placeholder="Works with folded label"
                     />
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
                         testID="uiMaterialTextView_with_icon"
                         label="Input with right icon"
-                        helperText="Hint"
+                        helperText="Warning"
+                        warning
                     >
                         <UIMaterialTextView.Icon
                             source={UIAssets.icons.ui.buttonClose}
                             tintColor={ColorVariants.IconSecondary}
                         />
                     </UIMaterialTextView>
+                    <View style={{ height: 20 }} />
                     <UIMaterialTextView
                         testID="uiMaterialTextView_with_icons"
                         label="Input with right icon"
-                        helperText="Hint"
+                        helperText="Error"
+                        error
                     >
                         <UIMaterialTextView.Icon
                             source={UIAssets.icons.ui.buttonPlus}
@@ -138,7 +142,7 @@ export const Inputs = () => {
                     <UIMaterialTextView
                         testID="uiMaterialTextView_with_action"
                         label="Input with right action"
-                        helperText="Hint"
+                        helperText="Caption"
                     >
                         <UIMaterialTextView.Action>Action</UIMaterialTextView.Action>
                     </UIMaterialTextView>
@@ -146,7 +150,7 @@ export const Inputs = () => {
                     <UIMaterialTextView
                         testID="uiMaterialTextView_with_text"
                         label="Input with right text"
-                        helperText="Hint"
+                        helperText="Caption"
                     >
                         <UIMaterialTextView.Text>Text</UIMaterialTextView.Text>
                     </UIMaterialTextView>
@@ -155,7 +159,7 @@ export const Inputs = () => {
                         testID="uiMaterialTextView_multiline"
                         multiline
                         label="Input multiline"
-                        helperText="Hint"
+                        helperText="Caption"
                         defaultValue="Very long text that should be multiline and that is what we gonna check there"
                     />
                 </View>
