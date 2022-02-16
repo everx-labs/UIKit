@@ -128,14 +128,14 @@ export const UIMaterialTextViewFloating = React.forwardRef<
     return (
         <UIMaterialTextViewComment {...props}>
             <View
-                style={[styles.container]}
+                style={styles.container}
                 onLayout={onLayout}
                 // @ts-expect-error
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
                 ref={borderViewRef}
             >
-                <Animated.View style={[styles.input, inputStyle]}>
+                <Animated.View style={[styles.input, inputStyle]} layout={Layout}>
                     <UITextViewAnimated
                         ref={ref}
                         {...rest}
@@ -165,10 +165,11 @@ const useStyles = makeStyles((theme: Theme) => ({
         alignItems: 'center',
         borderRadius: UILayoutConstant.input.borderRadius,
         backgroundColor: theme[ColorVariants.BackgroundBW],
+        paddingHorizontal: UILayoutConstant.contentOffset,
     },
     input: {
         flex: 1,
         paddingVertical: UILayoutConstant.contentInsetVerticalX4,
-        paddingLeft: UILayoutConstant.contentOffset,
+        paddingRight: UILayoutConstant.smallContentOffset,
     },
 }));

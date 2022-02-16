@@ -91,7 +91,7 @@ export const Inputs = () => {
                 <UINumberTextView testID="uiNumberTextView_default" placeholder="Put number" />
             </ExampleSection>
             <ExampleSection title="UIMaterialTextView">
-                <View style={{ maxWidth: 300, paddingVertical: 20, minWidth: 250 }}>
+                <View style={{ maxWidth: 400, padding: 20, alignSelf: 'stretch' }}>
                     <UIMaterialTextView testID="uiMaterialTextView_default" label="Label" />
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView

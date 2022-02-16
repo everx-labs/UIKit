@@ -2,6 +2,7 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
 import { UIImage, UIImageProps } from '@tonlabs/uikit.media';
 import { useClearButton } from './useClearButton';
@@ -166,11 +167,11 @@ export function useMaterialTextViewChildren(
 
 const styles = StyleSheet.create({
     iconSize: {
-        width: 24,
-        height: 24,
+        width: UILayoutConstant.iconSize,
+        height: UILayoutConstant.iconSize,
     },
     iconsFiller: {
-        marginLeft: 24,
+        marginLeft: UILayoutConstant.smallContentOffset,
     },
     clearButtonWrapper: {
         justifyContent: 'flex-end',

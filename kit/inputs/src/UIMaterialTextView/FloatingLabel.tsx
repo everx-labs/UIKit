@@ -218,7 +218,6 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (props: FloatingLabel
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
-        left: UILayoutConstant.contentOffset,
         top: UILayoutConstant.contentInsetVerticalX4,
     },
 });

@@ -4,10 +4,18 @@ import {
     NativeSyntheticEvent,
     TextInputChangeEventData,
     StyleSheet,
+    Platform,
 } from 'react-native';
 
 import { OnHeightChange, useAutogrowTextView } from '../useAutogrowTextView';
 import type { UIMaterialTextViewProps } from './types';
+
+/**
+ * It is not known why, but experimentally it was possible to establish
+ * that the `onContentSizeChangeProp` returns the height by about 4.5 less than the real size on iOS.
+ * This is necessary so that the text in the input is not cut off
+ */
+const HEIGHT_CORRECTION = Platform.OS === 'ios' ? 4.5 : 0;
 
 export function useAutogrow(
     ref: React.Ref<TextInput>,
@@ -51,7 +59,10 @@ export function useAutogrow(
         [onAutogrowChange, onChangeProp],
     );
 
-    const style = React.useMemo(() => [styles.input, { height: inputHeight }], [inputHeight]);
+    const style = React.useMemo(
+        () => [styles.input, { height: inputHeight + HEIGHT_CORRECTION }],
+        [inputHeight],
+    );
 
     if (!multiline) {
         return {
