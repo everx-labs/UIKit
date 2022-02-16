@@ -151,6 +151,7 @@ export const UIMaterialTextViewFloating = React.forwardRef<
                         numberOfLines={numberOfLines}
                         style={style}
                         layout={Layout}
+                        scrollEnabled={false}
                     />
                     <FloatingLabel expandingValue={expandingValue} isHovered={isHovered}>
                         {label}

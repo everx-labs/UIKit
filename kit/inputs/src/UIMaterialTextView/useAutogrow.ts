@@ -10,28 +10,21 @@ import {
 import { OnHeightChange, useAutogrowTextView } from '../useAutogrowTextView';
 import type { UIMaterialTextViewProps } from './types';
 
-/**
- * It is not known why, but experimentally it was possible to establish
- * that the `onContentSizeChangeProp` returns the height by about 4.5 less than the real size on iOS.
- * This is necessary so that the text in the input is not cut off
- */
-const HEIGHT_CORRECTION = Platform.OS === 'ios' ? 4.5 : 0;
-
 export function useAutogrow(
     ref: React.Ref<TextInput>,
     onContentSizeChangeProp: UIMaterialTextViewProps['onContentSizeChange'],
     onChangeProp: UIMaterialTextViewProps['onChange'],
     multiline: UIMaterialTextViewProps['multiline'],
-    numberOfLines: UIMaterialTextViewProps['numberOfLines'],
+    numberOfLinesProp: UIMaterialTextViewProps['numberOfLines'],
     onHeightChange?: OnHeightChange,
 ) {
     const {
         onContentSizeChange: onAutogrowContentSizeChange,
         onChange: onAutogrowChange,
         inputHeight,
-        numberOfLinesProp,
+        numberOfLines,
         resetInputHeight,
-    } = useAutogrowTextView(ref, onHeightChange, multiline ? numberOfLines : 1);
+    } = useAutogrowTextView(ref, onHeightChange, multiline ? numberOfLinesProp : 1);
 
     const onContentSizeChange = React.useCallback(
         (event: any) => {
@@ -60,7 +53,12 @@ export function useAutogrow(
     );
 
     const style = React.useMemo(
-        () => [styles.input, { height: inputHeight + HEIGHT_CORRECTION }],
+        () => [
+            styles.input,
+            Platform.select({
+                web: { height: inputHeight },
+            }),
+        ],
         [inputHeight],
     );
 
@@ -69,7 +67,7 @@ export function useAutogrow(
             onContentSizeChange: onContentSizeChangeProp,
             onChange: onChangeProp,
             resetInputHeight,
-            numberOfLines,
+            numberOfLinesProp,
             style: styles.input,
         };
     }
@@ -78,7 +76,7 @@ export function useAutogrow(
         onContentSizeChange,
         onChange,
         resetInputHeight,
-        numberOfLines: numberOfLinesProp,
+        numberOfLines,
         style,
     };
 }
