@@ -11,15 +11,12 @@ import type { UIMaterialTextViewProps } from './types';
 
 export function useAutogrow(
     ref: React.Ref<TextInput>,
-    props: UIMaterialTextViewProps,
+    onContentSizeChangeProp: UIMaterialTextViewProps['onContentSizeChange'],
+    onChangeProp: UIMaterialTextViewProps['onChange'],
+    multiline: UIMaterialTextViewProps['multiline'],
+    numberOfLines: UIMaterialTextViewProps['numberOfLines'],
     onHeightChange?: OnHeightChange,
 ) {
-    const {
-        onContentSizeChange: onContentSizeChangeProp,
-        onChange: onChangeProp,
-        multiline,
-        numberOfLines,
-    } = props;
     const {
         onContentSizeChange: onAutogrowContentSizeChange,
         onChange: onAutogrowChange,
@@ -56,7 +53,7 @@ export function useAutogrow(
 
     const style = React.useMemo(() => [styles.input, { height: inputHeight }], [inputHeight]);
 
-    if (!props.multiline) {
+    if (!multiline) {
         return {
             onContentSizeChange: onContentSizeChangeProp,
             onChange: onChangeProp,

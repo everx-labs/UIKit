@@ -1,20 +1,35 @@
 import * as React from 'react';
-import { LayoutChangeEvent, StyleSheet, View, TextStyle, ViewStyle, StyleProp } from 'react-native';
+import {
+    LayoutChangeEvent,
+    StyleSheet,
+    View,
+    TextStyle,
+    ViewStyle,
+    StyleProp,
+    ColorValue,
+} from 'react-native';
 import Animated, {
     interpolate,
-    interpolateColor,
     useAnimatedStyle,
     useDerivedValue,
     useSharedValue,
+    withSpring,
     withTiming,
 } from 'react-native-reanimated';
 
-import { ColorVariants, useTheme, Typography, TypographyVariants } from '@tonlabs/uikit.themes';
+import {
+    ColorVariants,
+    useTheme,
+    Theme,
+    Typography,
+    TypographyVariants,
+} from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
 export type FloatingLabelProps = {
     children: string;
     expandingValue: Readonly<Animated.SharedValue<number>>;
+    isHovered: boolean;
 };
 
 const paragraphTextStyle: TextStyle = StyleSheet.flatten(
@@ -37,7 +52,7 @@ const POSITION_EXPANDED: number = 1;
 // @inline
 const LEFT_OFFSET_OF_UI_LABEL_TEXT_FROM_EDGE: number = 1;
 
-const validateChildren = (children: string): boolean => {
+function validateChildren(children: string): boolean {
     if (typeof children !== 'string') {
         if (__DEV__) {
             console.error(`FloatingLabel: prop 'children' must have only 'string' value`);
@@ -45,26 +60,51 @@ const validateChildren = (children: string): boolean => {
         return false;
     }
     return true;
-};
+}
+
+function useColors(theme: Theme) {
+    return React.useMemo(
+        () => ({
+            hoveredColor: theme[ColorVariants.TextSecondary],
+            defaultColor: theme[ColorVariants.TextTertiary],
+        }),
+        [theme],
+    );
+}
+
+function getColor(
+    isHovered: boolean,
+    expandingValue: number,
+    hoveredColor: ColorValue,
+    defaultColor: ColorValue,
+): string {
+    'worklet';
+
+    if (expandingValue !== POSITION_FOLDED) {
+        return defaultColor as string;
+    }
+    return (isHovered ? hoveredColor : defaultColor) as string;
+}
 
 type LabelProps = {
     children: string;
     expandingValue: Readonly<Animated.SharedValue<number>>;
     onLabelLayout: (layoutChangeEvent: LayoutChangeEvent) => void;
+    isHovered: boolean;
 };
 const Label: React.FC<LabelProps> = (props: LabelProps) => {
-    const { children, expandingValue, onLabelLayout } = props;
+    const { children, expandingValue, onLabelLayout, isHovered } = props;
     const theme = useTheme();
+    const { hoveredColor, defaultColor } = useColors(theme);
+
+    const color = useDerivedValue(() => {
+        const newColor = getColor(isHovered, expandingValue.value, hoveredColor, defaultColor);
+        return withSpring(newColor);
+    }, [isHovered, hoveredColor, defaultColor]);
+
     const labelStyle = useAnimatedStyle(() => {
         return {
-            color: interpolateColor(
-                expandingValue.value,
-                [POSITION_FOLDED, POSITION_EXPANDED],
-                [
-                    theme[ColorVariants.TextTertiary] as string,
-                    theme[ColorVariants.TextSecondary] as string,
-                ],
-            ),
+            color: color.value,
         };
     });
 
@@ -113,7 +153,7 @@ const useOnLabelLayout = (
 };
 
 export const FloatingLabel: React.FC<FloatingLabelProps> = (props: FloatingLabelProps) => {
-    const { expandingValue, children } = props;
+    const { expandingValue, children, isHovered } = props;
 
     /** Dimensions of label in the expanded state */
     const expandedLabelWidth: Animated.SharedValue<number> = useSharedValue<number>(0);
@@ -163,7 +203,11 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (props: FloatingLabel
     return (
         <View style={styles.container} pointerEvents="none">
             <Animated.View style={labelContainerStyle}>
-                <Label expandingValue={expandingValue} onLabelLayout={onLabelLayout}>
+                <Label
+                    expandingValue={expandingValue}
+                    onLabelLayout={onLabelLayout}
+                    isHovered={isHovered}
+                >
                     {children}
                 </Label>
             </Animated.View>

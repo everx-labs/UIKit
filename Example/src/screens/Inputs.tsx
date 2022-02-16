@@ -152,38 +152,6 @@ export const Inputs = () => {
                     </UIMaterialTextView>
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
-                        testID="uiMaterialTextView_without_floating"
-                        floating={false}
-                        label="Label"
-                    />
-                    <View style={{ height: 20 }} />
-                    <UIMaterialTextView
-                        testID="uiMaterialTextView_without_placeholder"
-                        floating={false}
-                        label="Label with initial value"
-                        value={text}
-                        onChangeText={setText}
-                        helperText="Hint"
-                    />
-                    <View style={{ height: 20 }} />
-                    <UIMaterialTextView
-                        testID="uiMaterialTextView_with_action"
-                        floating={false}
-                        label="Input with right action"
-                        helperText="Hint"
-                    >
-                        <UIMaterialTextView.Action>Action</UIMaterialTextView.Action>
-                    </UIMaterialTextView>
-                    <View style={{ height: 20 }} />
-                    <UIMaterialTextView
-                        testID="uiMaterialTextView_no_label_animation"
-                        floating={false}
-                        label="Input with right text"
-                        helperText="Hint"
-                    >
-                        <UIMaterialTextView.Text>Text</UIMaterialTextView.Text>
-                    </UIMaterialTextView>
-                    <UIMaterialTextView
                         testID="uiMaterialTextView_multiline"
                         multiline
                         label="Input multiline"

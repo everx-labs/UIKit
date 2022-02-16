@@ -4,25 +4,28 @@ import { StyleSheet, View } from 'react-native';
 import { ColorVariants, UILabel, TypographyVariants } from '@tonlabs/uikit.themes';
 import type { UITextViewProps } from '../UITextView';
 
-import type { UIMaterialTextViewCommonProps } from './types';
+import type { UIMaterialTextViewProps } from './types';
 
-const getCommentColor = (props: UIMaterialTextViewCommonProps): ColorVariants => {
-    if (props.success) {
+const getCommentColor = (
+    success: boolean | undefined,
+    error: boolean | undefined,
+): ColorVariants => {
+    if (success) {
         return ColorVariants.TextPositive;
     }
-    if (props.error) {
+    if (error) {
         return ColorVariants.TextNegative;
     }
     return ColorVariants.TextSecondary;
 };
 
 export function UIMaterialTextViewComment(
-    props: UIMaterialTextViewCommonProps & {
+    props: UIMaterialTextViewProps & {
         onLayout?: Pick<UITextViewProps, 'onLayout'>;
         children: React.ReactNode;
     },
 ) {
-    const { helperText, onLayout, children } = props;
+    const { helperText, onLayout, children, success, error } = props;
 
     if (!helperText) {
         return (
@@ -37,7 +40,7 @@ export function UIMaterialTextViewComment(
             {children}
             <UILabel
                 role={TypographyVariants.ParagraphNote}
-                color={getCommentColor(props)}
+                color={getCommentColor(success, error)}
                 style={styles.comment}
             >
                 {helperText}

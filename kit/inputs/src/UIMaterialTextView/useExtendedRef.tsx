@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { TextInput, Platform } from 'react-native';
 import { calculateWebInputHeight } from '../useAutogrowTextView';
-import type { UIMaterialTextViewCommonProps, UIMaterialTextViewRef } from './types';
+import type { UIMaterialTextViewRef } from './types';
 
 export function useExtendedRef(
     forwardedRed: React.Ref<UIMaterialTextViewRef>,
     localRef: React.RefObject<TextInput>,
-    props: UIMaterialTextViewCommonProps,
+    multiline: boolean | undefined,
     onChangeText: (text: string, callOnChangeProp?: boolean) => string,
 ) {
     // @ts-ignore
@@ -33,7 +33,7 @@ export function useExtendedRef(
                 text,
             });
 
-            if (props.multiline) {
+            if (multiline) {
                 if (Platform.OS === 'web') {
                     const elem = localRef.current as unknown as HTMLTextAreaElement;
                     calculateWebInputHeight(elem);

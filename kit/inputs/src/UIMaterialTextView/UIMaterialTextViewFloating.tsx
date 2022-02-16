@@ -1,19 +1,19 @@
 import * as React from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { TextInput, View } from 'react-native';
 
 import { useHover } from '@tonlabs/uikit.controls';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { makeStyles, useTheme, Theme, ColorVariants } from '@tonlabs/uikit.themes';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import { UITextView, useFocused, useUITextViewValue } from '../UITextView';
 
 import { useMaterialTextViewChildren } from './useMaterialTextViewChildren';
 
 import { FloatingLabel } from './FloatingLabel';
-import type { UIMaterialTextViewCommonProps, UIMaterialTextViewRef } from './types';
+import type { UIMaterialTextViewProps, UIMaterialTextViewRef } from './types';
 import { useExtendedRef } from './useExtendedRef';
 import { useAutogrow } from './useAutogrow';
 import { UIMaterialTextViewComment } from './UIMaterialTextViewComment';
-import { UIMaterialTextViewBackground } from './UIMaterialTextViewBackground';
 import { useExpandingValue } from './useExpandingValue';
 
 // @inline
@@ -29,9 +29,11 @@ const getIsExpanded = (isFocused: boolean, inputHasValue: boolean): boolean => {
     return isFocused || inputHasValue;
 };
 
-function useFloatingLabelAttribute(props: UIMaterialTextViewCommonProps, inputHasValue: boolean) {
-    const { onFocus: onFocusProp, onBlur: onBlurProp } = props;
-
+function useFloatingLabelAttribute(
+    onFocusProp: UIMaterialTextViewProps['onFocus'],
+    onBlurProp: UIMaterialTextViewProps['onBlur'],
+    inputHasValue: boolean,
+) {
     const { isFocused, onFocus, onBlur } = useFocused(onFocusProp, onBlurProp);
 
     const isExpanded: boolean = getIsExpanded(isFocused, inputHasValue);
@@ -60,16 +62,17 @@ function useFloatingLabelAttribute(props: UIMaterialTextViewCommonProps, inputHa
 
 export const UIMaterialTextViewFloating = React.forwardRef<
     UIMaterialTextViewRef,
-    UIMaterialTextViewCommonProps
->(function UIMaterialTextViewFloatingForwarded(props: UIMaterialTextViewCommonProps, passedRef) {
-    const { label, onLayout, children, onHeightChange, ...rest } = props;
+    UIMaterialTextViewProps
+>(function UIMaterialTextViewFloatingForwarded(props: UIMaterialTextViewProps, passedRef) {
+    const { label, onLayout, children, onHeightChange, borderViewRef, ...rest } = props;
     const ref = React.useRef<TextInput>(null);
+    const theme = useTheme();
     const {
         inputHasValue,
         clear: clearInput,
         onChangeText: onChangeTextProp,
     } = useUITextViewValue(ref, false, props);
-    useExtendedRef(passedRef, ref, props, onChangeTextProp);
+    useExtendedRef(passedRef, ref, props.multiline, onChangeTextProp);
     const {
         isFocused,
         onFocus,
@@ -77,10 +80,13 @@ export const UIMaterialTextViewFloating = React.forwardRef<
         isDefaultPlaceholderVisible,
         markDefaultPlacehoderAsVisible,
         isExpanded,
-    } = useFloatingLabelAttribute(props, inputHasValue);
+    } = useFloatingLabelAttribute(props.onFocus, props.onBlur, inputHasValue);
     const { onContentSizeChange, onChange, numberOfLines, style, resetInputHeight } = useAutogrow(
         ref,
-        props,
+        props.onContentSizeChange,
+        props.onChange,
+        props.multiline,
+        props.numberOfLines,
         onHeightChange,
     );
     const clear = React.useCallback(() => {
@@ -116,46 +122,50 @@ export const UIMaterialTextViewFloating = React.forwardRef<
         };
     });
 
+    const styles = useStyles(theme);
+
     return (
         <UIMaterialTextViewComment {...props}>
-            <View style={[styles.container]} onLayout={onLayout}>
-                <UIMaterialTextViewBackground
-                    {...props}
-                    // isFocused={isFocused}
-                    onMouseEnter={onMouseEnter}
-                    onMouseLeave={onMouseLeave}
-                    // isHovered={isHovered}
-                >
-                    <Animated.View style={inputStyle}>
-                        <UITextView
-                            ref={ref}
-                            {...rest}
-                            placeholder={
-                                isDefaultPlaceholderVisible ? props.placeholder : undefined
-                            }
-                            onFocus={onFocus}
-                            onBlur={onBlur}
-                            onChangeText={onChangeTextProp}
-                            onContentSizeChange={onContentSizeChange}
-                            onChange={onChange}
-                            numberOfLines={numberOfLines}
-                            style={[styles.input, style]}
-                        />
-                        <FloatingLabel expandingValue={expandingValue}>{label}</FloatingLabel>
-                    </Animated.View>
-                    {processedChildren}
-                </UIMaterialTextViewBackground>
+            <View
+                style={[styles.container]}
+                onLayout={onLayout}
+                // @ts-expect-error
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
+                ref={borderViewRef}
+            >
+                <Animated.View style={inputStyle}>
+                    <UITextView
+                        ref={ref}
+                        {...rest}
+                        placeholder={isDefaultPlaceholderVisible ? props.placeholder : undefined}
+                        onFocus={onFocus}
+                        onBlur={onBlur}
+                        onChangeText={onChangeTextProp}
+                        onContentSizeChange={onContentSizeChange}
+                        onChange={onChange}
+                        numberOfLines={numberOfLines}
+                        style={[styles.input, style]}
+                    />
+                    <FloatingLabel expandingValue={expandingValue} isHovered={isHovered}>
+                        {label}
+                    </FloatingLabel>
+                </Animated.View>
+                {processedChildren}
             </View>
         </UIMaterialTextViewComment>
     );
 });
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme: Theme) => ({
     container: {
-        flexDirection: 'column',
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: UILayoutConstant.input.borderRadius,
+        backgroundColor: theme[ColorVariants.BackgroundBW],
     },
     input: {
         paddingVertical: UILayoutConstant.contentInsetVerticalX4,
         paddingLeft: UILayoutConstant.contentOffset,
     },
-});
+}));
