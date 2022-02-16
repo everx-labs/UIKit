@@ -114,7 +114,7 @@ export function localizedNumberFormat(
     'worklet';
 
     const integer = value.integerValue(Rounding.RoundDown);
-    const integerFormatted = `${getIntegerSign(integer, showPositiveSign)}${groupReversed(
+    const integerFormatted = `${getIntegerSign(value, showPositiveSign)}${groupReversed(
         integer.abs().toFixed(0, Rounding.RoundDown),
         INTEGER_GROUP_SIZE,
         integerGroupChar,
