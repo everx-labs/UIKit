@@ -30,6 +30,10 @@ export type UIMenuActionProps = {
      * The callback that is called when tapping on the action
      */
     onPress: () => void;
+    /**
+     * ID for usage in tests
+     */
+    testID?: string;
 };
 
 export type UIMenuContainerChildType = React.ReactElement<UIMenuActionProps>;
@@ -59,7 +63,7 @@ export type UIMenuContainerContentProps = {
      * The ref of the element that shows the menu.
      * It is used to position the menu
      */
-    targetRef: React.RefObject<NativeMethods>;
+    triggerRef: React.RefObject<NativeMethods>;
     /**
      * List of UIMenuAction
      * There can be no more than one child with the "Cancel" UIMenuActionType.

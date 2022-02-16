@@ -11,7 +11,6 @@ import {
     View,
 } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
-import type { ImageSource } from 'react-native/Libraries/Image/ImageSource';
 import {
     PanGestureHandler,
     TapGestureHandler,
@@ -20,7 +19,6 @@ import {
 
 import { UIConstant, UIDevice, UIFunction, UIStyle } from '@tonlabs/uikit.core';
 import type { SafeAreaInsets } from '@tonlabs/uikit.core';
-import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.themes';
 import { useHasScroll, ScrollableContext } from '@tonlabs/uikit.scrolls';
 
@@ -60,7 +58,7 @@ export type ModalControllerState = ControllerState & {
     width?: ?number,
     height?: ?number,
     controllerVisible?: boolean,
-    header?: React$Node,
+    header?: React.ReactNode,
 };
 
 export type ModalControllerShowArgs =
@@ -69,7 +67,7 @@ export type ModalControllerShowArgs =
           open?: boolean,
           onCancel?: () => void,
           onSubmit?: () => void,
-          onSelect?: any => void,
+          onSelect?: () => void,
       };
 
 const styles = StyleSheet.create({
@@ -128,7 +126,6 @@ function ModalControllerContainer({
     onPanHandlerStateChange,
     onLayout,
     marginBottom,
-    spinnerOverlay,
     children,
 }: {
     testID: ?string,
@@ -144,10 +141,10 @@ function ModalControllerContainer({
     onPan: any,
     onLayout: any,
     marginBottom: Animated.Value,
-    spinnerOverlay: any,
     children: any,
 }) {
     const testIDProp = React.useMemo(
+        // eslint-disable-next-line no-confusing-arrow
         () => (testID ? { testID: `${testID}_dialog` } : null),
         [testID],
     );
@@ -189,15 +186,25 @@ function ModalControllerContainer({
                     onHandlerStateChange={onPanHandlerStateChange}
                 >
                     <AnimatedViewWithColor
-                        color={backgroundColor}
-                        style={[
-                            // DO NOT USE UIStyle.absoluteFillObject here, as it has { overflow: 'hidden' }
-                            // And this brings a layout bug to Safari
-                            UIStyle.Common.absoluteFillContainer(),
-                            { opacity: dYDependentOpacity },
-                        ]}
-                        onLayout={onLayout}
-                    />
+                        {...testIDProp}
+                        color={UIBackgroundViewColors.BackgroundPrimary}
+                        style={dialogStyle}
+                    >
+                        <Animated.View
+                            style={[
+                                UIStyle.common.flex(),
+                                adjustKeyboardInsetDynamically
+                                    ? { paddingBottom: marginBottom }
+                                    : null,
+                            ]}
+                        >
+                            <View style={UIStyle.common.flex()}>
+                                <ScrollableContext.Provider value={scrollableContextValue}>
+                                    {children}
+                                </ScrollableContext.Provider>
+                            </View>
+                        </Animated.View>
+                    </AnimatedViewWithColor>
                 </PanGestureHandler>
             </TapGestureHandler>
             <PanGestureHandler
@@ -237,25 +244,45 @@ export default class UIModalController<Props, State> extends UIController<
     ModalControllerState & State,
 > {
     fullscreen: boolean;
+
     dismissible: boolean;
+
     fromBottom: boolean;
+
     smallStripe: boolean;
+
     half: boolean;
+
     adjustBottomSafeAreaInsetDynamically: boolean;
+
     adjustKeyboardInsetDynamically: boolean;
+
     onCancel: ?() => void;
+
     onSelect: ?(any) => void;
+
     onSubmit: ?() => void;
+
     marginBottom: Animated.Value;
+
     dy: Animated.Value;
+
     animation: 'slide' | 'fade';
+
     testID: ?string;
+
     minWidth: number = 0;
+
     minHeight: number = 0;
+
     maxWidth: number = Number.MAX_SAFE_INTEGER;
+
     maxHeight: number = Number.MAX_SAFE_INTEGER;
+
     modalOnWeb: boolean;
+
     zIndex: ?number;
+
     closeAnimation: ?{ stop: () => void, start: (...any) => any };
 
     static animations = {
@@ -266,7 +293,6 @@ export default class UIModalController<Props, State> extends UIController<
     constructor(props: ModalControllerProps & Props) {
         super(props);
         this.testID = '[UIModalController]';
-        this.hasSpinnerOverlay = true;
         this.fullscreen = false;
         this.dismissible = true;
         this.adjustBottomSafeAreaInsetDynamically = true;
@@ -351,6 +377,7 @@ export default class UIModalController<Props, State> extends UIController<
             // hence it should fold the app on Android when the modal screen cannot be dismissed.
 
             // For that purpose we should have ExitAndroid native modules installed in the app.
+            // eslint-disable-next-line no-lonely-if
             if (NativeModules.ExitAndroid) {
                 NativeModules.ExitAndroid.sendToBackApp();
             } else {
@@ -479,10 +506,6 @@ export default class UIModalController<Props, State> extends UIController<
         };
     }
 
-    getCancelImage(): ?ImageSource {
-        return UIAssets.icons.ui.buttonClose;
-    }
-
     // Override if needed!
     shouldSwipeToDismiss() {
         return Platform.OS !== 'web'; // this.dismissible;
@@ -495,7 +518,7 @@ export default class UIModalController<Props, State> extends UIController<
 
     getDYDependentOpacity(): number {
         const maxHeight = this.getMaxHeight();
-        return (this.dy: any).interpolate({
+        return this.dy.interpolate({
             inputRange: [0, maxHeight],
             outputRange: [1, 0],
         });
@@ -541,7 +564,7 @@ export default class UIModalController<Props, State> extends UIController<
         });
     }
 
-    setHeader(header: React$Node) {
+    setHeader(header: React.ReactNode) {
         this.setStateSafely({ header });
     }
 
@@ -656,20 +679,8 @@ export default class UIModalController<Props, State> extends UIController<
     }
 
     // Render
-    renderLeftHeader() {
-        return null;
-    }
-
-    renderCentralHeader() {
-        return null;
-    }
-
-    renderRightHeader() {
-        return null;
-    }
-
     // eslint-disable-next-line no-unused-vars
-    renderContentView(contentHeight: number): React$Node {
+    renderContentView(_contentHeight: number): React.ReactNode {
         return null;
     }
 
@@ -728,7 +739,6 @@ export default class UIModalController<Props, State> extends UIController<
                 onPan={this.onPan}
                 onLayout={this.onLayout}
                 marginBottom={this.marginBottom}
-                spinnerOverlay={this.renderSpinnerOverlay()}
             >
                 {this.renderContentView(contentHeight)}
             </ModalControllerContainer>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, LayoutChangeEvent } from 'react-native';
+import { View, StyleSheet, LayoutChangeEvent, StyleProp, ViewStyle } from 'react-native';
 import Svg, { Path as SvgPath } from 'react-native-svg';
 import Animated, { useAnimatedProps, useSharedValue } from 'react-native-reanimated';
 import { TypographyVariants, UILabel, ColorVariants, useTheme } from '@tonlabs/uikit.themes';
@@ -92,9 +92,8 @@ type IProps = {
     testID?: string;
 };
 
-export const LinearChart: React.FC<IProps> = (props: IProps) => {
+export const LinearChart: React.FC<IProps> = ({ data, testID }: IProps) => {
     const theme = useTheme();
-    const { data } = props;
     const dimensions = useSharedValue<LinearChartDimensions>({
         ...LINEAR_CHART_INITIAL_DIMENSIONS,
     });
@@ -133,7 +132,7 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
     });
 
     return (
-        <View testID={props.testID} style={styles.container}>
+        <View testID={testID} style={styles.container}>
             <View onLayout={onLayout} style={styles.chartContainer}>
                 <AnimatedSvg animatedProps={animatedSvgProps}>
                     <AnimatedPath
@@ -172,7 +171,7 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                 <Animated.View
                     style={[styles.extremumLabelContainer, labelData.maximumLabelContainerStyle]}
                 >
-                    <Animated.View style={labelData.maximumLabelStyle}>
+                    <Animated.View style={labelData.maximumLabelStyle as StyleProp<ViewStyle>}>
                         <UILabel
                             role={TypographyVariants.ParagraphLabel}
                             color={ColorVariants.TextTertiary}
@@ -188,7 +187,7 @@ export const LinearChart: React.FC<IProps> = (props: IProps) => {
                 <Animated.View
                     style={[styles.extremumLabelContainer, labelData.minimumLabelContainerStyle]}
                 >
-                    <Animated.View style={labelData.minimumLabelStyle}>
+                    <Animated.View style={labelData.minimumLabelStyle as StyleProp<ViewStyle>}>
                         <UILabel
                             role={TypographyVariants.ParagraphLabel}
                             color={ColorVariants.TextTertiary}

@@ -49,7 +49,6 @@ import { Layouts } from './screens/Layouts';
 import { Menus } from './screens/Menus';
 import { NotificationsScreen } from './screens/Notifications';
 import { Products } from './screens/Products';
-import { Profile } from './screens/Profile';
 import { TextScreen } from './screens/Text';
 import { VideosScreen } from './screens/Videos';
 import { Browser } from './screens/Browser';
@@ -250,12 +249,6 @@ const Main = ({ navigation }: { navigation: any }) => {
                         title="Products"
                         type={UILinkButtonType.Menu}
                         onPress={() => navigation.navigate('products')}
-                        layout={styles.button}
-                    />
-                    <UILinkButton
-                        title="Profile"
-                        type={UILinkButtonType.Menu}
-                        onPress={() => navigation.navigate('profile')}
                         layout={styles.button}
                     />
                     <UILinkButton
@@ -501,13 +494,6 @@ const App = () => {
                             component={Products}
                             options={{
                                 title: 'Products',
-                            }}
-                        />
-                        <Split.Screen
-                            name="profile"
-                            component={Profile}
-                            options={{
-                                title: 'Profile',
                             }}
                         />
                         <Split.Screen

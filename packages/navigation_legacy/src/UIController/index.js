@@ -18,7 +18,6 @@ import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
 import { UIConstant, UIFunction, UIStyle } from '@tonlabs/uikit.core';
 import type { SafeAreaInsets } from '@tonlabs/uikit.core';
 import { UIComponent } from '@tonlabs/uikit.components';
-import { UISpinnerOverlay } from '@tonlabs/uicast.spinner-overlay';
 import { UISafeAreaView } from '@tonlabs/uikit.layout';
 import { UIBackgroundViewColors } from '@tonlabs/uikit.themes';
 import { UILargeTitleContainerRefContext } from '@tonlabs/uicast.bars';
@@ -54,8 +53,6 @@ export type ControllerProps = {
 export type ControllerState = {
     contentInset?: ContentInset,
     safeArea?: ContentInset,
-    showIndicator?: boolean,
-    spinnerVisible?: boolean,
     runningAsyncOperation?: string,
 };
 
@@ -133,7 +130,6 @@ export default class UIController<Props, State> extends UIComponent<
     static contextType: typeof SafeAreaInsetsContext = SafeAreaInsetsContext;
 
     // constructor
-    hasSpinnerOverlay: boolean;
 
     trackKeyboard: boolean;
 
@@ -144,7 +140,6 @@ export default class UIController<Props, State> extends UIComponent<
         super(props);
 
         this.androidKeyboardAdjust = UIController.AndroidKeyboardAdjust.Resize;
-        this.hasSpinnerOverlay = false;
         this.trackKeyboard = false;
 
         this.listenToNavigation();
@@ -193,10 +188,6 @@ export default class UIController<Props, State> extends UIComponent<
     }
 
     // Virtual
-    renderOverlay() {
-        return null;
-    }
-
     renderSafely() {
         return null;
     }
@@ -338,10 +329,6 @@ export default class UIController<Props, State> extends UIComponent<
         return this.props.route?.params || {};
     }
 
-    shouldShowIndicator(): ?boolean {
-        return this.state.showIndicator;
-    }
-
     // Navigation
 
     navigationListeners: { remove(): void }[];
@@ -470,26 +457,6 @@ export default class UIController<Props, State> extends UIComponent<
         }
     }
 
-    // Actions
-    showSpinnerOverlay(show: boolean = true) {
-        this.setStateSafely({ spinnerVisible: show });
-    }
-
-    hideSpinnerOverlay() {
-        if (!this.mounted) {
-            return;
-        }
-        this.showSpinnerOverlay(false);
-    }
-
-    showIndicator(showIndicator: boolean = true) {
-        this.setStateSafely({ showIndicator });
-    }
-
-    hideIndicator() {
-        this.showIndicator(false);
-    }
-
     // Async Operations
     getRunningAsyncOperation(): string {
         return this.state.runningAsyncOperation || '';
@@ -525,14 +492,10 @@ export default class UIController<Props, State> extends UIComponent<
     }
 
     // Render
-    renderSpinnerOverlay() {
-        return <UISpinnerOverlay key="SpinnerOverlay" visible={this.state?.spinnerVisible} />;
-    }
-
     render() {
         const contentInSafeArea = this.renderSafely();
 
-        const main = (
+        return (
             <UISafeAreaView
                 color={UIBackgroundViewColors.BackgroundPrimary}
                 style={UIStyle.container.screen()}
@@ -557,19 +520,6 @@ export default class UIController<Props, State> extends UIComponent<
                     }}
                 </UILargeTitleContainerRefContext.Consumer>
             </UISafeAreaView>
-        );
-        const overlays = [].concat(
-            this.renderOverlay() || [],
-            this.hasSpinnerOverlay ? this.renderSpinnerOverlay() : [],
-        );
-        if (overlays.length === 0) {
-            return main;
-        }
-        return (
-            <View style={UIStyle.common.flex()}>
-                {main}
-                {overlays.length > 1 ? <>{overlays}</> : overlays[0]}
-            </View>
         );
     }
 

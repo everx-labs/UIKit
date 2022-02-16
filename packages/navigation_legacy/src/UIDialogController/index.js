@@ -14,7 +14,6 @@ import {
 import { ScrollView } from '@tonlabs/uikit.scrolls';
 
 import UIController from '../UIController';
-import UIDialogTextInput from './UIDialogTextInput';
 
 const AnimatedUIBackgroundView = Animated.createAnimatedComponent(UIBackgroundView);
 
@@ -56,24 +55,12 @@ const styles = StyleSheet.create({
  * Configuration Options
  * ---------------------
  * this.title = null
- * this.hasTextInput = false
- * this.hasAuxTextInput = false
  * this.testID = undefined
- * this.textInputPlaceholder = undefined
- * this.textInputAutoFocus = true
- * this.textInputSecureTextEntry = false
- * this.textInputKeyboardType = undefined
- * this.textInputMaxLength = undefined
- * this.textInputBeginningTag = undefined
- * this.textInputTagSeparator = undefined
- * this.auxTextInputPlaceholder = undefined
  *
  * Overridable
  * -----------
- * renderSubtitle()
  * renderContent()
  * renderBottom()
- * renderOverlay()
  */
 class UIDialogController extends UIController {
     static styles() {
@@ -87,52 +74,16 @@ class UIDialogController extends UIController {
         this.wrapContentInScrollView = true;
         this.androidKeyboardAdjust = UIController.AndroidKeyboardAdjust.Pan;
         this.title = undefined;
-        this.hasTextInput = false;
-        this.hasAuxTextInput = false;
         this.testID = undefined;
-        this.textInputPlaceholder = undefined;
-        this.textInputAutoFocus = true;
-        this.textInputSecureTextEntry = false;
-        this.textInputKeyboardType = undefined;
-        this.textInputMaxLength = undefined;
-        this.textInputBeginningTag = undefined;
-        this.textInputTagSeparator = undefined;
-        this.auxTextInputPlaceholder = undefined;
         this.trackKeyboard = true;
-
-        this.onSubmitEditingTextInput = () => {
-            if (this.auxTextInput) {
-                this.auxTextInput.focus();
-            }
-        };
 
         this.marginBottom = new Animated.Value(0);
         this.state = {
-            input: '',
-            auxInput: '',
-            showIndicator: false,
             bottomPanelHeight: 0,
         };
     }
 
-    // Events
-    onChangeInput = text => {
-        this.setInput(text);
-    };
-
-    onChangeAuxInput = text => {
-        this.setAuxInput(text);
-    };
-
     // Setters
-    setInput(input) {
-        this.setStateSafely({ input });
-    }
-
-    setAuxInput(auxInput) {
-        this.setStateSafely({ auxInput });
-    }
-
     setContentInset(contentInset, animation) {
         super.setContentInset(contentInset, animation);
         const bottomInset = Math.max(0, contentInset.bottom);
@@ -152,14 +103,6 @@ class UIDialogController extends UIController {
     // Getters
     getMarginBottom() {
         return this.marginBottom;
-    }
-
-    getInput() {
-        return this.state.input;
-    }
-
-    getAuxInput() {
-        return this.state.auxInput;
     }
 
     getContentContainerStyle() {
@@ -187,69 +130,6 @@ class UIDialogController extends UIController {
                 </UILabel>
             </View>
         );
-    }
-
-    renderTextInput() {
-        if (!this.hasTextInput) {
-            return null;
-        }
-        const keyboardTypeProp = this.textInputKeyboardType
-            ? { keyboardType: this.textInputKeyboardType }
-            : null;
-        const maxLengthProp =
-            this.textInputMaxLength > 0 ? { maxLength: this.textInputMaxLength } : null;
-        return (
-            <UIDialogTextInput
-                ref={component => {
-                    this.textInput = component;
-                }}
-                style={UIStyle.marginTopMedium}
-                editable={!this.shouldShowIndicator()}
-                autoFocus={this.textInputAutoFocus}
-                textAlign="center"
-                returnKeyType="next"
-                beginningTag={this.textInputBeginningTag}
-                tagSeparator={this.textInputTagSeparator}
-                placeholder={this.textInputPlaceholder}
-                secureTextEntry={this.textInputSecureTextEntry}
-                {...keyboardTypeProp}
-                {...maxLengthProp}
-                value={this.getInput()}
-                onChangeText={this.onChangeInput}
-                onSubmitEditing={this.onSubmitEditingTextInput}
-            />
-        );
-    }
-
-    renderAuxTextInput() {
-        if (!this.hasAuxTextInput) {
-            return null;
-        }
-        return (
-            <UIDialogTextInput
-                ref={component => {
-                    this.auxTextInput = component;
-                }}
-                style={UIStyle.marginTopDefault}
-                editable={!this.shouldShowIndicator()}
-                autoCapitalize="words"
-                textAlign="center"
-                returnKeyType="done"
-                placeholder={this.auxTextInputPlaceholder}
-                value={this.getAuxInput()}
-                onChangeText={this.onChangeAuxInput}
-                onSubmitEditing={() => this.signUp()}
-            />
-        );
-    }
-
-    renderSubtitle() {
-        return null;
-    }
-
-    renderSubtitleContainer() {
-        const subtitle = this.renderSubtitle();
-        return subtitle ? <View style={styles.subtitleContainer}>{subtitle}</View> : null;
     }
 
     renderBottom() {
@@ -319,17 +199,10 @@ class UIDialogController extends UIController {
         ) : null;
     }
 
-    renderOverlay() {
-        return null;
-    }
-
     renderSafely() {
         const content = (
             <>
                 {this.renderTitle()}
-                {this.renderTextInput()}
-                {this.renderAuxTextInput()}
-                {this.renderSubtitleContainer()}
                 {this.renderContentContainer()}
             </>
         );

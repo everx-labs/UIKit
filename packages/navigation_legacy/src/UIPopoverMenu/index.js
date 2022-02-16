@@ -17,6 +17,9 @@ type Props = PopoverProps & {
     onCancelCallback: () => void, // for iOS and Android only
 };
 
+/**
+ * @deprecated class. Remove ASAP!
+ */
 export default class UIPopoverMenu extends UIPopover<Props, PopoverState> {
     static defaultProps: Props = {
         ...UIPopover.defaultProps,
@@ -102,6 +105,7 @@ export default class UIPopoverMenu extends UIPopover<Props, PopoverState> {
                     item =>
                         !!item && (
                             <UIPopup.ActionSheet.Action
+                                testID={`${item.title}_action_button`}
                                 title={item.title}
                                 key={`${Math.random()}~SheetMenuItem~${item.title}`}
                                 onPress={() => {
@@ -118,6 +122,7 @@ export default class UIPopoverMenu extends UIPopover<Props, PopoverState> {
                 )}
                 {this.state.needCancelItem && (
                     <UIPopup.ActionSheet.Action
+                        testID={`${uiLocalized.Cancel}_action_button`}
                         title={uiLocalized.Cancel}
                         key={`${Math.random()}~SheetMenuItem~Cancel`}
                         onPress={() => {

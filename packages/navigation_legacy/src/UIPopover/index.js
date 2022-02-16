@@ -258,7 +258,7 @@ export default class UIPopover<Props, State> extends UIComponent<
                 nativeID={POPOVER_MENU}
                 onLayout={this.onLayout}
                 style={[
-                    UIStyle.border.radiusDefault(),
+                    { borderRadius: UIConstant.borderRadius() },
                     UIStyle.common.cardShadow(),
                     ...menuStyle,
                     this.props.componentStyle,

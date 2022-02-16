@@ -12,8 +12,8 @@ import {
     ColorVariants,
 } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
-
-import { UIPullerSheet } from './UIPullerSheet';
+import { UIBottomSheet, useIntrinsicSizeScrollView } from '@tonlabs/uikit.popups';
+import { ScrollView } from '@tonlabs/uikit.scrolls';
 
 type AbstractBox = {
     id: number;
@@ -61,37 +61,39 @@ function UIBoxPickerItem<Box extends AbstractBox>({
     );
 }
 
-export function UIBoxPicker<Box extends AbstractBox>({
-    visible,
-    onClose,
-    onSelect,
-    onAdd,
-    boxes,
-    headerTitle,
-    addTitle,
-}: {
-    visible: boolean;
-    onClose: () => void;
+type CommonBoxPickerProps<Box extends AbstractBox> = {
     onSelect: OnSelect<Box>;
     onAdd?: () => void;
     boxes: Box[];
     headerTitle: string;
     addTitle: string;
-}) {
-    if (boxes.length === 0) {
-        return null;
-    }
+};
 
+function UIBoxPickerContent<Box extends AbstractBox>({
+    headerTitle,
+    boxes,
+    addTitle,
+    onAdd,
+    onSelect,
+}: CommonBoxPickerProps<Box>) {
+    const { style: scrollIntrinsicStyle, onContentSizeChange } = useIntrinsicSizeScrollView();
     return (
-        <UIPullerSheet visible={visible} onClose={onClose}>
+        <>
             <UIBackgroundView style={styles.sectionHeader}>
                 <UILabel role={UILabelRoles.HeadlineFootnote} color={UILabelColors.TextPrimary}>
                     {headerTitle}
                 </UILabel>
             </UIBackgroundView>
-            {boxes.map(box => (
-                <UIBoxPickerItem key={box.id} box={box} onSelect={onSelect} />
-            ))}
+            <ScrollView
+                contentContainerStyle={styles.itemContentContainerStyle}
+                // @ts-expect-error
+                containerStyle={scrollIntrinsicStyle}
+                onContentSizeChange={onContentSizeChange}
+            >
+                {boxes.map(box => (
+                    <UIBoxPickerItem key={box.id} box={box} onSelect={onSelect} />
+                ))}
+            </ScrollView>
             {/* TODO: use UILinkButton instead once it's ready! */}
             {onAdd && (
                 <View style={styles.addButtonContainer}>
@@ -104,13 +106,36 @@ export function UIBoxPicker<Box extends AbstractBox>({
                     />
                 </View>
             )}
-        </UIPullerSheet>
+        </>
+    );
+}
+
+export function UIBoxPicker<Box extends AbstractBox>({
+    visible,
+    onClose,
+    ...rest
+}: {
+    visible: boolean;
+    onClose: () => void;
+} & CommonBoxPickerProps<Box>) {
+    if (rest.boxes.length === 0) {
+        return null;
+    }
+
+    return (
+        <UIBottomSheet visible={visible} onClose={onClose}>
+            <UIBoxPickerContent {...rest} />
+        </UIBottomSheet>
     );
 }
 
 const styles = StyleSheet.create({
     sectionHeader: {
         paddingVertical: 8,
+        paddingHorizontal: UILayoutConstant.contentOffset,
+    },
+    itemContentContainerStyle: {
+        paddingHorizontal: UILayoutConstant.contentOffset,
     },
     item: {
         flexDirection: 'row',
@@ -132,6 +157,5 @@ const styles = StyleSheet.create({
     addButtonContainer: {
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        marginLeft: -UILayoutConstant.contentOffset + 4,
     },
 });

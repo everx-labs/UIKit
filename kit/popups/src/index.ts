@@ -4,11 +4,13 @@ import { IUINotice, UINotice } from './UINotice';
 import { UICardSheet, UIBottomSheet, UIFullscreenSheet, UIModalSheet } from './Sheets';
 import { UIPushNotice } from './UIPushNotice';
 import { IUIMenu, UIMenu } from './UIMenu';
+import { UITooltip } from './Tooltip';
 
 export type { UIPushNoticeContentPublicProps } from './UIPushNotice';
 
-export * from './Notice/types';
 export * from './ActionSheet/types';
+export * from './Notice/types';
+export * from './Menu/types';
 export * from './UIAlert/types';
 export * from './Sheets';
 export * from './UIPushNotice';
@@ -18,6 +20,7 @@ const ActionSheet: IUIActionSheet = UIActionSheet;
 const AlertView: IUIAlertView = UIAlertView;
 const Push: typeof UIPushNotice = UIPushNotice;
 const Menu: IUIMenu = UIMenu;
+const Tooltip: typeof UITooltip = UITooltip;
 
 export const UIPopup = {
     ActionSheet,
@@ -25,6 +28,7 @@ export const UIPopup = {
     Notice,
     Push,
     Menu,
+    Tooltip,
 };
 
 export const UIPopups = {
@@ -34,4 +38,5 @@ export const UIPopups = {
     UIFullscreenSheet,
     UIModalSheet,
     UIMenu,
+    Tooltip,
 };

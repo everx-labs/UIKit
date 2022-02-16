@@ -3,7 +3,7 @@ import React from 'react';
 import { View } from 'react-native';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-import { UIStyle } from '@tonlabs/uikit.core';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { UIActionComponent } from '@tonlabs/uikit.components';
 import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 import type { UIActionComponentProps, UIActionComponentState } from '@tonlabs/uikit.components';
@@ -61,7 +61,7 @@ export default class MenuItem extends UIActionComponent<MenuItemType, UIActionCo
 
         const containerStyle = [
             UIStyle.common.centerLeftContainer(),
-            UIStyle.height.buttonHeight(),
+            { height: UIConstant.buttonHeight() },
             contentStyle,
             style,
         ];

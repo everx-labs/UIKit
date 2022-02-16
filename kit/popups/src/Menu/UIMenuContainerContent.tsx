@@ -1,20 +1,21 @@
 import * as React from 'react';
 import {
     LayoutChangeEvent,
-    NativeMethods,
     ScaledSize,
     StyleSheet,
     useWindowDimensions,
     PixelRatio,
     View,
 } from 'react-native';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import { TapGestureHandler } from 'react-native-gesture-handler';
 import { ColorVariants, useTheme, Theme, makeStyles, useColorParts } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UIMenuContainerContentProps } from './types';
 import { UIConstant } from '../constants';
 import { ShadowView } from '../ShadowView';
+import { useTargetDimensions, TargetDimensions } from '../useTargetDimensions';
+import { usePopupLayoutAnimationFunctions } from '../usePopupLayoutAnimationFunctions';
 
 type Location = {
     left: number;
@@ -25,46 +26,11 @@ type Size = {
     width: number;
     height: number;
 };
-type Dimensions = {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-};
 
 const initialSize: Size = {
     width: 0,
     height: 0,
 };
-
-function useTargetDimensions(
-    targetRef: React.RefObject<NativeMethods>,
-    windowDimensions: ScaledSize,
-): Dimensions | null {
-    const [dimensions, setDimensions] = React.useState<Dimensions | null>(null);
-
-    React.useEffect(() => {
-        targetRef.current?.measure(
-            (
-                _x: number,
-                _y: number,
-                width: number,
-                height: number,
-                pageX: number,
-                pageY: number,
-            ) => {
-                setDimensions({
-                    x: pageX,
-                    y: pageY,
-                    width,
-                    height,
-                });
-            },
-        );
-    }, [targetRef, windowDimensions]);
-
-    return dimensions;
-}
 
 function getBoundaries(windowDimensions: ScaledSize, menuSize: Size) {
     return {
@@ -75,27 +41,27 @@ function getBoundaries(windowDimensions: ScaledSize, menuSize: Size) {
 }
 
 function useMenuLocation(
-    targetDimensions: Dimensions | null,
+    triggerDimensions: TargetDimensions | null,
     windowDimensions: ScaledSize,
     menuSize: Size,
 ): Location | null {
     return React.useMemo(() => {
-        if (!menuSize.height || !menuSize.width || !targetDimensions) {
+        if (!menuSize.height || !menuSize.width || !triggerDimensions) {
             return null;
         }
 
         const boundaries = getBoundaries(windowDimensions, menuSize);
 
-        let top: number | undefined = targetDimensions.y + targetDimensions.height;
+        let top: number | undefined = triggerDimensions.y + triggerDimensions.height;
         let bottom: number | undefined;
         const left: number = Math.max(
             boundaries.left,
-            Math.min(boundaries.right, targetDimensions.x),
+            Math.min(boundaries.right, triggerDimensions.x),
         );
 
         if (top > boundaries.bottom) {
             top = undefined;
-            bottom = windowDimensions.height - targetDimensions.y;
+            bottom = windowDimensions.height - triggerDimensions.y;
         }
 
         return {
@@ -103,18 +69,19 @@ function useMenuLocation(
             top,
             bottom,
         };
-    }, [targetDimensions, windowDimensions, menuSize]);
+    }, [triggerDimensions, windowDimensions, menuSize]);
 }
 
 export function UIMenuContainerContent({
     children,
-    targetRef,
-    onClose: onCloseProp,
+    triggerRef,
+    onClose,
     testID,
 }: UIMenuContainerContentProps) {
     const theme = useTheme();
+    const { entering, exiting } = usePopupLayoutAnimationFunctions();
     const windowDimensions = useWindowDimensions();
-    const targetDimensions = useTargetDimensions(targetRef, windowDimensions);
+    const triggerDimensions = useTargetDimensions(triggerRef, windowDimensions);
 
     const [menuSize, setMenuSize] = React.useState<Size>(initialSize);
     const onLayout = React.useCallback(
@@ -127,14 +94,7 @@ export function UIMenuContainerContent({
         },
         [menuSize],
     );
-    const menuLocation = useMenuLocation(targetDimensions, windowDimensions, menuSize);
-
-    const onClose = React.useCallback(
-        function onClose() {
-            onCloseProp();
-        },
-        [onCloseProp],
-    );
+    const menuLocation = useMenuLocation(triggerDimensions, windowDimensions, menuSize);
 
     const { color: shadowColor, opacity: shadowOpacity } = useColorParts(
         ColorVariants.BackgroundOverlay,
@@ -143,13 +103,13 @@ export function UIMenuContainerContent({
 
     return (
         <>
-            <TapGestureHandler onEnded={onClose}>
+            <TapGestureHandler onHandlerStateChange={onClose}>
                 <View style={StyleSheet.absoluteFill} />
             </TapGestureHandler>
             <Animated.View
                 style={styles.container}
-                entering={FadeIn.duration(UIConstant.menu.animationTime)}
-                exiting={FadeOut.duration(UIConstant.menu.animationTime)}
+                entering={entering}
+                exiting={exiting}
                 onLayout={onLayout}
                 testID={testID}
             >
