@@ -3,9 +3,12 @@ import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-
 import { UIImage, UIImageProps } from '@tonlabs/uikit.media';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useClearButton } from './useClearButton';
+
+const UIImageAnimated = Animated.createAnimatedComponent(UIImage);
+const UILabelAnimated = Animated.createAnimatedComponent(UILabel);
 
 export function UIMaterialTextViewIcon({
     onPress,
@@ -16,7 +19,12 @@ export function UIMaterialTextViewIcon({
 }) {
     return (
         <TouchableOpacity onPress={onPress}>
-            <UIImage {...rest} style={[styles.iconSize, style]} />
+            <UIImageAnimated
+                {...rest}
+                style={[styles.iconSize, style]}
+                entering={FadeIn}
+                exiting={FadeOut}
+            />
         </TouchableOpacity>
     );
 }
@@ -30,18 +38,28 @@ export function UIMaterialTextViewAction({
 }) {
     return (
         <TouchableOpacity onPress={onPress}>
-            <UILabel role={UILabelRoles.Action} color={UILabelColors.TextPrimary}>
+            <UILabelAnimated
+                role={UILabelRoles.Action}
+                color={UILabelColors.TextPrimary}
+                entering={FadeIn}
+                exiting={FadeOut}
+            >
                 {children}
-            </UILabel>
+            </UILabelAnimated>
         </TouchableOpacity>
     );
 }
 
 export function UIMaterialTextViewText({ children }: { children: string }) {
     return (
-        <UILabel role={UILabelRoles.ParagraphText} color={UILabelColors.TextTertiary}>
+        <UILabelAnimated
+            role={UILabelRoles.ParagraphText}
+            color={UILabelColors.TextTertiary}
+            entering={FadeIn}
+            exiting={FadeOut}
+        >
             {children}
-        </UILabel>
+        </UILabelAnimated>
     );
 }
 

@@ -92,6 +92,13 @@ export const Inputs = () => {
             </ExampleSection>
             <ExampleSection title="UIMaterialTextView">
                 <View style={{ maxWidth: 400, padding: 20, alignSelf: 'stretch' }}>
+                    <UIMaterialTextView
+                        testID="uiMaterialTextView_without_label"
+                        label=""
+                        placeholder="Placeholder without Label"
+                        helperText="Caption"
+                    />
+                    <View style={{ height: 20 }} />
                     <UIMaterialTextView testID="uiMaterialTextView_default" label="Label" />
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
