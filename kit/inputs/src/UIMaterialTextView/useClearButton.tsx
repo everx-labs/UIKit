@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
-
+import { StyleSheet } from 'react-native';
+import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UIAssets } from '@tonlabs/uikit.assets';
 
 import { UIImage } from '@tonlabs/uikit.media';
