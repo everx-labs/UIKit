@@ -1,15 +1,8 @@
 import * as React from 'react';
-import {
-    LayoutChangeEvent,
-    ScaledSize,
-    StyleSheet,
-    useWindowDimensions,
-    PixelRatio,
-    View,
-} from 'react-native';
+import { LayoutChangeEvent, ScaledSize, StyleSheet, useWindowDimensions, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { TapGestureHandler } from 'react-native-gesture-handler';
-import { ColorVariants, useTheme, Theme, makeStyles, useColorParts } from '@tonlabs/uikit.themes';
+import { ColorVariants, useTheme, Theme, makeStyles, useShadow } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UIMenuContainerContentProps } from './types';
 import { UIConstant } from '../constants';
@@ -96,10 +89,8 @@ export function UIMenuContainerContent({
     );
     const menuLocation = useMenuLocation(triggerDimensions, windowDimensions, menuSize);
 
-    const { color: shadowColor, opacity: shadowOpacity } = useColorParts(
-        ColorVariants.BackgroundOverlay,
-    );
-    const styles = useStyles(theme, menuLocation, shadowColor, shadowOpacity);
+    const shadow = useShadow(5);
+    const styles = useStyles(theme, menuLocation, shadow);
 
     return (
         <>
@@ -119,26 +110,20 @@ export function UIMenuContainerContent({
     );
 }
 
-const useStyles = makeStyles(
-    (theme: Theme, location: Location | null, shadowColor: string, shadowOpacity: number) => ({
-        container: {
-            position: 'absolute',
-            top: -10000,
-            left: -10000,
-            ...location,
-        },
-        shadowContainer: {
-            backgroundColor: theme[ColorVariants.BackgroundPrimary],
-            borderRadius: UILayoutConstant.alertBorderRadius,
-            width: UIConstant.menu.width,
-            paddingHorizontal: UILayoutConstant.contentOffset,
-            shadowRadius: 48 / PixelRatio.get(),
-            shadowOffset: {
-                width: 0,
-                height: 32 / PixelRatio.get(),
-            },
-            shadowColor,
-            shadowOpacity,
-        },
-    }),
-);
+const useStyles = makeStyles((theme: Theme, location: Location | null, shadow: any) => ({
+    container: {
+        position: 'absolute',
+        top: -10000,
+        left: -10000,
+        ...location,
+    },
+    shadowContainer: {
+        backgroundColor: theme[ColorVariants.BackgroundPrimary],
+        borderRadius: UILayoutConstant.alertBorderRadius,
+        width: UIConstant.menu.width,
+        paddingHorizontal: UILayoutConstant.contentOffset,
+        ...shadow,
+        /** elevation animates terribly */
+        elevation: undefined,
+    },
+}));
