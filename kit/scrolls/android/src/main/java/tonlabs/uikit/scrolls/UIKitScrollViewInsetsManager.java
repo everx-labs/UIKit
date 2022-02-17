@@ -1,16 +1,20 @@
 package tonlabs.uikit.scrolls;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
 
 import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.uimanager.BaseViewManager;
-import com.facebook.react.uimanager.LayoutShadowNode;
+import com.facebook.react.common.MapBuilder;
+import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
 
 import org.jetbrains.annotations.NotNull;
 
-public class UIKitScrollViewInsetsManager extends BaseViewManager<UIKitScrollViewInsets, LayoutShadowNode> {
+import java.util.Map;
+
+public class UIKitScrollViewInsetsManager extends SimpleViewManager<UIKitScrollViewInsets> {
     @NonNull
     @NotNull
     @Override
@@ -18,34 +22,19 @@ public class UIKitScrollViewInsetsManager extends BaseViewManager<UIKitScrollVie
         return UIKitScrollViewInsets.REACT_CLASS;
     }
 
-    @Override
-    public LayoutShadowNode createShadowNodeInstance() {
-        return new LayoutShadowNode();
-    }
-
-    @Override
-    public Class<? extends LayoutShadowNode> getShadowNodeClass() {
-        return LayoutShadowNode.class;
-    }
-
-    @Override
-    public void updateExtraData(@NonNull @NotNull UIKitScrollViewInsets root, Object extraData) {
-        //
-    }
-
     @NonNull
     @NotNull
     @Override
-    protected UIKitScrollViewInsets createViewInstance(ThemedReactContext reactContext) {
+    protected UIKitScrollViewInsets createViewInstance(@NonNull ThemedReactContext reactContext) {
         return new UIKitScrollViewInsets(reactContext);
     }
 
-    @ReactProp(name = "automaticallyAdjustContentInsets", defaultBoolean = false)
+    @ReactProp(name = "automaticallyAdjustContentInsets")
     public void setAutomaticallyAdjustContentInsets(UIKitScrollViewInsets view, boolean value) {
         view.setAutomaticallyAdjustContentInsets(value);
     }
 
-    @ReactProp(name = "automaticallyAdjustKeyboardInsets", defaultBoolean = false)
+    @ReactProp(name = "automaticallyAdjustKeyboardInsets")
     public void setAutomaticallyAdjustKeyboardInsets(UIKitScrollViewInsets view, boolean value) {
         view.setAutomaticallyAdjustKeyboardInsets(value);
     }
@@ -53,12 +42,25 @@ public class UIKitScrollViewInsetsManager extends BaseViewManager<UIKitScrollVie
     @ReactProp(name = "contentInset")
     public void setContentInset(UIKitScrollViewInsets view, ReadableMap contentInsetMap) {
         view.setContentInset(
-                new EdgeInsets(
+                Insets.of(
                         contentInsetMap.hasKey("top") ? contentInsetMap.getInt("top") : 0,
                         contentInsetMap.hasKey("right") ? contentInsetMap.getInt("right") : 0,
                         contentInsetMap.hasKey("bottom") ? contentInsetMap.getInt("bottom") : 0,
                         contentInsetMap.hasKey("left") ? contentInsetMap.getInt("left") : 0
                 )
         );
+    }
+
+    @Nullable
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public Map<String, Object> getExportedCustomBubblingEventTypeConstants() {
+        return MapBuilder.<String, Object>builder()
+                .put(
+                        "topScrollViewInsetsChange",
+                        MapBuilder.of(
+                                "phasedRegistrationNames",
+                                MapBuilder.of("bubbled", "onScrollViewInsetsChange", "captured", "onScrollViewInsetsChangeCapture")))
+                .build();
     }
 }
