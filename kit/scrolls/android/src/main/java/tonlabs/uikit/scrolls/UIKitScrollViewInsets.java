@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -30,6 +31,7 @@ public class UIKitScrollViewInsets extends FrameLayout implements UIKitScrollVie
 
     private Insets mContentInset = Insets.NONE;
     private Insets mPrevInset = Insets.NONE;
+    private WindowInsetsCompat mLastKnownWindowInsets;
 
     public static final String REACT_CLASS = "UIKitScrollViewInsets";
 
@@ -58,19 +60,9 @@ public class UIKitScrollViewInsets extends FrameLayout implements UIKitScrollVie
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(getContainerView(), (v, insets) -> {
-            Insets initialInsets = Insets.of(mContentInset.left, mContentInset.top, mContentInset.right, mContentInset.bottom);
+            runInsetsChainCalculation(insets);
 
-            InsetsChange change = InsetsChange.makeInstant(initialInsets);
-
-            if (mScrollViewInsetsSafeArea != null) {
-                change = mScrollViewInsetsSafeArea.calculateInsets(change.insets, insets);
-            }
-
-            if (mScrollViewInsetsKeyboard != null) {
-                change = mScrollViewInsetsKeyboard.calculateInsets(change.insets, insets);
-            }
-
-            applyInsetsChange(change);
+            mLastKnownWindowInsets = insets;
 
             return insets;
         });
@@ -100,6 +92,12 @@ public class UIKitScrollViewInsets extends FrameLayout implements UIKitScrollVie
 
     public void setContentInset(Insets contentInset) {
         mContentInset = contentInset;
+
+        if (mLastKnownWindowInsets == null) {
+            return;
+        }
+
+        runInsetsChainCalculation(mLastKnownWindowInsets);
     }
 
     public void setAutomaticallyAdjustContentInsets(boolean automaticallyAdjustContentInsets) {
@@ -137,6 +135,22 @@ public class UIKitScrollViewInsets extends FrameLayout implements UIKitScrollVie
     @Override
     public View getContainerView() {
         return mScrollView == null ? this : mScrollView;
+    }
+
+    private void runInsetsChainCalculation(WindowInsetsCompat insets) {
+        Insets initialInsets = Insets.of(mContentInset.left, mContentInset.top, mContentInset.right, mContentInset.bottom);
+
+        InsetsChange change = InsetsChange.makeInstant(initialInsets);
+
+        if (mScrollViewInsetsSafeArea != null) {
+            change = mScrollViewInsetsSafeArea.calculateInsets(change.insets, insets);
+        }
+
+        if (mScrollViewInsetsKeyboard != null) {
+            change = mScrollViewInsetsKeyboard.calculateInsets(change.insets, insets);
+        }
+
+        applyInsetsChange(change);
     }
 
     private void applyInsetsChange(InsetsChange change) {

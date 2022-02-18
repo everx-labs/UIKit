@@ -19,6 +19,7 @@ import { CellRendererComponent } from './CellRendererComponent';
 
 import { wrapScrollableComponent } from '../../wrapScrollableComponent';
 import { AccordionSectionHeader } from './AccordionSectionHeader';
+import type { RNSectionList } from '../../types';
 
 let now: number;
 
@@ -466,9 +467,7 @@ const UIAccordionSectionListOriginal = React.memo(
     }),
 );
 
-export const UIAccordionSectionList: <ItemT>(
-    props: SectionListProps<ItemT, UIAccordionSection<ItemT>>,
-) => JSX.Element = wrapScrollableComponent(
+export const UIAccordionSectionList: typeof RNSectionList = wrapScrollableComponent(
     UIAccordionSectionListOriginal,
     'UIAccordionSectionList',
 );

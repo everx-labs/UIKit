@@ -43,10 +43,10 @@ public class UIKitScrollViewInsetsManager extends SimpleViewManager<UIKitScrollV
     public void setContentInset(UIKitScrollViewInsets view, ReadableMap contentInsetMap) {
         view.setContentInset(
                 Insets.of(
+                        contentInsetMap.hasKey("left") ? contentInsetMap.getInt("left") : 0,
                         contentInsetMap.hasKey("top") ? contentInsetMap.getInt("top") : 0,
                         contentInsetMap.hasKey("right") ? contentInsetMap.getInt("right") : 0,
-                        contentInsetMap.hasKey("bottom") ? contentInsetMap.getInt("bottom") : 0,
-                        contentInsetMap.hasKey("left") ? contentInsetMap.getInt("left") : 0
+                        contentInsetMap.hasKey("bottom") ? contentInsetMap.getInt("bottom") : 0
                 )
         );
     }

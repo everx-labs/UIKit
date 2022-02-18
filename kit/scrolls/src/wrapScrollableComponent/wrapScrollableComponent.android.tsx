@@ -93,17 +93,22 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
 
             return {
                 ...style,
+                paddingHorizontal: undefined,
+                paddingVertical: undefined,
                 paddingLeft: getContentContainerPadding(
-                    style.paddingLeft,
+                    style.paddingLeft || style.paddingHorizontal,
                     internalContentInset.left,
                 ),
-                paddingTop: getContentContainerPadding(style.paddingTop, internalContentInset.top),
+                paddingTop: getContentContainerPadding(
+                    style.paddingTop || style.paddingVertical,
+                    internalContentInset.top,
+                ),
                 paddingRight: getContentContainerPadding(
-                    style.paddingRight,
+                    style.paddingRight || style.paddingHorizontal,
                     internalContentInset.right,
                 ),
                 paddingBottom: getContentContainerPadding(
-                    style.paddingBottom,
+                    style.paddingBottom || style.paddingVertical,
                     internalContentInset.bottom,
                 ),
             };
