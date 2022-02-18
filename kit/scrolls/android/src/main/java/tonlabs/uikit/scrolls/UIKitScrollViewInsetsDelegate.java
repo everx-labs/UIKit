@@ -1,5 +1,9 @@
 package tonlabs.uikit.scrolls;
 
+import android.app.Activity;
+import android.view.View;
+
 public interface UIKitScrollViewInsetsDelegate {
-    void onInsetsShouldBeRecalculated();
+    View getContainerView();
+    Activity getCurrentActivity();
 }

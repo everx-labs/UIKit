@@ -1,38 +1,45 @@
 package tonlabs.uikit.scrolls;
 
-import android.view.View;
+import android.util.DisplayMetrics;
 
 import androidx.core.graphics.Insets;
-import androidx.core.view.OnApplyWindowInsetsListener;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class UIKitScrollViewInsetsKeyboard {
-    private UIKitScrollViewInsetsDelegate mDelegate;
-    private Insets mLastKnownImeInsets = Insets.NONE;
+    private final UIKitScrollViewInsetsDelegate mDelegate;
 
-    UIKitScrollViewInsetsKeyboard(UIKitScrollViewInsetsDelegate delegate, View view) {
+    UIKitScrollViewInsetsKeyboard(UIKitScrollViewInsetsDelegate delegate) {
         mDelegate = delegate;
-
-        ViewCompat.setOnApplyWindowInsetsListener(view, new OnApplyWindowInsetsListener() {
-            @Override
-            public WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
-                mLastKnownImeInsets = insets.getInsets(WindowInsetsCompat.Type.ime());
-
-                mDelegate.onInsetsShouldBeRecalculated();
-
-                return insets;
-            }
-        });
     }
 
-    public InsetsChange calculateInsets(Insets insets) {
+    public InsetsChange calculateInsets(Insets insetsInChain, WindowInsetsCompat insets) {
+        Insets imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime());
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        mDelegate.getCurrentActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int screenHeight = displayMetrics.heightPixels;
+
+        int[] location = new int[2];
+        mDelegate.getContainerView().getLocationOnScreen(location);
+        int y = location[1];
+
+        int viewBottomY = y + mDelegate.getContainerView().getHeight();
+
+        int absoluteImeBottom = screenHeight - imeInsets.bottom;
+
+        Insets keyboardInset = Insets.of(
+                imeInsets.left,
+                imeInsets.top,
+                imeInsets.right,
+                Math.min(viewBottomY, screenHeight) - absoluteImeBottom
+        );
+
         return InsetsChange.makeInstant(
                 Insets.of(
-                        insets.left,
-                        insets.top,
-                        insets.right,
-                        Math.max(insets.bottom, mLastKnownImeInsets.bottom)
+                        insetsInChain.left,
+                        insetsInChain.top,
+                        insetsInChain.right,
+                        Math.max(insetsInChain.bottom, keyboardInset.bottom)
                 )
         );
     }

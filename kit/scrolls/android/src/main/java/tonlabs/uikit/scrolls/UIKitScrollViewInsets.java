@@ -1,5 +1,7 @@
 package tonlabs.uikit.scrolls;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -7,12 +9,14 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
 
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.views.scroll.ReactScrollView;
 import com.facebook.react.uimanager.UIManagerHelper;
 
+@SuppressLint("ViewConstructor")
 public class UIKitScrollViewInsets extends FrameLayout implements UIKitScrollViewInsetsDelegate {
     private ReactScrollView mScrollView;
     private final ReactContext mReactContext;
@@ -46,12 +50,30 @@ public class UIKitScrollViewInsets extends FrameLayout implements UIKitScrollVie
         }
 
         if (manageSafeArea) {
-            mScrollViewInsetsSafeArea = new UIKitScrollViewInsetsSafeArea(this, mScrollView == null ? this : mScrollView);
+            mScrollViewInsetsSafeArea = new UIKitScrollViewInsetsSafeArea(this);
         }
 
         if (manageKeyboard) {
-            mScrollViewInsetsKeyboard = new UIKitScrollViewInsetsKeyboard(this, this);
+            mScrollViewInsetsKeyboard = new UIKitScrollViewInsetsKeyboard(this);
         }
+
+        ViewCompat.setOnApplyWindowInsetsListener(getContainerView(), (v, insets) -> {
+            Insets initialInsets = Insets.of(mContentInset.left, mContentInset.top, mContentInset.right, mContentInset.bottom);
+
+            InsetsChange change = InsetsChange.makeInstant(initialInsets);
+
+            if (mScrollViewInsetsSafeArea != null) {
+                change = mScrollViewInsetsSafeArea.calculateInsets(change.insets, insets);
+            }
+
+            if (mScrollViewInsetsKeyboard != null) {
+                change = mScrollViewInsetsKeyboard.calculateInsets(change.insets, insets);
+            }
+
+            applyInsetsChange(change);
+
+            return insets;
+        });
 
         isAttachedToWindow = true;
     }
@@ -91,7 +113,7 @@ public class UIKitScrollViewInsets extends FrameLayout implements UIKitScrollVie
             return;
         }
 
-        mScrollViewInsetsSafeArea = new UIKitScrollViewInsetsSafeArea(this, mScrollView == null ? this : mScrollView);
+        mScrollViewInsetsSafeArea = new UIKitScrollViewInsetsSafeArea(this);
     }
 
     public void setAutomaticallyAdjustKeyboardInsets(boolean automaticallyAdjustKeyboardInsets) {
@@ -104,24 +126,17 @@ public class UIKitScrollViewInsets extends FrameLayout implements UIKitScrollVie
             mScrollViewInsetsKeyboard = null;
         }
 
-        mScrollViewInsetsKeyboard = new UIKitScrollViewInsetsKeyboard(this, this);
+        mScrollViewInsetsKeyboard = new UIKitScrollViewInsetsKeyboard(this);
     }
 
     @Override
-    public void onInsetsShouldBeRecalculated() {
-        Insets insets = Insets.of(this.mContentInset.left, this.mContentInset.top, this.mContentInset.right, this.mContentInset.bottom);
+    public Activity getCurrentActivity() {
+        return mReactContext.getCurrentActivity();
+    }
 
-        InsetsChange change = InsetsChange.makeInstant(insets);
-
-        if (mScrollViewInsetsSafeArea != null) {
-            change = mScrollViewInsetsSafeArea.calculateInsets(insets);
-        }
-
-        if (mScrollViewInsetsKeyboard != null) {
-            change = mScrollViewInsetsKeyboard.calculateInsets(change.insets);
-        }
-
-        this.applyInsetsChange(change);
+    @Override
+    public View getContainerView() {
+        return mScrollView == null ? this : mScrollView;
     }
 
     private void applyInsetsChange(InsetsChange change) {
