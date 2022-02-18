@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { TextInput, Platform } from 'react-native';
+import type { SharedValue } from 'react-native-reanimated';
 import { calculateWebInputHeight } from '../useAutogrowTextView';
 import type { UIMaterialTextViewRef } from './types';
 
@@ -8,6 +9,7 @@ export function useExtendedRef(
     localRef: React.RefObject<TextInput>,
     multiline: boolean | undefined,
     onChangeText: (text: string, callOnChangeProp?: boolean) => string,
+    imperativeText: SharedValue<string>,
 ) {
     // @ts-ignore
     React.useImperativeHandle(forwardedRed, () => ({
@@ -29,9 +31,12 @@ export function useExtendedRef(
         },
         // Custom one
         changeText: (text: string, callOnChangeProp?: boolean) => {
-            localRef.current?.setNativeProps({
-                text,
-            });
+            console.log('changeText', text);
+            // localRef.current?.setNativeProps({
+            //     text,
+            // });
+            // eslint-disable-next-line no-param-reassign
+            imperativeText.value = text;
 
             if (multiline) {
                 if (Platform.OS === 'web') {

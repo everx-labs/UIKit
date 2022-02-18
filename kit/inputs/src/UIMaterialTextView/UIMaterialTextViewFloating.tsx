@@ -1,10 +1,18 @@
 import * as React from 'react';
-import { TextInput, View } from 'react-native';
+import { Platform, TextInput, View } from 'react-native';
 
-import { useHover } from '@tonlabs/uikit.controls';
+import { useHover, addNativeProps } from '@tonlabs/uikit.controls';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { makeStyles, useTheme, Theme, ColorVariants } from '@tonlabs/uikit.themes';
-import Animated, { interpolate, useAnimatedStyle, Layout } from 'react-native-reanimated';
+import Animated, {
+    interpolate,
+    useAnimatedStyle,
+    Layout,
+    useAnimatedProps,
+    useSharedValue,
+    runOnJS,
+    runOnUI,
+} from 'react-native-reanimated';
 import { UITextView, useFocused, useUITextViewValue } from '../UITextView';
 
 import { useMaterialTextViewChildren } from './useMaterialTextViewChildren';
@@ -25,7 +33,19 @@ const POSITION_EXPANDED: number = 1;
 // @inline
 const EXPANDED_INPUT_OFFSET: number = 8;
 
-const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
+Animated.addWhitelistedNativeProps({ text: true });
+
+const UITextViewAnimated = Animated.createAnimatedComponent(
+    addNativeProps(UITextView, {
+        text: true,
+        /**
+         * Used for web
+         */
+        value: true,
+    }),
+);
+
+// const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
 
 const getIsExpanded = (isFocused: boolean, inputHasValue: boolean): boolean => {
     return isFocused || inputHasValue;
@@ -66,7 +86,7 @@ export const UIMaterialTextViewFloating = React.forwardRef<
     UIMaterialTextViewRef,
     UIMaterialTextViewProps
 >(function UIMaterialTextViewFloatingForwarded(props: UIMaterialTextViewProps, passedRef) {
-    const { label, onLayout, children, onHeightChange, borderViewRef, ...rest } = props;
+    const { label, onLayout, children, onHeightChange, borderViewRef, value, ...rest } = props;
     const ref = React.useRef<TextInput>(null);
     const theme = useTheme();
     const {
@@ -74,7 +94,6 @@ export const UIMaterialTextViewFloating = React.forwardRef<
         clear: clearInput,
         onChangeText: onChangeTextProp,
     } = useUITextViewValue(ref, false, props);
-    useExtendedRef(passedRef, ref, props.multiline, onChangeTextProp);
     const {
         isFocused,
         onFocus,
@@ -125,6 +144,38 @@ export const UIMaterialTextViewFloating = React.forwardRef<
 
     const styles = useStyles(theme);
 
+    const imperativeText = useSharedValue('');
+
+    function runUIChangeText(text: string) {
+        'worklet';
+
+        imperativeText.value = text;
+        console.log('onChangeText', text);
+
+        runOnJS(onChangeTextProp)(text);
+    }
+
+    function onChangeText(text: string) {
+        runOnUI(runUIChangeText)(text);
+    }
+
+    useExtendedRef(passedRef, ref, props.multiline, onChangeTextProp, imperativeText);
+    const animatedProps = useAnimatedProps(() => {
+        console.log({ imperativeText: imperativeText.value });
+        if (Platform.OS === 'web') {
+            return {
+                value: imperativeText.value,
+                // onChangeText,
+            };
+        }
+        return {
+            text: imperativeText.value,
+            // onChangeText,
+        };
+    });
+
+    console.log(value);
+
     return (
         <UIMaterialTextViewComment {...props}>
             <View
@@ -145,13 +196,14 @@ export const UIMaterialTextViewFloating = React.forwardRef<
                         }
                         onFocus={onFocus}
                         onBlur={onBlur}
-                        onChangeText={onChangeTextProp}
+                        onChangeText={onChangeText}
                         onContentSizeChange={onContentSizeChange}
                         onChange={onChange}
                         numberOfLines={numberOfLines}
                         style={style}
                         layout={Layout}
                         scrollEnabled={false}
+                        animatedProps={animatedProps}
                     />
                     <FloatingLabel expandingValue={expandingValue} isHovered={isHovered}>
                         {label}

@@ -8,14 +8,16 @@ import { UIMaterialTextViewFloating } from './UIMaterialTextViewFloating';
 import { UIMaterialTextViewSimple } from './UIMaterialTextViewSimple';
 import type { UIMaterialTextViewRef, UIMaterialTextViewProps } from './types';
 
-const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMaterialTextViewProps>(
-    function UIMaterialTextViewForward(props: UIMaterialTextViewProps, ref) {
-        const { label } = props;
-        if (label) {
-            return <UIMaterialTextViewFloating {...props} ref={ref} />;
-        }
-        return <UIMaterialTextViewSimple {...props} ref={ref} />;
-    },
+const UIMaterialTextViewForward = React.memo(
+    React.forwardRef<UIMaterialTextViewRef, UIMaterialTextViewProps>(
+        function UIMaterialTextViewForward(props: UIMaterialTextViewProps, ref) {
+            const { label } = props;
+            if (label) {
+                return <UIMaterialTextViewFloating {...props} ref={ref} />;
+            }
+            return <UIMaterialTextViewSimple {...props} ref={ref} />;
+        },
+    ),
 );
 
 // @ts-expect-error

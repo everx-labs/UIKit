@@ -4,7 +4,7 @@ import { TextInput, View } from 'react-native';
 import { useHover } from '@tonlabs/uikit.controls';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { makeStyles, useTheme, Theme, ColorVariants } from '@tonlabs/uikit.themes';
-import Animated, { Layout } from 'react-native-reanimated';
+import Animated, { Layout, useSharedValue } from 'react-native-reanimated';
 import { UITextView, useFocused, useUITextViewValue } from '../UITextView';
 
 import { useMaterialTextViewChildren } from './useMaterialTextViewChildren';
@@ -28,7 +28,8 @@ export const UIMaterialTextViewSimple = React.forwardRef<
         clear: clearInput,
         onChangeText: onChangeTextProp,
     } = useUITextViewValue(ref, false, props);
-    useExtendedRef(passedRef, ref, props.multiline, onChangeTextProp);
+    const imperativeText = useSharedValue('');
+    useExtendedRef(passedRef, ref, props.multiline, onChangeTextProp, imperativeText);
     const { isFocused, onFocus, onBlur } = useFocused(props.onFocus, props.onBlur);
     const { onContentSizeChange, onChange, numberOfLines, style, resetInputHeight } = useAutogrow(
         ref,

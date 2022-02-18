@@ -3,7 +3,12 @@ import { useState } from 'react';
 import BigNumber from 'bignumber.js';
 import { View } from 'react-native';
 
-import { UIMaterialTextView, UISeedPhraseTextView, UINumberTextView } from '@tonlabs/uikit.inputs';
+import {
+    UIMaterialTextView,
+    UISeedPhraseTextView,
+    UINumberTextView,
+    UIMaterialTextViewRef,
+} from '@tonlabs/uikit.inputs';
 import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAddressTextView } from '@tonlabs/uicast.address-text';
 import { UIAmountInput, UIDetailsInput, UITransferInput } from '@tonlabs/uikit.components';
@@ -85,6 +90,7 @@ export const Inputs = () => {
     const mnemonicWords = ['report', 'replenish', 'meadow', 'village', 'slight'];
     const [text, setText] = useState('test');
     const [transfer, setTransfer] = useState(new BigNumber(0));
+    const ref: React.Ref<UIMaterialTextViewRef> = React.useRef(null);
     return (
         <ExampleScreen>
             <ExampleSection title="UINumberTextView">
@@ -94,12 +100,19 @@ export const Inputs = () => {
                 <View style={{ maxWidth: 400, padding: 20, alignSelf: 'stretch' }}>
                     <UIMaterialTextView
                         testID="uiMaterialTextView_without_label"
-                        label=""
+                        label="Label1"
                         placeholder="Placeholder without Label"
                         helperText="Caption"
+                        ref={ref}
                     />
                     <View style={{ height: 20 }} />
-                    <UIMaterialTextView testID="uiMaterialTextView_default" label="Label" />
+                    <UIMaterialTextView
+                        testID="uiMaterialTextView_default"
+                        label="Label"
+                        onChangeText={asd => {
+                            ref.current?.changeText(asd);
+                        }}
+                    />
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
                         testID="uiMaterialTextView_with_initial_value"
