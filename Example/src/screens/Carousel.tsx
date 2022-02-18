@@ -4,13 +4,13 @@ import { View, Text } from 'react-native';
 import { UICarouselView } from '@tonlabs/uicast.carousel-view';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIImage } from '@tonlabs/uikit.media';
-import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
+
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
 const DATA = ['Hello', 'this', 'is', 'UICarouselView'];
 
-export const Carousel = () => {
+export function CarouselScreen() {
     const onPageIndexChange = (index: number) => {
         console.log('page changed', index);
     };
@@ -49,22 +49,5 @@ export const Carousel = () => {
                 </View>
             </ExampleSection>
         </ExampleScreen>
-    );
-};
-
-const CarouselStack = createStackNavigator();
-
-export function CarouselScreen() {
-    return (
-        <CarouselStack.Navigator>
-            <CarouselStack.Screen
-                name="CarouselWindow"
-                options={{
-                    useHeaderLargeTitle: true,
-                    title: 'Carousel',
-                }}
-                component={Carousel}
-            />
-        </CarouselStack.Navigator>
     );
 }

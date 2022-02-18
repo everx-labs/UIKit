@@ -18,7 +18,6 @@ function SheetContent({ children }: { children: React.ReactNode }) {
                 paddingBottom,
                 paddingHorizontal: UILayoutConstant.contentOffset,
             }}
-            // @ts-expect-error
             containerStyle={scrollIntrinsicStyle}
             onContentSizeChange={onContentSizeChange}
         >

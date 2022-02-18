@@ -86,7 +86,6 @@ function UIBoxPickerContent<Box extends AbstractBox>({
             </UIBackgroundView>
             <ScrollView
                 contentContainerStyle={styles.itemContentContainerStyle}
-                // @ts-expect-error
                 containerStyle={scrollIntrinsicStyle}
                 onContentSizeChange={onContentSizeChange}
             >

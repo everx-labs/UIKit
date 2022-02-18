@@ -1,9 +1,11 @@
 import * as React from 'react';
-import type { ScrollViewProps, StyleProp, ViewStyle } from 'react-native';
+import type { ScrollViewProps } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { ScrollableContext } from '../Context';
 import { useHasScroll } from './useHasScroll';
+import { ScrollableAutomaticInsets } from './ScrollableAutomaticInsets';
+import type { ScrollableAdditionalProps } from './types';
 
 export function wrapScrollableComponent<Props extends ScrollViewProps>(
     ScrollableComponent: React.ComponentClass<Props>,
@@ -14,8 +16,15 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
     function ScrollableForwarded(
         {
             containerStyle = { flex: 1 },
+            automaticallyAdjustContentInsets,
+            automaticallyAdjustKeyboardInsets,
+            contentInset,
+            scrollIndicatorInsets,
             ...props
-        }: Props & { children?: React.ReactNode; containerStyle: StyleProp<ViewStyle> },
+        }: Props &
+            ScrollableAdditionalProps & {
+                children?: React.ReactNode;
+            },
         forwardRef: React.RefObject<typeof AnimatedScrollable>,
     ) {
         const {
@@ -48,6 +57,9 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
             return ref?.current;
         });
 
+        const automaticInsets =
+            automaticallyAdjustContentInsets || automaticallyAdjustKeyboardInsets;
+
         return (
             <Animated.View style={containerStyle}>
                 {/* @ts-ignore */}
@@ -58,7 +70,18 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
                     scrollEventThrottle={16}
                     onLayout={horizontal ? undefined : onLayout}
                     onContentSizeChange={horizontal ? undefined : onContentSizeChange}
+                    contentInset={automaticInsets ? undefined : contentInset}
+                    scrollIndicatorInsets={automaticInsets ? undefined : scrollIndicatorInsets}
                 />
+                {automaticInsets ? (
+                    // The position of a component is very important
+                    // See UIKitScrollViewInsets.m for details
+                    <ScrollableAutomaticInsets
+                        automaticallyAdjustContentInsets={automaticallyAdjustContentInsets}
+                        automaticallyAdjustKeyboardInsets={automaticallyAdjustKeyboardInsets}
+                        contentInset={contentInset}
+                    />
+                ) : null}
             </Animated.View>
         );
     }

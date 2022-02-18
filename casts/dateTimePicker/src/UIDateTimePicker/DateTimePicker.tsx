@@ -168,7 +168,6 @@ function DatePickerContent(props: UIDateTimePickerProps) {
             />
             <UIBackgroundView color={ColorVariants.BackgroundTertiary} style={styles.underline} />
             <ScrollView
-                // @ts-expect-error
                 containerStyle={style}
                 onContentSizeChange={onContentSizeChange}
                 keyboardShouldPersistTaps="handled"
