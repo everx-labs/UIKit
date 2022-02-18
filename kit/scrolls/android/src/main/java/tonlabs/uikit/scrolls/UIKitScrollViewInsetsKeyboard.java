@@ -1,9 +1,9 @@
 package tonlabs.uikit.scrolls;
 
-import android.util.DisplayMetrics;
-
 import androidx.core.graphics.Insets;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.facebook.react.uimanager.DisplayMetricsHolder;
 
 public class UIKitScrollViewInsetsKeyboard {
     private final UIKitScrollViewInsetsDelegate mDelegate;
@@ -15,9 +15,7 @@ public class UIKitScrollViewInsetsKeyboard {
     public InsetsChange calculateInsets(Insets insetsInChain, WindowInsetsCompat insets) {
         Insets imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime());
 
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        mDelegate.getCurrentActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int screenHeight = displayMetrics.heightPixels;
+        int screenHeight = DisplayMetricsHolder.getScreenDisplayMetrics().heightPixels;
 
         int[] location = new int[2];
         mDelegate.getContainerView().getLocationOnScreen(location);
@@ -25,13 +23,13 @@ public class UIKitScrollViewInsetsKeyboard {
 
         int viewBottomY = y + mDelegate.getContainerView().getHeight();
 
-        int absoluteImeBottom = screenHeight - imeInsets.bottom;
+        int absoluteImeBottomY = screenHeight - imeInsets.bottom;
 
         Insets keyboardInset = Insets.of(
                 imeInsets.left,
                 imeInsets.top,
                 imeInsets.right,
-                Math.min(viewBottomY, screenHeight) - absoluteImeBottom
+                Math.min(viewBottomY, screenHeight) - absoluteImeBottomY
         );
 
         return InsetsChange.makeInstant(
