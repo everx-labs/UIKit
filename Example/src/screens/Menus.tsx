@@ -5,7 +5,7 @@ import { Platform, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant } from '@tonlabs/uikit.core';
-import { UIPopover, UIPopoverMenu } from '@tonlabs/uikit.navigation_legacy';
+import { UIPopover } from '@tonlabs/uikit.navigation_legacy';
 import { UILargeTitleHeader } from '@tonlabs/uicast.bars';
 import { UIQRCodeScannerSheet } from '@tonlabs/uicast.qr-code-scanner-sheet';
 import {
@@ -684,25 +684,6 @@ export const Menus = () => {
                     <UIPopover placement="top" component={<Text>This is a popover</Text>}>
                         <UILinkButton testID="show_uiPopover" title="Show UIPopover" />
                     </UIPopover>
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UIPopoverMenu">
-                <View style={{ paddingVertical: 20 }}>
-                    <UIPopoverMenu
-                        placement="top"
-                        menuItemsList={[
-                            {
-                                title: 'Item 1',
-                                onPress: () => alert('Action 1 was called'),
-                            },
-                            {
-                                title: 'Item 2',
-                                onPress: () => alert('Action 2 was called'),
-                            },
-                        ]}
-                    >
-                        <UILinkButton title="Show UIPopoverMenu" />
-                    </UIPopoverMenu>
                 </View>
             </ExampleSection>
         </ExampleScreen>
