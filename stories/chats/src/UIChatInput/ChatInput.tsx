@@ -4,13 +4,14 @@ import type { TextInput } from 'react-native';
 import { uiLocalized } from '@tonlabs/localization';
 import { UITextView, useAutogrowTextView } from '@tonlabs/uikit.inputs';
 import { UIPopup } from '@tonlabs/uikit.popups';
+import type { UIMenuActionProps } from '@tonlabs/uikit.popups';
 
 import { ChatInputContainer } from './ChatInputContainer';
 import { MenuPlus } from './MenuPlus';
 import { MenuMore } from './MenuMore';
 import { QuickAction } from './QuickActions';
 import { useChatInputValue } from './useChatInputValue';
-import type { MenuItem, QuickActionItem, OnSendText, Shortcut } from './types';
+import type { QuickActionItem, OnSendText, Shortcut } from './types';
 
 const MAX_INPUT_LENGTH = 2 ** 10;
 
@@ -22,9 +23,9 @@ type ChatInputProps = {
     editable: boolean;
     placeholder?: string;
     shortcuts?: Shortcut[];
-    menuPlus?: MenuItem[];
+    menuPlus?: UIMenuActionProps[];
     menuPlusDisabled?: boolean;
-    menuMore?: MenuItem[];
+    menuMore?: UIMenuActionProps[];
     menuMoreDisabled?: boolean;
     quickActions?: QuickActionItem[];
     inputHidden?: boolean;
