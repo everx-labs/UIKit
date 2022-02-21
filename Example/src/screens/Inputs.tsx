@@ -91,7 +91,13 @@ export const Inputs = () => {
                 <UINumberTextView testID="uiNumberTextView_default" placeholder="Put number" />
             </ExampleSection>
             <ExampleSection title="UIMaterialTextView">
-                <View style={{ maxWidth: 300, paddingVertical: 20, minWidth: 250 }}>
+                <View style={{ maxWidth: 400, padding: 20, alignSelf: 'stretch' }}>
+                    <UIMaterialTextView
+                        testID="uiMaterialTextView_without_label"
+                        placeholder="Placeholder without Label"
+                        helperText="Caption"
+                    />
+                    <View style={{ height: 20 }} />
                     <UIMaterialTextView testID="uiMaterialTextView_default" label="Label" />
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
@@ -99,31 +105,35 @@ export const Inputs = () => {
                         label="Label with initial value"
                         value={text}
                         onChangeText={setText}
-                        helperText="Hint"
+                        helperText="Caption"
                     />
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
                         testID="uiMaterialTextView_with_placeholder"
                         label="Label with placeholder"
                         onChangeText={setText}
-                        helperText="Hint"
+                        helperText="Success"
+                        success
                         placeholder="Works with folded label"
                     />
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
                         testID="uiMaterialTextView_with_icon"
                         label="Input with right icon"
-                        helperText="Hint"
+                        helperText="Warning"
+                        warning
                     >
                         <UIMaterialTextView.Icon
                             source={UIAssets.icons.ui.buttonClose}
                             tintColor={ColorVariants.IconSecondary}
                         />
                     </UIMaterialTextView>
+                    <View style={{ height: 20 }} />
                     <UIMaterialTextView
                         testID="uiMaterialTextView_with_icons"
                         label="Input with right icon"
-                        helperText="Hint"
+                        helperText="Error"
+                        error
                     >
                         <UIMaterialTextView.Icon
                             source={UIAssets.icons.ui.buttonPlus}
@@ -138,7 +148,7 @@ export const Inputs = () => {
                     <UIMaterialTextView
                         testID="uiMaterialTextView_with_action"
                         label="Input with right action"
-                        helperText="Hint"
+                        helperText="Caption"
                     >
                         <UIMaterialTextView.Action>Action</UIMaterialTextView.Action>
                     </UIMaterialTextView>
@@ -146,48 +156,16 @@ export const Inputs = () => {
                     <UIMaterialTextView
                         testID="uiMaterialTextView_with_text"
                         label="Input with right text"
-                        helperText="Hint"
+                        helperText="Caption"
                     >
                         <UIMaterialTextView.Text>Text</UIMaterialTextView.Text>
                     </UIMaterialTextView>
                     <View style={{ height: 20 }} />
-                    <UIMaterialTextView
-                        testID="uiMaterialTextView_without_floating"
-                        floating={false}
-                        label="Label"
-                    />
-                    <View style={{ height: 20 }} />
-                    <UIMaterialTextView
-                        testID="uiMaterialTextView_without_placeholder"
-                        floating={false}
-                        label="Label with initial value"
-                        value={text}
-                        onChangeText={setText}
-                        helperText="Hint"
-                    />
-                    <View style={{ height: 20 }} />
-                    <UIMaterialTextView
-                        testID="uiMaterialTextView_with_action"
-                        floating={false}
-                        label="Input with right action"
-                        helperText="Hint"
-                    >
-                        <UIMaterialTextView.Action>Action</UIMaterialTextView.Action>
-                    </UIMaterialTextView>
-                    <View style={{ height: 20 }} />
-                    <UIMaterialTextView
-                        testID="uiMaterialTextView_no_label_animation"
-                        floating={false}
-                        label="Input with right text"
-                        helperText="Hint"
-                    >
-                        <UIMaterialTextView.Text>Text</UIMaterialTextView.Text>
-                    </UIMaterialTextView>
                     <UIMaterialTextView
                         testID="uiMaterialTextView_multiline"
                         multiline
                         label="Input multiline"
-                        helperText="Hint"
+                        helperText="Caption"
                         defaultValue="Very long text that should be multiline and that is what we gonna check there"
                     />
                 </View>
@@ -222,7 +200,7 @@ export const Inputs = () => {
                 </View>
             </ExampleSection>
             <ExampleSection title="UIAddressInput">
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <View style={{ width: 300, paddingVertical: 20 }}>
                     <UIAddressTextView
                         testID="uiAddressInput_default"
                         label="Type address"
@@ -238,7 +216,7 @@ export const Inputs = () => {
                 </View>
             </ExampleSection>
             <ExampleSection title="UIAmountInput">
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <View style={{ width: 300, paddingVertical: 20 }}>
                     <UIAmountInput
                         testID="uiAmountInput_default"
                         placeholder="Amount"
@@ -247,7 +225,7 @@ export const Inputs = () => {
                         onChangeText={(newText: string) => setAmount(newText)}
                     />
                 </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <View style={{ width: 300, paddingVertical: 20 }}>
                     <UIAmountInput
                         testID="uiAmountInput_with_trailing_value"
                         placeholder="Amount"
@@ -259,7 +237,7 @@ export const Inputs = () => {
                 </View>
             </ExampleSection>
             <ExampleSection title="UIDetailsInput">
-                <View style={{ paddingVertical: 20 }} testID="uiDetailsInput_default">
+                <View style={{ width: 300, paddingVertical: 20 }} testID="uiDetailsInput_default">
                     <UIDetailsInput
                         placeholder="Details"
                         comment="Some comment here"
@@ -267,7 +245,7 @@ export const Inputs = () => {
                         onChangeText={(newText: string) => setDetails(newText)}
                     />
                 </View>
-                <View testID="uiDetailsInput_multiline" style={{ paddingVertical: 20 }}>
+                <View testID="uiDetailsInput_multiline" style={{ width: 300, paddingVertical: 20 }}>
                     <UIDetailsInput
                         placeholder="Multiline details"
                         comment="Some comment here"
@@ -279,7 +257,7 @@ export const Inputs = () => {
                 </View>
             </ExampleSection>
             <ExampleSection title="UITransferInput">
-                <View testID="uiTransferInput_default" style={{ paddingVertical: 20 }}>
+                <View testID="uiTransferInput_default" style={{ width: 300, paddingVertical: 20 }}>
                     <UITransferInput
                         value={transfer}
                         placeholder="Your transfer"
