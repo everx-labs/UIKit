@@ -90,7 +90,7 @@ function useCountriesSearch(
     const [searching, setSearching] = React.useState(false);
     const [countriesList, setCountriesList] = React.useState<CountriesArray>([]);
     const [filteredList, setFilteredList] = React.useState(countriesList);
-    const fuse = React.useMemo(() => new Fuse(filteredList, fuseOptions), [filteredList]);
+    const fuse = React.useMemo(() => new Fuse(countriesList, fuseOptions), [filteredList]);
 
     const checkIncludes = React.useCallback(
         (code: string) => {
