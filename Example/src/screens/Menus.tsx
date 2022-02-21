@@ -1,11 +1,10 @@
 /* eslint-disable no-alert */
 /* eslint-disable react/no-unused-prop-types */
 import * as React from 'react';
-import { Platform, Text, TouchableOpacity, View } from 'react-native';
+import { Platform, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIConstant } from '@tonlabs/uikit.core';
-import { UIPopover } from '@tonlabs/uikit.navigation_legacy';
 import { UILargeTitleHeader } from '@tonlabs/uicast.bars';
 import { UIQRCodeScannerSheet } from '@tonlabs/uicast.qr-code-scanner-sheet';
 import {
@@ -677,13 +676,6 @@ export const Menus = () => {
                             onPress={getMenuCallback('Disabled Action')}
                         />
                     </UIPopup.Menu>
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UIPopover">
-                <View style={{ paddingVertical: 20 }}>
-                    <UIPopover placement="top" component={<Text>This is a popover</Text>}>
-                        <UILinkButton testID="show_uiPopover" title="Show UIPopover" />
-                    </UIPopover>
                 </View>
             </ExampleSection>
         </ExampleScreen>
