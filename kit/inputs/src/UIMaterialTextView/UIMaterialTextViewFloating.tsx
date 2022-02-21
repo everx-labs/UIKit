@@ -66,7 +66,7 @@ export const UIMaterialTextViewFloating = React.forwardRef<
     UIMaterialTextViewRef,
     UIMaterialTextViewProps
 >(function UIMaterialTextViewFloatingForwarded(props: UIMaterialTextViewProps, passedRef) {
-    const { label, onLayout, children, onHeightChange, borderViewRef, ...rest } = props;
+    const { label = '', onLayout, children, onHeightChange, borderViewRef, ...rest } = props;
     const ref = React.useRef<TextInput>(null);
     const theme = useTheme();
     const {

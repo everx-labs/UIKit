@@ -3,7 +3,7 @@ import type { UITextViewProps } from '../UITextView';
 import type { OnHeightChange } from '../useAutogrowTextView';
 
 export type UIMaterialTextViewProps = UITextViewProps & {
-    label: string;
+    label?: string;
     helperText?: string;
     error?: boolean;
     warning?: boolean;

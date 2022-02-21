@@ -94,7 +94,6 @@ export const Inputs = () => {
                 <View style={{ maxWidth: 400, padding: 20, alignSelf: 'stretch' }}>
                     <UIMaterialTextView
                         testID="uiMaterialTextView_without_label"
-                        label=""
                         placeholder="Placeholder without Label"
                         helperText="Caption"
                     />
