@@ -155,22 +155,18 @@ export const UIMaterialTextViewFloating = React.forwardRef<
         runOnJS(onChangeTextProp)(text);
     }
 
-    function onChangeText(text: string) {
-        runOnUI(runUIChangeText)(text);
-    }
-
     useExtendedRef(passedRef, ref, props.multiline, onChangeTextProp, imperativeText);
     const animatedProps = useAnimatedProps(() => {
         console.log({ imperativeText: imperativeText.value });
         if (Platform.OS === 'web') {
             return {
                 value: imperativeText.value,
-                // onChangeText,
+                onChangeText: runUIChangeText,
             };
         }
         return {
             text: imperativeText.value,
-            // onChangeText,
+            onChangeText: runUIChangeText,
         };
     });
 
@@ -196,7 +192,7 @@ export const UIMaterialTextViewFloating = React.forwardRef<
                         }
                         onFocus={onFocus}
                         onBlur={onBlur}
-                        onChangeText={onChangeText}
+                        // onChangeText={onChangeText}
                         onContentSizeChange={onContentSizeChange}
                         onChange={onChange}
                         numberOfLines={numberOfLines}
