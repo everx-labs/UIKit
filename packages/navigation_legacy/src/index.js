@@ -5,8 +5,6 @@ export { default as UIModalController } from './UIModalController';
 export { default as UIPopover } from './UIPopover';
 export { default as UIPopoverBackground } from './UIPopoverBackground';
 export { default as UIPopoverMenu } from './UIPopoverMenu';
-export { default as UIShareManager } from './UIShareManager';
-export { default as UIShareScreen } from './UIShareManager/UIShareScreen';
 
 export type * from './UIPopoverMenu/MenuItem';
 export type * from './UIModalController';

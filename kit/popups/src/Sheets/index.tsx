@@ -5,3 +5,4 @@ export * from './UIBottomSheet';
 export * from './useIntrinsicSizeScrollView';
 export * from './UIFullscreenSheet';
 export * from './UIModalSheet';
+export * from './UIShareSheet/UIShareSheet';
