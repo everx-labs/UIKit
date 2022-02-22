@@ -313,7 +313,7 @@ const App = () => {
 
     return (
         <StoreProvider>
-            <UIModalPortalManager>
+            <UIModalPortalManager maxMobileWidth={900}>
                 <NavigationContainer ref={navRef} linking={{ prefixes: ['/'] }}>
                     <Split.Navigator
                         initialRouteName="browser"

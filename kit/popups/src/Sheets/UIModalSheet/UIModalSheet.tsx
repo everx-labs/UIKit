@@ -14,7 +14,7 @@ export type UIModalSheetProps = UISheetProps & {
     maxMobileWidth: number;
 };
 
-function useIsMobile(maxMobileWidth: number) {
+export function useIsMobile(maxMobileWidth: number) {
     const { width } = useWindowDimensions();
 
     return React.useMemo(() => {
