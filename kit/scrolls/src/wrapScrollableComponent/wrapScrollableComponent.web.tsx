@@ -1,9 +1,22 @@
 import * as React from 'react';
-import type { ScrollViewProps, StyleProp, ViewStyle } from 'react-native';
+import { ScrollViewProps, StyleSheet, ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { ScrollableContext } from '../Context';
 import { useHasScroll } from './useHasScroll';
+import type { ScrollableAdditionalProps } from './types';
+
+function getContentContainerPadding(padding: ViewStyle['padding'], inset: number | undefined) {
+    if (padding == null) {
+        return inset ?? 0;
+    }
+
+    if (typeof padding === 'string') {
+        return padding;
+    }
+
+    return padding + (inset ?? 0);
+}
 
 export function wrapScrollableComponent<Props extends ScrollViewProps>(
     ScrollableComponent: React.ComponentClass<Props>,
@@ -14,8 +27,14 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
     function ScrollableForwarded(
         {
             containerStyle = { flex: 1 },
+            automaticallyAdjustContentInsets,
+            automaticallyAdjustKeyboardInsets,
+            contentInset,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            scrollIndicatorInsets,
+            contentContainerStyle: contentContainerStyleProp,
             ...props
-        }: Props & { children?: React.ReactNode; containerStyle: StyleProp<ViewStyle> },
+        }: Props & ScrollableAdditionalProps & { children?: React.ReactNode },
         forwardRef: React.RefObject<typeof AnimatedScrollable>,
     ) {
         const {
@@ -50,6 +69,39 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
             return ref?.current;
         });
 
+        const automaticInsets =
+            automaticallyAdjustContentInsets || automaticallyAdjustKeyboardInsets;
+
+        const contentContainerStyle: ViewStyle = React.useMemo(() => {
+            const style = StyleSheet.flatten(contentContainerStyleProp) || {};
+
+            if (!automaticInsets) {
+                return style;
+            }
+
+            return {
+                ...style,
+                paddingHorizontal: undefined,
+                paddingVertical: undefined,
+                paddingLeft: getContentContainerPadding(
+                    style.paddingLeft || style.paddingHorizontal,
+                    contentInset?.left,
+                ),
+                paddingTop: getContentContainerPadding(
+                    style.paddingTop || style.paddingVertical,
+                    contentInset?.top,
+                ),
+                paddingRight: getContentContainerPadding(
+                    style.paddingRight || style.paddingHorizontal,
+                    contentInset?.right,
+                ),
+                paddingBottom: getContentContainerPadding(
+                    style.paddingBottom || style.paddingVertical,
+                    contentInset?.bottom,
+                ),
+            };
+        }, [contentInset, contentContainerStyleProp, automaticInsets]);
+
         return (
             <Animated.View style={containerStyle}>
                 {/* @ts-ignore */}
@@ -63,6 +115,7 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
                     onWheel={horizontal ? onWheelProp : onWheel}
                     onLayout={onLayout}
                     onContentSizeChange={onContentSizeChange}
+                    contentContainerStyle={contentContainerStyle}
                 />
             </Animated.View>
         );
