@@ -1,10 +1,7 @@
 // @ts-ignore
 // eslint-disable-next-line import/no-unresolved, import/extensions
 import { addNativeProps as addNativePropsImpl } from './addNativeProps';
+import type { AddNativeProps } from './types';
 
-export const addNativeProps: <P>(
-    component: React.ComponentClass<P>,
-    properties: {
-        [key: string]: true;
-    },
-) => React.ForwardRefExoticComponent<P> = addNativePropsImpl;
+export const addNativeProps: AddNativeProps = addNativePropsImpl;
+addNativeProps

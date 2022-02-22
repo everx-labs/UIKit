@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { Platform, TextInput, View } from 'react-native';
+import {
+    NativeSyntheticEvent,
+    Platform,
+    TextInput,
+    TextInputChangeEventData,
+    View,
+} from 'react-native';
 
 import { useHover, addNativeProps } from '@tonlabs/uikit.controls';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
@@ -12,7 +18,16 @@ import Animated, {
     useSharedValue,
     runOnJS,
     runOnUI,
+    useWorkletCallback,
+    useAnimatedReaction,
+    useAnimatedRef,
+    useEvent,
+    useHandler,
+    useAnimatedScrollHandler,
+    withDelay,
 } from 'react-native-reanimated';
+import {} from 'react-native-redash';
+import { TextInput as TextInputGH, TapGestureHandler } from 'react-native-gesture-handler';
 import { UITextView, useFocused, useUITextViewValue } from '../UITextView';
 
 import { useMaterialTextViewChildren } from './useMaterialTextViewChildren';
@@ -33,7 +48,12 @@ const POSITION_EXPANDED: number = 1;
 // @inline
 const EXPANDED_INPUT_OFFSET: number = 8;
 
-Animated.addWhitelistedNativeProps({ text: true });
+Animated.addWhitelistedNativeProps({
+    text: true,
+    value: true,
+    defaultValue: true,
+    'default-value': true,
+});
 
 const UITextViewAnimated = Animated.createAnimatedComponent(
     addNativeProps(UITextView, {
@@ -146,31 +166,85 @@ export const UIMaterialTextViewFloating = React.forwardRef<
 
     const imperativeText = useSharedValue('');
 
-    function runUIChangeText(text: string) {
-        'worklet';
+    // React.useEffect(() => {
+    //     if (value) {
+    //         imperativeText.value = value;
+    //     }
+    // }, [value, imperativeText]);
 
-        imperativeText.value = text;
-        console.log('onChangeText', text);
+    // useAnimatedReaction(
+    //     () => ({
+    //         imperativeText: imperativeText.value,
+    //     }),
+    //     (nextState, prevState) => {
+    //         if (nextState.imperativeText !== prevState?.imperativeText) {
+    //             console.log(nextState.imperativeText);
+    //             // console.log(ref.current);
+    //             // ref.current?.setNativeProps?.({
+    //             //     text: nextState.imperativeText,
+    //             // });
+    //         }
+    //     },
+    // );
 
-        runOnJS(onChangeTextProp)(text);
+    const runUIChangeText = useWorkletCallback(
+        function runUIChangeText(text: string) {
+            const formattedText = text
+                .split('')
+                .filter(c => c !== '-')
+                .join('-');
+            imperativeText.value = formattedText;
+
+            runOnJS(onChangeTextProp)(formattedText);
+        },
+        [onChangeTextProp],
+    );
+
+    function onChangeText(text: string) {
+        runOnUI(runUIChangeText)(text);
     }
 
     useExtendedRef(passedRef, ref, props.multiline, onChangeTextProp, imperativeText);
+
     const animatedProps = useAnimatedProps(() => {
-        console.log({ imperativeText: imperativeText.value });
+        console.log('animatedProps', imperativeText.value);
         if (Platform.OS === 'web') {
             return {
-                value: imperativeText.value,
-                onChangeText: runUIChangeText,
+                // ????
+                // text: imperativeText.value,
+                // value: imperativeText.value,
+                // defaultValue: imperativeText.value,
+                // 'default-value': imperativeText.value,
             };
         }
         return {
             text: imperativeText.value,
-            onChangeText: runUIChangeText,
+            // value: imperativeText.value,
+            // defaultValue: imperativeText.value,
+            // 'default-value': imperativeText.value,
         };
     });
 
-    console.log(value);
+    // const handlers = {
+    //     onChange: () => {
+    //         'worklet';
+
+    //         console.log('onChange');
+    //     },
+    // };
+
+    // const { context, doDependenciesDiffer } = useHandler(handlers);
+
+    const event = useEvent(
+        () => {
+            'worklet';
+
+            console.log('event');
+            // handlers.onChange();
+        },
+        // ['textInput', 'onChange', 'onChangeText', 'change', 'changeText'],
+        ['onTextInput'],
+    );
 
     return (
         <UIMaterialTextViewComment {...props}>
@@ -192,13 +266,16 @@ export const UIMaterialTextViewFloating = React.forwardRef<
                         }
                         onFocus={onFocus}
                         onBlur={onBlur}
-                        // onChangeText={onChangeText}
+                        onChangeText={onChangeText}
                         onContentSizeChange={onContentSizeChange}
-                        onChange={onChange}
+                        onChange={event}
+                        onTextInput={event}
+                        onKeyPress={event}
                         numberOfLines={numberOfLines}
                         style={style}
                         layout={Layout}
                         scrollEnabled={false}
+                        // @ts-expect-error
                         animatedProps={animatedProps}
                     />
                     <FloatingLabel expandingValue={expandingValue} isHovered={isHovered}>
