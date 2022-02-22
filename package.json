@@ -72,7 +72,6 @@
         "react-native-navigation-bar-color": "2.0.1",
         "react-native-parsed-text": "git+https://github.com/FactorBench/react-native-parsed-text.git",
         "react-native-redash": "16.0.11",
-        "react-native-simple-popover": "git+https://github.com/tonlabs/react-native-simple-popover.git",
         "react-native-status-bar-height": "1.0.1",
         "react-native-tab-view": "3.0.1",
         "react-qr-reader": "2.2.1"

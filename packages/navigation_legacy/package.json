@@ -44,8 +44,7 @@
         "@tonlabs/uikit.layout": "^3.0.0",
         "@tonlabs/uikit.popups": "^3.0.0",
         "@tonlabs/uikit.scrolls": "^3.0.0",
-        "@tonlabs/uikit.themes": "^3.0.0",
-        "react-native-simple-popover": "git+https://github.com/tonlabs/react-native-simple-popover.git"
+        "@tonlabs/uikit.themes": "^3.0.0"
     },
     "devDependencies": {
         "@babel/runtime": "^7.15.0",

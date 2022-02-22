@@ -13,7 +13,6 @@ import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { enableFreeze } from 'react-native-screens';
 
-import { UIPopoverBackground } from '@tonlabs/uikit.navigation_legacy';
 import { PortalManager } from '@tonlabs/uikit.layout';
 import {
     UILinkButton,
@@ -589,13 +588,11 @@ const AppWrapper = () => {
                         },
                     }}
                 >
-                    <UIPopoverBackground>
-                        <UIStatusBarManager>
-                            <SafeAreaProvider>
-                                <App />
-                            </SafeAreaProvider>
-                        </UIStatusBarManager>
-                    </UIPopoverBackground>
+                    <UIStatusBarManager>
+                        <SafeAreaProvider>
+                            <App />
+                        </SafeAreaProvider>
+                    </UIStatusBarManager>
                 </ThemeSwitcher.Provider>
             </ThemeContext.Provider>
         </GestureHandlerRootView>
