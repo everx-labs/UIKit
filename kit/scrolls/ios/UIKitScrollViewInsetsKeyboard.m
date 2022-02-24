@@ -9,7 +9,7 @@
 
 @implementation UIKitScrollViewInsetsKeyboard {
     RCTScrollView *_rctScrollView;
-    id<UIKitScrollViewInsetsDelegate> _delegate;
+    __weak id<UIKitScrollViewInsetsDelegate> _delegate;
 }
 
 - (instancetype)initWithRCTScrollView:(RCTScrollView *)rctScrollView withDelegate:(id<UIKitScrollViewInsetsDelegate>)delegate {
@@ -46,7 +46,9 @@
         return;
     }
     
-    [_delegate onInsetsShouldBeRecalculated:notification];
+    if ([_delegate respondsToSelector:@selector(onInsetsShouldBeRecalculated:)]) {
+        [_delegate onInsetsShouldBeRecalculated:notification];
+    }
 }
 
 - (InsetsChange)calculateInsets:(UIEdgeInsets)insets withNotification:(NSNotification*)notification {

@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { SectionList, ViewProps } from 'react-native';
-import type { SectionListData } from 'react-native';
+import type { ViewProps, SectionListData } from 'react-native';
 
 import { UILoadMoreButton } from '@tonlabs/uikit.controls';
+import { SectionList } from '@tonlabs/uikit.scrolls';
+
 import { SectionExtra, UIChatListFormatter } from './UIChatListFormatter';
 import { UICommonChatList } from './UICommonChatList';
 import { DateSeparator } from './DateSeparator';
@@ -65,9 +66,10 @@ type UIChatListProps = {
     onPressUrl?: OnPressUrl;
     onLongPressText?: OnLongPressText;
     bottomInset?: number;
+    shouldAutoHandleInsets: boolean;
 };
 
-export const UIChatList = React.forwardRef<SectionList, UIChatListProps>(
+export const UIChatList = React.forwardRef<typeof SectionList, UIChatListProps>(
     function UIChatListContainer(
         {
             nativeID,
@@ -77,6 +79,7 @@ export const UIChatList = React.forwardRef<SectionList, UIChatListProps>(
             onLoadEarlierMessages,
             onPressUrl,
             onLongPressText,
+            shouldAutoHandleInsets,
         }: UIChatListProps,
         ref,
     ) {
@@ -104,6 +107,7 @@ export const UIChatList = React.forwardRef<SectionList, UIChatListProps>(
                 canLoadMore={canLoadMore}
                 onLongPressText={onLongPressText}
                 onPressUrl={onPressUrl}
+                shouldAutoHandleInsets={shouldAutoHandleInsets}
             >
                 {chatListProps => (
                     <SectionList

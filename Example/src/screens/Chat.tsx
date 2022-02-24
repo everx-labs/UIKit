@@ -9,10 +9,13 @@ import {
     ChatMessage,
     MessageStatus,
     TransactionType,
+    useShouldAutoHandleInsets,
 } from '@tonlabs/uistory.chats';
 import { UIPopup } from '@tonlabs/uikit.popups';
 import { uiLocalized } from '@tonlabs/localization';
 import { useStickers } from '@tonlabs/uistory.stickers';
+import { UIInputAccessoryViewAvailability } from '@tonlabs/uikit.inputs';
+
 import { useBase64Image } from './hooks/useBase64Image';
 
 const userId = '0:000';
@@ -401,37 +404,49 @@ export function Chat() {
     );
     const stickersKeyboard = useStickers(stickers, onItemSelected);
 
+    const {
+        shouldAutoHandleInsets,
+        onInputAccessoryViewAvailable,
+        onInputAccessoryViewUnavailable,
+    } = useShouldAutoHandleInsets();
+
     return (
         <>
-            <UIChatList
-                nativeID="chatSectionList"
-                onLoadEarlierMessages={onLoadEarlierMessages}
-                onPressUrl={onPressUrl}
-                onLongPressText={onLongPressText}
-                canLoadMore
-                isLoadingMore={false}
-                messages={messages}
-            />
-            <UIChatInput
-                managedScrollViewNativeID="chatSectionList"
-                editable
-                onSendText={(text: string) => {
-                    setMessages([
-                        {
-                            key: `${Date.now()}1`,
-                            type: ChatMessageType.PlainText,
-                            status: MessageStatus.Sent,
-                            time: Date.now(),
-                            sender: userId,
-                            text,
-                        },
-                        ...messages,
-                    ]);
-                }}
-                onSendMedia={onSendMedia}
-                onSendDocument={onSendDocument}
-                customKeyboard={stickersKeyboard}
-            />
+            <UIInputAccessoryViewAvailability
+                onInputAccessoryViewAvailable={onInputAccessoryViewAvailable}
+                onInputAccessoryViewUnavailable={onInputAccessoryViewUnavailable}
+            >
+                <UIChatList
+                    nativeID="chatSectionList"
+                    onLoadEarlierMessages={onLoadEarlierMessages}
+                    onPressUrl={onPressUrl}
+                    onLongPressText={onLongPressText}
+                    canLoadMore
+                    isLoadingMore={false}
+                    messages={messages}
+                    shouldAutoHandleInsets={shouldAutoHandleInsets}
+                />
+                <UIChatInput
+                    managedScrollViewNativeID="chatSectionList"
+                    editable
+                    onSendText={(text: string) => {
+                        setMessages([
+                            {
+                                key: `${Date.now()}1`,
+                                type: ChatMessageType.PlainText,
+                                status: MessageStatus.Sent,
+                                time: Date.now(),
+                                sender: userId,
+                                text,
+                            },
+                            ...messages,
+                        ]);
+                    }}
+                    onSendMedia={onSendMedia}
+                    onSendDocument={onSendDocument}
+                    customKeyboard={stickersKeyboard}
+                />
+            </UIInputAccessoryViewAvailability>
             <UIPopup.Notice
                 visible={isNoticeVisible}
                 title={uiLocalized.MessageCopiedToClipboard}

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FlatList, FlatListProps, ViewProps } from 'react-native';
+import type { FlatListProps, ViewProps } from 'react-native';
 
 import {
     BubbleActionButton,
@@ -10,6 +10,8 @@ import {
     OnPressUrl,
     OnLongPressText,
 } from '@tonlabs/uistory.chats';
+import { FlatList } from '@tonlabs/uikit.scrolls';
+
 import { BrowserMessage, InteractiveMessageType } from './types';
 import { getFormattedList } from './getFormattedList';
 import { AddressInput } from './Inputs/addressInput';
@@ -33,6 +35,7 @@ type UIBrowserListProps = {
     onPressUrl?: OnPressUrl;
     onLongPressText?: OnLongPressText;
     bottomInset?: number;
+    shouldAutoHandleInsets: boolean;
 };
 
 function flatListGetItemLayoutFabric({
@@ -114,9 +117,9 @@ const renderBubble = () => (item: BrowserMessage, onLayout: ViewProps['onLayout'
     return null;
 };
 
-export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
+export const UIBrowserList = React.forwardRef<typeof FlatList, UIBrowserListProps>(
     function UIBrowserListForwarded(
-        { messages, onPressUrl, onLongPressText }: UIBrowserListProps,
+        { messages, onPressUrl, onLongPressText, shouldAutoHandleInsets }: UIBrowserListProps,
         ref,
     ) {
         const formattedMessages = React.useMemo(() => getFormattedList(messages), [messages]);
@@ -128,6 +131,7 @@ export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
                 getItemLayoutFabric={flatListGetItemLayoutFabric}
                 onLongPressText={onLongPressText}
                 onPressUrl={onPressUrl}
+                shouldAutoHandleInsets={shouldAutoHandleInsets}
             >
                 {(chatListProps: CommonChatListProps<BrowserMessage>) => (
                     <FlatList

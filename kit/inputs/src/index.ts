@@ -18,6 +18,7 @@ export * from './UINumberTextView';
 export * from './UISeedPhraseTextView';
 export * from './UITextView';
 export * from './UIInputAccessoryView/UIInputAccessoryView';
+export * from './UIInputAccessoryView/UIInputAccessoryViewAvailability';
 
 export * from './UIMaterialTextView/useClearButton';
 export * from './useAutogrowTextView';
