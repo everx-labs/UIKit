@@ -106,7 +106,15 @@ export const UIMaterialTextViewFloating = React.forwardRef<
     UIMaterialTextViewRef,
     UIMaterialTextViewProps
 >(function UIMaterialTextViewFloatingForwarded(props: UIMaterialTextViewProps, passedRef) {
-    const { label, onLayout, children, onHeightChange, borderViewRef, value, ...rest } = props;
+    const {
+        label,
+        onLayout,
+        children,
+        onHeightChange,
+        borderViewRef,
+        value: valueProp,
+        ...rest
+    } = props;
     const ref = React.useRef<TextInput>(null);
     const theme = useTheme();
     const {
@@ -167,10 +175,10 @@ export const UIMaterialTextViewFloating = React.forwardRef<
     const imperativeText = useSharedValue('');
 
     // React.useEffect(() => {
-    //     if (value) {
-    //         imperativeText.value = value;
+    //     if (valueProp) {
+    //         imperativeText.value = valueProp;
     //     }
-    // }, [value, imperativeText]);
+    // }, [valueProp, imperativeText]);
 
     // useAnimatedReaction(
     //     () => ({
@@ -187,22 +195,33 @@ export const UIMaterialTextViewFloating = React.forwardRef<
     //     },
     // );
 
+    const [displayedValue, setDisplayedValue] = React.useState<string>('');
+
+    const onChangeValueFormatted = (value: string) => {
+        onChangeTextProp(value);
+        setDisplayedValue(value);
+    };
+
     const runUIChangeText = useWorkletCallback(
         function runUIChangeText(text: string) {
-            const formattedText = text
-                .split('')
-                .filter(c => c !== '-')
-                .join('-');
-            imperativeText.value = formattedText;
-
-            runOnJS(onChangeTextProp)(formattedText);
+            // const chars = text
+            //     .split('')
+            //     .filter(char => char !== ' ' && char !== '(' && char !== ')' && char !== '+');
+            // // .reduce((acc: string[], char: string, index: number) => {
+            // //     if (index === 0)
+            // // }, ['+7']);
+            // console.log({ chars: `'${chars.join('')}'` });
+            // const formattedText = `+7 (${chars.slice(1, 4).join('')}) ${chars
+            //     .slice(4, 7)
+            //     .join('')} ${chars.slice(7, 9).join('')} ${chars.slice(9, 11).join('')}`;
+            // imperativeText.value = formattedText;
+            const formattedText = text;
+            runOnJS(onChangeValueFormatted)(formattedText);
         },
         [onChangeTextProp],
     );
 
-    function onChangeText(text: string) {
-        runOnUI(runUIChangeText)(text);
-    }
+    function onChangeText(text: string) {}
 
     useExtendedRef(passedRef, ref, props.multiline, onChangeTextProp, imperativeText);
 
@@ -235,6 +254,11 @@ export const UIMaterialTextViewFloating = React.forwardRef<
 
     // const { context, doDependenciesDiffer } = useHandler(handlers);
 
+    const asd = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
+        onChange?.(e);
+        runOnUI(runUIChangeText)(e.nativeEvent.text);
+    };
+
     const event = useEvent(
         () => {
             'worklet';
@@ -266,17 +290,16 @@ export const UIMaterialTextViewFloating = React.forwardRef<
                         }
                         onFocus={onFocus}
                         onBlur={onBlur}
-                        onChangeText={onChangeText}
+                        // onChangeText={onChangeText}
                         onContentSizeChange={onContentSizeChange}
-                        onChange={event}
-                        onTextInput={event}
-                        onKeyPress={event}
+                        onChange={asd}
                         numberOfLines={numberOfLines}
                         style={style}
                         layout={Layout}
                         scrollEnabled={false}
                         // @ts-expect-error
-                        animatedProps={animatedProps}
+                        // animatedProps={animatedProps}
+                        value={displayedValue}
                     />
                     <FloatingLabel expandingValue={expandingValue} isHovered={isHovered}>
                         {label}
