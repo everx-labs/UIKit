@@ -2,6 +2,8 @@ import type { View, TextInput } from 'react-native';
 import type { UITextViewProps } from '../UITextView';
 import type { OnHeightChange } from '../useAutogrowTextView';
 
+export type UIMaterialTextViewMask = '[000] [000].[000] [000]';
+
 export type UIMaterialTextViewProps = UITextViewProps & {
     label?: string;
     helperText?: string;
@@ -12,6 +14,7 @@ export type UIMaterialTextViewProps = UITextViewProps & {
     borderViewRef?: React.Ref<View>;
     children?: React.ReactNode;
     onHeightChange?: OnHeightChange;
+    mask?: UIMaterialTextViewMask;
 };
 
 export type UIMaterialTextViewRef = TextInput & {

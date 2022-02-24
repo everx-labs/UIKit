@@ -7,14 +7,18 @@ import {
 import { UIMaterialTextViewFloating } from './UIMaterialTextViewFloating';
 import { UIMaterialTextViewSimple } from './UIMaterialTextViewSimple';
 import type { UIMaterialTextViewRef, UIMaterialTextViewProps } from './types';
+import { useApplyMask } from '../useApplyMask';
 
 const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMaterialTextViewProps>(
     function UIMaterialTextViewForward(props: UIMaterialTextViewProps, ref) {
-        const { label } = props;
+        const textViewRef = React.useRef<UIMaterialTextViewRef>(null);
+        const { label, mask } = props;
+
+        const formattingProps = useApplyMask(textViewRef, mask);
         if (label) {
-            return <UIMaterialTextViewFloating {...props} ref={ref} />;
+            return <UIMaterialTextViewFloating {...props} ref={textViewRef} {...formattingProps} />;
         }
-        return <UIMaterialTextViewSimple {...props} ref={ref} />;
+        return <UIMaterialTextViewSimple {...props} ref={textViewRef} {...formattingProps} />;
     },
 );
 
