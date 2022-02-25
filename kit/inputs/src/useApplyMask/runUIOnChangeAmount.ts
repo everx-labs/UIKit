@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
-import type { SharedValue } from 'react-native-reanimated';
-import type { UIMaterialTextViewRef } from '../UIMaterialTextView';
+import { runOnJS, SharedValue } from 'react-native-reanimated';
+import type { MoveCarret } from './types';
 
 // @inline
 const INTEGER_GROUP_SIZE = 3;
@@ -10,7 +10,7 @@ const FRACTIONAL_GROUP_SIZE = 3;
 // @inline
 const DECIMALS = 8;
 
-function group(rawString: string, groupSize: number, groupSeparator: string) {
+function runUIGroup(rawString: string, groupSize: number, groupSeparator: string) {
     'worklet';
 
     let groupedPart = '';
@@ -33,7 +33,7 @@ function group(rawString: string, groupSize: number, groupSeparator: string) {
     return groupedPart;
 }
 
-function groupReversed(rawString: string, groupSize: number, groupSeparator: string) {
+function runUIGroupReversed(rawString: string, groupSize: number, groupSeparator: string) {
     'worklet';
 
     let groupedPart = '';
@@ -56,7 +56,7 @@ function groupReversed(rawString: string, groupSize: number, groupSeparator: str
     return groupedPart;
 }
 
-function getCarretNormalizedPosition(
+function runUIGetCarretNormalizedPosition(
     carretPosition: number,
     previousText: string,
     integerSeparator: string,
@@ -75,7 +75,7 @@ function getCarretNormalizedPosition(
     return carretNormalizedPosition;
 }
 
-function getNewCarretPosition(
+function runUIGetNewCarretPosition(
     startPosition: number,
     endPosition: number,
     text: string,
@@ -93,13 +93,13 @@ function getNewCarretPosition(
 
     // At first we should get a carret position
     // in normalized value (ie without separators)
-    const startCarretNormalizedPosition = getCarretNormalizedPosition(
+    const startCarretNormalizedPosition = runUIGetCarretNormalizedPosition(
         startPosition,
         previousText,
         integerSeparator,
         fractionalSeparator,
     );
-    const endCarretNormalizedPosition = getCarretNormalizedPosition(
+    const endCarretNormalizedPosition = runUIGetCarretNormalizedPosition(
         endPosition,
         previousText,
         integerSeparator,
@@ -130,19 +130,28 @@ function getNewCarretPosition(
         }
     }
 
+    console.log({
+        startPosition,
+        endPosition,
+        text,
+        normalizedText,
+        previousText,
+        previousNormalizedText,
+        // integerSeparator,
+        // fractionalSeparator,
+        newCarretPosition,
+        startCarretNormalizedPosition,
+        endCarretNormalizedPosition,
+    });
+
     return newCarretPosition;
 }
 
-export function runUIOnChangeAmount(
+function format(
     rawNumber: string,
-    ref: React.RefObject<UIMaterialTextViewRef>,
-    selectionStart: SharedValue<number>,
-    selectionEnd: SharedValue<number>,
-    integerSeparator: string,
     delimeter: string,
+    integerSeparator: string,
     fractionalSeparator: string,
-    lastNormalizedText: SharedValue<string>,
-    lastText: SharedValue<string>,
 ) {
     'worklet';
 
@@ -156,7 +165,7 @@ export function runUIOnChangeAmount(
 
     normalizedText += normalizedIntegerPart;
 
-    const groupedIntegerPart = groupReversed(
+    const groupedIntegerPart = runUIGroupReversed(
         normalizedIntegerPart,
         INTEGER_GROUP_SIZE,
         integerSeparator,
@@ -173,7 +182,7 @@ export function runUIOnChangeAmount(
         normalizedText += delimeter;
         normalizedText += normalizedDecimalPart;
 
-        const groupedDecimalPart = group(
+        const groupedDecimalPart = runUIGroup(
             normalizedDecimalPart,
             FRACTIONAL_GROUP_SIZE,
             fractionalSeparator,
@@ -184,8 +193,35 @@ export function runUIOnChangeAmount(
 
     const formattedNumber = result.join(delimeter);
 
+    return {
+        normalizedText,
+        formattedNumber,
+    };
+}
+
+export function runUIOnChangeAmount(
+    rawNumber: string,
+    selectionStart: SharedValue<number>,
+    selectionEnd: SharedValue<number>,
+    integerSeparator: string,
+    delimeter: string,
+    fractionalSeparator: string,
+    lastNormalizedText: SharedValue<string>,
+    lastText: SharedValue<string>,
+    setText: (formattedNumber: string) => void,
+    moveCarret: MoveCarret,
+) {
+    'worklet';
+
+    const { formattedNumber, normalizedText } = format(
+        rawNumber,
+        delimeter,
+        integerSeparator,
+        fractionalSeparator,
+    );
+
     // Adjust carret (calculation)
-    const carretPosition = getNewCarretPosition(
+    const carretPosition = runUIGetNewCarretPosition(
         selectionStart.value,
         selectionEnd.value,
         formattedNumber,
@@ -196,14 +232,8 @@ export function runUIOnChangeAmount(
         fractionalSeparator,
     );
 
-    // Set it to text input
-    // To avoid re-rendering
-    if (ref && 'current' in ref && ref.current) {
-        ref.current?.setNativeProps({
-            text: formattedNumber,
-        });
-        moveCarret(ref, carretPosition, formattedNumber.length);
-    }
+    runOnJS(setText)(formattedNumber);
+    runOnJS(moveCarret)(carretPosition, formattedNumber.length);
 
     selectionStart.value = carretPosition;
     lastText.value = formattedNumber;

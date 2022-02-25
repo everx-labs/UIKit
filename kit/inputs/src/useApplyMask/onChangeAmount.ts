@@ -1,15 +1,16 @@
 import { runOnUI, SharedValue } from 'react-native-reanimated';
 import { uiLocalized } from '@tonlabs/localization';
-import type { UIMaterialTextViewRef } from '../UIMaterialTextView';
 import { runUIOnChangeAmount } from './runUIOnChangeAmount';
+import type { MoveCarret } from './types';
 
 export function onChangeAmount(
     rawNumber: string,
-    ref: React.RefObject<UIMaterialTextViewRef>,
     selectionStart: SharedValue<number>,
     selectionEnd: SharedValue<number>,
     lastNormalizedText: SharedValue<string>,
     lastText: SharedValue<string>,
+    setText: (formattedNumber: string) => void,
+    moveCarret: MoveCarret,
 ) {
     const {
         grouping: integerSeparator,
@@ -17,12 +18,8 @@ export function onChangeAmount(
         decimalGrouping: fractionalSeparator,
     } = uiLocalized.localeInfo.numbers;
 
-    // TODO
-    const formattedNumber;
-
     runOnUI(runUIOnChangeAmount)(
         rawNumber,
-        ref,
         selectionStart,
         selectionEnd,
         integerSeparator,
@@ -30,5 +27,7 @@ export function onChangeAmount(
         fractionalSeparator,
         lastNormalizedText,
         lastText,
+        setText,
+        moveCarret,
     );
 }
