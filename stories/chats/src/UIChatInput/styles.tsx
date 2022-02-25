@@ -18,4 +18,8 @@ export const commonStyles = StyleSheet.create({
         height: UIConstant.mediumIconSize(),
         width: UIConstant.mediumIconSize(),
     },
+    actionTitle: {
+        minWidth: UIConstant.iconSize(),
+        textAlign: 'center',
+    },
 });

@@ -58,7 +58,9 @@ export function QuickAction(props: Props) {
                         <UILabel
                             color={UILabelColors.TextAccent}
                             role={UILabelRoles.Action}
-                            style={action.icon ? UIStyle.margin.leftSmall() : null}
+                            style={
+                                action.icon ? UIStyle.margin.leftSmall() : commonStyles.actionTitle
+                            }
                         >
                             {action.title}
                         </UILabel>
