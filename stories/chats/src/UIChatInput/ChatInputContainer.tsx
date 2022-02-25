@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Animated, ColorValue, Platform, StyleSheet, View } from 'react-native';
+import { Animated, ColorValue, Platform, StyleSheet, View, LayoutChangeEvent } from 'react-native';
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
@@ -37,15 +37,23 @@ function useAnimatedBorder(numberOfLines: number) {
     return borderOpacity.current;
 }
 
-export function ChatInputContainer(props: {
+export function ChatInputContainer({
+    numberOfLines,
+    shortcuts,
+    children,
+    left,
+    right,
+    onHeightChange,
+}: {
     numberOfLines: number;
     shortcuts?: Shortcut[];
     children: React.ReactNode;
     left?: React.ReactNode;
     right?: React.ReactNode;
+    onHeightChange?: (height: number) => void;
 }) {
     const theme = useTheme();
-    const borderOpacity = useAnimatedBorder(props.numberOfLines);
+    const borderOpacity = useAnimatedBorder(numberOfLines);
 
     const containerStyle: {
         backgroundColor: ColorValue;
@@ -56,9 +64,34 @@ export function ChatInputContainer(props: {
         [theme],
     );
 
+    const onLayoutIfNecessary = React.useCallback(
+        ({
+            nativeEvent: {
+                layout: { height },
+            },
+        }: LayoutChangeEvent) => {
+            if (onHeightChange) {
+                onHeightChange(height);
+            }
+        },
+        [onHeightChange],
+    );
+
+    const onLayout = onHeightChange != null ? onLayoutIfNecessary : undefined;
+
+    React.useEffect(
+        () => () => {
+            if (onHeightChange) {
+                // If inputs is unmounted need to reset insets for list
+                onHeightChange(0);
+            }
+        },
+        [onHeightChange],
+    );
+
     return (
-        <View style={containerStyle}>
-            <Shortcuts shortcuts={props.shortcuts} />
+        <View style={containerStyle} onLayout={onLayout}>
+            <Shortcuts shortcuts={shortcuts} />
             <Animated.View
                 style={[
                     styles.border,
@@ -68,12 +101,10 @@ export function ChatInputContainer(props: {
                     },
                 ]}
             />
-            <View
-                style={[styles.container, props.left == null ? UIStyle.margin.leftDefault() : null]}
-            >
-                {props.left}
-                <View style={styles.inputMsg}>{props.children}</View>
-                {props.right}
+            <View style={[styles.container, left == null ? UIStyle.margin.leftDefault() : null]}>
+                {left}
+                <View style={styles.inputMsg}>{children}</View>
+                {right}
             </View>
         </View>
     );

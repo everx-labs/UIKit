@@ -51,9 +51,12 @@
     }
 }
 
-- (InsetsChange)calculateInsets:(UIEdgeInsets)insets withNotification:(NSNotification*)notification {
+- (InsetsChange)calculateInsets:(UIEdgeInsets)insetsInChain
+               withNotification:(NSNotification*)notification
+                   contentInset:(UIEdgeInsets)contentInset
+keyboardInsetAdjustmentBehavior:(NSString *)keyboardInsetAdjustmentBehavior {
     if (notification == NULL) {
-        return InsetsChangeInstantMake(insets, insets);
+        return InsetsChangeInstantMake(insetsInChain, insetsInChain);
     }
     
     // Use it if you want insets change to be animated
@@ -68,13 +71,18 @@
     CGFloat scrollViewLowerY = MIN(scrollViewLowerYUnconstrained,
                                    globalHeight);
     
-    UIEdgeInsets newEdgeInsets = insets;
+    UIEdgeInsets newEdgeInsets = insetsInChain;
     
     CGFloat inset = MAX(scrollViewLowerY - endFrame.origin.y, 0);
+    
+    if ([keyboardInsetAdjustmentBehavior isEqualToString:@"inclusive"]) {
+        inset = MAX(scrollViewLowerY - endFrame.origin.y - contentInset.bottom, 0);
+    }
+    
     if (_rctScrollView.inverted) {
-        newEdgeInsets.top = MAX(inset, insets.top);
+        newEdgeInsets.top = MAX(inset, insetsInChain.top);
     } else {
-        newEdgeInsets.bottom = MAX(inset, insets.bottom);
+        newEdgeInsets.bottom = MAX(inset, insetsInChain.bottom);
     }
     
     return InsetsChangeInstantMake(newEdgeInsets, newEdgeInsets);

@@ -9,7 +9,7 @@ import {
     ChatMessage,
     MessageStatus,
     TransactionType,
-    useShouldAutoHandleInsets,
+    useAutoHandleInsets,
 } from '@tonlabs/uistory.chats';
 import { UIPopup } from '@tonlabs/uikit.popups';
 import { uiLocalized } from '@tonlabs/localization';
@@ -408,7 +408,9 @@ export function Chat() {
         shouldAutoHandleInsets,
         onInputAccessoryViewAvailable,
         onInputAccessoryViewUnavailable,
-    } = useShouldAutoHandleInsets();
+        contentInset,
+        onHeightChange,
+    } = useAutoHandleInsets();
 
     return (
         <>
@@ -425,6 +427,7 @@ export function Chat() {
                     isLoadingMore={false}
                     messages={messages}
                     shouldAutoHandleInsets={shouldAutoHandleInsets}
+                    contentInset={contentInset}
                 />
                 <UIChatInput
                     managedScrollViewNativeID="chatSectionList"
@@ -445,6 +448,7 @@ export function Chat() {
                     onSendMedia={onSendMedia}
                     onSendDocument={onSendDocument}
                     customKeyboard={stickersKeyboard}
+                    onHeightChange={onHeightChange}
                 />
             </UIInputAccessoryViewAvailability>
             <UIPopup.Notice

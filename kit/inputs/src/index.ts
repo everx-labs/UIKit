@@ -23,6 +23,7 @@ export * from './UIInputAccessoryView/UIInputAccessoryViewAvailability';
 export * from './UIMaterialTextView/useClearButton';
 export * from './useAutogrowTextView';
 export * from './useCustomKeyboard';
+export * from './useDimensions';
 export * from './useAnimatedKeyboardHeight';
 export * from './useAndroidNavigationBarHeight';
 

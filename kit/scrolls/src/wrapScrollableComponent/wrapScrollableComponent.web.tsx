@@ -29,6 +29,9 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
             containerStyle = { flex: 1 },
             automaticallyAdjustContentInsets,
             automaticallyAdjustKeyboardInsets,
+            // Not applicable for web
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            keyboardInsetAdjustmentBehavior,
             contentInset,
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             scrollIndicatorInsets,

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export function useShouldAutoHandleInsets() {
+export function useAutoHandleInsets() {
     const [shouldAutoHandleInsets, setShouldHandleInsets] = React.useState(true);
 
     const onInputAccessoryViewAvailable = React.useCallback(() => {
@@ -15,5 +15,7 @@ export function useShouldAutoHandleInsets() {
         shouldAutoHandleInsets,
         onInputAccessoryViewAvailable,
         onInputAccessoryViewUnavailable,
+        contentInset: undefined,
+        onHeightChange: undefined,
     };
 }

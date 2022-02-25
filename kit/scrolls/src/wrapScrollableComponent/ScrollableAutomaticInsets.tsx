@@ -7,11 +7,13 @@ const UIKitScrollViewInsets = requireNativeComponent('UIKitScrollViewInsets');
 export const ScrollableAutomaticInsets = React.memo(function ScrollableAutomaticInsets({
     automaticallyAdjustContentInsets = false,
     automaticallyAdjustKeyboardInsets = false,
+    keyboardInsetAdjustmentBehavior = 'exclusive',
     contentInset,
     onInsetsChange: onInsetsChangeProp,
 }: {
     automaticallyAdjustContentInsets?: boolean;
     automaticallyAdjustKeyboardInsets?: boolean;
+    keyboardInsetAdjustmentBehavior?: 'inclusive' | 'exclusive';
     contentInset: ScrollViewProps['contentInset'];
     onInsetsChange?: (insets: Insets) => void;
 }) {
@@ -20,6 +22,7 @@ export const ScrollableAutomaticInsets = React.memo(function ScrollableAutomatic
             // @ts-ignore
             automaticallyAdjustContentInsets={automaticallyAdjustContentInsets}
             automaticallyAdjustKeyboardInsets={automaticallyAdjustKeyboardInsets}
+            keyboardInsetAdjustmentBehavior={keyboardInsetAdjustmentBehavior}
             contentInset={contentInset}
             onScrollViewInsetsChange={
                 onInsetsChangeProp != null

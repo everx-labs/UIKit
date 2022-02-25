@@ -1,12 +1,13 @@
 import * as React from 'react';
 
 import { PortalManager } from '@tonlabs/uikit.layout';
-import { useShouldAutoHandleInsets } from '@tonlabs/uistory.chats';
+import { useAutoHandleInsets } from '@tonlabs/uistory.chats';
 import type { OnPressUrl, OnLongPressText } from '@tonlabs/uistory.chats';
 import { UIInputAccessoryViewAvailability } from '@tonlabs/uikit.inputs';
 
 import { UIBrowserList } from './UIBrowserList';
 import type { BrowserMessage } from './types';
+import { UIBrowserInputOnHeightChangeContext } from './UIBrowserInputHeight';
 
 type UIBrowserProps = {
     messages: BrowserMessage[];
@@ -19,20 +20,26 @@ export function UIBrowser({ messages, onPressUrl, onLongPressText }: UIBrowserPr
         shouldAutoHandleInsets,
         onInputAccessoryViewAvailable,
         onInputAccessoryViewUnavailable,
-    } = useShouldAutoHandleInsets();
+        contentInset,
+        onHeightChange,
+    } = useAutoHandleInsets();
+
     return (
         <UIInputAccessoryViewAvailability
             onInputAccessoryViewAvailable={onInputAccessoryViewAvailable}
             onInputAccessoryViewUnavailable={onInputAccessoryViewUnavailable}
         >
-            <PortalManager id="browser" renderOnlyLastPortal>
-                <UIBrowserList
-                    messages={messages}
-                    onPressUrl={onPressUrl}
-                    onLongPressText={onLongPressText}
-                    shouldAutoHandleInsets={shouldAutoHandleInsets}
-                />
-            </PortalManager>
+            <UIBrowserInputOnHeightChangeContext.Provider value={onHeightChange}>
+                <PortalManager id="browser" renderOnlyLastPortal>
+                    <UIBrowserList
+                        messages={messages}
+                        onPressUrl={onPressUrl}
+                        onLongPressText={onLongPressText}
+                        shouldAutoHandleInsets={shouldAutoHandleInsets}
+                        contentInset={contentInset}
+                    />
+                </PortalManager>
+            </UIBrowserInputOnHeightChangeContext.Provider>
         </UIInputAccessoryViewAvailability>
     );
 }

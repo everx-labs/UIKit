@@ -16,6 +16,7 @@ import {
     Keyboard,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useKeyboard } from '@react-native-community/hooks';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
@@ -197,6 +198,8 @@ export function useHasScroll() {
 }
 
 function useScrollToTop(ref: React.RefObject<SectionList>, hasScrollOverflow: boolean) {
+    const { keyboardShown } = useKeyboard();
+
     React.useLayoutEffect(() => {
         function scrollToTop() {
             const scrollResponder = ref?.current?.getScrollResponder();
@@ -235,7 +238,7 @@ function useScrollToTop(ref: React.RefObject<SectionList>, hasScrollOverflow: bo
          *  - Open a debot, messages should be in a correct position.
          *  - Open a debot, do few actions, restart the debot, tap back, and open it again.
          */
-    }, [ref, hasScrollOverflow]);
+    }, [ref, hasScrollOverflow, keyboardShown]);
 }
 
 function useLinesAnimation(hasScrollOverflow: React.RefObject<boolean>) {
