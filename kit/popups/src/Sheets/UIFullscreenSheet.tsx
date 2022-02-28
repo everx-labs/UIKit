@@ -1,24 +1,22 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, ViewStyle, StatusBar, useWindowDimensions } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { useDimensions } from '@tonlabs/uikit.inputs';
 import { UISheet, UISheetProps } from './UISheet/UISheet';
 
-export type UIFullscreenSheetProps = Omit<UISheetProps, 'countRubberBandDistance'> & {
+export type UIFullscreenSheetProps = UISheetProps & {
     style?: StyleProp<ViewStyle>;
 };
 
 export function UIFullscreenSheet({ children, style, ...rest }: UIFullscreenSheetProps) {
-    const { height } = useWindowDimensions();
-    const { top: topInset } = useSafeAreaInsets();
+    const {
+        screen: { height },
+    } = useDimensions();
 
     const fullscreenHeight = React.useMemo(
-        () =>
-            height -
-            Math.max(StatusBar.currentHeight ?? 0, topInset) +
-            UILayoutConstant.rubberBandEffectDistance,
-        [height, topInset],
+        () => height + UILayoutConstant.rubberBandEffectDistance,
+        [height],
     );
 
     const sheetStyle = React.useMemo(() => {

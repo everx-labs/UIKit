@@ -38,9 +38,31 @@ type ChatInputProps = {
     onFocus: () => void;
     onBlur?: () => void;
     onMaxLength?: (maxLength: number) => void;
+
+    onHeightChange?: (height: number) => void;
 };
 
-export function ChatInput(props: ChatInputProps) {
+export function ChatInput({
+    textInputRef,
+    onSendText: onSendTextProp,
+    onMaxLength: onMaxLengthProp,
+    customKeyboardButton,
+    customKeyboardVisible,
+    shortcuts,
+    menuPlus,
+    menuPlusDisabled,
+    menuMore,
+    menuMoreDisabled,
+    editable,
+    onCustomKeyboardPress,
+    quickActions,
+    inputHidden,
+    autoFocus,
+    placeholder,
+    onFocus,
+    onBlur,
+    onHeightChange,
+}: ChatInputProps) {
     const {
         onContentSizeChange,
         onChange,
@@ -48,7 +70,7 @@ export function ChatInput(props: ChatInputProps) {
         numberOfLines,
         numberOfLinesProp,
         resetInputHeight,
-    } = useAutogrowTextView(props.textInputRef, undefined, CHAT_INPUT_NUM_OF_LINES);
+    } = useAutogrowTextView(textInputRef, undefined, CHAT_INPUT_NUM_OF_LINES);
 
     const [isNoticeVisible, setNoticeVisible] = React.useState(false);
 
@@ -61,17 +83,17 @@ export function ChatInput(props: ChatInputProps) {
     }, []);
 
     const { inputHasValue, onChangeText, onKeyPress, onSendText } = useChatInputValue({
-        ref: props.textInputRef,
-        onSendText: props.onSendText,
-        onMaxLength: props.onMaxLength || onMaxLength,
+        ref: textInputRef,
+        onSendText: onSendTextProp,
+        onMaxLength: onMaxLengthProp || onMaxLength,
         resetInputHeight,
         maxInputLength: MAX_INPUT_LENGTH,
     });
 
-    const CustomKeyboardButton = props.customKeyboardButton;
+    const CustomKeyboardButton = customKeyboardButton;
 
     const renderNotice = React.useCallback(() => {
-        if (props.onMaxLength == null) {
+        if (onMaxLengthProp == null) {
             return (
                 <UIPopup.Notice
                     type={UIPopup.Notice.Type.TopToast}
@@ -87,56 +109,57 @@ export function ChatInput(props: ChatInputProps) {
             );
         }
         return null;
-    }, [hideNotice, isNoticeVisible, props.onMaxLength]);
+    }, [hideNotice, isNoticeVisible, onMaxLengthProp]);
 
     return (
         <ChatInputContainer
             numberOfLines={numberOfLines}
-            shortcuts={props.shortcuts}
+            shortcuts={shortcuts}
             left={
-                props.menuPlus?.length && props.menuPlus?.length > 0 ? (
-                    <MenuPlus menuPlus={props.menuPlus} menuPlusDisabled={props.menuPlusDisabled} />
+                menuPlus?.length && menuPlus?.length > 0 ? (
+                    <MenuPlus menuPlus={menuPlus} menuPlusDisabled={menuPlusDisabled} />
                 ) : null
             }
             right={
                 <>
                     {CustomKeyboardButton && (
                         <CustomKeyboardButton
-                            editable={props.editable}
-                            customKeyboardVisible={props.customKeyboardVisible}
+                            editable={editable}
+                            customKeyboardVisible={customKeyboardVisible}
                             inputHasValue={inputHasValue}
-                            onPress={props.onCustomKeyboardPress}
+                            onPress={onCustomKeyboardPress}
                         />
                     )}
                     <QuickAction
-                        quickActions={props.quickActions}
+                        quickActions={quickActions}
                         inputHasValue={inputHasValue}
                         onSendText={onSendText}
                     />
-                    <MenuMore menuMore={props.menuMore} menuMoreDisabled={props.menuMoreDisabled} />
+                    <MenuMore menuMore={menuMore} menuMoreDisabled={menuMoreDisabled} />
                 </>
             }
+            onHeightChange={onHeightChange}
         >
-            {props.inputHidden ? null : (
+            {inputHidden ? null : (
                 <UITextView
-                    ref={props.textInputRef}
+                    ref={textInputRef}
                     testID="chat_input"
                     autoCapitalize="sentences"
                     autoCorrect={false}
-                    autoFocus={props.autoFocus}
+                    autoFocus={autoFocus}
                     clearButtonMode="never"
                     keyboardType="default"
-                    editable={props.editable}
+                    editable={editable}
                     maxLength={MAX_INPUT_LENGTH}
                     multiline
                     numberOfLines={numberOfLinesProp}
-                    placeholder={props.placeholder ?? uiLocalized.TypeMessage}
+                    placeholder={placeholder ?? uiLocalized.TypeMessage}
                     onContentSizeChange={onContentSizeChange}
                     onChange={onChange}
                     onChangeText={onChangeText}
                     onKeyPress={onKeyPress}
-                    onFocus={props.onFocus}
-                    onBlur={props.onBlur}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
                     style={inputStyle}
                 />
             )}

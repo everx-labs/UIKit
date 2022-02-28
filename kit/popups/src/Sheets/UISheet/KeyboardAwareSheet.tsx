@@ -1,14 +1,28 @@
 import * as React from 'react';
-import { useDerivedValue, withSpring } from 'react-native-reanimated';
+import Animated, { useDerivedValue, withSpring } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useAnimatedKeyboardHeight } from '@tonlabs/uikit.inputs';
+import { useAnimatedKeyboardHeight, useAndroidNavigationBarHeight } from '@tonlabs/uikit.inputs';
 import { SheetOriginContext } from './SheetOriginContext';
 
 function getZeroBottomInset() {
     'worklet';
 
     return 0;
+}
+
+const SheetBottomInsetContext = React.createContext<Animated.SharedValue<number> | null>(null);
+
+export function useSheetBottomInset() {
+    const bottomInset = React.useContext(SheetBottomInsetContext);
+
+    if (bottomInset == null) {
+        throw new Error(
+            'Have you forgot to wrap <UISheet.Content /> with <SheetBottomInsetContext /> ?',
+        );
+    }
+
+    return bottomInset;
 }
 
 export type KeyboardAwareSheetProps = {
@@ -27,6 +41,7 @@ export function KeyboardAwareSheet({
 }: KeyboardAwareSheetProps) {
     const insets = useSafeAreaInsets();
     const keyboardHeight = useAnimatedKeyboardHeight();
+    const { shared: androidNavigationBarHeightShared } = useAndroidNavigationBarHeight();
 
     const bottomInset = useDerivedValue(() => {
         return withSpring(getBottomInset(insets.bottom, keyboardHeight.value), {
@@ -35,10 +50,22 @@ export function KeyboardAwareSheet({
     });
 
     const origin = useDerivedValue(() => {
-        return 0 - defaultShift - keyboardHeight.value - bottomInset.value;
+        return (
+            0 -
+            defaultShift -
+            keyboardHeight.value -
+            (keyboardHeight.value > 0 ? androidNavigationBarHeightShared.value : 0) -
+            bottomInset.value
+        );
     });
 
-    return <SheetOriginContext.Provider value={origin}>{children}</SheetOriginContext.Provider>;
+    return (
+        <SheetOriginContext.Provider value={origin}>
+            <SheetBottomInsetContext.Provider value={bottomInset}>
+                {children}
+            </SheetBottomInsetContext.Provider>
+        </SheetOriginContext.Provider>
+    );
 }
 
 export function KeyboardUnawareSheet({
@@ -56,5 +83,11 @@ export function KeyboardUnawareSheet({
         return 0 - defaultShift - bottomInset.value;
     });
 
-    return <SheetOriginContext.Provider value={origin}>{children}</SheetOriginContext.Provider>;
+    return (
+        <SheetOriginContext.Provider value={origin}>
+            <SheetBottomInsetContext.Provider value={bottomInset}>
+                {children}
+            </SheetBottomInsetContext.Provider>
+        </SheetOriginContext.Provider>
+    );
 }

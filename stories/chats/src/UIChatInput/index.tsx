@@ -87,53 +87,75 @@ export type UIChatInputProps = {
     onSendDocument: OnSendDocument;
     onCustomKeyboardVisible?: (visible: boolean) => void | Promise<void>;
     onMaxLength?: (maxValue: number) => void;
+    onHeightChange?: (height: number) => void;
 
     customKeyboard?: UICustomKeyboardView;
 
     managedScrollViewNativeID?: string;
 };
 
-export function UIChatInput(props: UIChatInputProps) {
+export function UIChatInput({
+    managedScrollViewNativeID,
+    editable,
+    autoFocus,
+    placeholder,
+    shortcuts,
+    menuPlusHidden,
+    menuPlusDisabled,
+    menuMoreDisabled,
+    inputHidden,
+    quickActions,
+    customKeyboard,
+    onSendText,
+    onMaxLength,
+    onSendDocument,
+    onSendMedia,
+    onHeightChange,
+}: UIChatInputProps) {
     const textInputRef = React.useRef<TextInput>(null);
 
     const {
         customKeyboardView,
         toggle: toggleKeyboard,
         dismiss: dismissKeyboard,
-    } = useCustomKeyboard(textInputRef, props.customKeyboard);
+    } = useCustomKeyboard(textInputRef, customKeyboard);
 
-    const { menuPlus, chatPickerRef } = useMenuPlus(props.menuPlusHidden);
+    const { menuPlus, chatPickerRef } = useMenuPlus(menuPlusHidden);
 
     useBackHandler(textInputRef, dismissKeyboard);
 
     return (
         <UIInputAccessoryView
-            managedScrollViewNativeID={props.managedScrollViewNativeID}
+            managedScrollViewNativeID={managedScrollViewNativeID}
             customKeyboardView={customKeyboardView}
         >
             <ChatInput
                 textInputRef={textInputRef}
-                editable={props.editable}
-                autoFocus={props.autoFocus}
-                placeholder={props.placeholder}
-                shortcuts={props.shortcuts}
+                editable={editable}
+                autoFocus={autoFocus}
+                placeholder={placeholder}
+                shortcuts={shortcuts}
                 menuPlus={menuPlus}
-                menuPlusDisabled={props.menuPlusDisabled}
+                menuPlusDisabled={menuPlusDisabled}
                 menuMore={undefined /* TODO: we not render it right now, but could at some point */}
-                menuMoreDisabled={props.menuMoreDisabled}
-                inputHidden={props.inputHidden}
-                quickActions={props.quickActions}
+                menuMoreDisabled={menuMoreDisabled}
+                inputHidden={inputHidden}
+                quickActions={quickActions}
                 customKeyboardVisible={customKeyboardView != null}
                 onCustomKeyboardPress={toggleKeyboard}
-                customKeyboardButton={props.customKeyboard?.button}
-                onSendText={props.onSendText}
+                customKeyboardButton={
+                    // It is broken on Android, I have to temporarely hide it
+                    Platform.OS === 'android' ? undefined : customKeyboard?.button
+                }
+                onSendText={onSendText}
                 onFocus={dismissKeyboard}
-                onMaxLength={props.onMaxLength}
+                onMaxLength={onMaxLength}
+                onHeightChange={onHeightChange}
             />
             <ChatPicker
                 ref={chatPickerRef}
-                onSendDocument={props.onSendDocument}
-                onSendMedia={props.onSendMedia}
+                onSendDocument={onSendDocument}
+                onSendMedia={onSendMedia}
                 dismissKeyboard={dismissKeyboard}
             />
         </UIInputAccessoryView>

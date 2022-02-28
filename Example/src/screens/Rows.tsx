@@ -3,7 +3,12 @@ import { View } from 'react-native';
 import BigNumber from 'bignumber.js';
 
 import { UILabel, UILabelRoles } from '@tonlabs/uikit.themes';
-import { UIListRowKind, UIListRows, renderUIListItem, UIListSeparator } from '@tonlabs/uicast.rows';
+import {
+    UIKitListRowKind,
+    UIKitListRows,
+    renderUIListItem,
+    UIListSeparator,
+} from '@tonlabs/uicast.rows';
 
 import { UIAccordionSectionList } from '@tonlabs/uikit.scrolls';
 // @ts-ignore
@@ -33,7 +38,7 @@ export const RowsScreen = React.memo(function Rows() {
         title: string;
         key: string;
         ItemSeparatorComponent: any;
-        data: UIListRows;
+        data: UIKitListRows;
     }> = React.useMemo(() => {
         return [
             {
@@ -42,7 +47,7 @@ export const RowsScreen = React.memo(function Rows() {
                 data: [
                     {
                         key: `0`,
-                        kind: UIListRowKind.Link,
+                        kind: UIKitListRowKind.Link,
                         props: {
                             title: 'Title ',
                             description: 'Description',
@@ -53,7 +58,7 @@ export const RowsScreen = React.memo(function Rows() {
                     },
                     {
                         key: `1`,
-                        kind: UIListRowKind.Link,
+                        kind: UIKitListRowKind.Link,
                         props: {
                             title: "Let's check out a very long header for this link that you can imagine",
                             // description:
@@ -71,7 +76,7 @@ export const RowsScreen = React.memo(function Rows() {
                 key: 'currencies',
                 data: new Array(100).fill(null).map((_, index) => ({
                     key: `${index}`,
-                    kind: UIListRowKind.Currency,
+                    kind: UIKitListRowKind.Currency,
                     props: {
                         name: "Let's check out a very long header for this link that you can imagine",
                         ...(index % 2 === 0
@@ -93,7 +98,7 @@ export const RowsScreen = React.memo(function Rows() {
                 key: 'links2',
                 data: new Array(100).fill(null).map((_, index) => ({
                     key: `${index}`,
-                    kind: UIListRowKind.Link,
+                    kind: UIKitListRowKind.Link,
                     props: {
                         title: "Let's check out a very long header for this link that you can imagine",
                         ...(index % 2 === 0

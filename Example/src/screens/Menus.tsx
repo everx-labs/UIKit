@@ -11,7 +11,7 @@ import {
     UICardSheet,
     UIBottomSheet,
     UIFullscreenSheet,
-    UIPageSheet,
+    UIModalSheet,
     UIPopup,
     UIActionSheetContainerChildType,
     useIntrinsicSizeScrollView,
@@ -161,7 +161,7 @@ function PinCodeMenu() {
                         return Promise.resolve('123123');
                     }}
                     onEnter={(pin: string) => {
-                        return new Promise(resolve => {
+                        return new Promise<{ valid: boolean; description: string }>(resolve => {
                             setTimeout(() => {
                                 if (pin === '123123') {
                                     setAttempts(5);
@@ -216,29 +216,26 @@ function LargeTitleSheetExample() {
     );
 }
 
-function BigBottomLargeTitleSheet() {
-    const theme = useTheme();
-    const [bigBottomSheetVisible, setBigBottomSheetVisible] = React.useState(false);
+function ModalWithLargeTitleSheet() {
+    const [visible, setVisible] = React.useState(false);
     return (
         <>
             <UILinkButton
-                testID="show_big_uiBottomSheet_largeTitleHeader"
-                title="Show Big UIBottomSheet with UILargeTitleHeader"
+                testID="show_modal_largeTitleHeader"
+                title="Show Modal with UILargeTitleHeader"
                 onPress={() => {
-                    setBigBottomSheetVisible(true);
+                    setVisible(true);
                 }}
             />
-            <UIFullscreenSheet
-                visible={bigBottomSheetVisible}
+            <UIModalSheet
+                visible={visible}
                 onClose={() => {
-                    setBigBottomSheetVisible(false);
+                    setVisible(false);
                 }}
-                style={{
-                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                }}
+                maxMobileWidth={900}
             >
                 <LargeTitleSheetExample />
-            </UIFullscreenSheet>
+            </UIModalSheet>
         </>
     );
 }
@@ -258,7 +255,6 @@ function FlexibleSizeBottomSheetContent({
                 paddingHorizontal: 20,
                 paddingBottom: insets.bottom,
             }}
-            // @ts-expect-error
             containerStyle={scrollIntrinsicStyle}
             onContentSizeChange={onContentSizeChange}
         >
@@ -321,34 +317,6 @@ function FlexibleSizeBottomSheet() {
             >
                 <FlexibleSizeBottomSheetContent setSheetVisible={setSheetVisible} />
             </UIBottomSheet>
-        </>
-    );
-}
-
-function PageWithLargeTitleSheet() {
-    const theme = useTheme();
-    const [visible, setVisible] = React.useState(false);
-    return (
-        <>
-            <UILinkButton
-                testID="show_page_with_largeTitleHeader"
-                title="Show UIPageSheet with UILargeTitleHeader"
-                onPress={() => {
-                    setVisible(true);
-                }}
-            />
-            <UIPageSheet
-                visible={visible}
-                onClose={() => {
-                    setVisible(false);
-                }}
-                style={{
-                    backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                    borderRadius: 10,
-                }}
-            >
-                <LargeTitleSheetExample />
-            </UIPageSheet>
         </>
     );
 }
@@ -616,9 +584,56 @@ export const Menus = () => {
                         }}
                     />
                     <PinCodeMenu />
-                    <BigBottomLargeTitleSheet />
                     <FlexibleSizeBottomSheet />
-                    <PageWithLargeTitleSheet />
+                    <ModalWithLargeTitleSheet />
+                </View>
+            </ExampleSection>
+            <ExampleSection title="UIMenu">
+                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <TouchableOpacity ref={menuTriggerRef} onPress={() => setIsUIMenuVisible(true)}>
+                        <UILabel color={ColorVariants.TextAccent} role={TypographyVariants.Action}>
+                            Show UIMenu
+                        </UILabel>
+                    </TouchableOpacity>
+
+                    <UIPopup.Menu
+                        visible={isUIMenuVisible}
+                        triggerRef={menuTriggerRef}
+                        onClose={() => setIsUIMenuVisible(false)}
+                    >
+                        <UIPopup.Menu.CustomAction key="9">
+                            <UIPopup.Menu.PrimaryColumn onPress={getMenuCallback('PrimaryColumn')}>
+                                <UIPopup.Menu.IconCell source={UIAssets.icons.ui.camera} />
+                                <UIPopup.Menu.ActionCell title="Action" />
+                            </UIPopup.Menu.PrimaryColumn>
+                            <UIPopup.Menu.SecondaryColumn>
+                                <UIPopup.Menu.IconCell
+                                    source={UIAssets.icons.ui.camera}
+                                    onPress={getMenuCallback('First IconCell')}
+                                />
+                                <UIPopup.Menu.IconCell
+                                    source={UIAssets.icons.ui.camera}
+                                    onPress={getMenuCallback('Second IconCell')}
+                                    tintColor={ColorVariants.TextAccent}
+                                />
+                            </UIPopup.Menu.SecondaryColumn>
+                        </UIPopup.Menu.CustomAction>
+                        <UIPopup.Menu.Action
+                            type={UIPopup.Menu.Action.Type.Neutral}
+                            title="Neutral Action"
+                            onPress={getMenuCallback('Neutral Action')}
+                        />
+                        <UIPopup.Menu.Action
+                            type={UIPopup.Menu.Action.Type.Negative}
+                            title="Negative Action"
+                            onPress={getMenuCallback('Negative Action')}
+                        />
+                        <UIPopup.Menu.Action
+                            type={UIPopup.Menu.Action.Type.Disabled}
+                            title="Disabled Action"
+                            onPress={getMenuCallback('Disabled Action')}
+                        />
+                    </UIPopup.Menu>
                 </View>
             </ExampleSection>
             <ExampleSection title="UITooltip">

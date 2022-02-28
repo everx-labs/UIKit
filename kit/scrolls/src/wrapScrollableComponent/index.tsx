@@ -8,3 +8,7 @@ export const wrapScrollableComponent: <Props extends ScrollViewProps>(
     component: React.ComponentType<Props>,
     displayName: string,
 ) => any = platformWrapScrollableComponent;
+
+export * from './types';
+
+export * from './ScrollableAutomaticInsets';

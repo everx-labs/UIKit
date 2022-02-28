@@ -3,7 +3,6 @@ import { useNavigation } from '@react-navigation/core';
 
 import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { NestedInModalContext } from '@tonlabs/uicast.modal-navigator';
 
 import { HeaderItem, UIHeaderItems } from './UIHeaderItems';
 
@@ -208,7 +207,6 @@ export function useNavigationHeaderLeftItems(
     shouldShowCloseButton: boolean = true,
 ) {
     let navigation: ReturnType<typeof useNavigation> | null = null;
-    const closeModal = React.useContext(NestedInModalContext);
 
     // If it's used not in a navigation context
     // it might throw an error, to prevent a crash trying to catch it
@@ -236,7 +234,13 @@ export function useNavigationHeaderLeftItems(
             navigation={navigation}
             headerBackButton={headerBackButton}
             shouldShowCloseButton={shouldShowCloseButton}
-            closeModal={closeModal}
+            closeModal={
+                navigation != null && 'hide' in navigation
+                    ? () => {
+                          (navigation as any).hide();
+                      }
+                    : null
+            }
         />
     );
 }

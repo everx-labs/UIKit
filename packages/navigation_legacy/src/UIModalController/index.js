@@ -21,7 +21,6 @@ import { UIConstant, UIDevice, UIFunction, UIStyle } from '@tonlabs/uikit.core';
 import type { SafeAreaInsets } from '@tonlabs/uikit.core';
 import { UIBackgroundView, UIBackgroundViewColors } from '@tonlabs/uikit.themes';
 import { useHasScroll, ScrollableContext } from '@tonlabs/uikit.scrolls';
-import { NestedInDismissibleModalContext } from '@tonlabs/uicast.modal-navigator';
 
 import type {
     AnimationParameters,
@@ -170,42 +169,21 @@ function ModalControllerContainer({
     );
 
     return (
-        <NestedInDismissibleModalContext.Provider value={dismissible}>
-            <Animated.View style={containerStyle}>
-                <TapGestureHandler
-                    enabled={dismissible}
-                    {...(dismissible && shouldSwipeToDismiss
-                        ? {
-                              waitFor: panHandlerRef,
-                          }
-                        : null)}
-                    onHandlerStateChange={onTapHandlerStateChange}
-                >
-                    <PanGestureHandler
-                        enabled={dismissible && shouldSwipeToDismiss}
-                        ref={panHandlerRef}
-                        onGestureEvent={onPan}
-                        onHandlerStateChange={onPanHandlerStateChange}
-                    >
-                        <AnimatedViewWithColor
-                            color={backgroundColor}
-                            style={[
-                                // DO NOT USE UIStyle.absoluteFillObject here, as it has { overflow: 'hidden' }
-                                // And this brings a layout bug to Safari
-                                UIStyle.Common.absoluteFillContainer(),
-                                { opacity: dYDependentOpacity },
-                            ]}
-                            onLayout={onLayout}
-                        />
-                    </PanGestureHandler>
-                </TapGestureHandler>
+        <Animated.View style={containerStyle}>
+            <TapGestureHandler
+                enabled={dismissible}
+                {...(dismissible && shouldSwipeToDismiss
+                    ? {
+                          waitFor: panHandlerRef,
+                      }
+                    : null)}
+                onHandlerStateChange={onTapHandlerStateChange}
+            >
                 <PanGestureHandler
                     enabled={dismissible && shouldSwipeToDismiss}
+                    ref={panHandlerRef}
                     onGestureEvent={onPan}
                     onHandlerStateChange={onPanHandlerStateChange}
-                    {...(Platform.OS === 'android' && hasScroll
-                        ? { waitFor: scrollPanGestureHandlerRef }
-                        : null)}
                 >
                     <AnimatedViewWithColor
                         {...testIDProp}
@@ -228,8 +206,36 @@ function ModalControllerContainer({
                         </Animated.View>
                     </AnimatedViewWithColor>
                 </PanGestureHandler>
-            </Animated.View>
-        </NestedInDismissibleModalContext.Provider>
+            </TapGestureHandler>
+            <PanGestureHandler
+                enabled={dismissible && shouldSwipeToDismiss}
+                onGestureEvent={onPan}
+                onHandlerStateChange={onPanHandlerStateChange}
+                {...(Platform.OS === 'android' && hasScroll
+                    ? { waitFor: scrollPanGestureHandlerRef }
+                    : null)}
+            >
+                <AnimatedViewWithColor
+                    {...testIDProp}
+                    color={UIBackgroundViewColors.BackgroundPrimary}
+                    style={dialogStyle}
+                >
+                    <Animated.View
+                        style={[
+                            UIStyle.common.flex(),
+                            adjustKeyboardInsetDynamically ? { paddingBottom: marginBottom } : null,
+                        ]}
+                    >
+                        <View style={UIStyle.common.flex()}>
+                            <ScrollableContext.Provider value={scrollableContextValue}>
+                                {children}
+                            </ScrollableContext.Provider>
+                        </View>
+                    </Animated.View>
+                    {spinnerOverlay}
+                </AnimatedViewWithColor>
+            </PanGestureHandler>
+        </Animated.View>
     );
 }
 
