@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import * as React from 'react';
 import type { FlatList, FlatListProps, Insets, ViewProps } from 'react-native';
 
@@ -62,57 +63,56 @@ function flatListGetItemLayoutFabric({
 }
 
 const renderBubble = () => (item: BrowserMessage, onLayout: ViewProps['onLayout']) => {
-    const { type } = item;
-    if (type === ChatMessageType.PlainText) {
+    if (item.type === ChatMessageType.PlainText) {
         return <BubbleSimplePlainText {...item} onLayout={onLayout} />;
     }
-    if (type === ChatMessageType.ActionButton) {
+    if (item.type === ChatMessageType.ActionButton) {
         return <BubbleActionButton {...item} onLayout={onLayout} />;
     }
 
-    if (type === InteractiveMessageType.AddressInput) {
+    if (item.type === InteractiveMessageType.AddressInput) {
         return <AddressInput {...item} onLayout={onLayout} />;
     }
-    if (type === InteractiveMessageType.Terminal) {
+    if (item.type === InteractiveMessageType.Terminal) {
         return <TerminalInput {...item} onLayout={onLayout} />;
     }
-    if (type === InteractiveMessageType.Menu) {
+    if (item.type === InteractiveMessageType.Menu) {
         return <MenuInput {...item} onLayout={onLayout} />;
     }
-    if (type === InteractiveMessageType.Confirm) {
+    if (item.type === InteractiveMessageType.Confirm) {
         return <ConfirmInput {...item} onLayout={onLayout} />;
     }
-    if (type === InteractiveMessageType.AmountInput) {
+    if (item.type === InteractiveMessageType.AmountInput) {
         return <AmountInput {...item} onLayout={onLayout} />;
     }
-    if (type === InteractiveMessageType.SigningBox) {
+    if (item.type === InteractiveMessageType.SigningBox) {
         return <SigningBox {...item} onLayout={onLayout} />;
     }
-    if (type === InteractiveMessageType.EncryptionBox) {
+    if (item.type === InteractiveMessageType.EncryptionBox) {
         return <EncryptionBox {...item} onLayout={onLayout} />;
     }
-    if (type === InteractiveMessageType.TransactionConfirmation) {
+    if (item.type === InteractiveMessageType.TransactionConfirmation) {
         return <TransactionConfirmation {...item} onLayout={onLayout} />;
     }
-    if (type === InteractiveMessageType.QRCodeScanner) {
+    if (item.type === InteractiveMessageType.QRCodeScanner) {
         return <QRCodeScanner {...item} onLayout={onLayout} />;
     }
-    if (type === InteractiveMessageType.Date) {
+    if (item.type === InteractiveMessageType.Date) {
         return <DatePicker {...item} onLayout={onLayout} />;
     }
-    if (type === InteractiveMessageType.Time) {
+    if (item.type === InteractiveMessageType.Time) {
         return <TimePicker {...item} onLayout={onLayout} />;
     }
-    if (type === InteractiveMessageType.DateTime) {
+    if (item.type === InteractiveMessageType.DateTime) {
         return <DateTimePicker {...item} onLayout={onLayout} />;
     }
-    if (type === InteractiveMessageType.MediaOutput) {
+    if (item.type === InteractiveMessageType.MediaOutput) {
         return <MediaOutput {...item} onLayout={onLayout} />;
     }
-    if (type === InteractiveMessageType.QRCodeDraw) {
+    if (item.type === InteractiveMessageType.QRCodeDraw) {
         return <QRCodeDraw {...item} onLayout={onLayout} />;
     }
-    if (type === InteractiveMessageType.Country) {
+    if (item.type === InteractiveMessageType.Country) {
         return <CountryPicker {...item} onLayout={onLayout} />;
     }
 
