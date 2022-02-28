@@ -1,17 +1,4 @@
-import type { StyleProp, ViewStyle, TextStyle, ImageSourcePropType } from 'react-native';
-
-// TODO: should be in UIActionSheet
-// But since it not in TS yet leave it here
-export type MenuItem = {
-    style?: StyleProp<ViewStyle>;
-    title: string;
-    titleStyle?: StyleProp<TextStyle>;
-    details?: string;
-    detailsStyle?: StyleProp<TextStyle>;
-    chosen?: boolean;
-    reversedColors?: boolean;
-    onPress: () => void | Promise<void>;
-};
+import type { ImageSourcePropType } from 'react-native';
 
 export type QuickActionItem = {
     key: string;

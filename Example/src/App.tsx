@@ -13,7 +13,6 @@ import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { enableFreeze } from 'react-native-screens';
 
-import { UIPopoverBackground } from '@tonlabs/uikit.navigation_legacy';
 import { PortalManager } from '@tonlabs/uikit.layout';
 import {
     UILinkButton,
@@ -30,6 +29,7 @@ import {
     ColorVariants,
     ThemeContext,
     useTheme,
+    UIStatusBarManager,
 } from '@tonlabs/uikit.themes';
 import { UISearchBarButton } from '@tonlabs/uicast.bars';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
@@ -608,11 +608,11 @@ const AppWrapper = () => {
                         },
                     }}
                 >
-                    <UIPopoverBackground>
+                    <UIStatusBarManager>
                         <SafeAreaProvider>
                             <App />
                         </SafeAreaProvider>
-                    </UIPopoverBackground>
+                    </UIStatusBarManager>
                 </ThemeSwitcher.Provider>
             </ThemeContext.Provider>
         </GestureHandlerRootView>

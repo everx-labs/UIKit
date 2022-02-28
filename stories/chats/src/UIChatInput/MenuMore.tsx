@@ -1,47 +1,106 @@
 import * as React from 'react';
-import {
-    Image, // TODO: use UIImage?
-    View,
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIPopoverMenu } from '@tonlabs/uikit.navigation_legacy';
+import { ColorVariants } from '@tonlabs/uikit.themes';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
+import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIImage } from '@tonlabs/uikit.media';
+import { UIPopup } from '@tonlabs/uikit.popups';
+import type { UIMenuActionProps } from '@tonlabs/uikit.popups';
 
 import { commonStyles } from './styles';
-import type { MenuItem } from './types';
 
 type Props = {
-    menuMore?: MenuItem[];
+    menuMore?: UIMenuActionProps[];
     menuMoreDisabled?: boolean;
 };
 
 export function MenuMore({ menuMore, menuMoreDisabled }: Props) {
+    const [isMenuVisible, setMenuVisible] = React.useState<boolean>(false);
+
+    const menuTriggerRef = React.useRef<View>(null);
+
+    const showMenu = React.useCallback(() => setMenuVisible(true), []);
+
+    const hideMenu = React.useCallback(() => setMenuVisible(false), []);
+
     if (!menuMore || menuMore.length === 0) {
         return null;
     }
 
-    let content = null;
-
     if (menuMoreDisabled) {
-        content = <Image source={UIAssets.icons.ui.buttonDots} />;
-    } else if (menuMore.length === 1) {
-        content = (
-            <TouchableOpacity onPress={menuMore[0].onPress}>
-                <Image source={UIAssets.icons.ui.buttonDots} />
-            </TouchableOpacity>
+        return (
+            <View style={commonStyles.buttonContainer}>
+                <View style={styles.iconWrapper}>
+                    <UIImage
+                        source={UIAssets.icons.ui.buttonDots}
+                        tintColor={ColorVariants.IconNeutral}
+                    />
+                </View>
+            </View>
         );
-    } else {
-        content = (
-            <UIPopoverMenu testID="menu_view_more" menuItemsList={menuMore} placement="top">
-                <Image source={UIAssets.icons.ui.buttonDots} />
-            </UIPopoverMenu>
+    }
+
+    if (menuMore.length === 1) {
+        return (
+            <TouchableOpacity
+                testID="menu_view_more"
+                onPress={menuMore[0].onPress}
+                style={commonStyles.buttonContainer}
+            >
+                <View style={styles.iconWrapper}>
+                    <UIImage
+                        source={UIAssets.icons.ui.buttonDots}
+                        tintColor={ColorVariants.IconAccent}
+                    />
+                </View>
+            </TouchableOpacity>
         );
     }
 
     return (
-        <View style={commonStyles.buttonContainer}>
-            <View style={commonStyles.icon}>{content}</View>
-        </View>
+        <>
+            {/* We disable hierarchy optimization for Android to make it possible
+            to measure View's dimensions for the UIPopup.Menu triggerRef */}
+            <View ref={menuTriggerRef} collapsable={false}>
+                <TouchableOpacity
+                    testID="menu_view_more"
+                    key={`menu_view_more_items:${menuMore.length}`}
+                    onPress={showMenu}
+                    style={commonStyles.buttonContainer}
+                >
+                    <View style={styles.iconWrapper}>
+                        <UIImage
+                            source={UIAssets.icons.ui.buttonDots}
+                            tintColor={ColorVariants.IconAccent}
+                        />
+                    </View>
+                </TouchableOpacity>
+            </View>
+
+            <UIPopup.Menu visible={isMenuVisible} triggerRef={menuTriggerRef} onClose={hideMenu}>
+                {menuMore.map(item => (
+                    <UIPopup.Menu.Action
+                        testID={`${item.title}_action_button`}
+                        key={`menu_view_more_item:${item.title}`}
+                        type={item.type}
+                        title={item.title}
+                        onPress={() => {
+                            hideMenu();
+                            item.onPress();
+                        }}
+                    />
+                ))}
+            </UIPopup.Menu>
+        </>
     );
 }
+
+const styles = StyleSheet.create({
+    iconWrapper: {
+        width: 24,
+        height: 24,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+});

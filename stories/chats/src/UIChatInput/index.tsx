@@ -7,16 +7,11 @@ import {
     UIInputAccessoryView,
     UICustomKeyboardView,
 } from '@tonlabs/uikit.inputs';
+import { UIPopup } from '@tonlabs/uikit.popups';
+import type { UIMenuActionProps } from '@tonlabs/uikit.popups';
 
 import { ChatInput } from './ChatInput';
-import type {
-    OnSendText,
-    OnSendMedia,
-    OnSendDocument,
-    Shortcut,
-    MenuItem,
-    QuickActionItem,
-} from './types';
+import type { OnSendText, OnSendMedia, OnSendDocument, Shortcut, QuickActionItem } from './types';
 import { ChatPicker, ChatPickerRef } from './ChatPicker';
 
 function useMenuPlus(menuPlusHidden = false) {
@@ -28,17 +23,19 @@ function useMenuPlus(menuPlusHidden = false) {
         chatPickerRef.current?.openDocumentDialog();
     }, []);
 
-    const menu: MenuItem[] = React.useMemo(() => {
+    const menu: UIMenuActionProps[] = React.useMemo(() => {
         if (menuPlusHidden) {
             return [];
         }
 
         return [
             {
+                type: UIPopup.Menu.Action.Type.Neutral,
                 title: uiLocalized.Chats.Actions.AttachImage,
                 onPress: onPressImage,
             },
             {
+                type: UIPopup.Menu.Action.Type.Neutral,
                 title: uiLocalized.Chats.Actions.AttachDocument,
                 onPress: onPressDocument,
             },
