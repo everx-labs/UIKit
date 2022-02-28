@@ -3,9 +3,9 @@ import { ImageStyle, StyleProp, View } from 'react-native';
 import {
     ColorVariants,
     makeStyles,
-    useTheme,
-    UILabel,
     TypographyVariants,
+    UILabel,
+    useTheme,
 } from '@tonlabs/uikit.themes';
 import { UIImage } from '@tonlabs/uikit.media';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
@@ -30,26 +30,26 @@ function UICellDebotImpl({ image, title, caption, onPress, loading, testID }: UI
         <TouchableOpacity testID={testID} onPress={onPress}>
             <View style={styles.container} testID={testID}>
                 <UIImage source={image} style={styles.image as StyleProp<ImageStyle>} />
-                <View style={styles.textContainer}>
-                    {title ? (
-                        <UILabel
-                            role={TypographyVariants.NarrowActionFootnote}
-                            color={ColorVariants.TextPrimary}
-                            numberOfLines={caption ? 1 : 2}
-                        >
-                            {title}
-                        </UILabel>
-                    ) : null}
-                    {caption ? (
-                        <UILabel
-                            role={TypographyVariants.NarrowParagraphFootnote}
-                            color={ColorVariants.TextSecondary}
-                            numberOfLines={title ? 1 : 2}
-                        >
-                            {caption}
-                        </UILabel>
-                    ) : null}
-                </View>
+                {title ? (
+                    <UILabel
+                        role={TypographyVariants.NarrowActionFootnote}
+                        color={ColorVariants.TextPrimary}
+                        numberOfLines={caption ? 1 : 2}
+                        style={styles.textContainer}
+                    >
+                        {title}
+                    </UILabel>
+                ) : null}
+                {caption ? (
+                    <UILabel
+                        role={TypographyVariants.NarrowParagraphFootnote}
+                        color={ColorVariants.TextSecondary}
+                        numberOfLines={title ? 1 : 2}
+                        style={styles.textContainers}
+                    >
+                        {caption}
+                    </UILabel>
+                ) : null}
             </View>
         </TouchableOpacity>
     );
