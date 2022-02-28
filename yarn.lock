@@ -11709,11 +11709,6 @@ react-localization@1.0.17, react-localization@^1.0.13, react-localization@^1.0.1
   dependencies:
     localized-strings "^0.2.0"
 
-react-native-android-keyboard-adjust@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-android-keyboard-adjust/-/react-native-android-keyboard-adjust-1.2.0.tgz#7988b1258482c08548ce972401b2ae03a674fcb4"
-  integrity sha512-Q280bmf0zXnzLbHU9DcVoKZSKihd0s3hltz2kIUCJ5Q9EhLVR/pjgZ3Bwd1VgrHxQPnduHXdCp0432msklRMow==
-
 react-native-animateable-text@0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/react-native-animateable-text/-/react-native-animateable-text-0.7.0.tgz#a542522fdf05975598c11036bc050bb06968c8b0"
