@@ -23,34 +23,6 @@ export const UIMaterialTextViewSimple = React.forwardRef<TextInput, UIMaterialTe
         } = props;
         const theme = useTheme();
 
-        // const {
-        //     inputHasValue,
-        //     clear: clearInput,
-        //     onChangeText: onChangeTextProp,
-        // } = useUITextViewValue(ref, false, props);
-        // useExtendedRef(passedRef, ref, props.multiline, onChangeTextProp);
-        // const { isFocused, onFocus, onBlur } = useFocused(props.onFocus, props.onBlur);
-        // const { onContentSizeChange, onChange, numberOfLines, style, resetInputHeight } = useAutogrow(
-        //     ref,
-        //     props.onContentSizeChange,
-        //     props.onChange,
-        //     props.multiline,
-        //     props.numberOfLines,
-        //     onHeightChange,
-        // );
-        // const clear = React.useCallback(() => {
-        //     clearInput();
-        //     resetInputHeight();
-        // }, [clearInput, resetInputHeight]);
-        // const { isHovered, onMouseEnter, onMouseLeave } = useHover();
-        // const processedChildren = useMaterialTextViewChildren(
-        //     children,
-        //     inputHasValue,
-        //     isFocused,
-        //     isHovered,
-        //     clear,
-        // );
-
         const styles = useStyles(theme);
 
         return (
