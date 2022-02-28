@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { runOnJS, SharedValue } from 'react-native-reanimated';
-import type { MoveCarret } from './types';
+import type { ChangeText, MoveCarret } from '../UIMaterialTextView/types';
 
 // @inline
 const INTEGER_GROUP_SIZE = 3;
@@ -208,8 +208,9 @@ export function runUIOnChangeAmount(
     fractionalSeparator: string,
     lastNormalizedText: SharedValue<string>,
     lastText: SharedValue<string>,
-    setText: (formattedNumber: string) => void,
+    changeText: ChangeText,
     moveCarret: MoveCarret,
+    skipNextOnSelectionChange: SharedValue<boolean>,
 ) {
     'worklet';
 
@@ -232,10 +233,12 @@ export function runUIOnChangeAmount(
         fractionalSeparator,
     );
 
-    runOnJS(setText)(formattedNumber);
+    runOnJS(changeText)(formattedNumber);
     runOnJS(moveCarret)(carretPosition, formattedNumber.length);
 
+    skipNextOnSelectionChange.value = true;
     selectionStart.value = carretPosition;
+    selectionEnd.value = carretPosition;
     lastText.value = formattedNumber;
     lastNormalizedText.value = normalizedText;
 }

@@ -1,24 +1,99 @@
 import * as React from 'react';
+import type { TextInput } from 'react-native';
+import { useHover } from '@tonlabs/uikit.controls';
 import {
+    useMaterialTextViewChildren,
     UIMaterialTextViewIcon,
     UIMaterialTextViewAction,
     UIMaterialTextViewText,
 } from './useMaterialTextViewChildren';
 import { UIMaterialTextViewFloating } from './UIMaterialTextViewFloating';
 import { UIMaterialTextViewSimple } from './UIMaterialTextViewSimple';
-import type { UIMaterialTextViewRef, UIMaterialTextViewProps } from './types';
+import type {
+    UIMaterialTextViewRef,
+    UIMaterialTextViewProps,
+    UIMaterialTextViewLayoutProps,
+} from './types';
 import { useApplyMask } from '../useApplyMask';
+import { useExtendedRef } from './useExtendedRef';
+import { useFocused } from '../UITextView';
+import { useAutogrow } from './useAutogrow';
+import { useInteract } from './useInteract';
+import { useInputHasValue } from './useInputHasValue';
 
 const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMaterialTextViewProps>(
-    function UIMaterialTextViewForward(props: UIMaterialTextViewProps, ref) {
-        const textViewRef = React.useRef<UIMaterialTextViewRef>(null);
-        const { label, mask } = props;
+    function UIMaterialTextViewForward(props: UIMaterialTextViewProps, passedRef) {
+        const ref = React.useRef<TextInput>(null);
+        const {
+            label,
+            mask,
+            children,
+            onHeightChange,
+            multiline,
+            value,
+            defaultValue,
+            onChangeText: onChangeTextProp,
+            onContentSizeChange: onContentSizeChangeProp,
+            onChange: onChangeProp,
+            numberOfLines: numberOfLinesProp,
+            onFocus: onFocusProp,
+            onBlur: onBlurProp,
+        } = props;
 
-        const formattingProps = useApplyMask(textViewRef, mask);
+        const { inputHasValue, onChangeText } = useInputHasValue(
+            value,
+            defaultValue,
+            onChangeTextProp,
+        );
+        const { isFocused, onFocus, onBlur } = useFocused(onFocusProp, onBlurProp);
+        const { onContentSizeChange, onChange, numberOfLines, style, resetInputHeight } =
+            useAutogrow(
+                ref,
+                onContentSizeChangeProp,
+                onChangeProp,
+                multiline,
+                numberOfLinesProp,
+                onHeightChange,
+            );
+        const { changeText, clear, moveCarret } = useInteract(
+            ref,
+            multiline,
+            onChangeText,
+            resetInputHeight,
+        );
+        const { isHovered, onMouseEnter, onMouseLeave } = useHover();
+        const processedChildren = useMaterialTextViewChildren(
+            children,
+            inputHasValue,
+            isFocused,
+            isHovered,
+            clear,
+        );
+
+        useExtendedRef(passedRef, ref, changeText, moveCarret);
+
+        const formattingProps = useApplyMask(changeText, moveCarret, mask);
+
+        const newProps: UIMaterialTextViewLayoutProps = {
+            onContentSizeChange,
+            onChange,
+            numberOfLines,
+            onFocus,
+            onBlur,
+            style,
+            children: processedChildren,
+            onMouseEnter,
+            onMouseLeave,
+            isHovered,
+            inputHasValue,
+            isFocused,
+            ...formattingProps,
+        };
+
         if (label) {
-            return <UIMaterialTextViewFloating {...props} ref={textViewRef} {...formattingProps} />;
+            return <UIMaterialTextViewFloating {...props} {...newProps} ref={ref} />;
         }
-        return <UIMaterialTextViewSimple {...props} ref={textViewRef} {...formattingProps} />;
+        return <UIMaterialTextViewSimple {...props} {...newProps} ref={ref} />;
     },
 );
 

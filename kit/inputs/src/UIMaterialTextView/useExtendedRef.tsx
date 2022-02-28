@@ -1,46 +1,22 @@
 import * as React from 'react';
-import { TextInput, Platform } from 'react-native';
-import { calculateWebInputHeight } from '../useAutogrowTextView';
-import type { UIMaterialTextViewRef } from './types';
+import type { TextInput } from 'react-native';
+import type { UIMaterialTextViewRef, ChangeText, MoveCarret } from './types';
 
 export function useExtendedRef(
     forwardedRed: React.Ref<UIMaterialTextViewRef>,
     localRef: React.RefObject<TextInput>,
-    multiline: boolean | undefined,
-    onChangeText: (text: string, callOnChangeProp?: boolean) => string,
+    changeText: ChangeText,
+    moveCarret: MoveCarret,
 ) {
-    // @ts-ignore
-    React.useImperativeHandle(forwardedRed, () => ({
-        // Methods of TextInput
-        setNativeProps(...args) {
-            return localRef.current?.setNativeProps(...args);
-        },
-        isFocused() {
-            return localRef.current?.isFocused() || false;
-        },
-        focus() {
-            return localRef.current?.focus();
-        },
-        blur() {
-            return localRef.current?.blur();
-        },
-        clear() {
-            return localRef.current?.clear();
-        },
-        // Custom one
-        changeText: (text: string, callOnChangeProp?: boolean) => {
-            localRef.current?.setNativeProps({
-                text,
-            });
-
-            if (multiline) {
-                if (Platform.OS === 'web') {
-                    const elem = localRef.current as unknown as HTMLTextAreaElement;
-                    calculateWebInputHeight(elem);
-                }
-            }
-
-            onChangeText(text, callOnChangeProp);
-        },
-    }));
+    React.useImperativeHandle(
+        forwardedRed,
+        (): UIMaterialTextViewRef => ({
+            ...localRef.current,
+            setNativeProps(...args) {
+                return localRef.current?.setNativeProps(...args);
+            },
+            changeText,
+            moveCarret,
+        }),
+    );
 }

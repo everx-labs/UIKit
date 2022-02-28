@@ -1,18 +1,11 @@
 import * as React from 'react';
 import { TextInput, View } from 'react-native';
-
-import { useHover } from '@tonlabs/uikit.controls';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { makeStyles, useTheme, Theme, ColorVariants } from '@tonlabs/uikit.themes';
 import Animated, { interpolate, useAnimatedStyle, Layout } from 'react-native-reanimated';
-import { UITextView, useFocused, useUITextViewValue } from '../UITextView';
-
-import { useMaterialTextViewChildren } from './useMaterialTextViewChildren';
-
+import { UITextView } from '../UITextView';
 import { FloatingLabel } from './FloatingLabel';
-import type { UIMaterialTextViewProps, UIMaterialTextViewRef } from './types';
-import { useExtendedRef } from './useExtendedRef';
-import { useAutogrow } from './useAutogrow';
+import type { UIMaterialTextViewLayoutProps } from './types';
 import { UIMaterialTextViewComment } from './UIMaterialTextViewComment';
 import { useExpandingValue } from './useExpandingValue';
 
@@ -31,13 +24,7 @@ const getIsExpanded = (isFocused: boolean, inputHasValue: boolean): boolean => {
     return isFocused || inputHasValue;
 };
 
-function useFloatingLabelAttribute(
-    onFocusProp: UIMaterialTextViewProps['onFocus'],
-    onBlurProp: UIMaterialTextViewProps['onBlur'],
-    inputHasValue: boolean,
-) {
-    const { isFocused, onFocus, onBlur } = useFocused(onFocusProp, onBlurProp);
-
+function useFloatingLabelAttribute(isFocused: boolean, inputHasValue: boolean) {
     const isExpanded: boolean = getIsExpanded(isFocused, inputHasValue);
 
     const [isDefaultPlaceholderVisible, setDefaultPlaceholderVisible] = React.useState(isExpanded);
@@ -53,9 +40,6 @@ function useFloatingLabelAttribute(
     }, [isExpanded]);
 
     return {
-        isFocused,
-        onFocus,
-        onBlur,
         isDefaultPlaceholderVisible,
         markDefaultPlacehoderAsVisible,
         isExpanded,
@@ -63,46 +47,25 @@ function useFloatingLabelAttribute(
 }
 
 export const UIMaterialTextViewFloating = React.forwardRef<
-    UIMaterialTextViewRef,
-    UIMaterialTextViewProps
->(function UIMaterialTextViewFloatingForwarded(props: UIMaterialTextViewProps, passedRef) {
-    const { label = '', onLayout, children, onHeightChange, borderViewRef, ...rest } = props;
-    const ref = React.useRef<TextInput>(null);
-    const theme = useTheme();
+    TextInput,
+    UIMaterialTextViewLayoutProps
+>(function UIMaterialTextViewFloatingForwarded(props: UIMaterialTextViewLayoutProps, ref) {
     const {
-        inputHasValue,
-        clear: clearInput,
-        onChangeText: onChangeTextProp,
-    } = useUITextViewValue(ref, false, props);
-    useExtendedRef(passedRef, ref, props.multiline, onChangeTextProp);
-    const {
-        isFocused,
-        onFocus,
-        onBlur,
-        isDefaultPlaceholderVisible,
-        markDefaultPlacehoderAsVisible,
-        isExpanded,
-    } = useFloatingLabelAttribute(props.onFocus, props.onBlur, inputHasValue);
-    const { onContentSizeChange, onChange, numberOfLines, style, resetInputHeight } = useAutogrow(
-        ref,
-        props.onContentSizeChange,
-        props.onChange,
-        props.multiline,
-        props.numberOfLines,
-        onHeightChange,
-    );
-    const clear = React.useCallback(() => {
-        clearInput();
-        resetInputHeight();
-    }, [clearInput, resetInputHeight]);
-    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
-    const processedChildren = useMaterialTextViewChildren(
+        label = '',
+        onLayout,
         children,
+        onMouseEnter,
+        onMouseLeave,
+        borderViewRef,
+        isHovered,
         inputHasValue,
         isFocused,
-        isHovered,
-        clear,
-    );
+        ...rest
+    } = props;
+    const theme = useTheme();
+
+    const { isDefaultPlaceholderVisible, markDefaultPlacehoderAsVisible, isExpanded } =
+        useFloatingLabelAttribute(isFocused, inputHasValue);
 
     const expandingValue: Readonly<Animated.SharedValue<number>> = useExpandingValue(
         isExpanded,
@@ -143,13 +106,6 @@ export const UIMaterialTextViewFloating = React.forwardRef<
                         placeholderTextColor={
                             isHovered ? ColorVariants.TextSecondary : ColorVariants.TextTertiary
                         }
-                        onFocus={onFocus}
-                        onBlur={onBlur}
-                        onChangeText={onChangeTextProp}
-                        onContentSizeChange={onContentSizeChange}
-                        onChange={onChange}
-                        numberOfLines={numberOfLines}
-                        style={style}
                         layout={Layout}
                         scrollEnabled={false}
                     />
@@ -157,7 +113,7 @@ export const UIMaterialTextViewFloating = React.forwardRef<
                         {label}
                     </FloatingLabel>
                 </Animated.View>
-                {processedChildren}
+                {children}
             </View>
         </UIMaterialTextViewComment>
     );

@@ -1,7 +1,7 @@
 import { runOnUI, SharedValue } from 'react-native-reanimated';
 import { uiLocalized } from '@tonlabs/localization';
 import { runUIOnChangeAmount } from './runUIOnChangeAmount';
-import type { MoveCarret } from './types';
+import type { ChangeText, MoveCarret } from '../UIMaterialTextView/types';
 
 export function onChangeAmount(
     rawNumber: string,
@@ -9,8 +9,9 @@ export function onChangeAmount(
     selectionEnd: SharedValue<number>,
     lastNormalizedText: SharedValue<string>,
     lastText: SharedValue<string>,
-    setText: (formattedNumber: string) => void,
+    changeText: ChangeText,
     moveCarret: MoveCarret,
+    skipNextOnSelectionChange: SharedValue<boolean>,
 ) {
     const {
         grouping: integerSeparator,
@@ -27,7 +28,8 @@ export function onChangeAmount(
         fractionalSeparator,
         lastNormalizedText,
         lastText,
-        setText,
+        changeText,
         moveCarret,
+        skipNextOnSelectionChange,
     );
 }

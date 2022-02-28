@@ -1,3 +1,4 @@
+import type React from 'react';
 import type { View, TextInput } from 'react-native';
 import type { UITextViewProps } from '../UITextView';
 import type { OnHeightChange } from '../useAutogrowTextView';
@@ -17,6 +18,19 @@ export type UIMaterialTextViewProps = UITextViewProps & {
     mask?: UIMaterialTextViewMask;
 };
 
-export type UIMaterialTextViewRef = TextInput & {
-    changeText: (text: string, callOnChangeProp?: boolean) => void;
+export type UIMaterialTextViewLayoutProps = UIMaterialTextViewProps & {
+    onMouseEnter: () => void;
+    onMouseLeave: () => void;
+    isHovered: boolean;
+    isFocused: boolean;
+    inputHasValue: boolean;
 };
+
+export type UIMaterialTextViewRef = React.RefAttributes<TextInput> & {
+    setNativeProps: (nativeProps: Record<string, unknown>) => void;
+    changeText: (text: string, callOnChangeProp?: boolean) => void;
+    moveCarret: (carretPosition: number, maxPosition?: number | undefined) => void;
+};
+
+export type ChangeText = (text: string, callOnChangeProp?: boolean | undefined) => void;
+export type MoveCarret = (carretPosition: number, maxPosition?: number | undefined) => void;
