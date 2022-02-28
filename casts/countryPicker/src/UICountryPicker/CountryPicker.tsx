@@ -179,7 +179,6 @@ function CountryPickerContent({ banned, permitted, onClose, onSelect }: CountryP
     );
 
     const hideKeyboard = React.useCallback(() => {
-        // react-native-android-keyboard-adjust bug:
         // Keyboard doesn't want to hide on Android
         // so we have to forcibly hide the keyboard
         isAndroid && Keyboard.dismiss();
