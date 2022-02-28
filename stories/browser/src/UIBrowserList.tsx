@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FlatList, FlatListProps, ViewProps } from 'react-native';
+import type { FlatList, FlatListProps, Insets, ViewProps } from 'react-native';
 
 import {
     BubbleActionButton,
@@ -10,6 +10,7 @@ import {
     OnPressUrl,
     OnLongPressText,
 } from '@tonlabs/uistory.chats';
+
 import { BrowserMessage, InteractiveMessageType } from './types';
 import { getFormattedList } from './getFormattedList';
 import { AddressInput } from './Inputs/addressInput';
@@ -27,12 +28,15 @@ import { DateTimePicker } from './Inputs/dateTimePicker';
 import { CountryPicker } from './Inputs/countryPicker';
 import { MediaOutput } from './MediaOutput';
 import { QRCodeDraw } from './QRCodeDraw';
+import { UIBrowserFlatList } from './UIBrowserFlatList';
 
 type UIBrowserListProps = {
     messages: BrowserMessage[];
     onPressUrl?: OnPressUrl;
     onLongPressText?: OnLongPressText;
     bottomInset?: number;
+    shouldAutoHandleInsets: boolean;
+    contentInset?: Insets;
 };
 
 function flatListGetItemLayoutFabric({
@@ -58,56 +62,57 @@ function flatListGetItemLayoutFabric({
 }
 
 const renderBubble = () => (item: BrowserMessage, onLayout: ViewProps['onLayout']) => {
-    if (item.type === ChatMessageType.PlainText) {
+    const { type } = item;
+    if (type === ChatMessageType.PlainText) {
         return <BubbleSimplePlainText {...item} onLayout={onLayout} />;
     }
-    if (item.type === ChatMessageType.ActionButton) {
+    if (type === ChatMessageType.ActionButton) {
         return <BubbleActionButton {...item} onLayout={onLayout} />;
     }
 
-    if (item.type === InteractiveMessageType.AddressInput) {
+    if (type === InteractiveMessageType.AddressInput) {
         return <AddressInput {...item} onLayout={onLayout} />;
     }
-    if (item.type === InteractiveMessageType.Terminal) {
+    if (type === InteractiveMessageType.Terminal) {
         return <TerminalInput {...item} onLayout={onLayout} />;
     }
-    if (item.type === InteractiveMessageType.Menu) {
+    if (type === InteractiveMessageType.Menu) {
         return <MenuInput {...item} onLayout={onLayout} />;
     }
-    if (item.type === InteractiveMessageType.Confirm) {
+    if (type === InteractiveMessageType.Confirm) {
         return <ConfirmInput {...item} onLayout={onLayout} />;
     }
-    if (item.type === InteractiveMessageType.AmountInput) {
+    if (type === InteractiveMessageType.AmountInput) {
         return <AmountInput {...item} onLayout={onLayout} />;
     }
-    if (item.type === InteractiveMessageType.SigningBox) {
+    if (type === InteractiveMessageType.SigningBox) {
         return <SigningBox {...item} onLayout={onLayout} />;
     }
-    if (item.type === InteractiveMessageType.EncryptionBox) {
+    if (type === InteractiveMessageType.EncryptionBox) {
         return <EncryptionBox {...item} onLayout={onLayout} />;
     }
-    if (item.type === InteractiveMessageType.TransactionConfirmation) {
+    if (type === InteractiveMessageType.TransactionConfirmation) {
         return <TransactionConfirmation {...item} onLayout={onLayout} />;
     }
-    if (item.type === InteractiveMessageType.QRCodeScanner) {
+    if (type === InteractiveMessageType.QRCodeScanner) {
         return <QRCodeScanner {...item} onLayout={onLayout} />;
     }
-    if (item.type === InteractiveMessageType.Date) {
+    if (type === InteractiveMessageType.Date) {
         return <DatePicker {...item} onLayout={onLayout} />;
     }
-    if (item.type === InteractiveMessageType.Time) {
+    if (type === InteractiveMessageType.Time) {
         return <TimePicker {...item} onLayout={onLayout} />;
     }
-    if (item.type === InteractiveMessageType.DateTime) {
+    if (type === InteractiveMessageType.DateTime) {
         return <DateTimePicker {...item} onLayout={onLayout} />;
     }
-    if (item.type === InteractiveMessageType.MediaOutput) {
+    if (type === InteractiveMessageType.MediaOutput) {
         return <MediaOutput {...item} onLayout={onLayout} />;
     }
-    if (item.type === InteractiveMessageType.QRCodeDraw) {
+    if (type === InteractiveMessageType.QRCodeDraw) {
         return <QRCodeDraw {...item} onLayout={onLayout} />;
     }
-    if (item.type === InteractiveMessageType.Country) {
+    if (type === InteractiveMessageType.Country) {
         return <CountryPicker {...item} onLayout={onLayout} />;
     }
 
@@ -116,7 +121,13 @@ const renderBubble = () => (item: BrowserMessage, onLayout: ViewProps['onLayout'
 
 export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
     function UIBrowserListForwarded(
-        { messages, onPressUrl, onLongPressText }: UIBrowserListProps,
+        {
+            messages,
+            onPressUrl,
+            onLongPressText,
+            shouldAutoHandleInsets,
+            contentInset,
+        }: UIBrowserListProps,
         ref,
     ) {
         const formattedMessages = React.useMemo(() => getFormattedList(messages), [messages]);
@@ -128,11 +139,13 @@ export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
                 getItemLayoutFabric={flatListGetItemLayoutFabric}
                 onLongPressText={onLongPressText}
                 onPressUrl={onPressUrl}
+                shouldAutoHandleInsets={shouldAutoHandleInsets}
             >
                 {(chatListProps: CommonChatListProps<BrowserMessage>) => (
-                    <FlatList
+                    <UIBrowserFlatList
                         testID="browser_container"
                         data={formattedMessages}
+                        contentInset={contentInset}
                         {...chatListProps}
                     />
                 )}

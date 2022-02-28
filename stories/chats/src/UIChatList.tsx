@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { SectionList, ViewProps } from 'react-native';
-import type { SectionListData } from 'react-native';
+import type { ViewProps, SectionListData, SectionList, Insets } from 'react-native';
 
 import { UILoadMoreButton } from '@tonlabs/uikit.controls';
+
 import { SectionExtra, UIChatListFormatter } from './UIChatListFormatter';
 import { UICommonChatList } from './UICommonChatList';
 import { DateSeparator } from './DateSeparator';
@@ -18,6 +18,7 @@ import { ChatBubbleQRCode } from './BubbleQRCode';
 import { ChatBubbleMedia } from './BubbleMedia/BubbleMedia';
 import { ChatMessageType } from './constants';
 import type { ChatMessage, OnPressUrl, OnLongPressText } from './types';
+import { UIChatSectionList } from './UIChatSectionList';
 
 const renderSectionTitle = ({
     section,
@@ -64,7 +65,8 @@ type UIChatListProps = {
     onLoadEarlierMessages: () => void;
     onPressUrl?: OnPressUrl;
     onLongPressText?: OnLongPressText;
-    bottomInset?: number;
+    shouldAutoHandleInsets: boolean;
+    contentInset?: Insets;
 };
 
 export const UIChatList = React.forwardRef<SectionList, UIChatListProps>(
@@ -77,6 +79,8 @@ export const UIChatList = React.forwardRef<SectionList, UIChatListProps>(
             onLoadEarlierMessages,
             onPressUrl,
             onLongPressText,
+            shouldAutoHandleInsets,
+            contentInset,
         }: UIChatListProps,
         ref,
     ) {
@@ -104,9 +108,10 @@ export const UIChatList = React.forwardRef<SectionList, UIChatListProps>(
                 canLoadMore={canLoadMore}
                 onLongPressText={onLongPressText}
                 onPressUrl={onPressUrl}
+                shouldAutoHandleInsets={shouldAutoHandleInsets}
             >
-                {chatListProps => (
-                    <SectionList
+                {({ ...chatListProps }) => (
+                    <UIChatSectionList
                         testID="chat_container"
                         sections={sections}
                         // Because the List is inverted in order to render from the bottom,
@@ -115,6 +120,7 @@ export const UIChatList = React.forwardRef<SectionList, UIChatListProps>(
                         // renderSectionHeader={section => this.renderSectionStatus(section)}
                         onEndReached={onLoadEarlierMessages}
                         ListFooterComponent={renderLoadMore}
+                        contentInset={contentInset}
                         {...chatListProps}
                     />
                 )}

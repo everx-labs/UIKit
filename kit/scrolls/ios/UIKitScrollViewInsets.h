@@ -19,5 +19,6 @@
 @property (nonatomic, assign) BOOL automaticallyAdjustContentInsets;
 @property (nonatomic, assign) BOOL automaticallyAdjustKeyboardInsets;
 @property (nonatomic, assign) UIEdgeInsets contentInset;
+@property (nonatomic, copy) NSString *keyboardInsetAdjustmentBehavior;
 
 @end

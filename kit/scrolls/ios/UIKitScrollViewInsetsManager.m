@@ -22,6 +22,7 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_VIEW_PROPERTY(automaticallyAdjustContentInsets, BOOL);
 RCT_EXPORT_VIEW_PROPERTY(automaticallyAdjustKeyboardInsets, BOOL);
+RCT_EXPORT_VIEW_PROPERTY(keyboardInsetAdjustmentBehavior, NSString);
 RCT_EXPORT_VIEW_PROPERTY(contentInset, UIEdgeInsets);
 
 @end

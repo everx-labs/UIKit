@@ -21,16 +21,17 @@
 
 - (InsetsChange)calculateInsets:(UIEdgeInsets)currentInsets {
     UIEdgeInsets safeAreaInsets = [self getSafeAreaInsets];
-    
-    UIEdgeInsets newInsets = UIEdgeInsetsMake(currentInsets.top + safeAreaInsets.top,
-                                              currentInsets.left + safeAreaInsets.left,
-                                              currentInsets.bottom + safeAreaInsets.bottom,
-                                              currentInsets.right + safeAreaInsets.right);
-    
+
+    UIEdgeInsets newInsets;
     UIEdgeInsets indicatorInsets;
     
     if (_rctScrollView.inverted) {
-        CGFloat indicatorInsetBottom = newInsets.bottom;
+        newInsets = UIEdgeInsetsMake(currentInsets.bottom + safeAreaInsets.bottom,
+                                     currentInsets.left + safeAreaInsets.left,
+                                     currentInsets.top + safeAreaInsets.top,
+                                     currentInsets.right + safeAreaInsets.right);
+        
+        CGFloat indicatorInsetBottom = newInsets.top;
         
         if (@available(iOS 13.0, *)) {
             // nothing
@@ -43,6 +44,11 @@
                                            newInsets.bottom,
                                            newInsets.right);
     } else {
+        newInsets = UIEdgeInsetsMake(currentInsets.top + safeAreaInsets.top,
+                                     currentInsets.left + safeAreaInsets.left,
+                                     currentInsets.bottom + safeAreaInsets.bottom,
+                                     currentInsets.right + safeAreaInsets.right);
+        
         CGFloat indicatorInsetBottom = newInsets.bottom;
         
         if (@available(iOS 13.0, *)) {

@@ -12,7 +12,7 @@ public class UIKitScrollViewInsetsKeyboard {
         mDelegate = delegate;
     }
 
-    public InsetsChange calculateInsets(Insets insetsInChain, WindowInsetsCompat insets) {
+    public InsetsChange calculateInsets(Insets insetsInChain, Insets contentInsets, WindowInsetsCompat insets, String keyboardInsetAdjustmentBehavior) {
         Insets imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime());
 
         int screenHeight = DisplayMetricsHolder.getScreenDisplayMetrics().heightPixels;
@@ -37,7 +37,9 @@ public class UIKitScrollViewInsetsKeyboard {
                         insetsInChain.left,
                         insetsInChain.top,
                         insetsInChain.right,
-                        Math.max(insetsInChain.bottom, keyboardInset.bottom)
+                        keyboardInsetAdjustmentBehavior.equals("inclusive")
+                                ? Math.max(insetsInChain.bottom, keyboardInset.bottom + contentInsets.bottom)
+                                : Math.max(insetsInChain.bottom, keyboardInset.bottom)
                 )
         );
     }

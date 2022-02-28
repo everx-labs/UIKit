@@ -18,6 +18,7 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
             containerStyle = { flex: 1 },
             automaticallyAdjustContentInsets,
             automaticallyAdjustKeyboardInsets,
+            keyboardInsetAdjustmentBehavior,
             contentInset,
             scrollIndicatorInsets,
             ...props
@@ -79,6 +80,7 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
                     <ScrollableAutomaticInsets
                         automaticallyAdjustContentInsets={automaticallyAdjustContentInsets}
                         automaticallyAdjustKeyboardInsets={automaticallyAdjustKeyboardInsets}
+                        keyboardInsetAdjustmentBehavior={keyboardInsetAdjustmentBehavior}
                         contentInset={contentInset}
                     />
                 ) : null}

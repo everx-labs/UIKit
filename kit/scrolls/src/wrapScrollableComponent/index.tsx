@@ -10,3 +10,5 @@ export const wrapScrollableComponent: <Props extends ScrollViewProps>(
 ) => any = platformWrapScrollableComponent;
 
 export * from './types';
+
+export * from './ScrollableAutomaticInsets';

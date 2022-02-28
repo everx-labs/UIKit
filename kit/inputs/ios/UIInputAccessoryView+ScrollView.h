@@ -17,6 +17,6 @@
 - (void)handleScrollViewOffsets:(CGFloat)diffBetweenTransformsY;
 - (void)manageScrollViewInsets:(CGFloat)accessoryTranslation;
 - (void)resetScrollViewInsets;
-- (CGFloat)getSafeAreaBottom;
+- (UIEdgeInsets)getSafeAreaInsets;
 
 @end

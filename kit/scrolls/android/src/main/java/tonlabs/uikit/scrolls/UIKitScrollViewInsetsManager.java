@@ -6,6 +6,7 @@ import androidx.core.graphics.Insets;
 
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
+import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
@@ -43,12 +44,17 @@ public class UIKitScrollViewInsetsManager extends SimpleViewManager<UIKitScrollV
     public void setContentInset(UIKitScrollViewInsets view, ReadableMap contentInsetMap) {
         view.setContentInset(
                 Insets.of(
-                        contentInsetMap.hasKey("left") ? contentInsetMap.getInt("left") : 0,
-                        contentInsetMap.hasKey("top") ? contentInsetMap.getInt("top") : 0,
-                        contentInsetMap.hasKey("right") ? contentInsetMap.getInt("right") : 0,
-                        contentInsetMap.hasKey("bottom") ? contentInsetMap.getInt("bottom") : 0
+                        contentInsetMap.hasKey("left") ? (int) PixelUtil.toPixelFromDIP(contentInsetMap.getInt("left")) : 0,
+                        contentInsetMap.hasKey("top") ? (int) PixelUtil.toPixelFromDIP(contentInsetMap.getInt("top")) : 0,
+                        contentInsetMap.hasKey("right") ? (int) PixelUtil.toPixelFromDIP(contentInsetMap.getInt("right")) : 0,
+                        contentInsetMap.hasKey("bottom") ? (int) PixelUtil.toPixelFromDIP(contentInsetMap.getInt("bottom")) : 0
                 )
         );
+    }
+
+    @ReactProp(name = "keyboardInsetAdjustmentBehavior")
+    public void setKeyboardInsetAdjustmentBehavior(UIKitScrollViewInsets view, String keyboardInsetAdjustmentBehavior) {
+        view.setKeyboardInsetAdjustmentBehavior(keyboardInsetAdjustmentBehavior);
     }
 
     @Nullable

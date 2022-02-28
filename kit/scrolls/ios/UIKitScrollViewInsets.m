@@ -29,6 +29,7 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
 - (instancetype)initWithBridge:(RCTBridge *)bridge {
     if ([self init]) {
         _bridge = bridge;
+        _keyboardInsetAdjustmentBehavior = @"exclusive";
     }
     
     return self;
@@ -75,6 +76,19 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
     [self onInsetsShouldBeRecalculated];
 }
 
+- (void)setContentInset:(UIEdgeInsets)contentInset {
+    _contentInset = contentInset;
+    
+    [self onInsetsShouldBeRecalculated];
+}
+
+- (void)setKeyboardInsetAdjustmentBehavior:(NSString *)keyboardInsetAdjustmentBehavior {
+    _keyboardInsetAdjustmentBehavior = keyboardInsetAdjustmentBehavior;
+    
+    [self onInsetsShouldBeRecalculated];
+}
+
+
 - (void)onInsetsShouldBeRecalculated {
     InsetsChange change = InsetsChangeInstantMake(self.contentInset, self.contentInset);
     
@@ -93,7 +107,10 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
     }
     
     if (_insetsKeyboard != NULL) {
-        InsetsChange keyboardChange = [_insetsKeyboard calculateInsets:change.insets withNotification:notification];
+        InsetsChange keyboardChange = [_insetsKeyboard calculateInsets:change.insets
+                                                      withNotification:notification
+                                                          contentInset:self.contentInset
+                                       keyboardInsetAdjustmentBehavior:self.keyboardInsetAdjustmentBehavior];
         
         if (!UIEdgeInsetsEqualToEdgeInsets(change.insets, keyboardChange.insets)) {
             change = keyboardChange;

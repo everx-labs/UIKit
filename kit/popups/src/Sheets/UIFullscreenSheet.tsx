@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, ViewStyle, useWindowDimensions } from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { useDimensions } from '@tonlabs/uikit.inputs';
 import { UISheet, UISheetProps } from './UISheet/UISheet';
 
 export type UIFullscreenSheetProps = UISheetProps & {
@@ -9,7 +10,9 @@ export type UIFullscreenSheetProps = UISheetProps & {
 };
 
 export function UIFullscreenSheet({ children, style, ...rest }: UIFullscreenSheetProps) {
-    const { height } = useWindowDimensions();
+    const {
+        screen: { height },
+    } = useDimensions();
 
     const fullscreenHeight = React.useMemo(
         () => height + UILayoutConstant.rubberBandEffectDistance,

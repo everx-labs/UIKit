@@ -16,7 +16,7 @@ import {
     Keyboard,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useKeyboard } from '@react-native-community/hooks';
 
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
@@ -197,14 +197,8 @@ export function useHasScroll() {
     };
 }
 
-function useContentInset(ref: React.RefObject<SectionList>, hasScrollOverflow: boolean) {
-    const bottomInset = useSafeAreaInsets().bottom;
-    const contentInset = React.useMemo(
-        () => ({
-            top: bottomInset,
-        }),
-        [bottomInset],
-    );
+function useScrollToTop(ref: React.RefObject<SectionList>, hasScrollOverflow: boolean) {
+    const { keyboardShown } = useKeyboard();
 
     React.useLayoutEffect(() => {
         function scrollToTop() {
@@ -244,9 +238,7 @@ function useContentInset(ref: React.RefObject<SectionList>, hasScrollOverflow: b
          *  - Open a debot, messages should be in a correct position.
          *  - Open a debot, do few actions, restart the debot, tap back, and open it again.
          */
-    }, [bottomInset, ref, hasScrollOverflow]);
-
-    return contentInset;
+    }, [ref, hasScrollOverflow, keyboardShown]);
 }
 
 function useLinesAnimation(hasScrollOverflow: React.RefObject<boolean>) {
@@ -366,7 +358,7 @@ export type CommonChatListProps<ItemT extends BubbleBaseT> = {
     keyboardDismissMode: ScrollViewProps['keyboardDismissMode'];
     keyboardShouldPersistTaps: ScrollViewProps['keyboardShouldPersistTaps'];
     automaticallyAdjustContentInsets: boolean;
-    contentInset: ScrollViewProps['contentInset'];
+    automaticallyAdjustKeyboardInsets: boolean;
     onResponderGrant: ScrollViewProps['onResponderGrant'];
     onTouchEnd: ScrollViewProps['onTouchEnd'];
     inverted: boolean;
@@ -394,6 +386,8 @@ type UICommonChatListProps<ItemT extends BubbleBaseT> = {
     canLoadMore?: boolean;
     onLongPressText?: OnLongPressText;
     onPressUrl?: OnPressUrl;
+    // This is temporary!
+    shouldAutoHandleInsets: boolean;
 };
 
 export function UICommonChatList<ItemT extends BubbleBaseT>({
@@ -405,6 +399,7 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
     children,
     onLongPressText,
     onPressUrl,
+    shouldAutoHandleInsets,
 }: UICommonChatListProps<ItemT>) {
     const keyboardDismissProp: ScrollViewProps['keyboardDismissMode'] = React.useMemo(() => {
         if (Platform.OS !== 'ios') {
@@ -449,7 +444,7 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
         onViewableItemsChanged,
     } = useLinesAnimation(hasScrollRef);
     useChatListWheelHandler(localRef, nativeID, listContentOffset);
-    const contentInset = useContentInset(localRef, hasScroll);
+    useScrollToTop(localRef, hasScroll);
     const handlers = useCloseKeyboardOnTap();
 
     const onLayout = React.useCallback(
@@ -468,36 +463,34 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
     );
 
     return (
-        <>
-            <UrlPressHandlerContext.Provider value={onPressUrl}>
-                <TextLongPressHandlerContext.Provider value={onLongPressText}>
-                    <Animated.View style={lineStyle} />
-                    {children({
-                        ref: localRef,
-                        nativeID,
-                        keyboardDismissMode: keyboardDismissProp,
-                        keyboardShouldPersistTaps: 'handled',
-                        automaticallyAdjustContentInsets: false,
-                        contentInset,
-                        inverted: true,
-                        getItemLayout,
-                        onLayout,
-                        onContentSizeChange,
-                        onScroll: onScrollMessages,
-                        onScrollToIndexFailed,
-                        scrollEventThrottle: UIConstant.maxScrollEventThrottle(),
-                        style,
-                        contentContainerStyle: styles.messagesList,
-                        onViewableItemsChanged,
-                        keyExtractor,
-                        renderItem,
-                        onEndReachedThreshold: 0.6,
-                        renderScrollComponent,
-                        ...handlers,
-                    })}
-                </TextLongPressHandlerContext.Provider>
-            </UrlPressHandlerContext.Provider>
-        </>
+        <UrlPressHandlerContext.Provider value={onPressUrl}>
+            <TextLongPressHandlerContext.Provider value={onLongPressText}>
+                <Animated.View style={lineStyle} />
+                {children({
+                    ref: localRef,
+                    nativeID,
+                    keyboardDismissMode: keyboardDismissProp,
+                    keyboardShouldPersistTaps: 'handled',
+                    inverted: true,
+                    getItemLayout,
+                    onLayout,
+                    onContentSizeChange,
+                    onScroll: onScrollMessages,
+                    onScrollToIndexFailed,
+                    scrollEventThrottle: UIConstant.maxScrollEventThrottle(),
+                    style,
+                    contentContainerStyle: styles.messagesList,
+                    onViewableItemsChanged,
+                    keyExtractor,
+                    renderItem,
+                    onEndReachedThreshold: 0.6,
+                    renderScrollComponent,
+                    automaticallyAdjustContentInsets: shouldAutoHandleInsets,
+                    automaticallyAdjustKeyboardInsets: shouldAutoHandleInsets,
+                    ...handlers,
+                })}
+            </TextLongPressHandlerContext.Provider>
+        </UrlPressHandlerContext.Provider>
     );
 }
 const styles = StyleSheet.create({

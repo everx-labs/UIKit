@@ -29,6 +29,8 @@ public class UIKitScrollViewInsets extends FrameLayout implements UIKitScrollVie
     private UIKitScrollViewInsetsSafeArea mScrollViewInsetsSafeArea;
     private UIKitScrollViewInsetsKeyboard mScrollViewInsetsKeyboard;
 
+    private String mKeyboardInsetAdjustmentBehavior = "exclusive";
+
     private Insets mContentInset = Insets.NONE;
     private Insets mPrevInset = Insets.NONE;
     private WindowInsetsCompat mLastKnownWindowInsets;
@@ -127,6 +129,16 @@ public class UIKitScrollViewInsets extends FrameLayout implements UIKitScrollVie
         mScrollViewInsetsKeyboard = new UIKitScrollViewInsetsKeyboard(this);
     }
 
+    public void setKeyboardInsetAdjustmentBehavior(String keyboardInsetAdjustmentBehavior) {
+        mKeyboardInsetAdjustmentBehavior = keyboardInsetAdjustmentBehavior;
+
+        if (mLastKnownWindowInsets == null) {
+            return;
+        }
+
+        runInsetsChainCalculation(mLastKnownWindowInsets);
+    }
+
     @Override
     public Activity getCurrentActivity() {
         return mReactContext.getCurrentActivity();
@@ -147,7 +159,7 @@ public class UIKitScrollViewInsets extends FrameLayout implements UIKitScrollVie
         }
 
         if (mScrollViewInsetsKeyboard != null) {
-            change = mScrollViewInsetsKeyboard.calculateInsets(change.insets, insets);
+            change = mScrollViewInsetsKeyboard.calculateInsets(change.insets, initialInsets, insets, mKeyboardInsetAdjustmentBehavior);
         }
 
         applyInsetsChange(change);

@@ -10,6 +10,24 @@ import {
 import { Portal } from '@tonlabs/uikit.layout';
 
 import type { TerminalMessage } from '../types';
+import { useUIBrowserInputOnHeightChange } from '../UIBrowserInputHeight';
+
+function TerminalInputContainer({ onSendText }: { onSendText: (text: string) => void }) {
+    const onHeightChange = useUIBrowserInputOnHeightChange();
+
+    return (
+        <UIChatInput
+            editable
+            autoFocus
+            menuPlusHidden
+            onSendText={onSendText}
+            onSendMedia={() => undefined}
+            onSendDocument={() => undefined}
+            managedScrollViewNativeID="browserList"
+            onHeightChange={onHeightChange}
+        />
+    );
+}
 
 export function TerminalInput({ onLayout, ...message }: TerminalMessage) {
     if (message.externalState != null) {
@@ -48,18 +66,12 @@ export function TerminalInput({ onLayout, ...message }: TerminalMessage) {
                 />
             )}
             <Portal forId="browser">
-                <UIChatInput
-                    editable
-                    autoFocus
-                    menuPlusHidden
+                <TerminalInputContainer
                     onSendText={(text: string) => {
                         message.onSend({
                             text,
                         });
                     }}
-                    onSendMedia={() => undefined}
-                    onSendDocument={() => undefined}
-                    managedScrollViewNativeID="browserList"
                 />
             </Portal>
         </View>
