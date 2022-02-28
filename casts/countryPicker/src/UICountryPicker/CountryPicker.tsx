@@ -2,12 +2,12 @@ import React from 'react';
 import Fuse from 'fuse.js';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { View, Platform, Keyboard } from 'react-native';
-import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 import { useKeyboard } from '@react-native-community/hooks';
 
+import { UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
 import { UISearchBar } from '@tonlabs/uicast.bars';
-import { UIFullscreenSheet } from '@tonlabs/uikit.popups';
+import { UIModalSheet } from '@tonlabs/uikit.popups';
 import { FlatList } from '@tonlabs/uikit.scrolls';
 import { UILinkButton } from '@tonlabs/uikit.controls';
 import {
@@ -178,26 +178,6 @@ function CountryPickerContent({ banned, permitted, onClose, onSelect }: CountryP
         [insets?.bottom, keyboardShown, keyboardHeight],
     );
 
-    React.useEffect(() => {
-        /**
-         * We should use react-native-android-keyboard-adjust
-         * to fix android keyboard work with UIBottomSheet
-         * also we have to check if component visible
-         * and only if it showing call setAdjustNothing
-         * Otherwise, since CountryPicker is only used in the browser
-         * we have to call setAdjustResize, because it is default mode for browser
-         */
-        if (!isAndroid) {
-            return;
-        }
-
-        AndroidKeyboardAdjust.setAdjustNothing();
-        // eslint-disable-next-line consistent-return
-        return () => {
-            AndroidKeyboardAdjust.setAdjustResize();
-        };
-    }, []);
-
     const hideKeyboard = React.useCallback(() => {
         // react-native-android-keyboard-adjust bug:
         // Keyboard doesn't want to hide on Android
@@ -220,6 +200,8 @@ function CountryPickerContent({ banned, permitted, onClose, onSelect }: CountryP
                     onMomentumScrollBegin={hideKeyboard}
                     contentContainerStyle={contentContainerStyle}
                     scrollIndicatorInsets={scrollIndicatorInsets}
+                    automaticallyAdjustContentInsets
+                    automaticallyAdjustKeyboardInsets
                 />
             </CountryPickerContext.Provider>
         </>
@@ -233,9 +215,14 @@ export function CountryPicker({ visible, ...countryPickerProps }: WrappedCountry
     const { onClose } = countryPickerProps;
 
     return (
-        <UIFullscreenSheet onClose={onClose} visible={visible} style={styles.sheet}>
+        <UIModalSheet
+            onClose={onClose}
+            visible={visible}
+            style={styles.sheet}
+            maxMobileWidth={UIConstant.elasticWidthNormal()}
+        >
             <CountryPickerContent {...countryPickerProps} />
-        </UIFullscreenSheet>
+        </UIModalSheet>
     );
 }
 
