@@ -6,7 +6,12 @@ import {
     UIMaterialTextViewIcon,
     UIMaterialTextViewAction,
     UIMaterialTextViewText,
-} from './useMaterialTextViewChildren';
+    useExtendedRef,
+    useAutogrow,
+    useInteract,
+    useInputHasValue,
+    useClear,
+} from './hooks';
 import { UIMaterialTextViewFloating } from './UIMaterialTextViewFloating';
 import { UIMaterialTextViewSimple } from './UIMaterialTextViewSimple';
 import type {
@@ -15,11 +20,7 @@ import type {
     UIMaterialTextViewLayoutProps,
 } from './types';
 import { useApplyMask } from '../useApplyMask';
-import { useExtendedRef } from './useExtendedRef';
 import { useFocused } from '../UITextView';
-import { useAutogrow } from './useAutogrow';
-import { useInteract } from './useInteract';
-import { useInputHasValue } from './useInputHasValue';
 
 const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMaterialTextViewProps>(
     function UIMaterialTextViewForward(props: UIMaterialTextViewProps, passedRef) {
@@ -40,12 +41,14 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
             onBlur: onBlurProp,
         } = props;
 
-        const { inputHasValue, onChangeText } = useInputHasValue(
+        const { inputHasValue, onChangeText: onChangeTextWithInputHasValue } = useInputHasValue(
             value,
             defaultValue,
             onChangeTextProp,
         );
+
         const { isFocused, onFocus, onBlur } = useFocused(onFocusProp, onBlurProp);
+
         const { onContentSizeChange, onChange, numberOfLines, style, resetInputHeight } =
             useAutogrow(
                 ref,
@@ -55,12 +58,17 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
                 numberOfLinesProp,
                 onHeightChange,
             );
-        const { changeText, clear, moveCarret } = useInteract(
+
+        const { changeText, moveCarret } = useInteract(
             ref,
             multiline,
-            onChangeText,
-            resetInputHeight,
+            onChangeTextWithInputHasValue,
         );
+
+        const { onChangeText, onSelectionChange } = useApplyMask(changeText, moveCarret, mask);
+
+        const clear = useClear(resetInputHeight, onChangeText);
+
         const { isHovered, onMouseEnter, onMouseLeave } = useHover();
         const processedChildren = useMaterialTextViewChildren(
             children,
@@ -71,8 +79,6 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
         );
 
         useExtendedRef(passedRef, ref, changeText, moveCarret);
-
-        const formattingProps = useApplyMask(changeText, moveCarret, mask);
 
         const newProps: UIMaterialTextViewLayoutProps = {
             onContentSizeChange,
@@ -87,7 +93,8 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
             isHovered,
             inputHasValue,
             isFocused,
-            ...formattingProps,
+            onChangeText,
+            onSelectionChange,
         };
 
         if (label) {

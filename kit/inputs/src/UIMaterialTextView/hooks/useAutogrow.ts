@@ -7,8 +7,8 @@ import {
     Platform,
 } from 'react-native';
 
-import { OnHeightChange, useAutogrowTextView } from '../useAutogrowTextView';
-import type { UIMaterialTextViewProps } from './types';
+import { OnHeightChange, useAutogrowTextView } from '../../useAutogrowTextView';
+import type { UIMaterialTextViewProps } from '../types';
 
 export function useAutogrow(
     ref: React.Ref<TextInput>,

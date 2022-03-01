@@ -233,6 +233,18 @@ export function runUIOnChangeAmount(
         fractionalSeparator,
     );
 
+    // console.log({
+    //     selectionStart: selectionStart.value,
+    //     selectionEnd: selectionEnd.value,
+    //     formattedNumber,
+    //     normalizedText,
+    //     lastText: lastText.value,
+    //     lastNormalizedText: lastNormalizedText.value,
+    //     integerSeparator,
+    //     fractionalSeparator,
+    //     carretPosition,
+    // });
+
     runOnJS(changeText)(formattedNumber);
     runOnJS(moveCarret)(carretPosition, formattedNumber.length);
 

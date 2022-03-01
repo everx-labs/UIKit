@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { Platform, TextInput } from 'react-native';
-import { calculateWebInputHeight } from '../useAutogrowTextView';
-import { moveCarret as moveCarretPlatform } from '../moveCarret';
-import type { ChangeText } from './types';
+import { calculateWebInputHeight } from '../../useAutogrowTextView';
+import { moveCarret as moveCarretPlatform } from '../../moveCarret';
+import type { ChangeText } from '../types';
 
 export function useInteract(
     ref: React.RefObject<TextInput>,
     multiline: boolean | undefined,
     onChangeText: ChangeText,
-    onClear: (() => void) | undefined,
 ) {
     const changeText = React.useCallback(
         function changeText(text: string, callOnChangeProp?: boolean) {
@@ -35,17 +34,8 @@ export function useInteract(
         [ref],
     );
 
-    const clear = React.useCallback(
-        function clear() {
-            onClear?.();
-            changeText('');
-        },
-        [onClear, changeText],
-    );
-
     return {
         changeText,
         moveCarret,
-        clear,
     };
 }

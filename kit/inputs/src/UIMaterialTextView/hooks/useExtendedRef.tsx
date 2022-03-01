@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { TextInput } from 'react-native';
-import type { UIMaterialTextViewRef, ChangeText, MoveCarret } from './types';
+import type { UIMaterialTextViewRef, ChangeText, MoveCarret } from '../types';
 
 export function useExtendedRef(
     forwardedRed: React.Ref<UIMaterialTextViewRef>,

@@ -17,7 +17,6 @@ export function useOnSelectionChange() {
                 skipNextOnSelectionChange.value = false;
                 return;
             }
-            console.log('onSelectionChange', { start, end });
             selectionStart.value = start;
             selectionEnd.value = end;
         },

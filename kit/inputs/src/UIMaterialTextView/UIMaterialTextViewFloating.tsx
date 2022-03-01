@@ -7,7 +7,7 @@ import { UITextView } from '../UITextView';
 import { FloatingLabel } from './FloatingLabel';
 import type { UIMaterialTextViewLayoutProps } from './types';
 import { UIMaterialTextViewComment } from './UIMaterialTextViewComment';
-import { useExpandingValue } from './useExpandingValue';
+import { useExpandingValue } from './hooks';
 
 // @inline
 const POSITION_FOLDED: number = 0;
