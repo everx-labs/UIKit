@@ -1,7 +1,7 @@
 import { runOnUI, SharedValue } from 'react-native-reanimated';
 import { uiLocalized } from '@tonlabs/localization';
 import { runUIOnChangeAmount } from './runUIOnChangeAmount';
-import type { ChangeText, MoveCarret } from '../UIMaterialTextView/types';
+import type { ChangeText, MoveCarret } from '../../UIMaterialTextView/types';
 
 export function onChangeAmount(
     rawNumber: string,

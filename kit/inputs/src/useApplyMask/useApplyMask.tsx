@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { useSharedValue } from 'react-native-reanimated';
 import type { UIMaterialTextViewMask, ChangeText, MoveCarret } from '../UIMaterialTextView/types';
-import { onChangeAmount } from './onChangeAmount';
+import { onChangeAmount } from './amount';
 import { useOnSelectionChange } from './useOnSelectionChange';
 
 export function useApplyMask(
