@@ -45,7 +45,7 @@ function UICellDebotImpl({ image, title, caption, onPress, loading, testID }: UI
                         role={TypographyVariants.NarrowParagraphFootnote}
                         color={ColorVariants.TextSecondary}
                         numberOfLines={title ? 1 : 2}
-                        style={styles.textContainers}
+                        style={styles.textContainer}
                     >
                         {caption}
                     </UILabel>
