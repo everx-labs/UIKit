@@ -17,11 +17,11 @@ export function useApplyMask(
     const lastText = useSharedValue('');
 
     const onChangeText = React.useCallback(
-        (rawNumber: string): void => {
+        (text: string): void => {
             switch (mask) {
                 case '[000] [000].[000] [000]':
                     onChangeAmount(
-                        rawNumber,
+                        text,
                         selectionStart,
                         selectionEnd,
                         lastNormalizedText,
@@ -32,7 +32,7 @@ export function useApplyMask(
                     );
                     break;
                 default:
-                    break;
+                    changeText(text);
             }
         },
         [
