@@ -1,12 +1,11 @@
 import * as React from 'react';
-import {
-    Image, // TODO: use UIImage?
-    StyleSheet,
-} from 'react-native';
+import { StyleSheet } from 'react-native';
 
+import { ColorVariants } from '@tonlabs/uikit.themes';
+import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIConstant } from '@tonlabs/uikit.core';
-import { TouchableOpacity } from '@tonlabs/uikit.controls';
+import { UIImage } from '@tonlabs/uikit.media';
 
 export type OnStickersPress = () => void | Promise<void>;
 
@@ -28,12 +27,13 @@ export function StickersButton(props: Props) {
             style={styles.buttonContainer}
             onPress={() => props.onPress()}
         >
-            <Image
+            <UIImage
                 style={styles.icon}
-                source={
+                source={UIAssets.icons.ui.buttonStickerEnabled}
+                tintColor={
                     !props.customKeyboardVisible
-                        ? UIAssets.icons.ui.buttonStickerEnabled
-                        : UIAssets.icons.ui.buttonStickerDisabled
+                        ? ColorVariants.IconAccent
+                        : ColorVariants.IconNeutral
                 }
             />
         </TouchableOpacity>

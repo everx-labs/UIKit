@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIStyle } from '@tonlabs/uikit.core';
-import { UIImage } from '@tonlabs/uikit.media';
+import { ColorVariants, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
+import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIImage } from '@tonlabs/uikit.media';
+import { UIStyle } from '@tonlabs/uikit.core';
 
 import type { QuickActionItem } from './types';
 import { commonStyles } from './styles';
@@ -35,8 +35,6 @@ export function QuickAction(props: Props) {
         return null;
     }
 
-    // TODO: change TouchableOpacity & its content to some component,
-    //  that will allow to set icon size 32 (for currency signs)
     return (
         <View style={UIStyle.flex.row()}>
             {quickActions.map(action => (
@@ -48,19 +46,17 @@ export function QuickAction(props: Props) {
                 >
                     {action.icon != null && (
                         <UIImage
-                            // Do now scale the images to preserve their original size
                             resizeMode="center"
                             source={action.icon}
-                            style={commonStyles.actionIcon}
+                            style={commonStyles.icon}
+                            tintColor={ColorVariants.IconAccent}
                         />
                     )}
                     {action.title != null && (
                         <UILabel
                             color={UILabelColors.TextAccent}
                             role={UILabelRoles.Action}
-                            style={
-                                action.icon ? UIStyle.margin.leftSmall() : commonStyles.actionTitle
-                            }
+                            style={action.icon ? UIStyle.margin.leftSmall() : null}
                         >
                             {action.title}
                         </UILabel>
