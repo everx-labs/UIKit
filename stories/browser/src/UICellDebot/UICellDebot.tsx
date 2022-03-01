@@ -30,26 +30,28 @@ function UICellDebotImpl({ image, title, caption, onPress, loading, testID }: UI
         <TouchableOpacity testID={testID} onPress={onPress}>
             <View style={styles.container} testID={testID}>
                 <UIImage source={image} style={styles.image as StyleProp<ImageStyle>} />
-                {title ? (
-                    <UILabel
-                        role={TypographyVariants.NarrowActionFootnote}
-                        color={ColorVariants.TextPrimary}
-                        numberOfLines={caption ? 1 : 2}
-                        style={styles.textContainer}
-                    >
-                        {title}
-                    </UILabel>
-                ) : null}
-                {caption ? (
-                    <UILabel
-                        role={TypographyVariants.NarrowParagraphFootnote}
-                        color={ColorVariants.TextSecondary}
-                        numberOfLines={title ? 1 : 2}
-                        style={styles.textContainer}
-                    >
-                        {caption}
-                    </UILabel>
-                ) : null}
+                <View style={styles.textContainer}>
+                    {title ? (
+                        <UILabel
+                            role={TypographyVariants.NarrowActionFootnote}
+                            color={ColorVariants.TextPrimary}
+                            numberOfLines={caption ? 1 : 2}
+                            style={styles.text}
+                        >
+                            {title}
+                        </UILabel>
+                    ) : null}
+                    {caption ? (
+                        <UILabel
+                            role={TypographyVariants.NarrowParagraphFootnote}
+                            color={ColorVariants.TextSecondary}
+                            numberOfLines={title ? 1 : 2}
+                            style={styles.text}
+                        >
+                            {caption}
+                        </UILabel>
+                    ) : null}
+                </View>
             </View>
         </TouchableOpacity>
     );
@@ -69,6 +71,8 @@ const useStyles = makeStyles(() => ({
     },
     textContainer: {
         paddingTop: UILayoutConstant.contentInsetVerticalX2,
+    },
+    text: {
         alignSelf: 'stretch',
         alignItems: 'center',
         textAlign: 'center',
