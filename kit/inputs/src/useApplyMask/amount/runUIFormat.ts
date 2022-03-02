@@ -1,3 +1,4 @@
+import { runUIGetSeparatorRegExp } from './runUIGetSeparatorRegExp';
 import { runUIGroup } from './runUIGroup';
 import { runUIGroupReversed } from './runUIGroupReversed';
 
@@ -14,10 +15,18 @@ export function runUIFormat(
     delimeter: string,
     integerSeparator: string,
     fractionalSeparator: string,
+    inputSeparators: string[],
 ) {
     'worklet';
 
-    const [integerPart, decimalPart] = rawNumber.split(delimeter);
+    const separatorRegExp = runUIGetSeparatorRegExp(
+        integerSeparator,
+        fractionalSeparator,
+        inputSeparators,
+    );
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [integerPart, _inputDelimeter, decimalPart] = rawNumber.split(separatorRegExp);
     let normalizedText = '';
     const result: string[] = [];
     const notNumbersRegexp = /[^0-9]/g;

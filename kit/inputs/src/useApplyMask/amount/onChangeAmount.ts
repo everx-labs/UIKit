@@ -19,6 +19,8 @@ export function onChangeAmount(
         decimalGrouping: fractionalSeparator,
     } = uiLocalized.localeInfo.numbers;
 
+    const inputSeparators = [',', '.', '/', 'б', 'ю'];
+
     runOnUI(runUIOnChangeAmount)(
         rawNumber,
         selectionStart,
@@ -31,5 +33,6 @@ export function onChangeAmount(
         changeText,
         moveCarret,
         skipNextOnSelectionChange,
+        inputSeparators,
     );
 }
