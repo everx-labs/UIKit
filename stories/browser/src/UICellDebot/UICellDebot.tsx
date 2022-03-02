@@ -71,10 +71,10 @@ const useStyles = makeStyles(() => ({
     },
     textContainer: {
         paddingTop: UILayoutConstant.contentInsetVerticalX2,
-    },
-    text: {
         alignSelf: 'stretch',
         alignItems: 'center',
+    },
+    text: {
         textAlign: 'center',
     },
     textSkeleton: {
