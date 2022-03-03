@@ -9,12 +9,16 @@
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
 #import <React/RCTConvert.h>
+#import <React/RCTScrollView.h>
 
 #import "UIKitScrollViewInsetsDelegate.h"
 
-@interface UIKitScrollViewInsets : UIView <UIKitScrollViewInsetsDelegate>
+@interface UIKitScrollViewInsets : NSObject <UIKitScrollViewInsetsDelegate>
 
-- (instancetype)initWithBridge:(RCTBridge *)bridge;
+- (instancetype)initWithScrollView:(RCTScrollView *)rctScrollView;
+- (BOOL)didMoveToWindow;
+- (void)onInsetsShouldBeRecalculated;
+- (void)reset;
 
 @property (nonatomic, assign) BOOL automaticallyAdjustContentInsets;
 @property (nonatomic, assign) BOOL automaticallyAdjustKeyboardInsets;

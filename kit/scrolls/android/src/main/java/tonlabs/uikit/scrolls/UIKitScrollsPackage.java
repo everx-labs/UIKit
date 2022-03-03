@@ -23,7 +23,7 @@ public class UIKitScrollsPackage implements ReactPackage {
     public List<ViewManager> createViewManagers(@Nonnull ReactApplicationContext reactContext) {
         return Arrays.asList(
                 new UIKitAccordionOverlayViewManager(),
-                new UIKitScrollViewInsetsManager()
+                new UIKitScrollViewManager()
         );
     }
 }

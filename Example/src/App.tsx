@@ -10,7 +10,7 @@ import React from 'react';
 import { I18nManager, NativeModules, Platform, StyleSheet, View, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { enableFreeze } from 'react-native-screens';
 
 import { PortalManager } from '@tonlabs/uikit.layout';
@@ -83,7 +83,6 @@ const ThemeSwitcher = React.createContext({
 
 const Main = ({ navigation }: { navigation: any }) => {
     const [isSearchVisible, setIsSearchVisible] = React.useState(false);
-    const { bottom } = useSafeAreaInsets();
     const tabBarBottomInset = useSplitTabBarHeight();
     return (
         <UIBackgroundView style={{ flex: 1 }}>
@@ -134,8 +133,9 @@ const Main = ({ navigation }: { navigation: any }) => {
                     </UISearchBarButton>
                 </View>
                 <ScrollView
-                    contentContainerStyle={{
-                        paddingBottom: Math.max(bottom, tabBarBottomInset),
+                    automaticallyAdjustContentInsets
+                    contentInset={{
+                        bottom: tabBarBottomInset,
                     }}
                 >
                     <UILinkButton

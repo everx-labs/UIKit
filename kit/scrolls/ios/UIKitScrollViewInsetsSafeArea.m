@@ -5,6 +5,8 @@
 //  Created by Aleksei Savelev on 14.02.2022.
 //
 
+#import "UIView+React.h"
+
 #import "UIKitScrollViewInsetsSafeArea.h"
 
 @implementation UIKitScrollViewInsetsSafeArea {
@@ -67,9 +69,32 @@
 }
 
 - (UIEdgeInsets)getSafeAreaInsets {
+    UIEdgeInsets safeAreaInsets = [self getRawSafeAreaInsets];
+    
+    CGFloat screenHeight = [[UIScreen mainScreen] bounds].size.height;
+    CGFloat absoluteSafeBottomY = screenHeight - safeAreaInsets.bottom;
+    
+    CGPoint absoluteViewOrigin = [_rctScrollView convertPoint:_rctScrollView.bounds.origin toView:nil];
+    CGFloat viewBottomY = absoluteViewOrigin.y + _rctScrollView.bounds.size.height;
+
+    CGFloat topInset = MAX(safeAreaInsets.top - absoluteViewOrigin.y, 0);
+    CGFloat bottomInset = MIN(viewBottomY, screenHeight) - absoluteSafeBottomY;
+    
+    return (UIEdgeInsets){topInset, safeAreaInsets.left, bottomInset, safeAreaInsets.right};
+}
+
+- (UIEdgeInsets)getRawSafeAreaInsets {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_10_3
     if (@available(iOS 11.0, *)) {
-        return _rctScrollView.safeAreaInsets;
+        UIView *view = _rctScrollView;
+        while (view) {
+          UIViewController *controller = view.reactViewController;
+          if (controller) {
+              return controller.view.safeAreaInsets;
+          }
+          view = view.superview;
+        }
+        return UIEdgeInsetsZero;
     }
 #endif
     return UIEdgeInsetsZero;
