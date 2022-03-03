@@ -3,7 +3,6 @@ import * as React from 'react';
 import { FlatListProps, FlatList, Insets, ViewStyle, StyleSheet, View } from 'react-native';
 
 import { UIStyle } from '@tonlabs/uikit.core';
-import { ScrollableAutomaticInsets } from '@tonlabs/uikit.scrolls';
 
 const emptyInsets: Insets = {
     left: 0,
@@ -40,9 +39,6 @@ export const UIBrowserFlatList = React.memo(
         }: Props<ItemT>,
         forwardRef: React.Ref<FlatList<ItemT>>,
     ) {
-        const automaticInsets =
-            automaticallyAdjustContentInsets || automaticallyAdjustKeyboardInsets;
-
         const [internalContentInset, setInternalContentInset] = React.useState<Insets>(
             contentInset || emptyInsets,
         );
@@ -75,22 +71,23 @@ export const UIBrowserFlatList = React.memo(
             };
         }, [internalContentInset, contentContainerStyleProp]);
 
+        const onInsetsChange = React.useCallback(({ nativeEvent }: { nativeEvent: Insets }) => {
+            setInternalContentInset(nativeEvent);
+        }, []);
+
         return (
             <View style={UIStyle.common.flex()}>
                 <FlatList
                     ref={forwardRef}
                     {...chatListProps}
                     contentContainerStyle={contentContainerStyle}
+                    automaticallyAdjustContentInsets={automaticallyAdjustContentInsets}
+                    // @ts-ignore
+                    automaticallyAdjustKeyboardInsets={automaticallyAdjustKeyboardInsets}
+                    keyboardInsetAdjustmentBehavior="inclusive"
+                    contentInset={contentInset}
+                    onInsetsChange={onInsetsChange}
                 />
-                {automaticInsets ? (
-                    <ScrollableAutomaticInsets
-                        automaticallyAdjustContentInsets={automaticallyAdjustContentInsets}
-                        automaticallyAdjustKeyboardInsets={automaticallyAdjustKeyboardInsets}
-                        keyboardInsetAdjustmentBehavior="inclusive"
-                        contentInset={contentInset}
-                        onInsetsChange={setInternalContentInset}
-                    />
-                ) : null}
             </View>
         );
     }),
