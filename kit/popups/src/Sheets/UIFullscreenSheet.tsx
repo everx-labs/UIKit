@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { Platform, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { useDimensions } from '@tonlabs/uikit.inputs';
+
 import { UISheet, UISheetProps } from './UISheet/UISheet';
 
 export type UIFullscreenSheetProps = UISheetProps & {
@@ -11,13 +12,17 @@ export type UIFullscreenSheetProps = UISheetProps & {
 
 export function UIFullscreenSheet({ children, style, ...rest }: UIFullscreenSheetProps) {
     const {
-        screen: { height },
+        screen: { height: screenHeight },
+        window: { height: windowHeight },
     } = useDimensions();
 
-    const fullscreenHeight = React.useMemo(
-        () => height + UILayoutConstant.rubberBandEffectDistance,
-        [height],
-    );
+    const fullscreenHeight = React.useMemo(() => {
+        if (Platform.OS === 'web') {
+            return windowHeight + UILayoutConstant.rubberBandEffectDistance;
+        }
+
+        return screenHeight + UILayoutConstant.rubberBandEffectDistance;
+    }, [screenHeight, windowHeight]);
 
     const sheetStyle = React.useMemo(() => {
         const flattenStyle = StyleSheet.flatten(style);
