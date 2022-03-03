@@ -108,6 +108,8 @@ export function useAutogrowTextView(
         default: undefined,
     });
 
+    console.log({ numberOfLines });
+
     const inputStyle = React.useMemo(
         () => ({
             padding: 0,

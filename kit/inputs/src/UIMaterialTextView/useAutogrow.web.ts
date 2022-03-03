@@ -4,7 +4,6 @@ import {
     NativeSyntheticEvent,
     TextInputChangeEventData,
     StyleSheet,
-    Platform,
 } from 'react-native';
 
 import { OnHeightChange, useAutogrowTextView } from '../useAutogrowTextView';
@@ -52,15 +51,7 @@ export function useAutogrow(
         [onAutogrowChange, onChangeProp],
     );
 
-    const style = React.useMemo(
-        () => [
-            styles.input,
-            Platform.select({
-                web: { height: inputHeight },
-            }),
-        ],
-        [inputHeight],
-    );
+    const style = React.useMemo(() => [styles.input, { height: inputHeight }], [inputHeight]);
 
     if (!multiline) {
         return {
