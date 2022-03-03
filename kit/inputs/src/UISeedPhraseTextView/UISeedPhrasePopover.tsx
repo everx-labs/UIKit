@@ -27,6 +27,7 @@ type UISeedPhrasePopoverProps = {
     onHighlightedItemIndexChange: (index: number) => void;
     hints: string[];
     onHintSelected: (item: string) => void;
+    forId?: string;
     // width: number;
 };
 
@@ -152,12 +153,13 @@ function UISeedPhrasePopoverContent(props: UISeedPhrasePopoverProps) {
 }
 
 export function UISeedPhrasePopover(props: UISeedPhrasePopoverProps) {
-    if (props.hints.length === 0) {
+    const { hints, forId } = props;
+    if (hints.length === 0) {
         return null;
     }
 
     return (
-        <Portal absoluteFill>
+        <Portal absoluteFill forId={forId}>
             <UISeedPhrasePopoverContent {...props} />
         </Portal>
     );
