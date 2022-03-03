@@ -36,6 +36,9 @@ export type UITextViewProps = Omit<
     TextInputProps,
     'style' | 'placeholderTextColor' | 'underlineColorAndroid'
 > & {
+    /**
+     * Color of the placeholder
+     */
     placeholderTextColor?: ColorVariants;
     style?: StyleProp<UITextViewStyle>;
     /**

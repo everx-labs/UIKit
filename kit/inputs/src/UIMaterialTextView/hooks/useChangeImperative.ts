@@ -4,7 +4,7 @@ import { calculateWebInputHeight } from '../../useAutogrowTextView';
 import { moveCarret as moveCarretPlatform } from '../../moveCarret';
 import type { ChangeText } from '../types';
 
-export function useInteract(
+export function useChangeImperative(
     ref: React.RefObject<TextInput>,
     multiline: boolean | undefined,
     onChangeText: ChangeText,

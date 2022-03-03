@@ -8,7 +8,7 @@ import {
     UIMaterialTextViewText,
     useExtendedRef,
     useAutogrow,
-    useInteract,
+    useChangeImperative,
     useInputHasValue,
     useClear,
 } from './hooks';
@@ -59,7 +59,7 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
                 onHeightChange,
             );
 
-        const { changeText, moveCarret } = useInteract(
+        const { changeText, moveCarret } = useChangeImperative(
             ref,
             multiline,
             onChangeTextWithInputHasValue,

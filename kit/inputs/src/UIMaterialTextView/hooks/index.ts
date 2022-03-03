@@ -5,5 +5,5 @@ export * from './useExpandingValue';
 export * from './useExtendedRef';
 export * from './useFoldingValue';
 export * from './useInputHasValue';
-export * from './useInteract';
+export * from './useChangeImperative';
 export * from './useMaterialTextViewChildren';
