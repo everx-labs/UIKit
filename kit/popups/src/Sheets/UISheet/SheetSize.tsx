@@ -1,11 +1,15 @@
 import * as React from 'react';
-import { LayoutChangeEvent, StatusBar, useWindowDimensions, ViewStyle } from 'react-native';
+import { LayoutChangeEvent, useWindowDimensions, ViewStyle } from 'react-native';
 import Animated, {
     useAnimatedStyle,
     useDerivedValue,
     useSharedValue,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { useAndroidNavigationBarHeight } from '@tonlabs/uikit.inputs';
+
 import { useSheetOrigin } from './SheetOriginContext';
 
 type SheetSizeContextT = {
@@ -47,7 +51,7 @@ function useSheetHeight() {
 }
 
 function calcTopSpace(topInset: number) {
-    return Math.max(StatusBar.currentHeight ?? 0, topInset);
+    return Math.max(topInset, UILayoutConstant.contentInsetVerticalX4);
 }
 
 export function IntrinsicSizeSheet({ children }: { children: React.ReactNode }) {
@@ -55,6 +59,7 @@ export function IntrinsicSizeSheet({ children }: { children: React.ReactNode }) 
 
     const { height } = useWindowDimensions();
     const insets = useSafeAreaInsets();
+    const { shared: androidNavigationBarHeightShared } = useAndroidNavigationBarHeight();
     const topSpace = useSharedValue(calcTopSpace(insets.top));
 
     React.useEffect(() => {
@@ -64,7 +69,7 @@ export function IntrinsicSizeSheet({ children }: { children: React.ReactNode }) 
     const origin = useSheetOrigin();
 
     const maxPossibleHeight = useDerivedValue(() => {
-        return height + origin.value - topSpace.value;
+        return height + androidNavigationBarHeightShared.value + origin.value - topSpace.value;
     });
     const constrainedHeight = useDerivedValue(() => {
         return Math.min(cardHeight.value, maxPossibleHeight.value);

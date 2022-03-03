@@ -307,10 +307,12 @@ const TAB_BAR_DEFAULT_BOTTOM_INSET = 32;
 const TAB_BAR_HEIGHT = 64;
 export function useTabBarHeight() {
     const insets = useSafeAreaInsets();
-    const tabBarHeight = React.useMemo(
-        () => Math.max(insets.bottom, TAB_BAR_DEFAULT_BOTTOM_INSET) + TAB_BAR_HEIGHT,
-        [insets.bottom],
-    );
+    const tabBarHeight = React.useMemo(() => {
+        if (insets.bottom > 0) {
+            return TAB_BAR_HEIGHT;
+        }
+        return TAB_BAR_DEFAULT_BOTTOM_INSET + TAB_BAR_HEIGHT;
+    }, [insets.bottom]);
     const insetsWithTabBar = React.useMemo(
         () => ({ ...insets, bottom: tabBarHeight }),
         [insets, tabBarHeight],

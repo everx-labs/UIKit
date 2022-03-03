@@ -1,5 +1,7 @@
 package tonlabs.uikit;
 
+import androidx.core.view.WindowCompat;
+
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
@@ -21,7 +23,11 @@ public class MainActivity extends ReactActivity {
         return new ReactActivityDelegate(this, getMainComponentName()) {
             @Override
             protected ReactRootView createRootView() {
-                return new RNGestureHandlerEnabledRootView(MainActivity.this);
+                ReactRootView rootView = new RNGestureHandlerEnabledRootView(MainActivity.this);
+
+                WindowCompat.setDecorFitsSystemWindows(MainActivity.this.getWindow(), false);
+
+                return rootView;
             }
         };
     }

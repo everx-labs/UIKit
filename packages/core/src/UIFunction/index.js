@@ -42,6 +42,15 @@ export type StringLocaleInfo = {
     dates: DateFormatInfo,
 };
 
+function removeCallingCode(phone: string, callingCode: string) {
+    if (callingCode) {
+        // remove `+`, `countryCallingCode` and ` `
+        if (phone.startsWith('+')) {
+            return phone.substring(1 + callingCode.length).trim();
+        }
+    }
+    return phone;
+}
 export default class UIFunction {
     // Async Helpers
     /** Converts callback style function into Promise */

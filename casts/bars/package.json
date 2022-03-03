@@ -37,7 +37,6 @@
         "@react-native-community/hooks": "^2.6.0",
         "@react-navigation/core": "^5.16.1",
         "@tonlabs/localization": "^3.0.0",
-        "@tonlabs/uicast.modal-navigator": "^3.0.0",
         "@tonlabs/uikit.assets": "^3.0.0",
         "@tonlabs/uikit.controls": "^3.0.0",
         "@tonlabs/uikit.core": "^3.0.0",

@@ -1,5 +1,6 @@
+/* eslint-disable react/destructuring-assignment */
 import * as React from 'react';
-import { FlatList, FlatListProps, ViewProps } from 'react-native';
+import type { FlatList, FlatListProps, Insets, ViewProps } from 'react-native';
 
 import {
     BubbleActionButton,
@@ -10,6 +11,7 @@ import {
     OnPressUrl,
     OnLongPressText,
 } from '@tonlabs/uistory.chats';
+
 import { BrowserMessage, InteractiveMessageType } from './types';
 import { getFormattedList } from './getFormattedList';
 import { AddressInput } from './Inputs/addressInput';
@@ -27,12 +29,15 @@ import { DateTimePicker } from './Inputs/dateTimePicker';
 import { CountryPicker } from './Inputs/countryPicker';
 import { MediaOutput } from './MediaOutput';
 import { QRCodeDraw } from './QRCodeDraw';
+import { UIBrowserFlatList } from './UIBrowserFlatList';
 
 type UIBrowserListProps = {
     messages: BrowserMessage[];
     onPressUrl?: OnPressUrl;
     onLongPressText?: OnLongPressText;
     bottomInset?: number;
+    shouldAutoHandleInsets: boolean;
+    contentInset?: Insets;
 };
 
 function flatListGetItemLayoutFabric({
@@ -116,7 +121,13 @@ const renderBubble = () => (item: BrowserMessage, onLayout: ViewProps['onLayout'
 
 export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
     function UIBrowserListForwarded(
-        { messages, onPressUrl, onLongPressText }: UIBrowserListProps,
+        {
+            messages,
+            onPressUrl,
+            onLongPressText,
+            shouldAutoHandleInsets,
+            contentInset,
+        }: UIBrowserListProps,
         ref,
     ) {
         const formattedMessages = React.useMemo(() => getFormattedList(messages), [messages]);
@@ -128,11 +139,13 @@ export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
                 getItemLayoutFabric={flatListGetItemLayoutFabric}
                 onLongPressText={onLongPressText}
                 onPressUrl={onPressUrl}
+                shouldAutoHandleInsets={shouldAutoHandleInsets}
             >
                 {(chatListProps: CommonChatListProps<BrowserMessage>) => (
-                    <FlatList
+                    <UIBrowserFlatList
                         testID="browser_container"
                         data={formattedMessages}
+                        contentInset={contentInset}
                         {...chatListProps}
                     />
                 )}

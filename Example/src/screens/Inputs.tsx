@@ -93,7 +93,7 @@ export const Inputs = () => {
             <ExampleSection title="UIMaterialTextView">
                 <View style={{ maxWidth: 400, padding: 20, alignSelf: 'stretch' }}>
                     <UIMaterialTextView
-                        testID="uiMaterialTextView_without_label"
+                        testID="uiMaterialTextView_amount"
                         placeholder="Placeholder"
                         label="Amount"
                         helperText="Caption"
@@ -220,7 +220,12 @@ export const Inputs = () => {
                                 );
                             },
                         }}
-                    />
+                    >
+                        <UIMaterialTextView.Icon
+                            source={UIAssets.icons.ui.buttonPlus}
+                            tintColor={ColorVariants.TextAccent}
+                        />
+                    </UIAddressTextView>
                 </View>
             </ExampleSection>
             <ExampleSection title="UIAmountInput">

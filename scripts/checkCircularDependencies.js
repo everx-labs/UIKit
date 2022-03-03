@@ -47,7 +47,6 @@ const checkCircularDependencies = async () => {
 
             'packages/components/src/index.js',
             'packages/core/src/index.js',
-            'packages/navigation_legacy/src/index.js',
         ];
         const tree = await parseDependencyTree(sources, {
             extensions: [

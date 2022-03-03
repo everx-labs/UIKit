@@ -3,8 +3,6 @@ import { View, StyleSheet, Platform } from 'react-native';
 import BlobUtil from 'react-native-blob-util';
 
 import { UIConstant } from '@tonlabs/uikit.core';
-import { UIAlertView } from '@tonlabs/uikit.navigation_legacy';
-import { uiLocalized } from '@tonlabs/localization';
 
 import type { OnSendMedia, OnSendDocument } from './types';
 
@@ -68,19 +66,22 @@ const onPickDocumentWeb = (e: any, onSendDocument?: OnSendDocument) => {
     }
 
     if (file.size >= UIConstant.maxFileSize()) {
+        // TODO: shared UIAlertView doesn't exist anymore
+        //       please use modern popover
+        //
         // in decimal
-        const msg = uiLocalized.formatString(
-            uiLocalized.FileIsTooBig,
-            (UIConstant.maxFileSize() / 1000000).toFixed(),
-        );
-        UIAlertView.showAlert(uiLocalized.Error, msg, [
-            {
-                title: uiLocalized.OK,
-                onPress: () => {
-                    // nothing
-                },
-            },
-        ]);
+        // const msg = uiLocalized.formatString(
+        //     uiLocalized.FileIsTooBig,
+        //     (UIConstant.maxFileSize() / 1000000).toFixed(),
+        // );
+        // UIAlertView.showAlert(uiLocalized.Error, msg, [
+        //     {
+        //         title: uiLocalized.OK,
+        //         onPress: () => {
+        //             // nothing
+        //         },
+        //     },
+        // ]);
         return;
     }
 

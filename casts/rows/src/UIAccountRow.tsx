@@ -70,7 +70,7 @@ export const UIAccountRow = React.memo(function UIAccountRow({
                     <UICurrency
                         integerColor={amountColor}
                         decimalColor={amountColor}
-                        signIcon={currencySignProps?.signIcon}
+                        signChar={currencySignProps?.signChar}
                     >
                         {balance}
                     </UICurrency>

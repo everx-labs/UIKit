@@ -1,27 +1,21 @@
 import { Platform, StyleSheet } from 'react-native';
 
 import UIColor from '../UIColor';
-import UIFont from '../UIFont';
 import UIConstant from '../UIConstant';
 import UIDevice from '../UIDevice';
-import UIStyleBorder, { borderStyles } from './UIStyleBorder';
-import UIStyleHeight, { heightStyles } from './UIStyleHeight';
 import UIStyleMargin, { marginStyles } from './UIStyleMargin';
 import UIStylePadding, { paddingStyles } from './UIStylePadding';
 import UIStyleCommon, { commonStyles } from './UIStyleCommon';
-import UIStyleFlex from './UIStyleFlex';
-import UIStyleText from '../UITextStyle/UIStyleText';
-import UIStyleWidth, { widthStyles } from './UIStyleWidth';
+import UIStyleFlex, { flexStyles } from './UIStyleFlex';
 import UIStyleColor from './UIStyleColor';
-import UIStyleContainer from './UIStyleContainer';
+import UIStyleContainer, { containerStyles } from './UIStyleContainer';
 
 const UIStyle = StyleSheet.create({
     ...commonStyles,
-    ...widthStyles,
-    ...heightStyles,
+    ...containerStyles,
+    ...flexStyles,
     ...marginStyles,
     ...paddingStyles,
-    ...borderStyles,
 
     // navigator
     navigatorHeader: {
@@ -46,12 +40,6 @@ const UIStyle = StyleSheet.create({
         elevation: Platform.select({
             android: 0,
         }),
-    },
-    navigatorHeaderTitle: {
-        ...UIFont.bodyMedium(),
-        textAlign: 'center',
-        color: UIColor.textPrimary(),
-        alignSelf: 'center',
     },
     navigatorButton: {
         marginHorizontal: UIConstant.normalContentOffset(),
@@ -86,30 +74,22 @@ const UIStyle = StyleSheet.create({
     },
 });
 
-UIStyle.border = UIStyleBorder;
 UIStyle.color = UIStyleColor;
 UIStyle.common = UIStyleCommon;
 UIStyle.container = UIStyleContainer;
-UIStyle.height = UIStyleHeight;
 UIStyle.margin = UIStyleMargin;
 UIStyle.padding = UIStylePadding;
-UIStyle.text = UIStyleText;
-UIStyle.width = UIStyleWidth;
 UIStyle.flex = UIStyleFlex;
 
 // Deprecated
 UIStyle.displayFlex = UIStyleFlex;
 
 // Deprecated
-UIStyle.Border = UIStyleBorder;
 UIStyle.Color = UIStyleColor;
 UIStyle.Common = UIStyleCommon;
 UIStyle.Container = UIStyleContainer;
-UIStyle.Height = UIStyleHeight;
 UIStyle.Margin = UIStyleMargin;
 UIStyle.Padding = UIStylePadding;
-UIStyle.Text = UIStyleText;
-UIStyle.Width = UIStyleWidth;
 UIStyle.Flex = UIStyleFlex;
 
 export default UIStyle;

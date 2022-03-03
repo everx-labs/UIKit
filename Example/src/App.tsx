@@ -7,13 +7,12 @@
 
 import { FlatList, TouchableOpacity, GestureHandlerRootView } from 'react-native-gesture-handler';
 import React from 'react';
-import { I18nManager, NativeModules, Platform, StyleSheet, View } from 'react-native';
+import { I18nManager, NativeModules, Platform, StyleSheet, View, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { enableFreeze } from 'react-native-screens';
 
-import { UIPopoverBackground } from '@tonlabs/uikit.navigation_legacy';
 import { PortalManager } from '@tonlabs/uikit.layout';
 import {
     UILinkButton,
@@ -32,10 +31,11 @@ import {
     useTheme,
     UIStatusBarManager,
 } from '@tonlabs/uikit.themes';
-import { UIAndroidNavigationBar, UISearchBarButton } from '@tonlabs/uicast.bars';
+import { UISearchBarButton } from '@tonlabs/uicast.bars';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { createSplitNavigator, useSplitTabBarHeight } from '@tonlabs/uicast.split-navigator';
+import { UIModalPortalManager } from '@tonlabs/uikit.popups';
 
 import { ButtonsScreen } from './screens/Buttons';
 import { Checkbox } from './screens/Checkbox';
@@ -65,6 +65,7 @@ import { FinancesScreen } from './screens/Finances';
 import { SkeletonsScreen } from './screens/Skeletons';
 
 import { StoreProvider, updateStore } from './useStore';
+import { AutomaticInsetsTest } from './screens/AutomaticInsetsTest';
 
 // Optimize React rendering
 enableFreeze();
@@ -82,7 +83,6 @@ const ThemeSwitcher = React.createContext({
 
 const Main = ({ navigation }: { navigation: any }) => {
     const [isSearchVisible, setIsSearchVisible] = React.useState(false);
-    const { bottom } = useSafeAreaInsets();
     const tabBarBottomInset = useSplitTabBarHeight();
     return (
         <UIBackgroundView style={{ flex: 1 }}>
@@ -133,8 +133,9 @@ const Main = ({ navigation }: { navigation: any }) => {
                     </UISearchBarButton>
                 </View>
                 <ScrollView
-                    contentContainerStyle={{
-                        paddingBottom: Math.max(bottom, tabBarBottomInset),
+                    automaticallyAdjustContentInsets
+                    contentInset={{
+                        bottom: tabBarBottomInset,
                     }}
                 >
                     <UILinkButton
@@ -287,6 +288,12 @@ const Main = ({ navigation }: { navigation: any }) => {
                         onPress={() => navigation.navigate('skeletons')}
                         layout={styles.button}
                     />
+                    {/* <UILinkButton
+                        title="Automatic insets test"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('automatic-insets-test')}
+                        layout={styles.button}
+                    /> */}
                 </ScrollView>
             </PortalManager>
         </UIBackgroundView>
@@ -300,9 +307,13 @@ const App = () => {
     const theme = useTheme();
     const themeSwitcher = React.useContext(ThemeSwitcher);
 
+    React.useEffect(() => {
+        StatusBar.setTranslucent(true);
+    }, []);
+
     return (
         <StoreProvider>
-            <PortalManager>
+            <UIModalPortalManager maxMobileWidth={900}>
                 <NavigationContainer ref={navRef} linking={{ prefixes: ['/'] }}>
                     <Split.Navigator
                         initialRouteName="browser"
@@ -353,7 +364,7 @@ const App = () => {
                             component={CarouselScreen}
                             options={{
                                 useHeaderLargeTitle: true,
-                                title: 'Cells',
+                                title: 'Carousel',
                             }}
                         />
                         <Split.Screen
@@ -560,10 +571,18 @@ const App = () => {
                                 title: 'Videos',
                             }}
                         />
+                        <Split.Screen
+                            name="automatic-insets-test"
+                            component={AutomaticInsetsTest}
+                            options={{
+                                // headerVisible: false,
+                                useHeaderLargeTitle: true,
+                                title: 'Carousel',
+                            }}
+                        />
                     </Split.Navigator>
                 </NavigationContainer>
-                <UIAndroidNavigationBar />
-            </PortalManager>
+            </UIModalPortalManager>
         </StoreProvider>
     );
 };
@@ -589,13 +608,11 @@ const AppWrapper = () => {
                         },
                     }}
                 >
-                    <UIPopoverBackground>
-                        <UIStatusBarManager>
-                            <SafeAreaProvider>
-                                <App />
-                            </SafeAreaProvider>
-                        </UIStatusBarManager>
-                    </UIPopoverBackground>
+                    <UIStatusBarManager>
+                        <SafeAreaProvider>
+                            <App />
+                        </SafeAreaProvider>
+                    </UIStatusBarManager>
                 </ThemeSwitcher.Provider>
             </ThemeContext.Provider>
         </GestureHandlerRootView>

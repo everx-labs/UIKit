@@ -42,7 +42,6 @@
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-native": "^0.65.0",
-        "react-native-android-keyboard-adjust": "^1.2.0",
         "react-native-codegen": "^0.0.7",
         "react-native-device-info": "^8.4.8",
         "react-native-fast-image": "^8.5.11",
@@ -55,7 +54,7 @@
         "react-native-share": "^7.3.3",
         "react-native-svg": "^12.1.1",
         "react-native-view-shot": "^3.1.2",
-        "react-native-web": "0.17.1"
+        "react-native-web": "^0.17.7"
     },
     "dependencies": {
         "@quentin-sommer/react-useragent": "2.0.0",
@@ -72,7 +71,6 @@
         "react-native-navigation-bar-color": "2.0.1",
         "react-native-parsed-text": "git+https://github.com/FactorBench/react-native-parsed-text.git",
         "react-native-redash": "16.0.11",
-        "react-native-simple-popover": "git+https://github.com/tonlabs/react-native-simple-popover.git",
         "react-native-status-bar-height": "1.0.1",
         "react-native-tab-view": "3.0.1",
         "react-qr-reader": "2.2.1"

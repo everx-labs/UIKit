@@ -1,10 +1,30 @@
 import * as React from 'react';
-import type { ScrollViewProps, StyleProp, ViewStyle } from 'react-native';
+import { Insets, ScrollViewProps, StyleSheet, ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { NativeViewGestureHandler, PanGestureHandler } from 'react-native-gesture-handler';
 
 import { ScrollableContext } from '../Context';
 import { useHasScroll } from './useHasScroll';
+import type { ScrollableAdditionalProps } from './types';
+
+const emptyInsets: Insets = {
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+};
+
+function getContentContainerPadding(padding: ViewStyle['padding'], inset: number | undefined) {
+    if (padding == null) {
+        return inset ?? 0;
+    }
+
+    if (typeof padding === 'string') {
+        return padding;
+    }
+
+    return padding + (inset ?? 0);
+}
 
 export function wrapScrollableComponent<Props extends ScrollViewProps>(
     ScrollableComponent: React.ComponentClass<Props>,
@@ -15,8 +35,12 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
     function ScrollableForwarded(
         {
             containerStyle = { flex: 1 },
+            automaticallyAdjustContentInsets,
+            automaticallyAdjustKeyboardInsets,
+            keyboardInsetAdjustmentBehavior,
+            contentInset,
             ...props
-        }: Props & { children?: React.ReactNode; containerStyle: StyleProp<ViewStyle> },
+        }: Props & ScrollableAdditionalProps & { children?: React.ReactNode },
         forwardRef: React.RefObject<typeof AnimatedScrollable>,
     ) {
         const {
@@ -56,6 +80,40 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
             return ref?.current;
         });
 
+        const [internalContentInset, setInternalContentInset] = React.useState<Insets>(
+            contentInset || emptyInsets,
+        );
+
+        const contentContainerStyle: ViewStyle = React.useMemo(() => {
+            const style = StyleSheet.flatten(props.contentContainerStyle) || {};
+
+            return {
+                ...style,
+                paddingHorizontal: undefined,
+                paddingVertical: undefined,
+                paddingLeft: getContentContainerPadding(
+                    style.paddingLeft || style.paddingHorizontal,
+                    internalContentInset.left,
+                ),
+                paddingTop: getContentContainerPadding(
+                    style.paddingTop || style.paddingVertical,
+                    internalContentInset.top,
+                ),
+                paddingRight: getContentContainerPadding(
+                    style.paddingRight || style.paddingHorizontal,
+                    internalContentInset.right,
+                ),
+                paddingBottom: getContentContainerPadding(
+                    style.paddingBottom || style.paddingVertical,
+                    internalContentInset.bottom,
+                ),
+            };
+        }, [internalContentInset, props.contentContainerStyle]);
+
+        const onInsetsChange = React.useCallback(({ nativeEvent }: { nativeEvent: Insets }) => {
+            setInternalContentInset(nativeEvent);
+        }, []);
+
         return (
             <PanGestureHandler
                 ref={panGestureHandlerRef}
@@ -78,6 +136,12 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
                             scrollEventThrottle={16}
                             onLayout={horizontal ? undefined : onLayout}
                             onContentSizeChange={horizontal ? undefined : onContentSizeChange}
+                            contentContainerStyle={contentContainerStyle}
+                            automaticallyAdjustContentInsets={automaticallyAdjustContentInsets}
+                            automaticallyAdjustKeyboardInsets={automaticallyAdjustKeyboardInsets}
+                            keyboardInsetAdjustmentBehavior={keyboardInsetAdjustmentBehavior}
+                            contentInset={contentInset}
+                            onInsetsChange={onInsetsChange}
                         />
                     </NativeViewGestureHandler>
                 </Animated.View>

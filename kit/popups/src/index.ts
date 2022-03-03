@@ -1,7 +1,13 @@
 import { IUIAlertView, UIAlertView } from './UIAlertView';
 import { IUIActionSheet, UIActionSheet } from './UIActionSheet';
 import { IUINotice, UINotice } from './UINotice';
-import { UICardSheet, UIBottomSheet, UIFullscreenSheet, UISheet } from './Sheets';
+import {
+    UICardSheet,
+    UIBottomSheet,
+    UIFullscreenSheet,
+    UIModalSheet,
+    UIShareSheet,
+} from './Sheets';
 import { UIPushNotice } from './UIPushNotice';
 import { IUIMenu, UIMenu } from './UIMenu';
 import { UITooltip } from './Tooltip';
@@ -36,7 +42,8 @@ export const UIPopups = {
     UICardSheet,
     UIBottomSheet,
     UIFullscreenSheet,
-    UISheet,
+    UIModalSheet,
+    UIShareSheet,
     UIMenu,
     Tooltip,
 };

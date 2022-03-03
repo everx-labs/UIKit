@@ -90,6 +90,25 @@ export function useSheetReady() {
     return ready;
 }
 
+export const SheetProgressContext = React.createContext<Animated.SharedValue<number> | null>(null);
+
+/**
+ * Use it to get a relative progress of sheet placement
+ * without specific knowledge, like a sheet height or any other variables.
+ * The progress is a range from 0 to 1.
+ * 0 means a sheet is closed
+ * 1 means a sheet is open
+ */
+export function useSheetProgress() {
+    const progress = React.useContext(SheetProgressContext);
+
+    if (progress == null) {
+        throw new Error('Are you using `useSheetProgress` not in `UISheet` context?');
+    }
+
+    return progress;
+}
+
 export function usePosition(
     height: Animated.SharedValue<number>,
     origin: Animated.SharedValue<number>,
@@ -145,6 +164,11 @@ export function usePosition(
         }
 
         return origin.value + normalizedPosition.value;
+    });
+
+    // See `useSheetProgress`
+    const positionProgress = useDerivedValue(() => {
+        return Math.min(Math.max(normalizedPosition.value / snapPoint.value, 0), 1);
     });
 
     /**
@@ -320,6 +344,7 @@ export function usePosition(
         hasScroll,
         setHasScroll,
         position,
+        positionProgress,
         ready,
     };
 }

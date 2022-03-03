@@ -3,9 +3,9 @@ import { ImageStyle, StyleProp, View } from 'react-native';
 import {
     ColorVariants,
     makeStyles,
-    useTheme,
-    UILabel,
     TypographyVariants,
+    UILabel,
+    useTheme,
 } from '@tonlabs/uikit.themes';
 import { UIImage } from '@tonlabs/uikit.media';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
@@ -36,6 +36,7 @@ function UICellDebotImpl({ image, title, caption, onPress, loading, testID }: UI
                             role={TypographyVariants.NarrowActionFootnote}
                             color={ColorVariants.TextPrimary}
                             numberOfLines={caption ? 1 : 2}
+                            style={styles.text}
                         >
                             {title}
                         </UILabel>
@@ -45,6 +46,7 @@ function UICellDebotImpl({ image, title, caption, onPress, loading, testID }: UI
                             role={TypographyVariants.NarrowParagraphFootnote}
                             color={ColorVariants.TextSecondary}
                             numberOfLines={title ? 1 : 2}
+                            style={styles.text}
                         >
                             {caption}
                         </UILabel>
@@ -71,6 +73,8 @@ const useStyles = makeStyles(() => ({
         paddingTop: UILayoutConstant.contentInsetVerticalX2,
         alignSelf: 'stretch',
         alignItems: 'center',
+    },
+    text: {
         textAlign: 'center',
     },
     textSkeleton: {

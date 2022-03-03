@@ -1,14 +1,7 @@
 import * as React from 'react';
-import {
-    LayoutChangeEvent,
-    ScaledSize,
-    StyleSheet,
-    useWindowDimensions,
-    PixelRatio,
-    View,
-} from 'react-native';
+import { LayoutChangeEvent, ScaledSize, StyleSheet, useWindowDimensions, View } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { ColorVariants, useTheme, Theme, makeStyles, useColorParts } from '@tonlabs/uikit.themes';
+import { ColorVariants, useTheme, Theme, makeStyles, useShadow } from '@tonlabs/uikit.themes';
 import { UILayoutConstant, Portal } from '@tonlabs/uikit.layout';
 import type { UITooltipBoxProps } from './types';
 import { UIConstant } from '../constants';
@@ -100,11 +93,8 @@ export function UITooltipBox({ message, triggerRef, onClose, forId, testID }: UI
 
     const tooltipLocation = useTooltipLocation(triggerDimensions, windowDimensions, tooltipSize);
 
-    const { color: shadowColor, opacity: shadowOpacity } = useColorParts(
-        ColorVariants.BackgroundOverlay,
-    );
-
-    const styles = useStyles(theme, tooltipLocation, shadowColor, shadowOpacity);
+    const shadow = useShadow(4);
+    const styles = useStyles(theme, tooltipLocation, shadow);
 
     if (!tooltipLocation) {
         return (
@@ -133,36 +123,25 @@ export function UITooltipBox({ message, triggerRef, onClose, forId, testID }: UI
     );
 }
 
-const useStyles = makeStyles(
-    (
-        theme: Theme,
-        tooltipLocation: Location | null,
-        shadowColor: string,
-        shadowOpacity: number,
-    ) => ({
-        measureContainer: {
-            position: 'absolute',
-            width: UIConstant.tooltip.maxWidth,
-            alignItems: 'flex-start',
-            opacity: 0,
-        },
-        container: {
-            position: 'absolute',
-            ...tooltipLocation,
-        },
-        shadowContainer: {
-            backgroundColor: theme[ColorVariants.BackgroundBW],
-            borderRadius: UIConstant.tooltip.borderRadius,
-            shadowRadius: 24 / PixelRatio.get(),
-            shadowOffset: {
-                width: 0,
-                height: 16 / PixelRatio.get(),
-            },
-            shadowColor,
-            shadowOpacity,
-        },
-        underlay: {
-            ...StyleSheet.absoluteFillObject,
-        },
-    }),
-);
+const useStyles = makeStyles((theme: Theme, tooltipLocation: Location | null, shadow: any) => ({
+    measureContainer: {
+        position: 'absolute',
+        width: UIConstant.tooltip.maxWidth,
+        alignItems: 'flex-start',
+        opacity: 0,
+    },
+    container: {
+        position: 'absolute',
+        ...tooltipLocation,
+    },
+    shadowContainer: {
+        backgroundColor: theme[ColorVariants.BackgroundBW],
+        borderRadius: UIConstant.tooltip.borderRadius,
+        ...shadow,
+        /** elevation animates terribly */
+        elevation: undefined,
+    },
+    underlay: {
+        ...StyleSheet.absoluteFillObject,
+    },
+}));

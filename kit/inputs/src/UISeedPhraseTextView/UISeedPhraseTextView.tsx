@@ -4,7 +4,11 @@ import { View, Platform } from 'react-native';
 import { uiLocalized } from '@tonlabs/localization';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import { UIMaterialTextView, UIMaterialTextViewRef } from '../UIMaterialTextView';
+import {
+    UIMaterialTextView,
+    UIMaterialTextViewRef,
+    UIMaterialTextViewProps,
+} from '../UIMaterialTextView';
 import { moveCarret } from '../moveCarret';
 
 import { UISeedPhrasePopover } from './UISeedPhrasePopover';
@@ -145,13 +149,21 @@ export type UISeedPhraseTextViewProps = {
     validatePhrase: (phrase?: string, parts?: string[]) => Promise<boolean>;
     onSuccess: (phrase?: string, parts?: string[]) => void | Promise<void>;
     onSubmit: () => void | Promise<void>;
-};
+} & Pick<UIMaterialTextViewProps, 'onFocus' | 'onBlur'>;
 
 export const UISeedPhraseTextView = React.forwardRef<
     UIMaterialTextViewRef,
     UISeedPhraseTextViewProps
 >(function UISeedPhraseTextViewForwarded(props: UISeedPhraseTextViewProps, ref) {
-    const { words, validatePhrase, onSuccess, onSubmit, testID } = props;
+    const {
+        words,
+        validatePhrase,
+        onSuccess,
+        onSubmit,
+        testID,
+        onFocus: onFocusProp,
+        onBlur: onBlurProp,
+    } = props;
     const totalWords = React.useMemo(() => {
         if (typeof props.totalWords === 'number') {
             return [props.totalWords];
@@ -192,26 +204,40 @@ export const UISeedPhraseTextView = React.forwardRef<
 
     const [isFocused, setIsFocused] = React.useState(false);
 
-    const onFocus = React.useCallback(() => {
-        setIsFocused(true);
-    }, [setIsFocused]);
+    const onFocus = React.useCallback(
+        evt => {
+            setIsFocused(true);
 
-    const onBlur = React.useCallback(() => {
-        // To handle taps on hints we need to delay handling a bit
-        // to get a room for event to fire (at least on web)
-        // or with isFocused == true hints will be re-rendered before click occur
-        setTimeout(() => {
-            // in onHintSelected method we call .focus() to continue typing
-            // so it means we don't need to handle blur event anymore
-            if (refToUse && 'current' in refToUse && refToUse.current?.isFocused()) {
-                return;
+            if (onFocusProp) {
+                onFocusProp(evt);
             }
-            dispatch({
-                type: 'blur',
-            });
-            setIsFocused(false);
-        }, 50);
-    }, [refToUse]);
+        },
+        [setIsFocused, onFocusProp],
+    );
+
+    const onBlur = React.useCallback(
+        evt => {
+            // To handle taps on hints we need to delay handling a bit
+            // to get a room for event to fire (at least on web)
+            // or with isFocused == true hints will be re-rendered before click occur
+            setTimeout(() => {
+                // in onHintSelected method we call .focus() to continue typing
+                // so it means we don't need to handle blur event anymore
+                if (refToUse && 'current' in refToUse && refToUse.current?.isFocused()) {
+                    return;
+                }
+                dispatch({
+                    type: 'blur',
+                });
+                setIsFocused(false);
+            }, 50);
+
+            if (onBlurProp) {
+                onBlurProp(evt);
+            }
+        },
+        [refToUse, onBlurProp],
+    );
 
     const hints = React.useMemo(() => {
         if (!isFocused) {

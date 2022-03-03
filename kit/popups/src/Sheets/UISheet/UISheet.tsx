@@ -8,7 +8,7 @@ import { Portal } from '@tonlabs/uikit.layout';
 import { ColorVariants, useColorParts, useStatusBar } from '@tonlabs/uikit.themes';
 import { ScrollableContext } from '@tonlabs/uikit.scrolls';
 import type { OnOpen, OnClose } from './types';
-import { SheetReadyContext, usePosition } from './usePosition';
+import { SheetProgressContext, SheetReadyContext, usePosition } from './usePosition';
 import { KeyboardAwareSheet, KeyboardUnawareSheet } from './KeyboardAwareSheet';
 import { useSheetOrigin } from './SheetOriginContext';
 import { FixedSizeSheet, IntrinsicSizeSheet, useSheetSize } from './SheetSize';
@@ -96,6 +96,7 @@ function SheetContent({
         hasScroll,
         setHasScroll,
         position,
+        positionProgress,
         ready,
     } = usePosition(
         height,
@@ -167,7 +168,7 @@ function SheetContent({
         () => ({
             ref: scrollRef,
             panGestureHandlerRef: scrollPanGestureHandlerRef,
-            scrollHandler,
+            scrollHandler: Platform.OS === 'web' ? undefined : scrollHandler,
             gestureHandler: scrollGestureHandler,
             onWheel: null,
             hasScroll,
@@ -211,7 +212,9 @@ function SheetContent({
                     <Animated.View onLayout={onSheetLayout} style={[style, cardSizeStyle]}>
                         <ScrollableContext.Provider value={scrollableContextValue}>
                             <SheetReadyContext.Provider value={ready}>
-                                {children}
+                                <SheetProgressContext.Provider value={positionProgress}>
+                                    {children}
+                                </SheetProgressContext.Provider>
                             </SheetReadyContext.Provider>
                         </ScrollableContext.Provider>
                     </Animated.View>
