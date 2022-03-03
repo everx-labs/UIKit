@@ -84,8 +84,6 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
             contentInset || emptyInsets,
         );
 
-        console.log(contentInset, internalContentInset);
-
         const contentContainerStyle: ViewStyle = React.useMemo(() => {
             const style = StyleSheet.flatten(props.contentContainerStyle) || {};
 
