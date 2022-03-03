@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 
 import { UIStyle } from '@tonlabs/uikit.core';
-import { ScrollableAutomaticInsets } from '@tonlabs/uikit.scrolls';
 
 import type { ChatMessage } from './types';
 
@@ -53,9 +52,6 @@ export const UIChatSectionList = React.memo(
         }: Props<ItemT, SectionT>,
         forwardRef: React.Ref<SectionList<ItemT, SectionT>>,
     ) {
-        const automaticInsets =
-            automaticallyAdjustContentInsets || automaticallyAdjustKeyboardInsets;
-
         const [internalContentInset, setInternalContentInset] = React.useState<Insets>(
             contentInset || emptyInsets,
         );
@@ -90,22 +86,23 @@ export const UIChatSectionList = React.memo(
             };
         }, [internalContentInset, contentContainerStyleProp]);
 
+        const onInsetsChange = React.useCallback(({ nativeEvent }: { nativeEvent: Insets }) => {
+            setInternalContentInset(nativeEvent);
+        }, []);
+
         return (
             <View style={UIStyle.common.flex()}>
                 <SectionList
                     ref={forwardRef}
                     {...chatListProps}
                     contentContainerStyle={contentContainerStyle}
+                    automaticallyAdjustContentInsets={automaticallyAdjustContentInsets}
+                    // @ts-ignore
+                    automaticallyAdjustKeyboardInsets={automaticallyAdjustKeyboardInsets}
+                    keyboardInsetAdjustmentBehavior="inclusive"
+                    contentInset={contentInset}
+                    onInsetsChange={onInsetsChange}
                 />
-                {automaticInsets ? (
-                    <ScrollableAutomaticInsets
-                        automaticallyAdjustContentInsets={automaticallyAdjustContentInsets}
-                        automaticallyAdjustKeyboardInsets={automaticallyAdjustKeyboardInsets}
-                        keyboardInsetAdjustmentBehavior="inclusive"
-                        contentInset={contentInset}
-                        onInsetsChange={setInternalContentInset}
-                    />
-                ) : null}
             </View>
         );
     }),

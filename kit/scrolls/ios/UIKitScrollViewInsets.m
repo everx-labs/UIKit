@@ -18,61 +18,69 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
    return curve << 16;
 }
 
+/**
+ * Probably better to do it with category, since it has to access scroll view
+ */
 @implementation UIKitScrollViewInsets {
-    RCTBridge *_bridge;
-    RCTScrollView *_rctScrollView;
+    __weak RCTScrollView *_rctScrollView;
     UIKitScrollViewInsetsSafeArea *_insetsSafeArea;
     UIKitScrollViewInsetsKeyboard *_insetsKeyboard;
     UIEdgeInsets _indicatorInsets;
 }
 
-- (instancetype)initWithBridge:(RCTBridge *)bridge {
-    if ([self init]) {
-        _bridge = bridge;
+- (instancetype)initWithScrollView:(RCTScrollView *)rctScrollView {
+    if (self = [self init]) {
+        _rctScrollView = rctScrollView;
         _keyboardInsetAdjustmentBehavior = @"exclusive";
     }
     
     return self;
 }
 
-- (void)didMoveToWindow {
-    /**
-     * It's actually a very fragile way to access a scroll view
-     * but I had to use it, as refs and nativeID looks to be
-     * even worse in this particular situation.
-     * Hence it is very important to place the component as it is now!
-     */
-    UIView *view = self.superview.subviews[0];
-    
-    if (![view isKindOfClass:[RCTScrollView class]]) {
-        return;
+- (BOOL)didMoveToWindow {
+    if (_rctScrollView == NULL) {
+        return NO;
     }
     
-    _rctScrollView = (RCTScrollView *)view;
+    BOOL shouldReset = NO;
     
     if (_insetsSafeArea == NULL && self.automaticallyAdjustContentInsets) {
         _insetsSafeArea = [[UIKitScrollViewInsetsSafeArea alloc] initWithRCTScrollView:_rctScrollView];
+        shouldReset = YES;
     }
     
     if (_insetsKeyboard == NULL && self.automaticallyAdjustKeyboardInsets) {
         _insetsKeyboard = [[UIKitScrollViewInsetsKeyboard alloc]initWithRCTScrollView:_rctScrollView withDelegate:self];
+        shouldReset = YES;
     }
     
-    [self reset];
-    
-    // Force `layoutSubviews` to be called,
-    // sometimes it's not called without it
-    // but `layoutSubviews` is an only place
-    // (besides `safeAreaInsetsDidChange`, that is also inconsistent)
-    // to access safeAreaInsets
-    [self setNeedsLayout];
+    return shouldReset;
 }
 
-- (void)layoutSubviews {
+- (void)setAutomaticallyAdjustContentInsets:(BOOL)automaticallyAdjustContentInsets {
+    _automaticallyAdjustContentInsets = automaticallyAdjustContentInsets;
+    
+    if (automaticallyAdjustContentInsets) {
+        _insetsSafeArea = [[UIKitScrollViewInsetsSafeArea alloc] initWithRCTScrollView:_rctScrollView];
+        [self reset];
+    } else {
+        _insetsSafeArea = NULL;
+    }
+    
     [self onInsetsShouldBeRecalculated];
 }
 
-- (void)safeAreaInsetsDidChange {
+- (void)setAutomaticallyAdjustKeyboardInsets:(BOOL)automaticallyAdjustKeyboardInsets {
+    _automaticallyAdjustKeyboardInsets = automaticallyAdjustKeyboardInsets;
+    
+    if (automaticallyAdjustKeyboardInsets) {
+        _insetsKeyboard = [[UIKitScrollViewInsetsKeyboard alloc] initWithRCTScrollView:_rctScrollView
+                                                                          withDelegate:self];
+        [self reset];
+    } else {
+        _insetsKeyboard = NULL;
+    }
+    
     [self onInsetsShouldBeRecalculated];
 }
 
@@ -88,8 +96,11 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
     [self onInsetsShouldBeRecalculated];
 }
 
-
 - (void)onInsetsShouldBeRecalculated {
+    if (_insetsSafeArea == NULL && _insetsKeyboard == NULL) {
+        return;
+    }
+    
     InsetsChange change = InsetsChangeInstantMake(self.contentInset, self.contentInset);
     
     if (_insetsSafeArea != NULL) {
@@ -131,7 +142,6 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
      * but just to be sure we do it again, as it can brake things otherwise
      */
     if (@available(iOS 11.0, *)) {
-        _rctScrollView.automaticallyAdjustContentInsets = NO;
         _rctScrollView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     }
     if (@available(iOS 13.0, *)) {
@@ -149,6 +159,10 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
 }
 
 - (void)setInsets:(UIEdgeInsets)insets withIndicator:(UIEdgeInsets)indicatorInsets {
+    if (_rctScrollView == NULL) {
+        return;
+    }
+    
     if (!UIEdgeInsetsEqualToEdgeInsets(_rctScrollView.scrollView.contentInset, insets)) {
         [_rctScrollView.scrollView setContentInset:insets];
     }
@@ -159,6 +173,10 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
 }
 
 - (void)setInsets:(UIEdgeInsets)insets withIndicator:(UIEdgeInsets)indicatorInsets duration:(NSTimeInterval)duration curve:(UIViewAnimationCurve)curve {
+    if (_rctScrollView == NULL) {
+        return;
+    }
+    
     [UIView animateWithDuration:duration
                           delay:0.0
                         options:animationOptionsWithCurve(curve)

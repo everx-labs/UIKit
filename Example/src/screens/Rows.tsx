@@ -136,6 +136,7 @@ export const RowsScreen = React.memo(function Rows() {
                     getItemCount={items => items.length}
                     getItem={(items, index) => items[index]}
                     windowSize={5}
+                    automaticallyAdjustContentInsets
                 />
             </View>
         </View>

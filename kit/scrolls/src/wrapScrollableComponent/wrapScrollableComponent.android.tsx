@@ -6,7 +6,6 @@ import { NativeViewGestureHandler, PanGestureHandler } from 'react-native-gestur
 import { ScrollableContext } from '../Context';
 import { useHasScroll } from './useHasScroll';
 import type { ScrollableAdditionalProps } from './types';
-import { ScrollableAutomaticInsets } from './ScrollableAutomaticInsets';
 
 const emptyInsets: Insets = {
     left: 0,
@@ -40,7 +39,6 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
             automaticallyAdjustKeyboardInsets,
             keyboardInsetAdjustmentBehavior,
             contentInset,
-            scrollIndicatorInsets,
             ...props
         }: Props & ScrollableAdditionalProps & { children?: React.ReactNode },
         forwardRef: React.RefObject<typeof AnimatedScrollable>,
@@ -82,9 +80,6 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
             return ref?.current;
         });
 
-        const automaticInsets =
-            automaticallyAdjustContentInsets || automaticallyAdjustKeyboardInsets;
-
         const [internalContentInset, setInternalContentInset] = React.useState<Insets>(
             contentInset || emptyInsets,
         );
@@ -115,6 +110,10 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
             };
         }, [internalContentInset, props.contentContainerStyle]);
 
+        const onInsetsChange = React.useCallback(({ nativeEvent }: { nativeEvent: Insets }) => {
+            setInternalContentInset(nativeEvent);
+        }, []);
+
         return (
             <PanGestureHandler
                 ref={panGestureHandlerRef}
@@ -137,22 +136,14 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
                             scrollEventThrottle={16}
                             onLayout={horizontal ? undefined : onLayout}
                             onContentSizeChange={horizontal ? undefined : onContentSizeChange}
-                            contentInset={automaticInsets ? undefined : contentInset}
-                            scrollIndicatorInsets={
-                                automaticInsets ? undefined : scrollIndicatorInsets
-                            }
                             contentContainerStyle={contentContainerStyle}
-                        />
-                    </NativeViewGestureHandler>
-                    {automaticInsets ? (
-                        <ScrollableAutomaticInsets
                             automaticallyAdjustContentInsets={automaticallyAdjustContentInsets}
                             automaticallyAdjustKeyboardInsets={automaticallyAdjustKeyboardInsets}
                             keyboardInsetAdjustmentBehavior={keyboardInsetAdjustmentBehavior}
                             contentInset={contentInset}
-                            onInsetsChange={setInternalContentInset}
+                            onInsetsChange={onInsetsChange}
                         />
-                    ) : null}
+                    </NativeViewGestureHandler>
                 </Animated.View>
             </PanGestureHandler>
         );

@@ -3,7 +3,6 @@ import * as React from 'react';
 import { DefaultSectionT, SectionList, SectionListProps, View } from 'react-native';
 
 import { UIStyle } from '@tonlabs/uikit.core';
-import { ScrollableAutomaticInsets } from '@tonlabs/uikit.scrolls';
 
 import type { ChatMessage } from './types';
 
@@ -25,21 +24,16 @@ export const UIChatSectionList = React.memo(
         }: Props<ItemT, SectionT>,
         forwardRef: React.Ref<SectionList<ItemT, SectionT>>,
     ) {
-        const automaticInsets =
-            automaticallyAdjustContentInsets || automaticallyAdjustKeyboardInsets;
-
         return (
             <View style={UIStyle.common.flex()}>
-                <SectionList ref={forwardRef} {...chatListProps} />
-                {automaticInsets ? (
-                    // The position of a component is very important
-                    // See UIKitScrollViewInsets.m for details
-                    <ScrollableAutomaticInsets
-                        automaticallyAdjustContentInsets={automaticallyAdjustContentInsets}
-                        automaticallyAdjustKeyboardInsets={automaticallyAdjustKeyboardInsets}
-                        contentInset={contentInset}
-                    />
-                ) : null}
+                <SectionList
+                    ref={forwardRef}
+                    {...chatListProps}
+                    automaticallyAdjustContentInsets={automaticallyAdjustContentInsets}
+                    // @ts-ignore
+                    automaticallyAdjustKeyboardInsets={automaticallyAdjustKeyboardInsets}
+                    contentInset={contentInset}
+                />
             </View>
         );
     }),

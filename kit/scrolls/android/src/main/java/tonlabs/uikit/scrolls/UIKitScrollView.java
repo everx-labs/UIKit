@@ -3,9 +3,6 @@ package tonlabs.uikit.scrolls;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.core.graphics.Insets;
@@ -14,12 +11,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.ThemedReactContext;
-import com.facebook.react.views.scroll.ReactScrollView;
 import com.facebook.react.uimanager.UIManagerHelper;
+import com.facebook.react.views.scroll.ReactScrollView;
 
 @SuppressLint("ViewConstructor")
-public class UIKitScrollViewInsets extends FrameLayout implements UIKitScrollViewInsetsDelegate {
-    private ReactScrollView mScrollView;
+public class UIKitScrollView extends ReactScrollView implements UIKitScrollViewInsetsDelegate {
     private final ReactContext mReactContext;
 
     private boolean isAttachedToWindow = false;
@@ -35,9 +31,7 @@ public class UIKitScrollViewInsets extends FrameLayout implements UIKitScrollVie
     private Insets mPrevInset = Insets.NONE;
     private WindowInsetsCompat mLastKnownWindowInsets;
 
-    public static final String REACT_CLASS = "UIKitScrollViewInsets";
-
-    UIKitScrollViewInsets(@NonNull ThemedReactContext reactContext) {
+    UIKitScrollView(@NonNull ThemedReactContext reactContext) {
         super(reactContext);
 
         mReactContext = reactContext;
@@ -47,12 +41,6 @@ public class UIKitScrollViewInsets extends FrameLayout implements UIKitScrollVie
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
 
-        mScrollView = getManagedReactScrollView();
-
-        if (mScrollView == null) {
-            return;
-        }
-
         if (manageSafeArea) {
             mScrollViewInsetsSafeArea = new UIKitScrollViewInsetsSafeArea(this);
         }
@@ -61,7 +49,7 @@ public class UIKitScrollViewInsets extends FrameLayout implements UIKitScrollVie
             mScrollViewInsetsKeyboard = new UIKitScrollViewInsetsKeyboard(this);
         }
 
-        ViewCompat.setOnApplyWindowInsetsListener(getContainerView(), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(this, (v, insets) -> {
             runInsetsChainCalculation(insets);
 
             mLastKnownWindowInsets = insets;
@@ -72,24 +60,14 @@ public class UIKitScrollViewInsets extends FrameLayout implements UIKitScrollVie
         isAttachedToWindow = true;
     }
 
-    private ReactScrollView getManagedReactScrollView() {
-        ViewParent parent = this.getParent();
+    @Override
+    public Activity getCurrentActivity() {
+        return mReactContext.getCurrentActivity();
+    }
 
-        if (!(parent instanceof ViewGroup)) {
-            return null;
-        }
-
-        ViewGroup parentGroup = (ViewGroup) parent;
-
-        for (int i = 0; i < parentGroup.getChildCount(); i += 1) {
-            View view = parentGroup.getChildAt(i);
-
-            if (view instanceof ReactScrollView) {
-                return (ReactScrollView) view;
-            }
-        }
-
-        return null;
+    @Override
+    public View getContainerView() {
+        return this;
     }
 
     public void setContentInset(Insets contentInset) {
@@ -139,16 +117,6 @@ public class UIKitScrollViewInsets extends FrameLayout implements UIKitScrollVie
         runInsetsChainCalculation(mLastKnownWindowInsets);
     }
 
-    @Override
-    public Activity getCurrentActivity() {
-        return mReactContext.getCurrentActivity();
-    }
-
-    @Override
-    public View getContainerView() {
-        return mScrollView == null ? this : mScrollView;
-    }
-
     private void runInsetsChainCalculation(WindowInsetsCompat insets) {
         Insets initialInsets = Insets.of(mContentInset.left, mContentInset.top, mContentInset.right, mContentInset.bottom);
 
@@ -180,7 +148,7 @@ public class UIKitScrollViewInsets extends FrameLayout implements UIKitScrollVie
         mPrevInset = change.insets;
 
         UIManagerHelper.getEventDispatcherForReactTag(mReactContext, getId()).dispatchEvent(
-            new InsetsChangeEvent(UIManagerHelper.getSurfaceId(mReactContext), getId(), change.insets)
+                new InsetsChangeEvent(UIManagerHelper.getSurfaceId(mReactContext), getId(), change.insets)
         );
     }
 }
