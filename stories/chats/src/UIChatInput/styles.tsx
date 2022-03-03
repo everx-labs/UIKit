@@ -14,8 +14,4 @@ export const commonStyles = StyleSheet.create({
         height: UIConstant.iconSize(),
         width: UIConstant.iconSize(),
     },
-    actionIcon: {
-        height: UIConstant.mediumIconSize(),
-        width: UIConstant.mediumIconSize(),
-    },
 });
