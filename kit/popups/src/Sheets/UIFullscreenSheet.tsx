@@ -9,7 +9,17 @@ export type UIFullscreenSheetProps = UISheetProps & {
     style?: StyleProp<ViewStyle>;
 };
 
-export function UIFullscreenSheet({ children, style, ...rest }: UIFullscreenSheetProps) {
+export function UIFullscreenSheet({
+    children,
+    style,
+    /**
+     * Turn it off by default as in fullscreen
+     * the overlay isn't visible anyway
+     * and status bar color is made to be contrast on overlay
+     */
+    shouldChangeStatusBar = false,
+    ...rest
+}: UIFullscreenSheetProps) {
     const {
         screen: { height },
     } = useDimensions();
@@ -36,7 +46,11 @@ export function UIFullscreenSheet({ children, style, ...rest }: UIFullscreenShee
         <UISheet.Container visible={visible} forId={forId}>
             <UISheet.KeyboardUnaware defaultShift={-UILayoutConstant.rubberBandEffectDistance}>
                 <UISheet.FixedSize height={fullscreenHeight}>
-                    <UISheet.Content {...rest} style={[styles.bottom, style, sheetStyle]}>
+                    <UISheet.Content
+                        {...rest}
+                        style={[styles.bottom, style, sheetStyle]}
+                        shouldChangeStatusBar={shouldChangeStatusBar}
+                    >
                         {children}
                     </UISheet.Content>
                 </UISheet.FixedSize>
