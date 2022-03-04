@@ -7,7 +7,9 @@ import { uiLocalized } from '@tonlabs/localization';
 import { TouchableOpacity, UIBoxButton } from '@tonlabs/uikit.controls';
 import { UILayoutConstant, PortalManager, Portal } from '@tonlabs/uikit.layout';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
+import { UILabel, UILabelColors, UILabelRoles, ColorVariants } from '@tonlabs/uikit.themes';
+import { UISlideBar } from '@tonlabs/uicast.bars';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import { UIModalSheet, UIModalSheetProps } from '../UIModalSheet';
 import { UINotice, UINoticeType, UINoticeColor, UINoticeDuration } from '../../Notice';
@@ -36,10 +38,25 @@ export function UIShareSheet({ message, subtitle, ...sheetProps }: UIShareSheetP
         setCopiedVisible(false);
     }, []);
 
+    const headerLeftItems = React.useMemo(
+        () => [
+            {
+                testID: 'uinavigation-close-modal-button',
+                icon: {
+                    source: UIAssets.icons.ui.closeBlack,
+                },
+                iconTintColor: ColorVariants.IconAccent,
+                onPress: onClose,
+            },
+        ],
+        [onClose],
+    );
+
     return (
         <>
             <UIModalSheet {...sheetProps}>
                 <PortalManager id="share">
+                    <UISlideBar headerLeftItems={headerLeftItems} />
                     <View style={styles.header}>
                         <UILabel color={UILabelColors.TextPrimary} role={UILabelRoles.TitleMedium}>
                             {uiLocalized.Share}
