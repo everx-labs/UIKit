@@ -145,13 +145,14 @@ export type UISeedPhraseTextViewProps = {
     validatePhrase: (phrase?: string, parts?: string[]) => Promise<boolean>;
     onSuccess: (phrase?: string, parts?: string[]) => void | Promise<void>;
     onSubmit: () => void | Promise<void>;
+    forId?: string;
 };
 
 export const UISeedPhraseTextView = React.forwardRef<
     UIMaterialTextViewRef,
     UISeedPhraseTextViewProps
 >(function UISeedPhraseTextViewForwarded(props: UISeedPhraseTextViewProps, ref) {
-    const { words, validatePhrase, onSuccess, onSubmit, testID } = props;
+    const { words, validatePhrase, onSuccess, onSubmit, testID, forId } = props;
     const totalWords = React.useMemo(() => {
         if (typeof props.totalWords === 'number') {
             return [props.totalWords];
@@ -530,6 +531,7 @@ export const UISeedPhraseTextView = React.forwardRef<
             />
             <UISeedPhrasePopover
                 // if number of lines changed, redraw it
+                forId={forId}
                 key={height}
                 elementRef={textInputBorderViewRef}
                 currentHighlightedItemIndex={state.highlight.index}
