@@ -143,12 +143,13 @@ const reducer = (state: CurrentInnerState, action: ACTION): CurrentInnerState =>
 };
 
 export type UISeedPhraseTextViewProps = {
+    forId?: string;
+    onSubmit: () => void | Promise<void>;
+    onSuccess: (phrase?: string, parts?: string[]) => void | Promise<void>;
     testID?: string;
-    words: string[];
     totalWords: number | number[];
     validatePhrase: (phrase?: string, parts?: string[]) => Promise<boolean>;
-    onSuccess: (phrase?: string, parts?: string[]) => void | Promise<void>;
-    onSubmit: () => void | Promise<void>;
+    words: string[];
 } & Pick<UIMaterialTextViewProps, 'onFocus' | 'onBlur'>;
 
 export const UISeedPhraseTextView = React.forwardRef<
@@ -156,21 +157,23 @@ export const UISeedPhraseTextView = React.forwardRef<
     UISeedPhraseTextViewProps
 >(function UISeedPhraseTextViewForwarded(props: UISeedPhraseTextViewProps, ref) {
     const {
-        words,
-        validatePhrase,
-        onSuccess,
-        onSubmit,
-        testID,
-        onFocus: onFocusProp,
+        forId,
         onBlur: onBlurProp,
+        onFocus: onFocusProp,
+        onSubmit,
+        onSuccess,
+        testID,
+        totalWords: totalWordsProp,
+        validatePhrase,
+        words,
     } = props;
     const totalWords = React.useMemo(() => {
-        if (typeof props.totalWords === 'number') {
-            return [props.totalWords];
+        if (typeof totalWordsProp === 'number') {
+            return [totalWordsProp];
         }
 
-        return props.totalWords;
-    }, [props.totalWords]);
+        return totalWordsProp;
+    }, [totalWordsProp]);
 
     const textInputRef = React.useRef<UIMaterialTextViewRef>(null);
     const textInputBorderViewRef = React.useRef<View>(null);
@@ -556,6 +559,7 @@ export const UISeedPhraseTextView = React.forwardRef<
             />
             <UISeedPhrasePopover
                 // if number of lines changed, redraw it
+                forId={forId}
                 key={height}
                 elementRef={textInputBorderViewRef}
                 currentHighlightedItemIndex={state.highlight.index}
