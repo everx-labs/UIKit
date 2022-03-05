@@ -17,18 +17,18 @@ const withSpringConfig: WithSpringConfig = {
     stiffness: 150,
 };
 
-const getPosition = (isExpanded: boolean): number => {
+function getPosition(isExpanded: boolean): number {
     return isExpanded ? POSITION_EXPANDED : POSITION_FOLDED;
-};
+}
 
 /**
  * Returns animated label expanding position.
  * It can be in the range from POSITION_FOLDED to POSITION_EXPANDED
  */
-export const useExpandingValue = (
+export function useExpandingValue(
     isExpanded: boolean,
     onExpand: () => void,
-): Readonly<Animated.SharedValue<number>> => {
+): Readonly<Animated.SharedValue<number>> {
     /** Label position switcher (POSITION_FOLDED/POSITION_EXPANDED) */
     const expandingPosition: Animated.SharedValue<number> = useSharedValue<number>(
         getPosition(isExpanded),
@@ -53,4 +53,4 @@ export const useExpandingValue = (
         return withSpring(expandingPosition.value, withSpringConfig, animationCallback);
     });
     return expandingValue;
-};
+}
