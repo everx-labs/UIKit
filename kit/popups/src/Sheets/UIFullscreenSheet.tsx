@@ -1,23 +1,51 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { Platform, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { useDimensions } from '@tonlabs/uikit.inputs';
+
 import { UISheet, UISheetProps } from './UISheet/UISheet';
 
 export type UIFullscreenSheetProps = UISheetProps & {
     style?: StyleProp<ViewStyle>;
 };
 
-export function UIFullscreenSheet({ children, style, ...rest }: UIFullscreenSheetProps) {
+export function UIFullscreenSheet({
+    children,
+    style,
+    /**
+     * Turn it off by default as in fullscreen
+     * the overlay isn't visible anyway
+     * and status bar color is made to be contrast on overlay
+     */
+    shouldChangeStatusBar = false,
+    ...rest
+}: UIFullscreenSheetProps) {
     const {
-        screen: { height },
+        screen: { height: screenHeight },
+        window: { height: windowHeight },
     } = useDimensions();
 
-    const fullscreenHeight = React.useMemo(
-        () => height + UILayoutConstant.rubberBandEffectDistance,
-        [height],
-    );
+    const fullscreenHeight = React.useMemo(() => {
+        /**
+         * On different platforms it behave differently.
+         *
+         * On web `screenHeight` is equal to a device screen height
+         * a browser window is usually smaller (and can be resized).
+         */
+        if (Platform.OS === 'web') {
+            return windowHeight + UILayoutConstant.rubberBandEffectDistance;
+        }
+
+        /**
+         * On iOS it seems `windowHeight` is equal to screenHeight.
+         *
+         * On Android `windowHeight` doesn't include a status bar height and
+         * a navigation bar (the one on the bottom). Since we use edge-to-edge
+         * right now we want to use `screenHeight` to be fullscreen.
+         */
+        return screenHeight + UILayoutConstant.rubberBandEffectDistance;
+    }, [screenHeight, windowHeight]);
 
     const sheetStyle = React.useMemo(() => {
         const flattenStyle = StyleSheet.flatten(style);
@@ -36,7 +64,11 @@ export function UIFullscreenSheet({ children, style, ...rest }: UIFullscreenShee
         <UISheet.Container visible={visible} forId={forId}>
             <UISheet.KeyboardUnaware defaultShift={-UILayoutConstant.rubberBandEffectDistance}>
                 <UISheet.FixedSize height={fullscreenHeight}>
-                    <UISheet.Content {...rest} style={[styles.bottom, style, sheetStyle]}>
+                    <UISheet.Content
+                        {...rest}
+                        style={[styles.bottom, style, sheetStyle]}
+                        shouldChangeStatusBar={shouldChangeStatusBar}
+                    >
                         {children}
                     </UISheet.Content>
                 </UISheet.FixedSize>

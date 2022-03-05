@@ -5,7 +5,7 @@ import Animated, { interpolateColor, useAnimatedStyle } from 'react-native-reani
 import { useBackHandler } from '@react-native-community/hooks';
 
 import { Portal } from '@tonlabs/uikit.layout';
-import { ColorVariants, useColorParts, useStatusBar } from '@tonlabs/uikit.themes';
+import { ColorVariants, useColorParts, UIStatusBar } from '@tonlabs/uikit.themes';
 import { ScrollableContext } from '@tonlabs/uikit.scrolls';
 import type { OnOpen, OnClose } from './types';
 import { SheetProgressContext, SheetReadyContext, usePosition } from './usePosition';
@@ -50,6 +50,12 @@ export type UISheetProps = {
      */
     hasCloseAnimation?: boolean;
     /**
+     * Whether UISheet should change the status bar color or not
+     *
+     * By default - true
+     */
+    shouldChangeStatusBar?: boolean;
+    /**
      * Sheet uses <Portal /> to put itself on top of
      * current components, like a layer.
      * Use the ID if you want to change destination where
@@ -81,6 +87,7 @@ function SheetContent({
     style,
     hasOpenAnimation,
     hasCloseAnimation,
+    shouldChangeStatusBar = true,
 }: UISheetProps) {
     const onClosePortalRequest = useSheetClosePortalRequest();
     const origin = useSheetOrigin();
@@ -125,10 +132,6 @@ function SheetContent({
         }
 
         return false;
-    });
-
-    useStatusBar({
-        backgroundColor: ColorVariants.BackgroundOverlay,
     });
 
     const { colorParts: overlayColorParts, opacity: overlayOpacity } = useColorParts(
@@ -187,40 +190,45 @@ function SheetContent({
     );
 
     return (
-        <View style={styles.container}>
-            <TapGestureHandler enabled={onClose != null} onGestureEvent={onTapGestureHandler}>
-                {/* https://github.com/software-mansion/react-native-gesture-handler/issues/71 */}
-                <Animated.View style={styles.interlayer}>
+        <>
+            <View style={styles.container}>
+                <TapGestureHandler enabled={onClose != null} onGestureEvent={onTapGestureHandler}>
+                    {/* https://github.com/software-mansion/react-native-gesture-handler/issues/71 */}
+                    <Animated.View style={styles.interlayer}>
+                        <PanGestureHandler
+                            maxPointers={1}
+                            enabled={onClose != null}
+                            onGestureEvent={onPanGestureHandler}
+                        >
+                            <Animated.View style={overlayStyle as StyleProp<ViewStyle>} />
+                        </PanGestureHandler>
+                    </Animated.View>
+                </TapGestureHandler>
+                <Animated.View style={[styles.sheet, cardStyle]} pointerEvents="box-none">
                     <PanGestureHandler
                         maxPointers={1}
                         enabled={onClose != null}
                         onGestureEvent={onPanGestureHandler}
+                        {...(Platform.OS === 'android' && hasScroll
+                            ? { waitFor: scrollPanGestureHandlerRef }
+                            : null)}
                     >
-                        <Animated.View style={overlayStyle as StyleProp<ViewStyle>} />
+                        <Animated.View onLayout={onSheetLayout} style={[style, cardSizeStyle]}>
+                            <ScrollableContext.Provider value={scrollableContextValue}>
+                                <SheetReadyContext.Provider value={ready}>
+                                    <SheetProgressContext.Provider value={positionProgress}>
+                                        {children}
+                                    </SheetProgressContext.Provider>
+                                </SheetReadyContext.Provider>
+                            </ScrollableContext.Provider>
+                        </Animated.View>
                     </PanGestureHandler>
                 </Animated.View>
-            </TapGestureHandler>
-            <Animated.View style={[styles.sheet, cardStyle]} pointerEvents="box-none">
-                <PanGestureHandler
-                    maxPointers={1}
-                    enabled={onClose != null}
-                    onGestureEvent={onPanGestureHandler}
-                    {...(Platform.OS === 'android' && hasScroll
-                        ? { waitFor: scrollPanGestureHandlerRef }
-                        : null)}
-                >
-                    <Animated.View onLayout={onSheetLayout} style={[style, cardSizeStyle]}>
-                        <ScrollableContext.Provider value={scrollableContextValue}>
-                            <SheetReadyContext.Provider value={ready}>
-                                <SheetProgressContext.Provider value={positionProgress}>
-                                    {children}
-                                </SheetProgressContext.Provider>
-                            </SheetReadyContext.Provider>
-                        </ScrollableContext.Provider>
-                    </Animated.View>
-                </PanGestureHandler>
-            </Animated.View>
-        </View>
+            </View>
+            {shouldChangeStatusBar && (
+                <UIStatusBar backgroundColor={ColorVariants.BackgroundOverlay} />
+            )}
+        </>
     );
 }
 
