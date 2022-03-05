@@ -3,55 +3,32 @@ import { TextInput, View } from 'react-native';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { makeStyles, useTheme, Theme, ColorVariants } from '@tonlabs/uikit.themes';
 import Animated, { interpolate, useAnimatedStyle, Layout } from 'react-native-reanimated';
-import { UITextView } from '../UITextView';
-import { FloatingLabel } from './FloatingLabel';
-import type { UIMaterialTextViewLayoutProps } from './types';
-import { UIMaterialTextViewComment } from './UIMaterialTextViewComment';
-import { useExpandingValue } from './hooks';
+import { UITextView } from '../../UITextView';
+import { FloatingLabel } from '../FloatingLabel';
+import type { UIMaterialTextViewLayoutProps } from '../types';
+import { UIMaterialTextViewComment } from '../UIMaterialTextViewComment';
+import { useExpandingValue, usePlaceholderVisibility } from './hooks';
 
 // @inline
 const POSITION_FOLDED: number = 0;
 // @inline
 const POSITION_EXPANDED: number = 1;
 
-// EXPANDED_INPUT_OFFSET = UILayoutConstant.contentOffset - UILayoutConstant.contentInsetVerticalX2
+/**
+ * Expanded position vertical offset of the Label
+ * It was calculated as (UILayoutConstant.contentOffset - UILayoutConstant.contentInsetVerticalX2)
+ */
 // @inline
 const EXPANDED_INPUT_OFFSET: number = 8;
 
 const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
-
-const getIsExpanded = (isFocused: boolean, inputHasValue: boolean): boolean => {
-    return isFocused || inputHasValue;
-};
-
-function useFloatingLabelAttribute(isFocused: boolean, inputHasValue: boolean) {
-    const isExpanded: boolean = getIsExpanded(isFocused, inputHasValue);
-
-    const [isDefaultPlaceholderVisible, setDefaultPlaceholderVisible] = React.useState(isExpanded);
-
-    const markDefaultPlacehoderAsVisible = React.useCallback(() => {
-        setDefaultPlaceholderVisible(true);
-    }, []);
-
-    React.useEffect(() => {
-        if (!isExpanded) {
-            setDefaultPlaceholderVisible(false);
-        }
-    }, [isExpanded]);
-
-    return {
-        isDefaultPlaceholderVisible,
-        markDefaultPlacehoderAsVisible,
-        isExpanded,
-    };
-}
 
 export const UIMaterialTextViewFloating = React.forwardRef<
     TextInput,
     UIMaterialTextViewLayoutProps
 >(function UIMaterialTextViewFloatingForwarded(props: UIMaterialTextViewLayoutProps, ref) {
     const {
-        label = '',
+        label = 'Input',
         onLayout,
         children,
         onMouseEnter,
@@ -64,12 +41,12 @@ export const UIMaterialTextViewFloating = React.forwardRef<
     } = props;
     const theme = useTheme();
 
-    const { isDefaultPlaceholderVisible, markDefaultPlacehoderAsVisible, isExpanded } =
-        useFloatingLabelAttribute(isFocused, inputHasValue);
+    const isExpanded = React.useMemo(() => isFocused || inputHasValue, [isFocused, inputHasValue]);
+    const { isPlaceholderVisible, showPlacehoder } = usePlaceholderVisibility(isExpanded);
 
     const expandingValue: Readonly<Animated.SharedValue<number>> = useExpandingValue(
         isExpanded,
-        markDefaultPlacehoderAsVisible,
+        showPlacehoder,
     );
 
     const inputStyle = useAnimatedStyle(() => {
@@ -102,7 +79,7 @@ export const UIMaterialTextViewFloating = React.forwardRef<
                     <UITextViewAnimated
                         ref={ref}
                         {...rest}
-                        placeholder={isDefaultPlaceholderVisible ? props.placeholder : undefined}
+                        placeholder={isPlaceholderVisible ? props.placeholder : undefined}
                         placeholderTextColor={
                             isHovered ? ColorVariants.TextSecondary : ColorVariants.TextTertiary
                         }

@@ -1,7 +1,6 @@
 export * from './useAutogrow';
 export * from './useClear';
 export * from './useClearButton';
-export * from './useExpandingValue';
 export * from './useExtendedRef';
 export * from './useFoldingValue';
 export * from './useInputHasValue';
