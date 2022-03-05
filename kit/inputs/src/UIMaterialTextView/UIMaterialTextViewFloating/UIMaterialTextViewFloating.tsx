@@ -4,7 +4,7 @@ import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { makeStyles, useTheme, Theme, ColorVariants } from '@tonlabs/uikit.themes';
 import Animated, { interpolate, useAnimatedStyle, Layout } from 'react-native-reanimated';
 import { UITextView } from '../../UITextView';
-import { FloatingLabel } from '../FloatingLabel';
+import { FloatingLabel } from './FloatingLabel';
 import type { UIMaterialTextViewLayoutProps } from '../types';
 import { UIMaterialTextViewComment } from '../UIMaterialTextViewComment';
 import { useExpandingValue, usePlaceholderVisibility } from './hooks';

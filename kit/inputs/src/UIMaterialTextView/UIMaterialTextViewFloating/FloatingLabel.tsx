@@ -52,9 +52,7 @@ type LabelProps = {
     onLabelLayout: (layoutChangeEvent: LayoutChangeEvent) => void;
     isHovered: boolean;
 };
-const Label: React.FC<LabelProps> = (props: LabelProps) => {
-    const { children, onLabelLayout, isHovered } = props;
-
+function Label({ children, onLabelLayout, isHovered }: LabelProps) {
     return (
         <UILabel
             role={TypographyVariants.ParagraphText}
@@ -66,18 +64,18 @@ const Label: React.FC<LabelProps> = (props: LabelProps) => {
             {children}
         </UILabel>
     );
-};
+}
 
-const getFoldedX = (width: number): number => {
+function getFoldedX(width: number): number {
     'worklet';
 
     return (width * (1 - FOLDED_LABEL_SCALE)) / 2 - LEFT_OFFSET_OF_UI_LABEL_TEXT_FROM_EDGE / 2;
-};
+}
 
-const useOnLabelLayout = (
+function useOnLabelLayout(
     expandedLabelWidth: Animated.SharedValue<number>,
     expandedLabelHeight: Animated.SharedValue<number>,
-) => {
+) {
     return React.useCallback(
         (layoutChangeEvent: LayoutChangeEvent) => {
             if (expandedLabelWidth.value !== layoutChangeEvent.nativeEvent.layout.width) {
@@ -98,11 +96,9 @@ const useOnLabelLayout = (
         },
         [expandedLabelWidth, expandedLabelHeight],
     );
-};
+}
 
-export const FloatingLabel: React.FC<FloatingLabelProps> = (props: FloatingLabelProps) => {
-    const { expandingValue, children, isHovered } = props;
-
+export function FloatingLabel({ expandingValue, children, isHovered }: FloatingLabelProps) {
     /** Dimensions of label in the expanded state */
     const expandedLabelWidth: Animated.SharedValue<number> = useSharedValue<number>(0);
     const expandedLabelHeight: Animated.SharedValue<number> = useSharedValue<number>(0);
@@ -157,7 +153,7 @@ export const FloatingLabel: React.FC<FloatingLabelProps> = (props: FloatingLabel
             </Animated.View>
         </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {
