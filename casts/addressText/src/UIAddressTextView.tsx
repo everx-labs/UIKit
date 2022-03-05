@@ -139,6 +139,7 @@ export const UIAddressTextView = React.forwardRef<UIMaterialTextViewRef, UIAddre
 
         const children = [
             <UIMaterialTextView.Icon
+                key="address_text_view_scanner_button"
                 testID="address_text_view_scanner"
                 source={UIAssets.icons.addressInput.scan}
                 onPress={() => {
