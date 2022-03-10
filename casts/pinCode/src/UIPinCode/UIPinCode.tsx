@@ -461,7 +461,7 @@ const styles = StyleSheet.create({
         flex: 3,
     },
     inner: {
-        flex: 10,
+        flex: 12,
         alignItems: 'center',
     },
     bottomSpacer: {
