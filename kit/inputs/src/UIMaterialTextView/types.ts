@@ -14,7 +14,7 @@ export type UIMaterialTextViewChild =
     | UIMaterialTextViewActionChild
     | UIMaterialTextViewTextChild;
 
-export type UIMaterialTextViewProps = UITextViewProps & {
+export type UIMaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
     /**
      * Label of the UIMaterialTextView
      */
@@ -65,6 +65,7 @@ export type UIMaterialTextViewLayoutProps = UIMaterialTextViewProps & {
     isHovered: boolean;
     isFocused: boolean;
     inputHasValue: boolean;
+    style?: UITextViewProps['style'];
 };
 
 export interface UIMaterialTextViewRef extends TextInput {
