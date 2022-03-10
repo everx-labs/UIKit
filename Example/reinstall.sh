@@ -1,9 +1,12 @@
 npx lerna bootstrap
 npx lerna run prepare
 
+rvm use ruby-$(cat .ruby-version)
+bundle install
+
 cd ios
 rm -rf Pods
-pod install
+bundle exec pod install
 cd ..
 
 if command -v osascript &> /dev/null

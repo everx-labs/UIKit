@@ -39,4 +39,4 @@ class AnimateableTextWeb extends React.Component<Text['props'] & { text: string 
     }
 }
 
-export const AnimateableText = Animated.createAnimatedComponent(AnimateableTextWeb);
+export const AnimateableText: any = Animated.createAnimatedComponent(AnimateableTextWeb);
