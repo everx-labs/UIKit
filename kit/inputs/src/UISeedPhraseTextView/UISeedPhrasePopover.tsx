@@ -13,9 +13,6 @@ import { Portal, UILayoutConstant } from '@tonlabs/uikit.layout';
 
 const MAX_CELLS = 3;
 
-const statusBarHeight =
-    Platform.OS === 'android' && StatusBar.currentHeight ? StatusBar.currentHeight : 0;
-
 type UISeedPhrasePopoverProps = {
     elementRef: React.Ref<View>;
     currentHighlightedItemIndex: number;
@@ -54,7 +51,7 @@ function UISeedPhrasePopoverContent(props: UISeedPhrasePopoverProps) {
                 elementRef.current?.measureInWindow((x, y, width, inputHeight) => {
                     setMeasurement({
                         x,
-                        y: y + inputHeight + statusBarHeight,
+                        y: y + inputHeight + (StatusBar.currentHeight ?? 0),
                         width,
                     });
                 });
