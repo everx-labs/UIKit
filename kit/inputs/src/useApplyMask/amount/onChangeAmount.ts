@@ -17,9 +17,8 @@ export function onChangeAmount(
         grouping: integerSeparator,
         decimal: delimeter,
         decimalGrouping: fractionalSeparator,
+        decimalAlternative: delimeterAlternative,
     } = uiLocalized.localeInfo.numbers;
-
-    const inputSeparators = [',', '.', '/', 'б', 'ю'];
 
     runOnUI(runUIOnChangeAmount)(
         rawNumber,
@@ -33,6 +32,6 @@ export function onChangeAmount(
         changeText,
         moveCarret,
         skipNextOnSelectionChange,
-        inputSeparators,
+        delimeterAlternative,
     );
 }

@@ -11,6 +11,7 @@ export function getNumberFormatInfo(): NumberFormatInfo {
         thousands: parts[2],
         decimal: parts[3],
         decimalGrouping: '\u2009',
+        decimalAlternative: ['\u044E', '\u0431', '/', '?', '<', '>', ',', '.'],
     };
 }
 

@@ -36,6 +36,7 @@ export type NumberFormatInfo = {
     thousands: string;
     decimal: string;
     decimalGrouping: string;
+    decimalAlternative: string[];
 };
 
 export type NumberParts = {

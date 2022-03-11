@@ -16,7 +16,7 @@ export function runUIOnChangeAmount(
     changeText: ChangeText,
     moveCarret: MoveCarret,
     skipNextOnSelectionChange: SharedValue<boolean>,
-    inputSeparators: string[],
+    delimeterAlternative: string[],
 ) {
     'worklet';
 
@@ -25,7 +25,7 @@ export function runUIOnChangeAmount(
         delimeter,
         integerSeparator,
         fractionalSeparator,
-        inputSeparators,
+        delimeterAlternative,
     );
 
     // Adjust carret (calculation)

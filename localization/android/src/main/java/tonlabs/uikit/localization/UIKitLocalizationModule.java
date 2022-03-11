@@ -41,6 +41,16 @@ public class UIKitLocalizationModule extends ReactContextBaseJavaModule {
         numbers.put("thousands", Character.toString(symbols.getGroupingSeparator()));
         numbers.put("decimal", Character.toString(symbols.getDecimalSeparator()));
         numbers.put("decimalGrouping", "\u2009");
+        numbers.put("decimalAlternative", new String[] {
+                "\u044E",
+                "\u0431",
+                "/",
+                "?",
+                "<",
+                ">",
+                ",",
+                "."
+        });
 
         final Map<String, Object> dates = new HashMap<>();
         WritableNativeArray components = new WritableNativeArray();

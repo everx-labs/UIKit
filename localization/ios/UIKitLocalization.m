@@ -39,6 +39,16 @@ RCT_EXPORT_MODULE()
                 @"thousands": grouping,
                 @"decimal": decimal,
                 @"decimalGrouping": @"\u2009",
+                @"decimalAlternative": @[
+                    @"\u044E",
+                    @"\u0431",
+                    @"/",
+                    @"?",
+                    @"<",
+                    @">",
+                    @",",
+                    @".",
+                ],
         },
         @"dates": @{
                 @"separator": [NSString stringWithFormat:@"%@", dateInfo[@"separator"]],
