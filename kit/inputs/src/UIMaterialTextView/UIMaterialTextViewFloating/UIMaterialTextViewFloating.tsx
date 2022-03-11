@@ -106,6 +106,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     input: {
         flex: 1,
+        flexDirection: 'row',
         paddingVertical: UILayoutConstant.contentInsetVerticalX4,
         paddingRight: UILayoutConstant.smallContentOffset,
     },
