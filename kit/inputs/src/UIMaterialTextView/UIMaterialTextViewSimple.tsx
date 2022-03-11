@@ -4,7 +4,7 @@ import { TextInput, View } from 'react-native';
 import { useHover } from '@tonlabs/uikit.controls';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { makeStyles, useTheme, Theme, ColorVariants } from '@tonlabs/uikit.themes';
-import Animated, { Layout } from 'react-native-reanimated';
+import Animated /* , { Layout } */ from 'react-native-reanimated';
 import { UITextView, useFocused, useUITextViewValue } from '../UITextView';
 
 import { useMaterialTextViewChildren } from './useMaterialTextViewChildren';
@@ -63,7 +63,7 @@ export const UIMaterialTextViewSimple = React.forwardRef<
                 onMouseLeave={onMouseLeave}
                 ref={borderViewRef}
             >
-                <Animated.View style={styles.input} layout={Layout}>
+                <Animated.View style={styles.input} /* layout={Layout} */>
                     <UITextViewAnimated
                         ref={ref}
                         {...rest}
@@ -78,7 +78,7 @@ export const UIMaterialTextViewSimple = React.forwardRef<
                         onChange={onChange}
                         numberOfLines={numberOfLines}
                         style={style}
-                        layout={Layout}
+                        // layout={Layout}
                         scrollEnabled={false}
                     />
                 </Animated.View>

@@ -7,7 +7,7 @@ import type { UITooltipBoxProps } from './types';
 import { UIConstant } from '../constants';
 import { ShadowView } from '../ShadowView';
 import { TargetDimensions, useTargetDimensions } from '../useTargetDimensions';
-import { usePopupLayoutAnimationFunctions } from '../usePopupLayoutAnimationFunctions';
+// import { usePopupLayoutAnimationFunctions } from '../usePopupLayoutAnimationFunctions';
 import { UITooltipContent } from './UITooltipContent';
 import { UITooltipBackdrop } from './UITooltipBackdrop';
 
@@ -85,7 +85,7 @@ function useTooltipMeasuring() {
 export function UITooltipBox({ message, triggerRef, onClose, forId, testID }: UITooltipBoxProps) {
     const contentRef = React.useRef<View>(null);
     const theme = useTheme();
-    const { entering, exiting } = usePopupLayoutAnimationFunctions();
+    // const { entering, exiting } = usePopupLayoutAnimationFunctions();
     const windowDimensions = useWindowDimensions();
     const triggerDimensions = useTargetDimensions(triggerRef, windowDimensions);
 
@@ -109,8 +109,8 @@ export function UITooltipBox({ message, triggerRef, onClose, forId, testID }: UI
             <UITooltipBackdrop onTap={onClose} triggerRef={triggerRef} contentRef={contentRef} />
             <Animated.View
                 style={styles.container}
-                entering={entering}
-                exiting={exiting}
+                // entering={entering}
+                // exiting={exiting}
                 testID={testID}
             >
                 <ShadowView style={styles.shadowContainer}>
