@@ -2486,11 +2486,6 @@
     eslint-plugin-react-native "3.6.0"
     prettier "1.16.4"
 
-"@react-native-community/hooks@2.6.0":
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/@react-native-community/hooks/-/hooks-2.6.0.tgz#dd5f19601eb3684c6bcdd3df3d0c04cf44c24cff"
-  integrity sha512-emBGKvhJ0h++lLJQ5ejsj+od9G67nEaihjvfSx7/JWvNrQGAhP9U0OZqgb9dkKzor9Ufaj9SGt8RNY97cGzttw==
-
 "@react-native-community/hooks@^2.6.0":
   version "2.8.1"
   resolved "https://registry.yarnpkg.com/@react-native-community/hooks/-/hooks-2.8.1.tgz#6e785431db49318048fdd14b601998437b6cc200"
@@ -5708,9 +5703,9 @@ ee-first@1.1.1:
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 electron-to-chromium@^1.4.76:
-  version "1.4.80"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.80.tgz#299a1ea3e32810934b4e3c2e4d4cb53136fdab3f"
-  integrity sha512-COsbJCGVYCc/aAY4cd94x1Js3q0r406YKGbdL8LXHg0O9dEjuFEFU/vZneRxBxKo/f1lLHi0YyAR7sbFM+i8Bg==
+  version "1.4.81"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.81.tgz#a9ce8997232fb9fb0ec53de8931a85b18c0a7383"
+  integrity sha512-Gs7xVpIZ7tYYSDA+WgpzwpPvfGwUk3KSIjJ0akuj5XQHFdyQnsUoM76EA4CIHXNLPiVwTwOFay9RMb0ChG3OBw==
 
 elliptic@^6.5.3:
   version "6.5.4"
@@ -6817,7 +6812,7 @@ follow-redirects@^1.0.0:
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.9.tgz#dd4ea157de7bfaf9ea9b3fbd85aa16951f78d8d7"
   integrity sha512-MQDfihBQYMcyy5dhRDJUHcw7lb2Pv/TuE6xP1vyraLukNDHKbDxDNaOE3NbCAdKQApno+GPRyo1YAp89yCjK4w==
 
-fontfaceobserver-es@3.3.3, fontfaceobserver-es@^3.3.3:
+fontfaceobserver-es@^3.3.3:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/fontfaceobserver-es/-/fontfaceobserver-es-3.3.3.tgz#b8fa6b774592c53d4ff98b031f97f15f9bdc4d83"
   integrity sha512-1EyweL1ryy0koZWk80Kr0UgWq9KhbOl2cD6x1O8BtFu0gNqCWIXK1lVFSUb37DI5FMn1m86I6X7N1JRBy8wVfw==
@@ -11744,13 +11739,6 @@ react-is@^16.13.0, react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.4:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-react-localization@1.0.17:
-  version "1.0.17"
-  resolved "https://registry.yarnpkg.com/react-localization/-/react-localization-1.0.17.tgz#f12f78c8c5e16dea5015cd44b1871c2dee09e99d"
-  integrity sha512-UowuLAvnEPXJgzxjDX/9hKdKYvtUgC6hQ5PV0CnT5f/77tItIUru5tTwgrDY2UL5oUK3JRMgz42tqnAU2W5eoA==
-  dependencies:
-    localized-strings "^0.2.0"
-
 react-localization@^1.0.13, react-localization@^1.0.14:
   version "1.0.18"
   resolved "https://registry.yarnpkg.com/react-localization/-/react-localization-1.0.18.tgz#9be8d49138126712991d5b7c6a7ff1f18549322c"
@@ -11764,13 +11752,6 @@ react-native-animateable-text@0.9.1:
   integrity sha512-qaekXiTNqJuG0KIMgnzfyz41xvt2dx5sRI0cCluWyDa15BF2kR+IgOd5W3NiPrRbmKUERuGuS1YRBJJEpPeIlA==
   dependencies:
     nullthrows "^1.1.1"
-
-react-native-awesome-alerts@1.3.2:
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/react-native-awesome-alerts/-/react-native-awesome-alerts-1.3.2.tgz#b21e609fd46aaf2ec951fa8771870201d702feb1"
-  integrity sha512-PhRj7XeLF+HZ97B728puyHonaJt2oWsJty/QZeowgnepIuVtj7OUYBrohXtY6f4/vrmsk85IH5IzRxLGAF0t1g==
-  dependencies:
-    prop-types "^15.7.2"
 
 react-native-blob-util@^0.13.18:
   version "0.13.18"
@@ -11844,7 +11825,7 @@ react-native-gesture-handler@1.10.3, react-native-gesture-handler@^1.10.3:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
-react-native-iphone-x-helper@1.3.1, react-native-iphone-x-helper@^1.0.1, react-native-iphone-x-helper@^1.3.0, react-native-iphone-x-helper@^1.3.1:
+react-native-iphone-x-helper@^1.0.1, react-native-iphone-x-helper@^1.3.0:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
   integrity sha512-HOf0jzRnq2/aFUcdCJ9w9JGzN3gdEg0zFE4FyYlp4jtidqU03D5X7ZegGKfT1EWteR0gPBGp9ye5T5FvSWi9Yg==
@@ -11911,15 +11892,6 @@ react-native-reanimated@2.4.1:
     react-native-screens "^3.4.0"
     string-hash-64 "^1.0.3"
 
-react-native-redash@16.0.11:
-  version "16.0.11"
-  resolved "https://registry.yarnpkg.com/react-native-redash/-/react-native-redash-16.0.11.tgz#973c3050a0645e3b9873790a8e68694770a32f27"
-  integrity sha512-9yTpeabkAoWASzmhEkynNh1wDTrLVtbE+x9dOV1DI23vRa7k1HI+Y1jOUNOPyRG2ddgHampNq9iHtsLnkK4mtw==
-  dependencies:
-    abs-svg-path "^0.1.1"
-    normalize-svg-path "^1.0.1"
-    parse-svg-path "^0.1.2"
-
 react-native-redash@^16.0.11:
   version "16.2.3"
   resolved "https://registry.yarnpkg.com/react-native-redash/-/react-native-redash-16.2.3.tgz#ee63e100c60f83275116e57d4e8bc79f26349db9"
@@ -11951,9 +11923,9 @@ react-native-screens@^3.4.0:
     warn-once "^0.1.0"
 
 react-native-share@^7.3.3:
-  version "7.3.6"
-  resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-7.3.6.tgz#cab3e4e485cecee662ae5dd8a757fc6ec7c5140a"
-  integrity sha512-oqwWS9/Tzvo0+3RXVNH1hXIthYvOicN/iJbVEv0YMIQLlsuIeoSQ4zh9Yre1APzRKoF8+En+G2XApQk7UaI5Kg==
+  version "7.3.7"
+  resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-7.3.7.tgz#f5eed0bf657ec8c5c45e3fe7a88611d28cc8f734"
+  integrity sha512-WYXAqyNZeKKk3Kvsv4N3tJuLNw8k+HM+ymKnWFRomoSerD5syJqmBHgw1HwED8iV3zH11lXJw3rha9+H80XUHQ==
 
 react-native-simple-shadow-view@1.6.3:
   version "1.6.3"
@@ -12072,7 +12044,7 @@ react-player@^2.9.0:
     prop-types "^15.7.2"
     react-fast-compare "^3.0.1"
 
-react-qr-reader@2.2.1, react-qr-reader@^2.2.1:
+react-qr-reader@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/react-qr-reader/-/react-qr-reader-2.2.1.tgz#dc89046d1c1a1da837a683dd970de5926817d55b"
   integrity sha512-EL5JEj53u2yAOgtpAKAVBzD/SiKWn0Bl7AZy6ZrSf1lub7xHwtaXe6XSx36Wbhl1VMGmvmrwYMRwO1aSCT2fwA==

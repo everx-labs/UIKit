@@ -14,7 +14,7 @@ then
   osascript -e "display notification \"Waiting for secret files revealing\" with title \"Quiver UI\""
 fi
 
-npm run secret:reveal
+yarn run secret:reveal
 
 if command -v osascript &> /dev/null
 then
