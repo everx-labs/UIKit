@@ -2,7 +2,7 @@ import * as React from 'react';
 import { TextInput, View } from 'react-native';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { makeStyles, useTheme, Theme, ColorVariants } from '@tonlabs/uikit.themes';
-import Animated, { interpolate, useAnimatedStyle, Layout } from 'react-native-reanimated';
+import Animated, { interpolate, useAnimatedStyle /* , Layout */ } from 'react-native-reanimated';
 import { UITextView } from '../../UITextView';
 import { FloatingLabel } from './FloatingLabel';
 import type { UIMaterialTextViewLayoutProps } from '../types';
@@ -75,7 +75,7 @@ export const UIMaterialTextViewFloating = React.forwardRef<
                 onMouseLeave={onMouseLeave}
                 ref={borderViewRef}
             >
-                <Animated.View style={[styles.input, inputStyle]} layout={Layout}>
+                <Animated.View style={[styles.input, inputStyle]} /* layout={Layout} */>
                     <UITextViewAnimated
                         ref={ref}
                         {...rest}
@@ -83,7 +83,7 @@ export const UIMaterialTextViewFloating = React.forwardRef<
                         placeholderTextColor={
                             isHovered ? ColorVariants.TextSecondary : ColorVariants.TextTertiary
                         }
-                        layout={Layout}
+                        // layout={Layout}
                         scrollEnabled={false}
                     />
                     <FloatingLabel expandingValue={expandingValue} isHovered={isHovered}>

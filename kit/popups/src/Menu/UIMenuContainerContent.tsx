@@ -8,7 +8,7 @@ import type { UIMenuContainerContentProps } from './types';
 import { UIConstant } from '../constants';
 import { ShadowView } from '../ShadowView';
 import { useTargetDimensions, TargetDimensions } from '../useTargetDimensions';
-import { usePopupLayoutAnimationFunctions } from '../usePopupLayoutAnimationFunctions';
+// import { usePopupLayoutAnimationFunctions } from '../usePopupLayoutAnimationFunctions';
 
 type Location = {
     left: number;
@@ -72,7 +72,7 @@ export function UIMenuContainerContent({
     testID,
 }: UIMenuContainerContentProps) {
     const theme = useTheme();
-    const { entering, exiting } = usePopupLayoutAnimationFunctions();
+    // const { entering, exiting } = usePopupLayoutAnimationFunctions();
     const windowDimensions = useWindowDimensions();
     const triggerDimensions = useTargetDimensions(triggerRef, windowDimensions);
 
@@ -99,8 +99,8 @@ export function UIMenuContainerContent({
             </TapGestureHandler>
             <Animated.View
                 style={styles.container}
-                entering={entering}
-                exiting={exiting}
+                // entering={entering}
+                // exiting={exiting}
                 onLayout={onLayout}
                 testID={testID}
             >
