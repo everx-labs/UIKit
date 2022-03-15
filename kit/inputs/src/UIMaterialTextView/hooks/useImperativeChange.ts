@@ -2,7 +2,12 @@ import * as React from 'react';
 import { Platform, TextInput } from 'react-native';
 import { calculateWebInputHeight } from '../../useAutogrowTextView';
 import { moveCarret as moveCarretPlatform } from '../../moveCarret';
-import type { ChangeText, ImperativeChangeText, ImperativeChangeTextConfig } from '../types';
+import type {
+    ChangeText,
+    ImperativeChangeText,
+    MoveCarret,
+    ImperativeChangeTextConfig,
+} from '../types';
 
 const defultConfig = {
     callOnChangeProp: undefined,
@@ -42,7 +47,7 @@ export function useImperativeChange(
         [ref, multiline, onChangeText],
     );
 
-    const moveCarret = React.useCallback(
+    const moveCarret: MoveCarret = React.useCallback(
         function moveCarret(carretPosition: number, maxPosition?: number) {
             moveCarretPlatform(ref, carretPosition, maxPosition);
         },
