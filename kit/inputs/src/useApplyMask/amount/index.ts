@@ -1,1 +1,1 @@
-export * from './onChangeAmount';
+export * from './useApplyMaskAmount';
