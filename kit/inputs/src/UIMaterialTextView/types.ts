@@ -54,7 +54,8 @@ export type UIMaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
      */
     onHeightChange?: OnHeightChange;
     /**
-     * Provides a input mask
+     * Provides a input mask.
+     * It must not be changed between renders.
      */
     mask?: UIMaterialTextViewMask;
 };
