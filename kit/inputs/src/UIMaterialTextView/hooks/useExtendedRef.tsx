@@ -29,7 +29,7 @@ export function useExtendedRef(
     React.useImperativeHandle<TextInput, UIMaterialTextViewRef>(
         forwardedRed,
         (): UIMaterialTextViewRef => ({
-            ...(localRef.current ? localRef.current : new TextInput({})),
+            ...(localRef.current ? localRef.current : TextInput.prototype),
             setState: getEmptyMethod('setState'),
             forceUpdate: getEmptyMethod('forceUpdate'),
             render: getEmptyMethod('render'),
