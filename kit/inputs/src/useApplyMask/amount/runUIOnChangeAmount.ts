@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { runOnJS, SharedValue } from 'react-native-reanimated';
+import type { SharedValue } from 'react-native-reanimated';
 import type { ChangeText, MoveCarret } from '../../UIMaterialTextView/types';
 import { runUIFormat } from './runUIFormat';
 import { runUIGetNewCarretPosition } from './runUIGetNewCarretPosition';
@@ -40,8 +40,8 @@ export function runUIOnChangeAmount(
         fractionalSeparator,
     );
 
-    runOnJS(changeText)(formattedNumber);
-    runOnJS(moveCarret)(carretPosition, formattedNumber.length);
+    changeText(formattedNumber);
+    moveCarret(carretPosition, formattedNumber.length);
 
     skipNextOnSelectionChange.value = true;
     selectionStart.value = carretPosition;

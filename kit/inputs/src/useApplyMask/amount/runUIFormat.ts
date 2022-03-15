@@ -8,7 +8,7 @@ const INTEGER_GROUP_SIZE = 3;
 const FRACTIONAL_GROUP_SIZE = 3;
 
 // @inline
-const DECIMALS = 8;
+const DECIMALS = 9;
 
 export function runUIFormat(
     rawNumber: string,
@@ -26,7 +26,9 @@ export function runUIFormat(
     );
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [integerPart, _inputDelimeter, decimalPart] = rawNumber.split(inputDelimeterRegExp);
+    const [integerPart, ...rest] = rawNumber.split(inputDelimeterRegExp);
+    const decimalPart = rest.join('');
+
     let normalizedText = '';
     const result: string[] = [];
     const notNumbersRegexp = /[^0-9]/g;
@@ -45,7 +47,7 @@ export function runUIFormat(
     result.push(groupedIntegerPart);
 
     // Normalize and group fractional part
-    if (DECIMALS > 0 && decimalPart != null) {
+    if (DECIMALS > 0 && decimalPart != null && decimalPart.length > 0) {
         let normalizedDecimalPart = decimalPart.replace(notNumbersRegexp, '');
 
         normalizedDecimalPart = normalizedDecimalPart.slice(0, DECIMALS);

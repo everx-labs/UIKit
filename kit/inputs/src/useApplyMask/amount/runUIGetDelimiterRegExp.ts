@@ -1,11 +1,11 @@
-const specialCharacters = '[]\\^$.|?*+()';
-
 export function runUIGetDelimiterRegExp(
     integerSeparator: string,
     fractionalSeparator: string,
     delimeterAlternative: string[],
 ): RegExp {
     'worklet';
+
+    const specialCharacters = '[]\\^$.|?*+()';
 
     const filteredSeparators = delimeterAlternative.reduce(
         (result: string[], separator: string) => {

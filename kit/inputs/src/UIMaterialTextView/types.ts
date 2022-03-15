@@ -4,7 +4,7 @@ import type { UIImageProps } from '@tonlabs/uikit.media';
 import type { UITextViewProps } from '../UITextView';
 import type { OnHeightChange } from '../useAutogrowTextView';
 
-export type UIMaterialTextViewMask = '[000] [000].[000] [000]';
+export type UIMaterialTextViewMask = 'Amount';
 
 export type UIMaterialTextViewIconChild = React.ReactElement<UIMaterialTextViewIconProps>;
 export type UIMaterialTextViewActionChild = React.ReactElement<UIMaterialTextViewActionProps>;
@@ -24,17 +24,17 @@ export type UIMaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
      */
     helperText?: string;
     /**
-     * Is validation error?
+     * Validation error
      * Defines the helperText style.
      */
     error?: boolean;
     /**
-     * Is validation warning?
+     * Validation warning
      * Defines the helperText style.
      */
     warning?: boolean;
     /**
-     * Is validation success?
+     * Validation success
      * Defines the helperText style.
      */
     success?: boolean;

@@ -94,10 +94,10 @@ export const Inputs = () => {
                 <View style={{ maxWidth: 400, padding: 20, alignSelf: 'stretch' }}>
                     <UIMaterialTextView
                         testID="uiMaterialTextView_amount"
-                        placeholder="[000] [000].[000] [000]"
+                        placeholder="Amount"
                         label="Amount"
                         helperText="Caption"
-                        mask="[000] [000].[000] [000]"
+                        mask="Amount"
                     />
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView

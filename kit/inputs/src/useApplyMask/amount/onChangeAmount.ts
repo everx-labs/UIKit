@@ -1,4 +1,4 @@
-import { runOnUI, SharedValue } from 'react-native-reanimated';
+import type { SharedValue } from 'react-native-reanimated';
 import { uiLocalized } from '@tonlabs/localization';
 import { runUIOnChangeAmount } from './runUIOnChangeAmount';
 import type { ChangeText, MoveCarret } from '../../UIMaterialTextView/types';
@@ -20,7 +20,7 @@ export function onChangeAmount(
         decimalAlternative: delimeterAlternative,
     } = uiLocalized.localeInfo.numbers;
 
-    runOnUI(runUIOnChangeAmount)(
+    runUIOnChangeAmount(
         rawNumber,
         selectionStart,
         selectionEnd,

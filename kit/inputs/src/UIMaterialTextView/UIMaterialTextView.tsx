@@ -8,7 +8,7 @@ import {
     UIMaterialTextViewText,
     useExtendedRef,
     useAutogrow,
-    useChangeImperative,
+    useImperativeChange,
     useInputHasValue,
     useClear,
 } from './hooks';
@@ -59,7 +59,7 @@ function useExtendedProps(
         onHeightChange,
     );
 
-    const { changeText, moveCarret } = useChangeImperative(
+    const { changeText, moveCarret } = useImperativeChange(
         ref,
         multiline,
         onChangeTextWithInputHasValue,
