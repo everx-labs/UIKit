@@ -11,7 +11,7 @@ const FRACTIONAL_GROUP_SIZE = 3;
 const DECIMALS = 9;
 
 export function runUIFormat(
-    rawNumber: string,
+    inputText: string,
     delimeter: string,
     integerSeparator: string,
     fractionalSeparator: string,
@@ -26,7 +26,7 @@ export function runUIFormat(
     );
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [integerPart, ...rest] = rawNumber.split(inputDelimeterRegExp);
+    const [integerPart, ...rest] = inputText.split(inputDelimeterRegExp);
     const decimalPart = rest.join('');
 
     let normalizedText = '';
@@ -64,10 +64,10 @@ export function runUIFormat(
         result.push(groupedDecimalPart);
     }
 
-    const formattedNumber = result.join(delimeter);
+    const formattedText = result.join(delimeter);
 
     return {
         normalizedText,
-        formattedNumber,
+        formattedText,
     };
 }

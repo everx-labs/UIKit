@@ -10,8 +10,7 @@ export function useApplyMask(
     moveCarret: MoveCarret,
     mask?: UIMaterialTextViewMask,
 ) {
-    const { selectionStart, selectionEnd, onSelectionChange, skipNextOnSelectionChange } =
-        useOnSelectionChange();
+    const { selectionEnd, onSelectionChange, skipNextOnSelectionChange } = useOnSelectionChange();
 
     const lastNormalizedText = useSharedValue('');
     const lastText = useSharedValue('');
@@ -19,10 +18,9 @@ export function useApplyMask(
     const onChangeText = React.useCallback(
         (text: string): void => {
             switch (mask) {
-                case '[000] [000].[000] [000]':
+                case 'Amount':
                     onChangeAmount(
                         text,
-                        selectionStart,
                         selectionEnd,
                         lastNormalizedText,
                         lastText,
@@ -37,7 +35,6 @@ export function useApplyMask(
         },
         [
             mask,
-            selectionStart,
             selectionEnd,
             lastNormalizedText,
             lastText,
