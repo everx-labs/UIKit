@@ -2,14 +2,14 @@
 import type { SharedValue } from 'react-native-reanimated';
 import { uiLocalized } from '@tonlabs/localization';
 import { runUIOnChangeAmount } from './runUIOnChangeAmount';
-import type { ChangeText, MoveCarret } from '../../UIMaterialTextView/types';
+import type { ImperativeChangeText, MoveCarret } from '../../UIMaterialTextView/types';
 
 export function onChangeAmount(
     inputText: string,
     selectionEnd: SharedValue<number>,
     lastNormalizedText: SharedValue<string>,
     lastText: SharedValue<string>,
-    changeText: ChangeText,
+    imperativeChangeText: ImperativeChangeText,
     moveCarret: MoveCarret,
     skipNextOnSelectionChange: SharedValue<boolean>,
 ) {
@@ -31,10 +31,16 @@ export function onChangeAmount(
         delimeterAlternative,
     );
 
-    changeText(formattedText);
+    imperativeChangeText(formattedText);
     moveCarret(carretPosition, formattedText.length);
 
+    /**
+     * We need to skip the next call of OnSelectionChange
+     * because it will happen after the calculations above
+     * and will break these calculations
+     */
     skipNextOnSelectionChange.value = true;
+
     selectionEnd.value = carretPosition;
     lastText.value = formattedText;
     lastNormalizedText.value = normalizedText;

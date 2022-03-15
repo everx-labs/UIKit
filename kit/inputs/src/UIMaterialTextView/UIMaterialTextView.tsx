@@ -59,13 +59,17 @@ function useExtendedProps(
         onHeightChange,
     );
 
-    const { changeText, moveCarret } = useImperativeChange(
+    const { imperativeChangeText, moveCarret } = useImperativeChange(
         ref,
         multiline,
         onChangeTextWithInputHasValue,
     );
 
-    const { onChangeText, onSelectionChange } = useApplyMask(changeText, moveCarret, mask);
+    const { onChangeText, onSelectionChange } = useApplyMask(
+        imperativeChangeText,
+        moveCarret,
+        mask,
+    );
 
     const clear = useClear(resetInputHeight, onChangeText);
 
@@ -78,7 +82,7 @@ function useExtendedProps(
         clear,
     );
 
-    useExtendedRef(passedRef, ref, changeText, moveCarret);
+    useExtendedRef(passedRef, ref, imperativeChangeText, moveCarret);
 
     const newProps: UIMaterialTextViewLayoutProps = {
         ...props,

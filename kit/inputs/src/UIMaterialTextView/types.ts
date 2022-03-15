@@ -76,6 +76,12 @@ export interface UIMaterialTextViewRef extends TextInput {
 export type ChangeText = (text: string, callOnChangeProp?: boolean | undefined) => void;
 export type MoveCarret = (carretPosition: number, maxPosition?: number | undefined) => void;
 
+export type ImperativeChangeTextConfig = {
+    callOnChangeProp?: boolean;
+    shouldSetNativeProps?: boolean;
+};
+export type ImperativeChangeText = (text: string, config?: ImperativeChangeTextConfig) => void;
+
 export type UIMaterialTextViewIconProps = UIImageProps & {
     onPress?: () => void;
 };

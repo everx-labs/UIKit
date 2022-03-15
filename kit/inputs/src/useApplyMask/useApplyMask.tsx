@@ -1,14 +1,18 @@
 /* eslint-disable no-param-reassign */
 import * as React from 'react';
 import { useSharedValue } from 'react-native-reanimated';
-import type { UIMaterialTextViewMask, ChangeText, MoveCarret } from '../UIMaterialTextView/types';
+import type {
+    UIMaterialTextViewMask,
+    ImperativeChangeText,
+    MoveCarret,
+} from '../UIMaterialTextView/types';
 import { onChangeAmount } from './amount';
 import { useOnSelectionChange } from './useOnSelectionChange';
 
 export function useApplyMask(
-    changeText: ChangeText,
+    imperativeChangeText: ImperativeChangeText,
     moveCarret: MoveCarret,
-    mask?: UIMaterialTextViewMask,
+    mask: UIMaterialTextViewMask | undefined,
 ) {
     const { selectionEnd, onSelectionChange, skipNextOnSelectionChange } = useOnSelectionChange();
 
@@ -24,13 +28,23 @@ export function useApplyMask(
                         selectionEnd,
                         lastNormalizedText,
                         lastText,
-                        changeText,
+                        imperativeChangeText,
                         moveCarret,
                         skipNextOnSelectionChange,
                     );
                     break;
                 default:
-                    changeText(text);
+                    /**
+                     * If the text is empty, then the Clear button may have been pressed,
+                     * if so we must call `setNativeProps` to clear the input
+                     */
+                    if (!text) {
+                        imperativeChangeText(text);
+                    } else {
+                        imperativeChangeText(text, {
+                            shouldSetNativeProps: false,
+                        });
+                    }
             }
         },
         [
@@ -38,7 +52,7 @@ export function useApplyMask(
             selectionEnd,
             lastNormalizedText,
             lastText,
-            changeText,
+            imperativeChangeText,
             moveCarret,
             skipNextOnSelectionChange,
         ],
