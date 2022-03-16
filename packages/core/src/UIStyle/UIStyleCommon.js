@@ -106,77 +106,77 @@ export default class UIStyleCommon {
     }
 
     // Containers
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static absoluteFillContainer() {
         return styles.absoluteFillContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static fullWidthPaddingContainer() {
         return styles.fullWidthPaddingContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static fullWidthPaddingCenterContainer() {
         return styles.fullWidthPaddingCenterContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static pageContainer() {
         return styles.pageContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static pageNormalContainer() {
         return styles.pageNormalContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static pageSlimContainer() {
         return styles.pageSlimContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static bottomScreenContainer() {
         return styles.bottomScreenContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static bottomOffsetScreenContainer() {
         return styles.bottomOffsetScreenContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static leftScreenContainer() {
         return styles.leftScreenContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static rightScreenContainer() {
         return styles.rightScreenContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static centerContainer() {
         return styles.centerContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static centerLeftContainer() {
         return styles.centerLeftContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static centerRightContainer() {
         return styles.centerRightContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static rowSpaceContainer() {
         return styles.rowSpaceContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static rowCenterSpaceContainer() {
         return styles.rowCenterSpaceContainer;
     }

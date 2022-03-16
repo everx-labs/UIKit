@@ -15,11 +15,6 @@ let current = UIColorThemeName.light;
 export class UITheme {
     static current: UIColorThemeData = themes.light;
 
-    // Text colors
-    static textPrimary(theme?: ?UIColorThemeNameType): UIColorData {
-        return themes[theme || current].text.primary.normal;
-    }
-
     // Background colors
     static borderBottom(theme?: ?UIColorThemeNameType): UIColorData {
         return themes[theme || current].borderBottom;
@@ -38,11 +33,6 @@ export class UITheme {
             return borderBottom.hover;
         }
         return borderBottom.normal;
-    }
-
-    static borderBottomLightColor(theme: ?UIColorThemeNameType) {
-        const borderBottom = UITheme.borderBottom(theme);
-        return borderBottom.light;
     }
 
     static button(theme?: ?UIColorThemeNameType): UIColorData {

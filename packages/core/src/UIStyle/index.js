@@ -49,12 +49,4 @@ UIStyle.flex = UIStyleFlex;
 // Deprecated
 UIStyle.displayFlex = UIStyleFlex;
 
-// Deprecated
-UIStyle.Color = UIStyleColor;
-UIStyle.Common = UIStyleCommon;
-UIStyle.Container = UIStyleContainer;
-UIStyle.Margin = UIStyleMargin;
-UIStyle.Padding = UIStylePadding;
-UIStyle.Flex = UIStyleFlex;
-
 export default UIStyle;

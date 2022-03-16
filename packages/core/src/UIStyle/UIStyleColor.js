@@ -60,15 +60,6 @@ export default class UIStyleColor {
         return this.getStyle(color, this.styles.borderBottomColor);
     }
 
-    static textPrimary(theme?: ?UIColorThemeNameType) {
-        return this.getColorStyle(UITheme.textPrimary(theme));
-    }
-
-    static borderBottomLight(theme: ?UIColorThemeNameType) {
-        const borderColor = UITheme.borderBottomLightColor(theme);
-        return this.getBorderBottomColorStyle(borderColor);
-    }
-
     static borderBottom(theme: ?UIColorThemeNameType, focused: boolean, hover: boolean) {
         const borderColor = UITheme.borderBottomColor(theme, focused, hover);
         return this.getBorderBottomColorStyle(borderColor);
