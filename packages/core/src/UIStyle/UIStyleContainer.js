@@ -1,7 +1,6 @@
 // @flow
 import { StyleSheet } from 'react-native';
 import UIConstant from '../UIConstant';
-import UIColor from '../UIColor';
 
 const absoluteFillWidthContainer = {
     position: 'absolute',
@@ -67,7 +66,6 @@ export const containerStyles = {
     },
     screenBackground: {
         ...absoluteFillObject,
-        backgroundColor: UIColor.backgroundPrimary(),
     },
     screenContainer: {
         flex: 1,
@@ -132,11 +130,6 @@ export const containerStyles = {
         left: '50%',
         width: 320,
         marginLeft: -160,
-    },
-    backgroundImageContainer: {
-        width: UIConstant.backgroundImageContainerWidth(),
-        height: UIConstant.backgroundImageContainerHeight(),
-        backgroundColor: UIColor.backgroundQuinary(),
     },
 
     fullWidthCenterContainer: {
@@ -242,10 +235,6 @@ export default class UIStyleContainer {
 
     static absoluteFillWidth() {
         return styles.absoluteFillWidthContainer;
-    }
-
-    static topScreen() {
-        return styles.topScreenContainer;
     }
 
     static screenBackground() {

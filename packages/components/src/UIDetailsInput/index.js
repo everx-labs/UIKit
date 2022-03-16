@@ -1,7 +1,7 @@
 /* eslint-disable global-require */
 // @flow
 import * as React from 'react';
-import { Platform, TextInput, View, StyleSheet, Image } from 'react-native';
+import { Platform, View, StyleSheet } from 'react-native';
 
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type {
@@ -10,9 +10,8 @@ import type {
     AutoCapitalize,
 } from 'react-native/Libraries/Components/TextInput/TextInput';
 
-import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import type { UIColorThemeNameType, EventProps } from '@tonlabs/uikit.core';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import type { EventProps } from '@tonlabs/uikit.core';
 import { UITextView } from '@tonlabs/uikit.inputs';
 import { UILinkButton, UILinkButtonSize, UILinkButtonVariant } from '@tonlabs/uikit.controls';
 import {
@@ -49,9 +48,6 @@ const styles = StyleSheet.create({
     },
     commentStyle: {
         zIndex: -1,
-    },
-    prefixIcon: {
-        marginRight: UIConstant.smallContentOffset(),
     },
 });
 
@@ -312,10 +308,6 @@ export type UIDetailsInputProps = UIActionComponentProps & {
     */
     submitDisabled?: boolean,
     /**
-    @ignore
-    */
-    theme?: UIColorThemeNameType,
-    /**
     The token symbol
     */
     token?: string | React$Element<any>,
@@ -333,16 +325,6 @@ export type UIDetailsInputProps = UIActionComponentProps & {
     @ignore
     */
     testID?: string,
-    /**
-    Prefix icon
-    @default null
-    */
-    prefixIcon?: ?string,
-    /**
-    Prefix icon color
-    @default null
-    */
-    prefixIconColor?: ?string,
     /**
     ID for InputAccessoryView
     */
@@ -726,16 +708,6 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
         );
     }
 
-    renderPrefixIcon() {
-        const { prefixIcon, prefixIconColor } = this.props;
-        if (!prefixIcon) return null;
-
-        const styleColor = prefixIconColor
-            ? UIStyle.color.getTintColorStyle(prefixIconColor)
-            : null;
-        return <Image source={this.props.prefixIcon} style={[styles.prefixIcon, styleColor]} />;
-    }
-
     renderBeginningTag() {
         const beginningTag = this.beginningTag();
         const emptyValue = !this.props.value || !this.props.value.length;
@@ -940,7 +912,6 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
     renderTextFragment(): React$Node {
         return (
             <React.Fragment>
-                {this.renderPrefixIcon()}
                 {this.renderBeginningTag()}
                 <View style={UIStyle.container.screen()}>
                     {this.renderAuxTextInput()}
@@ -959,10 +930,7 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
         const { hideBottomLine, bottomLineColor, mandatory, mandatoryColor } = this.props;
         const bottomLine = hideBottomLine
             ? null
-            : {
-                  borderBottomColor: UIColor.light(),
-                  borderBottomWidth: 1,
-              };
+            : { borderBottomWidth: 1 };
 
         return (
             <TextViewWrapper
@@ -1129,10 +1097,7 @@ UIDetailsInput.defaultProps = {
     showSymbolsLeft: false,
     style: null,
     submitDisabled: false,
-    theme: UIColor.Theme.Light,
     value: '',
     visible: true,
-    prefixIcon: null,
-    prefixIconColor: null,
     copyingLocked: false,
 };
