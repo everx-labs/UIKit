@@ -18,7 +18,6 @@
     "dependencies": {
         "@quentin-sommer/react-useragent": "2.0.0",
         "@react-native-clipboard/clipboard": "^1.8.5",
-        "@react-native-community/blur": "git+https://github.com/tonlabs/react-native-blur.git",
         "@react-navigation/bottom-tabs": "^5.11.15",
         "@react-navigation/core": "^5.16.1",
         "@react-navigation/devtools": "^5.1.26",
@@ -28,7 +27,6 @@
         "@tonlabs/localization": "*",
         "@tonlabs/uicast.address-text": "*",
         "@tonlabs/uicast.bars": "*",
-        "@tonlabs/uicast.blur-view": "*",
         "@tonlabs/uicast.cards": "*",
         "@tonlabs/uicast.carousel-view": "*",
         "@tonlabs/uicast.country-picker": "*",
