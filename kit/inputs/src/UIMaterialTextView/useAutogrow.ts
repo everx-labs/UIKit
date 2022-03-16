@@ -1,4 +1,4 @@
-import type * as React from 'react';
+import * as React from 'react';
 import type { TextInput } from 'react-native';
 import type { OnHeightChange } from '../useAutogrowTextView';
 import type { UIMaterialTextViewProps } from './types';
@@ -9,10 +9,34 @@ export function useAutogrow(
     onChangeProp: UIMaterialTextViewProps['onChange'],
     _multiline: UIMaterialTextViewProps['multiline'],
     numberOfLinesProp: UIMaterialTextViewProps['numberOfLines'],
-    _onHeightChange?: OnHeightChange,
+    onHeightChange: OnHeightChange | undefined,
+    _isHovered: boolean,
 ) {
+    const inputHeight = React.useRef(0);
+
+    const onContentSizeChange = React.useCallback(
+        (event: any) => {
+            if (onHeightChange) {
+                const height = event?.nativeEvent?.contentSize?.height;
+                if (height !== inputHeight.current) {
+                    inputHeight.current = height;
+                    if (typeof height === 'number') {
+                        onHeightChange(height);
+                    } else {
+                        onHeightChange(0);
+                    }
+                }
+            }
+
+            if (onContentSizeChangeProp) {
+                onContentSizeChangeProp(event);
+            }
+        },
+        [onHeightChange, onContentSizeChangeProp],
+    );
+
     return {
-        onContentSizeChange: onContentSizeChangeProp,
+        onContentSizeChange,
         onChange: onChangeProp,
         resetInputHeight: () => null,
         numberOfLines: numberOfLinesProp,

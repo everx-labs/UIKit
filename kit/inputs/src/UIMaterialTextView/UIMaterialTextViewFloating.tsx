@@ -83,6 +83,7 @@ export const UIMaterialTextViewFloating = React.forwardRef<
         markDefaultPlacehoderAsVisible,
         isExpanded,
     } = useFloatingLabelAttribute(props.onFocus, props.onBlur, inputHasValue);
+    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
     const { onContentSizeChange, onChange, numberOfLines, style, resetInputHeight } = useAutogrow(
         ref,
         props.onContentSizeChange,
@@ -90,12 +91,12 @@ export const UIMaterialTextViewFloating = React.forwardRef<
         props.multiline,
         props.numberOfLines,
         onHeightChange,
+        isHovered,
     );
     const clear = React.useCallback(() => {
         clearInput();
         resetInputHeight();
     }, [clearInput, resetInputHeight]);
-    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
     const processedChildren = useMaterialTextViewChildren(
         children,
         inputHasValue,
