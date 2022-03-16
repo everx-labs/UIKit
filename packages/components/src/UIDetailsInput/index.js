@@ -928,9 +928,7 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
 
     renderTextView() {
         const { hideBottomLine, bottomLineColor, mandatory, mandatoryColor } = this.props;
-        const bottomLine = hideBottomLine
-            ? null
-            : { borderBottomWidth: 1 };
+        const bottomLine = hideBottomLine ? null : { borderBottomWidth: 1 };
 
         return (
             <TextViewWrapper
