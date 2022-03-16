@@ -60,46 +60,8 @@ export default class UIStyleColor {
         return this.getStyle(color, this.styles.borderBottomColor);
     }
 
-    static getBorderTopColorStyle(color: UIColorData) {
-        return this.getStyle(color, this.styles.borderTopColor);
-    }
-
-    static getTintColorStyle(color: UIColorData) {
-        return this.getStyle(color, this.styles.tintColor);
-    }
-
     static textPrimary(theme?: ?UIColorThemeNameType) {
         return this.getColorStyle(UITheme.textPrimary(theme));
-    }
-
-    static backgroundPrimary(theme?: ?UIColorThemeNameType) {
-        return this.getBackgroundColorStyle(UITheme.backgroundPrimary(theme));
-    }
-
-    static stateTextPrimary(
-        theme: ?UIColorThemeNameType,
-        disabled: boolean,
-        tapped: boolean,
-        hover: boolean,
-    ) {
-        const color = UITheme.stateTextPrimary(theme, disabled, tapped, hover);
-        return this.getColorStyle(color);
-    }
-
-    static actionTextPrimary(theme?: ?UIColorThemeNameType) {
-        return this.getColorStyle(UITheme.actionTextPrimary(theme));
-    }
-
-    static textSecondary(theme?: ?UIColorThemeNameType) {
-        return this.getColorStyle(UITheme.textSecondary(theme));
-    }
-
-    static textTertiary(theme?: ?UIColorThemeNameType) {
-        return this.getColorStyle(UITheme.textTertiary(theme));
-    }
-
-    static textQuaternary(theme?: ?UIColorThemeNameType) {
-        return this.getColorStyle(UITheme.textQuaternary(theme));
     }
 
     static borderBottomLight(theme: ?UIColorThemeNameType) {
