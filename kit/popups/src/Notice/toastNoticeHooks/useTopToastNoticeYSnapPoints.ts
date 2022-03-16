@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { useWindowDimensions } from 'react-native';
 import Animated, { useDerivedValue } from 'react-native-reanimated';
-import { initialWindowMetrics } from 'react-native-safe-area-context';
-import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+import { initialWindowMetrics, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { SnapPoints } from '../types';
 
@@ -12,7 +11,7 @@ const INVALID_VALUE = 100000;
 export const useTopToastNoticeYSnapPoints = (
     noticeHeight: Animated.SharedValue<number>,
 ): SnapPoints => {
-    const statusBarHeight = React.useMemo(() => getStatusBarHeight(), []);
+    const { top: topInset } = useSafeAreaInsets();
     const screenDimensionsHeight = useWindowDimensions().height;
 
     const screenHeight = React.useMemo(() => {
@@ -25,8 +24,8 @@ export const useTopToastNoticeYSnapPoints = (
     }, [screenDimensionsHeight]);
 
     const openedYSnapPoint = useDerivedValue(() => {
-        return -screenHeight + statusBarHeight + UILayoutConstant.contentOffset;
-    }, [screenHeight, statusBarHeight]);
+        return -screenHeight + topInset + UILayoutConstant.contentInsetVerticalX4;
+    }, [screenHeight, topInset]);
     const closedYSnapPoint = useDerivedValue(() => {
         if (noticeHeight.value === 0) {
             return INVALID_VALUE;
