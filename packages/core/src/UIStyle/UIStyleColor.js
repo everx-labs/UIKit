@@ -1,10 +1,9 @@
 // @flow
 import { StyleSheet } from 'react-native';
 
-import type { UIColorData, UIColorThemeNameType } from '../UIColor/UIColorTypes';
-import { UITheme } from '../UITheme';
-
 type ColorStyle = string;
+
+type UIColorData = string;
 
 const colorStyleSheets: { [ColorStyle]: Object } = {
     color: {},
@@ -21,14 +20,6 @@ export default class UIStyleColor {
         borderBottomColor: 'borderBottomColor',
         borderTopColor: 'borderTopColor',
         tintColor: 'tintColor',
-    };
-
-    // Deprecated
-    static Styles = {
-        Color: 'color',
-        BackgroundColor: 'backgroundColor',
-        BorderBottomColor: 'borderBottomColor',
-        TintColor: 'tintColor',
     };
 
     static getStyle(color: UIColorData, colorStyle: ColorStyle): Object {
@@ -48,20 +39,7 @@ export default class UIStyleColor {
         return sheet.style;
     }
 
-    static getColorStyle(color: UIColorData) {
-        return this.getStyle(color, this.styles.color);
-    }
-
     static getBackgroundColorStyle(color: UIColorData) {
         return this.getStyle(color, this.styles.backgroundColor);
-    }
-
-    static getBorderBottomColorStyle(color: UIColorData) {
-        return this.getStyle(color, this.styles.borderBottomColor);
-    }
-
-    static borderBottom(theme: ?UIColorThemeNameType, focused: boolean, hover: boolean) {
-        const borderColor = UITheme.borderBottomColor(theme, focused, hover);
-        return this.getBorderBottomColorStyle(borderColor);
     }
 }
