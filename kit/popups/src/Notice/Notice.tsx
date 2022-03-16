@@ -34,15 +34,20 @@ const getBackgroundColor = (color: UINoticeColor, theme: Theme): ColorValue => {
     }
 };
 
-const renderCountdown = (
-    countdownValue: Animated.SharedValue<number>,
-    countdownProgress: Animated.SharedValue<number>,
-    styles: ViewStyle,
-    hasCountdown: boolean | undefined,
-): React.ReactElement | null => {
+function NoticeCountdown({
+    countdownValue,
+    countdownProgress,
+    style,
+    hasCountdown,
+}: {
+    countdownValue: Animated.SharedValue<number>;
+    countdownProgress: Animated.SharedValue<number>;
+    style: ViewStyle;
+    hasCountdown: boolean | undefined;
+}): React.ReactElement | null {
     if (hasCountdown) {
         return (
-            <View style={styles}>
+            <View style={style}>
                 <CountdownCirlce
                     countdownValue={countdownValue}
                     countdownProgress={countdownProgress}
@@ -52,23 +57,26 @@ const renderCountdown = (
         );
     }
     return null;
-};
+}
 
-const renderAction = (
-    action: UINoticeActionAttributes | undefined,
-    styles: ViewStyle,
-): React.ReactElement | null => {
+function NoticeAction({
+    action,
+    style,
+}: {
+    action: UINoticeActionAttributes | undefined;
+    style: ViewStyle;
+}): React.ReactElement | null {
     if (!action) {
         return null;
     }
     return (
-        <View style={styles}>
+        <View style={style}>
             <Action action={action} />
         </View>
     );
-};
+}
 
-export const Notice: React.FC<NoticeProps> = ({
+export function Notice({
     title,
     color,
     onPress,
@@ -78,7 +86,7 @@ export const Notice: React.FC<NoticeProps> = ({
     countdownValue,
     countdownProgress,
     hasCountdown,
-}: NoticeProps) => {
+}: NoticeProps) {
     const theme = useTheme();
     const styles = useStyles(color, theme);
     return (
@@ -92,7 +100,12 @@ export const Notice: React.FC<NoticeProps> = ({
                 >
                     <View style={StyleSheet.absoluteFill} />
                 </TouchableWithoutFeedback>
-                {renderCountdown(countdownValue, countdownProgress, styles.countdown, hasCountdown)}
+                <NoticeCountdown
+                    countdownValue={countdownValue}
+                    countdownProgress={countdownProgress}
+                    style={styles.countdown}
+                    hasCountdown={hasCountdown}
+                />
                 <View style={styles.labelContainer} pointerEvents="none">
                     <UILabel
                         testID="message_default"
@@ -102,11 +115,11 @@ export const Notice: React.FC<NoticeProps> = ({
                         {title}
                     </UILabel>
                 </View>
-                {renderAction(action, styles.action)}
+                <NoticeAction action={action} style={styles.action} />
             </View>
         </View>
     );
-};
+}
 
 const useStyles = makeStyles((color: UINoticeColor, theme: Theme) => ({
     underlay: {
