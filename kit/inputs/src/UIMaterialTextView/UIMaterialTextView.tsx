@@ -74,7 +74,7 @@ function useExtendedProps(
         mask,
     );
 
-    const clear = useClear(resetInputHeight, onChangeText);
+    const clear = useClear(resetInputHeight, onChangeText, ref);
 
     const processedChildren = useMaterialTextViewChildren(
         children,
