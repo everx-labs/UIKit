@@ -179,7 +179,7 @@ export const Inputs = () => {
                 </View>
             </ExampleSection>
             <ExampleSection title="UISeedPhraseTextView">
-                <View style={{ paddingVertical: 20, width: '50%' }}>
+                <View style={{ padding: 20, maxWidth: 400, alignSelf: 'stretch' }}>
                     <UISeedPhraseTextView
                         testID="uiSeedPhraseTextView_5_or_10"
                         words={mnemonicWords}
