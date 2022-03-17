@@ -79,9 +79,18 @@ export function useIntrinsicSizeScrollView() {
         };
     });
 
+    const parentHeightCalculationProcess = React.useRef<number>();
+
     const onContentSizeChange: ScrollViewProps['onContentSizeChange'] = React.useCallback(
         (_, height) => {
-            if (ready.value) {
+            /**
+             * In ideal situation we can rely only on ready.value
+             * but in real life there is a small time gap between
+             * when parentHeight is set and when we set ready.value to true.
+             * The managed scroll view can change it's content size
+             * that can fall in this small gap.
+             */
+            if (ready.value || restSpace.value !== 0) {
                 scrollViewContentHeight.value = height;
                 return;
             }
@@ -104,7 +113,15 @@ export function useIntrinsicSizeScrollView() {
              */
             (function checkParentHeight() {
                 if (parentHeight.value === 0) {
-                    requestAnimationFrame(checkParentHeight);
+                    /**
+                     * If somehow it happen that at this point there is already
+                     * a calculation in progress, just kill it, to use only fresh data
+                     */
+                    if (parentHeightCalculationProcess.current != null) {
+                        cancelAnimationFrame(parentHeightCalculationProcess.current);
+                    }
+                    parentHeightCalculationProcess.current =
+                        requestAnimationFrame(checkParentHeight);
                     return;
                 }
 

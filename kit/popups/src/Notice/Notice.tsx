@@ -8,7 +8,6 @@ import {
     ViewStyle,
 } from 'react-native';
 import type Animated from 'react-native-reanimated';
-import { UIBoxButtonVariant } from '@tonlabs/uikit.controls';
 import {
     TypographyVariants,
     UILabel,
@@ -19,7 +18,7 @@ import {
 } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIConstant } from '../constants';
-import { NoticeProps, UINoticeType, UINoticeColor, UINoticeActionAttributes } from './types';
+import { NoticeProps, UINoticeColor, UINoticeActionAttributes } from './types';
 import { Action } from './Action';
 import { CountdownCirlce } from './CountdownCircle';
 
@@ -28,82 +27,56 @@ const getBackgroundColor = (color: UINoticeColor, theme: Theme): ColorValue => {
         case UINoticeColor.Secondary:
             return theme[ColorVariants.BackgroundSecondary];
         case UINoticeColor.Negative:
-            return theme[ColorVariants.StaticBackgroundNegative];
-        case UINoticeColor.PrimaryInverted:
+            return theme[ColorVariants.BackgroundNegative];
+        case UINoticeColor.Primary:
         default:
-            return theme[ColorVariants.BackgroundPrimaryInverted];
+            return theme[ColorVariants.BackgroundBW];
     }
 };
 
-export const getTitleColorVariant = (color: UINoticeColor): ColorVariants => {
-    switch (color) {
-        case UINoticeColor.Secondary:
-        case UINoticeColor.Negative:
-            return ColorVariants.TextPrimary;
-        case UINoticeColor.PrimaryInverted:
-        default:
-            return ColorVariants.TextPrimaryInverted;
-    }
-};
-
-export const getActionVariant = (color: UINoticeColor): UIBoxButtonVariant => {
-    switch (color) {
-        case UINoticeColor.Negative:
-            return UIBoxButtonVariant.Negative;
-        case UINoticeColor.Secondary:
-        case UINoticeColor.PrimaryInverted:
-        default:
-            return UIBoxButtonVariant.Neutral;
-    }
-};
-
-const getBorderRadius = (type: UINoticeType): number => {
-    switch (type) {
-        case UINoticeType.BottomToast:
-        case UINoticeType.TopToast:
-        default:
-            return UILayoutConstant.alertBorderRadius;
-    }
-};
-
-const renderCountdown = (
-    countdownValue: Animated.SharedValue<number>,
-    countdownProgress: Animated.SharedValue<number>,
-    color: UINoticeColor,
-    styles: ViewStyle,
-    hasCountdown: boolean | undefined,
-): React.ReactElement | null => {
+function NoticeCountdown({
+    countdownValue,
+    countdownProgress,
+    style,
+    hasCountdown,
+}: {
+    countdownValue: Animated.SharedValue<number>;
+    countdownProgress: Animated.SharedValue<number>;
+    style: ViewStyle;
+    hasCountdown: boolean | undefined;
+}): React.ReactElement | null {
     if (hasCountdown) {
         return (
-            <View style={styles}>
+            <View style={style}>
                 <CountdownCirlce
                     countdownValue={countdownValue}
                     countdownProgress={countdownProgress}
-                    color={getTitleColorVariant(color)}
+                    color={ColorVariants.TextPrimary}
                 />
             </View>
         );
     }
     return null;
-};
+}
 
-const renderAction = (
-    action: UINoticeActionAttributes | undefined,
-    color: UINoticeColor,
-    styles: ViewStyle,
-): React.ReactElement | null => {
+function NoticeAction({
+    action,
+    style,
+}: {
+    action: UINoticeActionAttributes | undefined;
+    style: ViewStyle;
+}): React.ReactElement | null {
     if (!action) {
         return null;
     }
     return (
-        <View style={styles}>
-            <Action action={action} variant={getActionVariant(color)} />
+        <View style={style}>
+            <Action action={action} />
         </View>
     );
-};
+}
 
-export const Notice: React.FC<NoticeProps> = ({
-    type,
+export function Notice({
     title,
     color,
     onPress,
@@ -113,9 +86,9 @@ export const Notice: React.FC<NoticeProps> = ({
     countdownValue,
     countdownProgress,
     hasCountdown,
-}: NoticeProps) => {
+}: NoticeProps) {
     const theme = useTheme();
-    const styles = useStyles(color, type, theme);
+    const styles = useStyles(color, theme);
     return (
         <View style={styles.underlay}>
             <View style={styles.container}>
@@ -127,34 +100,33 @@ export const Notice: React.FC<NoticeProps> = ({
                 >
                     <View style={StyleSheet.absoluteFill} />
                 </TouchableWithoutFeedback>
-                {renderCountdown(
-                    countdownValue,
-                    countdownProgress,
-                    color,
-                    styles.countdown,
-                    hasCountdown,
-                )}
+                <NoticeCountdown
+                    countdownValue={countdownValue}
+                    countdownProgress={countdownProgress}
+                    style={styles.countdown}
+                    hasCountdown={hasCountdown}
+                />
                 <View style={styles.labelContainer} pointerEvents="none">
                     <UILabel
                         testID="message_default"
                         role={TypographyVariants.ParagraphNote}
-                        color={getTitleColorVariant(color)}
+                        color={ColorVariants.TextPrimary}
                     >
                         {title}
                     </UILabel>
                 </View>
-                {renderAction(action, color, styles.action)}
+                <NoticeAction action={action} style={styles.action} />
             </View>
         </View>
     );
-};
+}
 
-const useStyles = makeStyles((color: UINoticeColor, type: UINoticeType, theme: Theme) => ({
+const useStyles = makeStyles((color: UINoticeColor, theme: Theme) => ({
     underlay: {
         maxWidth: UIConstant.maxWidth,
         flex: 1,
         backgroundColor: 'white',
-        borderRadius: getBorderRadius(type),
+        borderRadius: UILayoutConstant.alertBorderRadius,
         overflow: 'hidden',
         ...Platform.select({
             web: {

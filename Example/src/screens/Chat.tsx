@@ -455,7 +455,7 @@ export function Chat() {
                 visible={isNoticeVisible}
                 title={uiLocalized.MessageCopiedToClipboard}
                 type={UIPopup.Notice.Type.BottomToast}
-                color={UIPopup.Notice.Color.PrimaryInverted}
+                color={UIPopup.Notice.Color.Primary}
                 onClose={hideNotice}
             />
         </>

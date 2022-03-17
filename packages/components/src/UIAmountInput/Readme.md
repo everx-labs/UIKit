@@ -12,7 +12,6 @@ class ExampleComponent extends ThemeSwitcher {
     renderContent() {
         return (
             <UIAmountInput
-                theme={this.getTheme()}
                 value={this.state.details}
                 placeholder="Amount"
                 comment="Some comment here"

@@ -4,7 +4,7 @@ import { TextInput, View } from 'react-native';
 import { useHover } from '@tonlabs/uikit.controls';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { makeStyles, useTheme, Theme, ColorVariants } from '@tonlabs/uikit.themes';
-import Animated, { Layout } from 'react-native-reanimated';
+import Animated /* , { Layout } */ from 'react-native-reanimated';
 import { UITextView, useFocused, useUITextViewValue } from '../UITextView';
 
 import { useMaterialTextViewChildren } from './useMaterialTextViewChildren';
@@ -30,19 +30,21 @@ export const UIMaterialTextViewSimple = React.forwardRef<
     } = useUITextViewValue(ref, false, props);
     useExtendedRef(passedRef, ref, props.multiline, onChangeTextProp);
     const { isFocused, onFocus, onBlur } = useFocused(props.onFocus, props.onBlur);
-    const { onContentSizeChange, onChange, numberOfLines, style, resetInputHeight } = useAutogrow(
+    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
+    const { onContentSizeChange, onChange, numberOfLines, resetInputHeight } = useAutogrow(
         ref,
         props.onContentSizeChange,
         props.onChange,
         props.multiline,
         props.numberOfLines,
         onHeightChange,
+        isHovered,
+        isFocused,
     );
     const clear = React.useCallback(() => {
         clearInput();
         resetInputHeight();
     }, [clearInput, resetInputHeight]);
-    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
     const processedChildren = useMaterialTextViewChildren(
         children,
         inputHasValue,
@@ -63,7 +65,7 @@ export const UIMaterialTextViewSimple = React.forwardRef<
                 onMouseLeave={onMouseLeave}
                 ref={borderViewRef}
             >
-                <Animated.View style={styles.input} layout={Layout}>
+                <Animated.View style={styles.input} /* layout={Layout} */>
                     <UITextViewAnimated
                         ref={ref}
                         {...rest}
@@ -77,8 +79,7 @@ export const UIMaterialTextViewSimple = React.forwardRef<
                         onContentSizeChange={onContentSizeChange}
                         onChange={onChange}
                         numberOfLines={numberOfLines}
-                        style={style}
-                        layout={Layout}
+                        // layout={Layout}
                         scrollEnabled={false}
                     />
                 </Animated.View>

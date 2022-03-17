@@ -214,7 +214,11 @@ function SheetContent({
                             ? { waitFor: scrollPanGestureHandlerRef }
                             : null)}
                     >
-                        <Animated.View onLayout={onSheetLayout} style={[style, cardSizeStyle]}>
+                        <Animated.View
+                            onLayout={onSheetLayout}
+                            style={[style, cardSizeStyle]}
+                            pointerEvents="box-none"
+                        >
                             <ScrollableContext.Provider value={scrollableContextValue}>
                                 <SheetReadyContext.Provider value={ready}>
                                     <SheetProgressContext.Provider value={positionProgress}>

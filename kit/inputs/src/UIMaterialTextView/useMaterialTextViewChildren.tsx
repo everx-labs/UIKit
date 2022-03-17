@@ -4,7 +4,7 @@ import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIImage, UIImageProps } from '@tonlabs/uikit.media';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import Animated /* , { FadeIn, FadeOut } */ from 'react-native-reanimated';
 import { useClearButton } from './useClearButton';
 
 const UIImageAnimated = Animated.createAnimatedComponent(UIImage);
@@ -22,8 +22,8 @@ export function UIMaterialTextViewIcon({
             <UIImageAnimated
                 {...rest}
                 style={[styles.iconSize, style]}
-                entering={FadeIn}
-                exiting={FadeOut}
+                // entering={FadeIn}
+                // exiting={FadeOut}
             />
         </TouchableOpacity>
     );
@@ -41,8 +41,8 @@ export function UIMaterialTextViewAction({
             <UILabelAnimated
                 role={UILabelRoles.Action}
                 color={UILabelColors.TextPrimary}
-                entering={FadeIn}
-                exiting={FadeOut}
+                // entering={FadeIn}
+                // exiting={FadeOut}
             >
                 {children}
             </UILabelAnimated>
@@ -55,8 +55,8 @@ export function UIMaterialTextViewText({ children }: { children: string }) {
         <UILabelAnimated
             role={UILabelRoles.ParagraphText}
             color={UILabelColors.TextTertiary}
-            entering={FadeIn}
-            exiting={FadeOut}
+            // entering={FadeIn}
+            // exiting={FadeOut}
         >
             {children}
         </UILabelAnimated>

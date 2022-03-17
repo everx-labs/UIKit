@@ -4,7 +4,7 @@ import { TextInput, View } from 'react-native';
 import { useHover } from '@tonlabs/uikit.controls';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { makeStyles, useTheme, Theme, ColorVariants } from '@tonlabs/uikit.themes';
-import Animated, { interpolate, useAnimatedStyle, Layout } from 'react-native-reanimated';
+import Animated, { interpolate, useAnimatedStyle /* , Layout */ } from 'react-native-reanimated';
 import { UITextView, useFocused, useUITextViewValue } from '../UITextView';
 
 import { useMaterialTextViewChildren } from './useMaterialTextViewChildren';
@@ -83,19 +83,21 @@ export const UIMaterialTextViewFloating = React.forwardRef<
         markDefaultPlacehoderAsVisible,
         isExpanded,
     } = useFloatingLabelAttribute(props.onFocus, props.onBlur, inputHasValue);
-    const { onContentSizeChange, onChange, numberOfLines, style, resetInputHeight } = useAutogrow(
+    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
+    const { onContentSizeChange, onChange, numberOfLines, resetInputHeight } = useAutogrow(
         ref,
         props.onContentSizeChange,
         props.onChange,
         props.multiline,
         props.numberOfLines,
         onHeightChange,
+        isHovered,
+        isFocused,
     );
     const clear = React.useCallback(() => {
         clearInput();
         resetInputHeight();
     }, [clearInput, resetInputHeight]);
-    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
     const processedChildren = useMaterialTextViewChildren(
         children,
         inputHasValue,
@@ -135,7 +137,7 @@ export const UIMaterialTextViewFloating = React.forwardRef<
                 onMouseLeave={onMouseLeave}
                 ref={borderViewRef}
             >
-                <Animated.View style={[styles.input, inputStyle]} layout={Layout}>
+                <Animated.View style={[styles.input, inputStyle]} /* layout={Layout} */>
                     <UITextViewAnimated
                         ref={ref}
                         {...rest}
@@ -149,8 +151,7 @@ export const UIMaterialTextViewFloating = React.forwardRef<
                         onContentSizeChange={onContentSizeChange}
                         onChange={onChange}
                         numberOfLines={numberOfLines}
-                        style={style}
-                        layout={Layout}
+                        // layout={Layout}
                         scrollEnabled={false}
                     />
                     <FloatingLabel expandingValue={expandingValue} isHovered={isHovered}>

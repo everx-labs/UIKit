@@ -461,8 +461,9 @@ const styles = StyleSheet.create({
         flex: 3,
     },
     inner: {
-        flex: 10,
+        flex: 12,
         alignItems: 'center',
+        minHeight: 'auto', // disallow to cut off the content!
     },
     bottomSpacer: {
         flex: 1,
