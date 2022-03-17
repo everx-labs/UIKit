@@ -141,7 +141,7 @@ export const UIAddressTextView = React.forwardRef<UIMaterialTextViewRef, UIAddre
                     ref={ref}
                     {...rest}
                     autoCapitalize="none"
-                    autoCompleteType="off"
+                    autoComplete="off"
                     autoCorrect={false}
                     multiline
                     onBlur={onBlur}

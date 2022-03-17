@@ -85,7 +85,7 @@ export function KeyboardScreen() {
                 >
                     <TextInput
                         ref={inputRef}
-                        autoCompleteType="off"
+                        autoComplete="off"
                         autoCorrect={false}
                         nativeID="test-input-for-keyboard"
                         style={{ flex: 1, backgroundColor: 'red' }}
