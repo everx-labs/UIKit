@@ -1,7 +1,5 @@
 import { Platform } from 'react-native';
 
-import UIColor from '../UIColor';
-
 const UI_ANIMATION_SCALE_IN_FACTOR = 0.95;
 const UI_ANIMATION_DURATION = 250;
 const UI_ANIMATION_SMALL_DURATION = 100;
@@ -141,53 +139,6 @@ const FULL_SCREEN_DIALOG_HEIGHT = 600;
 const UI_ALERT_WIDTH = 272;
 
 const UI_HIT_SLOP_NAVIGATION = { top: 10, left: 20, bottom: 10, right: 20 };
-
-const UI_COMMON_SHADOW =
-    Platform.OS === 'android'
-        ? {
-              elevation: 1,
-          }
-        : {
-              shadowColor: UIColor.overlayWithAlpha(0.04),
-              shadowOpacity: 1,
-              shadowRadius: 8,
-              shadowOffset: {
-                  width: 0,
-                  height: 4,
-              },
-          };
-
-const UI_SHADOW_40 =
-    Platform.OS === 'android'
-        ? {
-              elevation: 1,
-          }
-        : {
-              shadowColor: UIColor.dark(),
-              shadowOpacity: 0.12,
-              shadowRadius: 20,
-              shadowOffset: {
-                  width: 0,
-                  height: 12,
-              },
-          };
-
-const UI_CARD_SHADOW =
-    Platform.OS === 'android'
-        ? {
-              elevation: 8,
-          }
-        : {
-              shadowColor: '#000000',
-              shadowOpacity: 0.2,
-              shadowRadius: 20,
-              shadowOffset: {
-                  width: 0,
-                  height: 4,
-              },
-          };
-
-const UI_CARD_SHADOW_WIDTH = 40;
 
 const MAX_FILE_SIZE = 10000000;
 
@@ -587,23 +538,6 @@ export default class UIConstant {
     // Symbols
     static separatorSymbol() {
         return UI_SEPARATOR_SYMBOL;
-    }
-
-    // Shadows
-    static commonShadow() {
-        return UI_COMMON_SHADOW;
-    }
-
-    static shadow40() {
-        return UI_SHADOW_40;
-    }
-
-    static cardShadow() {
-        return UI_CARD_SHADOW;
-    }
-
-    static cardShadowWidth() {
-        return UI_CARD_SHADOW_WIDTH;
     }
 
     // Components size

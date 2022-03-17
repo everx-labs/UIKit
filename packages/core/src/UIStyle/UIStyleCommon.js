@@ -1,62 +1,12 @@
 // @flow
 import { StyleSheet } from 'react-native';
-import UIColor from '../UIColor';
 import UIConstant from '../UIConstant';
 import { containerStyles } from './UIStyleContainer';
 import { flexStyles } from './UIStyleFlex';
 
 export const commonStyles = {
-    commonShadow: {
-        ...UIConstant.commonShadow(),
-    },
-    shadow40: {
-        ...UIConstant.shadow40(),
-    },
-    cardShadow: {
-        ...UIConstant.cardShadow(),
-    },
-
-    backgroundPrimaryColor: {
-        backgroundColor: UIColor.backgroundPrimary(),
-    },
-    backgroundLightColor: {
-        backgroundColor: UIColor.whiteLight(),
-    },
-    backgroundTransparent: {
-        backgroundColor: 'transparent',
-    },
-
-    noOpacity: {
-        opacity: 0,
-    },
-    opacity30: {
-        opacity: 0.3,
-    },
     opacity70: {
         opacity: 0.7,
-    },
-    fullOpacity: {
-        opacity: 1,
-    },
-    displayNone: {
-        display: 'none',
-    },
-
-    overflowHidden: {
-        overflow: 'hidden',
-    },
-    overflowVisible: {
-        overflow: 'visible',
-    },
-    flexWrap: {
-        flexWrap: 'wrap',
-    },
-
-    dismissStripe: {
-        height: 4,
-        width: 40,
-        backgroundColor: UIColor.light(),
-        borderRadius: 2,
     },
 
     icon: {
@@ -66,14 +16,6 @@ export const commonStyles = {
 
     positionAbsolute: {
         position: 'absolute',
-    },
-
-    profilePhoto: {
-        backgroundColor: UIColor.backgroundSecondary(),
-        width: UIConstant.profilePhotoSize(),
-        height: UIConstant.profilePhotoSize(),
-        borderRadius: UIConstant.profilePhotoSize() / 2.0,
-        overflow: 'hidden',
     },
 
     ...containerStyles,
@@ -164,137 +106,86 @@ export default class UIStyleCommon {
     }
 
     // Containers
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static absoluteFillContainer() {
         return styles.absoluteFillContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static fullWidthPaddingContainer() {
         return styles.fullWidthPaddingContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static fullWidthPaddingCenterContainer() {
         return styles.fullWidthPaddingCenterContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static pageContainer() {
         return styles.pageContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static pageNormalContainer() {
         return styles.pageNormalContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static pageSlimContainer() {
         return styles.pageSlimContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static bottomScreenContainer() {
         return styles.bottomScreenContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static bottomOffsetScreenContainer() {
         return styles.bottomOffsetScreenContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static leftScreenContainer() {
         return styles.leftScreenContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static rightScreenContainer() {
         return styles.rightScreenContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static centerContainer() {
         return styles.centerContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static centerLeftContainer() {
         return styles.centerLeftContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static centerRightContainer() {
         return styles.centerRightContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static rowSpaceContainer() {
         return styles.rowSpaceContainer;
     }
 
-    // deprecated, use UIStyle.Container
+    // deprecated, use UIStyle.container
     static rowCenterSpaceContainer() {
         return styles.rowCenterSpaceContainer;
-    }
-
-    // actual
-    // shadow
-    static commonShadow() {
-        return styles.commonShadow;
-    }
-
-    static shadow40() {
-        return styles.shadow40;
-    }
-
-    static cardShadow() {
-        return styles.cardShadow;
-    }
-
-    // colors
-    static backgroundPrimaryColor() {
-        return styles.backgroundPrimaryColor;
-    }
-
-    static backgroundLightColor() {
-        return styles.backgroundLightColor;
-    }
-
-    static backgroundTransparent() {
-        return styles.backgroundTransparent;
-    }
-
-    static noOpacity() {
-        return styles.noOpacity;
-    }
-
-    static opacity30() {
-        return styles.opacity30;
     }
 
     static opacity70() {
         return styles.opacity70;
     }
 
-    static fullOpacity() {
-        return styles.fullOpacity;
-    }
-
     // other
-    static overflowHidden() {
-        return styles.overflowHidden;
-    }
-
-    static overflowVisible() {
-        return styles.overflowVisible;
-    }
-
-    static flexWrap() {
-        return styles.flexWrap;
-    }
-
     static positionAbsolute() {
         return styles.positionAbsolute;
     }
@@ -307,20 +198,8 @@ export default class UIStyleCommon {
         return styles.absoluteFillWidthContainer;
     }
 
-    static displayNone() {
-        return styles.displayNone;
-    }
-
     // custom
     static icon() {
         return styles.icon;
-    }
-
-    static dismissStripe() {
-        return styles.dismissStripe;
-    }
-
-    static profilePhoto() {
-        return styles.profilePhoto;
     }
 }
