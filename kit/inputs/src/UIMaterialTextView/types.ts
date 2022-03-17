@@ -1,4 +1,10 @@
-import type { View, TextInput } from 'react-native';
+import type {
+    View,
+    TextInput,
+    NativeSyntheticEvent,
+    TextInputContentSizeChangeEventData,
+    TextInputChangeEventData,
+} from 'react-native';
 import type { UITextViewProps } from '../UITextView';
 import type { OnHeightChange } from '../useAutogrowTextView';
 
@@ -16,4 +22,13 @@ export type UIMaterialTextViewProps = UITextViewProps & {
 
 export type UIMaterialTextViewRef = TextInput & {
     changeText: (text: string, callOnChangeProp?: boolean) => void;
+};
+
+export type AutogrowAttributes = {
+    onContentSizeChange:
+        | ((e: NativeSyntheticEvent<TextInputContentSizeChangeEventData>) => void)
+        | undefined;
+    onChange: ((event: NativeSyntheticEvent<TextInputChangeEventData>) => void) | undefined;
+    resetInputHeight: () => void;
+    numberOfLines: number | undefined;
 };
