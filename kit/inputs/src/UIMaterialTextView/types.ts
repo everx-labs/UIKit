@@ -1,8 +1,13 @@
 import type React from 'react';
-import type { View, TextInput } from 'react-native';
+import type {
+    View,
+    TextInput,
+    NativeSyntheticEvent,
+    TextInputContentSizeChangeEventData,
+    TextInputChangeEventData,
+} from 'react-native';
 import type { UIImageProps } from '@tonlabs/uikit.media';
 import type { UITextViewProps } from '../UITextView';
-import type { OnHeightChange } from '../useAutogrowTextView';
 
 export type UIMaterialTextViewMask = 'Amount';
 
@@ -52,7 +57,7 @@ export type UIMaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
     /**
      * A callback that is called when the input height changes
      */
-    onHeightChange?: OnHeightChange;
+    onHeightChange?: (height: number) => void;
     /**
      * Provides a input mask.
      * It must not be changed between renders.
@@ -66,7 +71,6 @@ export type UIMaterialTextViewLayoutProps = UIMaterialTextViewProps & {
     isHovered: boolean;
     isFocused: boolean;
     inputHasValue: boolean;
-    style?: UITextViewProps['style'];
 };
 
 export interface UIMaterialTextViewRef extends TextInput {
@@ -93,3 +97,12 @@ export type UIMaterialTextViewActionProps = {
 };
 
 export type UIMaterialTextViewTextProps = { children: string };
+
+export type AutogrowAttributes = {
+    onContentSizeChange:
+        | ((e: NativeSyntheticEvent<TextInputContentSizeChangeEventData>) => void)
+        | undefined;
+    onChange: ((event: NativeSyntheticEvent<TextInputChangeEventData>) => void) | undefined;
+    resetInputHeight: () => void;
+    numberOfLines: number | undefined;
+};

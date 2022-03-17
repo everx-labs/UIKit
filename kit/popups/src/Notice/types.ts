@@ -1,5 +1,4 @@
 import type React from 'react';
-import type { UIBoxButtonVariant } from '@tonlabs/uikit.controls';
 import type { ColorVariants } from '@tonlabs/uikit.themes';
 import type Animated from 'react-native-reanimated';
 
@@ -11,7 +10,7 @@ export enum UINoticeType {
 
 // eslint-disable-next-line no-shadow
 export enum UINoticeColor {
-    PrimaryInverted = 'PrimaryInverted',
+    Primary = 'Primary',
     Secondary = 'Secondary',
     Negative = 'Negative',
 }
@@ -28,7 +27,6 @@ export type UINoticeActionAttributes = {
 };
 
 export type NoticeProps = {
-    type: UINoticeType;
     color: UINoticeColor;
     title: string;
     onPress: () => void;
@@ -43,7 +41,6 @@ export type NoticeProps = {
 
 export type ActionProps = {
     action?: UINoticeActionAttributes;
-    variant?: UIBoxButtonVariant;
 };
 
 export type UINoticeProps = {
@@ -90,7 +87,7 @@ export type UINoticeProps = {
 };
 
 export type ToastNoticeProps = {
-    type: NoticeProps['type'];
+    type: UINoticeType;
     visible: UINoticeProps['visible'];
     onTap: UINoticeProps['onTap'];
     onCloseAnimationEnd: () => void;

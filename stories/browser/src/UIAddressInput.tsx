@@ -130,7 +130,7 @@ export function UIAddressInputInternal({
             return (
                 <UIPopup.Notice
                     type={UIPopup.Notice.Type.TopToast}
-                    color={UIPopup.Notice.Color.PrimaryInverted}
+                    color={UIPopup.Notice.Color.Primary}
                     visible={isNoticeVisible}
                     title={uiLocalized.formatString(
                         uiLocalized.Chats.Alerts.MessageTooLong,

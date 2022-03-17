@@ -44,6 +44,7 @@ export function UIMaterialTextViewComment(
                     role={TypographyVariants.ParagraphLabel}
                     color={commentColor}
                     style={styles.comment}
+                    numberOfLines={1}
                 >
                     {helperText}
                 </UILabel>

@@ -95,7 +95,7 @@ export function UIShareSheet({ message, subtitle, ...sheetProps }: UIShareSheetP
             </UIModalSheet>
             <UINotice
                 type={UINoticeType.BottomToast}
-                color={UINoticeColor.PrimaryInverted}
+                color={UINoticeColor.Primary}
                 title={uiLocalized.CopiedToClipboard}
                 visible={copiedVisible}
                 onClose={onCloseCopiedNotice}

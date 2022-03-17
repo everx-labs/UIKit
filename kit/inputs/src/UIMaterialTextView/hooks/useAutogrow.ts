@@ -1,88 +1,44 @@
 import * as React from 'react';
-import {
-    TextInput,
+import type {
     NativeSyntheticEvent,
-    TextInputChangeEventData,
-    StyleSheet,
-    Platform,
+    TextInput,
+    TextInputContentSizeChangeEventData,
 } from 'react-native';
-
-import { OnHeightChange, useAutogrowTextView } from '../../useAutogrowTextView';
-import type { UIMaterialTextViewProps } from '../types';
+import type { UIMaterialTextViewProps, AutogrowAttributes } from '../types';
 
 export function useAutogrow(
-    ref: React.Ref<TextInput>,
+    _ref: React.Ref<TextInput>,
     onContentSizeChangeProp: UIMaterialTextViewProps['onContentSizeChange'],
     onChangeProp: UIMaterialTextViewProps['onChange'],
-    multiline: UIMaterialTextViewProps['multiline'],
+    _multiline: UIMaterialTextViewProps['multiline'],
     numberOfLinesProp: UIMaterialTextViewProps['numberOfLines'],
-    onHeightChange?: OnHeightChange,
-) {
-    const {
-        onContentSizeChange: onAutogrowContentSizeChange,
-        onChange: onAutogrowChange,
-        inputHeight,
-        numberOfLines,
-        resetInputHeight,
-    } = useAutogrowTextView(ref, onHeightChange, multiline ? numberOfLinesProp : 1);
+    onHeightChange: UIMaterialTextViewProps['onHeightChange'],
+    _isHovered: boolean,
+    _isFocused: boolean,
+): AutogrowAttributes {
+    const inputHeight = React.useRef(0);
 
     const onContentSizeChange = React.useCallback(
-        (event: any) => {
-            if (onAutogrowContentSizeChange) {
-                onAutogrowContentSizeChange(event);
+        (event: NativeSyntheticEvent<TextInputContentSizeChangeEventData>) => {
+            if (onHeightChange) {
+                const { height } = event.nativeEvent.contentSize;
+                if (height !== inputHeight.current) {
+                    inputHeight.current = height;
+                    onHeightChange(height);
+                }
             }
 
             if (onContentSizeChangeProp) {
                 onContentSizeChangeProp(event);
             }
         },
-        [onAutogrowContentSizeChange, onContentSizeChangeProp],
+        [onHeightChange, onContentSizeChangeProp],
     );
-
-    const onChange = React.useCallback(
-        (event: NativeSyntheticEvent<TextInputChangeEventData>) => {
-            if (onAutogrowChange) {
-                onAutogrowChange(event);
-            }
-
-            if (onChangeProp) {
-                onChangeProp(event);
-            }
-        },
-        [onAutogrowChange, onChangeProp],
-    );
-
-    const style = React.useMemo(
-        () => [
-            styles.input,
-            Platform.select({
-                web: { height: inputHeight },
-            }),
-        ],
-        [inputHeight],
-    );
-
-    if (!multiline) {
-        return {
-            onContentSizeChange: onContentSizeChangeProp,
-            onChange: onChangeProp,
-            resetInputHeight,
-            numberOfLinesProp,
-            style: styles.input,
-        };
-    }
 
     return {
         onContentSizeChange,
-        onChange,
-        resetInputHeight,
-        numberOfLines,
-        style,
+        onChange: onChangeProp,
+        resetInputHeight: () => null,
+        numberOfLines: numberOfLinesProp,
     };
 }
-
-const styles = StyleSheet.create({
-    input: {
-        minHeight: 24, // At least size of right icons to not jump
-    },
-});

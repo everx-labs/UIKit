@@ -49,14 +49,17 @@ function useExtendedProps(
     );
 
     const { isFocused, onFocus, onBlur } = useFocused(onFocusProp, onBlurProp);
+    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
-    const { onContentSizeChange, onChange, numberOfLines, style, resetInputHeight } = useAutogrow(
+    const { onContentSizeChange, onChange, numberOfLines, resetInputHeight } = useAutogrow(
         ref,
         onContentSizeChangeProp,
         onChangeProp,
         multiline,
         numberOfLinesProp,
         onHeightChange,
+        isHovered,
+        isFocused,
     );
 
     const { imperativeChangeText, moveCarret } = useImperativeChange(
@@ -73,7 +76,6 @@ function useExtendedProps(
 
     const clear = useClear(resetInputHeight, onChangeText);
 
-    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
     const processedChildren = useMaterialTextViewChildren(
         children,
         inputHasValue,
@@ -91,7 +93,6 @@ function useExtendedProps(
         numberOfLines,
         onFocus,
         onBlur,
-        style,
         children: processedChildren,
         onMouseEnter,
         onMouseLeave,
