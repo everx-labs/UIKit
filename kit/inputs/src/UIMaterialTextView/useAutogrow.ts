@@ -1,5 +1,9 @@
 import * as React from 'react';
-import type { TextInput } from 'react-native';
+import type {
+    NativeSyntheticEvent,
+    TextInput,
+    TextInputContentSizeChangeEventData,
+} from 'react-native';
 import type { OnHeightChange } from '../useAutogrowTextView';
 import type { UIMaterialTextViewProps, AutogrowAttributes } from './types';
 
@@ -16,16 +20,12 @@ export function useAutogrow(
     const inputHeight = React.useRef(0);
 
     const onContentSizeChange = React.useCallback(
-        (event: any) => {
+        (event: NativeSyntheticEvent<TextInputContentSizeChangeEventData>) => {
             if (onHeightChange) {
-                const height = event?.nativeEvent?.contentSize?.height;
+                const { height } = event.nativeEvent.contentSize;
                 if (height !== inputHeight.current) {
                     inputHeight.current = height;
-                    if (typeof height === 'number') {
-                        onHeightChange(height);
-                    } else {
-                        onHeightChange(0);
-                    }
+                    onHeightChange(height);
                 }
             }
 
