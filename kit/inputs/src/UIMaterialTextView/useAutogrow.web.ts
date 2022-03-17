@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { Typography, TypographyVariants } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import type { UIMaterialTextViewProps } from './types';
+import type { UIMaterialTextViewProps, AutogrowAttributes } from './types';
 
 export type OnHeightChange = (height: number) => void;
 
@@ -20,11 +20,12 @@ export function calculateWebInputHeight(elem: HTMLTextAreaElement) {
     // (that is used under the hood of TextInput in rn-web)
     // eslint-disable-next-line no-param-reassign
     elem.style.height = `${0}px`;
+    // eslint-disable-next-line no-param-reassign
+    elem.style.flex = `none`;
 
     const height = elem.scrollHeight;
 
     // Remove it to apply again styles we pass in props
-    // @ts-ignore
     // eslint-disable-next-line no-param-reassign
     elem.style.height = `${height}px`;
 
@@ -43,8 +44,10 @@ const measureInputHeight = (ref: React.Ref<TextInput> | null) => {
 export function useAutogrowTextView(
     ref: React.Ref<TextInput> | null,
     onHeightChange: OnHeightChange | undefined,
+    multiline: boolean | undefined,
     constrainedNumberOfLines: number | undefined,
     isHovered: boolean,
+    isFocused: boolean,
 ) {
     const [inputHeight, setInputHeight] = React.useState<number>(0);
 
@@ -77,10 +80,12 @@ export function useAutogrowTextView(
 
     const onChange = React.useCallback(
         (_event: any) => {
-            const height = measureInputHeight(ref);
-            onContentSizeChange(height);
+            if (multiline) {
+                const height = measureInputHeight(ref);
+                onContentSizeChange(height);
+            }
         },
-        [ref, onContentSizeChange],
+        [ref, onContentSizeChange, multiline],
     );
 
     React.useLayoutEffect(() => {
@@ -88,12 +93,16 @@ export function useAutogrowTextView(
          * We have to force a height measurement to draw it correctly
          * at the first render and after the `Hover` state has changed
          */
-        requestAnimationFrame(() => onChange(null));
-    }, [onChange, isHovered]);
+        if (multiline) {
+            requestAnimationFrame(() => onChange(null));
+        }
+    }, [onChange, isHovered, multiline, isFocused]);
 
     const resetInputHeight = React.useCallback(() => {
-        onChange(null);
-    }, [onChange]);
+        if (multiline) {
+            onChange(null);
+        }
+    }, [onChange, multiline]);
 
     const numberOfLines = Math.round(inputHeight / textViewHeight);
 
@@ -112,16 +121,24 @@ export function useAutogrow(
     numberOfLinesProp: UIMaterialTextViewProps['numberOfLines'],
     onHeightChange: OnHeightChange | undefined,
     isHovered: boolean,
-) {
+    isFocused: boolean,
+): AutogrowAttributes {
     const {
         onChange: onAutogrowChange,
         numberOfLines,
         resetInputHeight,
-    } = useAutogrowTextView(ref, onHeightChange, multiline ? numberOfLinesProp : 1, isHovered);
+    } = useAutogrowTextView(
+        ref,
+        onHeightChange,
+        multiline,
+        numberOfLinesProp,
+        isHovered,
+        isFocused,
+    );
 
     const onChange = React.useCallback(
         (event: NativeSyntheticEvent<TextInputChangeEventData>) => {
-            if (onAutogrowChange) {
+            if (multiline) {
                 onAutogrowChange(event);
             }
 
@@ -129,7 +146,7 @@ export function useAutogrow(
                 onChangeProp(event);
             }
         },
-        [onAutogrowChange, onChangeProp],
+        [onAutogrowChange, onChangeProp, multiline],
     );
 
     if (!multiline) {
@@ -137,29 +154,14 @@ export function useAutogrow(
             onContentSizeChange: onContentSizeChangeProp,
             onChange: onChangeProp,
             resetInputHeight,
-            numberOfLinesProp,
-            style: undefined,
+            numberOfLines: numberOfLinesProp,
         };
     }
-
-    console.log({ numberOfLines });
 
     return {
         onContentSizeChange: onContentSizeChangeProp,
         onChange,
         resetInputHeight,
         numberOfLines,
-        style: {
-            borderWidth: 1,
-            flex: undefined,
-            flexShrink: 1,
-            outlineStyle: 'none',
-        },
     };
 }
-
-// const styles = StyleSheet.create({
-//     input: {
-//         minHeight: 24, // At least size of right icons to not jump
-//     },
-// });

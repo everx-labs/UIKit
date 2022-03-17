@@ -31,7 +31,7 @@ export const UIMaterialTextViewSimple = React.forwardRef<
     useExtendedRef(passedRef, ref, props.multiline, onChangeTextProp);
     const { isFocused, onFocus, onBlur } = useFocused(props.onFocus, props.onBlur);
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
-    const { onContentSizeChange, onChange, numberOfLines, style, resetInputHeight } = useAutogrow(
+    const { onContentSizeChange, onChange, numberOfLines, resetInputHeight } = useAutogrow(
         ref,
         props.onContentSizeChange,
         props.onChange,
@@ -39,6 +39,7 @@ export const UIMaterialTextViewSimple = React.forwardRef<
         props.numberOfLines,
         onHeightChange,
         isHovered,
+        isFocused,
     );
     const clear = React.useCallback(() => {
         clearInput();
@@ -78,7 +79,6 @@ export const UIMaterialTextViewSimple = React.forwardRef<
                         onContentSizeChange={onContentSizeChange}
                         onChange={onChange}
                         numberOfLines={numberOfLines}
-                        style={style}
                         // layout={Layout}
                         scrollEnabled={false}
                     />
