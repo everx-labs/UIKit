@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Animated, ColorValue, Platform, StyleSheet, View, LayoutChangeEvent } from 'react-native';
+import { Animated, Platform, StyleSheet, View, LayoutChangeEvent } from 'react-native';
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
-import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import { ColorVariants, useTheme, UIBackgroundView } from '@tonlabs/uikit.themes';
 
 import { Shortcuts } from './Shortcuts';
 import type { Shortcut } from './types';
@@ -55,15 +55,6 @@ export function ChatInputContainer({
     const theme = useTheme();
     const borderOpacity = useAnimatedBorder(numberOfLines);
 
-    const containerStyle: {
-        backgroundColor: ColorValue;
-    } = React.useMemo(
-        () => ({
-            backgroundColor: theme[ColorVariants.BackgroundPrimary],
-        }),
-        [theme],
-    );
-
     const onLayoutIfNecessary = React.useCallback(
         ({
             nativeEvent: {
@@ -90,7 +81,7 @@ export function ChatInputContainer({
     );
 
     return (
-        <View style={containerStyle} onLayout={onLayout}>
+        <UIBackgroundView onLayout={onLayout}>
             <Shortcuts shortcuts={shortcuts} />
             <Animated.View
                 style={[
@@ -106,7 +97,7 @@ export function ChatInputContainer({
                 <View style={styles.inputMsg}>{children}</View>
                 {right}
             </View>
-        </View>
+        </UIBackgroundView>
     );
 }
 
