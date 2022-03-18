@@ -40,7 +40,6 @@ import { UIModalPortalManager } from '@tonlabs/uikit.popups';
 import { ButtonsScreen } from './screens/Buttons';
 import { Checkbox } from './screens/Checkbox';
 import { Inputs } from './screens/Inputs';
-import { Design } from './screens/Design';
 import { ListsScreen } from './screens/Lists';
 import { Chart } from './screens/Chart';
 import { CardsScreen } from './screens/Cards';
@@ -184,12 +183,6 @@ const Main = ({ navigation }: { navigation: any }) => {
                         title="Checkbox"
                         type={UILinkButtonType.Menu}
                         onPress={() => navigation.navigate('checkbox')}
-                        layout={styles.button}
-                    />
-                    <UILinkButton
-                        title="Design"
-                        type={UILinkButtonType.Menu}
-                        onPress={() => navigation.navigate('design')}
                         layout={styles.button}
                     />
                     <UILinkButton
@@ -404,13 +397,6 @@ const App = () => {
                             component={Checkbox}
                             options={{
                                 title: 'Checkbox',
-                            }}
-                        />
-                        <Split.Screen
-                            name="design"
-                            component={Design}
-                            options={{
-                                title: 'Design',
                             }}
                         />
                         <Split.Screen

@@ -268,7 +268,19 @@ export function usePosition(
     }>({
         onScroll: (event, ctx) => {
             const y = event.contentOffset.y - ctx.translationY;
-            ctx.translationY = event.contentOffset.y;
+
+            /**
+             * Sometimes `onScroll` can be called with unitialized `ctx`.
+             * To prevent invalid value to be set on `normalizedPosition` use a guard.
+             * (NaN that will be passed through to styles can lead to a view disappearance).
+             *
+             * For example on iOS it happened after
+             * native stack animation ends or just on a view mount.
+             * Also sometimes `event.contentOffset.y` can be `NaN` on Android.
+             */
+            if (isNaN(y)) {
+                return;
+            }
 
             normalizedPosition.value -= y;
 
@@ -280,6 +292,8 @@ export function usePosition(
                  * that's why context reset is set BEFORE call
                  */
                 scrollTo(scrollRef, 0, 0, false);
+            } else {
+                ctx.translationY = event.contentOffset.y;
             }
         },
         onBeginDrag: (_event, ctx) => {

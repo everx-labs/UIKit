@@ -6,10 +6,6 @@ sed -i '' -e '195s/.*/      } else if (typeof strings[key] !== "string" \&\& typ
 # Patch Android
 ## Remove `jcenter` in favour of `google` or `mavenCentral`
 
-### Patch `react-native-animateable-text`
-sed -i '' -e '7s/.*/    mavenCentral()/' ./node_modules/react-native-animateable-text/android/build.gradle
-sed -i '' -e '51s/.*//' ./node_modules/react-native-animateable-text/android/build.gradle
-
 ### Patch `react-native-camera`
 sed -i '' -e '13s/.*//' ./node_modules/react-native-camera/android/build.gradle
 sed -i '' -e '59s/.*//' ./node_modules/react-native-camera/android/build.gradle

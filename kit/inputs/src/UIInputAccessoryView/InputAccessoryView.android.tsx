@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { requireNativeComponent, StyleSheet } from 'react-native';
+import { requireNativeComponent, StatusBar, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
@@ -28,7 +28,8 @@ function InputAccessoryViewLike({ children }: { children: React.ReactNode }) {
                             ? -1 *
                               (keyboardHeight.value +
                                   androidNavigationBarHeight.value -
-                                  bottomInset)
+                                  bottomInset -
+                                  (StatusBar.currentHeight ?? 0))
                             : 0,
                 },
             ],

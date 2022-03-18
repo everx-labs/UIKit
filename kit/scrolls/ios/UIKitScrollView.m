@@ -38,6 +38,10 @@
 - (void)didMoveToWindow {
     [super didMoveToWindow];
     
+    if (self.window == nil) {
+        return;
+    }
+    
     [_insets setContentInset:_contentInsetInternal];
     [_insets setKeyboardInsetAdjustmentBehavior:self.keyboardInsetAdjustmentBehavior];
     [_insets setAutomaticallyAdjustContentInsets:_automaticallyAdjustContentInsetsInternal];

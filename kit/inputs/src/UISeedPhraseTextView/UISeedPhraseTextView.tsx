@@ -538,7 +538,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 borderViewRef={textInputBorderViewRef}
                 testID={testID}
                 autoCapitalize="none"
-                autoCompleteType="off"
+                autoComplete="off"
                 autoCorrect={false}
                 multiline
                 contextMenuHidden
