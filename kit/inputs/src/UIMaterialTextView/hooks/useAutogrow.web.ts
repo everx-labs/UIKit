@@ -18,8 +18,6 @@ export function calculateWebInputHeight(elem: HTMLTextAreaElement) {
     // (that is used under the hood of TextInput in rn-web)
     // eslint-disable-next-line no-param-reassign
     elem.style.height = `${0}px`;
-    // eslint-disable-next-line no-param-reassign
-    elem.style.flex = `none`;
 
     const height = elem.scrollHeight;
 
