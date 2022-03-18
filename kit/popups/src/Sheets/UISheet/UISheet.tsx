@@ -38,9 +38,13 @@ export type UISheetProps = {
      */
     children: React.ReactNode;
     /**
-     * Styles for container
+     * Styles for sheet
      */
     style?: StyleProp<ViewStyle>;
+    /**
+     * Styles for container around sheet
+     */
+    containerStyle?: StyleProp<ViewStyle>;
     /**
      * Whether UISheet has open animation or not
      */
@@ -84,6 +88,7 @@ function SheetContent({
     onOpenEnd,
     onCloseEnd,
     children,
+    containerStyle,
     style,
     hasOpenAnimation,
     hasCloseAnimation,
@@ -205,7 +210,10 @@ function SheetContent({
                         </PanGestureHandler>
                     </Animated.View>
                 </TapGestureHandler>
-                <Animated.View style={[styles.sheet, cardStyle]} pointerEvents="box-none">
+                <Animated.View
+                    style={[styles.sheet, cardStyle, containerStyle]}
+                    pointerEvents="box-none"
+                >
                     <PanGestureHandler
                         maxPointers={1}
                         enabled={onClose != null}
@@ -214,11 +222,7 @@ function SheetContent({
                             ? { waitFor: scrollPanGestureHandlerRef }
                             : null)}
                     >
-                        <Animated.View
-                            onLayout={onSheetLayout}
-                            style={[style, cardSizeStyle]}
-                            pointerEvents="box-none"
-                        >
+                        <Animated.View onLayout={onSheetLayout} style={[style, cardSizeStyle]}>
                             <ScrollableContext.Provider value={scrollableContextValue}>
                                 <SheetReadyContext.Provider value={ready}>
                                     <SheetProgressContext.Provider value={positionProgress}>

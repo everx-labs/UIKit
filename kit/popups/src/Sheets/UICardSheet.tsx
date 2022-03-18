@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { View } from 'react-native';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { useTheme, Theme, makeStyles, ColorVariants } from '@tonlabs/uikit.themes';
 import { UIDialogBar, UIDialogBarProps } from '@tonlabs/uicast.bars';
@@ -44,11 +43,9 @@ export function UICardSheet({
         <UISheet.Container visible={visible} forId={forId}>
             <UISheet.KeyboardAware getBottomInset={getCardSheetBottomInset}>
                 <UISheet.IntrinsicSize>
-                    <UISheet.Content {...rest} style={styles.sheet}>
-                        <View style={styles.card}>
-                            {hasHeader ? <UIDialogBar hasPuller {...headerOptions} /> : null}
-                            {children}
-                        </View>
+                    <UISheet.Content {...rest} containerStyle={styles.sheet} style={styles.card}>
+                        {hasHeader ? <UIDialogBar hasPuller {...headerOptions} /> : null}
+                        {children}
                     </UISheet.Content>
                 </UISheet.IntrinsicSize>
             </UISheet.KeyboardAware>
