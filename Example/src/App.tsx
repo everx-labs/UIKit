@@ -30,6 +30,7 @@ import {
     ThemeContext,
     useTheme,
     UIStatusBarManager,
+    UIAndroidNavigationBar,
 } from '@tonlabs/uikit.themes';
 import { UISearchBarButton } from '@tonlabs/uicast.bars';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
@@ -599,6 +600,7 @@ const AppWrapper = () => {
                             <App />
                         </SafeAreaProvider>
                     </UIStatusBarManager>
+                    <UIAndroidNavigationBar />
                 </ThemeSwitcher.Provider>
             </ThemeContext.Provider>
         </GestureHandlerRootView>
