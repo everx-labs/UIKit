@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { StatusBar, StatusBarStyle } from 'react-native';
 
-import { ColorVariants, useTheme } from './Colors';
+import { ColorVariants } from './Colors';
 import { useIsDarkColor } from './useIsDarkColor';
 
 const StatusBarContext = React.createContext<{
-    addBar: (id: number, barStyle: StatusBarStyle, backgroundColor: ColorVariants) => void;
+    addBar: (id: number, barStyle: StatusBarStyle) => void;
     removeBar: (id: number) => void;
 } | null>(null);
 
@@ -25,7 +25,6 @@ type State = {
     styles: {
         [key: number]: {
             barStyle: StatusBarStyle;
-            backgroundColor: ColorVariants;
         };
     };
     stack: number[];
@@ -36,7 +35,6 @@ type AddBarAction = {
     payload: {
         id: number;
         barStyle: StatusBarStyle;
-        backgroundColor: ColorVariants;
     };
 };
 
@@ -53,7 +51,6 @@ function reducer(state: State, action: AddBarAction | RemoveBarAction) {
             ...state.styles,
             [action.payload.id]: {
                 barStyle: action.payload.barStyle,
-                backgroundColor: action.payload.backgroundColor,
             },
         };
         const stack = state.stack.slice();
@@ -87,7 +84,6 @@ function useStatusBarStyle(color: ColorVariants): StatusBarStyle {
 }
 
 export function UIStatusBarManager({ children }: { children: React.ReactNode }) {
-    const theme = useTheme();
     const localID = useLocalID();
 
     const defaultBarStyle = useStatusBarStyle(ColorVariants.BackgroundPrimary);
@@ -96,20 +92,18 @@ export function UIStatusBarManager({ children }: { children: React.ReactNode }) 
         styles: {
             [localID]: {
                 barStyle: defaultBarStyle,
-                backgroundColor: ColorVariants.BackgroundPrimary,
             },
         },
         stack: [localID],
     });
 
     const manager = React.useRef({
-        addBar(id: number, barStyle: StatusBarStyle, backgroundColor: ColorVariants) {
+        addBar(id: number, barStyle: StatusBarStyle) {
             dispatch({
                 type: 'ADD_BAR',
                 payload: {
                     id,
                     barStyle,
-                    backgroundColor,
                 },
             });
         },
@@ -123,7 +117,7 @@ export function UIStatusBarManager({ children }: { children: React.ReactNode }) 
         },
     }).current;
 
-    const { barStyle, backgroundColor } = React.useMemo(() => {
+    const { barStyle } = React.useMemo(() => {
         const lastStyleId = state.stack[state.stack.length - 1];
 
         return state.styles[lastStyleId];
@@ -132,7 +126,7 @@ export function UIStatusBarManager({ children }: { children: React.ReactNode }) 
     return (
         <StatusBarContext.Provider value={manager}>
             {children}
-            <StatusBar barStyle={barStyle} backgroundColor={theme[backgroundColor]} />
+            <StatusBar barStyle={barStyle} backgroundColor="transparent" />
         </StatusBarContext.Provider>
     );
 }
@@ -148,7 +142,7 @@ export function useStatusBar({ backgroundColor }: { backgroundColor: ColorVarian
             return undefined;
         }
 
-        parentManager.addBar(localID, barStyle, backgroundColor);
+        parentManager.addBar(localID, barStyle);
 
         return () => {
             parentManager.removeBar(localID);

@@ -10,11 +10,6 @@ sed -i '' -e '195s/.*/      } else if (typeof strings[key] !== "string" \&\& typ
 sed -i '' -e '13s/.*//' ./node_modules/react-native-camera/android/build.gradle
 sed -i '' -e '59s/.*//' ./node_modules/react-native-camera/android/build.gradle
 
-### Patch `react-native-navigation-bar-color`
-sed -i '' -e '3s/.*/    google()/' ./node_modules/react-native-navigation-bar-color/android/build.gradle
-sed -i '' -e '4s/.*/    mavenCentral() }/' ./node_modules/react-native-navigation-bar-color/android/build.gradle
-sed -i '' -e '7s/.*/    classpath("com.android.tools.build:gradle:4.2.2")/' ./node_modules/react-native-navigation-bar-color/android/build.gradle
-
 ### Patch `react-native-pager-view`
 sed -i '' -e '7s/.*/    mavenCentral()/' ./node_modules/react-native-pager-view/android/build.gradle
 sed -i '' -e '54s/.*//' ./node_modules/react-native-pager-view/android/build.gradle
