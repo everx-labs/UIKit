@@ -44,11 +44,12 @@ export function UIMaterialTextViewComment(
                     role={TypographyVariants.ParagraphLabel}
                     color={commentColor}
                     style={styles.comment}
-                    numberOfLines={1}
                 >
                     {helperText}
                 </UILabel>
-            ) : null}
+            ) : (
+                <View style={styles.bottomDefaultOffset} />
+            )}
         </View>
     );
 }
@@ -56,11 +57,12 @@ export function UIMaterialTextViewComment(
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
-        paddingBottom: 20,
     },
     comment: {
-        position: 'absolute',
-        bottom: 0,
-        left: UILayoutConstant.contentOffset,
+        paddingTop: UILayoutConstant.contentInsetVerticalX1,
+        paddingHorizontal: UILayoutConstant.contentOffset,
+    },
+    bottomDefaultOffset: {
+        height: UILayoutConstant.contentInsetVerticalX4,
     },
 });
