@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
@@ -47,11 +46,9 @@ export function UIBottomSheet({
         <UISheet.Container visible={visible} forId={forId}>
             <UISheet.KeyboardAware defaultShift={-UILayoutConstant.rubberBandEffectDistance}>
                 <UISheet.IntrinsicSize>
-                    <UISheet.Content {...rest} style={styles.sheet}>
-                        <View style={styles.card}>
-                            {hasHeader ? <UIDialogBar hasPuller {...headerOptions} /> : null}
-                            {children}
-                        </View>
+                    <UISheet.Content {...rest} containerStyle={styles.sheet} style={styles.card}>
+                        {hasHeader ? <UIDialogBar hasPuller {...headerOptions} /> : null}
+                        {children}
                     </UISheet.Content>
                 </UISheet.IntrinsicSize>
             </UISheet.KeyboardAware>
