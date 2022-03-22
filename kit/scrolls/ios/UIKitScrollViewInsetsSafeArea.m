@@ -74,11 +74,12 @@
     CGFloat screenHeight = [[UIScreen mainScreen] bounds].size.height;
     CGFloat absoluteSafeBottomY = screenHeight - safeAreaInsets.bottom;
     
-    CGPoint absoluteViewOrigin = [_rctScrollView convertPoint:_rctScrollView.bounds.origin toView:nil];
+    CGRect absoluteViewRect = [_rctScrollView.window convertRect:_rctScrollView.frame toView:_rctScrollView.superview];
+    CGPoint absoluteViewOrigin = absoluteViewRect.origin;
     CGFloat viewBottomY = absoluteViewOrigin.y + _rctScrollView.bounds.size.height;
 
     CGFloat topInset = MAX(safeAreaInsets.top - absoluteViewOrigin.y, 0);
-    CGFloat bottomInset = MIN(viewBottomY, screenHeight) - absoluteSafeBottomY;
+    CGFloat bottomInset = MAX(MIN(viewBottomY, screenHeight) - absoluteSafeBottomY, 0);
     
     return (UIEdgeInsets){topInset, safeAreaInsets.left, bottomInset, safeAreaInsets.right};
 }
