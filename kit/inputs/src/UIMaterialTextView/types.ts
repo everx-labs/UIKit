@@ -88,15 +88,31 @@ export type ImperativeChangeTextConfig = {
 export type ImperativeChangeText = (text: string, config?: ImperativeChangeTextConfig) => void;
 
 export type UIMaterialTextViewIconProps = UIImageProps & {
+    /**
+     * Callback called by clicking/tapping on the icon
+     */
     onPress?: () => void;
 };
 
-export type UIMaterialTextViewActionProps = {
-    children: string;
+export type UIMaterialTextViewActionProps = UIMaterialTextViewTextProps & {
+    /**
+     * Callback called by clicking/tapping on the action
+     */
     onPress?: () => void;
 };
 
-export type UIMaterialTextViewTextProps = { children: string };
+export type UIMaterialTextViewTextProps = {
+    /**
+     * You can pass a `string`, `UIImage`, or any other element as children.
+     *
+     * If it is a `string`, it will be placed in a `UILabel` with suitable styles.
+     *
+     * If it is the `UIImage`, a suitable `tintColor` prop will be passed to it.
+     *
+     * Any other element will be displayed unchanged.
+     */
+    children: React.ReactNode;
+};
 
 export type AutogrowAttributes = {
     onContentSizeChange:

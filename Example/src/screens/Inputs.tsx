@@ -8,6 +8,7 @@ import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAddressTextView } from '@tonlabs/uicast.address-text';
 import { UIAmountInput, UIDetailsInput, UITransferInput } from '@tonlabs/uikit.components';
 import { UIAssets } from '@tonlabs/uikit.assets';
+import { UIImage } from '@tonlabs/uikit.media';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -98,7 +99,25 @@ export const Inputs = () => {
                         label="Amount"
                         helperText="Caption"
                         mask="Amount"
-                    />
+                    >
+                        <UIMaterialTextView.Action>
+                            EVER
+                            <UIImage source={UIAssets.icons.ui.unfoldShow} />
+                        </UIMaterialTextView.Action>
+                    </UIMaterialTextView>
+                    <View style={{ height: 20 }} />
+                    <UIMaterialTextView
+                        testID="uiMaterialTextView_amount"
+                        placeholder="Amount"
+                        label="Amount"
+                        helperText="Caption"
+                        mask="Amount"
+                    >
+                        <UIMaterialTextView.Text>
+                            <UIImage source={UIAssets.icons.ui.warn} />
+                            WEVER
+                        </UIMaterialTextView.Text>
+                    </UIMaterialTextView>
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
                         testID="uiMaterialTextView_without_label"

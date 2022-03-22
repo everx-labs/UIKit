@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
+import { UILabel, UILabelRoles, ColorVariants } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIImage } from '@tonlabs/uikit.media';
 import Animated /* , { FadeIn, FadeOut } */ from 'react-native-reanimated';
@@ -17,7 +17,29 @@ import type {
 } from '../types';
 
 const UIImageAnimated = Animated.createAnimatedComponent(UIImage);
-const UILabelAnimated = Animated.createAnimatedComponent(UILabel);
+
+function processChildren(
+    children: React.ReactNode,
+    tintColor: ColorVariants | undefined,
+): React.ReactNode {
+    return React.Children.map(children, (child: React.ReactNode) => {
+        if (typeof child === 'string') {
+            return (
+                <UILabel role={UILabelRoles.Action} color={tintColor}>
+                    {child}
+                </UILabel>
+            );
+        }
+        if (React.isValidElement(child) && child.type === UIImage) {
+            console.dir(child);
+            return React.createElement(UIImage, {
+                ...child.props,
+                tintColor,
+            });
+        }
+        return child;
+    });
+}
 
 export function UIMaterialTextViewIcon({ onPress, style, ...rest }: UIMaterialTextViewIconProps) {
     return (
@@ -33,30 +55,32 @@ export function UIMaterialTextViewIcon({ onPress, style, ...rest }: UIMaterialTe
 }
 
 export function UIMaterialTextViewAction({ children, onPress }: UIMaterialTextViewActionProps) {
+    const processedChildren = processChildren(children, ColorVariants.TextPrimary);
+
     return (
         <TouchableOpacity onPress={onPress}>
-            <UILabelAnimated
-                role={UILabelRoles.Action}
-                color={UILabelColors.TextPrimary}
+            <Animated.View
+                style={styles.actionContainer}
                 // entering={FadeIn}
                 // exiting={FadeOut}
             >
-                {children}
-            </UILabelAnimated>
+                {processedChildren}
+            </Animated.View>
         </TouchableOpacity>
     );
 }
 
 export function UIMaterialTextViewText({ children }: UIMaterialTextViewTextProps) {
+    const processedChildren = processChildren(children, ColorVariants.TextTertiary);
+
     return (
-        <UILabelAnimated
-            role={UILabelRoles.ParagraphText}
-            color={UILabelColors.TextTertiary}
+        <Animated.View
+            style={styles.textContainer}
             // entering={FadeIn}
             // exiting={FadeOut}
         >
-            {children}
-        </UILabelAnimated>
+            {processedChildren}
+        </Animated.View>
     );
 }
 
@@ -190,5 +214,13 @@ const styles = StyleSheet.create({
     },
     clearButtonWrapper: {
         justifyContent: 'flex-end',
+    },
+    actionContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    textContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
 });
