@@ -3,20 +3,23 @@ import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import { UIImage, UIImageProps } from '@tonlabs/uikit.media';
+import { UIImage } from '@tonlabs/uikit.media';
 import Animated /* , { FadeIn, FadeOut } */ from 'react-native-reanimated';
 import { useClearButton } from './useClearButton';
+import type {
+    UIMaterialTextViewActionProps,
+    UIMaterialTextViewIconProps,
+    UIMaterialTextViewTextProps,
+    UIMaterialTextViewProps,
+    UIMaterialTextViewActionChild,
+    UIMaterialTextViewIconChild,
+    UIMaterialTextViewTextChild,
+} from '../types';
 
 const UIImageAnimated = Animated.createAnimatedComponent(UIImage);
 const UILabelAnimated = Animated.createAnimatedComponent(UILabel);
 
-export function UIMaterialTextViewIcon({
-    onPress,
-    style,
-    ...rest
-}: UIImageProps & {
-    onPress?: () => void;
-}) {
+export function UIMaterialTextViewIcon({ onPress, style, ...rest }: UIMaterialTextViewIconProps) {
     return (
         <TouchableOpacity onPress={onPress}>
             <UIImageAnimated
@@ -29,13 +32,7 @@ export function UIMaterialTextViewIcon({
     );
 }
 
-export function UIMaterialTextViewAction({
-    children,
-    onPress,
-}: {
-    children: string;
-    onPress?: () => void;
-}) {
+export function UIMaterialTextViewAction({ children, onPress }: UIMaterialTextViewActionProps) {
     return (
         <TouchableOpacity onPress={onPress}>
             <UILabelAnimated
@@ -50,7 +47,7 @@ export function UIMaterialTextViewAction({
     );
 }
 
-export function UIMaterialTextViewText({ children }: { children: string }) {
+export function UIMaterialTextViewText({ children }: UIMaterialTextViewTextProps) {
     return (
         <UILabelAnimated
             role={UILabelRoles.ParagraphText}
@@ -98,12 +95,12 @@ const getChilds = (children: React.ReactNode) => {
 };
 
 export function useMaterialTextViewChildren(
-    children: React.ReactNode,
+    children: UIMaterialTextViewProps['children'],
     inputHasValue: boolean,
     isFocused: boolean,
     isHovered: boolean,
     clear: () => void,
-) {
+): UIMaterialTextViewProps['children'] {
     const clearButton = useClearButton(inputHasValue, isFocused, isHovered, clear);
 
     if (clearButton) {
@@ -116,9 +113,9 @@ export function useMaterialTextViewChildren(
     }
 
     const { icons, action, text } = getChilds(children).reduce<{
-        icons: React.ReactNode[];
-        action: React.ReactNode;
-        text: React.ReactNode;
+        icons: (UIMaterialTextViewIconChild | undefined)[];
+        action: UIMaterialTextViewActionChild | undefined;
+        text: UIMaterialTextViewTextChild | undefined;
     }>(
         (acc, child) => {
             if (React.isValidElement(child)) {
@@ -135,8 +132,8 @@ export function useMaterialTextViewChildren(
         },
         {
             icons: [],
-            action: null,
-            text: null,
+            action: undefined,
+            text: undefined,
         },
     );
 
@@ -153,7 +150,7 @@ export function useMaterialTextViewChildren(
 
         return icons
             .slice(0, 2) // Render only two icons, as required by design system
-            .reduce<React.ReactNode[]>((acc, item, index) => {
+            .reduce<UIMaterialTextViewIconChild[]>((acc, item, index) => {
                 if (!React.isValidElement(item)) {
                     return acc;
                 }

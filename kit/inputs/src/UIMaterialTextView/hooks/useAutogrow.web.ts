@@ -7,9 +7,7 @@ import {
 } from 'react-native';
 import { Typography, TypographyVariants } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import type { UIMaterialTextViewProps, AutogrowAttributes } from './types';
-
-export type OnHeightChange = (height: number) => void;
+import type { UIMaterialTextViewProps, AutogrowAttributes } from '../types';
 
 const textViewHeight =
     StyleSheet.flatten(Typography[TypographyVariants.ParagraphText]).lineHeight ??
@@ -20,8 +18,6 @@ export function calculateWebInputHeight(elem: HTMLTextAreaElement) {
     // (that is used under the hood of TextInput in rn-web)
     // eslint-disable-next-line no-param-reassign
     elem.style.height = `${0}px`;
-    // eslint-disable-next-line no-param-reassign
-    elem.style.flex = `none`;
 
     const height = elem.scrollHeight;
 
@@ -43,7 +39,7 @@ const measureInputHeight = (ref: React.Ref<TextInput> | null) => {
 
 export function useAutogrowTextView(
     ref: React.Ref<TextInput> | null,
-    onHeightChange: OnHeightChange | undefined,
+    onHeightChange: UIMaterialTextViewProps['onHeightChange'],
     multiline: boolean | undefined,
     constrainedNumberOfLines: number | undefined,
     isHovered: boolean,
@@ -119,7 +115,7 @@ export function useAutogrow(
     onChangeProp: UIMaterialTextViewProps['onChange'],
     multiline: UIMaterialTextViewProps['multiline'],
     numberOfLinesProp: UIMaterialTextViewProps['numberOfLines'],
-    onHeightChange: OnHeightChange | undefined,
+    onHeightChange: UIMaterialTextViewProps['onHeightChange'],
     isHovered: boolean,
     isFocused: boolean,
 ): AutogrowAttributes {

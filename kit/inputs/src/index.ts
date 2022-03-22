@@ -6,7 +6,7 @@ import * as UISeedPhraseTextView from './UISeedPhraseTextView';
 import * as UITextView from './UITextView';
 import * as UIInputAccessoryView from './UIInputAccessoryView/UIInputAccessoryView';
 
-import * as useClearButton from './UIMaterialTextView/useClearButton';
+import * as useClearButton from './UIMaterialTextView/hooks/useClearButton';
 import * as useAutogrowTextView from './useAutogrowTextView';
 import * as useCustomKeyboard from './useCustomKeyboard';
 import * as useAnimatedKeyboardHeight from './useAnimatedKeyboardHeight';
@@ -20,7 +20,7 @@ export * from './UITextView';
 export * from './UIInputAccessoryView/UIInputAccessoryView';
 export * from './UIInputAccessoryView/UIInputAccessoryViewAvailability';
 
-export * from './UIMaterialTextView/useClearButton';
+export * from './UIMaterialTextView/hooks/useClearButton';
 export * from './useAutogrowTextView';
 export * from './useCustomKeyboard';
 export * from './useDimensions';

@@ -7,22 +7,24 @@ import type { UITextViewProps } from '../UITextView';
 
 import type { UIMaterialTextViewProps } from './types';
 
-const getCommentColor = (
+function useCommentColor(
     success: boolean | undefined,
     warning: boolean | undefined,
     error: boolean | undefined,
-): ColorVariants => {
-    if (error) {
-        return ColorVariants.TextNegative;
-    }
-    if (warning) {
-        return ColorVariants.TextPrimary;
-    }
-    if (success) {
-        return ColorVariants.TextPositive;
-    }
-    return ColorVariants.TextTertiary;
-};
+): ColorVariants {
+    return React.useMemo(() => {
+        if (error) {
+            return ColorVariants.TextNegative;
+        }
+        if (warning) {
+            return ColorVariants.TextPrimary;
+        }
+        if (success) {
+            return ColorVariants.TextPositive;
+        }
+        return ColorVariants.TextTertiary;
+    }, [success, warning, error]);
+}
 
 export function UIMaterialTextViewComment(
     props: UIMaterialTextViewProps & {
@@ -32,18 +34,22 @@ export function UIMaterialTextViewComment(
 ) {
     const { helperText, onLayout, children, success, warning, error } = props;
 
+    const commentColor = useCommentColor(success, warning, error);
+
     return (
         <View style={styles.container} onLayout={onLayout}>
             {children}
             {helperText ? (
                 <UILabel
                     role={TypographyVariants.ParagraphLabel}
-                    color={getCommentColor(success, warning, error)}
+                    color={commentColor}
                     style={styles.comment}
                 >
                     {helperText}
                 </UILabel>
-            ) : null}
+            ) : (
+                <View style={styles.bottomDefaultOffset} />
+            )}
         </View>
     );
 }
@@ -51,11 +57,12 @@ export function UIMaterialTextViewComment(
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
-        paddingBottom: 20,
     },
     comment: {
-        position: 'absolute',
-        bottom: 0,
-        left: UILayoutConstant.contentOffset,
+        paddingTop: UILayoutConstant.contentInsetVerticalX1,
+        paddingHorizontal: UILayoutConstant.contentOffset,
+    },
+    bottomDefaultOffset: {
+        height: UILayoutConstant.contentInsetVerticalX4,
     },
 });

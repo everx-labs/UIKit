@@ -36,6 +36,10 @@ export type NumberFormatInfo = {
     thousands: string;
     decimal: string;
     decimalGrouping: string;
+    /**
+     * A list of characters that will be automatically replaced with a decimal separator
+     */
+    decimalAlternative: string[];
 };
 
 export type NumberParts = {

@@ -7,6 +7,7 @@ import {
     useUITextViewValue,
     UIMaterialTextView,
     UIMaterialTextViewProps,
+    UIMaterialTextViewChild,
     UIMaterialTextViewRef,
 } from '@tonlabs/uikit.inputs';
 import { ColorVariants } from '@tonlabs/uikit.themes';
@@ -23,6 +24,7 @@ export type UIAddressTextViewValidateAddress = (
 ) => Promise<UIAddressTextViewValidationResult | null>;
 
 type UIAddressTextViewProps = UIMaterialTextViewProps & {
+    children: UIMaterialTextViewChild | undefined;
     validateAddress: UIAddressTextViewValidateAddress;
     qrCode: {
         parseData: (data: any) => Promise<string>;
@@ -135,6 +137,22 @@ export const UIAddressTextView = React.forwardRef<UIMaterialTextViewRef, UIAddre
             [qrCode, ref, onChangeText],
         );
 
+        const children = [
+            <UIMaterialTextView.Icon
+                key="address_text_view_scanner_button"
+                testID="address_text_view_scanner"
+                source={UIAssets.icons.addressInput.scan}
+                onPress={() => {
+                    setQrVisible(!qrVisible);
+                }}
+                tintColor={ColorVariants.TextAccent}
+            />,
+        ];
+
+        if (props.children) {
+            children.unshift(props.children);
+        }
+
         return (
             <>
                 <UIMaterialTextView
@@ -151,15 +169,7 @@ export const UIAddressTextView = React.forwardRef<UIMaterialTextViewRef, UIAddre
                     success={success}
                     error={error}
                 >
-                    {props.children}
-                    <UIMaterialTextView.Icon
-                        testID="address_text_view_scanner"
-                        source={UIAssets.icons.addressInput.scan}
-                        onPress={() => {
-                            setQrVisible(!qrVisible);
-                        }}
-                        tintColor={ColorVariants.TextAccent}
-                    />
+                    {children}
                 </UIMaterialTextView>
                 <UIQRCodeScannerSheet
                     visible={qrVisible}

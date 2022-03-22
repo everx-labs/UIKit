@@ -6,11 +6,17 @@ import type { DateFormatInfo, NumberFormatInfo } from '../types';
 export function getNumberFormatInfo(): NumberFormatInfo {
     const formatParser = /111(\D*)222(\D*)333(\D*)444/g;
     const parts = formatParser.exec((111222333.444).toLocaleString()) || ['', '', '', '.'];
+    /**
+     * IMPORTANT!
+     * If you want to change this object,
+     * you also need to change the same object in the native localization files.
+     */
     return {
         grouping: parts[1],
         thousands: parts[2],
         decimal: parts[3],
         decimalGrouping: '\u2009',
+        decimalAlternative: ['\u044E', '\u0431', '/', '?', '<', '>', ',', '.'],
     };
 }
 

@@ -4,8 +4,7 @@ import type {
     TextInput,
     TextInputContentSizeChangeEventData,
 } from 'react-native';
-import type { OnHeightChange } from '../useAutogrowTextView';
-import type { UIMaterialTextViewProps, AutogrowAttributes } from './types';
+import type { UIMaterialTextViewProps, AutogrowAttributes } from '../types';
 
 export function useAutogrow(
     _ref: React.Ref<TextInput>,
@@ -13,7 +12,7 @@ export function useAutogrow(
     onChangeProp: UIMaterialTextViewProps['onChange'],
     _multiline: UIMaterialTextViewProps['multiline'],
     numberOfLinesProp: UIMaterialTextViewProps['numberOfLines'],
-    onHeightChange: OnHeightChange | undefined,
+    onHeightChange: UIMaterialTextViewProps['onHeightChange'],
     _isHovered: boolean,
     _isFocused: boolean,
 ): AutogrowAttributes {

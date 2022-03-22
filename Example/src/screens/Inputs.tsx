@@ -93,6 +93,14 @@ export const Inputs = () => {
             <ExampleSection title="UIMaterialTextView">
                 <View style={{ maxWidth: 400, padding: 20, alignSelf: 'stretch' }}>
                     <UIMaterialTextView
+                        testID="uiMaterialTextView_amount"
+                        placeholder="Amount"
+                        label="Amount"
+                        helperText="Caption"
+                        mask="Amount"
+                    />
+                    <View style={{ height: 20 }} />
+                    <UIMaterialTextView
                         testID="uiMaterialTextView_without_label"
                         placeholder="Placeholder without Label"
                         helperText="Caption"
@@ -171,7 +179,7 @@ export const Inputs = () => {
                 </View>
             </ExampleSection>
             <ExampleSection title="UISeedPhraseTextView">
-                <View style={{ paddingVertical: 20, width: '50%' }}>
+                <View style={{ padding: 20, maxWidth: 400, alignSelf: 'stretch' }}>
                     <UISeedPhraseTextView
                         testID="uiSeedPhraseTextView_5_or_10"
                         words={mnemonicWords}
@@ -212,7 +220,12 @@ export const Inputs = () => {
                                 );
                             },
                         }}
-                    />
+                    >
+                        <UIMaterialTextView.Icon
+                            source={UIAssets.icons.ui.buttonPlus}
+                            tintColor={ColorVariants.TextAccent}
+                        />
+                    </UIAddressTextView>
                 </View>
             </ExampleSection>
             <ExampleSection title="UIAmountInput">

@@ -26,6 +26,7 @@ export const UILayoutConstant = {
     smallContentOffset: 8,
     normalContentOffset: 12,
     contentOffset: 16,
+    contentInsetVerticalX1: GRID_LINE_HEIGHT,
     contentInsetVerticalX2: 2 * GRID_LINE_HEIGHT,
     contentInsetVerticalX3: 3 * GRID_LINE_HEIGHT,
     contentInsetVerticalX4: 4 * GRID_LINE_HEIGHT,
