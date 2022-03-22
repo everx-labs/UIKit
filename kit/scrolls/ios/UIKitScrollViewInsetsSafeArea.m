@@ -74,7 +74,7 @@
     CGFloat screenHeight = [[UIScreen mainScreen] bounds].size.height;
     CGFloat absoluteSafeBottomY = screenHeight - safeAreaInsets.bottom;
     
-    CGRect absoluteViewRect = [_rctScrollView.window convertRect:_rctScrollView.frame toView:_rctScrollView.superview];
+    CGRect absoluteViewRect = [_rctScrollView.window convertRect:_rctScrollView.frame fromView:_rctScrollView.superview];
     CGPoint absoluteViewOrigin = absoluteViewRect.origin;
     CGFloat viewBottomY = absoluteViewOrigin.y + _rctScrollView.bounds.size.height;
 
