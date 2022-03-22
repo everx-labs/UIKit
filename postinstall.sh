@@ -22,5 +22,7 @@ sed -i '' -e '39s/.*/    mavenCentral()/' ./node_modules/react-native-svg/androi
 sed -i '' -e '11s/.*/    mavenCentral()/' ./node_modules/react-native-view-shot/android/build.gradle
 sed -i '' -e '40s/.*/    mavenCentral()/' ./node_modules/react-native-view-shot/android/build.gradle
 
+npx patch-package
+
 ## Jetify Android dependencies
 ./node_modules/.bin/jetify

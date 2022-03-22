@@ -56,7 +56,7 @@
         "react-dom": "17.0.2",
         "react-native": "0.67.3",
         "react-native-gesture-handler": "^1.10.3",
-        "react-native-reanimated": "2.4.1",
+        "react-native-reanimated": "2.5.0",
         "react-native-safe-area-context": "^3.3.2",
         "react-native-simple-shadow-view": "1.6.3",
         "typescript": "4.4.3"
@@ -67,7 +67,7 @@
         "react-dom": "^17.0.2",
         "react-native": "^0.67.3",
         "react-native-gesture-handler": "^1.10.3",
-        "react-native-reanimated": "^2.4.1",
+        "react-native-reanimated": "^2.5.0",
         "react-native-safe-area-context": "^3.3.2",
         "react-native-simple-shadow-view": "^1.6.3",
         "react-native-svg": "^12.1.1"
