@@ -101,33 +101,6 @@ export const Inputs = () => {
             </ExampleSection>
             <ExampleSection title="UIMaterialTextView">
                 <View style={{ maxWidth: 400, padding: 20, alignSelf: 'stretch' }}>
-                    <UIAmountInput
-                        testID="uiMaterialTextView_amount"
-                        placeholder="0.00"
-                        label="Amount Currency"
-                        message="Caption"
-                        onChangeAmount={value => setAmount(value)}
-                        decimalAspect={UIAmountInputDecimalAspect.Currency}
-                    />
-                    <View style={{ height: 20 }} />
-                    <UIAmountInput
-                        testID="uiMaterialTextView_amount"
-                        placeholder="000"
-                        label="Amount Integer"
-                        message="Caption"
-                        onChangeAmount={value => setAmount(value)}
-                        decimalAspect={UIAmountInputDecimalAspect.Integer}
-                    />
-                    <View style={{ height: 20 }} />
-                    <UIAmountInput
-                        testID="uiMaterialTextView_amount"
-                        placeholder="0.000"
-                        label="Amount Precision"
-                        message="Caption"
-                        onChangeAmount={value => setAmount(value)}
-                        decimalAspect={UIAmountInputDecimalAspect.Precision}
-                    />
-                    <View style={{ height: 20 }} />
                     <UIMaterialTextView
                         testID="uiMaterialTextView_without_label"
                         placeholder="Placeholder without Label"
@@ -254,6 +227,36 @@ export const Inputs = () => {
                             tintColor={ColorVariants.TextAccent}
                         />
                     </UIAddressTextView>
+                </View>
+            </ExampleSection>
+            <ExampleSection title="UIAmountInput">
+                <View style={{ maxWidth: 400, padding: 20, alignSelf: 'stretch' }}>
+                    <UIAmountInput
+                        testID="uiMaterialTextView_amount"
+                        placeholder="0.00"
+                        label="Amount Currency"
+                        message="Caption"
+                        onChangeAmount={value => setAmount(value)}
+                        decimalAspect={UIAmountInputDecimalAspect.Currency}
+                    />
+                    <View style={{ height: 20 }} />
+                    <UIAmountInput
+                        testID="uiMaterialTextView_amount"
+                        placeholder="000"
+                        label="Amount Integer"
+                        message="Caption"
+                        onChangeAmount={value => setAmount(value)}
+                        decimalAspect={UIAmountInputDecimalAspect.Integer}
+                    />
+                    <View style={{ height: 20 }} />
+                    <UIAmountInput
+                        testID="uiMaterialTextView_amount"
+                        placeholder="0.000"
+                        label="Amount Precision"
+                        message="Caption"
+                        onChangeAmount={value => setAmount(value)}
+                        decimalAspect={UIAmountInputDecimalAspect.Precision}
+                    />
                 </View>
             </ExampleSection>
             {/* <ExampleSection title="UIAmountInput">
