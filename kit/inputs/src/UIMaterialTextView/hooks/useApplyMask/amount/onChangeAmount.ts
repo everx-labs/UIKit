@@ -2,7 +2,7 @@
 import type { SharedValue } from 'react-native-reanimated';
 import { uiLocalized } from '@tonlabs/localization';
 import { runUIOnChangeAmount } from './runUIOnChangeAmount';
-import type { ImperativeChangeText, MoveCarret } from '../../UIMaterialTextView/types';
+import type { ImperativeChangeText, MoveCarret } from '../../../types';
 
 export function onChangeAmount(
     inputText: string,
@@ -12,6 +12,7 @@ export function onChangeAmount(
     imperativeChangeText: ImperativeChangeText,
     moveCarret: MoveCarret,
     skipNextOnSelectionChange: SharedValue<boolean>,
+    countOfDecimalDigits: number | null,
 ) {
     const {
         grouping: integerSeparator,
@@ -29,6 +30,7 @@ export function onChangeAmount(
         lastNormalizedText,
         lastText,
         delimeterAlternative,
+        countOfDecimalDigits,
     );
 
     imperativeChangeText(formattedText);

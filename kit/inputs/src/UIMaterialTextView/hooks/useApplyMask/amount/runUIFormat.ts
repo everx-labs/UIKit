@@ -7,15 +7,13 @@ const INTEGER_GROUP_SIZE = 3;
 // @inline
 const FRACTIONAL_GROUP_SIZE = 3;
 
-// @inline
-const DECIMALS = 9;
-
 export function runUIFormat(
     inputText: string,
     delimeter: string,
     integerSeparator: string,
     fractionalSeparator: string,
     delimeterAlternative: string[],
+    countOfDecimalDigits: number | null,
 ) {
     'worklet';
 
@@ -47,10 +45,16 @@ export function runUIFormat(
     result.push(groupedIntegerPart);
 
     // Normalize and group fractional part
-    if (DECIMALS > 0 && decimalPart != null && decimalPart.length > 0) {
+    if (
+        (countOfDecimalDigits === null || countOfDecimalDigits > 0) &&
+        decimalPart != null &&
+        decimalPart.length > 0
+    ) {
         let normalizedDecimalPart = decimalPart.replace(notNumbersRegexp, '');
 
-        normalizedDecimalPart = normalizedDecimalPart.slice(0, DECIMALS);
+        if (countOfDecimalDigits !== null) {
+            normalizedDecimalPart = normalizedDecimalPart.slice(0, countOfDecimalDigits);
+        }
 
         normalizedText += delimeter;
         normalizedText += normalizedDecimalPart;

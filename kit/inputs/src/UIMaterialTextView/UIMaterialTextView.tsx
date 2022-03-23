@@ -11,6 +11,7 @@ import {
     useImperativeChange,
     useInputHasValue,
     useClear,
+    useApplyMask,
 } from './hooks';
 import { UIMaterialTextViewFloating } from './UIMaterialTextViewFloating';
 import { UIMaterialTextViewSimple } from './UIMaterialTextViewSimple';
@@ -19,7 +20,6 @@ import type {
     UIMaterialTextViewProps,
     UIMaterialTextViewLayoutProps,
 } from './types';
-import { useApplyMask } from '../useApplyMask';
 import { useFocused } from '../UITextView';
 
 function useExtendedProps(

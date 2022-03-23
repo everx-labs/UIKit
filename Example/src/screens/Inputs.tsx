@@ -3,10 +3,16 @@ import { useState } from 'react';
 import BigNumber from 'bignumber.js';
 import { View } from 'react-native';
 
-import { UIMaterialTextView, UISeedPhraseTextView, UINumberTextView } from '@tonlabs/uikit.inputs';
+import {
+    UIMaterialTextView,
+    UISeedPhraseTextView,
+    UINumberTextView,
+    UIAmountInput,
+    UIAmountInputDecimalAspect,
+} from '@tonlabs/uikit.inputs';
 import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAddressTextView } from '@tonlabs/uicast.address-text';
-import { UIAmountInput, UIDetailsInput, UITransferInput } from '@tonlabs/uikit.components';
+import { UIDetailsInput, UITransferInput } from '@tonlabs/uikit.components';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -80,11 +86,14 @@ const localeInfo = {
 };
 
 export const Inputs = () => {
-    const [amount, setAmount] = useState('');
+    const [amount, setAmount] = useState<BigNumber | undefined>(undefined);
     const [details, setDetails] = useState('');
     const mnemonicWords = ['report', 'replenish', 'meadow', 'village', 'slight'];
     const [text, setText] = useState('test');
     const [transfer, setTransfer] = useState(new BigNumber(0));
+    React.useEffect(() => {
+        console.log(amount);
+    }, [amount]);
     return (
         <ExampleScreen>
             <ExampleSection title="UINumberTextView">
@@ -92,12 +101,31 @@ export const Inputs = () => {
             </ExampleSection>
             <ExampleSection title="UIMaterialTextView">
                 <View style={{ maxWidth: 400, padding: 20, alignSelf: 'stretch' }}>
-                    <UIMaterialTextView
+                    <UIAmountInput
                         testID="uiMaterialTextView_amount"
-                        placeholder="Amount"
-                        label="Amount"
-                        helperText="Caption"
-                        mask="Amount"
+                        placeholder="0.00"
+                        label="Amount Currency"
+                        message="Caption"
+                        onChangeAmount={value => setAmount(value)}
+                        decimalAspect={UIAmountInputDecimalAspect.Currency}
+                    />
+                    <View style={{ height: 20 }} />
+                    <UIAmountInput
+                        testID="uiMaterialTextView_amount"
+                        placeholder="000"
+                        label="Amount Integer"
+                        message="Caption"
+                        onChangeAmount={value => setAmount(value)}
+                        decimalAspect={UIAmountInputDecimalAspect.Integer}
+                    />
+                    <View style={{ height: 20 }} />
+                    <UIAmountInput
+                        testID="uiMaterialTextView_amount"
+                        placeholder="0.000"
+                        label="Amount Precision"
+                        message="Caption"
+                        onChangeAmount={value => setAmount(value)}
+                        decimalAspect={UIAmountInputDecimalAspect.Precision}
                     />
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
@@ -228,7 +256,7 @@ export const Inputs = () => {
                     </UIAddressTextView>
                 </View>
             </ExampleSection>
-            <ExampleSection title="UIAmountInput">
+            {/* <ExampleSection title="UIAmountInput">
                 <View style={{ width: 300, paddingVertical: 20 }}>
                     <UIAmountInput
                         testID="uiAmountInput_default"
@@ -248,7 +276,7 @@ export const Inputs = () => {
                         onChangeText={(newText: string) => setAmount(newText)}
                     />
                 </View>
-            </ExampleSection>
+            </ExampleSection> */}
             <ExampleSection title="UIDetailsInput">
                 <View style={{ width: 300, paddingVertical: 20 }} testID="uiDetailsInput_default">
                     <UIDetailsInput

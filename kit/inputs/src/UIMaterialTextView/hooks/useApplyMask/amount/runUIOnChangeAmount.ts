@@ -11,6 +11,7 @@ export function runUIOnChangeAmount(
     lastNormalizedText: SharedValue<string>,
     lastText: SharedValue<string>,
     delimeterAlternative: string[],
+    countOfDecimalDigits: number | null,
 ) {
     'worklet';
 
@@ -20,6 +21,7 @@ export function runUIOnChangeAmount(
         integerSeparator,
         fractionalSeparator,
         delimeterAlternative,
+        countOfDecimalDigits,
     );
 
     // Adjust carret (calculation)

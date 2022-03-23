@@ -1,9 +1,5 @@
 import * as React from 'react';
-import type {
-    UIMaterialTextViewMask,
-    ImperativeChangeText,
-    MoveCarret,
-} from '../UIMaterialTextView/types';
+import type { UIMaterialTextViewMask, ImperativeChangeText, MoveCarret } from '../../types';
 import { useApplyMaskAmount } from './amount';
 
 function useApplyMaskDefault(imperativeChangeText: ImperativeChangeText) {
@@ -55,8 +51,11 @@ export function useApplyMask(
      */
     switch (maskRef.current) {
         case 'Amount':
+        case 'AmountInteger':
+        case 'AmountPrecision':
+        case 'AmountCurrency':
             // eslint-disable-next-line react-hooks/rules-of-hooks
-            return useApplyMaskAmount(imperativeChangeText, moveCarret);
+            return useApplyMaskAmount(imperativeChangeText, moveCarret, maskRef.current);
         default:
             // eslint-disable-next-line react-hooks/rules-of-hooks
             return useApplyMaskDefault(imperativeChangeText);

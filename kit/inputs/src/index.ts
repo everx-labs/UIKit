@@ -5,6 +5,7 @@ import * as UINumberTextView from './UINumberTextView';
 import * as UISeedPhraseTextView from './UISeedPhraseTextView';
 import * as UITextView from './UITextView';
 import * as UIInputAccessoryView from './UIInputAccessoryView/UIInputAccessoryView';
+import * as UIAmountInput from './UIAmountInput';
 
 import * as useClearButton from './UIMaterialTextView/hooks/useClearButton';
 import * as useAutogrowTextView from './useAutogrowTextView';
@@ -19,6 +20,7 @@ export * from './UISeedPhraseTextView';
 export * from './UITextView';
 export * from './UIInputAccessoryView/UIInputAccessoryView';
 export * from './UIInputAccessoryView/UIInputAccessoryViewAvailability';
+export * from './UIAmountInput';
 
 export * from './UIMaterialTextView/hooks/useClearButton';
 export * from './useAutogrowTextView';
@@ -35,6 +37,7 @@ export const UILayout = {
     UISeedPhraseTextView,
     UITextView,
     UIInputAccessoryView,
+    UIAmountInput,
 
     useClearButton,
     useAutogrowTextView,

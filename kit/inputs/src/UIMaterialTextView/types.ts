@@ -9,7 +9,12 @@ import type {
 import type { UIImageProps } from '@tonlabs/uikit.media';
 import type { UITextViewProps } from '../UITextView';
 
-export type UIMaterialTextViewMask = 'Amount';
+export type UIMaterialTextViewAmountMask =
+    | 'Amount'
+    | 'AmountInteger'
+    | 'AmountPrecision'
+    | 'AmountCurrency';
+export type UIMaterialTextViewMask = UIMaterialTextViewAmountMask;
 
 export type UIMaterialTextViewIconChild = React.ReactElement<UIMaterialTextViewIconProps>;
 export type UIMaterialTextViewActionChild = React.ReactElement<UIMaterialTextViewActionProps>;
