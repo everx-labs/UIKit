@@ -24,7 +24,7 @@ export type UIAddressTextViewValidateAddress = (
 ) => Promise<UIAddressTextViewValidationResult | null>;
 
 type UIAddressTextViewProps = UIMaterialTextViewProps & {
-    children: UIMaterialTextViewChild | undefined;
+    children?: UIMaterialTextViewChild;
     validateAddress: UIAddressTextViewValidateAddress;
     qrCode: {
         parseData: (data: any) => Promise<string>;

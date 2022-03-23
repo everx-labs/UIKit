@@ -16,6 +16,7 @@
         "web:bundle:dev": "webpack -d --config webpack.config.js --progress --colors --display-error-details"
     },
     "dependencies": {
+        "@babel/preset-typescript": "7.16.7",
         "@quentin-sommer/react-useragent": "2.0.0",
         "@react-native-clipboard/clipboard": "^1.8.5",
         "@react-navigation/bottom-tabs": "^5.11.15",
@@ -78,7 +79,7 @@
         "react-native-parsed-text": "git+https://github.com/FactorBench/react-native-parsed-text.git",
         "react-native-permissions": "^3.2.0",
         "react-native-qrcode-scanner": "git+https://github.com/tonlabs/react-native-qrcode-scanner.git",
-        "react-native-reanimated": "2.4.1",
+        "react-native-reanimated": "2.5.0",
         "react-native-safe-area-context": "^3.3.2",
         "react-native-screens": "3.10.2",
         "react-native-share": "^7.3.3",
