@@ -28,11 +28,15 @@ export function runUIFormat(
     const decimalPart = rest.join('');
 
     let normalizedText = '';
-    const result: string[] = [];
+    const formattedResult: string[] = [];
     const notNumbersRegexp = /[^0-9]/g;
 
     // Normalize and group integer part
-    const normalizedIntegerPart = integerPart.replace(notNumbersRegexp, '');
+    let normalizedIntegerPart = integerPart.replace(notNumbersRegexp, '').replace(/^0*/, '');
+
+    if ((integerPart || decimalPart) && !normalizedIntegerPart) {
+        normalizedIntegerPart = '0';
+    }
 
     normalizedText += normalizedIntegerPart;
 
@@ -42,7 +46,7 @@ export function runUIFormat(
         integerSeparator,
     );
 
-    result.push(groupedIntegerPart);
+    formattedResult.push(groupedIntegerPart);
 
     // Normalize and group fractional part
     if (
@@ -65,10 +69,10 @@ export function runUIFormat(
             fractionalSeparator,
         );
 
-        result.push(groupedDecimalPart);
+        formattedResult.push(groupedDecimalPart);
     }
 
-    const formattedText = result.join(delimeter);
+    const formattedText = formattedResult.join(delimeter);
 
     return {
         normalizedText,
