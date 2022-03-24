@@ -20,14 +20,16 @@ export type UICardSheetProps = Omit<UISheetProps, 'style'> & {
 // @inline
 const CARD_SHEET_DEFAULT_BOTTOM_INSET = 16; // UILayoutConstant.contentOffset
 
-function getCardSheetBottomInset(bottomInset: number, keyboardHeight: number) {
+function getCardSheetBottomInset(bottomInset: number, keyboardBottomInset: number) {
     'worklet';
 
-    if (keyboardHeight !== 0) {
+    const inset = Math.max(CARD_SHEET_DEFAULT_BOTTOM_INSET, bottomInset);
+
+    if (keyboardBottomInset > inset) {
         return CARD_SHEET_DEFAULT_BOTTOM_INSET;
     }
 
-    return Math.max(CARD_SHEET_DEFAULT_BOTTOM_INSET, bottomInset);
+    return inset;
 }
 
 export function UICardSheet({

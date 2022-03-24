@@ -206,12 +206,12 @@ const Main = ({ navigation }: { navigation: any }) => {
                         layout={styles.button}
                     />
                     {/* <UILinkButton
-                            title="Keyboard"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('keyboard')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
+                        title="Keyboard"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('keyboard')}
+                        layout={styles.button}
+                    /> */}
+                    {/* <UILinkButton
                             title="Large header"
                             type={UILinkButtonType.Menu}
                             onPress={() => navigation.navigate('large-header')}
