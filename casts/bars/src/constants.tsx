@@ -7,7 +7,10 @@ export const UIConstant = {
     elastiicWidthController: 600,
     titleMinimumFontScale: 0.7,
 
-    refreshControlHeight: 50,
-    refreshControlLoaderSize: 20,
+    refreshControlSize: 40,
+    refreshControlLoaderSize: 18,
+    refreshControlTrackWidth: 1.75,
     refreshControlPositioningDuration: 200,
+
+    headerItemHorizontalInset: 13,
 };

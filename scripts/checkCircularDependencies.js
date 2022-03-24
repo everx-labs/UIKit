@@ -20,10 +20,12 @@ const checkCircularDependencies = async () => {
             'kit/scrolls/src/index.ts',
             'kit/themes/src/index.ts',
 
+            'casts/accountPicker/src/index.ts',
             'casts/addressText/src/index.ts',
             'casts/banner/src/index.ts',
             'casts/bars/src/index.ts',
             'casts/blurView/src/index.ts',
+            'casts/cards/src/index.ts',
             'casts/carouselView/src/index.ts',
             'casts/countryPicker/src/index.ts',
             'casts/dateTimePicker/src/index.ts',
@@ -34,8 +36,10 @@ const checkCircularDependencies = async () => {
             'casts/pinCode/src/index.ts',
             'casts/promoNotice/src/index.ts',
             'casts/qrCodeScannerSheet/src/index.ts',
+            'casts/rows/src/index.ts',
             'casts/splitNavigator/src/index.ts',
             'casts/stackNavigator/src/index.ts',
+            'casts/texts/src/index.ts',
 
             'stories/browser/src/index.ts',
             'stories/chats/src/index.ts',
@@ -43,8 +47,6 @@ const checkCircularDependencies = async () => {
 
             'packages/components/src/index.js',
             'packages/core/src/index.js',
-            'packages/legacy/src/index.js',
-            'packages/navigation_legacy/src/index.js',
         ];
         const tree = await parseDependencyTree(sources, {
             extensions: [

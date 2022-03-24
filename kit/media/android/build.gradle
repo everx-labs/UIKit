@@ -36,4 +36,6 @@ dependencies {
     implementation project(path: ':react-native-fast-image') // From node_modules
     implementation("com.github.bumptech.glide:glide:${_glideVersion}")
     implementation("com.github.bumptech.glide:annotations:${_glideVersion}")
+    implementation project(':react-native-video')
+    implementation "androidx.appcompat:appcompat:1.0.0"
 }

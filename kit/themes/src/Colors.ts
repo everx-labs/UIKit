@@ -30,8 +30,8 @@ export enum ColorVariants {
     BackgroundTertiaryInverted = 'BackgroundTertiaryInverted',
     BackgroundOverlay = 'BackgroundOverlay',
     BackgroundOverlayInverted = 'BackgroundOverlayInverted',
+    BackgroundBW = 'BackgroundBW',
     // BackgroundNulled = 'BackgroundNulled',
-    // BackgroundBAndW = 'BackgroundBAndW',
     LinePrimary = 'LinePrimary',
     LineSecondary = 'LineSecondary',
     LineTertiary = 'LineTertiary',
@@ -39,6 +39,10 @@ export enum ColorVariants {
     LineAccent = 'LineAccent',
     LineNegative = 'LineNegative',
     LinePositive = 'LinePositive',
+    LineOverlayLight = 'LineOverlayLight',
+    LineOverlayDark = 'LineOverlayDark',
+    SpecialAccentLight = 'SpecialAccentLight',
+    SpecialAccentDark = 'SpecialAccentDark',
     IconAccent = 'IconAccent',
     // IconPrimary = 'IconPrimary',
     IconSecondary = 'IconSecondary',
@@ -63,7 +67,9 @@ export enum ColorVariants {
     StaticBackgroundAccent = 'StaticBackgroundAccent',
     StaticBackgroundNegative = 'StaticBackgroundNegative',
     StaticBackgroundPositive = 'StaticBackgroundPositive',
+    StaticBackgroundOverlay = 'StaticBackgroundOverlay',
     Shadow = 'Shadow',
+    ShadowOpaque = 'ShadowOpaque',
 }
 
 export type Theme = {
@@ -85,6 +91,7 @@ const StaticTheme = {
     [ColorVariants.StaticBackgroundAccent]: 'rgba(0, 131, 224, 0.12)',
     [ColorVariants.StaticBackgroundNegative]: 'rgba(231, 23, 23, 0.12)',
     [ColorVariants.StaticBackgroundPositive]: 'rgba(54, 192, 92, 0.12)',
+    [ColorVariants.StaticBackgroundOverlay]: 'rgba(4, 4, 4, 0.4)',
 };
 
 export const LightTheme: Theme = {
@@ -92,16 +99,16 @@ export const LightTheme: Theme = {
     [ColorVariants.TextPrimary]: '#20262A',
     [ColorVariants.TextSecondary]: '#707376',
     [ColorVariants.TextTertiary]: '#B6B8BA',
-    [ColorVariants.TextPrimaryInverted]: '#FDFDFD',
+    [ColorVariants.TextPrimaryInverted]: '#FAFAFA',
     [ColorVariants.TextNeutral]: '#E2E3E4',
     [ColorVariants.TextAccent]: '#0073C4',
     [ColorVariants.TextNegative]: '#CA1414',
     [ColorVariants.TextPositive]: '#2FA851',
     [ColorVariants.TextWarning]: '#B08229',
     [ColorVariants.TextOverlay]: 'rgba(32, 38, 42, 0.6)',
-    [ColorVariants.TextOverlayInverted]: 'rgba(253, 253, 253, 0.4)',
+    [ColorVariants.TextOverlayInverted]: 'rgba(250, 250, 250, 0.4)',
 
-    [ColorVariants.BackgroundPrimary]: '#FDFDFD',
+    [ColorVariants.BackgroundPrimary]: '#FAFAFA',
     [ColorVariants.BackgroundSecondary]: '#F4F4F5',
     [ColorVariants.BackgroundTertiary]: '#EBECEC',
     [ColorVariants.BackgroundNeutral]: '#E2E3E4',
@@ -111,8 +118,9 @@ export const LightTheme: Theme = {
     [ColorVariants.BackgroundWarning]: '#FFC043',
     [ColorVariants.BackgroundPrimaryInverted]: '#20262A',
     [ColorVariants.BackgroundTertiaryInverted]: '#B6B8BA',
-    [ColorVariants.BackgroundOverlay]: 'rgba(0, 0, 0, 0.6)',
+    [ColorVariants.BackgroundOverlay]: 'rgba(4, 4, 4, 0.4)',
     [ColorVariants.BackgroundOverlayInverted]: 'rgba(255, 255, 255, 0.4)',
+    [ColorVariants.BackgroundBW]: '#FFFFFF',
 
     [ColorVariants.LinePrimary]: '#F4F4F5',
     [ColorVariants.LineSecondary]: '#EBECEC',
@@ -121,6 +129,11 @@ export const LightTheme: Theme = {
     [ColorVariants.LineAccent]: '#0083E0',
     [ColorVariants.LineNegative]: '#CA1414',
     [ColorVariants.LinePositive]: '#2FA851',
+    [ColorVariants.LineOverlayDark]: 'rgba(255,255,255,.08)',
+    [ColorVariants.LineOverlayLight]: 'rgba(0,0,0,.04)',
+
+    [ColorVariants.SpecialAccentLight]: '#339CE6',
+    [ColorVariants.SpecialAccentDark]: '#0069B3',
 
     [ColorVariants.IconAccent]: '#0073C4',
     // [ColorVariants.IconPrimary]: '#20262A',
@@ -133,11 +146,12 @@ export const LightTheme: Theme = {
     [ColorVariants.KeyboardStyle]: 'light',
 
     [ColorVariants.Shadow]: 'rgb(32, 38, 42)',
+    [ColorVariants.ShadowOpaque]: 'rgba(32, 38, 42, 0.08)',
 };
 
 export const DarkTheme: Theme = {
     ...StaticTheme,
-    [ColorVariants.TextPrimary]: '#FDFDFD',
+    [ColorVariants.TextPrimary]: '#FAFAFA',
     [ColorVariants.TextSecondary]: '#ADB0B1',
     [ColorVariants.TextTertiary]: '#676B6E',
     [ColorVariants.TextPrimaryInverted]: '#20262A',
@@ -146,7 +160,7 @@ export const DarkTheme: Theme = {
     [ColorVariants.TextNegative]: '#E71717',
     [ColorVariants.TextPositive]: '#36C05C',
     [ColorVariants.TextWarning]: '#FFC043',
-    [ColorVariants.TextOverlay]: 'rgba(253, 253, 253, 0.4)',
+    [ColorVariants.TextOverlay]: 'rgba(250, 250, 250, 0.4)',
     [ColorVariants.TextOverlayInverted]: 'rgba(32, 38, 42, 0.6)',
 
     [ColorVariants.BackgroundPrimary]: '#20262A',
@@ -157,18 +171,24 @@ export const DarkTheme: Theme = {
     [ColorVariants.BackgroundNegative]: '#CA1414',
     [ColorVariants.BackgroundPositive]: '#2FA851',
     [ColorVariants.BackgroundWarning]: '#B08229',
-    [ColorVariants.BackgroundPrimaryInverted]: '#FDFDFD',
+    [ColorVariants.BackgroundPrimaryInverted]: '#FAFAFA',
     [ColorVariants.BackgroundTertiaryInverted]: '#676B6E',
-    [ColorVariants.BackgroundOverlay]: 'rgba(0, 0, 0, 0.8)',
+    [ColorVariants.BackgroundOverlay]: 'rgba(4, 4, 4, 0.6)',
     [ColorVariants.BackgroundOverlayInverted]: 'rgba(255, 255, 255, 0.2)',
+    [ColorVariants.BackgroundBW]: '#1C2125',
 
     [ColorVariants.LinePrimary]: '#292F32',
     [ColorVariants.LineSecondary]: '#32373B',
     [ColorVariants.LineTertiary]: '#32373B',
-    [ColorVariants.LineNeutral]: '#FDFDFD',
+    [ColorVariants.LineNeutral]: '#FAFAFA',
     [ColorVariants.LineAccent]: '#0073C4',
     [ColorVariants.LineNegative]: '#CA1414',
     [ColorVariants.LinePositive]: '#36C05C',
+    [ColorVariants.LineOverlayDark]: 'rgba(0,0,0,.08)',
+    [ColorVariants.LineOverlayLight]: 'rgba(255,255,255,.08)',
+
+    [ColorVariants.SpecialAccentLight]: '#338FD0',
+    [ColorVariants.SpecialAccentDark]: '#005C9D',
 
     [ColorVariants.IconAccent]: '#0073C4',
     [ColorVariants.IconSecondary]: '#ADB0B1',
@@ -177,7 +197,8 @@ export const DarkTheme: Theme = {
     [ColorVariants.Transparent]: 'rgba(0,0,0,0)',
     [ColorVariants.KeyboardStyle]: 'dark',
 
-    [ColorVariants.Shadow]: 'rgb(32, 38, 42)',
+    [ColorVariants.Shadow]: 'rgb(19, 23, 25)',
+    [ColorVariants.ShadowOpaque]: 'rgba(19, 23, 25, 0.4)',
 };
 
 export const ThemeContext = React.createContext(LightTheme);

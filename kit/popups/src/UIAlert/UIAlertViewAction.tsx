@@ -1,46 +1,33 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { UIBoxButton, UIBoxButtonType, UIBoxButtonVariant } from '@tonlabs/uikit.controls';
 import { UIAlertViewActionProps, UIAlertViewActionType } from './types';
-
-const getActionVariant = (type: UIAlertViewActionType): UIBoxButtonVariant => {
-    switch (type) {
-        case UIAlertViewActionType.Negative:
-            return UIBoxButtonVariant.Negative;
-        case UIAlertViewActionType.Cancel:
-        case UIAlertViewActionType.Neutral:
-        default:
-            return UIBoxButtonVariant.Neutral;
-    }
-};
-
-const getBoxButtonType = (type: UIAlertViewActionType): UIBoxButtonType => {
-    switch (type) {
-        case UIAlertViewActionType.Cancel:
-            return UIBoxButtonType.Nulled;
-        case UIAlertViewActionType.Negative:
-        case UIAlertViewActionType.Neutral:
-        default:
-            return UIBoxButtonType.Tertiary;
-    }
-};
+import { UIForeground } from '../UIForeground';
 
 export const UIAlertViewAction: React.FC<UIAlertViewActionProps> = ({
     type,
     title,
     onPress,
+    testID,
 }: UIAlertViewActionProps) => {
-    const variant: UIBoxButtonVariant = getActionVariant(type);
-    const boxButtonType: UIBoxButtonType = getBoxButtonType(type);
+    if (type === UIAlertViewActionType.Cancel) {
+        return (
+            <UIForeground.Container key={title}>
+                <UIForeground.PrimaryColumn>
+                    <UIForeground.CancelCell testID={testID} onPress={onPress} title={title} />
+                </UIForeground.PrimaryColumn>
+            </UIForeground.Container>
+        );
+    }
+
     return (
-        <View key={title} style={styles.action}>
-            <UIBoxButton type={boxButtonType} variant={variant} title={title} onPress={onPress} />
-        </View>
+        <UIForeground.Container key={title}>
+            <UIForeground.PrimaryColumn>
+                <UIForeground.ActionCell
+                    testID={testID}
+                    negative={type === UIAlertViewActionType.Negative}
+                    onPress={onPress}
+                    title={title}
+                />
+            </UIForeground.PrimaryColumn>
+        </UIForeground.Container>
     );
 };
-
-const styles = StyleSheet.create({
-    action: {
-        paddingTop: 16,
-    },
-});

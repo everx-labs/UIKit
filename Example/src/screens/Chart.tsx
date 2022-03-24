@@ -12,7 +12,7 @@ const getRandomSign = (): number => {
 const getRandomValue = () => (Math.floor(Math.random() * 1000000) / 10) * getRandomSign();
 
 let acc = 0;
-const getСumulativeValue = () => {
+const getCumulativeValue = () => {
     acc += getRandomValue();
     return acc;
 };
@@ -26,7 +26,7 @@ const getData = (): LinearChartPoint[] => {
         .map((_, index: number) => {
             return {
                 x: new Date(2020, 5, index).getTime(),
-                y: getСumulativeValue(),
+                y: getCumulativeValue(),
             };
         });
 };

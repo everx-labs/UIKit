@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, FlatList as RNFlatList } from 'react-native';
 
 import {
     ColorVariants,
@@ -41,9 +41,15 @@ function getYearLabelColor(disabled: boolean, isSelected: boolean) {
 export const Years = React.memo(function Years() {
     const { yearsMatrix, selectedRow, selectedYear, minYear, maxYear, onSelect } = useYears();
     const theme = useTheme();
+    const listRef = React.useRef<any>(null);
+
+    React.useEffect(() => {
+        (listRef?.current as RNFlatList)?.scrollToIndex({ index: Math.max(selectedRow - 2, 0) });
+    }, [listRef, selectedRow]);
 
     return (
         <FlatList
+            ref={listRef}
             style={styles.list}
             data={yearsMatrix}
             keyExtractor={item => `${item[0]}`}
@@ -52,7 +58,6 @@ export const Years = React.memo(function Years() {
                 offset: YEAR_ROW_HEIGHT * index,
                 index,
             })}
-            initialScrollIndex={Math.max(selectedRow - 2, 0)}
             renderItem={({ item, index: rowIndex }) => (
                 <View style={styles.rowWrapper}>
                     {item.map((year: number) => {

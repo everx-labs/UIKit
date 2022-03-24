@@ -15,13 +15,13 @@ function useCreateOnWheelHandler({
     onStart: (event: React.WheelEvent) => void;
     onEnd: (event?: React.WheelEvent) => void;
 }) {
-    const onWheelEndTimeout = React.useRef<number | null>(null);
-    const onWheelEndCbRef = React.useRef<(() => void) | null>(null);
+    const onWheelEndTimeout = React.useRef<number>();
+    const onWheelEndCbRef = React.useRef<TimerHandler>();
 
     if (onWheelEndCbRef.current == null) {
         onWheelEndCbRef.current = () => {
             onEnd();
-            onWheelEndTimeout.current = null;
+            onWheelEndTimeout.current = undefined;
         };
     }
 
@@ -37,7 +37,9 @@ function useCreateOnWheelHandler({
                 onStart(event);
             }
 
-            onWheelEndTimeout.current = setTimeout(onWheelEndCbRef.current, END_THRESHOLD);
+            if (onWheelEndCbRef.current != null) {
+                onWheelEndTimeout.current = setTimeout(onWheelEndCbRef.current, END_THRESHOLD);
+            }
 
             onActive(event);
         },

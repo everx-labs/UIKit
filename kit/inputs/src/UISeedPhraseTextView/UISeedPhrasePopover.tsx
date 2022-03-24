@@ -1,13 +1,5 @@
 import * as React from 'react';
-import {
-    ColorValue,
-    findNodeHandle,
-    UIManager,
-    View,
-    Platform,
-    StyleSheet,
-    FlatList,
-} from 'react-native';
+import { ColorValue, View, Platform, StyleSheet, FlatList, StatusBar } from 'react-native';
 
 import {
     ColorVariants,
@@ -22,11 +14,12 @@ import { Portal, UILayoutConstant } from '@tonlabs/uikit.layout';
 const MAX_CELLS = 3;
 
 type UISeedPhrasePopoverProps = {
-    elementRef: React.Ref<any>;
+    elementRef: React.Ref<View>;
     currentHighlightedItemIndex: number;
     onHighlightedItemIndexChange: (index: number) => void;
     hints: string[];
     onHintSelected: (item: string) => void;
+    forId?: string;
     // width: number;
 };
 
@@ -55,16 +48,10 @@ function UISeedPhrasePopoverContent(props: UISeedPhrasePopoverProps) {
         if (elementRef && 'current' in elementRef) {
             // delay to the next tick to guarantee layout
             setTimeout(() => {
-                const node = findNodeHandle(elementRef.current);
-
-                if (node == null) {
-                    return;
-                }
-
-                UIManager.measureInWindow(node, (x, y, width, inputHeight) => {
+                elementRef.current?.measureInWindow((x, y, width, inputHeight) => {
                     setMeasurement({
                         x,
-                        y: y + inputHeight,
+                        y: y + inputHeight + (StatusBar.currentHeight ?? 0),
                         width,
                     });
                 });
@@ -152,12 +139,13 @@ function UISeedPhrasePopoverContent(props: UISeedPhrasePopoverProps) {
 }
 
 export function UISeedPhrasePopover(props: UISeedPhrasePopoverProps) {
-    if (props.hints.length === 0) {
+    const { hints, forId } = props;
+    if (hints.length === 0) {
         return null;
     }
 
     return (
-        <Portal absoluteFill>
+        <Portal absoluteFill forId={forId}>
             <UISeedPhrasePopoverContent {...props} />
         </Portal>
     );

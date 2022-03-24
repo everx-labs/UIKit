@@ -40,7 +40,6 @@ export const UINotice: React.FC<UINoticeProps> = (props: UINoticeProps) => {
                     >
                         {({ onPress, onLongPress, onPressOut }) => (
                             <Notice
-                                type={type}
                                 title={title}
                                 color={color}
                                 testID={testID}

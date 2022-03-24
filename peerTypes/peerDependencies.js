@@ -1,7 +1,4 @@
 // @flow
-declare module '@react-native-community/netinfo' {
-    declare module.exports: any;
-}
 
 declare module 'react-dom' {
     declare module.exports: any;
@@ -59,10 +56,6 @@ declare module 'react-native/Libraries/Types/CoreEventTypes' {
     declare module.exports: any;
 }
 
-declare module 'react-native-android-keyboard-adjust' {
-    declare module.exports: any;
-}
-
 declare module 'react-native-device-info' {
     declare module.exports: any;
 }
@@ -72,10 +65,6 @@ declare module 'react-native-fast-image' {
 }
 
 declare module 'react-native-gesture-handler' {
-    declare module.exports: any;
-}
-
-declare module 'react-native-image-picker' {
     declare module.exports: any;
 }
 

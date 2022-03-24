@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, StyleSheet, TextInput } from 'react-native';
+import { StyleSheet, TextInput } from 'react-native';
 
 import { ChatInputContainer, useChatInputValue } from '@tonlabs/uistory.chats';
 import { UITextView, useAutogrowTextView } from '@tonlabs/uikit.inputs';
@@ -16,6 +16,7 @@ import {
     ValidationResultStatus,
 } from './types';
 import { ActionButton } from './ActionButton';
+import { useUIBrowserInputOnHeightChange } from './UIBrowserInputHeight';
 
 const MAX_INPUT_LENGTH = 120;
 const MAX_INPUT_NUM_OF_LINES = 5;
@@ -94,7 +95,7 @@ export function UIAddressInputInternal({
         numberOfLines,
         numberOfLinesProp,
         resetInputHeight,
-    } = useAutogrowTextView(textInputRef, onHeightChange, MAX_INPUT_NUM_OF_LINES);
+    } = useAutogrowTextView(textInputRef, undefined, MAX_INPUT_NUM_OF_LINES);
 
     const [isNoticeVisible, setNoticeVisible] = React.useState(false);
 
@@ -130,7 +131,7 @@ export function UIAddressInputInternal({
             return (
                 <UIPopup.Notice
                     type={UIPopup.Notice.Type.TopToast}
-                    color={UIPopup.Notice.Color.PrimaryInverted}
+                    color={UIPopup.Notice.Color.Primary}
                     visible={isNoticeVisible}
                     title={uiLocalized.formatString(
                         uiLocalized.Chats.Alerts.MessageTooLong,
@@ -155,6 +156,7 @@ export function UIAddressInputInternal({
                     clear={clear}
                 />
             }
+            onHeightChange={onHeightChange}
         >
             {validation.text && validation.text.length > 0 ? (
                 <UILabel
@@ -194,35 +196,30 @@ type UIAddressInputProps = {
     placeholder?: string;
 
     onSendText: OnSendText;
-    onHeightChange?: OnHeightChange;
     onMaxLength?: OnMaxLength;
 
     validateAddress: ValidateAddress;
 };
 
-export function UIAddressInput(props: UIAddressInputProps) {
+export function UIAddressInput({
+    placeholder,
+    onSendText,
+    onMaxLength,
+    validateAddress,
+}: UIAddressInputProps) {
     const textInputRef = React.useRef<TextInput>(null);
-    const { onHeightChange } = props;
 
-    React.useEffect(
-        () => () => {
-            if (onHeightChange) {
-                // If inputs is unmounted need to reset insets for list
-                onHeightChange(0);
-            }
-        },
-        [onHeightChange],
-    );
+    const onHeightChange = useUIBrowserInputOnHeightChange();
 
     return (
         <UIInputAccessoryView managedScrollViewNativeID="browserList">
             <UIAddressInputInternal
                 textInputRef={textInputRef}
-                placeholder={props.placeholder}
-                onSendText={props.onSendText}
-                onHeightChange={Platform.OS === 'web' ? onHeightChange : undefined}
-                onMaxLength={props.onMaxLength}
-                validateAddress={props.validateAddress}
+                placeholder={placeholder}
+                onSendText={onSendText}
+                onHeightChange={onHeightChange}
+                onMaxLength={onMaxLength}
+                validateAddress={validateAddress}
             />
         </UIInputAccessoryView>
     );

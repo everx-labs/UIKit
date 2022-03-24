@@ -17,8 +17,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.facebook.react.bridge.JSIModulePackage;
-import com.swmansion.reanimated.ReanimatedJSIModulePackage;
-
 import tonlabs.uikit.keyboard.UIKitKeyboardJSIModulePackage;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -50,7 +48,6 @@ public class MainApplication extends Application implements ReactApplication {
             return new JSIModulePackage() {
                 @Override
                 public List<JSIModuleSpec> getJSIModules(ReactApplicationContext reactApplicationContext, JavaScriptContextHolder jsContext) {
-                    new ReanimatedJSIModulePackage().getJSIModules(reactApplicationContext, jsContext);
                     new UIKitKeyboardJSIModulePackage().getJSIModules(reactApplicationContext, jsContext);
                     return Arrays.<JSIModuleSpec>asList();
                 }

@@ -4,12 +4,13 @@ import { View, Text } from 'react-native';
 import { UICarouselView } from '@tonlabs/uicast.carousel-view';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIImage } from '@tonlabs/uikit.media';
+
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
 const DATA = ['Hello', 'this', 'is', 'UICarouselView'];
 
-export const Carousel = () => {
+export function CarouselScreen() {
     const onPageIndexChange = (index: number) => {
         console.log('page changed', index);
     };
@@ -29,7 +30,14 @@ export const Carousel = () => {
     return (
         <ExampleScreen>
             <ExampleSection title="UICarouselView">
-                <View style={{ width: 400, height: 220, paddingVertical: 20 }}>
+                <View
+                    style={{
+                        width: '100%',
+                        maxWidth: 600,
+                        height: 220,
+                        paddingVertical: 20,
+                    }}
+                >
                     <UICarouselView.Container
                         initialIndex={0}
                         onPageIndexChange={onPageIndexChange}
@@ -42,4 +50,4 @@ export const Carousel = () => {
             </ExampleSection>
         </ExampleScreen>
     );
-};
+}

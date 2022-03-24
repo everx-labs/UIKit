@@ -19,6 +19,9 @@ package-lock.json
 #Test results
 coverage/
 
+# Gems
+vendor/
+
 lib/
 
 .gitsecret/keys/random_seed

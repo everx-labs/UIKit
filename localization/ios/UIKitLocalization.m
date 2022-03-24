@@ -39,11 +39,22 @@ RCT_EXPORT_MODULE()
                 @"thousands": grouping,
                 @"decimal": decimal,
                 @"decimalGrouping": @"\u2009",
+                @"decimalAlternative": @[
+                    @"\u044E",
+                    @"\u0431",
+                    @"/",
+                    @"?",
+                    @"<",
+                    @">",
+                    @",",
+                    @".",
+                ],
         },
         @"dates": @{
                 @"separator": [NSString stringWithFormat:@"%@", dateInfo[@"separator"]],
                 @"localePattern": [NSString stringWithFormat:@"%@", dateInfo[@"localePattern"]],
                 @"components": dateInfo[@"components"],
+                @"dayOfWeek": [NSNumber numberWithUnsignedInteger: [NSCalendar currentCalendar].firstWeekday],
         },
     };
     return localeInfo;

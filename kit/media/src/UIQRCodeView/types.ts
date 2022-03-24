@@ -29,7 +29,7 @@ export enum QRCodeError {
 export type QRCodeProps = {
     /** Type of the QR code */
     type: QRCodeType;
-    /** String value to encode into the QR сode */
+    /** String value to encode into the QR code */
     value: string;
     /** Called if it is impossible to draw a QR code */
     onError?: (error: QRCodeError) => void;

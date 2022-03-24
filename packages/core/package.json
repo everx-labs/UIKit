@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uikit.core",
-    "version": "2.3.0",
+    "version": "3.0.0",
     "description": "Core utilities for Tonlabs's UIKit",
     "scripts": {
         "prepare": "bob build"
@@ -34,33 +34,29 @@
     ],
     "dependencies": {
         "@quentin-sommer/react-useragent": "2.0.0",
-        "@tonlabs/uikit.themes": "^2.3.0",
-        "@tonlabs/uikit.assets": "^2.3.0",
+        "@tonlabs/uikit.themes": "^3.0.0",
         "bignumber.js": "9.0.0",
-        "currency-formatter": "1.5.4",
         "dayjs": "1.9.1",
-        "libphonenumber-js": "1.7.14",
         "mobile-detect": "1.4.3",
-        "react-native-status-bar-height": "1.0.1",
-        "validator": "10.11.0"
+        "react-native-status-bar-height": "1.0.1"
     },
     "devDependencies": {
         "@babel/runtime": "^7.15.0",
-        "@react-native-community/bob": "0.16.2",
         "react": "17.0.2",
         "react-dom": "17.0.2",
-        "react-native": "0.65.1",
-        "react-native-device-info": "^5.6.3",
-        "react-native-svg": "^12.1.0"
+        "react-native": "0.67.3",
+        "react-native-builder-bob": "^0.18.2",
+        "react-native-device-info": "^8.4.8",
+        "react-native-svg": "^12.1.1"
     },
     "peerDependencies": {
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
-        "react-native": "^0.65.0",
-        "react-native-device-info": "^5.6.3",
-        "react-native-svg": "^12.1.0"
+        "react-native": "^0.67.3",
+        "react-native-device-info": "^8.4.8",
+        "react-native-svg": "^12.1.1"
     },
-    "@react-native-community/bob": {
+    "react-native-builder-bob": {
         "source": "src",
         "output": "lib",
         "targets": [

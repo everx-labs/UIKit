@@ -15,7 +15,6 @@ class ExampleComponent extends ThemeSwitcher {
         return (
             <View>
                 <UIDetailsInput
-                    theme={this.getTheme()}
                     value={this.state.details}
                     placeholder="Details"
                     comment="Some comment here"
@@ -26,7 +25,6 @@ class ExampleComponent extends ThemeSwitcher {
                     }
                 />
                 <UIDetailsInput
-                    theme={this.getTheme()}
                     value={this.state.multilineDetails}
                     placeholder="Multiline details"
                     comment="Some comment here"

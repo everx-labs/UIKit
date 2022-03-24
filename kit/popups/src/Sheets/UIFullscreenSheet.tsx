@@ -1,55 +1,79 @@
 import * as React from 'react';
-import {
-    StyleProp,
-    StyleSheet,
-    ViewStyle,
-    View,
-    StatusBar,
-    useWindowDimensions,
-} from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Platform, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { useDimensions } from '@tonlabs/uicast.keyboard';
+
 import { UISheet, UISheetProps } from './UISheet/UISheet';
 
-export type UIFullscreenSheetProps = Omit<UISheetProps, 'countRubberBandDistance'> & {
+export type UIFullscreenSheetProps = UISheetProps & {
     style?: StyleProp<ViewStyle>;
 };
 
-export function UIFullscreenSheet({ children, style, ...rest }: UIFullscreenSheetProps) {
-    const { height } = useWindowDimensions();
-    const { top: topInset, bottom: bottomInset } = useSafeAreaInsets();
-    const flattenStyle = StyleSheet.flatten(style);
+export function UIFullscreenSheet({
+    children,
+    style,
+    /**
+     * Turn it off by default as in fullscreen
+     * the overlay isn't visible anyway
+     * and status bar color is made to be contrast on overlay
+     */
+    shouldChangeStatusBar = false,
+    ...rest
+}: UIFullscreenSheetProps) {
+    const {
+        screen: { height: screenHeight },
+        window: { height: windowHeight },
+    } = useDimensions();
 
-    const passedPaddingBottom = Math.max(
-        bottomInset || 0,
-        (flattenStyle.paddingBottom as number) ?? (flattenStyle.padding as number) ?? 0,
-    );
-    const passedPaddingTop =
-        (flattenStyle.paddingTop as number) ?? (flattenStyle.padding as number) ?? 0;
+    const fullscreenHeight = React.useMemo(() => {
+        /**
+         * On different platforms it behave differently.
+         *
+         * On web `screenHeight` is equal to a device screen height
+         * a browser window is usually smaller (and can be resized).
+         */
+        if (Platform.OS === 'web') {
+            return windowHeight + UILayoutConstant.rubberBandEffectDistance;
+        }
 
-    const sheetStyle = React.useMemo(
-        () => ({
-            paddingBottom: passedPaddingBottom + UILayoutConstant.rubberBandEffectDistance,
-        }),
-        [passedPaddingBottom],
-    );
+        /**
+         * On iOS it seems `windowHeight` is equal to screenHeight.
+         *
+         * On Android `windowHeight` doesn't include a status bar height and
+         * a navigation bar (the one on the bottom). Since we use edge-to-edge
+         * right now we want to use `screenHeight` to be fullscreen.
+         */
+        return screenHeight + UILayoutConstant.rubberBandEffectDistance;
+    }, [screenHeight, windowHeight]);
 
-    const innerStyle = React.useMemo(
-        () => ({
-            height:
-                height -
-                Math.max(StatusBar.currentHeight ?? 0, topInset) -
-                passedPaddingBottom -
-                passedPaddingTop,
-        }),
-        [height, topInset, passedPaddingBottom, passedPaddingTop],
-    );
+    const sheetStyle = React.useMemo(() => {
+        const flattenStyle = StyleSheet.flatten(style);
+        const paddingBottom =
+            Math.max((flattenStyle.paddingBottom as number) ?? 0) +
+            UILayoutConstant.rubberBandEffectDistance;
 
+        return {
+            paddingBottom,
+            height: fullscreenHeight,
+        };
+    }, [style, fullscreenHeight]);
+
+    const { visible, forId } = rest;
     return (
-        <UISheet {...rest} countRubberBandDistance style={[styles.bottom, style, sheetStyle]}>
-            <View style={innerStyle}>{children}</View>
-        </UISheet>
+        <UISheet.Container visible={visible} forId={forId}>
+            <UISheet.KeyboardUnaware defaultShift={-UILayoutConstant.rubberBandEffectDistance}>
+                <UISheet.FixedSize height={fullscreenHeight}>
+                    <UISheet.Content
+                        {...rest}
+                        style={[styles.bottom, style, sheetStyle]}
+                        shouldChangeStatusBar={shouldChangeStatusBar}
+                    >
+                        {children}
+                    </UISheet.Content>
+                </UISheet.FixedSize>
+            </UISheet.KeyboardUnaware>
+        </UISheet.Container>
     );
 }
 
@@ -59,5 +83,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         left: 'auto',
         right: 'auto',
+        overflow: 'hidden',
     },
 });

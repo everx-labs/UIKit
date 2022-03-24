@@ -155,7 +155,7 @@ static UIInputAccessoryView *_currentView;
         return;
     }
     
-    CGFloat safeAreaBottom = [self getSafeAreaBottom];
+    CGFloat safeAreaBottom = [self getSafeAreaInsets].bottom;
     CGFloat accessoryTranslation = MIN(-safeAreaBottom, -keyboardHeight);
     
     CGAffineTransform transform = CGAffineTransformMakeTranslation(0, accessoryTranslation);

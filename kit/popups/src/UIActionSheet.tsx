@@ -4,6 +4,7 @@ import {
     IUIActionSheet,
     UIActionSheetActionType,
 } from './ActionSheet';
+import { UIForeground } from './UIForeground';
 
 export * from './ActionSheet/types';
 
@@ -14,3 +15,12 @@ export const UIActionSheet: IUIActionSheet = UIActionSheetContainer;
 // same
 UIActionSheet.Action = UIActionSheetAction;
 UIActionSheet.Action.Type = UIActionSheetActionType;
+UIActionSheet.CustomAction = UIForeground.Container;
+
+UIActionSheet.PrimaryColumn = UIForeground.PrimaryColumn;
+UIActionSheet.SecondaryColumn = UIForeground.SecondaryColumn;
+
+UIActionSheet.ActionCell = UIForeground.ActionCell;
+UIActionSheet.IconCell = UIForeground.IconCell;
+UIActionSheet.NumberCell = UIForeground.NumberCell;
+UIActionSheet.TextCell = UIForeground.TextCell;

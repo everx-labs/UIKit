@@ -1,11 +1,8 @@
 import * as React from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
-import RNFetchBlob from 'rn-fetch-blob';
-import DocumentPicker from 'react-native-document-picker';
+import BlobUtil from 'react-native-blob-util';
 
 import { UIConstant } from '@tonlabs/uikit.core';
-import { UIAlertView } from '@tonlabs/uikit.navigation_legacy';
-import { uiLocalized } from '@tonlabs/localization';
 
 import type { OnSendMedia, OnSendDocument } from './types';
 
@@ -20,18 +17,6 @@ const extractDocumentName = (e: any) => {
     }
 
     return fileName;
-};
-
-const pickDocument = async (callback: (doc: any, name: string) => Promise<void>) => {
-    try {
-        const file = await DocumentPicker.pick({
-            type: [DocumentPicker.types.pdf],
-        });
-        const source = Platform.OS === 'ios' ? file.uri.replace('file://', '') : file.uri;
-        callback(source, file.name);
-    } catch (error) {
-        console.error(`Failed to pick document with: ${error}`);
-    }
 };
 
 const onPickDocument = async (doc: any, name: string, onSendDocument?: OnSendDocument) => {
@@ -53,13 +38,13 @@ const onPickDocument = async (doc: any, name: string, onSendDocument?: OnSendDoc
     };
     try {
         // TODO: I don't like it, can we do it without base64?
-        const data = await RNFetchBlob.fs.readFile(decodeURI(doc), 'base64');
+        const data = await BlobUtil.fs.readFile(decodeURI(doc), 'base64');
         processData(data);
     } catch (decError) {
         // Failed to load the data from the decoded URI, try the plain one
         try {
             // TODO: I don't like it, can we do it without base64?
-            const data = await RNFetchBlob.fs.readFile(doc, 'base64');
+            const data = await BlobUtil.fs.readFile(doc, 'base64');
             processData(data);
         } catch (error) {
             console.error('Failed to pick the document with error:', error, decError);
@@ -81,19 +66,22 @@ const onPickDocumentWeb = (e: any, onSendDocument?: OnSendDocument) => {
     }
 
     if (file.size >= UIConstant.maxFileSize()) {
+        // TODO: shared UIAlertView doesn't exist anymore
+        //       please use modern popover
+        //
         // in decimal
-        const msg = uiLocalized.formatString(
-            uiLocalized.FileIsTooBig,
-            (UIConstant.maxFileSize() / 1000000).toFixed(),
-        );
-        UIAlertView.showAlert(uiLocalized.Error, msg, [
-            {
-                title: uiLocalized.OK,
-                onPress: () => {
-                    // nothing
-                },
-            },
-        ]);
+        // const msg = uiLocalized.formatString(
+        //     uiLocalized.FileIsTooBig,
+        //     (UIConstant.maxFileSize() / 1000000).toFixed(),
+        // );
+        // UIAlertView.showAlert(uiLocalized.Error, msg, [
+        //     {
+        //         title: uiLocalized.OK,
+        //         onPress: () => {
+        //             // nothing
+        //         },
+        //     },
+        // ]);
         return;
     }
 
@@ -111,6 +99,7 @@ export type ChatPickerRef = {
 type Props = {
     dismissKeyboard: () => void;
     onSendDocument?: OnSendDocument;
+    // eslint-disable-next-line react/no-unused-prop-types
     onSendMedia?: OnSendMedia;
 };
 
@@ -129,14 +118,9 @@ export const ChatPicker = React.forwardRef<ChatPickerRef, Props>(function ChatIm
 
             if (Platform.OS === 'web') {
                 inputRef.current?.click();
-                return;
+            } else {
+                // Not supported for now
             }
-
-            setTimeout(() => {
-                pickDocument((data: any, name: string) =>
-                    onPickDocument(data, name, props.onSendDocument),
-                );
-            }, UIConstant.animationDuration() * 2);
         },
     }));
 

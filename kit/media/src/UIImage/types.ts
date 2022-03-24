@@ -1,7 +1,7 @@
-import type { ImageProps } from 'react-native';
+import type { ColorValue, ImageProps, ImageURISource } from 'react-native';
 import type { ColorVariants } from '@tonlabs/uikit.themes';
 
-export type UIImageProps = ImageProps & {
+export type UIImageSimpleProps = ImageProps & {
     /**
      * Native:
      * tintColor for some reason don't work properly with
@@ -13,5 +13,11 @@ export type UIImageProps = ImageProps & {
      * Here is the issue: https://github.com/necolas/react-native-web/issues/1914
      * Hence passing this prop we force to use canvas
      */
+    tintColor?: ColorValue | null;
+};
+
+export type UIImageProps = ImageProps & {
     tintColor?: ColorVariants | null;
 };
+
+export type Prefetch = (content: ImageURISource[] | ImageURISource) => void;

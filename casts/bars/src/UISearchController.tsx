@@ -8,6 +8,7 @@ import Animated, {
     interpolate,
     runOnJS,
 } from 'react-native-reanimated';
+import type { WithSpringConfig } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useBackHandler } from '@react-native-community/hooks';
 
@@ -29,15 +30,16 @@ export type UISearchControllerProps = {
     placeholder?: string;
     onCancel: () => void | Promise<void>;
     onChangeText?: React.ComponentProps<typeof UISearchBar>['onChangeText'];
+    onDidHide?: () => void;
     children: ((searchText: string) => React.ReactNode) | React.ReactNode;
     searching?: boolean;
 };
 
-type UISearchControllerContentProps = Omit<UISearchControllerProps, 'forId'> & {
+type UISearchControllerContentProps = Omit<UISearchControllerProps, 'forId' | 'onDidHide'> & {
     progress: Readonly<Animated.SharedValue<number>>;
 };
 
-const withSpringConfig: Animated.WithSpringConfig = {
+const withSpringConfig: WithSpringConfig = {
     damping: 16,
     stiffness: 200,
 };
@@ -67,7 +69,7 @@ const useProgress = (
     }, [visible, visibleState, isFirstRender]);
 
     const onAnimation = React.useCallback(
-        (isFinished: boolean): void => {
+        (isFinished?: boolean): void => {
             'worklet';
 
             if (
@@ -162,7 +164,7 @@ function UISearchControllerContent({
     );
 }
 
-export function UISearchController({ forId, ...props }: UISearchControllerProps) {
+export function UISearchController({ forId, onDidHide, ...props }: UISearchControllerProps) {
     const { visible, children } = props;
     const [isVisible, setIsVisible] = React.useState(visible);
 
@@ -175,7 +177,11 @@ export function UISearchController({ forId, ...props }: UISearchControllerProps)
 
     const onClosed = React.useCallback((): void => {
         setIsVisible(false);
-    }, [setIsVisible]);
+
+        if (onDidHide) {
+            onDidHide();
+        }
+    }, [onDidHide]);
 
     const progress: Readonly<Animated.SharedValue<number>> = useProgress(visible, onClosed);
 

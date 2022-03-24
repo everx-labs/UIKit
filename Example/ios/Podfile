@@ -17,8 +17,10 @@ target 'Quiver UI' do
   pod 'UIKitInputs', :path => "../../kit/inputs/UIKitInputs.podspec"
   pod 'UIKitControls', :path => "../../kit/controls/UIKitControls.podspec"
   pod 'UIKitMedia', :path => "../../kit/media/UIKitMedia.podspec"
+  pod 'UIKitScrolls', :path => "../../kit/scrolls/UIKitScrolls.podspec"
   pod 'UIKitLocalization', :path => "../../localization/UIKitLocalization.podspec"
   pod 'UIKitKeyboard', :path => "../../casts/keyboard/UIKitKeyboard.podspec"
+  pod 'react-native-video/VideoCaching', :path => '../../node_modules/react-native-video'
   
   target 'Quiver UITests' do
     inherit! :complete
@@ -32,6 +34,7 @@ target 'Quiver UI' do
   use_flipper!()
   post_install do |installer|
     react_native_post_install(installer)
+    __apply_Xcode_12_5_M1_post_install_workaround(installer)
     installer.pods_project.targets.each do |target|
       target.build_configurations.each do |config|
         config.build_settings['OTHER_CPLUSPLUSFLAGS'] = '-DDONT_AUTOINSTALL_REANIMATED'

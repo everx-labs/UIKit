@@ -1,3 +1,5 @@
+import type { UIImageProps } from '@tonlabs/uikit.media';
+
 // eslint-disable-next-line no-shadow
 export enum UIAlertViewActionType {
     Neutral = 'Neutral',
@@ -18,7 +20,13 @@ export type UIAlertViewActionProps = {
      * The callback that is called when tapping on the action
      */
     onPress: () => void;
+    /**
+     * ID for usage in tests
+     */
+    testID?: string;
 };
+
+export type UIAlertViewIcon = Pick<UIImageProps, 'source' | 'tintColor'>;
 
 export type UIAlertViewContainerProps = {
     /**
@@ -33,6 +41,10 @@ export type UIAlertViewContainerProps = {
      * Note of the Alert
      */
     note?: string;
+    /**
+     * Icon in the header of the Alert
+     */
+    icon?: UIAlertViewIcon;
     /**
      * List of UIAlertView.Action
      * There can be no more than one child with the "Cancel" UIAlertViewActionType.

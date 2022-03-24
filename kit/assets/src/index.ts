@@ -61,6 +61,7 @@ import iconButtonPlus from './resources/btn_plus/btn_plus.png';
 import iconButtonPlusDisabled from './resources/btn_plus_disabled/btn_plus_disabled.png';
 import iconButtonStickerEnabled from './resources/btn_sticker_enabled/stickerEnabled.png';
 import iconButtonStickerDisabled from './resources/btn_sticker_disabled/stickerDisabled.png';
+import iconArrowDownWhite from './resources/ico-arrow-down/ico-arrow-down-white.png';
 import iconArrowLeft from './resources/ico-arrow-left/ico-arrow-left.png';
 import iconArrowLeftBlack from './resources/ico-arrow-left/ico-arrow-left-black.png';
 import iconArrowRight from './resources/ico-arrow-right/ico-arrow-right.png';
@@ -68,6 +69,8 @@ import iconArrowRightPrimary from './resources/ico-arrow-right/arrow-right-prima
 import iconArrowRightPrimaryMinus from './resources/ico-arrow-right/arrow-right-primary-minus.png';
 import iconArrowRightWhite from './resources/ico-arrow-right/arrow-right-white.png';
 import iconArrowUpRight from './resources/ico-arrow-up-right/arrow-up-right.png';
+import iconBlankMiddle from './resources/ico-blank-middle/blank-middle.png';
+import iconBlankUp from './resources/ico-blank-up/blank-up.png';
 import iconCamera from './resources/ico-camera/ico-camera.png';
 import iconCheckboxCircleActive from './resources/ico-checkbox-circle-active/ico-checkbox-circle-active.png';
 import iconCheckboxCircleActiveInverted from './resources/ico-checkbox-circle-active/ico-checkbox-circle-active-inverted.png';
@@ -117,8 +120,6 @@ import iconKeyThinGrey from './resources/key-thin/key-thin-grey.png';
 import iconKeyThinWhite from './resources/key-thin/key-thin-white.png';
 import iconWarn from './resources/ico-warn/ico-warn.png';
 
-import iconLogoGramLabel from './resources/logo/gram-label/gram-label.png';
-import iconLogoTonLabelWhite from './resources/logo/ton-label/ton-label-white.png';
 import iconLogoTonlabsBlack from './resources/logo/tonlabs/tonlabs-black.png';
 import iconLogoTonlabsPrimaryMinus from './resources/logo/tonlabs/tonlabs-primary-minus.png';
 
@@ -207,6 +208,7 @@ export const UIAssets = {
             buttonPlusDisabled: iconButtonPlusDisabled,
             buttonStickerDisabled: iconButtonStickerDisabled,
             buttonStickerEnabled: iconButtonStickerEnabled,
+            arrowDownWhite: iconArrowDownWhite,
             arrowLeft: iconArrowLeft,
             arrowLeftBlack: iconArrowLeftBlack,
             arrowRight: iconArrowRight,
@@ -214,6 +216,8 @@ export const UIAssets = {
             arrowRightPrimaryMinus: iconArrowRightPrimaryMinus,
             arrowRightWhite: iconArrowRightWhite,
             arrowUpRight: iconArrowUpRight,
+            blankMiddle: iconBlankMiddle,
+            blankUp: iconBlankUp,
             camera: iconCamera,
             checkboxCircleActive: iconCheckboxCircleActive,
             checkboxCircleActiveInverted: iconCheckboxCircleActiveInverted,
@@ -265,8 +269,6 @@ export const UIAssets = {
         },
 
         logo: {
-            gramLabel: iconLogoGramLabel,
-            tonLabel: iconLogoTonLabelWhite,
             tonlabsBlack: iconLogoTonlabsBlack,
             tonlabsPrimary: iconLogoTonlabsPrimaryMinus,
         },

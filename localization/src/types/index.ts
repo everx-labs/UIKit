@@ -36,6 +36,10 @@ export type NumberFormatInfo = {
     thousands: string;
     decimal: string;
     decimalGrouping: string;
+    /**
+     * A list of characters that will be automatically replaced with a decimal separator
+     */
+    decimalAlternative: string[];
 };
 
 export type NumberParts = {
@@ -58,6 +62,7 @@ export type DateFormatInfo = {
     separator: string;
     localePattern: string;
     components: string[];
+    dayOfWeek: number;
 };
 
 export type StringLocaleInfo = {
@@ -67,7 +72,26 @@ export type StringLocaleInfo = {
 };
 
 export type LocalizationServiceMethods = Omit<LocalizedStringsMethods, 'formatString'> & {
+    languages: Language[];
+    localeInfo: StringLocaleInfo;
     formatString(str: string, ...values: string[]): string;
+    setLanguages(languages: Language[]): void;
+    amountToLocale(
+        value: BigNumber | string | number | unknown,
+        options?: NumberPartsOptions,
+        localeInfo?: StringLocaleInfo,
+    ): string;
+    localizedStringForValue(value: number, base: string): string;
+    changeLocaleInfo(localeInfo: StringLocaleInfo): void;
+    changeLanguage(language: Language): void;
+    formatTime(time: number | Date, format?: string): string;
+    formatDate(time: number | Date): string;
+    formatDateOnly(date: number | Date): string;
+    getFirstDayOfWeek(): number;
+    decimalSeparator: string;
+    languageName: string;
+    dayJSLocale: string;
+    getLanguageFromString(language: string): Language;
 };
 
 export type LanguageInfo = {

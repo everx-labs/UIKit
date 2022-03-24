@@ -9,6 +9,7 @@ import java.util.Map;
 import java.text.DecimalFormatSymbols;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -40,6 +41,16 @@ public class UIKitLocalizationModule extends ReactContextBaseJavaModule {
         numbers.put("thousands", Character.toString(symbols.getGroupingSeparator()));
         numbers.put("decimal", Character.toString(symbols.getDecimalSeparator()));
         numbers.put("decimalGrouping", "\u2009");
+        numbers.put("decimalAlternative", new String[] {
+                "\u044E",
+                "\u0431",
+                "/",
+                "?",
+                "<",
+                ">",
+                ",",
+                "."
+        });
 
         final Map<String, Object> dates = new HashMap<>();
         WritableNativeArray components = new WritableNativeArray();
@@ -51,6 +62,10 @@ public class UIKitLocalizationModule extends ReactContextBaseJavaModule {
         dates.put("separator", dateInfo.getSeparator());
         dates.put("localePattern", dateInfo.getLocalePattern());
         dates.put("components", components);
+
+        Calendar calendar = Calendar.getInstance();
+
+        dates.put("dayOfWeek", calendar.getFirstDayOfWeek());
 
         final Map<String, Object> localeInfo = new HashMap<>();
         localeInfo.put("numbers", numbers);

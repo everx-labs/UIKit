@@ -4,6 +4,7 @@ import Animated from 'react-native-reanimated';
 
 import { ScrollableContext } from '../Context';
 import { useHasScroll } from './useHasScroll';
+import type { ScrollableAdditionalProps } from './types';
 
 export function wrapScrollableComponent<Props extends ScrollViewProps>(
     ScrollableComponent: React.ComponentClass<Props>,
@@ -12,10 +13,28 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
     const AnimatedScrollable = Animated.createAnimatedComponent(ScrollableComponent);
 
     function ScrollableForwarded(
-        props: Props & { children?: React.ReactNode },
+        {
+            containerStyle = { flex: 1 },
+            automaticallyAdjustContentInsets,
+            automaticallyAdjustKeyboardInsets,
+            keyboardInsetAdjustmentBehavior,
+            contentInset,
+            ...props
+        }: Props &
+            ScrollableAdditionalProps & {
+                children?: React.ReactNode;
+            },
         forwardRef: React.RefObject<typeof AnimatedScrollable>,
     ) {
-        const { onLayout, onContentSizeChange } = useHasScroll();
+        const {
+            horizontal,
+            onLayout: onLayoutProp,
+            onContentSizeChange: onContentSizeChangeProp,
+        } = props;
+        const { onLayout, onContentSizeChange } = useHasScroll(
+            onLayoutProp,
+            onContentSizeChangeProp,
+        );
 
         const { ref, scrollHandler, registerScrollable, unregisterScrollable } =
             React.useContext(ScrollableContext);
@@ -38,15 +57,19 @@ export function wrapScrollableComponent<Props extends ScrollViewProps>(
         });
 
         return (
-            <Animated.View style={{ flex: 1 }}>
+            <Animated.View style={containerStyle}>
                 {/* @ts-ignore */}
                 <AnimatedScrollable
                     {...props}
                     ref={ref}
-                    onScrollBeginDrag={scrollHandler}
+                    onScrollBeginDrag={horizontal ? undefined : scrollHandler}
                     scrollEventThrottle={16}
-                    onLayout={onLayout}
-                    onContentSizeChange={onContentSizeChange}
+                    onLayout={horizontal ? undefined : onLayout}
+                    onContentSizeChange={horizontal ? undefined : onContentSizeChange}
+                    automaticallyAdjustContentInsets={automaticallyAdjustContentInsets}
+                    automaticallyAdjustKeyboardInsets={automaticallyAdjustKeyboardInsets}
+                    keyboardInsetAdjustmentBehavior={keyboardInsetAdjustmentBehavior}
+                    contentInset={contentInset}
                 />
             </Animated.View>
         );

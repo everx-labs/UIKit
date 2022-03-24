@@ -14,19 +14,17 @@ node_modules/react-native/Libraries/polyfills/.*
 ; Flow doesn't support platforms
 .*/Libraries/Utilities/LoadingView.js
 
+; Ignore next due to: https://github.com/browserify/resolve/issues/262
+.*/node_modules/resolve/.*
+
 [untyped]
 .*/lib/commonjs/.*
 .*/lib/module/.*
 .*/node_modules/@react-native-community/cli/.*/.*
-.*/node_modules/react-native-safe-area/.*
-.*/node_modules/react-native-share/.*
-.*/node_modules/@react-native-clipboard/.*
 
 ; TODO: migrate the following packages on TS or remove as the current flow annotation is not actual; TODO: migrate the following packages on TS or remove as the current flow annotation is not actual
 .*/packages/core/.*
 .*/packages/components/.*
-.*/packages/legacy/.*
-.*/packages/navigation_legacy/.*
 
 [include]
 
@@ -40,6 +38,8 @@ emoji=true
 sharedmemory.hash_table_pow=21
 
 exact_by_default=true
+
+format.bracket_spacing=false
 
 module.file_ext=.js
 module.file_ext=.json
@@ -77,4 +77,4 @@ untyped-import
 untyped-type-import
 
 [version]
-^0.149.0
+^0.162.0

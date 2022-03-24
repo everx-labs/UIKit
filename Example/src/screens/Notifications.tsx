@@ -5,7 +5,6 @@ import { View } from 'react-native';
 import { UILinkButton, UIBoxButton, UIBoxButtonVariant } from '@tonlabs/uikit.controls';
 import { UILabel } from '@tonlabs/uikit.themes';
 import { UIPopup, UINoticeColor } from '@tonlabs/uikit.popups';
-import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
 
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -52,10 +51,8 @@ function PushPopup() {
     );
 }
 
-export function Notifications() {
-    const [noticeColor, setNoticeColor] = React.useState<UINoticeColor>(
-        UINoticeColor.PrimaryInverted,
-    );
+export function NotificationsScreen() {
+    const [noticeColor, setNoticeColor] = React.useState<UINoticeColor>(UINoticeColor.Primary);
     const [hasCountdown, setHasCountdown] = React.useState<boolean>(true);
     const [visibleBottomToastNotice, setVisibleBottomToastNotice] = React.useState<boolean>(false);
     const [visibleTopToastNotice, setVisibleTopToastNotice] = React.useState<boolean>(false);
@@ -89,11 +86,11 @@ export function Notifications() {
                         <UIBoxButton
                             title="PrimaryInverted"
                             variant={
-                                noticeColor === UINoticeColor.PrimaryInverted
+                                noticeColor === UINoticeColor.Primary
                                     ? UIBoxButtonVariant.Positive
                                     : UIBoxButtonVariant.Neutral
                             }
-                            onPress={() => setNoticeColor(UINoticeColor.PrimaryInverted)}
+                            onPress={() => setNoticeColor(UINoticeColor.Primary)}
                             layout={{
                                 marginBottom: 4,
                             }}
@@ -189,22 +186,5 @@ export function Notifications() {
                 <PushPopup />
             </ExampleSection>
         </ExampleScreen>
-    );
-}
-
-const NotificationsStack = createStackNavigator();
-
-export function NotificationsScreen() {
-    return (
-        <NotificationsStack.Navigator>
-            <NotificationsStack.Screen
-                name="NotificationsWindow"
-                options={{
-                    useHeaderLargeTitle: true,
-                    title: 'Notifications',
-                }}
-                component={Notifications}
-            />
-        </NotificationsStack.Navigator>
     );
 }

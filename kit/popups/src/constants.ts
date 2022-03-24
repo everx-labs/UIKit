@@ -18,4 +18,11 @@ export const UIConstant = {
     defaultNoticeHeight: 72, // Using when notice has not yet been measured
     longPressDelay: 200,
     iconPushSize: 40,
+    menu: {
+        width: 256,
+    },
+    tooltip: {
+        maxWidth: 256,
+        borderRadius: 12,
+    },
 };

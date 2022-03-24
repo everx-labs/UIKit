@@ -1,7 +1,7 @@
 /* eslint-disable global-require */
 // @flow
 import * as React from 'react';
-import { Platform, TextInput, View, StyleSheet, Image } from 'react-native';
+import { Platform, View, StyleSheet } from 'react-native';
 
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type {
@@ -10,9 +10,8 @@ import type {
     AutoCapitalize,
 } from 'react-native/Libraries/Components/TextInput/TextInput';
 
-import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIColor, UIConstant, UIStyle } from '@tonlabs/uikit.core';
-import type { UIColorThemeNameType, EventProps } from '@tonlabs/uikit.core';
+import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import type { EventProps } from '@tonlabs/uikit.core';
 import { UITextView } from '@tonlabs/uikit.inputs';
 import { UILinkButton, UILinkButtonSize, UILinkButtonVariant } from '@tonlabs/uikit.controls';
 import {
@@ -23,7 +22,6 @@ import {
     useTheme,
 } from '@tonlabs/uikit.themes';
 
-import UIActionImage from '../UIActionImage';
 import { UIActionComponent } from '../UIActionComponent';
 import type { UIActionComponentProps, UIActionComponentState } from '../UIActionComponent';
 
@@ -50,9 +48,6 @@ const styles = StyleSheet.create({
     },
     commentStyle: {
         zIndex: -1,
-    },
-    prefixIcon: {
-        marginRight: UIConstant.smallContentOffset(),
     },
 });
 
@@ -216,10 +211,6 @@ export type UIDetailsInputProps = UIActionComponentProps & {
     */
     maxHeight?: number,
     /**
-    @ignore
-    */
-    needArrow?: boolean,
-    /**
     Callback that is called when the text input is blurred.
     */
     onBlur: () => void,
@@ -317,10 +308,6 @@ export type UIDetailsInputProps = UIActionComponentProps & {
     */
     submitDisabled?: boolean,
     /**
-    @ignore
-    */
-    theme?: UIColorThemeNameType,
-    /**
     The token symbol
     */
     token?: string | React$Element<any>,
@@ -338,16 +325,6 @@ export type UIDetailsInputProps = UIActionComponentProps & {
     @ignore
     */
     testID?: string,
-    /**
-    Prefix icon
-    @default null
-    */
-    prefixIcon?: ?string,
-    /**
-    Prefix icon color
-    @default null
-    */
-    prefixIconColor?: ?string,
     /**
     ID for InputAccessoryView
     */
@@ -731,16 +708,6 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
         );
     }
 
-    renderPrefixIcon() {
-        const { prefixIcon, prefixIconColor } = this.props;
-        if (!prefixIcon) return null;
-
-        const styleColor = prefixIconColor
-            ? UIStyle.color.getTintColorStyle(prefixIconColor)
-            : null;
-        return <Image source={this.props.prefixIcon} style={[styles.prefixIcon, styleColor]} />;
-    }
-
     renderBeginningTag() {
         const beginningTag = this.beginningTag();
         const emptyValue = !this.props.value || !this.props.value.length;
@@ -907,30 +874,6 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
         );
     }
 
-    renderArrow() {
-        const { theme, needArrow } = this.props;
-        if (!needArrow) {
-            return null;
-        }
-        let icons = {};
-        if (theme === UIColor.Theme.Action) {
-            icons = {
-                iconEnabled: UIAssets.icons.ui.arrowRightPrimary,
-                iconHovered: UIAssets.icons.ui.arrowRightWhite,
-                iconDisabled: UIAssets.icons.ui.arrowRightPrimaryMinus,
-            };
-        }
-
-        return (
-            <UIActionImage
-                {...icons}
-                source={theme === UIColor.Theme.Light && UIAssets.icons.ui.arrowRight}
-                disabled={this.isSubmitDisabled()}
-                onPress={this.onSubmitEditing}
-            />
-        );
-    }
-
     renderRightComponent() {
         if (this.props.renderRightComponentOnlyOnFocus && !this.isFocused()) {
             return null;
@@ -969,7 +912,6 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
     renderTextFragment(): React$Node {
         return (
             <React.Fragment>
-                {this.renderPrefixIcon()}
                 {this.renderBeginningTag()}
                 <View style={UIStyle.container.screen()}>
                     {this.renderAuxTextInput()}
@@ -979,7 +921,6 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
                 {this.renderCounter()}
                 {this.renderToken()}
                 {this.renderButton()}
-                {this.renderArrow()}
                 {this.renderRightComponent()}
             </React.Fragment>
         );
@@ -987,7 +928,7 @@ export class UIDetailsInput<Props, State> extends UIActionComponent<
 
     renderTextView() {
         const { hideBottomLine, bottomLineColor, mandatory, mandatoryColor } = this.props;
-        const bottomLine = hideBottomLine ? null : UIStyle.border.bottom();
+        const bottomLine = hideBottomLine ? null : { borderBottomWidth: 1 };
 
         return (
             <TextViewWrapper
@@ -1137,7 +1078,6 @@ UIDetailsInput.defaultProps = {
     mandatory: false,
     mandatoryColor: ColorVariants.LineNegative,
     maxLines: 1,
-    needArrow: false,
     noPersonalizedLearning: false,
     onBlur: () => {},
     onChangeText: () => {},
@@ -1155,10 +1095,7 @@ UIDetailsInput.defaultProps = {
     showSymbolsLeft: false,
     style: null,
     submitDisabled: false,
-    theme: UIColor.Theme.Light,
     value: '',
     visible: true,
-    prefixIcon: null,
-    prefixIconColor: null,
     copyingLocked: false,
 };

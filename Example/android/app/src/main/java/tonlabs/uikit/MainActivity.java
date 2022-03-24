@@ -1,5 +1,7 @@
 package tonlabs.uikit;
 
+import androidx.core.view.WindowCompat;
+
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
@@ -26,6 +28,7 @@ public class MainActivity extends ReactActivity {
                 RNGestureHandlerEnabledRootView rootView = new RNGestureHandlerEnabledRootView(MainActivity.this);
 
                 UIKitKeyboardFrameListener.attach(MainActivity.this, rootView);
+                WindowCompat.setDecorFitsSystemWindows(MainActivity.this.getWindow(), false);
 
                 return rootView;
             }

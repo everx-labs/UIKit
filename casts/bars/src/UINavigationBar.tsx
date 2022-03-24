@@ -15,7 +15,7 @@ import {
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIConstant as UINavConstant } from './constants';
-import { UIHeaderItems } from './UIHeaderItems';
+import { UIHeaderItems, hitSlop } from './UIHeaderItems';
 import type { HeaderItem } from './UIHeaderItems';
 import { useNavigationHeaderLeftItems } from './useNavigationHeaderLeftItems';
 
@@ -104,7 +104,7 @@ type PrivateProps = {
     headerTitleOpacity?: Animated.SharedValue<number>;
 };
 
-export function UINavigationBar({
+export const UINavigationBar = React.memo(function UINavigationBar({
     testID,
     headerLeft,
     headerLeftItems,
@@ -191,15 +191,12 @@ export function UINavigationBar({
             </View>
         </UIBackgroundView>
     );
-}
+});
 
 const styles = StyleSheet.create({
     container: {
         height: UILayoutConstant.headerHeight,
         flexDirection: 'row',
-        alignItems: 'center',
-        paddingVertical: UILayoutConstant.contentInsetVerticalX2,
-        paddingHorizontal: UINavConstant.scrollContentInsetHorizontal,
         flexWrap: 'nowrap',
     },
     titleContainer: {
@@ -232,11 +229,20 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         overflow: 'hidden',
+        // Since we don't use real hitSlop
+        // but padding instead,
+        // need to apply padding here to compensate
+        // applied insets for UIHeaderItem
+        // e.g. it's 13 for a button,
+        // and since we have 16 by design here
+        // it should be 16 - 13 = 3
+        paddingLeft: UINavConstant.scrollContentInsetHorizontal - hitSlop.left,
     },
     headerRightItems: {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-end',
         overflow: 'hidden',
+        paddingRight: UINavConstant.scrollContentInsetHorizontal - hitSlop.right,
     },
 });

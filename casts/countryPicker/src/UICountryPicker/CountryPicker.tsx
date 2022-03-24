@@ -1,12 +1,13 @@
 import React from 'react';
 import Fuse from 'fuse.js';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { View, useWindowDimensions } from 'react-native';
+import { View, Platform, Keyboard } from 'react-native';
+import { useKeyboard } from '@react-native-community/hooks';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
 import { UISearchBar } from '@tonlabs/uicast.bars';
-import { UIBottomSheet } from '@tonlabs/uikit.popups';
+import { UIModalSheet } from '@tonlabs/uikit.popups';
 import { FlatList } from '@tonlabs/uikit.scrolls';
 import { UILinkButton } from '@tonlabs/uikit.controls';
 import {
@@ -17,7 +18,12 @@ import {
     Theme,
     makeStyles,
 } from '@tonlabs/uikit.themes';
-import type { CountriesArray, Country, WrappedCountryPickerProps } from './types';
+import type {
+    CountriesArray,
+    Country,
+    WrappedCountryPickerProps,
+    CountryPickerProps,
+} from './types';
 import { CountryPickerRow } from './CountryPickerRow';
 import { ListEmptyComponent } from './ListEmptyComponent';
 import { CountryPickerContext } from './CountryPickerContext';
@@ -38,37 +44,53 @@ const fuseOptions = {
     keys: ['name'],
 };
 
-function returnCountryRow({ item }: { item: Country }) {
+const isAndroid = Platform.OS === 'android';
+
+function renderCountryRow({ item }: { item: Country }) {
     return <CountryPickerRow item={item} />;
 }
 
-export function CountryPicker({
+const keyExtractor = (item: Country) => item.code;
+
+function SearchHeader({
+    searching,
+    onSearch,
     onClose,
-    onSelect,
-    visible,
-    banned = [],
-    permitted = [],
-}: WrappedCountryPickerProps) {
-    const { height } = useWindowDimensions();
-
+}: {
+    searching: boolean;
+    onSearch: (text: string) => void;
+    onClose: () => void;
+}) {
     const theme = useTheme();
-    const styles = useStyles(theme, height);
+    const styles = useStyles(theme);
 
+    return (
+        <View style={styles.headerContainer}>
+            <View style={styles.headerTitleContainer}>
+                <View style={styles.sideHeaderView}>
+                    <UILinkButton onPress={onClose} title={uiLocalized.Cancel} />
+                </View>
+                <UILabel role={TypographyVariants.HeadlineHead} style={styles.headerTitle}>
+                    {uiLocalized.CountryPicker.Title}
+                </UILabel>
+                <View style={styles.sideHeaderView} />
+            </View>
+            <UISearchBar searching={searching} returnKeyType="done" onChangeText={onSearch} />
+        </View>
+    );
+}
+
+function useCountriesSearch(
+    banned: WrappedCountryPickerProps['banned'] = [],
+    permitted: WrappedCountryPickerProps['permitted'] = [],
+) {
     const [loading, setLoading] = React.useState(true);
 
     const [search, setSearch] = React.useState('');
+    const [searching, setSearching] = React.useState(false);
     const [countriesList, setCountriesList] = React.useState<CountriesArray>([]);
     const [filteredList, setFilteredList] = React.useState(countriesList);
-    const fuse = React.useMemo(() => new Fuse(filteredList, fuseOptions), [filteredList]);
-
-    const insets = useSafeAreaInsets();
-    const contentInset = React.useMemo(
-        () => ({
-            top: 0, // without it adds some additional space on iOS
-            bottom: insets.bottom + UIConstant.contentOffset() + UIConstant.buttonHeight(),
-        }),
-        [insets?.bottom],
-    );
+    const fuse = React.useMemo(() => new Fuse(countriesList, fuseOptions), [countriesList]);
 
     const checkIncludes = React.useCallback(
         (code: string) => {
@@ -98,8 +120,17 @@ export function CountryPicker({
     }, [countriesList]);
 
     React.useEffect(() => {
-        const result = search ? fuse.search(search) : countriesList;
-        setFilteredList(result as CountriesArray);
+        if (search.length === 0) {
+            setFilteredList(countriesList);
+            return;
+        }
+        setSearching(true);
+
+        requestAnimationFrame(() => {
+            const result = fuse.search(search);
+            setSearching(false);
+            setFilteredList(result as CountriesArray);
+        });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search]);
 
@@ -121,52 +152,83 @@ export function CountryPicker({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const renderSearchHeader = () => {
-        return (
-            <View style={styles.headerContainer}>
-                <View style={styles.headerTitleContainer}>
-                    <View style={styles.sideHeaderView}>
-                        <UILinkButton onPress={onClose} title={uiLocalized.Cancel} />
-                    </View>
-                    <UILabel role={TypographyVariants.HeadlineHead} style={styles.headerTitle}>
-                        {uiLocalized.CountryPicker.Title}
-                    </UILabel>
-                    <View style={styles.sideHeaderView} />
-                </View>
-                <UISearchBar returnKeyType="done" value={search} onChangeText={setSearch} />
-            </View>
-        );
+    return {
+        loading,
+        searching,
+        onSearch: setSearch,
+        countries: filteredList,
     };
+}
 
-    const keyExtractor = React.useCallback((item: Country) => item.code, []);
+function CountryPickerContent({ banned, permitted, onClose, onSelect }: CountryPickerProps) {
+    const insets = useSafeAreaInsets();
+    const { keyboardShown, keyboardHeight } = useKeyboard();
+
+    const contentContainerStyle = React.useMemo(
+        () => ({
+            paddingBottom: keyboardShown ? keyboardHeight : insets.bottom,
+        }),
+        [insets?.bottom, keyboardShown, keyboardHeight],
+    );
+    const scrollIndicatorInsets = React.useMemo(
+        () => ({
+            top: 0,
+            bottom: keyboardShown ? keyboardHeight : insets.bottom,
+        }),
+        [insets?.bottom, keyboardShown, keyboardHeight],
+    );
+
+    const hideKeyboard = React.useCallback(() => {
+        // Keyboard doesn't want to hide on Android
+        // so we have to forcibly hide the keyboard
+        isAndroid && Keyboard.dismiss();
+    }, []);
+
+    const { loading, searching, countries, onSearch } = useCountriesSearch(banned, permitted);
 
     return (
-        <UIBottomSheet
-            onClose={onClose}
-            visible={visible}
-            style={styles.sheet}
-            shouldHandleKeyboard={false}
-        >
-            {renderSearchHeader()}
+        <>
+            <SearchHeader searching={searching} onClose={onClose} onSearch={onSearch} />
             <CountryPickerContext.Provider value={{ loading, onSelect }}>
                 <FlatList
-                    data={filteredList}
-                    renderItem={returnCountryRow}
+                    data={countries}
+                    renderItem={renderCountryRow}
                     keyExtractor={keyExtractor}
                     ListEmptyComponent={ListEmptyComponent}
                     keyboardDismissMode="interactive"
-                    contentInset={contentInset}
+                    onMomentumScrollBegin={hideKeyboard}
+                    contentContainerStyle={contentContainerStyle}
+                    scrollIndicatorInsets={scrollIndicatorInsets}
+                    automaticallyAdjustContentInsets
+                    automaticallyAdjustKeyboardInsets
                 />
             </CountryPickerContext.Provider>
-        </UIBottomSheet>
+        </>
     );
 }
 
-const useStyles = makeStyles((theme: Theme, height: number) => ({
+export function CountryPicker({ visible, ...countryPickerProps }: WrappedCountryPickerProps) {
+    const theme = useTheme();
+    const styles = useStyles(theme);
+
+    const { onClose } = countryPickerProps;
+
+    return (
+        <UIModalSheet
+            onClose={onClose}
+            visible={visible}
+            style={styles.sheet}
+            maxMobileWidth={UIConstant.elasticWidthNormal()}
+        >
+            <CountryPickerContent {...countryPickerProps} />
+        </UIModalSheet>
+    );
+}
+
+const useStyles = makeStyles((theme: Theme) => ({
     sheet: {
         backgroundColor: theme[ColorVariants.BackgroundPrimary] as string,
         borderRadius: 10,
-        height,
     },
     headerContainer: {
         backgroundColor: theme[ColorVariants.BackgroundPrimary] as string,

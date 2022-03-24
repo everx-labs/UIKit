@@ -6,16 +6,14 @@ buildscript {
         minSdkVersion = 21
         compileSdkVersion = 30
         targetSdkVersion = 30
-        ndkVersion = "20.1.5948944"
+        ndkVersion = "21.4.7075529"
     }
     repositories {
         google()
         mavenCentral()
-        jcenter() // TODO: jcenter is deprecated, to be removed soon (Feb 2022)!
-        // TODO: need to update or get rid from `react-native-image-picker` to remove jcenter
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.2.1")
+        classpath("com.android.tools.build:gradle:4.2.2")
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -25,10 +23,6 @@ buildscript {
 allprojects {
     repositories {
         google()
-        mavenCentral()
-        jcenter() // TODO: jcenter is deprecated, to be removed soon (Feb 2022)!
-        // TODO: need to update or get rid from `react-native-image-picker` to remove jcenter
-        mavenLocal()
         maven { url 'https://www.jitpack.io' }
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
@@ -37,6 +31,13 @@ allprojects {
         maven {
             // Android JSC is installed from npm
             url("$rootDir/../../node_modules/jsc-android/dist")
+        }
+        mavenCentral {
+            // We don't want to fetch react-native from Maven Central as there are
+            // older versions over there.
+            content {
+                excludeGroup "com.facebook.react"
+            }
         }
     }
 }

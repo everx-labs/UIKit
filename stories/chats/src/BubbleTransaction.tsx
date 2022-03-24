@@ -69,12 +69,10 @@ const getBubbleCornerStyle = (position: BubblePosition) => {
     return null;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getAmountColor = (_message: TransactionMessage) => {
     return UILabelColors.StaticTextPrimaryLight;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getCommentColor = (_message: TransactionMessage) => {
     return UILabelColors.StaticTextOverlayLight;
 };
@@ -158,7 +156,7 @@ function BubbleTransactionMain(props: TransactionMessage) {
         <View
             testID={getContainerTestID(props)}
             style={[
-                UIStyle.Common.justifyCenter(),
+                UIStyle.common.justifyCenter(),
                 styles.trxCard,
                 bubbleStyle,
                 getBubbleCornerStyle(position),
@@ -167,16 +165,16 @@ function BubbleTransactionMain(props: TransactionMessage) {
         >
             <View
                 style={[
-                    UIStyle.Common.flexRow(),
-                    UIStyle.Margin.bottomTiny(),
-                    UIStyle.Common.justifyStart(),
+                    UIStyle.common.flexRow(),
+                    UIStyle.margin.bottomTiny(),
+                    UIStyle.common.justifyStart(),
                 ]}
             >
                 <UILabel role={UILabelRoles.PromoMedium} color={getAmountColor(props)}>
                     {balanceChange}
                 </UILabel>
             </View>
-            <View style={[UIStyle.Common.flexRow(), UIStyle.Common.justifyStart()]}>
+            <View style={[UIStyle.common.flexRow(), UIStyle.common.justifyStart()]}>
                 <TransactionSublabel {...props} />
             </View>
         </View>

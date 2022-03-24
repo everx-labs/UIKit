@@ -11,19 +11,16 @@ class ExampleComponent extends ThemeSwitcher {
 
     renderContent() {
         return (
-            <View style={UIStyle.greatCellHeight}>
-                <UIAmountInput
-                    theme={this.getTheme()}
-                    value={this.state.details}
-                    placeholder="Amount"
-                    comment="Some comment here"
-                    onChangeText={newText =>
-                        this.setState({
-                            details: newText,
-                        })
-                    }
-                />
-            </View>
+            <UIAmountInput
+                value={this.state.details}
+                placeholder="Amount"
+                comment="Some comment here"
+                onChangeText={newText =>
+                    this.setState({
+                        details: newText,
+                    })
+                }
+            />
         );
     }
 }

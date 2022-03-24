@@ -15,7 +15,13 @@ import Animated, {
     withRepeat,
     withTiming,
 } from 'react-native-reanimated';
-import { Typography, TypographyVariants, getFontMesurements } from '@tonlabs/uikit.themes';
+import {
+    Typography,
+    TypographyVariants,
+    ColorVariants,
+    getFontMesurements,
+    useTheme,
+} from '@tonlabs/uikit.themes';
 import { UIImage } from '@tonlabs/uikit.media';
 
 import { UICurrencySignIconAlign, UICurrencySignIconInlineHeight } from './types';
@@ -250,12 +256,22 @@ export const UICurrencySign = React.memo(function UICurrencySign({
     signIconAspectRatio,
     signIconInlineHeight = UICurrencySignIconInlineHeight.CapHeight,
     signIconAlign = UICurrencySignIconAlign.Middle,
-}: UICurrencySignProps) {
+    integerColor,
+}: UICurrencySignProps & {
+    integerColor: ColorVariants;
+}) {
+    const theme = useTheme();
     const assetSource = React.useMemo(() => resolveAssetSource(signIcon), [signIcon]);
 
     if (signChar) {
         return (
-            <Text style={[Typography[signVariant], styles.iconTextContainer]}>
+            <Text
+                style={[
+                    Typography[signVariant],
+                    styles.iconTextContainer,
+                    { color: theme[integerColor] },
+                ]}
+            >
                 {'\u00A0'}
                 {signChar}
             </Text>

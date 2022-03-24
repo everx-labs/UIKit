@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, StyleSheet, TextInput } from 'react-native';
+import { StyleSheet, TextInput } from 'react-native';
 import BigNumber from 'bignumber.js';
 
 import { ChatInputContainer } from '@tonlabs/uistory.chats';
@@ -14,6 +14,7 @@ import { UILabel, UILabelRoles, ColorVariants } from '@tonlabs/uikit.themes';
 import { uiLocalized } from '@tonlabs/localization';
 import type { OnHeightChange, OnSendAmount } from './types';
 import { ActionButton } from './ActionButton';
+import { useUIBrowserInputOnHeightChange } from './UIBrowserInputHeight';
 
 // eslint-disable-next-line no-shadow
 enum ValidationStatus {
@@ -379,33 +380,29 @@ type UIAmountInputProps = {
     max?: BigNumber;
 
     onSendAmount: OnSendAmount;
-    onHeightChange?: OnHeightChange;
 };
 
-export function UIAmountInput(props: UIAmountInputProps) {
+export function UIAmountInput({
+    placeholder,
+    decimals,
+    min,
+    max,
+    onSendAmount,
+}: UIAmountInputProps) {
     const textInputRef = React.useRef<TextInput>(null);
-    const { onHeightChange } = props;
 
-    React.useEffect(
-        () => () => {
-            if (onHeightChange) {
-                // If inputs is unmounted need to reset insets for list
-                onHeightChange(0);
-            }
-        },
-        [onHeightChange],
-    );
+    const onHeightChange = useUIBrowserInputOnHeightChange();
 
     return (
         <UIInputAccessoryView managedScrollViewNativeID="browserList">
             <UIAmountInputInternal
                 textInputRef={textInputRef}
-                placeholder={props.placeholder}
-                decimals={props.decimals}
-                min={props.min}
-                max={props.max}
-                onSendAmount={props.onSendAmount}
-                onHeightChange={Platform.OS === 'web' ? onHeightChange : undefined}
+                placeholder={placeholder}
+                decimals={decimals}
+                min={min}
+                max={max}
+                onSendAmount={onSendAmount}
+                onHeightChange={onHeightChange}
             />
         </UIInputAccessoryView>
     );

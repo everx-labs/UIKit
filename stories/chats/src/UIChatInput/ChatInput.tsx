@@ -4,13 +4,14 @@ import type { TextInput } from 'react-native';
 import { uiLocalized } from '@tonlabs/localization';
 import { UITextView, useAutogrowTextView } from '@tonlabs/uikit.inputs';
 import { UIPopup } from '@tonlabs/uikit.popups';
+import type { UIMenuActionProps } from '@tonlabs/uikit.popups';
 
 import { ChatInputContainer } from './ChatInputContainer';
 import { MenuPlus } from './MenuPlus';
 import { MenuMore } from './MenuMore';
 import { QuickAction } from './QuickActions';
 import { useChatInputValue } from './useChatInputValue';
-import type { MenuItem, QuickActionItem, OnSendText, Shortcut } from './types';
+import type { QuickActionItem, OnSendText, Shortcut } from './types';
 
 const MAX_INPUT_LENGTH = 2 ** 10;
 
@@ -22,9 +23,9 @@ type ChatInputProps = {
     editable: boolean;
     placeholder?: string;
     shortcuts?: Shortcut[];
-    menuPlus?: MenuItem[];
+    menuPlus?: UIMenuActionProps[];
     menuPlusDisabled?: boolean;
-    menuMore?: MenuItem[];
+    menuMore?: UIMenuActionProps[];
     menuMoreDisabled?: boolean;
     quickActions?: QuickActionItem[];
     inputHidden?: boolean;
@@ -37,9 +38,31 @@ type ChatInputProps = {
     onFocus: () => void;
     onBlur?: () => void;
     onMaxLength?: (maxLength: number) => void;
+
+    onHeightChange?: (height: number) => void;
 };
 
-export function ChatInput(props: ChatInputProps) {
+export function ChatInput({
+    textInputRef,
+    onSendText: onSendTextProp,
+    onMaxLength: onMaxLengthProp,
+    customKeyboardButton,
+    customKeyboardVisible,
+    shortcuts,
+    menuPlus,
+    menuPlusDisabled,
+    menuMore,
+    menuMoreDisabled,
+    editable,
+    onCustomKeyboardPress,
+    quickActions,
+    inputHidden,
+    autoFocus,
+    placeholder,
+    onFocus,
+    onBlur,
+    onHeightChange,
+}: ChatInputProps) {
     const {
         onContentSizeChange,
         onChange,
@@ -47,7 +70,7 @@ export function ChatInput(props: ChatInputProps) {
         numberOfLines,
         numberOfLinesProp,
         resetInputHeight,
-    } = useAutogrowTextView(props.textInputRef, undefined, CHAT_INPUT_NUM_OF_LINES);
+    } = useAutogrowTextView(textInputRef, undefined, CHAT_INPUT_NUM_OF_LINES);
 
     const [isNoticeVisible, setNoticeVisible] = React.useState(false);
 
@@ -60,21 +83,21 @@ export function ChatInput(props: ChatInputProps) {
     }, []);
 
     const { inputHasValue, onChangeText, onKeyPress, onSendText } = useChatInputValue({
-        ref: props.textInputRef,
-        onSendText: props.onSendText,
-        onMaxLength: props.onMaxLength || onMaxLength,
+        ref: textInputRef,
+        onSendText: onSendTextProp,
+        onMaxLength: onMaxLengthProp || onMaxLength,
         resetInputHeight,
         maxInputLength: MAX_INPUT_LENGTH,
     });
 
-    const CustomKeyboardButton = props.customKeyboardButton;
+    const CustomKeyboardButton = customKeyboardButton;
 
     const renderNotice = React.useCallback(() => {
-        if (props.onMaxLength == null) {
+        if (onMaxLengthProp == null) {
             return (
                 <UIPopup.Notice
                     type={UIPopup.Notice.Type.TopToast}
-                    color={UIPopup.Notice.Color.PrimaryInverted}
+                    color={UIPopup.Notice.Color.Primary}
                     visible={isNoticeVisible}
                     title={uiLocalized.formatString(
                         uiLocalized.Chats.Alerts.MessageTooLong,
@@ -86,56 +109,57 @@ export function ChatInput(props: ChatInputProps) {
             );
         }
         return null;
-    }, [hideNotice, isNoticeVisible, props.onMaxLength]);
+    }, [hideNotice, isNoticeVisible, onMaxLengthProp]);
 
     return (
         <ChatInputContainer
             numberOfLines={numberOfLines}
-            shortcuts={props.shortcuts}
+            shortcuts={shortcuts}
             left={
-                props.menuPlus?.length && props.menuPlus?.length > 0 ? (
-                    <MenuPlus menuPlus={props.menuPlus} menuPlusDisabled={props.menuPlusDisabled} />
+                menuPlus?.length && menuPlus?.length > 0 ? (
+                    <MenuPlus menuPlus={menuPlus} menuPlusDisabled={menuPlusDisabled} />
                 ) : null
             }
             right={
                 <>
                     {CustomKeyboardButton && (
                         <CustomKeyboardButton
-                            editable={props.editable}
-                            customKeyboardVisible={props.customKeyboardVisible}
+                            editable={editable}
+                            customKeyboardVisible={customKeyboardVisible}
                             inputHasValue={inputHasValue}
-                            onPress={props.onCustomKeyboardPress}
+                            onPress={onCustomKeyboardPress}
                         />
                     )}
                     <QuickAction
-                        quickActions={props.quickActions}
+                        quickActions={quickActions}
                         inputHasValue={inputHasValue}
                         onSendText={onSendText}
                     />
-                    <MenuMore menuMore={props.menuMore} menuMoreDisabled={props.menuMoreDisabled} />
+                    <MenuMore menuMore={menuMore} menuMoreDisabled={menuMoreDisabled} />
                 </>
             }
+            onHeightChange={onHeightChange}
         >
-            {props.inputHidden ? null : (
+            {inputHidden ? null : (
                 <UITextView
-                    ref={props.textInputRef}
+                    ref={textInputRef}
                     testID="chat_input"
                     autoCapitalize="sentences"
                     autoCorrect={false}
-                    autoFocus={props.autoFocus}
+                    autoFocus={autoFocus}
                     clearButtonMode="never"
                     keyboardType="default"
-                    editable={props.editable}
+                    editable={editable}
                     maxLength={MAX_INPUT_LENGTH}
                     multiline
                     numberOfLines={numberOfLinesProp}
-                    placeholder={props.placeholder ?? uiLocalized.TypeMessage}
+                    placeholder={placeholder ?? uiLocalized.TypeMessage}
                     onContentSizeChange={onContentSizeChange}
                     onChange={onChange}
                     onChangeText={onChangeText}
                     onKeyPress={onKeyPress}
-                    onFocus={props.onFocus}
-                    onBlur={props.onBlur}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
                     style={inputStyle}
                 />
             )}

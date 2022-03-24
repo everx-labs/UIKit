@@ -1,13 +1,22 @@
+import dayjs from 'dayjs';
+import { Platform } from 'react-native';
+
 import type { DateFormatInfo, NumberFormatInfo } from '../types';
 
 export function getNumberFormatInfo(): NumberFormatInfo {
     const formatParser = /111(\D*)222(\D*)333(\D*)444/g;
     const parts = formatParser.exec((111222333.444).toLocaleString()) || ['', '', '', '.'];
+    /**
+     * IMPORTANT!
+     * If you want to change this object,
+     * you also need to change the same object in the native localization files.
+     */
     return {
         grouping: parts[1],
         thousands: parts[2],
         decimal: parts[3],
         decimalGrouping: '\u2009',
+        decimalAlternative: ['\u044E', '\u0431', '/', '?', '<', '>', ',', '.'],
     };
 }
 
@@ -52,9 +61,14 @@ export function getDateFormatInfo(): DateFormatInfo {
     localePattern = `${localePattern}${symbols[components[1]]}`;
     localePattern = `${localePattern}${separator}${symbols[components[2]]}`;
 
+    // By default Sunday(0) - start of  week
+    // @ts-expect-error TS doesn't know about importing "weekday" in DayJSConfig.ts for web
+    const dayOfWeek = Platform.OS === 'web' ? dayjs().startOf('w').weekday() : 0;
+
     return {
         separator,
         localePattern,
         components,
+        dayOfWeek,
     };
 }

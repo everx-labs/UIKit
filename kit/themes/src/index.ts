@@ -17,6 +17,7 @@ export * from './Typography';
 export * from './UIBackgroundView';
 export * from './UILabel';
 export * from './UIStatusBar';
+export * from './UIAndroidNavigationBar';
 
 export * from './useWebFonts';
 export * from './makeStyles';

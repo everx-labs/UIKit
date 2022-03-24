@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import * as React from 'react';
 // @ts-expect-error
 import SpringConfig from 'react-native/Libraries/Animated/SpringConfig';
@@ -18,11 +19,12 @@ import Animated, {
     scrollTo,
 } from 'react-native-reanimated';
 
-import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { useHasScroll } from '@tonlabs/uikit.scrolls';
 
-import { getYWithRubberBandEffect } from '../../AnimationHelpers/getYWithRubberBandEffect';
+import { AnimationHelpers } from '@tonlabs/uikit.layout';
 import type { OnOpen, OnClose } from './types';
+
+const { getYWithRubberBandEffect } = AnimationHelpers;
 
 const OpenSpringConfig = {
     overshootClamping: false,
@@ -40,102 +42,174 @@ const CloseSpringConfig = {
     ...SpringConfig.fromBouncinessAndSpeed(1, 12),
 };
 
-// eslint-disable-next-line no-shadow
-enum SHOW_STATES {
-    CLOSE = 0,
-    CLOSING = 1,
-    OPEN = 2,
-    OPENING = 3,
-    DRAG = 4,
+// @inline
+const SHOW_STATE_CLOSE = 0;
+// @inline
+const SHOW_STATE_CLOSING = 1;
+// @inline
+const SHOW_STATE_OPEN = 2;
+// @inline
+const SHOW_STATE_OPENING = 3;
+// @inline
+// const SHOW_STATE_DRAG = 4;
+
+type ShowStates = 0 | 1 | 2 | 3 | 4;
+
+// @inline
+const SWIPE_THRESHOLD = 50; // UILayoutConstant.swipeThreshold
+// @inline
+const RUBBER_BAND_EFFECT_DISTANCE = 50; // UILayoutConstant.rubberBandEffectDistance
+
+function resetPosition(
+    normalizedPosition: Animated.SharedValue<number>,
+    showState: Animated.SharedValue<number>,
+    snapPoint: number,
+    onCloseProp: OnClose | undefined,
+) {
+    'worklet';
+
+    if (normalizedPosition.value - snapPoint > SWIPE_THRESHOLD) {
+        showState.value = SHOW_STATE_CLOSE;
+        if (onCloseProp) {
+            runOnJS(onCloseProp)();
+        }
+        return;
+    }
+    showState.value = SHOW_STATE_OPEN;
+}
+
+export const SheetReadyContext = React.createContext<Animated.SharedValue<boolean> | null>(null);
+
+export function useSheetReady() {
+    const ready = React.useContext(SheetReadyContext);
+
+    if (ready == null) {
+        throw new Error('Are you using `useIntrinsicSizeScrollView` not in `UISheet` context?');
+    }
+
+    return ready;
+}
+
+export const SheetProgressContext = React.createContext<Animated.SharedValue<number> | null>(null);
+
+/**
+ * Use it to get a relative progress of sheet placement
+ * without specific knowledge, like a sheet height or any other variables.
+ * The progress is a range from 0 to 1.
+ * 0 means a sheet is closed
+ * 1 means a sheet is open
+ */
+export function useSheetProgress() {
+    const progress = React.useContext(SheetProgressContext);
+
+    if (progress == null) {
+        throw new Error('Are you using `useSheetProgress` not in `UISheet` context?');
+    }
+
+    return progress;
 }
 
 export function usePosition(
     height: Animated.SharedValue<number>,
-    keyboardHeight: Animated.SharedValue<number>,
-    bottomInset: number,
+    origin: Animated.SharedValue<number>,
     hasOpenAnimation: boolean = true,
     hasCloseAnimation: boolean = true,
-    shouldHandleKeyboard: boolean = true,
-    countRubberBandDistance: boolean = false,
     onCloseProp: OnClose | undefined,
     onCloseModal: OnClose,
     onOpenEndProp: OnOpen | undefined,
     onCloseEndProp: OnClose | undefined,
 ) {
-    const showState = useSharedValue<SHOW_STATES>(SHOW_STATES.CLOSING);
+    const showState = useSharedValue<ShowStates>(SHOW_STATE_CLOSING);
 
     const animate = React.useCallback(
         (isShow: boolean) => {
             if (isShow) {
-                showState.value = SHOW_STATES.OPEN;
+                showState.value = SHOW_STATE_OPEN;
                 return;
             }
-            showState.value = SHOW_STATES.CLOSE;
+            showState.value = SHOW_STATE_CLOSE;
         },
         [showState],
     );
 
-    const position = useSharedValue(0);
+    /**
+     * A position from y=0, to not involve origin here,
+     * as it can be animated separately
+     */
+    const normalizedPosition = useSharedValue(0);
 
-    const snapPointPosition = useDerivedValue(() => {
-        let snapPoint = 0 - height.value;
-        if (shouldHandleKeyboard && keyboardHeight.value !== 0) {
-            snapPoint =
-                snapPoint -
-                keyboardHeight.value +
-                // At this point we don't want inset to be the size of
-                // safe area bottom inset, therefore trying to apply
-                // only `contentOffset`
-                bottomInset -
-                UILayoutConstant.contentOffset -
-                (countRubberBandDistance ? UILayoutConstant.rubberBandEffectDistance : 0);
-        }
-        return snapPoint;
+    const snapPoint = useDerivedValue(() => {
+        return 0 - height.value;
     });
+
+    const { hasScroll, hasScrollShared, setHasScroll } = useHasScroll();
+
+    /**
+     * Position starting from origin,
+     * that is used in animated `style`
+     */
+    const position = useDerivedValue(() => {
+        if (normalizedPosition.value < snapPoint.value) {
+            if (hasScrollShared.value) {
+                return origin.value + snapPoint.value;
+            }
+            return (
+                origin.value +
+                snapPoint.value -
+                getYWithRubberBandEffect(
+                    snapPoint.value - normalizedPosition.value,
+                    RUBBER_BAND_EFFECT_DISTANCE,
+                )
+            );
+        }
+
+        return origin.value + normalizedPosition.value;
+    });
+
+    // See `useSheetProgress`
+    const positionProgress = useDerivedValue(() => {
+        return Math.min(Math.max(normalizedPosition.value / snapPoint.value, 0), 1);
+    });
+
+    /**
+     * A guard that is used to wait for some calculations
+     * that can influence animation.
+     * For example see `useIntrinsicSizeScrollView`
+     */
+    const ready = useSharedValue(true);
 
     useAnimatedReaction(
         () => {
             return {
                 showState: showState.value,
                 height: height.value,
-                keyboardHeight: keyboardHeight.value,
-                snapPointPosition: snapPointPosition.value,
+                snapPoint: snapPoint.value,
+                ready: ready.value,
             };
         },
         (currentState, prevState) => {
-            // Sometimes we could be caught in a situation
-            // when UISheet was asked to be closed (via visible=false)
-            // and at the same time a keyboard was opened
-            // so to prevent opening this guard is needed
-            // (due to the fact that when sheet is open it's in OPENING state)
-            if (
-                currentState.showState === SHOW_STATES.OPENING &&
-                prevState?.keyboardHeight !== currentState.keyboardHeight
-            ) {
-                cancelAnimation(position);
-                showState.value = SHOW_STATES.OPEN;
-
+            if (!currentState.ready) {
                 return;
             }
 
-            if (currentState.height === 0) {
+            if (currentState.snapPoint === 0) {
                 return;
             }
 
             if (
-                currentState.showState === SHOW_STATES.OPENING &&
-                prevState?.height !== currentState.height
+                currentState.showState === SHOW_STATE_OPENING &&
+                prevState?.snapPoint !== currentState.snapPoint
             ) {
-                cancelAnimation(position);
-                showState.value = SHOW_STATES.OPEN;
+                cancelAnimation(normalizedPosition);
+                normalizedPosition.value = currentState.snapPoint;
 
                 return;
             }
 
-            if (currentState.showState === SHOW_STATES.OPEN) {
+            if (currentState.showState === SHOW_STATE_OPEN) {
                 if (hasOpenAnimation) {
-                    position.value = withSpring(
-                        currentState.snapPointPosition,
+                    normalizedPosition.value = withSpring(
+                        currentState.snapPoint,
                         OpenSpringConfig,
                         isFinished => {
                             if (isFinished && onOpenEndProp) {
@@ -144,114 +218,91 @@ export function usePosition(
                         },
                     );
                 } else {
-                    position.value = currentState.snapPointPosition;
+                    normalizedPosition.value = currentState.snapPoint;
                     if (onOpenEndProp) {
                         runOnJS(onOpenEndProp)();
                     }
                 }
 
-                showState.value = SHOW_STATES.OPENING;
+                showState.value = SHOW_STATE_OPENING;
 
                 return;
             }
 
-            if (currentState.showState === SHOW_STATES.CLOSE) {
+            if (currentState.showState === SHOW_STATE_CLOSE) {
                 if (hasCloseAnimation) {
-                    position.value = withSpring(
-                        0 - currentState.keyboardHeight,
-                        CloseSpringConfig,
-                        isFinished => {
-                            if (isFinished) {
-                                if (onCloseEndProp) {
-                                    runOnJS(onCloseEndProp)();
-                                }
-                                runOnJS(onCloseModal)();
+                    normalizedPosition.value = withSpring(0, CloseSpringConfig, isFinished => {
+                        if (isFinished) {
+                            if (onCloseEndProp) {
+                                runOnJS(onCloseEndProp)();
                             }
-                        },
-                    );
+                            runOnJS(onCloseModal)();
+                        }
+                    });
                 } else {
-                    position.value = 0 - currentState.keyboardHeight;
+                    normalizedPosition.value = origin.value;
                     if (onCloseEndProp) {
                         runOnJS(onCloseEndProp)();
                     }
                     runOnJS(onCloseModal)();
                 }
 
-                showState.value = SHOW_STATES.CLOSING;
+                showState.value = SHOW_STATE_CLOSING;
             }
         },
     );
 
-    const positionWithoutRubberBand = useSharedValue(0);
-
     const onTapGestureHandler = useAnimatedGestureHandler<TapGestureHandlerGestureEvent>({
         onActive: () => {
-            showState.value = SHOW_STATES.CLOSE;
+            showState.value = SHOW_STATE_CLOSE;
             if (onCloseProp) {
                 runOnJS(onCloseProp)();
             }
         },
     });
-
-    const yIsNegative = useSharedValue<boolean>(true);
-
-    const adjustPosition = (y: number) => {
-        'worklet';
-
-        const intermediatePosition = position.value - y;
-
-        if (y > 0 && intermediatePosition < snapPointPosition.value) {
-            positionWithoutRubberBand.value += y;
-            position.value =
-                snapPointPosition.value -
-                getYWithRubberBandEffect(
-                    positionWithoutRubberBand.value,
-                    UILayoutConstant.rubberBandEffectDistance,
-                );
-
-            return;
-        }
-
-        positionWithoutRubberBand.value = Math.max(positionWithoutRubberBand.value + y, 0);
-        position.value = intermediatePosition;
-    };
-
-    const resetPosition = () => {
-        'worklet';
-
-        if (position.value - snapPointPosition.value > UILayoutConstant.swipeThreshold) {
-            showState.value = SHOW_STATES.CLOSE;
-            if (onCloseProp) {
-                runOnJS(onCloseProp)();
-            }
-            return;
-        }
-        showState.value = SHOW_STATES.OPEN;
-    };
 
     const scrollRef = useAnimatedRef<Animated.ScrollView>();
 
-    const scrollHandler = useAnimatedScrollHandler({
-        onScroll: event => {
-            const { y } = event.contentOffset;
+    const scrollHandler = useAnimatedScrollHandler<{
+        translationY: number;
+    }>({
+        onScroll: (event, ctx) => {
+            const y = event.contentOffset.y - ctx.translationY;
 
-            yIsNegative.value = y <= 0;
+            /**
+             * Sometimes `onScroll` can be called with unitialized `ctx`.
+             * To prevent invalid value to be set on `normalizedPosition` use a guard.
+             * (NaN that will be passed through to styles can lead to a view disappearance).
+             *
+             * For example on iOS it happened after
+             * native stack animation ends or just on a view mount.
+             * Also sometimes `event.contentOffset.y` can be `NaN` on Android.
+             */
+            if (isNaN(y)) {
+                return;
+            }
 
-            const intermediatePosition = position.value - y;
+            normalizedPosition.value -= y;
 
-            if (y <= 0 || intermediatePosition > snapPointPosition.value) {
-                adjustPosition(y);
+            if (normalizedPosition.value > snapPoint.value) {
+                ctx.translationY = 0;
+                /**
+                 * Be careful with scrollTo, as while call is executing
+                 * there could be run another handler on the thread,
+                 * that's why context reset is set BEFORE call
+                 */
                 scrollTo(scrollRef, 0, 0, false);
+            } else {
+                ctx.translationY = event.contentOffset.y;
             }
         },
-        onBeginDrag: () => {
-            positionWithoutRubberBand.value = 0;
+        onBeginDrag: (_event, ctx) => {
+            ctx.translationY = 0;
         },
-        onEndDrag: resetPosition,
-        onMomentumEnd: resetPosition,
+        onEndDrag: () => resetPosition(normalizedPosition, showState, snapPoint.value, onCloseProp),
+        onMomentumEnd: () =>
+            resetPosition(normalizedPosition, showState, snapPoint.value, onCloseProp),
     });
-
-    const { hasScroll, hasScrollShared, setHasScroll } = useHasScroll();
 
     const scrollGestureHandler = useAnimatedGestureHandler<
         PanGestureHandlerGestureEvent,
@@ -263,26 +314,17 @@ export function usePosition(
             const y = ctx.translationY - event.translationY;
             ctx.translationY = event.translationY;
 
-            const intermediatePosition = position.value - y;
+            normalizedPosition.value -= y;
 
-            if (!hasScrollShared.value) {
-                if (y <= 0 || intermediatePosition > snapPointPosition.value) {
-                    adjustPosition(y);
-                    scrollTo(scrollRef, 0, 0, false);
-                    return;
-                }
-            }
-
-            if (yIsNegative.value && y <= 0) {
-                adjustPosition(y);
+            if (normalizedPosition.value > snapPoint.value) {
+                scrollTo(scrollRef, 0, 0, false);
             }
         },
         onStart: (_event, ctx) => {
             ctx.translationY = 0;
-            positionWithoutRubberBand.value = 0;
         },
         onEnd: () => {
-            resetPosition();
+            resetPosition(normalizedPosition, showState, snapPoint.value, onCloseProp);
         },
     });
 
@@ -296,14 +338,13 @@ export function usePosition(
             const y = ctx.translationY - event.translationY;
             ctx.translationY = event.translationY;
 
-            adjustPosition(y);
+            normalizedPosition.value -= y;
         },
         onStart: (_event, ctx) => {
             ctx.translationY = 0;
-            positionWithoutRubberBand.value = 0;
         },
         onEnd: () => {
-            resetPosition();
+            resetPosition(normalizedPosition, showState, snapPoint.value, onCloseProp);
         },
     });
 
@@ -317,5 +358,7 @@ export function usePosition(
         hasScroll,
         setHasScroll,
         position,
+        positionProgress,
+        ready,
     };
 }

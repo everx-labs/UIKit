@@ -20,3 +20,13 @@ export type GridProps<ItemT> = {
     /** used for autotests */
     testID?: string;
 };
+
+export type LayoutCell = {
+    height: number;
+    x: number;
+    y: number;
+};
+
+export type Layout = Record<string, LayoutCell>;
+
+export type MasonryItem<Item> = { key: string; item?: Item; aspectRatio: number };

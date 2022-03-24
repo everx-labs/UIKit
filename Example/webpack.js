@@ -22,15 +22,11 @@ module.exports = {
                     path.resolve(__dirname, '../stories/'),
                     path.resolve(__dirname, '../plugins/'),
                     path.resolve(__dirname, '../localization/'),
-                    path.resolve(__dirname, '../node_modules/react-native-indicators/'),
-                    path.resolve(__dirname, '../node_modules/react-native-simple-popover/'),
-                    path.resolve(__dirname, '../node_modules/react-native-awesome-alerts/'),
                     path.resolve(__dirname, '../node_modules/react-native-parsed-text/'),
                     path.resolve(__dirname, '../node_modules/react-native-fast-image/'),
                     path.resolve(__dirname, '../node_modules/react-native-gesture-handler/'),
                     path.resolve(__dirname, '../node_modules/react-native-share/'),
-                    path.resolve(__dirname, '../node_modules/react-native-document-picker/'),
-                    path.resolve(__dirname, '../node_modules/rn-fetch-blob/'),
+                    path.resolve(__dirname, '../node_modules/react-native-blob-util/'),
                     path.resolve(__dirname, '../node_modules/react-native-reanimated/'),
                     path.resolve(__dirname, '../node_modules/react-native-view-shot/'),
                     path.resolve(__dirname, '../node_modules/react-native-web-linear-gradient/'),
@@ -86,15 +82,16 @@ module.exports = {
                 'react-native-web/dist/exports/Text/TextAncestorContext',
             'react-native/Libraries/Animated/SpringConfig':
                 'react-native-web/dist/vendor/react-native/Animated/SpringConfig',
+            'react-native/Libraries/Lists/VirtualizedSectionList':
+                'react-native-web/dist/vendor/react-native/VirtualizedSectionList',
             'react-native/Libraries/Components/View/ReactNativeStyleAttributes': 'react',
             'react-native': 'react-native-web',
             'react-native-localization': 'react-localization',
-            'react-native-document-picker': 'react', // Hack in order not to load
-            'rn-fetch-blob': 'react', // Hack in order not to load
+            'react-native-blob-util': 'react', // Hack in order not to load
             'react-native-camera': 'react', // Hack in order not to load
-            'react-native-permissions': 'react', // Hack in order not to load
             'react-native-qrcode-scanner': 'react', // Hack in order not to load
             'react-native-linear-gradient': 'react-native-web-linear-gradient',
+            'react-native-video': 'react', // Hack in order not to load,
         },
     },
 };
