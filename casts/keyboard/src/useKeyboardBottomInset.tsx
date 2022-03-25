@@ -27,7 +27,6 @@ function clearMutableBottom(uid: number) {
 }
 
 export function useKeyboardBottomInset() {
-    // TODO: should it be 0 or insets.bottom?
     const uidRef = React.useRef<number>(0);
     if (uidRef.current === 0) {
         uidCounter += 1;
