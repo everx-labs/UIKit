@@ -1,4 +1,4 @@
-package tonlabs.uikit.inputs;
+package tonlabs.uikit.keyboard;
 
 import android.view.ViewTreeObserver;
 import android.view.Window;

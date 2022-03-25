@@ -8,8 +8,8 @@ import {
     useUITextViewValue,
     useNumberFormatting,
     useAutogrowTextView,
-    UIInputAccessoryView,
 } from '@tonlabs/uikit.inputs';
+import { UIInputAccessoryView } from '@tonlabs/uicast.keyboard';
 import { UILabel, UILabelRoles, ColorVariants } from '@tonlabs/uikit.themes';
 import { uiLocalized } from '@tonlabs/localization';
 import type { OnHeightChange, OnSendAmount } from './types';
@@ -224,7 +224,7 @@ function UIAmountInputInternal({
     onSendAmount: onSendAmountProp,
 }: UIAmountInputInternalProps) {
     const { onChange, onContentSizeChange, numberOfLines, resetInputHeight, inputStyle } =
-        useAutogrowTextView(textInputRef, onHeightChange, 1);
+        useAutogrowTextView(textInputRef, undefined, 1);
 
     const {
         inputHasValue,
@@ -340,6 +340,7 @@ function UIAmountInputInternal({
                     clear={clear}
                 />
             }
+            onHeightChange={onHeightChange}
         >
             <UIAmountInputHint
                 validationText={validationString}

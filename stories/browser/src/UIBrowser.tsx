@@ -3,7 +3,7 @@ import * as React from 'react';
 import { PortalManager } from '@tonlabs/uikit.layout';
 import { useAutoHandleInsets } from '@tonlabs/uistory.chats';
 import type { OnPressUrl, OnLongPressText } from '@tonlabs/uistory.chats';
-import { UIInputAccessoryViewAvailability } from '@tonlabs/uikit.inputs';
+import { UIInputAccessoryViewAvailability } from '@tonlabs/uicast.keyboard';
 
 import { UIBrowserList } from './UIBrowserList';
 import type { BrowserMessage } from './types';

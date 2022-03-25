@@ -14,7 +14,7 @@ import {
 import { UIPopup } from '@tonlabs/uikit.popups';
 import { uiLocalized } from '@tonlabs/localization';
 import { useStickers } from '@tonlabs/uistory.stickers';
-import { UIInputAccessoryViewAvailability } from '@tonlabs/uikit.inputs';
+import { UIInputAccessoryViewAvailability } from '@tonlabs/uicast.keyboard';
 
 import { useBase64Image } from './hooks/useBase64Image';
 

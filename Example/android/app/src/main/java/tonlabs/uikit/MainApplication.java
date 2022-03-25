@@ -7,9 +7,17 @@ import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
+import com.facebook.react.bridge.JSIModuleSpec;
+import com.facebook.react.bridge.JavaScriptContextHolder;
+import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import com.facebook.react.bridge.JSIModulePackage;
+import tonlabs.uikit.keyboard.UIKitKeyboardJSIModulePackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -33,6 +41,16 @@ public class MainApplication extends Application implements ReactApplication {
         @Override
         protected String getJSMainModuleName() {
           return "index";
+        }
+
+        @Override
+        protected JSIModulePackage getJSIModulePackage() {
+            return new JSIModulePackage() {
+                @Override
+                public List<JSIModuleSpec> getJSIModules(ReactApplicationContext reactApplicationContext, JavaScriptContextHolder jsContext) {
+                    return Arrays.<JSIModuleSpec>asList();
+                }
+            };
         }
       };
 
