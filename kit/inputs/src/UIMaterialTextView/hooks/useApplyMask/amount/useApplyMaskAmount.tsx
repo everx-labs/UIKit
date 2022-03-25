@@ -1,12 +1,13 @@
 /* eslint-disable no-param-reassign */
 import * as React from 'react';
 import { SharedValue, useSharedValue } from 'react-native-reanimated';
+import { uiLocalized } from '@tonlabs/localization';
 import type {
     UIMaterialTextViewAmountMask,
     UIMaterialTextViewApplyMask,
     UIMaterialTextViewInputState,
 } from '../../../types';
-import { onChangeAmount } from './onChangeAmount';
+import { runUIOnChangeAmount } from './runUIOnChangeAmount';
 
 function useCountOfDecimalDigits(mask: UIMaterialTextViewAmountMask | undefined): number | null {
     return React.useMemo(() => {
@@ -31,23 +32,50 @@ export function useApplyMaskAmount(
     const lastText = useSharedValue('');
     const countOfDecimalDigits = useCountOfDecimalDigits(mask);
 
+    const {
+        grouping: integerSeparator,
+        decimal: delimeter,
+        decimalGrouping: fractionalSeparator,
+        decimalAlternative: delimeterAlternative,
+    } = uiLocalized.localeInfo.numbers;
+
     const applyMaskAmount = React.useCallback(
         (text: string): UIMaterialTextViewInputState => {
-            return onChangeAmount(
+            const { formattedText, normalizedText, carretPosition } = runUIOnChangeAmount(
                 text,
                 selectionEnd,
+                integerSeparator,
+                delimeter,
+                fractionalSeparator,
                 lastNormalizedText,
                 lastText,
-                skipNextOnSelectionChange,
+                delimeterAlternative,
                 countOfDecimalDigits,
             );
+
+            /**
+             * We need to skip the next call of OnSelectionChange
+             * because it will happen after the calculations above
+             * and will break these calculations
+             */
+            skipNextOnSelectionChange.value = true;
+
+            selectionEnd.value = carretPosition;
+            lastText.value = formattedText;
+            lastNormalizedText.value = normalizedText;
+
+            return { formattedText, carretPosition };
         },
         [
             selectionEnd,
+            integerSeparator,
+            delimeter,
+            fractionalSeparator,
             lastNormalizedText,
             lastText,
-            skipNextOnSelectionChange,
+            delimeterAlternative,
             countOfDecimalDigits,
+            skipNextOnSelectionChange,
         ],
     );
 

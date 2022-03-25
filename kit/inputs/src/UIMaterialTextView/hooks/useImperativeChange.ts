@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { TextInput } from 'react-native';
+import { Platform, TextInput } from 'react-native';
 import { moveCarret as moveCarretPlatform } from '../../moveCarret';
 import type {
     ImperativeChangeText,
@@ -43,14 +43,18 @@ export function useImperativeChange(
 
             checkInputHasValue(formattedText);
 
-            if (ref.current?.isFocused() !== false && carretPosition != null) {
-                moveCarret(carretPosition, formattedText.length);
-            }
-
             if (shouldSetNativeProps || text !== formattedText) {
                 ref.current?.setNativeProps({
                     text: formattedText,
                 });
+            }
+
+            if (
+                Platform.OS === 'web' &&
+                ref.current?.isFocused() !== false &&
+                carretPosition != null
+            ) {
+                moveCarret(carretPosition, formattedText.length);
             }
 
             if (callOnChangeProp) {
