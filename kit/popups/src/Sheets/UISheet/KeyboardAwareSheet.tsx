@@ -2,8 +2,23 @@ import * as React from 'react';
 import Animated, { useDerivedValue, withSpring } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useKeyboardBottomInset, useAndroidNavigationBarHeight } from '@tonlabs/uicast.keyboard';
+import { useKeyboardBottomInset } from '@tonlabs/uicast.keyboard';
 import { SheetOriginContext } from './SheetOriginContext';
+
+// @inline
+const DEFAULT_BOTTOM_INSET = 16; // UILayoutConstant.contentOffset
+
+function getDefaultBottomInset(bottomInset: number, keyboardBottomInset: number) {
+    'worklet';
+
+    const inset = Math.max(DEFAULT_BOTTOM_INSET, bottomInset);
+
+    if (keyboardBottomInset > inset) {
+        return DEFAULT_BOTTOM_INSET;
+    }
+
+    return inset;
+}
 
 function getZeroBottomInset() {
     'worklet';
@@ -28,6 +43,7 @@ export function useSheetBottomInset() {
 export type KeyboardAwareSheetProps = {
     children: React.ReactNode;
     defaultShift?: number;
+    hasDefaultInset?: boolean;
     /**
      * IMPORTANT: should be a worklet!
      */
@@ -37,24 +53,21 @@ export type KeyboardAwareSheetProps = {
 export function KeyboardAwareSheet({
     children,
     defaultShift = 0,
-    getBottomInset = getZeroBottomInset,
+    hasDefaultInset = false,
+    getBottomInset: getBottomInsetProp,
 }: KeyboardAwareSheetProps) {
     const insets = useSafeAreaInsets();
     const keyboardBottomInset = useKeyboardBottomInset();
-    const { shared: androidNavigationBarHeightShared } = useAndroidNavigationBarHeight();
+
+    const getBottomInset =
+        getBottomInsetProp || (hasDefaultInset ? getDefaultBottomInset : getZeroBottomInset);
 
     const bottomInset = useDerivedValue(() => {
         return getBottomInset(insets.bottom, keyboardBottomInset.value);
     });
 
     const origin = useDerivedValue(() => {
-        return (
-            0 -
-            defaultShift -
-            keyboardBottomInset.value -
-            (keyboardBottomInset.value > 0 ? androidNavigationBarHeightShared.value : 0) -
-            bottomInset.value
-        );
+        return 0 - defaultShift - keyboardBottomInset.value - bottomInset.value;
     });
 
     return (
@@ -69,9 +82,13 @@ export function KeyboardAwareSheet({
 export function KeyboardUnawareSheet({
     children,
     defaultShift = 0,
-    getBottomInset = getZeroBottomInset,
+    hasDefaultInset = false,
+    getBottomInset: getBottomInsetProp,
 }: KeyboardAwareSheetProps) {
     const insets = useSafeAreaInsets();
+
+    const getBottomInset =
+        getBottomInsetProp || (hasDefaultInset ? getDefaultBottomInset : getZeroBottomInset);
 
     const bottomInset = useDerivedValue(() => {
         return withSpring(getBottomInset(insets.bottom, 0), { overshootClamping: true });

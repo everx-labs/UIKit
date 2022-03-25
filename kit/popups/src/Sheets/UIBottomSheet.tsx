@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { useTheme, Theme, makeStyles, ColorVariants } from '@tonlabs/uikit.themes';
@@ -22,7 +21,7 @@ export type UIBottomSheetProps = Omit<UISheetProps, 'style'> & {
 
 export function UIBottomSheet({
     children,
-    hasDefaultInset = true,
+    hasDefaultInset,
     hasHeader = true,
     headerOptions,
     ...rest
@@ -30,21 +29,14 @@ export function UIBottomSheet({
     const { visible, forId } = rest;
     const theme = useTheme();
 
-    const { bottom: bottomInset } = useSafeAreaInsets();
-
-    const defaultPadding = React.useMemo(() => {
-        if (!hasDefaultInset) {
-            return 0;
-        }
-
-        return Math.max(bottomInset || 0, UILayoutConstant.contentOffset);
-    }, [bottomInset, hasDefaultInset]);
-
-    const styles = useStyles(defaultPadding, theme);
+    const styles = useStyles(theme);
 
     return (
         <UISheet.Container visible={visible} forId={forId}>
-            <UISheet.KeyboardAware defaultShift={-UILayoutConstant.rubberBandEffectDistance}>
+            <UISheet.KeyboardAware
+                hasDefaultInset={hasDefaultInset}
+                defaultShift={-UILayoutConstant.rubberBandEffectDistance}
+            >
                 <UISheet.IntrinsicSize>
                     <UISheet.Content {...rest} containerStyle={styles.sheet} style={styles.card}>
                         {hasHeader ? <UIDialogBar hasPuller {...headerOptions} /> : null}
@@ -56,7 +48,7 @@ export function UIBottomSheet({
     );
 }
 
-const useStyles = makeStyles((defaultPadding: number, theme: Theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
     sheet: {
         flexDirection: 'row',
         justifyContent: 'center',
@@ -68,6 +60,6 @@ const useStyles = makeStyles((defaultPadding: number, theme: Theme) => ({
         borderTopRightRadius: UILayoutConstant.alertBorderRadius,
         overflow: 'hidden',
         backgroundColor: theme[ColorVariants.BackgroundPrimary],
-        paddingBottom: defaultPadding + UILayoutConstant.rubberBandEffectDistance,
+        paddingBottom: UILayoutConstant.rubberBandEffectDistance,
     },
 }));
