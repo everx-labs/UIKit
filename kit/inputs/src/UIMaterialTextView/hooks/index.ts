@@ -6,3 +6,4 @@ export * from './useInputHasValue';
 export * from './useImperativeChange';
 export * from './useMaterialTextViewChildren';
 export * from './useApplyMask';
+export * from './useOnSelectionChange';

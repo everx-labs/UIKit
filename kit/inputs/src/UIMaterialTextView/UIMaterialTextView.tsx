@@ -11,6 +11,7 @@ import {
     useImperativeChange,
     useInputHasValue,
     useClear,
+    useOnSelectionChange,
     useApplyMask,
 } from './hooks';
 import { UIMaterialTextViewFloating } from './UIMaterialTextViewFloating';
@@ -42,11 +43,7 @@ function useExtendedProps(
         onBlur: onBlurProp,
     } = props;
 
-    const { inputHasValue, onChangeText: onChangeTextWithInputHasValue } = useInputHasValue(
-        value,
-        defaultValue,
-        onChangeTextProp,
-    );
+    const { inputHasValue, checkInputHasValue } = useInputHasValue(value, defaultValue);
 
     const { isFocused, onFocus, onBlur } = useFocused(onFocusProp, onBlurProp);
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
@@ -62,19 +59,36 @@ function useExtendedProps(
         isFocused,
     );
 
+    const { selectionEnd, onSelectionChange, skipNextOnSelectionChange } = useOnSelectionChange();
+
+    const applyMask = useApplyMask(mask, selectionEnd, skipNextOnSelectionChange);
+
     const { imperativeChangeText, moveCarret } = useImperativeChange(
         ref,
-        multiline,
-        onChangeTextWithInputHasValue,
+        onChangeTextProp,
+        checkInputHasValue,
+        applyMask,
     );
 
-    const { onChangeText, onSelectionChange } = useApplyMask(
-        imperativeChangeText,
-        moveCarret,
-        mask,
+    const onChangeText = React.useCallback(
+        (text: string) =>
+            imperativeChangeText(text, {
+                shouldSetNativeProps: false,
+            }),
+        [imperativeChangeText],
     );
 
-    const clear = useClear(resetInputHeight, onChangeText, ref);
+    React.useEffect(() => {
+        if (defaultValue) {
+            imperativeChangeText(defaultValue);
+        }
+        /**
+         * defaultValue should not change during re-rendering
+         */
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const clear = useClear(resetInputHeight, imperativeChangeText, ref);
 
     const processedChildren = useMaterialTextViewChildren(
         children,

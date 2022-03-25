@@ -1,4 +1,5 @@
 import type BigNumber from 'bignumber.js';
+import type { UIMaterialTextViewRef } from '../UIMaterialTextView/types';
 import type { UIAmountInputDecimalAspect, UIAmountInputMessageType } from './constants';
 
 export type UIAmountInputProps = {
@@ -39,3 +40,7 @@ export type UIAmountInputProps = {
      */
     testID?: string;
 };
+
+export interface UIAmountInputRef extends UIMaterialTextViewRef {
+    changeAmount: (amount: BigNumber | undefined, callOnChangeProp?: boolean) => void;
+}

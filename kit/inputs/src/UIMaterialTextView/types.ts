@@ -79,12 +79,15 @@ export type UIMaterialTextViewLayoutProps = UIMaterialTextViewProps & {
 };
 
 export interface UIMaterialTextViewRef extends TextInput {
-    changeText: (text: string, callOnChangeProp?: boolean) => void;
-    moveCarret: (carretPosition: number, maxPosition?: number | undefined) => void;
+    changeText: UIMaterialTextViewRefChangeText;
+    moveCarret: UIMaterialTextViewRefMoveCarret;
 }
 
-export type ChangeText = (text: string, callOnChangeProp?: boolean | undefined) => void;
-export type MoveCarret = (carretPosition: number, maxPosition?: number | undefined) => void;
+export type UIMaterialTextViewRefChangeText = (text: string, callOnChangeProp?: boolean) => void;
+export type UIMaterialTextViewRefMoveCarret = (
+    carretPosition: number,
+    maxPosition?: number,
+) => void;
 
 export type ImperativeChangeTextConfig = {
     callOnChangeProp?: boolean;
@@ -111,3 +114,9 @@ export type AutogrowAttributes = {
     resetInputHeight: () => void;
     numberOfLines: number | undefined;
 };
+
+export type UIMaterialTextViewInputState = {
+    formattedText: string;
+    carretPosition: number | null;
+};
+export type UIMaterialTextViewApplyMask = (text: string) => UIMaterialTextViewInputState;

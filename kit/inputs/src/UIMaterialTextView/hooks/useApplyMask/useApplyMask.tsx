@@ -1,38 +1,26 @@
 import * as React from 'react';
-import type { UIMaterialTextViewMask, ImperativeChangeText, MoveCarret } from '../../types';
+import type { SharedValue } from 'react-native-reanimated';
+import type {
+    UIMaterialTextViewMask,
+    UIMaterialTextViewApplyMask,
+    UIMaterialTextViewInputState,
+} from '../../types';
 import { useApplyMaskAmount } from './amount';
 
-function useApplyMaskDefault(imperativeChangeText: ImperativeChangeText) {
-    const onSelectionChange = React.useCallback(() => null, []);
-
-    const onChangeText = React.useCallback(
-        (text: string): void => {
-            /**
-             * If the text is empty, then the Clear button may have been pressed,
-             * if so we must call `setNativeProps` to clear the input
-             */
-            if (!text) {
-                imperativeChangeText(text);
-            } else {
-                imperativeChangeText(text, {
-                    shouldSetNativeProps: false,
-                });
-            }
-        },
-        [imperativeChangeText],
-    );
-
-    return {
-        onSelectionChange,
-        onChangeText,
-    };
+function useApplyMaskDefault(): UIMaterialTextViewApplyMask {
+    return React.useCallback((text: string): UIMaterialTextViewInputState => {
+        return {
+            formattedText: text,
+            carretPosition: null,
+        };
+    }, []);
 }
 
 export function useApplyMask(
-    imperativeChangeText: ImperativeChangeText,
-    moveCarret: MoveCarret,
     mask: UIMaterialTextViewMask | undefined,
-) {
+    selectionEnd: SharedValue<number>,
+    skipNextOnSelectionChange: SharedValue<boolean>,
+): UIMaterialTextViewApplyMask {
     /**
      * The prop `mask` must not be changed, so we can use ref to make sure it will not.
      * NOTE: Do not reassign this ref!
@@ -55,9 +43,9 @@ export function useApplyMask(
         case 'AmountPrecision':
         case 'AmountCurrency':
             // eslint-disable-next-line react-hooks/rules-of-hooks
-            return useApplyMaskAmount(imperativeChangeText, moveCarret, maskRef.current);
+            return useApplyMaskAmount(maskRef.current, selectionEnd, skipNextOnSelectionChange);
         default:
             // eslint-disable-next-line react-hooks/rules-of-hooks
-            return useApplyMaskDefault(imperativeChangeText);
+            return useApplyMaskDefault();
     }
 }

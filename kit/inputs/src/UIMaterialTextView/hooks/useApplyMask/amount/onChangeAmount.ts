@@ -2,18 +2,16 @@
 import type { SharedValue } from 'react-native-reanimated';
 import { uiLocalized } from '@tonlabs/localization';
 import { runUIOnChangeAmount } from './runUIOnChangeAmount';
-import type { ImperativeChangeText, MoveCarret } from '../../../types';
+import type { UIMaterialTextViewInputState } from '../../../types';
 
 export function onChangeAmount(
     inputText: string,
     selectionEnd: SharedValue<number>,
     lastNormalizedText: SharedValue<string>,
     lastText: SharedValue<string>,
-    imperativeChangeText: ImperativeChangeText,
-    moveCarret: MoveCarret,
     skipNextOnSelectionChange: SharedValue<boolean>,
     countOfDecimalDigits: number | null,
-) {
+): UIMaterialTextViewInputState {
     const {
         grouping: integerSeparator,
         decimal: delimeter,
@@ -33,9 +31,6 @@ export function onChangeAmount(
         countOfDecimalDigits,
     );
 
-    imperativeChangeText(formattedText);
-    moveCarret(carretPosition, formattedText.length);
-
     /**
      * We need to skip the next call of OnSelectionChange
      * because it will happen after the calculations above
@@ -46,4 +41,6 @@ export function onChangeAmount(
     selectionEnd.value = carretPosition;
     lastText.value = formattedText;
     lastNormalizedText.value = normalizedText;
+
+    return { formattedText, carretPosition };
 }

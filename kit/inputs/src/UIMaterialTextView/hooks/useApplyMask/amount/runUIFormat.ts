@@ -32,9 +32,10 @@ export function runUIFormat(
     const notNumbersRegexp = /[^0-9]/g;
 
     // Normalize and group integer part
-    let normalizedIntegerPart = integerPart.replace(notNumbersRegexp, '').replace(/^0*/, '');
+    const numberIntegerPart = integerPart.replace(notNumbersRegexp, '');
+    let normalizedIntegerPart = numberIntegerPart.replace(/^0*/, '');
 
-    if ((integerPart || decimalPart) && !normalizedIntegerPart) {
+    if ((numberIntegerPart || decimalPart) && !normalizedIntegerPart) {
         normalizedIntegerPart = '0';
     }
 

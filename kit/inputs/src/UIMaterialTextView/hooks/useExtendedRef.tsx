@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { TextInput } from 'react-native';
-import type { UIMaterialTextViewRef, ChangeText, ImperativeChangeText, MoveCarret } from '../types';
+import type {
+    UIMaterialTextViewRef,
+    UIMaterialTextViewRefChangeText,
+    ImperativeChangeText,
+    UIMaterialTextViewRefMoveCarret,
+} from '../types';
 
 function getEmptyMethod(name: string) {
     return function emptyMethod() {
@@ -15,13 +20,11 @@ export function useExtendedRef(
     forwardedRed: React.Ref<UIMaterialTextViewRef>,
     localRef: React.RefObject<TextInput>,
     imperativeChangeText: ImperativeChangeText,
-    moveCarret: MoveCarret,
+    moveCarret: UIMaterialTextViewRefMoveCarret,
 ) {
-    const changeText: ChangeText = React.useCallback(
+    const changeText: UIMaterialTextViewRefChangeText = React.useCallback(
         function changeText(text: string, callOnChangeProp: boolean | undefined) {
-            imperativeChangeText(text, {
-                callOnChangeProp,
-            });
+            imperativeChangeText(text, { callOnChangeProp });
         },
         [imperativeChangeText],
     );

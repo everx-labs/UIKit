@@ -1,13 +1,12 @@
 /* eslint-disable no-param-reassign */
 import * as React from 'react';
-import { useSharedValue } from 'react-native-reanimated';
+import { SharedValue, useSharedValue } from 'react-native-reanimated';
 import type {
-    ImperativeChangeText,
-    MoveCarret,
     UIMaterialTextViewAmountMask,
+    UIMaterialTextViewApplyMask,
+    UIMaterialTextViewInputState,
 } from '../../../types';
 import { onChangeAmount } from './onChangeAmount';
-import { useOnSelectionChange } from '../useOnSelectionChange';
 
 function useCountOfDecimalDigits(mask: UIMaterialTextViewAmountMask | undefined): number | null {
     return React.useMemo(() => {
@@ -24,25 +23,21 @@ function useCountOfDecimalDigits(mask: UIMaterialTextViewAmountMask | undefined)
 }
 
 export function useApplyMaskAmount(
-    imperativeChangeText: ImperativeChangeText,
-    moveCarret: MoveCarret,
     mask: UIMaterialTextViewAmountMask | undefined,
-) {
-    const { selectionEnd, onSelectionChange, skipNextOnSelectionChange } = useOnSelectionChange();
-
+    selectionEnd: SharedValue<number>,
+    skipNextOnSelectionChange: SharedValue<boolean>,
+): UIMaterialTextViewApplyMask {
     const lastNormalizedText = useSharedValue('');
     const lastText = useSharedValue('');
     const countOfDecimalDigits = useCountOfDecimalDigits(mask);
 
-    const onChangeText = React.useCallback(
-        (text: string): void => {
-            onChangeAmount(
+    const applyMaskAmount = React.useCallback(
+        (text: string): UIMaterialTextViewInputState => {
+            return onChangeAmount(
                 text,
                 selectionEnd,
                 lastNormalizedText,
                 lastText,
-                imperativeChangeText,
-                moveCarret,
                 skipNextOnSelectionChange,
                 countOfDecimalDigits,
             );
@@ -51,15 +46,10 @@ export function useApplyMaskAmount(
             selectionEnd,
             lastNormalizedText,
             lastText,
-            imperativeChangeText,
-            moveCarret,
             skipNextOnSelectionChange,
             countOfDecimalDigits,
         ],
     );
 
-    return {
-        onSelectionChange,
-        onChangeText,
-    };
+    return applyMaskAmount;
 }

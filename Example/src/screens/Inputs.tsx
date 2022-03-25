@@ -9,6 +9,7 @@ import {
     UINumberTextView,
     UIAmountInput,
     UIAmountInputDecimalAspect,
+    UIAmountInputRef,
 } from '@tonlabs/uikit.inputs';
 import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAddressTextView } from '@tonlabs/uicast.address-text';
@@ -86,13 +87,14 @@ const localeInfo = {
 };
 
 export const Inputs = () => {
+    const amountPrecisionRef = React.useRef<UIAmountInputRef>(null);
     const [amount, setAmount] = useState<BigNumber | undefined>(undefined);
     const [details, setDetails] = useState('');
     const mnemonicWords = ['report', 'replenish', 'meadow', 'village', 'slight'];
     const [text, setText] = useState('test');
     const [transfer, setTransfer] = useState(new BigNumber(0));
     React.useEffect(() => {
-        console.log(amount);
+        amountPrecisionRef.current?.changeAmount(amount, false);
     }, [amount]);
     return (
         <ExampleScreen>
@@ -245,6 +247,7 @@ export const Inputs = () => {
                         label="Amount Currency"
                         message="Caption"
                         onChangeAmount={value => setAmount(value)}
+                        defaultAmount={new BigNumber(123345.123567)}
                         decimalAspect={UIAmountInputDecimalAspect.Currency}
                     />
                     <View style={{ height: 20 }} />
@@ -258,11 +261,12 @@ export const Inputs = () => {
                     />
                     <View style={{ height: 20 }} />
                     <UIAmountInput
+                        ref={amountPrecisionRef}
                         testID="uiMaterialTextView_amount"
                         placeholder="0.000"
                         label="Amount Precision"
                         message="Caption"
-                        onChangeAmount={value => setAmount(value)}
+                        onChangeAmount={_value => null}
                         decimalAspect={UIAmountInputDecimalAspect.Precision}
                     />
                 </View>
