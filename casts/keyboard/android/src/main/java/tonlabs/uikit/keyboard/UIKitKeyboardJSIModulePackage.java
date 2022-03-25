@@ -17,12 +17,16 @@ public class UIKitKeyboardJSIModulePackage implements JSIModulePackage {
 
     public static native void installJSIBindings(long jsiPtr, CallInvokerHolderImpl jsCallInvokerHelper, UIKitKeyboardFrameListener androidFrameListener);
 
-    @Override
-    public List<JSIModuleSpec> getJSIModules(ReactApplicationContext reactApplicationContext, JavaScriptContextHolder jsContext) {
+    public static void install(ReactApplicationContext reactApplicationContext) {
         long jsiPtr = reactApplicationContext.getJavaScriptContextHolder().get();
         CallInvokerHolderImpl jsCallInvokerHolder = (CallInvokerHolderImpl) reactApplicationContext.getCatalystInstance().getJSCallInvokerHolder();
 
         UIKitKeyboardJSIModulePackage.installJSIBindings(jsiPtr, jsCallInvokerHolder, UIKitKeyboardFrameListener.getShared());
+    }
+
+    @Override
+    public List<JSIModuleSpec> getJSIModules(ReactApplicationContext reactApplicationContext, JavaScriptContextHolder jsContext) {
+        // No-op
 
         return Arrays.<JSIModuleSpec>asList();
     }

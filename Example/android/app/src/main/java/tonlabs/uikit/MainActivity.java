@@ -27,8 +27,8 @@ public class MainActivity extends ReactActivity {
             protected ReactRootView createRootView() {
                 RNGestureHandlerEnabledRootView rootView = new RNGestureHandlerEnabledRootView(MainActivity.this);
 
-                UIKitKeyboardFrameListener.attach(MainActivity.this, rootView);
                 WindowCompat.setDecorFitsSystemWindows(MainActivity.this.getWindow(), false);
+                UIKitKeyboardFrameListener.attach(MainActivity.this, rootView);
 
                 return rootView;
             }

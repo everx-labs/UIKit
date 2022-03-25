@@ -1,18 +1,29 @@
 import * as React from 'react';
+import { NativeModules } from 'react-native';
 import type Animated from 'react-native-reanimated';
 
 let uidCounter = 0;
 
-function makeMutableBottom(uid: number): Animated.SharedValue<number> {
+function getUIKitKeyboardModule(): {
+    addFrameListener: (uid: number) => Animated.SharedValue<number>;
+    removeFrameListener: (uid: number) => void;
+} {
     // @ts-ignore
     // eslint-disable-next-line no-underscore-dangle
-    return global.__uikitKeyboard.addFrameListener(uid);
+    if (global.__uikitKeyboard == null) {
+        NativeModules.UIKitKeyboardFrameListenerModule.install();
+    }
+    // @ts-ignore
+    // eslint-disable-next-line no-underscore-dangle
+    return global.__uikitKeyboard;
+}
+
+function makeMutableBottom(uid: number) {
+    return getUIKitKeyboardModule().addFrameListener(uid);
 }
 
 function clearMutableBottom(uid: number) {
-    // @ts-ignore
-    // eslint-disable-next-line no-underscore-dangle
-    global.__uikitKeyboard.removeFrameListener(uid);
+    getUIKitKeyboardModule().removeFrameListener(uid);
 }
 
 export function useKeyboardBottomInset() {

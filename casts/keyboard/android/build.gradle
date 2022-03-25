@@ -13,6 +13,10 @@ def findNodeModulesWithRN(path = '..', level = 0) {
 }
 def NODE_MODULES_DIR = findNodeModulesWithRN();
 
+def reactProperties = new Properties()
+file("$NODE_MODULES_DIR/react-native/ReactAndroid/gradle.properties").withInputStream { reactProperties.load(it) }
+def REACT_NATIVE_VERSION = reactProperties.getProperty("VERSION_NAME").split("\\.")[1].toInteger()
+
 def FOR_HERMES = System.getenv("FOR_HERMES") == "True"
 rootProject.getSubprojects().forEach({project ->
     if (project.plugins.hasPlugin("com.android.application")) {
@@ -23,7 +27,10 @@ rootProject.getSubprojects().forEach({project ->
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
 
     dependencies {
@@ -49,7 +56,7 @@ android {
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
         versionCode 1
-        versionName "2.0.2"
+        versionName "3.0.0"
 
         externalNativeBuild {
             cmake {
@@ -58,6 +65,7 @@ android {
                 arguments "-DANDROID_STL=c++_shared",
                         "-DONANDROID",
                         "-DANDROID_TOOLCHAIN=clang",
+                        "-DREACT_NATIVE_VERSION=${REACT_NATIVE_VERSION}",
                         "-DNODE_MODULES_DIR=${NODE_MODULES_DIR}",
                         "-DFOR_HERMES=${FOR_HERMES}"
             }
@@ -71,7 +79,7 @@ android {
     }
 
     packagingOptions {
-        excludes = ["**/libc++_shared.so", "**/libfbjni.so", "**/libjsi.so"]
+        excludes = ["**/libc++_shared.so", "**/libfbjni.so", "**/libjsi.so", "**/libreactnativejni.so", "**/libfolly_json.so", "**/libreanimated.so", "**/libjscexecutor.so"]
     }
 
     buildTypes {
@@ -98,7 +106,6 @@ android {
 
 repositories {
     mavenCentral()
-    jcenter()
     google()
 
     def found = false
@@ -224,7 +231,7 @@ extractJNIFiles.mustRunAfter extractAARHeaders
 // pre-native build pipeline
 
 tasks.whenTaskAdded { task ->
-    if (task.name == 'externalNativeBuildDebug' || task.name == 'externalNativeBuildRelease') {
+    if (!task.name.contains('Clean') && (task.name.contains('externalNative') || task.name.contains('CMake'))) {
         task.dependsOn(extractAARHeaders)
         task.dependsOn(extractJNIFiles)
     }

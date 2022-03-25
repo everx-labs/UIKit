@@ -67,27 +67,6 @@ public class UIKitKeyboardFrameListener {
     }
 
     private void attachInstance(Activity mActivity, ReactRootView mRootView) {
-        WindowCompat.setDecorFitsSystemWindows(mActivity.getWindow(), false);
-
-        ViewCompat.setOnApplyWindowInsetsListener(mRootView, new OnApplyWindowInsetsListener() {
-            @Override
-            public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
-                Insets kb = insets.getInsets(WindowInsetsCompat.Type.ime());
-                if (paddingBottom == 0) {
-                    Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-                    if (systemBars.top == 0) {
-                        return insets;
-                    }
-
-                    ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) mRootView.getLayoutParams();
-                    layoutParams.setMargins(layoutParams.leftMargin, systemBars.top, layoutParams.rightMargin, systemBars.bottom);
-                    mRootView.requestLayout();
-                    paddingBottom = systemBars.bottom;
-                }
-                return insets;
-            }
-        });
-
         ViewCompat.setWindowInsetsAnimationCallback(mRootView, new WindowInsetsAnimationCompat.Callback(WindowInsetsAnimationCompat.Callback.DISPATCH_MODE_STOP) {
             @NonNull
             @NotNull
