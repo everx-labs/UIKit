@@ -13,86 +13,15 @@ import {
 } from '@tonlabs/uikit.inputs';
 import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAddressTextView } from '@tonlabs/uicast.address-text';
-import { UIDetailsInput, UITransferInput } from '@tonlabs/uikit.components';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
-function getNumberFormatInfo() {
-    const formatParser = /111(\D*)222(\D*)333(\D*)444/g;
-    const parts = formatParser.exec((111222333.444).toLocaleString()) || ['', '', '', '.'];
-    return {
-        grouping: parts[1],
-        thousands: parts[2],
-        decimal: parts[3],
-        decimalGrouping: '\u2009',
-    };
-}
-
-function getDateFormatInfo() {
-    const date = new Date(1986, 5, 7);
-    const d = date.getDate();
-    const m = date.getMonth() + 1;
-    const y = date.getFullYear();
-
-    // TODO: Uncomment once updated to RN0.59
-    // const options = {
-    //    year: 'numeric',
-    //    month: '2-digit',
-    //    day: 'numeric',
-    // };
-    // Not working for android due to RN using JavaScriptCore engine in non-debug mode
-    // const localeDate = date.toLocaleDateString(undefined, options);
-    const localeDate = '07/06/1986';
-    const formatParser = /(\d{1,4})(\D{1})(\d{1,4})\D{1}(\d{1,4})/g;
-    const parts = formatParser.exec(localeDate) || ['', '7', '.', '6', '1986'];
-
-    const separator = parts[2] || '.';
-    const components = ['year', 'month', 'day'];
-    const symbols = {
-        year: 'YYYY',
-        month: 'MM',
-        day: 'DD',
-    };
-
-    const shortDateNumbers: number[] = [];
-    const splitDate = localeDate.split(separator);
-    splitDate.forEach(component => shortDateNumbers.push(Number(component)));
-
-    if (shortDateNumbers?.length === 3) {
-        components[shortDateNumbers.indexOf(d)] = 'day';
-        components[shortDateNumbers.indexOf(m)] = 'month';
-        components[shortDateNumbers.indexOf(y)] = 'year';
-    }
-
-    // TODO: Need to find a better way to get the pattern.
-    // @ts-ignore
-    let localePattern = `${symbols[components[0]]}${separator}`;
-    // @ts-ignore
-    localePattern = `${localePattern}${symbols[components[1]]}`;
-    // @ts-ignore
-    localePattern = `${localePattern}${separator}${symbols[components[2]]}`;
-
-    return {
-        separator,
-        localePattern,
-        components,
-    };
-}
-
-const localeInfo = {
-    name: '',
-    numbers: getNumberFormatInfo(),
-    dates: getDateFormatInfo(),
-};
-
 export const Inputs = () => {
     const amountPrecisionRef = React.useRef<UIAmountInputRef>(null);
     const [amount, setAmount] = useState<BigNumber | undefined>(undefined);
-    const [details, setDetails] = useState('');
     const mnemonicWords = ['report', 'replenish', 'meadow', 'village', 'slight'];
     const [text, setText] = useState('test');
-    const [transfer, setTransfer] = useState(new BigNumber(0));
     React.useEffect(() => {
         amountPrecisionRef.current?.changeAmount(amount, false);
     }, [amount]);
@@ -268,59 +197,6 @@ export const Inputs = () => {
                         message="Caption"
                         onChangeAmount={_value => null}
                         decimalAspect={UIAmountInputDecimalAspect.Precision}
-                    />
-                </View>
-            </ExampleSection>
-            {/* <ExampleSection title="UIAmountInput">
-                <View style={{ width: 300, paddingVertical: 20 }}>
-                    <UIAmountInput
-                        testID="uiAmountInput_default"
-                        placeholder="Amount"
-                        comment="Some comment here"
-                        value={amount}
-                        onChangeText={(newText: string) => setAmount(newText)}
-                    />
-                </View>
-                <View style={{ width: 300, paddingVertical: 20 }}>
-                    <UIAmountInput
-                        testID="uiAmountInput_with_trailing_value"
-                        placeholder="Amount"
-                        comment="Some comment here"
-                        value={amount}
-                        trailingValue="$"
-                        onChangeText={(newText: string) => setAmount(newText)}
-                    />
-                </View>
-            </ExampleSection> */}
-            <ExampleSection title="UIDetailsInput">
-                <View style={{ width: 300, paddingVertical: 20 }} testID="uiDetailsInput_default">
-                    <UIDetailsInput
-                        placeholder="Details"
-                        comment="Some comment here"
-                        value={details}
-                        onChangeText={(newText: string) => setDetails(newText)}
-                    />
-                </View>
-                <View testID="uiDetailsInput_multiline" style={{ width: 300, paddingVertical: 20 }}>
-                    <UIDetailsInput
-                        placeholder="Multiline details"
-                        comment="Some comment here"
-                        value={details}
-                        onChangeText={(newText: string) => setDetails(newText)}
-                        maxLines={3}
-                        containerStyle={{ marginTop: 16 }}
-                    />
-                </View>
-            </ExampleSection>
-            <ExampleSection title="UITransferInput">
-                <View testID="uiTransferInput_default" style={{ width: 300, paddingVertical: 20 }}>
-                    <UITransferInput
-                        value={transfer}
-                        placeholder="Your transfer"
-                        maxDecimals={3}
-                        minDecimals={3}
-                        onValueChange={(num: BigNumber) => setTransfer(num)}
-                        localeInfo={localeInfo}
                     />
                 </View>
             </ExampleSection>
