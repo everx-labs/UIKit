@@ -8,10 +8,16 @@ import { SheetOriginContext } from './SheetOriginContext';
 // @inline
 const DEFAULT_BOTTOM_INSET = 16; // UILayoutConstant.contentOffset
 
+export function getMaxPossibleDefaultBottomInset(bottomInset: number) {
+    'worklet';
+
+    return Math.max(DEFAULT_BOTTOM_INSET, bottomInset);
+}
+
 function getDefaultBottomInset(bottomInset: number, keyboardBottomInset: number) {
     'worklet';
 
-    const inset = Math.max(DEFAULT_BOTTOM_INSET, bottomInset);
+    const inset = getMaxPossibleDefaultBottomInset(bottomInset);
 
     if (keyboardBottomInset > inset) {
         return DEFAULT_BOTTOM_INSET;

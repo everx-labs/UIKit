@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { requireNativeComponent, StatusBar, StyleSheet } from 'react-native';
+import { requireNativeComponent, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 import { UIBackgroundView } from '@tonlabs/uikit.themes';
 
 import type { UIInputAccessoryViewProps } from './types';
-import { useAnimatedKeyboardHeight } from '../useAnimatedKeyboardHeight';
-import { useAndroidNavigationBarHeight } from '../useAndroidNavigationBarHeight.android';
+import { useKeyboardBottomInset } from '../useKeyboardBottomInset';
 
 const CustomKeyboardNativeView = requireNativeComponent<UIInputAccessoryViewProps>(
     'CustomKeyboardNativeView',
@@ -15,28 +14,18 @@ const CustomKeyboardNativeView = requireNativeComponent<UIInputAccessoryViewProp
 
 function InputAccessoryViewLike({ children }: { children: React.ReactNode }) {
     const { bottom: bottomInset } = useSafeAreaInsets();
-    const keyboardHeight = useAnimatedKeyboardHeight();
-
-    const { shared: androidNavigationBarHeight } = useAndroidNavigationBarHeight();
+    const keyboardBottomInset = useKeyboardBottomInset();
 
     const style = useAnimatedStyle(() => {
         return {
             transform: [
                 {
-                    translateY:
-                        keyboardHeight.value > 0
-                            ? -1 *
-                              (keyboardHeight.value +
-                                  androidNavigationBarHeight.value -
-                                  bottomInset -
-                                  (StatusBar.currentHeight ?? 0))
-                            : 0,
+                    translateY: Math.min(-1 * (keyboardBottomInset.value - bottomInset), 0),
                 },
             ],
         };
     });
 
-    Animated;
     return (
         <Animated.View style={[styles.inputAccessoryLikeContainer, style]}>
             {children}
