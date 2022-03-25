@@ -31,7 +31,6 @@ function processChildren(
             );
         }
         if (React.isValidElement(child) && child.type === UIImage) {
-            console.dir(child);
             return React.createElement(UIImage, {
                 ...child.props,
                 tintColor,
