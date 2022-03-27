@@ -3,16 +3,17 @@ import { StyleSheet, View } from 'react-native';
 import type BigNumber from 'bignumber.js';
 
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
-import { UICurrency, UICurrencyProps } from '@tonlabs/uicast.numbers';
+import { UICurrency, UICurrencyProps, UINumber, UINumberProps } from '@tonlabs/uicast.numbers';
 import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
-import type { UILabelProps } from '@tonlabs/uikit.themes';
 import { UILinkButton, UILinkButtonProps } from '@tonlabs/uikit.controls';
 import { UILayoutConstant, UISkeleton } from '@tonlabs/uikit.layout';
+import type { ColorVariants, TypographyVariants, UILabelProps } from '@tonlabs/uikit.themes';
 
 export enum UITableRowValueKind {
     Currency = 'currency',
     Label = 'label',
     Link = 'link',
+    Number = 'number',
 }
 
 type UIRowValue<Kind, Props> = { kind: Kind; props: Props; testID?: string };
@@ -23,12 +24,18 @@ export type UITableRowValue =
           Omit<UICurrencyProps, 'children'> & { amount: BigNumber }
       >
     | UIRowValue<UITableRowValueKind.Label, Omit<UILabelProps, 'children'> & { title: string }>
-    | UIRowValue<UITableRowValueKind.Link, UILinkButtonProps>;
+    | UIRowValue<UITableRowValueKind.Link, UILinkButtonProps>
+    | UIRowValue<
+          UITableRowValueKind.Number,
+          Omit<UINumberProps, 'children'> & { number: BigNumber }
+      >;
 
 export type UITableRowProps = {
     testID?: string;
     name: string;
     nameTestID?: string;
+    nameColor?: ColorVariants;
+    nameVariant?: TypographyVariants;
     value: UITableRowValue;
     caption?: string;
     captionTestID?: string;
@@ -45,9 +52,9 @@ function renderTableValue(value: UITableRowValue) {
                 <UICurrency
                     testID={testID}
                     integerColor={UILabelColors.TextPrimary}
-                    integerVariant={UILabelRoles.NarrowMonoNote}
+                    integerVariant={UILabelRoles.NarrowMonoText}
                     decimalColor={UILabelColors.TextPrimary}
-                    decimalVariant={UILabelRoles.NarrowMonoNote}
+                    decimalVariant={UILabelRoles.NarrowMonoText}
                     {...props}
                 >
                     {props.amount}
@@ -57,8 +64,8 @@ function renderTableValue(value: UITableRowValue) {
             return (
                 <UILabel
                     testID={testID}
-                    color={UILabelColors.TextPrimary}
-                    role={UILabelRoles.NarrowParagraphNote}
+                    color={UILabelColors.TextSecondary}
+                    role={UILabelRoles.NarrowParagraphText}
                     {...props}
                 >
                     {props.title}
@@ -66,6 +73,19 @@ function renderTableValue(value: UITableRowValue) {
             );
         case UITableRowValueKind.Link:
             return <UILinkButton testID={testID} {...props} />;
+        case UITableRowValueKind.Number:
+            return (
+                <UINumber
+                    testID={testID}
+                    integerColor={UILabelColors.TextPrimary}
+                    integerVariant={UILabelRoles.NarrowMonoText}
+                    decimalColor={UILabelColors.TextSecondary}
+                    decimalVariant={UILabelRoles.NarrowMonoText}
+                    {...props}
+                >
+                    {props.number}
+                </UINumber>
+            );
         default:
             return null;
     }
@@ -75,6 +95,8 @@ export const UITableRow = React.memo(function UITableRow({
     testID,
     name,
     nameTestID,
+    nameColor = UILabelColors.TextPrimary,
+    nameVariant = UILabelRoles.NarrowParagraphText,
     value,
     caption,
     captionTestID,
@@ -91,11 +113,7 @@ export const UITableRow = React.memo(function UITableRow({
             <View style={styles.rowContainer}>
                 <UISkeleton show={loading}>
                     <View style={styles.nameContainer}>
-                        <UILabel
-                            testID={nameTestID}
-                            color={UILabelColors.TextSecondary}
-                            role={UILabelRoles.NarrowParagraphNote}
-                        >
+                        <UILabel testID={nameTestID} color={nameColor} role={nameVariant}>
                             {name}
                         </UILabel>
                     </View>
@@ -107,8 +125,8 @@ export const UITableRow = React.memo(function UITableRow({
             {caption != null ? (
                 <UILabel
                     testID={captionTestID}
-                    color={UILabelColors.TextTertiary}
-                    role={UILabelRoles.NarrowParagraphFootnote}
+                    color={UILabelColors.TextSecondary}
+                    role={UILabelRoles.NarrowParagraphNote}
                     style={styles.caption}
                 >
                     {caption}
@@ -129,13 +147,13 @@ const styles = StyleSheet.create({
     },
     nameContainer: {
         flex: 1,
-        marginRight: UILayoutConstant.contentInsetVerticalX2,
+        marginRight: UILayoutConstant.smallContentOffset,
     },
     valueContainer: {
         flex: 1,
-        marginLeft: UILayoutConstant.contentInsetVerticalX2,
+        marginLeft: UILayoutConstant.smallContentOffset,
     },
     caption: {
-        marginTop: UILayoutConstant.contentInsetVerticalX1,
+        marginTop: UILayoutConstant.tinyContentOffset,
     },
 });
