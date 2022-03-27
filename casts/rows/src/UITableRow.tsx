@@ -30,6 +30,8 @@ export type UITableRowProps = {
     name: string;
     nameTestID?: string;
     value: UITableRowValue;
+    caption?: string;
+    captionTestID?: string;
     loading: boolean;
     onPress?: () => void;
 };
@@ -74,6 +76,8 @@ export const UITableRow = React.memo(function UITableRow({
     name,
     nameTestID,
     value,
+    caption,
+    captionTestID,
     loading,
     onPress,
 }: UITableRowProps) {
@@ -84,35 +88,54 @@ export const UITableRow = React.memo(function UITableRow({
             disabled={!onPress}
             style={styles.container}
         >
-            <UISkeleton show={loading}>
-                <View style={styles.nameContainer}>
-                    <UILabel
-                        testID={nameTestID}
-                        color={UILabelColors.TextSecondary}
-                        role={UILabelRoles.NarrowParagraphNote}
-                    >
-                        {name}
-                    </UILabel>
-                </View>
-            </UISkeleton>
-            <UISkeleton show={loading}>
-                <View style={styles.valueContainer}>{renderTableValue(value)}</View>
-            </UISkeleton>
+            <View style={styles.rowContainer}>
+                <UISkeleton show={loading}>
+                    <View style={styles.nameContainer}>
+                        <UILabel
+                            testID={nameTestID}
+                            color={UILabelColors.TextSecondary}
+                            role={UILabelRoles.NarrowParagraphNote}
+                        >
+                            {name}
+                        </UILabel>
+                    </View>
+                </UISkeleton>
+                <UISkeleton show={loading}>
+                    <View style={styles.valueContainer}>{renderTableValue(value)}</View>
+                </UISkeleton>
+            </View>
+            {caption != null ? (
+                <UILabel
+                    testID={captionTestID}
+                    color={UILabelColors.TextTertiary}
+                    role={UILabelRoles.NarrowParagraphFootnote}
+                    style={styles.caption}
+                >
+                    {caption}
+                </UILabel>
+            ) : null}
         </TouchableOpacity>
     );
 });
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row',
         paddingVertical: UILayoutConstant.contentInsetVerticalX4,
+    },
+    rowContainer: {
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
     },
     nameContainer: {
+        flex: 1,
         marginRight: UILayoutConstant.contentInsetVerticalX2,
     },
     valueContainer: {
+        flex: 1,
         marginLeft: UILayoutConstant.contentInsetVerticalX2,
+    },
+    caption: {
+        marginTop: UILayoutConstant.contentInsetVerticalX1,
     },
 });
