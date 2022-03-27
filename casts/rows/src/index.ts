@@ -1,6 +1,7 @@
 export * from './UIAccountRow';
-export * from './UILink';
 export * from './UICurrencyRow';
+export * from './UILink';
+export * from './UITableRow';
 
 export * from './UIListRowsAdapter';
 export { UIRowsPressabilityProvider } from './UIListRowsContext';
