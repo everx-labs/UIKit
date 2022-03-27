@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import type BigNumber from 'bignumber.js';
 
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
@@ -40,13 +40,25 @@ function renderTableValue(value: UITableRowValue) {
     switch (kind) {
         case UITableRowValueKind.Currency:
             return (
-                <UICurrency testID={testID} {...props}>
+                <UICurrency
+                    testID={testID}
+                    integerColor={UILabelColors.TextPrimary}
+                    integerVariant={UILabelRoles.NarrowMonoNote}
+                    decimalColor={UILabelColors.TextPrimary}
+                    decimalVariant={UILabelRoles.NarrowMonoNote}
+                    {...props}
+                >
                     {props.amount}
                 </UICurrency>
             );
         case UITableRowValueKind.Label:
             return (
-                <UILabel testID={testID} {...props}>
+                <UILabel
+                    testID={testID}
+                    color={UILabelColors.TextPrimary}
+                    role={UILabelRoles.NarrowParagraphNote}
+                    {...props}
+                >
                     {props.title}
                 </UILabel>
             );
@@ -73,15 +85,19 @@ export const UITableRow = React.memo(function UITableRow({
             style={styles.container}
         >
             <UISkeleton show={loading}>
-                <UILabel
-                    testID={nameTestID}
-                    color={UILabelColors.TextSecondary}
-                    role={UILabelRoles.NarrowParagraphNote}
-                >
-                    {name}
-                </UILabel>
+                <View style={styles.nameContainer}>
+                    <UILabel
+                        testID={nameTestID}
+                        color={UILabelColors.TextSecondary}
+                        role={UILabelRoles.NarrowParagraphNote}
+                    >
+                        {name}
+                    </UILabel>
+                </View>
             </UISkeleton>
-            <UISkeleton show={loading}>{renderTableValue(value)}</UISkeleton>
+            <UISkeleton show={loading}>
+                <View style={styles.valueContainer}>{renderTableValue(value)}</View>
+            </UISkeleton>
         </TouchableOpacity>
     );
 });
@@ -92,5 +108,11 @@ const styles = StyleSheet.create({
         paddingVertical: UILayoutConstant.contentInsetVerticalX4,
         alignItems: 'center',
         justifyContent: 'space-between',
+    },
+    nameContainer: {
+        marginRight: UILayoutConstant.contentInsetVerticalX2,
+    },
+    valueContainer: {
+        marginLeft: UILayoutConstant.contentInsetVerticalX2,
     },
 });
