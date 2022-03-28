@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAnimatedReaction } from 'react-native-reanimated';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import { useAndroidNavigationBarHeight } from '@tonlabs/uikit.inputs';
+import { useAndroidNavigationBarHeight } from '@tonlabs/uicast.keyboard';
 
 import { UISheet, UISheetProps } from '../UISheet/UISheet';
 import { useShrinkContentUnderSheetContextProgress } from './ShrinkContentUnderSheet';

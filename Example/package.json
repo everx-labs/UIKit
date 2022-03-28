@@ -32,6 +32,7 @@
         "@tonlabs/uicast.carousel-view": "*",
         "@tonlabs/uicast.country-picker": "*",
         "@tonlabs/uicast.date-time-picker": "*",
+        "@tonlabs/uicast.keyboard": "*",
         "@tonlabs/uicast.linear-chart": "*",
         "@tonlabs/uicast.modal-navigator": "*",
         "@tonlabs/uicast.numbers": "*",

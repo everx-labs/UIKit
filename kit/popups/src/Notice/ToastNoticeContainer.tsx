@@ -4,7 +4,7 @@ import { PanGestureHandler } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
 import { useHover } from '@tonlabs/uikit.controls';
-import { useAnimatedKeyboardHeight } from '@tonlabs/uikit.inputs';
+import { useAnimatedKeyboardHeight } from '@tonlabs/uicast.keyboard';
 
 import { UIConstant } from '../constants';
 import type { SnapPoints, ToastNoticeProps } from './types';

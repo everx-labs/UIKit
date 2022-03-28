@@ -1,0 +1,1 @@
+#import "../cpp/UIKitKeyboardModule.cpp" // compile UIKitKeyboardModule as Objective-C++

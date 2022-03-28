@@ -8,7 +8,7 @@ import Animated, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import { useAndroidNavigationBarHeight } from '@tonlabs/uikit.inputs';
+import { useAndroidNavigationBarHeight } from '@tonlabs/uicast.keyboard';
 
 import { useSheetOrigin } from './SheetOriginContext';
 

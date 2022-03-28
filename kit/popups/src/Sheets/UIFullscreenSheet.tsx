@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Platform, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import { useDimensions } from '@tonlabs/uikit.inputs';
+import { useDimensions } from '@tonlabs/uicast.keyboard';
 
 import { UISheet, UISheetProps } from './UISheet/UISheet';
 
