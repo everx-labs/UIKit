@@ -19,6 +19,7 @@ target 'Quiver UI' do
   pod 'UIKitMedia', :path => "../../kit/media/UIKitMedia.podspec"
   pod 'UIKitScrolls', :path => "../../kit/scrolls/UIKitScrolls.podspec"
   pod 'UIKitLocalization', :path => "../../localization/UIKitLocalization.podspec"
+  pod 'UIKitKeyboard', :path => "../../casts/keyboard/UIKitKeyboard.podspec"
   pod 'react-native-video/VideoCaching', :path => '../../node_modules/react-native-video'
   
   target 'Quiver UITests' do

@@ -7,6 +7,8 @@ import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 
+import tonlabs.uikit.keyboard.UIKitKeyboardFrameListener;
+
 public class MainActivity extends ReactActivity {
 
     /**
@@ -23,9 +25,10 @@ public class MainActivity extends ReactActivity {
         return new ReactActivityDelegate(this, getMainComponentName()) {
             @Override
             protected ReactRootView createRootView() {
-                ReactRootView rootView = new RNGestureHandlerEnabledRootView(MainActivity.this);
+                RNGestureHandlerEnabledRootView rootView = new RNGestureHandlerEnabledRootView(MainActivity.this);
 
                 WindowCompat.setDecorFitsSystemWindows(MainActivity.this.getWindow(), false);
+                UIKitKeyboardFrameListener.attach(MainActivity.this, rootView);
 
                 return rootView;
             }

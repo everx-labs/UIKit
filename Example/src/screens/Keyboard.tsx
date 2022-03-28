@@ -3,7 +3,7 @@ import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UILabel } from '@tonlabs/uikit.themes';
-import { UIInputAccessoryView, useCustomKeyboard } from '@tonlabs/uikit.inputs';
+import { UIInputAccessoryView, useCustomKeyboard } from '@tonlabs/uicast.keyboard';
 import { useStickers } from '@tonlabs/uistory.stickers';
 
 import { ExampleScreen } from '../components/ExampleScreen';

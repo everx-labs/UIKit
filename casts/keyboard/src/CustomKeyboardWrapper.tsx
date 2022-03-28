@@ -49,8 +49,8 @@ type Props = {
     children: React.ReactNode;
 };
 
-export function CustomKeyboardWrapper(props: Props) {
-    const { height, opacity } = useCustomKeyboardWrapperAnimations(props.children != null);
+export function CustomKeyboardWrapper({ children }: Props) {
+    const { height, opacity } = useCustomKeyboardWrapperAnimations(children != null);
 
     return (
         <Animated.View>
@@ -62,7 +62,7 @@ export function CustomKeyboardWrapper(props: Props) {
                     },
                 ]}
             >
-                {props.children}
+                {children}
             </Animated.View>
         </Animated.View>
     );

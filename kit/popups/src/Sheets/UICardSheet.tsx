@@ -17,19 +17,6 @@ export type UICardSheetProps = Omit<UISheetProps, 'style'> & {
     headerOptions?: Pick<UIDialogBarProps, 'headerLeftItems' | 'headerRightItems'>;
 };
 
-// @inline
-const CARD_SHEET_DEFAULT_BOTTOM_INSET = 16; // UILayoutConstant.contentOffset
-
-function getCardSheetBottomInset(bottomInset: number, keyboardHeight: number) {
-    'worklet';
-
-    if (keyboardHeight !== 0) {
-        return CARD_SHEET_DEFAULT_BOTTOM_INSET;
-    }
-
-    return Math.max(CARD_SHEET_DEFAULT_BOTTOM_INSET, bottomInset);
-}
-
 export function UICardSheet({
     children,
     hasHeader = true,
@@ -41,7 +28,7 @@ export function UICardSheet({
     const styles = useStyles(theme);
     return (
         <UISheet.Container visible={visible} forId={forId}>
-            <UISheet.KeyboardAware getBottomInset={getCardSheetBottomInset}>
+            <UISheet.KeyboardAware hasDefaultInset>
                 <UISheet.IntrinsicSize>
                     <UISheet.Content {...rest} containerStyle={styles.sheet} style={styles.card}>
                         {hasHeader ? <UIDialogBar hasPuller {...headerOptions} /> : null}

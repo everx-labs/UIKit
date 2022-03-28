@@ -1,4 +1,4 @@
-package tonlabs.uikit.inputs;
+package tonlabs.uikit.keyboard;
 
 import android.content.Context;
 import android.util.Log;

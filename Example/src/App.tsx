@@ -56,7 +56,8 @@ import { CarouselScreen } from './screens/Carousel';
 import { CellsScreen } from './screens/Cells';
 import { Navigation } from './screens/Navigation';
 import { SectionsService } from './Search';
-import { KeyboardScreen } from './screens/Keyboard';
+// import { KeyboardScreen } from './screens/Keyboard';
+import { KeyboardScreen2 } from './screens/Keyboard2';
 import { LargeHeaderScreen } from './screens/LargeHeader';
 import { QRCodeScreen } from './screens/QRCode';
 import { RowsScreen } from './screens/Rows';
@@ -204,12 +205,12 @@ const Main = ({ navigation }: { navigation: any }) => {
                         layout={styles.button}
                     />
                     {/* <UILinkButton
-                            title="Keyboard"
-                            type={UILinkButtonType.Menu}
-                            onPress={() => navigation.navigate('keyboard')}
-                            layout={styles.button}
-                        />
-                        <UILinkButton
+                        title="Keyboard"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('keyboard')}
+                        layout={styles.button}
+                    /> */}
+                    {/* <UILinkButton
                             title="Large header"
                             type={UILinkButtonType.Menu}
                             onPress={() => navigation.navigate('large-header')}
@@ -416,7 +417,7 @@ const App = () => {
                         />
                         <Split.Screen
                             name="keyboard"
-                            component={KeyboardScreen}
+                            component={KeyboardScreen2}
                             options={{
                                 title: 'Keyboard',
                             }}

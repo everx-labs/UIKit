@@ -38,6 +38,7 @@
         "@tonlabs/uikit.controls": "^3.0.0",
         "@tonlabs/uikit.core": "^3.0.0",
         "@tonlabs/uikit.inputs": "^3.0.0",
+        "@tonlabs/uicast.keyboard": "^3.0.0",
         "@tonlabs/uikit.media": "^3.0.0",
         "@tonlabs/uikit.themes": "^3.0.0",
         "react-native-safe-area-context": "^3.3.2"
