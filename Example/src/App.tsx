@@ -45,7 +45,6 @@ import { ListsScreen } from './screens/Lists';
 import { Chart } from './screens/Chart';
 import { CardsScreen } from './screens/Cards';
 import { Images } from './screens/Images';
-import { Layouts } from './screens/Layouts';
 import { Menus } from './screens/Menus';
 import { NotificationsScreen } from './screens/Notifications';
 import { Products } from './screens/Products';
@@ -216,12 +215,6 @@ const Main = ({ navigation }: { navigation: any }) => {
                             onPress={() => navigation.navigate('large-header')}
                             layout={styles.button}
                         /> */}
-                    <UILinkButton
-                        title="Layouts"
-                        type={UILinkButtonType.Menu}
-                        onPress={() => navigation.navigate('layouts')}
-                        layout={styles.button}
-                    />
                     <UILinkButton
                         title="Menus"
                         type={UILinkButtonType.Menu}
@@ -432,13 +425,6 @@ const App = () => {
                             name="large-header"
                             component={LargeHeaderScreen}
                             options={{ headerVisible: false }}
-                        />
-                        <Split.Screen
-                            name="layouts"
-                            component={Layouts}
-                            options={{
-                                title: 'Layouts',
-                            }}
                         />
                         <Split.Screen
                             name="main"
