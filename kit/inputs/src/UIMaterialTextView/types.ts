@@ -107,7 +107,7 @@ export type UIMaterialTextViewTextProps = {
      *
      * If it is a `string`, it will be placed in a `UILabel` with suitable styles.
      *
-     * If it is the `UIImage`, a suitable `tintColor` prop will be passed to it.
+     * If it is the `UIImage`, a suitable `tintColor` prop and size styles will be passed to it.
      *
      * Any other element will be displayed unchanged.
      */

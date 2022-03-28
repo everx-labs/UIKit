@@ -114,7 +114,12 @@ export const Inputs = () => {
                         mask="Amount"
                     >
                         <UIMaterialTextView.Text>
-                            <UIImage source={UIAssets.icons.ui.warn} />
+                            <UIImage
+                                source={UIAssets.icons.ui.camera}
+                                style={{
+                                    marginRight: 4,
+                                }}
+                            />
                             WEVER
                         </UIMaterialTextView.Text>
                     </UIMaterialTextView>

@@ -34,6 +34,10 @@ function processChildren(
             return React.createElement(UIImage, {
                 ...child.props,
                 tintColor,
+                style: {
+                    ...styles.imageChild,
+                    ...child.props.style,
+                },
             });
         }
         return child;
@@ -221,5 +225,9 @@ const styles = StyleSheet.create({
     textContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    imageChild: {
+        height: UILayoutConstant.iconSize,
+        width: UILayoutConstant.iconSize,
     },
 });
