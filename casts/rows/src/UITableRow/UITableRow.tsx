@@ -78,14 +78,14 @@ export const UITableRow = React.memo(function UITableRow({
             style={styles.container}
         >
             <View style={styles.rowContainer}>
-                <UISkeleton show={loading}>
+                <UISkeleton show={loading} style={styles.skeleton}>
                     <View style={styles.nameContainer}>
                         <UILabel testID={nameTestID} color={nameColor} role={nameVariant}>
                             {name}
                         </UILabel>
                     </View>
                 </UISkeleton>
-                <UISkeleton show={loading}>
+                <UISkeleton show={loading} style={styles.skeleton}>
                     <View style={styles.valueContainer}>{renderTableValue(value)}</View>
                 </UISkeleton>
             </View>
@@ -106,6 +106,9 @@ export const UITableRow = React.memo(function UITableRow({
 const styles = StyleSheet.create({
     container: {
         paddingVertical: UILayoutConstant.contentInsetVerticalX4,
+    },
+    skeleton: {
+        borderRadius: UILayoutConstant.borderRadius,
     },
     rowContainer: {
         flexDirection: 'row',
