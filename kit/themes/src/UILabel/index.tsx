@@ -5,5 +5,4 @@ export * from './UILabel';
 export const UILabelRoles = TypographyVariants;
 export const UILabelColors = ColorVariants;
 
-import type { Props } from './types';
-export type UILabelProps = Props;
+export type { UILabelProps } from './types';
