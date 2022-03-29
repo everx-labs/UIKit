@@ -74,7 +74,7 @@ RCT_EXPORT_MODULE()
 
 - (UIView *)keyboardView {
     /**
-     * If count of windows is changed it means there might be a new UITextEffectsWindow,
+     * If the count of windows has changed it means there might be a new UITextEffectsWindow,
      * thus we have to obtain a new `keyboardView`
      */
     int windowsCount = [UIApplication.sharedApplication.windows count];
