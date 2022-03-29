@@ -1,13 +1,11 @@
 import type { UIAccountRowProps } from './UIAccountRow';
 import type { UICurrencyRowProps } from './UICurrencyRow';
 import type { UILinkProps } from './UILink';
-import type { UITableRowProps } from './UITableRow';
 
 export enum UIKitListRowKind {
     Account = 'account',
     Currency = 'currency',
     Link = 'link',
-    Table = 'table',
 }
 
 export type UIListRow<Kind, Props, Payload = void> = Payload extends void
@@ -17,7 +15,6 @@ export type UIListRow<Kind, Props, Payload = void> = Payload extends void
 export type UIKitListRow<P = void> =
     | UIListRow<UIKitListRowKind.Account, UIAccountRowProps, P>
     | UIListRow<UIKitListRowKind.Currency, UICurrencyRowProps, P>
-    | UIListRow<UIKitListRowKind.Link, UILinkProps, P>
-    | UIListRow<UIKitListRowKind.Table, UITableRowProps, P>;
+    | UIListRow<UIKitListRowKind.Link, UILinkProps, P>;
 
 export type UIKitListRows<P = void> = UIKitListRow<P>[];

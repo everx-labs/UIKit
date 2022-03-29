@@ -6,7 +6,6 @@ import { useTheme, ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAccountRow } from './UIAccountRow';
 import { UICurrencyRow } from './UICurrencyRow';
 import { UILink } from './UILink';
-import { UITableRow } from './UITableRow';
 
 import { UIKitListRow, UIKitListRowKind } from './types';
 import type { UIListRow } from './types';
@@ -23,9 +22,6 @@ export function renderUIListItem<ItemT extends UIKitListRow<any>>({
     }
     if (item.kind === UIKitListRowKind.Link) {
         return <UILink {...item.props} />;
-    }
-    if (item.kind === UIKitListRowKind.Table) {
-        return <UITableRow {...item.props} />;
     }
     return null;
 }
