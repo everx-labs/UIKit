@@ -1,4 +1,5 @@
 import * as React from 'react';
+import type { SharedValue } from 'react-native-reanimated';
 import type {
     UIMaterialTextViewMask,
     ImperativeChangeText,
@@ -36,6 +37,8 @@ export function useApplyMask(
     imperativeChangeText: ImperativeChangeText,
     moveCarret: MoveCarret,
     mask: UIMaterialTextViewMask | undefined,
+    selectionEnd: SharedValue<number>,
+    skipNextOnSelectionChange: SharedValue<boolean>,
 ) {
     /**
      * The prop `mask` must not be changed, so we can use ref to make sure it will not.
@@ -56,7 +59,12 @@ export function useApplyMask(
     switch (maskRef.current) {
         case 'Amount':
             // eslint-disable-next-line react-hooks/rules-of-hooks
-            return useApplyMaskAmount(imperativeChangeText, moveCarret);
+            return useApplyMaskAmount(
+                imperativeChangeText,
+                moveCarret,
+                selectionEnd,
+                skipNextOnSelectionChange,
+            );
         default:
             // eslint-disable-next-line react-hooks/rules-of-hooks
             return useApplyMaskDefault(imperativeChangeText);

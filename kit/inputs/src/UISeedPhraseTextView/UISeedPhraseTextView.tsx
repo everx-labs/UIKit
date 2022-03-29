@@ -9,9 +9,9 @@ import {
     UIMaterialTextViewRef,
     UIMaterialTextViewProps,
 } from '../UIMaterialTextView';
-import { moveCarret } from '../moveCarret';
 
 import { UISeedPhrasePopover } from './UISeedPhrasePopover';
+import { useExtendedRef } from './hooks';
 
 const SPLITTER = ` ${UILayoutConstant.dashSymbol} `;
 
@@ -177,7 +177,8 @@ export const UISeedPhraseTextView = React.forwardRef<
 
     const textInputRef = React.useRef<UIMaterialTextViewRef>(null);
     const textInputBorderViewRef = React.useRef<View>(null);
-    const refToUse = ref || textInputRef;
+
+    useExtendedRef(ref, textInputRef);
 
     const [state, dispatch] = React.useReducer(reducer, {
         phrase: '',
@@ -226,7 +227,7 @@ export const UISeedPhraseTextView = React.forwardRef<
             setTimeout(() => {
                 // in onHintSelected method we call .focus() to continue typing
                 // so it means we don't need to handle blur event anymore
-                if (refToUse && 'current' in refToUse && refToUse.current?.isFocused()) {
+                if (textInputRef && textInputRef.current?.isFocused()) {
                     return;
                 }
                 dispatch({
@@ -239,7 +240,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 onBlurProp(evt);
             }
         },
-        [refToUse, onBlurProp],
+        [textInputRef, onBlurProp],
     );
 
     const hints = React.useMemo(() => {
@@ -271,28 +272,27 @@ export const UISeedPhraseTextView = React.forwardRef<
                 newText = `${newText}${SPLITTER}`;
             }
 
-            if (refToUse && 'current' in refToUse) {
-                // Now change the text for the input
-                if (Platform.OS === 'android') {
-                    // Actually Android moves the cursor to the the right visually,
-                    // BUT physically it's not moved, and when the user continues typing
-                    // the cursor stays wherever it was before, but not at the right.
-                    // N.B. This bug is reproducible on NOT all Android devices, but some!!!
+            // Now change the text for the input
+            if (Platform.OS === 'android') {
+                // Actually Android moves the cursor to the the right visually,
+                // BUT physically it's not moved, and when the user continues typing
+                // the cursor stays wherever it was before, but not at the right.
+                // N.B. This bug is reproducible on NOT all Android devices, but some!!!
 
-                    /*
+                /*
                     At the moment the hack bellow behaves even more terrible then the issue above,
                     because a native selection of Android's TextInput gets stuck since RN0.60:
                     https://github.com/facebook/react-native/issues/26047
 
                     // Thus we change the native position of it ...
-                    refToUse.current?.setNativeProps({
+                    textInputRef.current?.setNativeProps({
                         selection: {
                             start: newText.length - 1,
                             end: newText.length - 1,
                         },
                     });
                     // ... in order to return it back to the right
-                    refToUse.current?.setNativeProps({
+                    textInputRef.current?.setNativeProps({
                         selection: {
                             start: newText.length,
                             end: newText.length,
@@ -300,27 +300,22 @@ export const UISeedPhraseTextView = React.forwardRef<
                     });
                     */
 
-                    // Another hack...
-                    // Remove the ending space in order to force the input updating its cursor
-                    // (This should not affect the UX when selecting hints)
-                    refToUse.current?.setNativeProps({
-                        text: newText.substr(0, newText.length - 1),
-                    });
+                // Another hack...
+                // Remove the ending space in order to force the input updating its cursor
+                // (This should not affect the UX when selecting hints)
+                textInputRef.current?.changeText(newText.substr(0, newText.length - 1), false);
 
-                    // Now move the cursor position back to the end
-                    requestAnimationFrame(() => {
-                        refToUse.current?.setNativeProps({
-                            text: newText,
-                        });
-                    });
-                } else {
-                    // The rest platforms behave properly
-                    refToUse.current?.changeText(newText, false);
-                }
-
-                // Focus the input in case the focus was lost on a hint selection
-                refToUse.current?.focus();
+                // Now move the cursor position back to the end
+                requestAnimationFrame(() => {
+                    textInputRef.current?.changeText(newText, false);
+                });
+            } else {
+                // The rest platforms behave properly
+                textInputRef.current?.changeText(newText, false);
             }
+
+            // Focus the input in case the focus was lost on a hint selection
+            textInputRef.current?.focus();
 
             dispatchAndSavePhrase({
                 type: 'separate',
@@ -329,7 +324,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 },
             });
         },
-        [totalWords, state.typed.index, dispatchAndSavePhrase, refToUse],
+        [totalWords, state.typed.index, dispatchAndSavePhrase, textInputRef],
     );
 
     const onHighlightedItemIndexChange = React.useCallback((index: number) => {
@@ -388,11 +383,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 // Prevent adding dash when there wasn't typed a word
                 // i.e `word - - `
                 if (text.endsWith('  ')) {
-                    if (refToUse && 'current' in refToUse) {
-                        refToUse.current?.setNativeProps({
-                            text: phraseRef.current,
-                        });
-                    }
+                    textInputRef.current?.changeText(phraseRef.current, false);
                     return;
                 }
                 const parts = text.split(SPLITTER);
@@ -401,9 +392,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                         ? `${text}${UILayoutConstant.dashSymbol} `
                         : text.trim();
 
-                if (refToUse && 'current' in refToUse) {
-                    refToUse.current?.changeText(newText, false);
-                }
+                textInputRef.current?.changeText(newText, false);
 
                 dispatchAndSavePhrase({
                     type: 'separate',
@@ -419,9 +408,7 @@ export const UISeedPhraseTextView = React.forwardRef<
             ) {
                 const newText = text.slice(0, text.length - 2);
 
-                if (refToUse && 'current' in refToUse) {
-                    refToUse.current?.changeText(newText, false);
-                }
+                textInputRef.current?.changeText(newText, false);
 
                 dispatchAndSavePhrase({
                     type: 'remove_separator',
@@ -433,8 +420,8 @@ export const UISeedPhraseTextView = React.forwardRef<
 
             const newText = text.match(/(\w+)/g)?.join(SPLITTER) ?? '';
 
-            if (newText !== text && refToUse && 'current' in refToUse) {
-                refToUse.current?.changeText(newText, false);
+            if (newText !== text) {
+                textInputRef.current?.changeText(newText, false);
             }
 
             dispatchAndSavePhrase({
@@ -442,7 +429,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 payload: { phrase: newText },
             });
         },
-        [totalWords, dispatchAndSavePhrase, refToUse],
+        [totalWords, dispatchAndSavePhrase, textInputRef],
     );
 
     const [isValid, setIsValid] = React.useState(false);
@@ -463,16 +450,14 @@ export const UISeedPhraseTextView = React.forwardRef<
                 onSuccessRef.current(state.phrase, state.parts);
             }
         });
-    }, [isValid, setIsValid, state.phrase, state.parts, refToUse]);
+    }, [isValid, setIsValid, state.phrase, state.parts, textInputRef]);
 
     const onSubmitEditing = React.useCallback(() => {
-        if (refToUse && 'current' in refToUse) {
-            refToUse.current?.changeText(phraseRef.current, false);
-        }
+        textInputRef.current?.changeText(phraseRef.current, false);
         if (isValid) {
             onSubmit && onSubmit();
         }
-    }, [isValid, onSubmit, refToUse]);
+    }, [isValid, onSubmit, textInputRef]);
 
     const totalWordsString = React.useMemo(() => {
         if (typeof props.totalWords === 'number') {
@@ -516,11 +501,12 @@ export const UISeedPhraseTextView = React.forwardRef<
         }) => {
             // We want to protect seed phrase against copying
             // as it might be occasionally compromised in clipboard
-            if (Platform.OS !== 'ios' && start !== end) {
-                moveCarret(refToUse, state.phrase.length);
+            // NOTE: on android, this resets the input value for an unknown reason
+            if (Platform.OS !== 'android' && start !== end) {
+                textInputRef.current?.moveCarret(end);
             }
         },
-        [state, refToUse],
+        [textInputRef],
     );
 
     const [height, setHeight] = React.useState(0);
@@ -534,7 +520,7 @@ export const UISeedPhraseTextView = React.forwardRef<
     return (
         <>
             <UIMaterialTextView
-                ref={refToUse}
+                ref={textInputRef}
                 borderViewRef={textInputBorderViewRef}
                 testID={testID}
                 autoCapitalize="none"
