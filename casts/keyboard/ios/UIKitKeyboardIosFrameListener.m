@@ -18,6 +18,7 @@
     NSMapTable *_listeners;
     CADisplayLink *displayLink;
     CGFloat prevKeyboardTopPosition;
+    int _windowsCount;
 }
 - (instancetype)init
 {
@@ -26,6 +27,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
         _listeners = [NSMapTable strongToStrongObjectsMapTable];
         prevKeyboardTopPosition = 0;
+        _windowsCount = 0;
     }
     return self;
 }
@@ -43,7 +45,18 @@ RCT_EXPORT_MODULE()
  * And this repo has a closed issue about that https://github.com/JunyuKuang/KeyboardUtility/issues/1
  */
 - (UIView *)findKeyboardView {
-    for (UIWindow *window in [UIApplication.sharedApplication.windows reverseObjectEnumerator]) {
+    /**
+     * There was reverseobjectEnumerator before.
+     * Usually a structure looks like this:
+     *   - UIWindow
+     *   - UITextEffectsWindow
+     * Based on that it seemed that to access from the END is faster
+     * But turned out there might be more than one UITextEffectsWindow,
+     * and the one that works correct is placed closer to UIWindow.
+     * Therefore now we begin from start, where UIWindow is one first place
+     * and choose the closest UITextEffectsWindow.
+     */
+    for (UIWindow *window in [UIApplication.sharedApplication.windows objectEnumerator]) {
         if ([window isKindOfClass:NSClassFromString(@"UITextEffectsWindow")]) {
             for (UIView *containerView in window.subviews) {
                 if ([containerView isKindOfClass:NSClassFromString(@"UIInputSetContainerView")]) {
@@ -60,8 +73,15 @@ RCT_EXPORT_MODULE()
 }
 
 - (UIView *)keyboardView {
-    if (_keyboardView == nil) {
+    /**
+     * If count of windows is changed it means there might be a new UITextEffectsWindow,
+     * thus we have to obtain a new `keyboardView`
+     */
+    int windowsCount = [UIApplication.sharedApplication.windows count];
+    
+    if (_keyboardView == nil || windowsCount != _windowsCount) {
         _keyboardView = [self findKeyboardView];
+        _windowsCount = windowsCount;
     }
     return _keyboardView;
 }
@@ -108,7 +128,6 @@ RCT_EXPORT_MODULE()
         displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateKeyboardFrameForListeners)];
         [displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
     }
-    // TODO: call with a current point if needed
     [_listeners setObject:withListener forKey:uid];
 }
 

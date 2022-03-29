@@ -11,7 +11,7 @@ function getUIKitKeyboardModule(): {
     // @ts-ignore
     // eslint-disable-next-line no-underscore-dangle
     if (global.__uikitKeyboard == null) {
-        NativeModules.UIKitKeyboardFrameListenerModule.install();
+        NativeModules.UIKitKeyboardFrameListenerModule?.install();
     }
     // @ts-ignore
     // eslint-disable-next-line no-underscore-dangle
