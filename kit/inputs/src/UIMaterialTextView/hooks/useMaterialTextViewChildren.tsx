@@ -36,7 +36,7 @@ function processChildren(
                 tintColor,
                 style: {
                     ...styles.imageChild,
-                    ...child.props.style,
+                    ...StyleSheet.flatten(child.props.style),
                 },
             });
         }
