@@ -2,9 +2,9 @@ import * as React from 'react';
 import BigNumber from 'bignumber.js';
 import { uiLocalized } from '@tonlabs/localization';
 import type { UIMaterialTextViewRef, UIMaterialTextViewMask } from '../UIMaterialTextView';
-import { UIMaterialTextView } from '../UIMaterialTextView';
 import { UIAmountInputDecimalAspect, UIAmountInputMessageType } from './constants';
 import type { UIAmountInputRef } from './types';
+import { getEmptyUIMaterialTextViewRef } from '../UIMaterialTextView/getEmptyUIMaterialTextViewRef';
 
 const notDigitOrDelimiterRegExp = new RegExp(
     `[^\\d\\${uiLocalized.localeInfo.numbers.decimal}]`,
@@ -98,6 +98,9 @@ export function useMask(
     }, [decimalAspect]);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const { changeText, ...defaultRef } = getEmptyUIMaterialTextViewRef('UIAmountInput/hooks.ts');
+
 export function useExtendedRef(
     forwardedRed: React.Ref<UIAmountInputRef>,
     localRef: React.RefObject<UIMaterialTextViewRef>,
@@ -109,10 +112,11 @@ export function useExtendedRef(
         [localRef],
     );
 
-    React.useImperativeHandle<UIMaterialTextViewRef, UIAmountInputRef>(
+    React.useImperativeHandle<Record<string, any>, UIAmountInputRef>(
         forwardedRed,
         (): UIAmountInputRef => ({
-            ...(localRef.current ? localRef.current : UIMaterialTextView.prototype),
+            ...defaultRef,
+            ...localRef.current,
             changeAmount,
         }),
     );

@@ -41,6 +41,6 @@ export type UIAmountInputProps = {
     testID?: string;
 };
 
-export interface UIAmountInputRef extends UIMaterialTextViewRef {
+export type UIAmountInputRef = Omit<UIMaterialTextViewRef, 'changeText'> & {
     changeAmount: (amount: BigNumber | undefined, callOnChangeProp?: boolean) => void;
-}
+};
