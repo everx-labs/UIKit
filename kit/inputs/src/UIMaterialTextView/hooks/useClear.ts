@@ -9,9 +9,10 @@ export function useClear(
 ) {
     return React.useCallback(
         function clear() {
-            resetInputHeight();
             imperativeChangeText('');
+            ref.current?.clear();
             ref.current?.blur();
+            resetInputHeight();
         },
         [resetInputHeight, imperativeChangeText, ref],
     );

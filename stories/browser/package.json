@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uistory.browser",
-    "version": "3.0.0",
+    "version": "4.0.0",
     "description": "Browser based on Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",
@@ -34,31 +34,31 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/localization": "^3.0.0",
-        "@tonlabs/uicast.country-picker": "^3.0.0",
-        "@tonlabs/uicast.date-time-picker": "^3.0.0",
-        "@tonlabs/uicast.qr-code-scanner-sheet": "^3.0.0",
-        "@tonlabs/uikit.assets": "^3.0.0",
-        "@tonlabs/uikit.controls": "^3.0.0",
-        "@tonlabs/uikit.core": "^3.0.0",
-        "@tonlabs/uikit.inputs": "^3.0.0",
-        "@tonlabs/uicast.keyboard": "^3.0.0",
-        "@tonlabs/uikit.layout": "^3.0.0",
-        "@tonlabs/uikit.media": "^3.0.0",
-        "@tonlabs/uikit.popups": "^3.0.0",
-        "@tonlabs/uikit.scrolls": "^3.0.0",
-        "@tonlabs/uikit.themes": "^3.0.0",
-        "@tonlabs/uistory.chats": "^3.0.0",
+        "@tonlabs/localization": "^3.0.1",
+        "@tonlabs/uicast.country-picker": "^3.1.0",
+        "@tonlabs/uicast.date-time-picker": "^3.1.0",
+        "@tonlabs/uicast.keyboard": "^3.1.0",
+        "@tonlabs/uicast.qr-code-scanner-sheet": "^3.1.0",
+        "@tonlabs/uikit.assets": "^3.0.1",
+        "@tonlabs/uikit.controls": "^3.1.0",
+        "@tonlabs/uikit.core": "^4.0.0",
+        "@tonlabs/uikit.inputs": "^3.1.0",
+        "@tonlabs/uikit.layout": "^3.1.0",
+        "@tonlabs/uikit.media": "^3.1.0",
+        "@tonlabs/uikit.popups": "^4.0.0",
+        "@tonlabs/uikit.scrolls": "^4.0.0",
+        "@tonlabs/uikit.themes": "^3.1.0",
+        "@tonlabs/uistory.chats": "^4.0.0",
         "bignumber.js": "9.0.0",
         "react-native-safe-area-context": "^3.3.2"
     },
     "devDependencies": {
-        "react-native-builder-bob": "^0.18.2",
         "@types/react": "17.0.21",
         "@types/react-native": "0.67.2",
         "react": "17.0.2",
         "react-dom": "17.0.2",
-        "react-native": "0.67.3"
+        "react-native": "0.67.3",
+        "react-native-builder-bob": "^0.18.2"
     },
     "peerDependencies": {
         "react": "^17.0.2",

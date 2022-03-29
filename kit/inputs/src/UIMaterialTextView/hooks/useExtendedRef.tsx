@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TextInput } from 'react-native';
+import type { TextInput } from 'react-native';
 import type {
     UIMaterialTextViewRef,
     UIMaterialTextViewRefChangeText,
@@ -7,13 +7,11 @@ import type {
     UIMaterialTextViewRefMoveCarret,
 } from '../types';
 
-function getEmptyMethod(name: string) {
-    return function emptyMethod() {
-        console.error(
-            `[useExtendedRef]: You tried to call method [${name}]. This method is not implemented.`,
-        );
-        return null;
-    };
+function emptyMethod(name: string, returnedValue: any = null) {
+    console.error(
+        `[useExtendedRef]: You tried to call method [${name}]. This method is not implemented.`,
+    );
+    return returnedValue;
 }
 
 export function useExtendedRef(
@@ -21,6 +19,7 @@ export function useExtendedRef(
     localRef: React.RefObject<TextInput>,
     imperativeChangeText: ImperativeChangeText,
     moveCarret: UIMaterialTextViewRefMoveCarret,
+    clear: () => void,
 ) {
     const changeText: UIMaterialTextViewRefChangeText = React.useCallback(
         function changeText(text: string, callOnChangeProp: boolean | undefined) {
@@ -29,15 +28,30 @@ export function useExtendedRef(
         [imperativeChangeText],
     );
 
-    React.useImperativeHandle<TextInput, UIMaterialTextViewRef>(
+    React.useImperativeHandle<Record<string, any>, UIMaterialTextViewRef>(
         forwardedRed,
         (): UIMaterialTextViewRef => ({
-            ...(localRef.current ? localRef.current : TextInput.prototype),
-            setState: getEmptyMethod('setState'),
-            forceUpdate: getEmptyMethod('forceUpdate'),
-            render: getEmptyMethod('render'),
             changeText,
             moveCarret,
+            clear,
+            isFocused: () => {
+                if (!localRef.current?.isFocused) {
+                    return emptyMethod('isFocused', false);
+                }
+                return localRef.current?.isFocused();
+            },
+            focus: () => {
+                if (!localRef.current?.focus) {
+                    return emptyMethod('focus');
+                }
+                return localRef.current?.focus();
+            },
+            blur: () => {
+                if (!localRef.current?.blur) {
+                    return emptyMethod('blur');
+                }
+                return localRef.current?.blur();
+            },
         }),
     );
 }

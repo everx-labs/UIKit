@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uicast.carousel-view",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "description": "Carousel view on Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",
@@ -34,19 +34,19 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/uikit.controls": "^3.0.0",
-        "@tonlabs/uikit.layout": "^3.0.0",
-        "@tonlabs/uikit.themes": "^3.0.0",
+        "@tonlabs/uikit.controls": "^3.1.0",
+        "@tonlabs/uikit.layout": "^3.1.0",
+        "@tonlabs/uikit.themes": "^3.1.0",
         "lodash": "^4.17.21"
     },
     "devDependencies": {
-        "react-native-builder-bob": "^0.18.2",
         "@types/lodash": "^4.14.175",
         "@types/react": "17.0.21",
         "@types/react-native": "0.67.2",
         "react": "17.0.2",
         "react-dom": "17.0.2",
         "react-native": "0.67.3",
+        "react-native-builder-bob": "^0.18.2",
         "react-native-gesture-handler": "^1.10.3",
         "react-native-pager-view": "^5.4.9",
         "react-native-reanimated": "2.5.0",

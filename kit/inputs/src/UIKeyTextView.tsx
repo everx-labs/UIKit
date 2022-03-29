@@ -1,5 +1,4 @@
 import * as React from 'react';
-import type { TextInput } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/localization';
 
@@ -17,7 +16,6 @@ type OnSuccess = (success: boolean) => void | Promise<void>;
 type OnError = (error: boolean) => void | Promise<void>;
 
 export function useKeyTextView(
-    ref: React.Ref<TextInput> | null,
     isFocused: boolean,
     props: UIMaterialTextViewProps & {
         onDone: OnDone;
@@ -25,12 +23,17 @@ export function useKeyTextView(
         onError?: OnError;
     },
 ) {
+    /**
+     * ref is passed as null because types of ref are incompatible
+     * and we don't need the clear method
+     */
     const {
         inputValue,
         inputHasValue,
         onChangeText: onChangeTextBase,
         onKeyPress: onKeyPressBase,
-    } = useUITextViewValue(ref, true, props);
+    } = useUITextViewValue(null, true, props);
+
     const { onDone, onError, onSuccess } = props;
 
     const [hasInvalidChars, setHasInvalidChars] = React.useState(false);
@@ -131,7 +134,6 @@ export const UIKeyTextView = React.forwardRef<UIMaterialTextViewRef, UIKeyTextVi
     function UIKeyTextViewForwarded(props: UIKeyTextViewProps, ref) {
         const { isFocused, onFocus, onBlur } = useFocused(props.onFocus, props.onBlur);
         const { onChangeText, onKeyPress, helperText, success, error } = useKeyTextView(
-            ref,
             isFocused,
             props,
         );

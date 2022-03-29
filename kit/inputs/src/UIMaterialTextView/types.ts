@@ -78,10 +78,10 @@ export type UIMaterialTextViewLayoutProps = UIMaterialTextViewProps & {
     inputHasValue: boolean;
 };
 
-export interface UIMaterialTextViewRef extends TextInput {
+export type UIMaterialTextViewRef = Pick<TextInput, 'isFocused' | 'focus' | 'blur' | 'clear'> & {
     changeText: UIMaterialTextViewRefChangeText;
     moveCarret: UIMaterialTextViewRefMoveCarret;
-}
+};
 
 export type UIMaterialTextViewRefChangeText = (text: string, callOnChangeProp?: boolean) => void;
 export type UIMaterialTextViewRefMoveCarret = (

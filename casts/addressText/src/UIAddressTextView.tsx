@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { TextInput, NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
+import type { NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 
@@ -31,12 +31,16 @@ type UIAddressTextViewProps = UIMaterialTextViewProps & {
     };
 };
 
-function useAddressTextView(ref: React.Ref<TextInput> | null, props: UIAddressTextViewProps) {
+function useAddressTextView(props: UIAddressTextViewProps) {
+    /**
+     * ref is passed as null because types of ref are incompatible
+     * and we don't need the clear method
+     */
     const {
         inputValue,
         onChangeText: onChangeTextBase,
         onKeyPress: onKeyPressBase,
-    } = useUITextViewValue(ref, true, props);
+    } = useUITextViewValue(null, true, props);
 
     const { validateAddress, onSubmitEditing, onBlur: onBlurBase } = props;
 
@@ -114,10 +118,8 @@ export const UIAddressTextView = React.forwardRef<UIMaterialTextViewRef, UIAddre
             qrCode,
             ...rest
         } = props;
-        const { onBlur, onChangeText, onKeyPress, helperText, success, error } = useAddressTextView(
-            ref,
-            props,
-        );
+        const { onBlur, onChangeText, onKeyPress, helperText, success, error } =
+            useAddressTextView(props);
         const [qrVisible, setQrVisible] = React.useState(false);
 
         const onRead = React.useCallback(

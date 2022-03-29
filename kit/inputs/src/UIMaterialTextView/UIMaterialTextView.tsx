@@ -41,6 +41,7 @@ function useExtendedProps(
         numberOfLines: numberOfLinesProp,
         onFocus: onFocusProp,
         onBlur: onBlurProp,
+        onSelectionChange: onSelectionChangeProp,
     } = props;
 
     const { inputHasValue, checkInputHasValue } = useInputHasValue(value, defaultValue);
@@ -59,7 +60,8 @@ function useExtendedProps(
         isFocused,
     );
 
-    const { selectionEnd, onSelectionChange, skipNextOnSelectionChange } = useOnSelectionChange();
+    const { selectionEnd, onSelectionChange, skipNextOnSelectionChange } =
+        useOnSelectionChange(onSelectionChangeProp);
 
     const applyMask = useApplyMask(mask, selectionEnd, skipNextOnSelectionChange);
 
@@ -98,7 +100,7 @@ function useExtendedProps(
         clear,
     );
 
-    useExtendedRef(passedRef, ref, imperativeChangeText, moveCarret);
+    useExtendedRef(passedRef, ref, imperativeChangeText, moveCarret, clear);
 
     const newProps: UIMaterialTextViewLayoutProps = {
         ...props,
