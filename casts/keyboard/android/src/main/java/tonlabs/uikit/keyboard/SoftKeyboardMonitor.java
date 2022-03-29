@@ -1,4 +1,4 @@
-package tonlabs.uikit.inputs;
+package tonlabs.uikit.keyboard;
 
 import android.graphics.Rect;
 import android.view.ViewTreeObserver;

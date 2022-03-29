@@ -6,7 +6,7 @@ import {
     useCustomKeyboard,
     UIInputAccessoryView,
     UICustomKeyboardView,
-} from '@tonlabs/uikit.inputs';
+} from '@tonlabs/uicast.keyboard';
 import { UIPopup } from '@tonlabs/uikit.popups';
 import type { UIMenuActionProps } from '@tonlabs/uikit.popups';
 

@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uikit.core",
-    "version": "3.0.0",
+    "version": "4.0.0",
     "description": "Core utilities for Tonlabs's UIKit",
     "scripts": {
         "prepare": "bob build"
@@ -34,7 +34,7 @@
     ],
     "dependencies": {
         "@quentin-sommer/react-useragent": "2.0.0",
-        "@tonlabs/uikit.themes": "^3.0.0",
+        "@tonlabs/uikit.themes": "^3.1.0",
         "bignumber.js": "9.0.0",
         "dayjs": "1.9.1",
         "mobile-detect": "1.4.3",

@@ -1,4 +1,4 @@
-package tonlabs.uikit.media;
+package tonlabs.uikit.inputs;
 
 import android.content.Context;
 import android.os.Build;

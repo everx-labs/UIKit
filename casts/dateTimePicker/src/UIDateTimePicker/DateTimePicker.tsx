@@ -182,12 +182,7 @@ export function DatePicker(props: UIDateTimePickerProps) {
     const { visible, onClose } = props;
 
     return (
-        <UIBottomSheet
-            visible={visible}
-            onClose={onClose}
-            hasDefaultInset={false}
-            hasHeader={false}
-        >
+        <UIBottomSheet visible={visible} onClose={onClose} hasDefaultInset hasHeader={false}>
             <DatePickerContent {...props} />
         </UIBottomSheet>
     );

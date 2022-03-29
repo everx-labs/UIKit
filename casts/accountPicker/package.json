@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uicast.account-picker",
-    "version": "2.3.0",
+    "version": "2.4.0",
     "description": "Account picker on Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",
@@ -34,16 +34,16 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/uikit.themes": "^3.0.0",
-        "@tonlabs/uikit.core": "^3.0.0"
+        "@tonlabs/uikit.core": "^4.0.0",
+        "@tonlabs/uikit.themes": "^3.1.0"
     },
     "devDependencies": {
-        "react-native-builder-bob": "^0.18.2",
         "@types/react": "17.0.21",
         "@types/react-native": "0.67.2",
         "react": "17.0.2",
         "react-dom": "17.0.2",
         "react-native": "0.67.3",
+        "react-native-builder-bob": "^0.18.2",
         "typescript": "4.4.3"
     },
     "peerDependencies": {

@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uicast.split-navigator",
-    "version": "3.0.0",
+    "version": "3.1.0",
     "description": "Split navigator on Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",
@@ -34,24 +34,24 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/uikit.themes": "^3.0.0",
-        "@tonlabs/uikit.controls": "^3.0.0",
-        "@tonlabs/uikit.media": "^3.0.0",
-        "@tonlabs/uicast.stack-navigator": "^3.0.0",
-        "react-native-safe-area-context": "^3.3.2",
-        "nanoid": "^3.3.1"
+        "@tonlabs/uicast.stack-navigator": "^3.1.0",
+        "@tonlabs/uikit.controls": "^3.1.0",
+        "@tonlabs/uikit.media": "^3.1.0",
+        "@tonlabs/uikit.themes": "^3.1.0",
+        "nanoid": "^3.3.1",
+        "react-native-safe-area-context": "^3.3.2"
     },
     "devDependencies": {
-        "react-native-builder-bob": "^0.18.2",
         "@react-navigation/core": "^5.16.1",
+        "@react-navigation/elements": "^1.2.1",
         "@react-navigation/native": "^5.9.8",
         "@react-navigation/stack": "^5.14.9",
-        "@react-navigation/elements": "^1.2.1",
         "@types/react": "17.0.21",
         "@types/react-native": "0.67.2",
         "react": "17.0.2",
         "react-dom": "17.0.2",
         "react-native": "0.67.3",
+        "react-native-builder-bob": "^0.18.2",
         "react-native-gesture-handler": "^1.10.3",
         "react-native-reanimated": "2.5.0",
         "react-native-redash": "^16.0.11",
@@ -62,9 +62,9 @@
     },
     "peerDependencies": {
         "@react-navigation/core": "^5.16.1",
+        "@react-navigation/elements": "^1.2.1",
         "@react-navigation/native": "^5.9.8",
         "@react-navigation/stack": "^5.14.9",
-        "@react-navigation/elements": "^1.2.1",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-native": "^0.67.3",

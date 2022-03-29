@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { useTheme, Theme, makeStyles, ColorVariants } from '@tonlabs/uikit.themes';
 import { UIDialogBar, UIDialogBarProps } from '@tonlabs/uicast.bars';
 
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { UISheet, UISheetProps } from './UISheet/UISheet';
+import { getMaxPossibleDefaultBottomInset } from './UISheet/KeyboardAwareSheet';
 
 export type UIBottomSheetProps = Omit<UISheetProps, 'style'> & {
     hasDefaultInset?: boolean;
@@ -29,22 +30,17 @@ export function UIBottomSheet({
 }: UIBottomSheetProps) {
     const { visible, forId } = rest;
     const theme = useTheme();
+    const { bottom } = useSafeAreaInsets();
+    const defaultInset = React.useMemo(() => getMaxPossibleDefaultBottomInset(bottom), [bottom]);
 
-    const { bottom: bottomInset } = useSafeAreaInsets();
-
-    const defaultPadding = React.useMemo(() => {
-        if (!hasDefaultInset) {
-            return 0;
-        }
-
-        return Math.max(bottomInset || 0, UILayoutConstant.contentOffset);
-    }, [bottomInset, hasDefaultInset]);
-
-    const styles = useStyles(defaultPadding, theme);
+    const styles = useStyles(defaultInset, theme);
 
     return (
         <UISheet.Container visible={visible} forId={forId}>
-            <UISheet.KeyboardAware defaultShift={-UILayoutConstant.rubberBandEffectDistance}>
+            <UISheet.KeyboardAware
+                hasDefaultInset={hasDefaultInset}
+                defaultShift={-UILayoutConstant.rubberBandEffectDistance - defaultInset}
+            >
                 <UISheet.IntrinsicSize>
                     <UISheet.Content {...rest} containerStyle={styles.sheet} style={styles.card}>
                         {hasHeader ? <UIDialogBar hasPuller {...headerOptions} /> : null}
@@ -56,7 +52,7 @@ export function UIBottomSheet({
     );
 }
 
-const useStyles = makeStyles((defaultPadding: number, theme: Theme) => ({
+const useStyles = makeStyles((defaultInset: number, theme: Theme) => ({
     sheet: {
         flexDirection: 'row',
         justifyContent: 'center',
@@ -68,6 +64,6 @@ const useStyles = makeStyles((defaultPadding: number, theme: Theme) => ({
         borderTopRightRadius: UILayoutConstant.alertBorderRadius,
         overflow: 'hidden',
         backgroundColor: theme[ColorVariants.BackgroundPrimary],
-        paddingBottom: defaultPadding + UILayoutConstant.rubberBandEffectDistance,
+        paddingBottom: defaultInset + UILayoutConstant.rubberBandEffectDistance,
     },
 }));
