@@ -53,7 +53,7 @@ RCT_EXPORT_MODULE()
      * Based on that it seemed that to access from the END is faster
      * But turned out there might be more than one UITextEffectsWindow,
      * and the one that works correct is placed closer to UIWindow.
-     * Therefore now we begin from start, where UIWindow is one first place
+     * Therefore now we begin from start, where UIWindow is on first place
      * and choose the closest UITextEffectsWindow.
      */
     for (UIWindow *window in [UIApplication.sharedApplication.windows objectEnumerator]) {
