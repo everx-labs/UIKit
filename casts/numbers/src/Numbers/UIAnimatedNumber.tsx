@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import Animated, {
     Easing,
     runOnJS,
@@ -150,6 +150,15 @@ export function UIAnimatedNumber({
 
     const textLikeContainer = useTextLikeContainer();
 
+    /**
+     * A dirty hack to respect default font scale setting of `Text`,
+     * as it's a common solution on SO to disable font scaling.
+     * Like here - https://stackoverflow.com/questions/41807843/how-to-disable-font-scaling-in-react-native-for-ios-app
+     */
+    const defaultAllowFontScaling = React.useRef(
+        (Text as any).defaultProps.allowFontScaling ?? true,
+    ).current;
+
     return (
         <View
             testID={testID}
@@ -162,12 +171,14 @@ export function UIAnimatedNumber({
                 style={[Typography[integerVariant], integerColorStyle, styles.integer]}
                 animatedProps={animatedIntegerProps}
                 selectable={false}
+                allowFontScaling={defaultAllowFontScaling}
             />
             <AnimateableText
                 testID="number-decimal"
                 style={[Typography[decimalVariant], decimalColorStyle, styles.decimal]}
                 animatedProps={animatedDecimalProps}
                 selectable={false}
+                allowFontScaling={defaultAllowFontScaling}
             />
             {sign}
             {showDebugGrid && <DebugGrid variant={decimalVariant} />}
