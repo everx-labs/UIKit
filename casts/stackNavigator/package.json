@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uicast.stack-navigator",
-    "version": "3.0.0",
+    "version": "3.1.0",
     "description": "Stack navigator on Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",
@@ -34,13 +34,12 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/uicast.bars": "^3.0.0",
-        "@tonlabs/uikit.layout": "^3.0.0",
-        "@tonlabs/uikit.themes": "^3.0.0",
+        "@tonlabs/uicast.bars": "^3.1.0",
+        "@tonlabs/uikit.layout": "^3.1.0",
+        "@tonlabs/uikit.themes": "^3.1.0",
         "react-native-safe-area-context": "^3.3.2"
     },
     "devDependencies": {
-        "react-native-builder-bob": "^0.18.2",
         "@react-navigation/native": "^5.9.8",
         "@react-navigation/stack": "^5.14.9",
         "@types/react": "17.0.21",
@@ -48,6 +47,7 @@
         "react": "17.0.2",
         "react-dom": "17.0.2",
         "react-native": "0.67.3",
+        "react-native-builder-bob": "^0.18.2",
         "react-native-gesture-handler": "^1.10.3",
         "react-native-reanimated": "2.5.0",
         "react-native-redash": "^16.0.11",
