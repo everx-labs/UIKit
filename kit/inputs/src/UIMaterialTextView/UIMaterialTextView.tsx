@@ -21,6 +21,7 @@ import type {
 } from './types';
 import { useApplyMask } from '../useApplyMask';
 import { useFocused } from '../UITextView';
+import { useOnSelectionChange } from '../useApplyMask/useOnSelectionChange';
 
 function useExtendedProps(
     props: UIMaterialTextViewProps,
@@ -40,6 +41,7 @@ function useExtendedProps(
         numberOfLines: numberOfLinesProp,
         onFocus: onFocusProp,
         onBlur: onBlurProp,
+        onSelectionChange: onSelectionChangeProp,
     } = props;
 
     const { inputHasValue, onChangeText: onChangeTextWithInputHasValue } = useInputHasValue(
@@ -64,14 +66,18 @@ function useExtendedProps(
 
     const { imperativeChangeText, moveCarret } = useImperativeChange(
         ref,
-        multiline,
         onChangeTextWithInputHasValue,
     );
 
-    const { onChangeText, onSelectionChange } = useApplyMask(
+    const { selectionEnd, onSelectionChange, skipNextOnSelectionChange } =
+        useOnSelectionChange(onSelectionChangeProp);
+
+    const { onChangeText } = useApplyMask(
         imperativeChangeText,
         moveCarret,
         mask,
+        selectionEnd,
+        skipNextOnSelectionChange,
     );
 
     const clear = useClear(resetInputHeight, onChangeText, ref);
@@ -84,7 +90,7 @@ function useExtendedProps(
         clear,
     );
 
-    useExtendedRef(passedRef, ref, imperativeChangeText, moveCarret);
+    useExtendedRef(passedRef, ref, imperativeChangeText, moveCarret, clear);
 
     const newProps: UIMaterialTextViewLayoutProps = {
         ...props,
