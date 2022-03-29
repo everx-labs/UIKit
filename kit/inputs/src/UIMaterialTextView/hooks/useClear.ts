@@ -8,9 +8,10 @@ export function useClear(
 ) {
     return React.useCallback(
         function clear() {
-            resetInputHeight();
-            onChangeText('');
+            ref.current?.clear();
             ref.current?.blur();
+            onChangeText('');
+            resetInputHeight();
         },
         [resetInputHeight, onChangeText, ref],
     );

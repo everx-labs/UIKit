@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Platform, TextInput } from 'react-native';
-import { calculateWebInputHeight } from '../../useAutogrowTextView';
+import type { TextInput } from 'react-native';
 import { moveCarret as moveCarretPlatform } from '../../moveCarret';
 import type {
     ChangeText,
@@ -14,11 +13,7 @@ const defultConfig = {
     shouldSetNativeProps: true,
 };
 
-export function useImperativeChange(
-    ref: React.RefObject<TextInput>,
-    multiline: boolean | undefined,
-    onChangeText: ChangeText,
-) {
+export function useImperativeChange(ref: React.RefObject<TextInput>, onChangeText: ChangeText) {
     const imperativeChangeText: ImperativeChangeText = React.useCallback(
         function imperativeChangeText(
             text: string,
@@ -35,16 +30,9 @@ export function useImperativeChange(
                 });
             }
 
-            if (multiline) {
-                if (Platform.OS === 'web') {
-                    const elem = ref.current as unknown as HTMLTextAreaElement;
-                    calculateWebInputHeight(elem);
-                }
-            }
-
             onChangeText(text, callOnChangeProp);
         },
-        [ref, multiline, onChangeText],
+        [ref, onChangeText],
     );
 
     const moveCarret: MoveCarret = React.useCallback(
