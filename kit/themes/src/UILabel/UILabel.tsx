@@ -6,7 +6,7 @@ import TextAncestorContext from 'react-native/Libraries/Text/TextAncestor';
 
 import { Typography, TypographyVariants } from '../Typography';
 import { ColorVariants, useTheme } from '../Colors';
-import type { Props } from './types';
+import type { UILabelProps } from './types';
 // @ts-expect-error
 // eslint-disable-next-line import/extensions, import/no-unresolved
 import { useLabelDataSet } from './useLabelDataSet';
@@ -45,7 +45,7 @@ const useStyles = makeStyles((numberOfLines: number): { textMultiLine: any } => 
  *     Hello world!
  * </UILabel>
  */
-export const UILabel = React.forwardRef<Text, Props>(function UILabelForwarded(
+export const UILabel = React.forwardRef<Text, UILabelProps>(function UILabelForwarded(
     {
         role = TypographyVariants.ParagraphText,
         color: colorProp = ColorVariants.TextPrimary,
@@ -53,7 +53,7 @@ export const UILabel = React.forwardRef<Text, Props>(function UILabelForwarded(
         textComponent,
         numberOfLines,
         ...rest
-    }: Props,
+    }: UILabelProps,
     ref,
 ) {
     const theme = useTheme();
