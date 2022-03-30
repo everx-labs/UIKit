@@ -65,6 +65,13 @@ export const UIMaterialTextViewFloating = React.forwardRef<
 
     const styles = useStyles(theme);
 
+    const placeholderTextColor = React.useMemo(() => {
+        if (!isPlaceholderVisible) {
+            return ColorVariants.Transparent;
+        }
+        return isHovered ? ColorVariants.TextSecondary : ColorVariants.TextTertiary;
+    }, [isPlaceholderVisible, isHovered]);
+
     return (
         <UIMaterialTextViewComment {...props}>
             <View
@@ -79,10 +86,8 @@ export const UIMaterialTextViewFloating = React.forwardRef<
                     <UITextViewAnimated
                         ref={ref}
                         {...rest}
-                        placeholder={isPlaceholderVisible ? props.placeholder : undefined}
-                        placeholderTextColor={
-                            isHovered ? ColorVariants.TextSecondary : ColorVariants.TextTertiary
-                        }
+                        placeholder={props.placeholder}
+                        placeholderTextColor={placeholderTextColor}
                         // layout={Layout}
                         scrollEnabled={false}
                     />
