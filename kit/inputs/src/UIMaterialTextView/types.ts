@@ -111,7 +111,7 @@ export type AutogrowAttributes = {
         | ((e: NativeSyntheticEvent<TextInputContentSizeChangeEventData>) => void)
         | undefined;
     onChange: ((event: NativeSyntheticEvent<TextInputChangeEventData>) => void) | undefined;
-    resetInputHeight: () => void;
+    remeasureInputHeight: () => void;
     numberOfLines: number | undefined;
 };
 

@@ -3,7 +3,7 @@ import type { TextInput } from 'react-native';
 import type { ImperativeChangeText } from '../types';
 
 export function useClear(
-    resetInputHeight: () => void,
+    remeasureInputHeight: () => void,
     imperativeChangeText: ImperativeChangeText,
     ref: React.RefObject<TextInput>,
 ) {
@@ -12,8 +12,8 @@ export function useClear(
             imperativeChangeText('');
             ref.current?.clear();
             ref.current?.blur();
-            resetInputHeight();
+            remeasureInputHeight();
         },
-        [resetInputHeight, imperativeChangeText, ref],
+        [remeasureInputHeight, imperativeChangeText, ref],
     );
 }

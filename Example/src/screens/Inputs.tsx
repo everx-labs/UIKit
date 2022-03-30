@@ -38,6 +38,7 @@ export const Inputs = () => {
                         label="Amount"
                         helperText="Caption"
                         mask="Amount"
+                        defaultValue="123asd,./124sdf"
                     />
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView

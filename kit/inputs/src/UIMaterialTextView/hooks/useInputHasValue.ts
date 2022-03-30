@@ -2,9 +2,7 @@ import * as React from 'react';
 
 export function useInputHasValue(value: string | undefined, defaultValue: string | undefined) {
     // Little optimization to not re-render children on every value change
-    const [inputHasValue, setInputHasValue] = React.useState(
-        (value != null && value !== '') || (defaultValue != null && defaultValue !== ''),
-    );
+    const [inputHasValue, setInputHasValue] = React.useState(!!value || !!defaultValue);
 
     React.useEffect(() => {
         if (value == null) {

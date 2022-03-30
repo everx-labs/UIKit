@@ -34,7 +34,7 @@ function useExtendedProps(
         onHeightChange,
         multiline,
         value,
-        defaultValue,
+        defaultValue: defaultValueProp,
         onChangeText: onChangeTextProp,
         onContentSizeChange: onContentSizeChangeProp,
         onChange: onChangeProp,
@@ -44,12 +44,12 @@ function useExtendedProps(
         onSelectionChange: onSelectionChangeProp,
     } = props;
 
-    const { inputHasValue, checkInputHasValue } = useInputHasValue(value, defaultValue);
+    const { inputHasValue, checkInputHasValue } = useInputHasValue(value, defaultValueProp);
 
     const { isFocused, onFocus, onBlur } = useFocused(onFocusProp, onBlurProp);
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
-    const { onContentSizeChange, onChange, numberOfLines, resetInputHeight } = useAutogrow(
+    const { onContentSizeChange, onChange, numberOfLines, remeasureInputHeight } = useAutogrow(
         ref,
         onContentSizeChangeProp,
         onChangeProp,
@@ -80,17 +80,12 @@ function useExtendedProps(
         [imperativeChangeText],
     );
 
-    React.useEffect(() => {
-        if (defaultValue) {
-            imperativeChangeText(defaultValue);
-        }
-        /**
-         * defaultValue should not change during re-rendering
-         */
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const defaultValueRef = React.useRef<string>();
+    if (defaultValueProp && defaultValueRef.current == null) {
+        defaultValueRef.current = applyMask(defaultValueProp).formattedText;
+    }
 
-    const clear = useClear(resetInputHeight, imperativeChangeText, ref);
+    const clear = useClear(remeasureInputHeight, imperativeChangeText, ref);
 
     const processedChildren = useMaterialTextViewChildren(
         children,
@@ -117,6 +112,7 @@ function useExtendedProps(
         isFocused,
         onChangeText,
         onSelectionChange,
+        defaultValue: defaultValueRef.current,
     };
 
     return newProps;
