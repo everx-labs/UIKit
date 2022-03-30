@@ -35,7 +35,7 @@ type UILabelStyle = Pick<
     FlexStyle &
     TransformsStyle;
 
-export type Props = Omit<TextProps, 'style'> & {
+export type UILabelProps = Omit<TextProps, 'style'> & {
     role?: TypographyVariants;
     color?: ColorVariants;
     style?: StyleProp<UILabelStyle>;
