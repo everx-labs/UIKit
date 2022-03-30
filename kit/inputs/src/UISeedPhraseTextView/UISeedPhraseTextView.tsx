@@ -376,7 +376,14 @@ export const UISeedPhraseTextView = React.forwardRef<
     );
 
     const onChangeText = React.useCallback(
-        (text: string) => {
+        (textRaw: string) => {
+            // Note: there is an issue with `.toLocaleLowerCase` on Android on some old API version
+            // when `Hermes` is used. See issue: https://github.com/facebook/hermes/issues/582
+            // The given function returns some incorrect result when applied to an empty string.
+            // It was fixed for hermes@0.10.0 which is supposed to be used with react-native@0.67
+            // For now we just need to ensure the string is not empty, when applying the function
+            const text = textRaw ? textRaw.toLocaleLowerCase() : '';
+
             const lastSymbol = text[text.length - 1];
 
             if (text.length > phraseRef.current.length && lastSymbol === ' ') {
