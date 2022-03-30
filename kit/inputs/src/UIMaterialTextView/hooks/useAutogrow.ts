@@ -38,7 +38,7 @@ export function useAutogrow(
     return {
         onContentSizeChange,
         onChange: onChangeProp,
-        resetInputHeight: () => null,
         numberOfLines: numberOfLinesProp,
+        remeasureInputHeight: () => null,
     };
 }

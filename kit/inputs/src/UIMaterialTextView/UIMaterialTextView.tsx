@@ -11,6 +11,8 @@ import {
     useImperativeChange,
     useInputHasValue,
     useClear,
+    useOnSelectionChange,
+    useApplyMask,
 } from './hooks';
 import { UIMaterialTextViewFloating } from './UIMaterialTextViewFloating';
 import { UIMaterialTextViewSimple } from './UIMaterialTextViewSimple';
@@ -19,9 +21,7 @@ import type {
     UIMaterialTextViewProps,
     UIMaterialTextViewLayoutProps,
 } from './types';
-import { useApplyMask } from '../useApplyMask';
 import { useFocused } from '../UITextView';
-import { useOnSelectionChange } from '../useApplyMask/useOnSelectionChange';
 
 function useExtendedProps(
     props: UIMaterialTextViewProps,
@@ -34,7 +34,7 @@ function useExtendedProps(
         onHeightChange,
         multiline,
         value,
-        defaultValue,
+        defaultValue: defaultValueProp,
         onChangeText: onChangeTextProp,
         onContentSizeChange: onContentSizeChangeProp,
         onChange: onChangeProp,
@@ -44,16 +44,12 @@ function useExtendedProps(
         onSelectionChange: onSelectionChangeProp,
     } = props;
 
-    const { inputHasValue, onChangeText: onChangeTextWithInputHasValue } = useInputHasValue(
-        value,
-        defaultValue,
-        onChangeTextProp,
-    );
+    const { inputHasValue, checkInputHasValue } = useInputHasValue(value, defaultValueProp);
 
     const { isFocused, onFocus, onBlur } = useFocused(onFocusProp, onBlurProp);
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
-    const { onContentSizeChange, onChange, numberOfLines, resetInputHeight } = useAutogrow(
+    const { onContentSizeChange, onChange, numberOfLines, remeasureInputHeight } = useAutogrow(
         ref,
         onContentSizeChangeProp,
         onChangeProp,
@@ -64,23 +60,32 @@ function useExtendedProps(
         isFocused,
     );
 
-    const { imperativeChangeText, moveCarret } = useImperativeChange(
-        ref,
-        onChangeTextWithInputHasValue,
-    );
-
     const { selectionEnd, onSelectionChange, skipNextOnSelectionChange } =
         useOnSelectionChange(onSelectionChangeProp);
 
-    const { onChangeText } = useApplyMask(
-        imperativeChangeText,
-        moveCarret,
-        mask,
-        selectionEnd,
-        skipNextOnSelectionChange,
+    const applyMask = useApplyMask(mask, selectionEnd, skipNextOnSelectionChange);
+
+    const { imperativeChangeText, moveCarret } = useImperativeChange(
+        ref,
+        onChangeTextProp,
+        checkInputHasValue,
+        applyMask,
     );
 
-    const clear = useClear(resetInputHeight, onChangeText, ref);
+    const onChangeText = React.useCallback(
+        (text: string) =>
+            imperativeChangeText(text, {
+                shouldSetNativeProps: false,
+            }),
+        [imperativeChangeText],
+    );
+
+    const defaultValueRef = React.useRef<string>();
+    if (defaultValueProp && defaultValueRef.current == null) {
+        defaultValueRef.current = applyMask(defaultValueProp).formattedText;
+    }
+
+    const clear = useClear(remeasureInputHeight, imperativeChangeText, ref);
 
     const processedChildren = useMaterialTextViewChildren(
         children,
@@ -107,6 +112,7 @@ function useExtendedProps(
         isFocused,
         onChangeText,
         onSelectionChange,
+        defaultValue: defaultValueRef.current,
     };
 
     return newProps;

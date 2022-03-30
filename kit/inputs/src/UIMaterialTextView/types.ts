@@ -9,7 +9,12 @@ import type {
 import type { UIImageProps } from '@tonlabs/uikit.media';
 import type { UITextViewProps } from '../UITextView';
 
-export type UIMaterialTextViewMask = 'Amount';
+export type UIMaterialTextViewAmountMask =
+    | 'Amount'
+    | 'AmountInteger'
+    | 'AmountPrecision'
+    | 'AmountCurrency';
+export type UIMaterialTextViewMask = UIMaterialTextViewAmountMask;
 
 export type UIMaterialTextViewIconChild = React.ReactElement<UIMaterialTextViewIconProps>;
 export type UIMaterialTextViewActionChild = React.ReactElement<UIMaterialTextViewActionProps>;
@@ -74,12 +79,15 @@ export type UIMaterialTextViewLayoutProps = UIMaterialTextViewProps & {
 };
 
 export type UIMaterialTextViewRef = Pick<TextInput, 'isFocused' | 'focus' | 'blur' | 'clear'> & {
-    changeText: (text: string, callOnChangeProp?: boolean) => void;
-    moveCarret: (carretPosition: number, maxPosition?: number | undefined) => void;
+    changeText: UIMaterialTextViewRefChangeText;
+    moveCarret: UIMaterialTextViewRefMoveCarret;
 };
 
-export type ChangeText = (text: string, callOnChangeProp?: boolean | undefined) => void;
-export type MoveCarret = (carretPosition: number, maxPosition?: number | undefined) => void;
+export type UIMaterialTextViewRefChangeText = (text: string, callOnChangeProp?: boolean) => void;
+export type UIMaterialTextViewRefMoveCarret = (
+    carretPosition: number,
+    maxPosition?: number,
+) => void;
 
 export type ImperativeChangeTextConfig = {
     callOnChangeProp?: boolean;
@@ -103,6 +111,12 @@ export type AutogrowAttributes = {
         | ((e: NativeSyntheticEvent<TextInputContentSizeChangeEventData>) => void)
         | undefined;
     onChange: ((event: NativeSyntheticEvent<TextInputChangeEventData>) => void) | undefined;
-    resetInputHeight: () => void;
+    remeasureInputHeight: () => void;
     numberOfLines: number | undefined;
 };
+
+export type UIMaterialTextViewInputState = {
+    formattedText: string;
+    carretPosition: number | null;
+};
+export type UIMaterialTextViewApplyMask = (text: string) => UIMaterialTextViewInputState;
