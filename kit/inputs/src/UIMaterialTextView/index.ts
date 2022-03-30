@@ -1,5 +1,5 @@
 export * from './UIMaterialTextView';
-export {
+export type {
     UIMaterialTextViewAmountMask,
     UIMaterialTextViewMask,
     UIMaterialTextViewChild,
