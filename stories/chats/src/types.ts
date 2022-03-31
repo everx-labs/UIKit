@@ -45,6 +45,7 @@ export type ActionButtonMessage = BubbleBaseT & {
     textMode?: 'ellipsize' | 'fit';
     disabled?: boolean;
     onPress?: () => void | Promise<void>;
+    iconSource?: ImageSourcePropType;
 };
 
 // Props that required for proper chat rendering

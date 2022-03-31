@@ -35,6 +35,7 @@ import {
     useTheme,
 } from '@tonlabs/uikit.themes';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import { View } from 'react-native';
 import { useBase64Image } from './hooks/useBase64Image';
@@ -224,10 +225,12 @@ function BrowserAddMenu({
                             {
                                 handlerId: 1,
                                 title: 'One',
+                                iconSource: UIAssets.icons.ui.camera,
                             },
                             {
                                 handlerId: 2,
                                 title: 'Two',
+                                iconSource: UIAssets.icons.ui.plus,
                             },
                             {
                                 handlerId: 3,

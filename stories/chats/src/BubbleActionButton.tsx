@@ -24,7 +24,7 @@ const getButtonRadius = (options: ActionButtonMessage, position: BubblePosition)
 };
 
 export function BubbleActionButton(message: ActionButtonMessage) {
-    const { status, text, disabled, onPress, variant } = message; // textMode = 'ellipsize',
+    const { status, text, disabled, onPress, variant, onLayout, iconSource } = message; // textMode = 'ellipsize',
     const position = useBubblePosition(status);
     const containerStyle = useBubbleContainerStyle(message);
 
@@ -42,7 +42,7 @@ export function BubbleActionButton(message: ActionButtonMessage) {
     }, [variant]);
 
     return (
-        <View style={containerStyle} onLayout={message.onLayout}>
+        <View style={containerStyle} onLayout={onLayout}>
             <UIMsgButton
                 disabled={disabled}
                 onPress={onPress}
@@ -51,6 +51,7 @@ export function BubbleActionButton(message: ActionButtonMessage) {
                 type={UIMsgButtonType.Secondary}
                 variant={msgVariant}
                 cornerPosition={getButtonRadius(message, position)}
+                icon={iconSource}
             />
         </View>
     );

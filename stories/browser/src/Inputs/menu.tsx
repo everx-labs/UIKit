@@ -74,6 +74,7 @@ export function MenuInput({ onLayout, ...message }: MenuMessage) {
                     }}
                     firstFromChain={index === 0}
                     lastFromChain={unfolded && index === message.items.length - 1}
+                    iconSource={item.iconSource}
                 />
             ))}
             {!unfolded && !hasItemsToFold && (
