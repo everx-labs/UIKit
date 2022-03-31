@@ -5,6 +5,7 @@ import { useTheme, ColorVariants } from '@tonlabs/uikit.themes';
 
 import { UIAccountRow } from './UIAccountRow';
 import { UICurrencyRow } from './UICurrencyRow';
+import { UIHiddenCurrencyRow } from './UIHiddenCurrencyRow';
 import { UILink } from './UILink';
 
 import { UIKitListRow, UIKitListRowKind } from './types';
@@ -18,6 +19,9 @@ export function renderUIListItem<ItemT extends UIKitListRow<any>>({
         return <UIAccountRow {...item.props} />;
     }
     if (item.kind === UIKitListRowKind.Currency) {
+        if (item.props.hidden) {
+            return <UIHiddenCurrencyRow {...item.props} payload={payload} />;
+        }
         return <UICurrencyRow {...item.props} payload={payload} />;
     }
     if (item.kind === UIKitListRowKind.Link) {
