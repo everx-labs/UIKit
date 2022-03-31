@@ -69,15 +69,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: UIConstant.uiLink.row.borderRadius,
     },
-    iconWrapper: {
-        marginRight: UILayoutConstant.normalContentOffset,
-        borderRadius: UIConstant.uiLink.logo.borderRadius,
-        overflow: 'hidden',
-    },
-    icon: {
-        width: UIConstant.uiLink.logo.size,
-        height: UIConstant.uiLink.logo.size,
-    },
     desc: {
         flex: 1,
         marginRight: UILayoutConstant.normalContentOffset,
