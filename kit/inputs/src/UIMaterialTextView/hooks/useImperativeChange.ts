@@ -1,19 +1,34 @@
 import * as React from 'react';
-import type { TextInput } from 'react-native';
+import { Platform, TextInput } from 'react-native';
 import { moveCarret as moveCarretPlatform } from '../../moveCarret';
 import type {
-    ChangeText,
     ImperativeChangeText,
-    MoveCarret,
+    UIMaterialTextViewRefMoveCarret,
     ImperativeChangeTextConfig,
+    UIMaterialTextViewApplyMask,
 } from '../types';
+import { useCallWithTimeOut } from './useCallWithTimeOut';
 
 const defultConfig = {
-    callOnChangeProp: undefined,
+    callOnChangeProp: true,
     shouldSetNativeProps: true,
 };
 
-export function useImperativeChange(ref: React.RefObject<TextInput>, onChangeText: ChangeText) {
+export function useImperativeChange(
+    ref: React.RefObject<TextInput>,
+    onChangeTextProp: ((text: string) => void) | undefined,
+    checkInputHasValue: (text: string) => string,
+    applyMask: UIMaterialTextViewApplyMask,
+) {
+    const moveCarret: UIMaterialTextViewRefMoveCarret = React.useCallback(
+        function moveCarret(carretPosition: number, maxPosition?: number) {
+            moveCarretPlatform(ref, carretPosition, maxPosition);
+        },
+        [ref],
+    );
+
+    const onChangeTextPropWithTimeOut = useCallWithTimeOut(onChangeTextProp);
+
     const imperativeChangeText: ImperativeChangeText = React.useCallback(
         function imperativeChangeText(
             text: string,
@@ -24,22 +39,33 @@ export function useImperativeChange(ref: React.RefObject<TextInput>, onChangeTex
                 shouldSetNativeProps = defultConfig.shouldSetNativeProps,
             } = config;
 
-            if (shouldSetNativeProps) {
+            const { formattedText, carretPosition } = applyMask(text);
+
+            checkInputHasValue(formattedText);
+
+            if (shouldSetNativeProps || text !== formattedText) {
                 ref.current?.setNativeProps({
-                    text,
+                    text: formattedText,
                 });
             }
 
-            onChangeText(text, callOnChangeProp);
-        },
-        [ref, onChangeText],
-    );
+            if (
+                Platform.OS === 'web' &&
+                ref.current?.isFocused() !== false &&
+                carretPosition != null
+            ) {
+                moveCarret(carretPosition, formattedText.length);
+            }
 
-    const moveCarret: MoveCarret = React.useCallback(
-        function moveCarret(carretPosition: number, maxPosition?: number) {
-            moveCarretPlatform(ref, carretPosition, maxPosition);
+            if (callOnChangeProp) {
+                /**
+                 * timeout is used so that input changes are not slowed down
+                 * by heavy execution of onChangeTextProp
+                 */
+                onChangeTextPropWithTimeOut(formattedText);
+            }
         },
-        [ref],
+        [ref, checkInputHasValue, applyMask, moveCarret, onChangeTextPropWithTimeOut],
     );
 
     return {

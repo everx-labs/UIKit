@@ -3,9 +3,10 @@ import { ListRenderItemInfo, StyleSheet, View } from 'react-native';
 
 import { useTheme, ColorVariants } from '@tonlabs/uikit.themes';
 
-import { UILink } from './UILink';
-import { UICurrencyRow } from './UICurrencyRow';
 import { UIAccountRow } from './UIAccountRow';
+import { UICurrencyRow } from './UICurrencyRow';
+import { UILink } from './UILink';
+
 import { UIKitListRow, UIKitListRowKind } from './types';
 import type { UIListRow } from './types';
 
@@ -16,11 +17,11 @@ export function renderUIListItem<ItemT extends UIKitListRow<any>>({
     if (item.kind === UIKitListRowKind.Account) {
         return <UIAccountRow {...item.props} />;
     }
-    if (item.kind === UIKitListRowKind.Link) {
-        return <UILink {...item.props} />;
-    }
     if (item.kind === UIKitListRowKind.Currency) {
         return <UICurrencyRow {...item.props} payload={payload} />;
+    }
+    if (item.kind === UIKitListRowKind.Link) {
+        return <UILink {...item.props} />;
     }
     return null;
 }

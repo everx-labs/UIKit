@@ -23,7 +23,7 @@ export function calculateWebInputHeight(elem: HTMLTextAreaElement) {
 
     // Remove it to apply again styles we pass in props
     // eslint-disable-next-line no-param-reassign
-    elem.style.height = `${height}px`;
+    elem.style.height = `auto`;
 
     return height;
 }
@@ -32,12 +32,12 @@ const measureInputHeight = (ref: React.Ref<TextInput> | null) => {
     if (ref && 'current' in ref && ref.current) {
         // eslint-disable-next-line no-param-reassign
         const elem = ref.current as unknown as HTMLTextAreaElement;
-        return calculateWebInputHeight(elem);
+        return calculateWebInputHeight(elem) || textViewHeight;
     }
     return 0;
 };
 
-export function useAutogrowTextView(
+export function useMeasureAutogrowTextView(
     ref: React.Ref<TextInput> | null,
     onHeightChange: UIMaterialTextViewProps['onHeightChange'],
     multiline: boolean | undefined,
@@ -45,7 +45,9 @@ export function useAutogrowTextView(
     isHovered: boolean,
     isFocused: boolean,
 ) {
-    const [inputHeight, setInputHeight] = React.useState<number>(0);
+    const [numberOfLines, setNumberOfLines] = React.useState<number>(1);
+    const prevNumberOfLinesRef = React.useRef(1);
+    const inputHeightRef = React.useRef(0);
 
     const onContentSizeChange = React.useCallback(
         (height: number) => {
@@ -53,12 +55,8 @@ export function useAutogrowTextView(
                 return;
             }
 
-            if (height === inputHeight) {
+            if (height === inputHeightRef.current) {
                 return;
-            }
-
-            if (onHeightChange) {
-                onHeightChange(height);
             }
 
             if (constrainedNumberOfLines) {
@@ -66,16 +64,24 @@ export function useAutogrowTextView(
                     height,
                     textViewHeight * constrainedNumberOfLines,
                 );
-                setInputHeight(constrainedHeight);
+                inputHeightRef.current = constrainedHeight;
+                onHeightChange?.(constrainedHeight);
             } else {
-                setInputHeight(height);
+                inputHeightRef.current = height;
+                onHeightChange?.(height);
+            }
+
+            const newNumberOfLines = Math.round(inputHeightRef.current / textViewHeight);
+            if (prevNumberOfLinesRef.current !== newNumberOfLines) {
+                prevNumberOfLinesRef.current = newNumberOfLines;
+                setNumberOfLines(newNumberOfLines);
             }
         },
-        [inputHeight, constrainedNumberOfLines, onHeightChange],
+        [constrainedNumberOfLines, onHeightChange],
     );
 
-    const onChange = React.useCallback(
-        (_event: any) => {
+    const remeasureInputHeight = React.useCallback(
+        function remeasureInputHeight() {
             if (multiline) {
                 const height = measureInputHeight(ref);
                 onContentSizeChange(height);
@@ -84,34 +90,23 @@ export function useAutogrowTextView(
         [ref, onContentSizeChange, multiline],
     );
 
-    React.useLayoutEffect(() => {
+    React.useEffect(() => {
         /**
          * We have to force a height measurement to draw it correctly
-         * at the first render and after the `Hover` state has changed
+         * at the first render and after the `Hover` and `isFocused` state has changed
          */
-        if (multiline) {
-            requestAnimationFrame(() => onChange(null));
-        }
-    }, [onChange, isHovered, multiline, isFocused]);
-
-    const resetInputHeight = React.useCallback(() => {
-        if (multiline) {
-            onChange(null);
-        }
-    }, [onChange, multiline]);
-
-    const numberOfLines = Math.round(inputHeight / textViewHeight);
+        requestAnimationFrame(() => remeasureInputHeight());
+    }, [remeasureInputHeight, isHovered, isFocused]);
 
     return {
-        onChange,
-        resetInputHeight,
         numberOfLines,
+        remeasureInputHeight,
     };
 }
 
 export function useAutogrow(
     ref: React.Ref<TextInput>,
-    onContentSizeChangeProp: UIMaterialTextViewProps['onContentSizeChange'],
+    onContentSizeChange: UIMaterialTextViewProps['onContentSizeChange'],
     onChangeProp: UIMaterialTextViewProps['onChange'],
     multiline: UIMaterialTextViewProps['multiline'],
     numberOfLinesProp: UIMaterialTextViewProps['numberOfLines'],
@@ -119,11 +114,7 @@ export function useAutogrow(
     isHovered: boolean,
     isFocused: boolean,
 ): AutogrowAttributes {
-    const {
-        onChange: onAutogrowChange,
-        numberOfLines,
-        resetInputHeight,
-    } = useAutogrowTextView(
+    const { numberOfLines, remeasureInputHeight } = useMeasureAutogrowTextView(
         ref,
         onHeightChange,
         multiline,
@@ -135,29 +126,29 @@ export function useAutogrow(
     const onChange = React.useCallback(
         (event: NativeSyntheticEvent<TextInputChangeEventData>) => {
             if (multiline) {
-                onAutogrowChange(event);
+                remeasureInputHeight();
             }
 
             if (onChangeProp) {
                 onChangeProp(event);
             }
         },
-        [onAutogrowChange, onChangeProp, multiline],
+        [remeasureInputHeight, onChangeProp, multiline],
     );
 
     if (!multiline) {
         return {
-            onContentSizeChange: onContentSizeChangeProp,
+            onContentSizeChange,
             onChange: onChangeProp,
-            resetInputHeight,
+            remeasureInputHeight: () => null,
             numberOfLines: numberOfLinesProp,
         };
     }
 
     return {
-        onContentSizeChange: onContentSizeChangeProp,
+        onContentSizeChange,
         onChange,
-        resetInputHeight,
+        remeasureInputHeight,
         numberOfLines,
     };
 }

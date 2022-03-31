@@ -1,2 +1,16 @@
 export * from './UIMaterialTextView';
-export * from './types';
+export type {
+    UIMaterialTextViewAmountMask,
+    UIMaterialTextViewMask,
+    UIMaterialTextViewChild,
+    UIMaterialTextViewIconChild,
+    UIMaterialTextViewActionChild,
+    UIMaterialTextViewTextChild,
+    UIMaterialTextViewProps,
+    UIMaterialTextViewIconProps,
+    UIMaterialTextViewActionProps,
+    UIMaterialTextViewTextProps,
+    UIMaterialTextViewRef,
+    UIMaterialTextViewRefChangeText,
+    UIMaterialTextViewRefMoveCarret,
+} from './types';
