@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Pressable as PressablePlatform } from 'react-native';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
-import { useTheme } from '@tonlabs/uikit.themes';
 import { useHover } from '../useHover';
 import {
     PressableStateContext,
@@ -29,13 +28,11 @@ export function Pressable({
     style,
     testID,
 }: PressableProps) {
-    const theme = useTheme();
     const { isPressed, onPressIn, onPressOut } = usePressed();
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
     const pressableState: PressableStateVariant = usePressableState(disabled, isPressed, isHovered);
 
     const pressableColorScheme: PressableColorScheme = usePressableColorScheme(
-        theme,
         disabledColor,
         hoveredColor,
         initialColor,

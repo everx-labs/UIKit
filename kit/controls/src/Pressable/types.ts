@@ -1,26 +1,25 @@
 import type { ColorVariants } from '@tonlabs/uikit.themes';
-import type { ColorValue, StyleProp, ViewStyle } from 'react-native';
+import type { StyleProp, ViewStyle } from 'react-native';
 
 export type PressableProps = {
     onPress?: () => void | Promise<void>;
     onLongPress?: () => void | Promise<void>;
-
     disabled?: boolean;
+    children: React.ReactNode;
+    style?: StyleProp<ViewStyle>;
+    testID?: string;
+} & PressableColors;
 
-    // Colors:
+export type PressableColors = {
     initialColor: ColorVariants;
     pressedColor: ColorVariants;
     hoveredColor: ColorVariants;
     disabledColor: ColorVariants;
-
-    children: React.ReactNode;
-    style?: StyleProp<ViewStyle>;
-    testID?: string;
 };
 
 export type PressableColorScheme = {
-    initialColor: ColorValue;
-    pressedColor: ColorValue;
-    hoveredColor: ColorValue;
-    disabledColor: ColorValue;
+    initialColor: string;
+    pressedColor: string;
+    hoveredColor: string;
+    disabledColor: string;
 };

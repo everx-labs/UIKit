@@ -5,30 +5,34 @@ import {
     pressableWithSpringConfig,
     PressableStateContext,
 } from './constants';
-import type { PressableColorScheme } from './types';
+import { usePressableColorScheme } from './hooks';
+import type { PressableColors, PressableColorScheme } from './types';
 
-export function useProgressColor(colorScheme: PressableColorScheme) {
+export function useProgressColor({
+    initialColor,
+    pressedColor,
+    hoveredColor,
+    disabledColor,
+}: PressableColors) {
     const pressableState = React.useContext(PressableStateContext);
+    const colorScheme: PressableColorScheme = usePressableColorScheme(
+        initialColor,
+        pressedColor,
+        hoveredColor,
+        disabledColor,
+    );
 
     const color = React.useMemo(() => {
         switch (pressableState) {
             case PressableStateVariant.Disabled:
-                return typeof colorScheme.disabledColor === 'string'
-                    ? colorScheme.disabledColor
-                    : colorScheme.disabledColor.toString();
+                return colorScheme.disabledColor;
             case PressableStateVariant.Hovered:
-                return typeof colorScheme.hoveredColor === 'string'
-                    ? colorScheme.hoveredColor
-                    : colorScheme.hoveredColor.toString();
+                return colorScheme.hoveredColor;
             case PressableStateVariant.Pressed:
-                return typeof colorScheme.pressedColor === 'string'
-                    ? colorScheme.pressedColor
-                    : colorScheme.pressedColor.toString();
+                return colorScheme.pressedColor;
             case PressableStateVariant.Initial:
             default:
-                return typeof colorScheme.initialColor === 'string'
-                    ? colorScheme.initialColor
-                    : colorScheme.initialColor.toString();
+                return colorScheme.initialColor;
         }
     }, [pressableState, colorScheme]);
 

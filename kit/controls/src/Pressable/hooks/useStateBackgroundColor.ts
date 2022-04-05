@@ -9,22 +9,14 @@ export function useStateBackgroundColor(
     return React.useMemo<string>(() => {
         switch (pressableState) {
             case PressableStateVariant.Disabled:
-                return typeof pressableColorScheme.disabledColor === 'string'
-                    ? pressableColorScheme.disabledColor
-                    : pressableColorScheme.disabledColor.toString();
+                return pressableColorScheme.disabledColor;
             case PressableStateVariant.Hovered:
-                return typeof pressableColorScheme.hoveredColor === 'string'
-                    ? pressableColorScheme.hoveredColor
-                    : pressableColorScheme.hoveredColor.toString();
+                return pressableColorScheme.hoveredColor;
             case PressableStateVariant.Pressed:
-                return typeof pressableColorScheme.pressedColor === 'string'
-                    ? pressableColorScheme.pressedColor
-                    : pressableColorScheme.pressedColor.toString();
+                return pressableColorScheme.pressedColor;
             case PressableStateVariant.Initial:
             default:
-                return typeof pressableColorScheme.initialColor === 'string'
-                    ? pressableColorScheme.initialColor
-                    : pressableColorScheme.initialColor.toString();
+                return pressableColorScheme.initialColor;
         }
     }, [pressableState, pressableColorScheme]);
 }
