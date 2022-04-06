@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {
+import Animated, {
     useSharedValue,
     useAnimatedStyle,
     useAnimatedReaction,
@@ -68,6 +68,7 @@ const moveWithSpring = (
 };
 
 export const useNoticePosition = (
+    noticeHeight: Animated.SharedValue<number>,
     xSnapPoints: SnapPoints,
     ySnapPoints: SnapPoints,
     visible: boolean,
@@ -89,11 +90,42 @@ export const useNoticePosition = (
     const isNoticeHeld = useSharedValue<boolean>(false);
 
     React.useEffect(() => {
-        toastNoticeState.value = getToastNoticeState(visible);
         if (!visible) {
+            toastNoticeState.value = 'Closed';
             suspendClosingTimer();
+
+            return;
         }
-    }, [visible, toastNoticeState, suspendClosingTimer]);
+
+        /**
+         * There was a fix in reanimated
+         * https://github.com/software-mansion/react-native-reanimated/pull/2580
+         *
+         * Basically it does a good thing,
+         * it doesn't apply style updates until a view isn't mounted.
+         * But I noticed with a debugger, that `uiManagerWillPerformMounting` of `REAModule`
+         * is somehow non-determenistic, it can run with a big delay
+         * (probably due to our code too :shrug:)
+         *
+         * To avoid falling in this logic, here we wait until layout is done
+         * (it's based on a fact that `height.value` is set on `onLayout`)
+         * and start animation only after that.
+         *
+         * Breadcrumbs:
+         * With this bug an opening of a notice is laggy,
+         * sometimes it just stuck on closed state and un-freezes
+         * only when you touch sth or after a big delay
+         */
+        (function animateWhenHeightIsSet() {
+            if (noticeHeight.value === 0) {
+                requestAnimationFrame(animateWhenHeightIsSet);
+                return;
+            }
+            requestAnimationFrame(() => {
+                toastNoticeState.value = 'Opened';
+            });
+        })();
+    }, [visible, noticeHeight, toastNoticeState, suspendClosingTimer]);
 
     const onAnimationEnd = useWorkletCallback((isFinished?: boolean) => {
         if (isFinished && swipeDirection.value !== 'None') {
