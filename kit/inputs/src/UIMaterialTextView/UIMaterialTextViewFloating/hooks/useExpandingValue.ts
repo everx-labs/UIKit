@@ -27,11 +27,23 @@ function getPosition(isExpanded: boolean): number {
  */
 export function useExpandingValue(
     isExpanded: boolean,
-    onExpand: () => void,
+    showPlacehoder: () => void,
 ): Readonly<Animated.SharedValue<number>> {
     /** Label position switcher (POSITION_FOLDED/POSITION_EXPANDED) */
     const expandingPosition: Animated.SharedValue<number> = useSharedValue<number>(
         getPosition(isExpanded),
+    );
+
+    const isExpandedRef = React.useRef(isExpanded);
+    isExpandedRef.current = isExpanded;
+
+    const onExpand = React.useCallback(
+        function onExpand() {
+            if (isExpandedRef.current) {
+                showPlacehoder();
+            }
+        },
+        [isExpandedRef, showPlacehoder],
     );
 
     React.useEffect(() => {
