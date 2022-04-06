@@ -52,6 +52,12 @@
     }
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    [_insets onInsetsShouldBeRecalculated];
+}
+
 - (void)safeAreaInsetsDidChange {
     [_insets onInsetsShouldBeRecalculated];
 }
