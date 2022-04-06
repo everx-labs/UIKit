@@ -1,4 +1,4 @@
-import type { ChatMessageType, BubbleBaseT } from '@tonlabs/uistory.chats';
+import type { BubbleBaseT, ChatMessageType } from '@tonlabs/uistory.chats';
 import type BigNumber from 'bignumber.js';
 import type React from 'react';
 
@@ -43,6 +43,7 @@ export enum InteractiveMessageType {
     Time = 'Time',
     DateTime = 'DateTime',
     Country = 'Country',
+    Sharing = 'Sharing',
 }
 
 type PlainTextMessage = BubbleBaseT & {
@@ -360,6 +361,14 @@ export type QRCodeDrawMessage = InteractiveMessage<
     }
 >;
 
+export type SharingMessage = InteractiveMessage<
+    InteractiveMessageType.Sharing,
+    {
+        text: string;
+        onShare: () => void;
+    }
+>;
+
 export type BrowserMessage =
     | PlainTextMessage
     | ActionButtonMessage
@@ -377,7 +386,8 @@ export type BrowserMessage =
     | DateMessage
     | TimeMessage
     | DateTimeMessage
-    | CountryMessage;
+    | CountryMessage
+    | SharingMessage;
 
 type WithExternalStateHelper<A> = A extends { externalState?: any } ? A : never;
 

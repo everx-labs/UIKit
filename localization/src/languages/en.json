@@ -64,6 +64,9 @@
             "AttentionDesc": "This transaction is trying to change the contract and will not be performed",
             "Confirm": "Confirm",
             "Cancel": "Cancel"
+        },
+        "Sharing": {
+            "Share": "Share"
         }
     },
     "Cancel": "Cancel",

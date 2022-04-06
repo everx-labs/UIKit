@@ -64,6 +64,9 @@
             "Title": "트랜잭션 확인",
             "To": "받는 사람",
             "Total": "합계"
+        },
+        "Sharing": {
+            "Share": "Share"
         }
     },
     "Cancel": "취소하기",

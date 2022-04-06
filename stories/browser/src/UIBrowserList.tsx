@@ -30,6 +30,7 @@ import { CountryPicker } from './Inputs/countryPicker';
 import { MediaOutput } from './MediaOutput';
 import { QRCodeDraw } from './QRCodeDraw';
 import { UIBrowserFlatList } from './UIBrowserFlatList';
+import { Sharing } from './Sharing';
 
 type UIBrowserListProps = {
     messages: BrowserMessage[];
@@ -114,6 +115,9 @@ const renderBubble = () => (item: BrowserMessage, onLayout: ViewProps['onLayout'
     }
     if (item.type === InteractiveMessageType.Country) {
         return <CountryPicker {...item} onLayout={onLayout} />;
+    }
+    if (item.type === InteractiveMessageType.Sharing) {
+        return <Sharing {...item} onLayout={onLayout} />;
     }
 
     return null;

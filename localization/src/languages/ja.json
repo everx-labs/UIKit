@@ -76,6 +76,9 @@
             "AddCipherKey": "Add an encryption key",
             "CipherKeyLabel": "Encryption key",
             "UseKey": "Use key"
+        },
+        "Sharing": {
+            "Share": "Share"
         }
     },
     "Cancel": "キャンセル",
