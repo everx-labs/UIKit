@@ -35,9 +35,8 @@ export function useExpandingValue(
     );
 
     /**
-     * If you change the input value via ref,
-     * then there may be a moment when the outdated `isExpanded` value
-     * is taken in the `onExpand` callback.
+     * If you change the input value via ref, then there may be a moment
+     * when the outdated `isExpanded` value is taken in the `onExpand` callback.
      * To fix this behavior, I had to create this ref and update it every render.
      */
     const isExpandedRef = React.useRef(isExpanded);
