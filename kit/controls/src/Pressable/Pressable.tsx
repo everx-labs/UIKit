@@ -33,10 +33,10 @@ export function Pressable({
     const pressableState: PressableStateVariant = usePressableState(disabled, isPressed, isHovered);
 
     const pressableColorScheme: PressableColorScheme = usePressableColorScheme(
-        disabledColor,
-        hoveredColor,
         initialColor,
         pressedColor,
+        hoveredColor,
+        disabledColor,
     );
     const stateBackgroundColor: string = useStateBackgroundColor(
         pressableState,

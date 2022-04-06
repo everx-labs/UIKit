@@ -14,10 +14,10 @@ function getStringValue(color: ColorValue): string {
 }
 
 export function usePressableColorScheme(
-    disabledColor: ColorVariants,
-    hoveredColor: ColorVariants,
     initialColor: ColorVariants,
     pressedColor: ColorVariants,
+    hoveredColor: ColorVariants,
+    disabledColor: ColorVariants,
 ): PressableColorScheme {
     const theme = useTheme();
     return React.useMemo(() => {

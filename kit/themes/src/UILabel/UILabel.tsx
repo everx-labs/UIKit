@@ -92,11 +92,9 @@ export const UILabel = React.forwardRef<Text, UILabelProps>(function UILabelForw
             // It's also part of a fix below with textMultiline
             numberOfLines={Platform.select({ web: undefined, default: numberOfLines })}
             style={[
-                style,
-                // Override font and color styles
-                // If there were any
                 fontStyle,
                 colorStyle,
+                style,
                 /**
                  * Applying a fix until it isn't merged to RNW
                  * https://github.com/necolas/react-native-web/pull/2113/files

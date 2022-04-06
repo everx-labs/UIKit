@@ -8,7 +8,7 @@ import {
 import { usePressableColorScheme } from './hooks';
 import type { PressableColors, PressableColorScheme } from './types';
 
-export function useProgressColor({
+export function usePressableContentColor({
     initialColor,
     pressedColor,
     hoveredColor,
