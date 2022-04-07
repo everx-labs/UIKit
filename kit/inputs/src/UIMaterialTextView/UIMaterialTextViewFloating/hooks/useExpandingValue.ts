@@ -46,6 +46,10 @@ export function useExpandingValue(
 
     React.useEffect(() => {
         const toValue = getPosition(isExpanded);
+        /**
+         * We don't need to run animation if expandingPosition is already in correct state.
+         * It leads to unwanted calling of `onExpand` callback.
+         */
         if (toValue === expandingPosition.value) {
             return;
         }
