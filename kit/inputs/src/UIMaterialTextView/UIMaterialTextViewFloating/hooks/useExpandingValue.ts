@@ -46,7 +46,10 @@ export function useExpandingValue(
 
     React.useEffect(() => {
         const toValue = getPosition(isExpanded);
-        const callback = isExpanded && toValue !== expandingPosition.value ? onExpand : undefined;
+        if (toValue === expandingPosition.value) {
+            return;
+        }
+        const callback = isExpanded ? onExpand : undefined;
         expandingPosition.value = withSpring(toValue, withSpringConfig, callback);
     }, [isExpanded, expandingPosition, onExpand]);
 
