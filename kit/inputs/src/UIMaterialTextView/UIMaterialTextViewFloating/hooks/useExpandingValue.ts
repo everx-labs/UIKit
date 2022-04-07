@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Animated, {
     runOnJS,
-    useDerivedValue,
     useSharedValue,
     withSpring,
     WithSpringConfig,
@@ -13,8 +12,8 @@ const POSITION_FOLDED: number = 0;
 const POSITION_EXPANDED: number = 1;
 
 const withSpringConfig: WithSpringConfig = {
-    damping: 17,
     stiffness: 150,
+    overshootClamping: true,
 };
 
 function getPosition(isExpanded: boolean): number {
@@ -34,40 +33,22 @@ export function useExpandingValue(
         getPosition(isExpanded),
     );
 
-    /**
-     * If you change the input value via ref, then there may be a moment
-     * when the outdated `isExpanded` value is taken in the `onExpand` callback.
-     * To fix this behavior, I had to create this ref and update it every render.
-     */
-    const isExpandedRef = React.useRef(isExpanded);
-    isExpandedRef.current = isExpanded;
-
     const onExpand = React.useCallback(
-        function onExpand() {
-            if (isExpandedRef.current) {
-                showPlacehoder();
-            }
-        },
-        [isExpandedRef, showPlacehoder],
-    );
-
-    React.useEffect(() => {
-        expandingPosition.value = getPosition(isExpanded);
-    }, [isExpanded, expandingPosition]);
-
-    const animationCallback = React.useCallback(
         (isFinished?: boolean): void => {
             'worklet';
 
-            if (isFinished && expandingPosition.value === POSITION_EXPANDED) {
-                runOnJS(onExpand)();
+            if (isFinished) {
+                runOnJS(showPlacehoder)();
             }
         },
-        [expandingPosition.value, onExpand],
+        [showPlacehoder],
     );
 
-    const expandingValue: Readonly<Animated.SharedValue<number>> = useDerivedValue(() => {
-        return withSpring(expandingPosition.value, withSpringConfig, animationCallback);
-    });
-    return expandingValue;
+    React.useEffect(() => {
+        const toValue = getPosition(isExpanded);
+        const callback = isExpanded && toValue !== expandingPosition.value ? onExpand : undefined;
+        expandingPosition.value = withSpring(toValue, withSpringConfig, callback);
+    }, [isExpanded, expandingPosition, onExpand]);
+
+    return expandingPosition;
 }
