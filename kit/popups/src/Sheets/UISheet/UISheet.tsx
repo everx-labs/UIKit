@@ -127,8 +127,34 @@ function SheetContent({
             return;
         }
 
-        requestAnimationFrame(() => animate(true));
-    }, [visible, animate]);
+        /**
+         * There was a fix in reanimated
+         * https://github.com/software-mansion/react-native-reanimated/pull/2580
+         *
+         * Basically it does a good thing,
+         * it doesn't apply style updates until a view isn't mounted.
+         * But I noticed with a debugger, that `uiManagerWillPerformMounting` of `REAModule`
+         * is somehow non-determenistic, it can run with a big delay
+         * (probably due to our code too :shrug:)
+         *
+         * To avoid falling in this logic, here we wait until layout is done
+         * (it's based on a fact that `height.value` is set on `onLayout`)
+         * and start animation only after that.
+         *
+         * Breadcrumbs:
+         * With this bug an opening of a sheet is laggy,
+         * sometimes overlay isn't set or set with a big delay,
+         * sometimes it just stuck on closed state and un-freezes
+         * only when you touch sth
+         */
+        (function animateWhenHeightIsSet() {
+            if (height.value === 0) {
+                requestAnimationFrame(animateWhenHeightIsSet);
+                return;
+            }
+            requestAnimationFrame(() => animate(true));
+        })();
+    }, [visible, animate, height]);
 
     useBackHandler(() => {
         if (onClose) {
@@ -145,7 +171,6 @@ function SheetContent({
 
     const overlayStyle = useAnimatedStyle(() => {
         return {
-            flex: 1,
             // There was theoretically better for perf solution
             // with opacity, but on web it worked really bad
             // as it seems animated value need some time
@@ -206,7 +231,7 @@ function SheetContent({
                             enabled={onClose != null}
                             onGestureEvent={onPanGestureHandler}
                         >
-                            <Animated.View style={overlayStyle as StyleProp<ViewStyle>} />
+                            <Animated.View style={[styles.interlayer, overlayStyle]} />
                         </PanGestureHandler>
                     </Animated.View>
                 </TapGestureHandler>
