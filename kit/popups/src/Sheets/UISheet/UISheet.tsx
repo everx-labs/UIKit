@@ -124,7 +124,7 @@ function SheetContent({
     React.useEffect(() => {
         if (!visible) {
             animate(false);
-            return;
+            return undefined;
         }
 
         /**
@@ -146,14 +146,25 @@ function SheetContent({
          * sometimes overlay isn't set or set with a big delay,
          * sometimes it just stuck on closed state and un-freezes
          * only when you touch sth
+         *
+         * This should be removed once a bug in reanimated is resolved!
          */
+        let recursionRafId: number | undefined;
         (function animateWhenHeightIsSet() {
             if (height.value === 0) {
-                requestAnimationFrame(animateWhenHeightIsSet);
+                recursionRafId = requestAnimationFrame(animateWhenHeightIsSet);
                 return;
             }
             requestAnimationFrame(() => animate(true));
         })();
+
+        return () => {
+            if (recursionRafId != null) {
+                // Clean raf from animateWhenHeightIsSet,
+                // to avoid possible infinite recursion
+                cancelAnimationFrame(recursionRafId);
+            }
+        };
     }, [visible, animate, height]);
 
     useBackHandler(() => {
