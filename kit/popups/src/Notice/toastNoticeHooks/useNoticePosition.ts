@@ -94,7 +94,7 @@ export const useNoticePosition = (
             toastNoticeState.value = 'Closed';
             suspendClosingTimer();
 
-            return;
+            return undefined;
         }
 
         /**
@@ -115,16 +115,27 @@ export const useNoticePosition = (
          * With this bug an opening of a notice is laggy,
          * sometimes it just stuck on closed state and un-freezes
          * only when you touch sth or after a big delay
+         *
+         * This should be removed once a bug in reanimated is resolved!
          */
+        let recursionRafId: number | undefined;
         (function animateWhenHeightIsSet() {
             if (noticeHeight.value === 0) {
-                requestAnimationFrame(animateWhenHeightIsSet);
+                recursionRafId = requestAnimationFrame(animateWhenHeightIsSet);
                 return;
             }
             requestAnimationFrame(() => {
                 toastNoticeState.value = 'Opened';
             });
         })();
+
+        return () => {
+            if (recursionRafId != null) {
+                // Clean raf from animateWhenHeightIsSet,
+                // to avoid possible infinite recursion
+                cancelAnimationFrame(recursionRafId);
+            }
+        };
     }, [visible, noticeHeight, toastNoticeState, suspendClosingTimer]);
 
     const onAnimationEnd = useWorkletCallback((isFinished?: boolean) => {
