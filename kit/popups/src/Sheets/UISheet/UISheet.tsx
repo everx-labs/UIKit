@@ -13,6 +13,8 @@ import { KeyboardAwareSheet, KeyboardUnawareSheet } from './KeyboardAwareSheet';
 import { useSheetOrigin } from './SheetOriginContext';
 import { FixedSizeSheet, IntrinsicSizeSheet, useSheetSize } from './SheetSize';
 
+type UISheetStatusBarTriggerColor = 'primary' | 'overlay' | ColorVariants | null;
+
 export type UISheetProps = {
     /**
      * UISheet is controlled component,
@@ -54,11 +56,12 @@ export type UISheetProps = {
      */
     hasCloseAnimation?: boolean;
     /**
-     * Whether UISheet should change the status bar color or not
+     * A color for what status bar color will be calculated
+     * (it will enforce a color that is contrast)
      *
-     * By default - true
+     * By default - overlay, the color that is used for overlay
      */
-    shouldChangeStatusBar?: boolean;
+    statusBarTriggerColor?: UISheetStatusBarTriggerColor;
     /**
      * Sheet uses <Portal /> to put itself on top of
      * current components, like a layer.
@@ -82,6 +85,20 @@ function useSheetClosePortalRequest() {
     return onClose;
 }
 
+function useStatusBarColor(
+    statusBarTriggerColor: UISheetStatusBarTriggerColor,
+): ColorVariants | null {
+    return React.useMemo(() => {
+        if (statusBarTriggerColor === 'overlay') {
+            return ColorVariants.BackgroundOverlay;
+        }
+        if (statusBarTriggerColor === 'primary') {
+            return ColorVariants.BackgroundPrimary;
+        }
+        return statusBarTriggerColor;
+    }, [statusBarTriggerColor]);
+}
+
 function SheetContent({
     visible,
     onClose,
@@ -92,7 +109,7 @@ function SheetContent({
     style,
     hasOpenAnimation,
     hasCloseAnimation,
-    shouldChangeStatusBar = true,
+    statusBarTriggerColor = 'overlay',
 }: UISheetProps) {
     const onClosePortalRequest = useSheetClosePortalRequest();
     const origin = useSheetOrigin();
@@ -220,6 +237,8 @@ function SheetContent({
         ],
     );
 
+    const statusBarColor = useStatusBarColor(statusBarTriggerColor);
+
     return (
         <>
             <View style={styles.container}>
@@ -259,9 +278,7 @@ function SheetContent({
                     </PanGestureHandler>
                 </Animated.View>
             </View>
-            {shouldChangeStatusBar && (
-                <UIStatusBar backgroundColor={ColorVariants.BackgroundOverlay} />
-            )}
+            {statusBarColor != null && <UIStatusBar backgroundColor={statusBarColor} />}
         </>
     );
 }
