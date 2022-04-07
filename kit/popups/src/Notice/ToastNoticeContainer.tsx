@@ -34,6 +34,7 @@ export function ToastNoticeContainer({
     const ySnapPoints: SnapPoints = useToastNoticeYSnapPoints(type, noticeHeight, keyboardHeight);
 
     const { noticePositionStyle, gestureHandler, ...handlers } = useNoticePosition(
+        noticeHeight,
         xSnapPoints,
         ySnapPoints,
         visible,

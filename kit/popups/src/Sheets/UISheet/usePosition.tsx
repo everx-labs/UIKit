@@ -149,6 +149,9 @@ export function usePosition(
      * that is used in animated `style`
      */
     const position = useDerivedValue(() => {
+        if (snapPoint.value === 0) {
+            return 0;
+        }
         if (normalizedPosition.value < snapPoint.value) {
             if (hasScrollShared.value) {
                 return origin.value + snapPoint.value;
