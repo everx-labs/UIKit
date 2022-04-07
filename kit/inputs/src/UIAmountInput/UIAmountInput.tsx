@@ -37,7 +37,7 @@ export const UIAmountInput = React.forwardRef<UIAmountInputRef, UIAmountInputPro
                 success={success}
                 mask={mask}
                 onChangeText={onChangeText}
-                keyboardType="numeric"
+                keyboardType="numbers-and-punctuation"
             />
         );
     },
