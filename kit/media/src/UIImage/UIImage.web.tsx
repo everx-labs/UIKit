@@ -18,6 +18,65 @@ import { useTheme } from '@tonlabs/uikit.themes';
 
 import type { UIImageProps, UIImageSimpleProps } from './types';
 
+export function getColorParts(color: string) {
+    if (color.indexOf('#') === 0) {
+        // Hex
+        const hexRegex = /#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})/i;
+
+        // @ts-ignore
+        const [, red, green, blue] = color.match(hexRegex);
+
+        const colorPartsArray = [parseInt(red, 16), parseInt(green, 16), parseInt(blue, 16)];
+        const colorParts = colorPartsArray.join(', ');
+
+        return {
+            color: `rgb(${colorParts})`,
+            colorParts,
+            colorPartsArray,
+            opacity: 1,
+        };
+    }
+
+    if (color.indexOf('rgb(') === 0) {
+        const rgbRegex = /rgb\((\d+),\s+(\d+),\s+(\d+)\)/;
+
+        // @ts-ignore
+        const [, red, green, blue] = color.match(rgbRegex);
+
+        const colorPartsArray = [Number(red), Number(green), Number(blue)];
+        const colorParts = colorPartsArray.join(', ');
+
+        return {
+            color: `rgb(${colorParts})`,
+            colorParts,
+            colorPartsArray,
+            opacity: 1,
+        };
+    }
+
+    if (color.indexOf('rgba(') === 0) {
+        const rgbaRegex = /rgba\((\d+),\s+(\d+),\s+(\d+),\s+([\d.]+)\)/;
+
+        // @ts-ignore
+        const [, red, green, blue, opacity] = color.match(rgbaRegex);
+
+        const colorPartsArray = [Number(red), Number(green), Number(blue)];
+        const colorParts = colorPartsArray.join(', ');
+
+        return {
+            color: `rgb(${colorParts})`,
+            colorParts,
+            colorPartsArray,
+            opacity: Number(opacity),
+        };
+    }
+
+    return {
+        color,
+        opacity: 1,
+    };
+}
+
 export function prefetch(content: ImageURISource[] | ImageURISource): void {
     if (!content || (Array.isArray(content) && content.length === 0)) {
         /**
@@ -75,13 +134,25 @@ const TintUIImage = React.forwardRef<View, UIImageSimpleProps>(function TintUIIm
     const localRef = React.useRef<View>(null);
     const canvasCtxHolder = React.useRef<CanvasRenderingContext2D>();
 
+    const imgRef = React.useRef<HTMLImageElement>(new Image());
+
     React.useImperativeHandle(ref, () => ({
         setNativeProps(nativeProps: { style?: { tintColor?: ColorValue } }) {
-            if (nativeProps.style != null && nativeProps.style.tintColor != null) {
-                if (canvasCtxHolder.current != null && dimensions != null) {
-                    canvasCtxHolder.current.fillStyle = nativeProps.style.tintColor as string;
-                    canvasCtxHolder.current.fillRect(0, 0, dimensions.width, dimensions.height);
-                }
+            if (
+                nativeProps.style != null &&
+                nativeProps.style.tintColor != null &&
+                canvasCtxHolder.current != null &&
+                dimensions != null
+            ) {
+                canvasCtxHolder.current.drawImage(
+                    imgRef.current,
+                    0,
+                    0,
+                    dimensions.width,
+                    dimensions.height,
+                );
+                canvasCtxHolder.current.fillStyle = nativeProps.style.tintColor as string;
+                canvasCtxHolder.current.fillRect(0, 0, dimensions.width, dimensions.height);
             }
             return localRef.current?.setNativeProps(nativeProps);
         },
@@ -135,7 +206,7 @@ const TintUIImage = React.forwardRef<View, UIImageSimpleProps>(function TintUIIm
             }
             return;
         }
-        const img = new Image();
+
         const currentCanvas = document.getElementById(`${idRef.current}`) as HTMLCanvasElement;
         if (!currentCanvas || !currentCanvas.getContext) {
             if (isMounted.current) {
@@ -152,7 +223,7 @@ const TintUIImage = React.forwardRef<View, UIImageSimpleProps>(function TintUIIm
             return;
         }
 
-        img.onload = () => {
+        imgRef.current.onload = () => {
             if (!ctx || !dimensions) {
                 return;
             }
@@ -169,9 +240,9 @@ const TintUIImage = React.forwardRef<View, UIImageSimpleProps>(function TintUIIm
             ctx.scale(scale, scale);
 
             // draw image
-            ctx.drawImage(img, 0, 0, dimensions.width, dimensions.height);
+            ctx.drawImage(imgRef.current, 0, 0, dimensions.width, dimensions.height);
             // set composite mode
-            ctx.globalCompositeOperation = 'source-in';
+            ctx.globalCompositeOperation = 'source-atop';
             // draw color
             ctx.fillStyle = tintColor as string;
             ctx.fillRect(0, 0, dimensions.width, dimensions.height);
@@ -184,7 +255,7 @@ const TintUIImage = React.forwardRef<View, UIImageSimpleProps>(function TintUIIm
             // until image isn't loaded
             canvasCtxHolder.current = ctx;
         };
-        img.src = uri;
+        imgRef.current.src = uri;
     }, [uri, dimensions, tintColor, width, height, onLoadEnd]);
 
     if (hasError || !tintColor || !width || !height || !uri) {

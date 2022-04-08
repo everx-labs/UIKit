@@ -11,10 +11,10 @@ export type PressableProps = {
 } & PressableColors;
 
 export type PressableColors = {
-    initialColor: ColorVariants;
-    pressedColor: ColorVariants;
-    hoveredColor: ColorVariants;
-    disabledColor: ColorVariants;
+    initialColor?: ColorVariants;
+    pressedColor?: ColorVariants;
+    hoveredColor?: ColorVariants;
+    disabledColor?: ColorVariants;
 };
 
 export type PressableColorScheme = {
