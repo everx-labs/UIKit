@@ -23,6 +23,8 @@ import {
     UIPillButtonVariant,
     UIShowMoreButton,
     UIShowMoreButtonHeight,
+    UIWideBoxButton,
+    UIWideBoxButtonType,
 } from '@tonlabs/uikit.controls';
 import { UILabel } from '@tonlabs/uikit.themes';
 
@@ -39,6 +41,44 @@ export function ButtonsScreen() {
     }, []);
     return (
         <ExampleScreen>
+            <ExampleSection title="UIActionButton">
+                <View
+                    style={{
+                        maxWidth: 600,
+                        alignSelf: 'stretch',
+                        padding: 20,
+                        alignItems: 'stretch',
+                    }}
+                >
+                    <UIWideBoxButton
+                        type={UIWideBoxButtonType.Primary}
+                        title="Primary"
+                        caption="caption"
+                        icon={UIAssets.icons.ui.plus}
+                        onPress={() => console.log('Pressed')}
+                        disabled={false}
+                        loading={false}
+                    />
+                    <UIWideBoxButton
+                        type={UIWideBoxButtonType.Secondary}
+                        title="Secondary"
+                        caption="caption"
+                        icon={UIAssets.icons.ui.plus}
+                        onPress={() => console.log('Pressed')}
+                        disabled={false}
+                        loading={false}
+                    />
+                    <UIWideBoxButton
+                        type={UIWideBoxButtonType.Nulled}
+                        title="Nulled"
+                        caption="caption"
+                        icon={UIAssets.icons.ui.plus}
+                        onPress={() => console.log('Pressed')}
+                        disabled={false}
+                        loading={false}
+                    />
+                </View>
+            </ExampleSection>
             <ExampleSection title="UIActionButton">
                 <View
                     style={{
