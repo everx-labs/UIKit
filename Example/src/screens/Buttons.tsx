@@ -55,7 +55,7 @@ export function ButtonsScreen() {
                         title="Primary"
                         caption="caption"
                         icon={UIAssets.icons.ui.plus}
-                        onPress={() => console.log('Pressed')}
+                        onPress={() => console.log('UIWideBoxButtonType.Primary')}
                         loading={false}
                     />
                     <UIWideBoxButton
@@ -63,7 +63,7 @@ export function ButtonsScreen() {
                         title="Secondary"
                         caption="caption"
                         icon={UIAssets.icons.ui.plus}
-                        onPress={() => console.log('Pressed')}
+                        onPress={() => console.log('UIWideBoxButtonType.Secondary')}
                         loading={false}
                     />
                     <UIBackgroundView
@@ -75,7 +75,7 @@ export function ButtonsScreen() {
                         title="Nulled"
                         caption="caption"
                         icon={UIAssets.icons.ui.plus}
-                        onPress={() => console.log('Pressed')}
+                        onPress={() => console.log('UIWideBoxButtonType.Nulled')}
                         loading={false}
                     />
                     <UIBackgroundView

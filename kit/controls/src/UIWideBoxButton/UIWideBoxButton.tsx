@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { UISkeleton } from '@tonlabs/uikit.layout';
+import { UILayoutConstant, UISkeleton } from '@tonlabs/uikit.layout';
+import { StyleSheet } from 'react-native';
 import { Pressable } from '../Pressable';
 import type { UIWideBoxButtonProps } from './types';
 import { UIWideBoxButtonSecondary } from './content/UIWideBoxButtonSecondary';
@@ -31,7 +32,7 @@ export const UIWideBoxButton = (props: UIWideBoxButtonProps) => {
     }, [type]);
     if (type === UIWideBoxButtonType.Nulled) {
         return (
-            <UISkeleton show={!!loading}>
+            <UISkeleton show={!!loading} style={style.skeleton}>
                 <Pressable testID={testID} disabled={disabled} onPress={onPress}>
                     <Content {...props} />
                     <Caption title={caption} wideBoxButtonType={type} />
@@ -40,7 +41,7 @@ export const UIWideBoxButton = (props: UIWideBoxButtonProps) => {
         );
     }
     return (
-        <UISkeleton show={!!loading}>
+        <UISkeleton show={!!loading} style={style.skeleton}>
             <Pressable testID={testID} disabled={disabled} onPress={onPress}>
                 <Content {...props} />
             </Pressable>
@@ -48,3 +49,9 @@ export const UIWideBoxButton = (props: UIWideBoxButtonProps) => {
         </UISkeleton>
     );
 };
+
+const style = StyleSheet.create({
+    skeleton: {
+        borderRadius: UILayoutConstant.alertBorderRadius,
+    },
+});
