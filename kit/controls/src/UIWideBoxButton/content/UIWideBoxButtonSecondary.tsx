@@ -6,20 +6,12 @@ import { UIAnimatedImage } from '@tonlabs/uikit.media';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UIWideBoxButtonProps } from '../types';
 import { usePressableContentColor } from '../../Pressable';
+import { contentColors } from '../constants';
 
 export function UIWideBoxButtonSecondary({ title, icon }: UIWideBoxButtonProps) {
-    const contentColors = React.useMemo(() => {
-        return {
-            initialColor: ColorVariants.BackgroundAccent,
-            pressedColor: ColorVariants.SpecialAccentDark,
-            hoveredColor: ColorVariants.SpecialAccentLight,
-            disabledColor: ColorVariants.BackgroundNeutral,
-        };
-    }, []);
+    const contentColor = usePressableContentColor(contentColors.secondary);
 
-    const contentColor = usePressableContentColor(contentColors);
-
-    const animatedProps = useAnimatedProps(() => {
+    const animatedImageProps = useAnimatedProps(() => {
         return {
             tintColor: contentColor.value,
         };
@@ -45,7 +37,11 @@ export function UIWideBoxButtonSecondary({ title, icon }: UIWideBoxButtonProps) 
             >
                 {title}
             </UILabelAnimated>
-            <UIAnimatedImage source={icon} style={styles.image} animatedProps={animatedProps} />
+            <UIAnimatedImage
+                source={icon}
+                style={styles.image}
+                animatedProps={animatedImageProps}
+            />
         </Animated.View>
     );
 }

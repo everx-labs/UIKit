@@ -6,18 +6,10 @@ import { UIImage } from '@tonlabs/uikit.media';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UIWideBoxButtonProps } from '../types';
 import { usePressableContentColor } from '../../Pressable';
+import { contentColors } from '../constants';
 
 export function UIWideBoxButtonPrimary({ title, icon }: UIWideBoxButtonProps) {
-    const contentColors = React.useMemo(() => {
-        return {
-            initialColor: ColorVariants.BackgroundAccent,
-            pressedColor: ColorVariants.SpecialAccentDark,
-            hoveredColor: ColorVariants.SpecialAccentLight,
-            disabledColor: ColorVariants.BackgroundNeutral,
-        };
-    }, []);
-
-    const contentColor = usePressableContentColor(contentColors);
+    const contentColor = usePressableContentColor(contentColors.primary);
 
     const animatedStyles = useAnimatedStyle(() => {
         return {

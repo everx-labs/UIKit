@@ -26,7 +26,7 @@ import {
     UIWideBoxButton,
     UIWideBoxButtonType,
 } from '@tonlabs/uikit.controls';
-import { UILabel } from '@tonlabs/uikit.themes';
+import { ColorVariants, UIBackgroundView, UILabel } from '@tonlabs/uikit.themes';
 
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -41,7 +41,7 @@ export function ButtonsScreen() {
     }, []);
     return (
         <ExampleScreen>
-            <ExampleSection title="UIActionButton">
+            <ExampleSection title="UIWideBoxButton">
                 <View
                     style={{
                         maxWidth: 600,
@@ -56,7 +56,6 @@ export function ButtonsScreen() {
                         caption="caption"
                         icon={UIAssets.icons.ui.plus}
                         onPress={() => console.log('Pressed')}
-                        disabled={false}
                         loading={false}
                     />
                     <UIWideBoxButton
@@ -65,8 +64,11 @@ export function ButtonsScreen() {
                         caption="caption"
                         icon={UIAssets.icons.ui.plus}
                         onPress={() => console.log('Pressed')}
-                        disabled={false}
                         loading={false}
+                    />
+                    <UIBackgroundView
+                        color={ColorVariants.BackgroundOverlay}
+                        style={{ height: 1 }}
                     />
                     <UIWideBoxButton
                         type={UIWideBoxButtonType.Nulled}
@@ -74,8 +76,11 @@ export function ButtonsScreen() {
                         caption="caption"
                         icon={UIAssets.icons.ui.plus}
                         onPress={() => console.log('Pressed')}
-                        disabled={false}
                         loading={false}
+                    />
+                    <UIBackgroundView
+                        color={ColorVariants.BackgroundOverlay}
+                        style={{ height: 1 }}
                     />
                 </View>
             </ExampleSection>
