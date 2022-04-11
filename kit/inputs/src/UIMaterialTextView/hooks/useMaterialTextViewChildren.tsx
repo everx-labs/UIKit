@@ -46,7 +46,7 @@ function processChildren(
 
 export function UIMaterialTextViewIcon({ onPress, style, ...rest }: UIMaterialTextViewIconProps) {
     return (
-        <TouchableOpacity onPress={onPress}>
+        <TouchableOpacity onPress={onPress} style={styles.iconTapZone}>
             <UIImageAnimated
                 {...rest}
                 style={[styles.iconSize, style]}
@@ -208,6 +208,12 @@ export function useMaterialTextViewChildren(
 }
 
 const styles = StyleSheet.create({
+    iconTapZone: {
+        height: UILayoutConstant.tapZoneSize,
+        width: UILayoutConstant.tapZoneSize,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     iconSize: {
         width: UILayoutConstant.iconSize,
         height: UILayoutConstant.iconSize,

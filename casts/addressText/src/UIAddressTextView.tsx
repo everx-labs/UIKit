@@ -147,7 +147,7 @@ export const UIAddressTextView = React.forwardRef<UIMaterialTextViewRef, UIAddre
                 onPress={() => {
                     setQrVisible(!qrVisible);
                 }}
-                tintColor={ColorVariants.TextAccent}
+                tintColor={ColorVariants.LineNeutral}
             />,
         ];
 

@@ -4,6 +4,7 @@ const GRID_LINE_HEIGHT = 4;
 
 export const UILayoutConstant = {
     iconSize: 24,
+    tapZoneSize: 48,
 
     loaderSize: 18,
 
