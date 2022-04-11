@@ -15,6 +15,7 @@ export const UIWideBoxButton = (props: UIWideBoxButtonProps) => {
         caption,
         onPress,
         disabled,
+        layout,
         loading,
         testID,
     } = props;
@@ -32,7 +33,7 @@ export const UIWideBoxButton = (props: UIWideBoxButtonProps) => {
     }, [type]);
     if (type === UIWideBoxButtonType.Nulled) {
         return (
-            <UISkeleton show={!!loading} style={style.skeleton}>
+            <UISkeleton show={!!loading} style={[style.skeleton, layout]}>
                 <Pressable testID={testID} disabled={disabled} onPress={onPress}>
                     <Content {...props} />
                     <Caption title={caption} wideBoxButtonType={type} />
