@@ -92,13 +92,7 @@ const PortalView = React.memo<PortalItem>(function PortalView({
 }: PortalItem) {
     if (absoluteFill) {
         return (
-            <View
-                collapsable={false}
-                pointerEvents="box-none"
-                // Pick `zIndex` for PortalManager thus to overlap all components
-                // http://softwareas.com/whats-the-maximum-z-index (as per Safari 0-3 threshold)
-                style={[StyleSheet.absoluteFill, { zIndex: 16777271 }]}
-            >
+            <View collapsable={false} pointerEvents="box-none" style={StyleSheet.absoluteFill}>
                 {children}
             </View>
         );
