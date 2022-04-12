@@ -18,65 +18,6 @@ import { useTheme } from '@tonlabs/uikit.themes';
 
 import type { UIImageProps, UIImageSimpleProps } from './types';
 
-export function getColorParts(color: string) {
-    if (color.indexOf('#') === 0) {
-        // Hex
-        const hexRegex = /#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})/i;
-
-        // @ts-ignore
-        const [, red, green, blue] = color.match(hexRegex);
-
-        const colorPartsArray = [parseInt(red, 16), parseInt(green, 16), parseInt(blue, 16)];
-        const colorParts = colorPartsArray.join(', ');
-
-        return {
-            color: `rgb(${colorParts})`,
-            colorParts,
-            colorPartsArray,
-            opacity: 1,
-        };
-    }
-
-    if (color.indexOf('rgb(') === 0) {
-        const rgbRegex = /rgb\((\d+),\s+(\d+),\s+(\d+)\)/;
-
-        // @ts-ignore
-        const [, red, green, blue] = color.match(rgbRegex);
-
-        const colorPartsArray = [Number(red), Number(green), Number(blue)];
-        const colorParts = colorPartsArray.join(', ');
-
-        return {
-            color: `rgb(${colorParts})`,
-            colorParts,
-            colorPartsArray,
-            opacity: 1,
-        };
-    }
-
-    if (color.indexOf('rgba(') === 0) {
-        const rgbaRegex = /rgba\((\d+),\s+(\d+),\s+(\d+),\s+([\d.]+)\)/;
-
-        // @ts-ignore
-        const [, red, green, blue, opacity] = color.match(rgbaRegex);
-
-        const colorPartsArray = [Number(red), Number(green), Number(blue)];
-        const colorParts = colorPartsArray.join(', ');
-
-        return {
-            color: `rgb(${colorParts})`,
-            colorParts,
-            colorPartsArray,
-            opacity: Number(opacity),
-        };
-    }
-
-    return {
-        color,
-        opacity: 1,
-    };
-}
-
 export function prefetch(content: ImageURISource[] | ImageURISource): void {
     if (!content || (Array.isArray(content) && content.length === 0)) {
         /**
@@ -144,6 +85,12 @@ const TintUIImage = React.forwardRef<View, UIImageSimpleProps>(function TintUIIm
                 canvasCtxHolder.current != null &&
                 dimensions != null
             ) {
+                /**
+                 * We redraw the image because if we re-apply the fill
+                 * with a color with transparency,it leads to an increase
+                 * in the transparency of the image
+                 * (it seems that the transparency values are multiplied)
+                 */
                 canvasCtxHolder.current.drawImage(
                     imgRef.current,
                     0,

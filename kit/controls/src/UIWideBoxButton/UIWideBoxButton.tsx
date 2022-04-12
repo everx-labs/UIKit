@@ -9,7 +9,7 @@ import { UIWideBoxButtonType } from './constants';
 import { UIWideBoxButtonPrimary } from './content/UIWideBoxButtonPrimary';
 import { UIWideBoxButtonNulled } from './content/UIWideBoxButtonNulled';
 
-export const UIWideBoxButton = (props: UIWideBoxButtonProps) => {
+export function UIWideBoxButton(props: UIWideBoxButtonProps) {
     const {
         type = UIWideBoxButtonType.Primary,
         caption,
@@ -20,17 +20,20 @@ export const UIWideBoxButton = (props: UIWideBoxButtonProps) => {
         testID,
     } = props;
 
-    const Content = React.useMemo(() => {
-        switch (type) {
-            case UIWideBoxButtonType.Secondary:
-                return UIWideBoxButtonSecondary;
-            case UIWideBoxButtonType.Nulled:
-                return UIWideBoxButtonNulled;
-            case UIWideBoxButtonType.Primary:
-            default:
-                return UIWideBoxButtonPrimary;
-        }
-    }, [type]);
+    const Content = React.useMemo(
+        function Content() {
+            switch (type) {
+                case UIWideBoxButtonType.Secondary:
+                    return UIWideBoxButtonSecondary;
+                case UIWideBoxButtonType.Nulled:
+                    return UIWideBoxButtonNulled;
+                case UIWideBoxButtonType.Primary:
+                default:
+                    return UIWideBoxButtonPrimary;
+            }
+        },
+        [type],
+    );
     if (type === UIWideBoxButtonType.Nulled) {
         return (
             <UISkeleton show={!!loading} style={[style.skeleton, layout]}>
@@ -49,7 +52,7 @@ export const UIWideBoxButton = (props: UIWideBoxButtonProps) => {
             <Caption title={caption} wideBoxButtonType={type} />
         </UISkeleton>
     );
-};
+}
 
 const style = StyleSheet.create({
     skeleton: {
