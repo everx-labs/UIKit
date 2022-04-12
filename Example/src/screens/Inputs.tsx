@@ -22,7 +22,6 @@ export const Inputs = () => {
     const amountPrecisionRef = React.useRef<UIAmountInputRef>(null);
     const [amount, setAmount] = useState<BigNumber | undefined>(undefined);
     const mnemonicWords = ['report', 'replenish', 'meadow', 'village', 'slight'];
-    const [text, setText] = useState('test');
     React.useEffect(() => {
         amountPrecisionRef.current?.changeAmount(amount, false);
     }, [amount]);
@@ -76,15 +75,12 @@ export const Inputs = () => {
                     <UIMaterialTextView
                         testID="uiMaterialTextView_with_initial_value"
                         label="Label with initial value"
-                        value={text}
-                        onChangeText={setText}
                         helperText="Caption"
                     />
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
                         testID="uiMaterialTextView_with_placeholder"
                         label="Label with placeholder"
-                        onChangeText={setText}
                         helperText="Success"
                         success
                         placeholder="Works with folded label"
