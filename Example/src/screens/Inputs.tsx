@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useState } from 'react';
 import BigNumber from 'bignumber.js';
 import { View } from 'react-native';
 
@@ -20,12 +19,10 @@ import { ExampleScreen } from '../components/ExampleScreen';
 
 export const Inputs = () => {
     const amountPrecisionRef = React.useRef<UIAmountInputRef>(null);
-    const [amount, setAmount] = useState<BigNumber | undefined>(undefined);
     const mnemonicWords = ['report', 'replenish', 'meadow', 'village', 'slight'];
-    const [text, setText] = useState('test');
-    React.useEffect(() => {
+    const onChangeAmount = React.useCallback((amount: BigNumber | undefined) => {
         amountPrecisionRef.current?.changeAmount(amount, false);
-    }, [amount]);
+    }, []);
     return (
         <ExampleScreen>
             <ExampleSection title="UINumberTextView">
@@ -76,15 +73,12 @@ export const Inputs = () => {
                     <UIMaterialTextView
                         testID="uiMaterialTextView_with_initial_value"
                         label="Label with initial value"
-                        value={text}
-                        onChangeText={setText}
                         helperText="Caption"
                     />
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
                         testID="uiMaterialTextView_with_placeholder"
                         label="Label with placeholder"
-                        onChangeText={setText}
                         helperText="Success"
                         success
                         placeholder="Works with folded label"
@@ -200,7 +194,7 @@ export const Inputs = () => {
                         placeholder="0.00"
                         label="Amount Currency"
                         message="Caption"
-                        onChangeAmount={value => setAmount(value)}
+                        onChangeAmount={onChangeAmount}
                         defaultAmount={new BigNumber(123345.123567)}
                         decimalAspect={UIAmountInputDecimalAspect.Currency}
                     />
@@ -210,7 +204,7 @@ export const Inputs = () => {
                         placeholder="000"
                         label="Amount Integer"
                         message="Caption"
-                        onChangeAmount={value => setAmount(value)}
+                        onChangeAmount={onChangeAmount}
                         decimalAspect={UIAmountInputDecimalAspect.Integer}
                     />
                     <View style={{ height: 20 }} />
