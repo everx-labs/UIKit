@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import { StyleSheet, View } from 'react-native';
 import { Pressable } from '../Pressable';
 import type { UIWideBoxButtonProps } from './types';
 import { UIWideBoxButtonSecondary } from './content/UIWideBoxButtonSecondary';
@@ -41,7 +39,7 @@ export function UIWideBoxButton(props: UIWideBoxButtonProps) {
                 disabled={disabled}
                 loading={loading}
                 onPress={onPress}
-                style={[style.container, layout]}
+                style={layout}
             >
                 <Content {...props} />
                 <Caption title={caption} wideBoxButtonType={type} />
@@ -49,17 +47,11 @@ export function UIWideBoxButton(props: UIWideBoxButtonProps) {
         );
     }
     return (
-        <View style={style.container}>
+        <>
             <Pressable testID={testID} disabled={disabled} loading={loading} onPress={onPress}>
                 <Content {...props} />
             </Pressable>
             <Caption title={caption} wideBoxButtonType={type} />
-        </View>
+        </>
     );
 }
-
-const style = StyleSheet.create({
-    container: {
-        borderRadius: UILayoutConstant.alertBorderRadius,
-    },
-});
