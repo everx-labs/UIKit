@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type Animated from 'react-native-reanimated';
-import { useAnimatedColor } from '../useAnimatedColor';
+import { useAnimatedColor } from './hooks/useAnimatedColor';
 import {
     PressableStateVariant,
     pressableWithSpringConfig,
