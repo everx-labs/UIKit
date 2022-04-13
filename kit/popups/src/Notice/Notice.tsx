@@ -125,7 +125,6 @@ const useStyles = makeStyles((color: UINoticeColor, theme: Theme) => ({
     underlay: {
         maxWidth: UIConstant.maxWidth,
         flex: 1,
-        backgroundColor: 'white',
         borderRadius: UILayoutConstant.alertBorderRadius,
         overflow: 'hidden',
         ...Platform.select({
