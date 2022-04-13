@@ -10,7 +10,7 @@ import { usePressableColorScheme } from './hooks';
 import type { PressableColors, PressableColorScheme } from './types';
 
 /**
- * This hooks is used to animate child components colors.
+ * This hook is used to animate child components colors.
  *
  * NOTE: You can use it only in child components of the Pressable component.
  * @returns the current color, which depends on the state of the parent Pressable component.
