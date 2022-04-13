@@ -3,10 +3,14 @@ import { PressableStateVariant } from '../constants';
 
 export function usePressableState(
     disabled: boolean | undefined,
+    loading: boolean | undefined,
     isPressed: boolean,
     isHovered: boolean,
 ) {
     return React.useMemo<PressableStateVariant>(() => {
+        if (loading) {
+            return PressableStateVariant.Loading;
+        }
         if (disabled) {
             return PressableStateVariant.Disabled;
         }
@@ -17,5 +21,5 @@ export function usePressableState(
             return PressableStateVariant.Hovered;
         }
         return PressableStateVariant.Initial;
-    }, [disabled, isPressed, isHovered]);
+    }, [disabled, loading, isPressed, isHovered]);
 }

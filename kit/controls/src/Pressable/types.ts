@@ -5,16 +5,18 @@ export type PressableProps = {
     onPress?: () => void | Promise<void>;
     onLongPress?: () => void | Promise<void>;
     disabled?: boolean;
+    loading?: boolean;
     children: React.ReactNode;
     style?: StyleProp<ViewStyle>;
     testID?: string;
-} & PressableColors;
+};
 
 export type PressableColors = {
-    initialColor?: ColorVariants;
-    pressedColor?: ColorVariants;
-    hoveredColor?: ColorVariants;
-    disabledColor?: ColorVariants;
+    initialColor: ColorVariants;
+    pressedColor: ColorVariants;
+    hoveredColor: ColorVariants;
+    disabledColor: ColorVariants;
+    loadingColor: ColorVariants;
 };
 
 export type PressableColorScheme = {
@@ -22,4 +24,5 @@ export type PressableColorScheme = {
     pressedColor: string;
     hoveredColor: string;
     disabledColor: string;
+    loadingColor: string;
 };

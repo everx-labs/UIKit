@@ -13,6 +13,7 @@ export function usePressableContentColor({
     pressedColor,
     hoveredColor,
     disabledColor,
+    loadingColor,
 }: PressableColors) {
     const pressableState = React.useContext(PressableStateContext);
     const colorScheme: PressableColorScheme = usePressableColorScheme(
@@ -20,6 +21,7 @@ export function usePressableContentColor({
         pressedColor,
         hoveredColor,
         disabledColor,
+        loadingColor,
     );
 
     const color = React.useMemo(() => {
@@ -30,6 +32,8 @@ export function usePressableContentColor({
                 return colorScheme.hoveredColor;
             case PressableStateVariant.Pressed:
                 return colorScheme.pressedColor;
+            case PressableStateVariant.Loading:
+                return colorScheme.loadingColor;
             case PressableStateVariant.Initial:
             default:
                 return colorScheme.initialColor;

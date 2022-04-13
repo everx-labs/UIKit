@@ -1,55 +1,28 @@
 import * as React from 'react';
 import { Pressable as PressablePlatform } from 'react-native';
-import Animated, { useAnimatedStyle } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import { useHover } from '../useHover';
-import {
-    PressableStateContext,
-    PressableStateVariant,
-    pressableWithSpringConfig,
-} from './constants';
-import type { PressableProps, PressableColorScheme } from './types';
-import {
-    usePressed,
-    usePressableState,
-    usePressableColorScheme,
-    useStateBackgroundColor,
-} from './hooks';
-import { useAnimatedColor } from '../useAnimatedColor';
+import { PressableStateContext, PressableStateVariant } from './constants';
+import type { PressableProps } from './types';
+import { usePressed, usePressableState } from './hooks';
 
 export function Pressable({
     onPress,
     onLongPress,
     disabled,
-    initialColor,
-    pressedColor,
-    hoveredColor,
-    disabledColor,
+    loading,
     children,
     style,
     testID,
 }: PressableProps) {
     const { isPressed, onPressIn, onPressOut } = usePressed();
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
-    const pressableState: PressableStateVariant = usePressableState(disabled, isPressed, isHovered);
-
-    const pressableColorScheme: PressableColorScheme = usePressableColorScheme(
-        initialColor,
-        pressedColor,
-        hoveredColor,
-        disabledColor,
+    const pressableState: PressableStateVariant = usePressableState(
+        disabled,
+        loading,
+        isPressed,
+        isHovered,
     );
-    const stateBackgroundColor: string = useStateBackgroundColor(
-        pressableState,
-        pressableColorScheme,
-    );
-    const animatedBackgroundColor: Readonly<Animated.SharedValue<string | number>> =
-        useAnimatedColor(stateBackgroundColor, pressableWithSpringConfig);
-
-    const containerStyles = useAnimatedStyle(() => {
-        return {
-            backgroundColor: animatedBackgroundColor.value,
-        };
-    });
 
     return (
         <PressableStateContext.Provider value={pressableState}>
@@ -57,12 +30,12 @@ export function Pressable({
                 onPress={onPress}
                 onLongPress={onLongPress}
                 testID={testID}
-                disabled={disabled}
+                disabled={disabled || loading}
                 onPressIn={onPressIn}
                 onPressOut={onPressOut}
             >
                 <Animated.View
-                    style={[containerStyles, style]}
+                    style={style}
                     // @ts-expect-error
                     onMouseEnter={onMouseEnter}
                     onMouseLeave={onMouseLeave}

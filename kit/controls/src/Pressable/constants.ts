@@ -6,6 +6,7 @@ export enum PressableStateVariant {
     Disabled = 'Disabled',
     Hovered = 'Hovered',
     Pressed = 'Pressed',
+    Loading = 'Loading',
 }
 
 export const PressableStateContext = React.createContext<PressableStateVariant>(

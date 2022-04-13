@@ -14,10 +14,11 @@ function getStringColor(theme: Theme, color: ColorVariants | undefined): string 
 }
 
 export function usePressableColorScheme(
-    initialColor?: ColorVariants,
-    pressedColor?: ColorVariants,
-    hoveredColor?: ColorVariants,
-    disabledColor?: ColorVariants,
+    initialColor: ColorVariants,
+    pressedColor: ColorVariants,
+    hoveredColor: ColorVariants,
+    disabledColor: ColorVariants,
+    loadingColor: ColorVariants,
 ): PressableColorScheme {
     const theme = useTheme();
     return React.useMemo(() => {
@@ -26,6 +27,7 @@ export function usePressableColorScheme(
             pressedColor: getStringColor(theme, pressedColor),
             hoveredColor: getStringColor(theme, hoveredColor),
             disabledColor: getStringColor(theme, disabledColor),
+            loadingColor: getStringColor(theme, loadingColor),
         };
-    }, [disabledColor, hoveredColor, initialColor, pressedColor, theme]);
+    }, [disabledColor, hoveredColor, initialColor, pressedColor, loadingColor, theme]);
 }
