@@ -13,6 +13,8 @@ import { KeyboardAwareSheet, KeyboardUnawareSheet } from './KeyboardAwareSheet';
 import { useSheetOrigin } from './SheetOriginContext';
 import { FixedSizeSheet, IntrinsicSizeSheet, useSheetSize } from './SheetSize';
 
+type UISheetStatusBarTriggerColor = 'primary' | 'overlay' | ColorVariants | null;
+
 export type UISheetProps = {
     /**
      * UISheet is controlled component,
@@ -54,11 +56,12 @@ export type UISheetProps = {
      */
     hasCloseAnimation?: boolean;
     /**
-     * Whether UISheet should change the status bar color or not
+     * A color for what status bar color will be calculated
+     * (it will enforce a color that is contrast)
      *
-     * By default - true
+     * By default - overlay, the color that is used for overlay
      */
-    shouldChangeStatusBar?: boolean;
+    statusBarTriggerColor?: UISheetStatusBarTriggerColor;
     /**
      * Sheet uses <Portal /> to put itself on top of
      * current components, like a layer.
@@ -82,6 +85,20 @@ function useSheetClosePortalRequest() {
     return onClose;
 }
 
+function useStatusBarColor(
+    statusBarTriggerColor: UISheetStatusBarTriggerColor,
+): ColorVariants | null {
+    return React.useMemo(() => {
+        if (statusBarTriggerColor === 'overlay') {
+            return ColorVariants.BackgroundOverlay;
+        }
+        if (statusBarTriggerColor === 'primary') {
+            return ColorVariants.BackgroundPrimary;
+        }
+        return statusBarTriggerColor;
+    }, [statusBarTriggerColor]);
+}
+
 function SheetContent({
     visible,
     onClose,
@@ -92,7 +109,7 @@ function SheetContent({
     style,
     hasOpenAnimation,
     hasCloseAnimation,
-    shouldChangeStatusBar = true,
+    statusBarTriggerColor = 'overlay',
 }: UISheetProps) {
     const onClosePortalRequest = useSheetClosePortalRequest();
     const origin = useSheetOrigin();
@@ -124,11 +141,48 @@ function SheetContent({
     React.useEffect(() => {
         if (!visible) {
             animate(false);
-            return;
+            return undefined;
         }
 
-        requestAnimationFrame(() => animate(true));
-    }, [visible, animate]);
+        /**
+         * There was a fix in reanimated
+         * https://github.com/software-mansion/react-native-reanimated/pull/2580
+         *
+         * Basically it does a good thing,
+         * it doesn't apply style updates until a view isn't mounted.
+         * But I noticed with a debugger, that `uiManagerWillPerformMounting` of `REAModule`
+         * is somehow non-determenistic, it can run with a big delay
+         * (probably due to our code too :shrug:)
+         *
+         * To avoid falling in this logic, here we wait until layout is done
+         * (it's based on a fact that `height.value` is set on `onLayout`)
+         * and start animation only after that.
+         *
+         * Breadcrumbs:
+         * With this bug an opening of a sheet is laggy,
+         * sometimes overlay isn't set or set with a big delay,
+         * sometimes it just stuck on closed state and un-freezes
+         * only when you touch sth
+         *
+         * This should be removed once a bug in reanimated is resolved!
+         */
+        let recursionRafId: number | undefined;
+        (function animateWhenHeightIsSet() {
+            if (height.value === 0) {
+                recursionRafId = requestAnimationFrame(animateWhenHeightIsSet);
+                return;
+            }
+            requestAnimationFrame(() => animate(true));
+        })();
+
+        return () => {
+            if (recursionRafId != null) {
+                // Clean raf from animateWhenHeightIsSet,
+                // to avoid possible infinite recursion
+                cancelAnimationFrame(recursionRafId);
+            }
+        };
+    }, [visible, animate, height]);
 
     useBackHandler(() => {
         if (onClose) {
@@ -145,7 +199,6 @@ function SheetContent({
 
     const overlayStyle = useAnimatedStyle(() => {
         return {
-            flex: 1,
             // There was theoretically better for perf solution
             // with opacity, but on web it worked really bad
             // as it seems animated value need some time
@@ -195,6 +248,8 @@ function SheetContent({
         ],
     );
 
+    const statusBarColor = useStatusBarColor(statusBarTriggerColor);
+
     return (
         <>
             <View style={styles.container}>
@@ -206,7 +261,7 @@ function SheetContent({
                             enabled={onClose != null}
                             onGestureEvent={onPanGestureHandler}
                         >
-                            <Animated.View style={overlayStyle as StyleProp<ViewStyle>} />
+                            <Animated.View style={[styles.interlayer, overlayStyle]} />
                         </PanGestureHandler>
                     </Animated.View>
                 </TapGestureHandler>
@@ -234,9 +289,7 @@ function SheetContent({
                     </PanGestureHandler>
                 </Animated.View>
             </View>
-            {shouldChangeStatusBar && (
-                <UIStatusBar backgroundColor={ColorVariants.BackgroundOverlay} />
-            )}
+            {statusBarColor != null && <UIStatusBar backgroundColor={statusBarColor} />}
         </>
     );
 }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { ColorVariants, UILabel, TypographyVariants } from '@tonlabs/uikit.themes';
+import { ColorVariants, UILabel, TypographyVariants, Typography } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UITextViewProps } from '../UITextView';
 
@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: UILayoutConstant.contentOffset,
     },
     bottomDefaultOffset: {
-        height: UILayoutConstant.contentInsetVerticalX4,
+        marginTop: UILayoutConstant.contentInsetVerticalX1,
+        height: Typography[TypographyVariants.ParagraphLabel].lineHeight,
     },
 });

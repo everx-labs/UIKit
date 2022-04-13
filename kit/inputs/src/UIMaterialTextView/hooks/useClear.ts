@@ -11,7 +11,7 @@ export function useClear(
         function clear() {
             imperativeChangeText('');
             ref.current?.clear();
-            ref.current?.blur();
+            ref.current?.focus();
             remeasureInputHeight();
         },
         [remeasureInputHeight, imperativeChangeText, ref],

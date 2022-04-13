@@ -14,11 +14,11 @@ export function UIFullscreenSheet({
     children,
     style,
     /**
-     * Turn it off by default as in fullscreen
-     * the overlay isn't visible anyway
-     * and status bar color is made to be contrast on overlay
+     * By default UISheet calculate status bar color to be
+     * contrast to overlay. Change it to be contrast against
+     * primary color, as overlay isn't visible in this sheet.
      */
-    shouldChangeStatusBar = false,
+    statusBarTriggerColor = 'primary',
     ...rest
 }: UIFullscreenSheetProps) {
     const {
@@ -67,7 +67,7 @@ export function UIFullscreenSheet({
                     <UISheet.Content
                         {...rest}
                         style={[styles.bottom, style, sheetStyle]}
-                        shouldChangeStatusBar={shouldChangeStatusBar}
+                        statusBarTriggerColor={statusBarTriggerColor}
                     >
                         {children}
                     </UISheet.Content>

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Animated, {
     runOnJS,
-    useDerivedValue,
     useSharedValue,
     withSpring,
     WithSpringConfig,
@@ -13,8 +12,8 @@ const POSITION_FOLDED: number = 0;
 const POSITION_EXPANDED: number = 1;
 
 const withSpringConfig: WithSpringConfig = {
-    damping: 17,
     stiffness: 150,
+    overshootClamping: true,
 };
 
 function getPosition(isExpanded: boolean): number {
@@ -27,30 +26,36 @@ function getPosition(isExpanded: boolean): number {
  */
 export function useExpandingValue(
     isExpanded: boolean,
-    onExpand: () => void,
+    showPlacehoder: () => void,
 ): Readonly<Animated.SharedValue<number>> {
     /** Label position switcher (POSITION_FOLDED/POSITION_EXPANDED) */
     const expandingPosition: Animated.SharedValue<number> = useSharedValue<number>(
         getPosition(isExpanded),
     );
 
-    React.useEffect(() => {
-        expandingPosition.value = getPosition(isExpanded);
-    }, [isExpanded, expandingPosition]);
-
-    const animationCallback = React.useCallback(
+    const onExpand = React.useCallback(
         (isFinished?: boolean): void => {
             'worklet';
 
-            if (isFinished && expandingPosition.value === POSITION_EXPANDED) {
-                runOnJS(onExpand)();
+            if (isFinished) {
+                runOnJS(showPlacehoder)();
             }
         },
-        [expandingPosition.value, onExpand],
+        [showPlacehoder],
     );
 
-    const expandingValue: Readonly<Animated.SharedValue<number>> = useDerivedValue(() => {
-        return withSpring(expandingPosition.value, withSpringConfig, animationCallback);
-    });
-    return expandingValue;
+    React.useEffect(() => {
+        const toValue = getPosition(isExpanded);
+        /**
+         * We don't need to run animation if expandingPosition is already in correct state.
+         * It leads to unwanted calling of `onExpand` callback.
+         */
+        if (toValue === expandingPosition.value) {
+            return;
+        }
+        const callback = isExpanded ? onExpand : undefined;
+        expandingPosition.value = withSpring(toValue, withSpringConfig, callback);
+    }, [isExpanded, expandingPosition, onExpand]);
+
+    return expandingPosition;
 }
