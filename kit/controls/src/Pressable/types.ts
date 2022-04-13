@@ -6,6 +6,9 @@ export type PressableProps = {
     onLongPress?: () => void | Promise<void>;
     disabled?: boolean;
     loading?: boolean;
+    /**
+     * Use usePressableContentColor hook in the child components to animate their colors.
+     */
     children: React.ReactNode;
     style?: StyleProp<ViewStyle>;
     testID?: string;

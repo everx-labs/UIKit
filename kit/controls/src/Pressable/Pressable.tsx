@@ -6,6 +6,12 @@ import { PressableStateContext, PressableStateVariant } from './constants';
 import type { PressableProps } from './types';
 import { usePressed, usePressableState } from './hooks';
 
+/**
+ * It is necessary to simplify the creation of new buttons.
+ * It provides a context from which to get the current state of the component.
+ *
+ * To animate children colors please use `usePressableContentColor` hook in children components.
+ */
 export function Pressable({
     onPress,
     onLongPress,

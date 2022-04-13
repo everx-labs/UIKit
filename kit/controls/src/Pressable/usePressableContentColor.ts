@@ -1,4 +1,5 @@
 import * as React from 'react';
+import type Animated from 'react-native-reanimated';
 import { useAnimatedColor } from '../useAnimatedColor';
 import {
     PressableStateVariant,
@@ -8,13 +9,19 @@ import {
 import { usePressableColorScheme } from './hooks';
 import type { PressableColors, PressableColorScheme } from './types';
 
+/**
+ * This hooks is used to animate child components colors.
+ *
+ * NOTE: You can use it only in child components of the Pressable component.
+ * @returns the current color, which depends on the state of the parent Pressable component.
+ */
 export function usePressableContentColor({
     initialColor,
     pressedColor,
     hoveredColor,
     disabledColor,
     loadingColor,
-}: PressableColors) {
+}: PressableColors): Readonly<Animated.SharedValue<string | number>> {
     const pressableState = React.useContext(PressableStateContext);
     const colorScheme: PressableColorScheme = usePressableColorScheme(
         initialColor,
