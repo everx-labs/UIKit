@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { UILayoutConstant, UISkeleton } from '@tonlabs/uikit.layout';
-import { StyleSheet } from 'react-native';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { StyleSheet, View } from 'react-native';
 import { Pressable } from '../Pressable';
 import type { UIWideBoxButtonProps } from './types';
 import { UIWideBoxButtonSecondary } from './content/UIWideBoxButtonSecondary';
@@ -36,26 +36,30 @@ export function UIWideBoxButton(props: UIWideBoxButtonProps) {
     );
     if (type === UIWideBoxButtonType.Nulled) {
         return (
-            <UISkeleton show={!!loading} style={[style.skeleton, layout]}>
-                <Pressable testID={testID} disabled={disabled} onPress={onPress}>
-                    <Content {...props} />
-                    <Caption title={caption} wideBoxButtonType={type} />
-                </Pressable>
-            </UISkeleton>
+            <Pressable
+                testID={testID}
+                disabled={disabled}
+                loading={loading}
+                onPress={onPress}
+                style={[style.container, layout]}
+            >
+                <Content {...props} />
+                <Caption title={caption} wideBoxButtonType={type} />
+            </Pressable>
         );
     }
     return (
-        <UISkeleton show={!!loading} style={style.skeleton}>
-            <Pressable testID={testID} disabled={disabled} onPress={onPress}>
+        <View style={style.container}>
+            <Pressable testID={testID} disabled={disabled} loading={loading} onPress={onPress}>
                 <Content {...props} />
             </Pressable>
             <Caption title={caption} wideBoxButtonType={type} />
-        </UISkeleton>
+        </View>
     );
 }
 
 const style = StyleSheet.create({
-    skeleton: {
+    container: {
         borderRadius: UILayoutConstant.alertBorderRadius,
     },
 });

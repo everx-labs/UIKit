@@ -1,20 +1,43 @@
 import * as React from 'react';
-import { ColorValue, ImageStyle, View } from 'react-native';
-import { UILabelAnimated, UILabelRoles, makeStyles } from '@tonlabs/uikit.themes';
+import { ColorValue, ImageStyle, StyleProp, View, ViewStyle } from 'react-native';
+import { UILabelAnimated, UILabelRoles, makeStyles, ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAnimatedImage } from '@tonlabs/uikit.media';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import { useAnimatedProps } from 'react-native-reanimated';
+import Animated, { useAnimatedProps } from 'react-native-reanimated';
 import type { UIWideBoxButtonProps } from '../types';
 import { usePressableContentColor } from '../../Pressable';
 import { contentColors } from '../constants';
+import { UIIndicator } from '../../UIIndicator';
 
-export function UIWideBoxButtonNulled({ title, icon, caption }: UIWideBoxButtonProps) {
-    const contentColor = usePressableContentColor(contentColors.nulled);
+function RightContent({
+    icon,
+    loading,
+    contentColor,
+    imageStyle,
+}: Pick<UIWideBoxButtonProps, 'icon' | 'loading'> & {
+    contentColor: Readonly<Animated.SharedValue<string | number>>;
+    imageStyle: StyleProp<ViewStyle>;
+}) {
     const animatedImageProps = useAnimatedProps(() => {
         return {
             tintColor: contentColor.value,
         };
     });
+
+    if (loading) {
+        return <UIIndicator color={ColorVariants.TextOverlay} size={UILayoutConstant.iconSize} />;
+    }
+    if (icon) {
+        return (
+            <UIAnimatedImage source={icon} style={imageStyle} animatedProps={animatedImageProps} />
+        );
+    }
+    return null;
+}
+
+export function UIWideBoxButtonNulled({ title, icon, caption, loading }: UIWideBoxButtonProps) {
+    const contentColor = usePressableContentColor(contentColors.nulled);
+
     const animatedLabelProps = useAnimatedProps(() => {
         return {
             color: contentColor.value as ColorValue,
@@ -27,13 +50,12 @@ export function UIWideBoxButtonNulled({ title, icon, caption }: UIWideBoxButtonP
             <UILabelAnimated role={UILabelRoles.Action} animatedProps={animatedLabelProps}>
                 {title}
             </UILabelAnimated>
-            {icon ? (
-                <UIAnimatedImage
-                    source={icon}
-                    style={styles.image as ImageStyle}
-                    animatedProps={animatedImageProps}
-                />
-            ) : null}
+            <RightContent
+                icon={icon}
+                loading={loading}
+                contentColor={contentColor}
+                imageStyle={styles.image as ImageStyle}
+            />
         </View>
     );
 }

@@ -1,34 +1,68 @@
 import * as React from 'react';
 import { ColorValue, StyleSheet } from 'react-native';
-import Animated, { useAnimatedStyle } from 'react-native-reanimated';
-import { ColorVariants, UILabel, UILabelRoles } from '@tonlabs/uikit.themes';
-import { UIImage } from '@tonlabs/uikit.media';
+import Animated, { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
+import { ColorVariants, UILabelAnimated, UILabelRoles } from '@tonlabs/uikit.themes';
+import { UIAnimatedImage } from '@tonlabs/uikit.media';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UIWideBoxButtonProps } from '../types';
 import { usePressableContentColor } from '../../Pressable';
 import { contentColors } from '../constants';
+import { UIIndicator } from '../../UIIndicator';
 
-export function UIWideBoxButtonPrimary({ title, icon }: UIWideBoxButtonProps) {
-    const contentColor = usePressableContentColor(contentColors.primary);
+function RightContent({
+    icon,
+    loading,
+    contentColor,
+}: Pick<UIWideBoxButtonProps, 'icon' | 'loading'> & {
+    contentColor: Readonly<Animated.SharedValue<string | number>>;
+}) {
+    const animatedImageProps = useAnimatedProps(() => {
+        return {
+            tintColor: contentColor.value,
+        };
+    });
+
+    if (loading) {
+        return (
+            <UIIndicator
+                color={ColorVariants.TextOverlayInverted}
+                size={UILayoutConstant.iconSize}
+            />
+        );
+    }
+    if (icon) {
+        return (
+            <UIAnimatedImage
+                source={icon}
+                style={styles.image}
+                animatedProps={animatedImageProps}
+            />
+        );
+    }
+    return null;
+}
+
+export function UIWideBoxButtonPrimary({ title, icon, loading }: UIWideBoxButtonProps) {
+    const backgroundColor = usePressableContentColor(contentColors.primaryBackground);
+    const contentColor = usePressableContentColor(contentColors.primaryContent);
 
     const animatedStyles = useAnimatedStyle(() => {
         return {
-            backgroundColor: contentColor.value as ColorValue,
+            backgroundColor: backgroundColor.value as ColorValue,
+        };
+    });
+    const animatedLabelProps = useAnimatedProps(() => {
+        return {
+            color: contentColor.value as ColorValue,
         };
     });
 
     return (
         <Animated.View style={[styles.container, animatedStyles]}>
-            <UILabel color={ColorVariants.StaticTextPrimaryLight} role={UILabelRoles.Action}>
+            <UILabelAnimated role={UILabelRoles.Action} animatedProps={animatedLabelProps}>
                 {title}
-            </UILabel>
-            {icon ? (
-                <UIImage
-                    source={icon}
-                    style={styles.image}
-                    tintColor={ColorVariants.StaticTextPrimaryLight}
-                />
-            ) : null}
+            </UILabelAnimated>
+            <RightContent icon={icon} loading={loading} contentColor={contentColor} />
         </Animated.View>
     );
 }

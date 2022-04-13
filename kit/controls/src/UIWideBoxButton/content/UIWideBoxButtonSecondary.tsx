@@ -7,15 +7,38 @@ import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UIWideBoxButtonProps } from '../types';
 import { usePressableContentColor } from '../../Pressable';
 import { contentColors } from '../constants';
+import { UIIndicator } from '../../UIIndicator';
 
-export function UIWideBoxButtonSecondary({ title, icon }: UIWideBoxButtonProps) {
-    const contentColor = usePressableContentColor(contentColors.secondary);
-
+function RightContent({
+    icon,
+    loading,
+    contentColor,
+}: Pick<UIWideBoxButtonProps, 'icon' | 'loading'> & {
+    contentColor: Readonly<Animated.SharedValue<string | number>>;
+}) {
     const animatedImageProps = useAnimatedProps(() => {
         return {
             tintColor: contentColor.value,
         };
     });
+
+    if (loading) {
+        return <UIIndicator color={ColorVariants.TextOverlay} size={UILayoutConstant.iconSize} />;
+    }
+    if (icon) {
+        return (
+            <UIAnimatedImage
+                source={icon}
+                style={styles.image}
+                animatedProps={animatedImageProps}
+            />
+        );
+    }
+    return null;
+}
+
+export function UIWideBoxButtonSecondary({ title, icon, loading }: UIWideBoxButtonProps) {
+    const contentColor = usePressableContentColor(contentColors.secondary);
 
     const animatedLabelProps = useAnimatedProps(() => {
         return {
@@ -31,17 +54,8 @@ export function UIWideBoxButtonSecondary({ title, icon }: UIWideBoxButtonProps) 
 
     return (
         <Animated.View style={[styles.container, animatedStyles]}>
-            <UILabelAnimated
-                color={ColorVariants.TextPrimaryInverted}
-                animatedProps={animatedLabelProps}
-            >
-                {title}
-            </UILabelAnimated>
-            <UIAnimatedImage
-                source={icon}
-                style={styles.image}
-                animatedProps={animatedImageProps}
-            />
+            <UILabelAnimated animatedProps={animatedLabelProps}>{title}</UILabelAnimated>
+            <RightContent icon={icon} loading={loading} contentColor={contentColor} />
         </Animated.View>
     );
 }
