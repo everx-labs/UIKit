@@ -144,6 +144,11 @@ function SheetContent({
             return undefined;
         }
 
+        if (!hasOpenAnimation) {
+            animate(true);
+            return undefined;
+        }
+
         /**
          * There was a fix in reanimated
          * https://github.com/software-mansion/react-native-reanimated/pull/2580
@@ -182,7 +187,7 @@ function SheetContent({
                 cancelAnimationFrame(recursionRafId);
             }
         };
-    }, [visible, animate, height]);
+    }, [visible, animate, height, hasOpenAnimation]);
 
     useBackHandler(() => {
         if (onClose) {
