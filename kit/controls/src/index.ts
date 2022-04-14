@@ -9,6 +9,7 @@ import * as UIIndicator from './UIIndicator';
 import * as UIShowMoreButton from './UIShowMoreButton';
 import * as UISwitcher from './UISwitcher';
 import * as UIWideBoxButton from './UIWideBoxButton';
+import * as UIPressableArea from './UIPressableArea';
 
 import * as Haptics from './Haptics/Haptics';
 import * as useHover from './useHover';
@@ -24,6 +25,7 @@ export * from './UIIndicator';
 export * from './UIShowMoreButton';
 export * from './UISwitcher';
 export * from './UIWideBoxButton';
+export * from './UIPressableArea';
 
 export * from './Haptics/Haptics';
 export * from './useHover';
@@ -42,6 +44,7 @@ export const UIControl = {
     UIShowMoreButton,
     UISwitcher,
     UIWideBoxButton,
+    UIPressableArea,
 
     Haptics,
     useHover,

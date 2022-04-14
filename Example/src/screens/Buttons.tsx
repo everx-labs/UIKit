@@ -25,6 +25,7 @@ import {
     UIShowMoreButtonHeight,
     UIWideBoxButton,
     UIWideBoxButtonType,
+    UIPressableArea,
 } from '@tonlabs/uikit.controls';
 import { ColorVariants, UIBackgroundView, UILabel } from '@tonlabs/uikit.themes';
 
@@ -41,6 +42,23 @@ export function ButtonsScreen() {
     }, []);
     return (
         <ExampleScreen>
+            <ExampleSection title="UIPressableArea">
+                <UIPressableArea onPress={() => console.log('UIPressableArea')}>
+                    <View
+                        style={{
+                            marginTop: 20,
+                            width: 200,
+                            height: 40,
+                            borderRadius: 16,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: 'lightblue',
+                        }}
+                    >
+                        <UILabel>UIPressableArea</UILabel>
+                    </View>
+                </UIPressableArea>
+            </ExampleSection>
             <ExampleSection title="UIWideBoxButton">
                 <View
                     style={{
