@@ -4,10 +4,9 @@ import { ColorValue, Platform, Text } from 'react-native';
 // @ts-expect-error
 import TextAncestorContext from 'react-native/Libraries/Text/TextAncestor';
 
-import Animated from 'react-native-reanimated';
 import { Typography, TypographyVariants } from '../Typography';
 import { ColorVariants, useTheme } from '../Colors';
-import type { UILabelBasicProps, UILabelProps } from './types';
+import type { UILabelProps } from './types';
 // @ts-expect-error
 // eslint-disable-next-line import/extensions, import/no-unresolved
 import { useLabelDataSet } from './useLabelDataSet';
@@ -33,17 +32,31 @@ const useStyles = makeStyles((numberOfLines: number): { textMultiLine: any } => 
     };
 });
 
-const UILabelBasic = React.forwardRef<Text, UILabelBasicProps>(function UILabelForwarded(
+/**
+ * https://reactnative.dev/docs/text
+ *
+ * Text component with defined styles from our design system
+ *
+ * IMPORTANT: You must use only `role` and `color` props
+ *            to choose from pre-defined appearances.
+ *            Color and font styles would be overrided anyway.
+ *
+ * <UILabel role={UILabelRoles.ParagraphText} color={UILabelColors.TextPrimary}>
+ *     Hello world!
+ * </UILabel>
+ */
+export const UILabel = React.forwardRef<Text, UILabelProps>(function UILabelForwarded(
     {
         role = TypographyVariants.ParagraphText,
-        color,
+        color: colorProp = ColorVariants.TextPrimary,
         style,
         textComponent,
         numberOfLines,
         ...rest
-    }: UILabelBasicProps,
+    }: UILabelProps,
     ref,
 ) {
+    const theme = useTheme();
     const isNested = React.useContext(TextAncestorContext);
 
     const font = Typography[role];
@@ -60,6 +73,13 @@ const UILabelBasic = React.forwardRef<Text, UILabelBasicProps>(function UILabelF
           ]
         : font;
 
+    const colorStyle: { color: ColorValue } = React.useMemo(
+        () => ({
+            color: theme[colorProp],
+        }),
+        [theme, colorProp],
+    );
+
     const TextComponent = textComponent || Text;
 
     const dataSet = useLabelDataSet(rest.children);
@@ -72,10 +92,11 @@ const UILabelBasic = React.forwardRef<Text, UILabelBasicProps>(function UILabelF
             // It's also part of a fix below with textMultiline
             numberOfLines={Platform.select({ web: undefined, default: numberOfLines })}
             style={[
-                { color },
                 style,
-                // Override font styles if there were any
+                // Override font and color styles
+                // If there were any
                 fontStyle,
+                colorStyle,
                 /**
                  * Applying a fix until it isn't merged to RNW
                  * https://github.com/necolas/react-native-web/pull/2113/files
@@ -89,44 +110,3 @@ const UILabelBasic = React.forwardRef<Text, UILabelBasicProps>(function UILabelF
         />
     );
 });
-
-/**
- * https://reactnative.dev/docs/text
- *
- * Text component with defined styles from our design system
- *
- * IMPORTANT: You must use only `role` and `color` props
- *            to choose from pre-defined appearances.
- *            Color and font styles would be overrided anyway.
- *
- * <UILabel role={UILabelRoles.ParagraphText} color={UILabelColors.TextPrimary}>
- *     Hello world!
- * </UILabel>
- */
-export const UILabel = React.forwardRef<Text, UILabelProps>(function UILabelForwarded(
-    { color: colorProp = ColorVariants.TextPrimary, style, ...rest }: UILabelProps,
-    ref,
-) {
-    const theme = useTheme();
-
-    const colorStyle: { color: ColorValue } = React.useMemo(
-        () => ({
-            color: theme[colorProp],
-        }),
-        [theme, colorProp],
-    );
-
-    return (
-        <UILabelBasic
-            ref={ref}
-            {...rest}
-            style={[
-                style,
-                // Override color styles if there were any
-                colorStyle,
-            ]}
-        />
-    );
-});
-
-export const UILabelAnimated = Animated.createAnimatedComponent(UILabelBasic);

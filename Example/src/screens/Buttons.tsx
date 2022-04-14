@@ -23,10 +23,8 @@ import {
     UIPillButtonVariant,
     UIShowMoreButton,
     UIShowMoreButtonHeight,
-    UIWideBoxButton,
-    UIWideBoxButtonType,
 } from '@tonlabs/uikit.controls';
-import { ColorVariants, UIBackgroundView, UILabel } from '@tonlabs/uikit.themes';
+import { UILabel } from '@tonlabs/uikit.themes';
 
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -41,52 +39,6 @@ export function ButtonsScreen() {
     }, []);
     return (
         <ExampleScreen>
-            <ExampleSection title="UIWideBoxButton">
-                <View
-                    style={{
-                        maxWidth: 600,
-                        alignSelf: 'stretch',
-                        padding: 20,
-                        alignItems: 'stretch',
-                    }}
-                >
-                    <UIWideBoxButton
-                        type={UIWideBoxButtonType.Primary}
-                        title="Primary"
-                        caption="caption"
-                        icon={UIAssets.icons.ui.plus}
-                        onPress={() => console.log('UIWideBoxButtonType.Primary')}
-                        loading={false}
-                        disabled={false}
-                    />
-                    <UIWideBoxButton
-                        type={UIWideBoxButtonType.Secondary}
-                        title="Secondary"
-                        caption="caption"
-                        icon={UIAssets.icons.ui.plus}
-                        onPress={() => console.log('UIWideBoxButtonType.Secondary')}
-                        loading={false}
-                        disabled={false}
-                    />
-                    <UIBackgroundView
-                        color={ColorVariants.BackgroundOverlay}
-                        style={{ height: 1 }}
-                    />
-                    <UIWideBoxButton
-                        type={UIWideBoxButtonType.Nulled}
-                        title="Nulled"
-                        caption="caption"
-                        icon={UIAssets.icons.ui.plus}
-                        onPress={() => console.log('UIWideBoxButtonType.Nulled')}
-                        loading={false}
-                        disabled={false}
-                    />
-                    <UIBackgroundView
-                        color={ColorVariants.BackgroundOverlay}
-                        style={{ height: 1 }}
-                    />
-                </View>
-            </ExampleSection>
             <ExampleSection title="UIActionButton">
                 <View
                     style={{

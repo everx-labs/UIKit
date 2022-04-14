@@ -35,16 +35,12 @@ function PortalConsumer({ forId, absoluteFill, manager, children }: PortalConsum
         } else {
             manager.update(key.current, children, forId, absoluteFill);
         }
-    }, [manager, children, forId, absoluteFill]);
 
-    React.useEffect(() => {
         return () => {
-            if (key.current == null) {
-                return;
-            }
-            manager.unmount(key.current, forId);
+            // @ts-ignore
+            manager.unmount(key.current, forId, absoluteFill);
         };
-    }, [forId, manager]);
+    }, [manager, children, forId, absoluteFill]);
 
     return null;
 }
@@ -55,19 +51,24 @@ interface PortalProps {
     children: React.ReactNode;
 }
 
-export function Portal({ forId, absoluteFill, children }: PortalProps) {
-    const manager = React.useContext(PortalContext);
-
-    if (manager == null) {
-        return null;
-    }
-
-    return (
-        <PortalConsumer forId={forId} manager={manager} absoluteFill={absoluteFill}>
-            {children}
-        </PortalConsumer>
-    );
-}
+export const Portal = (props: PortalProps) => (
+    <PortalContext.Consumer>
+        {manager => {
+            if (manager != null) {
+                return (
+                    <PortalConsumer
+                        forId={props.forId}
+                        manager={manager}
+                        absoluteFill={props.absoluteFill}
+                    >
+                        {props.children}
+                    </PortalConsumer>
+                );
+            }
+            return null;
+        }}
+    </PortalContext.Consumer>
+);
 
 type PortalItem = {
     children: React.ReactNode;
@@ -202,11 +203,10 @@ export class PortalManager extends React.PureComponent<PortalManagerProps, Porta
         const portals = this.state;
         return (
             Object.keys(portals)
-                .map(portalKey => Number(portalKey))
-                .filter(portalKey => portals[portalKey] != null)
-                .sort((a, b) => b - a) // reversed order by keys
+                .filter(portalKey => portals[Number(portalKey)] != null)
+                .sort((a, b) => Number(b) - Number(a)) // reversed order by keys
                 // eslint-disable-next-line react/destructuring-assignment
-                .find(key => !!portals[key])
+                .find(key => !!portals[Number(key)])
         ); // find the first (max) key
     }
 
@@ -214,7 +214,7 @@ export class PortalManager extends React.PureComponent<PortalManagerProps, Porta
         const maxMountedKey = this.getMaxMountedKey();
 
         if (maxMountedKey != null) {
-            return maxMountedKey + 1;
+            return Number(maxMountedKey + 1);
         }
 
         this.counter += 1;

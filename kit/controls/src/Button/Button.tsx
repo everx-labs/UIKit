@@ -24,6 +24,13 @@ import {
 import { UIConstant } from '../constants';
 import type { ButtonAnimations } from './types';
 
+export type UILayout = {
+    marginTop?: number;
+    marginRight?: number;
+    marginBottom?: number;
+    marginLeft?: number;
+};
+
 type ButtonProps = {
     animations: ButtonAnimations;
     children: React.ReactNode;

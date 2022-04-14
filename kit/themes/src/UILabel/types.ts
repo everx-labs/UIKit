@@ -1,6 +1,5 @@
 import type * as React from 'react';
 import type {
-    ColorValue,
     FlexStyle,
     StyleProp,
     TextProps,
@@ -36,17 +35,10 @@ type UILabelStyle = Pick<
     FlexStyle &
     TransformsStyle;
 
-type UILabelBasicStyle = UILabelStyle & Pick<TextStyle, 'color'>;
-
-export type UILabelBasicProps = Omit<TextProps, 'style'> & {
+export type UILabelProps = Omit<TextProps, 'style'> & {
     role?: TypographyVariants;
-    color?: ColorValue;
-    style?: StyleProp<UILabelBasicStyle>;
-    children?: React.ReactNode | LocalizationString;
-    textComponent?: React.ComponentType<any>;
-};
-
-export type UILabelProps = UILabelBasicProps & {
     color?: ColorVariants;
     style?: StyleProp<UILabelStyle>;
+    children?: React.ReactNode | LocalizationString;
+    textComponent?: React.ComponentType<any>;
 };

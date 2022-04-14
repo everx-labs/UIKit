@@ -121,13 +121,16 @@ export function usePosition(
 ) {
     const showState = useSharedValue<ShowStates>(SHOW_STATE_CLOSING);
 
-    const open = React.useCallback(() => {
-        showState.value = SHOW_STATE_OPEN;
-    }, [showState]);
-
-    const close = React.useCallback(() => {
-        showState.value = SHOW_STATE_CLOSE;
-    }, [showState]);
+    const animate = React.useCallback(
+        (isShow: boolean) => {
+            if (isShow) {
+                showState.value = SHOW_STATE_OPEN;
+                return;
+            }
+            showState.value = SHOW_STATE_CLOSE;
+        },
+        [showState],
+    );
 
     /**
      * A position from y=0, to not involve origin here,
@@ -349,8 +352,7 @@ export function usePosition(
     });
 
     return {
-        open,
-        close,
+        animate,
         onTapGestureHandler,
         onPanGestureHandler,
         scrollRef,

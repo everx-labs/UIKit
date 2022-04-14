@@ -14,7 +14,7 @@ import {
     useButtonColors,
     useContentAnimatedStyles,
 } from './hooks';
-import type { UILayout } from '../types';
+import type { UILayout } from '../Button';
 
 export type UIActionButtonProps = {
     /**

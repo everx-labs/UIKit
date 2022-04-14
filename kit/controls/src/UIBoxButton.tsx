@@ -6,11 +6,12 @@ import {
     useDerivedValue,
     useSharedValue,
 } from 'react-native-reanimated';
+
 import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
-import { Button } from './Button';
+import { Button, UILayout } from './Button';
 import type { ButtonAnimations } from './Button/types';
+
 import { UIConstant } from './constants';
-import type { UILayout } from './types';
 
 // eslint-disable-next-line no-shadow
 export enum UIBoxButtonType {

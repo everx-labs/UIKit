@@ -75,31 +75,13 @@ const TintUIImage = React.forwardRef<View, UIImageSimpleProps>(function TintUIIm
     const localRef = React.useRef<View>(null);
     const canvasCtxHolder = React.useRef<CanvasRenderingContext2D>();
 
-    const imgRef = React.useRef<HTMLImageElement>(new Image());
-
     React.useImperativeHandle(ref, () => ({
         setNativeProps(nativeProps: { style?: { tintColor?: ColorValue } }) {
-            if (
-                nativeProps.style != null &&
-                nativeProps.style.tintColor != null &&
-                canvasCtxHolder.current != null &&
-                dimensions != null
-            ) {
-                /**
-                 * We redraw the image because if we re-apply the fill
-                 * with a color with transparency,it leads to an increase
-                 * in the transparency of the image
-                 * (it seems that the transparency values are multiplied)
-                 */
-                canvasCtxHolder.current.drawImage(
-                    imgRef.current,
-                    0,
-                    0,
-                    dimensions.width,
-                    dimensions.height,
-                );
-                canvasCtxHolder.current.fillStyle = nativeProps.style.tintColor as string;
-                canvasCtxHolder.current.fillRect(0, 0, dimensions.width, dimensions.height);
+            if (nativeProps.style != null && nativeProps.style.tintColor != null) {
+                if (canvasCtxHolder.current != null && dimensions != null) {
+                    canvasCtxHolder.current.fillStyle = nativeProps.style.tintColor as string;
+                    canvasCtxHolder.current.fillRect(0, 0, dimensions.width, dimensions.height);
+                }
             }
             return localRef.current?.setNativeProps(nativeProps);
         },
@@ -153,7 +135,7 @@ const TintUIImage = React.forwardRef<View, UIImageSimpleProps>(function TintUIIm
             }
             return;
         }
-
+        const img = new Image();
         const currentCanvas = document.getElementById(`${idRef.current}`) as HTMLCanvasElement;
         if (!currentCanvas || !currentCanvas.getContext) {
             if (isMounted.current) {
@@ -170,7 +152,7 @@ const TintUIImage = React.forwardRef<View, UIImageSimpleProps>(function TintUIIm
             return;
         }
 
-        imgRef.current.onload = () => {
+        img.onload = () => {
             if (!ctx || !dimensions) {
                 return;
             }
@@ -187,9 +169,9 @@ const TintUIImage = React.forwardRef<View, UIImageSimpleProps>(function TintUIIm
             ctx.scale(scale, scale);
 
             // draw image
-            ctx.drawImage(imgRef.current, 0, 0, dimensions.width, dimensions.height);
+            ctx.drawImage(img, 0, 0, dimensions.width, dimensions.height);
             // set composite mode
-            ctx.globalCompositeOperation = 'source-atop';
+            ctx.globalCompositeOperation = 'source-in';
             // draw color
             ctx.fillStyle = tintColor as string;
             ctx.fillRect(0, 0, dimensions.width, dimensions.height);
@@ -202,7 +184,7 @@ const TintUIImage = React.forwardRef<View, UIImageSimpleProps>(function TintUIIm
             // until image isn't loaded
             canvasCtxHolder.current = ctx;
         };
-        imgRef.current.src = uri;
+        img.src = uri;
     }, [uri, dimensions, tintColor, width, height, onLoadEnd]);
 
     if (hasError || !tintColor || !width || !height || !uri) {
