@@ -18,6 +18,8 @@ import type {
 
 const UIImageAnimated = Animated.createAnimatedComponent(UIImage);
 
+const ICON_TAP_ZONE_SIZE = 48;
+
 function processChildren(
     children: React.ReactNode,
     tintColor: ColorVariants | undefined,
@@ -44,9 +46,14 @@ function processChildren(
     });
 }
 
-export function UIMaterialTextViewIcon({ onPress, style, ...rest }: UIMaterialTextViewIconProps) {
+export function UIMaterialTextViewIcon({
+    onPress,
+    style,
+    containerStyle,
+    ...rest
+}: UIMaterialTextViewIconProps) {
     return (
-        <TouchableOpacity onPress={onPress} style={styles.iconTapZone}>
+        <TouchableOpacity onPress={onPress} style={[styles.iconTapZone, containerStyle]}>
             <UIImageAnimated
                 {...rest}
                 style={[styles.iconSize, style]}
@@ -185,7 +192,8 @@ export function useMaterialTextViewChildren(
                 if (index !== 0) {
                     acc.push(
                         React.cloneElement(item, {
-                            style: [item.props?.style, styles.iconsFiller],
+                            style: item.props?.style,
+                            containerStyle: [item.props?.containerStyle, styles.iconOffset],
                         }),
                     );
                 } else {
@@ -209,8 +217,8 @@ export function useMaterialTextViewChildren(
 
 const styles = StyleSheet.create({
     iconTapZone: {
-        height: UILayoutConstant.tapZoneSize,
-        width: UILayoutConstant.tapZoneSize,
+        height: ICON_TAP_ZONE_SIZE,
+        width: ICON_TAP_ZONE_SIZE,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -218,8 +226,8 @@ const styles = StyleSheet.create({
         width: UILayoutConstant.iconSize,
         height: UILayoutConstant.iconSize,
     },
-    iconsFiller: {
-        marginLeft: UILayoutConstant.smallContentOffset,
+    iconOffset: {
+        marginRight: -UILayoutConstant.normalContentOffset,
     },
     clearButtonWrapper: {
         justifyContent: 'flex-end',

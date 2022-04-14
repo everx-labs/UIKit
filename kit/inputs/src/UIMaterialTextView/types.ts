@@ -1,6 +1,8 @@
 import type React from 'react';
 import type {
     View,
+    ViewStyle,
+    StyleProp,
     TextInput,
     NativeSyntheticEvent,
     TextInputContentSizeChangeEventData,
@@ -100,6 +102,10 @@ export type UIMaterialTextViewIconProps = UIImageProps & {
      * Callback called by clicking/tapping on the icon
      */
     onPress?: () => void;
+    /**
+     * Style of icon container view
+     */
+    containerStyle?: StyleProp<ViewStyle>;
 };
 
 export type UIMaterialTextViewActionProps = UIMaterialTextViewTextProps & {
