@@ -37,15 +37,14 @@ function PortalConsumer({ forId, absoluteFill, manager, children }: PortalConsum
         }
     }, [manager, children, forId, absoluteFill]);
 
-    React.useState(() => {
+    React.useEffect(() => {
         return () => {
             if (key.current == null) {
                 return;
             }
-            // @ts-ignore
             manager.unmount(key.current, forId);
         };
-    });
+    }, [forId, manager]);
 
     return null;
 }
