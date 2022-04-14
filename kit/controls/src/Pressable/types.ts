@@ -29,3 +29,11 @@ export type PressableColorScheme = {
     disabledColor: string;
     loadingColor: string;
 };
+
+export type PressableNumericParameters = {
+    initial?: number;
+    pressed?: number;
+    hovered?: number;
+    disabled?: number;
+    loading?: number;
+};
