@@ -8,6 +8,7 @@ import * as TouchableOpacity from './TouchableOpacity';
 import * as UIIndicator from './UIIndicator';
 import * as UIShowMoreButton from './UIShowMoreButton';
 import * as UISwitcher from './UISwitcher';
+import * as UIWideBoxButton from './UIWideBoxButton';
 
 import * as Haptics from './Haptics/Haptics';
 import * as useHover from './useHover';
@@ -22,10 +23,12 @@ export * from './TouchableOpacity';
 export * from './UIIndicator';
 export * from './UIShowMoreButton';
 export * from './UISwitcher';
+export * from './UIWideBoxButton';
 
 export * from './Haptics/Haptics';
 export * from './useHover';
 export * from './addNativeProps';
+export * from './types';
 
 export const UIControl = {
     UIActionButton,
@@ -38,6 +41,7 @@ export const UIControl = {
     UIIndicator,
     UIShowMoreButton,
     UISwitcher,
+    UIWideBoxButton,
 
     Haptics,
     useHover,

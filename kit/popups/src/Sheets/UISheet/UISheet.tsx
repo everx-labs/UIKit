@@ -116,7 +116,8 @@ function SheetContent({
     const { height, onSheetLayout, style: cardSizeStyle } = useSheetSize();
 
     const {
-        animate,
+        open,
+        close,
         onTapGestureHandler,
         onPanGestureHandler,
         scrollRef,
@@ -140,7 +141,12 @@ function SheetContent({
 
     React.useEffect(() => {
         if (!visible) {
-            animate(false);
+            close();
+            return undefined;
+        }
+
+        if (!hasOpenAnimation) {
+            open();
             return undefined;
         }
 
@@ -167,12 +173,12 @@ function SheetContent({
          * This should be removed once a bug in reanimated is resolved!
          */
         let recursionRafId: number | undefined;
-        (function animateWhenHeightIsSet() {
+        (function openWhenHeightIsSet() {
             if (height.value === 0) {
-                recursionRafId = requestAnimationFrame(animateWhenHeightIsSet);
+                recursionRafId = requestAnimationFrame(openWhenHeightIsSet);
                 return;
             }
-            requestAnimationFrame(() => animate(true));
+            requestAnimationFrame(open);
         })();
 
         return () => {
@@ -182,7 +188,7 @@ function SheetContent({
                 cancelAnimationFrame(recursionRafId);
             }
         };
-    }, [visible, animate, height]);
+    }, [visible, open, close, height, hasOpenAnimation]);
 
     useBackHandler(() => {
         if (onClose) {
