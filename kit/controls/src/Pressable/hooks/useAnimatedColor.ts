@@ -58,8 +58,15 @@ export function useAnimatedColor(color: string, withSpringConfig: WithSpringConf
                 },
             );
         },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [color],
+        [
+            animatedColor,
+            animationValue,
+            color,
+            previousColor,
+            targetColor,
+            targetValue,
+            withSpringConfig,
+        ],
     );
 
     return animatedColor;
