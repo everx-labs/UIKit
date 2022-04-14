@@ -6,6 +6,8 @@ import { PressableStateContext, PressableStateVariant } from './constants';
 import type { PressableProps } from './types';
 import { usePressed, usePressableState } from './hooks';
 
+const PressablePlatformAnimated = Animated.createAnimatedComponent(PressablePlatform);
+
 /**
  * It is necessary to simplify the creation of new buttons.
  * It provides a context from which to get the current state of the component.
@@ -32,23 +34,20 @@ export function Pressable({
 
     return (
         <PressableStateContext.Provider value={pressableState}>
-            <PressablePlatform
+            <PressablePlatformAnimated
                 onPress={onPress}
                 onLongPress={onLongPress}
                 testID={testID}
                 disabled={disabled || loading}
                 onPressIn={onPressIn}
                 onPressOut={onPressOut}
+                style={style}
+                // @ts-expect-error
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
             >
-                <Animated.View
-                    style={style}
-                    // @ts-expect-error
-                    onMouseEnter={onMouseEnter}
-                    onMouseLeave={onMouseLeave}
-                >
-                    {children}
-                </Animated.View>
-            </PressablePlatform>
+                {children}
+            </PressablePlatformAnimated>
         </PressableStateContext.Provider>
     );
 }
