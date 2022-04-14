@@ -1,4 +1,5 @@
 import type { ImageSourcePropType } from 'react-native';
+import type { UILayout } from '../types';
 import type { UIWideBoxButtonType } from './constants';
 
 export type UIWideBoxButtonProps = {
@@ -32,7 +33,7 @@ export type UIWideBoxButtonProps = {
     /**
      * Allows to set top, right, bottom and left margins to the button container
      */
-    layout?: UIWideBoxButtonLayout;
+    layout?: UILayout;
     /**
      * Whether to display a loading indicator instead of button content or not
      */
@@ -41,11 +42,4 @@ export type UIWideBoxButtonProps = {
      * ID for usage in tests
      */
     testID?: string;
-};
-
-export type UIWideBoxButtonLayout = {
-    marginTop?: number;
-    marginRight?: number;
-    marginBottom?: number;
-    marginLeft?: number;
 };
