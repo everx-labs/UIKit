@@ -3,10 +3,10 @@ import { ColorValue, ImageSourcePropType, StyleProp, StyleSheet, ViewStyle } fro
 import { interpolateColor, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
 import { ColorVariants, useTheme, UILabelRoles } from '@tonlabs/uikit.themes';
-import { Button, UILayout } from './Button';
+import { Button } from './Button';
 import type { ButtonAnimations } from './Button/types';
-
 import { UIConstant } from './constants';
+import type { UILayout } from './types';
 
 // eslint-disable-next-line no-shadow
 export enum UIMsgButtonType {
