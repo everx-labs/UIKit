@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIScaleButton } from '@tonlabs/uikit.components';
 import {
     UIActionButton,
     UIActionButtonType,
@@ -680,19 +679,6 @@ export function ButtonsScreen() {
                         title="Action"
                         onPress={() => console.log('Pressed UIBoxButton')}
                     />
-                </View>
-            </ExampleSection>
-
-            <ExampleSection title="UIScaleButton">
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                    <UIScaleButton testID="uiScaleButton_default">
-                        <Text>Scale example</Text>
-                    </UIScaleButton>
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                    <UIScaleButton testID="uiScaleButton_factor_2" scaleInFactor={2}>
-                        <Text>Scale example factor 2</Text>
-                    </UIScaleButton>
                 </View>
             </ExampleSection>
         </ExampleScreen>
