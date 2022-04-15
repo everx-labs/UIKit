@@ -2,7 +2,6 @@
 // @flow
 
 import { Text, TextInput } from 'react-native';
-import type { TextStyleProp, ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import BigNumber from 'bignumber.js';
 
 import type { BigNum } from '../types/BigNum';
@@ -177,14 +176,6 @@ export default class UIFunction {
             decimalString.match(/.{1,3}/g)?.join(localeInfo.numbers.decimalGrouping) || '';
         result.valueString = `${integerString}${separatorString}${decFormatted}`;
         // Return result
-        return result;
-    }
-
-    static combineStyles(stylesArray: (ViewStyleProp | TextStyleProp)[]) {
-        let result = [];
-        stylesArray.forEach(item => {
-            result = Array.isArray(item) ? [...result, ...item] : [...result, item];
-        });
         return result;
     }
 

@@ -45,7 +45,6 @@
         "@tonlabs/uicast.stack-navigator": "*",
         "@tonlabs/uicast.texts": "*",
         "@tonlabs/uikit.assets": "*",
-        "@tonlabs/uikit.components": "*",
         "@tonlabs/uikit.controls": "*",
         "@tonlabs/uikit.core": "*",
         "@tonlabs/uikit.inputs": "*",
