@@ -61,7 +61,7 @@
         "react-native-builder-bob": "^0.18.2",
         "react-native-reanimated": "2.5.0",
         "react-native-safe-area-context": "^3.3.2",
-        "react-native-svg": "^12.1.1",
+        "react-native-svg": "^12.3.0",
         "react-native-video": "git+https://github.com/tonlabs/react-native-video.git",
         "react-player": "^2.9.0",
         "typescript": "4.4.3"
@@ -74,7 +74,7 @@
         "react-native-gesture-handler": "^1.10.3",
         "react-native-reanimated": "^2.5.0",
         "react-native-safe-area-context": "^3.3.2",
-        "react-native-svg": "^12.1.1",
+        "react-native-svg": "^12.3.0",
         "react-native-video": "git+https://github.com/tonlabs/react-native-video.git",
         "react-player": "^2.9.0"
     },

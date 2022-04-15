@@ -55,7 +55,7 @@
         "react-native-qrcode-scanner": "git+https://github.com/tonlabs/react-native-qrcode-scanner.git",
         "react-native-reanimated": "2.5.0",
         "react-native-redash": "^16.0.11",
-        "react-native-svg": "^12.1.1",
+        "react-native-svg": "^12.3.0",
         "typescript": "4.4.3"
     },
     "peerDependencies": {
@@ -67,7 +67,7 @@
         "react-native-qrcode-scanner": "^1.5.4",
         "react-native-reanimated": "^2.5.0",
         "react-native-redash": "^16.0.11",
-        "react-native-svg": "^12.1.1"
+        "react-native-svg": "^12.3.0"
     },
     "react-native-builder-bob": {
         "source": "src",
