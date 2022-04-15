@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
-import { UIScaleButton } from '@tonlabs/uikit.components';
+import { UIPressableArea } from '@tonlabs/uikit.controls';
 import {
     UILabel,
     UILabelColors,
@@ -188,31 +188,28 @@ export function BubbleTransaction(props: TransactionMessage) {
 
     return (
         <View style={containerStyle} onLayout={props.onLayout}>
-            <UIScaleButton
-                onPress={props.onPress}
-                content={
-                    <View style={getBubbleInner(position)}>
-                        <BubbleTransactionMain {...props} />
-                        {actionString && (
-                            <UILabel
-                                style={styles.actionString}
-                                role={UILabelRoles.ActionFootnote}
-                                color={getActionStringColor(props)}
-                            >
-                                {actionString}
-                            </UILabel>
-                        )}
-                        {props.comment && (
-                            <BubbleTransactionComment
-                                {...props.comment}
-                                status={props.status}
-                                type={props.info.type}
-                                onPress={props.onPress}
-                            />
-                        )}
-                    </View>
-                }
-            />
+            <UIPressableArea onPress={props.onPress}>
+                <View style={getBubbleInner(position)}>
+                    <BubbleTransactionMain {...props} />
+                    {actionString && (
+                        <UILabel
+                            style={styles.actionString}
+                            role={UILabelRoles.ActionFootnote}
+                            color={getActionStringColor(props)}
+                        >
+                            {actionString}
+                        </UILabel>
+                    )}
+                    {props.comment && (
+                        <BubbleTransactionComment
+                            {...props.comment}
+                            status={props.status}
+                            type={props.info.type}
+                            onPress={props.onPress}
+                        />
+                    )}
+                </View>
+            </UIPressableArea>
         </View>
     );
 }
