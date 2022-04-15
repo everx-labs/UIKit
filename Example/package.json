@@ -66,7 +66,7 @@
         "qrcode": "1.4.4",
         "react": "17.0.2",
         "react-dom": "17.0.2",
-        "react-native": "0.67.3",
+        "react-native": "0.67.4",
         "react-native-animateable-text": "0.9.1",
         "react-native-blob-util": "^0.13.18",
         "react-native-camera": "3.44.3",

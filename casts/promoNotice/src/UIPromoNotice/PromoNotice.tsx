@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Animated, ImageProps, StyleSheet, View, useWindowDimensions } from 'react-native';
+import { Animated, StyleSheet, View, useWindowDimensions } from 'react-native';
+import type { ImageSourcePropType } from 'react-native';
 import { TapGestureHandler } from 'react-native-gesture-handler';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
@@ -17,7 +18,7 @@ type OnClose = () => void | Promise<void>;
 
 export type UINoticeCommonProps = {
     visible: boolean;
-    icon: ImageProps;
+    icon: ImageSourcePropType;
     children: React.ReactNode;
     onClose?: OnClose;
     testID?: string;

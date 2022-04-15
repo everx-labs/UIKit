@@ -83,13 +83,7 @@ export function TimeInputWarning({ isValidTime = true }: { isValidTime: boolean 
     return (
         <View style={styles.container}>
             <View style={styles.image}>
-                <UIImage
-                    height={iconSize.height}
-                    width={iconSize.width}
-                    source={image}
-                    tintColor={color}
-                    resizeMode="contain"
-                />
+                <UIImage source={image} tintColor={color} resizeMode="contain" />
             </View>
             <UILabel style={styles.label} role={TypographyVariants.ParagraphNote} color={color}>
                 {warningLabel}

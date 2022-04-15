@@ -84,6 +84,7 @@ export const UIBrowserFlatList = React.memo(
                     automaticallyAdjustContentInsets={automaticallyAdjustContentInsets}
                     // @ts-ignore
                     automaticallyAdjustKeyboardInsets={automaticallyAdjustKeyboardInsets}
+                    // @ts-ignore
                     keyboardInsetAdjustmentBehavior="inclusive"
                     contentInset={contentInset}
                     onInsetsChange={onInsetsChange}

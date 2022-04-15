@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { ImageProps, Linking, Platform, StyleSheet, View } from 'react-native';
+import { Linking, Platform, StyleSheet, View } from 'react-native';
+import type { ImageSourcePropType } from 'react-native';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIDevice } from '@tonlabs/uikit.core';
@@ -11,7 +12,7 @@ import { PromoNotice } from './PromoNotice';
 type UIPromoNoticeProps = {
     appStoreUrl: string;
     googlePlayUrl: string;
-    icon?: ImageProps;
+    icon?: ImageSourcePropType;
     folding?: boolean;
     testID?: string;
 };
