@@ -47,14 +47,14 @@
         "react-native": "0.67.3",
         "react-native-builder-bob": "^0.18.2",
         "react-native-device-info": "^8.4.8",
-        "react-native-svg": "^12.1.1"
+        "react-native-svg": "^12.3.0"
     },
     "peerDependencies": {
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-native": "^0.67.3",
         "react-native-device-info": "^8.4.8",
-        "react-native-svg": "^12.1.1"
+        "react-native-svg": "^12.3.0"
     },
     "react-native-builder-bob": {
         "source": "src",
