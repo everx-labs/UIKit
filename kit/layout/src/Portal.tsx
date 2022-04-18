@@ -187,10 +187,21 @@ export class PortalManager extends React.PureComponent<PortalManagerProps, Porta
 
     manager: PortalMethods;
 
+    atomicState: Record<number, PortalItem | null>;
+
     constructor(props: PortalManagerProps) {
         super(props);
 
         this.state = {};
+        /**
+         * Atomic state is needed to update state synchronously
+         * since `setState` is asynchronous there could be a situation
+         * when few portals can be mounted at the same time,
+         * hence they try to obtain a key and it can happen
+         * when state isn't updated yet, that leads to the equal keys
+         * (after `getMaxMountedKey` was called)
+         */
+        this.atomicState = {};
         this.manager = {
             mount: this.mount,
             update: this.update,
@@ -199,7 +210,7 @@ export class PortalManager extends React.PureComponent<PortalManagerProps, Porta
     }
 
     getMaxMountedKey() {
-        const portals = this.state;
+        const portals = this.atomicState;
         return (
             Object.keys(portals)
                 .map(portalKey => Number(portalKey))
@@ -227,13 +238,14 @@ export class PortalManager extends React.PureComponent<PortalManagerProps, Porta
             return this.parentManager.mount(children, forId, absoluteFill);
         }
         const key = this.getKey();
-        this.setState(state => ({
-            ...state,
+        this.atomicState = {
+            ...this.atomicState,
             [key]: {
                 children,
                 absoluteFill,
             },
-        }));
+        };
+        this.setState(this.atomicState);
         return key;
     };
 
@@ -243,15 +255,14 @@ export class PortalManager extends React.PureComponent<PortalManagerProps, Porta
             this.parentManager.update(key, children, forId, absoluteFill);
             return;
         }
-        this.setState(state => {
-            return {
-                ...state,
-                [key]: {
-                    children,
-                    absoluteFill,
-                },
-            };
-        });
+        this.atomicState = {
+            ...this.atomicState,
+            [key]: {
+                children,
+                absoluteFill,
+            },
+        };
+        this.setState(this.atomicState);
     };
 
     unmount = (key: number, forId?: string) => {
@@ -260,10 +271,11 @@ export class PortalManager extends React.PureComponent<PortalManagerProps, Porta
             this.parentManager.unmount(key, forId);
             return;
         }
-        this.setState(state => ({
-            ...state,
+        this.atomicState = {
+            ...this.atomicState,
             [key]: null,
-        }));
+        };
+        this.setState(this.atomicState);
     };
 
     setParentManager = (parentManager: PortalMethods) => {
