@@ -13,8 +13,6 @@ import {
     TimeMessage,
     DateTimeMessage,
     CountryMessage,
-} from '@tonlabs/uistory.browser';
-import type {
     AddressInputMessage,
     ConfirmMessage,
     MenuMessage,
@@ -22,6 +20,7 @@ import type {
     AmountInputMessage,
     SigningBoxMessage,
     TransactionConfirmationMessage,
+    TransactionDetailsMessage,
 } from '@tonlabs/uistory.browser';
 import { UIPopup, UICardSheet, UIFullscreenSheet } from '@tonlabs/uikit.popups';
 import { uiLocalized } from '@tonlabs/localization';
@@ -92,6 +91,29 @@ function BrowserAddMenu({
 
     return (
         <ScrollView>
+            <UIBoxButton
+                title="Add TransactionDetails"
+                layout={{
+                    marginBottom: 10,
+                }}
+                onPress={() => {
+                    const message: TransactionDetailsMessage = {
+                        key: `${Date.now()}-transaction-details`,
+                        status: MessageStatus.Received,
+                        type: InteractiveMessageType.TransactionDetails,
+                        title: 'Confirm to proceed',
+                        signature: 'Surfer',
+                        action: 'ReturnDeposit',
+                        recipient:
+                            '0:6225d213f08faa016a6bef5891d76ab3c430ee3a127d10de459b3b3a844f4',
+                        amount: '0.50 SURF',
+                        contractFee: 'up to 5.00 EVER',
+                        networkFee: '≈0.12 EVER',
+                    };
+                    addMessage(message);
+                    setMenuVisible(false);
+                }}
+            />
             <UIBoxButton
                 title="Add Media image"
                 layout={{

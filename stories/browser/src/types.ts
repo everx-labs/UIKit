@@ -43,6 +43,7 @@ export enum InteractiveMessageType {
     Time = 'Time',
     DateTime = 'DateTime',
     Country = 'Country',
+    TransactionDetails = 'TransactionDetails',
 }
 
 type PlainTextMessage = BubbleBaseT & {
@@ -360,6 +361,19 @@ export type QRCodeDrawMessage = InteractiveMessage<
     }
 >;
 
+export type TransactionDetailsMessage = InteractiveMessage<
+    InteractiveMessageType.TransactionDetails,
+    {
+        title?: string;
+        signature?: string;
+        action?: string;
+        recipient?: string;
+        amount?: string;
+        contractFee?: string;
+        networkFee?: string;
+    }
+>;
+
 export type BrowserMessage =
     | PlainTextMessage
     | ActionButtonMessage
@@ -377,7 +391,8 @@ export type BrowserMessage =
     | DateMessage
     | TimeMessage
     | DateTimeMessage
-    | CountryMessage;
+    | CountryMessage
+    | TransactionDetailsMessage;
 
 type WithExternalStateHelper<A> = A extends { externalState?: any } ? A : never;
 

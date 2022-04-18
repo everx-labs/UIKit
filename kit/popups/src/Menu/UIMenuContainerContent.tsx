@@ -45,6 +45,8 @@ function useMenuLocation(
 
         const boundaries = getBoundaries(windowDimensions, menuSize);
 
+        console.log({ boundaries });
+
         let top: number | undefined = triggerDimensions.y + triggerDimensions.height;
         let bottom: number | undefined;
         const left: number = Math.max(

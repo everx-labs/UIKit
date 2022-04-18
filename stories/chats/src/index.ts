@@ -5,6 +5,7 @@ export * from './UIChatInput/ChatInputContainer';
 export * from './UIChatInput/useChatInputValue';
 export * from './BubbleQRCode';
 export * from './BubbleMedia';
+export * from './Bubble';
 export { sectionListGetItemLayout } from './UIChatListLayout';
 export * from './useAutoHandleInsets';
 
