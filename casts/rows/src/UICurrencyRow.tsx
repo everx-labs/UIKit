@@ -63,7 +63,10 @@ export const UICurrencyRow = React.memo(function UICurrencyRow({
             <UISkeleton show={loading} style={styles.iconWrapper}>
                 <UIImage source={icon} style={styles.icon} />
             </UISkeleton>
-            <UISkeleton show={loading} style={styles.inner}>
+            <UISkeleton
+                show={loading}
+                style={[styles.inner, loading ? styles.innerSkeleton : null]}
+            >
                 <View style={styles.desc}>
                     <UILabel
                         testID={nameTestID}
@@ -109,6 +112,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+    },
+    innerSkeleton: {
         borderRadius: UIConstant.uiLink.row.borderRadius,
     },
     iconWrapper: {
