@@ -61,6 +61,7 @@
             "ContractFee": "Contract fee",
             "More": "더...",
             "NetworkFee": "Network fee",
+            "UpTo": "up to",
             "Signature": "서명",
             "Attention": "주의 사항",
             "AttentionDesc": "이 트랜잭션은 계약을 변경하려고 하며 수행되지 않습니다",

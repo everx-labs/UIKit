@@ -25,7 +25,6 @@ import { UIPopup, UICardSheet, UIFullscreenSheet } from '@tonlabs/uikit.popups';
 import { uiLocalized } from '@tonlabs/localization';
 import { ChatMessageType, MessageStatus } from '@tonlabs/uistory.chats';
 import { UIBoxButton } from '@tonlabs/uikit.controls';
-import { UICurrency } from '@tonlabs/uicast.numbers';
 import { UILabel, ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
 
@@ -398,17 +397,12 @@ function BrowserAddMenu({
                             // nothing
                         },
                         action: 'ReturnDeposit',
-                        amount: <UICurrency signChar="SURF">{new BigNumber(0.5)}</UICurrency>,
-                        contractFee: (
-                            <UILabel>
-                                up to <UICurrency signChar="EVER">{new BigNumber(5)}</UICurrency>
-                            </UILabel>
-                        ),
-                        networkFee: (
-                            <UILabel>
-                                ≈<UICurrency signChar="EVER">{new BigNumber(0.12)}</UICurrency>
-                            </UILabel>
-                        ),
+                        amount: new BigNumber(0.5),
+                        amountCurrency: 'SURF',
+                        contractFee: new BigNumber(5),
+                        contractFeeCurrency: 'EVER',
+                        networkFee: new BigNumber(0.12),
+                        networkFeeCurrency: 'EVER',
                         signature: {
                             id: 1,
                             title: 'My Surf',

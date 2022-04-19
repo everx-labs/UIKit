@@ -299,12 +299,15 @@ export type TransactionConfirmationExternalState = {
 export type TransactionConfirmationMessage = InteractiveMessage<
     InteractiveMessageType.TransactionConfirmation,
     {
-        recipient?: string | React.ReactElement<any, any>;
+        recipient?: string;
         onRecipientPress?: () => void | Promise<void>;
-        amount: string | React.ReactElement<any, any>;
-        action?: string | React.ReactElement<any, any>;
-        contractFee: string | React.ReactElement<any, any>;
-        networkFee: string | React.ReactElement<any, any>;
+        amount: BigNumber;
+        amountCurrency: string;
+        action?: string;
+        contractFee: BigNumber;
+        contractFeeCurrency: string;
+        networkFee: BigNumber;
+        networkFeeCurrency: string;
         signature: SigningBox;
         onApprove: (externalState: TransactionConfirmationExternalState) => void | Promise<void>;
         onCancel: (externalState: TransactionConfirmationExternalState) => void | Promise<void>;
@@ -314,12 +317,15 @@ export type TransactionConfirmationMessage = InteractiveMessage<
 >;
 
 export type TransactionDetailsProps = BubbleBaseT & {
-    signature?: string | React.ReactElement<any, any>;
-    action?: string | React.ReactElement<any, any>;
-    recipient?: string | React.ReactElement<any, any>;
-    amount?: string | React.ReactElement<any, any>;
-    contractFee?: string | React.ReactElement<any, any>;
-    networkFee?: string | React.ReactElement<any, any>;
+    signature?: string;
+    action?: string;
+    recipient?: string;
+    amount?: BigNumber;
+    amountCurrency: string;
+    contractFee?: BigNumber;
+    contractFeeCurrency: string;
+    networkFee?: BigNumber;
+    networkFeeCurrency: string;
     isDangerous?: boolean;
     onRecipientPress?: () => void | Promise<void>;
 };

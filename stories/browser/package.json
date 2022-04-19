@@ -38,6 +38,7 @@
         "@tonlabs/uicast.country-picker": "^3.1.0",
         "@tonlabs/uicast.date-time-picker": "^3.1.0",
         "@tonlabs/uicast.keyboard": "^3.1.0",
+        "@tonlabs/uicast.numbers": "^3.1.0",
         "@tonlabs/uicast.qr-code-scanner-sheet": "^3.1.0",
         "@tonlabs/uikit.assets": "^3.0.1",
         "@tonlabs/uikit.controls": "^3.1.0",

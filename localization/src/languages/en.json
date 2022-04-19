@@ -61,6 +61,7 @@
             "ContractFee": "Contract fee",
             "More": "More...",
             "NetworkFee": "Network fee",
+            "UpTo": "up to",
             "Signature": "Signature",
             "Attention": "Attention",
             "AttentionDesc": "This transaction is trying to change the contract and will not be performed",

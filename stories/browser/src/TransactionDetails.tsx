@@ -4,17 +4,19 @@ import { Bubble } from '@tonlabs/uistory.chats';
 import { UIPressableArea } from '@tonlabs/uikit.controls';
 import { TypographyVariants, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { UICurrency } from '@tonlabs/uicast.numbers';
 import { uiLocalized } from '@tonlabs/localization';
+import type BigNumber from 'bignumber.js';
 import type { TransactionDetailsProps } from './types';
 import { UIConstant } from './constants';
 
-function Parameter({
+function TextParameter({
     label,
     value,
     onPress,
 }: {
     label: string;
-    value?: string | React.ReactElement<any, any>;
+    value?: string;
     onPress?: () => void | Promise<void>;
 }) {
     if (!value) {
@@ -32,42 +34,100 @@ function Parameter({
     );
 }
 
+function NumberParameter({
+    label,
+    value,
+    prefix,
+    signChar,
+    onPress,
+}: {
+    label: string;
+    value?: BigNumber;
+    prefix?: string;
+    signChar?: string;
+    onPress?: () => void | Promise<void>;
+}) {
+    if (!value) {
+        return null;
+    }
+    return (
+        <View style={styles.parameter}>
+            <UILabel role={TypographyVariants.ParagraphLabel} color={UILabelColors.TextSecondary}>
+                {label}
+            </UILabel>
+            <UIPressableArea onPress={onPress} disabled={!onPress} style={styles.parameterValue}>
+                <UILabel role={TypographyVariants.ParagraphText}>
+                    {prefix}
+                    <UICurrency signChar={signChar}>{value}</UICurrency>
+                </UILabel>
+            </UIPressableArea>
+        </View>
+    );
+}
+
 function ExpandedContent(props: TransactionDetailsProps) {
-    const { signature, action, recipient, amount, contractFee, networkFee, onRecipientPress } =
-        props;
+    const {
+        signature,
+        action,
+        recipient,
+        amount,
+        amountCurrency,
+        contractFee,
+        contractFeeCurrency,
+        networkFee,
+        networkFeeCurrency,
+        onRecipientPress,
+    } = props;
     return (
         <>
-            <Parameter
+            <TextParameter
                 label={uiLocalized.Browser.TransactionConfirmation.Signature}
                 value={signature}
             />
-            <Parameter label={uiLocalized.Browser.TransactionConfirmation.Action} value={action} />
-            <Parameter
+            <TextParameter
+                label={uiLocalized.Browser.TransactionConfirmation.Action}
+                value={action}
+            />
+            <TextParameter
                 label={uiLocalized.Browser.TransactionConfirmation.Recipient}
                 value={recipient}
                 onPress={onRecipientPress}
             />
-            <Parameter label={uiLocalized.Browser.TransactionConfirmation.Amount} value={amount} />
-            <Parameter
+            <NumberParameter
+                label={uiLocalized.Browser.TransactionConfirmation.Amount}
+                value={amount}
+                signChar={amountCurrency}
+            />
+            <NumberParameter
                 label={uiLocalized.Browser.TransactionConfirmation.ContractFee}
                 value={contractFee}
+                signChar={contractFeeCurrency}
+                prefix={`${uiLocalized.Browser.TransactionConfirmation.UpTo} `}
             />
-            <Parameter
+            <NumberParameter
                 label={uiLocalized.Browser.TransactionConfirmation.NetworkFee}
                 value={networkFee}
+                signChar={networkFeeCurrency}
+                prefix="≈"
             />
         </>
     );
 }
 
 function FoldedContent(props: TransactionDetailsProps) {
-    const { amount, contractFee } = props;
+    const { amount, amountCurrency, contractFee, contractFeeCurrency } = props;
     return (
         <>
-            <Parameter label={uiLocalized.Browser.TransactionConfirmation.Amount} value={amount} />
-            <Parameter
+            <NumberParameter
+                label={uiLocalized.Browser.TransactionConfirmation.Amount}
+                value={amount}
+                signChar={amountCurrency}
+            />
+            <NumberParameter
                 label={uiLocalized.Browser.TransactionConfirmation.ContractFee}
                 value={contractFee}
+                signChar={contractFeeCurrency}
+                prefix={`${uiLocalized.Browser.TransactionConfirmation.UpTo} `}
             />
         </>
     );
@@ -113,13 +173,16 @@ const styles = StyleSheet.create({
     bubble: {
         alignSelf: 'stretch',
         maxWidth: UIConstant.transactionDetails.maxWidth,
+        paddingHorizontal: 0,
     },
     title: {
         paddingTop: UILayoutConstant.contentInsetVerticalX2,
         paddingBottom: UILayoutConstant.contentInsetVerticalX4,
+        paddingHorizontal: UILayoutConstant.normalContentOffset,
     },
     parametersContainer: {
         overflow: 'hidden',
+        paddingHorizontal: UILayoutConstant.normalContentOffset,
     },
     parameter: {
         paddingTop: UILayoutConstant.contentInsetVerticalX2,
@@ -129,9 +192,11 @@ const styles = StyleSheet.create({
     },
     moreButton: {
         paddingVertical: UILayoutConstant.contentInsetVerticalX2,
+        paddingHorizontal: UILayoutConstant.normalContentOffset,
         alignItems: 'center',
     },
     cardRow: {
         paddingVertical: UILayoutConstant.contentInsetVerticalX3,
+        paddingHorizontal: UILayoutConstant.normalContentOffset,
     },
 });

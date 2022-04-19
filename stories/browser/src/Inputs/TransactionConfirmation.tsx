@@ -22,8 +22,11 @@ export function TransactionConfirmation({
     onRecipientPress,
     action,
     amount,
+    amountCurrency,
     contractFee,
+    contractFeeCurrency,
     networkFee,
+    networkFeeCurrency,
     signature,
     isDangerous,
     onApprove: onApproveProp,
@@ -53,8 +56,11 @@ export function TransactionConfirmation({
                 action={action}
                 recipient={recipient}
                 amount={amount}
+                amountCurrency={amountCurrency}
                 contractFee={contractFee}
+                contractFeeCurrency={contractFeeCurrency}
                 networkFee={networkFee}
+                networkFeeCurrency={networkFeeCurrency}
                 isDangerous={isDangerous}
                 onRecipientPress={onRecipientPress}
                 firstFromChain={firstFromChain}
