@@ -109,7 +109,9 @@ export function TransactionDetails(props: TransactionDetailsProps) {
             </View>
             {expanded ? null : (
                 <UIPressableArea onPress={onPress} style={styles.moreButton}>
-                    <UILabel role={TypographyVariants.MonoText}>more...</UILabel>
+                    <UILabel role={TypographyVariants.MonoText}>
+                        {uiLocalized.Browser.TransactionConfirmation.More}
+                    </UILabel>
                 </UIPressableArea>
             )}
             {isDangerous && (

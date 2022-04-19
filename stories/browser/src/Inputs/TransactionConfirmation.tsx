@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { UIMsgButton, UIMsgButtonType } from '@tonlabs/uikit.controls';
 import {
@@ -35,7 +35,6 @@ export function TransactionConfirmation({
     key,
 }: TransactionConfirmationMessage) {
     const theme = useTheme();
-    // const shadow = useShadow(1);
 
     const onApprove = React.useCallback(() => {
         onApproveProp({
@@ -113,28 +112,6 @@ export function TransactionConfirmation({
 }
 
 const styles = StyleSheet.create({
-    container: {
-        ...Platform.select({
-            web: {
-                maxWidth: '100%',
-            },
-            default: {
-                width: '100%',
-            },
-        }),
-        paddingRight: '20%',
-        alignSelf: 'flex-start',
-        paddingTop: UIConstant.smallContentOffset(),
-    },
-    card: {
-        paddingHorizontal: 12,
-        paddingTop: 24,
-        paddingBottom: 8,
-        borderRadius: 12,
-    },
-    cardRow: {
-        paddingVertical: 12,
-    },
     buttonsContainer: {
         maxWidth: '100%',
         alignSelf: 'flex-start',
@@ -162,8 +139,5 @@ const styles = StyleSheet.create({
     },
     response: {
         borderBottomRightRadius: 0,
-    },
-    address: {
-        flexDirection: 'row',
     },
 });
