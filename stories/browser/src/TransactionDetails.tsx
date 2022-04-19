@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { LayoutAnimation, StyleSheet, View } from 'react-native';
 import { Bubble } from '@tonlabs/uistory.chats';
-import { UIBoxButton, UIPressableArea } from '@tonlabs/uikit.controls';
+import { UIPressableArea } from '@tonlabs/uikit.controls';
 import { TypographyVariants, UILabel, UILabelColors } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { TransactionDetailsMessage } from './types';
+import { UIConstant } from './constants';
 
 function Parameter({ label, text }: { label: string; text?: string }) {
     if (!text) {
@@ -51,7 +52,7 @@ export function TransactionDetails(props: TransactionDetailsMessage) {
         setExpanded(prev => !prev);
     }, []);
     return (
-        <Bubble {...props} flexible={false}>
+        <Bubble {...props} style={styles.bubble}>
             <UILabel role={TypographyVariants.TitleSmall} style={styles.title}>
                 {title}
             </UILabel>
@@ -59,24 +60,19 @@ export function TransactionDetails(props: TransactionDetailsMessage) {
                 {expanded ? <ExpandedContent {...props} /> : <FoldedContent {...props} />}
             </View>
             {expanded ? null : (
-                <UIBoxButton title="more..." onPress={onPress} />
-                // <UIPressableArea
-                //     onPress={onPress}
-                //     scaleParameters={{
-                //         hovered: 1,
-                //         pressed: 1,
-                //     }}
-                // >
-                //     <UILabel role={TypographyVariants.MonoText} style={styles.moreButton}>
-                //         more...
-                //     </UILabel>
-                // </UIPressableArea>
+                <UIPressableArea onPress={onPress} style={styles.moreButton}>
+                    <UILabel role={TypographyVariants.MonoText}>more...</UILabel>
+                </UIPressableArea>
             )}
         </Bubble>
     );
 }
 
 const styles = StyleSheet.create({
+    bubble: {
+        alignSelf: 'stretch',
+        maxWidth: UIConstant.transactionDetails.maxWidth,
+    },
     title: {
         paddingTop: UILayoutConstant.contentInsetVerticalX2,
         paddingBottom: UILayoutConstant.contentInsetVerticalX4,
@@ -89,6 +85,6 @@ const styles = StyleSheet.create({
     },
     moreButton: {
         paddingVertical: UILayoutConstant.contentInsetVerticalX2,
-        alignSelf: 'stretch',
+        alignItems: 'center',
     },
 });
