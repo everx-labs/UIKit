@@ -54,7 +54,7 @@
             "UseSecurityCard": "보안 카드 사용"
         },
         "TransactionConfirmation": {
-            "Title": "Confirm to proceed",
+            "Title": "계속하려면 확인",
             "Recipient": "Recipient",
             "Amount": "Amount",
             "Action": "Action",
