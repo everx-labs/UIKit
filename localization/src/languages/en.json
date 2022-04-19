@@ -54,7 +54,7 @@
             "UseKey": "Use key"
         },
         "TransactionConfirmation": {
-            "Title": "Transaction confirmation",
+            "Title": "Confirm to proceed",
             "Recipient": "Recipient",
             "Amount": "Amount",
             "Action": "Action",

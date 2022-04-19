@@ -54,7 +54,7 @@
             "Cancel": "Отмена"
         },
         "TransactionConfirmation": {
-            "Title": "Подтверждение транзакции",
+            "Title": "Подтвердите, чтобы продолжить",
             "Recipient": "Получатель",
             "Amount": "Сумма",
             "Action": "Действие",
