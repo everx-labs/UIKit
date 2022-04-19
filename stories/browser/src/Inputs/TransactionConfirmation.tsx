@@ -32,7 +32,6 @@ export function TransactionConfirmation({
     firstFromChain,
     lastFromChain,
     status,
-    key,
 }: TransactionConfirmationMessage) {
     const theme = useTheme();
 
@@ -61,7 +60,7 @@ export function TransactionConfirmation({
                 firstFromChain={firstFromChain}
                 lastFromChain={lastFromChain}
                 status={status}
-                key={key}
+                key="TransactionConfirmation-details"
             />
             {externalState?.status == null ? (
                 <View style={styles.buttonsContainer}>
