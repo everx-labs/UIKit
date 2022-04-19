@@ -2,16 +2,8 @@ import * as React from 'react';
 import { LayoutAnimation, StyleSheet, View } from 'react-native';
 import { Bubble } from '@tonlabs/uistory.chats';
 import { UIPressableArea } from '@tonlabs/uikit.controls';
-import {
-    ColorVariants,
-    TypographyVariants,
-    UILabel,
-    UILabelColors,
-    UILabelRoles,
-} from '@tonlabs/uikit.themes';
-import { UIImage } from '@tonlabs/uikit.media';
+import { TypographyVariants, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import { UIAssets } from '@tonlabs/uikit.assets';
 import { uiLocalized } from '@tonlabs/localization';
 import type { TransactionDetailsProps } from './types';
 import { UIConstant } from './constants';
@@ -20,12 +12,10 @@ function Parameter({
     label,
     value,
     onPress,
-    hasArrow,
 }: {
     label: string;
     value?: string | React.ReactElement<any, any>;
     onPress?: () => void | Promise<void>;
-    hasArrow?: boolean;
 }) {
     if (!value) {
         return null;
@@ -36,15 +26,7 @@ function Parameter({
                 {label}
             </UILabel>
             <UIPressableArea onPress={onPress} disabled={!onPress} style={styles.parameterValue}>
-                <UILabel role={TypographyVariants.ParagraphText}>
-                    {value}
-                    {hasArrow ? (
-                        <UIImage
-                            source={UIAssets.icons.ui.arrowUpRight}
-                            tintColor={ColorVariants.TextPrimary}
-                        />
-                    ) : null}
-                </UILabel>
+                <UILabel role={TypographyVariants.ParagraphText}>{value}</UILabel>
             </UIPressableArea>
         </View>
     );
@@ -64,7 +46,6 @@ function ExpandedContent(props: TransactionDetailsProps) {
                 label={uiLocalized.Browser.TransactionConfirmation.Recipient}
                 value={recipient}
                 onPress={onRecipientPress}
-                hasArrow
             />
             <Parameter label={uiLocalized.Browser.TransactionConfirmation.Amount} value={amount} />
             <Parameter
