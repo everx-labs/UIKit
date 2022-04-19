@@ -56,7 +56,7 @@
         "TransactionConfirmation": {
             "Title": "계속하려면 확인",
             "Recipient": "받는 사람",
-            "Amount": "Amount",
+            "Amount": "액수",
             "Action": "Action",
             "ContractFee": "Contract fee",
             "More": "더...",
