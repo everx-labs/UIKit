@@ -2,9 +2,9 @@ import * as React from 'react';
 import { ImageStyle, StyleProp, View, ViewStyle } from 'react-native';
 
 import {
+    QRCodeRef,
     QRCodeSize,
     QRCodeType,
-    QRCodeRef,
     UIImage,
     UIQRCodeView,
     useQRCodeValueError,
@@ -87,6 +87,31 @@ const renderError = (
     );
 };
 
+export const QRCodeContainer: React.FC<{
+    onPress?: QRCodeMessage['onPress'];
+    style: StyleProp<ViewStyle>;
+    qrCodeRef: React.MutableRefObject<QRCodeRef>;
+}> = ({ qrCodeRef, children, style, onPress }) => {
+    if (onPress) {
+        const onQRCodePress = React.useCallback(async () => {
+            const base64 = await qrCodeRef.current?.getPng();
+            if (!base64) {
+                return;
+            }
+
+            onPress!(base64);
+        }, []);
+
+        return (
+            <UIPressableArea onPress={onQRCodePress}>
+                <View style={style}>{children}</View>
+            </UIPressableArea>
+        );
+    }
+
+    return <View style={style}>{children}</View>;
+};
+
 export const BubbleQRCode: React.FC<QRCodeMessage> = (message: QRCodeMessage) => {
     const { status, data, onError, onSuccess } = message;
     const theme = useTheme();
@@ -100,18 +125,6 @@ export const BubbleQRCode: React.FC<QRCodeMessage> = (message: QRCodeMessage) =>
     );
     const styles = useStyles(theme);
     const ref = React.useRef<QRCodeRef>(null);
-    const onPress = React.useCallback(async () => {
-        if (!message.onPress) {
-            return;
-        }
-        
-        const base64 = await ref.current?.getPng();
-        if (!base64) {
-            return;
-        }
-
-        message.onPress(base64);
-    }, []);
 
     const error = useQRCodeValueError(data, onError, onSuccess);
 
@@ -135,18 +148,16 @@ export const BubbleQRCode: React.FC<QRCodeMessage> = (message: QRCodeMessage) =>
                     roundedCornerStyle,
                 ]}
             >
-                <UIPressableArea onPress={onPress}>
-                    <View style={styles.qrCode}>
-                        <UIQRCodeView
-                            ref={ref}
-                            size={QRCodeSize.Medium}
-                            testID={`chat_qr_code_${data}`}
-                            type={QRCodeType.Square}
-                            logo={UIAssets.icons.brand.tonSymbolBlack}
-                            value={data}
-                        />
-                    </View>
-                </UIPressableArea>
+                <QRCodeContainer qrCodeRef={ref} style={styles.qrCode} onPress={message.onPress}>
+                    <UIQRCodeView
+                        ref={ref}
+                        size={QRCodeSize.Medium}
+                        testID={`chat_qr_code_${data}`}
+                        type={QRCodeType.Square}
+                        logo={UIAssets.icons.brand.tonSymbolBlack}
+                        value={data}
+                    />
+                </QRCodeContainer>
             </View>
         </View>
     );
