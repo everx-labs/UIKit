@@ -89,12 +89,16 @@ const renderError = (
 
 export const QRCodeContainer: React.FC<{
     onPress?: QRCodeMessage['onPress'];
+    qrCodeRef: React.MutableRefObject<QRCodeRef | null>;
     style: StyleProp<ViewStyle>;
-    qrCodeRef: React.MutableRefObject<QRCodeRef>;
 }> = ({ qrCodeRef, children, style, onPress }) => {
     if (onPress) {
         const onQRCodePress = React.useCallback(async () => {
-            const base64 = await qrCodeRef.current?.getPng();
+            if (!qrCodeRef?.current) {
+                return;
+            }
+            
+            const base64 = await qrCodeRef.current.getPng();
             if (!base64) {
                 return;
             }
@@ -124,7 +128,7 @@ export const BubbleQRCode: React.FC<QRCodeMessage> = (message: QRCodeMessage) =>
         UIConstant.mediumBorderRadius(),
     );
     const styles = useStyles(theme);
-    const ref = React.useRef<QRCodeRef>(null);
+    const ref = React.useRef<QRCodeRef | null>(null);
 
     const error = useQRCodeValueError(data, onError, onSuccess);
 
