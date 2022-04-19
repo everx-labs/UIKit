@@ -12,6 +12,7 @@ import {
 } from '@tonlabs/uikit.themes';
 import { UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
+import { UIAssets } from '@tonlabs/uikit.assets';
 import type { TransactionConfirmationMessage } from '../types';
 import { TransactionDetails } from '../TransactionDetails';
 
@@ -73,12 +74,14 @@ export function TransactionConfirmation({
                         layout={{
                             marginRight: UIConstant.tinyContentOffset(),
                         }}
+                        icon={UIAssets.icons.ui.buttonConfirm}
                     />
                     <UIMsgButton
                         testID="transaction_confirmation_cancel"
                         title={uiLocalized.Browser.TransactionConfirmation.Cancel}
                         type={UIMsgButtonType.Secondary}
                         onPress={onCancel}
+                        icon={UIAssets.icons.ui.buttonClose}
                     />
                 </View>
             ) : (
@@ -134,7 +137,6 @@ const styles = StyleSheet.create({
     },
     buttonsContainer: {
         maxWidth: '100%',
-        paddingRight: '20%',
         alignSelf: 'flex-start',
         justifyContent: 'flex-start',
         flexDirection: 'row',
