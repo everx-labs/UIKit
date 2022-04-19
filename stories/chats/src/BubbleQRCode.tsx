@@ -101,10 +101,15 @@ export const BubbleQRCode: React.FC<QRCodeMessage> = (message: QRCodeMessage) =>
     const styles = useStyles(theme);
     const ref = React.useRef<QRCodeRef>(null);
     const onPress = React.useCallback(async () => {
-        const base64 = await ref.current?.getPng();
-        if (!base64 || !message.onPress) {
+        if (!message.onPress) {
             return;
         }
+        
+        const base64 = await ref.current?.getPng();
+        if (!base64) {
+            return;
+        }
+
         message.onPress(base64);
     }, []);
 
