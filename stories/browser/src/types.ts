@@ -43,7 +43,6 @@ export enum InteractiveMessageType {
     Time = 'Time',
     DateTime = 'DateTime',
     Country = 'Country',
-    TransactionDetails = 'TransactionDetails',
 }
 
 type PlainTextMessage = BubbleBaseT & {
@@ -300,11 +299,12 @@ export type TransactionConfirmationExternalState = {
 export type TransactionConfirmationMessage = InteractiveMessage<
     InteractiveMessageType.TransactionConfirmation,
     {
-        toAddress?: string;
-        onAddressPress?: () => void | Promise<void>;
-        recipientsCount?: number;
-        totalAmount: string | React.ReactElement<any, any>;
-        fees: string | React.ReactElement<any, any>;
+        recipient?: string | React.ReactElement<any, any>;
+        onRecipientPress?: () => void | Promise<void>;
+        amount: string | React.ReactElement<any, any>;
+        action?: string | React.ReactElement<any, any>;
+        contractFee: string | React.ReactElement<any, any>;
+        networkFee: string | React.ReactElement<any, any>;
         signature: SigningBox;
         onApprove: (externalState: TransactionConfirmationExternalState) => void | Promise<void>;
         onCancel: (externalState: TransactionConfirmationExternalState) => void | Promise<void>;
@@ -312,6 +312,17 @@ export type TransactionConfirmationMessage = InteractiveMessage<
     },
     TransactionConfirmationExternalState
 >;
+
+export type TransactionDetailsProps = BubbleBaseT & {
+    signature?: string | React.ReactElement<any, any>;
+    action?: string | React.ReactElement<any, any>;
+    recipient?: string | React.ReactElement<any, any>;
+    amount?: string | React.ReactElement<any, any>;
+    contractFee?: string | React.ReactElement<any, any>;
+    networkFee?: string | React.ReactElement<any, any>;
+    isDangerous?: boolean;
+    onRecipientPress?: () => void | Promise<void>;
+};
 
 export type QRCodeScannerExternalState = {
     value: string;
@@ -361,19 +372,6 @@ export type QRCodeDrawMessage = InteractiveMessage<
     }
 >;
 
-export type TransactionDetailsMessage = InteractiveMessage<
-    InteractiveMessageType.TransactionDetails,
-    {
-        title?: string;
-        signature?: string;
-        action?: string;
-        recipient?: string;
-        amount?: string;
-        contractFee?: string;
-        networkFee?: string;
-    }
->;
-
 export type BrowserMessage =
     | PlainTextMessage
     | ActionButtonMessage
@@ -391,8 +389,7 @@ export type BrowserMessage =
     | DateMessage
     | TimeMessage
     | DateTimeMessage
-    | CountryMessage
-    | TransactionDetailsMessage;
+    | CountryMessage;
 
 type WithExternalStateHelper<A> = A extends { externalState?: any } ? A : never;
 

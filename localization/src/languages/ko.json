@@ -54,16 +54,17 @@
             "UseSecurityCard": "보안 카드 사용"
         },
         "TransactionConfirmation": {
+            "Title": "트랜잭션 확인",
+            "Recipient": "Recipient",
+            "Amount": "Amount",
+            "Action": "Action",
+            "ContractFee": "Contract fee",
+            "NetworkFee": "Network fee",
+            "Signature": "서명",
             "Attention": "주의 사항",
             "AttentionDesc": "이 트랜잭션은 계약을 변경하려고 하며 수행되지 않습니다",
-            "Cancel": "취소",
             "Confirm": "확인",
-            "Fees": "수수료",
-            "Recipients": "받는 사람",
-            "Signature": "서명",
-            "Title": "트랜잭션 확인",
-            "To": "받는 사람",
-            "Total": "합계"
+            "Cancel": "취소"
         }
     },
     "Cancel": "취소하기",

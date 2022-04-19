@@ -20,19 +20,13 @@ import {
     AmountInputMessage,
     SigningBoxMessage,
     TransactionConfirmationMessage,
-    TransactionDetailsMessage,
 } from '@tonlabs/uistory.browser';
 import { UIPopup, UICardSheet, UIFullscreenSheet } from '@tonlabs/uikit.popups';
 import { uiLocalized } from '@tonlabs/localization';
 import { ChatMessageType, MessageStatus } from '@tonlabs/uistory.chats';
 import { UIBoxButton } from '@tonlabs/uikit.controls';
-import {
-    UILabel,
-    UILabelColors,
-    UILabelRoles,
-    ColorVariants,
-    useTheme,
-} from '@tonlabs/uikit.themes';
+import { UICurrency } from '@tonlabs/uicast.numbers';
+import { UILabel, ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
 
 import { View } from 'react-native';
@@ -91,29 +85,6 @@ function BrowserAddMenu({
 
     return (
         <ScrollView>
-            <UIBoxButton
-                title="Add TransactionDetails"
-                layout={{
-                    marginBottom: 10,
-                }}
-                onPress={() => {
-                    const message: TransactionDetailsMessage = {
-                        key: `${Date.now()}-transaction-details`,
-                        status: MessageStatus.Received,
-                        type: InteractiveMessageType.TransactionDetails,
-                        title: 'Confirm to proceed',
-                        signature: 'Surfer',
-                        action: 'ReturnDeposit',
-                        recipient:
-                            '0:6225d213f08faa016a6bef5891d76ab3c430ee3a127d10de459b3b3a844f4',
-                        amount: '0.50 SURF',
-                        contractFee: 'up to 5.00 EVER',
-                        networkFee: '≈0.12 EVER',
-                    };
-                    addMessage(message);
-                    setMenuVisible(false);
-                }}
-            />
             <UIBoxButton
                 title="Add Media image"
                 layout={{
@@ -421,31 +392,21 @@ function BrowserAddMenu({
                         key: `${Date.now()}-approve`,
                         status: MessageStatus.Received,
                         type: InteractiveMessageType.TransactionConfirmation,
-                        toAddress: '0:12300000006789',
-                        onAddressPress: () => {
+                        recipient:
+                            '0:6225d2asdhksdf0wer6bef5891d76ab3c430ee3a127d10de459b3b3a844f4',
+                        onRecipientPress: () => {
                             // nothing
                         },
-                        recipientsCount: 255,
-                        totalAmount: (
+                        action: 'ReturnDeposit',
+                        amount: <UICurrency signChar="SURF">{new BigNumber(0.5)}</UICurrency>,
+                        contractFee: (
                             <UILabel>
-                                <UILabel role={UILabelRoles.MonoText}>0,000</UILabel>
-                                <UILabel
-                                    role={UILabelRoles.MonoText}
-                                    color={UILabelColors.TextTertiary}
-                                >
-                                    .000 000 000
-                                </UILabel>
+                                up to <UICurrency signChar="EVER">{new BigNumber(5)}</UICurrency>
                             </UILabel>
                         ),
-                        fees: (
+                        networkFee: (
                             <UILabel>
-                                <UILabel role={UILabelRoles.MonoText}>0</UILabel>
-                                <UILabel
-                                    role={UILabelRoles.MonoText}
-                                    color={UILabelColors.TextTertiary}
-                                >
-                                    .000 000 000
-                                </UILabel>
+                                ≈<UICurrency signChar="EVER">{new BigNumber(0.12)}</UICurrency>
                             </UILabel>
                         ),
                         signature: {

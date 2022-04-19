@@ -1,37 +1,40 @@
 import * as React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 
-import { UIImage } from '@tonlabs/uikit.media';
-import { UIMsgButton, UIMsgButtonType, TouchableOpacity } from '@tonlabs/uikit.controls';
+import { UIMsgButton, UIMsgButtonType } from '@tonlabs/uikit.controls';
 import {
     UIBackgroundView,
     UILabel,
     UILabelColors,
     UILabelRoles,
     ColorVariants,
-    useShadow,
     useTheme,
 } from '@tonlabs/uikit.themes';
 import { UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
-import { UIAssets } from '@tonlabs/uikit.assets';
 import type { TransactionConfirmationMessage } from '../types';
+import { TransactionDetails } from '../TransactionDetails';
 
 export function TransactionConfirmation({
     onLayout,
-    toAddress,
-    onAddressPress,
-    recipientsCount,
-    totalAmount,
-    fees,
+    recipient,
+    onRecipientPress,
+    action,
+    amount,
+    contractFee,
+    networkFee,
     signature,
     isDangerous,
     onApprove: onApproveProp,
     onCancel: onCancelProp,
     externalState,
+    firstFromChain,
+    lastFromChain,
+    status,
+    key,
 }: TransactionConfirmationMessage) {
     const theme = useTheme();
-    const shadow = useShadow(1);
+    // const shadow = useShadow(1);
 
     const onApprove = React.useCallback(() => {
         onApproveProp({
@@ -44,79 +47,22 @@ export function TransactionConfirmation({
         });
     }, [onCancelProp]);
 
-    const mainBubble = (
-        <View style={styles.container}>
-            <UIBackgroundView style={[styles.card, shadow]}>
-                <UILabel role={UILabelRoles.TitleSmall}>
-                    {uiLocalized.Browser.TransactionConfirmation.Title}
-                </UILabel>
-                {toAddress && (
-                    <View style={styles.cardRow}>
-                        <UILabel
-                            role={UILabelRoles.ParagraphLabel}
-                            color={UILabelColors.TextTertiary}
-                        >
-                            {uiLocalized.Browser.TransactionConfirmation.To}
-                        </UILabel>
-                        <TouchableOpacity onPress={onAddressPress}>
-                            <View style={styles.address}>
-                                <UILabel>
-                                    {`${toAddress.slice(0, 4)} ···· ${toAddress.slice(-4)}`}
-                                </UILabel>
-                                <UIImage source={UIAssets.icons.ui.arrowUpRight} />
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                )}
-                {recipientsCount != null && Number.isFinite(recipientsCount) && (
-                    <View style={styles.cardRow}>
-                        <UILabel
-                            role={UILabelRoles.ParagraphLabel}
-                            color={UILabelColors.TextTertiary}
-                        >
-                            {uiLocalized.Browser.TransactionConfirmation.Recipients}
-                        </UILabel>
-                        <UILabel>{recipientsCount}</UILabel>
-                    </View>
-                )}
-                <View style={styles.cardRow}>
-                    <UILabel role={UILabelRoles.ParagraphLabel} color={UILabelColors.TextTertiary}>
-                        {uiLocalized.Browser.TransactionConfirmation.Total}
-                    </UILabel>
-                    {totalAmount}
-                </View>
-                <View style={styles.cardRow}>
-                    <UILabel role={UILabelRoles.ParagraphLabel} color={UILabelColors.TextTertiary}>
-                        {uiLocalized.Browser.TransactionConfirmation.Fees}
-                    </UILabel>
-                    {fees}
-                </View>
-                <View style={styles.cardRow}>
-                    <UILabel role={UILabelRoles.ParagraphLabel} color={UILabelColors.TextTertiary}>
-                        {uiLocalized.Browser.TransactionConfirmation.Signature}
-                    </UILabel>
-                    <UILabel>{signature.title}</UILabel>
-                </View>
-                {isDangerous && (
-                    <View style={styles.cardRow}>
-                        <UILabel
-                            role={UILabelRoles.ParagraphLabel}
-                            color={UILabelColors.TextNegative}
-                        >
-                            {uiLocalized.Browser.TransactionConfirmation.Attention}
-                        </UILabel>
-                        <UILabel color={UILabelColors.TextNegative}>
-                            {uiLocalized.Browser.TransactionConfirmation.AttentionDesc}
-                        </UILabel>
-                    </View>
-                )}
-            </UIBackgroundView>
-        </View>
-    );
-
     return (
         <View onLayout={onLayout}>
-            {mainBubble}
+            <TransactionDetails
+                signature={signature.title}
+                action={action}
+                recipient={recipient}
+                amount={amount}
+                contractFee={contractFee}
+                networkFee={networkFee}
+                isDangerous={isDangerous}
+                onRecipientPress={onRecipientPress}
+                firstFromChain={firstFromChain}
+                lastFromChain={lastFromChain}
+                status={status}
+                key={key}
+            />
             {externalState?.status == null ? (
                 <View style={styles.buttonsContainer}>
                     <UIMsgButton
