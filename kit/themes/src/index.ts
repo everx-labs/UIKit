@@ -25,6 +25,8 @@ export * from './useColorParts';
 export * from './useColorShades';
 export * from './useIsDarkColor';
 
+export * from './makeRNSvgReanimatedCompat';
+
 export const UIThemes = {
     AnimateableText,
     Colors,

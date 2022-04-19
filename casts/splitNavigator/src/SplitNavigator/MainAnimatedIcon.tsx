@@ -3,10 +3,10 @@ import Animated, { interpolate, interpolateColor, useAnimatedProps } from 'react
 import { StyleSheet, ViewStyle } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 
-import { useColorParts, ColorVariants } from '@tonlabs/uikit.themes';
+import { useColorParts, ColorVariants, makeRNSvgReanimatedCompat } from '@tonlabs/uikit.themes';
 import type { SplitScreenTabBarAnimatedIconComponentProps } from './SplitBottomTabBar';
 
-const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+const AnimatedCircle = Animated.createAnimatedComponent(makeRNSvgReanimatedCompat(Circle));
 
 // @inline
 const ANIMATED_ICON_INACTIVE = 0;
