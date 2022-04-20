@@ -92,20 +92,20 @@ export const QRCodeContainer: React.FC<{
     qrCodeRef: React.MutableRefObject<QRCodeRef | null>;
     style: StyleProp<ViewStyle>;
 }> = ({ qrCodeRef, children, style, onPress }) => {
+    const onQRCodePress = React.useCallback(async () => {
+        if (!qrCodeRef?.current) {
+            return;
+        }
+
+        const base64 = await qrCodeRef.current.getPng();
+        if (!base64) {
+            return;
+        }
+
+        onPress!(base64);
+    }, [onPress]);
+
     if (onPress) {
-        const onQRCodePress = React.useCallback(async () => {
-            if (!qrCodeRef?.current) {
-                return;
-            }
-            
-            const base64 = await qrCodeRef.current.getPng();
-            if (!base64) {
-                return;
-            }
-
-            onPress!(base64);
-        }, []);
-
         return (
             <UIPressableArea onPress={onQRCodePress}>
                 <View style={style}>{children}</View>
