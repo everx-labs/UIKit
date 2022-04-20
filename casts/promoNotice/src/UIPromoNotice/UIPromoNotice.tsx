@@ -354,6 +354,7 @@ const styles = StyleSheet.create({
         borderRadius: UIConstant.alertBorderRadius,
         justifyContent: 'center',
         alignItems: 'center',
+        overflow: 'hidden',
     },
     closableNoticeIcon: {
         width: UIConstant.minNoticeIconSize,
