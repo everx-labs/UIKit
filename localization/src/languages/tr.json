@@ -267,11 +267,6 @@
     "orDelimeter": " veya ",
     "OutOf": "/",
     "PleaseUpdate": "Lütfen güncelleyin",
-    "promoDownload": {
-        "appStore": "App Store",
-        "googlePlay": "Google Play",
-        "notice": "Download application"
-    },
     "QRCodeScanner": {
         "ErrorOnRead": "Couldn't read QR code",
         "ErrorPermissions": "QR kodlarını tarayabilmek için kamera izinlerinizi açın",

@@ -267,11 +267,6 @@
     "orDelimeter": " или ",
     "OutOf": "из",
     "PleaseUpdate": "Пожалуйста, обновите",
-    "promoDownload": {
-        "appStore": "App Store",
-        "googlePlay": "Google Play",
-        "notice": "Установить приложение"
-    },
     "QRCodeScanner": {
         "ErrorOnRead": "Не удалось считать QR-код",
         "ErrorPermissions": "Чтобы сканировать QR-коды, разрешите доступ к камере вашего устройства",

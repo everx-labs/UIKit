@@ -2,14 +2,18 @@ import * as React from 'react';
 import { useState } from 'react';
 import { View } from 'react-native';
 
-import { UIPromoNotice } from '@tonlabs/uicast.promo-notice';
+import { UIAssets } from '@tonlabs/uikit.assets';
 import { TouchableOpacity, UISwitcher, UISwitcherVariant } from '@tonlabs/uikit.controls';
 import { UILabel } from '@tonlabs/uikit.themes';
+
+import { UIPromoNotice } from '@tonlabs/uicast.promo-notice';
+
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
 export const Products = () => {
     const [displayPromoNotice, setDisplayPromoNotice] = useState(false);
+
     return (
         <ExampleScreen>
             <ExampleSection title="UIPromoNotice">
@@ -32,11 +36,14 @@ export const Products = () => {
                         />
                     </TouchableOpacity>
                 </View>
+
                 {displayPromoNotice && (
                     <UIPromoNotice
-                        appStoreUrl="https://www.apple.com/app-store/"
-                        googlePlayUrl="https://play.google.com/store"
-                    />
+                        visible={displayPromoNotice}
+                        icon={UIAssets.icons.brand.surfSymbol}
+                    >
+                        <UILabel>Test Promo Notice Content</UILabel>
+                    </UIPromoNotice>
                 )}
             </ExampleSection>
         </ExampleScreen>
