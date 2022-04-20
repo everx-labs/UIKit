@@ -1,19 +1,18 @@
 import * as React from 'react';
-import type { TextInput } from 'react-native';
+import type { UITextViewRef } from '../../UITextView';
 import type { ImperativeChangeText } from '../types';
 
 export function useClear(
-    remeasureInputHeight: () => void,
     imperativeChangeText: ImperativeChangeText,
-    ref: React.RefObject<TextInput>,
+    ref: React.RefObject<UITextViewRef>,
 ) {
     return React.useCallback(
         function clear() {
             imperativeChangeText('');
             ref.current?.clear();
             ref.current?.focus();
-            remeasureInputHeight();
+            ref.current?.remeasureInputHeight();
         },
-        [remeasureInputHeight, imperativeChangeText, ref],
+        [imperativeChangeText, ref],
     );
 }

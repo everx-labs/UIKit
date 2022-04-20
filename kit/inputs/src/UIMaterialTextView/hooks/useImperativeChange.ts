@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Platform, TextInput } from 'react-native';
+import { LayoutAnimation, Platform } from 'react-native';
 import { moveCarret as moveCarretPlatform } from '../../moveCarret';
+import type { UITextViewRef } from '../../UITextView';
 import type {
     ImperativeChangeText,
     UIMaterialTextViewRefMoveCarret,
@@ -15,7 +16,7 @@ const defultConfig = {
 };
 
 export function useImperativeChange(
-    ref: React.RefObject<TextInput>,
+    ref: React.RefObject<UITextViewRef>,
     onChangeTextProp: ((text: string) => void) | undefined,
     checkInputHasValue: (text: string) => string,
     applyMask: UIMaterialTextViewApplyMask,
