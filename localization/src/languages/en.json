@@ -310,11 +310,6 @@
     "orDelimeter": " or ",
     "OutOf": "out of",
     "PleaseUpdate": "Please update",
-    "promoDownload": {
-        "appStore": "App Store",
-        "googlePlay": "Google Play",
-        "notice": "Download application"
-    },
     "QRCodeScanner": {
         "ErrorOnRead": "Couldn't read QR code",
         "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",

@@ -124,7 +124,7 @@ export const BubbleQRCode: React.FC<QRCodeMessage> = (message: QRCodeMessage) =>
                         size={QRCodeSize.Medium}
                         testID={`chat_qr_code_${data}`}
                         type={QRCodeType.Square}
-                        logo={UIAssets.icons.brand.tonSymbolBlack}
+                        logo={UIAssets.icons.brand.surfSymbolBlack}
                         value={data}
                     />
                 </View>

@@ -56,7 +56,7 @@ export function CellsScreen() {
                         loading={loading}
                     />
                     <UICellDebot
-                        image={UIAssets.icons.brand.tonwallet}
+                        image={UIAssets.icons.brand.surfSymbolBlack}
                         caption="Looooooooooooong super title"
                         onPress={() => console.log('Tap')}
                         loading={loading}
