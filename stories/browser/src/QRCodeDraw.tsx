@@ -2,10 +2,10 @@ import * as React from 'react';
 import { View } from 'react-native';
 
 import {
+    BubbleQRCode,
     BubbleSimplePlainText,
     ChatMessageType,
     MessageStatus,
-    BubbleQRCode,
 } from '@tonlabs/uistory.chats';
 import { QRCodeError, useQRCodeValueError } from '@tonlabs/uikit.media';
 
@@ -21,7 +21,14 @@ const convertQRCodeErrorToQRCodeDrawMessageStatus = (
     }
 };
 
-export const QRCodeDraw = ({ data, status, onLayout, prompt, onDraw }: QRCodeDrawMessage) => {
+export const QRCodeDraw = ({
+    data,
+    status,
+    onLayout,
+    prompt,
+    onDraw,
+    onPress,
+}: QRCodeDrawMessage) => {
     const onError = React.useCallback(
         (error: QRCodeError) => {
             if (onDraw) {
@@ -45,6 +52,7 @@ export const QRCodeDraw = ({ data, status, onLayout, prompt, onDraw }: QRCodeDra
                 status={status}
                 type={ChatMessageType.QRCode}
                 onLayout={onLayout}
+                onPress={onPress}
                 firstFromChain
                 key="qrcode-draw-bubble"
             />

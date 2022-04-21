@@ -356,6 +356,7 @@ export type QRCodeDrawMessage = InteractiveMessage<
     {
         data: string;
         prompt?: string;
+        onPress?: (image: string) => void;
         onDraw?: (status: QRCodeDrawMessageStatus) => void;
     }
 >;
