@@ -93,7 +93,7 @@ export const QRCodeContainer: React.FC<{
     style: StyleProp<ViewStyle>;
 }> = ({ qrCodeRef, children, style, onPress }) => {
     const onQRCodePress = React.useCallback(async () => {
-        if (!qrCodeRef?.current) {
+        if (!qrCodeRef.current) {
             return;
         }
 
