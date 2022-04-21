@@ -5,6 +5,9 @@ import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { useAutogrow, useAutoFocus, useHandleRef } from './hooks';
 import type { UITextViewProps, UITextViewRef } from './types';
 
+export const EXTRA_TOP_PADDING_OF_MULTILINE_INPUT = Platform.OS === 'ios' ? 4 : 0;
+export const EXTRA_BOTTOM_PADDING_OF_MULTILINE_INPUT = Platform.OS === 'ios' ? 1 : 0;
+
 const textViewTypographyVariant = TypographyVariants.ParagraphText;
 const textViewLineHeight =
     StyleSheet.flatten(Typography[textViewTypographyVariant]).lineHeight ??
@@ -75,14 +78,14 @@ export const UITextView = React.forwardRef<UITextViewRef, UITextViewProps>(
                     style,
                     {
                         color: theme[ColorVariants.TextPrimary],
+                        marginTop: multiline ? -EXTRA_TOP_PADDING_OF_MULTILINE_INPUT : 0,
+                        marginBottom: multiline ? -EXTRA_BOTTOM_PADDING_OF_MULTILINE_INPUT : 0,
                     },
                     Typography[textViewTypographyVariant],
-                    // autogrowStyle,
-                    // styles.resetStyles,
+                    autogrowStyle,
                 ]}
                 onContentSizeChange={onContentSizeChange}
                 onChange={onChange}
-                multiline={multiline}
                 scrollEnabled={multiline}
                 numberOfLines={numberOfLines}
             />
@@ -106,8 +109,5 @@ const styles = StyleSheet.create({
                 padding: 0,
             },
         }),
-    },
-    resetStyles: {
-        lineHeight: undefined,
     },
 });

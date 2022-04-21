@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { LayoutAnimation, Platform } from 'react-native';
 
 export function useInputHasValue(value: string | undefined, defaultValue: string | undefined) {
     // Little optimization to not re-render children on every value change
@@ -27,6 +28,12 @@ export function useInputHasValue(value: string | undefined, defaultValue: string
         },
         [inputHasValue],
     );
+
+    React.useEffect(() => {
+        if (Platform.OS === 'ios') {
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        }
+    }, [inputHasValue]);
 
     return {
         inputHasValue,

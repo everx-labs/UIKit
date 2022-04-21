@@ -49,10 +49,13 @@ export type UITextViewProps = Omit<
     noPersonalizedLearning?: boolean;
     /**
      * A callback that is called when the input height changes
+     * Only works with `multiline={true}`
      */
     onHeightChange?: (height: number) => void;
     /**
-     * TODO
+     * The maximum number of visible lines of text.
+     * A further increase in the text will lead to the appearance of a scroll in the component.
+     * Only works with `multiline={true}`
      */
     maxNumberOfLines?: number;
 };

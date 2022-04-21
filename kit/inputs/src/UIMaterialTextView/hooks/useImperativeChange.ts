@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { LayoutAnimation, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import { moveCarret as moveCarretPlatform } from '../../moveCarret';
 import type { UITextViewRef } from '../../UITextView';
 import type {

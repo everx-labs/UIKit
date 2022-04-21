@@ -1,15 +1,14 @@
 import * as React from 'react';
-import type { TextInput } from 'react-native';
-import type { UITextViewProps } from '../types';
+import type { UITextViewProps, UITextViewRef } from '../types';
 
 /**
  * This is useful hook if you want to listen for inputValue changes
- * But don't want to make TextInput controlled (eg. use `value` prop)
+ * But don't want to make UITextView controlled (eg. use `value` prop)
  *
  * @param useClearWithEnter boolean
  */
 export function useUITextViewValue(
-    ref: React.Ref<TextInput> | null,
+    ref: React.Ref<UITextViewRef> | null,
     useClearWithEnter = false,
     {
         value: valueProp,
