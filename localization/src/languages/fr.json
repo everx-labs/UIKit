@@ -251,7 +251,6 @@
     "moreWords24": "plus de mots",
     "moreWords50": "plus de mots",
     "Name": "Nom",
-    "NewVersionIsAvailable": "Une nouvelle version est disponible",
     "Next": "Suivant",
     "No": "Non",
     "NotChosen": "Non choisi",
@@ -266,7 +265,6 @@
     "operationTime": "Durée de l'opération",
     "orDelimeter": " ou ",
     "OutOf": "de",
-    "PleaseUpdate": "Veuillez mettre à jour",
     "QRCodeScanner": {
         "ErrorOnRead": "Couldn't read QR code",
         "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
@@ -330,7 +328,6 @@
     "TypeMessage": "Écrire un message...",
     "Unconfirmed": "Non confirmé",
     "UnreadMessages": "Messages non lus",
-    "Update": "Mettre à jour",
     "UpgradingWallet": "Mise à niveau de votre portefeuille ...",
     "UplimitRule": "Règle de limite supérieure",
     "UserHasNoWallet": "Cet utilisateur n'a pas encore de portefeuille, mais nous lui enverrons un lien pour en créer un et recevoir ce transfert",
