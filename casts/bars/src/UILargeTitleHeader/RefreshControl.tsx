@@ -52,7 +52,7 @@ export function RefreshControl({
         await new Promise(res => requestAnimationFrame(res));
 
         try {
-            await Promise.all([
+            await Promise.allSettled([
                 onRefresh(),
                 // An artificial timeout is needed
                 // in case the refresh is super fast
