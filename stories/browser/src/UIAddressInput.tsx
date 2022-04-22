@@ -1,8 +1,12 @@
 import * as React from 'react';
-import { StyleSheet, TextInput } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import { ChatInputContainer, useChatInputValue } from '@tonlabs/uistory.chats';
-import { UITextView, useAutogrowTextView } from '@tonlabs/uikit.inputs';
+import {
+    ChatInputContainer,
+    useChatInputHasSeveralLines,
+    useChatInputValue,
+} from '@tonlabs/uistory.chats';
+import { UITextView, UITextViewRef } from '@tonlabs/uikit.inputs';
 import { UIInputAccessoryView } from '@tonlabs/uicast.keyboard';
 import { UILabel, UILabelRoles, ColorVariants } from '@tonlabs/uikit.themes';
 import { uiLocalized } from '@tonlabs/localization';
@@ -71,7 +75,7 @@ const getHintColor = (status: ValidationResultStatus) => {
 };
 
 type UIAddressInputInternalProps = {
-    textInputRef: React.RefObject<TextInput>;
+    textInputRef: React.RefObject<UITextViewRef>;
     placeholder?: string;
     onSendText: OnSendText;
     onHeightChange?: OnHeightChange;
@@ -88,14 +92,7 @@ export function UIAddressInputInternal({
     placeholder,
     onMaxLength: onMaxLengthProp,
 }: UIAddressInputInternalProps) {
-    const {
-        onContentSizeChange,
-        onChange,
-        inputStyle,
-        numberOfLines,
-        numberOfLinesProp,
-        resetInputHeight,
-    } = useAutogrowTextView(textInputRef, undefined, MAX_INPUT_NUM_OF_LINES);
+    const { onNumberOfLinesChange, hasInputSeveralLines } = useChatInputHasSeveralLines();
 
     const [isNoticeVisible, setNoticeVisible] = React.useState(false);
 
@@ -116,7 +113,6 @@ export function UIAddressInputInternal({
     } = useChatInputValue({
         ref: textInputRef,
         onSendText: onSendTextProp,
-        resetInputHeight,
         maxInputLength: MAX_INPUT_LENGTH,
         onMaxLength: onMaxLengthProp || onMaxLength,
     });
@@ -147,7 +143,7 @@ export function UIAddressInputInternal({
 
     return (
         <ChatInputContainer
-            numberOfLines={numberOfLines}
+            hasInputSeveralLines={hasInputSeveralLines}
             right={
                 <ActionButton
                     inputHasValue={inputHasValue}
@@ -179,13 +175,11 @@ export function UIAddressInputInternal({
                 editable
                 maxLength={MAX_INPUT_LENGTH}
                 multiline
-                numberOfLines={numberOfLinesProp}
                 placeholder={placeholder ?? uiLocalized.Browser.AddressInput.Placeholder}
-                onContentSizeChange={onContentSizeChange}
-                onChange={onChange}
                 onChangeText={onChangeText}
                 onKeyPress={onKeyPress}
-                style={inputStyle}
+                maxNumberOfLines={MAX_INPUT_NUM_OF_LINES}
+                onNumberOfLinesChange={onNumberOfLinesChange}
             />
             {renderNotice()}
         </ChatInputContainer>
@@ -207,7 +201,7 @@ export function UIAddressInput({
     onMaxLength,
     validateAddress,
 }: UIAddressInputProps) {
-    const textInputRef = React.useRef<TextInput>(null);
+    const textInputRef = React.useRef<UITextViewRef>(null);
 
     const onHeightChange = useUIBrowserInputOnHeightChange();
 

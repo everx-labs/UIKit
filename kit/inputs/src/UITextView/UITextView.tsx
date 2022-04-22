@@ -5,6 +5,11 @@ import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { useAutogrow, useAutoFocus, useHandleRef } from './hooks';
 import type { UITextViewProps, UITextViewRef } from './types';
 
+/**
+ * The input on the ios platform has a feature -
+ * its height in `multiline={true}` mode is greater than in `multiline={false}`.
+ * Experimentally, it was found that it increases from above by 4pt, and from below by 1pt.
+ */
 export const EXTRA_TOP_PADDING_OF_MULTILINE_INPUT = Platform.OS === 'ios' ? 4 : 0;
 export const EXTRA_BOTTOM_PADDING_OF_MULTILINE_INPUT = Platform.OS === 'ios' ? 1 : 0;
 
@@ -21,6 +26,7 @@ export const UITextView = React.forwardRef<UITextViewRef, UITextViewProps>(
             noPersonalizedLearning,
             onHeightChange,
             maxNumberOfLines,
+            onNumberOfLinesChange,
             ...textInputProps
         }: UITextViewProps,
         passedRef,
@@ -50,6 +56,7 @@ export const UITextView = React.forwardRef<UITextViewRef, UITextViewProps>(
             multiline,
             maxNumberOfLines,
             onHeightChange,
+            onNumberOfLinesChange,
         );
 
         useHandleRef(textInputRef, passedRef, remeasureInputHeight);
@@ -78,8 +85,8 @@ export const UITextView = React.forwardRef<UITextViewRef, UITextViewProps>(
                     style,
                     {
                         color: theme[ColorVariants.TextPrimary],
-                        marginTop: multiline ? -EXTRA_TOP_PADDING_OF_MULTILINE_INPUT : 0,
-                        marginBottom: multiline ? -EXTRA_BOTTOM_PADDING_OF_MULTILINE_INPUT : 0,
+                        paddingTop: multiline ? -EXTRA_TOP_PADDING_OF_MULTILINE_INPUT : 0,
+                        paddingBottom: multiline ? -EXTRA_BOTTOM_PADDING_OF_MULTILINE_INPUT : 0,
                     },
                     Typography[textViewTypographyVariant],
                     autogrowStyle,

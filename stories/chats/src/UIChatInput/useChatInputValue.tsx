@@ -1,20 +1,17 @@
 import * as React from 'react';
-import type { TextInput } from 'react-native';
 
-import { useUITextViewValue } from '@tonlabs/uikit.inputs';
+import { UITextViewRef, useUITextViewValue } from '@tonlabs/uikit.inputs';
 
 import type { OnSendText } from './types';
 
 export function useChatInputValue({
     ref,
     onSendText: onSendTextProp,
-    resetInputHeight,
     maxInputLength,
     onMaxLength,
 }: {
-    ref: React.RefObject<TextInput>;
+    ref: React.RefObject<UITextViewRef>;
     onSendText: OnSendText;
-    resetInputHeight: () => void;
     maxInputLength: number;
     onMaxLength?: (maxLength: number) => void;
 }) {
@@ -32,8 +29,7 @@ export function useChatInputValue({
         }
 
         clear();
-        resetInputHeight();
-    }, [onSendTextProp, clear, inputValue, resetInputHeight]);
+    }, [onSendTextProp, clear, inputValue]);
 
     const onChangeText = React.useCallback(
         (text: string) => {

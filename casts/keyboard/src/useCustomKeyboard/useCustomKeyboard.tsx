@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Keyboard, TextInput, KeyboardEvent, Platform, AppRegistry } from 'react-native';
+import { Keyboard, KeyboardEvent, Platform, AppRegistry } from 'react-native';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
+import type { UITextViewRef } from '@tonlabs/uikit.inputs';
 import type { OnEvent, UICustomKeyboardView } from './types';
 
 export type OnCustomKeyboardVisible = (visible: boolean) => void | Promise<void>;
@@ -38,7 +39,7 @@ export function registerKeyboardComponent<KeyboardProps>(
 let globalID = 0;
 
 export function useCustomKeyboard(
-    inputRef: React.Ref<TextInput>,
+    inputRef: React.Ref<UITextViewRef>,
     cKeyboard?: UICustomKeyboardView,
 ) {
     const keyboardID = React.useRef<number>(null);

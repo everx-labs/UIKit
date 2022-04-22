@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { TextInput } from 'react-native';
-import type { UITextViewRef } from '..';
+import type { UITextViewRef } from '../types';
 
 export function useHandleRef(
     textInputRef: React.RefObject<TextInput>,
@@ -12,6 +12,7 @@ export function useHandleRef(
             return remeasureInputHeight?.();
         },
         clear: () => {
+            remeasureInputHeight?.();
             return textInputRef.current?.clear();
         },
         isFocused: () => {

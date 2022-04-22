@@ -48,7 +48,7 @@ export type UITextViewProps = Omit<
      */
     noPersonalizedLearning?: boolean;
     /**
-     * A callback that is called when the input height changes
+     * A callback that is called when the input height changes.
      * Only works with `multiline={true}`
      */
     onHeightChange?: (height: number) => void;
@@ -58,6 +58,11 @@ export type UITextViewProps = Omit<
      * Only works with `multiline={true}`
      */
     maxNumberOfLines?: number;
+    /**
+     * A callback that is called when the input number of lines changes.
+     * Only works with `multiline={true}`
+     */
+    onNumberOfLinesChange?: (numberOfLines: number) => void;
 };
 
 export type UITextViewRef = Pick<

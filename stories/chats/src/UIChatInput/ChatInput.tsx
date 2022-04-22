@@ -1,8 +1,6 @@
 import * as React from 'react';
-import type { TextInput } from 'react-native';
-
 import { uiLocalized } from '@tonlabs/localization';
-import { UITextView, useAutogrowTextView } from '@tonlabs/uikit.inputs';
+import { UITextView, UITextViewRef } from '@tonlabs/uikit.inputs';
 import { UIPopup } from '@tonlabs/uikit.popups';
 import type { UIMenuActionProps } from '@tonlabs/uikit.popups';
 
@@ -12,13 +10,14 @@ import { MenuMore } from './MenuMore';
 import { QuickAction } from './QuickActions';
 import { useChatInputValue } from './useChatInputValue';
 import type { QuickActionItem, OnSendText, Shortcut } from './types';
+import { useChatInputHasSeveralLines } from './useChatInputHasSeveralLines';
 
 const MAX_INPUT_LENGTH = 2 ** 10;
 
 const CHAT_INPUT_NUM_OF_LINES = 5;
 
 type ChatInputProps = {
-    textInputRef: React.RefObject<TextInput>;
+    textInputRef: React.RefObject<UITextViewRef>;
     autoFocus?: boolean;
     editable: boolean;
     placeholder?: string;
@@ -63,14 +62,7 @@ export function ChatInput({
     onBlur,
     onHeightChange,
 }: ChatInputProps) {
-    const {
-        onContentSizeChange,
-        onChange,
-        inputStyle,
-        numberOfLines,
-        numberOfLinesProp,
-        resetInputHeight,
-    } = useAutogrowTextView(textInputRef, undefined, CHAT_INPUT_NUM_OF_LINES);
+    const { onNumberOfLinesChange, hasInputSeveralLines } = useChatInputHasSeveralLines();
 
     const [isNoticeVisible, setNoticeVisible] = React.useState(false);
 
@@ -86,7 +78,6 @@ export function ChatInput({
         ref: textInputRef,
         onSendText: onSendTextProp,
         onMaxLength: onMaxLengthProp || onMaxLength,
-        resetInputHeight,
         maxInputLength: MAX_INPUT_LENGTH,
     });
 
@@ -113,7 +104,7 @@ export function ChatInput({
 
     return (
         <ChatInputContainer
-            numberOfLines={numberOfLines}
+            hasInputSeveralLines={hasInputSeveralLines}
             shortcuts={shortcuts}
             left={
                 menuPlus?.length && menuPlus?.length > 0 ? (
@@ -152,15 +143,13 @@ export function ChatInput({
                     editable={editable}
                     maxLength={MAX_INPUT_LENGTH}
                     multiline
-                    numberOfLines={numberOfLinesProp}
                     placeholder={placeholder ?? uiLocalized.TypeMessage}
-                    onContentSizeChange={onContentSizeChange}
-                    onChange={onChange}
                     onChangeText={onChangeText}
                     onKeyPress={onKeyPress}
                     onFocus={onFocus}
                     onBlur={onBlur}
-                    style={inputStyle}
+                    maxNumberOfLines={CHAT_INPUT_NUM_OF_LINES}
+                    onNumberOfLinesChange={onNumberOfLinesChange}
                 />
             )}
             {renderNotice()}

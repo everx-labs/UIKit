@@ -8,21 +8,21 @@ import { Shortcuts } from './Shortcuts';
 import type { Shortcut } from './types';
 import { useChatOnScrollListener } from '../useChatOnScrollListener';
 
-function useAnimatedBorder(numberOfLines: number) {
+function useAnimatedBorder(hasInputSeveralLines: boolean) {
     const borderOpacity = React.useRef<Animated.Value>(new Animated.Value(0));
 
     const scrollOffset = React.useRef<number>(0);
 
     const showBorderIfNeeded = React.useCallback(() => {
         const hasScroll = scrollOffset.current > 1;
-        const needToShow = hasScroll || numberOfLines > 1;
+        const needToShow = hasScroll || hasInputSeveralLines;
 
         Animated.spring(borderOpacity.current, {
             toValue: needToShow ? 1 : 0,
             useNativeDriver: true,
             speed: 20,
         }).start();
-    }, [numberOfLines]);
+    }, [hasInputSeveralLines]);
 
     useChatOnScrollListener((y: number) => {
         scrollOffset.current = y;
@@ -32,20 +32,20 @@ function useAnimatedBorder(numberOfLines: number) {
 
     React.useEffect(() => {
         showBorderIfNeeded();
-    }, [numberOfLines, showBorderIfNeeded]);
+    }, [hasInputSeveralLines, showBorderIfNeeded]);
 
     return borderOpacity.current;
 }
 
 export function ChatInputContainer({
-    numberOfLines,
+    hasInputSeveralLines,
     shortcuts,
     children,
     left,
     right,
     onHeightChange,
 }: {
-    numberOfLines: number;
+    hasInputSeveralLines: boolean;
     shortcuts?: Shortcut[];
     children: React.ReactNode;
     left?: React.ReactNode;
@@ -53,7 +53,7 @@ export function ChatInputContainer({
     onHeightChange?: (height: number) => void;
 }) {
     const theme = useTheme();
-    const borderOpacity = useAnimatedBorder(numberOfLines);
+    const borderOpacity = useAnimatedBorder(hasInputSeveralLines);
 
     const onLayoutIfNecessary = React.useCallback(
         ({

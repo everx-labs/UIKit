@@ -1,16 +1,12 @@
 import * as React from 'react';
-import {
-    LayoutAnimation,
+import type {
     NativeSyntheticEvent,
-    Platform,
     StyleProp,
     TextInput,
     TextInputContentSizeChangeEventData,
     TextStyle,
 } from 'react-native';
 import type { AutogrowAttributes, UITextViewProps } from '../types';
-
-export const EXTRA_HEIGHT_OF_MULTILINE_INPUT = Platform.OS === 'ios' ? 5 : 0;
 
 export function useAutogrow(
     ref: React.RefObject<TextInput>,
@@ -20,27 +16,25 @@ export function useAutogrow(
     multiline: UITextViewProps['multiline'],
     maxNumberOfLines: UITextViewProps['maxNumberOfLines'],
     onHeightChange: UITextViewProps['onHeightChange'],
+    onNumberOfLinesChange: UITextViewProps['onNumberOfLinesChange'],
 ): AutogrowAttributes {
     const inputHeightRef = React.useRef(0);
 
     const onContentHeightMaybeChanged = React.useCallback(
         function onContentHeightMaybeChanged(height: number) {
             if (height !== inputHeightRef.current) {
-                /**
-                 * We don't need to animate the first render.
-                 */
-                if (Platform.OS === 'ios' && inputHeightRef.current !== 0) {
-                    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-                }
-
                 inputHeightRef.current = height;
 
                 if (onHeightChange) {
                     onHeightChange(height);
                 }
+                if (onNumberOfLinesChange) {
+                    const numberOfLines = Math.round(height / textViewLineHeight);
+                    onNumberOfLinesChange(numberOfLines);
+                }
             }
         },
-        [onHeightChange],
+        [onHeightChange, onNumberOfLinesChange, textViewLineHeight],
     );
 
     const onMeasure = React.useCallback(
@@ -76,8 +70,7 @@ export function useAutogrow(
         function getAutogrowStyle() {
             if (multiline && maxNumberOfLines) {
                 return {
-                    maxHeight:
-                        maxNumberOfLines * textViewLineHeight + EXTRA_HEIGHT_OF_MULTILINE_INPUT,
+                    maxHeight: maxNumberOfLines * textViewLineHeight,
                 };
             }
             return null;

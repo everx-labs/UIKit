@@ -3,6 +3,7 @@ export * from './UIChatList';
 export * from './UIChatInput';
 export * from './UIChatInput/ChatInputContainer';
 export * from './UIChatInput/useChatInputValue';
+export * from './UIChatInput/useChatInputHasSeveralLines';
 export * from './BubbleQRCode';
 export * from './BubbleMedia';
 export { sectionListGetItemLayout } from './UIChatListLayout';
