@@ -11,7 +11,6 @@ export function useClear(
             imperativeChangeText('');
             ref.current?.clear();
             ref.current?.focus();
-            ref.current?.remeasureInputHeight();
         },
         [imperativeChangeText, ref],
     );

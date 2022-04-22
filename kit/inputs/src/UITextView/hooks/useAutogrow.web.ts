@@ -3,17 +3,17 @@ import type { TextInput, NativeSyntheticEvent, TextInputChangeEventData } from '
 import type { UITextViewProps, AutogrowAttributes } from '../types';
 
 function calculateWebInputHeight(elem: HTMLTextAreaElement) {
-    const currentHeight = elem.style.height;
+    const currentMaxHeight = elem.style.height;
     // To get real height of a textarea
     // (that is used under the hood of TextInput in rn-web)
     // eslint-disable-next-line no-param-reassign
-    elem.style.height = `${0}px`;
+    elem.style.maxHeight = `${0}px`;
 
     const height = elem.scrollHeight;
 
     // Remove it to apply again styles we pass in props
     // eslint-disable-next-line no-param-reassign
-    elem.style.height = currentHeight;
+    elem.style.maxHeight = currentMaxHeight;
 
     return height;
 }
@@ -44,9 +44,10 @@ function useMeasureAutogrowTextView(
     onHeightChange: UITextViewProps['onHeightChange'],
     multiline: boolean | undefined,
     maxNumberOfLines: number | undefined,
+    onNumberOfLinesChange: UITextViewProps['onNumberOfLinesChange'],
 ) {
     const [numberOfLines, setNumberOfLines] = React.useState<number>(1);
-    const prevNumberOfLinesRef = React.useRef(1);
+    const prevNumberOfLinesRef = React.useRef(0);
     const inputHeightRef = React.useRef(0);
 
     const onContentSizeChange = React.useCallback(
@@ -69,9 +70,16 @@ function useMeasureAutogrowTextView(
             if (prevNumberOfLinesRef.current !== newNumberOfLines) {
                 prevNumberOfLinesRef.current = newNumberOfLines;
                 setNumberOfLines(newNumberOfLines);
+                onNumberOfLinesChange?.(numberOfLines);
             }
         },
-        [maxNumberOfLines, onHeightChange, textViewLineHeight],
+        [
+            maxNumberOfLines,
+            numberOfLines,
+            onHeightChange,
+            onNumberOfLinesChange,
+            textViewLineHeight,
+        ],
     );
 
     const remeasureInputHeight = React.useCallback(
@@ -93,11 +101,11 @@ function useMeasureAutogrowTextView(
 export function useAutogrow(
     ref: React.RefObject<TextInput>,
     textViewLineHeight: number,
-    onContentSizeChange: UITextViewProps['onContentSizeChange'],
     onChangeProp: UITextViewProps['onChange'],
     multiline: UITextViewProps['multiline'],
     maxNumberOfLines: UITextViewProps['maxNumberOfLines'],
     onHeightChange: UITextViewProps['onHeightChange'],
+    onNumberOfLinesChange: UITextViewProps['onNumberOfLinesChange'],
 ): AutogrowAttributes {
     const { numberOfLines, remeasureInputHeight } = useMeasureAutogrowTextView(
         ref,
@@ -105,6 +113,7 @@ export function useAutogrow(
         onHeightChange,
         multiline,
         maxNumberOfLines,
+        onNumberOfLinesChange,
     );
 
     const onChange = React.useCallback(
@@ -122,7 +131,6 @@ export function useAutogrow(
 
     if (!multiline) {
         return {
-            onContentSizeChange,
             onChange: onChangeProp,
             remeasureInputHeight: undefined,
             numberOfLines: undefined,
@@ -131,7 +139,6 @@ export function useAutogrow(
     }
 
     return {
-        onContentSizeChange,
         onChange,
         remeasureInputHeight,
         numberOfLines,

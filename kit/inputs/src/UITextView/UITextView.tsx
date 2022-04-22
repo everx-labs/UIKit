@@ -31,27 +31,15 @@ export const UITextView = React.forwardRef<UITextViewRef, UITextViewProps>(
         }: UITextViewProps,
         passedRef,
     ) {
-        const {
-            autoFocus,
-            onContentSizeChange: onContentSizeChangeProp,
-            onChange: onChangeProp,
-            multiline,
-        } = textInputProps;
+        const { autoFocus, onChange: onChangeProp, multiline } = textInputProps;
 
         const textInputRef = React.useRef<TextInput>(null);
         const theme = useTheme();
         const autoFocusProp = useAutoFocus(textInputRef, autoFocus);
 
-        const {
-            onContentSizeChange,
-            onChange,
-            numberOfLines,
-            remeasureInputHeight,
-            autogrowStyle,
-        } = useAutogrow(
+        const { onChange, remeasureInputHeight, numberOfLines, autogrowStyle } = useAutogrow(
             textInputRef,
             textViewLineHeight,
-            onContentSizeChangeProp,
             onChangeProp,
             multiline,
             maxNumberOfLines,
@@ -61,12 +49,13 @@ export const UITextView = React.forwardRef<UITextViewRef, UITextViewProps>(
 
         useHandleRef(textInputRef, passedRef, remeasureInputHeight);
 
-        React.useEffect(() => {
-            /**
-             * We have to force a height measurement to draw it correctly at the first render
-             */
-            requestAnimationFrame(() => remeasureInputHeight?.());
-        }, [remeasureInputHeight]);
+        const onLayout = React.useCallback(
+            function onLayout(event) {
+                textInputProps.onLayout?.(event);
+                remeasureInputHeight?.();
+            },
+            [remeasureInputHeight, textInputProps],
+        );
 
         return (
             <TextInput
@@ -91,8 +80,8 @@ export const UITextView = React.forwardRef<UITextViewRef, UITextViewProps>(
                     Typography[textViewTypographyVariant],
                     autogrowStyle,
                 ]}
-                onContentSizeChange={onContentSizeChange}
                 onChange={onChange}
+                onLayout={onLayout}
                 scrollEnabled={multiline}
                 numberOfLines={numberOfLines}
             />

@@ -150,6 +150,7 @@ export function ChatInput({
                     onBlur={onBlur}
                     maxNumberOfLines={CHAT_INPUT_NUM_OF_LINES}
                     onNumberOfLinesChange={onNumberOfLinesChange}
+                    defaultValue="фыв фыжв фжывд ьфжывд фжывдь жфдыв фжыьдв жфыдьв жфдыьв жфдфыв "
                 />
             )}
             {renderNotice()}

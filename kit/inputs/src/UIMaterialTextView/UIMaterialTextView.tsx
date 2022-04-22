@@ -42,14 +42,6 @@ function useExtendedProps(
     const { isFocused, onFocus, onBlur } = useFocused(onFocusProp, onBlurProp);
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
-    React.useEffect(() => {
-        /**
-         * We have to force a height measurement to draw it correctly
-         * at the first render and after the `Hover` and `isFocused` state has changed
-         */
-        requestAnimationFrame(() => ref.current?.remeasureInputHeight());
-    }, [ref, isHovered, isFocused]);
-
     const { selectionEnd, onSelectionChange, skipNextOnSelectionChange } =
         useOnSelectionChange(onSelectionChangeProp);
 

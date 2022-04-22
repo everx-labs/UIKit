@@ -12,7 +12,6 @@ export function useHandleRef(
             return remeasureInputHeight?.();
         },
         clear: () => {
-            remeasureInputHeight?.();
             return textInputRef.current?.clear();
         },
         isFocused: () => {

@@ -4,7 +4,6 @@ import type {
     StyleProp,
     TextInput,
     TextInputChangeEventData,
-    TextInputContentSizeChangeEventData,
     TextInputProps,
     TextStyle,
     ViewStyle,
@@ -73,9 +72,6 @@ export type UITextViewRef = Pick<
 };
 
 export type AutogrowAttributes = {
-    onContentSizeChange:
-        | ((e: NativeSyntheticEvent<TextInputContentSizeChangeEventData>) => void)
-        | undefined;
     onChange: ((event: NativeSyntheticEvent<TextInputChangeEventData>) => void) | undefined;
     remeasureInputHeight: (() => void) | undefined;
     numberOfLines: number | undefined;

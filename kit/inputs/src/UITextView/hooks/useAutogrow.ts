@@ -1,17 +1,10 @@
 import * as React from 'react';
-import type {
-    NativeSyntheticEvent,
-    StyleProp,
-    TextInput,
-    TextInputContentSizeChangeEventData,
-    TextStyle,
-} from 'react-native';
+import type { StyleProp, TextInput, TextStyle } from 'react-native';
 import type { AutogrowAttributes, UITextViewProps } from '../types';
 
 export function useAutogrow(
     ref: React.RefObject<TextInput>,
     textViewLineHeight: number,
-    onContentSizeChangeProp: UITextViewProps['onContentSizeChange'],
     onChangeProp: UITextViewProps['onChange'],
     multiline: UITextViewProps['multiline'],
     maxNumberOfLines: UITextViewProps['maxNumberOfLines'],
@@ -53,19 +46,6 @@ export function useAutogrow(
         [onMeasure, ref, multiline],
     );
 
-    const onContentSizeChange = React.useCallback(
-        function onContentSizeChange(
-            event: NativeSyntheticEvent<TextInputContentSizeChangeEventData>,
-        ) {
-            remeasureInputHeight();
-
-            if (onContentSizeChangeProp) {
-                onContentSizeChangeProp(event);
-            }
-        },
-        [onContentSizeChangeProp, remeasureInputHeight],
-    );
-
     const autogrowStyle = React.useMemo<StyleProp<TextStyle>>(
         function getAutogrowStyle() {
             if (multiline && maxNumberOfLines) {
@@ -79,10 +59,9 @@ export function useAutogrow(
     );
 
     return {
-        onContentSizeChange,
         onChange: onChangeProp,
-        numberOfLines: undefined,
         remeasureInputHeight,
+        numberOfLines: undefined,
         autogrowStyle,
     };
 }

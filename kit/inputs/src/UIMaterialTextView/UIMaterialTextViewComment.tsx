@@ -37,27 +37,28 @@ export function UIMaterialTextViewComment(
     return (
         <View onLayout={onLayout}>
             {children}
-            {/**
-             * We need to wrap this `UILabel` into `View`
-             * to make the `UILabel` animated via `LayoutAnimation`
-             */}
-            <View>
+            {helperText ? (
                 <UILabel
-                    style={styles.comment}
                     role={TypographyVariants.ParagraphLabel}
                     color={commentColor}
+                    style={styles.comment}
                 >
                     {helperText}
                 </UILabel>
-            </View>
+            ) : (
+                <View style={styles.bottomDefaultOffset} />
+            )}
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     comment: {
-        marginTop: UILayoutConstant.contentInsetVerticalX1,
+        paddingTop: UILayoutConstant.contentInsetVerticalX1,
         paddingHorizontal: UILayoutConstant.contentOffset,
-        minHeight: Typography[TypographyVariants.ParagraphLabel].lineHeight,
+    },
+    bottomDefaultOffset: {
+        marginTop: UILayoutConstant.contentInsetVerticalX1,
+        height: Typography[TypographyVariants.ParagraphLabel].lineHeight,
     },
 });
