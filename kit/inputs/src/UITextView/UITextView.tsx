@@ -5,21 +5,13 @@ import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { useAutogrow, useAutoFocus, useHandleRef } from './hooks';
 import type { UITextViewProps, UITextViewRef } from './types';
 
-/**
- * The input on the ios platform has a feature -
- * its height in `multiline={true}` mode is greater than in `multiline={false}`.
- * Experimentally, it was found that it increases from above by 4pt, and from below by 1pt.
- */
-export const EXTRA_TOP_PADDING_OF_MULTILINE_INPUT = Platform.OS === 'ios' ? 4 : 0;
-export const EXTRA_BOTTOM_PADDING_OF_MULTILINE_INPUT = Platform.OS === 'ios' ? 1 : 0;
-
 const textViewTypographyVariant = TypographyVariants.ParagraphText;
 const textViewLineHeight =
     StyleSheet.flatten(Typography[textViewTypographyVariant]).lineHeight ??
     UILayoutConstant.smallCellHeight;
 
-export const UITextView = React.forwardRef<UITextViewRef, UITextViewProps>(
-    function UITextViewForwarded(
+export const UITextView = React.memo(
+    React.forwardRef<UITextViewRef, UITextViewProps>(function UITextViewForwarded(
         {
             placeholderTextColor = ColorVariants.TextSecondary,
             style,
@@ -74,9 +66,8 @@ export const UITextView = React.forwardRef<UITextViewRef, UITextViewProps>(
                     style,
                     {
                         color: theme[ColorVariants.TextPrimary],
-                        paddingTop: multiline ? -EXTRA_TOP_PADDING_OF_MULTILINE_INPUT : 0,
-                        paddingBottom: multiline ? -EXTRA_BOTTOM_PADDING_OF_MULTILINE_INPUT : 0,
                     },
+                    multiline ? styles.inputMultiline : null,
                     Typography[textViewTypographyVariant],
                     autogrowStyle,
                 ]}
@@ -86,7 +77,7 @@ export const UITextView = React.forwardRef<UITextViewRef, UITextViewProps>(
                 numberOfLines={numberOfLines}
             />
         );
-    },
+    }),
 );
 
 const styles = StyleSheet.create({
@@ -106,4 +97,16 @@ const styles = StyleSheet.create({
             },
         }),
     },
+    inputMultiline: Platform.select({
+        ios: {
+            /**
+             * The input on the ios platform has a feature -
+             * its height in `multiline={true}` mode is greater than in `multiline={false}`.
+             * Experimentally, it was found that it increases from above by 4pt, and from below by 1pt.
+             */
+            paddingTop: -4,
+            paddingBottom: -1,
+        },
+        default: {},
+    }),
 });
