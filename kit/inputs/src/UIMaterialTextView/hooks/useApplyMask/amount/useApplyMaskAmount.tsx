@@ -8,17 +8,17 @@ import type {
     UIMaterialTextViewInputState,
 } from '../../../types';
 import { runUIOnChangeAmount } from './runUIOnChangeAmount';
-import { UIConstants } from './constants';
+import { UIConstants } from '../../../constants';
 
 function useCountOfDecimalDigits(mask: UIMaterialTextViewAmountMask | undefined): number | null {
     return React.useMemo(() => {
         switch (mask) {
             case 'AmountInteger':
-                return UIConstants.aspectRatio.integer;
+                return UIConstants.amount.decimalAspect.integer;
             case 'AmountCurrency':
-                return UIConstants.aspectRatio.currency;
+                return UIConstants.amount.decimalAspect.currency;
             case 'AmountPrecision':
-                return UIConstants.aspectRatio.precision;
+                return UIConstants.amount.decimalAspect.precision;
             default:
                 return null;
         }
