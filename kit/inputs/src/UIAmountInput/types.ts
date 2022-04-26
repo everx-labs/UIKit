@@ -1,5 +1,5 @@
 import type BigNumber from 'bignumber.js';
-import type { UIMaterialTextViewRef } from '../UIMaterialTextView/types';
+import type { UIMaterialTextViewChild, UIMaterialTextViewRef } from '../UIMaterialTextView/types';
 import type { UIAmountInputDecimalAspect, UIAmountInputMessageType } from './constants';
 
 export type UIAmountInputProps = {
@@ -36,6 +36,13 @@ export type UIAmountInputProps = {
      */
     placeholder?: string;
     /**
+     *  As children you can provide only one or two of this component:
+     *  `UIAmountInput.Icon`
+     *  `UIAmountInput.Action`
+     *  `UIAmountInput.Text`
+     */
+    children?: UIAmountInputChild | UIAmountInputChild[] | undefined;
+    /**
      * ID for usage in tests
      */
     testID?: string;
@@ -44,3 +51,5 @@ export type UIAmountInputProps = {
 export type UIAmountInputRef = Omit<UIMaterialTextViewRef, 'changeText'> & {
     changeAmount: (amount: BigNumber | undefined, callOnChangeProp?: boolean) => void;
 };
+
+export type UIAmountInputChild = UIMaterialTextViewChild;
