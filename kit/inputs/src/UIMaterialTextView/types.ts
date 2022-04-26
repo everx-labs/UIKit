@@ -12,10 +12,9 @@ import type { UIImageProps } from '@tonlabs/uikit.media';
 import type { UITextViewProps } from '../UITextView';
 
 export type UIMaterialTextViewAmountMask =
-    | 'Amount'
-    | 'AmountInteger'
-    | 'AmountPrecision'
-    | 'AmountCurrency';
+    | 'AmountInteger' // integer number (aspectRatio === 0)
+    | 'AmountPrecision' // precision numer (aspectRatio === 9)
+    | 'AmountCurrency'; // currency number (aspectRatio === 2)
 export type UIMaterialTextViewMask = UIMaterialTextViewAmountMask;
 
 export type UIMaterialTextViewIconChild = React.ReactElement<UIMaterialTextViewIconProps>;
