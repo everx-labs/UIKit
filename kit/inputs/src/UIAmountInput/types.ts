@@ -16,7 +16,7 @@ export type UIAmountInputProps = {
      */
     label?: string;
     /**
-     * How many digits to draw for decimal aspect.
+     * How many digits to draw for decimal part.
      *
      * You should choose from predefined ones.
      * @default  UIAmountInputDecimalAspect.Precision
