@@ -5,10 +5,10 @@ import type { UIExpandableTextProps } from './types';
 
 export function MeasureLabel(
     props: UIExpandableTextProps & {
-        setIsFit: (isFit: boolean) => void;
+        onMeasure: (isFit: boolean) => void;
     },
 ) {
-    const { numberOfLines, setIsFit, role } = props;
+    const { numberOfLines, onMeasure, role } = props;
 
     const lineHeight = React.useMemo(
         () => StyleSheet.flatten(Typography[role || TypographyVariants.ParagraphText]).lineHeight,
@@ -16,24 +16,22 @@ export function MeasureLabel(
     );
 
     const onLayout = React.useCallback(
-        (event: LayoutChangeEvent) => {
-            const {
-                nativeEvent: {
-                    layout: { height },
-                },
-            } = event;
-
+        ({
+            nativeEvent: {
+                layout: { height },
+            },
+        }: LayoutChangeEvent) => {
             if (
                 numberOfLines == null ||
                 lineHeight == null ||
                 Math.round(height / lineHeight) <= numberOfLines
             ) {
-                setIsFit(true);
+                onMeasure(true);
             } else {
-                setIsFit(false);
+                onMeasure(false);
             }
         },
-        [lineHeight, numberOfLines, setIsFit],
+        [lineHeight, numberOfLines, onMeasure],
     );
 
     return (

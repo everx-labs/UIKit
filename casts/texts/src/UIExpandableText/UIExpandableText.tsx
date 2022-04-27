@@ -15,13 +15,22 @@ function UIExpandableTextImpl(props: UIExpandableTextProps) {
     const [isExpanded, setIsExpanded] = React.useState<boolean>(false);
     const [isFit, setIsFit] = React.useState<boolean>(false);
 
+    const onMeasure = React.useCallback(
+        (isFitMeasured: boolean) => {
+            if (isFitMeasured !== isFit) {
+                setIsFit(isFitMeasured);
+            }
+        },
+        [isFit],
+    );
+
     const onExpand = React.useCallback(() => {
         setIsExpanded(true);
     }, []);
 
     return (
         <View style={styles.container} testID={testID}>
-            <MeasureLabel {...props} setIsFit={setIsFit} />
+            <MeasureLabel {...props} onMeasure={onMeasure} />
             <UILabel
                 {...props}
                 numberOfLines={isExpanded ? undefined : numberOfLines}
