@@ -4,7 +4,7 @@ import { Bubble } from '@tonlabs/uistory.chats';
 import { UIPressableArea } from '@tonlabs/uikit.controls';
 import { TypographyVariants, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import { UICurrency } from '@tonlabs/uicast.numbers';
+import { UICurrency, UINumberDecimalAspect } from '@tonlabs/uicast.numbers';
 import { uiLocalized } from '@tonlabs/localization';
 import type BigNumber from 'bignumber.js';
 import type { TransactionDetailsProps } from './types';
@@ -58,7 +58,9 @@ function NumberParameter({
             <UIPressableArea onPress={onPress} disabled={!onPress} style={styles.parameterValue}>
                 <UILabel role={TypographyVariants.ParagraphText}>
                     {prefix}
-                    <UICurrency signChar={signChar}>{value}</UICurrency>
+                    <UICurrency signChar={signChar} decimalAspect={UINumberDecimalAspect.Precision}>
+                        {value}
+                    </UICurrency>
                 </UILabel>
             </UIPressableArea>
         </View>
