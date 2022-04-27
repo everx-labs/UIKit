@@ -3,6 +3,14 @@ import { LayoutChangeEvent, StyleSheet } from 'react-native';
 import { UILabel, TypographyVariants, Typography } from '@tonlabs/uikit.themes';
 import type { UIExpandableTextProps } from './types';
 
+/**
+ * It is used only to find out if the UILabel will be clipped
+ * by a given numberOfLines or the text will fit in its entirety.
+ *
+ * It renders nothing visible.
+ * @param props
+ * @returns
+ */
 export function MeasureLabel(
     props: UIExpandableTextProps & {
         onMeasure: (isFit: boolean) => void;
