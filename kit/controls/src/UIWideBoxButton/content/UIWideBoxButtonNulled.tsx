@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ColorValue, ImageStyle, StyleProp, View, ViewStyle } from 'react-native';
+import { ColorValue, ImageStyle, Platform, StyleProp, View } from 'react-native';
 import { UILabelAnimated, UILabelRoles, makeStyles, ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAnimatedImage } from '@tonlabs/uikit.media';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
@@ -16,11 +16,11 @@ function RightContent({
     imageStyle,
 }: Pick<UIWideBoxButtonProps, 'icon' | 'loading'> & {
     contentColor: Readonly<Animated.SharedValue<string | number>>;
-    imageStyle: StyleProp<ViewStyle>;
+    imageStyle: StyleProp<ImageStyle>;
 }) {
     const animatedImageProps = useAnimatedProps(() => {
         return {
-            tintColor: contentColor.value,
+            tintColor: contentColor.value as ColorValue,
         };
     });
 
@@ -68,6 +68,12 @@ const useStyles = makeStyles((hasCaption: boolean) => ({
         alignItems: 'center',
         justifyContent: 'space-between',
         borderRadius: UILayoutConstant.alertBorderRadius,
+        ...Platform.select({
+            web: {
+                userSelect: 'none',
+            },
+            default: null,
+        }),
     },
     image: {
         marginLeft: UILayoutConstant.normalContentOffset,
