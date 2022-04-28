@@ -17,24 +17,11 @@ import type { TransactionConfirmationMessage } from '../types';
 import { TransactionDetails } from '../TransactionDetails';
 
 export function TransactionConfirmation({
-    onLayout,
-    recipient,
-    onRecipientPress,
-    action,
-    amount,
-    amountCurrency,
-    contractFee,
-    contractFeeCurrency,
-    networkFee,
-    networkFeeCurrency,
-    signature,
-    isDangerous,
     onApprove: onApproveProp,
     onCancel: onCancelProp,
     externalState,
-    firstFromChain,
-    lastFromChain,
-    status,
+    onLayout,
+    ...transactionDetailsProps
 }: TransactionConfirmationMessage) {
     const theme = useTheme();
 
@@ -52,20 +39,7 @@ export function TransactionConfirmation({
     return (
         <View onLayout={onLayout}>
             <TransactionDetails
-                signature={signature.title}
-                action={action}
-                recipient={recipient}
-                amount={amount}
-                amountCurrency={amountCurrency}
-                contractFee={contractFee}
-                contractFeeCurrency={contractFeeCurrency}
-                networkFee={networkFee}
-                networkFeeCurrency={networkFeeCurrency}
-                isDangerous={isDangerous}
-                onRecipientPress={onRecipientPress}
-                firstFromChain={firstFromChain}
-                lastFromChain={lastFromChain}
-                status={status}
+                {...transactionDetailsProps}
                 key="TransactionConfirmation-details"
             />
             {externalState?.status == null ? (

@@ -84,7 +84,7 @@ function ExpandedContent(props: TransactionDetailsProps) {
         <>
             <TextParameter
                 label={uiLocalized.Browser.TransactionConfirmation.Signature}
-                value={signature}
+                value={signature?.title}
             />
             <TextParameter
                 label={uiLocalized.Browser.TransactionConfirmation.Action}
@@ -136,8 +136,8 @@ function FoldedContent(props: TransactionDetailsProps) {
 }
 
 export function TransactionDetails(props: TransactionDetailsProps) {
-    const { isDangerous } = props;
-    const [expanded, setExpanded] = React.useState<boolean>(false);
+    const { isDangerous, expandedByDefault } = props;
+    const [expanded, setExpanded] = React.useState<boolean>(!!expandedByDefault);
     const onPress = React.useCallback(() => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setExpanded(prev => !prev);

@@ -296,39 +296,36 @@ export type TransactionConfirmationExternalState = {
     status: 'approved' | 'cancelled';
 };
 
-export type TransactionConfirmationMessage = InteractiveMessage<
-    InteractiveMessageType.TransactionConfirmation,
-    {
-        recipient?: string;
-        onRecipientPress?: () => void | Promise<void>;
-        amount: BigNumber;
-        amountCurrency: string;
-        action?: string;
-        contractFee: BigNumber;
-        contractFeeCurrency: string;
-        networkFee: BigNumber;
-        networkFeeCurrency: string;
-        signature: SigningBox;
-        onApprove: (externalState: TransactionConfirmationExternalState) => void | Promise<void>;
-        onCancel: (externalState: TransactionConfirmationExternalState) => void | Promise<void>;
-        isDangerous?: boolean;
-    },
-    TransactionConfirmationExternalState
->;
-
-export type TransactionDetailsProps = BubbleBaseT & {
-    signature?: string;
+export type TransactionDetails = {
+    signature?: SigningBox;
     action?: string;
-    recipient?: string;
     amount?: BigNumber;
     amountCurrency: string;
     contractFee?: BigNumber;
     contractFeeCurrency: string;
+    isDangerous?: boolean;
     networkFee?: BigNumber;
     networkFeeCurrency: string;
-    isDangerous?: boolean;
+    recipient?: string;
     onRecipientPress?: () => void | Promise<void>;
+
+    /**
+     * Whether the bubble is expanded by default.
+     * If the value is 'false', the `more` button is displayed.
+     */
+    expandedByDefault?: boolean;
 };
+
+export type TransactionConfirmationMessage = InteractiveMessage<
+    InteractiveMessageType.TransactionConfirmation,
+    TransactionDetails & {
+        onApprove: (externalState: TransactionConfirmationExternalState) => void | Promise<void>;
+        onCancel: (externalState: TransactionConfirmationExternalState) => void | Promise<void>;
+    },
+    TransactionConfirmationExternalState
+>;
+
+export type TransactionDetailsProps = BubbleBaseT & TransactionDetails;
 
 export type QRCodeScannerExternalState = {
     value: string;
