@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Pressable as PressablePlatform } from 'react-native';
+import { Pressable as PressablePlatform, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useHover } from '../useHover';
 import { PressableStateContext, PressableStateVariant } from './constants';
@@ -14,15 +14,13 @@ const PressablePlatformAnimated = Animated.createAnimatedComponent(PressablePlat
  *
  * To animate children colors please use `usePressableContentColor` hook in children components.
  */
-export function Pressable({
-    onPress,
-    onLongPress,
-    disabled,
-    loading,
-    children,
-    style,
-    testID,
-}: PressableProps) {
+export const Pressable = React.forwardRef<View, PressableProps>(function Pressable(
+    { onPress, onLongPress, disabled, loading, children, style, testID }: PressableProps,
+    passedRef,
+) {
+    const localRef = React.useRef<View>(null);
+    const ref = passedRef || localRef;
+
     const { isPressed, onPressIn, onPressOut } = usePressed();
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
     const pressableState: PressableStateVariant = usePressableState(
@@ -35,6 +33,7 @@ export function Pressable({
     return (
         <PressableStateContext.Provider value={pressableState}>
             <PressablePlatformAnimated
+                ref={ref}
                 onPress={onPress}
                 onLongPress={onLongPress}
                 testID={testID}
@@ -50,4 +49,4 @@ export function Pressable({
             </PressablePlatformAnimated>
         </PressableStateContext.Provider>
     );
-}
+});
