@@ -91,6 +91,8 @@ const TintUIImage = React.forwardRef<View, UIImageSimpleProps>(function TintUIIm
                  * in the transparency of the image
                  * (it seems that the transparency values are multiplied)
                  */
+                canvasCtxHolder.current.clearRect(0, 0, dimensions.width, dimensions.height);
+                canvasCtxHolder.current.globalCompositeOperation = 'copy';
                 canvasCtxHolder.current.drawImage(
                     imgRef.current,
                     0,
@@ -98,6 +100,7 @@ const TintUIImage = React.forwardRef<View, UIImageSimpleProps>(function TintUIIm
                     dimensions.width,
                     dimensions.height,
                 );
+                canvasCtxHolder.current.globalCompositeOperation = 'source-in';
                 canvasCtxHolder.current.fillStyle = nativeProps.style.tintColor as string;
                 canvasCtxHolder.current.fillRect(0, 0, dimensions.width, dimensions.height);
             }
@@ -189,7 +192,7 @@ const TintUIImage = React.forwardRef<View, UIImageSimpleProps>(function TintUIIm
             // draw image
             ctx.drawImage(imgRef.current, 0, 0, dimensions.width, dimensions.height);
             // set composite mode
-            ctx.globalCompositeOperation = 'source-atop';
+            ctx.globalCompositeOperation = 'source-in';
             // draw color
             ctx.fillStyle = tintColor as string;
             ctx.fillRect(0, 0, dimensions.width, dimensions.height);
