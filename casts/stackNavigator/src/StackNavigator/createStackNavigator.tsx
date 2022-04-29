@@ -90,7 +90,7 @@ export const StackNavigator = ({
         [navigation, state.index, state.key],
     );
 
-    const descriptors = useWrapScreensWithUILargeTitleHeader(rawDescriptors);
+    const descriptors = useWrapScreensWithUILargeTitleHeader(state, rawDescriptors);
 
     if (doesSupportNative) {
         // TODO: check, maybe we don't need it anymore
