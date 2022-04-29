@@ -247,7 +247,15 @@ function useScrollToTop(ref: React.RefObject<SectionList>, hasScrollOverflow: bo
 
     useAnimatedReaction(
         () => keyboardBottomInset.value,
-        () => {
+        (bottomInset, prevBottomInset) => {
+            // do nothing on initial call
+            if (prevBottomInset == null) {
+                return;
+            }
+            // also do nothing, if there wasn't any real difference in value
+            if (prevBottomInset === bottomInset) {
+                return;
+            }
             runOnJS(scrollToTop)();
         },
     );
