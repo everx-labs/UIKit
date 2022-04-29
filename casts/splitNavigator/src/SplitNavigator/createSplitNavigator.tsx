@@ -548,7 +548,7 @@ export function SplitNavigator({
     const descriptors = useWrapScreensWithUILargeTitleHeader<
         SplitScreenOptions,
         SplitNavigationState
-    >(rawDescriptors, !isSplitted);
+    >(state, rawDescriptors, !isSplitted);
 
     const mainRoute = state.routes.find(({ name }: { name: string }) => name === MAIN_SCREEN_NAME);
     if (mainRoute == null) {

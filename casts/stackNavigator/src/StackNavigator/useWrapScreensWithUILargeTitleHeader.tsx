@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { NavigationContext, NavigationState } from '@react-navigation/native';
+import {
+    NavigationContext,
+    NavigationState,
+    NavigationRouteContext,
+} from '@react-navigation/native';
 import type { Descriptor, StackNavigationState, ParamListBase } from '@react-navigation/native';
 
 import { UIBackgroundView, ColorVariants } from '@tonlabs/uikit.themes';
@@ -127,9 +131,18 @@ export function useWrapScreensWithUILargeTitleHeader<
     Options extends StackNavigationOptions = StackNavigationOptions,
     NavState extends NavigationState<ParamListBase> = NavigationState<ParamListBase>,
 >(
+    state: NavigationState<ParamListBase>,
     descriptors: StackLikeDescriptors<Options, NavState>,
     hasTopInset: boolean = true,
 ): StackLikeDescriptors<Options, NavState> {
+    const descriptorToRouteMap = React.useMemo(
+        () =>
+            state.routes.reduce((acc, route) => {
+                acc[route.key] = route;
+                return acc;
+            }, {} as Record<string, typeof state['routes'][0]>),
+        [state.routes],
+    );
     return React.useMemo(
         () =>
             Object.keys(descriptors).reduce<StackLikeDescriptors<Options, NavState>>((acc, key) => {
@@ -139,19 +152,21 @@ export function useWrapScreensWithUILargeTitleHeader<
                     render: () => {
                         return (
                             <NavigationContext.Provider value={descriptor.navigation}>
-                                <ScreenWithHeaderContent
-                                    descriptor={descriptor}
-                                    hasTopInset={hasTopInset}
-                                >
-                                    {descriptor.render()}
-                                </ScreenWithHeaderContent>
+                                <NavigationRouteContext.Provider value={descriptorToRouteMap[key]}>
+                                    <ScreenWithHeaderContent
+                                        descriptor={descriptor}
+                                        hasTopInset={hasTopInset}
+                                    >
+                                        {descriptor.render()}
+                                    </ScreenWithHeaderContent>
+                                </NavigationRouteContext.Provider>
                             </NavigationContext.Provider>
                         );
                     },
                 };
                 return acc;
             }, {}),
-        [descriptors, hasTopInset],
+        [descriptors, hasTopInset, descriptorToRouteMap],
     );
 }
 
