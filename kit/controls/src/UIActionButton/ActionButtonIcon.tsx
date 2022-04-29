@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ImageStyle, StyleSheet, View } from 'react-native';
 import { ColorVariants, useTheme, makeStyles } from '@tonlabs/uikit.themes';
 import { UIAnimatedImage } from '@tonlabs/uikit.media';
 import { UIConstant } from '../constants';
@@ -30,7 +30,7 @@ function ActionButtonIconImpl({
                 <UIAnimatedImage
                     source={icon}
                     animatedProps={animatedProps}
-                    style={styles.iconSize}
+                    style={styles.iconSize as ImageStyle}
                 />
             </View>
         );
