@@ -173,7 +173,11 @@
     
     UIScrollView *scrollView = ((RCTScrollView *)view).scrollView;
     
-    [scrollView removeObserver:self forKeyPath:@"contentOffset" context:nil];
+    @try {
+        [scrollView removeObserver:self forKeyPath:@"contentOffset" context:nil];
+    }@catch(id exception) {
+        // do nothing, as it appears there wasn't an observer attached
+    }
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
