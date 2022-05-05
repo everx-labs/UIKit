@@ -153,7 +153,7 @@ function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
      */
 
     /**
-     * Actually if statement should be `sectionEndY === visibleBottomOffset`
+     * Actually statement should be `sectionEndY === visibleBottomOffset`
      * But in reality they might be not equal, with a diff less then 1.
      * Since values less than 1 (i.e 0.9) will be casted to `int` in native
      * we treat it as equality
