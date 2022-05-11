@@ -53,7 +53,7 @@ export function useMaterialTextViewChildren(
     inputHasValue: boolean,
     isFocused: boolean,
     isHovered: boolean,
-    clear: () => void,
+    clear: (() => void) | undefined,
 ): MaterialTextViewProps['children'] {
     const clearButton = useClearButton(inputHasValue, isFocused, isHovered, clear);
 

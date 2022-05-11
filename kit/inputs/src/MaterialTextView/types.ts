@@ -57,6 +57,7 @@ export type MaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
      * It must not be changed between renders.
      */
     mask?: MaterialTextViewMask;
+    onHover?: (isHovered: boolean) => void;
 };
 
 export type MaterialTextViewLayoutProps = MaterialTextViewProps & {

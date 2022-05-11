@@ -15,7 +15,7 @@ function emptyMethod(name: string, returnedValue: any = null) {
 }
 
 export function useExtendedRef(
-    forwardedRed: React.Ref<MaterialTextViewRef>,
+    forwardedRef: React.Ref<MaterialTextViewRef>,
     localRef: React.RefObject<UITextViewRef>,
     imperativeChangeText: ImperativeChangeText,
     moveCarret: MaterialTextViewRefMoveCarret,
@@ -29,7 +29,7 @@ export function useExtendedRef(
     );
 
     React.useImperativeHandle<Record<string, any>, MaterialTextViewRef>(
-        forwardedRed,
+        forwardedRef,
         (): MaterialTextViewRef => ({
             changeText,
             moveCarret,

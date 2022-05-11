@@ -14,7 +14,7 @@ export function useClearButton(
     inputHasValue: boolean,
     isFocused: boolean,
     isHovered: boolean,
-    clear: () => void,
+    clear: (() => void) | undefined,
 ) {
     return React.useMemo(() => {
         if (inputHasValue && (isFocused || isHovered)) {
