@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BackHandler, Platform, TextInput } from 'react-native';
+import { BackHandler, Platform } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/localization';
 import {
@@ -9,6 +9,7 @@ import {
 } from '@tonlabs/uicast.keyboard';
 import { UIPopup } from '@tonlabs/uikit.popups';
 import type { UIMenuActionProps } from '@tonlabs/uikit.popups';
+import type { UITextViewRef } from '@tonlabs/uikit.inputs';
 
 import { ChatInput } from './ChatInput';
 import type { OnSendText, OnSendMedia, OnSendDocument, Shortcut, QuickActionItem } from './types';
@@ -48,7 +49,7 @@ function useMenuPlus(menuPlusHidden = false) {
     };
 }
 
-export function useBackHandler(ref: React.RefObject<TextInput>, dismissKeyboard: () => void) {
+export function useBackHandler(ref: React.RefObject<UITextViewRef>, dismissKeyboard: () => void) {
     React.useEffect(() => {
         if (Platform.OS !== 'android') {
             return undefined;
@@ -112,7 +113,7 @@ export function UIChatInput({
     onSendMedia,
     onHeightChange,
 }: UIChatInputProps) {
-    const textInputRef = React.useRef<TextInput>(null);
+    const textInputRef = React.useRef<UITextViewRef>(null);
 
     const {
         customKeyboardView,

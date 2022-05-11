@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UILabel } from '@tonlabs/uikit.themes';
 import { UIInputAccessoryView, useCustomKeyboard } from '@tonlabs/uicast.keyboard';
 import { useStickers } from '@tonlabs/uistory.stickers';
+import { UITextViewRef, UITextView } from '@tonlabs/uikit.inputs';
 
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -23,7 +24,7 @@ export function KeyboardScreen() {
     const insets = useSafeAreaInsets();
     const inverted = false;
 
-    const inputRef = React.useRef<TextInput>(null);
+    const inputRef = React.useRef<UITextViewRef>(null);
     const cStickers = useStickers(stickers, (/* sticker */) => {
         return true;
     });
@@ -83,12 +84,12 @@ export function KeyboardScreen() {
                         padding: 20,
                     }}
                 >
-                    <TextInput
+                    <UITextView
                         ref={inputRef}
                         autoComplete="off"
                         autoCorrect={false}
                         nativeID="test-input-for-keyboard"
-                        style={{ flex: 1, backgroundColor: 'red' }}
+                        style={{ flex: 1 }}
                         placeholder="Type here"
                         onFocus={dismiss}
                         onBlur={() => console.log("why I'm blured?")}

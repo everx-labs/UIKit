@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-    Platform,
-    TextInput,
-    Text,
-    View,
-    TouchableWithoutFeedback,
-    StyleSheet,
-} from 'react-native';
+import { Platform, Text, View, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 import Animated, {
     interpolateColor,
     useAnimatedProps,
@@ -23,7 +16,7 @@ import {
     useTheme,
     AnimateableText,
 } from '@tonlabs/uikit.themes';
-import { UITextView } from '@tonlabs/uikit.inputs';
+import { UITextView, UITextViewRef } from '@tonlabs/uikit.inputs';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { uiLocalized } from '@tonlabs/localization';
@@ -44,11 +37,11 @@ const TIME_INPUT_IS_NOT_IN_FOCUS = 0;
 // @inline
 const TIME_INPUT_IS_IN_FOCUS = 1;
 
-const TimeInput = React.forwardRef<TextInput, TimeInputProps>(function TimeInput(
+const TimeInput = React.forwardRef<UITextViewRef, TimeInputProps>(function TimeInput(
     { initialTextTime, onChange }: TimeInputProps,
     forwardedRef,
 ) {
-    const inputRef = React.useRef<TextInput>(null);
+    const inputRef = React.useRef<UITextViewRef>(null);
 
     // @ts-ignore TS doesn't understand it, but it works
     React.useImperativeHandle(forwardedRef, () => inputRef.current);
@@ -160,7 +153,7 @@ const TimeInput = React.forwardRef<TextInput, TimeInputProps>(function TimeInput
 export function Time() {
     const { initialTime, isValid, haveValidation, isAmPmTime, isAM, toggleAmPm, set } = useTime();
 
-    const inputRef = React.useRef<TextInput>(null);
+    const inputRef = React.useRef<UITextViewRef>(null);
 
     React.useEffect(() => {
         /**
