@@ -327,7 +327,7 @@ function UIAmountInputInternal({
 
     return (
         <ChatInputContainer
-            hasInputSeveralLines={false}
+            hasSeveralLinesInInput={false}
             right={
                 <ActionButton
                     inputHasValue={inputHasValue}

@@ -10,7 +10,7 @@ import { MenuMore } from './MenuMore';
 import { QuickAction } from './QuickActions';
 import { useChatInputValue } from './useChatInputValue';
 import type { QuickActionItem, OnSendText, Shortcut } from './types';
-import { useChatInputHasSeveralLines } from './useChatInputHasSeveralLines';
+import { useHasSeveralLinesInInput } from './useHasSeveralLinesInInput';
 
 const MAX_INPUT_LENGTH = 2 ** 10;
 
@@ -62,7 +62,7 @@ export function ChatInput({
     onBlur,
     onHeightChange,
 }: ChatInputProps) {
-    const { onNumberOfLinesChange, hasInputSeveralLines } = useChatInputHasSeveralLines();
+    const { onNumberOfLinesChange, hasSeveralLinesInInput } = useHasSeveralLinesInInput();
 
     const [isNoticeVisible, setNoticeVisible] = React.useState(false);
 
@@ -104,7 +104,7 @@ export function ChatInput({
 
     return (
         <ChatInputContainer
-            hasInputSeveralLines={hasInputSeveralLines}
+            hasSeveralLinesInInput={hasSeveralLinesInInput}
             shortcuts={shortcuts}
             left={
                 menuPlus?.length && menuPlus?.length > 0 ? (

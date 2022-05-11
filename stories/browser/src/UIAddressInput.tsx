@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import {
     ChatInputContainer,
-    useChatInputHasSeveralLines,
+    useHasSeveralLinesInInput,
     useChatInputValue,
 } from '@tonlabs/uistory.chats';
 import { UITextView, UITextViewRef } from '@tonlabs/uikit.inputs';
@@ -92,7 +92,7 @@ export function UIAddressInputInternal({
     placeholder,
     onMaxLength: onMaxLengthProp,
 }: UIAddressInputInternalProps) {
-    const { onNumberOfLinesChange, hasInputSeveralLines } = useChatInputHasSeveralLines();
+    const { onNumberOfLinesChange, hasSeveralLinesInInput } = useHasSeveralLinesInInput();
 
     const [isNoticeVisible, setNoticeVisible] = React.useState(false);
 
@@ -143,7 +143,7 @@ export function UIAddressInputInternal({
 
     return (
         <ChatInputContainer
-            hasInputSeveralLines={hasInputSeveralLines}
+            hasSeveralLinesInInput={hasSeveralLinesInInput}
             right={
                 <ActionButton
                     inputHasValue={inputHasValue}
