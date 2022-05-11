@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { TextInput } from 'react-native';
+import type { UITextViewRef } from '../../UITextView';
 import type {
     UIMaterialTextViewRef,
     UIMaterialTextViewRefChangeText,
@@ -16,7 +16,7 @@ function emptyMethod(name: string, returnedValue: any = null) {
 
 export function useExtendedRef(
     forwardedRed: React.Ref<UIMaterialTextViewRef>,
-    localRef: React.RefObject<TextInput>,
+    localRef: React.RefObject<UITextViewRef>,
     imperativeChangeText: ImperativeChangeText,
     moveCarret: UIMaterialTextViewRefMoveCarret,
     clear: () => void,

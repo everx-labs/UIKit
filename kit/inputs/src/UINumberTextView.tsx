@@ -1,9 +1,6 @@
 import * as React from 'react';
-import type { TextInput } from 'react-native';
-
 import { uiLocalized } from '@tonlabs/localization';
-
-import { UITextView, UITextViewProps } from './UITextView';
+import { UITextView, UITextViewProps, UITextViewRef } from './UITextView';
 import { moveCarret } from './moveCarret';
 
 const groupReversed = (rawString: string, groupSize: number, groupSeparator: string) => {
@@ -129,7 +126,10 @@ function getNewCarretPosition(
     return newCarretPosition;
 }
 
-export function useNumberFormatting(ref: React.Ref<TextInput> | null, decimals: number = Infinity) {
+export function useNumberFormatting(
+    ref: React.Ref<UITextViewRef> | null,
+    decimals: number = Infinity,
+) {
     const selectionStart = React.useRef(0);
     const selectionEnd = React.useRef(0);
 
@@ -236,7 +236,7 @@ export function useNumberFormatting(ref: React.Ref<TextInput> | null, decimals: 
 }
 
 export function UINumberTextView(props: UITextViewProps) {
-    const textViewRef = React.useRef<TextInput>(null);
+    const textViewRef = React.useRef<UITextViewRef>(null);
 
     const { onSelectionChange, onChangeText } = useNumberFormatting(textViewRef);
 

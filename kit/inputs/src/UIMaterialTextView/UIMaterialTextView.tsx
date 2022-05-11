@@ -1,5 +1,4 @@
 import * as React from 'react';
-import type { TextInput } from 'react-native';
 import { useHover } from '@tonlabs/uikit.controls';
 import {
     useMaterialTextViewChildren,
@@ -7,7 +6,6 @@ import {
     UIMaterialTextViewAction,
     UIMaterialTextViewText,
     useExtendedRef,
-    useAutogrow,
     useImperativeChange,
     useInputHasValue,
     useClear,
@@ -21,24 +19,19 @@ import type {
     UIMaterialTextViewProps,
     UIMaterialTextViewLayoutProps,
 } from './types';
-import { useFocused } from '../UITextView';
+import { UITextViewRef, useFocused } from '../UITextView';
 
 function useExtendedProps(
     props: UIMaterialTextViewProps,
-    ref: React.RefObject<TextInput>,
+    ref: React.RefObject<UITextViewRef>,
     passedRef: React.ForwardedRef<UIMaterialTextViewRef>,
 ): UIMaterialTextViewLayoutProps {
     const {
         mask,
         children,
-        onHeightChange,
-        multiline,
         value,
         defaultValue: defaultValueProp,
         onChangeText: onChangeTextProp,
-        onContentSizeChange: onContentSizeChangeProp,
-        onChange: onChangeProp,
-        numberOfLines: numberOfLinesProp,
         onFocus: onFocusProp,
         onBlur: onBlurProp,
         onSelectionChange: onSelectionChangeProp,
@@ -48,17 +41,6 @@ function useExtendedProps(
 
     const { isFocused, onFocus, onBlur } = useFocused(onFocusProp, onBlurProp);
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
-
-    const { onContentSizeChange, onChange, numberOfLines, remeasureInputHeight } = useAutogrow(
-        ref,
-        onContentSizeChangeProp,
-        onChangeProp,
-        multiline,
-        numberOfLinesProp,
-        onHeightChange,
-        isHovered,
-        isFocused,
-    );
 
     const { selectionEnd, onSelectionChange, skipNextOnSelectionChange } =
         useOnSelectionChange(onSelectionChangeProp);
@@ -85,7 +67,7 @@ function useExtendedProps(
         defaultValueRef.current = applyMask(defaultValueProp).formattedText;
     }
 
-    const clear = useClear(remeasureInputHeight, imperativeChangeText, ref);
+    const clear = useClear(imperativeChangeText, ref);
 
     const processedChildren = useMaterialTextViewChildren(
         children,
@@ -99,9 +81,6 @@ function useExtendedProps(
 
     const newProps: UIMaterialTextViewLayoutProps = {
         ...props,
-        onContentSizeChange,
-        onChange,
-        numberOfLines,
         onFocus,
         onBlur,
         children: processedChildren,
@@ -120,7 +99,7 @@ function useExtendedProps(
 
 const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMaterialTextViewProps>(
     function UIMaterialTextViewForward(props: UIMaterialTextViewProps, passedRef) {
-        const ref = React.useRef<TextInput>(null);
+        const ref = React.useRef<UITextViewRef>(null);
         const { label } = props;
         const extendedProps = useExtendedProps(props, ref, passedRef);
 

@@ -1,13 +1,5 @@
 import type React from 'react';
-import type {
-    View,
-    ViewStyle,
-    StyleProp,
-    TextInput,
-    NativeSyntheticEvent,
-    TextInputContentSizeChangeEventData,
-    TextInputChangeEventData,
-} from 'react-native';
+import type { View, ViewStyle, StyleProp, TextInput } from 'react-native';
 import type { UIImageProps } from '@tonlabs/uikit.media';
 import type { UITextViewProps } from '../UITextView';
 
@@ -60,10 +52,6 @@ export type UIMaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
      *  `UIMaterialTextView.Text`
      */
     children?: UIMaterialTextViewChild | UIMaterialTextViewChild[] | undefined;
-    /**
-     * A callback that is called when the input height changes
-     */
-    onHeightChange?: (height: number) => void;
     /**
      * Provides a input mask.
      * It must not be changed between renders.
@@ -125,15 +113,6 @@ export type UIMaterialTextViewTextProps = {
      * Any other element will be displayed unchanged.
      */
     children: React.ReactNode;
-};
-
-export type AutogrowAttributes = {
-    onContentSizeChange:
-        | ((e: NativeSyntheticEvent<TextInputContentSizeChangeEventData>) => void)
-        | undefined;
-    onChange: ((event: NativeSyntheticEvent<TextInputChangeEventData>) => void) | undefined;
-    remeasureInputHeight: () => void;
-    numberOfLines: number | undefined;
 };
 
 export type UIMaterialTextViewInputState = {

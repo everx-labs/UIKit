@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, TextInput } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import {
     UITextView,
@@ -7,6 +7,7 @@ import {
     useUITextViewValue,
     useClearButton,
     useFocused,
+    UITextViewRef,
 } from '@tonlabs/uikit.inputs';
 import { UIImage } from '@tonlabs/uikit.media';
 import { UIIndicator, TouchableOpacity, useHover } from '@tonlabs/uikit.controls';
@@ -128,7 +129,7 @@ export function UISearchBar({
     ...inputProps
 }: UISearchBarProps) {
     const [searchText, setSearchText] = React.useState('');
-    const ref = React.useRef<TextInput>(null);
+    const ref = React.useRef<UITextViewRef>(null);
     const { inputHasValue, clear } = useUITextViewValue(ref, false, {
         value: searchText,
         ...inputProps,
