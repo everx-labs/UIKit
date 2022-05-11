@@ -173,7 +173,7 @@ export function TransactionDetails(props: TransactionDetailsProps) {
 
 const styles = StyleSheet.create({
     bubble: {
-        alignSelf: 'stretch',
+        alignSelf: 'flex-start',
         maxWidth: UIConstant.transactionDetails.maxWidth,
         paddingHorizontal: 0,
     },
