@@ -31,38 +31,6 @@ export const Inputs = () => {
             <ExampleSection title="UIMaterialTextView">
                 <View style={{ maxWidth: 400, padding: 20, alignSelf: 'stretch' }}>
                     <UIMaterialTextView
-                        testID="uiMaterialTextView_amount"
-                        placeholder="Amount"
-                        label="Amount"
-                        helperText="Caption"
-                        mask="Amount"
-                        defaultValue="123asd,./124sdf"
-                    >
-                        <UIMaterialTextView.Action>
-                            EVER
-                            <UIImage source={UIAssets.icons.ui.unfoldShow} />
-                        </UIMaterialTextView.Action>
-                    </UIMaterialTextView>
-                    <View style={{ height: 20 }} />
-                    <UIMaterialTextView
-                        testID="uiMaterialTextView_amount"
-                        placeholder="Amount"
-                        label="Amount"
-                        helperText="Caption"
-                        mask="Amount"
-                    >
-                        <UIMaterialTextView.Text>
-                            <UIImage
-                                source={UIAssets.icons.ui.camera}
-                                style={{
-                                    marginRight: 4,
-                                }}
-                            />
-                            WEVER
-                        </UIMaterialTextView.Text>
-                    </UIMaterialTextView>
-                    <View style={{ height: 20 }} />
-                    <UIMaterialTextView
                         testID="uiMaterialTextView_without_label"
                         placeholder="Placeholder without Label"
                         helperText="Caption"
@@ -74,7 +42,12 @@ export const Inputs = () => {
                         testID="uiMaterialTextView_with_initial_value"
                         label="Label with initial value"
                         helperText="Caption"
-                    />
+                    >
+                        <UIMaterialTextView.Action>
+                            EVER
+                            <UIImage source={UIAssets.icons.ui.unfoldShow} />
+                        </UIMaterialTextView.Action>
+                    </UIMaterialTextView>
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
                         testID="uiMaterialTextView_with_placeholder"
@@ -82,7 +55,17 @@ export const Inputs = () => {
                         helperText="Success"
                         success
                         placeholder="Works with folded label"
-                    />
+                    >
+                        <UIMaterialTextView.Text>
+                            <UIImage
+                                source={UIAssets.icons.ui.camera}
+                                style={{
+                                    marginRight: 4,
+                                }}
+                            />
+                            WEVER
+                        </UIMaterialTextView.Text>
+                    </UIMaterialTextView>
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
                         testID="uiMaterialTextView_with_icon"
@@ -133,6 +116,7 @@ export const Inputs = () => {
                         multiline
                         label="Input multiline"
                         helperText="Caption"
+                        maxNumberOfLines={3}
                         defaultValue="Very long text that should be multiline and that is what we gonna check there"
                     />
                 </View>
@@ -197,7 +181,12 @@ export const Inputs = () => {
                         onChangeAmount={onChangeAmount}
                         defaultAmount={new BigNumber(123345.123567)}
                         decimalAspect={UIAmountInputDecimalAspect.Currency}
-                    />
+                    >
+                        <UIAmountInput.Action>
+                            EVER
+                            <UIImage source={UIAssets.icons.ui.unfoldShow} />
+                        </UIAmountInput.Action>
+                    </UIAmountInput>
                     <View style={{ height: 20 }} />
                     <UIAmountInput
                         testID="uiMaterialTextView_amount"
@@ -206,7 +195,17 @@ export const Inputs = () => {
                         message="Caption"
                         onChangeAmount={onChangeAmount}
                         decimalAspect={UIAmountInputDecimalAspect.Integer}
-                    />
+                    >
+                        <UIAmountInput.Text>
+                            <UIImage
+                                source={UIAssets.icons.ui.camera}
+                                style={{
+                                    marginRight: 4,
+                                }}
+                            />
+                            WEVER
+                        </UIAmountInput.Text>
+                    </UIAmountInput>
                     <View style={{ height: 20 }} />
                     <UIAmountInput
                         ref={amountPrecisionRef}

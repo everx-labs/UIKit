@@ -1,4 +1,3 @@
-export * from './useAutogrow';
 export * from './useClear';
 export * from './useClearButton';
 export * from './useExtendedRef';

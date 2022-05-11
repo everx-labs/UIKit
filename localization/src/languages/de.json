@@ -254,7 +254,6 @@
     "moreWords24": "mehr Wörter",
     "moreWords50": "mehr Wörter",
     "Name": "Name",
-    "NewVersionIsAvailable": "Neue version ist verfügbar",
     "Next": "Nächsten",
     "No": "Nein",
     "NotChosen": "Nicht gewählt",
@@ -269,12 +268,6 @@
     "operationTime": "Betriebszeit",
     "orDelimeter": " oder ",
     "OutOf": "aus",
-    "PleaseUpdate": "Bitte aktualisieren",
-    "promoDownload": {
-        "appStore": "App Store",
-        "googlePlay": "Google Play",
-        "notice": "Download application"
-    },
     "QRCodeScanner": {
         "ErrorOnRead": "Couldn't read QR code",
         "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
@@ -338,7 +331,6 @@
     "TypeMessage": "Schreibe eine Nachricht...",
     "Unconfirmed": "Unbestätigt",
     "UnreadMessages": "Ungelesene Nachrichten",
-    "Update": "Update",
     "UpgradingWallet": "Aktualisieren Sie Ihre Brieftasche...",
     "UplimitRule": "Bis limit-Regel",
     "UserHasNoWallet": "Dieser Benutzer hat noch keine Brieftasche, aber wir senden ihm einen Link, um eine zu erstellen und diese Übertragung zu erhalten",

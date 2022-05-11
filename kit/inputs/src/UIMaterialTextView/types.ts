@@ -1,21 +1,12 @@
 import type React from 'react';
-import type {
-    View,
-    ViewStyle,
-    StyleProp,
-    TextInput,
-    NativeSyntheticEvent,
-    TextInputContentSizeChangeEventData,
-    TextInputChangeEventData,
-} from 'react-native';
+import type { View, ViewStyle, StyleProp, TextInput } from 'react-native';
 import type { UIImageProps } from '@tonlabs/uikit.media';
 import type { UITextViewProps } from '../UITextView';
 
 export type UIMaterialTextViewAmountMask =
-    | 'Amount'
-    | 'AmountInteger'
-    | 'AmountPrecision'
-    | 'AmountCurrency';
+    | 'AmountInteger' // integer number (aspectRatio === 0)
+    | 'AmountPrecision' // precision numer (aspectRatio === 9)
+    | 'AmountCurrency'; // currency number (aspectRatio === 2)
 export type UIMaterialTextViewMask = UIMaterialTextViewAmountMask;
 
 export type UIMaterialTextViewIconChild = React.ReactElement<UIMaterialTextViewIconProps>;
@@ -56,15 +47,11 @@ export type UIMaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
     borderViewRef?: React.Ref<View>;
     /**
      *  As children you can provide only one or two of this component:
-     *  `UIMaterialTextViewIcon`
-     *  `UIMaterialTextViewAction`
-     *  `UIMaterialTextViewText`
+     *  `UIMaterialTextView.Icon`
+     *  `UIMaterialTextView.Action`
+     *  `UIMaterialTextView.Text`
      */
     children?: UIMaterialTextViewChild | UIMaterialTextViewChild[] | undefined;
-    /**
-     * A callback that is called when the input height changes
-     */
-    onHeightChange?: (height: number) => void;
     /**
      * Provides a input mask.
      * It must not be changed between renders.
@@ -126,15 +113,6 @@ export type UIMaterialTextViewTextProps = {
      * Any other element will be displayed unchanged.
      */
     children: React.ReactNode;
-};
-
-export type AutogrowAttributes = {
-    onContentSizeChange:
-        | ((e: NativeSyntheticEvent<TextInputContentSizeChangeEventData>) => void)
-        | undefined;
-    onChange: ((event: NativeSyntheticEvent<TextInputChangeEventData>) => void) | undefined;
-    remeasureInputHeight: () => void;
-    numberOfLines: number | undefined;
 };
 
 export type UIMaterialTextViewInputState = {

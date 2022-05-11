@@ -3,7 +3,6 @@ import { StyleSheet, View } from 'react-native';
 
 import { ColorVariants, UILabel, TypographyVariants, Typography } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import type { UITextViewProps } from '../UITextView';
 
 import type { UIMaterialTextViewProps } from './types';
 
@@ -28,7 +27,6 @@ function useCommentColor(
 
 export function UIMaterialTextViewComment(
     props: UIMaterialTextViewProps & {
-        onLayout?: Pick<UITextViewProps, 'onLayout'>;
         children: React.ReactNode;
     },
 ) {
@@ -37,7 +35,7 @@ export function UIMaterialTextViewComment(
     const commentColor = useCommentColor(success, warning, error);
 
     return (
-        <View style={styles.container} onLayout={onLayout}>
+        <View onLayout={onLayout}>
             {children}
             {helperText ? (
                 <UILabel
@@ -55,15 +53,12 @@ export function UIMaterialTextViewComment(
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'column',
-    },
     comment: {
         paddingTop: UILayoutConstant.contentInsetVerticalX1,
         paddingHorizontal: UILayoutConstant.contentOffset,
     },
     bottomDefaultOffset: {
         marginTop: UILayoutConstant.contentInsetVerticalX1,
-        height: Typography[TypographyVariants.ParagraphLabel].lineHeight,
+        height: StyleSheet.flatten(Typography[TypographyVariants.ParagraphLabel]).lineHeight,
     },
 });

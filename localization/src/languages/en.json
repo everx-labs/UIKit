@@ -297,7 +297,6 @@
     "moreWords24": "more words",
     "moreWords50": "more words",
     "Name": "Name",
-    "NewVersionIsAvailable": "New version is available",
     "Next": "Next",
     "No": "No",
     "NotChosen": "Not chosen",
@@ -312,12 +311,6 @@
     "operationTime": "Operation time",
     "orDelimeter": " or ",
     "OutOf": "out of",
-    "PleaseUpdate": "Please update",
-    "promoDownload": {
-        "appStore": "App Store",
-        "googlePlay": "Google Play",
-        "notice": "Download application"
-    },
     "QRCodeScanner": {
         "ErrorOnRead": "Couldn't read QR code",
         "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
@@ -381,7 +374,6 @@
     "TypeMessage": "Write a message...",
     "Unconfirmed": "Unconfirmed",
     "UnreadMessages": "Unread messages",
-    "Update": "Update",
     "UpgradingWallet": "Upgrading your wallet...",
     "UplimitRule": "Uplimit Rule",
     "UserHasNoWallet": "This user does not have a wallet yet, but we will send him a link to create one and receive this transfer",

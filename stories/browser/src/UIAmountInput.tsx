@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, TextInput } from 'react-native';
+import { StyleSheet } from 'react-native';
 import BigNumber from 'bignumber.js';
 
 import { ChatInputContainer } from '@tonlabs/uistory.chats';
@@ -7,7 +7,7 @@ import {
     UITextView,
     useUITextViewValue,
     useNumberFormatting,
-    useAutogrowTextView,
+    UITextViewRef,
 } from '@tonlabs/uikit.inputs';
 import { UIInputAccessoryView } from '@tonlabs/uicast.keyboard';
 import { UILabel, UILabelRoles, ColorVariants } from '@tonlabs/uikit.themes';
@@ -203,7 +203,7 @@ const UIAmountInputHint = React.memo(function UIAmountInputHintMemoized({
 });
 
 type UIAmountInputInternalProps = {
-    textInputRef: React.RefObject<TextInput>;
+    textInputRef: React.RefObject<UITextViewRef>;
     placeholder?: string;
 
     decimals: number;
@@ -223,9 +223,6 @@ function UIAmountInputInternal({
     onHeightChange,
     onSendAmount: onSendAmountProp,
 }: UIAmountInputInternalProps) {
-    const { onChange, onContentSizeChange, numberOfLines, resetInputHeight, inputStyle } =
-        useAutogrowTextView(textInputRef, undefined, 1);
-
     const {
         inputHasValue,
         inputValue,
@@ -315,8 +312,7 @@ function UIAmountInputInternal({
         textInputRef.current?.focus();
 
         setValidationStatus(ValidationStatus.None);
-        resetInputHeight();
-    }, [clearBase, setValidationStatus, textInputRef, resetInputHeight]);
+    }, [clearBase, setValidationStatus, textInputRef]);
 
     const onKeyPress = React.useCallback(
         (e: any) => {
@@ -331,7 +327,7 @@ function UIAmountInputInternal({
 
     return (
         <ChatInputContainer
-            numberOfLines={numberOfLines}
+            hasSeveralLinesInInput={false}
             right={
                 <ActionButton
                     inputHasValue={inputHasValue}
@@ -361,13 +357,10 @@ function UIAmountInputInternal({
                 placeholder={placeholder}
                 placeholderTextColor={placeholderColor}
                 onSelectionChange={onSelectionChange}
-                onContentSizeChange={onContentSizeChange}
-                onChange={onChange}
                 onChangeText={onChangeText}
                 onKeyPress={onKeyPress}
                 onFocus={onFocus}
                 onBlur={onBlur}
-                style={inputStyle}
             />
         </ChatInputContainer>
     );
@@ -390,7 +383,7 @@ export function UIAmountInput({
     max,
     onSendAmount,
 }: UIAmountInputProps) {
-    const textInputRef = React.useRef<TextInput>(null);
+    const textInputRef = React.useRef<UITextViewRef>(null);
 
     const onHeightChange = useUIBrowserInputOnHeightChange();
 

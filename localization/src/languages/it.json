@@ -254,7 +254,6 @@
     "moreWords24": "altre parole",
     "moreWords50": "altre parole",
     "Name": "Nome",
-    "NewVersionIsAvailable": "È disponibile una nuova versione",
     "Next": "Avanti",
     "No": "No",
     "NotChosen": "Non scelto",
@@ -269,12 +268,6 @@
     "operationTime": "Tempo di funzionamento",
     "orDelimeter": " o ",
     "OutOf": "fuori da",
-    "PleaseUpdate": "Per favore aggiornare",
-    "promoDownload": {
-        "appStore": "App Store",
-        "googlePlay": "Google Play",
-        "notice": "Download application"
-    },
     "QRCodeScanner": {
         "ErrorOnRead": "Couldn't read QR code",
         "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
@@ -338,7 +331,6 @@
     "TypeMessage": "Scrivi un messaggio...",
     "Unconfirmed": "Non confermato",
     "UnreadMessages": "Messaggi non letti",
-    "Update": "Aggiornare",
     "UpgradingWallet": "Aggiornare il tuo portafoglio...",
     "UplimitRule": "Regola del limite massimo",
     "UserHasNoWallet": "Questo utente non ha ancora un portafoglio, ma gli invieremo un link per crearne uno e ricevere questo trasferimento",

@@ -38,7 +38,6 @@ export function useApplyMask(
      * then the same hooks will be executed after each render.
      */
     switch (maskRef.current) {
-        case 'Amount':
         case 'AmountInteger':
         case 'AmountPrecision':
         case 'AmountCurrency':

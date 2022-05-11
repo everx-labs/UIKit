@@ -254,7 +254,6 @@
     "moreWords24": "kelime kaldı",
     "moreWords50": "kelime kaldı",
     "Name": "Ad",
-    "NewVersionIsAvailable": "Uygulamanın yeni sürümü mevcut",
     "Next": "İleri",
     "No": "Hayır",
     "NotChosen": "Seçilmemiş",
@@ -269,12 +268,6 @@
     "operationTime": "İşlem zamanı",
     "orDelimeter": " veya ",
     "OutOf": "/",
-    "PleaseUpdate": "Lütfen güncelleyin",
-    "promoDownload": {
-        "appStore": "App Store",
-        "googlePlay": "Google Play",
-        "notice": "Download application"
-    },
     "QRCodeScanner": {
         "ErrorOnRead": "Couldn't read QR code",
         "ErrorPermissions": "QR kodlarını tarayabilmek için kamera izinlerinizi açın",
@@ -333,7 +326,6 @@
     "TypeMessage": "Mesaj yaz...",
     "Unconfirmed": "Onaylanmamış",
     "UnreadMessages": "Okunmamış mesajlar",
-    "Update": "Güncelle",
     "UpgradingWallet": "Cüzdanınız güncelleniyor...",
     "UplimitRule": "Koruma Kuralı",
     "UserHasNoWallet": "Bu kullanıcının henüz bir cüzdanı yok, ancak ona cüzdan oluşturması ve bu parayı teslim alması için bir bağlantı göndereceğiz",

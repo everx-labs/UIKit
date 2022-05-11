@@ -1,5 +1,6 @@
 import type { Ref } from 'react';
-import { Platform, TextInput } from 'react-native';
+import { Platform } from 'react-native';
+import type { UITextViewRef } from './UITextView';
 
 function moveWebCaret(input: HTMLInputElement, position: number) {
     if (input.setSelectionRange) {
@@ -18,7 +19,7 @@ function moveWebCaret(input: HTMLInputElement, position: number) {
 }
 
 export function moveCarret(
-    ref: Ref<TextInput>,
+    ref: Ref<UITextViewRef>,
     carretPosition: number,
     maxPosition: number = carretPosition,
 ) {

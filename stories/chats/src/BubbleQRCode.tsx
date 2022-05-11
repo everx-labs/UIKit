@@ -2,27 +2,30 @@ import * as React from 'react';
 import { ImageStyle, StyleProp, View, ViewStyle } from 'react-native';
 
 import {
-    UIQRCodeView,
-    QRCodeType,
+    QRCodeRef,
     QRCodeSize,
-    useQRCodeValueError,
+    QRCodeType,
     UIImage,
+    UIQRCodeView,
+    useQRCodeValueError,
 } from '@tonlabs/uikit.media';
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import {
-    UILabel,
-    TypographyVariants,
     ColorVariants,
-    Theme,
-    useTheme,
     makeStyles,
+    Theme,
+    TypographyVariants,
+    UILabel,
+    useTheme,
 } from '@tonlabs/uikit.themes';
+import { UIPressableArea } from '@tonlabs/uikit.controls';
+
 import { useBubbleContainerStyle, useBubblePosition } from './useBubblePosition';
 import { useBubbleBackgroundColor, useBubbleRoundedCornerStyle } from './useBubbleStyle';
 import { MessageStatus } from './constants';
-import type { QRCodeMessage, ChatQRCodeMessage } from './types';
+import type { ChatQRCodeMessage, QRCodeMessage } from './types';
 
 export const ChatBubbleQRCode: React.FC<ChatQRCodeMessage> = (message: ChatQRCodeMessage) => {
     return <BubbleQRCode {...message} />;
@@ -84,6 +87,35 @@ const renderError = (
     );
 };
 
+export const QRCodeContainer: React.FC<{
+    onPress?: QRCodeMessage['onPress'];
+    qrCodeRef: React.MutableRefObject<QRCodeRef | null>;
+    style: StyleProp<ViewStyle>;
+}> = ({ qrCodeRef, children, style, onPress }) => {
+    const onQRCodePress = React.useCallback(async () => {
+        if (!qrCodeRef.current) {
+            return;
+        }
+
+        const base64 = await qrCodeRef.current.getPng();
+        if (!base64) {
+            return;
+        }
+
+        onPress!(base64);
+    }, [onPress]);
+
+    if (onPress) {
+        return (
+            <UIPressableArea onPress={onQRCodePress}>
+                <View style={style}>{children}</View>
+            </UIPressableArea>
+        );
+    }
+
+    return <View style={style}>{children}</View>;
+};
+
 export const BubbleQRCode: React.FC<QRCodeMessage> = (message: QRCodeMessage) => {
     const { status, data, onError, onSuccess } = message;
     const theme = useTheme();
@@ -96,6 +128,7 @@ export const BubbleQRCode: React.FC<QRCodeMessage> = (message: QRCodeMessage) =>
         UIConstant.mediumBorderRadius(),
     );
     const styles = useStyles(theme);
+    const ref = React.useRef<QRCodeRef | null>(null);
 
     const error = useQRCodeValueError(data, onError, onSuccess);
 
@@ -119,15 +152,16 @@ export const BubbleQRCode: React.FC<QRCodeMessage> = (message: QRCodeMessage) =>
                     roundedCornerStyle,
                 ]}
             >
-                <View style={styles.qrCode}>
+                <QRCodeContainer qrCodeRef={ref} style={styles.qrCode} onPress={message.onPress}>
                     <UIQRCodeView
+                        ref={ref}
                         size={QRCodeSize.Medium}
                         testID={`chat_qr_code_${data}`}
                         type={QRCodeType.Square}
-                        logo={UIAssets.icons.brand.tonSymbolBlack}
+                        logo={UIAssets.icons.brand.surfSymbolBlack}
                         value={data}
                     />
-                </View>
+                </QRCodeContainer>
             </View>
         </View>
     );
