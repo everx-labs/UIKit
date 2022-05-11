@@ -5,7 +5,6 @@ import * as UISeedPhraseTextView from './UISeedPhraseTextView';
 import * as UITextView from './UITextView';
 import * as UIAmountInput from './UIAmountInput';
 
-import * as useClearButton from './UIMaterialTextView/hooks/useClearButton';
 import * as useAutogrowTextView from './useAutogrowTextView';
 
 export * from './UIMaterialTextView';
