@@ -102,9 +102,10 @@ export const AccordionOverlayView = React.forwardRef<
             return;
         }
 
-        const newOffset = prevScrollTop.current + scrollTopDiff;
-        overlayRef.current.style.top = `${newOffset}px`;
-        prevScrollTop.current = newOffset;
+        overlayRef.current.style.top = `${
+            parseFloat(overlayRef.current.style.top) + scrollTopDiff
+        }px`;
+        prevScrollTop.current = event.target.scrollTop;
     }, []);
 
     const hideOverlay = React.useCallback(() => {
