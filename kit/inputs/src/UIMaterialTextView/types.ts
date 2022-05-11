@@ -4,10 +4,9 @@ import type { UIImageProps } from '@tonlabs/uikit.media';
 import type { UITextViewProps } from '../UITextView';
 
 export type UIMaterialTextViewAmountMask =
-    | 'Amount'
-    | 'AmountInteger'
-    | 'AmountPrecision'
-    | 'AmountCurrency';
+    | 'AmountInteger' // integer number (aspectRatio === 0)
+    | 'AmountPrecision' // precision numer (aspectRatio === 9)
+    | 'AmountCurrency'; // currency number (aspectRatio === 2)
 export type UIMaterialTextViewMask = UIMaterialTextViewAmountMask;
 
 export type UIMaterialTextViewIconChild = React.ReactElement<UIMaterialTextViewIconProps>;
@@ -48,9 +47,9 @@ export type UIMaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
     borderViewRef?: React.Ref<View>;
     /**
      *  As children you can provide only one or two of this component:
-     *  `UIMaterialTextViewIcon`
-     *  `UIMaterialTextViewAction`
-     *  `UIMaterialTextViewText`
+     *  `UIMaterialTextView.Icon`
+     *  `UIMaterialTextView.Action`
+     *  `UIMaterialTextView.Text`
      */
     children?: UIMaterialTextViewChild | UIMaterialTextViewChild[] | undefined;
     /**

@@ -251,7 +251,6 @@
     "moreWords24": "言葉を追加する",
     "moreWords50": "言葉を追加する",
     "Name": "名前",
-    "NewVersionIsAvailable": "新しいバージョンが利用可能です",
     "Next": "次",
     "No": "いいえ",
     "NotChosen": "選択されていません",
@@ -266,12 +265,6 @@
     "operationTime": "操作時間",
     "orDelimeter": "または",
     "OutOf": "から",
-    "PleaseUpdate": "更新お願いします",
-    "promoDownload": {
-        "appStore": "App Store",
-        "googlePlay": "Google Play",
-        "notice": "Download application"
-    },
     "QRCodeScanner": {
         "ErrorOnRead": "Couldn't read QR code",
         "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
@@ -330,7 +323,6 @@
     "TypeMessage": "メッセージを書く...",
     "Unconfirmed": "未確認",
     "UnreadMessages": "未読のメッセージ",
-    "Update": "更新する",
     "UpgradingWallet": "ウォレットはアップグレード中...",
     "UplimitRule": "上限ルール",
     "UserHasNoWallet": "このユーザーはまだウオレットを持っていませんが、トランザクションを受け取れるように、ウオレットを作成するリンクを送信します。",

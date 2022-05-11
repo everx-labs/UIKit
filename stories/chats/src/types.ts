@@ -115,6 +115,7 @@ export type QRCodeMessage = BubbleBaseT & {
     data: string;
     onError?: (error: QRCodeError) => void;
     onSuccess?: () => void;
+    onPress?: (image: string) => void;
 };
 
 export type ChatQRCodeMessage = ChatMeta & QRCodeMessage;

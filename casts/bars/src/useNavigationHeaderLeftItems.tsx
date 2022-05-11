@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useNavigation } from '@react-navigation/core';
+import { useNavigation, useRoute } from '@react-navigation/core';
 
 import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
@@ -75,18 +75,24 @@ function findIfCanGoBackForStack(state: NavigationState, parentState?: Navigatio
     return false;
 }
 
-function useIfCanGoBackForStack(navigation: ReturnType<typeof useNavigation>): boolean {
+function useIfCanGoBackForStack(
+    navigation: ReturnType<typeof useNavigation>,
+    route: ReturnType<typeof useRoute>,
+): boolean {
     const currentStateRef = React.useRef(navigation.dangerouslyGetState());
     const parentStateRef = React.useRef(navigation.dangerouslyGetParent()?.dangerouslyGetState());
     const [canGoBack, setCanGoBack] = React.useState(
         findIfCanGoBackForStack(currentStateRef.current, parentStateRef.current),
     );
     const canGoBackRef = React.useRef(canGoBack);
-    const currentRouteIndex = React.useRef(currentStateRef.current.index).current;
 
     React.useEffect(() => {
         const disposeCurrent = navigation.addListener('state', event => {
             const { index } = event.data.state;
+
+            const currentRouteIndex = event.data.state.routes.findIndex(
+                ({ key: routeKey }) => routeKey === route.key,
+            );
 
             if (currentRouteIndex !== index) {
                 return;
@@ -127,23 +133,25 @@ function useIfCanGoBackForStack(navigation: ReturnType<typeof useNavigation>): b
             disposeCurrent();
             disposeParent?.();
         };
-    }, [currentRouteIndex, navigation]);
+    }, [navigation, route.key]);
 
     return canGoBack;
 }
 
 function HeaderLeftItems({
     navigation,
+    route,
     headerBackButton,
     shouldShowCloseButton,
     closeModal,
 }: {
     navigation: ReturnType<typeof useNavigation>;
+    route: ReturnType<typeof useRoute>;
     headerBackButton: HeaderItem | undefined;
     shouldShowCloseButton: boolean;
     closeModal: (() => void) | null;
 }) {
-    const canGoBackIfStack = useIfCanGoBackForStack(navigation);
+    const canGoBackIfStack = useIfCanGoBackForStack(navigation, route);
 
     if (navigation.canGoBack() && canGoBackIfStack) {
         const defaultBackButton: HeaderItem = {
@@ -207,12 +215,15 @@ export function useNavigationHeaderLeftItems(
     shouldShowCloseButton: boolean = true,
 ) {
     let navigation: ReturnType<typeof useNavigation> | null = null;
+    let route: ReturnType<typeof useRoute> | null = null;
 
     // If it's used not in a navigation context
     // it might throw an error, to prevent a crash trying to catch it
     try {
         // eslint-disable-next-line react-hooks/rules-of-hooks
         navigation = useNavigation();
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        route = useRoute();
     } catch (err) {
         // no-op
     }
@@ -225,13 +236,14 @@ export function useNavigationHeaderLeftItems(
         return <UIHeaderItems items={headerLeftItems} />;
     }
 
-    if (navigation == null) {
+    if (navigation == null || route == null) {
         return null;
     }
 
     return (
         <HeaderLeftItems
             navigation={navigation}
+            route={route}
             headerBackButton={headerBackButton}
             shouldShowCloseButton={shouldShowCloseButton}
             closeModal={

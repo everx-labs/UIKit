@@ -5,6 +5,7 @@ import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { uiLocalized } from '@tonlabs/localization';
 import type { UIExpandableTextProps } from './types';
 import { UILayout } from '../constants';
+import { MeasureLabel } from './MeasureLabel';
 
 function UIExpandableTextImpl(props: UIExpandableTextProps) {
     const { numberOfLines, testID, ...rest } = props;
@@ -12,6 +13,16 @@ function UIExpandableTextImpl(props: UIExpandableTextProps) {
     const styles = useStyles(theme);
 
     const [isExpanded, setIsExpanded] = React.useState<boolean>(false);
+    const [isFit, setIsFit] = React.useState<boolean>(false);
+
+    const onMeasure = React.useCallback(
+        (isFitMeasured: boolean) => {
+            if (isFitMeasured !== isFit) {
+                setIsFit(isFitMeasured);
+            }
+        },
+        [isFit],
+    );
 
     const onExpand = React.useCallback(() => {
         setIsExpanded(true);
@@ -19,12 +30,13 @@ function UIExpandableTextImpl(props: UIExpandableTextProps) {
 
     return (
         <View style={styles.container} testID={testID}>
+            <MeasureLabel {...props} onMeasure={onMeasure} />
             <UILabel
-                {...rest}
+                {...props}
                 numberOfLines={isExpanded ? undefined : numberOfLines}
                 testID={`UIExpandableText.Text:${testID}`}
             />
-            {!isExpanded ? (
+            {isExpanded || isFit ? null : (
                 <TouchableOpacity
                     onPress={onExpand}
                     style={styles.moreButton}
@@ -34,7 +46,7 @@ function UIExpandableTextImpl(props: UIExpandableTextProps) {
                         {uiLocalized.ExpandableText.more}
                     </UILabel>
                 </TouchableOpacity>
-            ) : null}
+            )}
         </View>
     );
 }

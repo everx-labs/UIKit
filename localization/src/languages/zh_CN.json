@@ -251,7 +251,6 @@
     "moreWords24": "更多的词",
     "moreWords50": "更多的词",
     "Name": "名字",
-    "NewVersionIsAvailable": "新版本可用",
     "Next": "下一个",
     "No": "不",
     "NotChosen": "未选择",
@@ -266,12 +265,6 @@
     "operationTime": "作业时间",
     "orDelimeter": "或",
     "OutOf": "以外",
-    "PleaseUpdate": "请更新",
-    "promoDownload": {
-        "appStore": "App Store",
-        "googlePlay": "Google Play",
-        "notice": "Download application"
-    },
     "QRCodeScanner": {
         "ErrorOnRead": "Couldn't read QR code",
         "ErrorPermissions": "Turn on your camera permissions to be able to scan QR codes",
@@ -330,7 +323,6 @@
     "TypeMessage": "写短信...",
     "Unconfirmed": "未确认",
     "UnreadMessages": "未读信息",
-    "Update": "更新",
     "UpgradingWallet": "正在升级您的钱包...",
     "UplimitRule": "上界法则",
     "UserHasNoWallet": "这个用户还没有钱包，但是为了收到这个交易，我们给您发一个做钱包的链接。",

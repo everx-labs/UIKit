@@ -260,7 +260,6 @@
     "Messenger": "메신저",
     "MiddleName": "중간 이름",
     "Name": "이름",
-    "NewVersionIsAvailable": "새 버전을 사용할 수 있습니다",
     "Next": "다음",
     "No": "아니오",
     "NoThankYou": "아니요, 괜찮습니다",
@@ -273,7 +272,6 @@
     "Online": "온라인",
     "OpenSettings": "설정 열기",
     "OutOf": "밖에",
-    "PleaseUpdate": "업데이트해 주세요",
     "QRCodeScanner": {
         "ErrorOnRead": "QR 코드를 인식할 수 없습니다",
         "ErrorPermissions": "카메라 권한을 '허용'으로 변경해서 QR 코드를 스캔할 수 있습니다",
@@ -339,7 +337,6 @@
     "TypeMessage": "메시지를 작성...",
     "Unconfirmed": "미확인",
     "UnreadMessages": "읽지 않은 메시지",
-    "Update": "업데이트",
     "UpgradingWallet": "지갑 업그레이드 중...",
     "UplimitRule": "상한 규칙",
     "UserHasNoWallet": "이 사용자는 아직 지갑이 없지만 지갑을 만들고 이 송금을 받을 수 있는 링크를 보내 드립니다",
@@ -422,11 +419,6 @@
     "moreWords50": "더 많은 단어",
     "operationTime": "작동 시간",
     "orDelimeter": " 또는 ",
-    "promoDownload": {
-        "appStore": "App Store",
-        "googlePlay": "Google Play",
-        "notice": "애플리케이션 다운로드"
-    },
     "rounds": "라운드",
     "rounds01": "라운드",
     "rounds21": "라운드",

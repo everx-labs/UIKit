@@ -7,12 +7,6 @@ import iconCardMastercardSecurecode from './resources/bank-cards/ico-mastercard/
 import iconCardVisa from './resources/bank-cards/ico-visa/visa.png';
 import iconCardVisaVerifiedBy from './resources/bank-cards/ico-visa/verified-byvisa.png';
 
-import iconBrandFigma from './resources/brand/develop/figma.png';
-import iconBrandNodejs from './resources/brand/develop/nodejs.png';
-import iconBrandReact from './resources/brand/develop/react.png';
-import iconBrandRust from './resources/brand/develop/rust.png';
-import iconBrandWebassembly from './resources/brand/develop/webassembly.png';
-
 import iconBrandApplepay from './resources/brand/payment/applepay.png';
 import iconBrandGooglepay from './resources/brand/payment/googlepay.png';
 
@@ -42,16 +36,8 @@ import iconBrandSocialTwitter from './resources/brand/social/twitter.png';
 import iconBrandSocialTwitterPrimary from './resources/brand/social/primary/twitter.png';
 import iconBrandSocialYoutube from './resources/brand/social/youtube.png';
 
-import iconBrandTondevOld from './resources/brand/tonlines/tondev-old.png';
-import iconBrandTondev from './resources/brand/tonlines/tondev.png';
-import iconBrandTonlabsOld from './resources/brand/tonlines/tonlabs-old.png';
-import iconBrandTonlabsSquare from './resources/brand/tonlines/tonlabs-square.png';
-import iconBrandTonlabsTransparent from './resources/brand/tonlines/tonlabs-transparent.png';
-import iconBrandTonlabs from './resources/brand/tonlines/tonlabs.png';
-import iconBrandTonwalletOld from './resources/brand/tonlines/tonwallet-old.png';
-import iconBrandTonwallet from './resources/brand/tonlines/tonwallet.png';
-import iconBrandTonSymbol from './resources/brand/tonlines/surf.png';
-import iconBrandTonSymbolBlack from './resources/brand/tonlines/surf-black.png';
+import iconBrandSurfSymbol from './resources/brand/surf.png';
+import iconBrandSurfSymbolBlack from './resources/brand/surf-black.png';
 
 import iconButtonClose from './resources/btn_close/btn_close.png';
 import iconButtonDots from './resources/btn_dots/btn_dots.png';
@@ -146,22 +132,8 @@ export const UIAssets = {
         },
 
         brand: {
-            figma: iconBrandFigma,
-            nodejs: iconBrandNodejs,
-            react: iconBrandReact,
-            rust: iconBrandRust,
-            webassembly: iconBrandWebassembly,
-            //
-            tondevOld: iconBrandTondevOld,
-            tondev: iconBrandTondev,
-            tonlabsOld: iconBrandTonlabsOld,
-            tonlabsSquare: iconBrandTonlabsSquare,
-            tonlabsTransparent: iconBrandTonlabsTransparent,
-            tonlabs: iconBrandTonlabs,
-            tonwalletOld: iconBrandTonwalletOld,
-            tonwallet: iconBrandTonwallet,
-            tonSymbol: iconBrandTonSymbol,
-            tonSymbolBlack: iconBrandTonSymbolBlack,
+            surfSymbol: iconBrandSurfSymbol,
+            surfSymbolBlack: iconBrandSurfSymbolBlack,
         },
 
         payment: {

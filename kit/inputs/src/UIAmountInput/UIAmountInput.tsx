@@ -4,11 +4,19 @@ import {
     UIMaterialTextViewRef,
     UIMaterialTextViewMask,
 } from '../UIMaterialTextView';
+import {
+    UIMaterialTextViewIcon,
+    UIMaterialTextViewAction,
+    UIMaterialTextViewText,
+} from '../UIMaterialTextView/hooks';
 import { useExtendedRef, useHelperTextStatus, useMask, useOnChangeText } from './hooks';
 import type { UIAmountInputProps, UIAmountInputRef } from './types';
 
-export const UIAmountInput = React.forwardRef<UIAmountInputRef, UIAmountInputProps>(
-    function UIAmountInput(props: UIAmountInputProps, forwardedRed: React.Ref<UIAmountInputRef>) {
+export const UIAmountInputForward = React.forwardRef<UIAmountInputRef, UIAmountInputProps>(
+    function UIAmountInputForward(
+        props: UIAmountInputProps,
+        forwardedRed: React.Ref<UIAmountInputRef>,
+    ) {
         const { onChangeAmount, defaultAmount, decimalAspect, messageType, message, ...restProps } =
             props;
 
@@ -42,3 +50,15 @@ export const UIAmountInput = React.forwardRef<UIAmountInputRef, UIAmountInputPro
         );
     },
 );
+
+// @ts-expect-error
+// ts doesn't understand that we assign [Icon|Action|Text] later, and want to see it right away
+export const UIAmountInput: typeof UIAmountInputForward & {
+    Icon: typeof UIMaterialTextViewIcon;
+    Action: typeof UIMaterialTextViewAction;
+    Text: typeof UIMaterialTextViewText;
+} = UIAmountInputForward;
+
+UIAmountInput.Icon = UIMaterialTextViewIcon;
+UIAmountInput.Action = UIMaterialTextViewAction;
+UIAmountInput.Text = UIMaterialTextViewText;

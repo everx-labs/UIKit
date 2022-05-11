@@ -59,6 +59,6 @@ const styles = StyleSheet.create({
     },
     bottomDefaultOffset: {
         marginTop: UILayoutConstant.contentInsetVerticalX1,
-        height: Typography[TypographyVariants.ParagraphLabel].lineHeight,
+        height: StyleSheet.flatten(Typography[TypographyVariants.ParagraphLabel]).lineHeight,
     },
 });

@@ -251,7 +251,6 @@
     "moreWords24": "mais palavras",
     "moreWords50": "mais palavras",
     "Name": "Nome",
-    "NewVersionIsAvailable": "Nova versão disponível",
     "Next": "Próximo",
     "No": "Não",
     "NotChosen": "Não escolhido",
@@ -266,12 +265,6 @@
     "operationTime": "Horário da operação",
     "orDelimeter": " ou ",
     "OutOf": "fora de",
-    "PleaseUpdate": "Por favor, atualize",
-    "promoDownload": {
-        "appStore": "App Store",
-        "googlePlay": "Google Play",
-        "notice": "Download application"
-    },
     "QRCodeScanner": {
         "ErrorOnRead": "Não foi possível ler o QR code",
         "ErrorPermissions": "Ative as permissões da câmera para poder ler os QR Codes",
@@ -335,7 +328,6 @@
     "TypeMessage": "Escreva uma mensagem…",
     "Unconfirmed": "Não confirmado",
     "UnreadMessages": "Mensagens não lidas",
-    "Update": "Atualizar",
     "UpgradingWallet": "Atualizando sua carteira…",
     "UplimitRule": "Regra de Aumento de Limite",
     "UserHasNoWallet": "Este usuário ainda não tem uma carteira, mas vamos enviar um link para criar uma para que possa receber esta transferência",
