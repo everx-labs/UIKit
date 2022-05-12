@@ -17,7 +17,14 @@ const emptyUIMaterialTextViewRef = getEmptyUIMaterialTextViewRef('UIMaterialText
 const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMaterialTextViewProps>(
     function UIMaterialTextViewForward(props: UIMaterialTextViewProps, passedRef) {
         const ref = React.useRef<MaterialTextViewRef>(null);
-        const { value, defaultValue, onFocus: onFocusProp, onBlur: onBlurProp, children } = props;
+        const {
+            value,
+            defaultValue,
+            onFocus: onFocusProp,
+            onBlur: onBlurProp,
+            onChangeText: onChangeTextProp,
+            children,
+        } = props;
         const [isHovered, setIsHovered] = React.useState<boolean>(false);
         const { isFocused, onFocus, onBlur } = useFocused(onFocusProp, onBlurProp);
         const { inputHasValue, checkInputHasValue } = useInputHasValue(value, defaultValue);
@@ -27,6 +34,14 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
             isFocused,
             isHovered,
             ref.current?.clear,
+        );
+
+        const onChangeText = React.useCallback(
+            function onChangeText(text: string) {
+                onChangeTextProp?.(text);
+                checkInputHasValue(text);
+            },
+            [checkInputHasValue, onChangeTextProp],
         );
 
         React.useImperativeHandle<Record<string, any>, MaterialTextViewRef>(
@@ -44,7 +59,7 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
                 onHover={setIsHovered}
                 onFocus={onFocus}
                 onBlur={onBlur}
-                onChangeText={checkInputHasValue}
+                onChangeText={onChangeText}
             >
                 {processedChildren}
             </MaterialTextView>
