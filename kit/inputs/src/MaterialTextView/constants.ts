@@ -6,5 +6,4 @@ export const UIConstants = {
             precision: 9,
         },
     },
-    iconTapZoneSize: 48,
 };

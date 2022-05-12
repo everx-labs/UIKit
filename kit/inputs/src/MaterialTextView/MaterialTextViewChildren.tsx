@@ -12,7 +12,6 @@ import type {
     MaterialTextViewTextProps,
     MaterialTextViewClearButtonProps,
 } from './types';
-import { UIConstants } from './constants';
 
 function processChildren(
     children: React.ReactNode,
@@ -85,10 +84,10 @@ export const MaterialTextViewClearButton = React.memo(function MaterialTextViewC
 
 const styles = StyleSheet.create({
     iconTapZone: {
-        height: UIConstants.iconTapZoneSize,
-        width: UIConstants.iconTapZoneSize,
         alignItems: 'center',
         justifyContent: 'center',
+        padding: UILayoutConstant.normalContentOffset,
+        left: UILayoutConstant.normalContentOffset,
     },
     iconSize: {
         width: UILayoutConstant.iconSize,
@@ -97,10 +96,14 @@ const styles = StyleSheet.create({
     actionContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+        padding: UILayoutConstant.normalContentOffset,
+        left: UILayoutConstant.normalContentOffset,
     },
     textContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+        padding: UILayoutConstant.normalContentOffset,
+        left: UILayoutConstant.normalContentOffset,
     },
     imageChild: {
         height: UILayoutConstant.iconSize,

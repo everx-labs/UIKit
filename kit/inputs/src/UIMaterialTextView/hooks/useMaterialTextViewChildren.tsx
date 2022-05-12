@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
-import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type {
     MaterialTextViewProps,
     MaterialTextViewActionChild,
@@ -97,21 +95,11 @@ export function useMaterialTextViewChildren(
 
         return icons
             .slice(0, 2) // Render only two icons, as required by design system
-            .reduce<MaterialTextViewIconChild[]>((acc, item, index) => {
+            .reduce<MaterialTextViewIconChild[]>((acc, item) => {
                 if (!React.isValidElement(item)) {
                     return acc;
                 }
-
-                if (index !== 0) {
-                    acc.push(
-                        React.cloneElement(item, {
-                            style: item.props?.style,
-                            containerStyle: [item.props?.containerStyle, styles.iconOffset],
-                        }),
-                    );
-                } else {
-                    acc.push(item);
-                }
+                acc.push(item);
 
                 return acc;
             }, []);
@@ -127,12 +115,3 @@ export function useMaterialTextViewChildren(
 
     return text;
 }
-
-const styles = StyleSheet.create({
-    iconOffset: {
-        marginRight: -UILayoutConstant.normalContentOffset,
-    },
-    clearButtonWrapper: {
-        justifyContent: 'flex-end',
-    },
-});
