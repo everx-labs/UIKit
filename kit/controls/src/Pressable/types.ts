@@ -1,5 +1,6 @@
 import type { ColorVariants } from '@tonlabs/uikit.themes';
-import type { StyleProp, ViewStyle } from 'react-native';
+import type React from 'react';
+import type { StyleProp, View, ViewStyle } from 'react-native';
 
 export type PressableProps = {
     onPress?: () => void | Promise<void>;
@@ -12,7 +13,7 @@ export type PressableProps = {
     children: React.ReactNode;
     style?: StyleProp<ViewStyle>;
     testID?: string;
-};
+} & React.RefAttributes<View>;
 
 export type PressableColors = {
     initialColor: ColorVariants;

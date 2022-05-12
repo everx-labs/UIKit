@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { Pressable as PressablePlatform, View } from 'react-native';
+import { useHover } from '../useHover';
 import { PressableStateContext, PressableStateVariant } from './constants';
 import type { PressableProps } from './types';
 import { usePressed, usePressableState } from './hooks';
-// import { TouchableOpacity } from '../TouchableOpacity';
 
 /**
  * It is necessary to simplify the creation of new buttons.
@@ -11,27 +11,26 @@ import { usePressed, usePressableState } from './hooks';
  *
  * To animate children colors please use `usePressableContentColor` hook in children components.
  */
-export function Pressable({
-    onPress,
-    onLongPress,
-    disabled,
-    loading,
-    children,
-    style,
-    testID,
-}: PressableProps) {
+export const Pressable = React.forwardRef<View, PressableProps>(function Pressable(
+    { onPress, onLongPress, disabled, loading, children, style, testID }: PressableProps,
+    passedRef,
+) {
+    const localRef = React.useRef<View>(null);
+    const ref = passedRef || localRef;
+
     const { isPressed, onPressIn, onPressOut } = usePressed();
+    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
     const pressableState: PressableStateVariant = usePressableState(
         disabled,
         loading,
         isPressed,
-        /** there is no hover in the mobile version */
-        false,
+        isHovered,
     );
 
     return (
         <PressableStateContext.Provider value={pressableState}>
-            <TouchableWithoutFeedback
+            <PressablePlatform
+                ref={ref}
                 onPress={onPress}
                 onLongPress={onLongPress}
                 testID={testID}
@@ -39,9 +38,12 @@ export function Pressable({
                 onPressIn={onPressIn}
                 onPressOut={onPressOut}
                 style={style}
+                // @ts-expect-error
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
             >
                 {children}
-            </TouchableWithoutFeedback>
+            </PressablePlatform>
         </PressableStateContext.Provider>
     );
-}
+});

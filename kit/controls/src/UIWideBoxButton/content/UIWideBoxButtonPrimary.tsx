@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ColorValue, ImageStyle, StyleSheet } from 'react-native';
+import { ColorValue, Platform, StyleSheet, ImageStyle } from 'react-native';
 import Animated, { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
 import { ColorVariants, UILabelAnimated, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UIAnimatedImage } from '@tonlabs/uikit.media';
@@ -75,6 +75,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         borderRadius: UILayoutConstant.alertBorderRadius,
+        ...Platform.select({
+            web: {
+                userSelect: 'none',
+            },
+            default: null,
+        }),
     },
     image: {
         marginLeft: UILayoutConstant.normalContentOffset,
