@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {
-    UIMaterialTextView,
-    UIMaterialTextViewRef,
-    UIMaterialTextViewMask,
-    UIMaterialTextViewIcon,
-    UIMaterialTextViewAction,
-    UIMaterialTextViewText,
-} from '../UIMaterialTextView';
+    MaterialTextView,
+    MaterialTextViewRef,
+    MaterialTextViewMask,
+    MaterialTextViewIcon,
+    MaterialTextViewAction,
+    MaterialTextViewText,
+} from '../MaterialTextView';
 import { useExtendedRef, useHelperTextStatus, useMask, useOnChangeText } from './hooks';
 import type { UIAmountInputProps, UIAmountInputRef } from './types';
 
@@ -18,13 +18,13 @@ export const UIAmountInputForward = React.forwardRef<UIAmountInputRef, UIAmountI
         const { onChangeAmount, defaultAmount, decimalAspect, messageType, message, ...restProps } =
             props;
 
-        const localRef = React.useRef<UIMaterialTextViewRef>(null);
+        const localRef = React.useRef<MaterialTextViewRef>(null);
 
         const onChangeText = useOnChangeText(onChangeAmount, localRef);
 
         useExtendedRef(forwardedRed, localRef);
 
-        const mask: UIMaterialTextViewMask = useMask(decimalAspect);
+        const mask: MaterialTextViewMask = useMask(decimalAspect);
 
         const defaultValue = React.useMemo(() => {
             return defaultAmount?.toString();
@@ -33,7 +33,7 @@ export const UIAmountInputForward = React.forwardRef<UIAmountInputRef, UIAmountI
         const { error, warning, success } = useHelperTextStatus(messageType);
 
         return (
-            <UIMaterialTextView
+            <MaterialTextView
                 {...restProps}
                 ref={localRef}
                 defaultValue={defaultValue}
@@ -52,11 +52,11 @@ export const UIAmountInputForward = React.forwardRef<UIAmountInputRef, UIAmountI
 // @ts-expect-error
 // ts doesn't understand that we assign [Icon|Action|Text] later, and want to see it right away
 export const UIAmountInput: typeof UIAmountInputForward & {
-    Icon: typeof UIMaterialTextViewIcon;
-    Action: typeof UIMaterialTextViewAction;
-    Text: typeof UIMaterialTextViewText;
+    Icon: typeof MaterialTextViewIcon;
+    Action: typeof MaterialTextViewAction;
+    Text: typeof MaterialTextViewText;
 } = UIAmountInputForward;
 
-UIAmountInput.Icon = UIMaterialTextViewIcon;
-UIAmountInput.Action = UIMaterialTextViewAction;
-UIAmountInput.Text = UIMaterialTextViewText;
+UIAmountInput.Icon = MaterialTextViewIcon;
+UIAmountInput.Action = MaterialTextViewAction;
+UIAmountInput.Text = MaterialTextViewText;
