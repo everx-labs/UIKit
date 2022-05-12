@@ -65,12 +65,7 @@ export function useMaterialTextViewChildren(
     );
 
     if (clearButton) {
-        /**
-         * It's wrapped with a View
-         * to stick a clear button to the bottom
-         * when an input is multilined
-         */
-        return <View style={styles.clearButtonWrapper}>{clearButton}</View>;
+        return clearButton;
     }
 
     const { icons, action, text } = getChildList(children).reduce<{

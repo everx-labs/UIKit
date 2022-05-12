@@ -12,8 +12,7 @@ import type {
     MaterialTextViewTextProps,
     MaterialTextViewClearButtonProps,
 } from './types';
-
-const ICON_TAP_ZONE_SIZE = 48;
+import { UIConstants } from './constants';
 
 function processChildren(
     children: React.ReactNode,
@@ -99,8 +98,8 @@ export const MaterialTextViewClearButton = React.memo(function MaterialTextViewC
 
 const styles = StyleSheet.create({
     iconTapZone: {
-        height: ICON_TAP_ZONE_SIZE,
-        width: ICON_TAP_ZONE_SIZE,
+        height: UIConstants.iconTapZoneSize,
+        width: UIConstants.iconTapZoneSize,
         alignItems: 'center',
         justifyContent: 'center',
     },
