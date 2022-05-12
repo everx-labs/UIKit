@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {
     getEmptyUIMaterialTextViewRef,
-    MaterialTextViewIcon as UIMaterialTextViewIcon,
-    MaterialTextViewAction as UIMaterialTextViewAction,
-    MaterialTextViewText as UIMaterialTextViewText,
+    MaterialTextViewIcon,
+    MaterialTextViewAction,
+    MaterialTextViewText,
     MaterialTextView,
     useInputHasValue,
     MaterialTextViewRef,
@@ -70,13 +70,11 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
 // @ts-expect-error
 // ts doesn't understand that we assign [Icon|Action|Text] later, and want to see it right away
 export const UIMaterialTextView: typeof UIMaterialTextViewForward & {
-    Icon: typeof UIMaterialTextViewIcon;
-    Action: typeof UIMaterialTextViewAction;
-    Text: typeof UIMaterialTextViewText;
+    Icon: typeof MaterialTextViewIcon;
+    Action: typeof MaterialTextViewAction;
+    Text: typeof MaterialTextViewText;
 } = UIMaterialTextViewForward;
 
-UIMaterialTextView.Icon = UIMaterialTextViewIcon;
-UIMaterialTextView.Action = UIMaterialTextViewAction;
-UIMaterialTextView.Text = UIMaterialTextViewText;
-
-export { UIMaterialTextViewIcon, UIMaterialTextViewAction, UIMaterialTextViewText };
+UIMaterialTextView.Icon = MaterialTextViewIcon;
+UIMaterialTextView.Action = MaterialTextViewAction;
+UIMaterialTextView.Text = MaterialTextViewText;
