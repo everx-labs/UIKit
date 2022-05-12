@@ -4,7 +4,7 @@ import { uiLocalized } from '@tonlabs/localization';
 import type { UIMaterialTextViewRef, UIMaterialTextViewMask } from '../UIMaterialTextView';
 import { UIAmountInputDecimalAspect, UIAmountInputMessageType } from './constants';
 import type { UIAmountInputRef } from './types';
-import { getEmptyUIMaterialTextViewRef } from '../UIMaterialTextView/getEmptyUIMaterialTextViewRef';
+import { getEmptyUIMaterialTextViewRef } from '../MaterialTextView';
 
 const notDigitOrDelimiterRegExp = new RegExp(
     `[^\\d\\${uiLocalized.localeInfo.numbers.decimal}]`,

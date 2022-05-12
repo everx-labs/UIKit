@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { getEmptyUIMaterialTextViewRef } from '../UIMaterialTextView/getEmptyUIMaterialTextViewRef';
+import { getEmptyUIMaterialTextViewRef } from '../MaterialTextView';
 import type { UIMaterialTextViewRef } from '../UIMaterialTextView/types';
 
 export function useExtendedRef(

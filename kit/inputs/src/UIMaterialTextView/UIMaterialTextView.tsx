@@ -1,8 +1,9 @@
 import * as React from 'react';
 import {
-    MaterialTextViewIcon,
-    MaterialTextViewAction,
-    MaterialTextViewText,
+    getEmptyUIMaterialTextViewRef,
+    MaterialTextViewIcon as UIMaterialTextViewIcon,
+    MaterialTextViewAction as UIMaterialTextViewAction,
+    MaterialTextViewText as UIMaterialTextViewText,
     MaterialTextView,
     useInputHasValue,
     MaterialTextViewRef,
@@ -11,7 +12,7 @@ import { useFocused } from '../UITextView';
 import { useMaterialTextViewChildren } from './hooks/useMaterialTextViewChildren';
 import type { UIMaterialTextViewRef, UIMaterialTextViewProps } from './types';
 
-const emptyMethod = () => null;
+const emptyUIMaterialTextViewRef = getEmptyUIMaterialTextViewRef('UIMaterialTextView');
 
 const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMaterialTextViewProps>(
     function UIMaterialTextViewForward(props: UIMaterialTextViewProps, passedRef) {
@@ -20,6 +21,7 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
         const [isHovered, setIsHovered] = React.useState<boolean>(false);
         const { isFocused, onFocus, onBlur } = useFocused(onFocusProp, onBlurProp);
         const { inputHasValue, checkInputHasValue } = useInputHasValue(value, defaultValue);
+        console.log({ inputHasValue, isFocused, isHovered });
         const processedChildren = useMaterialTextViewChildren(
             children,
             inputHasValue,
@@ -31,19 +33,15 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
         React.useImperativeHandle<Record<string, any>, MaterialTextViewRef>(
             passedRef,
             (): MaterialTextViewRef => ({
-                changeText: ref.current?.changeText || emptyMethod,
-                moveCarret: ref.current?.moveCarret || emptyMethod,
-                clear: ref.current?.clear || emptyMethod,
-                isFocused: ref.current?.isFocused || (() => false),
-                focus: ref.current?.focus || emptyMethod,
-                blur: ref.current?.blur || emptyMethod,
+                ...emptyUIMaterialTextViewRef,
+                ...ref.current,
             }),
         );
 
         return (
             <MaterialTextView
                 {...props}
-                ref={passedRef}
+                ref={ref}
                 onHover={setIsHovered}
                 onFocus={onFocus}
                 onBlur={onBlur}
@@ -58,11 +56,13 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
 // @ts-expect-error
 // ts doesn't understand that we assign [Icon|Action|Text] later, and want to see it right away
 export const UIMaterialTextView: typeof UIMaterialTextViewForward & {
-    Icon: typeof MaterialTextViewIcon;
-    Action: typeof MaterialTextViewAction;
-    Text: typeof MaterialTextViewText;
+    Icon: typeof UIMaterialTextViewIcon;
+    Action: typeof UIMaterialTextViewAction;
+    Text: typeof UIMaterialTextViewText;
 } = UIMaterialTextViewForward;
 
-UIMaterialTextView.Icon = MaterialTextViewIcon;
-UIMaterialTextView.Action = MaterialTextViewAction;
-UIMaterialTextView.Text = MaterialTextViewText;
+UIMaterialTextView.Icon = UIMaterialTextViewIcon;
+UIMaterialTextView.Action = UIMaterialTextViewAction;
+UIMaterialTextView.Text = UIMaterialTextViewText;
+
+export { UIMaterialTextViewIcon, UIMaterialTextViewAction, UIMaterialTextViewText };

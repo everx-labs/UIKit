@@ -113,6 +113,13 @@ export type MaterialTextViewTextProps = {
     children: React.ReactNode;
 };
 
+export type MaterialTextViewClearButtonProps = {
+    inputHasValue: boolean;
+    isFocused: boolean;
+    isHovered: boolean;
+    clear: (() => void) | undefined;
+};
+
 export type MaterialTextViewInputState = {
     formattedText: string;
     carretPosition: number | null;

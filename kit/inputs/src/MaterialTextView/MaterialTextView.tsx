@@ -35,12 +35,17 @@ function useExtendedProps(
         onFocus: onFocusProp,
         onBlur: onBlurProp,
         onSelectionChange: onSelectionChangeProp,
+        onHover,
     } = props;
 
     const { inputHasValue, checkInputHasValue } = useInputHasValue(value, defaultValueProp);
 
     const { isFocused, onFocus, onBlur } = useFocused(onFocusProp, onBlurProp);
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
+
+    React.useEffect(() => {
+        onHover?.(isHovered);
+    }, [isHovered, onHover]);
 
     const { selectionEnd, onSelectionChange, skipNextOnSelectionChange } =
         useOnSelectionChange(onSelectionChangeProp);

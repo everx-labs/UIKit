@@ -15,18 +15,11 @@ export function useInputHasValue(value: string | undefined, defaultValue: string
         }
     }, [value, inputHasValue]);
 
-    const checkInputHasValue = React.useCallback(
-        (text: string) => {
-            const hasValue = text != null ? text.length > 0 : false;
-
-            if (hasValue !== inputHasValue) {
-                setInputHasValue(hasValue);
-            }
-
-            return text;
-        },
-        [inputHasValue],
-    );
+    const checkInputHasValue = React.useCallback((text: string) => {
+        const hasValue = text != null ? text.length > 0 : false;
+        setInputHasValue(hasValue);
+        return text;
+    }, []);
 
     return {
         inputHasValue,

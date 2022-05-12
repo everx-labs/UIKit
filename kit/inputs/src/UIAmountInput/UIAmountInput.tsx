@@ -3,12 +3,10 @@ import {
     UIMaterialTextView,
     UIMaterialTextViewRef,
     UIMaterialTextViewMask,
-} from '../UIMaterialTextView';
-import {
     UIMaterialTextViewIcon,
     UIMaterialTextViewAction,
     UIMaterialTextViewText,
-} from '../UIMaterialTextView/hooks';
+} from '../UIMaterialTextView';
 import { useExtendedRef, useHelperTextStatus, useMask, useOnChangeText } from './hooks';
 import type { UIAmountInputProps, UIAmountInputRef } from './types';
 

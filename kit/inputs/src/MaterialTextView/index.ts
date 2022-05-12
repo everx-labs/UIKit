@@ -15,4 +15,5 @@ export type {
     MaterialTextViewRefChangeText,
     MaterialTextViewRefMoveCarret,
 } from './types';
-export { useClearButton, useInputHasValue } from './hooks';
+export { useInputHasValue } from './hooks';
+export * from './getEmptyUIMaterialTextViewRef';

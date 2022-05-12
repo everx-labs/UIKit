@@ -6,4 +6,8 @@ export const UIConstants = {
             precision: 9,
         },
     },
+    pressableIconScaleParameters: {
+        pressed: 0.8,
+        hovered: 1.2,
+    },
 };

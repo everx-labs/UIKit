@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { Pressable as RNPressable } from 'react-native';
+import { useHover } from '../useHover';
 import { PressableStateContext, PressableStateVariant } from './constants';
 import type { PressableProps } from './types';
 import { usePressed, usePressableState } from './hooks';
-// import { TouchableOpacity } from '../TouchableOpacity';
 
 /**
  * It is necessary to simplify the creation of new buttons.
@@ -21,17 +21,17 @@ export function Pressable({
     testID,
 }: PressableProps) {
     const { isPressed, onPressIn, onPressOut } = usePressed();
+    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
     const pressableState: PressableStateVariant = usePressableState(
         disabled,
         loading,
         isPressed,
-        /** there is no hover in the mobile version */
-        false,
+        isHovered,
     );
 
     return (
         <PressableStateContext.Provider value={pressableState}>
-            <TouchableWithoutFeedback
+            <RNPressable
                 onPress={onPress}
                 onLongPress={onLongPress}
                 testID={testID}
@@ -39,9 +39,12 @@ export function Pressable({
                 onPressIn={onPressIn}
                 onPressOut={onPressOut}
                 style={style}
+                // @ts-expect-error
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
             >
                 {children}
-            </TouchableWithoutFeedback>
+            </RNPressable>
         </PressableStateContext.Provider>
     );
 }

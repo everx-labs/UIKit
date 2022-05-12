@@ -8,10 +8,10 @@ import type {
     MaterialTextViewTextChild,
 } from '../../MaterialTextView';
 import {
-    useClearButton,
     MaterialTextViewIcon,
     MaterialTextViewAction,
     MaterialTextViewText,
+    MaterialTextViewClearButton,
 } from '../../MaterialTextView';
 
 const getChildList = (children: React.ReactNode) => {
@@ -55,7 +55,14 @@ export function useMaterialTextViewChildren(
     isHovered: boolean,
     clear: (() => void) | undefined,
 ): MaterialTextViewProps['children'] {
-    const clearButton = useClearButton(inputHasValue, isFocused, isHovered, clear);
+    const clearButton = (
+        <MaterialTextViewClearButton
+            inputHasValue={inputHasValue}
+            isFocused={isFocused}
+            isHovered={isHovered}
+            clear={clear}
+        />
+    );
 
     if (clearButton) {
         /**

@@ -1,15 +1,18 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { TouchableOpacity } from '@tonlabs/uikit.controls';
+import { UIPressableArea } from '@tonlabs/uikit.controls';
 import { ColorVariants, UILabel, UILabelRoles } from '@tonlabs/uikit.themes';
-import { UIAnimatedImage, UIImage } from '@tonlabs/uikit.media';
+import { UIImage } from '@tonlabs/uikit.media';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { UIAssets } from '@tonlabs/uikit.assets';
 import type {
     MaterialTextViewIconProps,
     MaterialTextViewActionProps,
     MaterialTextViewTextProps,
+    MaterialTextViewClearButtonProps,
 } from './types';
+import { UIConstants } from './constants';
 
 const ICON_TAP_ZONE_SIZE = 48;
 
@@ -46,14 +49,13 @@ export function MaterialTextViewIcon({
     ...rest
 }: MaterialTextViewIconProps) {
     return (
-        <TouchableOpacity onPress={onPress} style={[styles.iconTapZone, containerStyle]}>
-            <UIAnimatedImage
-                {...rest}
-                style={[styles.iconSize, style]}
-                // entering={FadeIn}
-                // exiting={FadeOut}
-            />
-        </TouchableOpacity>
+        <UIPressableArea
+            onPress={onPress}
+            style={[styles.iconTapZone, containerStyle]}
+            scaleParameters={UIConstants.pressableIconScaleParameters}
+        >
+            <UIImage {...rest} style={[styles.iconSize, style]} />
+        </UIPressableArea>
     );
 }
 
@@ -61,31 +63,50 @@ export function MaterialTextViewAction({ children, onPress }: MaterialTextViewAc
     const processedChildren = processChildren(children, ColorVariants.TextPrimary);
 
     return (
-        <TouchableOpacity onPress={onPress}>
-            <Animated.View
-                style={styles.actionContainer}
-                // entering={FadeIn}
-                // exiting={FadeOut}
-            >
-                {processedChildren}
-            </Animated.View>
-        </TouchableOpacity>
+        <UIPressableArea
+            onPress={onPress}
+            scaleParameters={UIConstants.pressableIconScaleParameters}
+        >
+            <Animated.View style={styles.actionContainer}>{processedChildren}</Animated.View>
+        </UIPressableArea>
     );
 }
 
 export function MaterialTextViewText({ children }: MaterialTextViewTextProps) {
     const processedChildren = processChildren(children, ColorVariants.TextTertiary);
 
-    return (
-        <Animated.View
-            style={styles.textContainer}
-            // entering={FadeIn}
-            // exiting={FadeOut}
-        >
-            {processedChildren}
-        </Animated.View>
-    );
+    return <Animated.View style={styles.textContainer}>{processedChildren}</Animated.View>;
 }
+
+export const MaterialTextViewClearButton = React.memo(function MaterialTextViewClearButton({
+    inputHasValue,
+    isFocused,
+    isHovered,
+    clear,
+}: MaterialTextViewClearButtonProps) {
+    if (inputHasValue && (isFocused || isHovered)) {
+        console.log({ inputHasValue, isFocused, isHovered });
+        return (
+            <UIPressableArea
+                testID="clear_btn"
+                style={styles.iconTapZone}
+                onPress={() => {
+                    console.log('onPress');
+                    clear?.();
+                }}
+                scaleParameters={UIConstants.pressableIconScaleParameters}
+            >
+                <UIImage
+                    source={UIAssets.icons.ui.clear}
+                    tintColor={ColorVariants.BackgroundPrimaryInverted}
+                    style={styles.iconSize}
+                />
+            </UIPressableArea>
+        );
+    }
+
+    return null;
+});
 
 const styles = StyleSheet.create({
     iconTapZone: {

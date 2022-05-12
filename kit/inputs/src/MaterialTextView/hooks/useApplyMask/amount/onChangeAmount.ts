@@ -2,7 +2,7 @@
 import type { SharedValue } from 'react-native-reanimated';
 import { uiLocalized } from '@tonlabs/localization';
 import { runUIOnChangeAmount } from './runUIOnChangeAmount';
-import type { UIMaterialTextViewInputState } from '../../../types';
+import type { MaterialTextViewInputState } from '../../../types';
 
 export function onChangeAmount(
     inputText: string,
@@ -11,7 +11,7 @@ export function onChangeAmount(
     lastText: SharedValue<string>,
     skipNextOnSelectionChange: SharedValue<boolean>,
     countOfDecimalDigits: number | null,
-): UIMaterialTextViewInputState {
+): MaterialTextViewInputState {
     const {
         grouping: integerSeparator,
         decimal: delimeter,
