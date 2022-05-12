@@ -9,7 +9,7 @@ import {
     MaterialTextViewRef,
 } from '../MaterialTextView';
 import { useFocused } from '../UITextView';
-import { useMaterialTextViewChildren } from './hooks/useMaterialTextViewChildren';
+import { useUIMaterialTextViewChildren } from './hooks';
 import type { UIMaterialTextViewRef, UIMaterialTextViewProps } from './types';
 
 const emptyUIMaterialTextViewRef = getEmptyUIMaterialTextViewRef('UIMaterialTextView');
@@ -28,7 +28,7 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
         const [isHovered, setIsHovered] = React.useState<boolean>(false);
         const { isFocused, onFocus, onBlur } = useFocused(onFocusProp, onBlurProp);
         const { inputHasValue, checkInputHasValue } = useInputHasValue(value, defaultValue);
-        const processedChildren = useMaterialTextViewChildren(
+        const processedChildren = useUIMaterialTextViewChildren(
             children,
             inputHasValue,
             isFocused,

@@ -1,16 +1,15 @@
 import * as React from 'react';
-import type {
-    MaterialTextViewProps,
-    MaterialTextViewActionChild,
-    MaterialTextViewIconChild,
-    MaterialTextViewTextChild,
-} from '../../MaterialTextView';
 import {
     MaterialTextViewIcon,
     MaterialTextViewAction,
     MaterialTextViewText,
-    MaterialTextViewClearButton,
-} from '../../MaterialTextView';
+} from '../MaterialTextViewChildren';
+import type {
+    MaterialTextViewProps,
+    MaterialTextViewIconChild,
+    MaterialTextViewActionChild,
+    MaterialTextViewTextChild,
+} from '../types';
 
 const getChildList = (children: React.ReactNode) => {
     const configs = React.Children.toArray(children).reduce<React.ReactNode[]>((acc, child) => {
@@ -48,15 +47,7 @@ const getChildList = (children: React.ReactNode) => {
 
 export function useMaterialTextViewChildren(
     children: MaterialTextViewProps['children'],
-    inputHasValue: boolean,
-    isFocused: boolean,
-    isHovered: boolean,
-    clear: (() => void) | undefined,
 ): MaterialTextViewProps['children'] {
-    if (inputHasValue && (isFocused || isHovered)) {
-        return <MaterialTextViewClearButton clear={clear} />;
-    }
-
     const { icons, action, text } = getChildList(children).reduce<{
         icons: (MaterialTextViewIconChild | undefined)[];
         action: MaterialTextViewActionChild | undefined;
