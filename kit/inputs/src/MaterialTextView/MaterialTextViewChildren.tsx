@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { UIPressableArea } from '@tonlabs/uikit.controls';
+import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { ColorVariants, UILabel, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UIImage } from '@tonlabs/uikit.media';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
@@ -12,7 +12,6 @@ import type {
     MaterialTextViewTextProps,
     MaterialTextViewClearButtonProps,
 } from './types';
-import { UIConstants } from './constants';
 
 const ICON_TAP_ZONE_SIZE = 48;
 
@@ -49,13 +48,9 @@ export function MaterialTextViewIcon({
     ...rest
 }: MaterialTextViewIconProps) {
     return (
-        <UIPressableArea
-            onPress={onPress}
-            style={[styles.iconTapZone, containerStyle]}
-            scaleParameters={UIConstants.pressableIconScaleParameters}
-        >
+        <TouchableOpacity onPress={onPress} style={[styles.iconTapZone, containerStyle]}>
             <UIImage {...rest} style={[styles.iconSize, style]} />
-        </UIPressableArea>
+        </TouchableOpacity>
     );
 }
 
@@ -63,12 +58,9 @@ export function MaterialTextViewAction({ children, onPress }: MaterialTextViewAc
     const processedChildren = processChildren(children, ColorVariants.TextPrimary);
 
     return (
-        <UIPressableArea
-            onPress={onPress}
-            scaleParameters={UIConstants.pressableIconScaleParameters}
-        >
+        <TouchableOpacity onPress={onPress}>
             <Animated.View style={styles.actionContainer}>{processedChildren}</Animated.View>
-        </UIPressableArea>
+        </TouchableOpacity>
     );
 }
 
@@ -87,21 +79,18 @@ export const MaterialTextViewClearButton = React.memo(function MaterialTextViewC
     if (inputHasValue && (isFocused || isHovered)) {
         console.log({ inputHasValue, isFocused, isHovered });
         return (
-            <UIPressableArea
+            <TouchableOpacity
                 testID="clear_btn"
                 style={styles.iconTapZone}
-                onPress={() => {
-                    console.log('onPress');
-                    clear?.();
-                }}
-                scaleParameters={UIConstants.pressableIconScaleParameters}
+                onPress={clear}
+                activeOpacity={1}
             >
                 <UIImage
                     source={UIAssets.icons.ui.clear}
                     tintColor={ColorVariants.BackgroundPrimaryInverted}
                     style={styles.iconSize}
                 />
-            </UIPressableArea>
+            </TouchableOpacity>
         );
     }
 
