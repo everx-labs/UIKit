@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type {
     MaterialTextViewProps,
@@ -55,17 +55,8 @@ export function useMaterialTextViewChildren(
     isHovered: boolean,
     clear: (() => void) | undefined,
 ): MaterialTextViewProps['children'] {
-    const clearButton = (
-        <MaterialTextViewClearButton
-            inputHasValue={inputHasValue}
-            isFocused={isFocused}
-            isHovered={isHovered}
-            clear={clear}
-        />
-    );
-
-    if (clearButton) {
-        return clearButton;
+    if (inputHasValue && (isFocused || isHovered)) {
+        return <MaterialTextViewClearButton clear={clear} />;
     }
 
     const { icons, action, text } = getChildList(children).reduce<{

@@ -86,14 +86,11 @@ function useInnerRightAction(
         );
     }
 
-    return (
-        <UIMaterialTextViewClearButton
-            inputHasValue={inputHasValue}
-            isFocused={isFocused}
-            isHovered={isHovered}
-            clear={clear}
-        />
-    );
+    if (inputHasValue && (isFocused || isHovered)) {
+        return <UIMaterialTextViewClearButton clear={clear} />;
+    }
+
+    return null;
 }
 
 type UISearchBarProps = Omit<UITextViewProps, 'placeholder'> & {

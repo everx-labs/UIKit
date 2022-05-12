@@ -114,9 +114,6 @@ export type MaterialTextViewTextProps = {
 };
 
 export type MaterialTextViewClearButtonProps = {
-    inputHasValue: boolean;
-    isFocused: boolean;
-    isHovered: boolean;
     clear: (() => void) | undefined;
 };
 

@@ -21,7 +21,6 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
         const [isHovered, setIsHovered] = React.useState<boolean>(false);
         const { isFocused, onFocus, onBlur } = useFocused(onFocusProp, onBlurProp);
         const { inputHasValue, checkInputHasValue } = useInputHasValue(value, defaultValue);
-        console.log({ inputHasValue, isFocused, isHovered });
         const processedChildren = useMaterialTextViewChildren(
             children,
             inputHasValue,

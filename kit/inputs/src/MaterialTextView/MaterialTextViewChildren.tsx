@@ -70,30 +70,22 @@ export function MaterialTextViewText({ children }: MaterialTextViewTextProps) {
 }
 
 export const MaterialTextViewClearButton = React.memo(function MaterialTextViewClearButton({
-    inputHasValue,
-    isFocused,
-    isHovered,
     clear,
 }: MaterialTextViewClearButtonProps) {
-    if (inputHasValue && (isFocused || isHovered)) {
-        console.log({ inputHasValue, isFocused, isHovered });
-        return (
-            <TouchableOpacity
-                testID="clear_btn"
-                style={styles.iconTapZone}
-                onPress={clear}
-                activeOpacity={1}
-            >
-                <UIImage
-                    source={UIAssets.icons.ui.clear}
-                    tintColor={ColorVariants.BackgroundPrimaryInverted}
-                    style={styles.iconSize}
-                />
-            </TouchableOpacity>
-        );
-    }
-
-    return null;
+    return (
+        <TouchableOpacity
+            testID="clear_btn"
+            style={styles.iconTapZone}
+            onPress={clear}
+            activeOpacity={1}
+        >
+            <UIImage
+                source={UIAssets.icons.ui.clear}
+                tintColor={ColorVariants.BackgroundPrimaryInverted}
+                style={styles.iconSize}
+            />
+        </TouchableOpacity>
+    );
 });
 
 const styles = StyleSheet.create({
