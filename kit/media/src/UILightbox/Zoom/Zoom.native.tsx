@@ -110,7 +110,6 @@ export const Zoom: React.FC<ZoomProps> = ({
                 ref={pinchRef}
                 onGestureEvent={onZoom}
                 simultaneousHandlers={panRef}
-                minPointers={2}
             >
                 <Animated.View style={styles.fullScreen}>
                     <PanGestureHandler
