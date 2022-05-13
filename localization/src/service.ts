@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import dayjs from 'dayjs';
 import { NativeModules } from 'react-native';
 import LocalizedStringsService from 'react-native-localization';
