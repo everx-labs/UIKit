@@ -12,7 +12,6 @@ import { usePressableContentColor } from '../Pressable';
 
 export function ActionButtonContent({
     icon,
-    layout,
     loading,
     title,
     type = UIActionButtonType.Primary,
@@ -35,7 +34,7 @@ export function ActionButtonContent({
     const styles = useStyles(icon, loading);
 
     return (
-        <Animated.View style={[styles.container, layout, animatedStyles]}>
+        <Animated.View style={[styles.container, animatedStyles]}>
             <View style={styles.actionButtonIcon}>
                 <ActionButtonIcon
                     icon={icon}
