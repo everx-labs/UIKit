@@ -9,7 +9,7 @@ export const UIActionButton = React.forwardRef<View, UIActionButtonProps>(functi
     props: UIActionButtonProps,
     ref,
 ) {
-    const { disabled, loading, onPress, testID } = props;
+    const { disabled, loading, onPress, testID, layout } = props;
 
     return (
         <Pressable
@@ -18,6 +18,7 @@ export const UIActionButton = React.forwardRef<View, UIActionButtonProps>(functi
             disabled={disabled}
             loading={loading}
             onPress={onPress}
+            style={layout}
         >
             <ActionButtonContent {...props} />
         </Pressable>

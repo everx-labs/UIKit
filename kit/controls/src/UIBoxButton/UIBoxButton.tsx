@@ -8,7 +8,7 @@ export const UIBoxButton = React.forwardRef<View, UIBoxButtonProps>(function UIB
     props: UIBoxButtonProps,
     ref,
 ) {
-    const { disabled, loading, onPress, testID } = props;
+    const { disabled, loading, onPress, testID, layout } = props;
 
     return (
         <Pressable
@@ -17,6 +17,7 @@ export const UIBoxButton = React.forwardRef<View, UIBoxButtonProps>(function UIB
             disabled={disabled}
             loading={loading}
             onPress={onPress}
+            style={layout}
         >
             <BoxButtonContent {...props} />
         </Pressable>
