@@ -1,11 +1,7 @@
 import * as React from 'react';
 import type Animated from 'react-native-reanimated';
-import { useAnimatedColor } from './hooks/useAnimatedColor';
-import {
-    PressableStateVariant,
-    pressableWithSpringConfig,
-    PressableStateContext,
-} from './constants';
+import { useDerivedValue, withSpring } from 'react-native-reanimated';
+import { pressableWithSpringConfig, PressableStateContext } from './constants';
 import { usePressableColorScheme } from './hooks';
 import type { PressableColors, PressableColorScheme } from './types';
 
@@ -31,23 +27,25 @@ export function usePressableContentColor({
         loadingColor,
     );
 
-    const color = React.useMemo(() => {
-        switch (pressableState) {
-            case PressableStateVariant.Disabled:
+    const color = useDerivedValue(() => {
+        switch (pressableState?.value) {
+            case 'Disabled':
                 return colorScheme.disabledColor;
-            case PressableStateVariant.Hovered:
+            case 'Hovered':
                 return colorScheme.hoveredColor;
-            case PressableStateVariant.Pressed:
+            case 'Pressed':
                 return colorScheme.pressedColor;
-            case PressableStateVariant.Loading:
+            case 'Loading':
                 return colorScheme.loadingColor;
-            case PressableStateVariant.Initial:
+            case 'Initial':
             default:
                 return colorScheme.initialColor;
         }
     }, [pressableState, colorScheme]);
 
-    const animatedColor = useAnimatedColor(color, pressableWithSpringConfig);
+    const animatedColor = useDerivedValue(() => {
+        return withSpring(color.value, pressableWithSpringConfig);
+    });
 
     return animatedColor;
 }
