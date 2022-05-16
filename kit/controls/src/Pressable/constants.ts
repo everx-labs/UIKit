@@ -11,3 +11,5 @@ export const pressableWithSpringConfig: WithSpringConfig = {
     stiffness: 1000,
     overshootClamping: true,
 };
+
+export const maxPressDistance = 10;

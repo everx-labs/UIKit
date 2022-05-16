@@ -2,7 +2,7 @@ import * as React from 'react';
 import { runOnJS, useSharedValue } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { View } from 'react-native';
-import { PressableStateContext } from './constants';
+import { maxPressDistance, PressableStateContext } from './constants';
 import type { PressableProps } from './types';
 import { usePressableState } from './hooks';
 import { useConvertToAnimatedValue } from './hooks/useConvertToAnimatedValue';
@@ -36,7 +36,7 @@ export function Pressable({
         .enabled(!(disabled || loading));
 
     const longPress = Gesture.LongPress()
-        .maxDistance(10)
+        .maxDistance(maxPressDistance)
         .shouldCancelWhenOutside(true)
         .onBegin(() => {
             isPressed.value = true;
