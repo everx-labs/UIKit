@@ -1,7 +1,6 @@
 import * as React from 'react';
 import type Animated from 'react-native-reanimated';
-import { useDerivedValue } from 'react-native-reanimated';
-import { useAnimatedColor } from './hooks/useAnimatedColor';
+import { useDerivedValue, withSpring } from 'react-native-reanimated';
 import { pressableWithSpringConfig, PressableStateContext } from './constants';
 import { usePressableColorScheme } from './hooks';
 import type { PressableColors, PressableColorScheme } from './types';
@@ -44,7 +43,9 @@ export function usePressableContentColor({
         }
     }, [pressableState, colorScheme]);
 
-    const animatedColor = useAnimatedColor(color, pressableWithSpringConfig);
+    const animatedColor = useDerivedValue(() => {
+        return withSpring(color.value, pressableWithSpringConfig);
+    });
 
     return animatedColor;
 }
