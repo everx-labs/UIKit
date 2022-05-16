@@ -15,6 +15,8 @@ export type PressableProps = {
     testID?: string;
 } & React.RefAttributes<View>;
 
+export type PressableStateType = 'Initial' | 'Disabled' | 'Hovered' | 'Pressed' | 'Loading';
+
 export type PressableColors = {
     initialColor: ColorVariants;
     pressedColor: ColorVariants;

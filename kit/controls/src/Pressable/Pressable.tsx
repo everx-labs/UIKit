@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { Pressable as PressablePlatform, View } from 'react-native';
+import { Pressable as PressablePlatform } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useHover } from '../useHover';
-import { PressableStateContext, PressableStateVariant } from './constants';
+import { PressableStateContext } from './constants';
 import type { PressableProps } from './types';
-import { usePressed, usePressableState } from './hooks';
+import { usePressed, usePressableState, useConvertToAnimatedValue } from './hooks';
 
 const PressablePlatformAnimated = Animated.createAnimatedComponent(PressablePlatform);
 
@@ -14,26 +14,33 @@ const PressablePlatformAnimated = Animated.createAnimatedComponent(PressablePlat
  *
  * To animate children colors please use `usePressableContentColor` hook in children components.
  */
-export const Pressable = React.forwardRef<View, PressableProps>(function Pressable(
-    { onPress, onLongPress, disabled, loading, children, style, testID }: PressableProps,
-    passedRef,
-) {
-    const localRef = React.useRef<View>(null);
-    const ref = passedRef || localRef;
-
+export function Pressable({
+    onPress,
+    onLongPress,
+    disabled,
+    loading,
+    children,
+    style,
+    testID,
+}: PressableProps) {
     const { isPressed, onPressIn, onPressOut } = usePressed();
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
-    const pressableState: PressableStateVariant = usePressableState(
-        disabled,
-        loading,
-        isPressed,
-        isHovered,
+
+    const isDisabledAnimated = useConvertToAnimatedValue(disabled);
+    const isLoadingAnimated = useConvertToAnimatedValue(loading);
+    const isPressedAnimated = useConvertToAnimatedValue(isPressed);
+    const isHoveredAnimated = useConvertToAnimatedValue(isHovered);
+
+    const pressableState = usePressableState(
+        isDisabledAnimated,
+        isLoadingAnimated,
+        isPressedAnimated,
+        isHoveredAnimated,
     );
 
     return (
         <PressableStateContext.Provider value={pressableState}>
             <PressablePlatformAnimated
-                ref={ref}
                 onPress={onPress}
                 onLongPress={onLongPress}
                 testID={testID}
@@ -49,4 +56,4 @@ export const Pressable = React.forwardRef<View, PressableProps>(function Pressab
             </PressablePlatformAnimated>
         </PressableStateContext.Provider>
     );
-});
+}
