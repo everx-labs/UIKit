@@ -262,188 +262,205 @@ export function ButtonsScreen() {
                         alignItems: 'stretch',
                     }}
                 >
-                    <View style={{ paddingVertical: 20 }}>
-                        <UIBoxButton
-                            testID="uiBoxButton_primary_default"
-                            title="Primary"
-                            onPress={() => console.log('Pressed UIBoxButton primary')}
-                        />
-                    </View>
-                    <View style={{ paddingVertical: 20 }}>
-                        <UIBoxButton
-                            testID="uiBoxButton_primary_negative"
-                            title="Primary negative"
-                            variant={UIBoxButtonVariant.Negative}
-                            onPress={() => {
-                                // empty
-                            }}
-                        />
-                    </View>
-                    <View style={{ paddingVertical: 20 }}>
-                        <UIBoxButton
-                            testID="uiBoxButton_primary_positive"
-                            title="Primary positive"
-                            variant={UIBoxButtonVariant.Positive}
-                            onPress={() => {
-                                // empty
-                            }}
-                        />
-                    </View>
-                    <View style={{ paddingVertical: 20 }}>
-                        <UIBoxButton
-                            disabled
-                            testID="uiBoxButton_primary_disabled"
-                            title="Primary disabled"
-                            onPress={() => {
-                                // empty
-                            }}
-                        />
-                    </View>
-                    <View style={{ paddingVertical: 20 }}>
-                        <UIBoxButton
-                            testID="uiBoxButton_primary_loading"
-                            title="Action"
-                            loading
-                            onPress={() => console.log('Pressed UIBoxButton')}
-                        />
-                    </View>
-                    <View style={{ paddingVertical: 20 }}>
-                        <UIBoxButton
-                            icon={UIAssets.icons.ui.camera}
-                            testID="uiBoxButton_primary_leftIcon"
-                            title="Action"
-                            onPress={() => console.log('Pressed UIBoxButton')}
-                        />
-                    </View>
-                    <View style={{ paddingVertical: 20 }}>
-                        <UIBoxButton
-                            icon={UIAssets.icons.ui.arrowUpRight}
-                            iconPosition={UIBoxButtonIconPosition.Middle}
-                            testID="uiBoxButton_primary_middleIcon"
-                            title="Action"
-                            onPress={() => console.log('Pressed UIBoxButton')}
-                        />
-                    </View>
-                    <View style={{ paddingVertical: 20 }}>
-                        <UIBoxButton
-                            icon={UIAssets.icons.ui.camera}
-                            iconPosition={UIBoxButtonIconPosition.Right}
-                            testID="uiBoxButton_primary_rightIcon"
-                            title="Action"
-                            onPress={() => console.log('Pressed UIBoxButton')}
-                        />
-                    </View>
-                    <View style={{ paddingVertical: 20 }}>
-                        <UIBoxButton
-                            testID="uiBoxButton_secondary"
-                            title="Secondary"
-                            type={UIBoxButtonType.Secondary}
-                            onPress={() => console.log('Pressed UIBoxButton secondary')}
-                        />
-                    </View>
-                    <View style={{ paddingVertical: 20 }}>
-                        <UIBoxButton
-                            testID="uiBoxButton_secondary_negative"
-                            title="Secondary negative"
-                            type={UIBoxButtonType.Secondary}
-                            variant={UIBoxButtonVariant.Negative}
-                            onPress={() => console.log('Pressed UIBoxButton secondary negative')}
-                        />
-                    </View>
-                    <View style={{ paddingVertical: 20 }}>
-                        <UIBoxButton
-                            testID="uiBoxButton_secondary_positive"
-                            title="Secondary positive"
-                            type={UIBoxButtonType.Secondary}
-                            variant={UIBoxButtonVariant.Positive}
-                            onPress={() => console.log('Pressed UIBoxButton secondary positive')}
-                        />
-                    </View>
-                    <View style={{ paddingVertical: 20 }}>
-                        <UIBoxButton
-                            disabled
-                            testID="uiBoxButton_secondary_disabled"
-                            title="Secondary disabled"
-                            type={UIBoxButtonType.Secondary}
-                            onPress={() => {
-                                // empty
-                            }}
-                        />
-                    </View>
-                    <View style={{ paddingVertical: 20 }}>
-                        <UIBoxButton
-                            testID="uiBoxButton_tertiary"
-                            title="Tertiary"
-                            type={UIBoxButtonType.Tertiary}
-                            onPress={() => console.log('Pressed UIBoxButton tertiary')}
-                        />
-                    </View>
-                    <View style={{ paddingVertical: 20 }}>
-                        <UIBoxButton
-                            testID="uiBoxButton_tertiary_negative"
-                            title="Tertiary negative"
-                            type={UIBoxButtonType.Tertiary}
-                            variant={UIBoxButtonVariant.Negative}
-                            onPress={() => console.log('Pressed UIBoxButton tertiary negative')}
-                        />
-                    </View>
-                    <View style={{ paddingVertical: 20 }}>
-                        <UIBoxButton
-                            testID="uiBoxButton_tertiary_positive"
-                            title="Tertiary positive"
-                            type={UIBoxButtonType.Tertiary}
-                            variant={UIBoxButtonVariant.Positive}
-                            onPress={() => console.log('Pressed UIBoxButton tertiary positive')}
-                        />
-                    </View>
-                    <View style={{ paddingVertical: 20 }}>
-                        <UIBoxButton
-                            disabled
-                            testID="uiBoxButton_tertiary_disabled"
-                            title="Tertiary disabled"
-                            type={UIBoxButtonType.Tertiary}
-                            onPress={() => {
-                                // empty
-                            }}
-                        />
-                    </View>
-                    <View style={{ paddingVertical: 20 }}>
-                        <UIBoxButton
-                            testID="uiBoxButton_nulled"
-                            title="Nulled"
-                            type={UIBoxButtonType.Nulled}
-                            onPress={() => console.log('Pressed UIBoxButton nulled')}
-                        />
-                    </View>
-                    <View style={{ paddingVertical: 20 }}>
-                        <UIBoxButton
-                            testID="uiBoxButton_nulled_negative"
-                            title="Nulled negative"
-                            type={UIBoxButtonType.Nulled}
-                            variant={UIBoxButtonVariant.Negative}
-                            onPress={() => console.log('Pressed UIBoxButton nulled negative')}
-                        />
-                    </View>
-                    <View style={{ paddingVertical: 20 }}>
-                        <UIBoxButton
-                            testID="uiBoxButton_nulled_positive"
-                            title="Nulled positive"
-                            type={UIBoxButtonType.Nulled}
-                            variant={UIBoxButtonVariant.Positive}
-                            onPress={() => console.log('Pressed UIBoxButton nulled positive')}
-                        />
-                    </View>
-                    <View style={{ paddingVertical: 20 }}>
-                        <UIBoxButton
-                            disabled
-                            testID="uiBoxButton_nulled_disabled"
-                            title="Nulled disabled"
-                            type={UIBoxButtonType.Nulled}
-                            onPress={() => {
-                                // empty
-                            }}
-                        />
-                    </View>
+                    <UIBoxButton
+                        testID="uiBoxButton_primary_default"
+                        title="Primary"
+                        onPress={() => console.log('Pressed UIBoxButton primary')}
+                    />
+                    <UIBoxButton
+                        testID="uiBoxButton_primary_negative"
+                        title="Primary negative"
+                        variant={UIBoxButtonVariant.Negative}
+                        onPress={() => {
+                            // empty
+                        }}
+                        layout={{
+                            marginTop: 20,
+                        }}
+                    />
+                    <UIBoxButton
+                        testID="uiBoxButton_primary_positive"
+                        title="Primary positive"
+                        variant={UIBoxButtonVariant.Positive}
+                        onPress={() => {
+                            // empty
+                        }}
+                        layout={{
+                            marginTop: 20,
+                        }}
+                    />
+                    <UIBoxButton
+                        disabled
+                        testID="uiBoxButton_primary_disabled"
+                        title="Primary disabled"
+                        onPress={() => {
+                            // empty
+                        }}
+                        layout={{
+                            marginTop: 20,
+                        }}
+                    />
+                    <UIBoxButton
+                        testID="uiBoxButton_primary_loading"
+                        title="Action"
+                        loading
+                        onPress={() => console.log('Pressed UIBoxButton')}
+                        layout={{
+                            marginTop: 20,
+                        }}
+                    />
+                    <UIBoxButton
+                        icon={UIAssets.icons.ui.camera}
+                        testID="uiBoxButton_primary_leftIcon"
+                        title="Action"
+                        onPress={() => console.log('Pressed UIBoxButton')}
+                        layout={{
+                            marginTop: 20,
+                        }}
+                    />
+                    <UIBoxButton
+                        icon={UIAssets.icons.ui.arrowUpRight}
+                        iconPosition={UIBoxButtonIconPosition.Middle}
+                        testID="uiBoxButton_primary_middleIcon"
+                        title="Action"
+                        onPress={() => console.log('Pressed UIBoxButton')}
+                        layout={{
+                            marginTop: 20,
+                        }}
+                    />
+                    <UIBoxButton
+                        icon={UIAssets.icons.ui.camera}
+                        iconPosition={UIBoxButtonIconPosition.Right}
+                        testID="uiBoxButton_primary_rightIcon"
+                        title="Action"
+                        onPress={() => console.log('Pressed UIBoxButton')}
+                        layout={{
+                            marginTop: 20,
+                        }}
+                    />
+                    <UIBoxButton
+                        testID="uiBoxButton_secondary"
+                        title="Secondary"
+                        type={UIBoxButtonType.Secondary}
+                        onPress={() => console.log('Pressed UIBoxButton secondary')}
+                        layout={{
+                            marginTop: 20,
+                        }}
+                    />
+                    <UIBoxButton
+                        testID="uiBoxButton_secondary_negative"
+                        title="Secondary negative"
+                        type={UIBoxButtonType.Secondary}
+                        variant={UIBoxButtonVariant.Negative}
+                        onPress={() => console.log('Pressed UIBoxButton secondary negative')}
+                        layout={{
+                            marginTop: 20,
+                        }}
+                    />
+                    <UIBoxButton
+                        testID="uiBoxButton_secondary_positive"
+                        title="Secondary positive"
+                        type={UIBoxButtonType.Secondary}
+                        variant={UIBoxButtonVariant.Positive}
+                        onPress={() => console.log('Pressed UIBoxButton secondary positive')}
+                        layout={{
+                            marginTop: 20,
+                        }}
+                    />
+                    <UIBoxButton
+                        disabled
+                        testID="uiBoxButton_secondary_disabled"
+                        title="Secondary disabled"
+                        type={UIBoxButtonType.Secondary}
+                        onPress={() => {
+                            // empty
+                        }}
+                        layout={{
+                            marginTop: 20,
+                        }}
+                    />
+                    <UIBoxButton
+                        testID="uiBoxButton_tertiary"
+                        title="Tertiary"
+                        type={UIBoxButtonType.Tertiary}
+                        onPress={() => console.log('Pressed UIBoxButton tertiary')}
+                        layout={{
+                            marginTop: 20,
+                        }}
+                    />
+                    <UIBoxButton
+                        testID="uiBoxButton_tertiary_negative"
+                        title="Tertiary negative"
+                        type={UIBoxButtonType.Tertiary}
+                        variant={UIBoxButtonVariant.Negative}
+                        onPress={() => console.log('Pressed UIBoxButton tertiary negative')}
+                        layout={{
+                            marginTop: 20,
+                        }}
+                    />
+                    <UIBoxButton
+                        testID="uiBoxButton_tertiary_positive"
+                        title="Tertiary positive"
+                        type={UIBoxButtonType.Tertiary}
+                        variant={UIBoxButtonVariant.Positive}
+                        onPress={() => console.log('Pressed UIBoxButton tertiary positive')}
+                        layout={{
+                            marginTop: 20,
+                        }}
+                    />
+                    <UIBoxButton
+                        disabled
+                        testID="uiBoxButton_tertiary_disabled"
+                        title="Tertiary disabled"
+                        type={UIBoxButtonType.Tertiary}
+                        onPress={() => {
+                            // empty
+                        }}
+                        layout={{
+                            marginTop: 20,
+                        }}
+                    />
+                    <UIBoxButton
+                        testID="uiBoxButton_nulled"
+                        title="Nulled"
+                        type={UIBoxButtonType.Nulled}
+                        onPress={() => console.log('Pressed UIBoxButton nulled')}
+                        layout={{
+                            marginTop: 20,
+                        }}
+                    />
+                    <UIBoxButton
+                        testID="uiBoxButton_nulled_negative"
+                        title="Nulled negative"
+                        type={UIBoxButtonType.Nulled}
+                        variant={UIBoxButtonVariant.Negative}
+                        onPress={() => console.log('Pressed UIBoxButton nulled negative')}
+                        layout={{
+                            marginTop: 20,
+                        }}
+                    />
+                    <UIBoxButton
+                        testID="uiBoxButton_nulled_positive"
+                        title="Nulled positive"
+                        type={UIBoxButtonType.Nulled}
+                        variant={UIBoxButtonVariant.Positive}
+                        onPress={() => console.log('Pressed UIBoxButton nulled positive')}
+                        layout={{
+                            marginTop: 20,
+                        }}
+                    />
+                    <UIBoxButton
+                        disabled
+                        testID="uiBoxButton_nulled_disabled"
+                        title="Nulled disabled"
+                        type={UIBoxButtonType.Nulled}
+                        onPress={() => {
+                            // empty
+                        }}
+                        layout={{
+                            marginTop: 20,
+                        }}
+                    />
                 </View>
             </ExampleSection>
 
