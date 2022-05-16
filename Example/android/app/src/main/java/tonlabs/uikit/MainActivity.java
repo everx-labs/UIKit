@@ -17,4 +17,19 @@ public class MainActivity extends ReactActivity {
     protected String getMainComponentName() {
         return "UIKit";
     }
+
+    @Override
+    protected ReactActivityDelegate createReactActivityDelegate() {
+        return new ReactActivityDelegate(this, getMainComponentName()) {
+            @Override
+            protected ReactRootView createRootView() {
+                ReactRootView rootView = new ReactRootView(getContext());
+
+                WindowCompat.setDecorFitsSystemWindows(MainActivity.this.getWindow(), false);
+                UIKitKeyboardFrameListener.attach(MainActivity.this, rootView);
+
+                return rootView;
+            }
+        };
+    }
 }
