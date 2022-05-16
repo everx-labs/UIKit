@@ -3,7 +3,6 @@ import { View, StyleSheet, Image } from 'react-native';
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import {
     UILabel,
     UILabelRoles,
@@ -21,7 +20,6 @@ type Props = TransactionComment & {
     // This is strange coz it's actually used in getBubbleColor
     // eslint-disable-next-line react/no-unused-prop-types
     type: TransactionType;
-    onPress?: () => void | Promise<void>;
 };
 
 const getBubbleCornerStyle = (position: BubblePosition) => {
@@ -54,7 +52,7 @@ export function BubbleTransactionComment(props: Props) {
     const bubbleColor = useBubbleColor(props);
 
     return (
-        <TouchableOpacity
+        <View
             style={[
                 styles.msgContainer,
                 UIStyle.padding.verticalSmall(),
@@ -64,7 +62,6 @@ export function BubbleTransactionComment(props: Props) {
                 props.status === MessageStatus.Pending && UIStyle.common.opacity70(),
                 props.encrypted && styles.msgContainerEncrypted,
             ]}
-            onPress={props.onPress}
         >
             <UILabel
                 testID={`transaction_comment_${props.text}`}
@@ -79,7 +76,7 @@ export function BubbleTransactionComment(props: Props) {
                     <Image source={UIAssets.icons.ui.keyThin} />
                 </View>
             )}
-        </TouchableOpacity>
+        </View>
     );
 }
 
@@ -90,6 +87,7 @@ const styles = StyleSheet.create({
         position: 'relative',
         borderRadius: UIConstant.borderRadius(),
         marginTop: UIConstant.tinyContentOffset(),
+        maxWidth: '100%',
     },
     msgContainerEncrypted: {
         paddingRight: KEY_THIN_WIDTH + UIConstant.smallContentOffset(), // take the place for the key icon
