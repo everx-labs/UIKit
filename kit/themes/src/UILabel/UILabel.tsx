@@ -13,8 +13,8 @@ import type { UILabelBasicProps, UILabelProps } from './types';
 import { useLabelDataSet } from './useLabelDataSet';
 import { makeStyles } from '../makeStyles';
 
-const useStyles = makeStyles((numberOfLines: number): { textMultiLine: any } => {
-    if (Platform.OS !== 'web' || numberOfLines == null) {
+const useStyles = makeStyles((numberOfLines: number | undefined): { textMultiLine: any } => {
+    if (Platform.OS !== 'web') {
         return {
             textMultiLine: null,
         };
