@@ -1,11 +1,7 @@
 import * as React from 'react';
 import type Animated from 'react-native-reanimated';
-import { useSharedValue, withSpring, WithSpringConfig } from 'react-native-reanimated';
-import {
-    PressableStateVariant,
-    pressableWithSpringConfig,
-    PressableStateContext,
-} from './constants';
+import { useDerivedValue, withSpring, WithSpringConfig } from 'react-native-reanimated';
+import { pressableWithSpringConfig, PressableStateContext } from './constants';
 import type { PressableNumericParameters } from './types';
 
 /**
@@ -31,27 +27,25 @@ export function usePressableContentNumericParameter(
 ): Readonly<Animated.SharedValue<number>> {
     const pressableState = React.useContext(PressableStateContext);
 
-    const scale = React.useMemo(() => {
-        switch (pressableState) {
-            case PressableStateVariant.Disabled:
+    const scale = useDerivedValue(() => {
+        switch (pressableState?.value) {
+            case 'Disabled':
                 return disabled;
-            case PressableStateVariant.Hovered:
+            case 'Hovered':
                 return hovered;
-            case PressableStateVariant.Pressed:
+            case 'Pressed':
                 return pressed;
-            case PressableStateVariant.Loading:
+            case 'Loading':
                 return loading;
-            case PressableStateVariant.Initial:
+            case 'Initial':
             default:
                 return initial;
         }
-    }, [pressableState, initial, pressed, hovered, disabled, loading]);
+    }, [initial, pressed, hovered, disabled, loading]);
 
-    const animatedScale = useSharedValue(scale);
-
-    React.useEffect(() => {
-        animatedScale.value = withSpring(scale, withSpringConfig);
-    }, [scale, animatedScale, withSpringConfig]);
+    const animatedScale = useDerivedValue(() => {
+        return withSpring(scale.value, withSpringConfig);
+    }, []);
 
     return animatedScale;
 }
