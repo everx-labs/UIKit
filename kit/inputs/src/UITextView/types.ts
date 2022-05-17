@@ -64,12 +64,10 @@ export type UITextViewProps = Omit<
     onNumberOfLinesChange?: (numberOfLines: number) => void;
 };
 
-export type UITextViewRef = Pick<
-    TextInput,
-    'isFocused' | 'focus' | 'blur' | 'clear' | 'setNativeProps'
-> & {
+export interface UITextViewRef
+    extends Pick<TextInput, 'isFocused' | 'focus' | 'blur' | 'clear' | 'setNativeProps'> {
     remeasureInputHeight: () => void;
-};
+}
 
 export type AutogrowAttributes = {
     onChange: ((event: NativeSyntheticEvent<TextInputChangeEventData>) => void) | undefined;

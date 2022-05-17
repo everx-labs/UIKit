@@ -551,9 +551,9 @@ export const UISeedPhraseTextView = React.forwardRef<
                 noPersonalizedLearning
             />
             <UISeedPhrasePopover
-                // if number of lines changed, redraw it
                 forId={forId}
-                key={height}
+                // if number of lines changed, redraw it
+                height={height}
                 elementRef={textInputBorderViewRef}
                 currentHighlightedItemIndex={state.highlight.index}
                 onHighlightedItemIndexChange={onHighlightedItemIndexChange}

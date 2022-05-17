@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { View } from 'react-native';
+
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { makeStyles, useTheme, Theme, ColorVariants } from '@tonlabs/uikit.themes';
-import Animated, { interpolate, useAnimatedStyle /* , Layout */ } from 'react-native-reanimated';
+import Animated, { interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated';
 import { UITextView, UITextViewRef } from '../../UITextView';
 import { FloatingLabel } from './FloatingLabel';
 import type { MaterialTextViewLayoutProps } from '../types';
@@ -21,6 +22,8 @@ const POSITION_EXPANDED: number = 1;
 // @inline
 const EXPANDED_INPUT_OFFSET: number = 8;
 
+const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
+
 export const MaterialTextViewFloating = React.forwardRef<
     UITextViewRef,
     MaterialTextViewLayoutProps
@@ -32,13 +35,14 @@ export const MaterialTextViewFloating = React.forwardRef<
         onMouseLeave,
         borderViewRef,
         isHovered,
-        inputHasValue,
+        hasValue,
         isFocused,
         ...rest
     } = props;
     const theme = useTheme();
 
-    const isExpanded = React.useMemo(() => isFocused || inputHasValue, [isFocused, inputHasValue]);
+    const isExpanded = useDerivedValue(() => isFocused.value || hasValue.value);
+
     const { isPlaceholderVisible, showPlacehoder } = usePlaceholderVisibility(isExpanded);
 
     const expandingValue: Readonly<Animated.SharedValue<number>> = useExpandingValue(
@@ -79,7 +83,7 @@ export const MaterialTextViewFloating = React.forwardRef<
                 ref={borderViewRef}
             >
                 <Animated.View style={[styles.input, inputStyle]} /* layout={Layout} */>
-                    <UITextView
+                    <UITextViewAnimated
                         ref={ref}
                         {...rest}
                         placeholder={props.placeholder}

@@ -1,9 +1,11 @@
 import * as React from 'react';
+import { runOnJS, useSharedValue } from 'react-native-reanimated';
+
 import { useHover } from '@tonlabs/uikit.controls';
+
 import {
     useExtendedRef,
     useImperativeChange,
-    useInputHasValue,
     useClear,
     useOnSelectionChange,
     useApplyMask,
@@ -15,78 +17,127 @@ import type {
     MaterialTextViewProps,
     MaterialTextViewLayoutProps,
 } from './types';
-import { UITextViewRef, useFocused } from '../UITextView';
+import type { UITextViewRef } from '../UITextView';
 import {
     MaterialTextViewIcon,
     MaterialTextViewAction,
     MaterialTextViewText,
 } from './MaterialTextViewChildren';
+import { useTextViewHandler } from '../useTextViewHandler';
 
 function useExtendedProps(
     props: MaterialTextViewProps,
     ref: React.RefObject<UITextViewRef>,
     passedRef: React.ForwardedRef<MaterialTextViewRef>,
 ): MaterialTextViewLayoutProps {
+    // At first extract props that we don't to pass through
     const {
-        mask,
-        value,
         defaultValue: defaultValueProp,
         onChangeText: onChangeTextProp,
+        // Suppress eslint, as we have to extract from props
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        onChange: onChangeProp,
         onFocus: onFocusProp,
         onBlur: onBlurProp,
         onSelectionChange: onSelectionChangeProp,
-        onHover,
+        ...restProps
     } = props;
+    const { mask, value, onHover } = restProps;
 
-    const { inputHasValue, checkInputHasValue } = useInputHasValue(value, defaultValueProp);
-
-    const { isFocused, onFocus, onBlur } = useFocused(onFocusProp, onBlurProp);
-    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
-
-    React.useEffect(() => {
-        onHover?.(isHovered);
-    }, [isHovered, onHover]);
-
-    const { selectionEnd, onSelectionChange, skipNextOnSelectionChange } =
+    const { selectionEnd, skipNextOnSelectionChange, onSelectionChange } =
         useOnSelectionChange(onSelectionChangeProp);
 
     const applyMask = useApplyMask(mask, selectionEnd, skipNextOnSelectionChange);
-
-    const { imperativeChangeText, moveCarret } = useImperativeChange(
-        ref,
-        onChangeTextProp,
-        checkInputHasValue,
-        applyMask,
-    );
-
-    const onChangeText = React.useCallback(
-        (text: string) =>
-            imperativeChangeText(text, {
-                shouldSetNativeProps: false,
-            }),
-        [imperativeChangeText],
-    );
 
     const defaultValueRef = React.useRef<string>();
     if (defaultValueProp && defaultValueRef.current == null) {
         defaultValueRef.current = applyMask(defaultValueProp).formattedText;
     }
 
+    const hasValue = useSharedValue(!!value || !!defaultValueRef.current);
+
+    const checkInputHasValue = React.useCallback(
+        (text: string) => {
+            hasValue.value = text.length > 0;
+        },
+        [hasValue],
+    );
+
+    const isFocused = useSharedValue(false);
+
+    const { imperativeChangeText, moveCarret, applyTextChange } = useImperativeChange(
+        ref,
+        onChangeTextProp,
+        checkInputHasValue,
+        applyMask,
+    );
+
+    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
+
+    React.useEffect(() => {
+        onHover?.(isHovered);
+    }, [isHovered, onHover]);
+
+    /**
+     * onChange event that we got from reanimated
+     * is too fast, that when we apply through the ref directly,
+     * it is became overriden on native side,
+     * thus wrap it with rAF
+     */
+    const appointTextChange = React.useCallback(
+        (...args: Parameters<typeof applyTextChange>) => {
+            requestAnimationFrame(() => {
+                applyTextChange(...args);
+            });
+        },
+        [applyTextChange],
+    );
+
+    const textViewHandlers = useTextViewHandler({
+        onFocus: evt => {
+            'worklet';
+
+            isFocused.value = true;
+
+            if (onFocusProp != null) {
+                runOnJS(onFocusProp)({ nativeEvent: evt } as any);
+            }
+        },
+        onBlur: evt => {
+            'worklet';
+
+            isFocused.value = false;
+
+            if (onBlurProp != null) {
+                runOnJS(onBlurProp)({ nativeEvent: evt } as any);
+            }
+        },
+        onChange: evt => {
+            'worklet';
+
+            const { formattedText, carretPosition } = applyMask(evt.text);
+
+            hasValue.value = formattedText.length > 0;
+
+            runOnJS(appointTextChange)(formattedText, carretPosition, {
+                shouldSetNativeProps: formattedText !== evt.text,
+            });
+        },
+        onSelectionChange,
+    });
+
     const clear = useClear(imperativeChangeText, ref);
 
     useExtendedRef(passedRef, ref, imperativeChangeText, moveCarret, clear);
 
     const newProps: MaterialTextViewLayoutProps = {
-        ...props,
-        onFocus,
-        onBlur,
+        ...restProps,
         onMouseEnter,
         onMouseLeave,
         isHovered,
-        inputHasValue,
+        hasValue,
         isFocused,
-        onChangeText,
-        onSelectionChange,
+        ...textViewHandlers,
         defaultValue: defaultValueRef.current,
     };
 

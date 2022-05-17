@@ -1,6 +1,8 @@
 import * as React from 'react';
-import Animated, {
+import {
     runOnJS,
+    SharedValue,
+    useAnimatedReaction,
     useSharedValue,
     withSpring,
     WithSpringConfig,
@@ -17,6 +19,8 @@ const withSpringConfig: WithSpringConfig = {
 };
 
 function getPosition(isExpanded: boolean): number {
+    'worklet';
+
     return isExpanded ? POSITION_EXPANDED : POSITION_FOLDED;
 }
 
@@ -25,13 +29,15 @@ function getPosition(isExpanded: boolean): number {
  * It can be in the range from POSITION_FOLDED to POSITION_EXPANDED
  */
 export function useExpandingValue(
-    isExpanded: boolean,
+    isExpanded: SharedValue<boolean>,
     showPlacehoder: () => void,
-): Readonly<Animated.SharedValue<number>> {
-    /** Label position switcher (POSITION_FOLDED/POSITION_EXPANDED) */
-    const expandingPosition: Animated.SharedValue<number> = useSharedValue<number>(
-        getPosition(isExpanded),
-    );
+): Readonly<SharedValue<number>> {
+    /**
+     * Label position switcher:
+     * `POSITION_FOLDED` or
+     * `POSITION_EXPANDED`
+     */
+    const position = useSharedValue(getPosition(isExpanded.value));
 
     const onExpand = React.useCallback(
         (isFinished?: boolean): void => {
@@ -44,18 +50,21 @@ export function useExpandingValue(
         [showPlacehoder],
     );
 
-    React.useEffect(() => {
-        const toValue = getPosition(isExpanded);
-        /**
-         * We don't need to run animation if expandingPosition is already in correct state.
-         * It leads to unwanted calling of `onExpand` callback.
-         */
-        if (toValue === expandingPosition.value) {
-            return;
-        }
-        const callback = isExpanded ? onExpand : undefined;
-        expandingPosition.value = withSpring(toValue, withSpringConfig, callback);
-    }, [isExpanded, expandingPosition, onExpand]);
+    useAnimatedReaction(
+        () => getPosition(isExpanded.value),
+        (expandingPosition, prevExpandingPosition) => {
+            /**
+             * We don't need to run animation if expandingPosition is already in correct state.
+             * It leads to unwanted calling of `onExpand` callback.
+             */
+            if (prevExpandingPosition === expandingPosition) {
+                return;
+            }
 
-    return expandingPosition;
+            const callback = prevExpandingPosition === POSITION_FOLDED ? onExpand : undefined;
+            position.value = withSpring(expandingPosition, withSpringConfig, callback);
+        },
+    );
+
+    return position;
 }

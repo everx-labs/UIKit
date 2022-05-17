@@ -36,7 +36,8 @@
     "dependencies": {
         "@react-native-community/hooks": "^2.6.0",
         "@tonlabs/uikit.core": "^4.0.0",
-        "@tonlabs/uikit.themes": "^3.1.0"
+        "@tonlabs/uikit.themes": "^3.1.0",
+        "@tonlabs/uikit.inputs": "^3.1.0"
     },
     "devDependencies": {
         "@types/react": "17.0.44",

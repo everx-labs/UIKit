@@ -19,6 +19,7 @@ export function ExampleScreen({
                     alignItems: 'center',
                 }}
                 automaticallyAdjustContentInsets
+                automaticallyAdjustKeyboardInsets
                 {...rest}
             >
                 {children}
