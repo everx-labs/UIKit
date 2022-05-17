@@ -102,9 +102,9 @@ export function UILinkButtonContent({
                 />
             ) : (
                 <View style={[styles.content, isRightIconPosition ? styles.extraPadding : null]}>
-                    <View style={styles.centerContent}>
+                    <View style={styles.mainContent}>
                         {iconPosition === UILinkButtonIconPosition.Left ? image : null}
-                        <View>
+                        <View style={styles.textContainer}>
                             {title ? (
                                 <UILabelAnimated
                                     role={UILabelRoles.Action}
@@ -120,7 +120,7 @@ export function UILinkButtonContent({
                                 <UILabel
                                     color={UILabelColors.TextSecondary}
                                     role={UILabelRoles.ParagraphNote}
-                                    numberOfLines={1}
+                                    numberOfLines={5}
                                     ellipsizeMode="tail"
                                     style={styles.caption}
                                 >
@@ -139,19 +139,22 @@ export function UILinkButtonContent({
 
 const styles = StyleSheet.create({
     container: {
-        overflow: 'hidden',
         justifyContent: 'center',
     },
     normalContainerHeight: {
-        height: UIConstant.linkButtonHeight,
+        minHeight: UIConstant.linkButtonHeight,
     },
     smallContainerHeight: {
-        height: UIConstant.linkButtonHeight / 2,
+        minHeight: UIConstant.linkButtonHeight / 2,
     },
     content: {
         padding: UIConstant.normalContentOffset,
         alignSelf: 'stretch',
         flexDirection: 'row',
+    },
+    textContainer: {
+        flexShrink: 1,
+        flexGrow: 0,
     },
     /**
      * Needed in order to leave space for icon in `UILinkButtonIconPosition.Right` position
@@ -159,7 +162,8 @@ const styles = StyleSheet.create({
     extraPadding: {
         paddingRight: UIConstant.normalContentOffset + UIConstant.iconSize,
     },
-    centerContent: {
+    mainContent: {
+        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
     },
