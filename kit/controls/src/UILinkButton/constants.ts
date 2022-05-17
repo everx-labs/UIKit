@@ -31,8 +31,8 @@ export const ContentColors: Record<
         [UILinkButtonVariant.Neutral]: {
             content: {
                 initialColor: ColorVariants.TextAccent,
-                pressedColor: ColorVariants.TextPrimary,
-                hoveredColor: ColorVariants.TextPrimary,
+                pressedColor: ColorVariants.SpecialAccentDark,
+                hoveredColor: ColorVariants.SpecialAccentLight,
                 disabledColor: ColorVariants.TextOverlay,
                 loadingColor: ColorVariants.TextAccent,
             },
@@ -40,8 +40,8 @@ export const ContentColors: Record<
         [UILinkButtonVariant.Negative]: {
             content: {
                 initialColor: ColorVariants.TextNegative,
-                pressedColor: ColorVariants.TextPrimary,
-                hoveredColor: ColorVariants.TextPrimary,
+                pressedColor: ColorVariants.SpecialAccentDark,
+                hoveredColor: ColorVariants.SpecialAccentLight,
                 disabledColor: ColorVariants.TextOverlay,
                 loadingColor: ColorVariants.TextNegative,
             },
@@ -49,8 +49,8 @@ export const ContentColors: Record<
         [UILinkButtonVariant.Positive]: {
             content: {
                 initialColor: ColorVariants.TextPositive,
-                pressedColor: ColorVariants.TextPrimary,
-                hoveredColor: ColorVariants.TextPrimary,
+                pressedColor: ColorVariants.SpecialAccentDark,
+                hoveredColor: ColorVariants.SpecialAccentLight,
                 disabledColor: ColorVariants.TextOverlay,
                 loadingColor: ColorVariants.TextPositive,
             },
@@ -60,8 +60,8 @@ export const ContentColors: Record<
         [UILinkButtonVariant.Neutral]: {
             content: {
                 initialColor: ColorVariants.TextPrimary,
-                pressedColor: ColorVariants.TextAccent,
-                hoveredColor: ColorVariants.TextAccent,
+                pressedColor: ColorVariants.SpecialAccentDark,
+                hoveredColor: ColorVariants.SpecialAccentLight,
                 disabledColor: ColorVariants.TextOverlay,
                 loadingColor: ColorVariants.TextPrimary,
             },
@@ -69,8 +69,8 @@ export const ContentColors: Record<
         [UILinkButtonVariant.Negative]: {
             content: {
                 initialColor: ColorVariants.TextNegative,
-                pressedColor: ColorVariants.TextAccent,
-                hoveredColor: ColorVariants.TextAccent,
+                pressedColor: ColorVariants.SpecialAccentDark,
+                hoveredColor: ColorVariants.SpecialAccentLight,
                 disabledColor: ColorVariants.TextOverlay,
                 loadingColor: ColorVariants.TextNegative,
             },
@@ -78,8 +78,8 @@ export const ContentColors: Record<
         [UILinkButtonVariant.Positive]: {
             content: {
                 initialColor: ColorVariants.TextPositive,
-                pressedColor: ColorVariants.TextAccent,
-                hoveredColor: ColorVariants.TextAccent,
+                pressedColor: ColorVariants.SpecialAccentDark,
+                hoveredColor: ColorVariants.SpecialAccentLight,
                 disabledColor: ColorVariants.TextOverlay,
                 loadingColor: ColorVariants.TextPositive,
             },

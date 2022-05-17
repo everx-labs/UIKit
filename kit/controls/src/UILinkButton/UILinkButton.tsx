@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { StyleSheet } from 'react-native';
 import type { UILinkButtonProps } from './types';
 import { Pressable } from '../Pressable';
 import { UILinkButtonContent } from './UILinkButtonContent';
@@ -11,9 +12,15 @@ export function UILinkButton(props: UILinkButtonProps) {
             disabled={disabled}
             loading={loading}
             onPress={onPress}
-            style={layout}
+            style={[styles.container, layout]}
         >
             <UILinkButtonContent {...props} />
         </Pressable>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        maxWidth: '100%',
+    },
+});

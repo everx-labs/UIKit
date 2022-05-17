@@ -46,29 +46,20 @@ export function UILinkButtonContent({
         };
     });
 
-    const imageStyle = React.useMemo(() => {
-        switch (iconPosition) {
-            case UILinkButtonIconPosition.Left:
-                return styles.leftIcon;
-            case UILinkButtonIconPosition.Right:
-                return styles.rightIcon;
-            default:
-                return null;
-        }
-    }, [iconPosition]);
-
     const image = React.useMemo(() => {
         if (icon == null) {
             return null;
         }
+        const additionalStyle =
+            iconPosition === UILinkButtonIconPosition.Left ? styles.leftIcon : null;
         return (
             <UIAnimatedImage
                 source={icon}
-                style={[styles.icon, imageStyle]}
+                style={[styles.icon, additionalStyle]}
                 animatedProps={animatedImageProps}
             />
         );
-    }, [animatedImageProps, icon, imageStyle]);
+    }, [animatedImageProps, icon, iconPosition]);
 
     const isRightIconPosition = iconPosition === UILinkButtonIconPosition.Right;
 
@@ -104,18 +95,21 @@ export function UILinkButtonContent({
                 <View style={[styles.content, isRightIconPosition ? styles.extraPadding : null]}>
                     <View style={styles.mainContent}>
                         {iconPosition === UILinkButtonIconPosition.Left ? image : null}
-                        <View style={styles.textContainer}>
-                            {title ? (
-                                <UILabelAnimated
-                                    role={UILabelRoles.Action}
-                                    animatedProps={animatedLabelProps}
-                                    ellipsizeMode="tail"
-                                    numberOfLines={1}
-                                    selectable={false}
-                                >
-                                    {title}
-                                </UILabelAnimated>
-                            ) : null}
+                        <View>
+                            <View style={styles.actionContainer}>
+                                {title ? (
+                                    <UILabelAnimated
+                                        role={UILabelRoles.Action}
+                                        animatedProps={animatedLabelProps}
+                                        ellipsizeMode="tail"
+                                        numberOfLines={1}
+                                        selectable={false}
+                                    >
+                                        {title}
+                                    </UILabelAnimated>
+                                ) : null}
+                                {iconPosition === UILinkButtonIconPosition.Middle ? image : null}
+                            </View>
                             {caption ? (
                                 <UILabel
                                     color={UILabelColors.TextSecondary}
@@ -128,9 +122,10 @@ export function UILinkButtonContent({
                                 </UILabel>
                             ) : null}
                         </View>
-                        {iconPosition === UILinkButtonIconPosition.Middle ? image : null}
                     </View>
-                    {isRightIconPosition ? image : null}
+                    {isRightIconPosition ? (
+                        <View style={styles.rightIconContainer}>{image}</View>
+                    ) : null}
                 </View>
             )}
         </Animated.View>
@@ -152,10 +147,6 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         flexDirection: 'row',
     },
-    textContainer: {
-        flexShrink: 1,
-        flexGrow: 0,
-    },
     /**
      * Needed in order to leave space for icon in `UILinkButtonIconPosition.Right` position
      */
@@ -163,9 +154,12 @@ const styles = StyleSheet.create({
         paddingRight: UIConstant.normalContentOffset + UIConstant.iconSize,
     },
     mainContent: {
-        flex: 1,
+        maxWidth: '100%',
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    actionContainer: {
+        flexDirection: 'row',
     },
     indicator: {
         margin: UIConstant.normalContentOffset,
@@ -177,10 +171,12 @@ const styles = StyleSheet.create({
     leftIcon: {
         marginRight: UIConstant.smallContentOffset,
     },
-    rightIcon: {
-        position: 'absolute',
-        right: UIConstant.normalContentOffset,
-        top: UIConstant.normalContentOffset,
+    rightIconContainer: {
+        ...StyleSheet.absoluteFillObject,
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        paddingRight: UIConstant.normalContentOffset,
     },
     caption: {
         marginTop: UIConstant.tinyContentOffset,
