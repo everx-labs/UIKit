@@ -5,7 +5,6 @@ import * as UISeedPhraseTextView from './UISeedPhraseTextView';
 import * as UITextView from './UITextView';
 import * as UIAmountInput from './UIAmountInput';
 
-import * as useClearButton from './UIMaterialTextView/hooks/useClearButton';
 import * as useAutogrowTextView from './useAutogrowTextView';
 
 export * from './UIMaterialTextView';
@@ -15,10 +14,9 @@ export * from './UISeedPhraseTextView';
 export * from './UITextView';
 export * from './UIAmountInput';
 
-export * from './UIMaterialTextView/hooks/useClearButton';
 export * from './useAutogrowTextView';
 
-export const UILayout = {
+export const UIInputs = {
     UIMaterialTextView,
     UIKeyTextView,
     UINumberTextView,
@@ -26,7 +24,6 @@ export const UILayout = {
     UITextView,
     UIAmountInput,
 
-    useClearButton,
     useAutogrowTextView,
 };
-export default UILayout;
+export default UIInputs;

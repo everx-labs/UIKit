@@ -4,9 +4,9 @@ import { moveCarret as moveCarretPlatform } from '../../moveCarret';
 import type { UITextViewRef } from '../../UITextView';
 import type {
     ImperativeChangeText,
-    UIMaterialTextViewRefMoveCarret,
+    MaterialTextViewRefMoveCarret,
     ImperativeChangeTextConfig,
-    UIMaterialTextViewApplyMask,
+    MaterialTextViewApplyMask,
 } from '../types';
 import { useCallWithTimeOut } from './useCallWithTimeOut';
 
@@ -19,9 +19,9 @@ export function useImperativeChange(
     ref: React.RefObject<UITextViewRef>,
     onChangeTextProp: ((text: string) => void) | undefined,
     checkInputHasValue: (text: string) => string,
-    applyMask: UIMaterialTextViewApplyMask,
+    applyMask: MaterialTextViewApplyMask,
 ) {
-    const moveCarret: UIMaterialTextViewRefMoveCarret = React.useCallback(
+    const moveCarret: MaterialTextViewRefMoveCarret = React.useCallback(
         function moveCarret(carretPosition: number, maxPosition?: number) {
             moveCarretPlatform(ref, carretPosition, maxPosition);
         },

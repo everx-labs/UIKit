@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ColorValue, Platform, StyleSheet } from 'react-native';
+import { ColorValue, Platform, StyleSheet, ImageStyle } from 'react-native';
 import Animated, { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
 import { ColorVariants, UILabelAnimated, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UIAnimatedImage } from '@tonlabs/uikit.media';
@@ -34,7 +34,7 @@ function RightContent({
         return (
             <UIAnimatedImage
                 source={icon}
-                style={styles.image}
+                style={styles.image as ImageStyle}
                 animatedProps={animatedImageProps}
             />
         );

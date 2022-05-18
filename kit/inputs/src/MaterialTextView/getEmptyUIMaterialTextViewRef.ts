@@ -1,4 +1,4 @@
-import type { UIMaterialTextViewRef } from './types';
+import type { MaterialTextViewRef } from './types';
 
 function getEmptyMethod(place: string, name: string, returnedValue: any = null) {
     return function emptyMethod() {
@@ -9,7 +9,7 @@ function getEmptyMethod(place: string, name: string, returnedValue: any = null) 
     };
 }
 
-export function getEmptyUIMaterialTextViewRef(place: string): UIMaterialTextViewRef {
+export function getEmptyUIMaterialTextViewRef(place: string): MaterialTextViewRef {
     return {
         changeText: getEmptyMethod(place, 'changeText'),
         moveCarret: getEmptyMethod(place, 'moveCarret'),

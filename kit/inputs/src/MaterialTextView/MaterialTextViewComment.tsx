@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { ColorVariants, UILabel, TypographyVariants, Typography } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
-import type { UIMaterialTextViewProps } from './types';
+import type { MaterialTextViewProps } from './types';
 
 function useCommentColor(
     success: boolean | undefined,
@@ -25,8 +25,8 @@ function useCommentColor(
     }, [success, warning, error]);
 }
 
-export function UIMaterialTextViewComment(
-    props: UIMaterialTextViewProps & {
+export function MaterialTextViewComment(
+    props: MaterialTextViewProps & {
         children: React.ReactNode;
     },
 ) {

@@ -3,14 +3,14 @@ import * as React from 'react';
 import { SharedValue, useSharedValue } from 'react-native-reanimated';
 import { uiLocalized } from '@tonlabs/localization';
 import type {
-    UIMaterialTextViewAmountMask,
-    UIMaterialTextViewApplyMask,
-    UIMaterialTextViewInputState,
+    MaterialTextViewAmountMask,
+    MaterialTextViewApplyMask,
+    MaterialTextViewInputState,
 } from '../../../types';
 import { runUIOnChangeAmount } from './runUIOnChangeAmount';
 import { UIConstants } from '../../../constants';
 
-function useCountOfDecimalDigits(mask: UIMaterialTextViewAmountMask | undefined): number | null {
+function useCountOfDecimalDigits(mask: MaterialTextViewAmountMask | undefined): number | null {
     return React.useMemo(() => {
         switch (mask) {
             case 'AmountInteger':
@@ -26,10 +26,10 @@ function useCountOfDecimalDigits(mask: UIMaterialTextViewAmountMask | undefined)
 }
 
 export function useApplyMaskAmount(
-    mask: UIMaterialTextViewAmountMask | undefined,
+    mask: MaterialTextViewAmountMask | undefined,
     selectionEnd: SharedValue<number>,
     skipNextOnSelectionChange: SharedValue<boolean>,
-): UIMaterialTextViewApplyMask {
+): MaterialTextViewApplyMask {
     const lastNormalizedText = useSharedValue('');
     const lastText = useSharedValue('');
     const countOfDecimalDigits = useCountOfDecimalDigits(mask);
@@ -42,7 +42,7 @@ export function useApplyMaskAmount(
     } = uiLocalized.localeInfo.numbers;
 
     const applyMaskAmount = React.useCallback(
-        (text: string): UIMaterialTextViewInputState => {
+        (text: string): MaterialTextViewInputState => {
             const { formattedText, normalizedText, carretPosition } = runUIOnChangeAmount(
                 text,
                 selectionEnd,
