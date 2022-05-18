@@ -5,7 +5,7 @@ import {
     UITextView,
     UITextViewProps,
     useUITextViewValue,
-    useClearButton,
+    UIMaterialTextViewClearButton,
     useFocused,
     UITextViewRef,
 } from '@tonlabs/uikit.inputs';
@@ -76,8 +76,6 @@ function useInnerRightAction(
     searching: boolean | undefined,
     clear: () => void,
 ) {
-    const clearButton = useClearButton(inputHasValue, isFocused, isHovered, clear);
-
     if (searching) {
         return (
             <UIIndicator
@@ -88,8 +86,8 @@ function useInnerRightAction(
         );
     }
 
-    if (clearButton) {
-        return clearButton;
+    if (inputHasValue && (isFocused || isHovered)) {
+        return <UIMaterialTextViewClearButton clear={clear} />;
     }
 
     return null;

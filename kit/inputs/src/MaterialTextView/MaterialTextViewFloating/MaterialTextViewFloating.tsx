@@ -5,8 +5,8 @@ import { makeStyles, useTheme, Theme, ColorVariants } from '@tonlabs/uikit.theme
 import Animated, { interpolate, useAnimatedStyle /* , Layout */ } from 'react-native-reanimated';
 import { UITextView, UITextViewRef } from '../../UITextView';
 import { FloatingLabel } from './FloatingLabel';
-import type { UIMaterialTextViewLayoutProps } from '../types';
-import { UIMaterialTextViewComment } from '../UIMaterialTextViewComment';
+import type { MaterialTextViewLayoutProps } from '../types';
+import { MaterialTextViewComment } from '../MaterialTextViewComment';
 import { useExpandingValue, usePlaceholderVisibility } from './hooks';
 
 // @inline
@@ -21,10 +21,10 @@ const POSITION_EXPANDED: number = 1;
 // @inline
 const EXPANDED_INPUT_OFFSET: number = 8;
 
-export const UIMaterialTextViewFloating = React.forwardRef<
+export const MaterialTextViewFloating = React.forwardRef<
     UITextViewRef,
-    UIMaterialTextViewLayoutProps
->(function UIMaterialTextViewFloatingForwarded(props: UIMaterialTextViewLayoutProps, ref) {
+    MaterialTextViewLayoutProps
+>(function MaterialTextViewFloatingForwarded(props: MaterialTextViewLayoutProps, ref) {
     const {
         label = 'Input',
         children,
@@ -70,7 +70,7 @@ export const UIMaterialTextViewFloating = React.forwardRef<
     }, [isPlaceholderVisible, isHovered]);
 
     return (
-        <UIMaterialTextViewComment {...props}>
+        <MaterialTextViewComment {...props}>
             <View
                 style={styles.container}
                 // @ts-expect-error
@@ -91,7 +91,7 @@ export const UIMaterialTextViewFloating = React.forwardRef<
                 </Animated.View>
                 {children}
             </View>
-        </UIMaterialTextViewComment>
+        </MaterialTextViewComment>
     );
 });
 
