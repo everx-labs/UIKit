@@ -29,7 +29,11 @@ function RightContent({
     }
     if (icon) {
         return (
-            <UIAnimatedImage source={icon} style={imageStyle} animatedProps={animatedImageProps} />
+            <UIAnimatedImage
+                source={icon}
+                style={imageStyle as ImageStyle}
+                animatedProps={animatedImageProps}
+            />
         );
     }
     return null;
