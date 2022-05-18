@@ -36,6 +36,10 @@ export type UIAmountInputProps = {
      */
     placeholder?: string;
     /**
+     * If false, text is not editable. The default value is true.
+     */
+    editable?: boolean | undefined;
+    /**
      *  As children you can provide only one or two of this component:
      *  `UIAmountInput.Icon`
      *  `UIAmountInput.Action`
