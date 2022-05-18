@@ -1,18 +1,13 @@
 import * as React from 'react';
-import type { View } from 'react-native';
 import type { UIBoxButtonProps } from './types';
 import { Pressable } from '../Pressable';
 import { BoxButtonContent } from './BoxButtonContent';
 
-export const UIBoxButton = React.forwardRef<View, UIBoxButtonProps>(function UIBoxButton(
-    props: UIBoxButtonProps,
-    ref,
-) {
+export function UIBoxButton(props: UIBoxButtonProps) {
     const { disabled, loading, onPress, testID, layout } = props;
 
     return (
         <Pressable
-            ref={ref}
             testID={testID}
             disabled={disabled}
             loading={loading}
@@ -22,4 +17,4 @@ export const UIBoxButton = React.forwardRef<View, UIBoxButtonProps>(function UIB
             <BoxButtonContent {...props} />
         </Pressable>
     );
-});
+}

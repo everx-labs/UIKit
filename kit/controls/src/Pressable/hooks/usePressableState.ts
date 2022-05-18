@@ -1,25 +1,27 @@
-import * as React from 'react';
-import { PressableStateVariant } from '../constants';
+import type Animated from 'react-native-reanimated';
+import { useDerivedValue } from 'react-native-reanimated';
+import type { PressableStateType } from '../types';
 
 export function usePressableState(
-    disabled: boolean | undefined,
-    loading: boolean | undefined,
-    isPressed: boolean,
-    isHovered: boolean,
-) {
-    return React.useMemo<PressableStateVariant>(() => {
-        if (loading) {
-            return PressableStateVariant.Loading;
+    isDisabled: Readonly<Animated.SharedValue<boolean | undefined>>,
+    isLoading: Readonly<Animated.SharedValue<boolean | undefined>>,
+    isPressed: Readonly<Animated.SharedValue<boolean>>,
+    isHovered: Readonly<Animated.SharedValue<boolean>>,
+): Readonly<Animated.SharedValue<PressableStateType>> {
+    const pressableState = useDerivedValue(() => {
+        if (isLoading.value) {
+            return 'Loading';
         }
-        if (disabled) {
-            return PressableStateVariant.Disabled;
+        if (isDisabled.value) {
+            return 'Disabled';
         }
-        if (isPressed) {
-            return PressableStateVariant.Pressed;
+        if (isPressed.value) {
+            return 'Pressed';
         }
-        if (isHovered) {
-            return PressableStateVariant.Hovered;
+        if (isHovered.value) {
+            return 'Hovered';
         }
-        return PressableStateVariant.Initial;
-    }, [disabled, loading, isPressed, isHovered]);
+        return 'Initial';
+    });
+    return pressableState;
 }

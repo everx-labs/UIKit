@@ -156,7 +156,7 @@ export function UIAnimatedNumber({
      * Like here - https://stackoverflow.com/questions/41807843/how-to-disable-font-scaling-in-react-native-for-ios-app
      */
     const defaultAllowFontScaling = React.useRef(
-        (Text as any).defaultProps.allowFontScaling ?? true,
+        (Text as any).defaultProps?.allowFontScaling ?? true,
     ).current;
 
     return (

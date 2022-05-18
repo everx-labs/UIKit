@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useFocused } from '..';
 import {
     MaterialTextView,
     MaterialTextViewRef,
@@ -9,6 +8,7 @@ import {
     MaterialTextViewText,
     useInputHasValue,
 } from '../MaterialTextView';
+import { useFocused } from '../UITextView';
 import {
     useExtendedRef,
     useHelperTextStatus,
