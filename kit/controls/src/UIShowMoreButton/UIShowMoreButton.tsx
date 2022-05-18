@@ -1,39 +1,25 @@
 import * as React from 'react';
-import { LayoutAnimation, Platform, UIManager, View } from 'react-native';
+import { ColorValue, LayoutAnimation, Platform, UIManager, View } from 'react-native';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { uiLocalized } from '@tonlabs/localization';
 import {
     UILabel,
-    UILabelColors,
     UILabelRoles,
     ColorVariants,
     useTheme,
-    Theme,
     TypographyVariants,
     makeStyles,
 } from '@tonlabs/uikit.themes';
 
-import { TouchableOpacity } from './TouchableOpacity';
-import { UIConstant } from './constants';
-import { UIIndicator } from './UIIndicator';
+import { UIConstant } from '../constants';
+import { UIIndicator } from '../UIIndicator';
+import { UIShowMoreButtonHeight, UIShowMoreButtonType } from './constants';
+import type { UIShowMoreButtonProps } from './types';
+import { UIPressableArea } from '../UIPressableArea';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true);
 }
-
-export enum UIShowMoreButtonHeight {
-    Medium = 'Medium',
-    Small = 'Small',
-}
-
-export type UIShowMoreButtonProps = {
-    label?: string;
-    progress: boolean;
-    height?: UIShowMoreButtonHeight;
-    onPress?: () => void;
-    background?: boolean;
-    testID?: string;
-};
 
 function getLabelRole(showMoreButtonHeight: UIShowMoreButtonHeight): TypographyVariants {
     switch (showMoreButtonHeight) {
@@ -72,7 +58,7 @@ export const UIShowMoreButton: React.FunctionComponent<UIShowMoreButtonProps> = 
     progress = false,
     height = UIShowMoreButtonHeight.Medium,
     onPress: onPressProp,
-    background = true,
+    type = UIShowMoreButtonType.Default,
     testID,
 }: UIShowMoreButtonProps) => {
     const theme = useTheme();
@@ -89,60 +75,60 @@ export const UIShowMoreButton: React.FunctionComponent<UIShowMoreButtonProps> = 
 
     const indicatorSize = useIndicatorSize(height);
 
-    const styles = useStyles(theme, background, height);
+    const contentColor = React.useMemo(() => {
+        return type === UIShowMoreButtonType.Default
+            ? ColorVariants.StaticTextPrimaryLight
+            : ColorVariants.TextPrimary;
+    }, [type]);
+
+    const backgroundColor = React.useMemo(() => {
+        return type === UIShowMoreButtonType.Default
+            ? theme[ColorVariants.BackgroundOverlay]
+            : theme[ColorVariants.Transparent];
+    }, [theme, type]);
+
+    const styles = useStyles(backgroundColor, height);
 
     return (
-        <TouchableOpacity
-            style={styles.container}
-            onPress={onPress}
-            disabled={progress}
-            testID={testID}
-        >
-            <View style={styles.indicatorContainer}>
-                {progress ? (
-                    <UIIndicator
-                        color={
-                            background
-                                ? ColorVariants.StaticTextPrimaryLight
-                                : ColorVariants.TextPrimary
-                        }
-                        size={indicatorSize}
-                    />
-                ) : null}
+        <UIPressableArea onPress={onPress} disabled={progress} testID={testID}>
+            <View style={styles.container}>
+                <View style={styles.indicatorContainer}>
+                    {progress ? <UIIndicator color={contentColor} size={indicatorSize} /> : null}
+                </View>
+                {progress ? null : (
+                    <UILabel
+                        style={styles.label}
+                        role={getLabelRole(height)}
+                        color={contentColor}
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                    >
+                        {label}
+                    </UILabel>
+                )}
             </View>
-            {progress ? null : (
-                <UILabel
-                    style={styles.label}
-                    role={getLabelRole(height)}
-                    color={
-                        background
-                            ? UILabelColors.StaticTextPrimaryLight
-                            : UILabelColors.TextPrimary
-                    }
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                >
-                    {label}
-                </UILabel>
-            )}
-        </TouchableOpacity>
+        </UIPressableArea>
     );
 };
 
 const useStyles = makeStyles(
-    (theme: Theme, background: boolean, showMoreButtonHeight: UIShowMoreButtonHeight) => {
+    (backgroundColor: ColorValue, showMoreButtonHeight: UIShowMoreButtonHeight) => {
         const size = getSize(showMoreButtonHeight);
         return {
             container: {
                 height: size,
                 minWidth: size,
-                backgroundColor: background
-                    ? theme[ColorVariants.BackgroundOverlay]
-                    : theme[ColorVariants.Transparent],
+                backgroundColor,
                 borderRadius: size,
                 overflow: 'hidden',
                 alignItems: 'center',
                 justifyContent: 'center',
+                ...Platform.select({
+                    web: {
+                        userSelect: 'none',
+                    },
+                    default: null,
+                }),
             },
             label: {
                 paddingHorizontal: UILayoutConstant.contentInsetVerticalX3,
