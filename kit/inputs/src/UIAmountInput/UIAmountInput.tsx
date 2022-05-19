@@ -1,15 +1,21 @@
 import * as React from 'react';
+import { useFocused } from '../UITextView';
 import {
-    UIMaterialTextView,
-    UIMaterialTextViewRef,
-    UIMaterialTextViewMask,
-} from '../UIMaterialTextView';
+    MaterialTextView,
+    MaterialTextViewRef,
+    MaterialTextViewMask,
+    MaterialTextViewIcon,
+    MaterialTextViewAction,
+    MaterialTextViewText,
+    useInputHasValue,
+} from '../MaterialTextView';
 import {
-    UIMaterialTextViewIcon,
-    UIMaterialTextViewAction,
-    UIMaterialTextViewText,
-} from '../UIMaterialTextView/hooks';
-import { useExtendedRef, useHelperTextStatus, useMask, useOnChangeText } from './hooks';
+    useExtendedRef,
+    useHelperTextStatus,
+    useMask,
+    useOnChangeText,
+    useUIAmountInputChildren,
+} from './hooks';
 import type { UIAmountInputProps, UIAmountInputRef } from './types';
 
 export const UIAmountInputForward = React.forwardRef<UIAmountInputRef, UIAmountInputProps>(
@@ -17,16 +23,21 @@ export const UIAmountInputForward = React.forwardRef<UIAmountInputRef, UIAmountI
         props: UIAmountInputProps,
         forwardedRed: React.Ref<UIAmountInputRef>,
     ) {
-        const { onChangeAmount, defaultAmount, decimalAspect, messageType, message, ...restProps } =
-            props;
+        const {
+            onChangeAmount,
+            defaultAmount,
+            decimalAspect,
+            messageType,
+            message,
+            children,
+            ...restProps
+        } = props;
 
-        const localRef = React.useRef<UIMaterialTextViewRef>(null);
+        const localRef = React.useRef<MaterialTextViewRef>(null);
 
         const onChangeText = useOnChangeText(onChangeAmount, localRef);
 
-        useExtendedRef(forwardedRed, localRef);
-
-        const mask: UIMaterialTextViewMask = useMask(decimalAspect);
+        const mask: MaterialTextViewMask = useMask(decimalAspect);
 
         const defaultValue = React.useMemo(() => {
             return defaultAmount?.toString();
@@ -34,8 +45,24 @@ export const UIAmountInputForward = React.forwardRef<UIAmountInputRef, UIAmountI
 
         const { error, warning, success } = useHelperTextStatus(messageType);
 
+        const [isHovered, setIsHovered] = React.useState<boolean>(false);
+        const { isFocused, onFocus, onBlur } = useFocused(undefined, undefined);
+        const { inputHasValue, checkInputHasValue } = useInputHasValue(
+            undefined,
+            defaultAmount?.toString(),
+        );
+        const processedChildren = useUIAmountInputChildren(
+            children,
+            inputHasValue,
+            isFocused,
+            isHovered,
+            localRef.current?.clear,
+        );
+
+        useExtendedRef(forwardedRed, checkInputHasValue, localRef);
+
         return (
-            <UIMaterialTextView
+            <MaterialTextView
                 {...restProps}
                 ref={localRef}
                 defaultValue={defaultValue}
@@ -45,8 +72,13 @@ export const UIAmountInputForward = React.forwardRef<UIAmountInputRef, UIAmountI
                 success={success}
                 mask={mask}
                 onChangeText={onChangeText}
+                onHover={setIsHovered}
+                onFocus={onFocus}
+                onBlur={onBlur}
                 keyboardType="decimal-pad"
-            />
+            >
+                {processedChildren}
+            </MaterialTextView>
         );
     },
 );
@@ -54,11 +86,11 @@ export const UIAmountInputForward = React.forwardRef<UIAmountInputRef, UIAmountI
 // @ts-expect-error
 // ts doesn't understand that we assign [Icon|Action|Text] later, and want to see it right away
 export const UIAmountInput: typeof UIAmountInputForward & {
-    Icon: typeof UIMaterialTextViewIcon;
-    Action: typeof UIMaterialTextViewAction;
-    Text: typeof UIMaterialTextViewText;
+    Icon: typeof MaterialTextViewIcon;
+    Action: typeof MaterialTextViewAction;
+    Text: typeof MaterialTextViewText;
 } = UIAmountInputForward;
 
-UIAmountInput.Icon = UIMaterialTextViewIcon;
-UIAmountInput.Action = UIMaterialTextViewAction;
-UIAmountInput.Text = UIMaterialTextViewText;
+UIAmountInput.Icon = MaterialTextViewIcon;
+UIAmountInput.Action = MaterialTextViewAction;
+UIAmountInput.Text = MaterialTextViewText;

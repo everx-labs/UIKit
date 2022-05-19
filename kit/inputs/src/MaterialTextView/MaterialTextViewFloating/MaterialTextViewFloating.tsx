@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { TextInput, View } from 'react-native';
+import { View } from 'react-native';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { makeStyles, useTheme, Theme, ColorVariants } from '@tonlabs/uikit.themes';
 import Animated, { interpolate, useAnimatedStyle /* , Layout */ } from 'react-native-reanimated';
-import { UITextView } from '../../UITextView';
+import { UITextView, UITextViewRef } from '../../UITextView';
 import { FloatingLabel } from './FloatingLabel';
-import type { UIMaterialTextViewLayoutProps } from '../types';
-import { UIMaterialTextViewComment } from '../UIMaterialTextViewComment';
+import type { MaterialTextViewLayoutProps } from '../types';
+import { MaterialTextViewComment } from '../MaterialTextViewComment';
 import { useExpandingValue, usePlaceholderVisibility } from './hooks';
 
 // @inline
@@ -21,15 +21,12 @@ const POSITION_EXPANDED: number = 1;
 // @inline
 const EXPANDED_INPUT_OFFSET: number = 8;
 
-const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
-
-export const UIMaterialTextViewFloating = React.forwardRef<
-    TextInput,
-    UIMaterialTextViewLayoutProps
->(function UIMaterialTextViewFloatingForwarded(props: UIMaterialTextViewLayoutProps, ref) {
+export const MaterialTextViewFloating = React.forwardRef<
+    UITextViewRef,
+    MaterialTextViewLayoutProps
+>(function MaterialTextViewFloatingForwarded(props: MaterialTextViewLayoutProps, ref) {
     const {
         label = 'Input',
-        onLayout,
         children,
         onMouseEnter,
         onMouseLeave,
@@ -73,23 +70,20 @@ export const UIMaterialTextViewFloating = React.forwardRef<
     }, [isPlaceholderVisible, isHovered]);
 
     return (
-        <UIMaterialTextViewComment {...props}>
+        <MaterialTextViewComment {...props}>
             <View
                 style={styles.container}
-                onLayout={onLayout}
                 // @ts-expect-error
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
                 ref={borderViewRef}
             >
                 <Animated.View style={[styles.input, inputStyle]} /* layout={Layout} */>
-                    <UITextViewAnimated
+                    <UITextView
                         ref={ref}
                         {...rest}
                         placeholder={props.placeholder}
                         placeholderTextColor={placeholderTextColor}
-                        // layout={Layout}
-                        scrollEnabled={false}
                     />
                     <FloatingLabel expandingValue={expandingValue} isHovered={isHovered}>
                         {label}
@@ -97,7 +91,7 @@ export const UIMaterialTextViewFloating = React.forwardRef<
                 </Animated.View>
                 {children}
             </View>
-        </UIMaterialTextViewComment>
+        </MaterialTextViewComment>
     );
 });
 

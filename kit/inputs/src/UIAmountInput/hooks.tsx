@@ -3,8 +3,12 @@ import BigNumber from 'bignumber.js';
 import { uiLocalized } from '@tonlabs/localization';
 import type { UIMaterialTextViewRef, UIMaterialTextViewMask } from '../UIMaterialTextView';
 import { UIAmountInputDecimalAspect, UIAmountInputMessageType } from './constants';
-import type { UIAmountInputRef } from './types';
-import { getEmptyUIMaterialTextViewRef } from '../UIMaterialTextView/getEmptyUIMaterialTextViewRef';
+import type { UIAmountInputProps, UIAmountInputRef } from './types';
+import {
+    getEmptyUIMaterialTextViewRef,
+    useMaterialTextViewChildren,
+    MaterialTextViewClearButton,
+} from '../MaterialTextView';
 
 const notDigitOrDelimiterRegExp = new RegExp(
     `[^\\d\\${uiLocalized.localeInfo.numbers.decimal}]`,
@@ -103,13 +107,16 @@ const { changeText, ...defaultRef } = getEmptyUIMaterialTextViewRef('UIAmountInp
 
 export function useExtendedRef(
     forwardedRed: React.Ref<UIAmountInputRef>,
+    checkInputHasValue: (text: string) => string,
     localRef: React.RefObject<UIMaterialTextViewRef>,
 ) {
     const changeAmount = React.useCallback(
         function changeAmount(amount: BigNumber | undefined, callOnChangeProp?: boolean) {
-            localRef.current?.changeText(amount ? amount.toString() : '', callOnChangeProp);
+            const text = amount ? amount.toString() : '';
+            checkInputHasValue(text);
+            localRef.current?.changeText(text, callOnChangeProp);
         },
-        [localRef],
+        [checkInputHasValue, localRef],
     );
 
     React.useImperativeHandle<Record<string, any>, UIAmountInputRef>(
@@ -120,4 +127,24 @@ export function useExtendedRef(
             changeAmount,
         }),
     );
+}
+
+export function useUIAmountInputChildren(
+    children: UIAmountInputProps['children'],
+    inputHasValue: boolean,
+    isFocused: boolean,
+    isHovered: boolean,
+    clear: (() => void) | undefined,
+): UIAmountInputProps['children'] {
+    const materialTextViewChildren = useMaterialTextViewChildren(children);
+
+    if (materialTextViewChildren) {
+        return materialTextViewChildren;
+    }
+
+    if (inputHasValue && (isFocused || isHovered)) {
+        return <MaterialTextViewClearButton clear={clear} />;
+    }
+
+    return undefined;
 }

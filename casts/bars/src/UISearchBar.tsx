@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { StyleSheet, TextInput } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import {
     UITextView,
     UITextViewProps,
     useUITextViewValue,
-    useClearButton,
+    UIMaterialTextViewClearButton,
     useFocused,
+    UITextViewRef,
 } from '@tonlabs/uikit.inputs';
 import { UIImage } from '@tonlabs/uikit.media';
 import { UIIndicator, TouchableOpacity, useHover } from '@tonlabs/uikit.controls';
@@ -75,8 +76,6 @@ function useInnerRightAction(
     searching: boolean | undefined,
     clear: () => void,
 ) {
-    const clearButton = useClearButton(inputHasValue, isFocused, isHovered, clear);
-
     if (searching) {
         return (
             <UIIndicator
@@ -87,8 +86,8 @@ function useInnerRightAction(
         );
     }
 
-    if (clearButton) {
-        return clearButton;
+    if (inputHasValue && (isFocused || isHovered)) {
+        return <UIMaterialTextViewClearButton clear={clear} />;
     }
 
     return null;
@@ -128,7 +127,7 @@ export function UISearchBar({
     ...inputProps
 }: UISearchBarProps) {
     const [searchText, setSearchText] = React.useState('');
-    const ref = React.useRef<TextInput>(null);
+    const ref = React.useRef<UITextViewRef>(null);
     const { inputHasValue, clear } = useUITextViewValue(ref, false, {
         value: searchText,
         ...inputProps,

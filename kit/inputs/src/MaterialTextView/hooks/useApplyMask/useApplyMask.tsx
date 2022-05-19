@@ -1,14 +1,14 @@
 import * as React from 'react';
 import type { SharedValue } from 'react-native-reanimated';
 import type {
-    UIMaterialTextViewMask,
-    UIMaterialTextViewApplyMask,
-    UIMaterialTextViewInputState,
+    MaterialTextViewMask,
+    MaterialTextViewApplyMask,
+    MaterialTextViewInputState,
 } from '../../types';
 import { useApplyMaskAmount } from './amount';
 
-function useApplyMaskDefault(): UIMaterialTextViewApplyMask {
-    return React.useCallback((text: string): UIMaterialTextViewInputState => {
+function useApplyMaskDefault(): MaterialTextViewApplyMask {
+    return React.useCallback((text: string): MaterialTextViewInputState => {
         return {
             formattedText: text,
             carretPosition: null,
@@ -17,10 +17,10 @@ function useApplyMaskDefault(): UIMaterialTextViewApplyMask {
 }
 
 export function useApplyMask(
-    mask: UIMaterialTextViewMask | undefined,
+    mask: MaterialTextViewMask | undefined,
     selectionEnd: SharedValue<number>,
     skipNextOnSelectionChange: SharedValue<boolean>,
-): UIMaterialTextViewApplyMask {
+): MaterialTextViewApplyMask {
     /**
      * The prop `mask` must not be changed, so we can use ref to make sure it will not.
      * NOTE: Do not reassign this ref!
@@ -29,7 +29,7 @@ export function useApplyMask(
 
     React.useEffect(() => {
         if (maskRef.current !== mask) {
-            console.error(`[UIMaterialTextView] useApplyMask.ts: prop 'mask' must not be changed`);
+            console.error(`[MaterialTextView] useApplyMask.ts: prop 'mask' must not be changed`);
         }
     }, [mask]);
 

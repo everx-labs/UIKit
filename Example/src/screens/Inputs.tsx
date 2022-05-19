@@ -116,6 +116,7 @@ export const Inputs = () => {
                         multiline
                         label="Input multiline"
                         helperText="Caption"
+                        maxNumberOfLines={3}
                         defaultValue="Very long text that should be multiline and that is what we gonna check there"
                     />
                 </View>
