@@ -9,9 +9,37 @@ import type {
 
 export type UIMsgButtonProps = {
     /**
+     * Type of the button; specific type allows to set the corresponding accent
+     * - `UIMsgButtonType.Primary` - button with current theme accent background color (default)
+     * - `UIMsgButtonType.Secondary` - button with 1 px border style and current theme accent line border color
+     */
+    type?: UIMsgButtonType;
+    /**
+     * Variant of the button; specific type allows to display the corresponding button action nature
+     * - `UIMsgButtonVariant.Neutral` - button with regular action (default)
+     * - `UIMsgButtonVariant.Negative` - button associated with some destructive action
+     * - `UIMsgButtonVariant.Positive` - button associated with some affirmative action
+     */
+    variant?: UIMsgButtonVariant;
+    /**
+     * Text displayed on the button
+     */
+    title?: string;
+    /**
      * Auxiliary text displayed on the button under the main title
      */
     caption?: string;
+    /**
+     * Source for the button icon
+     */
+    icon?: ImageSourcePropType;
+    /**
+     * Position of icon on the button
+     * - `UIMsgButtonIconPosition.Left` - icon to the left near the title
+     * - `UIMsgButtonIconPosition.Middle` - icon to the right near the title
+     * - `UIMsgButtonIconPosition.Right` - icon at the end of the button
+     */
+    iconPosition?: UIMsgButtonIconPosition;
     /**
      * Position of non-rounded corner of the button
      * - `UIMsgButtonCornerPosition.BottomLeft` - bottom left corner has zero radius
@@ -25,21 +53,6 @@ export type UIMsgButtonProps = {
      */
     disabled?: boolean;
     /**
-     * Source for the button icon
-     */
-    icon?: ImageSourcePropType;
-    /**
-     * Position of icon on the button
-     * - `UIMsgButtonIconPosition.Left` - icon to the left near the title
-     * - `UIMsgButtonIconPosition.Middle` - icon to the right near the title
-     * - `UIMsgButtonIconPosition.Right` - icon at the end of the button
-     */
-    iconPosition?: UIMsgButtonIconPosition;
-    /**
-     * Allows to set top, right, bottom and left margins to the button container
-     */
-    layout?: UILayout;
-    /**
      * Whether to display a loading indicator instead of button content or not
      */
     loading?: boolean;
@@ -48,24 +61,11 @@ export type UIMsgButtonProps = {
      */
     onPress?: () => void | Promise<void>;
     /**
+     * Allows to set top, right, bottom and left margins to the button container
+     */
+    layout?: UILayout;
+    /**
      * ID for usage in tests
      */
     testID?: string;
-    /**
-     * Text displayed on the button
-     */
-    title?: string;
-    /**
-     * Type of the button; specific type allows to set the corresponding accent
-     * - `UIMsgButtonType.Primary` - button with current theme accent background color (default)
-     * - `UIMsgButtonType.Secondary` - button with 1 px border style and current theme accent line border color
-     */
-    type?: UIMsgButtonType;
-    /**
-     * Variant of the button; specific type allows to display the corresponding button action nature
-     * - `UIMsgButtonVariant.Neutral` - button with regular action (default)
-     * - `UIMsgButtonVariant.Negative` - button associated with some destructive action
-     * - `UIMsgButtonVariant.Positive` - button associated with some affirmative action
-     */
-    variant?: UIMsgButtonVariant;
 };
