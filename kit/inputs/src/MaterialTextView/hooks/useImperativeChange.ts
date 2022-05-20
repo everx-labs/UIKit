@@ -10,7 +10,7 @@ import type {
 } from '../types';
 import { useCallWithTimeOut } from './useCallWithTimeOut';
 
-const defultConfig = {
+const defaultConfig = {
     callOnChangeProp: true,
     shouldSetNativeProps: true,
 };
@@ -18,7 +18,7 @@ const defultConfig = {
 export function useImperativeChange(
     ref: React.RefObject<UITextViewRef>,
     onChangeTextProp: ((text: string) => void) | undefined,
-    checkInputHasValue: (text: string) => string,
+    checkInputHasValue: (text: string) => void,
     applyMask: MaterialTextViewApplyMask,
 ) {
     const moveCarret: MaterialTextViewRefMoveCarret = React.useCallback(
@@ -28,23 +28,25 @@ export function useImperativeChange(
         [ref],
     );
 
-    const onChangeTextPropWithTimeOut = useCallWithTimeOut(onChangeTextProp);
+    const onChangeTextPropWithTimeOut = useCallWithTimeOut(
+        React.useCallback(
+            (text: string) => requestAnimationFrame(() => onChangeTextProp?.(text)),
+            [onChangeTextProp],
+        ),
+    );
 
-    const imperativeChangeText: ImperativeChangeText = React.useCallback(
-        function imperativeChangeText(
-            text: string,
-            config: ImperativeChangeTextConfig | undefined = defultConfig,
-        ) {
+    const applyTextChange = React.useCallback(
+        (
+            formattedText: string,
+            carretPosition: number | null,
+            config: ImperativeChangeTextConfig | undefined = defaultConfig,
+        ) => {
             const {
-                callOnChangeProp = defultConfig.callOnChangeProp,
-                shouldSetNativeProps = defultConfig.shouldSetNativeProps,
+                callOnChangeProp = defaultConfig.callOnChangeProp,
+                shouldSetNativeProps = defaultConfig.shouldSetNativeProps,
             } = config;
 
-            const { formattedText, carretPosition } = applyMask(text);
-
-            checkInputHasValue(formattedText);
-
-            if (shouldSetNativeProps || text !== formattedText) {
+            if (shouldSetNativeProps) {
                 ref.current?.setNativeProps({
                     text: formattedText,
                 });
@@ -66,11 +68,33 @@ export function useImperativeChange(
                 onChangeTextPropWithTimeOut(formattedText);
             }
         },
-        [ref, checkInputHasValue, applyMask, moveCarret, onChangeTextPropWithTimeOut],
+        [ref, moveCarret, onChangeTextPropWithTimeOut],
+    );
+
+    const imperativeChangeText: ImperativeChangeText = React.useCallback(
+        function imperativeChangeText(
+            text: string,
+            config: ImperativeChangeTextConfig = defaultConfig,
+        ) {
+            const {
+                callOnChangeProp = defaultConfig.callOnChangeProp,
+                shouldSetNativeProps = defaultConfig.shouldSetNativeProps,
+            } = config;
+            const { formattedText, carretPosition } = applyMask(text);
+
+            checkInputHasValue(formattedText);
+
+            applyTextChange(formattedText, carretPosition, {
+                callOnChangeProp,
+                shouldSetNativeProps: shouldSetNativeProps || text !== formattedText,
+            });
+        },
+        [checkInputHasValue, applyMask, applyTextChange],
     );
 
     return {
         imperativeChangeText,
         moveCarret,
+        applyTextChange,
     };
 }

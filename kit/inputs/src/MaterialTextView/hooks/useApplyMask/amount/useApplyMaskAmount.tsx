@@ -43,6 +43,8 @@ export function useApplyMaskAmount(
 
     const applyMaskAmount = React.useCallback(
         (text: string): MaterialTextViewInputState => {
+            'worklet';
+
             const { formattedText, normalizedText, carretPosition } = runUIOnChangeAmount(
                 text,
                 selectionEnd,

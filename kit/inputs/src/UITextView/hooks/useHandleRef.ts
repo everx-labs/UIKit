@@ -8,6 +8,9 @@ export function useHandleRef(
     remeasureInputHeight: (() => void) | undefined,
 ) {
     React.useImperativeHandle<UITextViewRef, UITextViewRef>(passedRef, () => ({
+        // To spread actual ref is important
+        // in order to work properly with `findNodeHandle`
+        ...textInputRef.current,
         remeasureInputHeight: () => {
             return remeasureInputHeight?.();
         },

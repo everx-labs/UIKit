@@ -1,6 +1,9 @@
 import type React from 'react';
 import type { View, ViewStyle, StyleProp, TextInput } from 'react-native';
+import type { SharedValue } from 'react-native-reanimated';
+
 import type { UIImageProps } from '@tonlabs/uikit.media';
+
 import type { UITextViewProps } from '../UITextView';
 
 export type MaterialTextViewAmountMask =
@@ -64,8 +67,8 @@ export type MaterialTextViewLayoutProps = MaterialTextViewProps & {
     onMouseEnter: () => void;
     onMouseLeave: () => void;
     isHovered: boolean;
-    isFocused: boolean;
-    inputHasValue: boolean;
+    isFocused: SharedValue<boolean>;
+    hasValue: SharedValue<boolean>;
 };
 
 export type MaterialTextViewRef = Pick<TextInput, 'isFocused' | 'focus' | 'blur' | 'clear'> & {

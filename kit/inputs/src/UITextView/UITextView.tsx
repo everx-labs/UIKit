@@ -10,8 +10,8 @@ const textViewLineHeight =
     StyleSheet.flatten(Typography[textViewTypographyVariant]).lineHeight ??
     UILayoutConstant.smallCellHeight;
 
-export const UITextView = React.memo(
-    React.forwardRef<UITextViewRef, UITextViewProps>(function UITextViewForwarded(
+export const UITextView = React.forwardRef<UITextViewRef, UITextViewProps>(
+    function UITextViewForwarded(
         {
             placeholderTextColor = ColorVariants.TextSecondary,
             style,
@@ -77,7 +77,7 @@ export const UITextView = React.memo(
                 numberOfLines={numberOfLines}
             />
         );
-    }),
+    },
 );
 
 const styles = StyleSheet.create({

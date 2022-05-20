@@ -9,6 +9,8 @@ import { useApplyMaskAmount } from './amount';
 
 function useApplyMaskDefault(): MaterialTextViewApplyMask {
     return React.useCallback((text: string): MaterialTextViewInputState => {
+        'worklet';
+
         return {
             formattedText: text,
             carretPosition: null,
