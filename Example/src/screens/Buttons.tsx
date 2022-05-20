@@ -22,6 +22,7 @@ import {
     UIPillButtonVariant,
     UIShowMoreButton,
     UIShowMoreButtonHeight,
+    UIShowMoreButtonType,
     UIWideBoxButton,
     UIWideBoxButtonType,
     UIPressableArea,
@@ -218,10 +219,10 @@ export function ButtonsScreen() {
                         progress={progress}
                     />
                     <UIShowMoreButton
+                        type={UIShowMoreButtonType.Transparent}
                         testID="uiBoxButton_primary_default"
                         label="Show more"
                         onPress={onPress}
-                        background={false}
                         progress={progress}
                     />
                 </View>
@@ -242,10 +243,10 @@ export function ButtonsScreen() {
                         progress={progress}
                     />
                     <UIShowMoreButton
+                        type={UIShowMoreButtonType.Transparent}
                         testID="uiBoxButton_primary_default"
                         label="Show more"
                         onPress={onPress}
-                        background={false}
                         height={UIShowMoreButtonHeight.Small}
                         progress={progress}
                     />
