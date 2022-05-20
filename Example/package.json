@@ -17,7 +17,6 @@
     },
     "dependencies": {
         "@babel/preset-typescript": "7.16.7",
-        "@quentin-sommer/react-useragent": "2.0.0",
         "@react-native-clipboard/clipboard": "^1.8.5",
         "@react-navigation/bottom-tabs": "^5.11.15",
         "@react-navigation/core": "^5.16.1",
