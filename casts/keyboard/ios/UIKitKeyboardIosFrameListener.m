@@ -92,6 +92,16 @@ RCT_EXPORT_MODULE()
     }
     
     CGFloat keyboardFrameY = [self.keyboardView.layer presentationLayer].frame.origin.y;
+
+    /**
+     * Starting from some new iOS version
+     * we found it on 15.5, it can return 0
+     * that is just wrong value, we don't need to react to
+     */
+    if (keyboardFrameY == 0) {
+        return;
+    }
+
     CGFloat keyboardWindowH = self.keyboardView.window.bounds.size.height;
     CGFloat keyboardTopPosition =
         keyboardWindowH -
