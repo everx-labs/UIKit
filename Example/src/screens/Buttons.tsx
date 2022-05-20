@@ -31,6 +31,10 @@ import { ColorVariants, UIBackgroundView, UILabel } from '@tonlabs/uikit.themes'
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
+const Separator = () => (
+    <UIBackgroundView color={ColorVariants.BackgroundOverlay} style={{ height: 1 }} />
+);
+
 export function ButtonsScreen() {
     const [progress, setProgress] = React.useState<boolean>(false);
     const onPress = React.useCallback(() => {
@@ -85,10 +89,7 @@ export function ButtonsScreen() {
                         loading={false}
                         disabled={false}
                     />
-                    <UIBackgroundView
-                        color={ColorVariants.BackgroundOverlay}
-                        style={{ height: 1 }}
-                    />
+                    <Separator />
                     <UIWideBoxButton
                         type={UIWideBoxButtonType.Nulled}
                         title="Nulled"
@@ -98,10 +99,7 @@ export function ButtonsScreen() {
                         loading={false}
                         disabled={false}
                     />
-                    <UIBackgroundView
-                        color={ColorVariants.BackgroundOverlay}
-                        style={{ height: 1 }}
-                    />
+                    <Separator />
                 </View>
             </ExampleSection>
             <ExampleSection title="UIActionButton">
@@ -465,32 +463,40 @@ export function ButtonsScreen() {
             </ExampleSection>
 
             <ExampleSection title="UILinkButton">
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <View
+                    style={{
+                        maxWidth: 400,
+                        alignSelf: 'stretch',
+                        alignItems: 'stretch',
+                        margin: 20,
+                        borderWidth: 1,
+                        borderStyle: 'dotted',
+                    }}
+                >
                     <UILinkButton
                         testID="uiLinkButton_default"
                         title="Action"
                         onPress={() => console.log('Pressed UILinkButton')}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <Separator />
                     <UILinkButton
                         testID="uiLinkButton_leftIcon"
                         title="Action"
                         icon={UIAssets.icons.ui.camera}
                         iconPosition={UILinkButtonIconPosition.Left}
                         onPress={() => console.log('Pressed UILinkButton with left icon')}
+                        caption="Here is a caption"
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <Separator />
                     <UILinkButton
                         testID="uiLinkButton_middleIcon"
                         title="Action"
                         icon={UIAssets.icons.ui.arrowUpRight}
                         iconPosition={UILinkButtonIconPosition.Middle}
                         onPress={() => console.log('Pressed UILinkButton with middle icon')}
+                        caption="Here is a caption"
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <Separator />
                     <UILinkButton
                         testID="uiLinkButton_rightIcon"
                         title="Action"
@@ -498,21 +504,22 @@ export function ButtonsScreen() {
                         iconPosition={UILinkButtonIconPosition.Right}
                         onPress={() => console.log('Pressed UILinkButton with right icon')}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <Separator />
                     <UILinkButton
                         testID="uiLinkButton_secondary"
                         title="Action"
                         type={UILinkButtonType.Menu}
                         onPress={() => console.log('Pressed secondary UILinkButton')}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <Separator />
                     <UILinkButton
+                        type={UILinkButtonType.Menu}
                         testID="uiLinkButton_withCaption"
                         title="Action"
-                        caption="Caption"
+                        caption="Here is a caption"
                         onPress={() => console.log('Pressed UILinkButton with caption')}
+                        icon={UIAssets.icons.ui.camera}
+                        iconPosition={UILinkButtonIconPosition.Right}
                     />
                 </View>
             </ExampleSection>
