@@ -107,8 +107,8 @@ function SheetContent({
     children,
     containerStyle,
     style,
-    hasOpenAnimation,
-    hasCloseAnimation,
+    hasOpenAnimation = true,
+    hasCloseAnimation = true,
     statusBarTriggerColor = 'overlay',
 }: UISheetProps) {
     const onClosePortalRequest = useSheetClosePortalRequest();

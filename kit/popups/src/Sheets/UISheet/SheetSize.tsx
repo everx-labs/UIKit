@@ -72,7 +72,7 @@ export function IntrinsicSizeSheet({ children }: { children: React.ReactNode }) 
         return height + androidNavigationBarHeightShared.value + origin.value - topSpace.value;
     });
     const constrainedHeight = useDerivedValue(() => {
-        return Math.min(cardHeight.value, maxPossibleHeight.value);
+        return Math.max(Math.min(cardHeight.value, maxPossibleHeight.value), 0);
     });
 
     const cardStyle = useAnimatedStyle(() => {
