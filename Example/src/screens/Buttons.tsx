@@ -525,25 +525,36 @@ export function ButtonsScreen() {
             </ExampleSection>
 
             <ExampleSection title="UIMsgButton">
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <View
+                    style={{
+                        maxWidth: 600,
+                        alignSelf: 'stretch',
+                        padding: 20,
+                        alignItems: 'stretch',
+                    }}
+                >
                     <UIMsgButton
                         testID="uiMsgButton_default"
                         title="Action"
                         onPress={() => {
                             //
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIMsgButton
+                        cornerPosition={UIMsgButtonCornerPosition.TopRight}
                         testID="uiMsgButton_longTitle"
-                        title="Action with a very loooooooong title"
+                        title="Action"
                         onPress={() => {
                             //
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
+                        variant={UIMsgButtonVariant.Negative}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIMsgButton
                         cornerPosition={UIMsgButtonCornerPosition.BottomLeft}
                         testID="uiMsgButton_cornerPosition_bottomLeft"
@@ -551,9 +562,11 @@ export function ButtonsScreen() {
                         onPress={() => {
                             //
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
+                        variant={UIMsgButtonVariant.Positive}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIMsgButton
                         disabled
                         testID="uiMsgButton_disabled"
@@ -561,9 +574,22 @@ export function ButtonsScreen() {
                         onPress={() => {
                             //
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <UIMsgButton
+                        disabled
+                        testID="uiMsgButton_loading"
+                        title="Disabled"
+                        onPress={() => {
+                            //
+                        }}
+                        loading
+                        layout={{
+                            marginTop: 20,
+                        }}
+                    />
                     <UIMsgButton
                         icon={UIAssets.icons.ui.camera}
                         testID="uiMsgButton_leftIcon_default"
@@ -571,31 +597,36 @@ export function ButtonsScreen() {
                         onPress={() => {
                             //
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIMsgButton
                         icon={UIAssets.icons.ui.arrowUpRight}
                         iconPosition={UIMsgButtonIconPosition.Middle}
                         testID="uiMsgButton_middleIcon"
                         title="Action"
+                        caption="Sell 1 · Buy 0 | short caption"
                         onPress={() => {
                             //
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIMsgButton
                         icon={UIAssets.icons.ui.camera}
                         iconPosition={UIMsgButtonIconPosition.Right}
                         testID="uiMsgButton_rightIcon"
                         title="Action"
+                        caption="Sell 1 · Buy 0 | Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong caption"
                         onPress={() => {
                             //
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIMsgButton
                         testID="uiMsgButton_secondary"
                         title="Secondary"
@@ -603,9 +634,10 @@ export function ButtonsScreen() {
                         onPress={() => {
                             //
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIMsgButton
                         testID="uiMsgButton_secondary_negative"
                         title="Secondary"
@@ -614,9 +646,10 @@ export function ButtonsScreen() {
                         onPress={() => {
                             //
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIMsgButton
                         testID="uiMsgButton_secondary_positive"
                         title="Secondary"
@@ -625,21 +658,35 @@ export function ButtonsScreen() {
                         onPress={() => {
                             //
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIMsgButton
                         testID="uiMsgButton_secondary_with_caption"
                         title="1.000000000 | Loooooooooooong title"
-                        caption="Sell 1 · Buy 0 | Loooooooooooooooooooooooong caption"
+                        caption="Sell 1 · Buy 0 | Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong caption"
                         cornerPosition={UIMsgButtonCornerPosition.TopLeft}
                         type={UIMsgButtonType.Secondary}
                         onPress={() => {
                             //
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <UIMsgButton
+                        testID="uiMsgButton_secondary_loading"
+                        title="Secondary"
+                        type={UIMsgButtonType.Secondary}
+                        onPress={() => {
+                            //
+                        }}
+                        loading
+                        layout={{
+                            marginTop: 20,
+                        }}
+                    />
                     <UIMsgButton
                         disabled
                         testID="uiMsgButton_secondary_disabled"
@@ -647,6 +694,9 @@ export function ButtonsScreen() {
                         type={UIMsgButtonType.Secondary}
                         onPress={() => {
                             //
+                        }}
+                        layout={{
+                            marginTop: 20,
                         }}
                     />
                 </View>
