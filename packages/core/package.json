@@ -36,7 +36,7 @@
         "@tonlabs/uikit.themes": "^3.1.0",
         "bignumber.js": "9.0.0",
         "dayjs": "1.9.1",
-        "mobile-detect": "1.4.3",
+        "mobile-detect": "^1.4.3",
         "react-native-status-bar-height": "1.0.1"
     },
     "devDependencies": {
