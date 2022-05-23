@@ -35,7 +35,7 @@
     ],
     "dependencies": {
         "@tonlabs/localization": "^3.0.1",
-        "@tonlabs/uicast.keyboard": "^3.1.0",
+        "@tonlabs/uicast.keyboard": "^3.1.1",
         "@tonlabs/uikit.assets": "^3.0.1",
         "@tonlabs/uikit.controls": "^3.1.0",
         "@tonlabs/uikit.core": "^4.0.0",
