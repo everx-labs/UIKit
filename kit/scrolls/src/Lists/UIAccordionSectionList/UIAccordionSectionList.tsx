@@ -267,12 +267,6 @@ function UIAccordionSectionListInner<ItemT>({
         });
     }, [sections, foldedSections]);
 
-    // This is used to reduce re-creation of a press callback
-    const processedSectionsHolderRef = React.useRef<typeof processedSections>(processedSections);
-    React.useEffect(() => {
-        processedSectionsHolderRef.current = processedSections;
-    }, [processedSections]);
-
     const onSectionHeaderPress = React.useCallback(
         (sectionKey: string) => {
             if (animationInProgress.current) {
