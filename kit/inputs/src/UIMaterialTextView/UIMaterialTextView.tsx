@@ -120,16 +120,17 @@ function useTextViewReactState<T extends TextViewParameterName>(
 ): TextViewState<T> {
     const configRef = React.useRef(config);
 
-    const result: TextViewState<T> = {} as TextViewState<T>;
-
-    // eslint-disable-next-line no-restricted-syntax
-    for (const key in configRef.current) {
-        if (Object.prototype.hasOwnProperty.call(configRef.current, key)) {
-            // eslint-disable-next-line react-hooks/rules-of-hooks
-            result[key] = useGetJSValue(ref.current?.[`${key}Animated`]);
+    return React.useMemo(() => {
+        const result: TextViewState<T> = {} as TextViewState<T>;
+        // eslint-disable-next-line no-restricted-syntax
+        for (const key in configRef.current) {
+            if (Object.prototype.hasOwnProperty.call(configRef.current, key)) {
+                // eslint-disable-next-line react-hooks/rules-of-hooks
+                result[key] = useGetJSValue(ref.current?.[`${key}Animated`]);
+            }
         }
-    }
-    return result;
+        return result;
+    }, [ref]);
 }
 
 const UINewMaterialTextViewForward = React.forwardRef<
