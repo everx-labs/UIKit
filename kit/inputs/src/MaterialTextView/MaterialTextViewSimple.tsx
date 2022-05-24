@@ -8,6 +8,8 @@ import { UITextView, UITextViewRef } from '../UITextView';
 import type { MaterialTextViewLayoutProps } from './types';
 import { MaterialTextViewComment } from './MaterialTextViewComment';
 
+const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
+
 export const MaterialTextViewSimple = React.forwardRef<UITextViewRef, MaterialTextViewLayoutProps>(
     function MaterialTextViewSimpleForwarded(props: MaterialTextViewLayoutProps, passedRef) {
         const { children, onMouseEnter, onMouseLeave, borderViewRef, isHovered, ...rest } = props;
@@ -25,7 +27,7 @@ export const MaterialTextViewSimple = React.forwardRef<UITextViewRef, MaterialTe
                     ref={borderViewRef}
                 >
                     <Animated.View style={styles.input} /* layout={Layout} */>
-                        <UITextView
+                        <UITextViewAnimated
                             ref={passedRef}
                             {...rest}
                             placeholder={props.placeholder}
