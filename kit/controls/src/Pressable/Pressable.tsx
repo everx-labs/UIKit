@@ -1,12 +1,9 @@
 import * as React from 'react';
 import { Pressable as PressablePlatform } from 'react-native';
-import Animated from 'react-native-reanimated';
 import { useHover } from '../useHover';
-import { PressableStateContext, PressableStateVariant } from './constants';
+import { PressableStateContext } from './constants';
 import type { PressableProps } from './types';
-import { usePressed, usePressableState } from './hooks';
-
-const PressablePlatformAnimated = Animated.createAnimatedComponent(PressablePlatform);
+import { usePressed, usePressableState, useConvertToAnimatedValue } from './hooks';
 
 /**
  * It is necessary to simplify the creation of new buttons.
@@ -25,16 +22,22 @@ export function Pressable({
 }: PressableProps) {
     const { isPressed, onPressIn, onPressOut } = usePressed();
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
-    const pressableState: PressableStateVariant = usePressableState(
-        disabled,
-        loading,
-        isPressed,
-        isHovered,
+
+    const isDisabledAnimated = useConvertToAnimatedValue(disabled);
+    const isLoadingAnimated = useConvertToAnimatedValue(loading);
+    const isPressedAnimated = useConvertToAnimatedValue(isPressed);
+    const isHoveredAnimated = useConvertToAnimatedValue(isHovered);
+
+    const pressableState = usePressableState(
+        isDisabledAnimated,
+        isLoadingAnimated,
+        isPressedAnimated,
+        isHoveredAnimated,
     );
 
     return (
         <PressableStateContext.Provider value={pressableState}>
-            <PressablePlatformAnimated
+            <PressablePlatform
                 onPress={onPress}
                 onLongPress={onLongPress}
                 testID={testID}
@@ -47,7 +50,7 @@ export function Pressable({
                 onMouseLeave={onMouseLeave}
             >
                 {children}
-            </PressablePlatformAnimated>
+            </PressablePlatform>
         </PressableStateContext.Provider>
     );
 }

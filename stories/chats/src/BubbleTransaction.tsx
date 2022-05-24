@@ -205,7 +205,6 @@ export function BubbleTransaction(props: TransactionMessage) {
                             {...props.comment}
                             status={props.status}
                             type={props.info.type}
-                            onPress={props.onPress}
                         />
                     )}
                 </View>

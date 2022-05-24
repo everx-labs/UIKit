@@ -35,7 +35,7 @@
     ],
     "dependencies": {
         "@tonlabs/localization": "^3.0.1",
-        "@tonlabs/uicast.keyboard": "^3.1.0",
+        "@tonlabs/uicast.keyboard": "^3.1.1",
         "@tonlabs/uikit.assets": "^3.0.1",
         "@tonlabs/uikit.controls": "^3.1.0",
         "@tonlabs/uikit.core": "^4.0.0",
@@ -72,7 +72,7 @@
         "react-dom": "^17.0.2",
         "react-native": "^0.67.4",
         "react-native-blob-util": "^0.13.18",
-        "react-native-gesture-handler": "^1.10.3",
+        "react-native-gesture-handler": "^2.4.2",
         "react-native-reanimated": "^2.5.0",
         "react-native-safe-area-context": "^3.3.2",
         "react-native-svg": "^12.3.0",

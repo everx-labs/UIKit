@@ -177,6 +177,40 @@ function prepareAnimation<ItemT, SectionT = DefaultSectionT>(
         });
 }
 
+function getVirtualizedHeaderKey(key: string) {
+    return `${key}:header`;
+}
+
+function useFoldedSectionsState<ItemT>(
+    sections: SectionListProps<ItemT, UIAccordionSection<ItemT>>['sections'],
+) {
+    const [foldedSectionsIntermediary, setFoldedSections] = React.useState<Record<string, boolean>>(
+        () => ({}),
+    );
+    const foldedSections = React.useMemo(() => {
+        return sections.reduce((acc, { key, isFolded }) => {
+            const sectionKey = getVirtualizedHeaderKey(key);
+
+            // Do not override if we already track it internally
+            if (sectionKey in foldedSectionsIntermediary) {
+                acc[sectionKey] = foldedSectionsIntermediary[sectionKey];
+            } else {
+                acc[sectionKey] = isFolded == null ? false : isFolded;
+            }
+
+            return acc;
+        }, {} as Record<string, boolean>);
+    }, [sections, foldedSectionsIntermediary]);
+
+    // This is used to reduce re-creation of a press callback
+    const foldedSectionsHolderRef = React.useRef<Record<string, boolean>>(foldedSections);
+    React.useEffect(() => {
+        foldedSectionsHolderRef.current = foldedSections;
+    }, [foldedSections]);
+
+    return { foldedSections, setFoldedSections, foldedSectionsHolderRef };
+}
+
 type UIAccordionSection<ItemT> = {
     /**
      * Items that will be rendered in a section
@@ -219,29 +253,16 @@ function UIAccordionSectionListInner<ItemT>({
     sectionToAnimateKey: { current: string | undefined };
     animationInProgress: { current: boolean };
 } & SectionListProps<ItemT, UIAccordionSection<ItemT>>) {
-    const [foldedSections, setFoldedSections] = React.useState<Record<string, boolean>>({});
-    // This is used to reduce re-creation of a press callback
-    const foldedSectionsHolderRef = React.useRef<Record<string, boolean>>(foldedSections);
-    React.useEffect(() => {
-        foldedSectionsHolderRef.current = foldedSections;
-    }, [foldedSections]);
+    const { foldedSections, setFoldedSections, foldedSectionsHolderRef } =
+        useFoldedSectionsState(sections);
 
     const processedSections = React.useMemo(() => {
         return sections.map(section => {
-            const { key, isFolded, data } = section;
-            if (!(`${key}:header` in foldedSections)) {
-                if (isFolded) {
-                    return {
-                        ...section,
-                        data: emptyArray as ItemT[],
-                    };
-                }
-                return section;
-            }
+            const { key, data } = section;
             return {
                 ...section,
-                data: foldedSections[`${key}:header`] ? (emptyArray as ItemT[]) : data,
-                isFolded: foldedSections[`${key}:header`],
+                data: foldedSections[getVirtualizedHeaderKey(key)] ? (emptyArray as ItemT[]) : data,
+                isFolded: foldedSections[getVirtualizedHeaderKey(key)],
             };
         });
     }, [sections, foldedSections]);
@@ -269,12 +290,20 @@ function UIAccordionSectionListInner<ItemT>({
                 [sectionKey]: !foldedSectionsHolderRef.current[sectionKey],
             });
         },
-        [listRef, overlayRef, sectionsMapping, sectionToAnimateKey, animationInProgress],
+        [
+            listRef,
+            overlayRef,
+            sectionsMapping,
+            sectionToAnimateKey,
+            animationInProgress,
+            foldedSectionsHolderRef,
+            setFoldedSections,
+        ],
     );
 
     const renderCollapsableSectionHeader = React.useCallback(
         (info: { section: SectionListData<ItemT, UIAccordionSection<ItemT>> }) => {
-            const sectionKey = `${info.section.key}:header`;
+            const sectionKey = getVirtualizedHeaderKey(info.section.key);
             return (
                 <AccordionSectionHeader
                     title={info.section.title}
@@ -339,7 +368,7 @@ const UIAccordionSectionListOriginal = React.memo(
         if (prevSections !== sections) {
             let prevSectionKey: string | undefined;
             for (let i = 0; i < sections.length; i += 1) {
-                const sectionKey = `${sections[i].key}:header`;
+                const sectionKey = getVirtualizedHeaderKey(sections[i].key);
                 if (sectionKey && prevSectionKey != null) {
                     sectionsMapping.current[prevSectionKey] = sectionKey;
                 }

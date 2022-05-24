@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ColorValue, StyleSheet } from 'react-native';
+import { ColorValue, Platform, StyleSheet, ImageStyle } from 'react-native';
 import Animated, { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
 import { ColorVariants, UILabelAnimated } from '@tonlabs/uikit.themes';
 import { UIAnimatedImage } from '@tonlabs/uikit.media';
@@ -18,7 +18,7 @@ function RightContent({
 }) {
     const animatedImageProps = useAnimatedProps(() => {
         return {
-            tintColor: contentColor.value,
+            tintColor: contentColor.value as ColorValue,
         };
     });
 
@@ -29,7 +29,7 @@ function RightContent({
         return (
             <UIAnimatedImage
                 source={icon}
-                style={styles.image}
+                style={styles.image as ImageStyle}
                 animatedProps={animatedImageProps}
             />
         );
@@ -69,6 +69,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         borderRadius: UILayoutConstant.alertBorderRadius,
         borderWidth: 1,
+        ...Platform.select({
+            web: {
+                userSelect: 'none',
+            },
+            default: null,
+        }),
     },
     image: {
         marginLeft: UILayoutConstant.normalContentOffset,

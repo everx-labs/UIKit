@@ -1,4 +1,5 @@
 import type { ColorVariants } from '@tonlabs/uikit.themes';
+import type React from 'react';
 import type { StyleProp, ViewStyle } from 'react-native';
 
 export type PressableProps = {
@@ -7,12 +8,15 @@ export type PressableProps = {
     disabled?: boolean;
     loading?: boolean;
     /**
+     * Use usePressableContentNumericParameter hook in the child components to animate them.
      * Use usePressableContentColor hook in the child components to animate their colors.
      */
     children: React.ReactNode;
     style?: StyleProp<ViewStyle>;
     testID?: string;
 };
+
+export type PressableStateType = 'Initial' | 'Disabled' | 'Hovered' | 'Pressed' | 'Loading';
 
 export type PressableColors = {
     initialColor: ColorVariants;

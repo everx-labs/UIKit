@@ -22,6 +22,7 @@ import {
     UIPillButtonVariant,
     UIShowMoreButton,
     UIShowMoreButtonHeight,
+    UIShowMoreButtonType,
     UIWideBoxButton,
     UIWideBoxButtonType,
     UIPressableArea,
@@ -30,6 +31,10 @@ import { ColorVariants, UIBackgroundView, UILabel } from '@tonlabs/uikit.themes'
 
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
+
+const Separator = () => (
+    <UIBackgroundView color={ColorVariants.BackgroundOverlay} style={{ height: 1 }} />
+);
 
 export function ButtonsScreen() {
     const [progress, setProgress] = React.useState<boolean>(false);
@@ -85,10 +90,7 @@ export function ButtonsScreen() {
                         loading={false}
                         disabled={false}
                     />
-                    <UIBackgroundView
-                        color={ColorVariants.BackgroundOverlay}
-                        style={{ height: 1 }}
-                    />
+                    <Separator />
                     <UIWideBoxButton
                         type={UIWideBoxButtonType.Nulled}
                         title="Nulled"
@@ -98,10 +100,7 @@ export function ButtonsScreen() {
                         loading={false}
                         disabled={false}
                     />
-                    <UIBackgroundView
-                        color={ColorVariants.BackgroundOverlay}
-                        style={{ height: 1 }}
-                    />
+                    <Separator />
                 </View>
             </ExampleSection>
             <ExampleSection title="UIActionButton">
@@ -220,10 +219,10 @@ export function ButtonsScreen() {
                         progress={progress}
                     />
                     <UIShowMoreButton
+                        type={UIShowMoreButtonType.Transparent}
                         testID="uiBoxButton_primary_default"
                         label="Show more"
                         onPress={onPress}
-                        background={false}
                         progress={progress}
                     />
                 </View>
@@ -244,24 +243,29 @@ export function ButtonsScreen() {
                         progress={progress}
                     />
                     <UIShowMoreButton
+                        type={UIShowMoreButtonType.Transparent}
                         testID="uiBoxButton_primary_default"
                         label="Show more"
                         onPress={onPress}
-                        background={false}
                         height={UIShowMoreButtonHeight.Small}
                         progress={progress}
                     />
                 </View>
             </ExampleSection>
             <ExampleSection title="UIBoxButton">
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <View
+                    style={{
+                        maxWidth: 600,
+                        alignSelf: 'stretch',
+                        padding: 20,
+                        alignItems: 'stretch',
+                    }}
+                >
                     <UIBoxButton
                         testID="uiBoxButton_primary_default"
                         title="Primary"
                         onPress={() => console.log('Pressed UIBoxButton primary')}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIBoxButton
                         testID="uiBoxButton_primary_negative"
                         title="Primary negative"
@@ -269,9 +273,10 @@ export function ButtonsScreen() {
                         onPress={() => {
                             // empty
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIBoxButton
                         testID="uiBoxButton_primary_positive"
                         title="Primary positive"
@@ -279,9 +284,10 @@ export function ButtonsScreen() {
                         onPress={() => {
                             // empty
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIBoxButton
                         disabled
                         testID="uiBoxButton_primary_disabled"
@@ -289,69 +295,77 @@ export function ButtonsScreen() {
                         onPress={() => {
                             // empty
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIBoxButton
                         testID="uiBoxButton_primary_loading"
                         title="Action"
                         loading
                         onPress={() => console.log('Pressed UIBoxButton')}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIBoxButton
                         icon={UIAssets.icons.ui.camera}
                         testID="uiBoxButton_primary_leftIcon"
                         title="Action"
                         onPress={() => console.log('Pressed UIBoxButton')}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIBoxButton
                         icon={UIAssets.icons.ui.arrowUpRight}
                         iconPosition={UIBoxButtonIconPosition.Middle}
                         testID="uiBoxButton_primary_middleIcon"
                         title="Action"
                         onPress={() => console.log('Pressed UIBoxButton')}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIBoxButton
                         icon={UIAssets.icons.ui.camera}
                         iconPosition={UIBoxButtonIconPosition.Right}
                         testID="uiBoxButton_primary_rightIcon"
                         title="Action"
                         onPress={() => console.log('Pressed UIBoxButton')}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIBoxButton
                         testID="uiBoxButton_secondary"
                         title="Secondary"
                         type={UIBoxButtonType.Secondary}
                         onPress={() => console.log('Pressed UIBoxButton secondary')}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIBoxButton
                         testID="uiBoxButton_secondary_negative"
                         title="Secondary negative"
                         type={UIBoxButtonType.Secondary}
                         variant={UIBoxButtonVariant.Negative}
                         onPress={() => console.log('Pressed UIBoxButton secondary negative')}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIBoxButton
                         testID="uiBoxButton_secondary_positive"
                         title="Secondary positive"
                         type={UIBoxButtonType.Secondary}
                         variant={UIBoxButtonVariant.Positive}
                         onPress={() => console.log('Pressed UIBoxButton secondary positive')}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIBoxButton
                         disabled
                         testID="uiBoxButton_secondary_disabled"
@@ -360,35 +374,39 @@ export function ButtonsScreen() {
                         onPress={() => {
                             // empty
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIBoxButton
                         testID="uiBoxButton_tertiary"
                         title="Tertiary"
                         type={UIBoxButtonType.Tertiary}
                         onPress={() => console.log('Pressed UIBoxButton tertiary')}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIBoxButton
                         testID="uiBoxButton_tertiary_negative"
                         title="Tertiary negative"
                         type={UIBoxButtonType.Tertiary}
                         variant={UIBoxButtonVariant.Negative}
                         onPress={() => console.log('Pressed UIBoxButton tertiary negative')}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIBoxButton
                         testID="uiBoxButton_tertiary_positive"
                         title="Tertiary positive"
                         type={UIBoxButtonType.Tertiary}
                         variant={UIBoxButtonVariant.Positive}
                         onPress={() => console.log('Pressed UIBoxButton tertiary positive')}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIBoxButton
                         disabled
                         testID="uiBoxButton_tertiary_disabled"
@@ -397,35 +415,39 @@ export function ButtonsScreen() {
                         onPress={() => {
                             // empty
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIBoxButton
                         testID="uiBoxButton_nulled"
                         title="Nulled"
                         type={UIBoxButtonType.Nulled}
                         onPress={() => console.log('Pressed UIBoxButton nulled')}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIBoxButton
                         testID="uiBoxButton_nulled_negative"
                         title="Nulled negative"
                         type={UIBoxButtonType.Nulled}
                         variant={UIBoxButtonVariant.Negative}
                         onPress={() => console.log('Pressed UIBoxButton nulled negative')}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIBoxButton
                         testID="uiBoxButton_nulled_positive"
                         title="Nulled positive"
                         type={UIBoxButtonType.Nulled}
                         variant={UIBoxButtonVariant.Positive}
                         onPress={() => console.log('Pressed UIBoxButton nulled positive')}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIBoxButton
                         disabled
                         testID="uiBoxButton_nulled_disabled"
@@ -434,37 +456,48 @@ export function ButtonsScreen() {
                         onPress={() => {
                             // empty
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
                 </View>
             </ExampleSection>
 
             <ExampleSection title="UILinkButton">
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <View
+                    style={{
+                        maxWidth: 400,
+                        alignSelf: 'stretch',
+                        alignItems: 'stretch',
+                        margin: 20,
+                        borderWidth: 1,
+                        borderStyle: 'dotted',
+                    }}
+                >
                     <UILinkButton
                         testID="uiLinkButton_default"
                         title="Action"
                         onPress={() => console.log('Pressed UILinkButton')}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <Separator />
                     <UILinkButton
                         testID="uiLinkButton_leftIcon"
                         title="Action"
                         icon={UIAssets.icons.ui.camera}
                         iconPosition={UILinkButtonIconPosition.Left}
                         onPress={() => console.log('Pressed UILinkButton with left icon')}
+                        caption="Here is a caption"
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <Separator />
                     <UILinkButton
                         testID="uiLinkButton_middleIcon"
                         title="Action"
                         icon={UIAssets.icons.ui.arrowUpRight}
                         iconPosition={UILinkButtonIconPosition.Middle}
                         onPress={() => console.log('Pressed UILinkButton with middle icon')}
+                        caption="Here is a caption"
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <Separator />
                     <UILinkButton
                         testID="uiLinkButton_rightIcon"
                         title="Action"
@@ -472,45 +505,57 @@ export function ButtonsScreen() {
                         iconPosition={UILinkButtonIconPosition.Right}
                         onPress={() => console.log('Pressed UILinkButton with right icon')}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <Separator />
                     <UILinkButton
                         testID="uiLinkButton_secondary"
                         title="Action"
                         type={UILinkButtonType.Menu}
                         onPress={() => console.log('Pressed secondary UILinkButton')}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <Separator />
                     <UILinkButton
+                        type={UILinkButtonType.Menu}
                         testID="uiLinkButton_withCaption"
                         title="Action"
-                        caption="Caption"
+                        caption="Here is a caption"
                         onPress={() => console.log('Pressed UILinkButton with caption')}
+                        icon={UIAssets.icons.ui.camera}
+                        iconPosition={UILinkButtonIconPosition.Right}
                     />
                 </View>
             </ExampleSection>
 
             <ExampleSection title="UIMsgButton">
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                <View
+                    style={{
+                        maxWidth: 600,
+                        alignSelf: 'stretch',
+                        padding: 20,
+                        alignItems: 'stretch',
+                    }}
+                >
                     <UIMsgButton
                         testID="uiMsgButton_default"
                         title="Action"
                         onPress={() => {
                             //
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIMsgButton
+                        cornerPosition={UIMsgButtonCornerPosition.TopRight}
                         testID="uiMsgButton_longTitle"
-                        title="Action with a very loooooooong title"
+                        title="Action"
                         onPress={() => {
                             //
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
+                        variant={UIMsgButtonVariant.Negative}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIMsgButton
                         cornerPosition={UIMsgButtonCornerPosition.BottomLeft}
                         testID="uiMsgButton_cornerPosition_bottomLeft"
@@ -518,9 +563,11 @@ export function ButtonsScreen() {
                         onPress={() => {
                             //
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
+                        variant={UIMsgButtonVariant.Positive}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIMsgButton
                         disabled
                         testID="uiMsgButton_disabled"
@@ -528,9 +575,22 @@ export function ButtonsScreen() {
                         onPress={() => {
                             //
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <UIMsgButton
+                        disabled
+                        testID="uiMsgButton_loading"
+                        title="Disabled"
+                        onPress={() => {
+                            //
+                        }}
+                        loading
+                        layout={{
+                            marginTop: 20,
+                        }}
+                    />
                     <UIMsgButton
                         icon={UIAssets.icons.ui.camera}
                         testID="uiMsgButton_leftIcon_default"
@@ -538,31 +598,36 @@ export function ButtonsScreen() {
                         onPress={() => {
                             //
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIMsgButton
                         icon={UIAssets.icons.ui.arrowUpRight}
                         iconPosition={UIMsgButtonIconPosition.Middle}
                         testID="uiMsgButton_middleIcon"
                         title="Action"
+                        caption="Sell 1 · Buy 0 | short caption"
                         onPress={() => {
                             //
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIMsgButton
                         icon={UIAssets.icons.ui.camera}
                         iconPosition={UIMsgButtonIconPosition.Right}
                         testID="uiMsgButton_rightIcon"
                         title="Action"
+                        caption="Sell 1 · Buy 0 | Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong caption"
                         onPress={() => {
                             //
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIMsgButton
                         testID="uiMsgButton_secondary"
                         title="Secondary"
@@ -570,9 +635,10 @@ export function ButtonsScreen() {
                         onPress={() => {
                             //
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIMsgButton
                         testID="uiMsgButton_secondary_negative"
                         title="Secondary"
@@ -581,9 +647,10 @@ export function ButtonsScreen() {
                         onPress={() => {
                             //
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIMsgButton
                         testID="uiMsgButton_secondary_positive"
                         title="Secondary"
@@ -592,21 +659,35 @@ export function ButtonsScreen() {
                         onPress={() => {
                             //
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
                     <UIMsgButton
                         testID="uiMsgButton_secondary_with_caption"
                         title="1.000000000 | Loooooooooooong title"
-                        caption="Sell 1 · Buy 0 | Loooooooooooooooooooooooong caption"
+                        caption="Sell 1 · Buy 0 | Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong caption"
                         cornerPosition={UIMsgButtonCornerPosition.TopLeft}
                         type={UIMsgButtonType.Secondary}
                         onPress={() => {
                             //
                         }}
+                        layout={{
+                            marginTop: 20,
+                        }}
                     />
-                </View>
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
+                    <UIMsgButton
+                        testID="uiMsgButton_secondary_loading"
+                        title="Secondary"
+                        type={UIMsgButtonType.Secondary}
+                        onPress={() => {
+                            //
+                        }}
+                        loading
+                        layout={{
+                            marginTop: 20,
+                        }}
+                    />
                     <UIMsgButton
                         disabled
                         testID="uiMsgButton_secondary_disabled"
@@ -614,6 +695,9 @@ export function ButtonsScreen() {
                         type={UIMsgButtonType.Secondary}
                         onPress={() => {
                             //
+                        }}
+                        layout={{
+                            marginTop: 20,
                         }}
                     />
                 </View>

@@ -1,8 +1,15 @@
 import type BigNumber from 'bignumber.js';
-import type { UIMaterialTextViewChild, UIMaterialTextViewRef } from '../UIMaterialTextView/types';
+import type {
+    UIMaterialTextViewChild,
+    UIMaterialTextViewProps,
+    UIMaterialTextViewRef,
+} from '../UIMaterialTextView/types';
 import type { UIAmountInputDecimalAspect, UIAmountInputMessageType } from './constants';
 
-export type UIAmountInputProps = {
+export type UIAmountInputProps = Omit<
+    UIMaterialTextViewProps,
+    'mask' | 'defaultValue' | 'value' | 'onChangeText'
+> & {
     /**
      * A callback that is called after changing the value in the input by the user.
      */
@@ -11,10 +18,6 @@ export type UIAmountInputProps = {
      * The default value that is displayed in the input.
      */
     defaultAmount?: BigNumber;
-    /**
-     * Label of the input.
-     */
-    label?: string;
     /**
      * How many digits to draw for decimal part.
      *
@@ -32,20 +35,12 @@ export type UIAmountInputProps = {
      */
     message?: string;
     /**
-     * The string that will be rendered before text input has been entered.
-     */
-    placeholder?: string;
-    /**
      *  As children you can provide only one or two of this component:
      *  `UIAmountInput.Icon`
      *  `UIAmountInput.Action`
      *  `UIAmountInput.Text`
      */
     children?: UIAmountInputChild | UIAmountInputChild[] | undefined;
-    /**
-     * ID for usage in tests
-     */
-    testID?: string;
 };
 
 export type UIAmountInputRef = Omit<UIMaterialTextViewRef, 'changeText'> & {
