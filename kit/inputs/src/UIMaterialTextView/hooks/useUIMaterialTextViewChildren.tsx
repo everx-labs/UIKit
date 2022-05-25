@@ -10,11 +10,12 @@ export function useUIMaterialTextViewChildren(
     inputHasValue: boolean,
     isFocused: boolean,
     isHovered: boolean,
+    editable: boolean,
     clear: (() => void) | undefined,
 ): MaterialTextViewProps['children'] {
     const materialTextViewChildren = useMaterialTextViewChildren(children);
 
-    if (inputHasValue && (isFocused || isHovered)) {
+    if (editable && inputHasValue && (isFocused || isHovered)) {
         return <MaterialTextViewClearButton clear={clear} />;
     }
 
