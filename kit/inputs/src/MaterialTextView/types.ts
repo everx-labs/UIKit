@@ -64,8 +64,8 @@ export type MaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
 };
 
 export type MaterialTextViewLayoutProps = MaterialTextViewProps & {
-    onMouseEnter: () => void;
-    onMouseLeave: () => void;
+    onMouseEnter?: () => void;
+    onMouseLeave?: () => void;
     isHovered: boolean;
     isFocused: SharedValue<boolean>;
     hasValue: SharedValue<boolean>;

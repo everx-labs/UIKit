@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { runOnJS, useSharedValue } from 'react-native-reanimated';
+import { runOnJS, useDerivedValue, useSharedValue } from 'react-native-reanimated';
 
 import { useHover } from '@tonlabs/uikit.controls';
 
@@ -42,7 +42,9 @@ function useExtendedProps(
         onSelectionChange: onSelectionChangeProp,
         ...restProps
     } = props;
-    const { mask, value, onHover } = restProps;
+    const { mask, value, onHover, editable: editableProp } = restProps;
+
+    const editable = useDerivedValue(() => editableProp, [editableProp]);
 
     const { selectionEnd, skipNextOnSelectionChange, onSelectionChange } =
         useOnSelectionChange(onSelectionChangeProp);
@@ -97,6 +99,10 @@ function useExtendedProps(
         onFocus: evt => {
             'worklet';
 
+            if (editable.value === false) {
+                return;
+            }
+
             isFocused.value = true;
 
             if (onFocusProp != null) {
@@ -105,6 +111,10 @@ function useExtendedProps(
         },
         onBlur: evt => {
             'worklet';
+
+            if (editable.value === false) {
+                return;
+            }
 
             isFocused.value = false;
 
@@ -132,8 +142,12 @@ function useExtendedProps(
 
     const newProps: MaterialTextViewLayoutProps = {
         ...restProps,
-        onMouseEnter,
-        onMouseLeave,
+        ...(editableProp === false
+            ? null
+            : {
+                  onMouseEnter,
+                  onMouseLeave,
+              }),
         isHovered,
         hasValue,
         isFocused,

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { Platform, TextStyle, View } from 'react-native';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { makeStyles, useTheme, Theme, ColorVariants } from '@tonlabs/uikit.themes';
@@ -39,6 +39,7 @@ export const MaterialTextViewFloating = React.forwardRef<
         isFocused,
         ...rest
     } = props;
+    const { editable = true } = rest;
     const theme = useTheme();
 
     const isExpanded = useDerivedValue(() => isFocused.value || hasValue.value);
@@ -64,7 +65,7 @@ export const MaterialTextViewFloating = React.forwardRef<
         };
     });
 
-    const styles = useStyles(theme);
+    const styles = useStyles(theme, editable);
 
     const placeholderTextColor = React.useMemo(() => {
         if (!isPlaceholderVisible) {
@@ -82,12 +83,13 @@ export const MaterialTextViewFloating = React.forwardRef<
                 onMouseLeave={onMouseLeave}
                 ref={borderViewRef}
             >
-                <Animated.View style={[styles.input, inputStyle]} /* layout={Layout} */>
+                <Animated.View style={[styles.inputContainer, inputStyle]} /* layout={Layout} */>
                     <UITextViewAnimated
                         ref={ref}
                         {...rest}
                         placeholder={props.placeholder}
                         placeholderTextColor={placeholderTextColor}
+                        style={styles.input}
                     />
                     <FloatingLabel expandingValue={expandingValue} isHovered={isHovered}>
                         {label}
@@ -99,18 +101,27 @@ export const MaterialTextViewFloating = React.forwardRef<
     );
 });
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme: Theme, editable: boolean) => ({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
         borderRadius: UILayoutConstant.input.borderRadius,
-        backgroundColor: theme[ColorVariants.BackgroundBW],
+        backgroundColor: editable
+            ? theme[ColorVariants.BackgroundBW]
+            : theme[ColorVariants.BackgroundNeutral],
         paddingHorizontal: UILayoutConstant.contentOffset,
     },
-    input: {
+    inputContainer: {
         flex: 1,
         flexDirection: 'row',
         paddingVertical: UILayoutConstant.contentInsetVerticalX4,
         paddingRight: UILayoutConstant.smallContentOffset,
+    },
+    input: {
+        ...Platform.select({
+            web: {
+                ...(!editable ? ({ cursor: 'default' } as TextStyle) : null),
+            },
+        }),
     },
 }));
