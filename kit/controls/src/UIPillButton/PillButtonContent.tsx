@@ -53,6 +53,9 @@ export const PillButtonContent = ({
         };
     });
 
+    /**
+     * To animate button shape transition between loading and regular state on mobile platform.
+     */
     React.useLayoutEffect(() => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     }, [loading]);
