@@ -142,12 +142,8 @@ function useExtendedProps(
 
     const newProps: MaterialTextViewLayoutProps = {
         ...restProps,
-        ...(editableProp === false
-            ? null
-            : {
-                  onMouseEnter,
-                  onMouseLeave,
-              }),
+        onMouseEnter,
+        onMouseLeave,
         isHovered,
         hasValue,
         isFocused,

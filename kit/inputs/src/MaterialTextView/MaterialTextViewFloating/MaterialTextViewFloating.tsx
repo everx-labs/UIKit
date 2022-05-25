@@ -71,8 +71,8 @@ export const MaterialTextViewFloating = React.forwardRef<
         if (!isPlaceholderVisible) {
             return ColorVariants.Transparent;
         }
-        return isHovered ? ColorVariants.TextSecondary : ColorVariants.TextTertiary;
-    }, [isPlaceholderVisible, isHovered]);
+        return isHovered && editable ? ColorVariants.TextSecondary : ColorVariants.TextTertiary;
+    }, [isPlaceholderVisible, isHovered, editable]);
 
     return (
         <MaterialTextViewComment {...props}>
@@ -91,7 +91,11 @@ export const MaterialTextViewFloating = React.forwardRef<
                         placeholderTextColor={placeholderTextColor}
                         style={styles.input}
                     />
-                    <FloatingLabel expandingValue={expandingValue} isHovered={isHovered}>
+                    <FloatingLabel
+                        expandingValue={expandingValue}
+                        isHovered={isHovered}
+                        editable={editable}
+                    >
                         {label}
                     </FloatingLabel>
                 </Animated.View>

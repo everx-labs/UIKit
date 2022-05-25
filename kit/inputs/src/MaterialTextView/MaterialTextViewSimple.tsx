@@ -33,7 +33,9 @@ export const MaterialTextViewSimple = React.forwardRef<UITextViewRef, MaterialTe
                             {...rest}
                             placeholder={props.placeholder}
                             placeholderTextColor={
-                                isHovered ? ColorVariants.TextSecondary : ColorVariants.TextTertiary
+                                isHovered && editable
+                                    ? ColorVariants.TextSecondary
+                                    : ColorVariants.TextTertiary
                             }
                             style={styles.input}
                         />

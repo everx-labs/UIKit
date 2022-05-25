@@ -15,6 +15,7 @@ export type FloatingLabelProps = {
     children: string;
     expandingValue: Readonly<Animated.SharedValue<number>>;
     isHovered: boolean;
+    editable: boolean;
 };
 
 const paragraphTextStyle: TextStyle = StyleSheet.flatten(
@@ -51,12 +52,13 @@ type LabelProps = {
     children: string;
     onLabelLayout: (layoutChangeEvent: LayoutChangeEvent) => void;
     isHovered: boolean;
+    editable: boolean;
 };
-function Label({ children, onLabelLayout, isHovered }: LabelProps) {
+function Label({ children, onLabelLayout, isHovered, editable }: LabelProps) {
     return (
         <UILabel
             role={TypographyVariants.ParagraphText}
-            color={isHovered ? ColorVariants.TextSecondary : ColorVariants.TextTertiary}
+            color={isHovered && editable ? ColorVariants.TextSecondary : ColorVariants.TextTertiary}
             onLayout={onLabelLayout}
             numberOfLines={1}
             lineBreakMode="tail"
@@ -98,7 +100,12 @@ function useOnLabelLayout(
     );
 }
 
-export function FloatingLabel({ expandingValue, children, isHovered }: FloatingLabelProps) {
+export function FloatingLabel({
+    expandingValue,
+    children,
+    isHovered,
+    editable,
+}: FloatingLabelProps) {
     /** Dimensions of label in the expanded state */
     const expandedLabelWidth: Animated.SharedValue<number> = useSharedValue<number>(0);
     const expandedLabelHeight: Animated.SharedValue<number> = useSharedValue<number>(0);
@@ -147,7 +154,7 @@ export function FloatingLabel({ expandingValue, children, isHovered }: FloatingL
     return (
         <View style={styles.container} pointerEvents="none">
             <Animated.View style={labelContainerStyle}>
-                <Label onLabelLayout={onLabelLayout} isHovered={isHovered}>
+                <Label onLabelLayout={onLabelLayout} isHovered={isHovered} editable={editable}>
                     {children}
                 </Label>
             </Animated.View>
