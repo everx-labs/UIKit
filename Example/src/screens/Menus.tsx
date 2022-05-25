@@ -155,12 +155,11 @@ function PinCodeMenu() {
                     label="PIN code"
                     description="Correct"
                     disabled={attempts === 0}
-                    isBiometryEnabled
                     biometryType={UIPinCodeBiometryType.Face}
-                    getPasscodeWithBiometry={() => {
+                    passcodeBiometryProvider={() => {
                         return Promise.resolve('123123');
                     }}
-                    onEnter={(pin: string) => {
+                    validate={(pin: string) => {
                         return new Promise<{ valid: boolean; description: string }>(resolve => {
                             setTimeout(() => {
                                 if (pin === '123123') {

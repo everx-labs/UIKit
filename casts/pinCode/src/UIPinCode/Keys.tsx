@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import * as React from 'react';
-import { StyleProp, ViewStyle, StyleSheet } from 'react-native';
+import { StyleProp, ViewStyle, StyleSheet, processColor } from 'react-native';
 import {
     GestureEvent,
     NativeViewGestureHandlerPayload,
@@ -79,7 +79,7 @@ export const RawButton = Animated.createAnimatedComponent<
         }
 >(GHRawButton);
 
-export function Key({ num }: { num: number }) {
+export const Key = React.memo(function Key({ num }: { num: number }) {
     const { activeDotIndex, dotsValues, dotsAnims, dotsCount, disabled } =
         React.useContext(DotsContext);
 
@@ -122,6 +122,7 @@ export function Key({ num }: { num: number }) {
             enabled={!disabled}
             onGestureEvent={gestureHandler}
             style={[styles.button, disabled ? styles.disabledKey : null]}
+            rippleColor={processColor('transparent')}
         >
             <Animated.View style={[styles.circleAbove, circleAboveButtonStyle]} />
             <UILabel color={UILabelColors.TextPrimary} role={UILabelRoles.LightHuge}>
@@ -129,92 +130,21 @@ export function Key({ num }: { num: number }) {
             </UILabel>
         </RawButton>
     );
-}
+});
 
-export type BiometryProps = {
-    isBiometryEnabled: boolean;
-    biometryType?: UIPinCodeBiometryType;
-    getPasscodeWithBiometry?: (options?: { skipSettings?: boolean }) => Promise<string | undefined>;
-};
+export type GetPasscodeCb<T = void> = (options?: { skipSettings?: boolean }) => Promise<T>;
 
-export function useBiometryPasscode({
-    isBiometryEnabled,
-    getPasscodeWithBiometry,
-    dotsValues,
-    dotsAnims,
-    activeDotIndex,
-    dotsCount,
-}: BiometryProps & {
-    dotsValues: Animated.SharedValue<number>[];
-    dotsAnims: Animated.SharedValue<number>[];
-    activeDotIndex: Animated.SharedValue<number>;
-    dotsCount: number;
-}) {
-    const usePredefined = !isBiometryEnabled && process.env.NODE_ENV === 'development';
-
-    const getPasscode = React.useCallback(
-        async (options?: { skipSettings?: boolean; skipPredefined?: boolean }) => {
-            if (usePredefined) {
-                if (options?.skipPredefined) {
-                    return;
-                }
-
-                dotsValues.forEach((_dot, index) => {
-                    dotsValues[index].value = 1;
-                    dotsAnims[index].value = withSpring(
-                        DOT_ANIMATION_ACTIVE,
-                        DOT_WITH_SPRING_CONFIG,
-                    );
-                });
-                activeDotIndex.value = dotsCount;
-                return;
-            }
-
-            if (!isBiometryEnabled || getPasscodeWithBiometry == null) {
-                return;
-            }
-
-            let passcode: string | undefined;
-            try {
-                passcode = await getPasscodeWithBiometry(options);
-            } catch (error) {
-                console.error('Failed to get the passcode with biometry with error:', error);
-            }
-
-            if (passcode == null) {
-                return;
-            }
-
-            dotsValues.forEach((_dot, index) => {
-                dotsValues[index].value = Number((passcode as string)[index]);
-                dotsAnims[index].value = withSpring(DOT_ANIMATION_ACTIVE, DOT_WITH_SPRING_CONFIG);
-            });
-            activeDotIndex.value = dotsCount;
-        },
-        [
-            usePredefined,
-            isBiometryEnabled,
-            getPasscodeWithBiometry,
-            dotsValues,
-            dotsAnims,
-            activeDotIndex,
-            dotsCount,
-        ],
-    );
-
-    return {
-        usePredefined,
-        getPasscode,
-    };
-}
-
-export function BiometryKey({
-    isBiometryEnabled,
+export const BiometryKey = React.memo(function BiometryKey({
+    usePredefined,
     biometryType,
-    getPasscodeWithBiometry,
-}: BiometryProps) {
+    onCallBiometry,
+}: {
+    usePredefined: boolean;
+    biometryType: UIPinCodeBiometryType;
+    onCallBiometry: GetPasscodeCb;
+}) {
     let icon = null;
-    if (biometryType && getPasscodeWithBiometry != null) {
+    if (biometryType && onCallBiometry != null) {
         icon = (
             <UIImage
                 source={
@@ -227,17 +157,7 @@ export function BiometryKey({
         );
     }
 
-    const { activeDotIndex, dotsValues, dotsAnims, dotsCount, disabled } =
-        React.useContext(DotsContext);
-
-    const { usePredefined, getPasscode } = useBiometryPasscode({
-        isBiometryEnabled,
-        getPasscodeWithBiometry,
-        dotsValues,
-        dotsAnims,
-        activeDotIndex,
-        dotsCount,
-    });
+    const { disabled } = React.useContext(DotsContext);
 
     const circleAnimProgress = useSharedValue(CIRCLE_ANIMATION_NOT_ACTIVE);
     const gestureHandler = useAnimatedGestureHandler<GestureEvent<NativeViewGestureHandlerPayload>>(
@@ -247,7 +167,9 @@ export function BiometryKey({
             },
             onFinish: () => {
                 hapticSelection();
-                runOnJS(getPasscode)();
+                if (onCallBiometry != null) {
+                    runOnJS(onCallBiometry)();
+                }
             },
             onCancel: () => {
                 circleAnimProgress.value = withSpring(CIRCLE_ANIMATION_NOT_ACTIVE);
@@ -266,6 +188,7 @@ export function BiometryKey({
             enabled={!disabled}
             onGestureEvent={gestureHandler}
             style={[styles.button, disabled ? styles.disabledKey : null]}
+            rippleColor={processColor('transparent')}
         >
             <Animated.View style={[styles.circleAbove, circleAboveButtonStyle]} />
             {usePredefined ? (
@@ -277,9 +200,9 @@ export function BiometryKey({
             )}
         </RawButton>
     );
-}
+});
 
-export function DelKey() {
+export const DelKey = React.memo(function DelKey() {
     const { activeDotIndex, dotsValues, dotsAnims, disabled } = React.useContext(DotsContext);
 
     const circleAnimProgress = useSharedValue(CIRCLE_ANIMATION_NOT_ACTIVE);
@@ -325,12 +248,13 @@ export function DelKey() {
             enabled={!disabled}
             onGestureEvent={gestureHandlerDel}
             style={[styles.button, delButtonStyle, disabled ? styles.disabledKey : null]}
+            rippleColor={processColor('transparent')}
         >
             <Animated.View style={[styles.circleAbove, circleAboveDelButtonStyle]} />
             <UIImage source={UIAssets.icons.ui.delete} tintColor={ColorVariants.TextPrimary} />
         </RawButton>
     );
-}
+});
 
 const styles = StyleSheet.create({
     button: {
