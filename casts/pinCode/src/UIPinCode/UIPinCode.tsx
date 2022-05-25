@@ -435,11 +435,20 @@ function UIPinCodeImpl<Validation extends boolean | UIPinCodeEnterValidationResu
 
     // The keys will be disabled until an auto unlock
     // call to biometry isn't happen
+    // (There must be one from client side)
     const [autoUnlockIsPassed, setAutoUnlockIsPassed] = React.useState(
         // Do not wait for biometry if it isn't declared
         biometryType === UIPinCodeBiometryType.None,
     );
 
+    /**
+     * Beside simple inability to tap on keys when
+     * a pin code is disabled externally or in the loading state
+     * there is a thing connected to biometry.
+     * It's crucial to not let any UI changes happen when
+     * call to keychain with biometry access is happening,
+     * due to some internal deadlock, that can freaze the whole app
+     */
     const disabled = React.useMemo(
         () => disabledProp || loading || !autoUnlockIsPassed,
         [disabledProp, loading, autoUnlockIsPassed],
@@ -588,6 +597,13 @@ function UIPinCodeImpl<Validation extends boolean | UIPinCodeEnterValidationResu
                 </View>
                 <View style={styles.bottomSpacer} />
             </View>
+            {/*
+             * On Android there is a deadlock when UI changes happening
+             * simultaneously with biometry keychain access. To prevent
+             * them we simply show a View above all content, that prevent
+             * any unnwanted touch handlers to be fired, thus elimintaing
+             * possibility of such a deadlock to happen
+             */}
             {Platform.OS === 'android' && <BlockingView ref={biometryBlockingRef} />}
         </>
     );
