@@ -58,7 +58,7 @@ export function BubbleActionButton(message: ActionButtonMessage) {
             case ActionButtonMessageIconPosition.Right:
                 return UIMsgButtonIconPosition.Middle;
             default:
-                return undefined;
+                return UIMsgButtonIconPosition.Left;
         }
     }, [iconPositionProp]);
 
