@@ -99,6 +99,9 @@ function useExtendedProps(
         onFocus: evt => {
             'worklet';
 
+            /**
+             * Input still fire focus/blur events on web, even thought input isn't editable.
+             */
             if (editable.value === false) {
                 return;
             }
@@ -112,6 +115,9 @@ function useExtendedProps(
         onBlur: evt => {
             'worklet';
 
+            /**
+             * Input still fire focus/blur events on web, even thought input isn't editable.
+             */
             if (editable.value === false) {
                 return;
             }
