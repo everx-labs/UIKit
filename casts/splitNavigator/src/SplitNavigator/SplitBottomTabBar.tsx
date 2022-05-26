@@ -7,6 +7,7 @@ import {
     ViewStyle,
     StyleSheet,
     PixelRatio,
+    processColor,
 } from 'react-native';
 import {
     GestureEvent,
@@ -128,6 +129,7 @@ function SplitBottomTabBarItem({
             enabled
             onGestureEvent={gestureHandler}
             style={styles.iconButton}
+            rippleColor={processColor('transparent')}
         >
             {children}
         </RawButton>
