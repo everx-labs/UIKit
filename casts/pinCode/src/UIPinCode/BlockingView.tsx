@@ -80,7 +80,6 @@ export const BlockingView = React.memo(
                         resolveBlock.current?.resolve();
                     }}
                     onBlockingViewGone={() => {
-                        console.log('onBlockingViewGone', resolveUnblock.current);
                         resolveUnblock.current?.resolve();
                     }}
                 />
