@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { runOnJS, useSharedValue } from 'react-native-reanimated';
+import { runOnJS, useDerivedValue, useSharedValue } from 'react-native-reanimated';
 
 import { useHover } from '@tonlabs/uikit.controls';
 
@@ -42,7 +42,9 @@ function useExtendedProps(
         onSelectionChange: onSelectionChangeProp,
         ...restProps
     } = props;
-    const { mask, value, onHover } = restProps;
+    const { mask, value, onHover, editable: editableProp } = restProps;
+
+    const editable = useDerivedValue(() => editableProp, [editableProp]);
 
     const { selectionEnd, skipNextOnSelectionChange, onSelectionChange } =
         useOnSelectionChange(onSelectionChangeProp);
@@ -97,6 +99,13 @@ function useExtendedProps(
         onFocus: evt => {
             'worklet';
 
+            /**
+             * Input still fire focus/blur events on web, even thought input isn't editable.
+             */
+            if (editable.value === false) {
+                return;
+            }
+
             isFocused.value = true;
 
             if (onFocusProp != null) {
@@ -105,6 +114,13 @@ function useExtendedProps(
         },
         onBlur: evt => {
             'worklet';
+
+            /**
+             * Input still fire focus/blur events on web, even thought input isn't editable.
+             */
+            if (editable.value === false) {
+                return;
+            }
 
             isFocused.value = false;
 

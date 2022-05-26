@@ -39,6 +39,13 @@ export const Inputs = () => {
                     <UIMaterialTextView testID="uiMaterialTextView_default" label="Label" />
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
+                        testID="uiMaterialTextView_disabled"
+                        label="Disabled"
+                        editable={false}
+                        helperText="Caption"
+                    />
+                    <View style={{ height: 20 }} />
+                    <UIMaterialTextView
                         testID="uiMaterialTextView_with_initial_value"
                         label="Label with initial value"
                         helperText="Caption"
