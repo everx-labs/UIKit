@@ -114,4 +114,17 @@
     [_insets onInsetsShouldBeRecalculated];
 }
 
+/**
+ * This is need for detox,
+ * since it simply search for RCTScrollView
+ * https://github.com/wix/Detox/blob/c5562b4573d34df4ffa4a6db283ff105cfc7caf0/detox/ios/Detox/Invocation/Element.swift#L82
+ *
+ * But since here we replace implementation with our own
+ * we can use the logic from detox that looks for UIScrollView
+ * https://github.com/wix/Detox/blob/c5562b4573d34df4ffa4a6db283ff105cfc7caf0/detox/ios/Detox/Invocation/Element.swift#L77
+ */
+- (void)setTestID:(NSString *)testID {
+    self.scrollView.accessibilityIdentifier = testID;
+}
+
 @end
