@@ -6,12 +6,13 @@ import {
     UIMsgButtonType,
     UIMsgButtonVariant,
     UIMsgButtonCornerPosition,
+    UIMsgButtonIconPosition,
 } from '@tonlabs/uikit.controls';
 
 import { BubblePosition, useBubbleContainerStyle, useBubblePosition } from './useBubblePosition';
 
 import { ActionButtonVariant } from './constants';
-import type { ActionButtonMessage } from './types';
+import { ActionButtonMessage, ActionButtonMessageIconPosition } from './types';
 
 const getButtonRadius = (options: ActionButtonMessage, position: BubblePosition) => {
     if (position === BubblePosition.left && options.firstFromChain) {
@@ -24,7 +25,16 @@ const getButtonRadius = (options: ActionButtonMessage, position: BubblePosition)
 };
 
 export function BubbleActionButton(message: ActionButtonMessage) {
-    const { status, text, disabled, onPress, variant } = message; // textMode = 'ellipsize',
+    const {
+        status,
+        text,
+        disabled,
+        onPress,
+        variant,
+        onLayout,
+        icon,
+        iconPosition: iconPositionProp,
+    } = message; // textMode = 'ellipsize',
     const position = useBubblePosition(status);
     const containerStyle = useBubbleContainerStyle(message);
 
@@ -41,13 +51,26 @@ export function BubbleActionButton(message: ActionButtonMessage) {
         return UIMsgButtonVariant.Neutral;
     }, [variant]);
 
+    const iconPosition = React.useMemo<UIMsgButtonIconPosition | undefined>(() => {
+        switch (iconPositionProp) {
+            case ActionButtonMessageIconPosition.Left:
+                return UIMsgButtonIconPosition.Left;
+            case ActionButtonMessageIconPosition.Right:
+                return UIMsgButtonIconPosition.Middle;
+            default:
+                return undefined;
+        }
+    }, [iconPositionProp]);
+
     return (
-        <View style={containerStyle} onLayout={message.onLayout}>
+        <View style={containerStyle} onLayout={onLayout}>
             <UIMsgButton
                 disabled={disabled}
                 onPress={onPress}
                 testID={`chat_action_cell_${text}`}
                 title={text}
+                icon={icon}
+                iconPosition={iconPosition}
                 type={UIMsgButtonType.Secondary}
                 variant={msgVariant}
                 cornerPosition={getButtonRadius(message, position)}

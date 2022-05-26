@@ -38,10 +38,17 @@ export type PlainTextMessage = BubbleBaseT & {
     onTouchText?: () => void | Promise<void>;
 };
 
+export enum ActionButtonMessageIconPosition {
+    Left = 'Left',
+    Right = 'Right',
+}
+
 export type ActionButtonMessage = BubbleBaseT & {
     type: ChatMessageType.ActionButton;
     variant?: ActionButtonVariant;
     text: string;
+    icon?: ImageSourcePropType;
+    iconPosition?: ActionButtonMessageIconPosition;
     textMode?: 'ellipsize' | 'fit';
     disabled?: boolean;
     onPress?: () => void | Promise<void>;

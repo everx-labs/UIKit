@@ -62,6 +62,8 @@ export function MenuInput({ onLayout, ...message }: MenuMessage) {
                     // eslint-disable-next-line react/no-array-index-key
                     key={`menu-item-${item.handlerId}-${index}`}
                     text={item.title}
+                    icon={item.icon}
+                    iconPosition={item.iconPosition}
                     status={MessageStatus.Received}
                     onPress={() => {
                         // handlerId it's actually an identifier of an external function,
