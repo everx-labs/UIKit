@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import * as React from 'react';
-import { StyleProp, ViewStyle, StyleSheet, processColor } from 'react-native';
+import { StyleProp, ViewStyle, StyleSheet } from 'react-native';
 import {
     GestureEvent,
     NativeViewGestureHandlerPayload,
@@ -122,7 +122,6 @@ export const Key = React.memo(function Key({ num }: { num: number }) {
             enabled={!disabled}
             onGestureEvent={gestureHandler}
             style={[styles.button, disabled ? styles.disabledKey : null]}
-            rippleColor={processColor('transparent')}
         >
             <Animated.View style={[styles.circleAbove, circleAboveButtonStyle]} />
             <UILabel color={UILabelColors.TextPrimary} role={UILabelRoles.LightHuge}>
@@ -188,7 +187,6 @@ export const BiometryKey = React.memo(function BiometryKey({
             enabled={!disabled}
             onGestureEvent={gestureHandler}
             style={[styles.button, disabled ? styles.disabledKey : null]}
-            rippleColor={processColor('transparent')}
         >
             <Animated.View style={[styles.circleAbove, circleAboveButtonStyle]} />
             {usePredefined ? (
@@ -248,7 +246,6 @@ export const DelKey = React.memo(function DelKey() {
             enabled={!disabled}
             onGestureEvent={gestureHandlerDel}
             style={[styles.button, delButtonStyle, disabled ? styles.disabledKey : null]}
-            rippleColor={processColor('transparent')}
         >
             <Animated.View style={[styles.circleAbove, circleAboveDelButtonStyle]} />
             <UIImage source={UIAssets.icons.ui.delete} tintColor={ColorVariants.TextPrimary} />
