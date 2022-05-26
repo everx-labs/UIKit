@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { processColor, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { ColorVariants, Theme, useTheme, makeStyles } from '@tonlabs/uikit.themes';
 import { RawButton } from '../RawButton';
@@ -72,6 +72,7 @@ export const IconSwitcher: React.FC<UISwitcherProps> = ({
             onMouseLeave={onMouseLeave}
             testID={testID}
             enabled={!disabled}
+            rippleColor={processColor('transparent')}
         >
             <Animated.View style={imageOffOpacity}>
                 <Animated.View
