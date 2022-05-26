@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import * as React from 'react';
-import { StyleProp, ViewStyle, StyleSheet } from 'react-native';
+import { StyleProp, ViewStyle, StyleSheet, processColor } from 'react-native';
 import {
     GestureEvent,
     NativeViewGestureHandlerPayload,
@@ -122,6 +122,7 @@ export function Key({ num }: { num: number }) {
             enabled={!disabled}
             onGestureEvent={gestureHandler}
             style={[styles.button, disabled ? styles.disabledKey : null]}
+            rippleColor={processColor('transparent')}
         >
             <Animated.View style={[styles.circleAbove, circleAboveButtonStyle]} />
             <UILabel color={UILabelColors.TextPrimary} role={UILabelRoles.LightHuge}>
@@ -266,6 +267,7 @@ export function BiometryKey({
             enabled={!disabled}
             onGestureEvent={gestureHandler}
             style={[styles.button, disabled ? styles.disabledKey : null]}
+            rippleColor={processColor('transparent')}
         >
             <Animated.View style={[styles.circleAbove, circleAboveButtonStyle]} />
             {usePredefined ? (
@@ -325,6 +327,7 @@ export function DelKey() {
             enabled={!disabled}
             onGestureEvent={gestureHandlerDel}
             style={[styles.button, delButtonStyle, disabled ? styles.disabledKey : null]}
+            rippleColor={processColor('transparent')}
         >
             <Animated.View style={[styles.circleAbove, circleAboveDelButtonStyle]} />
             <UIImage source={UIAssets.icons.ui.delete} tintColor={ColorVariants.TextPrimary} />
