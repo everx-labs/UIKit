@@ -1,5 +1,6 @@
+/* eslint-disable no-param-reassign */
 import * as React from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import { View, StyleSheet, ViewStyle, Platform } from 'react-native';
 import Animated, {
     useSharedValue,
     useAnimatedStyle,
@@ -21,15 +22,18 @@ import {
     useTheme,
     UIBackgroundView,
 } from '@tonlabs/uikit.themes';
+
 import { DotsContext } from './DotsContext';
-import { BiometryKey, BiometryProps, DelKey, Key, useBiometryPasscode } from './Keys';
+import { BiometryKey, DelKey, GetPasscodeCb, Key } from './Keys';
 import {
     DEFAULT_DOTS_COUNT,
     DOTS_STATE_PRESENTATION_DURATION,
     DOT_WITH_SPRING_CONFIG,
+    UIPinCodeBiometryType,
 } from './constants';
 import { UIPinCodeDescription, UIPinCodeDescriptionRef } from './UIPinCodeDescription';
 import { useKeyboardListener } from './UIPinCodeKeyboardListener';
+import { BlockingView, BlockingViewRef } from './BlockingView';
 
 export type UIPinCodeEnterValidationResult = {
     valid: boolean;
@@ -186,42 +190,22 @@ function useAnimatedDots(
     return animatedDots.current;
 }
 
-function UIPinCodeImpl<Validation extends boolean | UIPinCodeEnterValidationResult>({
-    label,
-    labelTestID,
-    description,
-    descriptionTestID,
-    disabled = false,
-    loading = false,
-    length = DEFAULT_DOTS_COUNT,
-    onEnter,
+function usePinValidation<Validation extends boolean | UIPinCodeEnterValidationResult>({
+    validate: validateProp,
     onSuccess,
-    isBiometryEnabled = true,
-    biometryType,
-    getPasscodeWithBiometry,
-    autoUnlock = false,
+    dotsValues,
+    dotsAnims,
+    activeDotIndex,
 }: {
-    label?: string;
-    labelTestID?: string;
-    description?: string;
-    descriptionTestID?: string;
-    disabled?: boolean;
-    loading?: boolean;
-    length?: number;
-    onEnter: (pin: string) => Promise<Validation>;
-    onSuccess: Validation extends { payload: any }
-        ? (pin: string, payload: Validation['payload']) => void
-        : (pin: string) => void;
-    autoUnlock?: boolean;
-} & BiometryProps) {
-    const dotsValues = useDotsValues(length);
-    const dotsAnims = useDotsAnims(length);
-    const activeDotIndex = useSharedValue(0);
-    const validState = useSharedValue<ValidationState>(VALIDATION_STATE_NONE);
+    validate: UIPinCodeProps<Validation>['validate'];
+    onSuccess: UIPinCodeProps<Validation>['onSuccess'];
+    dotsValues: Animated.SharedValue<number>[];
+    dotsAnims: Animated.SharedValue<number>[];
+    activeDotIndex: Animated.SharedValue<number>;
+}) {
     const shakeAnim = useSharedValue<ShakeAnimationStatus>(0);
-    const animatedDots = useAnimatedDots(length, dotsAnims, validState);
-
-    useKeyboardListener(activeDotIndex, dotsValues, dotsAnims, length, disabled);
+    const descriptionRef = React.useRef<UIPinCodeDescriptionRef>(null);
+    const validState = useSharedValue<ValidationState>(VALIDATION_STATE_NONE);
 
     const showValidationError = React.useCallback(
         function showValidationErrorImpl() {
@@ -235,11 +219,9 @@ function UIPinCodeImpl<Validation extends boolean | UIPinCodeEnterValidationResu
         [shakeAnim],
     );
 
-    const descriptionRef = React.useRef<UIPinCodeDescriptionRef>(null);
-
     const validatePin = React.useCallback(
         (pin: string) => {
-            onEnter(pin).then(result => {
+            validateProp(pin).then(result => {
                 let isValid: boolean;
                 let validationDescription: string | undefined;
                 let payload: any;
@@ -269,12 +251,15 @@ function UIPinCodeImpl<Validation extends boolean | UIPinCodeEnterValidationResu
 
                 setTimeout(() => {
                     dotsValues.forEach((_dot, index) => {
+                        // eslint-disable-next-line no-param-reassign
                         dotsValues[index].value = -1;
+                        // eslint-disable-next-line no-param-reassign
                         dotsAnims[index].value = withSpring(
                             DOT_ANIMATION_NOT_ACTIVE,
                             DOT_WITH_SPRING_CONFIG,
                         );
                     });
+                    // eslint-disable-next-line no-param-reassign
                     activeDotIndex.value = 0;
                     validState.value = VALIDATION_STATE_NONE;
 
@@ -290,7 +275,7 @@ function UIPinCodeImpl<Validation extends boolean | UIPinCodeEnterValidationResu
             });
         },
         [
-            onEnter,
+            validateProp,
             onSuccess,
             showValidationError,
             validState,
@@ -300,28 +285,207 @@ function UIPinCodeImpl<Validation extends boolean | UIPinCodeEnterValidationResu
         ],
     );
 
-    const { getPasscode } = useBiometryPasscode({
-        isBiometryEnabled,
-        getPasscodeWithBiometry,
+    const shakeStyle = useAnimatedStyle(() => {
+        return {
+            transform: [
+                {
+                    translateX: interpolate(
+                        shakeAnim.value,
+                        [0, 0.25, 0.5, 0.75, 1],
+                        [0, -10, 10, -10, 0],
+                    ),
+                },
+            ],
+        };
+    });
+
+    return {
+        validatePin,
+        shakeStyle,
+        validState,
+        descriptionRef,
+    };
+}
+
+function useBiometry({
+    loading,
+    length,
+    biometryType,
+    passcodeBiometryProvider,
+    dotsValues,
+    dotsAnims,
+    activeDotIndex,
+}: {
+    loading: Required<UIPinCodeProps<any>>['loading'];
+    length: Required<UIPinCodeProps<any>>['length'];
+    biometryType: Required<UIPinCodeProps<any>>['biometryType'];
+    passcodeBiometryProvider: UIPinCodeProps<any>['passcodeBiometryProvider'];
+    dotsValues: Animated.SharedValue<number>[];
+    dotsAnims: Animated.SharedValue<number>[];
+    activeDotIndex: Animated.SharedValue<number>;
+}) {
+    const usePredefined =
+        biometryType === UIPinCodeBiometryType.None && process.env.NODE_ENV === 'development';
+    const biometryBlockingRef = React.useRef<BlockingViewRef>(null);
+
+    const loadingGuard = React.useRef<Promise<void> | null>(null);
+    const loadingResolve = React.useRef<(() => void) | null>();
+
+    React.useEffect(() => {
+        if (loading) {
+            if (loadingResolve.current != null) {
+                return;
+            }
+            loadingGuard.current = new Promise(res => {
+                loadingResolve.current = res;
+            });
+        } else {
+            loadingResolve.current?.();
+            loadingResolve.current = null;
+        }
+    }, [loading]);
+
+    const callBiometry = React.useCallback(
+        async (options?: { skipSettings?: boolean; skipPredefined?: boolean }) => {
+            if (usePredefined) {
+                if (options?.skipPredefined) {
+                    return;
+                }
+
+                dotsValues.forEach((_dot, index) => {
+                    dotsValues[index].value = 1;
+                    dotsAnims[index].value = withSpring(
+                        DOT_ANIMATION_ACTIVE,
+                        DOT_WITH_SPRING_CONFIG,
+                    );
+                });
+                activeDotIndex.value = length;
+                return;
+            }
+
+            if (biometryType === UIPinCodeBiometryType.None || passcodeBiometryProvider == null) {
+                return;
+            }
+
+            let passcode: string | undefined;
+
+            try {
+                await biometryBlockingRef.current?.block();
+                // Wait until loading is completed if any
+                await loadingGuard.current;
+                passcode = await passcodeBiometryProvider(options);
+            } catch (error) {
+                console.error('Failed to get the passcode with biometry with error:', error);
+            } finally {
+                await biometryBlockingRef.current?.unblock();
+            }
+
+            if (passcode != null) {
+                dotsValues.forEach((_dot, index) => {
+                    dotsValues[index].value = Number((passcode as string)[index]);
+                    dotsAnims[index].value = withSpring(
+                        DOT_ANIMATION_ACTIVE,
+                        DOT_WITH_SPRING_CONFIG,
+                    );
+                });
+                activeDotIndex.value = length;
+            }
+        },
+        [
+            length,
+            biometryType,
+            usePredefined,
+            passcodeBiometryProvider,
+            dotsValues,
+            dotsAnims,
+            activeDotIndex,
+        ],
+    );
+
+    return {
+        usePredefined,
+        callBiometry,
+        biometryBlockingRef,
+    };
+}
+
+function UIPinCodeImpl<Validation extends boolean | UIPinCodeEnterValidationResult>(
+    {
+        label,
+        labelTestID,
+        description,
+        descriptionTestID,
+        length: lengthProp = DEFAULT_DOTS_COUNT,
+        disabled: disabledProp = false,
+        loading = false,
+        biometryType = UIPinCodeBiometryType.None,
+        validate,
+        onSuccess,
+        passcodeBiometryProvider,
+    }: UIPinCodeProps<Validation>,
+    ref: React.Ref<UIPinCodeRef>,
+) {
+    // Do not change length after mount
+    // since it can affect how many hooks is called
+    const length = React.useRef(lengthProp).current;
+
+    const dotsValues = useDotsValues(length);
+    const dotsAnims = useDotsAnims(length);
+    const activeDotIndex = useSharedValue(0);
+
+    // The keys will be disabled until an auto unlock
+    // call to biometry isn't happen
+    // (There must be one from client side)
+    const [autoUnlockIsPassed, setAutoUnlockIsPassed] = React.useState(
+        // Do not wait for biometry if it isn't declared
+        biometryType === UIPinCodeBiometryType.None,
+    );
+
+    /**
+     * Beside simple inability to tap on keys when
+     * a pin code is disabled externally or in the loading state
+     * there is a thing connected to biometry.
+     * It's crucial to not let any UI changes happen when
+     * call to keychain with biometry access is happening,
+     * due to some internal deadlock, that can freaze the whole app
+     */
+    const disabled = React.useMemo(
+        () => disabledProp || loading || !autoUnlockIsPassed,
+        [disabledProp, loading, autoUnlockIsPassed],
+    );
+
+    const { validatePin, shakeStyle, descriptionRef, validState } = usePinValidation({
+        validate,
+        onSuccess,
         dotsValues,
         dotsAnims,
-        dotsCount: length,
         activeDotIndex,
     });
 
-    React.useEffect(() => {
-        if (!autoUnlock) {
-            return;
-        }
-        if (loading) {
-            return;
-        }
-        // Do not open settings if cannot authenticate
-        getPasscode({
-            skipSettings: true,
-            skipPredefined: true,
-        });
-    }, [getPasscode, autoUnlock, loading]);
+    const animatedDots = useAnimatedDots(length, dotsAnims, validState);
+
+    useKeyboardListener(activeDotIndex, dotsValues, dotsAnims, length, disabled);
+
+    const { callBiometry, usePredefined, biometryBlockingRef } = useBiometry({
+        loading,
+        length,
+        biometryType,
+        passcodeBiometryProvider,
+        dotsValues,
+        dotsAnims,
+        activeDotIndex,
+    });
+
+    React.useImperativeHandle(
+        ref,
+        () => ({
+            async getPasscodeWithBiometry(options) {
+                await callBiometry(options);
+                setAutoUnlockIsPassed(true);
+            },
+        }),
+        [callBiometry],
+    );
 
     useAnimatedReaction(
         () => {
@@ -359,97 +523,126 @@ function UIPinCodeImpl<Validation extends boolean | UIPinCodeEnterValidationResu
         [activeDotIndex, dotsValues, dotsAnims, length, disabled],
     );
 
-    const shakeStyle = useAnimatedStyle(() => {
-        return {
-            transform: [
-                {
-                    translateX: interpolate(
-                        shakeAnim.value,
-                        [0, 0.25, 0.5, 0.75, 1],
-                        [0, -10, 10, -10, 0],
-                    ),
-                },
-            ],
-        };
-    });
-
     return (
-        <View style={styles.container}>
-            <View style={styles.upperSpacer} />
-            <View style={styles.inner}>
-                {label != null && (
-                    <UILabel
-                        testID={labelTestID}
-                        numberOfLines={1}
-                        color={UILabelColors.TextPrimary}
-                        role={UILabelRoles.ParagraphText}
-                        selectable={false}
-                    >
-                        {label}
-                    </UILabel>
-                )}
-                <Animated.View style={[styles.dotsContainer, shakeStyle]}>
-                    {animatedDots.map(([outterStyles, innerStyles], index) => (
-                        <Animated.View
-                            // eslint-disable-next-line react/no-array-index-key
-                            key={index}
-                            style={[styles.dot, outterStyles]}
+        <>
+            <View style={styles.container}>
+                <View style={styles.upperSpacer} />
+                <View style={styles.inner}>
+                    {label != null && (
+                        <UILabel
+                            testID={labelTestID}
+                            numberOfLines={1}
+                            color={UILabelColors.TextPrimary}
+                            role={UILabelRoles.ParagraphText}
+                            selectable={false}
                         >
-                            <Animated.View
-                                style={[styles.dotInner, innerStyles]}
-                                testID="pin_code_circle"
-                            />
-                        </Animated.View>
-                    ))}
-                    {loading && (
-                        <UIBackgroundView
-                            style={[StyleSheet.absoluteFill, styles.loadingIndicator]}
-                        >
-                            <UIIndicator size={dotSize} />
-                        </UIBackgroundView>
+                            {label}
+                        </UILabel>
                     )}
-                </Animated.View>
-                <UIPinCodeDescription
-                    ref={descriptionRef}
-                    description={description}
-                    descriptionTestID={descriptionTestID}
-                />
-                <View style={styles.space} />
-                <DotsContext.Provider value={dotsContextValue}>
-                    <View style={{ position: 'relative' }}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Key num={1} />
-                            <Key num={2} />
-                            <Key num={3} />
+                    <Animated.View style={[styles.dotsContainer, shakeStyle]}>
+                        {animatedDots.map(([outterStyles, innerStyles], index) => (
+                            <Animated.View
+                                // eslint-disable-next-line react/no-array-index-key
+                                key={index}
+                                style={[styles.dot, outterStyles]}
+                            >
+                                <Animated.View
+                                    style={[styles.dotInner, innerStyles]}
+                                    testID="pin_code_circle"
+                                />
+                            </Animated.View>
+                        ))}
+                        {loading && (
+                            <UIBackgroundView
+                                style={[StyleSheet.absoluteFill, styles.loadingIndicator]}
+                            >
+                                <UIIndicator size={dotSize} />
+                            </UIBackgroundView>
+                        )}
+                    </Animated.View>
+                    <UIPinCodeDescription
+                        ref={descriptionRef}
+                        description={description}
+                        descriptionTestID={descriptionTestID}
+                    />
+                    <View style={styles.space} />
+                    <DotsContext.Provider value={dotsContextValue}>
+                        <View style={styles.keysContainer}>
+                            <View style={styles.keysRow}>
+                                <Key num={1} />
+                                <Key num={2} />
+                                <Key num={3} />
+                            </View>
+                            <View style={styles.keysRow}>
+                                <Key num={4} />
+                                <Key num={5} />
+                                <Key num={6} />
+                            </View>
+                            <View style={styles.keysRow}>
+                                <Key num={7} />
+                                <Key num={8} />
+                                <Key num={9} />
+                            </View>
+                            <View style={styles.keysRow}>
+                                <BiometryKey
+                                    usePredefined={usePredefined}
+                                    biometryType={biometryType}
+                                    onCallBiometry={callBiometry}
+                                />
+                                <Key num={0} />
+                                <DelKey />
+                            </View>
                         </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Key num={4} />
-                            <Key num={5} />
-                            <Key num={6} />
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Key num={7} />
-                            <Key num={8} />
-                            <Key num={9} />
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <BiometryKey
-                                isBiometryEnabled={isBiometryEnabled}
-                                biometryType={biometryType}
-                                getPasscodeWithBiometry={getPasscodeWithBiometry}
-                            />
-                            <Key num={0} />
-                            <DelKey />
-                        </View>
-                    </View>
-                </DotsContext.Provider>
+                    </DotsContext.Provider>
+                </View>
+                <View style={styles.bottomSpacer} />
             </View>
-            <View style={styles.bottomSpacer} />
-        </View>
+            {/*
+             * On Android there is a deadlock when UI changes happening
+             * simultaneously with biometry keychain access. To prevent
+             * them we simply show a View above all content, that prevent
+             * any unnwanted touch handlers to be fired, thus elimintaing
+             * possibility of such a deadlock to happen
+             */}
+            {Platform.OS === 'android' && <BlockingView ref={biometryBlockingRef} />}
+        </>
     );
 }
 
-export const UIPinCode = React.memo(UIPinCodeImpl) as typeof UIPinCodeImpl;
+export const UIPinCode = React.memo(React.forwardRef(UIPinCodeImpl)) as typeof UIPinCodeImpl;
+
+type UIPinCodeProps<Validation extends boolean | UIPinCodeEnterValidationResult> = {
+    // eslint-disable-next-line react/no-unused-prop-types
+    ref?: React.Ref<UIPinCodeRef>;
+
+    label?: string;
+    labelTestID?: string;
+    description?: string;
+    descriptionTestID?: string;
+    length?: number;
+
+    disabled?: boolean;
+    loading?: boolean;
+    biometryType?: UIPinCodeBiometryType;
+
+    // Verify that pin is valid with external method
+    validate: (pin: string) => Promise<Validation>;
+    // Is called when pin code is successfully extracted
+    // and validated
+    onSuccess: (pin: string) => void;
+    passcodeBiometryProvider?: GetPasscodeCb<string | undefined>;
+};
+
+export type UIPinCodeRef = {
+    // Call it when biometry is ready to be called
+    //
+    // Be aware that biometry is a heavy process,
+    // thus it's better to call when a process isn't busy
+    getPasscodeWithBiometry(options?: {
+        skipSettings?: boolean;
+        skipPredefined?: boolean;
+    }): Promise<void>;
+};
 
 const dotSize = UIConstant.tinyCellHeight();
 
@@ -468,6 +661,8 @@ const styles = StyleSheet.create({
     bottomSpacer: {
         flex: 1,
     },
+    keysContainer: { position: 'relative' },
+    keysRow: { flexDirection: 'row' },
     dotsContainer: {
         flexDirection: 'row',
         height: UIConstant.bigCellHeight(),

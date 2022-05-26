@@ -8,6 +8,7 @@ export const DOT_WITH_SPRING_CONFIG: WithSpringConfig = {
 export enum UIPinCodeBiometryType {
     Fingerprint = 'Fingerprint',
     Face = 'Face',
+    None = 'None',
 }
 
 export const DOTS_STATE_PRESENTATION_DURATION = 300;
