@@ -10,4 +10,7 @@ export const UIConstant = {
             height: 16,
         },
     },
+    transactionDetails: {
+        maxWidth: 400,
+    },
 };
