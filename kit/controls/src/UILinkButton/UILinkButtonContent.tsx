@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
         minHeight: UIConstant.linkButtonHeight / 2,
     },
     content: {
-        padding: UIConstant.normalContentOffset,
+        paddingVertical: UIConstant.normalContentOffset,
         alignSelf: 'stretch',
         flexDirection: 'row',
     },
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
      * Needed in order to leave space for icon in `UILinkButtonIconPosition.Right` position
      */
     extraPadding: {
-        paddingRight: UIConstant.normalContentOffset + UIConstant.iconSize,
+        paddingRight: UIConstant.iconSize,
     },
     mainContent: {
         maxWidth: '100%',
@@ -176,7 +176,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
-        paddingRight: UIConstant.normalContentOffset,
     },
     caption: {
         marginTop: UIConstant.tinyContentOffset,
