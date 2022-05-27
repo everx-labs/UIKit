@@ -90,11 +90,11 @@ type TextViewStateParameters = {
 
 type MaterialTextViewRef1 = MaterialTextViewRef & TextViewStateParameters;
 
-type TextViewParameterName = 'isHovered' | 'isFocused' | 'hasValue';
-
-type TextViewParameters<T extends TextViewParameterName> = Record<T, true | undefined>;
-
-type TextViewState<T extends TextViewParameterName> = Record<T, Readonly<boolean | undefined>>;
+type TextViewParameters = {
+    isHovered?: boolean;
+    isFocused?: boolean;
+    hasValue?: boolean;
+};
 
 function useGetJSValue(animatedValue: Readonly<SharedValue<boolean>> | undefined): boolean {
     if (!animatedValue) {
@@ -114,19 +114,22 @@ function useGetJSValue(animatedValue: Readonly<SharedValue<boolean>> | undefined
     return value;
 }
 
-function useTextViewReactState<T extends TextViewParameterName>(
+function useTextViewReactState<T extends TextViewParameters>(
     ref: React.RefObject<MaterialTextViewRef1>,
-    config: TextViewParameters<T>,
-): TextViewState<T> {
+    config: T,
+): Record<keyof T, boolean> {
     const configRef = React.useRef(config);
 
     return React.useMemo(() => {
-        const result: TextViewState<T> = {} as TextViewState<T>;
+        const result: Record<keyof T, boolean> = {} as Record<keyof T, boolean>;
         // eslint-disable-next-line no-restricted-syntax
         for (const key in configRef.current) {
             if (Object.prototype.hasOwnProperty.call(configRef.current, key)) {
+                const textViewParameterName = key as keyof TextViewParameters;
                 // eslint-disable-next-line react-hooks/rules-of-hooks
-                result[key] = useGetJSValue(ref.current?.[`${key}Animated`]);
+                result[textViewParameterName] = useGetJSValue(
+                    ref.current?.[`${textViewParameterName}Animated`],
+                );
             }
         }
         return result;
