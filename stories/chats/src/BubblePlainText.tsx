@@ -22,11 +22,10 @@ import {
     useTheme,
 } from '@tonlabs/uikit.themes';
 
-import { MessageStatus } from './constants';
+import { MessageStatus, RegExpConstants } from './constants';
 import type { OnLongPressText, OnPressUrl, ChatPlainTextMessage, PlainTextMessage } from './types';
 import { useBubblePosition, useBubbleContainerStyle } from './useBubblePosition';
 import { useBubbleBackgroundColor, useBubbleRoundedCornerStyle } from './useBubbleStyle';
-import { RegExpConstants } from './constants';
 
 const renderParsedText = (matchingString: string) => {
     return matchingString.replace(RegExpConstants.protocol, '');

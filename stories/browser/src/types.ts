@@ -296,21 +296,36 @@ export type TransactionConfirmationExternalState = {
     status: 'approved' | 'cancelled';
 };
 
+export type TransactionDetails = {
+    signature?: SigningBox;
+    action?: string;
+    amount?: BigNumber;
+    amountCurrency: string;
+    contractFee?: BigNumber;
+    contractFeeCurrency: string;
+    isDangerous?: boolean;
+    networkFee?: BigNumber;
+    networkFeeCurrency: string;
+    recipient?: string;
+    onRecipientPress?: () => void | Promise<void>;
+
+    /**
+     * Whether the bubble is expanded by default.
+     * If the value is 'false', the `more` button is displayed.
+     */
+    expandedByDefault?: boolean;
+};
+
 export type TransactionConfirmationMessage = InteractiveMessage<
     InteractiveMessageType.TransactionConfirmation,
-    {
-        toAddress?: string;
-        onAddressPress?: () => void | Promise<void>;
-        recipientsCount?: number;
-        totalAmount: string | React.ReactElement<any, any>;
-        fees: string | React.ReactElement<any, any>;
-        signature: SigningBox;
+    TransactionDetails & {
         onApprove: (externalState: TransactionConfirmationExternalState) => void | Promise<void>;
         onCancel: (externalState: TransactionConfirmationExternalState) => void | Promise<void>;
-        isDangerous?: boolean;
     },
     TransactionConfirmationExternalState
 >;
+
+export type TransactionDetailsProps = BubbleBaseT & TransactionDetails;
 
 export type QRCodeScannerExternalState = {
     value: string;

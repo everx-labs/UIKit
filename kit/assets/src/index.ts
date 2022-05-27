@@ -40,6 +40,7 @@ import iconBrandSurfSymbol from './resources/brand/surf.png';
 import iconBrandSurfSymbolBlack from './resources/brand/surf-black.png';
 
 import iconButtonClose from './resources/btn_close/btn_close.png';
+import iconButtonConfirm from './resources/btn_confirm/btn_confirm.png';
 import iconButtonDots from './resources/btn_dots/btn_dots.png';
 import iconButtonMinimize from './resources/btn_minimize/minimize.png';
 import iconButtonMsgSend from './resources/btn_msg_send/btn_msg_send.png';
@@ -173,6 +174,7 @@ export const UIAssets = {
 
         ui: {
             buttonClose: iconButtonClose,
+            buttonConfirm: iconButtonConfirm,
             buttonDots: iconButtonDots,
             buttonMinimize: iconButtonMinimize,
             buttonMsgSend: iconButtonMsgSend,

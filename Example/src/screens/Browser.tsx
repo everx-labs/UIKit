@@ -13,8 +13,6 @@ import {
     TimeMessage,
     DateTimeMessage,
     CountryMessage,
-} from '@tonlabs/uistory.browser';
-import type {
     AddressInputMessage,
     ConfirmMessage,
     MenuMessage,
@@ -27,13 +25,7 @@ import { UIPopup, UICardSheet, UIFullscreenSheet } from '@tonlabs/uikit.popups';
 import { uiLocalized } from '@tonlabs/localization';
 import { ChatMessageType, MessageStatus } from '@tonlabs/uistory.chats';
 import { UIBoxButton } from '@tonlabs/uikit.controls';
-import {
-    UILabel,
-    UILabelColors,
-    UILabelRoles,
-    ColorVariants,
-    useTheme,
-} from '@tonlabs/uikit.themes';
+import { UILabel, ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
 
 import { View } from 'react-native';
@@ -399,33 +391,18 @@ function BrowserAddMenu({
                         key: `${Date.now()}-approve`,
                         status: MessageStatus.Received,
                         type: InteractiveMessageType.TransactionConfirmation,
-                        toAddress: '0:12300000006789',
-                        onAddressPress: () => {
+                        recipient:
+                            '0:6225d2asdhksdf0wer6bef5891d76ab3c430ee3a127d10de459b3b3a844f4',
+                        onRecipientPress: () => {
                             // nothing
                         },
-                        recipientsCount: 255,
-                        totalAmount: (
-                            <UILabel>
-                                <UILabel role={UILabelRoles.MonoText}>0,000</UILabel>
-                                <UILabel
-                                    role={UILabelRoles.MonoText}
-                                    color={UILabelColors.TextTertiary}
-                                >
-                                    .000 000 000
-                                </UILabel>
-                            </UILabel>
-                        ),
-                        fees: (
-                            <UILabel>
-                                <UILabel role={UILabelRoles.MonoText}>0</UILabel>
-                                <UILabel
-                                    role={UILabelRoles.MonoText}
-                                    color={UILabelColors.TextTertiary}
-                                >
-                                    .000 000 000
-                                </UILabel>
-                            </UILabel>
-                        ),
+                        action: 'ReturnDeposit',
+                        amount: new BigNumber(0.5),
+                        amountCurrency: 'SURF',
+                        contractFee: new BigNumber(5),
+                        contractFeeCurrency: 'EVER',
+                        networkFee: new BigNumber(0.12),
+                        networkFeeCurrency: 'EVER',
                         signature: {
                             id: 1,
                             title: 'My Surf',
