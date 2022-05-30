@@ -143,21 +143,19 @@ export const BiometryKey = React.memo(function BiometryKey({
     biometryType: UIPinCodeBiometryType;
     onCallBiometry: GetPasscodeCb;
 }) {
-    let icon = null;
-    if (biometryType && onCallBiometry != null) {
-        icon = (
-            <UIImage
-                source={
-                    biometryType === UIPinCodeBiometryType.Face
-                        ? UIAssets.icons.security.faceId
-                        : UIAssets.icons.security.touchId
-                }
-                tintColor={ColorVariants.TextPrimary}
-            />
-        );
-    }
+    const { disabled, dotsValues, dotsAnims, activeDotIndex } = React.useContext(DotsContext);
 
-    const { disabled } = React.useContext(DotsContext);
+    const onTap = React.useCallback(() => {
+        if (usePredefined) {
+            dotsValues.forEach((_dot, index) => {
+                dotsValues[index].value = 1;
+                dotsAnims[index].value = withSpring(DOT_ANIMATION_ACTIVE, DOT_WITH_SPRING_CONFIG);
+            });
+            activeDotIndex.value = length;
+            return;
+        }
+        onCallBiometry();
+    }, [usePredefined, onCallBiometry, dotsValues, dotsAnims, activeDotIndex]);
 
     const circleAnimProgress = useSharedValue(CIRCLE_ANIMATION_NOT_ACTIVE);
     const gestureHandler = useAnimatedGestureHandler<GestureEvent<NativeViewGestureHandlerPayload>>(
@@ -167,9 +165,7 @@ export const BiometryKey = React.memo(function BiometryKey({
             },
             onFinish: () => {
                 hapticSelection();
-                if (onCallBiometry != null) {
-                    runOnJS(onCallBiometry)();
-                }
+                runOnJS(onTap)();
             },
             onCancel: () => {
                 circleAnimProgress.value = withSpring(CIRCLE_ANIMATION_NOT_ACTIVE);
@@ -196,7 +192,14 @@ export const BiometryKey = React.memo(function BiometryKey({
                     DEV
                 </UILabel>
             ) : (
-                icon
+                <UIImage
+                    source={
+                        biometryType === UIPinCodeBiometryType.Face
+                            ? UIAssets.icons.security.faceId
+                            : UIAssets.icons.security.touchId
+                    }
+                    tintColor={ColorVariants.TextPrimary}
+                />
             )}
         </RawButton>
     );

@@ -346,23 +346,7 @@ function useBiometry({
     }, [loading]);
 
     const callBiometry = React.useCallback(
-        async (options?: { skipSettings?: boolean; skipPredefined?: boolean }) => {
-            if (usePredefined) {
-                if (options?.skipPredefined) {
-                    return;
-                }
-
-                dotsValues.forEach((_dot, index) => {
-                    dotsValues[index].value = 1;
-                    dotsAnims[index].value = withSpring(
-                        DOT_ANIMATION_ACTIVE,
-                        DOT_WITH_SPRING_CONFIG,
-                    );
-                });
-                activeDotIndex.value = length;
-                return;
-            }
-
+        async (options?: { skipSettings?: boolean }) => {
             if (biometryType === UIPinCodeBiometryType.None || passcodeBiometryProvider == null) {
                 return;
             }
@@ -391,15 +375,7 @@ function useBiometry({
                 activeDotIndex.value = length;
             }
         },
-        [
-            length,
-            biometryType,
-            usePredefined,
-            passcodeBiometryProvider,
-            dotsValues,
-            dotsAnims,
-            activeDotIndex,
-        ],
+        [length, biometryType, passcodeBiometryProvider, dotsValues, dotsAnims, activeDotIndex],
     );
 
     return {
@@ -494,20 +470,20 @@ function UIPinCodeImpl<Validation extends boolean | UIPinCodeEnterValidationResu
         (dotsCurrentValues, previous) => {
             const pin = dotsCurrentValues.filter(val => val !== -1).join('');
 
+            if (pin.length !== length) {
+                return;
+            }
+
             // To prevent a situation when the reaction was called
             // because of deps changes (like validatePin was changed)
             // and not because of actual changes in dots values
-            if (previous != null) {
-                const prevPin = previous.filter(val => val !== -1).join('');
+            const prevPin = (previous || []).filter(val => val !== -1).join('');
 
-                if (pin === prevPin) {
-                    return;
-                }
+            if (pin === prevPin) {
+                return;
             }
 
-            if (pin.length === length) {
-                runOnJS(validatePin)(pin);
-            }
+            runOnJS(validatePin)(pin);
         },
         [dotsValues, length, validatePin],
     );
