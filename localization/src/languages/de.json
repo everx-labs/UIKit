@@ -298,6 +298,7 @@
     "Sec": "sec",
     "SeedPhrase": "12 Wort Schlüssel Satz",
     "seedPhraseTypo": "Scheint, wir haben hier einen Tippfehler. Versuchen Sie es erneut",
+    "seedPhraseWrongCharacter": "Please use only English letters",
     "Select": "Auswählen",
     "Share": "Kopieren & Teilen Sie Diesen Link",
     "ShareLink": "Link Teilen",

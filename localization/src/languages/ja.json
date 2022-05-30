@@ -298,6 +298,7 @@
     "Sec": "秒",
     "SeedPhrase": "12語のキーフレーズ",
     "seedPhraseTypo": "タイプミスがあるようです。もう一度やり直してください",
+    "seedPhraseWrongCharacter": "Please use only English letters",
     "Select": "選択する",
     "Share": "リンクをコピーして、共有する",
     "ShareLink": "リンクを共有する",

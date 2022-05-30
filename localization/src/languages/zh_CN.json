@@ -298,6 +298,7 @@
     "Sec": "秒",
     "SeedPhrase": "12字关键词",
     "seedPhraseTypo": "看起来在这里有印错的字。再试一次",
+    "seedPhraseWrongCharacter": "Please use only English letters",
     "Select": "选择",
     "Share": "复制并共享此链接",
     "ShareLink": "共享链接",

@@ -298,6 +298,7 @@
     "Sec": "sec",
     "SeedPhrase": "12 parole frase chiave",
     "seedPhraseTypo": "Sembra che abbiamo un errore di battitura qui. Riprova",
+    "seedPhraseWrongCharacter": "Please use only English letters",
     "Select": "Selezionare",
     "Share": "Copia e condividi questo collegamento",
     "ShareLink": "Link Condividi",

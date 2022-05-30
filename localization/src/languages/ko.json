@@ -428,6 +428,7 @@
     "rounds24": "라운드",
     "rounds50": "라운드",
     "seedPhraseTypo": "여기에 오타가 있는 것 같습니다. 다시 시도하십시오",
+    "seedPhraseWrongCharacter": "Please use only English letters",
     "words01": "단어",
     "words21": "단어",
     "words24": "단어",
