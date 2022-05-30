@@ -1,6 +1,11 @@
-import type { ChatMessageType, BubbleBaseT } from '@tonlabs/uistory.chats';
+import type {
+    ChatMessageType,
+    BubbleBaseT,
+    ActionButtonMessageIconPosition,
+} from '@tonlabs/uistory.chats';
 import type BigNumber from 'bignumber.js';
 import type React from 'react';
+import type { ImageSourcePropType } from 'react-native';
 
 /**
  * A string of the form: `data:[<data type>][;base64],<data in base64>`
@@ -131,7 +136,8 @@ export type AddressInputMessage = InteractiveMessage<
 type MenuItem = {
     handlerId: number;
     title: string;
-    description?: string;
+    icon?: ImageSourcePropType;
+    iconPosition?: ActionButtonMessageIconPosition;
 };
 
 export type MenuExternalState = {

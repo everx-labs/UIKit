@@ -23,7 +23,12 @@ import {
 } from '@tonlabs/uistory.browser';
 import { UIPopup, UICardSheet, UIFullscreenSheet } from '@tonlabs/uikit.popups';
 import { uiLocalized } from '@tonlabs/localization';
-import { ChatMessageType, MessageStatus } from '@tonlabs/uistory.chats';
+import {
+    ActionButtonMessageIconPosition,
+    ChatMessageType,
+    MessageStatus,
+} from '@tonlabs/uistory.chats';
+import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIBoxButton } from '@tonlabs/uikit.controls';
 import { UILabel, ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
@@ -220,14 +225,18 @@ function BrowserAddMenu({
                             {
                                 handlerId: 2,
                                 title: 'Two',
+                                icon: UIAssets.icons.ui.buttonPlus,
                             },
                             {
                                 handlerId: 3,
                                 title: 'Three',
+                                icon: UIAssets.icons.ui.search,
+                                iconPosition: ActionButtonMessageIconPosition.Right,
                             },
                             {
                                 handlerId: 4,
-                                title: 'Four',
+                                icon: UIAssets.icons.ui.search,
+                                title: '',
                             },
                             {
                                 handlerId: 5,

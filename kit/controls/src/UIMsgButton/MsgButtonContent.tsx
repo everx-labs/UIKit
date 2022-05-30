@@ -61,7 +61,7 @@ export const MsgButtonContent = ({
             return null;
         }
         const additionalStyles =
-            iconPosition === UIMsgButtonIconPosition.Left ? styles.leftIcon : null;
+            iconPosition === UIMsgButtonIconPosition.Left && title ? styles.leftIcon : null;
         return (
             <UIAnimatedImage
                 source={icon}
@@ -69,7 +69,7 @@ export const MsgButtonContent = ({
                 animatedProps={animatedImageProps}
             />
         );
-    }, [animatedImageProps, icon, iconPosition]);
+    }, [animatedImageProps, icon, iconPosition, title]);
 
     const cornerStyle = useCornerStyle(cornerPosition);
 
