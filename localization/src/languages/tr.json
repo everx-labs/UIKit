@@ -298,7 +298,7 @@
     "Sec": "san",
     "SeedPhrase": "12 kelimelik anahtar cümle",
     "seedPhraseTypo": "Burada yazım hatası gibi görünüyor. Lütfen tekrar deneyin",
-    "seedPhraseWrongCharacter": "Please use only English letters",
+    "seedPhraseWrongCharacter": "Please recheck that you entered only English letters",
     "Select": "Seç",
     "Share": "Bağlantıyı Kopyala ve Paylaş",
     "ShareLink": "Bağlantıyı Paylaş",

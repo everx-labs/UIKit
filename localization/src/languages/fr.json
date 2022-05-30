@@ -298,7 +298,7 @@
     "Sec": "sec",
     "SeedPhrase": "Phrase clé de 12 mots",
     "seedPhraseTypo": "Il semble que nous ayons une faute de frappe ici. Réessayer",
-    "seedPhraseWrongCharacter": "Please use only English letters",
+    "seedPhraseWrongCharacter": "Please recheck that you entered only English letters",
     "Select": "Sélectionner",
     "Share": "Copier et partager ce lien",
     "ShareLink": "Partager le lien",

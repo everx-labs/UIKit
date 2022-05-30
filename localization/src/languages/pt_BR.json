@@ -298,7 +298,7 @@
     "Sec": "seg",
     "SeedPhrase": "Frase-chave de 12 palavras",
     "seedPhraseTypo": "Parece um erro de digitação. Por favor, tente novamente",
-    "seedPhraseWrongCharacter": "Please use only English letters",
+    "seedPhraseWrongCharacter": "Please recheck that you entered only English letters",
     "Select": "Selecione",
     "Share": "Copiar e compartilhar este link",
     "ShareLink": "Compartilhar link",
