@@ -12,7 +12,7 @@ import { usePressed, usePressableState, useConvertToAnimatedValue } from './hook
  * To animate children colors please use `usePressableContentColor` hook in children components.
  */
 export function Pressable({
-    onPress,
+    onPress: onPressProp,
     onLongPress,
     disabled,
     loading,
@@ -33,6 +33,13 @@ export function Pressable({
         isLoadingAnimated,
         isPressedAnimated,
         isHoveredAnimated,
+    );
+
+    const onPress = React.useCallback(
+        function onPress() {
+            onPressProp?.();
+        },
+        [onPressProp],
     );
 
     return (
