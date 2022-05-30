@@ -39,5 +39,6 @@
 
 RCT_EXPORT_VIEW_PROPERTY(automaticallyAdjustKeyboardInsets, BOOL);
 RCT_EXPORT_VIEW_PROPERTY(keyboardInsetAdjustmentBehavior, NSString);
+RCT_EXPORT_VIEW_PROPERTY(testID, NSString);
 
 @end
