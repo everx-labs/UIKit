@@ -7,5 +7,3 @@ export { default as UIStyle } from './UIStyle';
 
 export type * from './UIColor/UIColorTypes';
 export type * from './UIDevice';
-export type * from './types';
-export type * from './types/BigNum';
