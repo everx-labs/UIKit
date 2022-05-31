@@ -30,7 +30,6 @@ function usePageViews(
             if (isInTransition.current) {
                 return;
             }
-            console.log('onPress2', index);
             isInTransition.current = true;
 
             /**
