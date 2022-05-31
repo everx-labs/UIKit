@@ -5,7 +5,7 @@ import PagerView from 'react-native-pager-view';
 
 import type { UICarouselViewContainerProps, UICarouselViewPageProps } from '../../types';
 import { usePageStyle } from '../animations';
-// import { Pagination } from '../Pagination';
+import { Pagination, PaginationRef } from '../Pagination';
 
 function usePageViews(
     pages: React.ReactElement<UICarouselViewPageProps>[],
@@ -95,15 +95,17 @@ export function CarouselViewContainer({
     testID,
     shouldPageMoveOnPress = true,
     onPageIndexChange,
-}: // showPagination,
-Props) {
+    showPagination,
+}: Props) {
     const pagerRef = React.useRef<PagerView>(null);
     const { pageStyle, setOffset } = usePageStyle(0);
-    // const [currentIndex, setCurrentIndex] = React.useState(initialIndex);
+
+    const paginationRef = React.useRef<PaginationRef>(null);
 
     const setPage = React.useCallback((index: number) => {
         requestAnimationFrame(() => {
             pagerRef.current?.setPage(index);
+            paginationRef.current?.setPage(index);
         });
     }, []);
 
@@ -157,24 +159,24 @@ Props) {
             >
                 {pagesProcessed}
             </PagerView>
-            {/**
-             * TODO: enable me
-             */}
-            {/* {showPagination && (
-                <Pagination pages={pages} activeIndex={currentIndex} setPage={setPage} />
-            )} */}
+            {showPagination && (
+                <Pagination
+                    ref={paginationRef}
+                    pages={pages}
+                    initialPage={initialIndex}
+                    onSetPage={setPage}
+                />
+            )}
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     carouselViewContainer: {
-        width: '100%',
-        height: '100%',
+        flex: 1,
     },
     carouselView: {
-        width: '100%',
-        height: '100%',
+        flex: 1,
     },
     page: {
         flex: 1,

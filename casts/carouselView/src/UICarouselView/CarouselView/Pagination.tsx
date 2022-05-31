@@ -38,34 +38,48 @@ function getPaginationWidth(amount: number) {
 
 type PaginationProps = {
     pages: React.ReactElement[];
-    setPage: (index: number) => void;
-    activeIndex: number;
+    onSetPage(index: number): void;
+    initialPage?: number;
 };
 
-export const Pagination: React.FC<PaginationProps> = React.memo(
-    ({ pages, setPage, activeIndex }: PaginationProps) => {
-        const onHandlePress = React.useCallback(
-            (index: number) => {
-                setPage(index);
-            },
-            [setPage],
-        );
+export type PaginationRef = {
+    setPage(index: number): void;
+};
 
-        return (
-            <View style={[{ width: getPaginationWidth(pages.length) }, styles.pagination]}>
-                {pages.map((_, index) => {
-                    return (
-                        <Circle
-                            // eslint-disable-next-line react/no-array-index-key
-                            key={`Circles_${index}`}
-                            active={index === activeIndex}
-                            onPress={() => onHandlePress(index)}
-                        />
-                    );
-                })}
-            </View>
-        );
-    },
+export const Pagination = React.memo(
+    React.forwardRef<PaginationRef, PaginationProps>(
+        ({ pages, onSetPage, initialPage }: PaginationProps, forwardRef) => {
+            const [activeIndex, setActiveIndex] = React.useState(initialPage ?? 0);
+
+            React.useImperativeHandle(forwardRef, () => ({
+                setPage(index) {
+                    setActiveIndex(index);
+                },
+            }));
+
+            const onHandlePress = React.useCallback(
+                (index: number) => {
+                    onSetPage(index);
+                },
+                [onSetPage],
+            );
+
+            return (
+                <View style={[{ width: getPaginationWidth(pages.length) }, styles.pagination]}>
+                    {pages.map((_, index) => {
+                        return (
+                            <Circle
+                                // eslint-disable-next-line react/no-array-index-key
+                                key={`Circles_${index}`}
+                                active={index === activeIndex}
+                                onPress={() => onHandlePress(index)}
+                            />
+                        );
+                    })}
+                </View>
+            );
+        },
+    ),
 );
 
 const styles = StyleSheet.create({
