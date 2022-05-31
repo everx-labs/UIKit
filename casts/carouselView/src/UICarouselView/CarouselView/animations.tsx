@@ -29,18 +29,21 @@ const springConfig: WithSpringConfig = {
 /**
  * Hook for page animation (opacity and scale), mobile only
  */
-export const usePageStyle = (initialOffset: any) => {
+export function usePageStyle(initialOffset: number) {
     const offset = useSharedValue(initialOffset);
 
-    React.useEffect(() => {
-        offset.value = initialOffset;
-    }, [offset, initialOffset]);
+    const setOffset = React.useCallback(
+        (newOffset: number) => {
+            offset.value = newOffset;
+        },
+        [offset],
+    );
 
     const animatedValue = useDerivedValue(() => {
         return withSpring(offset.value, springConfig);
     });
 
-    const animatedStyles = useAnimatedStyle(() => {
+    const pageStyle = useAnimatedStyle(() => {
         const opacity = interpolate(animatedValue.value, [1, 0], [0.5, 1]);
         const transform = [
             {
@@ -53,8 +56,11 @@ export const usePageStyle = (initialOffset: any) => {
         };
     });
 
-    return animatedStyles;
-};
+    return {
+        pageStyle,
+        setOffset,
+    };
+}
 
 /**
  * Pagination animations
