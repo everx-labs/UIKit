@@ -99,7 +99,6 @@ export function CarouselViewContainer({
 }: Props) {
     const pagerRef = React.useRef<PagerView>(null);
     const { pageStyle, setOffset } = usePageStyle(0);
-    // const [currentIndex, setCurrentIndex] = React.useState(initialIndex);
 
     const paginationRef = React.useRef<PaginationRef>(null);
 

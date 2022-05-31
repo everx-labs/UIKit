@@ -9,7 +9,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import type { UICarouselViewContainerProps, UICarouselViewPageProps } from '../../types';
 import { duration } from '../animations';
-import { Pagination } from '../Pagination';
+import { Pagination, PaginationRef } from '../Pagination';
 
 type PageProps = {
     page: React.ReactElement<UICarouselViewPageProps>;
@@ -78,6 +78,8 @@ export function CarouselViewContainer({
     const carouselOffset = useSharedValue(0);
     const itemOffset = useSharedValue(0);
 
+    const paginationRef = React.useRef<PaginationRef>(null);
+
     const [currentIndex, setCurrentIndex] = React.useState(initialIndex);
     const maxWidthTranslate = React.useMemo(() => layout.width * pages.length, [layout, pages]);
 
@@ -107,6 +109,7 @@ export function CarouselViewContainer({
             );
             setIsMoving(false);
             onPageIndexChange && onPageIndexChange(index);
+            paginationRef.current?.setPage(index);
         },
         [carouselOffset, itemOffset, layout.width, onPageIndexChange],
     );
@@ -170,7 +173,12 @@ export function CarouselViewContainer({
                 })}
             </Animated.View>
             {showPagination && (
-                <Pagination pages={pages} activeIndex={currentIndex} setPage={setCurrentIndex} />
+                <Pagination
+                    ref={paginationRef}
+                    pages={pages}
+                    initialPage={initialIndex}
+                    onSetPage={setCurrentIndex}
+                />
             )}
         </View>
     );
