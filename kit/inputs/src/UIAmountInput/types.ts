@@ -1,4 +1,5 @@
 import type BigNumber from 'bignumber.js';
+import type { SharedValue } from 'react-native-reanimated';
 import type {
     UIMaterialTextViewChild,
     UIMaterialTextViewProps,
@@ -48,3 +49,17 @@ export type UIAmountInputRef = Omit<UIMaterialTextViewRef, 'changeText'> & {
 };
 
 export type UIAmountInputChild = UIMaterialTextViewChild;
+
+export type AmountInputContextDefaultValuesType = {
+    isHovered: boolean;
+    isFocused: boolean;
+    inputText: string;
+    formattedText: string;
+    carretEndPosition: number;
+};
+
+export type AmountInputContextType = {
+    [key in keyof AmountInputContextDefaultValuesType]: SharedValue<
+        AmountInputContextDefaultValuesType[key]
+    >;
+};

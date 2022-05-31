@@ -1,84 +1,56 @@
 import * as React from 'react';
+// import type BigNumber from 'bignumber.js';
+// import type { SharedValue } from 'react-native-reanimated';
 import {
-    MaterialTextView,
-    MaterialTextViewRef,
-    MaterialTextViewMask,
     MaterialTextViewIcon,
     MaterialTextViewAction,
     MaterialTextViewText,
-    useInputHasValue,
 } from '../MaterialTextView';
-import { useFocused } from '../UITextView';
-import {
-    useExtendedRef,
-    useHelperTextStatus,
-    useMask,
-    useOnChangeText,
-    useUIAmountInputChildren,
-} from './hooks';
 import type { UIAmountInputProps, UIAmountInputRef } from './types';
+import { UIAmountInputContent } from './UIAmountInputContent';
+import { AmountInputContext, defaultContext } from './constants';
+
+/*
+type FocusState = { isFocused: boolean };
+type HoverState = { isHovered: boolean };
+type ValueState = { value: string; hasValue: boolean };
+
+type TextViewState<T extends Config> = (T['trackFocus'] extends boolean ? FocusState : unknown) &
+    (T['trackHover'] extends boolean ? HoverState : unknown) &
+    (T['trackValue'] extends boolean ? ValueState : unknown);
+
+type Config = {
+    trackHover?: boolean;
+    trackFocus?: boolean;
+    trackValue?: boolean;
+};
+
+function foo<T extends Config>(config: T): TextViewState<T> {
+    config;
+    return {} as any;
+}
+
+const { isFocused, isHovered, value, hasValue } = foo({
+    trackFocus: true,
+    trackHover: false,
+    trackValue: true,
+});
+
+isFocused;
+isHovered;
+value;
+hasValue;
+*/
 
 export const UIAmountInputForward = React.forwardRef<UIAmountInputRef, UIAmountInputProps>(
     function UIAmountInputForward(
         props: UIAmountInputProps,
-        forwardedRed: React.Ref<UIAmountInputRef>,
+        forwardedRef: React.Ref<UIAmountInputRef>,
     ) {
-        const {
-            onChangeAmount,
-            defaultAmount,
-            decimalAspect,
-            messageType,
-            message,
-            children,
-            ...restProps
-        } = props;
-
-        const localRef = React.useRef<MaterialTextViewRef>(null);
-
-        const onChangeText = useOnChangeText(onChangeAmount, localRef);
-
-        const mask: MaterialTextViewMask = useMask(decimalAspect);
-
-        const defaultValue = React.useMemo(() => {
-            return defaultAmount?.toString();
-        }, [defaultAmount]);
-
-        const { error, warning, success } = useHelperTextStatus(messageType);
-
-        const [isHovered, setIsHovered] = React.useState<boolean>(false);
-        const { isFocused, onFocus, onBlur } = useFocused(undefined, undefined);
-        const { inputHasValue, checkInputHasValue } = useInputHasValue(
-            undefined,
-            defaultAmount?.toString(),
-        );
-        const processedChildren = useUIAmountInputChildren(
-            children,
-            inputHasValue,
-            isFocused,
-            isHovered,
-            localRef.current?.clear,
-        );
-
-        useExtendedRef(forwardedRed, checkInputHasValue, localRef);
-
         return (
-            <MaterialTextView
-                {...restProps}
-                ref={localRef}
-                defaultValue={defaultValue}
-                helperText={message}
-                error={error}
-                warning={warning}
-                success={success}
-                mask={mask}
-                onChangeText={onChangeText}
-                onHover={setIsHovered}
-                onFocus={onFocus}
-                onBlur={onBlur}
-                keyboardType="decimal-pad"
-            >
-                {processedChildren}
-            </MaterialTextView>
+            <AmountInputContext.Provider value={defaultContext}>
+                <UIAmountInputContent ref={forwardedRef} {...props} />
+            </AmountInputContext.Provider>
         );
     },
 );
