@@ -15,12 +15,6 @@ export function UICarouselViewContainer({
 }: UICarouselViewContainerProps) {
     const pages: React.ReactElement<UICarouselViewPageProps>[] = usePages(children);
 
-    const [currentIndex, setCurrentIndex] = React.useState(initialIndex);
-
-    React.useEffect(() => {
-        setCurrentIndex(initialIndex);
-    }, [initialIndex]);
-
     if (pages.length === 0) {
         console.error(`UICarouselViewContainer: children must have at least 1 item`);
         return null;
@@ -29,7 +23,7 @@ export function UICarouselViewContainer({
     return (
         <CarouselViewContainer
             testID={testID}
-            initialIndex={currentIndex}
+            initialIndex={initialIndex}
             onPageIndexChange={onPageIndexChange}
             pages={pages}
             shouldPageMoveOnPress={shouldPageMoveOnPress}
