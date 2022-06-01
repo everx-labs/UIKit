@@ -1,10 +1,7 @@
 import * as React from 'react';
-import Animated, {
-    runOnJS,
-    useAnimatedReaction,
-    useAnimatedRef,
-    useDerivedValue,
-} from 'react-native-reanimated';
+import Animated, { runOnJS, useAnimatedReaction, useDerivedValue } from 'react-native-reanimated';
+import BigNumber from 'bignumber.js';
+import { uiLocalized } from '@tonlabs/localization';
 import type { UIAmountInputRef, UIAmountInputProps } from './types';
 import { UITextView, UITextViewRef } from '../UITextView';
 import { AmountInputContext, defaultContextValue } from './constants';
@@ -17,10 +14,17 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
         props: UIAmountInputProps,
         _forwardedRef: React.Ref<UIAmountInputRef>,
     ) {
-        const { editable, onFocus, onBlur, onHover, onSelectionChange, onChangeAmount, precision } =
-            props;
+        const {
+            editable,
+            onFocus,
+            onBlur,
+            onHover,
+            onSelectionChange,
+            onChangeAmount: onChangeAmountProp,
+            precision,
+        } = props;
         const ref = React.useRef<UITextViewRef>(null);
-        const { isHovered, isFocused, inputText, formattedText } =
+        const { isHovered, isFocused, inputText, normalizedText, formattedText } =
             React.useContext(AmountInputContext);
 
         /**
@@ -35,11 +39,15 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
             };
         });
 
+        /**
+         * TODO Remove
+         */
         useDerivedValue(() => {
             console.log('UI', {
                 isHovered: isHovered.value,
                 isFocused: isFocused.value,
                 inputText: inputText.value,
+                normalizedText: normalizedText.value,
                 formattedText: formattedText.value,
             });
         });
@@ -47,7 +55,7 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
         const setText = React.useCallback(
             (text: string) => {
                 /**
-                 * TODO
+                 * TODO to think how to do it on UI
                  * text doesn't change without requestAnimationFrame (too quick)
                  */
                 requestAnimationFrame(() => {
@@ -59,6 +67,45 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
             [ref],
         );
 
+        const onChangeAmount = React.useCallback(
+            (normalizedNumber: string) => {
+                if (onChangeAmountProp) {
+                    setTimeout(() => {
+                        let stringForBigNumber = normalizedNumber;
+                        if (uiLocalized.localeInfo.numbers.decimal !== '.') {
+                            stringForBigNumber = stringForBigNumber.replace(
+                                uiLocalized.localeInfo.numbers.decimal,
+                                '.',
+                            );
+                        }
+                        const value = new BigNumber(stringForBigNumber);
+
+                        if (value.isNaN()) {
+                            onChangeAmountProp(undefined);
+                        } else {
+                            onChangeAmountProp(value);
+                        }
+                    });
+                }
+            },
+            [onChangeAmountProp],
+        );
+
+        /**
+         * normalizedText has changed
+         */
+        useAnimatedReaction(
+            () => normalizedText.value,
+            (currentNormalizedText, previousNormalizedText) => {
+                if (currentNormalizedText !== previousNormalizedText) {
+                    runOnJS(onChangeAmount)(currentNormalizedText);
+                }
+            },
+        );
+
+        /**
+         * inputText has changed
+         */
         useAnimatedReaction(
             () => ({ inputText: inputText.value, formattedText: formattedText.value }),
             (currentState, _previousState) => {

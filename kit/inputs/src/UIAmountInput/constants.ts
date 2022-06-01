@@ -19,6 +19,7 @@ export const defaultContextValue: AmountInputContextDefaultValuesType = {
     isHovered: false,
     isFocused: false,
     inputText: '',
+    normalizedText: '',
     formattedText: '',
     carretEndPosition: 0,
 };
@@ -27,6 +28,7 @@ export const defaultContext: AmountInputContextType = {
     isHovered: makeMutable(defaultContextValue.isHovered),
     isFocused: makeMutable(defaultContextValue.isFocused),
     inputText: makeMutable(defaultContextValue.inputText),
+    normalizedText: makeMutable(defaultContextValue.normalizedText),
     formattedText: makeMutable(defaultContextValue.formattedText),
     carretEndPosition: makeMutable(defaultContextValue.carretEndPosition),
 };

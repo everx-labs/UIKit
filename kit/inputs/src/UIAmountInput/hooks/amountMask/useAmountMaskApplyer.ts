@@ -46,7 +46,7 @@ export function useAmountMaskApplyer(
             lastText.value = formattedText;
             lastNormalizedText.value = normalizedText;
 
-            return { formattedText, carretPosition };
+            return { formattedText, normalizedText, carretPosition };
         },
         [
             carretEndPosition,

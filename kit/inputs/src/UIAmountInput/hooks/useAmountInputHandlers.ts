@@ -12,7 +12,7 @@ export function useAmountInputHandlers(
     onSelectionChangeProp: UIAmountInputProps['onSelectionChange'],
     precision: UIAmountInputProps['precision'],
 ) {
-    const { isFocused, inputText, formattedText, carretEndPosition } =
+    const { isFocused, inputText, normalizedText, formattedText, carretEndPosition } =
         React.useContext(AmountInputContext);
 
     const editableAnimated = useDerivedValue(() => editableProp, [editableProp]);
@@ -73,16 +73,16 @@ export function useAmountInputHandlers(
         onChange: evt => {
             'worklet';
 
-            const { formattedText: newFormattedText, carretPosition: newCarretPosition } =
-                applyAmountMask(evt.text);
+            const {
+                formattedText: newFormattedText,
+                carretPosition: newCarretPosition,
+                normalizedText: newNormalizedText,
+            } = applyAmountMask(evt.text);
 
             inputText.value = evt.text;
             formattedText.value = newFormattedText;
             carretEndPosition.value = newCarretPosition;
-
-            // runOnJS(appointTextChange)(formattedText, carretPosition, {
-            //     shouldSetNativeProps: formattedText !== evt.text,
-            // });
+            normalizedText.value = newNormalizedText;
         },
         onSelectionChange: evt => {
             'worklet';
