@@ -341,6 +341,7 @@
     "Sec": "sec",
     "SeedPhrase": "12 word key phrase",
     "seedPhraseTypo": "Looks like a typo here. Please try again",
+    "seedPhraseWrongCharacter": "Please recheck that you entered only English letters",
     "Select": "Select",
     "Share": "Copy & Share This Link",
     "ShareLink": "Share Link",
