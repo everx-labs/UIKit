@@ -7,7 +7,12 @@ module.exports = function (api) {
         [
             'react-native-reanimated/plugin',
             {
-                globals: ['_hapticImpact', '_hapticSelection', '_hapticNotification'],
+                globals: [
+                    '_hapticImpact',
+                    '_hapticSelection',
+                    '_hapticNotification',
+                    '_injectInputValue',
+                ],
             },
         ],
     ];

@@ -6,6 +6,7 @@ import type { UIAmountInputRef, UIAmountInputProps } from './types';
 import { UITextView, UITextViewRef } from '../UITextView';
 import { AmountInputContext, defaultContextValue } from './constants';
 import { useAmountInputHandlers, useAmountInputHover } from './hooks';
+import { injectInputValue } from './InputValueInjector';
 
 const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
 
@@ -52,8 +53,10 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
             });
         });
 
+        console.log(injectInputValue('initial'));
         const setText = React.useCallback(
             (text: string) => {
+                console.log(injectInputValue(text));
                 /**
                  * TODO to think how to do it on UI
                  * text doesn't change without requestAnimationFrame (too quick)
