@@ -42,7 +42,17 @@ export type UIAmountInputProps = Omit<
      *  `UIAmountInput.Text`
      */
     children?: UIAmountInputChild | UIAmountInputChild[] | undefined;
+    /**
+     * Precision of the input value
+     * @default "Precise"
+     */
+    precision: UIAmountInputPrecision;
 };
+
+export type UIAmountInputPrecision =
+    | 'Integer' // integer number (aspectRatio === 0)
+    | 'Precise' // precise numer (aspectRatio === 9)
+    | 'Currency'; // currency number (aspectRatio === 2)
 
 export type UIAmountInputRef = Omit<UIMaterialTextViewRef, 'changeText'> & {
     changeAmount: (amount: BigNumber | undefined, callOnChangeProp?: boolean) => void;

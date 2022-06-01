@@ -1,19 +1,41 @@
 import * as React from 'react';
-import { runOnJS, useDerivedValue } from 'react-native-reanimated';
+import { runOnJS, useDerivedValue, useSharedValue } from 'react-native-reanimated';
 import type { UIAmountInputProps } from '../types';
 import { useTextViewHandler } from '../../useTextViewHandler';
-import { AmountInputContext } from '../constants';
+import { AmountInputContext, UIConstants } from '../constants';
+import { useAmountMaskApplyer } from './amountMask';
 
 export function useAmountInputHandlers(
-    editableProp: boolean | undefined,
+    editableProp: UIAmountInputProps['editable'],
     onFocusProp: UIAmountInputProps['onFocus'],
     onBlurProp: UIAmountInputProps['onBlur'],
     onSelectionChangeProp: UIAmountInputProps['onSelectionChange'],
+    precision: UIAmountInputProps['precision'],
 ) {
     const { isFocused, inputText, formattedText, carretEndPosition } =
         React.useContext(AmountInputContext);
 
     const editableAnimated = useDerivedValue(() => editableProp, [editableProp]);
+
+    const numberOfDecimalDigits = React.useMemo(() => {
+        switch (precision) {
+            case 'Integer':
+                return UIConstants.decimalAspect.integer;
+            case 'Currency':
+                return UIConstants.decimalAspect.currency;
+            case 'Precise':
+            default:
+                return UIConstants.decimalAspect.precision;
+        }
+    }, [precision]);
+
+    const skipNextOnSelectionChange = useSharedValue(false);
+
+    const applyAmountMask = useAmountMaskApplyer(
+        numberOfDecimalDigits,
+        carretEndPosition,
+        skipNextOnSelectionChange,
+    );
 
     const textViewHandlers = useTextViewHandler({
         onFocus: evt => {
@@ -51,10 +73,12 @@ export function useAmountInputHandlers(
         onChange: evt => {
             'worklet';
 
-            // const { formattedText, carretPosition } = applyMask(evt.text);
+            const { formattedText: newFormattedText, carretPosition: newCarretPosition } =
+                applyAmountMask(evt.text);
 
             inputText.value = evt.text;
-            formattedText.value = evt.text;
+            formattedText.value = newFormattedText;
+            carretEndPosition.value = newCarretPosition;
 
             // runOnJS(appointTextChange)(formattedText, carretPosition, {
             //     shouldSetNativeProps: formattedText !== evt.text,

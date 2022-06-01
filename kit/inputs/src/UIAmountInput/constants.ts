@@ -32,3 +32,11 @@ export const defaultContext: AmountInputContextType = {
 };
 
 export const AmountInputContext = React.createContext<AmountInputContextType>(defaultContext);
+
+export const UIConstants = {
+    decimalAspect: {
+        integer: 0,
+        currency: 2,
+        precision: 9,
+    },
+};
