@@ -9,6 +9,7 @@
 #import "HInputValueInjector.h"
 
 #import <RNReanimated/NativeReanimatedModule.h>
+#import <RNReanimated/REAModule.h>
 
 namespace tonlabs {
 namespace uikit {
@@ -34,7 +35,7 @@ JSIExecutor::RuntimeInstaller HInputValueInjectorJSIExecutorRuntimeInstaller(
         jsi::Runtime &reanimatedUIRuntime = *reanimatedModule->runtime.get();
         
         
-        auto injectInputValueCallback = [inputValueInjector](
+        auto injectInputValueCallback = [inputValueInjector, &bridge](
                                             jsi::Runtime& rt,
                                             const jsi::Value& thisVal,
                                             const jsi::Value *args,
@@ -43,7 +44,7 @@ JSIExecutor::RuntimeInstaller HInputValueInjectorJSIExecutorRuntimeInstaller(
             int viewTag = static_cast<int>(args[0].asNumber());
             const auto value = args[1].asString(rt);
 
-            [inputValueInjector injectInput:viewTag value:[NSString stringWithUTF8String:value.utf8(rt).c_str()]];
+            [inputValueInjector injectInputValue:[NSString stringWithUTF8String:value.utf8(rt).c_str()] byTag:viewTag forUIManager:bridge.uiManager];
             
             return jsi::Value::undefined();
         };

@@ -6,6 +6,8 @@
 //
 
 #import "HInputValueInjector.h"
+#import <React/RCTUIManager.h>
+#import <React/RCTMultilineTextInputView.h>
 
 @implementation HInputValueInjector
 
@@ -23,11 +25,16 @@ RCT_EXPORT_MODULE()
     _bridge = bridge;
 }
 
-- (void)injectInput:(int)viewTag value:(NSString *)value {
+- (void)injectInputValue:(NSString *)value byTag:(int)inputTag forUIManager:(RCTUIManager *)uiManager {
     NSLog(@"injectInputValue: value -------%@--------", value);
 
-    NSLog(@"injectInputValue: viewTag -------%i--------", viewTag);
+    NSLog(@"injectInputValue: viewTag -------%i--------", inputTag);
     
+    
+    UIView *view = [uiManager viewForReactTag:@(inputTag)];
+    RCTMultilineTextInputView *textInput = (RCTMultilineTextInputView *)view;
+    /* Not working: */
+    [textInput textInputShouldChangeText:(NSString *)@"000" inRange:(NSRange){.location = (NSUInteger)0, .length = (NSUInteger)3}];
 }
 
 @end

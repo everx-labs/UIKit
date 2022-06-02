@@ -7,9 +7,10 @@
 
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
+#import <React/RCTUIManager.h>
 
 @interface HInputValueInjector : NSObject<RCTBridgeModule>
 
-- (void)injectInput:(int)viewTag value:(NSString *)value;
+- (void)injectInputValue:(NSString *)value byTag:(int)viewTag forUIManager:(RCTUIManager *)uiManager;
 
 @end
