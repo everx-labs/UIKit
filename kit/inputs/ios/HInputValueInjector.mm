@@ -24,8 +24,7 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)injectInputValue:(NSString *)value {
-    
-    NSLog(value);
+    NSLog(@"injectInputValue: -------%@--------", value);
 }
 
 @end

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Animated, { runOnJS, useAnimatedReaction, useDerivedValue } from 'react-native-reanimated';
 import BigNumber from 'bignumber.js';
-import { uiLocalized } from '@tonlabs/localization';
 import type { UIAmountInputRef, UIAmountInputProps } from './types';
 import { UITextView, UITextViewRef } from '../UITextView';
 import { AmountInputContext, defaultContextValue } from './constants';
@@ -53,35 +52,11 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
             });
         });
 
-        console.log(injectInputValue('initial'));
-        const setText = React.useCallback(
-            (text: string) => {
-                console.log(injectInputValue(text));
-                /**
-                 * TODO to think how to do it on UI
-                 * text doesn't change without requestAnimationFrame (too quick)
-                 */
-                requestAnimationFrame(() => {
-                    ref.current?.setNativeProps({
-                        text,
-                    });
-                });
-            },
-            [ref],
-        );
-
         const onChangeAmount = React.useCallback(
             (normalizedNumber: string) => {
                 if (onChangeAmountProp) {
                     setTimeout(() => {
-                        let stringForBigNumber = normalizedNumber;
-                        if (uiLocalized.localeInfo.numbers.decimal !== '.') {
-                            stringForBigNumber = stringForBigNumber.replace(
-                                uiLocalized.localeInfo.numbers.decimal,
-                                '.',
-                            );
-                        }
-                        const value = new BigNumber(stringForBigNumber);
+                        const value = new BigNumber(normalizedNumber);
 
                         if (value.isNaN()) {
                             onChangeAmountProp(undefined);
@@ -113,7 +88,7 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
             () => ({ inputText: inputText.value, formattedText: formattedText.value }),
             (currentState, _previousState) => {
                 if (currentState.formattedText !== currentState.inputText) {
-                    runOnJS(setText)(currentState.formattedText);
+                    injectInputValue(currentState.formattedText);
                 }
             },
         );
