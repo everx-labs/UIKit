@@ -40,9 +40,10 @@ JSIExecutor::RuntimeInstaller HInputValueInjectorJSIExecutorRuntimeInstaller(
                                             const jsi::Value *args,
                                             size_t count
                                             ) -> jsi::Value {
-            const auto value = args[0].asString(rt);
-            
-            [inputValueInjector injectInputValue:[NSString stringWithUTF8String:value.utf8(rt).c_str()]];
+            int viewTag = static_cast<int>(args[0].asNumber());
+            const auto value = args[1].asString(rt);
+
+            [inputValueInjector injectInput:viewTag value:[NSString stringWithUTF8String:value.utf8(rt).c_str()]];
             
             return jsi::Value::undefined();
         };
@@ -50,7 +51,7 @@ JSIExecutor::RuntimeInstaller HInputValueInjectorJSIExecutorRuntimeInstaller(
         jsi::Value injectInputValue = jsi::Function::createFromHostFunction(
                                                                         reanimatedUIRuntime,
                                                                         jsi::PropNameID::forAscii(reanimatedUIRuntime, "_injectInputValue"),
-                                                                        1,
+                                                                        2,
                                                                         injectInputValueCallback);
         
         reanimatedUIRuntime.global().setProperty(reanimatedUIRuntime, "_injectInputValue", injectInputValue);

@@ -1,13 +1,19 @@
 import * as React from 'react';
-import Animated, { runOnJS, useAnimatedReaction, useDerivedValue } from 'react-native-reanimated';
+import Animated, {
+    runOnJS,
+    useAnimatedReaction,
+    useAnimatedRef,
+    useDerivedValue,
+} from 'react-native-reanimated';
 import BigNumber from 'bignumber.js';
+import { TextInput } from 'react-native';
 import type { UIAmountInputRef, UIAmountInputProps } from './types';
-import { UITextView, UITextViewRef } from '../UITextView';
 import { AmountInputContext, defaultContextValue } from './constants';
 import { useAmountInputHandlers, useAmountInputHover } from './hooks';
 import { injectInputValue } from './InputValueInjector';
 
-const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
+// TODO Change TextInput to UITextView
+const UITextViewAnimated = Animated.createAnimatedComponent(TextInput);
 
 export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountInputProps>(
     function UIAmountInputContent(
@@ -23,7 +29,7 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
             onChangeAmount: onChangeAmountProp,
             precision,
         } = props;
-        const ref = React.useRef<UITextViewRef>(null);
+        const ref = useAnimatedRef<TextInput>();
         const { isHovered, isFocused, inputText, normalizedText, formattedText } =
             React.useContext(AmountInputContext);
 
@@ -88,7 +94,7 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
             () => ({ inputText: inputText.value, formattedText: formattedText.value }),
             (currentState, _previousState) => {
                 if (currentState.formattedText !== currentState.inputText) {
-                    injectInputValue(currentState.formattedText);
+                    injectInputValue(ref, currentState.formattedText);
                 }
             },
         );

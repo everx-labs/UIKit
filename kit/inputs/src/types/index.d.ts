@@ -1,2 +1,4 @@
-// eslint-disable-next-line no-underscore-dangle
-declare const _injectInputValue: (value: string) => void;
+/* eslint-disable no-underscore-dangle */
+
+declare const _injectInputValue: (viewTag: number, value: string) => void;
+declare const _WORKLET: boolean;

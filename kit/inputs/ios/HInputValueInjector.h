@@ -10,6 +10,6 @@
 
 @interface HInputValueInjector : NSObject<RCTBridgeModule>
 
-- (void)injectInputValue:(NSString *)value;
+- (void)injectInput:(int)viewTag value:(NSString *)value;
 
 @end

@@ -23,8 +23,11 @@ RCT_EXPORT_MODULE()
     _bridge = bridge;
 }
 
-- (void)injectInputValue:(NSString *)value {
-    NSLog(@"injectInputValue: -------%@--------", value);
+- (void)injectInput:(int)viewTag value:(NSString *)value {
+    NSLog(@"injectInputValue: value -------%@--------", value);
+
+    NSLog(@"injectInputValue: viewTag -------%i--------", viewTag);
+    
 }
 
 @end
