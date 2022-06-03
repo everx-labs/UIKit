@@ -7,6 +7,7 @@
 
 #import "HInputValueInjector.h"
 #import <React/RCTUIManager.h>
+#import <React/RCTSinglelineTextInputView.h>
 #import <React/RCTMultilineTextInputView.h>
 
 @implementation HInputValueInjector
@@ -32,9 +33,18 @@ RCT_EXPORT_MODULE()
     
     
     UIView *view = [uiManager viewForReactTag:@(inputTag)];
-    RCTMultilineTextInputView *textInput = (RCTMultilineTextInputView *)view;
-    /* Not working: */
-    [textInput textInputShouldChangeText:(NSString *)@"000" inRange:(NSRange){.location = (NSUInteger)0, .length = (NSUInteger)3}];
+    if ([view isKindOfClass:[RCTSinglelineTextInputView class]]) {
+        RCTSinglelineTextInputView *singlelineTextInput = (RCTSinglelineTextInputView *)view;
+        
+        /* Not working: */
+        [singlelineTextInput
+            textInputShouldChangeText:(NSString *)@"000"
+            inRange:(NSRange){.location = (NSUInteger)0, .length = (NSUInteger)3}
+        ];        
+    }
+//    else if ([view isKindOfClass:[RCTMultilineTextInputView class]]) {
+//        RCTMultilineTextInputView *multilineTextInput = (RCTMultilineTextInputView *)view;
+//    }
 }
 
 @end
