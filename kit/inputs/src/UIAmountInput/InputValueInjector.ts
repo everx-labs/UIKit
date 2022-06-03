@@ -1,8 +1,8 @@
 import type React from 'react';
-import type { TextInput } from 'react-native';
+import type { UITextViewRef } from '../UITextView';
 
 /* global _WORKLET, _injectInputValue */
-export function injectInputValue(animatedRef: React.RefObject<TextInput>, value: string) {
+export function injectInputValue(animatedRef: React.RefObject<UITextViewRef>, value: string) {
     'worklet';
 
     if (!_WORKLET) {
