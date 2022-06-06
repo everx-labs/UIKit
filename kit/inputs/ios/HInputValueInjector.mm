@@ -9,6 +9,9 @@
 #import <React/RCTUIManager.h>
 #import <React/RCTSinglelineTextInputView.h>
 #import <React/RCTMultilineTextInputView.h>
+#import <React/RCTBaseTextInputShadowView.h>
+#import <React/RCTViewManager.h>
+#import <React/RCTUIManagerUtils.h>
 
 @implementation HInputValueInjector
 
@@ -31,17 +34,20 @@ RCT_EXPORT_MODULE()
 
     NSLog(@"injectInputValue: viewTag -------%i--------", inputTag);
     
-    
-    UIView *view = [uiManager viewForReactTag:@(inputTag)];
-    if ([view isKindOfClass:[RCTSinglelineTextInputView class]]) {
-        RCTSinglelineTextInputView *singlelineTextInput = (RCTSinglelineTextInputView *)view;
-        
-        /* Not working: */
-        [singlelineTextInput
-            textInputShouldChangeText:(NSString *)@"000"
-            inRange:(NSRange){.location = (NSUInteger)0, .length = (NSUInteger)3}
-        ];        
-    }
+    RCTExecuteOnUIManagerQueue(^{
+        RCTBaseTextInputShadowView *shadowView = (RCTBaseTextInputShadowView *)[uiManager shadowViewForReactTag:@(inputTag)];
+        [shadowView setText:value];
+    });
+
+    /* Not working: */
+//    UIView *view = [uiManager viewForReactTag:@(inputTag)];
+//    if ([view isKindOfClass:[RCTSinglelineTextInputView class]]) {
+//        RCTSinglelineTextInputView *singlelineTextInput = (RCTSinglelineTextInputView *)view;
+//        [singlelineTextInput
+//            textInputShouldChangeText:(NSString *)@"000"
+//            inRange:(NSRange){.location = (NSUInteger)0, .length = (NSUInteger)3}
+//        ];
+//    }
 //    else if ([view isKindOfClass:[RCTMultilineTextInputView class]]) {
 //        RCTMultilineTextInputView *multilineTextInput = (RCTMultilineTextInputView *)view;
 //    }
