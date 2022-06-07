@@ -30,27 +30,12 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)injectInputValue:(NSString *)value byTag:(int)inputTag forUIManager:(RCTUIManager *)uiManager {
-    NSLog(@"injectInputValue: value -------%@--------", value);
-
-    NSLog(@"injectInputValue: viewTag -------%i--------", inputTag);
-    
-    RCTExecuteOnUIManagerQueue(^{
-        RCTBaseTextInputShadowView *shadowView = (RCTBaseTextInputShadowView *)[uiManager shadowViewForReactTag:@(inputTag)];
-        [shadowView setText:value];
-    });
-
-    /* Not working: */
-//    UIView *view = [uiManager viewForReactTag:@(inputTag)];
-//    if ([view isKindOfClass:[RCTSinglelineTextInputView class]]) {
-//        RCTSinglelineTextInputView *singlelineTextInput = (RCTSinglelineTextInputView *)view;
-//        [singlelineTextInput
-//            textInputShouldChangeText:(NSString *)@"000"
-//            inRange:(NSRange){.location = (NSUInteger)0, .length = (NSUInteger)3}
-//        ];
-//    }
-//    else if ([view isKindOfClass:[RCTMultilineTextInputView class]]) {
-//        RCTMultilineTextInputView *multilineTextInput = (RCTMultilineTextInputView *)view;
-//    }
+    NSLog(@"\n ------- injectInputValue: value %@ --------", value);
+     UIView *view = [uiManager viewForReactTag:@(inputTag)];
+    if ([view isKindOfClass:[RCTBaseTextInputView class]]) {
+        RCTBaseTextInputView *baseTextInputView = (RCTBaseTextInputView *)view;
+        baseTextInputView.backedTextInputView.attributedText = [[NSAttributedString alloc] initWithString:value];
+    }
 }
 
 @end
