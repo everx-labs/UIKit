@@ -26,15 +26,16 @@ JSIExecutor::RuntimeInstaller HInputValueInjectorJSIExecutorRuntimeInstaller(
         }
         
         auto jsCallInvoker = bridge.jsCallInvoker;
-        
-        HInputValueInjector *inputValueInjector = [bridge moduleForName:@"HInputValueInjector"];
-        
+
         jsi::Object reanimatedModuleProxy = runtime.global().getPropertyAsObject(runtime, "__reanimatedModuleProxy");
         std::shared_ptr<reanimated::NativeReanimatedModule> reanimatedModule = std::static_pointer_cast<reanimated::NativeReanimatedModule>(reanimatedModuleProxy.getHostObject(runtime));
         
         jsi::Runtime &reanimatedUIRuntime = *reanimatedModule->runtime.get();
         
         
+        /** _injectInputValue*/
+        HInputValueInjector *inputValueInjector = [bridge moduleForName:@"HInputValueInjector"];
+
         auto injectInputValueCallback = [inputValueInjector, &bridge](
                                             jsi::Runtime& rt,
                                             const jsi::Value& thisVal,
@@ -56,6 +57,8 @@ JSIExecutor::RuntimeInstaller HInputValueInjectorJSIExecutorRuntimeInstaller(
                                                                         injectInputValueCallback);
         
         reanimatedUIRuntime.global().setProperty(reanimatedUIRuntime, "_injectInputValue", injectInputValue);
+        
+        /** _moveInputCarret */
 
         if (runtimeInstallerToWrap)
         {

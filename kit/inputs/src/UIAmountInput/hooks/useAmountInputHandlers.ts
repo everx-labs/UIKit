@@ -86,7 +86,10 @@ export function useAmountInputHandlers(
             if (evt.text !== newFormattedText) {
                 // getInputManager(ref)?.injectValue(newFormattedText);
                 // inputManager.value.injectValue(newFormattedText);
+
                 injectInputValue(ref, newFormattedText);
+                // moveInputCarret(ref, newCarretPosition);
+
                 // console.log({
                 //     text: evt.text,
                 //     newFormattedText,
