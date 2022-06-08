@@ -15,8 +15,7 @@ export function useAmountInputHandlers(
     onSelectionChangeProp: UIAmountInputProps['onSelectionChange'],
     precision: UIAmountInputProps['precision'],
 ) {
-    const { isFocused, inputText, normalizedText, formattedText, carretEndPosition } =
-        React.useContext(AmountInputContext);
+    const { isFocused, formattedText, carretEndPosition } = React.useContext(AmountInputContext);
 
     const editableAnimated = useDerivedValue(() => editableProp, [editableProp]);
 
@@ -87,7 +86,7 @@ export function useAmountInputHandlers(
             if (evt.text !== newFormattedText) {
                 // getInputManager(ref)?.injectValue(newFormattedText);
                 // inputManager.value.injectValue(newFormattedText);
-                // injectInputValue(ref, newFormattedText);
+                injectInputValue(ref, newFormattedText);
                 // console.log({
                 //     text: evt.text,
                 //     newFormattedText,
