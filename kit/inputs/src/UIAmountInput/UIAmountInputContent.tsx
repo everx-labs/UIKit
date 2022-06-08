@@ -1,22 +1,16 @@
 import * as React from 'react';
-import Animated, {
-    runOnJS,
-    useAnimatedReaction,
-    useAnimatedRef,
-    useDerivedValue,
-} from 'react-native-reanimated';
+import Animated, { runOnJS, useAnimatedReaction, useAnimatedRef } from 'react-native-reanimated';
 import BigNumber from 'bignumber.js';
 import type { UIAmountInputRef, UIAmountInputProps } from './types';
-import { AmountInputContext, defaultContextValue } from './constants';
+import { AmountInputContext } from './constants';
 import { useAmountInputHandlers, useAmountInputHover } from './hooks';
-import { injectInputValue } from './InputValueInjector';
 import { UITextView, UITextViewRef } from '../UITextView';
 
 const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
 
 export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountInputProps>(
     function UIAmountInputContent(
-        props: UIAmountInputProps,
+        { children: _children, ...props }: UIAmountInputProps,
         _forwardedRef: React.Ref<UIAmountInputRef>,
     ) {
         const {
@@ -30,33 +24,33 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
         } = props;
         // @ts-ignore
         const ref = useAnimatedRef<UITextViewRef>();
-        const { isHovered, isFocused, inputText, normalizedText, formattedText } =
-            React.useContext(AmountInputContext);
+        const { normalizedText } = React.useContext(AmountInputContext);
 
         /**
          * Reset context value after the component unmounting
          */
-        React.useLayoutEffect(() => {
-            return () => {
-                isHovered.value = defaultContextValue.isHovered;
-                isFocused.value = defaultContextValue.isFocused;
-                inputText.value = defaultContextValue.inputText;
-                formattedText.value = defaultContextValue.formattedText;
-            };
-        });
+        // React.useLayoutEffect(() => {
+        //     return () => {
+        //         isHovered.value = defaultContextValue.isHovered;
+        //         isFocused.value = defaultContextValue.isFocused;
+        //         inputText.value = defaultContextValue.inputText;
+        //         normalizedText.value = defaultContextValue.normalizedText;
+        //         formattedText.value = defaultContextValue.formattedText;
+        //     };
+        // });
 
         /**
          * TODO Remove
          */
-        useDerivedValue(() => {
-            console.log('UI', {
-                isHovered: isHovered.value,
-                isFocused: isFocused.value,
-                inputText: inputText.value,
-                normalizedText: normalizedText.value,
-                formattedText: formattedText.value,
-            });
-        });
+        // useDerivedValue(() => {
+        //     console.log('UI', {
+        //         isHovered: isHovered.value,
+        //         isFocused: isFocused.value,
+        //         inputText: inputText.value,
+        //         normalizedText: normalizedText.value,
+        //         formattedText: formattedText.value,
+        //     });
+        // });
 
         const onChangeAmount = React.useCallback(
             (normalizedNumber: string) => {
@@ -90,16 +84,17 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
         /**
          * inputText has changed
          */
-        useAnimatedReaction(
-            () => ({ inputText: inputText.value, formattedText: formattedText.value }),
-            (currentState, _previousState) => {
-                if (currentState.formattedText !== currentState.inputText) {
-                    injectInputValue(ref, currentState.formattedText);
-                }
-            },
-        );
+        // useAnimatedReaction(
+        //     () => ({ inputText: inputText.value, formattedText: formattedText.value }),
+        //     (currentState, _previousState) => {
+        //         if (currentState.formattedText !== currentState.inputText) {
+        //             injectInputValue(ref, currentState.formattedText);
+        //         }
+        //     },
+        // );
 
         const textViewHandlers = useAmountInputHandlers(
+            ref,
             editable,
             onFocus,
             onBlur,

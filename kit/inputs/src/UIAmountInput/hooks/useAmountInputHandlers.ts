@@ -4,8 +4,11 @@ import type { UIAmountInputProps } from '../types';
 import { useTextViewHandler } from '../../useTextViewHandler';
 import { AmountInputContext, UIConstants } from '../constants';
 import { useAmountMaskApplyer } from './amountMask';
+import { injectInputValue } from '../InputValueInjector';
+import type { UITextViewRef } from '../../UITextView';
 
 export function useAmountInputHandlers(
+    ref: React.RefObject<UITextViewRef>,
     editableProp: UIAmountInputProps['editable'],
     onFocusProp: UIAmountInputProps['onFocus'],
     onBlurProp: UIAmountInputProps['onBlur'],
@@ -36,6 +39,8 @@ export function useAmountInputHandlers(
         carretEndPosition,
         skipNextOnSelectionChange,
     );
+
+    // const inputManager = useInputManager(ref);
 
     const textViewHandlers = useTextViewHandler({
         onFocus: evt => {
@@ -76,13 +81,23 @@ export function useAmountInputHandlers(
             const {
                 formattedText: newFormattedText,
                 carretPosition: newCarretPosition,
-                normalizedText: newNormalizedText,
+                // normalizedText: newNormalizedText,
             } = applyAmountMask(evt.text);
 
-            inputText.value = evt.text;
+            if (evt.text !== newFormattedText) {
+                // getInputManager(ref)?.injectValue(newFormattedText);
+                // inputManager.value.injectValue(newFormattedText);
+                // injectInputValue(ref, newFormattedText);
+                // console.log({
+                //     text: evt.text,
+                //     newFormattedText,
+                // });
+            }
+
+            // inputText.value = evt.text;
             formattedText.value = newFormattedText;
             carretEndPosition.value = newCarretPosition;
-            normalizedText.value = newNormalizedText;
+            // normalizedText.value = newNormalizedText;
         },
         onSelectionChange: evt => {
             'worklet';
