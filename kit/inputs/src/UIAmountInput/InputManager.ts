@@ -1,7 +1,7 @@
 import type React from 'react';
 import { SharedValue, useDerivedValue } from 'react-native-reanimated';
 import type { UITextViewRef } from '../UITextView';
-import { injectInputValue } from './InputValueInjector';
+import { injectInputValue } from './injectInputValue';
 
 type InputManagerType = {
     injectValue: (value: string) => void;

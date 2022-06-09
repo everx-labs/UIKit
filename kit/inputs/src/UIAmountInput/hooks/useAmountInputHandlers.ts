@@ -4,8 +4,9 @@ import type { UIAmountInputProps } from '../types';
 import { useTextViewHandler } from '../../useTextViewHandler';
 import { AmountInputContext, UIConstants } from '../constants';
 import { useAmountMaskApplyer } from './amountMask';
-import { injectInputValue } from '../InputValueInjector';
+import { injectInputValue } from '../injectInputValue';
 import type { UITextViewRef } from '../../UITextView';
+import { moveInputCaret } from '../moveInputCaret';
 
 export function useAmountInputHandlers(
     ref: React.RefObject<UITextViewRef>,
@@ -88,7 +89,7 @@ export function useAmountInputHandlers(
                 // inputManager.value.injectValue(newFormattedText);
 
                 injectInputValue(ref, newFormattedText);
-                // moveInputCarret(ref, newCarretPosition);
+                moveInputCaret(ref, newCarretPosition);
 
                 // console.log({
                 //     text: evt.text,

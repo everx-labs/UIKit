@@ -10,7 +10,7 @@ module.exports = {
                     '_hapticSelection',
                     '_hapticNotification',
                     '_injectInputValue',
-                    '_moveInputCarret',
+                    '_moveInputCaret',
                 ],
             },
         ],

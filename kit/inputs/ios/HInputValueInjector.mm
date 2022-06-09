@@ -30,8 +30,7 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)injectInputValue:(NSString *)value byTag:(int)inputTag forUIManager:(RCTUIManager *)uiManager {
-    NSLog(@"\n ------- injectInputValue: value %@ --------", value);
-     UIView *view = [uiManager viewForReactTag:@(inputTag)];
+    UIView *view = [uiManager viewForReactTag:@(inputTag)];
     if ([view isKindOfClass:[RCTBaseTextInputView class]]) {
         RCTBaseTextInputView *baseTextInputView = (RCTBaseTextInputView *)view;
         baseTextInputView.backedTextInputView.attributedText = [[NSAttributedString alloc] initWithString:value];

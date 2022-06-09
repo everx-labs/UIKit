@@ -12,7 +12,7 @@ module.exports = function (api) {
                     '_hapticSelection',
                     '_hapticNotification',
                     '_injectInputValue',
-                    '_moveInputCarret',
+                    '_moveInputCaret',
                 ],
             },
         ],

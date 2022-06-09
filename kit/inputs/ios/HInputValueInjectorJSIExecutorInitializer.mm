@@ -7,6 +7,7 @@
 
 #import "HInputValueInjectorJSIExecutorInitializer.h"
 #import "HInputValueInjector.h"
+#import "HInputMoveCaret.h"
 
 #import <RNReanimated/NativeReanimatedModule.h>
 #import <RNReanimated/REAModule.h>
@@ -58,7 +59,30 @@ JSIExecutor::RuntimeInstaller HInputValueInjectorJSIExecutorRuntimeInstaller(
         
         reanimatedUIRuntime.global().setProperty(reanimatedUIRuntime, "_injectInputValue", injectInputValue);
         
-        /** _moveInputCarret */
+        /** _moveInputCaret */
+        HInputMoveCaret *inputMoveCaret = [bridge moduleForName:@"HInputMoveCaret"];
+
+        auto inputMoveCaretCallback = [inputMoveCaret, &bridge](
+                                            jsi::Runtime& rt,
+                                            const jsi::Value& thisVal,
+                                            const jsi::Value *args,
+                                            size_t count
+                                            ) -> jsi::Value {
+            int viewTag = static_cast<int>(args[0].asNumber());
+            double caretPosition = args[1].asNumber();
+
+            [inputMoveCaret moveCaretToPosition:[NSNumber numberWithDouble:(caretPosition)] byTag:viewTag forUIManager:bridge.uiManager];
+            
+            return jsi::Value::undefined();
+        };
+        
+        jsi::Value moveInputCaret = jsi::Function::createFromHostFunction(
+                                                                        reanimatedUIRuntime,
+                                                                        jsi::PropNameID::forAscii(reanimatedUIRuntime, "_moveInputCaret"),
+                                                                        2,
+                                                                        inputMoveCaretCallback);
+        
+        reanimatedUIRuntime.global().setProperty(reanimatedUIRuntime, "_moveInputCaret", moveInputCaret);
 
         if (runtimeInstallerToWrap)
         {
