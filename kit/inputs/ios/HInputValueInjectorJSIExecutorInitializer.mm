@@ -69,9 +69,9 @@ JSIExecutor::RuntimeInstaller HInputValueInjectorJSIExecutorRuntimeInstaller(
                                             size_t count
                                             ) -> jsi::Value {
             int viewTag = static_cast<int>(args[0].asNumber());
-            double caretPosition = args[1].asNumber();
+            int caretPosition = static_cast<int>(args[1].asNumber());
 
-            [inputMoveCaret moveCaretToPosition:[NSNumber numberWithDouble:(caretPosition)] byTag:viewTag forUIManager:bridge.uiManager];
+            [inputMoveCaret moveCaretToPosition:caretPosition byTag:viewTag forUIManager:bridge.uiManager];
             
             return jsi::Value::undefined();
         };

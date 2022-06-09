@@ -32,13 +32,7 @@ export function useAmountInputHandlers(
         }
     }, [precision]);
 
-    const skipNextOnSelectionChange = useSharedValue(false);
-
-    const applyAmountMask = useAmountMaskApplyer(
-        numberOfDecimalDigits,
-        carretEndPosition,
-        skipNextOnSelectionChange,
-    );
+    const applyAmountMask = useAmountMaskApplyer(numberOfDecimalDigits, carretEndPosition);
 
     // const inputManager = useInputManager(ref);
 
@@ -90,11 +84,6 @@ export function useAmountInputHandlers(
 
                 injectInputValue(ref, newFormattedText);
                 moveInputCaret(ref, newCarretPosition);
-
-                // console.log({
-                //     text: evt.text,
-                //     newFormattedText,
-                // });
             }
 
             // inputText.value = evt.text;
@@ -108,6 +97,8 @@ export function useAmountInputHandlers(
             if (onSelectionChangeProp != null) {
                 runOnJS(onSelectionChangeProp)({ nativeEvent: evt } as any);
             }
+
+            carretEndPosition.value = evt.selection.end;
         },
     });
 

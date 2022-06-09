@@ -11,6 +11,6 @@
 
 @interface HInputMoveCaret : NSObject<RCTBridgeModule>
 
-- (void)moveCaretToPosition:(NSNumber *)caretPosition byTag:(int)viewTag forUIManager:(RCTUIManager *)uiManager;
+- (void)moveCaretToPosition:(int)caretPosition byTag:(int)viewTag forUIManager:(RCTUIManager *)uiManager;
 
 @end

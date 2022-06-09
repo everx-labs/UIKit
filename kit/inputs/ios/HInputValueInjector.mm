@@ -7,27 +7,12 @@
 
 #import "HInputValueInjector.h"
 #import <React/RCTUIManager.h>
-#import <React/RCTSinglelineTextInputView.h>
-#import <React/RCTMultilineTextInputView.h>
-#import <React/RCTBaseTextInputShadowView.h>
-#import <React/RCTViewManager.h>
-#import <React/RCTUIManagerUtils.h>
+#import <React/RCTBaseTextInputView.h>
+
 
 @implementation HInputValueInjector
 
-@synthesize bridge = _bridge;
-@synthesize methodQueue = _methodQueue;
-
 RCT_EXPORT_MODULE()
-
-+ (BOOL)requiresMainQueueSetup {
-    return YES;
-}
-
-- (void)setBridge:(RCTBridge *)bridge
-{
-    _bridge = bridge;
-}
 
 - (void)injectInputValue:(NSString *)value byTag:(int)inputTag forUIManager:(RCTUIManager *)uiManager {
     UIView *view = [uiManager viewForReactTag:@(inputTag)];

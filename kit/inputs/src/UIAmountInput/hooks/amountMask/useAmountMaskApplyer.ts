@@ -6,7 +6,6 @@ import { runUIOnChangeAmount } from '../../../MaterialTextView/hooks/useApplyMas
 export function useAmountMaskApplyer(
     numberOfDecimalDigits: number,
     carretEndPosition: SharedValue<number>,
-    skipNextOnSelectionChange: SharedValue<boolean>,
 ) {
     const lastNormalizedText = useSharedValue('');
     const lastText = useSharedValue('');
@@ -34,14 +33,6 @@ export function useAmountMaskApplyer(
                 numberOfDecimalDigits,
             );
 
-            /**
-             * We need to skip the next call of OnSelectionChange
-             * because it will happen after the calculations above
-             * and will break these calculations
-             */
-            // eslint-disable-next-line no-param-reassign
-            skipNextOnSelectionChange.value = true;
-
             // selectionEnd.value = carretPosition;
             lastText.value = formattedText;
             lastNormalizedText.value = normalizedText;
@@ -57,7 +48,6 @@ export function useAmountMaskApplyer(
             lastNormalizedText,
             lastText,
             numberOfDecimalDigits,
-            skipNextOnSelectionChange,
         ],
     );
 }
