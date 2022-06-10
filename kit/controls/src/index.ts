@@ -26,6 +26,7 @@ export * from './UIShowMoreButton';
 export * from './UISwitcher';
 export * from './UIWideBoxButton';
 export * from './UIPressableArea';
+export * from './Pressable';
 
 export * from './Haptics/Haptics';
 export * from './useHover';
