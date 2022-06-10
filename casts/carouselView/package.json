@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uicast.carousel-view",
-    "version": "3.0.1",
+    "version": "3.0.2",
     "description": "Carousel view on Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",
@@ -34,9 +34,9 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/uikit.controls": "^3.1.0",
-        "@tonlabs/uikit.layout": "^3.1.0",
-        "@tonlabs/uikit.themes": "^3.1.0",
+        "@tonlabs/uikit.controls": "^3.1.1",
+        "@tonlabs/uikit.layout": "^3.1.1",
+        "@tonlabs/uikit.themes": "^3.1.1",
         "lodash": "^4.17.21"
     },
     "devDependencies": {

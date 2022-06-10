@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uicast.rows",
-    "version": "3.0.1",
+    "version": "3.0.2",
     "description": "Rows on Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",
@@ -34,12 +34,12 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/uicast.numbers": "^3.0.1",
-        "@tonlabs/uikit.assets": "^3.0.1",
-        "@tonlabs/uikit.controls": "^3.1.0",
-        "@tonlabs/uikit.layout": "^3.1.0",
-        "@tonlabs/uikit.media": "^3.1.0",
-        "@tonlabs/uikit.themes": "^3.1.0",
+        "@tonlabs/uicast.numbers": "^3.0.2",
+        "@tonlabs/uikit.assets": "^3.0.2",
+        "@tonlabs/uikit.controls": "^3.1.1",
+        "@tonlabs/uikit.layout": "^3.1.1",
+        "@tonlabs/uikit.media": "^3.1.1",
+        "@tonlabs/uikit.themes": "^3.1.1",
         "bignumber.js": "9.0.0"
     },
     "devDependencies": {

@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uistory.stickers",
-    "version": "3.0.1",
+    "version": "3.0.2",
     "description": "Stickers components for Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit",
@@ -34,13 +34,13 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/uicast.keyboard": "^3.1.1",
-        "@tonlabs/uikit.assets": "^3.0.1",
-        "@tonlabs/uikit.controls": "^3.1.0",
-        "@tonlabs/uikit.core": "^4.0.0",
-        "@tonlabs/uikit.inputs": "^3.1.0",
-        "@tonlabs/uikit.media": "^3.1.0",
-        "@tonlabs/uikit.themes": "^3.1.0",
+        "@tonlabs/uicast.keyboard": "^3.1.2",
+        "@tonlabs/uikit.assets": "^3.0.2",
+        "@tonlabs/uikit.controls": "^3.1.1",
+        "@tonlabs/uikit.core": "^4.0.1",
+        "@tonlabs/uikit.inputs": "^3.1.1",
+        "@tonlabs/uikit.media": "^3.1.1",
+        "@tonlabs/uikit.themes": "^3.1.1",
         "react-native-safe-area-context": "^3.3.2"
     },
     "devDependencies": {

@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uikit.scrolls",
-    "version": "4.0.0",
+    "version": "4.0.1",
     "description": "Scrolls package",
     "scripts": {
         "tsc": "tsc --noEmit",
@@ -34,9 +34,9 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/uikit.controls": "^3.1.0",
-        "@tonlabs/uikit.layout": "^3.1.0",
-        "@tonlabs/uikit.themes": "^3.1.0"
+        "@tonlabs/uikit.controls": "^3.1.1",
+        "@tonlabs/uikit.layout": "^3.1.1",
+        "@tonlabs/uikit.themes": "^3.1.1"
     },
     "devDependencies": {
         "@tonlabs/babel-plugin-transform-inline-consts": "^3.1.0",

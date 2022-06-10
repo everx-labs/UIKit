@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uikit.themes",
-    "version": "3.1.0",
+    "version": "3.1.1",
     "description": "Themes for Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit",
@@ -35,7 +35,7 @@
         "fonts.gradle"
     ],
     "dependencies": {
-        "@tonlabs/localization": "^3.0.1"
+        "@tonlabs/localization": "^3.0.2"
     },
     "devDependencies": {
         "@testing-library/jest-native": "4.0.1",

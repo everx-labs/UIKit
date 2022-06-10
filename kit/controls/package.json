@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uikit.controls",
-    "version": "3.1.0",
+    "version": "3.1.1",
     "description": "Controls for Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit",
@@ -34,12 +34,12 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/localization": "^3.0.1",
-        "@tonlabs/uikit.assets": "^3.0.1",
-        "@tonlabs/uikit.core": "^4.0.0",
-        "@tonlabs/uikit.layout": "^3.1.0",
-        "@tonlabs/uikit.media": "^3.1.0",
-        "@tonlabs/uikit.themes": "^3.1.0"
+        "@tonlabs/localization": "^3.0.2",
+        "@tonlabs/uikit.assets": "^3.0.2",
+        "@tonlabs/uikit.core": "^4.0.1",
+        "@tonlabs/uikit.layout": "^3.1.1",
+        "@tonlabs/uikit.media": "^3.1.1",
+        "@tonlabs/uikit.themes": "^3.1.1"
     },
     "devDependencies": {
         "@types/react": "17.0.44",
