@@ -1,16 +1,16 @@
 //
-//  HInputValueInjector.m
+//  UIKitInputValueInjector.m
 //  kit.inputs
 //
 //  Created by Anatolii Sergeev on 01.06.2022.
 //
 
-#import "HInputValueInjector.h"
+#import "UIKitInputValueInjector.h"
 #import <React/RCTUIManager.h>
 #import <React/RCTBaseTextInputView.h>
 
 
-@implementation HInputValueInjector
+@implementation UIKitInputValueInjector
 
 RCT_EXPORT_MODULE()
 

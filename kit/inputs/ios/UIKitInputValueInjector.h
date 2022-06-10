@@ -1,5 +1,5 @@
 //
-//  HInputValueInjector.h
+//  UIKitInputValueInjector.h
 //  kit.inputs
 //
 //  Created by Anatolii Sergeev on 01.06.2022.
@@ -9,7 +9,7 @@
 #import <React/RCTEventEmitter.h>
 #import <React/RCTUIManager.h>
 
-@interface HInputValueInjector : NSObject<RCTBridgeModule>
+@interface UIKitInputValueInjector : NSObject<RCTBridgeModule>
 
 - (void)injectInputValue:(NSString *)value byTag:(int)viewTag forUIManager:(RCTUIManager *)uiManager;
 

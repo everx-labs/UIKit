@@ -1,5 +1,5 @@
 //
-//  HInputValueInjectorJSIExecutorInitializer.h
+//  UIKitInputValueInjectorJSIExecutorInitializer.h
 //  kit.inputs
 //
 //  Created by Sergeev Anatolii on 01.06.2022.
@@ -15,7 +15,7 @@ namespace tonlabs {
 namespace uikit {
   using namespace facebook::react;
 
-  JSIExecutor::RuntimeInstaller HInputValueInjectorJSIExecutorRuntimeInstaller(
+  JSIExecutor::RuntimeInstaller UIKitInputValueInjectorJSIExecutorRuntimeInstaller(
       RCTBridge *bridge,
       JSIExecutor::RuntimeInstaller runtimeInstallerToWrap);
 

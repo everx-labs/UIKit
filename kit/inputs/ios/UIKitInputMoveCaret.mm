@@ -1,15 +1,15 @@
 //
-//  HInputMoveCaret.m
+//  UIKitInputMoveCaret.m
 //  kit.inputs
 //
 //  Created by Anatolii Sergeev on 09.06.2022.
 //
 
-#import "HInputMoveCaret.h"
+#import "UIKitInputMoveCaret.h"
 #import <React/RCTUIManager.h>
 #import <React/RCTBaseTextInputView.h>
 
-@implementation HInputMoveCaret
+@implementation UIKitInputMoveCaret
 
 RCT_EXPORT_MODULE()
 

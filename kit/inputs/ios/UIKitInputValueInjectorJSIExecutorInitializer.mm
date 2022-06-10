@@ -1,13 +1,13 @@
 //
-//  HInputValueInjectorJSIExecutorInitializer.m
+//  UIKitInputValueInjectorJSIExecutorInitializer.m
 //  kit.inputs
 //
 //  Created by Sergeev Anatolii on 01.06.2022.
 //
 
-#import "HInputValueInjectorJSIExecutorInitializer.h"
-#import "HInputValueInjector.h"
-#import "HInputMoveCaret.h"
+#import "UIKitInputValueInjectorJSIExecutorInitializer.h"
+#import "UIKitInputValueInjector.h"
+#import "UIKitInputMoveCaret.h"
 
 #import <RNReanimated/NativeReanimatedModule.h>
 #import <RNReanimated/REAModule.h>
@@ -16,7 +16,7 @@ namespace tonlabs {
 namespace uikit {
 using namespace facebook::react;
 
-JSIExecutor::RuntimeInstaller HInputValueInjectorJSIExecutorRuntimeInstaller(
+JSIExecutor::RuntimeInstaller UIKitInputValueInjectorJSIExecutorRuntimeInstaller(
                                                              RCTBridge *bridge,
                                                              JSIExecutor::RuntimeInstaller runtimeInstallerToWrap) {
     const auto runtimeInstaller = [bridge, runtimeInstallerToWrap](facebook::jsi::Runtime &runtime)
@@ -35,7 +35,7 @@ JSIExecutor::RuntimeInstaller HInputValueInjectorJSIExecutorRuntimeInstaller(
         
         
         /** _injectInputValue*/
-        HInputValueInjector *inputValueInjector = [bridge moduleForName:@"HInputValueInjector"];
+        UIKitInputValueInjector *inputValueInjector = [bridge moduleForName:@"UIKitInputValueInjector"];
 
         auto injectInputValueCallback = [inputValueInjector, &bridge](
                                             jsi::Runtime& rt,
@@ -60,7 +60,7 @@ JSIExecutor::RuntimeInstaller HInputValueInjectorJSIExecutorRuntimeInstaller(
         reanimatedUIRuntime.global().setProperty(reanimatedUIRuntime, "_injectInputValue", injectInputValue);
         
         /** _moveInputCaret */
-        HInputMoveCaret *inputMoveCaret = [bridge moduleForName:@"HInputMoveCaret"];
+        UIKitInputMoveCaret *inputMoveCaret = [bridge moduleForName:@"UIKitInputMoveCaret"];
 
         auto inputMoveCaretCallback = [inputMoveCaret, &bridge](
                                             jsi::Runtime& rt,
