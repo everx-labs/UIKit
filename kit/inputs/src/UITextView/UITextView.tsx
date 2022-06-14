@@ -9,7 +9,13 @@ const textViewTypographyVariant = TypographyVariants.ParagraphText;
 const inputTypographyStyle = StyleSheet.flatten(Typography[textViewTypographyVariant]);
 const textViewLineHeight = inputTypographyStyle.lineHeight ?? UILayoutConstant.smallCellHeight;
 
-const singleLineInputLineHeight =
+/**
+ * The singleline input on the ios platform has a bug -
+ * if `(lineHeight - fontSize) > 5` it starts to crop
+ * letters from the bottom (letters like "g", "j").
+ * Style prop `textAlignVertical` works only on Andriod.
+ */
+const singleLineInputLineHeightForIOS =
     inputTypographyStyle.fontSize && textViewLineHeight - inputTypographyStyle.fontSize > 5
         ? inputTypographyStyle.fontSize + 5
         : textViewLineHeight;
@@ -115,13 +121,7 @@ const styles = StyleSheet.create({
     }),
     inputSingleline: Platform.select({
         ios: {
-            /**
-             * The singleline input on the ios platform has a bug -
-             * if `(lineHeight - fontSize) > 5` it starts to crop
-             * letters from the bottom (letters like "g", "j").
-             * Style prop `textAlignVertical` works only on Andriod.
-             */
-            lineHeight: singleLineInputLineHeight,
+            lineHeight: singleLineInputLineHeightForIOS,
             height: textViewLineHeight,
         },
         default: {},
