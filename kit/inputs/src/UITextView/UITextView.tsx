@@ -6,9 +6,13 @@ import { useAutogrow, useAutoFocus, useHandleRef } from './hooks';
 import type { UITextViewProps, UITextViewRef } from './types';
 
 const textViewTypographyVariant = TypographyVariants.ParagraphText;
-const textViewLineHeight =
-    StyleSheet.flatten(Typography[textViewTypographyVariant]).lineHeight ??
-    UILayoutConstant.smallCellHeight;
+const inputTypographyStyle = StyleSheet.flatten(Typography[textViewTypographyVariant]);
+const textViewLineHeight = inputTypographyStyle.lineHeight ?? UILayoutConstant.smallCellHeight;
+
+const singleLineInputLineHeight =
+    inputTypographyStyle.fontSize && textViewLineHeight - inputTypographyStyle.fontSize > 5
+        ? inputTypographyStyle.fontSize + 5
+        : textViewLineHeight;
 
 export const UITextView = React.forwardRef<UITextViewRef, UITextViewProps>(
     function UITextViewForwarded(
@@ -67,8 +71,8 @@ export const UITextView = React.forwardRef<UITextViewRef, UITextViewProps>(
                     {
                         color: theme[ColorVariants.TextPrimary],
                     },
-                    multiline ? styles.inputMultiline : null,
-                    Typography[textViewTypographyVariant],
+                    inputTypographyStyle,
+                    multiline ? styles.inputMultiline : styles.inputSingleline,
                     autogrowStyle,
                 ]}
                 onChange={onChange}
@@ -106,6 +110,19 @@ const styles = StyleSheet.create({
              */
             paddingTop: -4,
             paddingBottom: -1,
+        },
+        default: {},
+    }),
+    inputSingleline: Platform.select({
+        ios: {
+            /**
+             * The singleline input on the ios platform has a bug -
+             * if `(lineHeight - fontSize) > 5` it starts to crop
+             * letters from the bottom (letters like "g", "j").
+             * Style prop `textAlignVertical` works only on Andriod.
+             */
+            lineHeight: singleLineInputLineHeight,
+            height: textViewLineHeight,
         },
         default: {},
     }),
