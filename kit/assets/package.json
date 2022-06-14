@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uikit.assets",
-    "version": "3.0.1",
+    "version": "3.0.2",
     "description": "Assets on Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",

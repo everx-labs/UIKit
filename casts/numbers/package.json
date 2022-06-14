@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uicast.numbers",
-    "version": "3.0.1",
+    "version": "3.0.2",
     "description": "Numbers on Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",
@@ -34,9 +34,9 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/localization": "^3.0.1",
-        "@tonlabs/uikit.media": "^3.1.0",
-        "@tonlabs/uikit.themes": "^3.1.0",
+        "@tonlabs/localization": "^3.0.2",
+        "@tonlabs/uikit.media": "^3.1.1",
+        "@tonlabs/uikit.themes": "^3.1.1",
         "bignumber.js": "9.0.0"
     },
     "devDependencies": {
