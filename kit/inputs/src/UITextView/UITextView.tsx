@@ -13,7 +13,7 @@ const textViewLineHeight = inputTypographyStyle.lineHeight ?? UILayoutConstant.s
  * The singleline input on the ios platform has a bug -
  * if `(lineHeight - fontSize) > 5` it starts to crop
  * letters from the bottom (letters like "g", "j").
- * Style prop `textAlignVertical` works only on Andriod.
+ * Style prop `textAlignVertical` works only on Android.
  */
 const singleLineInputLineHeightForIOS =
     inputTypographyStyle.fontSize && textViewLineHeight - inputTypographyStyle.fontSize > 5
