@@ -68,7 +68,6 @@ export enum ColorVariants {
     StaticBackgroundNegative = 'StaticBackgroundNegative',
     StaticBackgroundPositive = 'StaticBackgroundPositive',
     StaticBackgroundOverlay = 'StaticBackgroundOverlay',
-    StaticBackgroundSurfPrimary = 'StaticBackgroundSurfPrimary',
     Shadow = 'Shadow',
     ShadowOpaque = 'ShadowOpaque',
 }
@@ -93,7 +92,6 @@ const StaticTheme = {
     [ColorVariants.StaticBackgroundNegative]: 'rgba(231, 23, 23, 0.12)',
     [ColorVariants.StaticBackgroundPositive]: 'rgba(54, 192, 92, 0.12)',
     [ColorVariants.StaticBackgroundOverlay]: 'rgba(4, 4, 4, 0.4)',
-    [ColorVariants.StaticBackgroundSurfPrimary]: '#4963E6',
 };
 
 export const LightTheme: Theme = {
