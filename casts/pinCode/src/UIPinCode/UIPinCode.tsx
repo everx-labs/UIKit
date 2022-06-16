@@ -345,38 +345,32 @@ function useBiometry({
         }
     }, [loading]);
 
-    const callBiometry = React.useCallback(
-        async (options?: { skipSettings?: boolean }) => {
-            if (biometryType === UIPinCodeBiometryType.None || passcodeBiometryProvider == null) {
-                return;
-            }
+    const callBiometry = React.useCallback(async () => {
+        if (biometryType === UIPinCodeBiometryType.None || passcodeBiometryProvider == null) {
+            return;
+        }
 
-            let passcode: string | undefined;
+        let passcode: string | undefined;
 
-            try {
-                await biometryBlockingRef.current?.block();
-                // Wait until loading is completed if any
-                await loadingGuard.current;
-                passcode = await passcodeBiometryProvider(options);
-            } catch (error) {
-                console.error('Failed to get the passcode with biometry with error:', error);
-            } finally {
-                await biometryBlockingRef.current?.unblock();
-            }
+        try {
+            await biometryBlockingRef.current?.block();
+            // Wait until loading is completed if any
+            await loadingGuard.current;
+            passcode = await passcodeBiometryProvider();
+        } catch (error) {
+            console.error('Failed to get the passcode with biometry with error:', error);
+        } finally {
+            await biometryBlockingRef.current?.unblock();
+        }
 
-            if (passcode != null) {
-                dotsValues.forEach((_dot, index) => {
-                    dotsValues[index].value = Number((passcode as string)[index]);
-                    dotsAnims[index].value = withSpring(
-                        DOT_ANIMATION_ACTIVE,
-                        DOT_WITH_SPRING_CONFIG,
-                    );
-                });
-                activeDotIndex.value = length;
-            }
-        },
-        [length, biometryType, passcodeBiometryProvider, dotsValues, dotsAnims, activeDotIndex],
-    );
+        if (passcode != null) {
+            dotsValues.forEach((_dot, index) => {
+                dotsValues[index].value = Number((passcode as string)[index]);
+                dotsAnims[index].value = withSpring(DOT_ANIMATION_ACTIVE, DOT_WITH_SPRING_CONFIG);
+            });
+            activeDotIndex.value = length;
+        }
+    }, [length, biometryType, passcodeBiometryProvider, dotsValues, dotsAnims, activeDotIndex]);
 
     return {
         usePredefined,
@@ -387,6 +381,7 @@ function useBiometry({
 
 function UIPinCodeImpl<Validation extends boolean | UIPinCodeEnterValidationResult>(
     {
+        autoUnlock,
         label,
         labelTestID,
         description,
@@ -409,9 +404,13 @@ function UIPinCodeImpl<Validation extends boolean | UIPinCodeEnterValidationResu
     const dotsAnims = useDotsAnims(length);
     const activeDotIndex = useSharedValue(0);
 
-    // The keys will be disabled when an auto unlock call happens
-    // (There might be one from the client side)
-    const [autoUnlockIsHappening, setAutoUnlockIsHappening] = React.useState(false);
+    // The keys should be disabled until an auto unlock call to biometry does not happen,
+    // or until we learn that there is no auto unlock.
+    // (There must be a `passcodeProviderIsReady` call from the client side)
+    const [autoUnlockIsPassed, setAutoUnlockIsPassed] = React.useState(
+        // Do not wait for biometry if it isn't declared
+        !autoUnlock || biometryType === UIPinCodeBiometryType.None,
+    );
 
     /**
      * Beside simple inability to tap on keys when
@@ -422,8 +421,8 @@ function UIPinCodeImpl<Validation extends boolean | UIPinCodeEnterValidationResu
      * due to some internal deadlock, that can freaze the whole app
      */
     const disabled = React.useMemo(
-        () => disabledProp || loading || autoUnlockIsHappening,
-        [disabledProp, loading, autoUnlockIsHappening],
+        () => disabledProp || loading || !autoUnlockIsPassed,
+        [disabledProp, loading, autoUnlockIsPassed],
     );
 
     const { validatePin, shakeStyle, descriptionRef, validState } = usePinValidation({
@@ -451,18 +450,22 @@ function UIPinCodeImpl<Validation extends boolean | UIPinCodeEnterValidationResu
     React.useImperativeHandle(
         ref,
         () => ({
-            async getPasscodeWithBiometry(options) {
-                setAutoUnlockIsHappening(true);
+            async getPasscodeWithBiometry() {
+                if (!autoUnlock) {
+                    // No need to `setAutoUnlockIsPassed(true);` as it's already there initially.
+                    return;
+                }
+
                 try {
-                    await callBiometry(options);
+                    await callBiometry();
                 } catch (error) {
                     console.error('Failed to call the biometry with error:', error);
                 } finally {
-                    setAutoUnlockIsHappening(false);
+                    setAutoUnlockIsPassed(true);
                 }
             },
         }),
-        [callBiometry],
+        [autoUnlock, callBiometry],
     );
 
     useAnimatedReaction(
@@ -601,6 +604,10 @@ type UIPinCodeProps<Validation extends boolean | UIPinCodeEnterValidationResult>
 
     disabled?: boolean;
     loading?: boolean;
+    /**
+     * Flag either can auto-unlock or not via `getPasscodeWithBiometry()` method.
+     */
+    autoUnlock?: boolean;
     biometryType?: UIPinCodeBiometryType;
 
     // Verify that pin is valid with external method
@@ -612,14 +619,14 @@ type UIPinCodeProps<Validation extends boolean | UIPinCodeEnterValidationResult>
 };
 
 export type UIPinCodeRef = {
-    // Call it when biometry is ready to be called
+    // Call it when the Passcode provider is ready, i.e.
+    // biometry is ready to be called or there is no need to call it at all.
     //
-    // Be aware that biometry is a heavy process,
-    // thus it's better to call when a process isn't busy
-    getPasscodeWithBiometry(options?: {
-        skipSettings?: boolean;
-        skipPredefined?: boolean;
-    }): Promise<void>;
+    // Note: Be aware that biometry is a heavy process,
+    // thus it's better to call it when a process isn't busy.
+    //
+    // Note2: this method can be called only when `autoUnlock` prop is true!
+    getPasscodeWithBiometry(): Promise<void>;
 };
 
 const dotSize = UIConstant.tinyCellHeight();
