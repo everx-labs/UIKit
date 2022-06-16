@@ -409,13 +409,9 @@ function UIPinCodeImpl<Validation extends boolean | UIPinCodeEnterValidationResu
     const dotsAnims = useDotsAnims(length);
     const activeDotIndex = useSharedValue(0);
 
-    // The keys will be disabled until an auto unlock
-    // call to biometry isn't happen
-    // (There must be one from client side)
-    const [autoUnlockIsPassed, setAutoUnlockIsPassed] = React.useState(
-        // Do not wait for biometry if it isn't declared
-        biometryType === UIPinCodeBiometryType.None,
-    );
+    // The keys will be disabled when an auto unlock call happens
+    // (There might be one from the client side)
+    const [autoUnlockIsHappening, setAutoUnlockIsHappening] = React.useState(false);
 
     /**
      * Beside simple inability to tap on keys when
@@ -426,8 +422,8 @@ function UIPinCodeImpl<Validation extends boolean | UIPinCodeEnterValidationResu
      * due to some internal deadlock, that can freaze the whole app
      */
     const disabled = React.useMemo(
-        () => disabledProp || loading || !autoUnlockIsPassed,
-        [disabledProp, loading, autoUnlockIsPassed],
+        () => disabledProp || loading || autoUnlockIsHappening,
+        [disabledProp, loading, autoUnlockIsHappening],
     );
 
     const { validatePin, shakeStyle, descriptionRef, validState } = usePinValidation({
@@ -456,8 +452,14 @@ function UIPinCodeImpl<Validation extends boolean | UIPinCodeEnterValidationResu
         ref,
         () => ({
             async getPasscodeWithBiometry(options) {
-                await callBiometry(options);
-                setAutoUnlockIsPassed(true);
+                setAutoUnlockIsHappening(true);
+                try {
+                    await callBiometry(options);
+                } catch (error) {
+                    console.error('Failed to call the biometry with error:', error);
+                } finally {
+                    setAutoUnlockIsHappening(false);
+                }
             },
         }),
         [callBiometry],
