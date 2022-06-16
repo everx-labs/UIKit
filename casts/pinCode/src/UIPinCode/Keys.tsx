@@ -132,7 +132,7 @@ export const Key = React.memo(function Key({ num }: { num: number }) {
     );
 });
 
-export type GetPasscodeCb<T = void> = (options?: { skipSettings?: boolean }) => Promise<T>;
+export type GetPasscodeCb<T = void> = () => Promise<T>;
 
 function BiometryIcon({
     usePredefined,
