@@ -619,8 +619,7 @@ type UIPinCodeProps<Validation extends boolean | UIPinCodeEnterValidationResult>
 };
 
 export type UIPinCodeRef = {
-    // Call it when the Passcode provider is ready, i.e.
-    // biometry is ready to be called or there is no need to call it at all.
+    // Call it when biometry is ready to be called
     //
     // Note: Be aware that biometry is a heavy process,
     // thus it's better to call it when a process isn't busy.
