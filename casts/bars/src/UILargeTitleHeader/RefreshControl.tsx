@@ -19,27 +19,28 @@ import { NON_UI_RUBBER_BAND_EFFECT_DISTANCE } from './useRubberBandEffectDistanc
 export type OnRefresh = () => Promise<void>;
 
 const allSettled =
-    Promise.allSettled ||
-    /**
-     * Use a polyfill
-     * (from https://github.com/amrayn/allsettled-polyfill/blob/master/index.js)
-     * in case `allSettled` is not present in runtime
-     * (like in Hermes)
-     */
-    ((promises: Promise<any>[]) =>
-        Promise.all(
-            promises.map(p =>
-                p
-                    .then(value => ({
-                        status: 'fulfilled',
-                        value,
-                    }))
-                    .catch(reason => ({
-                        status: 'rejected',
-                        reason,
-                    })),
-            ),
-        ));
+    Promise.allSettled != null
+        ? Promise.allSettled.bind(Promise)
+        : /**
+           * Use a polyfill
+           * (from https://github.com/amrayn/allsettled-polyfill/blob/master/index.js)
+           * in case `allSettled` is not present in runtime
+           * (like in Hermes)
+           */
+          (promises: Promise<any>[]) =>
+              Promise.all(
+                  promises.map(p =>
+                      p
+                          .then(value => ({
+                              status: 'fulfilled',
+                              value,
+                          }))
+                          .catch(reason => ({
+                              status: 'rejected',
+                              reason,
+                          })),
+                  ),
+              );
 
 export function RefreshControl({
     onRefresh,
