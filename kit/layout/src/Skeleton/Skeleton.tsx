@@ -11,6 +11,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useTheme, ColorVariants } from '@tonlabs/uikit.themes';
 import { SkeletonProgress, useSkeletonProgress } from './useSkeletonProgress';
 import type { UISkeletonProps } from './types';
+import { UIKitSkeletonNativeView } from './UIKitSkeletonView';
 
 enum CrossDissolveProgress {
     Visible = 1,
@@ -154,6 +155,12 @@ function SkeletonAnimatable({
  * @returns
  */
 export function UISkeleton({ children, show, style: styleProp }: UISkeletonProps) {
+    return (
+        <UIKitSkeletonNativeView loading={show} style={styleProp}>
+            {children}
+        </UIKitSkeletonNativeView>
+    );
+
     const visible = children == null || show;
 
     const width = useSharedValue(0);
