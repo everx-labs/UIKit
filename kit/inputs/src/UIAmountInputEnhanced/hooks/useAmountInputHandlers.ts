@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { runOnJS, useDerivedValue, useSharedValue } from 'react-native-reanimated';
-import type { UIAmountInputProps } from '../types';
+import { runOnJS, useDerivedValue } from 'react-native-reanimated';
+import type { UIAmountInputEnhancedProps } from '../types';
 import { useTextViewHandler } from '../../useTextViewHandler';
 import { AmountInputContext, UIConstants } from '../constants';
 import { useAmountMaskApplyer } from './amountMask';
@@ -10,11 +10,11 @@ import { moveInputCaret } from '../moveInputCaret';
 
 export function useAmountInputHandlers(
     ref: React.RefObject<UITextViewRef>,
-    editableProp: UIAmountInputProps['editable'],
-    onFocusProp: UIAmountInputProps['onFocus'],
-    onBlurProp: UIAmountInputProps['onBlur'],
-    onSelectionChangeProp: UIAmountInputProps['onSelectionChange'],
-    precision: UIAmountInputProps['precision'],
+    editableProp: UIAmountInputEnhancedProps['editable'],
+    onFocusProp: UIAmountInputEnhancedProps['onFocus'],
+    onBlurProp: UIAmountInputEnhancedProps['onBlur'],
+    onSelectionChangeProp: UIAmountInputEnhancedProps['onSelectionChange'],
+    precision: UIAmountInputEnhancedProps['precision'],
 ) {
     const { isFocused, formattedText, carretEndPosition } = React.useContext(AmountInputContext);
 

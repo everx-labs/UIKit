@@ -2,8 +2,8 @@ import * as React from 'react';
 import BigNumber from 'bignumber.js';
 import { uiLocalized } from '@tonlabs/localization';
 import type { UIMaterialTextViewRef, UIMaterialTextViewMask } from '../../UIMaterialTextView';
-import { UIAmountInputDecimalAspect, UIAmountInputMessageType } from '../constants';
-import type { UIAmountInputProps, UIAmountInputRef } from '../types';
+import { UIAmountInputEnhancedDecimalAspect, UIAmountInputEnhancedMessageType } from '../constants';
+import type { UIAmountInputEnhancedProps, UIAmountInputEnhancedRef } from '../types';
 import {
     getEmptyUIMaterialTextViewRef,
     useMaterialTextViewChildren,
@@ -42,7 +42,7 @@ export function useOnChangeText(
             const amount = convertTextToBigNumber(text);
             if (amount?.isNaN()) {
                 console.error(
-                    `[UIAmountInput] useOnChangeText: an incorrect character was entered. Input changes were prevented`,
+                    `[UIAmountInputEnhanced] useOnChangeText: an incorrect character was entered. Input changes were prevented`,
                 );
                 ref.current?.changeText(previousTextRef.current, false);
                 return;
@@ -54,28 +54,28 @@ export function useOnChangeText(
     );
 }
 
-export function useHelperTextStatus(messageType: UIAmountInputMessageType | undefined) {
+export function useHelperTextStatus(messageType: UIAmountInputEnhancedMessageType | undefined) {
     return React.useMemo(() => {
         switch (messageType) {
-            case UIAmountInputMessageType.Error:
+            case UIAmountInputEnhancedMessageType.Error:
                 return {
                     error: true,
                     warning: false,
                     success: false,
                 };
-            case UIAmountInputMessageType.Warning:
+            case UIAmountInputEnhancedMessageType.Warning:
                 return {
                     error: false,
                     warning: true,
                     success: false,
                 };
-            case UIAmountInputMessageType.Success:
+            case UIAmountInputEnhancedMessageType.Success:
                 return {
                     error: false,
                     warning: false,
                     success: true,
                 };
-            case UIAmountInputMessageType.Info:
+            case UIAmountInputEnhancedMessageType.Info:
             default:
                 return {
                     error: false,
@@ -87,15 +87,15 @@ export function useHelperTextStatus(messageType: UIAmountInputMessageType | unde
 }
 
 export function useMask(
-    decimalAspect: UIAmountInputDecimalAspect | undefined,
+    decimalAspect: UIAmountInputEnhancedDecimalAspect | undefined,
 ): UIMaterialTextViewMask {
     return React.useMemo((): UIMaterialTextViewMask => {
         switch (decimalAspect) {
-            case UIAmountInputDecimalAspect.Integer:
+            case UIAmountInputEnhancedDecimalAspect.Integer:
                 return 'AmountInteger';
-            case UIAmountInputDecimalAspect.Currency:
+            case UIAmountInputEnhancedDecimalAspect.Currency:
                 return 'AmountCurrency';
-            case UIAmountInputDecimalAspect.Precision:
+            case UIAmountInputEnhancedDecimalAspect.Precision:
             default:
                 return 'AmountPrecision';
         }
@@ -103,10 +103,12 @@ export function useMask(
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const { changeText, ...defaultRef } = getEmptyUIMaterialTextViewRef('UIAmountInput/hooks.ts');
+const { changeText, ...defaultRef } = getEmptyUIMaterialTextViewRef(
+    'UIAmountInputEnhanced/hooks.ts',
+);
 
 export function useExtendedRef(
-    forwardedRed: React.Ref<UIAmountInputRef>,
+    forwardedRed: React.Ref<UIAmountInputEnhancedRef>,
     checkInputHasValue: (text: string) => string,
     localRef: React.RefObject<UIMaterialTextViewRef>,
 ) {
@@ -119,9 +121,9 @@ export function useExtendedRef(
         [checkInputHasValue, localRef],
     );
 
-    React.useImperativeHandle<Record<string, any>, UIAmountInputRef>(
+    React.useImperativeHandle<Record<string, any>, UIAmountInputEnhancedRef>(
         forwardedRed,
-        (): UIAmountInputRef => ({
+        (): UIAmountInputEnhancedRef => ({
             ...defaultRef,
             ...localRef.current,
             changeAmount,
@@ -129,13 +131,13 @@ export function useExtendedRef(
     );
 }
 
-export function useUIAmountInputChildren(
-    children: UIAmountInputProps['children'],
+export function useUIAmountInputEnhancedChildren(
+    children: UIAmountInputEnhancedProps['children'],
     inputHasValue: boolean,
     isFocused: boolean,
     isHovered: boolean,
     clear: (() => void) | undefined,
-): UIAmountInputProps['children'] {
+): UIAmountInputEnhancedProps['children'] {
     const materialTextViewChildren = useMaterialTextViewChildren(children);
 
     if (materialTextViewChildren) {
