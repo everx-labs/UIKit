@@ -15,6 +15,9 @@ import { useExtendedRef } from './hooks';
 
 const SPLITTER = ` ${UILayoutConstant.dashSymbol} `;
 
+const WORDS_REG_EXP = /[\p{L}\p{N}]+/gu;
+const NOT_ENGLISH_LETTERS_REG_EXP = /[^a-zA-Z]/g;
+
 const identifyWordThatChanged = (phrase: string, lastPhrase: string): [string, number] => {
     const currentWords = phrase.split(SPLITTER);
     const lastWords = lastPhrase.split(SPLITTER);
@@ -375,6 +378,8 @@ export const UISeedPhraseTextView = React.forwardRef<
         [hints, state.highlight.index, onHintSelected],
     );
 
+    const [hasIncorrectCharacters, setHasIncorrectCharacters] = React.useState(false);
+
     const onChangeText = React.useCallback(
         (textRaw: string) => {
             // Note: there is an issue with `.toLocaleLowerCase` on Android on some old API version
@@ -383,6 +388,14 @@ export const UISeedPhraseTextView = React.forwardRef<
             // It was fixed for hermes@0.10.0 which is supposed to be used with react-native@0.67
             // For now we just need to ensure the string is not empty, when applying the function
             const text = textRaw ? textRaw.toLocaleLowerCase() : '';
+
+            const wordList = text.match(WORDS_REG_EXP);
+
+            if (wordList?.join('').match(NOT_ENGLISH_LETTERS_REG_EXP)) {
+                setHasIncorrectCharacters(true);
+            } else if (hasIncorrectCharacters) {
+                setHasIncorrectCharacters(false);
+            }
 
             const lastSymbol = text[text.length - 1];
 
@@ -436,7 +449,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 payload: { phrase: newText },
             });
         },
-        [totalWords, dispatchAndSavePhrase, textInputRef],
+        [hasIncorrectCharacters, dispatchAndSavePhrase, totalWords],
     );
 
     const [isValid, setIsValid] = React.useState(false);
@@ -484,6 +497,9 @@ export const UISeedPhraseTextView = React.forwardRef<
     const hasValue = state.phrase.length > 0;
 
     const [helperText, error] = React.useMemo(() => {
+        if (hasIncorrectCharacters) {
+            return [uiLocalized.seedPhraseWrongCharacter, true];
+        }
         const entered = state.parts.filter(w => w.length > 0).length;
 
         if (!isFocused && hasValue) {
@@ -498,7 +514,7 @@ export const UISeedPhraseTextView = React.forwardRef<
         }
 
         return [uiLocalized.localizedStringForValue(entered, 'words'), false];
-    }, [isFocused, isValid, hasValue, state.parts, totalWordsString]);
+    }, [hasIncorrectCharacters, state.parts, isFocused, hasValue, isValid, totalWordsString]);
 
     const onSelectionChange = React.useCallback(
         ({

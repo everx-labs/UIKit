@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uicast.modal-navigator",
-    "version": "4.0.0",
+    "version": "4.0.1",
     "description": "Modal navigator on Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",
@@ -34,8 +34,8 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/uikit.layout": "^3.1.0",
-        "@tonlabs/uikit.popups": "^4.0.0",
+        "@tonlabs/uikit.layout": "^3.1.1",
+        "@tonlabs/uikit.popups": "^4.0.1",
         "lodash": "^4.17.21",
         "nanoid": "^3.3.1"
     },

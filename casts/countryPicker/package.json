@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uicast.country-picker",
-    "version": "3.1.0",
+    "version": "3.1.1",
     "description": "Country picker on Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",
@@ -35,15 +35,15 @@
     ],
     "dependencies": {
         "@react-native-community/hooks": "^2.6.0",
-        "@tonlabs/localization": "^3.0.1",
-        "@tonlabs/uicast.bars": "^3.1.0",
-        "@tonlabs/uikit.controls": "^3.1.0",
-        "@tonlabs/uikit.core": "^4.0.0",
-        "@tonlabs/uikit.layout": "^3.1.0",
-        "@tonlabs/uikit.media": "^3.1.0",
-        "@tonlabs/uikit.popups": "^4.0.0",
-        "@tonlabs/uikit.scrolls": "^4.0.0",
-        "@tonlabs/uikit.themes": "^3.1.0",
+        "@tonlabs/localization": "^3.0.2",
+        "@tonlabs/uicast.bars": "^3.1.1",
+        "@tonlabs/uikit.controls": "^3.1.1",
+        "@tonlabs/uikit.core": "^4.0.1",
+        "@tonlabs/uikit.layout": "^3.1.1",
+        "@tonlabs/uikit.media": "^3.1.1",
+        "@tonlabs/uikit.popups": "^4.0.1",
+        "@tonlabs/uikit.scrolls": "^4.0.1",
+        "@tonlabs/uikit.themes": "^3.1.1",
         "fuse.js": "^3.4.6",
         "react-native-safe-area-context": "^3.3.2"
     },

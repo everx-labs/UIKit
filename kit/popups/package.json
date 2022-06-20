@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uikit.popups",
-    "version": "4.0.0",
+    "version": "4.0.1",
     "description": "Popups package",
     "scripts": {
         "tsc": "tsc --noEmit",
@@ -35,18 +35,18 @@
     ],
     "dependencies": {
         "@react-native-community/hooks": "^2.6.0",
-        "@tonlabs/localization": "^3.0.1",
-        "@tonlabs/uicast.bars": "^3.1.0",
-        "@tonlabs/uicast.keyboard": "^3.1.1",
-        "@tonlabs/uicast.linear-chart": "^3.0.1",
-        "@tonlabs/uikit.assets": "^3.0.1",
-        "@tonlabs/uikit.controls": "^3.1.0",
-        "@tonlabs/uikit.core": "^4.0.0",
-        "@tonlabs/uikit.inputs": "^3.1.0",
-        "@tonlabs/uikit.layout": "^3.1.0",
-        "@tonlabs/uikit.media": "^3.1.0",
-        "@tonlabs/uikit.scrolls": "^4.0.0",
-        "@tonlabs/uikit.themes": "^3.1.0",
+        "@tonlabs/localization": "^3.0.2",
+        "@tonlabs/uicast.bars": "^3.1.1",
+        "@tonlabs/uicast.keyboard": "^3.1.2",
+        "@tonlabs/uicast.linear-chart": "^3.0.2",
+        "@tonlabs/uikit.assets": "^3.0.2",
+        "@tonlabs/uikit.controls": "^3.1.1",
+        "@tonlabs/uikit.core": "^4.0.1",
+        "@tonlabs/uikit.inputs": "^3.1.1",
+        "@tonlabs/uikit.layout": "^3.1.1",
+        "@tonlabs/uikit.media": "^3.1.1",
+        "@tonlabs/uikit.scrolls": "^4.0.1",
+        "@tonlabs/uikit.themes": "^3.1.1",
         "react-native-safe-area-context": "^3.3.2"
     },
     "devDependencies": {

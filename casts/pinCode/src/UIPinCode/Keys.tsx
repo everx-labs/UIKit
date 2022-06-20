@@ -132,7 +132,37 @@ export const Key = React.memo(function Key({ num }: { num: number }) {
     );
 });
 
-export type GetPasscodeCb<T = void> = (options?: { skipSettings?: boolean }) => Promise<T>;
+export type GetPasscodeCb<T = void> = () => Promise<T>;
+
+function BiometryIcon({
+    usePredefined,
+    biometryType,
+}: {
+    usePredefined: boolean;
+    biometryType: UIPinCodeBiometryType;
+}) {
+    if (usePredefined) {
+        return (
+            <UILabel color={UILabelColors.TextPrimary} role={UILabelRoles.ActionFootnote}>
+                DEV
+            </UILabel>
+        );
+    }
+
+    if (biometryType === UIPinCodeBiometryType.None) {
+        return null;
+    }
+    return (
+        <UIImage
+            source={
+                biometryType === UIPinCodeBiometryType.Face
+                    ? UIAssets.icons.security.faceId
+                    : UIAssets.icons.security.touchId
+            }
+            tintColor={ColorVariants.TextPrimary}
+        />
+    );
+}
 
 export const BiometryKey = React.memo(function BiometryKey({
     usePredefined,
@@ -187,20 +217,7 @@ export const BiometryKey = React.memo(function BiometryKey({
             rippleColor={processColor('transparent')}
         >
             <Animated.View style={[styles.circleAbove, circleAboveButtonStyle]} />
-            {usePredefined ? (
-                <UILabel color={UILabelColors.TextPrimary} role={UILabelRoles.ActionFootnote}>
-                    DEV
-                </UILabel>
-            ) : (
-                <UIImage
-                    source={
-                        biometryType === UIPinCodeBiometryType.Face
-                            ? UIAssets.icons.security.faceId
-                            : UIAssets.icons.security.touchId
-                    }
-                    tintColor={ColorVariants.TextPrimary}
-                />
-            )}
+            <BiometryIcon usePredefined={usePredefined} biometryType={biometryType} />
         </RawButton>
     );
 });
