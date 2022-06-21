@@ -8,7 +8,7 @@
 #import "UIKitSkeletonView.h"
 #import "UIKitShimmerLayer.h"
 
-static const long kInFlightCommandBuffers = 3;
+static const long kInFlightCommandBuffers = 1;
 
 // From https://www.raywenderlich.com/books/metal-by-tutorials/v3.0/chapters/4-the-vertex-function
 static const float kRectVertices[] = {
@@ -93,10 +93,14 @@ static const uint16_t kRectIndices[] = {
         
         _inflight_semaphore = dispatch_semaphore_create(kInFlightCommandBuffers);
         
-        _vertexBuffer = [_device newBufferWithBytes:kRectVertices length:sizeof(kRectVertices) options:MTLResourceOptionCPUCacheModeDefault];
+        _vertexBuffer = [_device newBufferWithBytes:kRectVertices
+                                             length:sizeof(kRectVertices)
+                                            options:MTLResourceOptionCPUCacheModeDefault];
         _vertexBuffer.label = @"ShimmerRectVertices";
         
-        _indexBuffer = [_device newBufferWithBytes:kRectIndices length:sizeof(kRectIndices) options:MTLResourceOptionCPUCacheModeDefault];
+        _indexBuffer = [_device newBufferWithBytes:kRectIndices
+                                            length:sizeof(kRectIndices)
+                                           options:MTLResourceOptionCPUCacheModeDefault];
         _indexBuffer.label = @"ShimmerRectIndices";
         
         // get the vertex function from the library
@@ -119,7 +123,13 @@ static const uint16_t kRectIndices[] = {
         vertexDescriptor.attributes[0].offset = 0;
         vertexDescriptor.attributes[0].bufferIndex = 0;
         
-        vertexDescriptor.layouts[0].stride = sizeof(*kRectVertices);
+        vertexDescriptor.layouts[0].stride = sizeof(*kRectVertices) * 3;
+        
+        vertexDescriptor.attributes[1].format = MTLVertexFormatFloat2;
+        vertexDescriptor.attributes[1].offset = 0;
+        vertexDescriptor.attributes[1].bufferIndex = 1;
+        
+        vertexDescriptor.layouts[1].stride = sizeof(float) * 2;
         
         pipelineStateDescriptor.label = @"SkeletonPipeline";
         pipelineStateDescriptor.vertexFunction = vertexProgram;
@@ -218,6 +228,16 @@ static const uint16_t kRectIndices[] = {
         
         [renderEncoder setVertexBuffer:_vertexBuffer offset:0 atIndex:0];
         
+        float width = (float) layer.bounds.size.width;
+        float height = (float) layer.bounds.size.height;
+        // I'm still not sure why it's 4*2, probably should match indices for all 4 vertices
+        const float resolution[] = { width, height, width, height, width, height, width, height };
+        id <MTLBuffer> resolutionBuffer = [_device newBufferWithBytes:resolution
+                                                               length:sizeof(resolution)
+                                                              options:MTLResourceOptionCPUCacheModeDefault];
+        resolutionBuffer.label = @"ShimmerRectResolution";
+        [renderEncoder setVertexBuffer:resolutionBuffer offset:0 atIndex:1];
+        
         [renderEncoder drawIndexedPrimitives:MTLPrimitiveTypeTriangle
                                   indexCount:(sizeof(kRectIndices) / sizeof(*kRectIndices))
                                    indexType:MTLIndexTypeUInt16
@@ -239,6 +259,8 @@ static const uint16_t kRectIndices[] = {
     
     // finalize rendering here. this will push the command buffer to the GPU
     [commandBuffer commit];
+    
+    [layer setReadyForNextDrawable];
 }
 
 #pragma mark Layers access and release
@@ -285,7 +307,11 @@ static const uint16_t kRectIndices[] = {
         _shimmerLayer = [[UIKitSkeletonsCoordinator sharedCoordinator] dequeueLayerForView:self];
         
 //        [self.layer addSublayer:_shimmerLayer];
+        _shimmerLayer.position = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
+        
         [self.layer insertSublayer:_shimmerLayer atIndex:0];
+        
+        [self setNeedsLayout];
     } else {
         [_shimmerLayer removeFromSuperlayer];
         [[UIKitSkeletonsCoordinator sharedCoordinator] releaseLayerForView:self];

@@ -14,9 +14,11 @@
 
 - (instancetype)initWithDevice:(id<MTLDevice>)device library:(id<MTLLibrary>)lib commandQueue:(id<MTLCommandQueue>)queue;
 
-- (void)render;
+//- (void)render;
 
 @property (nonatomic, readonly) id<CAMetalDrawable> currentDrawable;
 @property (nonatomic, readonly) MTLRenderPassDescriptor *renderPassDescriptor;
+
+- (void)setReadyForNextDrawable;
 
 @end

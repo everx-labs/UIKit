@@ -20,6 +20,7 @@
         
         self.device = device;
         self.pixelFormat = MTLPixelFormatBGRA8Unorm;
+        self.opaque = YES;
     }
     
     return self;
@@ -31,6 +32,10 @@
     }
     
     return _currentDrawable;
+}
+
+- (void)setReadyForNextDrawable {
+    _currentDrawable = nil;
 }
 
 - (MTLRenderPassDescriptor *)renderPassDescriptor {
