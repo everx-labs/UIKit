@@ -8,12 +8,15 @@ const DECIMAL_ASPECT_PRECISION = 2;
 const DECIMAL_ASPECT_SHORT = 3;
 // @inline
 const DECIMAL_ASPECT_SHORT_ELLIPSIZED = 4;
+// @inline
+const DECIMAL_ASPECT_MEDIUM = 5;
 
 export enum UINumberDecimalAspect {
     None = DECIMAL_ASPECT_NONE,
     Precision = DECIMAL_ASPECT_PRECISION,
     Short = DECIMAL_ASPECT_SHORT,
     ShortEllipsized = DECIMAL_ASPECT_SHORT_ELLIPSIZED,
+    Medium = DECIMAL_ASPECT_MEDIUM,
 }
 
 // https://mikemcl.github.io/bignumber.js/
@@ -42,6 +45,9 @@ export function getDecimalAspectDigits(aspect: UINumberDecimalAspect) {
     }
     if (aspect === DECIMAL_ASPECT_SHORT) {
         return 2;
+    }
+    if (aspect === DECIMAL_ASPECT_MEDIUM) {
+        return 4;
     }
     if (aspect === DECIMAL_ASPECT_PRECISION) {
         return 9;
