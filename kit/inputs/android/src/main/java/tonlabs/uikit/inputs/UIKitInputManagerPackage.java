@@ -10,12 +10,12 @@ import com.facebook.react.uimanager.ViewManager;
 import java.util.Collections;
 import java.util.List;
 
-public class UIKitInputsPackage implements ReactPackage {
+public class UIKitInputManagerPackage implements ReactPackage {
 
     @NonNull
     @Override
     public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
-        return Collections.emptyList();
+        return Collections.singletonList(new UIKitInputManagerModule(reactContext));
     }
 
     @NonNull

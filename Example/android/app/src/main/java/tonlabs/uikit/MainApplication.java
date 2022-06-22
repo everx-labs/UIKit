@@ -17,6 +17,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.facebook.react.bridge.JSIModulePackage;
+
+import tonlabs.uikit.inputs.UIKitInputManagerPackage;
 import tonlabs.uikit.keyboard.UIKitKeyboardJSIModulePackage;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -34,6 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
+          packages.add(new UIKitInputManagerPackage());
 
           return packages;
         }
