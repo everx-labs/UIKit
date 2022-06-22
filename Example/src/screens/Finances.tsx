@@ -142,6 +142,38 @@ function Currencies() {
                 </View>
                 <UILabel color={UILabelColors.TextSecondary}>ShortEllipsized</UILabel>
             </View>
+            <View
+                style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20 }}
+            >
+                <View>
+                    <UICurrency
+                        animated
+                        signIcon={UIAssets.icons.brand.surfSymbolBlack}
+                        loading={loading}
+                        decimalAspect={UINumberDecimalAspect.Medium}
+                    >
+                        {val}
+                    </UICurrency>
+                    <View style={{ height: 10 }} />
+                    <UICurrency
+                        animated
+                        signChar="$"
+                        loading={loading}
+                        decimalAspect={UINumberDecimalAspect.Medium}
+                    >
+                        {val}
+                    </UICurrency>
+                    <View style={{ height: 10 }} />
+                    <UICurrency
+                        signIcon={UIAssets.icons.brand.surfSymbolBlack}
+                        loading={loading}
+                        decimalAspect={UINumberDecimalAspect.Medium}
+                    >
+                        {val}
+                    </UICurrency>
+                </View>
+                <UILabel color={UILabelColors.TextSecondary}>Medium</UILabel>
+            </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View>
                     <UICurrency
