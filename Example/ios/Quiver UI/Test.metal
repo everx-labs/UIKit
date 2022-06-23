@@ -71,69 +71,57 @@ float4 gradient(thread const float4& accent, thread const float4& background, th
     float param_1 = _min;
     float param_2 = _max;
     float nx = normalizeX(param, param_1, param_2);
-//    float param_3 = nx;
     return mix(background, accent, mirroredLinearHorizontalGradient(nx));
 }
 
-static inline __attribute__((always_inline))
-float4 _shimmer_frag(thread const ShimmerInput& _input)
-{
-    float gradientWidth = 0.4;
-    float skewDegrees = 15.0;
-    float4 backgroundColor = float4(0.45, 0.45, 0.45, 1.0);
-    float4 accentColor = float4(1.0);
-    float2 currentPoint = _input.pos.xy / _input.u_resolution;
-    float ratio = _input.u_resolution.y / _input.u_resolution.x;
-    float skewX = (currentPoint.y * tan(skewDegrees * 0.01745329238474369049072265625)) * ratio;
-    float4 param = accentColor;
-    float4 param_1 = backgroundColor;
-    float param_2 = currentPoint.x;
-    float param_3 = 0.0 + skewX;
-    float param_4 = gradientWidth + skewX;
-    return gradient(param, param_1, param_2, param_3, param_4);
-}
-
-//vertex VertexOut basic_vertex( // 1
-//  const device VertexIn* vertex_array [[ buffer(0) ]], // 2
-//  unsigned int vid [[ vertex_id ]]) {                  // 3
-//    // 4
-//    VertexIn v = vertex_array[vid];
-//
-//    // 5
-//    VertexOut outVertex = VertexOut();
-//    outVertex.computedPosition = float4(v.position, 1.0);
-//    outVertex.color = v.color;
-//    return outVertex;
-//}
-
 struct ShimmerVertexIn {
   float4 position [[attribute(0)]];
-  float2 resolution [[attribute(1)]];
 };
 
 struct ShimmerVertexOut {
   float4 position [[position]];
-  float2 resolution;
 };
 
 vertex ShimmerVertexOut shimmer_vertex(ShimmerVertexIn in [[stage_in]]) {
   ShimmerVertexOut out {
-    .position = in.position,
-    .resolution = in.resolution
+    .position = in.position
   };
   return out;
 }
 
-fragment float4 shimmer_frag(ShimmerVertexOut in [[stage_in]]) {
-  float gradientWidth = 50.0 / in.resolution.x; // 50 is the width in pixels
-  float skewDegrees = 15.0;
-  float4 backgroundColor = float4(0.45, 0.45, 0.45, 1.0);
-  float4 accentColor = float4(1.0, 1.0, 1.0, 1.0);
-  float2 currentPoint = in.position.xy / in.resolution;
-  float ratio = in.resolution.y / in.resolution.x;
+struct ShimmerUniforms {
+  float width;
+  float height;
+  float gradientWidth;
+  float skew;
+  float progressShift;
+  packed_float3 backgroundColor;
+  packed_float3 accendColor;
+};
+
+fragment float4 shimmer_frag(
+                             ShimmerVertexOut in [[stage_in]],
+                             constant ShimmerUniforms &uniforms [[buffer(11)]]) {
+  float gradientWidth = uniforms.gradientWidth / uniforms.width;
+  float skewDegrees = uniforms.skew;
+  float4 backgroundColor = float4(uniforms.backgroundColor.r,
+                                  uniforms.backgroundColor.g,
+                                  uniforms.backgroundColor.b,
+                                  1.0);
+  float4 accentColor = float4(uniforms.accendColor.r,
+                              uniforms.accendColor.g,
+                              uniforms.accendColor.b,
+                              1.0);
+  float2 res = float2(uniforms.width, uniforms.height);
+
+  float2 currentPoint = in.position.xy / res;
+  float ratio = res.y / res.x;
   float skewX = ((1.0 - currentPoint.y) * tan(skewDegrees * 0.01745329238474369049072265625)) * ratio;
-//  float skewX = 0;
-  return gradient(accentColor, backgroundColor, currentPoint.x, 0.0 + skewX, gradientWidth + skewX);
+  return gradient(accentColor,
+                  backgroundColor,
+                  currentPoint.x,
+                  0.0 + skewX + uniforms.progressShift,
+                  gradientWidth + skewX + uniforms.progressShift);
   
 //  return float4(currentPoint.x, 0.0, 0.0, 1.0);
 }

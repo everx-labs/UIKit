@@ -42,16 +42,28 @@ static const uint16_t kRectIndices[] = {
     CADisplayLink* _displayLink;
     NSMutableDictionary *_layers;
     
+    // Cache of GUI rendering primitives
     id<MTLDevice> _device;
     id<MTLCommandQueue> _commandQueue;
     id<MTLLibrary> _library;
+    id<MTLRenderPipelineState> _pipelineState;
+    id <MTLBuffer> _vertexBuffer;
+    id <MTLBuffer> _indexBuffer;
     
     // constant synchronization for buffering <kInFlightCommandBuffers> frames
     dispatch_semaphore_t _inflight_semaphore;
     
-    id<MTLRenderPipelineState> _pipelineState;
-    id <MTLBuffer> _vertexBuffer;
-    id <MTLBuffer> _indexBuffer;
+    // utility to calculate progress
+    int _lastTime;
+    
+    // shimmer configuration consts
+    float gradientWidth;
+    float skewDegrees;
+    int shimmerDuration;
+    int skeletonDuration;
+    // coords calculation utilities
+    float _physicalSize;
+    float _physicalX0;
 }
 
 + (instancetype)sharedCoordinator
@@ -125,12 +137,6 @@ static const uint16_t kRectIndices[] = {
         
         vertexDescriptor.layouts[0].stride = sizeof(*kRectVertices) * 3;
         
-        vertexDescriptor.attributes[1].format = MTLVertexFormatFloat2;
-        vertexDescriptor.attributes[1].offset = 0;
-        vertexDescriptor.attributes[1].bufferIndex = 1;
-        
-        vertexDescriptor.layouts[1].stride = sizeof(float) * 2;
-        
         pipelineStateDescriptor.label = @"SkeletonPipeline";
         pipelineStateDescriptor.vertexFunction = vertexProgram;
         pipelineStateDescriptor.vertexDescriptor = vertexDescriptor;
@@ -148,8 +154,35 @@ static const uint16_t kRectIndices[] = {
             // cannot render anything without a valid compiled pipeline state object.
             assert(0);
         }
+        
+        // coords projection setup
+        // TODO: should it be dynamic?
+        gradientWidth = 70.0;
+        skewDegrees = 15.0;
+        shimmerDuration = 200;
+        skeletonDuration = 3 * 1000;
+        
+        CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+        
+        if (skeletonDuration < shimmerDuration) {
+            @throw @"Shimmer duration cannot be less than overall skeleton animation";
+        }
+        
+        // TODO: should update on any arguments changes
+        [self initProgressVars:shimmerDuration skeletonDuration:skeletonDuration screenWidth:screenWidth];
+        
+        _lastTime = 0;
     }
     return self;
+}
+
+- (void)initProgressVars:(int)shimmerDuration
+        skeletonDuration:(int)skeletonDuration
+             screenWidth:(CGFloat)screenWidth {
+    float relativeShimmerDuration = ((float) shimmerDuration) / ((float) skeletonDuration);
+    
+    _physicalSize = screenWidth / relativeShimmerDuration;
+    _physicalX0 = _physicalSize / 2 - screenWidth / 2;
 }
 
 #pragma mark Lifecycle
@@ -196,16 +229,28 @@ static const uint16_t kRectIndices[] = {
 }
 
 - (void)render {
+    // <<< update progress
+    _lastTime += (int) (_displayLink.duration * 1000);
+    
+    if (_lastTime > skeletonDuration) {
+        _lastTime -= skeletonDuration;
+    }
+    
+    float progress = (float) _lastTime / (float) skeletonDuration;
+    // <<< end progress update
+    
     [_layers enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, UIKitShimmerLayer *layer, BOOL * _Nonnull stop) {
         if (layer == nil) {
             return;
         }
-        // TODO: do we need to pass sth to it?
-        [self render:layer];
+        
+        if ([layer shouldRender:progress]) {
+            [self render:layer progress:progress];
+        }
     }];
 }
 
-- (void)render:(UIKitShimmerLayer *)layer {
+- (void)render:(UIKitShimmerLayer *)layer progress:(float)progress {
     id<CAMetalDrawable> drawable = layer.currentDrawable;
     if (drawable == nil) {
         return;
@@ -230,13 +275,20 @@ static const uint16_t kRectIndices[] = {
         
         float width = (float) layer.bounds.size.width;
         float height = (float) layer.bounds.size.height;
-        // I'm still not sure why it's 4*2, probably should match indices for all 4 vertices
-        const float resolution[] = { width, height, width, height, width, height, width, height };
-        id <MTLBuffer> resolutionBuffer = [_device newBufferWithBytes:resolution
-                                                               length:sizeof(resolution)
-                                                              options:MTLResourceOptionCPUCacheModeDefault];
-        resolutionBuffer.label = @"ShimmerRectResolution";
-        [renderEncoder setVertexBuffer:resolutionBuffer offset:0 atIndex:1];
+        
+        float layerProgressShift = [layer getLayerProgressShift:progress];
+//        NSLog(@"layerProgressShift: %f", layerProgressShift);
+        const float uniforms[] = {
+            width,
+            height,
+            gradientWidth, // gradient width
+            skewDegrees, // skew degrees
+            layerProgressShift,
+            0.45, 0.45, 0.45, // background color
+             1.0,  1.0,  1.0, // accent color
+        };
+        
+        [renderEncoder setFragmentBytes:&uniforms length:sizeof(uniforms) atIndex:11];
         
         [renderEncoder drawIndexedPrimitives:MTLPrimitiveTypeTriangle
                                   indexCount:(sizeof(kRectIndices) / sizeof(*kRectIndices))
@@ -272,10 +324,12 @@ static const uint16_t kRectIndices[] = {
     
     BOOL shouldStartLoop = _layers.count == 0;
     
-    UIKitShimmerLayer *newLayer = [[UIKitShimmerLayer alloc] initWithDevice:_device library:_library commandQueue:_commandQueue];
+    ProgressCoords progressCoords = [self getLayerProgressCoords:view];
+    UIKitShimmerLayer *newLayer = [[UIKitShimmerLayer alloc] initWithDevice:_device
+                                                                    library:_library
+                                                               commandQueue:_commandQueue
+                                                             progressCoords:progressCoords];
     newLayer.frame = view.frame;
-    
-    // TODO: We also need to find coords for a view in the window, to run shimmers in sync
     
     _layers[@((intptr_t)view)] = newLayer;
     
@@ -295,18 +349,53 @@ static const uint16_t kRectIndices[] = {
     }
 }
 
+- (ProgressCoords)getLayerProgressCoords:(UIView *)view {
+    CGPoint absoluteViewOrigin = [view.window convertPoint:view.frame.origin fromView:view.superview];
+    CGRect rect = CGRectMake(absoluteViewOrigin.x, absoluteViewOrigin.y, view.frame.size.width, view.frame.size.height);
+    
+    float skewTan = tanf(skewDegrees * (M_PI / 180.0f));
+    // when we apply a skew to the gradient rect we have to also calculate cathetus of of triangle from the side of it
+    float skewGradientWidth = gradientWidth + (rect.size.height * skewTan);
+    // calculate cathetus of a triangle that is projected from the bottom of a rect to the upper edge (that is 0)
+    float absoluteSkewXProjection = (rect.origin.y + rect.size.height) * skewTan;
+    
+    ProgressCoords coords;
+    float start = (_physicalX0 + rect.origin.x - skewGradientWidth + absoluteSkewXProjection);
+    coords.start = [self getRelativeToPhysicalSizeX:start] / _physicalSize;
+    float end = (_physicalX0 + rect.origin.x + rect.size.width + absoluteSkewXProjection);
+    coords.end = [self getRelativeToPhysicalSizeX:end] / _physicalSize;
+    coords.shift = skewGradientWidth / rect.size.width;
+    
+    return coords;
+}
+
+- (float)getRelativeToPhysicalSizeX:(float)x {
+    float _x = x;
+    while (_x > _physicalSize) {
+        _x -= _physicalSize;
+    }
+    return _x;
+}
+
 @end
 
+// TODO: remove layer on RN refresh
 @implementation UIKitSkeletonView {
     UIKitShimmerLayer *_shimmerLayer;
+}
+
+- (void)didMoveToWindow {
+    // deattached
+    if (self.superview == nil && _shimmerLayer != nil) {
+        [_shimmerLayer removeFromSuperlayer];
+        [[UIKitSkeletonsCoordinator sharedCoordinator] releaseLayerForView:self];
+    }
 }
 
 - (void)setLoading:(BOOL)loading {
     _loading = loading;
     if (loading) {
         _shimmerLayer = [[UIKitSkeletonsCoordinator sharedCoordinator] dequeueLayerForView:self];
-        
-//        [self.layer addSublayer:_shimmerLayer];
         _shimmerLayer.position = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
         
         [self.layer insertSublayer:_shimmerLayer atIndex:0];

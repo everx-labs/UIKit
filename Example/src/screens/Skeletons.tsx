@@ -74,7 +74,7 @@ function ContentLayoutDoesNotMatchSkeletonLayout({ isActive }: { isActive: boole
 }
 
 export function SkeletonsScreen() {
-    const [isActive, setIsActive] = React.useState(true);
+    const [isActive, setIsActive] = React.useState(false);
     return (
         <ExampleScreen>
             <ExampleSection title="UISkeleton">
@@ -92,6 +92,7 @@ export function SkeletonsScreen() {
                         style={{
                             borderRadius: UILayoutConstant.alertBorderRadius,
                             alignSelf: 'center',
+                            overflow: 'hidden',
                         }}
                     >
                         <View
@@ -105,8 +106,57 @@ export function SkeletonsScreen() {
                     <UISkeleton show={isActive} style={{ marginTop: 10 }}>
                         <View style={{ backgroundColor: contentBackgroundColor, height: 100 }} />
                     </UISkeleton>
+                    <View style={{ flexDirection: 'row', paddingHorizontal: 20, marginTop: 20 }}>
+                        <UISkeleton
+                            show={isActive}
+                            style={{
+                                borderRadius: 50,
+                                overflow: 'hidden',
+                                marginRight: 20,
+                            }}
+                        >
+                            <View
+                                style={{
+                                    backgroundColor: contentBackgroundColor,
+                                    width: 100,
+                                    height: 100,
+                                }}
+                            />
+                        </UISkeleton>
+                        <View style={{ flex: 1, paddingTop: 10 }}>
+                            <UISkeleton
+                                show={isActive}
+                                style={{
+                                    borderRadius: UILayoutConstant.alertBorderRadius,
+                                    overflow: 'hidden',
+                                    marginBottom: 10,
+                                }}
+                            >
+                                <View
+                                    style={{
+                                        backgroundColor: contentBackgroundColor,
+                                        height: 40,
+                                    }}
+                                />
+                            </UISkeleton>
+                            <UISkeleton
+                                show={isActive}
+                                style={{
+                                    borderRadius: UILayoutConstant.alertBorderRadius,
+                                    overflow: 'hidden',
+                                }}
+                            >
+                                <View
+                                    style={{
+                                        backgroundColor: contentBackgroundColor,
+                                        height: 40,
+                                    }}
+                                />
+                            </UISkeleton>
+                        </View>
+                    </View>
 
-                    <ContentLayoutDoesNotMatchSkeletonLayout isActive={isActive} />
+                    {/* <ContentLayoutDoesNotMatchSkeletonLayout isActive={isActive} /> */}
                 </View>
                 <UIBoxButton title="Toggle skeletons" onPress={() => setIsActive(!isActive)} />
             </ExampleSection>
