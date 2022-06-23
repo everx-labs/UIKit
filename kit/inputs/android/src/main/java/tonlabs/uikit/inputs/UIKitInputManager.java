@@ -2,31 +2,38 @@ package tonlabs.uikit.inputs;
 
 //import androidx.annotation.NonNull;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
-import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.module.annotations.ReactModule;
 
 import org.jetbrains.annotations.NotNull;
 
-@ReactModule(name = UIKitInputManagerModule.REACT_CLASS)
-public class UIKitInputManagerModule extends ReactContextBaseJavaModule {
-    protected static final String REACT_CLASS = "UIKitInputManagerModule";
-
-    UIKitInputManagerModule(ReactApplicationContext reactContext) {
-        super(reactContext);
-//        installJSIBindings();
+public class UIKitInputManager {
+    static {
+        System.loadLibrary("UIKitInputManager");
     }
 
-    @NotNull
-    @Override
-    public String getName() {
-        return UIKitInputManagerModule.REACT_CLASS;
+//    UIKitInputManager(ReactApplicationContext reactContext) {
+//        super(reactContext);
+//    }
+
+    @Nullable
+    static private UIKitInputManager _shared;
+    static public UIKitInputManager getShared() {
+        if (_shared == null) {
+            _shared = new UIKitInputManager();
+        }
+        return _shared;
     }
 
-    @ReactMethod(isBlockingSynchronousMethod = true)
-    public void install() {
-        UIKitInputManagerJSIModulePackage.install(getReactApplicationContext());
+
+    public void injectInputValue(int originalViewRef, String value) {
+//        UIKitInputManagerModule.install(getReactApplicationContext());
+        Log.d("UIKitInputManager", "injectInputValue");
+//        System.out.println("originalViewRef: " + originalViewRef);
+//        System.out.println("value: " + value);
     }
 
     // @ReactMethod(isBlockingSynchronousMethod = true)
@@ -44,10 +51,4 @@ public class UIKitInputManagerModule extends ReactContextBaseJavaModule {
     //     }
     // }
 
-//    @ReactMethod(isBlockingSynchronousMethod = true)
-//    public void injectInputValue(int originalViewRef, String value) {
-////        UIKitInputManagerModule.install(getReactApplicationContext());
-//        System.out.println("originalViewRef: " + originalViewRef);
-//        System.out.println("value: " + value);
-//    }
 }

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Animated, { runOnJS, useAnimatedReaction, useAnimatedRef } from 'react-native-reanimated';
 import BigNumber from 'bignumber.js';
+import { NativeModules } from 'react-native';
 import type { UIAmountInputEnhancedRef, UIAmountInputEnhancedProps } from './types';
 import { AmountInputContext } from './constants';
 import { useAmountInputHandlers, useAmountInputHover } from './hooks';
@@ -27,6 +28,10 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     // @ts-ignore
     const ref = useAnimatedRef<UITextViewRef>();
     const { normalizedText } = React.useContext(AmountInputContext);
+
+    React.useEffect(() => {
+        NativeModules.UIKitInputManagerModule?.install();
+    }, []);
 
     /**
      * Reset context value after the component unmounting
