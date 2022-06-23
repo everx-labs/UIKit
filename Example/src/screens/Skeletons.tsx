@@ -134,7 +134,8 @@ export function SkeletonsScreen() {
                             >
                                 <View
                                     style={{
-                                        backgroundColor: contentBackgroundColor,
+                                        // backgroundColor: contentBackgroundColor,
+                                        backgroundColor: 'green',
                                         height: 40,
                                     }}
                                 />

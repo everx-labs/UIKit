@@ -25,7 +25,10 @@
         
         self.device = device;
         self.pixelFormat = MTLPixelFormatBGRA8Unorm;
-        self.opaque = YES;
+//        self.backgroundColor = [[UIColor redColor] CGColor];
+//        self.framebufferOnly = NO;
+//        self.opaque = YES;
+//        self.opacity = 1.0f;
         
         _needFirstRender = YES;
         _lastShouldRenderCheck = NO;
@@ -49,7 +52,7 @@
     _currentDrawable = nil;
 }
 
-- (MTLRenderPassDescriptor *)renderPassDescriptor {
+- (MTLRenderPassDescriptor *)getRenderPassDescriptor:(const float[])color {
     MTLRenderPassDescriptor *renderPassDescriptor = [MTLRenderPassDescriptor renderPassDescriptor];
     
     if (renderPassDescriptor == nil) {
@@ -60,9 +63,10 @@
     MTLRenderPassColorAttachmentDescriptor *colorAttachment = renderPassDescriptor.colorAttachments[0];
     colorAttachment.texture = self.currentDrawable.texture;
     // make sure to clear every frame for best performance
-    colorAttachment.loadAction = MTLLoadActionClear;
+//    colorAttachment.loadAction = MTLLoadActionClear;
+    colorAttachment.loadAction = MTLLoadActionDontCare;
     // TODO: use proper color, is there any?
-    colorAttachment.clearColor = MTLClearColorMake(0.65f, 0.65f, 0.65f, 1.0f);
+//    colorAttachment.clearColor = MTLClearColorMake(color[0], color[1], color[2], 1.0f);
     
     return renderPassDescriptor;
 }

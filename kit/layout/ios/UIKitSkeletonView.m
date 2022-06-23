@@ -40,7 +40,7 @@ static const uint16_t kRectIndices[] = {
  */
 @implementation UIKitSkeletonsCoordinator {
     CADisplayLink* _displayLink;
-    NSMutableDictionary *_layers;
+    NSMapTable *_layers;
     
     // Cache of GUI rendering primitives
     id<MTLDevice> _device;
@@ -92,7 +92,7 @@ static const uint16_t kRectIndices[] = {
                                    name: UIApplicationWillEnterForegroundNotification
                                  object: nil];
         
-        _layers = [NSMutableDictionary new];
+        _layers = [NSMapTable strongToWeakObjectsMapTable];
         
         _device = MTLCreateSystemDefaultDevice();
         _commandQueue = [_device newCommandQueue];
@@ -157,10 +157,10 @@ static const uint16_t kRectIndices[] = {
         
         // coords projection setup
         // TODO: should it be dynamic?
-        gradientWidth = 70.0;
-        skewDegrees = 15.0;
-        shimmerDuration = 200;
-        skeletonDuration = 3 * 1000;
+        gradientWidth = 100.0;
+        skewDegrees = 10.0;
+        shimmerDuration = 800;
+        skeletonDuration = 1000;
         
         CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
         
@@ -239,15 +239,20 @@ static const uint16_t kRectIndices[] = {
     float progress = (float) _lastTime / (float) skeletonDuration;
     // <<< end progress update
     
-    [_layers enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, UIKitShimmerLayer *layer, BOOL * _Nonnull stop) {
-        if (layer == nil) {
-            return;
+    NSEnumerator *enumerator = [_layers objectEnumerator];
+    
+    @autoreleasepool {
+        UIKitShimmerLayer *layer;
+        while ((layer = [enumerator nextObject])) {
+            if (layer == nil) {
+                return;
+            }
+            
+            if ([layer shouldRender:progress]) {
+                [self render:layer progress:progress];
+            }
         }
-        
-        if ([layer shouldRender:progress]) {
-            [self render:layer progress:progress];
-        }
-    }];
+    }
 }
 
 - (void)render:(UIKitShimmerLayer *)layer progress:(float)progress {
@@ -259,12 +264,16 @@ static const uint16_t kRectIndices[] = {
     // Allow the renderer to preflight 3 frames on the CPU (using a semapore as a guard) and commit them to the GPU.
     // This semaphore will get signaled once the GPU completes a frame's work via addCompletedHandler callback below,
     // signifying the CPU can go ahead and prepare another frame.
-    dispatch_semaphore_wait(_inflight_semaphore, DISPATCH_TIME_FOREVER);
+//    dispatch_semaphore_wait(_inflight_semaphore, DISPATCH_TIME_FOREVER);
     
     // create a new command buffer for each renderpass to the current drawable
     id <MTLCommandBuffer> commandBuffer = [_commandQueue commandBuffer];
     
-    MTLRenderPassDescriptor *renderPassDescriptor = layer.renderPassDescriptor;
+//    const float backgroundColor[] = { 0.9609375, 0.96484375, 0.96875 };
+    const float backgroundColor[] = { 1.0, 1.0, 1.0 };
+//    const float accentColor[] = { 0.92578125,  0.9296875, 0.94140625 };
+    const float accentColor[] = { 0.0, 0.0, 0.0 };
+    MTLRenderPassDescriptor *renderPassDescriptor = [layer getRenderPassDescriptor:backgroundColor];
 //    MTLRenderPassDescriptor *renderPassDescriptor = [MTLRenderPassDescriptor renderPassDescriptor];
     if (renderPassDescriptor) {        
         id <MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
@@ -279,13 +288,12 @@ static const uint16_t kRectIndices[] = {
         float layerProgressShift = [layer getLayerProgressShift:progress];
 //        NSLog(@"layerProgressShift: %f", layerProgressShift);
         const float uniforms[] = {
-            width,
-            height,
             gradientWidth, // gradient width
             skewDegrees, // skew degrees
             layerProgressShift,
-            0.45, 0.45, 0.45, // background color
-             1.0,  1.0,  1.0, // accent color
+            width, height, // resolution
+            backgroundColor[0], backgroundColor[1], backgroundColor[2], // background color
+            accentColor[0], accentColor[1], accentColor[2], // accent color
         };
         
         [renderEncoder setFragmentBytes:&uniforms length:sizeof(uniforms) atIndex:11];
@@ -302,12 +310,12 @@ static const uint16_t kRectIndices[] = {
     }
     
     // call the view's completion handler which is required by the view since it will signal its semaphore and set up the next buffer
-    __block dispatch_semaphore_t block_sema = _inflight_semaphore;
-    [commandBuffer addCompletedHandler:^(id<MTLCommandBuffer> buffer) {
-        // GPU has completed rendering the frame and is done using the contents of any buffers previously encoded on the CPU for that frame.
-        // Signal the semaphore and allow the CPU to proceed and construct the next frame.
-        dispatch_semaphore_signal(block_sema);
-    }];
+//    __block dispatch_semaphore_t block_sema = _inflight_semaphore;
+//    [commandBuffer addCompletedHandler:^(id<MTLCommandBuffer> buffer) {
+//        // GPU has completed rendering the frame and is done using the contents of any buffers previously encoded on the CPU for that frame.
+//        // Signal the semaphore and allow the CPU to proceed and construct the next frame.
+//        dispatch_semaphore_signal(block_sema);
+//    }];
     
     // finalize rendering here. this will push the command buffer to the GPU
     [commandBuffer commit];
@@ -318,8 +326,9 @@ static const uint16_t kRectIndices[] = {
 #pragma mark Layers access and release
 
 - (UIKitShimmerLayer *)dequeueLayerForView:(UIView *)view {
-    if (_layers[@((intptr_t)view)] != nil) {
-        return _layers[@((intptr_t)view)];
+    UIKitShimmerLayer *layer = [_layers objectForKey:@((intptr_t)view)];
+    if (layer != nil) {
+        return nil;
     }
     
     BOOL shouldStartLoop = _layers.count == 0;
@@ -330,8 +339,10 @@ static const uint16_t kRectIndices[] = {
                                                                commandQueue:_commandQueue
                                                              progressCoords:progressCoords];
     newLayer.frame = view.frame;
+//    newLayer.frame = CGRectMake(0, 0, view.bounds.size.width, view.bounds.size.width);
+    newLayer.position = CGPointMake(view.bounds.size.width / 2, view.bounds.size.height / 2);
     
-    _layers[@((intptr_t)view)] = newLayer;
+    [_layers setObject:newLayer forKey:@((intptr_t)view)];
     
     if (shouldStartLoop) {
         [self startLoop];
@@ -382,10 +393,11 @@ static const uint16_t kRectIndices[] = {
 // TODO: remove layer on RN refresh
 @implementation UIKitSkeletonView {
     UIKitShimmerLayer *_shimmerLayer;
+    CGColorRef _originalLayerColor;
 }
 
 - (void)didMoveToWindow {
-    // deattached
+    // detached
     if (self.superview == nil && _shimmerLayer != nil) {
         [_shimmerLayer removeFromSuperlayer];
         [[UIKitSkeletonsCoordinator sharedCoordinator] releaseLayerForView:self];
@@ -396,14 +408,16 @@ static const uint16_t kRectIndices[] = {
     _loading = loading;
     if (loading) {
         _shimmerLayer = [[UIKitSkeletonsCoordinator sharedCoordinator] dequeueLayerForView:self];
-        _shimmerLayer.position = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
         
         [self.layer insertSublayer:_shimmerLayer atIndex:0];
+        _originalLayerColor = self.layer.backgroundColor;
+        self.layer.backgroundColor = [[UIColor whiteColor] CGColor];
         
         [self setNeedsLayout];
     } else {
         [_shimmerLayer removeFromSuperlayer];
         [[UIKitSkeletonsCoordinator sharedCoordinator] releaseLayerForView:self];
+        self.layer.backgroundColor = _originalLayerColor;
     }
 }
 

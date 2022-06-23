@@ -24,7 +24,8 @@ typedef struct _ProgressCoords {
 //- (void)render;
 
 @property (nonatomic, readonly) id<CAMetalDrawable> currentDrawable;
-@property (nonatomic, readonly) MTLRenderPassDescriptor *renderPassDescriptor;
+
+- (MTLRenderPassDescriptor *)getRenderPassDescriptor:(const float[])color;
 
 - (void)setReadyForNextDrawable;
 
