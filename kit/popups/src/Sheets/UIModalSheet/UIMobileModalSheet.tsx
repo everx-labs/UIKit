@@ -12,6 +12,7 @@ import { useSheetProgress } from '../UISheet/usePosition';
 
 export type UIMobileModalSheetProps = UISheetProps & {
     style?: StyleProp<ViewStyle>;
+    fixedMobileContainerHeight?: number;
 };
 
 const MoveContentUnderSheet = React.memo(function MoveContentUnderSheet() {
@@ -35,22 +36,23 @@ const MoveContentUnderSheet = React.memo(function MoveContentUnderSheet() {
     return null;
 });
 
-export function UIMobileModalSheet({ children, style, ...rest }: UIMobileModalSheetProps) {
+export function UIMobileModalSheet({ children, fixedMobileContainerHeight, style, ...rest }: UIMobileModalSheetProps) {
     const { height } = useWindowDimensions();
     const { top: topInset } = useSafeAreaInsets();
     const { height: androidNavigationBarHeight } = useAndroidNavigationBarHeight();
 
-    const fullscreenHeight = React.useMemo(
-        () =>
-            height +
-            androidNavigationBarHeight -
-            Math.max(topInset, UILayoutConstant.contentInsetVerticalX4) +
-            UILayoutConstant.rubberBandEffectDistance -
-            // iOS has a very small indent after when borderRadius ends
-            // do here the same, it's not exact, just was done with eye test
-            (UILayoutConstant.alertBorderRadius + 2),
-        [height, topInset, androidNavigationBarHeight],
-    );
+    const fullscreenHeight = React.useMemo(() => {
+        if (fixedMobileContainerHeight) {
+            return fixedMobileContainerHeight;
+        }
+        return height +
+        androidNavigationBarHeight -
+        Math.max(topInset, UILayoutConstant.contentInsetVerticalX4) +
+        UILayoutConstant.rubberBandEffectDistance -
+        // iOS has a very small indent after when borderRadius ends
+        // do here the same, it's not exact, just was done with eye test
+        (UILayoutConstant.alertBorderRadius + 2);
+    }, [fixedMobileContainerHeight, height, topInset, androidNavigationBarHeight]);
 
     const sheetStyle = React.useMemo(() => {
         const flattenStyle = StyleSheet.flatten(style);

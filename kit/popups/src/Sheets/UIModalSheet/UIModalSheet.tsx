@@ -10,8 +10,10 @@ import { UIDesktopModalSheet } from './UIDesktopModalSheet';
 const getIsMobile = (width: number, dividerWidth: number) => width <= dividerWidth;
 
 export type UIModalSheetProps = UISheetProps & {
-    style?: StyleProp<ViewStyle>;
     maxMobileWidth: number;
+    displayMobileView?: boolean;
+    fixedMobileContainerHeight?: number;
+    style?: StyleProp<ViewStyle>;
 };
 
 export function useIsMobile(maxMobileWidth: number) {
@@ -22,7 +24,7 @@ export function useIsMobile(maxMobileWidth: number) {
     }, [width, maxMobileWidth]);
 }
 
-export function UIModalSheet({ maxMobileWidth, style: styleProp, ...rest }: UIModalSheetProps) {
+export function UIModalSheet({ maxMobileWidth, displayMobileView, style: styleProp, ...rest }: UIModalSheetProps) {
     const isMobile = useIsMobile(maxMobileWidth);
     const theme = useTheme();
 
@@ -36,7 +38,7 @@ export function UIModalSheet({ maxMobileWidth, style: styleProp, ...rest }: UIMo
         [styleProp, theme],
     );
 
-    if (isMobile) {
+    if (isMobile || displayMobileView) {
         return <UIMobileModalSheet {...rest} style={style} />;
     }
 
