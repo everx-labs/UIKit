@@ -6,6 +6,7 @@
 #include <NativeReanimatedModule.h>
 
 #include "UIKitInputsManager.h"
+#include "UIKitInputsModule.h"
 #include <jni.h>
 
 using namespace facebook;
@@ -37,7 +38,7 @@ private:
         auto uiKitInputsManager =
             std::make_unique<UIKitInputsManager>(jni::make_global(javaUIKitInputsManager));
 
-        auto uiKitInputsModule = std::make_shared<UIKitInputsManager>(jsCallInvoker,
+        auto uiKitInputsModule = std::make_shared<UIKitInputsModule>(jsCallInvoker,
                                                                     *runtime,
                                                                     reanimatedModule,
                                                                     std::move(uiKitInputsManager));
@@ -49,7 +50,8 @@ private:
                 const size_t count) -> jsi::Value {
             int viewTag = static_cast<int>(args[0].asNumber());
             std::string value = args[1].getString(rt).utf8(rt);
-            uiKitInputsModule->injectInputValue(viewTag, value);
+            uiKitInputsModule->injectInputValue(rt, viewTag, value);
+            return jsi::Value::undefined();
         };
 
         jsi::Value injectInputValue = jsi::Function::createFromHostFunction(

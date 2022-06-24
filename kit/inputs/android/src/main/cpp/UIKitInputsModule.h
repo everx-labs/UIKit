@@ -34,7 +34,7 @@ class JSI_EXPORT UIKitInputsModuleSpec : public TurboModule {
 public:
     UIKitInputsModuleSpec(std::shared_ptr<CallInvoker> jsInvoker);
 
-    virtual jsi::Value injectInputValue(jsi::Runtime &runtime, const jsi::Value &uid) = 0;
+    virtual jsi::Value injectInputValue(jsi::Runtime &runtime, const jsi::Value &uid, const std::string &value) = 0;
 };
 
 class UIKitInputsModule : public UIKitInputsModuleSpec {
@@ -42,17 +42,17 @@ public:
     UIKitInputsModule(std::shared_ptr<CallInvoker> jsInvoker,
                         jsi::Runtime &rt,
                         std::shared_ptr<NativeReanimatedModule> nativeReanimatedModule,
-                        std::unique_ptr<UIKitInputsModule> uiKitInputsModule) :
+                        std::unique_ptr<UIKitInputsManager> uiKitInputsManager) :
     UIKitInputsModuleSpec(jsInvoker),
     runtime(rt),
-    _uiKitInputsModule(std::move(uiKitInputsModule)),
+//    _uiKitInputsManager(std::move(uiKitInputsManager)),
     _nativeReanimatedModule(std::move(nativeReanimatedModule)) {};
 
     jsi::Value injectInputValue(jsi::Runtime &runtime, const jsi::Value &uid, const std::string &value) override;
 
 private:
     jsi::Runtime &runtime;
-    std::unique_ptr<UIKitInputsModule> _uiKitInputsModule;
+//    std::unique_ptr<UIKitInputsModule> _uiKitInputsManager;
     std::shared_ptr<NativeReanimatedModule> _nativeReanimatedModule;
 };
 

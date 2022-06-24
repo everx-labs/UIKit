@@ -24,9 +24,12 @@ UIKitInputsModuleSpec::UIKitInputsModuleSpec(std::shared_ptr<CallInvoker> jsInvo
     methodMap_["injectInputValue"] = MethodMetadata{
       1, __hostFunction_UIKitInputsModuleSpec_injectInputValue};
 }
+}
 
 jsi::Value UIKitInputsModule::injectInputValue(jsi::Runtime &rt, const jsi::Value &uid, const std::string &value) {
-    
+
+
+
 
     // jsi::Value bottom = ShareableValue::adapt(rt,
     //                                           jsi::Value(0),
