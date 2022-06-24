@@ -11,7 +11,6 @@ const getIsMobile = (width: number, dividerWidth: number) => width <= dividerWid
 
 export type UIModalSheetProps = UISheetProps & {
     maxMobileWidth: number;
-    displayMobileView?: boolean;
     fixedMobileContainerHeight?: number;
     style?: StyleProp<ViewStyle>;
 };
@@ -24,7 +23,7 @@ export function useIsMobile(maxMobileWidth: number) {
     }, [width, maxMobileWidth]);
 }
 
-export function UIModalSheet({ maxMobileWidth, displayMobileView, style: styleProp, ...rest }: UIModalSheetProps) {
+export function UIModalSheet({ maxMobileWidth, style: styleProp, ...rest }: UIModalSheetProps) {
     const isMobile = useIsMobile(maxMobileWidth);
     const theme = useTheme();
 
@@ -38,7 +37,7 @@ export function UIModalSheet({ maxMobileWidth, displayMobileView, style: stylePr
         [styleProp, theme],
     );
 
-    if (isMobile || displayMobileView) {
+    if (isMobile) {
         return <UIMobileModalSheet {...rest} style={style} />;
     }
 

@@ -18,13 +18,11 @@ function ModalScreen<ParamList extends ParamListBase = ParamListBase>({
     route,
     descriptor,
     maxMobileWidth,
-    displayMobileView,
     fixedMobileContainerHeight,
 }: {
     route: ModalNavigationRoute<ParamList, keyof ParamList>;
     descriptor: Descriptor<ParamListBase>;
     maxMobileWidth: number;
-    displayMobileView?: boolean;
     fixedMobileContainerHeight?: number;
 }) {
     const { name } = route;
@@ -40,7 +38,6 @@ function ModalScreen<ParamList extends ParamListBase = ParamListBase>({
             visible={route.visible}
             onClose={hide}
             maxMobileWidth={maxMobileWidth}
-            displayMobileView={displayMobileView}
             fixedMobileContainerHeight={fixedMobileContainerHeight}
         >
             {descriptor.render()}
@@ -51,12 +48,10 @@ function ModalScreen<ParamList extends ParamListBase = ParamListBase>({
 const ModalNavigator = ({
     children,
     maxMobileWidth,
-    displayMobileView,
     fixedMobileContainerHeight,
 }: {
     children: React.ReactNode;
     maxMobileWidth: number;
-    displayMobileView?: boolean;
     fixedMobileContainerHeight?: number;
 }) => {
     const { state, navigation, descriptors } = useNavigationBuilder(ModalRouter, {
@@ -80,7 +75,6 @@ const ModalNavigator = ({
                             route={route}
                             descriptor={descriptor}
                             maxMobileWidth={maxMobileWidth}
-                            displayMobileView={displayMobileView}
                             fixedMobileContainerHeight={fixedMobileContainerHeight}
                         />
                     );
