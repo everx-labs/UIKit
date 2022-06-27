@@ -17,7 +17,7 @@ static jsi::Value __hostFunction_UIKitInputsModuleSpec_injectInputValue(
     TurboModule &turboModule,
     const jsi::Value *args,
     size_t count) {
-    return static_cast<UIKitInputsModuleSpec *>(&turboModule)->injectInputValue(rt, std::move(args[0]));
+    return static_cast<UIKitInputsModuleSpec *>(&turboModule)->injectInputValue(rt, std::move(args[0]), std::move(args[1]));
 }
 
 UIKitInputsModuleSpec::UIKitInputsModuleSpec(std::shared_ptr<CallInvoker> jsInvoker) : TurboModule("UIKitInputsModule", jsInvoker) {
