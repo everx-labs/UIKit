@@ -207,67 +207,80 @@ export function useTheme() {
     return React.useContext(ThemeContext);
 }
 
-const Shadow = {
-    1: {
-        offset: {
-            width: 0,
-            height: 1,
-        },
-        opacity: 0.1,
-        radius: 2,
-    },
-    2: {
-        offset: {
-            width: 0,
-            height: 3,
-        },
-        opacity: 0.03,
-        radius: 8,
-    },
-    3: {
-        offset: {
-            width: 0,
-            height: 6,
-        },
-        opacity: 0.04,
-        radius: 16,
-    },
-    4: {
-        offset: {
-            width: 0,
-            height: 4,
-        },
-        opacity: 0.06,
-        radius: 16,
-    },
-    5: {
-        offset: {
-            width: 0,
-            height: 8,
-        },
-        opacity: 0.1,
-        radius: 20,
-    },
-    6: {
-        offset: {
-            width: -1,
-            height: 1,
-        },
-        opacity: 0.05,
-        radius: 32,
-    },
-};
+function useShadowParameters(isDarkTheme: boolean) {
+    return React.useMemo(() => {
+        /**
+         * We need to apply different opacity for different Theme mode,
+         * and we can't do it through color because of the wrong color mixing on Android.
+         */
+        return {
+            1: {
+                offset: {
+                    width: 0,
+                    height: 1,
+                },
+                opacity: isDarkTheme ? 0.5 : 0.1,
+                radius: 2,
+            },
+            2: {
+                offset: {
+                    width: 0,
+                    height: 3,
+                },
+                opacity: isDarkTheme ? 0.15 : 0.03,
+                radius: 8,
+            },
+            3: {
+                offset: {
+                    width: 0,
+                    height: 6,
+                },
+                opacity: isDarkTheme ? 0.2 : 0.04,
+                radius: 16,
+            },
+            4: {
+                offset: {
+                    width: 0,
+                    height: 4,
+                },
+                opacity: isDarkTheme ? 0.3 : 0.06,
+                radius: 16,
+            },
+            5: {
+                offset: {
+                    width: 0,
+                    height: 8,
+                },
+                opacity: isDarkTheme ? 0.5 : 0.1,
+                radius: 20,
+            },
+            6: {
+                offset: {
+                    width: -1,
+                    height: 1,
+                },
+                opacity: isDarkTheme ? 0.25 : 0.05,
+                radius: 32,
+            },
+        };
+    }, [isDarkTheme]);
+}
 
 export function useShadow(level: 1 | 2 | 3 | 4 | 5 | 6) {
     const theme = useTheme();
+    const isDarkTheme = React.useMemo(
+        () => theme[ColorVariants.Shadow] === DarkTheme.Shadow,
+        [theme],
+    );
+    const shadowParameters = useShadowParameters(isDarkTheme);
     return React.useMemo(
         () => ({
             shadowColor: theme[ColorVariants.Shadow] as ColorValue,
-            shadowOffset: Shadow[level].offset,
-            shadowOpacity: Shadow[level].opacity,
-            shadowRadius: Shadow[level].radius,
+            shadowOffset: shadowParameters[level].offset,
+            shadowOpacity: shadowParameters[level].opacity,
+            shadowRadius: shadowParameters[level].radius,
             elevation: level,
         }),
-        [theme, level],
+        [theme, level, shadowParameters],
     );
 }
