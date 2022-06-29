@@ -12,7 +12,7 @@ export function UIButtonGroupAction(props: UIButtonGroupActionProps) {
             disabled={disabled}
             loading={loading}
             onPress={onPress}
-            style={[styles.container]}
+            style={styles.container}
         >
             <UIButtonGroupActionContent {...props} />
         </Pressable>

@@ -11,7 +11,7 @@ export const ContentColors: Record<'content' | 'background', PressableColors> = 
     content: {
         initialColor: ColorVariants.TextPrimary,
         pressedColor: ColorVariants.SpecialAccentDark,
-        hoveredColor: ColorVariants.SpecialAccentLight,
+        hoveredColor: ColorVariants.TextPrimary,
         disabledColor: ColorVariants.TextOverlay,
         loadingColor: ColorVariants.TextPrimary,
     },

@@ -13,7 +13,6 @@ export function UIButtonGroupContainer(props: UIButtonGroupProps) {
 
 const styles = StyleSheet.create({
     container: {
-        maxWidth: '100%',
         borderRadius: UILayoutConstants.containerBorderRadius,
         overflow: 'hidden',
         flexDirection: 'row',

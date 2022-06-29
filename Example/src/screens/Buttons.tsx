@@ -28,6 +28,7 @@ import {
     UIPressableArea,
     UIButtonGroup,
     UIButtonGroupActionIconPosition,
+    UIControl,
 } from '@tonlabs/uikit.controls';
 import { ColorVariants, UIBackgroundView, UILabel } from '@tonlabs/uikit.themes';
 
@@ -49,17 +50,27 @@ export function ButtonsScreen() {
     return (
         <ExampleScreen>
             <ExampleSection title="UIButtonGroup">
-                <UIButtonGroup>
-                    <UIButtonGroup.Action onPress={() => console.log('Deposit')}>
-                        Deposit
-                    </UIButtonGroup.Action>
-                    <UIButtonGroup.Action onPress={() => console.log('Exchange')}>
-                        Exchange
-                    </UIButtonGroup.Action>
-                    <UIButtonGroup.Action onPress={() => console.log('Send')}>
-                        Send
-                    </UIButtonGroup.Action>
-                </UIButtonGroup>
+                <View style={{ width: 350 }}>
+                    <UIControl.UIButtonGroup>
+                        <UIButtonGroup.Action
+                            onPress={() => console.log('Deposit')}
+                            icon={UIAssets.icons.ui.plus}
+                        >
+                            Deposit
+                        </UIButtonGroup.Action>
+                        <UIButtonGroup.Action onPress={() => console.log('Exchange')}>
+                            Exchange
+                        </UIButtonGroup.Action>
+                        <UIButtonGroup.Action
+                            onPress={() => console.log('Send')}
+                            icon={UIAssets.icons.ui.plus}
+                            iconPosition={UIButtonGroupActionIconPosition.Right}
+                            disabled
+                        >
+                            Send
+                        </UIButtonGroup.Action>
+                    </UIControl.UIButtonGroup>
+                </View>
             </ExampleSection>
             <ExampleSection title="UIPressableArea">
                 <UIPressableArea onPress={() => console.log('UIPressableArea')}>
