@@ -57,7 +57,7 @@ export function ButtonsScreen() {
                         >
                             Deposit
                         </UIButtonGroup.Action>
-                        <UIButtonGroup.Action onPress={() => console.log('Exchange')}>
+                        <UIButtonGroup.Action onPress={() => console.log('Exchange')} loading>
                             Exchange
                         </UIButtonGroup.Action>
                         <UIButtonGroup.Action
