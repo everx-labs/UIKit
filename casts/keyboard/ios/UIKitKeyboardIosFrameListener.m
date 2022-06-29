@@ -19,15 +19,20 @@
     CADisplayLink *displayLink;
     CGFloat prevKeyboardTopPosition;
     int _windowsCount;
+    
+    BOOL displayLinkPausedByDefault;
 }
 - (instancetype)init
 {
     self = [super init];
     if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
         _listeners = [NSMapTable strongToStrongObjectsMapTable];
         prevKeyboardTopPosition = 0;
         _windowsCount = 0;
+        
+        displayLinkPausedByDefault = YES;
     }
     return self;
 }
@@ -121,11 +126,26 @@ RCT_EXPORT_MODULE()
     }
 }
 
+- (void)keyboardWillShow:(NSNotification *)notification {
+    displayLinkPausedByDefault = NO;
+    
+    if (displayLink == nil) {
+        return;
+    }
+    displayLink.paused = NO;
+}
+
 - (void)keyboardDidHide:(NSNotification *)notification {
     /**
      * Invalidate it just in case
      */
     _keyboardView = nil;
+    displayLinkPausedByDefault = YES;
+    
+    if (displayLink == nil) {
+        return;
+    }
+    displayLink.paused = YES;
 }
 
 - (void)addFrameListener:(NSNumber *)uid withListener:(void (^)(CGFloat height))withListener {
@@ -137,6 +157,12 @@ RCT_EXPORT_MODULE()
          */
         displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateKeyboardFrameForListeners)];
         [displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
+        /**
+         * There're 2 situations:
+         * - when keyboard isn't opened yet, we should keep it paused to not waste CPU resources;
+         * - when keyboard is open during displayLink creation, let it work from the start.
+         */
+        displayLink.paused = displayLinkPausedByDefault;
     }
     [_listeners setObject:withListener forKey:uid];
 }
