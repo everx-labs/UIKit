@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
         borderRadius: UILayoutConstants.containerBorderRadius,
         overflow: 'hidden',
         flexDirection: 'row',
+        alignItems: 'stretch',
     },
 });
 

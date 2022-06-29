@@ -21,6 +21,6 @@ export function UIButtonGroupAction(props: UIButtonGroupActionProps) {
 
 const styles = StyleSheet.create({
     container: {
-        maxWidth: '100%',
+        flex: 1,
     },
 });

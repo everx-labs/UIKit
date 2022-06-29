@@ -4,6 +4,7 @@ import Animated, { useAnimatedProps, useAnimatedStyle } from 'react-native-reani
 
 import { UILabelRoles, UILabelAnimated } from '@tonlabs/uikit.themes';
 import { UIAnimatedImage } from '@tonlabs/uikit.media';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { ContentColors, UIButtonGroupActionIconPosition } from './constants';
 import { UIConstant } from '../constants';
 import type { UIButtonGroupActionProps } from './types';
@@ -40,11 +41,7 @@ export function UIButtonGroupActionContent({
             return null;
         }
         return (
-            <UIAnimatedImage
-                source={icon}
-                style={[styles.icon]}
-                animatedProps={animatedImageProps}
-            />
+            <UIAnimatedImage source={icon} style={styles.icon} animatedProps={animatedImageProps} />
         );
     }, [animatedImageProps, icon]);
 
@@ -71,13 +68,17 @@ export function UIButtonGroupActionContent({
 
 const styles = StyleSheet.create({
     container: {
-        flexGrow: 1,
-        flexShrink: 0,
-        justifyContent: 'center',
+        flex: 1,
         flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: UILayoutConstant.contentInsetVerticalX3,
+        paddingHorizontal: UILayoutConstant.normalContentOffset,
     },
     textContainer: {
+        flexShrink: 1,
         flexDirection: 'row',
+        justifyContent: 'center',
     },
     icon: {
         width: UIConstant.iconSize,
