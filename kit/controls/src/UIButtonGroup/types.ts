@@ -6,7 +6,7 @@ export type UIButtonGroupActionProps = {
     /**
      * Title
      */
-    title: string;
+    children: string;
     /**
      * The callback that is called when tapping on the action
      */
@@ -42,11 +42,11 @@ export type UIButtonGroupProps = {
      * List of UIButtonGroupAction
      * There can be no more than one child with the "Cancel" UIButtonGroupActionType.
      */
-    children: UIButtonGroupChildType | (UIButtonGroupChildType | UIButtonGroupChildType[])[];
+    children?: UIButtonGroupChildType | (UIButtonGroupChildType | UIButtonGroupChildType[])[];
     /**
      * Layout around UIButtonGroup
      */
-    layout: UILayout;
+    layout?: UILayout;
     /**
      * ID for usage in tests
      */

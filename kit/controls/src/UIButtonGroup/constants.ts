@@ -7,12 +7,21 @@ export enum UIButtonGroupActionIconPosition {
     Right = 'Right',
 }
 
-export const ContentColors: PressableColors = {
-    initialColor: ColorVariants.TextPrimary,
-    pressedColor: ColorVariants.SpecialAccentDark,
-    hoveredColor: ColorVariants.SpecialAccentLight,
-    disabledColor: ColorVariants.TextOverlay,
-    loadingColor: ColorVariants.TextPrimary,
+export const ContentColors: Record<'content' | 'background', PressableColors> = {
+    content: {
+        initialColor: ColorVariants.TextPrimary,
+        pressedColor: ColorVariants.SpecialAccentDark,
+        hoveredColor: ColorVariants.SpecialAccentLight,
+        disabledColor: ColorVariants.TextOverlay,
+        loadingColor: ColorVariants.TextPrimary,
+    },
+    background: {
+        initialColor: ColorVariants.BackgroundBW,
+        pressedColor: ColorVariants.BackgroundSecondary,
+        hoveredColor: ColorVariants.BackgroundSecondary,
+        disabledColor: ColorVariants.BackgroundBW,
+        loadingColor: ColorVariants.BackgroundBW,
+    },
 };
 
 export const UILayoutConstants = {
