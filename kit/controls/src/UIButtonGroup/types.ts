@@ -10,7 +10,11 @@ export type UIButtonGroupActionProps = {
     /**
      * The callback that is called when tapping on the action
      */
-    onPress: () => void;
+    onPress: () => void | Promise<void>;
+    /**
+     * Function will be called on action press longer than 500 milliseconds
+     */
+    onLongPress?: () => void | Promise<void>;
     /**
      * Source of the icon
      */

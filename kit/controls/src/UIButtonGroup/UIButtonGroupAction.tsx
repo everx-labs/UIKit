@@ -5,13 +5,14 @@ import { Pressable } from '../Pressable';
 import { UIButtonGroupActionContent } from './UIButtonGroupActionContent';
 
 export function UIButtonGroupAction(props: UIButtonGroupActionProps) {
-    const { disabled, loading, onPress, testID } = props;
+    const { disabled, loading, onPress, onLongPress, testID } = props;
     return (
         <Pressable
             testID={testID}
             disabled={disabled}
             loading={loading}
             onPress={onPress}
+            onLongPress={onLongPress}
             style={styles.container}
         >
             <UIButtonGroupActionContent {...props} />

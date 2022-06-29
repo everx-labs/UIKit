@@ -49,7 +49,7 @@ export function ButtonsScreen() {
     return (
         <ExampleScreen>
             <ExampleSection title="UIButtonGroup">
-                <View style={{ width: 350 }}>
+                <View style={{ width: '100%', maxWidth: 350, margin: 20 }}>
                     <UIButtonGroup>
                         <UIButtonGroup.Action
                             onPress={() => console.log('Deposit')}
