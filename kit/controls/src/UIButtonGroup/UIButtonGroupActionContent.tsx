@@ -50,7 +50,7 @@ function Content({
             <View style={styles.textContainer}>
                 {children ? (
                     <UILabelAnimated
-                        role={UILabelRoles.Action}
+                        role={UILabelRoles.ActionFootnote}
                         animatedProps={animatedLabelProps}
                         ellipsizeMode="tail"
                         numberOfLines={1}
@@ -99,7 +99,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: UILayoutConstant.normalContentOffset,
     },
     textContainer: {
-        flexShrink: 1,
         flexDirection: 'row',
         justifyContent: 'center',
     },
