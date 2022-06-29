@@ -19,6 +19,7 @@
     CADisplayLink *displayLink;
     CGFloat prevKeyboardTopPosition;
     int _windowsCount;
+    CGFloat _lastKnownKeyboardY;
     
     BOOL displayLinkPausedByDefault;
 }
@@ -31,6 +32,7 @@
         _listeners = [NSMapTable strongToStrongObjectsMapTable];
         prevKeyboardTopPosition = 0;
         _windowsCount = 0;
+        _lastKnownKeyboardY = 0;
         
         displayLinkPausedByDefault = YES;
     }
@@ -97,6 +99,10 @@ RCT_EXPORT_MODULE()
     }
     
     CGFloat keyboardFrameY = [self.keyboardView.layer presentationLayer].frame.origin.y;
+    // Doing as little work as possible, as it runs a lot of times with CADisplayLink
+    if (keyboardFrameY == _lastKnownKeyboardY) {
+        return;
+    }
 
     /**
      * Starting from some new iOS version
