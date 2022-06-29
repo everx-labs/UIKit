@@ -28,7 +28,6 @@ import {
     UIPressableArea,
     UIButtonGroup,
     UIButtonGroupActionIconPosition,
-    UIControl,
 } from '@tonlabs/uikit.controls';
 import { ColorVariants, UIBackgroundView, UILabel } from '@tonlabs/uikit.themes';
 
@@ -51,7 +50,7 @@ export function ButtonsScreen() {
         <ExampleScreen>
             <ExampleSection title="UIButtonGroup">
                 <View style={{ width: 350 }}>
-                    <UIControl.UIButtonGroup>
+                    <UIButtonGroup>
                         <UIButtonGroup.Action
                             onPress={() => console.log('Deposit')}
                             icon={UIAssets.icons.ui.plus}
@@ -69,7 +68,7 @@ export function ButtonsScreen() {
                         >
                             Send
                         </UIButtonGroup.Action>
-                    </UIControl.UIButtonGroup>
+                    </UIButtonGroup>
                 </View>
             </ExampleSection>
             <ExampleSection title="UIPressableArea">
