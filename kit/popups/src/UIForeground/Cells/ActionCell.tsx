@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { UILabel, TypographyVariants } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UIForegroundActionProps } from '../types';
@@ -29,6 +29,16 @@ export function ActionCell({
                 columnStatus.columnType === 'Primary'
                     ? styles.primaryContainer
                     : styles.secondaryContainer,
+                Platform.select({
+                    web: {
+                        display: 'flex',
+                        cursor:
+                            columnStatus.columnState !== 'Pressable' && (disabled || !onPress)
+                                ? 'default'
+                                : 'pointer',
+                    },
+                    default: null,
+                }),
             ]}
         >
             <UILabel

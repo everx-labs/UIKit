@@ -644,54 +644,6 @@ export const Menus = () => {
                     </UIPopup.Tooltip>
                 </View>
             </ExampleSection>
-            <ExampleSection title="UIMenu">
-                <View style={{ maxWidth: 300, paddingVertical: 20 }}>
-                    <TouchableOpacity ref={menuTriggerRef} onPress={() => setIsUIMenuVisible(true)}>
-                        <UILabel color={ColorVariants.TextAccent} role={TypographyVariants.Action}>
-                            Show UIMenu
-                        </UILabel>
-                    </TouchableOpacity>
-
-                    <UIPopup.Menu
-                        visible={isUIMenuVisible}
-                        triggerRef={menuTriggerRef}
-                        onClose={() => setIsUIMenuVisible(false)}
-                    >
-                        <UIPopup.Menu.CustomAction key="9">
-                            <UIPopup.Menu.PrimaryColumn onPress={getMenuCallback('PrimaryColumn')}>
-                                <UIPopup.Menu.IconCell source={UIAssets.icons.ui.camera} />
-                                <UIPopup.Menu.ActionCell title="Action" />
-                            </UIPopup.Menu.PrimaryColumn>
-                            <UIPopup.Menu.SecondaryColumn>
-                                <UIPopup.Menu.IconCell
-                                    source={UIAssets.icons.ui.camera}
-                                    onPress={getMenuCallback('First IconCell')}
-                                />
-                                <UIPopup.Menu.IconCell
-                                    source={UIAssets.icons.ui.camera}
-                                    onPress={getMenuCallback('Second IconCell')}
-                                    tintColor={ColorVariants.TextAccent}
-                                />
-                            </UIPopup.Menu.SecondaryColumn>
-                        </UIPopup.Menu.CustomAction>
-                        <UIPopup.Menu.Action
-                            type={UIPopup.Menu.Action.Type.Neutral}
-                            title="Neutral Action"
-                            onPress={getMenuCallback('Neutral Action')}
-                        />
-                        <UIPopup.Menu.Action
-                            type={UIPopup.Menu.Action.Type.Negative}
-                            title="Negative Action"
-                            onPress={getMenuCallback('Negative Action')}
-                        />
-                        <UIPopup.Menu.Action
-                            type={UIPopup.Menu.Action.Type.Disabled}
-                            title="Disabled Action"
-                            onPress={getMenuCallback('Disabled Action')}
-                        />
-                    </UIPopup.Menu>
-                </View>
-            </ExampleSection>
         </ExampleScreen>
     );
 };
