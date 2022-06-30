@@ -1,15 +1,16 @@
-import * as UIActionButton from './UIActionButton';
-import * as UIBoxButton from './UIBoxButton';
-import * as UILinkButton from './UILinkButton';
-import * as UILoadMoreButton from './UILoadMoreButton';
-import * as UIMsgButton from './UIMsgButton';
-import * as UIPillButton from './UIPillButton';
-import * as TouchableOpacity from './TouchableOpacity';
-import * as UIIndicator from './UIIndicator';
-import * as UIShowMoreButton from './UIShowMoreButton';
-import * as UISwitcher from './UISwitcher';
-import * as UIWideBoxButton from './UIWideBoxButton';
-import * as UIPressableArea from './UIPressableArea';
+import { UIActionButton } from './UIActionButton';
+import { UIBoxButton } from './UIBoxButton';
+import { UILinkButton } from './UILinkButton';
+import { UILoadMoreButton } from './UILoadMoreButton';
+import { UIMsgButton } from './UIMsgButton';
+import { UIPillButton } from './UIPillButton';
+import { TouchableOpacity } from './TouchableOpacity';
+import { UIIndicator } from './UIIndicator';
+import { UIShowMoreButton } from './UIShowMoreButton';
+import { UISwitcher } from './UISwitcher';
+import { UIWideBoxButton } from './UIWideBoxButton';
+import { UIPressableArea } from './UIPressableArea';
+import { UIButtonGroup } from './UIButtonGroup';
 
 import * as Haptics from './Haptics/Haptics';
 import * as useHover from './useHover';
@@ -27,6 +28,7 @@ export * from './UISwitcher';
 export * from './UIWideBoxButton';
 export * from './UIPressableArea';
 export * from './Pressable';
+export * from './UIButtonGroup';
 
 export * from './Haptics/Haptics';
 export * from './useHover';
@@ -46,6 +48,7 @@ export const UIControl = {
     UISwitcher,
     UIWideBoxButton,
     UIPressableArea,
+    UIButtonGroup,
 
     Haptics,
     useHover,

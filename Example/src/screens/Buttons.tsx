@@ -26,6 +26,8 @@ import {
     UIWideBoxButton,
     UIWideBoxButtonType,
     UIPressableArea,
+    UIButtonGroup,
+    UIButtonGroupActionIconPosition,
 } from '@tonlabs/uikit.controls';
 import { ColorVariants, UIBackgroundView, UILabel } from '@tonlabs/uikit.themes';
 
@@ -46,6 +48,29 @@ export function ButtonsScreen() {
     }, []);
     return (
         <ExampleScreen>
+            <ExampleSection title="UIButtonGroup">
+                <View style={{ width: '100%', maxWidth: 350, margin: 20 }}>
+                    <UIButtonGroup>
+                        <UIButtonGroup.Action
+                            onPress={() => console.log('Deposit')}
+                            icon={UIAssets.icons.ui.plus}
+                        >
+                            Deposit
+                        </UIButtonGroup.Action>
+                        <UIButtonGroup.Action onPress={() => console.log('Exchange')} loading>
+                            Exchange
+                        </UIButtonGroup.Action>
+                        <UIButtonGroup.Action
+                            onPress={() => console.log('Send')}
+                            icon={UIAssets.icons.ui.plus}
+                            iconPosition={UIButtonGroupActionIconPosition.Right}
+                            disabled
+                        >
+                            Send
+                        </UIButtonGroup.Action>
+                    </UIButtonGroup>
+                </View>
+            </ExampleSection>
             <ExampleSection title="UIPressableArea">
                 <UIPressableArea onPress={() => console.log('UIPressableArea')}>
                     <View
