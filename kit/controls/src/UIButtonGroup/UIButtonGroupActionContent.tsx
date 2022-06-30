@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: UILayoutConstant.normalContentOffset,
     },
     textContainer: {
+        flexShrink: 1,
         flexDirection: 'row',
         justifyContent: 'center',
     },

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import type { UIButtonGroupActionProps } from './types';
 import { Pressable } from '../Pressable';
 import { UIButtonGroupActionContent } from './UIButtonGroupActionContent';
@@ -23,5 +23,11 @@ export function UIButtonGroupAction(props: UIButtonGroupActionProps) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        ...Platform.select({
+            web: {
+                flexBasis: 'fit-content',
+            },
+            default: null,
+        }),
     },
 });
