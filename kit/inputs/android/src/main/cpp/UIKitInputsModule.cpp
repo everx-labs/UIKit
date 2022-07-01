@@ -26,29 +26,14 @@ UIKitInputsModuleSpec::UIKitInputsModuleSpec(std::shared_ptr<CallInvoker> jsInvo
 }
 }
 
-jsi::Value UIKitInputsModule::injectInputValue(jsi::Runtime &rt, const jsi::Value &uid, const std::string &value) {
+jsi::Value UIKitInputsModule::injectInputValue(jsi::Runtime &rt, const jsi::Value &reactTag, const jsi::Value &val) {
+    int viewTag = static_cast<int>(reactTag.asNumber());
+    std::string value = val.getString(rt).utf8(rt);
+    #ifdef __ANDROID__
+        this->_javaInputsManager-cthis()->injectInputValue(int, value);
+    #endif
 
-
-
-
-    // jsi::Value bottom = ShareableValue::adapt(rt,
-    //                                           jsi::Value(0),
-    //                                           _nativeReanimatedModule.get(),
-    //                                           ValueType::MutableValueType)->getValue(rt);
-    
-    // std::shared_ptr<MutableValue> bottomMutable = bottom.asObject(runtime).getHostObject<MutableValue>(runtime);
-
-    // _keyboardFrameListener.get()->injectInputValue(uid.asNumber(), [=, &bottom](double keyboardTopPosition) {
-    //     // At the point we will be on UI thread
-    //     // therefore we must take runtime on the same thread,
-    //     // and it's the runtime that reanimated uses
-    //     jsi::Runtime &reanimatedUIRuntime = *_nativeReanimatedModule->runtime.get();
-    //     bottomMutable.get()->set(reanimatedUIRuntime,
-    //                              jsi::PropNameID::forAscii(reanimatedUIRuntime, "value"),
-    //                              jsi::Value(keyboardTopPosition));
-    // });
-    
-    // return bottom;
+    return jsi::Value::undefined();
 }
 
 } // namespace uikit

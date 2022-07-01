@@ -11,15 +11,6 @@ import com.facebook.react.module.annotations.ReactModule;
 import org.jetbrains.annotations.NotNull;
 
 public class UIKitInputManager {
-//    static {
-//        System.loadLibrary("UIKitInputsModule");
-//    }
-
-
-//    UIKitInputManager(ReactApplicationContext reactContext) {
-//        super(reactContext);
-//    }
-
     @Nullable
     static private UIKitInputManager _shared;
     static public UIKitInputManager getShared() {

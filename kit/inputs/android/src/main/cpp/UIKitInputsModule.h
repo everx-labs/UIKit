@@ -16,6 +16,7 @@
 #include <NativeReanimatedModule.h>
 #include <ShareableValue.h>
 #include <MutableValue.h>
+#include "UIKitInputsManager.h"
 
 #elif __APPLE__
 
@@ -34,25 +35,35 @@ class JSI_EXPORT UIKitInputsModuleSpec : public TurboModule {
 public:
     UIKitInputsModuleSpec(std::shared_ptr<CallInvoker> jsInvoker);
 
-    virtual jsi::Value injectInputValue(jsi::Runtime &runtime, const jsi::Value &uid, const std::string &value) = 0;
+    virtual jsi::Value injectInputValue(jsi::Runtime &runtime, const jsi::Value &reactTag, const jsi::Value &value) = 0;
 };
 
 class UIKitInputsModule : public UIKitInputsModuleSpec {
 public:
     UIKitInputsModule(std::shared_ptr<CallInvoker> jsInvoker,
-                        jsi::Runtime &rt,
-                        std::shared_ptr<NativeReanimatedModule> nativeReanimatedModule,
-                        std::unique_ptr<UIKitInputsManager> uiKitInputsManager) :
+                      jsi::Runtime &rt,
+#ifdef __ANDROID__
+                      jni::global_ref<UIKitInputsManager::javaobject> javaInputsManager,
+#elif __APPLE__
+    // UIKitKeyboardFrameListener(UIKitKeyboardIosFrameListener *iosKeyboardFrameListener) : _iosKeyboardFrameListener(iosKeyboardFrameListener) {};
+#endif
+                      std::shared_ptr<NativeReanimatedModule> nativeReanimatedModule) :
     UIKitInputsModuleSpec(jsInvoker),
     runtime(rt),
-//    _uiKitInputsManager(std::move(uiKitInputsManager)),
+#ifdef __ANDROID__
+    _javaInputsManager(javaInputsManager),
+#endif
     _nativeReanimatedModule(std::move(nativeReanimatedModule)) {};
 
-    jsi::Value injectInputValue(jsi::Runtime &runtime, const jsi::Value &uid, const std::string &value) override;
+    jsi::Value injectInputValue(jsi::Runtime &runtime, const jsi::Value &reactTag, const jsi::Value &value) override;
 
 private:
     jsi::Runtime &runtime;
-//    std::unique_ptr<UIKitInputsModule> _uiKitInputsManager;
+#ifdef __ANDROID__
+    jni::global_ref<UIKitInputsManager::javaobject> _javaInputsManager;
+#elif __APPLE__
+//
+#endif
     std::shared_ptr<NativeReanimatedModule> _nativeReanimatedModule;
 };
 

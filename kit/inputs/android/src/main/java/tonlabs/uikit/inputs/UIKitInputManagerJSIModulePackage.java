@@ -18,13 +18,7 @@ public class UIKitInputManagerJSIModulePackage implements JSIModulePackage {
 //    }
     public static final String TAG = "UIKitInputManagerJSI";
     static {
-        try {
-            System.loadLibrary("UIKitInputManager");
-            Log.d(TAG, "-------- UIKitInputManager-cpp: loaded");
-        } catch (Exception e){
-            Log.d(TAG, "-------- UIKitInputManager-cpp: not loaded");
-            e.printStackTrace();
-        }
+        System.loadLibrary("UIKitInput");
     }
 
     public static native void installJSIBindings(long jsiPtr, CallInvokerHolderImpl jsCallInvokerHelper, UIKitInputManager uiKitInputManager);

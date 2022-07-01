@@ -35,32 +35,15 @@ private:
         std::shared_ptr<reanimated::NativeReanimatedModule> reanimatedModule = 
             std::static_pointer_cast<NativeReanimatedModule>(reanimatedModuleProxy.getHostObject(*runtime));
 
-        auto uiKitInputsManager =
-            std::make_unique<UIKitInputsManager>(jni::make_global(javaUIKitInputsManager));
-
         auto uiKitInputsModule = std::make_shared<UIKitInputsModule>(jsCallInvoker,
                                                                     *runtime,
-                                                                    reanimatedModule,
-                                                                    std::move(uiKitInputsManager));
-
-        auto clb4 = [uiKitInputsModule](
-                jsi::Runtime &rt,
-                const jsi::Value &thisValue,
-                const jsi::Value *args,
-                const size_t count) -> jsi::Value {
-            int viewTag = static_cast<int>(args[0].asNumber());
-            std::string value = args[1].getString(rt).utf8(rt);
-            uiKitInputsModule->injectInputValue(rt, viewTag, value);
-            return jsi::Value::undefined();
-        };
-
-        jsi::Value injectInputValue = jsi::Function::createFromHostFunction(
-                *runtime, jsi::PropNameID::forAscii(*runtime, "_injectInputValue"), 2, clb4);
+                                                                    jni::make_global(javaUIKitInputsManager),
+                                                                    reanimatedModule);
 
         runtime->global().setProperty(
-            *runtime,
-            "_injectInputValue",
-            std::move(injectInputValue));
+            *runtime, 
+            jsi::PropNameID::forAscii(*runtime, "__uikitInputs"),
+            jsi::Object::createFromHostObject(*runtime, std::move(uiKitInputsModule)));
     }
 };
 

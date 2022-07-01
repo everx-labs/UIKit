@@ -4,7 +4,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD 17)
 set (CMAKE_CXX_FLAGS "-DON_ANDROID -DONANDROID -DFOR_HERMES=${FOR_HERMES}")
 
-set(PACKAGE_NAME "UIKitInputManager")
+set(PACKAGE_NAME "UIKitInput")
 
 set(BUILD_DIR ${CMAKE_SOURCE_DIR}/build)
 set(RN_SO_DIR ${NODE_MODULES_DIR}/react-native/ReactAndroid/src/main/jni/first-party/react/jni)
