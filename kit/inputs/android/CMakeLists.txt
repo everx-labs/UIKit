@@ -11,7 +11,8 @@ set(RN_SO_DIR ${NODE_MODULES_DIR}/react-native/ReactAndroid/src/main/jni/first-p
 
 add_library(${PACKAGE_NAME}
     SHARED
-    src/main/cpp
+    src/main/cpp/UIKitInputsManager.cpp
+    src/main/cpp/UIKitInputsModule.cpp
     cpp-adapter.cpp
 )
 

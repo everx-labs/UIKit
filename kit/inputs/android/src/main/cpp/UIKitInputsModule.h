@@ -9,7 +9,7 @@
 
 #include "UIKitInputsModule.h"
 
-#include <jsi/jsi.h>
+//#include <jsi/jsi.h>
 
 #ifdef __ANDROID__
 
@@ -35,35 +35,36 @@ class JSI_EXPORT UIKitInputsModuleSpec : public TurboModule {
 public:
     UIKitInputsModuleSpec(std::shared_ptr<CallInvoker> jsInvoker);
 
-    virtual jsi::Value injectInputValue(jsi::Runtime &runtime, const jsi::Value &reactTag, const jsi::Value &value) = 0;
+    virtual void injectInputValue(jsi::Runtime &runtime, const jsi::Value &reactTag, const jsi::Value &value) = 0;
 };
 
 class UIKitInputsModule : public UIKitInputsModuleSpec {
 public:
     UIKitInputsModule(std::shared_ptr<CallInvoker> jsInvoker,
                       jsi::Runtime &rt,
-#ifdef __ANDROID__
+ #ifdef __ANDROID__
                       jni::global_ref<UIKitInputsManager::javaobject> javaInputsManager,
-#elif __APPLE__
-    // UIKitKeyboardFrameListener(UIKitKeyboardIosFrameListener *iosKeyboardFrameListener) : _iosKeyboardFrameListener(iosKeyboardFrameListener) {};
-#endif
+ #elif __APPLE__
+            jni::global_ref<UIKitInputsManager::javaobject> javaInputsManager,
+//     UIKitKeyboardFrameListener(UIKitKeyboardIosFrameListener *iosKeyboardFrameListener) : _iosKeyboardFrameListener(iosKeyboardFrameListener) {};
+ #endif
                       std::shared_ptr<NativeReanimatedModule> nativeReanimatedModule) :
     UIKitInputsModuleSpec(jsInvoker),
     runtime(rt),
-#ifdef __ANDROID__
+ #ifdef __ANDROID__
     _javaInputsManager(javaInputsManager),
-#endif
+ #endif
     _nativeReanimatedModule(std::move(nativeReanimatedModule)) {};
 
-    jsi::Value injectInputValue(jsi::Runtime &runtime, const jsi::Value &reactTag, const jsi::Value &value) override;
+    void injectInputValue(jsi::Runtime &runtime, const jsi::Value &reactTag, const jsi::Value &value) override;
 
 private:
     jsi::Runtime &runtime;
-#ifdef __ANDROID__
+ #ifdef __ANDROID__
     jni::global_ref<UIKitInputsManager::javaobject> _javaInputsManager;
-#elif __APPLE__
-//
-#endif
+ #elif __APPLE__
+
+ #endif
     std::shared_ptr<NativeReanimatedModule> _nativeReanimatedModule;
 };
 

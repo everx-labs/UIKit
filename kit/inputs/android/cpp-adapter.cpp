@@ -50,6 +50,6 @@ private:
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *) {
     return jni::initialize(vm, [] { 
         UIKitInputsJsiModule::registerNatives();
-        UIKitInputsManager::registerNatives();
+//        UIKitInputsManager::registerNatives();
     });
 }

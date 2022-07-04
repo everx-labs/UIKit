@@ -7,11 +7,9 @@
 
 #pragma once
 
-#include <unordered_map>
 #include <fbjni/fbjni.h>
 
-namespace tonlabs {
-namespace uikit {
+namespace tonlabs::uikit {
 
 using namespace facebook;
 
@@ -20,7 +18,7 @@ public:
     static constexpr auto kJavaDescriptor = "Ltonlabs/uikit/inputs/UIKitInputsManager;";
 
     explicit UIKitInputsManager(
-        jni::alias_ref<UIKitInputsManager::jhybridobject> jThis);
+        jni::alias_ref<UIKitInputsManager::javaobject> jThis);
 
     void injectInputValue(int uid, std::string value);
 
@@ -28,5 +26,4 @@ private:
     jni::global_ref<UIKitInputsManager::javaobject> javaPart_;
 };
 
-}
 }
