@@ -125,5 +125,6 @@ const useStyles = makeStyles((theme: Theme, location: Location | null, shadow: a
         ...shadow,
         /** elevation animates terribly */
         elevation: undefined,
+        overflow: 'hidden',
     },
 }));
