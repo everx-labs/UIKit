@@ -638,7 +638,9 @@ const styles = StyleSheet.create({
         flex: 3,
     },
     inner: {
-        flex: 12,
+        flexGrow: 4,
+        flexShrink: 1,
+        // Do not provide flex-basis, it breaks the fitting logic!
         alignItems: 'center',
         minHeight: 'auto', // disallow to cut off the content!
     },
