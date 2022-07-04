@@ -7,6 +7,7 @@ import { UIImage } from '@tonlabs/uikit.media';
 
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
+import { Highlights } from '../components/Highlights';
 
 const DATA = ['Hello', 'this', 'is', 'UICarouselView'];
 
@@ -46,6 +47,18 @@ export function CarouselScreen() {
                             return <UICarouselView.Page key={text} component={component(text)} />;
                         })}
                     </UICarouselView.Container>
+                </View>
+            </ExampleSection>
+            <ExampleSection title="UIHighlights">
+                <View
+                    style={{
+                        width: '100%',
+                        maxWidth: 600,
+                        height: 220,
+                        paddingVertical: 20,
+                    }}
+                >
+                    <Highlights />
                 </View>
             </ExampleSection>
         </ExampleScreen>
