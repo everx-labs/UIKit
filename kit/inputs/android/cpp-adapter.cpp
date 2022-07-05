@@ -7,7 +7,7 @@
 
 #include "UIKitInputsManager.h"
 #include "UIKitInputsModule.h"
-#include <jni.h>
+#include <iostream>
 
 using namespace facebook;
 using namespace reanimated;
@@ -15,7 +15,7 @@ using namespace tonlabs::uikit;
 
 struct UIKitInputsJsiModule : jni::JavaClass<UIKitInputsJsiModule> {
 public:
-    __unused static constexpr auto kJavaDescriptor = "tonlabs/uikit/inputs/UIKitInputsJSIModulePackage;";
+    __unused static constexpr auto kJavaDescriptor = "Ltonlabs/uikit/inputs/UIKitInputManagerJSIModulePackage;";
 
     static void registerNatives() {
         javaClassStatic()->registerNatives({makeNativeMethod("installJSIBindings", UIKitInputsJsiModule::installJSIBindings)});
@@ -52,4 +52,15 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *) {
         UIKitInputsJsiModule::registerNatives();
 //        UIKitInputsManager::registerNatives();
     });
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_tonlabs_uikit_inputs_UIKitInputManagerJSIModulePackage_installJSIBindings(JNIEnv *env,
+                                                     jclass clazz,
+                                                     jlong jsi_ptr,
+                                                     jobject js_call_invoker_helper,
+                                                     jobject ui_kit_input_manager) {
+    // TODO: implement installJSIBindings()
+    std::cout << "Java_tonlabs_uikit_inputs_UIKitInputManagerJSIModulePackage_installJSIBindings!";
 }

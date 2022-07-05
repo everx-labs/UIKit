@@ -40,7 +40,7 @@ Pod::Spec.new do |s|
   s.platforms    = { :ios => "11.0", :tvos => "11.0" }
   s.source       = { :git => "https://github.com/tonlabs/UIKit.git", :tag => "#{s.version}" }
 
-  s.source_files = "ios/**/*.{h,m,mm}"
+  s.source_files = "ios/**/*.{h,m,mm}", "android/src/main/cpp/*.{h,cpp}"
   s.pod_target_xcconfig = {
     :GCC_PREPROCESSOR_DEFINITIONS => "HAVE_FULLFSYNC=1",
     :WARNING_CFLAGS => "-Wno-shorten-64-to-32 -Wno-comma -Wno-unreachable-code -Wno-conditional-uninitialized -Wno-deprecated-declarations",
@@ -55,6 +55,8 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.dependency "React-Core"
+  s.dependency "React-callinvoker"
+  s.dependency "React-jsiexecutor"
   s.dependency "ReactCommon/turbomodule/core"
   s.dependency "#{folly_prefix}Folly"
 end

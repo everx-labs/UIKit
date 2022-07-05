@@ -6,16 +6,16 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
-public class ReactIncognitoTextInputPackage implements ReactPackage {
+public class UIKitInputsPackage implements ReactPackage {
     @Nonnull
     @Override
     public List<NativeModule> createNativeModules(@Nonnull ReactApplicationContext reactContext) {
-        return Collections.emptyList();
+        return Arrays.<NativeModule>asList(new UIKitInputManagerModule(reactContext));
     }
 
     @Nonnull

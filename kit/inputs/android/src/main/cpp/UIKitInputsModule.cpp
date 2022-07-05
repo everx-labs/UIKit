@@ -29,7 +29,7 @@ void UIKitInputsModule::injectInputValue(jsi::Runtime &rt, const jsi::Value &rea
     int viewTag = static_cast<int>(reactTag.asNumber());
     std::string value = val.getString(rt).utf8(rt);
     #ifdef __ANDROID__
-        this->_javaInputsManager->injectInputValue(viewTag, value);
+        static_cast<UIKitInputsManager>(_javaInputsManager).injectInputValue(viewTag, value);
     #endif
 }
 }

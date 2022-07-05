@@ -4,15 +4,15 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD 17)
 set (CMAKE_CXX_FLAGS "-DON_ANDROID -DONANDROID -DFOR_HERMES=${FOR_HERMES}")
 
-set(PACKAGE_NAME "UIKitInput")
+set(PACKAGE_NAME "UIKitInputs")
 
 set(BUILD_DIR ${CMAKE_SOURCE_DIR}/build)
 set(RN_SO_DIR ${NODE_MODULES_DIR}/react-native/ReactAndroid/src/main/jni/first-party/react/jni)
 
 add_library(${PACKAGE_NAME}
     SHARED
-    src/main/cpp/UIKitInputsManager.cpp
-    src/main/cpp/UIKitInputsModule.cpp
+    ./src/main/cpp/UIKitInputsManager.cpp
+    ./src/main/cpp/UIKitInputsModule.cpp
     cpp-adapter.cpp
 )
 
@@ -57,8 +57,7 @@ target_include_directories(
     ${NODE_MODULES_DIR}/react-native-reanimated/Common/cpp/headers/LayoutAnimations
     ${NODE_MODULES_DIR}/react-native-reanimated/Common/cpp/headers/AnimatedSensor
     ${NODE_MODULES_DIR}/react-native-reanimated/Common/cpp/hidden_headers
-    src/main/cpp
-    cpp-adapter.cpp
+    ./src/main/cpp
 )
 
 # find libraries
