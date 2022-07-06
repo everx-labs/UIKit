@@ -16,7 +16,7 @@
 #include <NativeReanimatedModule.h>
 #include <ShareableValue.h>
 #include <MutableValue.h>
-#include "UIKitInputsManager.h"
+#include "UIKitInputManager.h"
 
 #elif __APPLE__
 
@@ -43,7 +43,7 @@ public:
     UIKitInputsModule(std::shared_ptr<CallInvoker> jsInvoker,
                       jsi::Runtime &rt,
  #ifdef __ANDROID__
-                      jni::global_ref<UIKitInputsManager::javaobject> javaInputsManager,
+                      jni::global_ref<UIKitInputManager::javaobject> javaInputsManager,
  #elif __APPLE__
             jni::global_ref<UIKitInputsManager::javaobject> javaInputsManager,
 //     UIKitKeyboardFrameListener(UIKitKeyboardIosFrameListener *iosKeyboardFrameListener) : _iosKeyboardFrameListener(iosKeyboardFrameListener) {};
@@ -61,7 +61,7 @@ public:
 private:
     jsi::Runtime &runtime;
  #ifdef __ANDROID__
-    jni::global_ref<UIKitInputsManager::javaobject> _javaInputsManager;
+    jni::global_ref<UIKitInputManager::javaobject> _javaInputsManager;
  #elif __APPLE__
 
  #endif
