@@ -14,32 +14,6 @@ import Animated, {
 } from 'react-native-reanimated';
 import { debounce } from 'lodash';
 
-function binaryIndexSearch(positions: number[], x: number) {
-    'worklet';
-
-    let left = 0;
-    let right = positions.length;
-
-    while (true) {
-        const middle = left + Math.trunc((right - left) / 2);
-        const item = positions[middle];
-
-        if (x === item) {
-            return middle;
-        }
-
-        if (x >= item) {
-            left = middle;
-        } else {
-            right = middle;
-        }
-
-        if (right - left <= 1) {
-            return left;
-        }
-    }
-}
-
 function calculateIsStable(xCoordinates: number[], xCoordsStableFlags: number) {
     'worklet';
 
@@ -88,53 +62,95 @@ function usePositions(itemsCount: number) {
         [],
     );
 
-    const calculateCurrentPosition = React.useCallback(function calcCurrentPosition(x: number) {
+    const calculateProgress = React.useCallback(function calcProgress(position: number, x: number) {
         'worklet';
 
-        if (!sharedContext.value.isStable) {
-            return 0;
-        }
-
-        const position = binaryIndexSearch(sharedContext.value.positions, x);
         const leftX = sharedContext.value.positions[position];
         const rightX = sharedContext.value.positions[position + 1];
-        const progress = (x - leftX) / (rightX - leftX);
-        return position + progress;
+        return (x - leftX) / (rightX - leftX);
     }, []);
 
-    const calculateClosestPosition = React.useCallback(function calcClosestPosition(x: number) {
+    const calculateCurrentPosition = React.useCallback(function calcCurrentPosition(
+        rawX: number,
+        gravityPosition: number,
+    ): { gravityPosition: number; progress: number } {
         'worklet';
 
         if (!sharedContext.value.isStable) {
-            return 0;
+            return {
+                gravityPosition: 0,
+                progress: 0,
+            };
         }
 
-        const closesLeftPosition = binaryIndexSearch(sharedContext.value.positions, x);
-        const leftX = sharedContext.value.positions[closesLeftPosition];
-        const rightX = sharedContext.value.positions[closesLeftPosition + 1];
-        const middleX = leftX + Math.trunc((rightX - leftX) / 2);
+        const maxPosition = sharedContext.value.positions.length - 1;
+        const x = Math.min(
+            sharedContext.value.positions[maxPosition],
+            Math.max(sharedContext.value.positions[0], rawX),
+        );
 
-        if (x < middleX) {
-            return leftX;
+        const left = Math.max(0, gravityPosition - 1);
+        const right = Math.min(maxPosition, gravityPosition + 1);
+
+        const leftX = sharedContext.value.positions[left];
+        const rightX = sharedContext.value.positions[right];
+
+        if (x > leftX && x < rightX) {
+            const middleX = sharedContext.value.positions[gravityPosition];
+            if (x === middleX) {
+                return {
+                    gravityPosition,
+                    progress: 0,
+                };
+            }
+            if (x < middleX) {
+                const progress = -1 * (1 - calculateProgress(left, x));
+                return {
+                    gravityPosition,
+                    progress,
+                };
+            }
+            const progress = calculateProgress(gravityPosition, x);
+            return {
+                gravityPosition,
+                progress,
+            };
         }
-        return rightX;
-    }, []);
-
-    const calculateClosestLeftPosition = React.useCallback(function calcClosestPosition(x: number) {
-        'worklet';
-
-        if (!sharedContext.value.isStable) {
-            return 0;
+        if (x === leftX) {
+            return {
+                gravityPosition: left,
+                progress: 0,
+            };
         }
+        if (x === rightX) {
+            return {
+                gravityPosition: right,
+                progress: 0,
+            };
+        }
+        if (x < leftX) {
+            if (left === gravityPosition) {
+                return {
+                    gravityPosition,
+                    progress: 0,
+                };
+            }
 
-        const closesLeftPosition = binaryIndexSearch(sharedContext.value.positions, x);
-        const leftX = sharedContext.value.positions[closesLeftPosition];
+            return calcCurrentPosition(x, left);
+        }
+        // x > rightX
+        if (right === gravityPosition) {
+            return {
+                gravityPosition,
+                progress: 0,
+            };
+        }
+        return calcCurrentPosition(x, right);
+    },
+    []);
 
-        return leftX;
-    }, []);
-
-    const calculateClosestRightPosition = React.useCallback(function calcClosestPosition(
-        x: number,
+    const calculateClosestLeftX = React.useCallback(function calcClosestPosition(
+        gravityPosition: number,
     ) {
         'worklet';
 
@@ -142,10 +158,39 @@ function usePositions(itemsCount: number) {
             return 0;
         }
 
-        const closesLeftPosition = binaryIndexSearch(sharedContext.value.positions, x);
-        const rightX = sharedContext.value.positions[closesLeftPosition + 1];
+        return sharedContext.value.positions[Math.max(0, gravityPosition - 1)];
+    },
+    []);
 
-        return rightX;
+    const calculateClosestRightX = React.useCallback(function calcClosestPosition(
+        gravityPosition: number,
+    ) {
+        'worklet';
+
+        if (!sharedContext.value.isStable) {
+            return 0;
+        }
+
+        const maxPosition = sharedContext.value.positions.length - 1;
+        return sharedContext.value.positions[Math.min(maxPosition, gravityPosition + 1)];
+    },
+    []);
+
+    const calculateClosestX = React.useCallback(function calcClosestPosition(
+        x: number,
+        gravityPosition: number,
+    ) {
+        'worklet';
+
+        const { progress } = calculateCurrentPosition(x, gravityPosition);
+
+        if (progress === 0 || Math.abs(progress) < 0.5) {
+            return sharedContext.value.positions[gravityPosition];
+        }
+        if (progress < -0.5) {
+            return calculateClosestLeftX(gravityPosition);
+        }
+        return calculateClosestRightX(gravityPosition);
     },
     []);
 
@@ -161,9 +206,9 @@ function usePositions(itemsCount: number) {
 
     return {
         calculateCurrentPosition,
-        calculateClosestPosition,
-        calculateClosestLeftPosition,
-        calculateClosestRightPosition,
+        calculateClosestX,
+        calculateClosestLeftX,
+        calculateClosestRightX,
         onItemLayout,
     };
 }
@@ -204,50 +249,23 @@ function rotateDots(slots: number[], activeIndex: number, direction: number) {
 }
 
 export function Highlights() {
-    const prevPosition = useSharedValue(-1);
-    const currentPosition = useSharedValue(0);
-
-    useAnimatedReaction(
-        () => currentPosition.value,
-        (cur, prev) => {
-            if (prev == null || cur === prev) {
-                return;
-            }
-            prevPosition.value = prev;
-        },
-    );
+    const currentGravityPosition = useSharedValue(0);
 
     const currentProgress = useSharedValue(0);
 
     const [index, setIndex] = React.useState(0);
 
-    const prevDotsContext = useSharedValue({
-        slots: [1, 2, 3, 4, 5],
-        activeIndex: 1,
-    });
     const dotsContext = useSharedValue({
         slots: [1, 2, 3, 4, 5],
         activeIndex: 1,
     });
-    const dotsIndexes = useDerivedValue(() => {
-        // if (prevPosition.value > currentPosition.value && currentProgress.value > 0) {
-        //     return prevDotsContext.value.slots;
-        // }
-        return dotsContext.value.slots;
-    });
-    const activeDotIndex = useDerivedValue(() => {
-        if (prevPosition.value > currentPosition.value && currentProgress.value > 0) {
-            return dotsContext.value.activeIndex + 1;
-        }
-        return dotsContext.value.activeIndex;
-    });
     const dotProgress = useDerivedValue(() => {
         let progress = 0;
 
-        if (prevPosition.value > currentPosition.value && dotsContext.value.activeIndex === 1) {
+        if (dotsContext.value.activeIndex === 1 && currentProgress.value < 0) {
             progress = currentProgress.value;
         }
-        if (prevPosition.value < currentPosition.value && dotsContext.value.activeIndex === 3) {
+        if (dotsContext.value.activeIndex === 3 && currentProgress.value > 0) {
             progress = currentProgress.value;
         }
 
@@ -255,7 +273,7 @@ export function Highlights() {
     });
 
     useAnimatedReaction(
-        () => currentPosition.value,
+        () => currentGravityPosition.value,
         (cur, prev) => {
             if (cur === prev || prev == null) {
                 return;
@@ -267,7 +285,6 @@ export function Highlights() {
                 dotsContext.value.activeIndex,
                 direction,
             );
-            prevDotsContext.value = dotsContext.value;
             dotsContext.value = newDotsContext;
         },
     );
@@ -275,14 +292,14 @@ export function Highlights() {
     const {
         onItemLayout,
         calculateCurrentPosition,
-        calculateClosestPosition,
-        calculateClosestLeftPosition,
-        calculateClosestRightPosition,
+        calculateClosestX,
+        calculateClosestLeftX,
+        calculateClosestRightX,
     } = usePositions(10);
 
     const scrollRef = useAnimatedRef();
 
-    const scrollHandler = useAnimatedScrollHandler({
+    const scrollHandler = useAnimatedScrollHandler<{ adjustOnMomentum: number }>({
         onScroll(event) {
             const {
                 contentOffset: { x },
@@ -292,10 +309,12 @@ export function Highlights() {
                 return;
             }
 
-            const positionProgress = calculateCurrentPosition(x);
-            const position = Math.trunc(positionProgress);
-            currentPosition.value = position;
-            currentProgress.value = positionProgress - position;
+            const { gravityPosition, progress } = calculateCurrentPosition(
+                x,
+                currentGravityPosition.value,
+            );
+            currentGravityPosition.value = gravityPosition;
+            currentProgress.value = progress;
         },
         onEndDrag(event, ctx) {
             const {
@@ -320,7 +339,7 @@ export function Highlights() {
                 return;
             }
 
-            const closestX = calculateClosestPosition(x);
+            const closestX = calculateClosestX(x, currentGravityPosition.value);
             scrollTo(scrollRef, closestX, 0, true);
             // currentPosition.value = calculateCurrentPosition(closestX);
         },
@@ -333,18 +352,14 @@ export function Highlights() {
                 return;
             }
 
-            if (x == null || isNaN(x)) {
-                return;
-            }
-
             let closestX = 0;
 
             if (ctx.adjustOnMomentum === ADJUST_LEFT) {
-                closestX = calculateClosestLeftPosition(x);
+                closestX = calculateClosestLeftX(currentGravityPosition.value);
             } else if (ctx.adjustOnMomentum === ADJUST_RIGHT) {
-                closestX = calculateClosestRightPosition(x);
+                closestX = calculateClosestRightX(currentGravityPosition.value);
             } else {
-                closestX = calculateClosestPosition(x);
+                closestX = calculateClosestX(x, currentGravityPosition.value);
             }
 
             scrollTo(scrollRef, closestX, 0, true);
@@ -352,12 +367,16 @@ export function Highlights() {
         },
     });
 
+    const activeDotId = useDerivedValue(() => {
+        return dotsContext.value.slots[dotsContext.value.activeIndex];
+    });
+
     const dotsWrappers = React.useRef<Record<number, ReturnType<typeof useAnimatedStyle>>>({});
     const dots = React.useRef<Record<number, ReturnType<typeof useAnimatedStyle>>>({});
-    for (let i = 0; i < dotsIndexes.value.length; i += 1) {
+    for (let i = 0; i < dotsContext.value.slots.length; i += 1) {
         const id = i + 1;
         dotsWrappers.current[id] = useAnimatedStyle(() => {
-            const placement = dotsIndexes.value.findIndex(it => it === id) + 1;
+            const placement = dotsContext.value.slots.findIndex(it => it === id) + 1;
 
             return {
                 transform: [
@@ -373,11 +392,8 @@ export function Highlights() {
             };
         });
         dots.current[id] = useAnimatedStyle(() => {
-            const activeId = dotsIndexes.value[activeDotIndex.value];
-            // console.log(id, activeId, dotsIndexes.value, activeId === id);
-
             return {
-                backgroundColor: activeId === id ? 'white' : 'rgba(0,0,0,.2)',
+                backgroundColor: activeDotId.value === id ? 'white' : 'rgba(0,0,0,.2)',
             };
         });
     }
