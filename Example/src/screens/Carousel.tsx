@@ -4,10 +4,10 @@ import { View, Text } from 'react-native';
 import { UICarouselView } from '@tonlabs/uicast.carousel-view';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIImage } from '@tonlabs/uikit.media';
+import { UIHighlights, UIHighlightCard } from '@tonlabs/uicast.highlights';
 
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
-import { Highlights } from '../components/Highlights';
 
 const DATA = ['Hello', 'this', 'is', 'UICarouselView'];
 
@@ -58,7 +58,11 @@ export function CarouselScreen() {
                         paddingVertical: 20,
                     }}
                 >
-                    <Highlights />
+                    <UIHighlights spaceBetween={5} debug contentInset={{ left: 10 }}>
+                        {new Array(10).fill(null).map(() => (
+                            <UIHighlightCard />
+                        ))}
+                    </UIHighlights>
                 </View>
             </ExampleSection>
         </ExampleScreen>
