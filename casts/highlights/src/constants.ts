@@ -7,4 +7,6 @@ export const UIHighlightsConstants = {
     dotSize: 6,
     controlsHorizontalOffset: 6,
     controlIconSize: 16,
+    cardBorderRaduis: 12,
+    cardDescriptionOffset: 16,
 };

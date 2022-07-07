@@ -9,10 +9,12 @@ import Animated, {
     useAnimatedScrollHandler,
     useSharedValue,
 } from 'react-native-reanimated';
+
 import { Dots } from './Dots';
 import { usePositions } from './usePositions';
 import { useOnWheelHandler } from './useOnWheelHandler';
 import { WebPositionControl } from './WebPositionControls';
+import { runOnUIPlatformSelect } from './runOnUIPlatformSelect';
 
 // @inline
 const ADJUST_NONE = 0;
@@ -49,19 +51,6 @@ function DebugView({
     );
 }
 
-export function UIHighlightCard() {
-    return (
-        <View
-            style={{
-                backgroundColor: 'red',
-                width: 150,
-                height: 100,
-                borderRadius: 10,
-            }}
-        />
-    );
-}
-
 type UIHighlightsProps = {
     /**
      * Items of underlying ScrollView.
@@ -84,6 +73,18 @@ type UIHighlightsProps = {
      */
     contentInset?: UIHighlightsContentInset;
     /**
+     * iOS only
+     *
+     * Whether items should stick to the left edge
+     * after drag was end.
+     *
+     * Default - false
+     *
+     * Doesn't work on the web due to macos scroll inertia problem
+     * On Android doesn't work due to that `fling` isn't stopped by `scrollTo`
+     */
+    pagingEnabled?: boolean;
+    /**
      * Whether debug view is visible
      */
     debug?: boolean;
@@ -98,6 +99,7 @@ export function UIHighlights({
     spaceBetween = 0,
     debug = false,
     contentInset = { left: 0 },
+    pagingEnabled = false,
 }: UIHighlightsProps) {
     const currentGravityPosition = useSharedValue(0);
     const currentProgress = useSharedValue(0);
@@ -112,7 +114,8 @@ export function UIHighlights({
 
     const scrollRef = useAnimatedRef<Animated.ScrollView>();
 
-    const scrollHandler = useAnimatedScrollHandler<{ adjustOnMomentum: number }>({
+    type ScrollContext = { adjustOnMomentum: number };
+    const scrollHandler = useAnimatedScrollHandler<ScrollContext>({
         onScroll(event) {
             const {
                 contentOffset: { x },
@@ -130,6 +133,10 @@ export function UIHighlights({
             currentProgress.value = progress;
         },
         onEndDrag(event, ctx) {
+            if (!pagingEnabled) {
+                ctx.adjustOnMomentum = ADJUST_NONE;
+                return;
+            }
             const { contentOffset, velocity } = event;
 
             // On web we actually don't pass `contentOffset` object
@@ -138,11 +145,18 @@ export function UIHighlights({
 
             if (velocity != null) {
                 if (velocity.x > 0) {
-                    ctx.adjustOnMomentum = ADJUST_RIGHT;
+                    ctx.adjustOnMomentum = runOnUIPlatformSelect({
+                        android: ADJUST_LEFT,
+                        default: ADJUST_RIGHT,
+                    });
+
                     return;
                 }
                 if (velocity.x < 0) {
-                    ctx.adjustOnMomentum = ADJUST_LEFT;
+                    ctx.adjustOnMomentum = runOnUIPlatformSelect({
+                        android: ADJUST_RIGHT,
+                        default: ADJUST_LEFT,
+                    });
                     return;
                 }
             }
@@ -205,6 +219,7 @@ export function UIHighlights({
                 contentContainerStyle={contentStyle}
                 disableIntervalMomentum
                 showsHorizontalScrollIndicator={false}
+                onMomentumScrollBegin={() => undefined}
                 {...onWheelProps}
             >
                 {React.Children.map(children, (child, itemIndex) => {
@@ -237,12 +252,6 @@ export function UIHighlights({
                     );
                 })}
             </Animated.ScrollView>
-            {debug && (
-                <DebugView
-                    currentGravityPosition={currentGravityPosition}
-                    contentInset={contentInset}
-                />
-            )}
             <View style={[styles.controlPanel, contentStyle]}>
                 <Dots
                     currentProgress={currentProgress}
@@ -255,6 +264,12 @@ export function UIHighlights({
                     calculateClosestRightX={calculateClosestRightX}
                 />
             </View>
+            {debug && (
+                <DebugView
+                    currentGravityPosition={currentGravityPosition}
+                    contentInset={contentInset}
+                />
+            )}
         </View>
     );
 }
