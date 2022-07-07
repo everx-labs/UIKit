@@ -138,8 +138,6 @@ const useStyles = makeStyles((theme: Theme, tooltipLocation: Location | null, sh
         backgroundColor: theme[ColorVariants.BackgroundBW],
         borderRadius: UIConstant.tooltip.borderRadius,
         ...shadow,
-        /** elevation animates terribly */
-        elevation: undefined,
     },
     underlay: {
         ...StyleSheet.absoluteFillObject,
