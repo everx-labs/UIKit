@@ -39,6 +39,12 @@ export function usePositions(itemsCount: number) {
         sharedContext.value.isStable = false;
     }
 
+    /**
+     * I wanted to save on memory allocation
+     * for such a small task, hence I use bit masks here,
+     * since I doubt that there is going to be more than 62 items
+     * (JS number should be 64 bits long, with 2 bits for negative numbers)
+     */
     const xCoordsStableFlags = React.useRef(0);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,7 +70,7 @@ export function usePositions(itemsCount: number) {
     );
 
     const calculateCurrentPosition = React.useCallback(
-        function calcCurrentPosition(
+        function calculateCurrentPosition(
             rawX: number,
             gravityPosition: number,
         ): { gravityPosition: number; progress: number } {
@@ -83,6 +89,21 @@ export function usePositions(itemsCount: number) {
                 Math.max(sharedContext.value.positions[0], rawX),
             );
 
+            /**
+             * This is why it's called "gravity position",
+             * instead of counting position based on a left edge of an item
+             * (i.e. x coordinate of a View frame) (this is actually was my first solution)
+             * we treat that left edge as a gravity point.
+             *
+             * That means that we don't calculate current position
+             * based on between what coordinates the current X is,
+             * but rather we set a new gravity point only when progress
+             * (difference between current gravity point X and either left or right X)
+             * exceeds 1.
+             *
+             * That helps with movement to the left,
+             * since we change position only when the left card is fully visible.
+             */
             const left = Math.max(0, gravityPosition - 1);
             const right = Math.min(maxPosition, gravityPosition + 1);
 
@@ -130,7 +151,7 @@ export function usePositions(itemsCount: number) {
                     };
                 }
 
-                return calcCurrentPosition(x, left);
+                return calculateCurrentPosition(x, left);
             }
             // x > rightX
             if (right === gravityPosition) {
@@ -139,7 +160,7 @@ export function usePositions(itemsCount: number) {
                     progress: 0,
                 };
             }
-            return calcCurrentPosition(x, right);
+            return calculateCurrentPosition(x, right);
         },
         [calculateProgress, sharedContext],
     );

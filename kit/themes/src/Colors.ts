@@ -41,6 +41,13 @@ export enum ColorVariants {
     LinePositive = 'LinePositive',
     LineOverlayLight = 'LineOverlayLight',
     LineOverlayDark = 'LineOverlayDark',
+    GraphAccent = 'GraphAccent',
+    GraphPrimary = 'GraphPrimary',
+    GraphSecondary = 'GraphSecondary',
+    GraphTertiary = 'GraphTertiary',
+    GraphPrimaryInverted = 'GraphPrimaryInverted',
+    GraphNeutral = 'GraphNeutral',
+    GraphNegative = 'GraphNegative',
     SpecialAccentLight = 'SpecialAccentLight',
     SpecialAccentDark = 'SpecialAccentDark',
     IconAccent = 'IconAccent',
@@ -132,6 +139,14 @@ export const LightTheme: Theme = {
     [ColorVariants.LineOverlayDark]: 'rgba(255,255,255,.08)',
     [ColorVariants.LineOverlayLight]: 'rgba(0,0,0,.04)',
 
+    [ColorVariants.GraphAccent]: '#0073C4',
+    [ColorVariants.GraphPrimary]: '#20262A',
+    [ColorVariants.GraphSecondary]: '#707376',
+    [ColorVariants.GraphTertiary]: '#B6B8BA',
+    [ColorVariants.GraphPrimaryInverted]: '#FAFAFA',
+    [ColorVariants.GraphNeutral]: '#E2E3E4',
+    [ColorVariants.GraphNegative]: '#CA1414',
+
     [ColorVariants.SpecialAccentLight]: '#339CE6',
     [ColorVariants.SpecialAccentDark]: '#0069B3',
 
@@ -186,6 +201,14 @@ export const DarkTheme: Theme = {
     [ColorVariants.LinePositive]: '#36C05C',
     [ColorVariants.LineOverlayDark]: 'rgba(0,0,0,.08)',
     [ColorVariants.LineOverlayLight]: 'rgba(255,255,255,.08)',
+
+    [ColorVariants.GraphAccent]: '#0083E0',
+    [ColorVariants.GraphPrimary]: '#FAFAFA',
+    [ColorVariants.GraphSecondary]: '#ADB0B1',
+    [ColorVariants.GraphTertiary]: '#676B6E',
+    [ColorVariants.GraphPrimaryInverted]: '#20262A',
+    [ColorVariants.GraphNeutral]: '#3B4043',
+    [ColorVariants.GraphNegative]: '#E71717',
 
     [ColorVariants.SpecialAccentLight]: '#338FD0',
     [ColorVariants.SpecialAccentDark]: '#005C9D',

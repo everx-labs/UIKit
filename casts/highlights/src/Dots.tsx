@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Animated, {
     Extrapolate,
     interpolate,
@@ -9,6 +9,9 @@ import Animated, {
     useDerivedValue,
     useSharedValue,
 } from 'react-native-reanimated';
+
+import { ColorVariants, UIBackgroundView, useTheme } from '@tonlabs/uikit.themes';
+import { UIHighlightsConstants } from './constants';
 
 function rotateDots(slots: number[], activeIndex: number, direction: number) {
     'worklet';
@@ -48,12 +51,21 @@ function Dot({
     activeDotId,
     dotProgress,
     dotsContext,
+    initialPlacement,
+    dotsTranslations,
 }: {
     id: number;
     activeDotId: SharedValue<number>;
     dotProgress: SharedValue<number>;
     dotsContext: SharedValue<DotsContext>;
+    initialPlacement: SharedValue<number[]>;
+    dotsTranslations: SharedValue<number[]>;
 }) {
+    const theme = useTheme();
+
+    const activeColor = theme[ColorVariants.GraphPrimary];
+    const nonActiveColor = theme[ColorVariants.GraphNeutral];
+
     const wrapperStyle = useAnimatedStyle(() => {
         const placement = dotsContext.value.slots.findIndex(it => it === id) + 1;
 
@@ -62,10 +74,8 @@ function Dot({
                 {
                     translateX: interpolate(
                         placement - dotProgress.value,
-                        // TODO
-                        [0, 1, 2, 3, 4, 5, 6],
-                        // TODO
-                        [-32, -16, 0, 16, 32, 48, 64],
+                        initialPlacement.value,
+                        dotsTranslations.value,
                         Extrapolate.CLAMP,
                     ),
                 },
@@ -74,8 +84,7 @@ function Dot({
     });
     const dotStyle = useAnimatedStyle(() => {
         return {
-            // TODO
-            backgroundColor: activeDotId.value === id ? 'white' : 'rgba(0,0,0,.2)',
+            backgroundColor: activeDotId.value === id ? activeColor : nonActiveColor,
         };
     });
 
@@ -86,6 +95,31 @@ function Dot({
     );
 }
 
+function useInitialPlacement() {
+    const tPlacement = React.useRef<number[]>();
+    const tTranslations = React.useRef<number[]>();
+
+    // Since it's static use refs
+    // to not create array on re-renders
+    if (tPlacement.current == null || tTranslations.current == null) {
+        // We use two additional dots for sliding animation
+        tPlacement.current = new Array(UIHighlightsConstants.dotsCount + 2)
+            .fill(null)
+            .map((_, i) => i + 1);
+        // the first item going to be 1
+        // and we want the first dot to be hidden to the left
+        // (as it's for animation)
+        tTranslations.current = tPlacement.current.map(
+            it => (it - 2) * UIHighlightsConstants.dotWrapperWidth,
+        );
+    }
+
+    return {
+        initialPlacement: useSharedValue(tPlacement.current),
+        dotsTranslations: useSharedValue(tTranslations.current),
+    };
+}
+
 export const Dots = React.memo(function Dots({
     currentGravityPosition,
     currentProgress,
@@ -93,20 +127,27 @@ export const Dots = React.memo(function Dots({
     currentGravityPosition: SharedValue<number>;
     currentProgress: SharedValue<number>;
 }) {
+    const { initialPlacement, dotsTranslations } = useInitialPlacement();
+    const rightEdgeDotIndex = useDerivedValue(() => {
+        // 1 is for last index (array.length - 1)
+        // and 1 more to get the item before last
+        return initialPlacement.value.length - 2;
+    });
     const dotsContext = useSharedValue({
-        // TODO
-        slots: [1, 2, 3, 4, 5],
+        slots: initialPlacement.value,
         activeIndex: 1,
     });
     const dotProgress = useDerivedValue(() => {
         let progress = 0;
 
-        // TODO
+        // left edge index is always 1
         if (dotsContext.value.activeIndex === 1 && currentProgress.value < 0) {
             progress = currentProgress.value;
         }
-        // TODO
-        if (dotsContext.value.activeIndex === 3 && currentProgress.value > 0) {
+        if (
+            dotsContext.value.activeIndex === rightEdgeDotIndex.value &&
+            currentProgress.value > 0
+        ) {
             progress = currentProgress.value;
         }
 
@@ -134,67 +175,46 @@ export const Dots = React.memo(function Dots({
     });
 
     return (
-        <View
-            style={{
-                overflow: 'hidden',
-                position: 'relative',
-                borderRadius: 12,
-                // TODO
-                backgroundColor: 'grey',
-                // TODO
-                width: 16 * 3 + 6 * 2,
-                height: 24,
-                paddingHorizontal: 6,
-                flexDirection: 'row',
-            }}
-        >
-            <Dot
-                id={1}
-                activeDotId={activeDotId}
-                dotProgress={dotProgress}
-                dotsContext={dotsContext}
-            />
-            <Dot
-                id={2}
-                activeDotId={activeDotId}
-                dotProgress={dotProgress}
-                dotsContext={dotsContext}
-            />
-            <Dot
-                id={3}
-                activeDotId={activeDotId}
-                dotProgress={dotProgress}
-                dotsContext={dotsContext}
-            />
-            <Dot
-                id={4}
-                activeDotId={activeDotId}
-                dotProgress={dotProgress}
-                dotsContext={dotsContext}
-            />
-            <Dot
-                id={5}
-                activeDotId={activeDotId}
-                dotProgress={dotProgress}
-                dotsContext={dotsContext}
-            />
-        </View>
+        <UIBackgroundView color={ColorVariants.BackgroundBW} style={styles.container}>
+            {initialPlacement.value.map(it => (
+                <Dot
+                    key={it}
+                    id={it}
+                    activeDotId={activeDotId}
+                    dotProgress={dotProgress}
+                    dotsContext={dotsContext}
+                    initialPlacement={initialPlacement}
+                    dotsTranslations={dotsTranslations}
+                />
+            ))}
+        </UIBackgroundView>
     );
 });
 
 const styles = StyleSheet.create({
+    container: {
+        overflow: 'hidden',
+        position: 'relative',
+        flexDirection: 'row',
+        borderRadius: UIHighlightsConstants.controlItemHeight / 2,
+        width:
+            UIHighlightsConstants.dotWrapperWidth * UIHighlightsConstants.dotsCount +
+            // 2 because it's from both left and right side
+            UIHighlightsConstants.dotLeftOffset * 2,
+        height: UIHighlightsConstants.controlItemHeight,
+    },
     dotWrapper: {
-        width: 16,
+        width: UIHighlightsConstants.dotWrapperWidth,
         alignItems: 'center',
         justifyContent: 'center',
         position: 'absolute',
-        top: 4,
-        bottom: 4,
-        left: 6,
+        top: UIHighlightsConstants.dotVerticalOffset,
+        bottom: UIHighlightsConstants.dotVerticalOffset,
+        left: UIHighlightsConstants.dotLeftOffset,
     },
     dot: {
-        width: 6,
-        height: 6,
-        borderRadius: 3,
+        width: UIHighlightsConstants.dotSize,
+        height: UIHighlightsConstants.dotSize,
+        borderRadius: UIHighlightsConstants.dotSize / 2,
     },
 });

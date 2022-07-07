@@ -11,6 +11,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Dots } from './Dots';
 import { usePositions } from './usePositions';
+import { useOnWheelHandler } from './useOnWheelHandler';
+import { WebPositionControl } from './WebPositionControls';
 
 // @inline
 const ADJUST_NONE = 0;
@@ -128,10 +130,11 @@ export function UIHighlights({
             currentProgress.value = progress;
         },
         onEndDrag(event, ctx) {
-            const {
-                contentOffset: { x },
-                velocity,
-            } = event;
+            const { contentOffset, velocity } = event;
+
+            // On web we actually don't pass `contentOffset` object
+            // see `useOnWheelHandler`
+            const { x } = contentOffset || {};
 
             if (velocity != null) {
                 if (velocity.x > 0) {
@@ -176,6 +179,8 @@ export function UIHighlights({
         },
     });
 
+    const onWheelProps = useOnWheelHandler(scrollHandler);
+
     const contentStyle = React.useMemo(
         () =>
             Object.keys(contentInset).reduce((acc, key) => {
@@ -200,6 +205,7 @@ export function UIHighlights({
                 contentContainerStyle={contentStyle}
                 disableIntervalMomentum
                 showsHorizontalScrollIndicator={false}
+                {...onWheelProps}
             >
                 {React.Children.map(children, (child, itemIndex) => {
                     return (
@@ -242,6 +248,12 @@ export function UIHighlights({
                     currentProgress={currentProgress}
                     currentGravityPosition={currentGravityPosition}
                 />
+                <WebPositionControl
+                    scrollRef={scrollRef}
+                    currentGravityPosition={currentGravityPosition}
+                    calculateClosestLeftX={calculateClosestLeftX}
+                    calculateClosestRightX={calculateClosestRightX}
+                />
             </View>
         </View>
     );
@@ -249,7 +261,7 @@ export function UIHighlights({
 
 const styles = StyleSheet.create({
     container: { position: 'relative' },
-    controlPanel: { flexDirection: 'row', marginTop: 8 },
+    controlPanel: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 },
     debugOverlay: {
         position: 'absolute',
         top: 3,
