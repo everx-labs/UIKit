@@ -20,7 +20,7 @@ public:
     explicit UIKitInputManager(
         jni::alias_ref<UIKitInputManager::javaobject> jThis);
 
-    void injectInputValue(int uid, std::string value);
+    void injectInputValue(int uid, std::string value, std::function<void(std::string)> log);
 
 private:
     jni::global_ref<UIKitInputManager::javaobject> javaPart_;

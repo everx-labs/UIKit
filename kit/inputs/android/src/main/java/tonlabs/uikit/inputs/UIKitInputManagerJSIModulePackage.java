@@ -1,5 +1,7 @@
 package tonlabs.uikit.inputs;
 
+import android.util.Log;
+
 import com.facebook.react.bridge.JSIModulePackage;
 import com.facebook.react.bridge.JSIModuleSpec;
 import com.facebook.react.bridge.JavaScriptContextHolder;
@@ -13,6 +15,10 @@ import java.util.List;
 public class UIKitInputManagerJSIModulePackage implements JSIModulePackage {
     static {
         System.loadLibrary("UIKitInputs");
+    }
+
+    static void log(String value) {
+        Log.d("UIKitInputManagerJSI", value);
     }
 
     public static native void installJSIBindings(long jsiPtr, CallInvokerHolderImpl jsCallInvokerHelper, UIKitInputManager uiKitInputManager);

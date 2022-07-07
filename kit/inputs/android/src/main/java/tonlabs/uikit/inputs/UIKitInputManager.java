@@ -15,6 +15,8 @@ public class UIKitInputManager {
         System.loadLibrary("UIKitInputs");
     }
 
+    static public String TAG = "UIKitInputManager";
+
     @Nullable
     static private UIKitInputManager _shared;
     static public UIKitInputManager getShared() {
@@ -23,7 +25,6 @@ public class UIKitInputManager {
         }
         return _shared;
     }
-
 
     public void injectInputValue(int originalViewRef, String value) {
 //        UIKitInputManagerModule.install(getReactApplicationContext());

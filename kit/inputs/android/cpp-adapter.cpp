@@ -20,6 +20,12 @@ public:
         javaClassStatic()->registerNatives({makeNativeMethod("installJSIBindings", UIKitInputsJsiModule::installJSIBindings)});
     }
 
+    static void log(std::string value) {
+        static const auto cls = javaClassStatic();
+        const auto log = cls->getStaticMethod<void(std::string)>("log");
+        log(cls, value);
+    }
+
 private:
     static void installJSIBindings(jni::alias_ref<jni::JClass>,
                                    jlong jsContext,
@@ -37,11 +43,12 @@ private:
         auto uiKitInputsModule = std::make_shared<UIKitInputsModule>(jsCallInvoker,
                                                                      *runtime,
                                                                      jni::make_global(javaUIKitInputManager),
+                                                                     log,
                                                                      reanimatedModule);
 
         runtime->global().setProperty(
             *runtime,
-            jsi::PropNameID::forAscii(*runtime, "__uikitInputManager"),
+            jsi::PropNameID::forAscii(*runtime, "__uiKitInputManager"),
             jsi::Object::createFromHostObject(*runtime, std::move(uiKitInputsModule)));
     }
 };

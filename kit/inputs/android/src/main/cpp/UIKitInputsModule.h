@@ -48,12 +48,14 @@ public:
             jni::global_ref<UIKitInputsManager::javaobject> javaInputsManager,
 //     UIKitKeyboardFrameListener(UIKitKeyboardIosFrameListener *iosKeyboardFrameListener) : _iosKeyboardFrameListener(iosKeyboardFrameListener) {};
  #endif
+                      std::function<void(std::string)> log,
                       std::shared_ptr<NativeReanimatedModule> nativeReanimatedModule) :
     UIKitInputsModuleSpec(jsInvoker),
     runtime(rt),
  #ifdef __ANDROID__
     _javaInputsManager(javaInputsManager),
  #endif
+    _log(log),
     _nativeReanimatedModule(std::move(nativeReanimatedModule)) {};
 
     void injectInputValue(jsi::Runtime &runtime, const jsi::Value &reactTag, const jsi::Value &value) override;
@@ -65,7 +67,8 @@ private:
  #elif __APPLE__
 
  #endif
-    std::shared_ptr<NativeReanimatedModule> _nativeReanimatedModule;
+        std::function<void(std::string)> _log;
+        std::shared_ptr<NativeReanimatedModule> _nativeReanimatedModule;
 };
 
 } // namespace uikit
