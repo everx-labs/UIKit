@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, ViewStyle } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, Platform } from 'react-native';
 import Animated, {
     runOnJS,
     scrollTo,
@@ -73,7 +73,7 @@ type UIHighlightsProps = {
      */
     contentInset?: UIHighlightsContentInset;
     /**
-     * iOS only
+     * Mobile only
      *
      * Whether items should stick to the left edge
      * after drag was end.
@@ -219,7 +219,18 @@ export function UIHighlights({
                 contentContainerStyle={contentStyle}
                 disableIntervalMomentum
                 showsHorizontalScrollIndicator={false}
-                onMomentumScrollBegin={() => undefined}
+                // Deals with a bug on Android when `scrollTo`
+                // doesn't work in scroll handlers.
+                // It happens because by default `scrollTo`
+                // doesn't stop `fling` effect,
+                // so I had to extend horizontal scroll view
+                // to be able to disable it
+                {...Platform.select({
+                    android: {
+                        onMomentumScrollBegin: () => undefined,
+                        flingEnabled: !pagingEnabled,
+                    },
+                })}
                 {...onWheelProps}
             >
                 {React.Children.map(children, (child, itemIndex) => {
