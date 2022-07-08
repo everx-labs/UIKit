@@ -90,19 +90,46 @@ export function usePositions(itemsCount: number) {
             );
 
             /**
-             * This is why it's called "gravity position",
-             * instead of counting position based on a left edge of an item
-             * (i.e. x coordinate of a View frame) (this is actually was my first solution)
-             * we treat that left edge as a gravity point.
+             * In highlights we want to know what the "position" of the left edge of
+             * the visible area in ScrollView is regarding to items coordinates.
+             * Each item (aka a highlight card) has an X coordinate, that we collect on mount.
              *
-             * That means that we don't calculate current position
-             * based on between what coordinates the current X is,
-             * but rather we set a new gravity point only when progress
-             * (difference between current gravity point X and either left or right X)
-             * exceeds 1.
+             * How would one detect the "position" that the left edge represents?
              *
-             * That helps with movement to the left,
-             * since we change position only when the left card is fully visible.
+             * Simple solution would be to map the X coordinate of the left edge (aka `contentOffset.x`)
+             * to the ones we gathered before.
+             * Imagine we have 4 items that have following X coords: [0, 100, 300, 450].
+             * Now imagine we scroll highlights and got X = 50, then the current "position" is 0
+             * If X = 150, then the "position" = 1, if X = 350, then the "position" = 2 and so on.
+             *
+             * It works ok if one moves to the right,
+             * since "position" changes when the item is completely gone to the left.
+             * But it works differently when one moves to the left.
+             * Then as soon the item is slightly visible, "position" changes,
+             * even though it's not visible yet.
+             *
+             * To solve that "gravity position" was introduced.
+             * Basically it brings "current position" (previous state) to the algorithm.
+             * Let's revise previous example to show how it works,
+             * so we have the same coords: [0, 100, 300, 450].
+             * Now imagine we moved to X = 100, that means that we have a "gravity position" as 1.
+             * For that "position" we have two intervals to closest "positions":
+             * 1. [0, 100]
+             * 2. [100, 300]
+             *
+             * Now if we move either to the left or right and X falls into this intervals,
+             * we DON'T change the "current position".
+             * i.e.
+             * - current position = 1, X = 50, next position = 1
+             * - current position = 1, X = 200, next position = 1
+             * as soon as X doesn't fall to the intervals,
+             * we change "gravity position" to the closest point,
+             * (note: it's not actually how it's done,
+             *  since in reality scroll events are fired very fast
+             *  and it almost impossible to "jump" over big distances,
+             *  so we just increase or decrease gravity position)
+             * for example if X = 350, then we change "gravity position" to 2
+             * and continue next calculations with it.
              */
             const left = Math.max(0, gravityPosition - 1);
             const right = Math.min(maxPosition, gravityPosition + 1);
