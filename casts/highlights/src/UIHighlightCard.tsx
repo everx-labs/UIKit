@@ -1,9 +1,12 @@
 import * as React from 'react';
+import { StyleSheet, View } from 'react-native';
 
 import { UIImage, UIImageProps } from '@tonlabs/uikit.media';
+import { UIPressableArea, UIPressableAreaProps } from '@tonlabs/uikit.controls';
 import { ColorVariants, UILabel, UILabelRoles, useTheme } from '@tonlabs/uikit.themes';
-import { StyleSheet, View } from 'react-native';
+
 import { UIHighlightsConstants } from './constants';
+import { useHightlightsScrollRef } from './HighlightsScrollRefContext';
 
 export enum UIHighlightCardTextLayout {
     Top,
@@ -16,7 +19,7 @@ export enum UIHighlightCardForm {
     Horizontal,
 }
 
-type UIHighlightCardProps = {
+interface UIHighlightCardProps extends Omit<UIPressableAreaProps, 'children' | 'waitFor'> {
     /**
      * Height of the card
      *
@@ -62,7 +65,7 @@ type UIHighlightCardProps = {
      * If you use custom color please consider to support both light and dark theme.
      */
     color?: ColorVariants | string;
-};
+}
 
 export function UIHighlightCard({
     height = 128,
@@ -72,6 +75,7 @@ export function UIHighlightCard({
     caption,
     cover,
     color = ColorVariants.BackgroundBW,
+    ...pressableProps
 }: UIHighlightCardProps) {
     const theme = useTheme();
 
@@ -86,45 +90,53 @@ export function UIHighlightCard({
         return height * formToAspectRatioMapping[form];
     }, [height, form]);
 
+    const scrollRef = useHightlightsScrollRef();
+
     return (
-        <View
-            style={[styles.container, formToStyleMapping[form], { width, height, backgroundColor }]}
-        >
-            <UIImage
+        <UIPressableArea waitFor={scrollRef} {...pressableProps}>
+            <View
                 style={[
-                    styles.cover,
-                    {
-                        width: Math.min(width, height),
-                        height: Math.min(width, height),
-                    },
+                    styles.container,
+                    formToStyleMapping[form],
+                    { width, height, backgroundColor },
                 ]}
-                source={cover}
-            />
-            {title !== '' && (
-                <View style={[styles.description, textLayoutToStyleMapping[textLayout]]}>
-                    <View>
-                        <UILabel
-                            role={UILabelRoles.TitleSmall}
-                            color={ColorVariants.TextPrimary}
-                            numberOfLines={1}
-                            ellipsizeMode="tail"
-                        >
-                            {title}
-                        </UILabel>
-                        {caption !== '' && (
+            >
+                <UIImage
+                    style={[
+                        styles.cover,
+                        {
+                            width: Math.min(width, height),
+                            height: Math.min(width, height),
+                        },
+                    ]}
+                    source={cover}
+                />
+                {title !== '' && (
+                    <View style={[styles.description, textLayoutToStyleMapping[textLayout]]}>
+                        <View>
                             <UILabel
-                                role={UILabelRoles.ParagraphFootnote}
-                                color={ColorVariants.TextSecondary}
+                                role={UILabelRoles.TitleSmall}
+                                color={ColorVariants.TextPrimary}
+                                numberOfLines={1}
                                 ellipsizeMode="tail"
-                                numberOfLines={4}
                             >
-                                {caption}
+                                {title}
                             </UILabel>
-                        )}
+                            {caption !== '' && (
+                                <UILabel
+                                    role={UILabelRoles.ParagraphFootnote}
+                                    color={ColorVariants.TextSecondary}
+                                    ellipsizeMode="tail"
+                                    numberOfLines={4}
+                                >
+                                    {caption}
+                                </UILabel>
+                            )}
+                        </View>
                     </View>
-                </View>
-            )}
-        </View>
+                )}
+            </View>
+        </UIPressableArea>
     );
 }
 
