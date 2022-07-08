@@ -93,6 +93,8 @@ export function CarouselScreen() {
                             if (i % 2 === 0) {
                                 return (
                                     <UIHighlightCard
+                                        // eslint-disable-next-line react/no-array-index-key
+                                        key={`${i}_even`}
                                         form={UIHighlightCardForm.Horizontal}
                                         textLayout={UIHighlightCardTextLayout.Bottom}
                                         title="Title"
@@ -105,6 +107,8 @@ export function CarouselScreen() {
                             }
                             return (
                                 <UIHighlightCard
+                                    // eslint-disable-next-line react/no-array-index-key
+                                    key={`${i}_odd`}
                                     height={192}
                                     form={UIHighlightCardForm.Vertical}
                                     textLayout={UIHighlightCardTextLayout.Top}

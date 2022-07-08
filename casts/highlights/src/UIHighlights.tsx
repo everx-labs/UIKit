@@ -247,8 +247,12 @@ export function UIHighlights({
                 >
                     <HighlightsScrollRefProvider scrollRef={nativeGestureRef as any}>
                         {React.Children.map(children, (child, itemIndex) => {
+                            if (!React.isValidElement(child)) {
+                                return null;
+                            }
                             return (
                                 <View
+                                    key={child.key}
                                     style={
                                         itemIndex !== 0
                                             ? {
