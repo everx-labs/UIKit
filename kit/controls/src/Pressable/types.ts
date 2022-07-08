@@ -1,20 +1,45 @@
 import type { ColorVariants } from '@tonlabs/uikit.themes';
 import type React from 'react';
 import type { StyleProp, ViewStyle } from 'react-native';
+import type { GestureType } from 'react-native-gesture-handler';
 
-export type PressableProps = {
+export interface PressableProps {
+    /**
+     * Function will be called on button press
+     */
     onPress?: () => void | Promise<void>;
+    /**
+     * Function will be called on button long press
+     */
     onLongPress?: () => void | Promise<void>;
+    /**
+     * Whether the button is disabled or not.
+     * If the value is true, the button does not respond to events.
+     */
     disabled?: boolean;
+    /**
+     * Whether there is should be visual feedback for loading state.
+     */
     loading?: boolean;
     /**
      * Use usePressableContentNumericParameter hook in the child components to animate them.
      * Use usePressableContentColor hook in the child components to animate their colors.
      */
     children: React.ReactNode;
+    /**
+     * The `UIPressableArea` behaves like a usual `View` container
+     * and accepts all the appropriate styles
+     */
     style?: StyleProp<ViewStyle>;
+    /**
+     * ID for usage in tests
+     */
     testID?: string;
-};
+    /**
+     * Compatibility with https://docs.swmansion.com/react-native-gesture-handler/docs/next/guides/upgrading-to-2#replacing-waitfor-and-simultaneoushandlers
+     */
+    waitFor?: React.RefObject<GestureType>;
+}
 
 export type PressableStateType = 'Initial' | 'Disabled' | 'Hovered' | 'Pressed' | 'Loading';
 

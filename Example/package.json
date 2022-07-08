@@ -43,6 +43,7 @@
         "@tonlabs/uicast.split-navigator": "*",
         "@tonlabs/uicast.stack-navigator": "*",
         "@tonlabs/uicast.texts": "*",
+        "@tonlabs/uicast.highlights": "*",
         "@tonlabs/uikit.assets": "*",
         "@tonlabs/uikit.controls": "*",
         "@tonlabs/uikit.core": "*",

@@ -21,6 +21,7 @@ export function Pressable({
     children,
     style,
     testID,
+    waitFor,
 }: PressableProps) {
     const isPressed = useSharedValue(false);
     const isHovered = useSharedValue(false);
@@ -29,13 +30,17 @@ export function Pressable({
 
     const pressableState = usePressableState(isDisabled, isLoading, isPressed, isHovered);
 
-    const tap = Gesture.Tap()
+    let tap = Gesture.Tap()
         .onEnd((_e, success: boolean) => {
             success && onPress && runOnJS(onPress)();
         })
         .enabled(!(disabled || loading));
 
-    const longPress = Gesture.LongPress()
+    if (waitFor != null) {
+        tap = tap.requireExternalGestureToFail(waitFor);
+    }
+
+    let longPress = Gesture.LongPress()
         .maxDistance(maxPressDistance)
         .shouldCancelWhenOutside(true)
         .onBegin(() => {
@@ -51,6 +56,10 @@ export function Pressable({
             !onLongPress && success && onPress && runOnJS(onPress)();
         })
         .enabled(!(disabled || loading));
+
+    if (waitFor != null) {
+        longPress = longPress.requireExternalGestureToFail(waitFor);
+    }
 
     const tapGestures = Gesture.Simultaneous(longPress, tap);
 
