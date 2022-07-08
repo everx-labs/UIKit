@@ -267,7 +267,11 @@ export function UIHighlights({
                                             // there are some items to the left
                                             // decrease the `x` coord by the `contentInset`
                                             // if it's present
-                                            x - (contentInset.left ?? 0),
+                                            //
+                                            // Math.trunc here is to eliminate float coords,
+                                            // that due to IEEE 754 implementation in JS
+                                            // can lead to errors
+                                            Math.trunc(x - (contentInset.left ?? 0)),
                                         );
                                     }}
                                 >
