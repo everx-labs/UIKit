@@ -93,7 +93,14 @@ export function UIHighlightCard({
     const scrollRef = useHightlightsScrollRef();
 
     return (
-        <UIPressableArea waitFor={scrollRef} {...pressableProps}>
+        <UIPressableArea
+            // Change default hover scale factor
+            // since the parent ScrollView has an intrinsic height,
+            // hence the scale factor > 1 leads to cut vertical edges of the card
+            scaleParameters={{ hovered: 0.99 }}
+            waitFor={scrollRef}
+            {...pressableProps}
+        >
             <View
                 style={[
                     styles.container,
