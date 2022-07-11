@@ -1,19 +1,17 @@
 import * as React from 'react';
-import Animated, { runOnJS, useAnimatedReaction, useAnimatedRef } from 'react-native-reanimated';
+import Animated, {
+    runOnJS,
+    useAnimatedReaction,
+    useAnimatedRef,
+} from 'react-native-reanimated';
 import BigNumber from 'bignumber.js';
-import { NativeModules, NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
+import { NativeModules } from 'react-native';
 import type { UIAmountInputEnhancedRef, UIAmountInputEnhancedProps } from './types';
 import { AmountInputContext } from './constants';
 import { useAmountInputHandlers, useAmountInputHover } from './hooks';
 import { UITextView, UITextViewRef } from '../UITextView';
 
 const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
-
-// @ts-ignore
-// eslint-disable-next-line no-underscore-dangle
-if (global.__uiKitInputManager == null) {
-    NativeModules.UIKitInputManagerModule?.install();
-}
 
 export const UIAmountInputEnhancedContent = React.forwardRef<
     UIAmountInputEnhancedRef,
@@ -35,11 +33,25 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     const ref = useAnimatedRef<UITextViewRef>();
     const { normalizedText } = React.useContext(AmountInputContext);
 
-    function onFocusASD(e: NativeSyntheticEvent<TextInputFocusEventData>) {
-        onFocus?.(e);
+    React.useEffect(() => {
         // @ts-ignore
-        __uiKitInputManager.injectInputValue(ref?.(), 'INJECTED!');
-    }
+        // eslint-disable-next-line no-underscore-dangle
+        NativeModules.UIKitInputManagerModule?.install();
+    }, []);
+
+    // const ads = useSharedValue(0);
+    // const initialInject = () => {
+    //     'worklet';
+
+    //     if (!_WORKLET) {
+    //         return
+    //     }
+
+    //     // console.log('__uiKitInputManager', __uiKitInputManager);
+    //     // // @ts-ignore
+    //     // __uiKitInputManager?.injectInputValue?.(ref?.(), `INJECTED ${ads.value}`);
+    // };
+    // useDerivedValue(initialInject);
 
     /**
      * Reset context value after the component unmounting
@@ -111,7 +123,7 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     const textViewHandlers = useAmountInputHandlers(
         ref,
         editable,
-        onFocusASD,
+        onFocus,
         onBlur,
         onSelectionChange,
         precision,

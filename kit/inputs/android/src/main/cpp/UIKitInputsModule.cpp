@@ -16,7 +16,7 @@ static jsi::Value __hostFunction_UIKitInputsModuleSpec_injectInputValue(
     TurboModule &turboModule,
     const jsi::Value *args,
     size_t count) {
-    static_cast<UIKitInputsModuleSpec *>(&turboModule)->injectInputValue(rt, std::move(args[0]), std::move(args[1]));
+    static_cast<UIKitInputsModuleSpec *>(&turboModule)->callInjectInputValue(std::move(args[0]), std::move(args[1]));
     return jsi::Value::undefined();
 }
 
@@ -25,11 +25,14 @@ static jsi::Value __hostFunction_UIKitInputsModuleSpec_injectInputValue(
           1, __hostFunction_UIKitInputsModuleSpec_injectInputValue};
     }
 
-    void UIKitInputsModule::injectInputValue(jsi::Runtime &rt, const jsi::Value &reactTag, const jsi::Value &val) {
+
+    void UIKitInputsModule::callInjectInputValue(const jsi::Value &reactTag, const jsi::Value &val) {
         int viewTag = static_cast<int>(reactTag.asNumber());
-        std::string value = val.getString(rt).utf8(rt);
+        std::string value = val.getString(this->runtime).utf8(this->runtime);
         #ifdef __ANDROID__
-            static_cast<UIKitInputManager>(_javaInputsManager).injectInputValue(viewTag, value);
+//            this->_javaInputsManager->getClass()->getMethod<>()
+        _javaInputsManager->callInjectInputValue(viewTag, value);
+//            static_cast<UIKitInputManager>(_javaInputsManager).injectInputValue(viewTag, value);
         #endif
     }
 }

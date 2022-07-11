@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type React from 'react';
 import type { UITextViewRef } from '../UITextView';
 
-/* global _WORKLET, _injectInputValue */
+/* global _WORKLET, _injectInputValue, __uiKitInputManager */
 export function injectInputValue(animatedRef: React.RefObject<UITextViewRef>, value: string) {
     'worklet';
 
@@ -23,5 +24,8 @@ export function injectInputValue(animatedRef: React.RefObject<UITextViewRef>, va
     // @ts-expect-error
     const viewTag: number = animatedRef();
 
-    _injectInputValue(viewTag, value);
+    __uiKitInputManager?.injectInputValue?.(viewTag, value);
+    // console.log('_injectInputValue', _injectInputValue || null);
+    // console.log('_measure', _measure);
+    // _injectInputValue(viewTag, value);
 }

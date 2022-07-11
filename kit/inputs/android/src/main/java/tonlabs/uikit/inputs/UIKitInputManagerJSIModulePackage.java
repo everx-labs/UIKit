@@ -27,7 +27,7 @@ public class UIKitInputManagerJSIModulePackage implements JSIModulePackage {
         long jsiPtr = reactApplicationContext.getJavaScriptContextHolder().get();
         CallInvokerHolderImpl jsCallInvokerHolder = (CallInvokerHolderImpl) reactApplicationContext.getCatalystInstance().getJSCallInvokerHolder();
 
-        UIKitInputManagerJSIModulePackage.installJSIBindings(jsiPtr, jsCallInvokerHolder, UIKitInputManager.getShared());
+        UIKitInputManagerJSIModulePackage.installJSIBindings(jsiPtr, jsCallInvokerHolder, UIKitInputManager.getShared(reactApplicationContext));
     }
 
     @Override

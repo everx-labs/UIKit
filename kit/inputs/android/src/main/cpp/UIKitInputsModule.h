@@ -35,7 +35,7 @@ class JSI_EXPORT UIKitInputsModuleSpec : public TurboModule {
 public:
     UIKitInputsModuleSpec(std::shared_ptr<CallInvoker> jsInvoker);
 
-    virtual void injectInputValue(jsi::Runtime &runtime, const jsi::Value &reactTag, const jsi::Value &value) = 0;
+    virtual void callInjectInputValue(const jsi::Value &reactTag, const jsi::Value &value) = 0;
 };
 
 class UIKitInputsModule : public UIKitInputsModuleSpec {
@@ -56,7 +56,7 @@ public:
  #endif
     _nativeReanimatedModule(std::move(nativeReanimatedModule)) {};
 
-    void injectInputValue(jsi::Runtime &runtime, const jsi::Value &reactTag, const jsi::Value &value) override;
+    void callInjectInputValue(const jsi::Value &reactTag, const jsi::Value &value) override;
 
 private:
     jsi::Runtime &runtime;
