@@ -40,10 +40,18 @@ private:
         std::shared_ptr<reanimated::NativeReanimatedModule> reanimatedModule =
             std::static_pointer_cast<NativeReanimatedModule>(reanimatedModuleProxy.getHostObject(*runtime));
 
+//        auto uiKitInputManager =
+//                std::make_unique<UIKitInputManager>(jni::make_global(javaUIKitInputManager));
+
+//        static_cast<UIKitInputManager>(javaUIKitInputManager).injectInputValue(123, "123132");
+//        javaUIKitInputManager->cthis()->injectInputValue(123, "123132");
+//        javaUIKitInputManager.get()->injectInputValue(123, "123132");
+//        javaUIKitInputManager->getClass()->injectInputValue(123, "123132");
+//        jni::getPlainJniReference(javaUIKitInputManager)->injectInputValue(123, "123132");
+
         auto uiKitInputsModule = std::make_shared<UIKitInputsModule>(jsCallInvoker,
                                                                      *runtime,
                                                                      jni::make_global(javaUIKitInputManager),
-                                                                     log,
                                                                      reanimatedModule);
 
         runtime->global().setProperty(
