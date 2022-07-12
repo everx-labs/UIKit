@@ -1,7 +1,9 @@
 package tonlabs.uikit.inputs;
 
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -48,19 +50,19 @@ public class UIKitInputManager {
     }
 
     public void injectInputValue(int originalViewRef, String value) {
-        _reactApplicationContext.runOnUiQueueThread(
-                () -> {
-                    if (_uiManagerModule == null) {
-                        return;
-                    }
+       _reactApplicationContext.runOnUiQueueThread(
+           () -> {
+               if (_uiManagerModule == null) {
+                   return;
+               }
 
-                    View originalView = _uiManagerModule.resolveView(originalViewRef);
-                    if (originalView instanceof ReactEditText) {
-                        ReactEditText reactEditText = (ReactEditText) originalView;
-                        Editable editableText = reactEditText.getEditableText();
-                        editableText.replace(0, editableText.length(), value);
-                    }
-                }
-        );
+               View originalView = _uiManagerModule.resolveView(originalViewRef);
+               if (originalView instanceof ReactEditText) {
+                   ReactEditText reactEditText = (ReactEditText) originalView;
+                   Editable editableText = reactEditText.getEditableText();
+                   editableText.replace(0, editableText.length(), value);
+               }
+           }
+       );
     }
 }
