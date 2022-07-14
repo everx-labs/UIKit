@@ -7,24 +7,8 @@
 
 #pragma once
 
-#include "UIKitInputsModule.h"
-
-//#include <jsi/jsi.h>
-
-#ifdef __ANDROID__
-
 #include <NativeReanimatedModule.h>
-#include <ShareableValue.h>
-#include <MutableValue.h>
 #include "UIKitInputManager.h"
-
-#elif __APPLE__
-
-#include <RNReanimated/NativeReanimatedModule.h>
-#include <RNReanimated/ShareableValue.h>
-#include <RNReanimated/MutableValue.h>
-
-#endif
 
 namespace tonlabs {
 namespace uikit {
@@ -49,7 +33,8 @@ public:
  #endif
                       std::shared_ptr<NativeReanimatedModule> nativeReanimatedModule) :
     UIKitInputsModuleSpec(jsInvoker),
-    runtime(rt),
+    _jsInvoker(jsInvoker),
+    _runtime(rt),
  #ifdef __ANDROID__
     _javaInputsManager(javaInputsManager),
  #endif
@@ -57,13 +42,14 @@ public:
 
     jsi::Object bind(const jsi::Value &reactTag) override;
 private:
-    jsi::Runtime &runtime;
+    jsi::Runtime &_runtime;
  #ifdef __ANDROID__
     jni::global_ref<UIKitInputManager::javaobject> _javaInputsManager;
  #elif __APPLE__
 
  #endif
     std::shared_ptr<NativeReanimatedModule> _nativeReanimatedModule;
+        std::shared_ptr<CallInvoker> _jsInvoker;
 };
 
 } // namespace uikit

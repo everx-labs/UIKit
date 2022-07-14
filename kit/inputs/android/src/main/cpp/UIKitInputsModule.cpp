@@ -30,12 +30,12 @@ jsi::Object UIKitInputsModule::bind(const jsi::Value &reactTag) {
     int viewTag = static_cast<int>(reactTag.asNumber());
 
     // Get a Java class that contains resolved view (UIKitInputBinder.java)
-    auto javaInputsBinder = _javaInputsManager->bind(viewTag);
+    jni::global_ref<UIKitInputsBinder> javaInputsBinder = _javaInputsManager->bind(viewTag);
 
-    auto uiKitBinderHostObject = std::make_unique<UIKitInputsBinderHostObject>(jsCallInvoker,
-                                                                               *runtime,
-                                                                               jni::make_global(javaInputsBinder));
+    auto uiKitBinderHostObject = std::make_unique<UIKitInputsBinderHostObject>(_jsInvoker,
+                                                                               _runtime,
+                                                                               javaInputsBinder);
 
-    return jsi::Object::createFromHostObject(runtime, std::move(uiKitBinderHostObject))
+    return jsi::Object::createFromHostObject(_runtime, std::move(uiKitBinderHostObject));
 }
 }

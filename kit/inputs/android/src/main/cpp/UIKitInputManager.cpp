@@ -10,9 +10,9 @@
 namespace tonlabs::uikit {
 using namespace facebook;
 
-jni::alias_ref<UIKitInputManager::javaobject> UIKitInputManager::bind(int uid, std::string value) {
-    auto method = getClass()->getMethod<void(int, std::string)>("bind");
-    return method(self(), uid, value);
+jni::global_ref<UIKitInputsBinder> UIKitInputManager::bind(int uid) {
+    static const auto method = getClass()->getMethod<UIKitInputsBinder(int)>("bind");
+    return jni::make_global(method(self(), uid));
 }
 
 }

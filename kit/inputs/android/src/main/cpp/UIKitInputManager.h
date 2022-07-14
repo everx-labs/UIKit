@@ -11,7 +11,6 @@
 #include <jsi/jsi.h>
 
 #include "UIKitInputsBinder.h"
-#include ""
 
 namespace tonlabs::uikit {
 using namespace facebook;
@@ -20,10 +19,9 @@ class UIKitInputManager : public jni::JavaClass<UIKitInputManager> {
 public:
     static constexpr auto kJavaDescriptor = "Ltonlabs/uikit/inputs/UIKitInputManager;";
 
-    jni::alias_ref<UIKitInputManager::javaobject> bind(int reactTag);
+    jni::global_ref<UIKitInputsBinder> bind(int reactTag);
 
     private:
-//    jni::global_ref<UIKitInputManager::javaobject> javaPart_;
 };
 
 }

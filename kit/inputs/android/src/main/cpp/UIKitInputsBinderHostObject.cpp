@@ -22,11 +22,11 @@ UIKitInputsBinderHostObjectSpec::UIKitInputsBinderHostObjectSpec(std::shared_ptr
                 1, __hostFunction_UIKitInputsBinderHostObjectSpec_setText};
 }
 
-void UIKitInputsModule::setText(const jsi::Value &value) {
-    std::string value = val.getString(runtime).utf8(runtime);
+void UIKitInputsBinderHostObject::setText(const jsi::Value &value) {
+    std::string val = value.getString(_runtime).utf8(_runtime);
 
     #ifdef __ANDROID__
-    _javaInputsBinder->setText(value);
+        _javaInputsBinder->setText(val);
     #endif
 }
 }

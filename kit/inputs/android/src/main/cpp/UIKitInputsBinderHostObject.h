@@ -6,6 +6,7 @@
 
 #include <jsi/jsi.h>
 
+#include <NativeReanimatedModule.h>
 #include "UIKitInputsBinder.h"
 
 namespace tonlabs {
@@ -22,10 +23,10 @@ public:
 
 class UIKitInputsBinderHostObject : public UIKitInputsBinderHostObjectSpec {
 public:
-    UIKitInputsModule(std::shared_ptr <CallInvoker> jsInvoker,
+    UIKitInputsBinderHostObject(std::shared_ptr<CallInvoker> jsInvoker,
                       jsi::Runtime &rt,
-                      jni::global_ref<UIKitInputsBinder::javaobject> javaInputsBinder) :
-                UIKitInputsModuleSpec(jsInvoker),
+                      jni::global_ref<UIKitInputsBinder> javaInputsBinder) :
+                UIKitInputsBinderHostObjectSpec(jsInvoker),
                 _runtime(rt),
                 _javaInputsBinder(javaInputsBinder) {};
 
@@ -33,7 +34,7 @@ public:
 
 private:
     jsi::Runtime &_runtime;
-    jni::global_ref<UIKitInputsBinder::javaobject> _javaInputsBinder;
+    jni::global_ref<UIKitInputsBinder> _javaInputsBinder;
 };
 
 } // namespace uikit

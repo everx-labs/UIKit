@@ -10,6 +10,9 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.views.textinput.ReactEditText;
 
 public class UIKitInputBinder {
+    static {
+        System.loadLibrary("UIKitInputs");
+    }
     private final ReactApplicationContext mReactApplicationContext;
     private final UIManagerModule mUiManagerModule;
     @Nullable

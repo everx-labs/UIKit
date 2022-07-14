@@ -13,6 +13,8 @@ add_library(${PACKAGE_NAME}
     SHARED
     ./src/main/cpp/UIKitInputManager.cpp
     ./src/main/cpp/UIKitInputsModule.cpp
+    ./src/main/cpp/UIKitInputsBinder.cpp
+    ./src/main/cpp/UIKitInputsBinderHostObject.cpp
     cpp-adapter.cpp
 )
 
@@ -105,9 +107,16 @@ find_library(
     NO_CMAKE_FIND_ROOT_PATH
 )
 
+find_library(
+    LOG_LIB
+    log
+)
+
 # linking
 
-target_link_libraries(${PACKAGE_NAME}
+target_link_libraries(
+    ${PACKAGE_NAME}
+    ${LOG_LIB}
     ${JSI_LIB}
     ${JS_ENGINE_LIB} # <-- Hermes or JSC
     ${REANIMATED_LIB}
