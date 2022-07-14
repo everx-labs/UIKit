@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type React from 'react';
 import type { UITextViewRef } from '../UITextView';
 
 /* global _WORKLET, _moveInputCaret */
 export function moveInputCaret(
     animatedRef: React.RefObject<UITextViewRef>,
-    carretPosition: number,
+    _carretPosition: number,
 ) {
     'worklet';
 
@@ -26,5 +27,5 @@ export function moveInputCaret(
     // @ts-expect-error
     const viewTag: number = animatedRef();
 
-    _moveInputCaret(viewTag, carretPosition);
+    // _moveInputCaret(viewTag, carretPosition);
 }

@@ -35,6 +35,16 @@ using namespace facebook;
         auto method = getClass()->getMethod<void(int, std::string)>("injectInputValue");
         method(self(), uid, value);
         return;
-    };
+    }
 
+    InputValueAndSelectionInjector
+    UIKitInputManager::getInputValueInjector(int reactTag) {
+        auto method = getClass()->getMethod<void(int, std::string)>("injectInputValue");
+        return InputValueAndSelectionInjector(method, reactTag, self());
+    }
+
+    void
+    InputValueAndSelectionInjector::callInjectInputValue(std::string value) {
+        _method(_inputManager, _reactTag, value);
+    }
 }

@@ -24,7 +24,9 @@ export function injectInputValue(animatedRef: React.RefObject<UITextViewRef>, va
     // @ts-expect-error
     const viewTag: number = animatedRef();
 
-    __uiKitInputManager?.injectInputValue?.(viewTag, value);
+    // __uiKitInputManager?.injectInputValue?.(viewTag, value);
+    // console.log('__uiKitInputManager', __uiKitInputManager(viewTag));
+    
     // console.log('_injectInputValue', _injectInputValue || null);
     // console.log('_measure', _measure);
     // _injectInputValue(viewTag, value);

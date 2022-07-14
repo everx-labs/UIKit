@@ -34,6 +34,24 @@ public class UIKitInputManager {
     @Nullable
     static private UIKitInputManager _shared;
 
+    private class InputValueInjector {
+        private View _originalView;
+        InputValueInjector(int originalViewRef) {
+            _originalView = _uiManagerModule.resolveView(originalViewRef);;
+        }
+
+        public void injectInputValue(String value) {
+            _reactApplicationContext.runOnUiQueueThread(
+                    () -> {
+                        if (_originalView instanceof ReactEditText) {
+                            ReactEditText reactEditText = (ReactEditText) _originalView;
+                            Editable editableText = reactEditText.getEditableText();
+                            editableText.replace(0, editableText.length(), value);
+                        }
+                    }
+            );
+        }
+    }
 
     static public UIKitInputManager getShared(ReactApplicationContext reactApplicationContext) {
         if (_shared == null) {
@@ -64,5 +82,9 @@ public class UIKitInputManager {
                }
            }
        );
+    }
+
+    public InputValueInjector getInputValueInjector(int originalViewRef) {
+        return new InputValueInjector(originalViewRef);
     }
 }

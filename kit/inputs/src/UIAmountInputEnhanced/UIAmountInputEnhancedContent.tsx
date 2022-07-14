@@ -3,6 +3,7 @@ import Animated, {
     runOnJS,
     useAnimatedReaction,
     useAnimatedRef,
+    useDerivedValue,
 } from 'react-native-reanimated';
 import BigNumber from 'bignumber.js';
 import { NativeModules } from 'react-native';
@@ -12,6 +13,8 @@ import { useAmountInputHandlers, useAmountInputHover } from './hooks';
 import { UITextView, UITextViewRef } from '../UITextView';
 
 const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
+
+NativeModules.UIKitInputManagerModule?.install();
 
 export const UIAmountInputEnhancedContent = React.forwardRef<
     UIAmountInputEnhancedRef,
@@ -33,11 +36,25 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     const ref = useAnimatedRef<UITextViewRef>();
     const { normalizedText } = React.useContext(AmountInputContext);
 
-    React.useEffect(() => {
-        // @ts-ignore
-        // eslint-disable-next-line no-underscore-dangle
-        NativeModules.UIKitInputManagerModule?.install();
-    }, []);
+    // React.useEffect(() => {
+    //     // @ts-ignore
+    //     // eslint-disable-next-line no-underscore-dangle
+        
+    // }, []);
+
+    // const uiKitInputManager = useDerivedValue(() => {
+    //     if (!_WORKLET || !__uiKitInputManager) {
+    //         return null
+    //     }
+    //     return __uiKitInputManager(ref());
+    // })
+
+    useDerivedValue(() => {
+        if (!_WORKLET) {
+            return
+        }
+        console.log('uiKitInputManager', __uiKitInputManager?.getInputValueInjector(ref()).injectInputValue('value'))
+    })
 
     // const ads = useSharedValue(0);
     // const initialInject = () => {

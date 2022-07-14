@@ -36,6 +36,7 @@ public:
     UIKitInputsModuleSpec(std::shared_ptr<CallInvoker> jsInvoker);
 
     virtual void callInjectInputValue(const jsi::Value &reactTag, const jsi::Value &value) = 0;
+    virtual jsi::Value getInputValueInjector(const jsi::Value &reactTag) = 0;
 };
 
 class UIKitInputsModule : public UIKitInputsModuleSpec {
@@ -57,7 +58,7 @@ public:
     _nativeReanimatedModule(std::move(nativeReanimatedModule)) {};
 
     void callInjectInputValue(const jsi::Value &reactTag, const jsi::Value &value) override;
-
+    jsi::Value getInputValueInjector(const jsi::Value &reactTag) override;
 private:
     jsi::Runtime &runtime;
  #ifdef __ANDROID__
