@@ -6,56 +6,36 @@
 //
 
 #include "UIKitInputsModule.h"
+#include "UIKitInputsBinder.h"
+#include "UIKitInputsBinderHostObject.h"
 
 namespace tonlabs::uikit {
-    using namespace facebook;
-    using namespace reanimated;
+using namespace facebook;
+using namespace reanimated;
 
-    static jsi::Value __hostFunction_UIKitInputsModuleSpec_injectInputValue(
+static jsi::Value __hostFunction_UIKitInputsModuleSpec_bind(
         jsi::Runtime &rt,
         TurboModule &turboModule,
         const jsi::Value *args,
         size_t count) {
-        static_cast<UIKitInputsModuleSpec *>(&turboModule)->callInjectInputValue(std::move(args[0]), std::move(args[1]));
-        return jsi::Value::undefined();
-    }
+    return static_cast<UIKitInputsModuleSpec *>(&turboModule)->bind(std::move(args[0]));
+}
 
-    static jsi::Value __hostFunction_UIKitInputsModuleSpec_getInputValueInjector(
-            jsi::Runtime &rt,
-            TurboModule &turboModule,
-            const jsi::Value *args,
-            size_t count) {
+UIKitInputsModuleSpec::UIKitInputsModuleSpec(std::shared_ptr<CallInvoker> jsInvoker) : TurboModule("UIKitInputsModule", jsInvoker) {
+    methodMap_["bind"] = MethodMetadata{
+      1, __hostFunction_UIKitInputsModuleSpec_bind};
+}
 
-        return static_cast<UIKitInputsModuleSpec *>(&turboModule)->getInputValueInjector(std::move(args[0]));
-    }
+jsi::Object UIKitInputsModule::bind(const jsi::Value &reactTag) {
+    int viewTag = static_cast<int>(reactTag.asNumber());
 
-    UIKitInputsModuleSpec::UIKitInputsModuleSpec(std::shared_ptr<CallInvoker> jsInvoker) : TurboModule("UIKitInputsModule", jsInvoker) {
-        methodMap_["injectInputValue"] = MethodMetadata{
-          1, __hostFunction_UIKitInputsModuleSpec_injectInputValue};
-        methodMap_["getInputValueInjector"] = MethodMetadata{
-                1, __hostFunction_UIKitInputsModuleSpec_getInputValueInjector};
-    }
+    // Get a Java class that contains resolved view (UIKitInputBinder.java)
+    auto javaInputsBinder = _javaInputsManager->bind(viewTag);
 
-    void UIKitInputsModule::callInjectInputValue(const jsi::Value &reactTag, const jsi::Value &val) {
-        int viewTag = static_cast<int>(reactTag.asNumber());
-        std::string value = val.getString(runtime).utf8(runtime);
-        #ifdef __ANDROID__
-            _javaInputsManager->callInjectInputValue(viewTag, value);
-        #endif
-    }
+    auto uiKitBinderHostObject = std::make_unique<UIKitInputsBinderHostObject>(jsCallInvoker,
+                                                                               *runtime,
+                                                                               jni::make_global(javaInputsBinder));
 
-    jsi::Value UIKitInputsModule::getInputValueInjector(const jsi::Value &reactTag) {
-        InputValueAndSelectionInjector inputValueInjector = _javaInputsManager->getInputValueInjector(static_cast<int>(reactTag.asNumber()));
-        std::shared_ptr<InputValueAndSelectionInjector> inputValueInjectorShared =
-            std::make_shared<InputValueAndSelectionInjector>(
-                std::move(inputValueInjector)
-            );
-
-        jsi::Object inputValueInjectorObject = jsi::Object::createFromHostObject(runtime, inputValueInjectorShared);
-//        if (inputValueInjectorObject.hasProperty(runtime, "injectInputValue")) {
-//            return reactTag.asNumber();
-//        }
-//        return 000;
-        return inputValueInjectorObject;
-    }
+    return jsi::Object::createFromHostObject(runtime, std::move(uiKitBinderHostObject))
+}
 }

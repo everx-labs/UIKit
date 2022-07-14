@@ -35,8 +35,7 @@ class JSI_EXPORT UIKitInputsModuleSpec : public TurboModule {
 public:
     UIKitInputsModuleSpec(std::shared_ptr<CallInvoker> jsInvoker);
 
-    virtual void callInjectInputValue(const jsi::Value &reactTag, const jsi::Value &value) = 0;
-    virtual jsi::Value getInputValueInjector(const jsi::Value &reactTag) = 0;
+    virtual jsi::Object bind(const jsi::Value &reactTag) = 0;
 };
 
 class UIKitInputsModule : public UIKitInputsModuleSpec {
@@ -46,7 +45,6 @@ public:
  #ifdef __ANDROID__
                       jni::global_ref<UIKitInputManager::javaobject> javaInputsManager,
  #elif __APPLE__
-            jni::global_ref<UIKitInputsManager::javaobject> javaInputsManager,
 //     UIKitKeyboardFrameListener(UIKitKeyboardIosFrameListener *iosKeyboardFrameListener) : _iosKeyboardFrameListener(iosKeyboardFrameListener) {};
  #endif
                       std::shared_ptr<NativeReanimatedModule> nativeReanimatedModule) :
@@ -57,8 +55,7 @@ public:
  #endif
     _nativeReanimatedModule(std::move(nativeReanimatedModule)) {};
 
-    void callInjectInputValue(const jsi::Value &reactTag, const jsi::Value &value) override;
-    jsi::Value getInputValueInjector(const jsi::Value &reactTag) override;
+    jsi::Object bind(const jsi::Value &reactTag) override;
 private:
     jsi::Runtime &runtime;
  #ifdef __ANDROID__
@@ -66,7 +63,7 @@ private:
  #elif __APPLE__
 
  #endif
-        std::shared_ptr<NativeReanimatedModule> _nativeReanimatedModule;
+    std::shared_ptr<NativeReanimatedModule> _nativeReanimatedModule;
 };
 
 } // namespace uikit

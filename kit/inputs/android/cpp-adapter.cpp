@@ -40,54 +40,17 @@ private:
         std::shared_ptr<reanimated::NativeReanimatedModule> reanimatedModule =
             std::static_pointer_cast<NativeReanimatedModule>(reanimatedModuleProxy.getHostObject(*runtime));
 
+        jsi::Runtime &reanimatedRuntime = *reanimatedModule->runtime.get();
+
         auto uiKitInputsModule = std::make_unique<UIKitInputsModule>(jsCallInvoker,
-                                                                     *runtime,
+                                                                     *reanimatedRuntime,
                                                                      jni::make_global(javaUIKitInputManager),
                                                                      reanimatedModule);
-//
-//        auto uiKitInputsModuleFunction = [&javaUIKitInputManager, jsCallInvoker, reanimatedModule](
-//                jsi::Runtime& rt,
-//                const jsi::Value& thisVal,
-//                const jsi::Value *args,
-//                size_t count
-//                ) -> jsi::Value {
-//            int reactTag = static_cast<int>(args[0].asNumber());
-//
-////            auto inputValueAndSelectionInjector = std::make_unique<InputValueAndSelectionInjector>(jsCallInvoker,
-////                                                                         rt,
-////                                                                         javaUIKitInputManager->getInputValueAndSelectionInjector(reactTag));
-////            jni::alias_ref<InputValueAndSelectionInjector> inputValueAndSelectionInjector = javaUIKitInputManager->getInputValueAndSelectionInjector(reactTag);
-////            auto hostObject = std::make_unique<InputValueAndSelectionInjector>(jsCallInvoker,
-////                                                                  rt,
-////                                                                  jni::make_global(inputValueAndSelectionInjector),
-////                                                                  reanimatedModule);
-////
-////            jsi::Object injector = jsi::Object::createFromHostObject(rt, std::move(hostObject));
-//
-////            auto injector = javaUIKitInputManager->getInputValueAndSelectionInjector(reactTag);
-////
-////            injector.callInjectInputValue("ASD");
-//
-//            auto uiKitInputsModule = std::make_unique<UIKitInputsModule>(jsCallInvoker,
-//                                                                         rt,
-//                                                                         jni::make_global(javaUIKitInputManager),
-//                                                                         reactTag);
-//
-//            return jsi::Object::createFromHostObject(rt, std::move(uiKitInputsModule));;
-////            return reactTag;
-//        };
-
-        jsi::Runtime &reanimatedRuntime = *reanimatedModule->runtime.get();
 
         reanimatedRuntime.global().setProperty(
             reanimatedRuntime,
             "__uiKitInputManager",
             jsi::Object::createFromHostObject(reanimatedRuntime, std::move(uiKitInputsModule))
-//            jsi::Function::createFromHostFunction(
-//                    reanimatedRuntime,
-//                    jsi::PropNameID::forAscii(reanimatedRuntime, "__uiKitInputManager"),
-//                    1,
-//                    uiKitInputsModuleFunction)
         );
     }
 };

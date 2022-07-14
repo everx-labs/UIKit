@@ -34,25 +34,6 @@ public class UIKitInputManager {
     @Nullable
     static private UIKitInputManager _shared;
 
-    private class InputValueInjector {
-        private View _originalView;
-        InputValueInjector(int originalViewRef) {
-            _originalView = _uiManagerModule.resolveView(originalViewRef);;
-        }
-
-        public void injectInputValue(String value) {
-            _reactApplicationContext.runOnUiQueueThread(
-                    () -> {
-                        if (_originalView instanceof ReactEditText) {
-                            ReactEditText reactEditText = (ReactEditText) _originalView;
-                            Editable editableText = reactEditText.getEditableText();
-                            editableText.replace(0, editableText.length(), value);
-                        }
-                    }
-            );
-        }
-    }
-
     static public UIKitInputManager getShared(ReactApplicationContext reactApplicationContext) {
         if (_shared == null) {
             _shared = new UIKitInputManager(reactApplicationContext);
@@ -60,31 +41,12 @@ public class UIKitInputManager {
         return _shared;
     }
 
-    ReactApplicationContext _reactApplicationContext;
-    UIManagerModule _uiManagerModule;
+    ReactApplicationContext mReactApplicationContext;
     UIKitInputManager(ReactApplicationContext reactApplicationContext) {
-        _reactApplicationContext = reactApplicationContext;
-        _uiManagerModule = reactApplicationContext.getNativeModule(UIManagerModule.class);
+        mReactApplicationContext = reactApplicationContext;
     }
 
-    public void injectInputValue(int originalViewRef, String value) {
-       _reactApplicationContext.runOnUiQueueThread(
-           () -> {
-               if (_uiManagerModule == null) {
-                   return;
-               }
-
-               View originalView = _uiManagerModule.resolveView(originalViewRef);
-               if (originalView instanceof ReactEditText) {
-                   ReactEditText reactEditText = (ReactEditText) originalView;
-                   Editable editableText = reactEditText.getEditableText();
-                   editableText.replace(0, editableText.length(), value);
-               }
-           }
-       );
-    }
-
-    public InputValueInjector getInputValueInjector(int originalViewRef) {
-        return new InputValueInjector(originalViewRef);
+    public UIKitInputBinder bind(int reactTag) {
+        return new UIKitInputBinder(mReactApplicationContext, reactTag);
     }
 }
