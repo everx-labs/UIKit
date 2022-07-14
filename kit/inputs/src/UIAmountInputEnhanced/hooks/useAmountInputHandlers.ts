@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { runOnJS, useDerivedValue } from 'react-native-reanimated';
+import { runOnJS, useAnimatedRef, useDerivedValue } from 'react-native-reanimated';
 import type { UIAmountInputEnhancedProps } from '../types';
 import { useTextViewHandler } from '../../useTextViewHandler';
 import { AmountInputContext, UIConstants } from '../constants';
@@ -34,7 +34,7 @@ export function useAmountInputHandlers(
 
     const applyAmountMask = useAmountMaskApplyer(numberOfDecimalDigits, carretEndPosition);
 
-    // const inputManager = useInputManager(ref);
+    const inputManagerRef = useAnimatedRef();
 
     const textViewHandlers = useTextViewHandler({
         onFocus: evt => {
@@ -82,7 +82,7 @@ export function useAmountInputHandlers(
                 // getInputManager(ref)?.injectValue(newFormattedText);
                 // inputManager.value.injectValue(newFormattedText);
 
-                injectInputValue(ref, newFormattedText);
+                injectInputValue(ref, inputManagerRef, newFormattedText);
                 moveInputCaret(ref, newCarretPosition);
             }
 

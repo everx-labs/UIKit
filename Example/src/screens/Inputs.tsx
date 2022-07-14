@@ -9,6 +9,7 @@ import {
     UIAmountInput,
     UIAmountInputDecimalAspect,
     UIAmountInputRef,
+    UIAmountInputEnhanced,
 } from '@tonlabs/uikit.inputs';
 import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAddressTextView } from '@tonlabs/uicast.address-text';
@@ -25,6 +26,14 @@ export const Inputs = () => {
     }, []);
     return (
         <ExampleScreen>
+            <ExampleSection title="UIAmountInputEnhanced">
+                <View style={{ maxWidth: 400, padding: 20, alignSelf: 'stretch' }}>
+                    <UIAmountInputEnhanced
+                        precision="Precise"
+                        onChangeAmount={amount => console.log('onChangeAmount', amount?.toString())}
+                    />
+                </View>
+            </ExampleSection>
             <ExampleSection title="UINumberTextView">
                 <UINumberTextView testID="uiNumberTextView_default" placeholder="Put number" />
             </ExampleSection>

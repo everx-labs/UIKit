@@ -3,7 +3,11 @@ import type React from 'react';
 import type { UITextViewRef } from '../UITextView';
 
 /* global _WORKLET, _injectInputValue, __uiKitInputManager */
-export function injectInputValue(animatedRef: React.RefObject<UITextViewRef>, value: string) {
+export function injectInputValue(
+    animatedRef: React.RefObject<UITextViewRef>,
+    inputManagerRef: React.RefObject<any>,
+    value: string,
+) {
     'worklet';
 
     if (!_WORKLET) {
@@ -24,10 +28,16 @@ export function injectInputValue(animatedRef: React.RefObject<UITextViewRef>, va
     // @ts-expect-error
     const viewTag: number = animatedRef();
 
-    // __uiKitInputManager?.injectInputValue?.(viewTag, value);
-    // console.log('__uiKitInputManager', __uiKitInputManager(viewTag));
-    
-    // console.log('_injectInputValue', _injectInputValue || null);
-    // console.log('_measure', _measure);
+    if (!inputManagerRef.current) {
+        // @ts-expect-error
+        // eslint-disable-next-line no-param-reassign
+        inputManagerRef.current = __uiKitInputManager?.bind(viewTag);
+        requestAnimationFrame(() => {
+            inputManagerRef.current.setText(value);
+        });
+    } else {
+        inputManagerRef.current.setText(value);
+    }
+
     // _injectInputValue(viewTag, value);
 }

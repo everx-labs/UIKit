@@ -3,7 +3,6 @@ import Animated, {
     runOnJS,
     useAnimatedReaction,
     useAnimatedRef,
-    useDerivedValue,
 } from 'react-native-reanimated';
 import BigNumber from 'bignumber.js';
 import { NativeModules } from 'react-native';
@@ -35,40 +34,6 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     // @ts-ignore
     const ref = useAnimatedRef<UITextViewRef>();
     const { normalizedText } = React.useContext(AmountInputContext);
-
-    // React.useEffect(() => {
-    //     // @ts-ignore
-    //     // eslint-disable-next-line no-underscore-dangle
-        
-    // }, []);
-
-    // const uiKitInputManager = useDerivedValue(() => {
-    //     if (!_WORKLET || !__uiKitInputManager) {
-    //         return null
-    //     }
-    //     return __uiKitInputManager(ref());
-    // })
-
-    useDerivedValue(() => {
-        if (!_WORKLET) {
-            return
-        }
-        console.log('uiKitInputManager', __uiKitInputManager?.getInputValueInjector(ref()).injectInputValue('value'))
-    })
-
-    // const ads = useSharedValue(0);
-    // const initialInject = () => {
-    //     'worklet';
-
-    //     if (!_WORKLET) {
-    //         return
-    //     }
-
-    //     // console.log('__uiKitInputManager', __uiKitInputManager);
-    //     // // @ts-ignore
-    //     // __uiKitInputManager?.injectInputValue?.(ref?.(), `INJECTED ${ads.value}`);
-    // };
-    // useDerivedValue(initialInject);
 
     /**
      * Reset context value after the component unmounting
