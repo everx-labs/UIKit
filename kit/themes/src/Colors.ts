@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import type { ColorValue } from 'react-native';
+import { ColorValue, Platform } from 'react-native';
 
 // TODO: commented colors is just work in progress
 //       (not presented for both modes)
@@ -233,7 +233,16 @@ export function useTheme() {
 function useShadowParameters(isDarkTheme: boolean) {
     return React.useMemo(() => {
         /**
-         * We need to apply different opacity for different Theme mode,
+         * We need different opacity for different platforms in a dark theme,
+         * because different platforms make different color mixing in shadows.
+         */
+        const darkThemeOpacity = Platform.select({
+            android: isDarkTheme ? 0.3 : 0.1,
+            ios: isDarkTheme ? 1 : 0.1,
+            default: isDarkTheme ? 0.7 : 0.1,
+        });
+        /**
+         * We need to apply different opacity for different Theme mode
          * and we can't do it through color because of the wrong color mixing on Android.
          */
         return {
@@ -242,7 +251,7 @@ function useShadowParameters(isDarkTheme: boolean) {
                     width: 0,
                     height: 1,
                 },
-                opacity: isDarkTheme ? 0.5 : 0.1,
+                opacity: isDarkTheme ? darkThemeOpacity : 0.1,
                 radius: 2,
             },
             2: {
@@ -250,7 +259,7 @@ function useShadowParameters(isDarkTheme: boolean) {
                     width: 0,
                     height: 3,
                 },
-                opacity: isDarkTheme ? 0.15 : 0.03,
+                opacity: isDarkTheme ? darkThemeOpacity : 0.03,
                 radius: 8,
             },
             3: {
@@ -258,7 +267,7 @@ function useShadowParameters(isDarkTheme: boolean) {
                     width: 0,
                     height: 6,
                 },
-                opacity: isDarkTheme ? 0.2 : 0.04,
+                opacity: isDarkTheme ? darkThemeOpacity : 0.04,
                 radius: 16,
             },
             4: {
@@ -266,7 +275,7 @@ function useShadowParameters(isDarkTheme: boolean) {
                     width: 0,
                     height: 4,
                 },
-                opacity: isDarkTheme ? 0.3 : 0.06,
+                opacity: isDarkTheme ? darkThemeOpacity : 0.06,
                 radius: 16,
             },
             5: {
@@ -274,7 +283,7 @@ function useShadowParameters(isDarkTheme: boolean) {
                     width: 0,
                     height: 8,
                 },
-                opacity: isDarkTheme ? 0.5 : 0.1,
+                opacity: isDarkTheme ? darkThemeOpacity : 0.1,
                 radius: 20,
             },
             6: {
@@ -282,7 +291,7 @@ function useShadowParameters(isDarkTheme: boolean) {
                     width: -1,
                     height: 1,
                 },
-                opacity: isDarkTheme ? 0.25 : 0.05,
+                opacity: isDarkTheme ? darkThemeOpacity : 0.05,
                 radius: 32,
             },
         };
@@ -302,7 +311,6 @@ export function useShadow(level: 1 | 2 | 3 | 4 | 5 | 6) {
             shadowOffset: shadowParameters[level].offset,
             shadowOpacity: shadowParameters[level].opacity,
             shadowRadius: shadowParameters[level].radius,
-            elevation: level,
         }),
         [theme, level, shadowParameters],
     );
