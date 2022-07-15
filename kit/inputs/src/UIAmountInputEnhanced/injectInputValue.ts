@@ -2,20 +2,6 @@
 import type React from 'react';
 import type { UITextViewRef } from '../UITextView';
 
-function skipAnimationFrames(numberOfFrames: number, func: () => any) {
-    'worklet';
-
-    if (numberOfFrames > 0) {
-        requestAnimationFrame(() => {
-            'worklet';
-
-            skipAnimationFrames(numberOfFrames - 1, func);
-        });
-    } else {
-        func();
-    }
-}
-
 /* global _WORKLET, _injectInputValue, __uiKitInputManager */
 export function injectInputValue(
     animatedRef: React.RefObject<UITextViewRef>,
@@ -44,11 +30,11 @@ export function injectInputValue(
 
     if (!inputManagerRef.current) {
         // @ts-expect-error
+        const inputManager = __uiKitInputManager?.bind(viewTag);
+        // @ts-expect-error
         // eslint-disable-next-line no-param-reassign
-        inputManagerRef.current = __uiKitInputManager?.bind(viewTag);
-        skipAnimationFrames(2, () => {
-            inputManagerRef.current.setText(value);
-        });
+        inputManagerRef.current = inputManager;
+        inputManager.setText(value);
     } else {
         inputManagerRef.current.setText(value);
     }
