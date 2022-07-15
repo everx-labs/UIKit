@@ -13,8 +13,8 @@ add_library(${PACKAGE_NAME}
     SHARED
     ./src/main/cpp/UIKitInputManager.cpp
     ./src/main/cpp/UIKitInputsModule.cpp
-    ./src/main/cpp/UIKitInputsBinder.cpp
-    ./src/main/cpp/UIKitInputsBinderHostObject.cpp
+    ./src/main/cpp/UIKitInputBinder.cpp
+    ./src/main/cpp/UIKitInputBinderHostObject.cpp
     cpp-adapter.cpp
 )
 

@@ -10,7 +10,7 @@
 #include <fbjni/fbjni.h>
 #include <jsi/jsi.h>
 
-#include "UIKitInputsBinder.h"
+#include "UIKitInputBinder.h"
 
 namespace tonlabs::uikit {
 using namespace facebook;
@@ -19,7 +19,7 @@ class UIKitInputManager : public jni::JavaClass<UIKitInputManager> {
 public:
     static constexpr auto kJavaDescriptor = "Ltonlabs/uikit/inputs/UIKitInputManager;";
 
-    jni::global_ref<UIKitInputsBinder> bind(int reactTag);
+    jni::global_ref<UIKitInputBinder> bind(int reactTag);
 
     private:
 };

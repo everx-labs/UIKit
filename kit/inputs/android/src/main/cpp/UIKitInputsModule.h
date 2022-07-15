@@ -10,8 +10,7 @@
 #include <NativeReanimatedModule.h>
 #include "UIKitInputManager.h"
 
-namespace tonlabs {
-namespace uikit {
+namespace tonlabs :: uikit {
 using namespace facebook;
 using namespace reanimated;
 
@@ -22,23 +21,23 @@ public:
     virtual jsi::Object bind(const jsi::Value &reactTag) = 0;
 };
 
-class UIKitInputsModule : public UIKitInputsModuleSpec {
+class [[maybe_unused]] UIKitInputsModule : public UIKitInputsModuleSpec {
 public:
-    UIKitInputsModule(std::shared_ptr<CallInvoker> jsInvoker,
+    [[maybe_unused]] UIKitInputsModule(std::shared_ptr<CallInvoker> jsInvoker,
                       jsi::Runtime &rt,
  #ifdef __ANDROID__
-                      jni::global_ref<UIKitInputManager::javaobject> javaInputsManager,
+                      jni::global_ref<UIKitInputManager::javaobject> javaInputsManager
  #elif __APPLE__
 //     UIKitKeyboardFrameListener(UIKitKeyboardIosFrameListener *iosKeyboardFrameListener) : _iosKeyboardFrameListener(iosKeyboardFrameListener) {};
  #endif
-                      std::shared_ptr<NativeReanimatedModule> nativeReanimatedModule) :
+ ) :
     UIKitInputsModuleSpec(jsInvoker),
     _jsInvoker(jsInvoker),
     _runtime(rt),
  #ifdef __ANDROID__
-    _javaInputsManager(javaInputsManager),
+    _javaInputsManager(javaInputsManager)
  #endif
-    _nativeReanimatedModule(std::move(nativeReanimatedModule)) {};
+    {};
 
     jsi::Object bind(const jsi::Value &reactTag) override;
 private:
@@ -48,9 +47,7 @@ private:
  #elif __APPLE__
 
  #endif
-    std::shared_ptr<NativeReanimatedModule> _nativeReanimatedModule;
         std::shared_ptr<CallInvoker> _jsInvoker;
 };
 
-} // namespace uikit
-} // namespace tonlabs
+}

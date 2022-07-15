@@ -44,8 +44,7 @@ private:
 
         auto uiKitInputsModule = std::make_unique<UIKitInputsModule>(jsCallInvoker,
                                                                      reanimatedRuntime,
-                                                                     jni::make_global(javaUIKitInputManager),
-                                                                     reanimatedModule);
+                                                                     jni::make_global(javaUIKitInputManager));
 
         reanimatedRuntime.global().setProperty(
             reanimatedRuntime,

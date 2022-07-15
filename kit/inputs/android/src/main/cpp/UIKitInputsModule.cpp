@@ -6,8 +6,10 @@
 //
 
 #include "UIKitInputsModule.h"
-#include "UIKitInputsBinder.h"
-#include "UIKitInputsBinderHostObject.h"
+
+#include <utility>
+#include "UIKitInputBinder.h"
+#include "UIKitInputBinderHostObject.h"
 
 namespace tonlabs::uikit {
 using namespace facebook;
@@ -17,11 +19,11 @@ static jsi::Value __hostFunction_UIKitInputsModuleSpec_bind(
         jsi::Runtime &rt,
         TurboModule &turboModule,
         const jsi::Value *args,
-        size_t count) {
-    return static_cast<UIKitInputsModuleSpec *>(&turboModule)->bind(std::move(args[0]));
+        [[maybe_unused]] size_t count) {
+    return dynamic_cast<UIKitInputsModuleSpec *>(&turboModule)->bind(std::move(args[0]));
 }
 
-UIKitInputsModuleSpec::UIKitInputsModuleSpec(std::shared_ptr<CallInvoker> jsInvoker) : TurboModule("UIKitInputsModule", jsInvoker) {
+UIKitInputsModuleSpec::UIKitInputsModuleSpec(std::shared_ptr<CallInvoker> jsInvoker) : TurboModule("UIKitInputsModule", std::move(jsInvoker)) {
     methodMap_["bind"] = MethodMetadata{
       1, __hostFunction_UIKitInputsModuleSpec_bind};
 }
@@ -30,12 +32,13 @@ jsi::Object UIKitInputsModule::bind(const jsi::Value &reactTag) {
     int viewTag = static_cast<int>(reactTag.asNumber());
 
     // Get a Java class that contains resolved view (UIKitInputBinder.java)
-    jni::global_ref<UIKitInputsBinder> javaInputsBinder = _javaInputsManager->bind(viewTag);
+    jni::global_ref<UIKitInputBinder> javaInputBinder = _javaInputsManager->bind(viewTag);
 
-    auto uiKitBinderHostObject = std::make_unique<UIKitInputsBinderHostObject>(_jsInvoker,
+    auto uiKitBinderHostObject = std::make_unique<UIKitInputBinderHostObject>(_jsInvoker,
                                                                                _runtime,
-                                                                               javaInputsBinder);
+                                                                               javaInputBinder);
 
     return jsi::Object::createFromHostObject(_runtime, std::move(uiKitBinderHostObject));
 }
+
 }

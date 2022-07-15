@@ -36,6 +36,8 @@ export function useAmountInputHandlers(
 
     const inputManagerRef = useAnimatedRef();
 
+    // const injectInputValue1 = useInjectInputValue(ref)
+
     const textViewHandlers = useTextViewHandler({
         onFocus: evt => {
             'worklet';
