@@ -34,7 +34,7 @@ function ModalScreen<ParamList extends ParamListBase = ParamListBase>({
         <UIModalSheet
             forId="modal"
             visible={route.visible}
-            onClose={hide}
+            onClose={'onClose' in route ? route.onClose : hide}
             maxMobileWidth={maxMobileWidth}
         >
             {descriptor.render()}

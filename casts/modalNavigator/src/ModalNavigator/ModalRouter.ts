@@ -10,6 +10,7 @@ import {
     PartialState,
 } from '@react-navigation/native';
 import sortBy from 'lodash/sortBy';
+import type { UIModalSheetProps } from '@tonlabs/uikit.popups';
 
 type ModalScreenProps = {
     name: string;
@@ -110,6 +111,7 @@ export type ModalNavigationRoute<
     state?: NavigationState | PartialState<NavigationState>;
     order: number;
     visible: boolean;
+    onClose?: UIModalSheetProps['onClose'];
 };
 
 export type ModalNavigationState<ParamList extends ParamListBase = ParamListBase> = {
