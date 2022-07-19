@@ -61,6 +61,22 @@ typedef struct {
 
 @end
 
+static id<MTLLibrary> MTLCreateUIKitLayoutLibrary(id<MTLDevice> device) {
+    NSBundle *bundleFile = [NSBundle bundleWithURL:[[NSBundle bundleForClass:[UIKitShimmerRenderer class]]
+                                                    URLForResource:@"UIKitLayout"
+                                                    withExtension:@"bundle"]];
+    NSURL *libFile = [bundleFile URLForResource:@"UIKitLayout" withExtension:@"metallib"];
+    
+    NSError *libraryError = NULL;
+    id<MTLLibrary> lib = [device newLibraryWithFile:libFile.path error:&libraryError];
+    
+    if (!lib) {
+        return nil;
+    }
+    
+    return lib;
+}
+
 @implementation UIKitShimmerRenderer {
     // Cache of GUI rendering primitives
     id<MTLCommandQueue> _commandQueue;
@@ -111,7 +127,9 @@ typedef struct {
 - (void)initRenderPipeline {
     _device = MTLCreateSystemDefaultDevice();
     _commandQueue = [_device newCommandQueue];
-    _library = [_device newDefaultLibrary];
+    
+    _library = MTLCreateUIKitLayoutLibrary(_device);
+    
     if (!_library) {
         NSLog(@">> ERROR: Couldnt create a default shader library");
         // assert here becuase if the shader libary isn't loading, nothing good will happen

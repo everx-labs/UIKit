@@ -16,4 +16,20 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.dependency "React-Core"
+
+  s.script_phase = { 
+    :name => 'Build Metal Library - MSL 2.3', 
+    :script => <<~SCRIPTCONTENT,
+        set -e
+        set -u
+        set -o pipefail
+        cd "${PODS_TARGET_SRCROOT}/ios/"
+        xcrun metal -target "air64-${LLVM_TARGET_TRIPLE_VENDOR}-${LLVM_TARGET_TRIPLE_OS_VERSION}${LLVM_TARGET_TRIPLE_SUFFIX:-""}" -ffast-math -std=ios-metal2.3 -o "${METAL_LIBRARY_OUTPUT_DIR}/UIKitLayout.metallib" *.metal
+        SCRIPTCONTENT
+    :execution_position => :after_compile
+  }
+
+  s.pod_target_xcconfig = { "METAL_LIBRARY_OUTPUT_DIR" => "${TARGET_BUILD_DIR}\/UIKitLayout.bundle\/" }
+
+  s.resource_bundle = { 'UIKitLayout' => '' }
 end

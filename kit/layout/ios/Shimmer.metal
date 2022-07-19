@@ -90,37 +90,35 @@ vertex ShimmerVertexOut shimmer_vertex(ShimmerVertexIn in [[stage_in]]) {
 }
 
 struct ShimmerUniforms {
-  float width;
-  float height;
   float gradientWidth;
   float skew;
   float progressShift;
-  packed_float3 backgroundColor;
-  packed_float3 accendColor;
+  packed_float2 resolution;
+  packed_float4 backgroundColor;
+  packed_float4 accendColor;
 };
 
 fragment float4 shimmer_frag(ShimmerVertexOut in [[stage_in]],
                              constant ShimmerUniforms &uniforms [[buffer(11)]]) {
-  float gradientWidth = uniforms.gradientWidth / uniforms.width;
+  float2 resolution = uniforms.resolution;
+  float gradientWidth = uniforms.gradientWidth / resolution.x;
   float skewDegrees = uniforms.skew;
-  float4 backgroundColor = float4(uniforms.backgroundColor.r,
-                                  uniforms.backgroundColor.g,
-                                  uniforms.backgroundColor.b,
+  float4 backgroundColor = float4(uniforms.backgroundColor[0],
+                                  uniforms.backgroundColor[1],
+                                  uniforms.backgroundColor[2],
                                   1.0);
-  float4 accentColor = float4(uniforms.accendColor.r,
-                              uniforms.accendColor.g,
-                              uniforms.accendColor.b,
+  float4 accentColor = float4(uniforms.accendColor[0],
+                              uniforms.accendColor[1],
+                              uniforms.accendColor[2],
                               1.0);
-  float2 res = float2(uniforms.width, uniforms.height);
-
-  float2 currentPoint = in.position.xy / res;
-  float ratio = res.y / res.x;
+  float2 currentPoint = in.position.xy / resolution.xy;
+  float ratio = resolution.y / resolution.x;
   float skewX = ((1.0 - currentPoint.y) * tan(skewDegrees * 0.01745329238474369049072265625)) * ratio;
+  
   return gradient(accentColor,
                   backgroundColor,
                   currentPoint.x,
                   0.0 + skewX + uniforms.progressShift,
                   gradientWidth + skewX + uniforms.progressShift);
-  
-//  return float4(currentPoint.x, 0.0, 0.0, 1.0);
 }
+
