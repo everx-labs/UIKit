@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.uimanager.IllegalViewOperationException;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.views.textinput.ReactEditText;
 
@@ -37,8 +38,13 @@ public class UIKitInputBinder {
         if (mUiManagerModule == null) {
             return null;
         }
+        View view = null;
+        try {
+            view = mUiManagerModule.resolveView(reactTag);
+        } catch (IllegalViewOperationException e) {
+            e.printStackTrace();
+        }
 
-        View view = mUiManagerModule.resolveView(reactTag);
         if (view instanceof ReactEditText) {
             return (ReactEditText) view;
         } else return null;
@@ -49,6 +55,7 @@ public class UIKitInputBinder {
         editableText.replace(0, editableText.length(), value);
     }
 
+    @SuppressWarnings("unused")
     public void setText(String value) {
         /*
         There are situations when the call to setText occurs before the execution

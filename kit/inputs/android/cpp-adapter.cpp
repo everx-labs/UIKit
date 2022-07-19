@@ -20,12 +20,6 @@ public:
         javaClassStatic()->registerNatives({makeNativeMethod("installJSIBindings", UIKitInputsJsiModule::installJSIBindings)});
     }
 
-    static void log(std::string value) {
-        static const auto cls = javaClassStatic();
-        const auto log = cls->getStaticMethod<void(std::string)>("log");
-        log(cls, value);
-    }
-
 private:
     static void installJSIBindings(jni::alias_ref<jni::JClass>,
                                    jlong jsContext,

@@ -17,10 +17,6 @@ public class UIKitInputManagerJSIModulePackage implements JSIModulePackage {
         System.loadLibrary("UIKitInputs");
     }
 
-    static void log(String value) {
-        Log.d("UIKitInputManagerJSI", value);
-    }
-
     public static native void installJSIBindings(long jsiPtr, CallInvokerHolderImpl jsCallInvokerHelper, UIKitInputManager uiKitInputManager);
 
     public static void install(ReactApplicationContext reactApplicationContext) {;
