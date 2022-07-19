@@ -7,6 +7,7 @@
 
 #import "UIKitSkeletonViewManager.h"
 #import "UIKitSkeletonView.h"
+#import "UIKitShimmerRenderer.h"
 
 @implementation UIKitSkeletonViewManager
 
@@ -17,9 +18,7 @@ RCT_EXPORT_MODULE();
 }
 
 - (UIView *)view {
-    return [[UIKitSkeletonView alloc] init];
+    return [[UIKitSkeletonView alloc] initWithRenderer:[UIKitShimmerRenderer sharedRenderer]];
 }
-
-RCT_EXPORT_VIEW_PROPERTY(loading, BOOL);
 
 @end

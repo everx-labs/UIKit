@@ -94,28 +94,27 @@ struct ShimmerUniforms {
   float skew;
   float progressShift;
   packed_float2 resolution;
-  packed_float3 backgroundColor;
-  packed_float3 accendColor;
+  packed_float4 backgroundColor;
+  packed_float4 accendColor;
 };
 
-fragment float4 shimmer_frag(
-                             ShimmerVertexOut in [[stage_in]],
+fragment float4 shimmer_frag(ShimmerVertexOut in [[stage_in]],
                              constant ShimmerUniforms &uniforms [[buffer(11)]]) {
-  float gradientWidth = uniforms.gradientWidth / uniforms.resolution.x;
+  float2 resolution = uniforms.resolution;
+  float gradientWidth = uniforms.gradientWidth / resolution.x;
   float skewDegrees = uniforms.skew;
-  float4 backgroundColor = float4(uniforms.backgroundColor.r,
-                                  uniforms.backgroundColor.g,
-                                  uniforms.backgroundColor.b,
+  float4 backgroundColor = float4(uniforms.backgroundColor[0],
+                                  uniforms.backgroundColor[1],
+                                  uniforms.backgroundColor[2],
                                   1.0);
-  float4 accentColor = float4(uniforms.accendColor.r,
-                              uniforms.accendColor.g,
-                              uniforms.accendColor.b,
+  float4 accentColor = float4(uniforms.accendColor[0],
+                              uniforms.accendColor[1],
+                              uniforms.accendColor[2],
                               1.0);
-  float2 currentPoint = in.position.xy / uniforms.resolution;
-  float ratio = uniforms.resolution.y / uniforms.resolution.x;
+  float2 currentPoint = in.position.xy / resolution.xy;
+  float ratio = resolution.y / resolution.x;
   float skewX = ((1.0 - currentPoint.y) * tan(skewDegrees * 0.01745329238474369049072265625)) * ratio;
-
-//  return float4(0.0, 0.0, 0.0, 0.0);
+  
   return gradient(accentColor,
                   backgroundColor,
                   currentPoint.x,

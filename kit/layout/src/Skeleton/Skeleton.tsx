@@ -155,51 +155,24 @@ function SkeletonAnimatable({
  * @returns
  */
 export function UISkeleton({ children, show, style: styleProp }: UISkeletonProps) {
-    return (
-        <UIKitSkeletonNativeView loading={show} style={styleProp}>
-            {children}
-        </UIKitSkeletonNativeView>
-    );
-
     const visible = children == null || show;
 
-    const width = useSharedValue(0);
+    // const { isVisible, crossDissolveProgress } = useCrossDissolve(visible);
 
-    const onLayout = React.useCallback(
-        ({
-            nativeEvent: {
-                layout: { width: lWidth },
-            },
-        }: LayoutChangeEvent) => {
-            if (width.value !== lWidth) {
-                width.value = lWidth;
-            }
-        },
-        [width],
-    );
-
-    const { isVisible, crossDissolveProgress } = useCrossDissolve(visible);
-
-    const skeletonBorderRadius = React.useMemo(() => {
-        if (styleProp) {
-            const { borderRadius: stylePropBorderRadius } = StyleSheet.flatten(styleProp ?? {});
-            if (stylePropBorderRadius !== undefined) {
-                return stylePropBorderRadius;
-            }
-        }
-        return 0;
-    }, [styleProp]);
+    // const skeletonBorderRadius = React.useMemo(() => {
+    //     if (styleProp) {
+    //         const { borderRadius: stylePropBorderRadius } = StyleSheet.flatten(styleProp ?? {});
+    //         if (stylePropBorderRadius !== undefined) {
+    //             return stylePropBorderRadius;
+    //         }
+    //     }
+    //     return 0;
+    // }, [styleProp]);
 
     return (
-        <View style={[styles.container, styleProp]} onLayout={onLayout}>
+        <View style={[styles.container, styleProp]}>
             {children}
-            {isVisible && (
-                <SkeletonAnimatable
-                    width={width}
-                    borderRadius={skeletonBorderRadius}
-                    crossDissolveProgress={crossDissolveProgress}
-                />
-            )}
+            {visible && <UIKitSkeletonNativeView style={StyleSheet.absoluteFill} />}
         </View>
     );
 }
