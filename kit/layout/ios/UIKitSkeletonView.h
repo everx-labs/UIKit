@@ -11,13 +11,13 @@
 
 #import <React/RCTView.h>
 
-#import "UIKitShimmerRenderer.h"
-
 typedef struct _ProgressCoords {
     float start;
     float end;
     float shift;
 } ProgressCoords;
+
+@class UIKitShimmerRenderer;
 
 @interface UIKitSkeletonView : MTKView
 

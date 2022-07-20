@@ -6,6 +6,7 @@
 //
 
 #import "UIKitSkeletonView.h"
+#import "UIKitShimmerRenderer.h"
 
 @implementation UIKitSkeletonView {
     ProgressCoords _progressCoords;
@@ -23,7 +24,7 @@
 //        self.pixelFormat = MTLPixelFormatBGRA8Unorm;
         self.delegate = renderer;
         
-        [((UIKitShimmerRenderer *)self.delegate) retainShimmer];
+        [((UIKitShimmerRenderer *)self.delegate) retainShimmer:self];
         
         // Run by default
         self.paused = NO;
@@ -61,7 +62,7 @@
                                                     name: UIApplicationWillEnterForegroundNotification
                                                   object: nil];
     
-    [((UIKitShimmerRenderer *)self.delegate) releaseShimmer];
+    [((UIKitShimmerRenderer *)self.delegate) releaseShimmer:self];
 }
 
 - (void)didEnterBackground:(NSNotification*)notification {
@@ -88,10 +89,6 @@
     colorAttachment.loadAction = MTLLoadActionDontCare;
     
     return onscreenDescriptor;
-}
-
-- (void)render:(float)progress {
-    
 }
 
 #pragma mark Shimmer related

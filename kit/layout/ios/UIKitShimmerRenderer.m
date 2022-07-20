@@ -10,7 +10,6 @@
 
 #import <Foundation/Foundation.h>
 #import "UIKitShimmerRenderer.h"
-#import "UIKitSkeletonView.h"
 
 // From https://www.raywenderlich.com/books/metal-by-tutorials/v3.0/chapters/4-the-vertex-function
 static const float kRectVertices[] = {
@@ -25,41 +24,6 @@ static const uint16_t kRectIndices[] = {
     0, 3, 2,
     0, 1, 3
 };
-
-typedef struct {
-    float r;
-    float g;
-    float b;
-    float a;
-} ShimmerColor;
-
-@implementation RCTConvert (Shimmer)
-
-// TODO: remove
-+ (NSNumber *)rgbaToNumber:(int)r g:(int)g b:(int)b a:(int)a {
-    unsigned int hex = (unsigned int)((a << 24) | (r << 16) | (g << 8) | b >> 0);
-    return [NSNumber numberWithInt:hex];
-}
-
-+ (ShimmerColor)ShimmerColor:(id)json {
-    UIColor *color = [RCTConvert UIColor:json];
-    
-    if (color == nil) {
-        assert(0);
-    }
-    
-    CGFloat red = 0;
-    CGFloat green = 0;
-    CGFloat blue = 0;
-    CGFloat alpha = 0;
-    
-    [color getRed:&red green:&green blue:&blue alpha:&alpha];
-    
-    ShimmerColor c = { red, green, blue, alpha };
-    return c;
-}
-
-@end
 
 static id<MTLLibrary> MTLCreateUIKitLayoutLibrary(id<MTLDevice> device) {
     NSBundle *bundleFile = [NSBundle bundleWithURL:[[NSBundle bundleForClass:[UIKitShimmerRenderer class]]
@@ -96,10 +60,10 @@ static id<MTLLibrary> MTLCreateUIKitLayoutLibrary(id<MTLDevice> device) {
     float _physicalSize;
     float _physicalX0;
     
-    int _shimmersCount;
-    CFTimeInterval _lastTime;
+    NSMapTable *_views;
     
-    __weak UIView *tview;
+    // helps to calculate a global progress
+    CFTimeInterval _lastTime;
 }
 
 + (instancetype)sharedRenderer
@@ -112,14 +76,40 @@ static id<MTLLibrary> MTLCreateUIKitLayoutLibrary(id<MTLDevice> device) {
     return sharedInstance;
 }
 
++ (SkeletonConfig)defaultConfig {
+    static SkeletonConfig sharedConfig;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedConfig = (SkeletonConfig) {
+            200.0,
+            10.0,
+            800,
+            2000,
+            [RCTConvert ShimmerColor:[RCTConvert rgbaToNumber:245 g:246 b:247 a:255]],
+            [RCTConvert ShimmerColor:[RCTConvert rgbaToNumber:237 g:238 b:241 a:255]]
+        };
+    });
+    return sharedConfig;
+}
+
 - (instancetype)init
 {
     self = [super init];
     if (self) {
         [self initRenderPipeline];
         
-        _shimmersCount = 0;
         _lastTime = 0;
+        
+        // Initialize it to have a proper compare in `configure`
+        gradientWidth = 0;
+        skeletonDuration = 0;
+        shimmerDuration = 0;
+        
+        // Helps to set a proper `_lastTime`
+        // and update views when configuration is changed
+        _views = [NSMapTable strongToWeakObjectsMapTable];
+        
+        [self configure:[UIKitShimmerRenderer defaultConfig]];
     }
     return self;
 }
@@ -185,28 +175,41 @@ static id<MTLLibrary> MTLCreateUIKitLayoutLibrary(id<MTLDevice> device) {
         // cannot render anything without a valid compiled pipeline state object.
         assert(0);
     }
-    
-    // coords projection setup
-    // TODO: should it be dynamic?
-    gradientWidth = 200.0;
-    skewDegrees = 10.0;
-    shimmerDuration = 800;
-    skeletonDuration = 2000;
-    backgroundColor = [RCTConvert ShimmerColor:[RCTConvert rgbaToNumber:245 g:246 b:247 a:255]];
-//    backgroundColor = [RCTConvert ShimmerColor:[RCTConvert rgbaToNumber:255 g:255 b:255 a:255]];
-    accentColor = [RCTConvert ShimmerColor:[RCTConvert rgbaToNumber:237 g:238 b:241 a:255]];
-//    accentColor = [RCTConvert ShimmerColor:[RCTConvert rgbaToNumber:0 g:0 b:0 a:255]];
+}
+
+- (void)configure:(SkeletonConfig)config {
+    gradientWidth = config.gradientWidth;
+    skewDegrees = config.skewDegrees;
+    shimmerDuration = config.shimmerDuration;
+    skeletonDuration = config.skeletonDuration;
+    backgroundColor = config.backgroundColor;
+    accentColor = config.accentColor;
     
     if (skeletonDuration < shimmerDuration) {
         @throw @"Shimmer duration cannot be less than overall skeleton animation";
     }
     
-    // TODO: should update on any arguments changes
-    [self initProgressVars:shimmerDuration skeletonDuration:skeletonDuration];
+    [self updateProgressVars];
+    
+    if ([_views count] == 0) {
+        return;
+    }
+    
+    // Update views progress coords if configuration is changed
+    
+    NSEnumerator *enumerator = [_views objectEnumerator];
+
+    UIKitSkeletonView *view;
+    while ((view = [enumerator nextObject])) {
+        if (view == nil) {
+            return;
+        }
+
+        [view updateProgressCoords:[self getViewProgressCoords:view]];
+    }
 }
 
-- (void)initProgressVars:(int)shimmerDuration
-        skeletonDuration:(int)skeletonDuration {
+- (void)updateProgressVars {
     float relativeShimmerDuration = ((float) shimmerDuration) / ((float) skeletonDuration);
     
     float skewTan = tanf(skewDegrees * (M_PI / 180.0f));
@@ -221,15 +224,15 @@ static id<MTLLibrary> MTLCreateUIKitLayoutLibrary(id<MTLDevice> device) {
     _physicalX0 = _physicalSize / 2 - screenWidth / 2;
 }
 
-- (void)retainShimmer {
-    if (_shimmersCount == 0) {
+- (void)retainShimmer:(UIKitSkeletonView *)view {
+    if ([_views count] == 0) {
         _lastTime = CACurrentMediaTime() * 1000;
     }
-    _shimmersCount++;
+    [_views setObject:view forKey:@((intptr_t)view)];
 }
 
-- (void)releaseShimmer {
-    _shimmersCount--;
+- (void)releaseShimmer:(UIKitSkeletonView *)view {
+    [_views removeObjectForKey:@((intptr_t)view)];
 }
 
 #pragma mark Metal drawing delegate

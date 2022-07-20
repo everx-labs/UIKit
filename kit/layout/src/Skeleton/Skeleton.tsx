@@ -11,7 +11,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useTheme, ColorVariants } from '@tonlabs/uikit.themes';
 import { SkeletonProgress, useSkeletonProgress } from './useSkeletonProgress';
 import type { UISkeletonProps } from './types';
-import { UIKitSkeletonNativeView } from './UIKitSkeletonView';
+import { UIKitSkeleton, UIKitSkeletonNativeView } from './UIKitSkeletonView';
 
 enum CrossDissolveProgress {
     Visible = 1,
@@ -145,6 +145,25 @@ function SkeletonAnimatable({
     );
 }
 
+function UIKitSkeletonConfig() {
+    const theme = useTheme();
+    const prevThemeRef = React.useRef<typeof theme>();
+
+    if (prevThemeRef.current !== theme) {
+        UIKitSkeleton.configure({
+            gradientWidth: 300,
+            skewDegrees: 10,
+            shimmerDuration: 800,
+            skeletonDuration: 2000,
+            backgroundColor: theme[ColorVariants.BackgroundSecondary],
+            accentColor: theme[ColorVariants.BackgroundNeutral],
+        });
+        prevThemeRef.current = theme;
+    }
+
+    return null;
+}
+
 /**
  * Use it to show boundaries of content that will be shown
  * after loading is over.
@@ -172,7 +191,12 @@ export function UISkeleton({ children, show, style: styleProp }: UISkeletonProps
     return (
         <View style={[styles.container, styleProp]}>
             {children}
-            {visible && <UIKitSkeletonNativeView style={StyleSheet.absoluteFill} />}
+            {visible && (
+                <>
+                    <UIKitSkeletonConfig />
+                    <UIKitSkeletonNativeView style={StyleSheet.absoluteFill} />
+                </>
+            )}
         </View>
     );
 }
