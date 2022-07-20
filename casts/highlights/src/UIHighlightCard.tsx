@@ -124,7 +124,7 @@ export function UIHighlightCard({
                             <UILabel
                                 role={UILabelRoles.TitleSmall}
                                 color={ColorVariants.TextPrimary}
-                                numberOfLines={1}
+                                numberOfLines={2}
                                 ellipsizeMode="tail"
                             >
                                 {title}
