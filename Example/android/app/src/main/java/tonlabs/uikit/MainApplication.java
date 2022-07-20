@@ -18,7 +18,7 @@ import java.util.List;
 
 import com.facebook.react.bridge.JSIModulePackage;
 
-import tonlabs.uikit.inputs.UIKitInputManagerJSIModulePackage;
+import tonlabs.uikit.inputs.UIKitInputControllerJSIModulePackage;
 import tonlabs.uikit.keyboard.UIKitKeyboardJSIModulePackage;
 
 public class MainApplication extends Application implements ReactApplication {

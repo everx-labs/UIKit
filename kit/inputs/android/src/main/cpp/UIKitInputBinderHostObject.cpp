@@ -1,6 +1,7 @@
 //
 // Created by Aleksei Savelev on 14.07.2022.
 //
+#ifdef __ANDROID__
 
 #include "UIKitInputBinderHostObject.h"
 
@@ -26,9 +27,7 @@ UIKitInputBinderHostObjectSpec::UIKitInputBinderHostObjectSpec(std::shared_ptr<C
 
 void UIKitInputBinderHostObject::setText(const jsi::Value &value) {
     std::string val = value.getString(_runtime).utf8(_runtime);
-
-    #ifdef __ANDROID__
-        _javaInputBinder->setText(val);
-    #endif
+    _javaInputBinder->setText(val);
 }
 }
+#endif

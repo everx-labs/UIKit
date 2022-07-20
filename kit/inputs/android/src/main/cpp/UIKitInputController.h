@@ -7,7 +7,9 @@
 
 #pragma once
 
+#ifdef __ANDROID__
 #include <fbjni/fbjni.h>
+
 #include <jsi/jsi.h>
 
 #include "UIKitInputBinder.h"
@@ -15,9 +17,9 @@
 namespace tonlabs::uikit {
 using namespace facebook;
 
-class UIKitInputManager : public jni::JavaClass<UIKitInputManager> {
+class UIKitInputController : public jni::JavaClass<UIKitInputController> {
 public:
-    static constexpr auto kJavaDescriptor = "Ltonlabs/uikit/inputs/UIKitInputManager;";
+    static constexpr auto kJavaDescriptor = "Ltonlabs/uikit/inputs/UIKitInputController;";
 
     jni::global_ref<UIKitInputBinder> bind(int reactTag);
 
@@ -25,3 +27,4 @@ public:
 };
 
 }
+#endif

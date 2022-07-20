@@ -4,6 +4,8 @@
 
 #pragma once
 
+#ifdef __ANDROID__
+
 #include <jsi/jsi.h>
 
 #include <NativeReanimatedModule.h>
@@ -37,3 +39,4 @@ private:
 };
 
 }
+#endif

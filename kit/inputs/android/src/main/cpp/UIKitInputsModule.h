@@ -7,8 +7,10 @@
 
 #pragma once
 
+#ifdef __ANDROID__
 #include <NativeReanimatedModule.h>
-#include "UIKitInputManager.h"
+
+#include "UIKitInputController.h"
 
 namespace tonlabs :: uikit {
 using namespace facebook;
@@ -25,29 +27,20 @@ class [[maybe_unused]] UIKitInputsModule : public UIKitInputsModuleSpec {
 public:
     [[maybe_unused]] UIKitInputsModule(std::shared_ptr<CallInvoker> jsInvoker,
                       jsi::Runtime &rt,
- #ifdef __ANDROID__
-                      jni::global_ref<UIKitInputManager::javaobject> javaInputsManager
- #elif __APPLE__
-//     UIKitKeyboardFrameListener(UIKitKeyboardIosFrameListener *iosKeyboardFrameListener) : _iosKeyboardFrameListener(iosKeyboardFrameListener) {};
- #endif
+                      jni::global_ref<UIKitInputController::javaobject> javaInputsManager
  ) :
     UIKitInputsModuleSpec(jsInvoker),
     _jsInvoker(jsInvoker),
     _runtime(rt),
- #ifdef __ANDROID__
     _javaInputsManager(javaInputsManager)
- #endif
     {};
 
     jsi::Object bind(const jsi::Value &reactTag) override;
 private:
     jsi::Runtime &_runtime;
- #ifdef __ANDROID__
-    jni::global_ref<UIKitInputManager::javaobject> _javaInputsManager;
- #elif __APPLE__
-
- #endif
-        std::shared_ptr<CallInvoker> _jsInvoker;
+    jni::global_ref<UIKitInputController::javaobject> _javaInputsManager;
+    std::shared_ptr<CallInvoker> _jsInvoker;
 };
 
 }
+#endif

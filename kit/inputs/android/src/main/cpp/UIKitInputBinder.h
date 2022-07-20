@@ -4,6 +4,7 @@
 
 #pragma once
 
+#ifdef __ANDROID__
 #include <fbjni/fbjni.h>
 #include <jsi/jsi.h>
 
@@ -17,3 +18,4 @@ public:
     void setText(std::string value);
 };
 }
+#endif

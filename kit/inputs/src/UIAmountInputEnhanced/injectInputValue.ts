@@ -2,7 +2,7 @@
 import type React from 'react';
 import type { UITextViewRef } from '../UITextView';
 
-/* global _WORKLET, _injectInputValue, __uiKitInputManager */
+/* global _WORKLET, _injectInputValue, _uiKitInputController */
 export function injectInputValue(
     animatedRef: React.RefObject<UITextViewRef>,
     inputManagerRef: React.RefObject<any>,
@@ -30,7 +30,7 @@ export function injectInputValue(
 
     if (!inputManagerRef.current) {
         // @ts-expect-error
-        const inputManager = __uiKitInputManager?.bind(viewTag);
+        const inputManager = _uiKitInputController?.bind(viewTag);
         // @ts-expect-error
         // eslint-disable-next-line no-param-reassign
         inputManagerRef.current = inputManager;

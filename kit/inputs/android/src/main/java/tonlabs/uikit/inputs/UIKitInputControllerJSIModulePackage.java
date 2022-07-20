@@ -12,18 +12,18 @@ import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("JniMissingFunction")
-public class UIKitInputManagerJSIModulePackage implements JSIModulePackage {
+public class UIKitInputControllerJSIModulePackage implements JSIModulePackage {
     static {
         System.loadLibrary("UIKitInputs");
     }
 
-    public static native void installJSIBindings(long jsiPtr, CallInvokerHolderImpl jsCallInvokerHelper, UIKitInputManager uiKitInputManager);
+    public static native void installJSIBindings(long jsiPtr, CallInvokerHolderImpl jsCallInvokerHelper, UIKitInputController uiKitInputController);
 
     public static void install(ReactApplicationContext reactApplicationContext) {;
         long jsiPtr = reactApplicationContext.getJavaScriptContextHolder().get();
         CallInvokerHolderImpl jsCallInvokerHolder = (CallInvokerHolderImpl) reactApplicationContext.getCatalystInstance().getJSCallInvokerHolder();
 
-        UIKitInputManagerJSIModulePackage.installJSIBindings(jsiPtr, jsCallInvokerHolder, UIKitInputManager.getShared(reactApplicationContext));
+        UIKitInputControllerJSIModulePackage.installJSIBindings(jsiPtr, jsCallInvokerHolder, UIKitInputController.getShared(reactApplicationContext));
     }
 
     @Override

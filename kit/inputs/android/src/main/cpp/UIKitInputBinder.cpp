@@ -1,6 +1,7 @@
 //
 // Created by Aleksei Savelev on 14.07.2022.
 //
+#ifdef __ANDROID__
 
 #include "UIKitInputBinder.h"
 
@@ -12,3 +13,4 @@ void UIKitInputBinder::setText(std::string value) {
     method(self(), std::move(value));
 }
 }
+#endif

@@ -4,6 +4,7 @@
 //
 //  Created by Sergeev Anatolii on 20/06/2022
 //
+#ifdef __ANDROID__
 
 #include "UIKitInputsModule.h"
 
@@ -42,3 +43,4 @@ jsi::Object UIKitInputsModule::bind(const jsi::Value &reactTag) {
 }
 
 }
+#endif

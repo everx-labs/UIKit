@@ -24,7 +24,7 @@ typedef facebook::react::JSCExecutorFactory ExecutorFactory;
 
 #import <UIKitControls/HHapticJSIExecutorInitializer.h>
 #import <UIKitKeyboard/UIKitKeyboardJSIExecutorInstaller.h>
-#import <UIKitInputs/UIKitInputValueInjectorJSIExecutorInitializer.h>
+#import <UIKitInputs/UIKitInputControllerJSIExecutorInitializer.h>
 
 #if DEBUG
 #import <FlipperKit/FlipperClient.h>
@@ -87,8 +87,8 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (std::unique_ptr<facebook::react::JSExecutorFactory>)jsExecutorFactoryForBridge:(RCTBridge *)bridge {
   const auto withUIKitKeyboardInstaller = tonlabs::uikit::UIKitKeyboardJSIExecutorInstaller(bridge, NULL);
-  const auto withUIKitInputValueInjectorInstaller = tonlabs::uikit::UIKitInputValueInjectorJSIExecutorRuntimeInstaller(bridge, withUIKitKeyboardInstaller);
-  const auto withHHapticInstaller = tonlabs::uikit::HHapticJSIExecutorRuntimeInstaller(bridge, withUIKitInputValueInjectorInstaller);
+  const auto withUIKitInputControllerInstaller = tonlabs::uikit::UIKitInputControllerJSIExecutorRuntimeInstaller(bridge, withUIKitKeyboardInstaller);
+  const auto withHHapticInstaller = tonlabs::uikit::HHapticJSIExecutorRuntimeInstaller(bridge, withUIKitInputControllerInstaller);
   const auto withReanimatedInstaller = reanimated::REAJSIExecutorRuntimeInstaller(bridge, withHHapticInstaller);
 
   #if __has_include(<React/RCTJSIExecutorRuntimeInstaller.h>)

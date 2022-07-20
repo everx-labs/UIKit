@@ -2,17 +2,17 @@ package tonlabs.uikit.inputs;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 
-public class UIKitInputManager {
+public class UIKitInputController {
     static {
         System.loadLibrary("UIKitInputs");
     }
 
-    static public UIKitInputManager getShared(ReactApplicationContext reactApplicationContext) {
-        return new UIKitInputManager(reactApplicationContext);
+    static public UIKitInputController getShared(ReactApplicationContext reactApplicationContext) {
+        return new UIKitInputController(reactApplicationContext);
     }
 
     ReactApplicationContext mReactApplicationContext;
-    UIKitInputManager(ReactApplicationContext reactApplicationContext) {
+    UIKitInputController(ReactApplicationContext reactApplicationContext) {
         mReactApplicationContext = reactApplicationContext;
     }
 

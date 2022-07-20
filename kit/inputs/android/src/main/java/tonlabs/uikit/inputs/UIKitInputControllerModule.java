@@ -7,23 +7,23 @@ import com.facebook.react.module.annotations.ReactModule;
 
 import org.jetbrains.annotations.NotNull;
 
-@ReactModule(name = UIKitInputManagerModule.REACT_CLASS)
-public class UIKitInputManagerModule extends ReactContextBaseJavaModule {
-    protected static final String REACT_CLASS = "UIKitInputManagerModule";
+@ReactModule(name = UIKitInputControllerModule.REACT_CLASS)
+public class UIKitInputControllerModule extends ReactContextBaseJavaModule {
+    protected static final String REACT_CLASS = "UIKitInputControllerModule";
 
-    UIKitInputManagerModule(ReactApplicationContext reactContext) {
+    UIKitInputControllerModule(ReactApplicationContext reactContext) {
         super(reactContext);
     }
 
     @NotNull
     @Override
     public String getName() {
-        return UIKitInputManagerModule.REACT_CLASS;
+        return UIKitInputControllerModule.REACT_CLASS;
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)
     public void install() {
-        UIKitInputManagerJSIModulePackage.install(getReactApplicationContext());
+        UIKitInputControllerJSIModulePackage.install(getReactApplicationContext());
     }
 
 }

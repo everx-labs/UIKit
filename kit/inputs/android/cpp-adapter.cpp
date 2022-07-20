@@ -5,7 +5,7 @@
 
 #include <NativeReanimatedModule.h>
 
-#include "UIKitInputManager.h"
+#include "UIKitInputController.h"
 #include "UIKitInputsModule.h"
 
 using namespace facebook;
@@ -14,7 +14,7 @@ using namespace tonlabs::uikit;
 
 struct UIKitInputsJsiModule : jni::JavaClass<UIKitInputsJsiModule> {
 public:
-    __unused static constexpr auto kJavaDescriptor = "Ltonlabs/uikit/inputs/UIKitInputManagerJSIModulePackage;";
+    __unused static constexpr auto kJavaDescriptor = "Ltonlabs/uikit/inputs/UIKitInputControllerJSIModulePackage;";
 
     static void registerNatives() {
         javaClassStatic()->registerNatives({makeNativeMethod("installJSIBindings", UIKitInputsJsiModule::installJSIBindings)});
@@ -24,7 +24,7 @@ private:
     static void installJSIBindings(jni::alias_ref<jni::JClass>,
                                    jlong jsContext,
                                    jni::alias_ref<facebook::react::CallInvokerHolder::javaobject> jsCallInvokerHolder,
-                                   jni::alias_ref<UIKitInputManager::javaobject> javaUIKitInputManager) {
+                                   jni::alias_ref<UIKitInputController::javaobject> javaUIKitInputController) {
         jsi::Runtime *runtime = reinterpret_cast<facebook::jsi::Runtime *>(jsContext);
 
         std::shared_ptr<facebook::react::CallInvoker> jsCallInvoker =
@@ -38,11 +38,11 @@ private:
 
         auto uiKitInputsModule = std::make_unique<UIKitInputsModule>(jsCallInvoker,
                                                                      reanimatedRuntime,
-                                                                     jni::make_global(javaUIKitInputManager));
+                                                                     jni::make_global(javaUIKitInputController));
 
         reanimatedRuntime.global().setProperty(
             reanimatedRuntime,
-            "__uiKitInputManager",
+            "_uiKitInputController",
             jsi::Object::createFromHostObject(reanimatedRuntime, std::move(uiKitInputsModule))
         );
     }
