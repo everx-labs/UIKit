@@ -11,7 +11,7 @@ module.exports = {
                     '_hapticNotification',
                     '_injectInputValue',
                     '_moveInputCaret',
-                    '__uiKitInputManager',
+                    '_uiKitInputController',
                 ],
             },
         ],
