@@ -1,9 +1,5 @@
 import * as React from 'react';
-import Animated, {
-    runOnJS,
-    useAnimatedReaction,
-    useAnimatedRef,
-} from 'react-native-reanimated';
+import Animated, { runOnJS, useAnimatedReaction, useAnimatedRef } from 'react-native-reanimated';
 import BigNumber from 'bignumber.js';
 import { NativeModules } from 'react-native';
 import type { UIAmountInputEnhancedRef, UIAmountInputEnhancedProps } from './types';
