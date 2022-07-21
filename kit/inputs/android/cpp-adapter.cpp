@@ -6,7 +6,7 @@
 #include <NativeReanimatedModule.h>
 
 #include "UIKitInputControllerAndroid.h"
-#include "UIKitInputsModule.h"
+#include "UIKitInputsModuleAndroid.h"
 
 using namespace facebook;
 using namespace reanimated;
@@ -36,7 +36,7 @@ private:
 
         jsi::Runtime &reanimatedRuntime = *reanimatedModule->runtime.get();
 
-        auto uiKitInputsModule = std::make_unique<UIKitInputsModule>(jsCallInvoker,
+        auto uiKitInputsModule = std::make_unique<UIKitInputsModuleAndroid>(jsCallInvoker,
                                                                      reanimatedRuntime,
                                                                      jni::make_global(javaUIKitInputController));
 

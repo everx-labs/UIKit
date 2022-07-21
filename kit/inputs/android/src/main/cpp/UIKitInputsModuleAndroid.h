@@ -1,5 +1,5 @@
 //
-//  UIKitInputsModule.h
+//  UIKitInputsModuleAndroid.h
 //  uikit.inputs
 //
 //  Created by Sergeev Anatolii on 20/06/2022
@@ -23,11 +23,11 @@ public:
     virtual jsi::Object bind(const jsi::Value &reactTag) = 0;
 };
 
-class [[maybe_unused]] UIKitInputsModule : public UIKitInputsModuleSpec {
+class [[maybe_unused]] UIKitInputsModuleAndroid : public UIKitInputsModuleSpec {
 public:
-    [[maybe_unused]] UIKitInputsModule(std::shared_ptr<CallInvoker> jsInvoker,
-                      jsi::Runtime &rt,
-                      jni::global_ref<UIKitInputControllerAndroid::javaobject> javaInputsManager
+    [[maybe_unused]] UIKitInputsModuleAndroid(std::shared_ptr<CallInvoker> jsInvoker,
+                                              jsi::Runtime &rt,
+                                              jni::global_ref<UIKitInputControllerAndroid::javaobject> javaInputsManager
  ) :
     UIKitInputsModuleSpec(jsInvoker),
     _jsInvoker(jsInvoker),

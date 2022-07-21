@@ -22,11 +22,11 @@ public:
     virtual void setText(const jsi::Value &value) = 0;
 };
 
-class UIKitInputBinderHostObject : public UIKitInputBinderHostObjectSpec {
+class UIKitInputBinderHostObjectAndroid : public UIKitInputBinderHostObjectSpec {
 public:
-    UIKitInputBinderHostObject(std::shared_ptr<CallInvoker> jsInvoker,
-                      jsi::Runtime &rt,
-                      jni::global_ref<UIKitInputBinderAndroid> javaInputBinder) :
+    UIKitInputBinderHostObjectAndroid(std::shared_ptr<CallInvoker> jsInvoker,
+                                      jsi::Runtime &rt,
+                                      jni::global_ref<UIKitInputBinderAndroid> javaInputBinder) :
                 UIKitInputBinderHostObjectSpec(jsInvoker),
                 _runtime(rt),
                 _javaInputBinder(javaInputBinder) {};
