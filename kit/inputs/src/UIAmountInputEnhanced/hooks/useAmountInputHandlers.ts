@@ -34,7 +34,8 @@ export function useAmountInputHandlers(
 
     const applyAmountMask = useAmountMaskApplyer(numberOfDecimalDigits, carretEndPosition);
 
-    const inputManagerRef = useAnimatedRef();
+    // @ts-expect-error
+    const inputManagerRef = useAnimatedRef<InputBinder | undefined>();
 
     // const injectInputValue1 = useInjectInputValue(ref)
 
