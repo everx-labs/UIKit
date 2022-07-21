@@ -11,7 +11,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useTheme, ColorVariants } from '@tonlabs/uikit.themes';
 import { SkeletonProgress, useSkeletonProgress } from './useSkeletonProgress';
 import type { UISkeletonProps } from './types';
-import { UIKitSkeleton, UIKitSkeletonNativeView } from './UIKitSkeletonView';
 
 enum CrossDissolveProgress {
     Visible = 1,
@@ -145,25 +144,6 @@ function SkeletonAnimatable({
     );
 }
 
-function UIKitSkeletonConfig() {
-    const theme = useTheme();
-    const prevThemeRef = React.useRef<typeof theme>();
-
-    if (prevThemeRef.current !== theme) {
-        UIKitSkeleton.configure({
-            gradientWidth: 300,
-            skewDegrees: 10,
-            shimmerDuration: 800,
-            skeletonDuration: 2000,
-            backgroundColor: theme[ColorVariants.BackgroundSecondary],
-            accentColor: theme[ColorVariants.BackgroundNeutral],
-        });
-        prevThemeRef.current = theme;
-    }
-
-    return null;
-}
-
 /**
  * Use it to show boundaries of content that will be shown
  * after loading is over.
@@ -176,26 +156,42 @@ function UIKitSkeletonConfig() {
 export function UISkeleton({ children, show, style: styleProp }: UISkeletonProps) {
     const visible = children == null || show;
 
-    // const { isVisible, crossDissolveProgress } = useCrossDissolve(visible);
+    const width = useSharedValue(0);
 
-    // const skeletonBorderRadius = React.useMemo(() => {
-    //     if (styleProp) {
-    //         const { borderRadius: stylePropBorderRadius } = StyleSheet.flatten(styleProp ?? {});
-    //         if (stylePropBorderRadius !== undefined) {
-    //             return stylePropBorderRadius;
-    //         }
-    //     }
-    //     return 0;
-    // }, [styleProp]);
+    const onLayout = React.useCallback(
+        ({
+            nativeEvent: {
+                layout: { width: lWidth },
+            },
+        }: LayoutChangeEvent) => {
+            if (width.value !== lWidth) {
+                width.value = lWidth;
+            }
+        },
+        [width],
+    );
+
+    const { isVisible, crossDissolveProgress } = useCrossDissolve(visible);
+
+    const skeletonBorderRadius = React.useMemo(() => {
+        if (styleProp) {
+            const { borderRadius: stylePropBorderRadius } = StyleSheet.flatten(styleProp ?? {});
+            if (stylePropBorderRadius !== undefined) {
+                return stylePropBorderRadius;
+            }
+        }
+        return 0;
+    }, [styleProp]);
 
     return (
-        <View style={[styles.container, styleProp]}>
+        <View style={[styles.container, styleProp]} onLayout={onLayout}>
             {children}
-            {visible && (
-                <>
-                    <UIKitSkeletonConfig />
-                    <UIKitSkeletonNativeView style={StyleSheet.absoluteFill} />
-                </>
+            {isVisible && (
+                <SkeletonAnimatable
+                    width={width}
+                    borderRadius={skeletonBorderRadius}
+                    crossDissolveProgress={crossDissolveProgress}
+                />
             )}
         </View>
     );

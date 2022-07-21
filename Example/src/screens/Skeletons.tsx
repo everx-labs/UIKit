@@ -9,6 +9,7 @@ import { ExampleSection } from '../components/ExampleSection';
 
 const contentBackgroundColor = 'rgba(255,0,0,.1)';
 
+const showContentLayoutDoesNotMatchSkeletonLayout = false;
 function ContentLayoutDoesNotMatchSkeletonLayout({ isActive }: { isActive: boolean }) {
     if (isActive) {
         return (
@@ -157,7 +158,9 @@ export function SkeletonsScreen() {
                         </View>
                     </View>
 
-                    {/* <ContentLayoutDoesNotMatchSkeletonLayout isActive={isActive} /> */}
+                    {showContentLayoutDoesNotMatchSkeletonLayout && (
+                        <ContentLayoutDoesNotMatchSkeletonLayout isActive={isActive} />
+                    )}
                 </View>
                 <UIBoxButton title="Toggle skeletons" onPress={() => setIsActive(!isActive)} />
             </ExampleSection>
