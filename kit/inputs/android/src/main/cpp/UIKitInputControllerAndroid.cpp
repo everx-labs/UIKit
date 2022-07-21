@@ -6,13 +6,13 @@
 //
 #ifdef __ANDROID__
 
-#include "UIKitInputController.h"
+#include "UIKitInputControllerAndroid.h"
 
 namespace tonlabs::uikit {
 using namespace facebook;
 
-jni::global_ref<UIKitInputBinder> UIKitInputController::bind(int uid) {
-    static const auto method = getClass()->getMethod<UIKitInputBinder(int)>("bind");
+jni::global_ref<UIKitInputBinderAndroid> UIKitInputControllerAndroid::bind(int uid) {
+    static const auto method = getClass()->getMethod<UIKitInputBinderAndroid(int)>("bind");
     return jni::make_global(method(self(), uid));
 }
 

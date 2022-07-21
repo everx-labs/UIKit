@@ -9,7 +9,7 @@
 #include "UIKitInputsModule.h"
 
 #include <utility>
-#include "UIKitInputBinder.h"
+#include "UIKitInputBinderAndroid.h"
 #include "UIKitInputBinderHostObject.h"
 
 namespace tonlabs::uikit {
@@ -33,7 +33,7 @@ jsi::Object UIKitInputsModule::bind(const jsi::Value &reactTag) {
     int viewTag = static_cast<int>(reactTag.asNumber());
 
     // Get a Java class that contains resolved view (UIKitInputBinder.java)
-    jni::global_ref<UIKitInputBinder> javaInputBinder = _javaInputsManager->bind(viewTag);
+    jni::global_ref<UIKitInputBinderAndroid> javaInputBinder = _javaInputsManager->bind(viewTag);
 
     auto uiKitBinderHostObject = std::make_unique<UIKitInputBinderHostObject>(_jsInvoker,
                                                                                _runtime,

@@ -12,16 +12,16 @@
 
 #include <jsi/jsi.h>
 
-#include "UIKitInputBinder.h"
+#include "UIKitInputBinderAndroid.h"
 
 namespace tonlabs::uikit {
 using namespace facebook;
 
-class UIKitInputController : public jni::JavaClass<UIKitInputController> {
+class UIKitInputControllerAndroid : public jni::JavaClass<UIKitInputControllerAndroid> {
 public:
     static constexpr auto kJavaDescriptor = "Ltonlabs/uikit/inputs/UIKitInputController;";
 
-    jni::global_ref<UIKitInputBinder> bind(int reactTag);
+    jni::global_ref<UIKitInputBinderAndroid> bind(int reactTag);
 
     private:
 };

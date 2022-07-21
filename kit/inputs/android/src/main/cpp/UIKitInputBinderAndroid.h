@@ -11,7 +11,7 @@
 namespace tonlabs::uikit {
 using namespace facebook;
 
-class UIKitInputBinder : public jni::JavaClass<UIKitInputBinder> {
+class UIKitInputBinderAndroid : public jni::JavaClass<UIKitInputBinderAndroid> {
 public:
     static constexpr auto kJavaDescriptor = "Ltonlabs/uikit/inputs/UIKitInputBinder;";
 

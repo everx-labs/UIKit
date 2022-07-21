@@ -5,7 +5,7 @@
 
 #include <NativeReanimatedModule.h>
 
-#include "UIKitInputController.h"
+#include "UIKitInputControllerAndroid.h"
 #include "UIKitInputsModule.h"
 
 using namespace facebook;
@@ -24,7 +24,7 @@ private:
     static void installJSIBindings(jni::alias_ref<jni::JClass>,
                                    jlong jsContext,
                                    jni::alias_ref<facebook::react::CallInvokerHolder::javaobject> jsCallInvokerHolder,
-                                   jni::alias_ref<UIKitInputController::javaobject> javaUIKitInputController) {
+                                   jni::alias_ref<UIKitInputControllerAndroid::javaobject> javaUIKitInputController) {
         jsi::Runtime *runtime = reinterpret_cast<facebook::jsi::Runtime *>(jsContext);
 
         std::shared_ptr<facebook::react::CallInvoker> jsCallInvoker =

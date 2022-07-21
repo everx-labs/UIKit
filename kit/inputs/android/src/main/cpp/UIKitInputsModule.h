@@ -10,7 +10,7 @@
 #ifdef __ANDROID__
 #include <NativeReanimatedModule.h>
 
-#include "UIKitInputController.h"
+#include "UIKitInputControllerAndroid.h"
 
 namespace tonlabs :: uikit {
 using namespace facebook;
@@ -27,7 +27,7 @@ class [[maybe_unused]] UIKitInputsModule : public UIKitInputsModuleSpec {
 public:
     [[maybe_unused]] UIKitInputsModule(std::shared_ptr<CallInvoker> jsInvoker,
                       jsi::Runtime &rt,
-                      jni::global_ref<UIKitInputController::javaobject> javaInputsManager
+                      jni::global_ref<UIKitInputControllerAndroid::javaobject> javaInputsManager
  ) :
     UIKitInputsModuleSpec(jsInvoker),
     _jsInvoker(jsInvoker),
@@ -38,7 +38,7 @@ public:
     jsi::Object bind(const jsi::Value &reactTag) override;
 private:
     jsi::Runtime &_runtime;
-    jni::global_ref<UIKitInputController::javaobject> _javaInputsManager;
+    jni::global_ref<UIKitInputControllerAndroid::javaobject> _javaInputsManager;
     std::shared_ptr<CallInvoker> _jsInvoker;
 };
 

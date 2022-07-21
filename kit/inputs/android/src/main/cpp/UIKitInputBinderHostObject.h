@@ -9,7 +9,7 @@
 #include <jsi/jsi.h>
 
 #include <NativeReanimatedModule.h>
-#include "UIKitInputBinder.h"
+#include "UIKitInputBinderAndroid.h"
 
 namespace tonlabs:: uikit {
 
@@ -26,7 +26,7 @@ class UIKitInputBinderHostObject : public UIKitInputBinderHostObjectSpec {
 public:
     UIKitInputBinderHostObject(std::shared_ptr<CallInvoker> jsInvoker,
                       jsi::Runtime &rt,
-                      jni::global_ref<UIKitInputBinder> javaInputBinder) :
+                      jni::global_ref<UIKitInputBinderAndroid> javaInputBinder) :
                 UIKitInputBinderHostObjectSpec(jsInvoker),
                 _runtime(rt),
                 _javaInputBinder(javaInputBinder) {};
@@ -35,7 +35,7 @@ public:
 
 private:
     jsi::Runtime &_runtime;
-    jni::global_ref<UIKitInputBinder> _javaInputBinder;
+    jni::global_ref<UIKitInputBinderAndroid> _javaInputBinder;
 };
 
 }
