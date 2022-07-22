@@ -100,6 +100,7 @@
 
 - (BOOL)_shouldRender:(float)globalProgress {
     if (_needFirstRender) {
+        _needFirstRender = NO;
         return YES;
     }
     
