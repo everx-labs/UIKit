@@ -45,23 +45,24 @@ UIKitInputControllerJSIExecutorRuntimeInstaller(RCTBridge *bridge,
             if ([view isKindOfClass:[RCTBaseTextInputView class]]) {
                 RCTBaseTextInputView *baseTextInputView = (RCTBaseTextInputView *)view;
                 inputController.baseTextInputView = baseTextInputView;
-                
             }
             
             auto setTextCallback = [inputController, &bridge, viewTag](jsi::Runtime &rt,
                                                                        const jsi::Value &thisVal,
-                                                                       const jsi::Value *text, size_t count) -> jsi::Value {
-                const auto value = text->asString(rt);
+                                                                       const jsi::Value *args,
+                                                                       size_t count) -> jsi::Value {
+                const auto text = args[0].asString(rt);
+                int caretPosition = args[1].asNumber();
                 const auto stingifiedValue =
-                [NSString stringWithUTF8String:value.utf8(rt).c_str()];
+                [NSString stringWithUTF8String:text.utf8(rt).c_str()];
                 
-                [inputController setText:stingifiedValue];
+                [inputController setText:stingifiedValue andCaretPosition:caretPosition];
                 
                 return jsi::Value::undefined();
             };
             
             jsi::PropNameID propNameOfSetTextMethod = jsi::PropNameID::forAscii(rt, "setText");
-            jsi::Value setText = jsi::Function::createFromHostFunction(rt, propNameOfSetTextMethod, 1, setTextCallback);
+            jsi::Value setText = jsi::Function::createFromHostFunction(rt, propNameOfSetTextMethod, 2, setTextCallback);
             
             jsi::Object inputManager = jsi::Object(rt);
             inputManager.setProperty(rt, propNameOfSetTextMethod, setText);

@@ -13,6 +13,6 @@
 @property (nonatomic, weak) RCTBaseTextInputView *baseTextInputView;
 
 - (instancetype)initWith:(RCTBaseTextInputView *)baseTextInputView;
-- (void)setText:(NSString *)value;
+- (void)setText:(NSString *)value andCaretPosition:(int) caretPosition;
 
 @end

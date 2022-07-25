@@ -18,9 +18,16 @@ RCT_EXPORT_MODULE()
     return self;
 }
 
-- (void)setText:(NSString *)value {
+- (void)setText:(NSString *)value andCaretPosition:(int)caretPosition {
     if (_baseTextInputView != NULL) {
+        /* Set text */
         _baseTextInputView.backedTextInputView.attributedText = [[NSAttributedString alloc] initWithString:value];
+
+        /* Set caretPosition */
+        UITextPosition *startPosition = [_baseTextInputView.backedTextInputView positionFromPosition:_baseTextInputView.backedTextInputView.beginningOfDocument offset:caretPosition];
+        UITextPosition *endPosition = [_baseTextInputView.backedTextInputView positionFromPosition:_baseTextInputView.backedTextInputView.beginningOfDocument offset:caretPosition];
+        UITextRange *textRange = [_baseTextInputView.backedTextInputView textRangeFromPosition:startPosition toPosition:endPosition];
+        [_baseTextInputView.backedTextInputView setSelectedTextRange:textRange notifyDelegate:false];
     }
 }
 
