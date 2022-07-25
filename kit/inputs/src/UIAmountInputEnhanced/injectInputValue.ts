@@ -7,6 +7,7 @@ export function injectInputValue(
     animatedRef: React.RefObject<UITextViewRef>,
     inputManagerRef: React.RefObject<InputBinder | undefined>,
     value: string,
+    caretPosition: number,
 ) {
     'worklet';
 
@@ -33,8 +34,8 @@ export function injectInputValue(
         // @ts-expect-error
         // eslint-disable-next-line no-param-reassign
         inputManagerRef.current = inputManager;
-        inputManager?.setText(value);
+        inputManager?.setText(value, caretPosition);
     } else {
-        inputManagerRef.current.setText(value);
+        inputManagerRef.current.setText(value, caretPosition);
     }
 }

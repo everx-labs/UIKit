@@ -55,8 +55,12 @@ public class UIKitInputBinder {
         editableText.replace(0, editableText.length(), value);
     }
 
+    private void moveCaret(@NonNull ReactEditText reactEditText, int caretPosition) {
+        reactEditText.setSelection(caretPosition);
+    }
+
     @SuppressWarnings("unused")
-    public void setText(String value) {
+    public void setText(String value, int caretPosition) {
         /*
         There are situations when the call to setText occurs before the execution
         of the resolveView method on runOnUiQueueThread completes.
@@ -70,11 +74,13 @@ public class UIKitInputBinder {
                     }
                     if (mReactEditText != null) {
                         applyText(mReactEditText, value);
+                        moveCaret(mReactEditText, caretPosition);
                     }
                 }
             );
         } else {
             applyText(mReactEditText, value);
+            moveCaret(mReactEditText, caretPosition);
         }
     }
 }

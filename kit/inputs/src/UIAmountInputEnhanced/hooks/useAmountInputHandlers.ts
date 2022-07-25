@@ -77,7 +77,7 @@ export function useAmountInputHandlers(
 
             const {
                 formattedText: newFormattedText,
-                carretPosition: newCarretPosition,
+                carretPosition: newCaretPosition,
                 // normalizedText: newNormalizedText,
             } = applyAmountMask(evt.text);
 
@@ -85,13 +85,13 @@ export function useAmountInputHandlers(
                 // getInputManager(ref)?.injectValue(newFormattedText);
                 // inputManager.value.injectValue(newFormattedText);
 
-                injectInputValue(ref, inputManagerRef, newFormattedText);
-                moveInputCaret(ref, newCarretPosition);
+                injectInputValue(ref, inputManagerRef, newFormattedText, newCaretPosition);
+                // moveInputCaret(ref, newCaretPosition);
             }
 
             // inputText.value = evt.text;
             formattedText.value = newFormattedText;
-            carretEndPosition.value = newCarretPosition;
+            carretEndPosition.value = newCaretPosition;
             // normalizedText.value = newNormalizedText;
         },
         onSelectionChange: evt => {

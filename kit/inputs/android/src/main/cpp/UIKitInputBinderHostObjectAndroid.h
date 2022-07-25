@@ -19,7 +19,7 @@ class UIKitInputBinderHostObjectSpec : public TurboModule {
 public:
     UIKitInputBinderHostObjectSpec(std::shared_ptr<CallInvoker> jsInvoker);
 
-    virtual void setText(const jsi::Value &value) = 0;
+    virtual void setText(const jsi::Value &value, const jsi::Value &caretPosition) = 0;
 };
 
 class UIKitInputBinderHostObjectAndroid : public UIKitInputBinderHostObjectSpec {
@@ -31,7 +31,7 @@ public:
                 _runtime(rt),
                 _javaInputBinder(javaInputBinder) {};
 
-    void setText(const jsi::Value &value) override;
+    void setText(const jsi::Value &value, const jsi::Value &caretPosition) override;
 
 private:
     jsi::Runtime &_runtime;

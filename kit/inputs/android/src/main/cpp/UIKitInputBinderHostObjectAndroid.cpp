@@ -16,7 +16,7 @@ static jsi::Value __hostFunction_UIKitInputBinderHostObjectSpec_setText(
         TurboModule &turboModule,
         const jsi::Value *args,
         [[maybe_unused]] size_t count) {
-    dynamic_cast<UIKitInputBinderHostObjectAndroid *>(&turboModule)->setText(std::move(args[0]));
+    dynamic_cast<UIKitInputBinderHostObjectAndroid *>(&turboModule)->setText(std::move(args[0]), std::move(args[1]));
     return jsi::Value::undefined();
 }
 
@@ -25,9 +25,10 @@ UIKitInputBinderHostObjectSpec::UIKitInputBinderHostObjectSpec(std::shared_ptr<C
                 1, __hostFunction_UIKitInputBinderHostObjectSpec_setText};
 }
 
-void UIKitInputBinderHostObjectAndroid::setText(const jsi::Value &value) {
+void UIKitInputBinderHostObjectAndroid::setText(const jsi::Value &value, const jsi::Value &caretPosition) {
     std::string val = value.getString(_runtime).utf8(_runtime);
-    _javaInputBinder->setText(val);
+    int caretPlace = static_cast<int>(caretPosition.asNumber());
+    _javaInputBinder->setText(val, caretPlace);
 }
 }
 #endif

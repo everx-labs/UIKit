@@ -8,9 +8,9 @@
 namespace tonlabs::uikit {
 using namespace facebook;
 
-void UIKitInputBinderAndroid::setText(std::string value) {
-    auto method = getClass()->getMethod<void(std::string)>("setText");
-    method(self(), std::move(value));
+void UIKitInputBinderAndroid::setText(std::string value, int caretPosition) {
+    auto method = getClass()->getMethod<void(std::string, int)>("setText");
+    method(self(), std::move(value), caretPosition);
 }
 }
 #endif

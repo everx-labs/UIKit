@@ -15,7 +15,7 @@ class UIKitInputBinderAndroid : public jni::JavaClass<UIKitInputBinderAndroid> {
 public:
     static constexpr auto kJavaDescriptor = "Ltonlabs/uikit/inputs/UIKitInputBinder;";
 
-    void setText(std::string value);
+    void setText(std::string value, int caretPosition);
 };
 }
 #endif
