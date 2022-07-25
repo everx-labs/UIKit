@@ -29,5 +29,20 @@ export function useHandleRef(
         setNativeProps: (nativeProps: any) => {
             return textInputRef.current?.setNativeProps(nativeProps);
         },
+        setSelectionRange: (start: number, end: number) => {
+            const textInput = textInputRef.current as any;
+            if (textInput?.setSelectionRange) {
+                textInput?.setSelectionRange(start, end);
+
+                return;
+            }
+            if (textInput?.createTextRange) {
+                const range = textInput.createTextRange();
+                range.collapse(true);
+                range.moveStart(start);
+                range.moveEnd(end);
+                range.select();
+            }
+        },
     }));
 }

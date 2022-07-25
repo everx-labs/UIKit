@@ -114,6 +114,10 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
             // @ts-expect-error
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
+            style={{
+                padding: 8,
+                borderWidth: 1,
+            }}
         >
             <UITextViewAnimated {...props} {...textViewHandlers} ref={ref} />
         </Animated.View>

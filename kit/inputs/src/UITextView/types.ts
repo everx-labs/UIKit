@@ -67,6 +67,7 @@ export type UITextViewProps = Omit<
 export interface UITextViewRef
     extends Pick<TextInput, 'isFocused' | 'focus' | 'blur' | 'clear' | 'setNativeProps'> {
     remeasureInputHeight: () => void;
+    setSelectionRange: (start: number, end: number) => void;
 }
 
 export type AutogrowAttributes = {
