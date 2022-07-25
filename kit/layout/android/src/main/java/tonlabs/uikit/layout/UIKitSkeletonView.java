@@ -1,28 +1,38 @@
 package tonlabs.uikit.layout;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.facebook.react.uimanager.ThemedReactContext;
 
+import java.util.WeakHashMap;
+
+import minus.android.support.opengl.GLTextureView;
+
 /**
  * TODO: must implement onPause and onResume!
  */
 @SuppressLint("ViewConstructor")
-public class UIKitSkeletonView extends GLSurfaceView implements UIKitShimmerRenderer.ShimmerProgress {
-    private UIKitShimmerRenderer.ProgressCoords mProgressCoords;
+public class UIKitSkeletonView extends GLTextureView implements UIKitShimmerRenderer.ShimmerProgress {
+    private UIKitShimmerConfiguration.ProgressCoords mProgressCoords;
     private boolean mNeedFirstRender = true;
     private boolean mLastShouldRenderCheck = false;
 
     UIKitSkeletonView(@NonNull ThemedReactContext reactContext, UIKitShimmerRenderer renderer) {
         super(reactContext);
 
+
+        setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+
         setEGLContextClientVersion(3);
         setRenderer(renderer);
 
-        renderer.connectView(this);
+        setRenderMode(RENDERMODE_CONTINUOUSLY);
     }
 
     // --- Shimmer related ---
@@ -83,7 +93,7 @@ public class UIKitSkeletonView extends GLSurfaceView implements UIKitShimmerRend
         return (globalProgress - mProgressCoords.start) / (1 - mProgressCoords.start + head);
     }
 
-    public void updateProgressCoords(UIKitShimmerRenderer.ProgressCoords progressCoords) {
+    public void updateProgressCoords(UIKitShimmerConfiguration.ProgressCoords progressCoords) {
         mProgressCoords = progressCoords;
     }
 

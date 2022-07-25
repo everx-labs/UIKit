@@ -40,7 +40,7 @@ export function UISkeleton({ children, show, style: styleProp }: UISkeletonProps
             {children}
             {visible && (
                 <>
-                    {/* <UIKitSkeletonConfig /> */}
+                    <UIKitSkeletonConfig />
                     <UIKitSkeletonNativeView
                         // @ts-ignore
                         style={StyleSheet.absoluteFill}

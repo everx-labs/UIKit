@@ -51,7 +51,7 @@ void main() {
         inUniforms.accentColor, 
         inUniforms.backgroundColor, 
         currentPoint.x, 
-        0.0 + skewX, 
-        gradientWidth + skewX
+        0.0 + skewX + inUniforms.progressShift, 
+        gradientWidth + skewX + inUniforms.progressShift
     );
 }
