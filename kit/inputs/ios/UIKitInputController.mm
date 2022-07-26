@@ -12,12 +12,6 @@
 
 RCT_EXPORT_MODULE()
 
-- (instancetype)initWith:(RCTBaseTextInputView *)baseTextInputView {
-    self = [super init];
-    _baseTextInputView = baseTextInputView;
-    return self;
-}
-
 - (void)setText:(NSString *)value andCaretPosition:(int)caretPosition {
     if (_baseTextInputView != NULL) {
         /* Set text */

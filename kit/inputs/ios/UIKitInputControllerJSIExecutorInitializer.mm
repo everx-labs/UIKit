@@ -33,14 +33,14 @@ UIKitInputControllerJSIExecutorRuntimeInstaller(RCTBridge *bridge,
         
         jsi::Runtime &reanimatedUIRuntime = *reanimatedModule->runtime.get();
         
-        UIKitInputController *inputController = [[UIKitInputController alloc] init];
-        
-        auto bindCallback = [bridge, inputController](jsi::Runtime &rt,
+        auto bindCallback = [bridge](jsi::Runtime &rt,
                                                       const jsi::Value &thisVal,
                                                       const jsi::Value *args,
                                                       size_t count) -> jsi::Object {
             int viewTag = static_cast<int>(args[0].asNumber());
             UIView *view = [bridge.uiManager viewForReactTag:@(viewTag)];
+            
+            UIKitInputController *inputController = [[UIKitInputController alloc] init];
             
             if ([view isKindOfClass:[RCTBaseTextInputView class]]) {
                 RCTBaseTextInputView *baseTextInputView = (RCTBaseTextInputView *)view;

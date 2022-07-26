@@ -33,7 +33,6 @@ export function useHandleRef(
             const textInput = textInputRef.current as any;
             if (textInput?.setSelectionRange) {
                 textInput?.setSelectionRange(start, end);
-
                 return;
             }
             if (textInput?.createTextRange) {
