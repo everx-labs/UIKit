@@ -1,12 +1,10 @@
 package tonlabs.uikit.layout;
 
 import android.opengl.GLES30;
-import android.opengl.GLSurfaceView;
 import android.util.Log;
 
 import com.facebook.react.uimanager.ThemedReactContext;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -43,7 +41,7 @@ public class UIKitShimmerRenderer implements GLTextureView.Renderer {
     private final int[] ibo = new int[1];
     private final ShortBuffer mRectIndices;
     // Uniform buffer objects
-    private final int[] ubo = new int[1];
+    private final ShimmerUniform mShimmerUniform = new ShimmerUniform();
 
     /** This will be used to pass in model position information. */
     private int mVertexPositionHandle;
@@ -120,7 +118,6 @@ public class UIKitShimmerRenderer implements GLTextureView.Renderer {
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
-        Log.d(TAG, "onSurfaceChanged");
         GLES30.glViewport(0, 0, width, height);
         this.width = width;
         this.height = height;
@@ -134,8 +131,6 @@ public class UIKitShimmerRenderer implements GLTextureView.Renderer {
 
     @Override
     public boolean onDrawFrame(GL10 gl) {
-        Log.d(TAG, String.format("onDrawFrame: %d", linkedView.getId()));
-
         float globalProgress = mSharedResourcesAccessor.getGlobalProgress();
         if (!linkedView.shouldRender(globalProgress)) {
             return false;
@@ -144,7 +139,6 @@ public class UIKitShimmerRenderer implements GLTextureView.Renderer {
         UIKitShimmerConfiguration.ShimmerColor backgroundColor = mSharedResourcesAccessor.getGlobalConfiguration().backgroundColor;
         // clear the our "screen"
         GLES30.glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
-//        GLES30.glClear(GLES30.GL_DEPTH_BUFFER_BIT | GLES30.GL_COLOR_BUFFER_BIT);
 
         // use program
         GLES30.glUseProgram(mProgramHandle);
@@ -165,7 +159,7 @@ public class UIKitShimmerRenderer implements GLTextureView.Renderer {
 
         GLES30.glBindBuffer(GLES30.GL_ELEMENT_ARRAY_BUFFER, ibo[0]);
 
-        new ShimmerUniform(
+        mShimmerUniform.update(
                 mSharedResourcesAccessor.getGlobalConfiguration(),
                 linkedView.getProgressShift(globalProgress),
                 width,
@@ -188,7 +182,7 @@ public class UIKitShimmerRenderer implements GLTextureView.Renderer {
 
     @Override
     public void onSurfaceDestroyed() {
-        // TODO
+        // no-op
     }
 
     private int loadShimmerShader(int type, String shaderSource) {
@@ -263,12 +257,12 @@ public class UIKitShimmerRenderer implements GLTextureView.Renderer {
     }
 
     class ShimmerUniform {
-        private final UIKitShimmerConfiguration mConfig;
-        private final float progressShift;
-        private final float scaledWidth;
-        private final float scaledHeight;
+        private UIKitShimmerConfiguration mConfig;
+        private float progressShift;
+        private float scaledWidth;
+        private float scaledHeight;
 
-        ShimmerUniform(
+        ShimmerUniform update(
                 UIKitShimmerConfiguration config,
                 float progressShift,
                 float scaledWidth,
@@ -279,6 +273,8 @@ public class UIKitShimmerRenderer implements GLTextureView.Renderer {
             this.progressShift = progressShift;
             this.scaledWidth = scaledWidth;
             this.scaledHeight = scaledHeight;
+
+            return this;
         }
 
         void set() {

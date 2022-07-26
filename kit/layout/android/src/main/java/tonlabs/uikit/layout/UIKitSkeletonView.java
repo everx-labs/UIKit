@@ -1,24 +1,18 @@
 package tonlabs.uikit.layout;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
-import android.graphics.PixelFormat;
-import android.opengl.GLSurfaceView;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.uimanager.ThemedReactContext;
-
-import java.util.WeakHashMap;
 
 import minus.android.support.opengl.GLTextureView;
 
-/**
- * TODO: must implement onPause and onResume!
- */
 @SuppressLint("ViewConstructor")
-public class UIKitSkeletonView extends GLTextureView implements UIKitShimmerRenderer.ShimmerProgress {
+public class UIKitSkeletonView extends GLTextureView implements UIKitShimmerRenderer.ShimmerProgress, LifecycleEventListener {
+    private final ThemedReactContext mReactContext;
+
     private UIKitShimmerConfiguration.ProgressCoords mProgressCoords;
     private boolean mNeedFirstRender = true;
     private boolean mLastShouldRenderCheck = false;
@@ -26,6 +20,9 @@ public class UIKitSkeletonView extends GLTextureView implements UIKitShimmerRend
     UIKitSkeletonView(@NonNull ThemedReactContext reactContext, UIKitShimmerRenderer renderer) {
         super(reactContext);
 
+        mReactContext = reactContext;
+
+        reactContext.addLifecycleEventListener(this);
 
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
 
@@ -33,6 +30,30 @@ public class UIKitSkeletonView extends GLTextureView implements UIKitShimmerRend
         setRenderer(renderer);
 
         setRenderMode(RENDERMODE_CONTINUOUSLY);
+    }
+
+    // MARK:- LifecycleEventListener
+
+    @Override
+    public void onHostResume() {
+        onResume();
+    }
+
+    @Override
+    public void onHostPause() {
+        onPause();
+    }
+
+    @Override
+    public void onHostDestroy() {
+        // no-op
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
+        mReactContext.removeLifecycleEventListener(this);
     }
 
     // --- Shimmer related ---
@@ -60,15 +81,9 @@ public class UIKitSkeletonView extends GLTextureView implements UIKitShimmerRend
 
     private boolean _shouldRenderWithProgress(float globalProgress) {
         if (mProgressCoords.end > mProgressCoords.start) {
-            if (globalProgress < mProgressCoords.start || globalProgress > mProgressCoords.end) {
-                return false;
-            }
-            return true;
+            return !(globalProgress < mProgressCoords.start) && !(globalProgress > mProgressCoords.end);
         }
-        if (globalProgress < mProgressCoords.start && globalProgress > mProgressCoords.end) {
-            return false;
-        }
-        return true;
+        return !(globalProgress < mProgressCoords.start) || !(globalProgress > mProgressCoords.end);
     }
 
     public float getProgressShift(float globalProgress) {

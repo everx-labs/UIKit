@@ -1,7 +1,6 @@
 package tonlabs.uikit.layout;
 
 import android.content.Context;
-import android.os.SystemClock;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -23,7 +22,7 @@ public class UIKitShimmerCoordinator {
     private final ShimmerGlobalProgress mShimmerGlobalProgress;
 
     private @Nullable ThemedReactContext mReactContext;
-    private UIKitShimmerConfiguration mConfig = UIKitShimmerConfiguration.defaultConfiguration();
+    private @Nullable UIKitShimmerConfiguration mConfig;
 
     private final WeakHashMap<UIKitSkeletonView, UIKitShimmerRenderer> mViewToRendererMap;
 
@@ -60,6 +59,13 @@ public class UIKitShimmerCoordinator {
         mViewToRendererMap.put(view, renderer);
 
         return view;
+    }
+
+    public UIKitShimmerConfiguration getConfig() {
+        if (mConfig == null) {
+            mConfig = UIKitShimmerConfiguration.defaultConfiguration();
+        }
+        return mConfig;
     }
 
     public void updateConfiguration(UIKitShimmerConfiguration newConfig) {
@@ -148,12 +154,12 @@ public class UIKitShimmerCoordinator {
 
         @Override
         public float getGlobalProgress() {
-            return mShimmerGlobalProgress.calculate(mConfig);
+            return mShimmerGlobalProgress.calculate(getConfig());
         }
 
         @Override
         public UIKitShimmerConfiguration getGlobalConfiguration() {
-            return mConfig;
+            return getConfig();
         }
     }
 }

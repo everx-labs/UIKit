@@ -1,8 +1,5 @@
 package tonlabs.uikit.layout;
 
-import android.graphics.PixelFormat;
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.facebook.react.module.annotations.ReactModule;
@@ -24,13 +21,5 @@ public class UIKitSkeletonViewManager extends SimpleViewManager<UIKitSkeletonVie
     public UIKitSkeletonView createViewInstance(@NonNull ThemedReactContext context) {
         UIKitSkeletonView view = UIKitShimmerCoordinator.getSharedCoordinator().createNewView(context);
         return view;
-    }
-
-    @Override
-    public void onDropViewInstance(@NonNull UIKitSkeletonView view) {
-        super.onDropViewInstance(view);
-
-        view.onResume();
-        Log.d(REACT_CLASS, String.format("onDropViewInstance: %d", view.getId()));
     }
 }
