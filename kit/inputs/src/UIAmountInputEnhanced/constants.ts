@@ -24,16 +24,18 @@ export const defaultContextValue: AmountInputContextDefaultValuesType = {
     carretEndPosition: 0,
 };
 
-export const defaultContext: AmountInputContextType = {
-    isHovered: makeMutable(defaultContextValue.isHovered),
-    isFocused: makeMutable(defaultContextValue.isFocused),
-    inputText: makeMutable(defaultContextValue.inputText),
-    normalizedText: makeMutable(defaultContextValue.normalizedText),
-    formattedText: makeMutable(defaultContextValue.formattedText),
-    carretEndPosition: makeMutable(defaultContextValue.carretEndPosition),
-};
+export function getDefaultContext() {
+    return {
+        isHovered: makeMutable(defaultContextValue.isHovered),
+        isFocused: makeMutable(defaultContextValue.isFocused),
+        inputText: makeMutable(defaultContextValue.inputText),
+        normalizedText: makeMutable(defaultContextValue.normalizedText),
+        formattedText: makeMutable(defaultContextValue.formattedText),
+        carretEndPosition: makeMutable(defaultContextValue.carretEndPosition),
+    };
+}
 
-export const AmountInputContext = React.createContext<AmountInputContextType>(defaultContext);
+export const AmountInputContext = React.createContext<AmountInputContextType>(getDefaultContext());
 
 export const UIConstants = {
     decimalAspect: {

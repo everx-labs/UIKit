@@ -8,7 +8,7 @@ import {
 } from '../MaterialTextView';
 import type { UIAmountInputEnhancedProps, UIAmountInputEnhancedRef } from './types';
 import { UIAmountInputEnhancedContent } from './UIAmountInputEnhancedContent';
-import { AmountInputContext, defaultContext } from './constants';
+import { AmountInputContext, getDefaultContext } from './constants';
 
 /*
 type FocusState = { isFocused: boolean };
@@ -49,8 +49,9 @@ export const UIAmountInputEnhancedForward = React.forwardRef<
     props: UIAmountInputEnhancedProps,
     forwardedRef: React.Ref<UIAmountInputEnhancedRef>,
 ) {
+    const contextValue = React.useMemo(() => getDefaultContext(), []);
     return (
-        <AmountInputContext.Provider value={defaultContext}>
+        <AmountInputContext.Provider value={contextValue}>
             <UIAmountInputEnhancedContent ref={forwardedRef} {...props} />
         </AmountInputContext.Provider>
     );
