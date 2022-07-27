@@ -249,31 +249,31 @@ export const LightThemeDeprecated = {
     ...StaticThemeDeprecated,
     get [ColorVariants.LinePrimary]() {
         warnAboutDeprecatedColorVariant(ColorVariants.LinePrimary);
-        return '#F4F4F5';
+        return '#FDFDFD'; // GraphPrimaryInverted
     },
     get [ColorVariants.LineSecondary]() {
         warnAboutDeprecatedColorVariant(ColorVariants.LineSecondary);
-        return '#EBECEC';
+        return '#FDFDFD'; // GraphPrimaryInverted
     },
     get [ColorVariants.LineTertiary]() {
         warnAboutDeprecatedColorVariant(ColorVariants.LineTertiary);
-        return '#E2E3E4';
+        return '#FDFDFD'; // GraphPrimaryInverted
     },
     get [ColorVariants.LineNeutral]() {
         warnAboutDeprecatedColorVariant(ColorVariants.LineNeutral);
-        return '#20262A';
+        return '#3B4043'; // GraphNeutral
     },
     get [ColorVariants.LineAccent]() {
         warnAboutDeprecatedColorVariant(ColorVariants.LineAccent);
-        return '#0083E0';
+        return '#4963E6'; // GraphAccent
     },
     get [ColorVariants.LineNegative]() {
         warnAboutDeprecatedColorVariant(ColorVariants.LineNegative);
-        return '#CA1414';
+        return '#E71717'; // GraphNegative
     },
     get [ColorVariants.LinePositive]() {
         warnAboutDeprecatedColorVariant(ColorVariants.LinePositive);
-        return '#2FA851';
+        return '#36C05C'; // GraphPositive
     },
     get [ColorVariants.LineOverlayDark]() {
         warnAboutDeprecatedColorVariant(ColorVariants.LineOverlayDark);
@@ -358,31 +358,31 @@ export const DarkThemeDeprecated = {
     ...StaticThemeDeprecated,
     get [ColorVariants.LinePrimary]() {
         warnAboutDeprecatedColorVariant(ColorVariants.LinePrimary);
-        return '#292F32';
+        return '#20262A'; // GraphPrimaryInverted
     },
     get [ColorVariants.LineSecondary]() {
         warnAboutDeprecatedColorVariant(ColorVariants.LineSecondary);
-        return '#32373B';
+        return '#20262A'; // GraphPrimaryInverted
     },
     get [ColorVariants.LineTertiary]() {
         warnAboutDeprecatedColorVariant(ColorVariants.LineTertiary);
-        return '#32373B';
+        return '#20262A'; // GraphPrimaryInverted
     },
     get [ColorVariants.LineNeutral]() {
         warnAboutDeprecatedColorVariant(ColorVariants.LineNeutral);
-        return '#FAFAFA';
+        return '#3B4043'; // GraphNeutral
     },
     get [ColorVariants.LineAccent]() {
         warnAboutDeprecatedColorVariant(ColorVariants.LineAccent);
-        return '#0073C4';
+        return '#4963E6'; // GraphAccent
     },
     get [ColorVariants.LineNegative]() {
         warnAboutDeprecatedColorVariant(ColorVariants.LineNegative);
-        return '#CA1414';
+        return '#4963E6'; // GraphNegative
     },
     get [ColorVariants.LinePositive]() {
         warnAboutDeprecatedColorVariant(ColorVariants.LinePositive);
-        return '#36C05C';
+        return '#36C05C'; // GraphPositive
     },
     get [ColorVariants.LineOverlayDark]() {
         warnAboutDeprecatedColorVariant(ColorVariants.LineOverlayDark);
