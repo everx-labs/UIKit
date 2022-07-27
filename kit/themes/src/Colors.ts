@@ -2,6 +2,11 @@ import * as React from 'react';
 
 import type { ColorValue } from 'react-native';
 
+function warnAboutDeprecatedColorVariant(colorVariant: ColorVariants) {
+    console.warn(`You used a deprecated ColorVariant: ${colorVariant}.
+    Please select another color that does not belong to the "Depracated" section`);
+}
+
 export enum ColorVariants {
     TextPrimary = 'TextPrimary',
     TextSecondary = 'TextSecondary',
@@ -84,10 +89,128 @@ export enum ColorVariants {
     /** UIKit internal colors */
     Transparent = 'Transparent',
     KeyboardStyle = 'KeyboardStyle',
+
+    /** Depracated */
+    LinePrimary = 'LinePrimary',
+    /** Depracated */
+    LineSecondary = 'LineSecondary',
+    /** Depracated */
+    LineTertiary = 'LineTertiary',
+    /** Depracated */
+    LineNeutral = 'LineNeutral',
+    /** Depracated */
+    LineAccent = 'LineAccent',
+    /** Depracated */
+    LineNegative = 'LineNegative',
+    /** Depracated */
+    LinePositive = 'LinePositive',
+    /** Depracated */
+    LineOverlayLight = 'LineOverlayLight',
+    /** Depracated */
+    LineOverlayDark = 'LineOverlayDark',
+    /** Depracated */
+    IconAccent = 'IconAccent',
+    /** Depracated */
+    IconSecondary = 'IconSecondary',
+    /** Depracated */
+    IconNeutral = 'IconNeutral',
+    /** Depracated */
+    StaticTextPrimaryDark = 'StaticTextPrimaryDark',
+    /** Depracated */
+    StaticTextPrimaryLight = 'StaticTextPrimaryLight',
+    /** Depracated */
+    StaticTextOverlayDark = 'StaticTextOverlayDark',
+    /** Depracated */
+    StaticTextOverlayLight = 'StaticTextOverlayLight',
+    /** Depracated */
+    StaticBackgroundBlack = 'StaticBackgroundBlack',
+    /** Depracated */
+    StaticBackgroundWhite = 'StaticBackgroundWhite',
+    /** Depracated */
+    StaticIconPrimaryDark = 'StaticIconPrimaryDark',
+    /** Depracated */
+    StaticIconPrimaryLight = 'StaticIconPrimaryLight',
+    /** Depracated */
+    StaticHoverOverlay = 'StaticHoverOverlay',
+    /** Depracated */
+    StaticPressOverlay = 'StaticPressOverlay',
+    /** Depracated */
+    StaticBlack = 'StaticBlack',
+    /** Depracated */
+    StaticBackgroundAccent = 'StaticBackgroundAccent',
+    /** Depracated */
+    StaticBackgroundNegative = 'StaticBackgroundNegative',
+    /** Depracated */
+    StaticBackgroundPositive = 'StaticBackgroundPositive',
+    /** Depracated */
+    StaticBackgroundOverlay = 'StaticBackgroundOverlay',
 }
 
 export type Theme = {
     [variant in ColorVariants]: ColorValue;
+};
+
+export const StaticThemeDeprecated = {
+    get [ColorVariants.StaticTextPrimaryDark]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.StaticTextPrimaryDark);
+        return '#20262A';
+    },
+    get [ColorVariants.StaticTextPrimaryLight]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.StaticTextPrimaryLight);
+        return '#FDFDFD';
+    },
+    get [ColorVariants.StaticTextOverlayDark]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.StaticTextOverlayDark);
+        return 'rgba(32, 38, 42, 0.6)';
+    },
+    get [ColorVariants.StaticTextOverlayLight]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.StaticTextOverlayLight);
+        return 'rgba(253, 253, 253, 0.6)';
+    },
+    get [ColorVariants.StaticBackgroundBlack]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.StaticBackgroundBlack);
+        return '#131719';
+    },
+    get [ColorVariants.StaticBackgroundWhite]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.StaticBackgroundWhite);
+        return '#FFFFFF';
+    },
+    get [ColorVariants.StaticIconPrimaryDark]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.StaticIconPrimaryDark);
+        return '#20262A';
+    },
+    get [ColorVariants.StaticIconPrimaryLight]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.StaticIconPrimaryLight);
+        return '#FDFDFD';
+    },
+    get [ColorVariants.StaticHoverOverlay]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.StaticHoverOverlay);
+        return 'rgba(32, 38, 42, 0.2)';
+    },
+    get [ColorVariants.StaticPressOverlay]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.StaticPressOverlay);
+        return 'rgba(32, 38, 42, 0.4)';
+    },
+    get [ColorVariants.StaticBlack]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.StaticBlack);
+        return '#000000';
+    },
+    get [ColorVariants.StaticBackgroundAccent]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.StaticBackgroundAccent);
+        return 'rgba(0, 131, 224, 0.12)';
+    },
+    get [ColorVariants.StaticBackgroundNegative]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.StaticBackgroundNegative);
+        return 'rgba(231, 23, 23, 0.12)';
+    },
+    get [ColorVariants.StaticBackgroundPositive]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.StaticBackgroundPositive);
+        return 'rgba(54, 192, 92, 0.12)';
+    },
+    get [ColorVariants.StaticBackgroundOverlay]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.StaticBackgroundOverlay);
+        return 'rgba(4, 4, 4, 0.4)';
+    },
 };
 
 const StaticTheme = {
@@ -122,8 +245,62 @@ const StaticTheme = {
     [ColorVariants.StaticEverscaleQuinary]: '#FFFFAE',
 };
 
-export const LightTheme: Theme = {
+export const LightThemeDeprecated = {
+    ...StaticThemeDeprecated,
+    get [ColorVariants.LinePrimary]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.LinePrimary);
+        return '#F4F4F5';
+    },
+    get [ColorVariants.LineSecondary]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.LineSecondary);
+        return '#EBECEC';
+    },
+    get [ColorVariants.LineTertiary]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.LineTertiary);
+        return '#E2E3E4';
+    },
+    get [ColorVariants.LineNeutral]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.LineNeutral);
+        return '#20262A';
+    },
+    get [ColorVariants.LineAccent]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.LineAccent);
+        return '#0083E0';
+    },
+    get [ColorVariants.LineNegative]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.LineNegative);
+        return '#CA1414';
+    },
+    get [ColorVariants.LinePositive]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.LinePositive);
+        return '#2FA851';
+    },
+    get [ColorVariants.LineOverlayDark]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.LineOverlayDark);
+        return 'rgba(255,255,255,.08)';
+    },
+    get [ColorVariants.LineOverlayLight]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.LineOverlayLight);
+        return 'rgba(0,0,0,.04)';
+    },
+
+    get [ColorVariants.IconAccent]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.IconAccent);
+        return '#0073C4';
+    },
+    get [ColorVariants.IconSecondary]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.IconSecondary);
+        return '#707376';
+    },
+    get [ColorVariants.IconNeutral]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.IconNeutral);
+        return '#E2E3E4';
+    },
+};
+
+export const LightTheme: Theme & Theme = {
     ...StaticTheme,
+    ...LightThemeDeprecated,
     [ColorVariants.TextPrimary]: '#20262A',
     [ColorVariants.TextSecondary]: '#292F32',
     [ColorVariants.TextTertiary]: '#32373B',
@@ -177,8 +354,62 @@ export const LightTheme: Theme = {
     [ColorVariants.ShadowOpaque]: 'rgba(32, 38, 42, 0.08)',
 };
 
-export const DarkTheme: Theme = {
+export const DarkThemeDeprecated = {
+    ...StaticThemeDeprecated,
+    get [ColorVariants.LinePrimary]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.LinePrimary);
+        return '#292F32';
+    },
+    get [ColorVariants.LineSecondary]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.LineSecondary);
+        return '#32373B';
+    },
+    get [ColorVariants.LineTertiary]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.LineTertiary);
+        return '#32373B';
+    },
+    get [ColorVariants.LineNeutral]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.LineNeutral);
+        return '#FAFAFA';
+    },
+    get [ColorVariants.LineAccent]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.LineAccent);
+        return '#0073C4';
+    },
+    get [ColorVariants.LineNegative]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.LineNegative);
+        return '#CA1414';
+    },
+    get [ColorVariants.LinePositive]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.LinePositive);
+        return '#36C05C';
+    },
+    get [ColorVariants.LineOverlayDark]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.LineOverlayDark);
+        return 'rgba(0,0,0,.08)';
+    },
+    get [ColorVariants.LineOverlayLight]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.LineOverlayLight);
+        return 'rgba(255,255,255,.08)';
+    },
+
+    get [ColorVariants.IconAccent]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.IconAccent);
+        return '#0073C4';
+    },
+    get [ColorVariants.IconSecondary]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.IconSecondary);
+        return '#ADB0B1';
+    },
+    get [ColorVariants.IconNeutral]() {
+        warnAboutDeprecatedColorVariant(ColorVariants.IconNeutral);
+        return '#3B4043';
+    },
+};
+
+export const DarkTheme: Theme & Theme = {
     ...StaticTheme,
+    ...DarkThemeDeprecated,
     [ColorVariants.TextPrimary]: '#FDFDFD',
     [ColorVariants.TextSecondary]: '#FDFDFD',
     [ColorVariants.TextTertiary]: '#676B6E',
