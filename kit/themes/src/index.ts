@@ -14,6 +14,7 @@ import * as useShadow from './useShadow';
 
 export * from './AnimateableText';
 export * from './Colors';
+export * from './ColorsLegacy';
 export * from './Typography';
 export * from './UIBackgroundView';
 export * from './UILabel';
