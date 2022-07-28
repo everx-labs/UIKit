@@ -42,7 +42,7 @@ private:
 
         reanimatedRuntime.global().setProperty(
             reanimatedRuntime,
-            "_uiKitInputController",
+            "_uiKitInputBinder",
             jsi::Object::createFromHostObject(reanimatedRuntime, std::move(uiKitInputInputBinderModule))
         );
     }
