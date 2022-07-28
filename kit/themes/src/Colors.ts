@@ -1,10 +1,9 @@
 import * as React from 'react';
 
-import { ColorValue, Platform } from 'react-native';
+import type { ColorValue } from 'react-native';
 
 function warnAboutDeprecatedColorVariant(colorVariant: ColorVariants) {
-    const message = `You have a deprecated color: ${colorVariant} in your color scheme`;
-    Platform.OS === 'web' ? console.error(message) : console.warn(message);
+    console.warn(`You have a deprecated color: ${colorVariant} in your color scheme`);
 }
 
 export enum ColorVariants {
