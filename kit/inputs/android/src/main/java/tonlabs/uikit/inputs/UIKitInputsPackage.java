@@ -15,7 +15,7 @@ public class UIKitInputsPackage implements ReactPackage {
     @Nonnull
     @Override
     public List<NativeModule> createNativeModules(@Nonnull ReactApplicationContext reactContext) {
-        return Arrays.<NativeModule>asList(new UIKitInputControllerModule(reactContext));
+        return Arrays.<NativeModule>asList(new UIKitInputModule(reactContext));
     }
 
     @Nonnull

@@ -6,17 +6,17 @@
 //
 #ifdef __ANDROID__
 
-#include "UIKitInputsModuleAndroid.h"
+#include "UIKitInputBinderModuleAndroid.h"
 
 #include <utility>
-#include "UIKitInputBinderAndroid.h"
-#include "UIKitInputBinderHostObjectAndroid.h"
+#include "UIKitInputControllerAndroid.h"
+#include "UIKitInputControllerHostObjectAndroid.h"
 
 namespace tonlabs::uikit {
 using namespace facebook;
 using namespace reanimated;
 
-static jsi::Value __hostFunction_UIKitInputsModuleSpec_bind(
+static jsi::Value __hostFunction_UIKitInputBinderModuleSpec_bind(
         jsi::Runtime &rt,
         TurboModule &turboModule,
         const jsi::Value *args,
@@ -24,20 +24,20 @@ static jsi::Value __hostFunction_UIKitInputsModuleSpec_bind(
     return dynamic_cast<UIKitInputsModuleSpec *>(&turboModule)->bind(std::move(args[0]));
 }
 
-UIKitInputsModuleSpec::UIKitInputsModuleSpec(std::shared_ptr<CallInvoker> jsInvoker) : TurboModule("UIKitInputsModuleAndroid", std::move(jsInvoker)) {
+UIKitInputsModuleSpec::UIKitInputsModuleSpec(std::shared_ptr<CallInvoker> jsInvoker) : TurboModule("UIKitInputBinderModuleAndroid", std::move(jsInvoker)) {
     methodMap_["bind"] = MethodMetadata{
-      1, __hostFunction_UIKitInputsModuleSpec_bind};
+      1, __hostFunction_UIKitInputBinderModuleSpec_bind};
 }
 
-jsi::Object UIKitInputsModuleAndroid::bind(const jsi::Value &reactTag) {
+jsi::Object UIKitInputBinderModuleAndroid::bind(const jsi::Value &reactTag) {
     int viewTag = static_cast<int>(reactTag.asNumber());
 
     // Get a Java class that contains resolved view (UIKitInputBinderAndroid.java)
-    jni::global_ref<UIKitInputBinderAndroid> javaInputBinder = _javaInputsManager->bind(viewTag);
+    jni::global_ref<UIKitInputControllerAndroid> javaInputController = _javaInputBinder->bind(viewTag);
 
-    auto uiKitBinderHostObject = std::make_unique<UIKitInputBinderHostObjectAndroid>(_jsInvoker,
+    auto uiKitBinderHostObject = std::make_unique<UIKitInputControllerHostObjectAndroid>(_jsInvoker,
                                                                                      _runtime,
-                                                                                     javaInputBinder);
+                                                                                     javaInputController);
 
     return jsi::Object::createFromHostObject(_runtime, std::move(uiKitBinderHostObject));
 }

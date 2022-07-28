@@ -5,8 +5,8 @@
 
 #include <NativeReanimatedModule.h>
 
-#include "UIKitInputControllerAndroid.h"
-#include "UIKitInputsModuleAndroid.h"
+#include "UIKitInputBinderAndroid.h"
+#include "UIKitInputBinderModuleAndroid.h"
 
 using namespace facebook;
 using namespace reanimated;
@@ -14,7 +14,7 @@ using namespace tonlabs::uikit;
 
 struct UIKitInputsJsiModule : jni::JavaClass<UIKitInputsJsiModule> {
 public:
-    __unused static constexpr auto kJavaDescriptor = "Ltonlabs/uikit/inputs/UIKitInputControllerJSIModulePackage;";
+    __unused static constexpr auto kJavaDescriptor = "Ltonlabs/uikit/inputs/UIKitInputJSIModulePackage;";
 
     static void registerNatives() {
         javaClassStatic()->registerNatives({makeNativeMethod("installJSIBindings", UIKitInputsJsiModule::installJSIBindings)});
@@ -24,7 +24,7 @@ private:
     static void installJSIBindings(jni::alias_ref<jni::JClass>,
                                    jlong jsContext,
                                    jni::alias_ref<facebook::react::CallInvokerHolder::javaobject> jsCallInvokerHolder,
-                                   jni::alias_ref<UIKitInputControllerAndroid::javaobject> javaUIKitInputController) {
+                                   jni::alias_ref<UIKitInputBinderAndroid::javaobject> javaUIKitInputBinder) {
         jsi::Runtime *runtime = reinterpret_cast<facebook::jsi::Runtime *>(jsContext);
 
         std::shared_ptr<facebook::react::CallInvoker> jsCallInvoker =
@@ -36,14 +36,14 @@ private:
 
         jsi::Runtime &reanimatedRuntime = *reanimatedModule->runtime.get();
 
-        auto uiKitInputsModule = std::make_unique<UIKitInputsModuleAndroid>(jsCallInvoker,
+        auto uiKitInputInputBinderModule = std::make_unique<UIKitInputBinderModuleAndroid>(jsCallInvoker,
                                                                      reanimatedRuntime,
-                                                                     jni::make_global(javaUIKitInputController));
+                                                                     jni::make_global(javaUIKitInputBinder));
 
         reanimatedRuntime.global().setProperty(
             reanimatedRuntime,
             "_uiKitInputController",
-            jsi::Object::createFromHostObject(reanimatedRuntime, std::move(uiKitInputsModule))
+            jsi::Object::createFromHostObject(reanimatedRuntime, std::move(uiKitInputInputBinderModule))
         );
     }
 };

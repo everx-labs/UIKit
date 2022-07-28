@@ -1,18 +1,12 @@
 //
-//  UIKitInputsManager.h
-//  uikit.inputs
-//
-//  Created by Sergeev Anatolii on 20/06/2022
+// Created by Aleksei Savelev on 14.07.2022.
 //
 
 #pragma once
 
 #ifdef __ANDROID__
 #include <fbjni/fbjni.h>
-
 #include <jsi/jsi.h>
-
-#include "UIKitInputBinderAndroid.h"
 
 namespace tonlabs::uikit {
 using namespace facebook;
@@ -21,10 +15,7 @@ class UIKitInputControllerAndroid : public jni::JavaClass<UIKitInputControllerAn
 public:
     static constexpr auto kJavaDescriptor = "Ltonlabs/uikit/inputs/UIKitInputController;";
 
-    jni::global_ref<UIKitInputBinderAndroid> bind(int reactTag);
-
-    private:
+    void setText(std::string value, int caretPosition);
 };
-
 }
 #endif

@@ -9,7 +9,7 @@ import { UITextView, UITextViewRef } from '../UITextView';
 
 const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
 
-NativeModules.UIKitInputControllerModule?.install();
+NativeModules.UIKitInputModule?.install();
 
 export const UIAmountInputEnhancedContent = React.forwardRef<
     UIAmountInputEnhancedRef,

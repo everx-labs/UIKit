@@ -12,14 +12,10 @@ import com.facebook.react.bridge.JavaScriptContextHolder;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import com.facebook.react.bridge.JSIModulePackage;
-
-import tonlabs.uikit.inputs.UIKitInputControllerJSIModulePackage;
-import tonlabs.uikit.keyboard.UIKitKeyboardJSIModulePackage;
 
 public class MainApplication extends Application implements ReactApplication {
 

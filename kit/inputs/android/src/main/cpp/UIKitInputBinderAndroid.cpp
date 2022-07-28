@@ -1,5 +1,8 @@
 //
-// Created by Aleksei Savelev on 14.07.2022.
+//  UIKitInputsManager.h
+//  uikit.inputs
+//
+//  Created by Sergeev Anatolii on 20/06/2022
 //
 #ifdef __ANDROID__
 
@@ -8,9 +11,10 @@
 namespace tonlabs::uikit {
 using namespace facebook;
 
-void UIKitInputBinderAndroid::setText(std::string value, int caretPosition) {
-    auto method = getClass()->getMethod<void(std::string, int)>("setText");
-    method(self(), std::move(value), caretPosition);
+jni::global_ref<UIKitInputControllerAndroid> UIKitInputBinderAndroid::bind(int uid) {
+    static const auto method = getClass()->getMethod<UIKitInputControllerAndroid(int)>("bind");
+    return jni::make_global(method(self(), uid));
 }
+
 }
 #endif

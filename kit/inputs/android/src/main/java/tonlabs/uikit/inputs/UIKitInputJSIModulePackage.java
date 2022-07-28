@@ -1,7 +1,5 @@
 package tonlabs.uikit.inputs;
 
-import android.util.Log;
-
 import com.facebook.react.bridge.JSIModulePackage;
 import com.facebook.react.bridge.JSIModuleSpec;
 import com.facebook.react.bridge.JavaScriptContextHolder;
@@ -12,18 +10,18 @@ import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("JniMissingFunction")
-public class UIKitInputControllerJSIModulePackage implements JSIModulePackage {
+public class UIKitInputJSIModulePackage implements JSIModulePackage {
     static {
         System.loadLibrary("UIKitInputs");
     }
 
-    public static native void installJSIBindings(long jsiPtr, CallInvokerHolderImpl jsCallInvokerHelper, UIKitInputController uiKitInputController);
+    public static native void installJSIBindings(long jsiPtr, CallInvokerHolderImpl jsCallInvokerHelper, UIKitInputBinder uiKitInputBinder);
 
     public static void install(ReactApplicationContext reactApplicationContext) {;
         long jsiPtr = reactApplicationContext.getJavaScriptContextHolder().get();
         CallInvokerHolderImpl jsCallInvokerHolder = (CallInvokerHolderImpl) reactApplicationContext.getCatalystInstance().getJSCallInvokerHolder();
 
-        UIKitInputControllerJSIModulePackage.installJSIBindings(jsiPtr, jsCallInvokerHolder, UIKitInputController.getShared(reactApplicationContext));
+        UIKitInputJSIModulePackage.installJSIBindings(jsiPtr, jsCallInvokerHolder, UIKitInputBinder.getShared(reactApplicationContext));
     }
 
     @Override

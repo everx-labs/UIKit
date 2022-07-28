@@ -11,10 +11,10 @@ set(RN_SO_DIR ${NODE_MODULES_DIR}/react-native/ReactAndroid/src/main/jni/first-p
 
 add_library(${PACKAGE_NAME}
     SHARED
-    ./src/main/cpp/UIKitInputControllerAndroid.cpp
-    ./src/main/cpp/UIKitInputsModuleAndroid.cpp
     ./src/main/cpp/UIKitInputBinderAndroid.cpp
-    ./src/main/cpp/UIKitInputBinderHostObjectAndroid.cpp
+    ./src/main/cpp/UIKitInputBinderModuleAndroid.cpp
+    ./src/main/cpp/UIKitInputControllerAndroid.cpp
+    ./src/main/cpp/UIKitInputControllerHostObjectAndroid.cpp
     cpp-adapter.cpp
 )
 
