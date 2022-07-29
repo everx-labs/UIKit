@@ -17,6 +17,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.facebook.react.bridge.JSIModulePackage;
+import com.swmansion.reanimated.ReanimatedPackage;
+
 import tonlabs.uikit.keyboard.UIKitKeyboardJSIModulePackage;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -35,7 +37,11 @@ public class MainApplication extends Application implements ReactApplication {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
 
-          return packages;
+            packages = PatchedReanimatedPackage.patchPackages(packages);
+
+            packages.add(new TracePackage());
+
+            return packages;
         }
 
         @Override
