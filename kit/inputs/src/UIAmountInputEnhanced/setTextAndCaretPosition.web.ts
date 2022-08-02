@@ -1,7 +1,7 @@
 import type React from 'react';
 import type { UITextViewRef } from '../UITextView';
 
-export function injectInputValue(
+export function setTextAndCaretPosition(
     animatedRef: React.RefObject<UITextViewRef>,
     _inputManagerRef: React.RefObject<UIKitInputBinder | undefined>,
     value: string,

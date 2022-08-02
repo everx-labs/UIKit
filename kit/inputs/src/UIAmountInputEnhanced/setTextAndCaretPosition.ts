@@ -3,7 +3,7 @@ import type React from 'react';
 import type { UITextViewRef } from '../UITextView';
 
 /* global _WORKLET, _uiKitInputBinder */
-export function injectInputValue(
+export function setTextAndCaretPosition(
     animatedRef: React.RefObject<UITextViewRef>,
     inputManagerRef: React.RefObject<InputController | undefined>,
     value: string,
@@ -13,7 +13,7 @@ export function injectInputValue(
 
     if (!_WORKLET) {
         console.error(
-            `[InputValueInjector]: [injectInputValue]: The function used in JS thread. Please use this function only on reanimated UI thread.`,
+            `[InputValueInjector]: [setTextAndCaretPosition]: The function used in JS thread. Please use this function only on reanimated UI thread.`,
         );
         return;
     }
@@ -21,7 +21,7 @@ export function injectInputValue(
     // @ts-expect-error
     if (typeof animatedRef !== 'function' || typeof animatedRef() !== 'number') {
         console.error(
-            `[InputValueInjector]: [injectInputValue]: First argument is not a reanimated ref. Please provide it.`,
+            `[InputValueInjector]: [setTextAndCaretPosition]: First argument is not a reanimated ref. Please provide it.`,
         );
         return;
     }

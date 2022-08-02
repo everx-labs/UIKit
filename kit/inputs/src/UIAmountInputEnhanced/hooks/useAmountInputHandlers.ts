@@ -4,7 +4,7 @@ import type { UIAmountInputEnhancedProps } from '../types';
 import { useTextViewHandler } from '../../useTextViewHandler';
 import { AmountInputContext, UIConstants } from '../constants';
 import { useAmountMaskApplyer } from './amountMask';
-import { injectInputValue } from '../injectInputValue';
+import { setTextAndCaretPosition } from '../setTextAndCaretPosition';
 import type { UITextViewRef } from '../../UITextView';
 
 export function useAmountInputHandlers(
@@ -81,11 +81,7 @@ export function useAmountInputHandlers(
             } = applyAmountMask(evt.text);
 
             if (evt.text !== newFormattedText) {
-                // getInputManager(ref)?.injectValue(newFormattedText);
-                // inputManager.value.injectValue(newFormattedText);
-
-                injectInputValue(ref, inputManagerRef, newFormattedText, newCaretPosition);
-                // moveInputCaret(ref, newCaretPosition);
+                setTextAndCaretPosition(ref, inputManagerRef, newFormattedText, newCaretPosition);
             }
 
             // inputText.value = evt.text;
