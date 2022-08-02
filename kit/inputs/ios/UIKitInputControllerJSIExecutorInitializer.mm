@@ -6,7 +6,6 @@
 //
 
 #import "UIKitInputControllerJSIExecutorInitializer.h"
-#import "UIKitInputMoveCaret.h"
 #import "UIKitInputController.h"
 
 #import <React/RCTBaseTextInputView.h>
@@ -47,7 +46,7 @@ UIKitInputControllerJSIExecutorRuntimeInstaller(RCTBridge *bridge,
                 inputController.baseTextInputView = baseTextInputView;
             }
             
-            auto setTextCallback = [inputController, &bridge, viewTag](jsi::Runtime &rt,
+            auto setTextAndCaretPositionCallback = [inputController, &bridge, viewTag](jsi::Runtime &rt,
                                                                        const jsi::Value &thisVal,
                                                                        const jsi::Value *args,
                                                                        size_t count) -> jsi::Value {
@@ -61,12 +60,11 @@ UIKitInputControllerJSIExecutorRuntimeInstaller(RCTBridge *bridge,
                 return jsi::Value::undefined();
             };
             
-            jsi::PropNameID propNameOfSetTextMethod = jsi::PropNameID::forAscii(rt, "setText");
-            jsi::Value setText = jsi::Function::createFromHostFunction(rt, propNameOfSetTextMethod, 2, setTextCallback);
+            jsi::PropNameID propNameOfSetTextMethod = jsi::PropNameID::forAscii(rt, "setTextAndCaretPosition");
+            jsi::Value setText = jsi::Function::createFromHostFunction(rt, propNameOfSetTextMethod, 2, setTextAndCaretPositionCallback);
             
             jsi::Object inputManager = jsi::Object(rt);
             inputManager.setProperty(rt, propNameOfSetTextMethod, setText);
-            // inputManager.setProperty(rt, "moveInputCaret", moveInputCaret);
             
             return inputManager;
         };
@@ -80,7 +78,7 @@ UIKitInputControllerJSIExecutorRuntimeInstaller(RCTBridge *bridge,
         uiKitInputController.setProperty(reanimatedUIRuntime, "bind", bind);
         
         
-        reanimatedUIRuntime.global().setProperty(reanimatedUIRuntime, "_uiKitInputController", uiKitInputController);
+        reanimatedUIRuntime.global().setProperty(reanimatedUIRuntime, "_uiKitInputBinder", uiKitInputController);
         
         if (runtimeInstallerToWrap) {
             runtimeInstallerToWrap(runtime);

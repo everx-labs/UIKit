@@ -2,7 +2,7 @@
 import type React from 'react';
 import type { UITextViewRef } from '../UITextView';
 
-/* global _WORKLET, _injectInputValue, _uiKitInputController */
+/* global _WORKLET, _uiKitInputBinder */
 export function injectInputValue(
     animatedRef: React.RefObject<UITextViewRef>,
     inputManagerRef: React.RefObject<InputController | undefined>,
@@ -34,8 +34,8 @@ export function injectInputValue(
         // @ts-expect-error
         // eslint-disable-next-line no-param-reassign
         inputManagerRef.current = inputController;
-        inputController?.setText(value, caretPosition);
+        inputController?.setTextAndCaretPosition(value, caretPosition);
     } else {
-        inputManagerRef.current.setText(value, caretPosition);
+        inputManagerRef.current.setTextAndCaretPosition(value, caretPosition);
     }
 }

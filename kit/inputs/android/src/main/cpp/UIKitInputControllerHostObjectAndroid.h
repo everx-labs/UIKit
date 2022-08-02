@@ -19,7 +19,7 @@ class UIKitInputControllerHostObjectSpec : public TurboModule {
 public:
     UIKitInputControllerHostObjectSpec(std::shared_ptr<CallInvoker> jsInvoker);
 
-    virtual void setText(const jsi::Value &value, const jsi::Value &caretPosition) = 0;
+    virtual void setTextAndCaretPosition(const jsi::Value &value, const jsi::Value &caretPosition) = 0;
 };
 
 class UIKitInputControllerHostObjectAndroid : public UIKitInputControllerHostObjectSpec {
@@ -31,7 +31,7 @@ public:
                 _runtime(rt),
                 _javaInputController(javaInputController) {};
 
-    void setText(const jsi::Value &value, const jsi::Value &caretPosition) override;
+    void setTextAndCaretPosition(const jsi::Value &value, const jsi::Value &caretPosition) override;
 
 private:
     jsi::Runtime &_runtime;

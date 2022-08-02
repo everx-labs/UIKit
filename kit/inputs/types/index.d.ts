@@ -1,7 +1,7 @@
 declare module '@tonlabs/uikit.core';
 
 type InputController = {
-    setText: (text: string, caretPosition: number) => void;
+    setTextAndCaretPosition: (text: string, caretPosition: number) => void;
 };
 type UIKitInputBinder = {
     bind: (viewTag: number) => InputController;

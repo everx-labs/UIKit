@@ -60,7 +60,7 @@ public class UIKitInputController {
     }
 
     @SuppressWarnings("unused")
-    public void setText(String value, int caretPosition) {
+    public void setTextAndCaretPosition(String value, int caretPosition) {
         /*
         There are situations when the call to setText occurs before the execution
         of the resolveView method on runOnUiQueueThread completes.

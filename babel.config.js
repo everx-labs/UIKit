@@ -13,7 +13,7 @@ module.exports = function (api) {
                     '_hapticNotification',
                     '_injectInputValue',
                     '_moveInputCaret',
-                    '_uiKitInputController'
+                    '_uiKitInputBinder',
                 ],
             },
         ],

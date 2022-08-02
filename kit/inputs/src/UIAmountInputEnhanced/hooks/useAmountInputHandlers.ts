@@ -6,7 +6,6 @@ import { AmountInputContext, UIConstants } from '../constants';
 import { useAmountMaskApplyer } from './amountMask';
 import { injectInputValue } from '../injectInputValue';
 import type { UITextViewRef } from '../../UITextView';
-import { moveInputCaret } from '../moveInputCaret';
 
 export function useAmountInputHandlers(
     ref: React.RefObject<UITextViewRef>,

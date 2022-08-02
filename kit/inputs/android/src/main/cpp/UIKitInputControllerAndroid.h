@@ -15,7 +15,7 @@ class UIKitInputControllerAndroid : public jni::JavaClass<UIKitInputControllerAn
 public:
     static constexpr auto kJavaDescriptor = "Ltonlabs/uikit/inputs/UIKitInputController;";
 
-    void setText(std::string value, int caretPosition);
+    void setTextAndCaretPosition(std::string value, int caretPosition);
 };
 }
 #endif
