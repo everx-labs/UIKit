@@ -26,6 +26,7 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
         onSelectionChange,
         onChangeAmount: onChangeAmountProp,
         precision,
+        multiline,
     } = props;
     // @ts-ignore
     const ref = useAnimatedRef<UITextViewRef>();
@@ -105,6 +106,7 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
         onBlur,
         onSelectionChange,
         precision,
+        multiline,
     );
 
     const { onMouseEnter, onMouseLeave } = useAmountInputHover(onHover);

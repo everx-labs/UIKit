@@ -32,6 +32,11 @@ export const Inputs = () => {
                         precision="Precise"
                         onChangeAmount={amount => console.log('onChangeAmount', amount?.toString())}
                     />
+                    <UIAmountInputEnhanced
+                        precision="Precise"
+                        onChangeAmount={amount => console.log('onChangeAmount', amount?.toString())}
+                        multiline
+                    />
                 </View>
             </ExampleSection>
             <ExampleSection title="UINumberTextView">

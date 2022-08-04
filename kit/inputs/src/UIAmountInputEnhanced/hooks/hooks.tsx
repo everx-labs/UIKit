@@ -1,6 +1,7 @@
 import * as React from 'react';
 import BigNumber from 'bignumber.js';
 import { uiLocalized } from '@tonlabs/localization';
+import { DerivedValue, useSharedValue } from 'react-native-reanimated';
 import type { UIMaterialTextViewRef, UIMaterialTextViewMask } from '../../UIMaterialTextView';
 import { UIAmountInputEnhancedDecimalAspect, UIAmountInputEnhancedMessageType } from '../constants';
 import type { UIAmountInputEnhancedProps, UIAmountInputEnhancedRef } from '../types';
@@ -149,4 +150,14 @@ export function useUIAmountInputEnhancedChildren(
     }
 
     return undefined;
+}
+
+export function useDerivedReactValue<T>(value: T): DerivedValue<T> {
+    const valueAnimated = useSharedValue(value);
+    React.useEffect(() => {
+        if (valueAnimated.value !== value) {
+            valueAnimated.value = value;
+        }
+    }, [valueAnimated, value]);
+    return valueAnimated;
 }

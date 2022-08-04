@@ -3,10 +3,7 @@ import * as React from 'react';
 import { SharedValue, useSharedValue } from 'react-native-reanimated';
 import { runUIOnChangeAmount } from '../../../MaterialTextView/hooks/useApplyMask/amount/runUIOnChangeAmount';
 
-export function useAmountMaskApplyer(
-    numberOfDecimalDigits: number,
-    carretEndPosition: SharedValue<number>,
-) {
+export function useAmountMaskApplyer(numberOfDecimalDigits: number) {
     const lastNormalizedText = useSharedValue('');
     const lastText = useSharedValue('');
 
@@ -18,12 +15,12 @@ export function useAmountMaskApplyer(
     } = uiLocalized.localeInfo.numbers;
 
     return React.useCallback(
-        function applyAmountMask(inputText: string) {
+        function applyAmountMask(inputText: string, caretEndPosition: SharedValue<number>) {
             'worklet';
 
             const { formattedText, normalizedText, carretPosition } = runUIOnChangeAmount(
                 inputText,
-                carretEndPosition,
+                caretEndPosition,
                 integerSeparator,
                 delimeter,
                 fractionalSeparator,
@@ -40,7 +37,6 @@ export function useAmountMaskApplyer(
             return { formattedText, normalizedText, carretPosition };
         },
         [
-            carretEndPosition,
             delimeter,
             delimeterAlternative,
             fractionalSeparator,

@@ -28,8 +28,6 @@ RCT_EXPORT_MODULE()
         UITextPosition *textPosition = [_baseTextInputView.backedTextInputView positionFromPosition:_baseTextInputView.backedTextInputView.beginningOfDocument offset:caretPosition];
 
         [_baseTextInputView.backedTextInputView setSelectedTextRange:[_baseTextInputView.backedTextInputView textRangeFromPosition:textPosition toPosition:textPosition] notifyDelegate:YES];
-
-        [_baseTextInputView textInputDidChange];
     }
 }
 
