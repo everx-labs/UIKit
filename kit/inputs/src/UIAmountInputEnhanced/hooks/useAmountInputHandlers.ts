@@ -18,7 +18,8 @@ export function useAmountInputHandlers(
     precision: UIAmountInputEnhancedProps['precision'],
     multiline: UIAmountInputEnhancedProps['multiline'],
 ) {
-    const { isFocused, formattedText, carretEndPosition } = React.useContext(AmountInputContext);
+    const { isFocused, formattedText, carretEndPosition, normalizedText } =
+        React.useContext(AmountInputContext);
 
     const prevCarretPosition = useSharedValue(carretEndPosition.value);
 
@@ -85,7 +86,7 @@ export function useAmountInputHandlers(
                 const {
                     formattedText: newFormattedText,
                     carretPosition: newCaretPosition,
-                    // normalizedText: newNormalizedText,
+                    normalizedText: newNormalizedText,
                 } = applyAmountMask(
                     evt.text,
                     platformOS.value === 'ios' && multilineAnimated.value
@@ -105,7 +106,7 @@ export function useAmountInputHandlers(
                 // inputText.value = evt.text;
                 formattedText.value = newFormattedText;
                 carretEndPosition.value = newCaretPosition;
-                // normalizedText.value = newNormalizedText;
+                normalizedText.value = newNormalizedText;
             },
             onSelectionChange: evt => {
                 'worklet';

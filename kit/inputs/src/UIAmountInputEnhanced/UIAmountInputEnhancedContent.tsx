@@ -33,19 +33,6 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     const { normalizedText } = React.useContext(AmountInputContext);
 
     /**
-     * Reset context value after the component unmounting
-     */
-    // React.useLayoutEffect(() => {
-    //     return () => {
-    //         isHovered.value = defaultContextValue.isHovered;
-    //         isFocused.value = defaultContextValue.isFocused;
-    //         inputText.value = defaultContextValue.inputText;
-    //         normalizedText.value = defaultContextValue.normalizedText;
-    //         formattedText.value = defaultContextValue.formattedText;
-    //     };
-    // });
-
-    /**
      * TODO Remove
      */
     // useDerivedValue(() => {
@@ -61,15 +48,8 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     const onChangeAmount = React.useCallback(
         (normalizedNumber: string) => {
             if (onChangeAmountProp) {
-                setTimeout(() => {
-                    const value = new BigNumber(normalizedNumber);
-
-                    if (value.isNaN()) {
-                        onChangeAmountProp(undefined);
-                    } else {
-                        onChangeAmountProp(value);
-                    }
-                });
+                const value = new BigNumber(normalizedNumber);
+                onChangeAmountProp(value);
             }
         },
         [onChangeAmountProp],
@@ -86,18 +66,6 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
             }
         },
     );
-
-    /**
-     * inputText has changed
-     */
-    // useAnimatedReaction(
-    //     () => ({ inputText: inputText.value, formattedText: formattedText.value }),
-    //     (currentState, _previousState) => {
-    //         if (currentState.formattedText !== currentState.inputText) {
-    //             injectInputValue(ref, currentState.formattedText);
-    //         }
-    //     },
-    // );
 
     const textViewHandlers = useAmountInputHandlers(
         ref,
