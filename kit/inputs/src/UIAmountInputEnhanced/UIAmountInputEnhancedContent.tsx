@@ -1,5 +1,10 @@
 import * as React from 'react';
-import Animated, { runOnJS, useAnimatedReaction, useAnimatedRef } from 'react-native-reanimated';
+import Animated, {
+    runOnJS,
+    useAnimatedReaction,
+    useAnimatedRef,
+    useDerivedValue,
+} from 'react-native-reanimated';
 import BigNumber from 'bignumber.js';
 import { NativeModules } from 'react-native';
 import type { UIAmountInputEnhancedRef, UIAmountInputEnhancedProps } from './types';
@@ -32,18 +37,21 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     const ref = useAnimatedRef<UITextViewRef>();
     const { normalizedText } = React.useContext(AmountInputContext);
 
+    const { isFocused, formattedText, isHovered, selectionEndPosition } =
+        React.useContext(AmountInputContext);
+
     /**
      * TODO Remove
      */
-    // useDerivedValue(() => {
-    //     console.log('UI', {
-    //         isHovered: isHovered.value,
-    //         isFocused: isFocused.value,
-    //         inputText: inputText.value,
-    //         normalizedText: normalizedText.value,
-    //         formattedText: formattedText.value,
-    //     });
-    // });
+    useDerivedValue(() => {
+        console.log('UI', {
+            isHovered: isHovered.value,
+            isFocused: isFocused.value,
+            selectionEndPosition: selectionEndPosition.value,
+            normalizedText: normalizedText.value,
+            formattedText: formattedText.value,
+        });
+    });
 
     const onChangeAmount = React.useCallback(
         (normalizedNumber: string) => {

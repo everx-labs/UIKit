@@ -18,10 +18,10 @@ export function useAmountInputHandlers(
     precision: UIAmountInputEnhancedProps['precision'],
     multiline: UIAmountInputEnhancedProps['multiline'],
 ) {
-    const { isFocused, formattedText, carretEndPosition, normalizedText } =
+    const { isFocused, formattedText, selectionEndPosition, normalizedText } =
         React.useContext(AmountInputContext);
 
-    const prevCarretPosition = useSharedValue(carretEndPosition.value);
+    const prevCaretPosition = useSharedValue(selectionEndPosition.value);
 
     const platformOS = useDerivedReactValue(Platform.OS);
     const editableAnimated = useDerivedReactValue(editableProp);
@@ -90,8 +90,8 @@ export function useAmountInputHandlers(
                 } = applyAmountMask(
                     evt.text,
                     platformOS.value === 'ios' && multilineAnimated.value
-                        ? prevCarretPosition
-                        : carretEndPosition,
+                        ? prevCaretPosition
+                        : selectionEndPosition,
                 );
 
                 if (evt.text !== newFormattedText) {
@@ -105,7 +105,7 @@ export function useAmountInputHandlers(
 
                 // inputText.value = evt.text;
                 formattedText.value = newFormattedText;
-                carretEndPosition.value = newCaretPosition;
+                selectionEndPosition.value = newCaretPosition;
                 normalizedText.value = newNormalizedText;
             },
             onSelectionChange: evt => {
@@ -115,8 +115,8 @@ export function useAmountInputHandlers(
                     runOnJS(onSelectionChangeProp)({ nativeEvent: evt } as any);
                 }
 
-                prevCarretPosition.value = carretEndPosition.value;
-                carretEndPosition.value = evt.selection.end;
+                prevCaretPosition.value = selectionEndPosition.value;
+                selectionEndPosition.value = evt.selection.end;
             },
         },
         [onFocusProp, onBlurProp, onSelectionChangeProp],

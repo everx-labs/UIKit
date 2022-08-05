@@ -66,10 +66,9 @@ export type UIAmountInputEnhancedChild = UIMaterialTextViewChild;
 export type AmountInputContextDefaultValuesType = {
     isHovered: boolean;
     isFocused: boolean;
-    inputText: string;
     normalizedText: string;
     formattedText: string;
-    carretEndPosition: number;
+    selectionEndPosition: number;
 };
 
 export type AmountInputContextType = {
