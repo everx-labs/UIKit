@@ -1,15 +1,9 @@
 import * as React from 'react';
-import Animated, {
-    runOnJS,
-    useAnimatedReaction,
-    useAnimatedRef,
-    useDerivedValue,
-} from 'react-native-reanimated';
-import BigNumber from 'bignumber.js';
+import Animated, { useAnimatedRef, useDerivedValue } from 'react-native-reanimated';
 import { NativeModules } from 'react-native';
 import type { UIAmountInputEnhancedRef, UIAmountInputEnhancedProps } from './types';
 import { AmountInputContext } from './constants';
-import { useAmountInputHandlers, useAmountInputHover } from './hooks';
+import { useAmountInputHandlers, useAmountInputHover, useConnectOnChangeAmount } from './hooks';
 import { UITextView, UITextViewRef } from '../UITextView';
 
 const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
@@ -44,7 +38,7 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
      * TODO Remove
      */
     useDerivedValue(() => {
-        console.log('UI', {
+        console.log({
             isHovered: isHovered.value,
             isFocused: isFocused.value,
             selectionEndPosition: selectionEndPosition.value,
@@ -53,27 +47,7 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
         });
     });
 
-    const onChangeAmount = React.useCallback(
-        (normalizedNumber: string) => {
-            if (onChangeAmountProp) {
-                const value = new BigNumber(normalizedNumber);
-                onChangeAmountProp(value);
-            }
-        },
-        [onChangeAmountProp],
-    );
-
-    /**
-     * normalizedText has changed
-     */
-    useAnimatedReaction(
-        () => normalizedText.value,
-        (currentNormalizedText, previousNormalizedText) => {
-            if (currentNormalizedText !== previousNormalizedText) {
-                runOnJS(onChangeAmount)(currentNormalizedText);
-            }
-        },
-    );
+    useConnectOnChangeAmount(onChangeAmountProp);
 
     const textViewHandlers = useAmountInputHandlers(
         ref,
