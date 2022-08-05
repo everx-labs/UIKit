@@ -1,11 +1,16 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { ContainerProps } from './types';
 import * as Columns from './Columns';
-import { useCheckChildren } from './hooks';
+import { useCheckChildren, useContainerHoverAnimatedStyle } from './hooks';
+import { useIsPrimaryActionEnabled } from './useIsPrimaryActionEnabled';
 
 export function Container({ children, id }: ContainerProps) {
+    const isPrimaryActionEnabled = useIsPrimaryActionEnabled(children);
+    const { animatedStyle, onMouseEnter, onMouseLeave } = useContainerHoverAnimatedStyle();
+
     const isValid = useCheckChildren(
         children,
         Columns,
@@ -15,9 +20,15 @@ export function Container({ children, id }: ContainerProps) {
         return null;
     }
     return (
-        <View key={id} style={styles.container}>
+        <Animated.View
+            key={id}
+            style={[styles.container, animatedStyle]}
+            // @ts-expect-error
+            onMouseEnter={isPrimaryActionEnabled ? onMouseEnter : undefined}
+            onMouseLeave={isPrimaryActionEnabled ? onMouseLeave : undefined}
+        >
             {children}
-        </View>
+        </Animated.View>
     );
 }
 
@@ -27,7 +38,9 @@ const styles = StyleSheet.create({
          * The negative horizontal margin is used to set the horizontal padding of all child elements
          * and not to think about the presence of an element on the left or right side.
          */
-        marginHorizontal: -UILayoutConstant.normalContentOffset / 2,
+        marginHorizontal: -UILayoutConstant.contentOffset,
+        paddingHorizontal:
+            UILayoutConstant.contentOffset - UILayoutConstant.normalContentOffset / 2,
         flexDirection: 'row',
         alignItems: 'center',
     },

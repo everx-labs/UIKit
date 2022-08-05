@@ -123,7 +123,5 @@ const useStyles = makeStyles((theme: Theme, location: Location | null, shadow: a
         width: UIConstant.menu.width,
         paddingHorizontal: UILayoutConstant.contentOffset,
         ...shadow,
-        /** elevation animates terribly */
-        elevation: undefined,
     },
 }));

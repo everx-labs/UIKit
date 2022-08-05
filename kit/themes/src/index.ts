@@ -10,9 +10,11 @@ import * as makeStyles from './makeStyles';
 import * as useColorParts from './useColorParts';
 import * as useColorShades from './useColorShades';
 import * as useIsDarkColor from './useIsDarkColor';
+import * as useShadow from './useShadow';
 
 export * from './AnimateableText';
 export * from './Colors';
+export * from './ColorsLegacy';
 export * from './Typography';
 export * from './UIBackgroundView';
 export * from './UILabel';
@@ -24,6 +26,7 @@ export * from './makeStyles';
 export * from './useColorParts';
 export * from './useColorShades';
 export * from './useIsDarkColor';
+export * from './useShadow';
 
 export * from './makeRNSvgReanimatedCompat';
 
@@ -40,5 +43,6 @@ export const UIThemes = {
     useColorParts,
     useColorShades,
     useIsDarkColor,
+    useShadow,
 };
 export default UIThemes;

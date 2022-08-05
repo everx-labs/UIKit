@@ -54,7 +54,11 @@ function calcTopSpace(topInset: number) {
     return Math.max(topInset, UILayoutConstant.contentInsetVerticalX4);
 }
 
-export function IntrinsicSizeSheet({ children }: { children: React.ReactNode }) {
+export const IntrinsicSizeSheet = React.memo(function IntrinsicSizeSheet({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
     const { height: cardHeight, onSheetLayout } = useSheetHeight();
 
     const { height } = useWindowDimensions();
@@ -97,28 +101,25 @@ export function IntrinsicSizeSheet({ children }: { children: React.ReactNode }) 
             {children}
         </SheetSizeContext.Provider>
     );
-}
+});
 
-export function FixedSizeSheet({
+export const FixedSizeSheet = React.memo(function FixedSizeSheet({
     height,
     children,
 }: {
     height: number;
     children: React.ReactNode;
 }) {
-    const sizeSizeContextValue = React.useRef<SheetSizeContextT>();
-
-    if (sizeSizeContextValue.current == null) {
-        sizeSizeContextValue.current = {
+    const sizeContextValue = React.useMemo(
+        () => ({
             maxPossibleHeight: { value: height },
             height: { value: height },
             style: { height },
-        };
-    }
+        }),
+        [height],
+    );
 
     return (
-        <SheetSizeContext.Provider value={sizeSizeContextValue.current}>
-            {children}
-        </SheetSizeContext.Provider>
+        <SheetSizeContext.Provider value={sizeContextValue}>{children}</SheetSizeContext.Provider>
     );
-}
+});
