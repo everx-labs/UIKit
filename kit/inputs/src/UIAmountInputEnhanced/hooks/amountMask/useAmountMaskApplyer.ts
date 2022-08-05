@@ -1,7 +1,7 @@
 import { uiLocalized } from '@tonlabs/localization';
 import * as React from 'react';
 import { SharedValue, useSharedValue } from 'react-native-reanimated';
-import { runUIOnChangeAmount } from '../../../MaterialTextView/hooks/useApplyMask/amount/runUIOnChangeAmount';
+import { runUIOnChangeAmount } from './runUIOnChangeAmount';
 
 export function useAmountMaskApplyer(numberOfDecimalDigits: number) {
     const lastNormalizedText = useSharedValue('');
