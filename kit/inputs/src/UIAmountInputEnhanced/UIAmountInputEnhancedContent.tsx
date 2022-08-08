@@ -5,6 +5,7 @@ import type { UIAmountInputEnhancedRef, UIAmountInputEnhancedProps } from './typ
 import { AmountInputContext } from './constants';
 import { useAmountInputHandlers, useAmountInputHover, useConnectOnChangeAmount } from './hooks';
 import { UITextView, UITextViewRef } from '../UITextView';
+import { TapHandler } from './TapHandler';
 
 const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
 
@@ -29,9 +30,8 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     } = props;
     // @ts-ignore
     const ref = useAnimatedRef<UITextViewRef>();
-    const { normalizedText } = React.useContext(AmountInputContext);
 
-    const { isFocused, formattedText, isHovered, selectionEndPosition } =
+    const { isFocused, formattedText, isHovered, selectionEndPosition, normalizedText } =
         React.useContext(AmountInputContext);
 
     /**
@@ -47,8 +47,6 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
         });
     });
 
-    useConnectOnChangeAmount(onChangeAmountProp);
-
     const textViewHandlers = useAmountInputHandlers(
         ref,
         editable,
@@ -59,19 +57,22 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
         multiline,
     );
 
+    useConnectOnChangeAmount(onChangeAmountProp);
     const { onMouseEnter, onMouseLeave } = useAmountInputHover(onHover);
 
     return (
-        <Animated.View
-            // @ts-expect-error
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-            style={{
-                padding: 8,
-                borderWidth: 1,
-            }}
-        >
-            <UITextViewAnimated {...props} {...textViewHandlers} ref={ref} />
-        </Animated.View>
+        <TapHandler inputRef={ref}>
+            <Animated.View
+                // @ts-expect-error
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
+                style={{
+                    padding: 8,
+                    borderWidth: 1,
+                }}
+            >
+                <UITextViewAnimated {...props} {...textViewHandlers} ref={ref} />
+            </Animated.View>
+        </TapHandler>
     );
 });
