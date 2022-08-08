@@ -169,7 +169,7 @@ public class UIKitShimmerRenderer implements GLTextureView.Renderer {
         // draw
         GLES30.glDrawElements(
                 GLES30.GL_TRIANGLE_STRIP,
-                rectVerticesData.length,
+                rectIndicesData.length,
                 GLES30.GL_UNSIGNED_SHORT,
                 0);
 
