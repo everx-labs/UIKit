@@ -181,7 +181,7 @@ export const BiometryKey = React.memo(function BiometryKey({
                 dotsValues[index].value = 1;
                 dotsAnims[index].value = withSpring(DOT_ANIMATION_ACTIVE, DOT_WITH_SPRING_CONFIG);
             });
-            activeDotIndex.value = length;
+            activeDotIndex.value = dotsValues.length;
             return;
         }
         onCallBiometry();
