@@ -22,7 +22,8 @@ export type MaterialTextViewChild =
 
 export type MaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
     /**
-     * Label of the MaterialTextView
+     * Label of the MaterialTextView.
+     * Note: The value is immutable
      */
     label?: string;
     /**
