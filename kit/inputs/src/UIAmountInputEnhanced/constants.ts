@@ -2,13 +2,6 @@ import * as React from 'react';
 import { makeMutable } from 'react-native-reanimated';
 import type { AmountInputContextDefaultValuesType, AmountInputContextType } from './types';
 
-export enum UIAmountInputEnhancedMessageType {
-    Error = 'Error',
-    Warning = 'Warning',
-    Success = 'Success',
-    Info = 'Info',
-}
-
 export enum UIAmountInputEnhancedDecimalAspect {
     Integer = 'Integer',
     Currency = 'Currency',

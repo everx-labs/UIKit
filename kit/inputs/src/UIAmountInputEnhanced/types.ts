@@ -1,14 +1,12 @@
 import type BigNumber from 'bignumber.js';
 import type { SharedValue } from 'react-native-reanimated';
+import type { InputMessageType } from '../InputMessage';
 import type {
     UIMaterialTextViewChild,
     UIMaterialTextViewProps,
     UIMaterialTextViewRef,
 } from '../UIMaterialTextView/types';
-import type {
-    UIAmountInputEnhancedDecimalAspect,
-    UIAmountInputEnhancedMessageType,
-} from './constants';
+import type { UIAmountInputEnhancedDecimalAspect } from './constants';
 
 export type UIAmountInputEnhancedProps = Omit<
     UIMaterialTextViewProps,
@@ -31,9 +29,9 @@ export type UIAmountInputEnhancedProps = Omit<
     decimalAspect?: UIAmountInputEnhancedDecimalAspect;
     /**
      * Type of the message. Affects the style of the message.
-     * @default  UIAmountInputEnhancedMessageType.Info
+     * @default  InputMessageType.Info
      */
-    messageType?: UIAmountInputEnhancedMessageType;
+    messageType?: InputMessageType;
     /**
      * Message text.
      */

@@ -6,6 +6,7 @@ import { AmountInputContext } from './constants';
 import { useAmountInputHandlers, useAmountInputHover, useConnectOnChangeAmount } from './hooks';
 import { UITextView, UITextViewRef } from '../UITextView';
 import { TapHandler } from './TapHandler';
+import { InputMessage } from '../InputMessage';
 
 const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
 
@@ -27,6 +28,8 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
         onChangeAmount: onChangeAmountProp,
         precision,
         multiline,
+        message,
+        messageType,
     } = props;
     // @ts-ignore
     const ref = useAnimatedRef<UITextViewRef>();
@@ -61,18 +64,16 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     const { onMouseEnter, onMouseLeave } = useAmountInputHover(onHover);
 
     return (
-        <TapHandler inputRef={ref}>
-            <Animated.View
-                // @ts-expect-error
-                onMouseEnter={onMouseEnter}
-                onMouseLeave={onMouseLeave}
-                style={{
-                    padding: 8,
-                    borderWidth: 1,
-                }}
-            >
-                <UITextViewAnimated {...props} {...textViewHandlers} ref={ref} />
-            </Animated.View>
-        </TapHandler>
+        <InputMessage type={messageType} text={message}>
+            <TapHandler inputRef={ref}>
+                <Animated.View
+                    // @ts-expect-error
+                    onMouseEnter={onMouseEnter}
+                    onMouseLeave={onMouseLeave}
+                >
+                    <UITextViewAnimated {...props} {...textViewHandlers} ref={ref} />
+                </Animated.View>
+            </TapHandler>
+        </InputMessage>
     );
 });

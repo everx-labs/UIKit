@@ -36,6 +36,7 @@ export const Inputs = () => {
                         precision="Precise"
                         onChangeAmount={amount => console.log('onChangeAmount', amount?.toString())}
                         multiline
+                        message="Caption"
                     />
                 </View>
             </ExampleSection>
