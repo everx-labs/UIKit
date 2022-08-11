@@ -3,13 +3,14 @@ import BigNumber from 'bignumber.js';
 import { uiLocalized } from '@tonlabs/localization';
 import { DerivedValue, useSharedValue } from 'react-native-reanimated';
 import type { UIMaterialTextViewRef, UIMaterialTextViewMask } from '../../UIMaterialTextView';
-import { UIAmountInputEnhancedDecimalAspect, UIAmountInputEnhancedMessageType } from '../constants';
+import { UIAmountInputEnhancedDecimalAspect } from '../constants';
 import type { UIAmountInputEnhancedProps, UIAmountInputEnhancedRef } from '../types';
 import {
     getEmptyUIMaterialTextViewRef,
     useMaterialTextViewChildren,
     MaterialTextViewClearButton,
 } from '../../MaterialTextView';
+import { InputMessageType } from '../../InputMessage';
 
 const notDigitOrDelimiterRegExp = new RegExp(
     `[^\\d\\${uiLocalized.localeInfo.numbers.decimal}]`,
@@ -55,28 +56,28 @@ export function useOnChangeText(
     );
 }
 
-export function useHelperTextStatus(messageType: UIAmountInputEnhancedMessageType | undefined) {
+export function useHelperTextStatus(messageType: InputMessageType | undefined) {
     return React.useMemo(() => {
         switch (messageType) {
-            case UIAmountInputEnhancedMessageType.Error:
+            case InputMessageType.Error:
                 return {
                     error: true,
                     warning: false,
                     success: false,
                 };
-            case UIAmountInputEnhancedMessageType.Warning:
+            case InputMessageType.Warning:
                 return {
                     error: false,
                     warning: true,
                     success: false,
                 };
-            case UIAmountInputEnhancedMessageType.Success:
+            case InputMessageType.Success:
                 return {
                     error: false,
                     warning: false,
                     success: true,
                 };
-            case UIAmountInputEnhancedMessageType.Info:
+            case InputMessageType.Info:
             default:
                 return {
                     error: false,

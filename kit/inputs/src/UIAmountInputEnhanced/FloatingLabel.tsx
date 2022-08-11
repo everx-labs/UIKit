@@ -16,6 +16,7 @@ import Animated, {
     useDerivedValue,
     useSharedValue,
     withSpring,
+    WithSpringConfig,
     withTiming,
 } from 'react-native-reanimated';
 
@@ -55,6 +56,11 @@ const POSITION_EXPANDED: number = 1;
 // @inline
 const LEFT_OFFSET_OF_UI_LABEL_TEXT_FROM_EDGE: number = 1;
 
+export const withSpringConfig: WithSpringConfig = {
+    stiffness: 1000,
+    overshootClamping: true,
+};
+
 function validateChildren(children: string): boolean {
     if (typeof children !== 'string') {
         if (__DEV__) {
@@ -73,19 +79,19 @@ type LabelProps = {
 };
 function Label({ children, onLabelLayout, isHovered, editable }: LabelProps) {
     const theme = useTheme();
-    const colors = React.useMemo(() => {
+    const colors = useDerivedValue(() => {
         return {
             hoverColor: theme[ColorVariants.TextSecondary] as string,
             default: theme[ColorVariants.TextTertiary] as string,
         };
     }, [theme]);
-    const hoverAnimationValue = useDerivedValue(() => {
-        return isHovered.value && editable ? colors.hoverColor : colors.default;
+    const toColor = useDerivedValue(() => {
+        return isHovered.value && editable ? colors.value.hoverColor : colors.value.default;
     }, [editable, colors]);
 
     const animatedProps = useAnimatedProps(() => {
         return {
-            color: withSpring(hoverAnimationValue.value) as any as ColorValue,
+            color: withSpring(toColor.value) as any as ColorValue,
         };
     }, [editable]);
     return (
