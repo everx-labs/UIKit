@@ -217,20 +217,10 @@ const StaticTheme = {
 
 export const LightThemeDeprecated = {
     [ColorVariants.TextPrimaryInverted]: '#EFEFF0', // TextInverted
-    [ColorVariants.BackgroundPrimaryInverted]: '#1C2124', // BackgroundInverted
-    [ColorVariants.GraphPrimaryInverted]: '#EFEFF0', // GraphInverted
-    [ColorVariants.LinePrimary]: '#EFEFF0', // GraphPrimaryInverted
-    [ColorVariants.LineSecondary]: '#EFEFF0', // GraphPrimaryInverted
-    [ColorVariants.LineTertiary]: '#EFEFF0', // GraphPrimaryInverted
-    [ColorVariants.LineNeutral]: '#3B4043', // GraphNeutral
-    [ColorVariants.LineAccent]: '#4963E6', // GraphAccent
-    [ColorVariants.LineNegative]: '#FF0C0C', // GraphNegative
-    [ColorVariants.LinePositive]: '#00D359', // GraphPositive
-
-    /** Deprecated colors without analogues */
     [ColorVariants.TextNeutral]: '#3B4043',
     [ColorVariants.TextOverlay]: 'rgba(28, 33, 36, 0.4)', // #1C2124 40%
     [ColorVariants.TextOverlayInverted]: 'rgba(239, 239, 240, 0.6)', // #EFEFF0 60%
+    [ColorVariants.BackgroundPrimaryInverted]: '#1C2124', // BackgroundInverted
     [ColorVariants.BackgroundNeutral]: '#3B4043',
     [ColorVariants.BackgroundSecondaryInverted]: '#283035',
     [ColorVariants.BackgroundTertiaryInverted]: '#3B474E',
@@ -238,6 +228,15 @@ export const LightThemeDeprecated = {
     [ColorVariants.BackgroundOverlayInverted]: 'rgba(239, 239, 240, 0.4)', // #EFEFF0 40%
     [ColorVariants.BackgroundOverlayDark]: 'rgba(0, 0, 0, 0.12)', // #000000 12%
     [ColorVariants.BackgroundOverlayLight]: 'rgba(255, 255, 255, 0.08)', // #FFFFFF 8%
+    [ColorVariants.GraphPrimaryInverted]: '#EFEFF0', // GraphInverted
+    [ColorVariants.GraphNeutral]: '#3B4043',
+    [ColorVariants.LinePrimary]: '#EFEFF0', // GraphInverted
+    [ColorVariants.LineSecondary]: '#EFEFF0', // GraphInverted
+    [ColorVariants.LineTertiary]: '#EFEFF0', // GraphInverted
+    [ColorVariants.LineNeutral]: '#3B4043', // GraphNeutral
+    [ColorVariants.LineAccent]: '#4963E6', // GraphAccent
+    [ColorVariants.LineNegative]: '#FF0C0C', // GraphNegative
+    [ColorVariants.LinePositive]: '#00D359', // GraphPositive
     [ColorVariants.LineOverlayDark]: 'rgba(255, 255, 255, 0.08)', // #FFFFFF 8%
     [ColorVariants.LineOverlayLight]: 'rgba(0, 0, 0, 0.04)', // #000000 4%
     [ColorVariants.IconAccent]: '#0073C4',
@@ -275,7 +274,6 @@ export const LightTheme: Theme = {
     [ColorVariants.GraphSecondary]: '#283035',
     [ColorVariants.GraphTertiary]: '#3B474E',
     [ColorVariants.GraphInverted]: '#EFEFF0',
-    [ColorVariants.GraphNeutral]: '#3B4043',
     [ColorVariants.GraphAccent]: '#4963E6',
     [ColorVariants.GraphNegative]: '#FF0C0C',
     [ColorVariants.GraphPositive]: '#00D359',
@@ -296,20 +294,10 @@ export const LightTheme: Theme = {
 
 export const DarkThemeDeprecated = {
     [ColorVariants.TextPrimaryInverted]: '#1C2124', // TextInverted
-    [ColorVariants.BackgroundPrimaryInverted]: '#EFEFF0', // BackgroundInverted
-    [ColorVariants.GraphPrimaryInverted]: '#1C2124', // GraphInverted
-    [ColorVariants.LinePrimary]: '#1C2124', // GraphPrimaryInverted
-    [ColorVariants.LineSecondary]: '#1C2124', // GraphPrimaryInverted
-    [ColorVariants.LineTertiary]: '#1C2124', // GraphPrimaryInverted
-    [ColorVariants.LineNeutral]: '#3B4043', // GraphNeutral
-    [ColorVariants.LineAccent]: '#4963E6', // GraphAccent
-    [ColorVariants.LineNegative]: '#4963E6', // GraphNegative
-    [ColorVariants.LinePositive]: '#00D359', // GraphPositive
-
-    /** Deprecated colors without analogues */
     [ColorVariants.TextNeutral]: '#3B4043',
     [ColorVariants.TextOverlay]: 'rgba(239, 239, 240, 0.4)', // EFEFF0 40%
     [ColorVariants.TextOverlayInverted]: 'rgba(4, 4, 4, 0.6)', // #040404 60%
+    [ColorVariants.BackgroundPrimaryInverted]: '#EFEFF0', // BackgroundInverted
     [ColorVariants.BackgroundNeutral]: '#3B4043',
     [ColorVariants.BackgroundSecondaryInverted]: '#E8E9E9',
     [ColorVariants.BackgroundTertiaryInverted]: '#494D51',
@@ -317,6 +305,15 @@ export const DarkThemeDeprecated = {
     [ColorVariants.BackgroundOverlayInverted]: 'rgba(239, 239, 240, 0.2)', // #EFEFF0 20%
     [ColorVariants.BackgroundOverlayDark]: 'rgba(0, 0, 0, 0.08)', // #000000 8%
     [ColorVariants.BackgroundOverlayLight]: 'rgba(255, 255, 255, 0.04)', // #FFFFFF 4%
+    [ColorVariants.GraphPrimaryInverted]: '#1C2124', // GraphInverted
+    [ColorVariants.GraphNeutral]: '#3B4043',
+    [ColorVariants.LinePrimary]: '#1C2124', // GraphInverted
+    [ColorVariants.LineSecondary]: '#1C2124', // GraphInverted
+    [ColorVariants.LineTertiary]: '#1C2124', // GraphInverted
+    [ColorVariants.LineNeutral]: '#3B4043', // GraphNeutral
+    [ColorVariants.LineAccent]: '#4963E6', // GraphAccent
+    [ColorVariants.LineNegative]: '#FF4747', // GraphNegative
+    [ColorVariants.LinePositive]: '#26DA72', // GraphPositive
     [ColorVariants.LineOverlayDark]: 'rgba(0, 0, 0, 0.08)', // #000000 8%
     [ColorVariants.LineOverlayLight]: 'rgba(255, 255, 255, 0.08)', // #FFFFFF 8%
     [ColorVariants.IconAccent]: '#0073C4',
@@ -354,7 +351,6 @@ export const DarkTheme: Theme = {
     [ColorVariants.GraphSecondary]: '#A4A6A8',
     [ColorVariants.GraphTertiary]: '#494D51',
     [ColorVariants.GraphInverted]: '#1C2124',
-    [ColorVariants.GraphNeutral]: '#3B4043',
     [ColorVariants.GraphAccent]: '#4963E6',
     [ColorVariants.GraphNegative]: '#FF4747',
     [ColorVariants.GraphPositive]: '#26DA72',
