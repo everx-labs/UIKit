@@ -1,8 +1,13 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTheme, ColorVariants } from '@tonlabs/uikit.themes';
-import type { UISkeletonProps } from './types';
+
+// Note: UIKitSkeletonNativeView also works for iOS, but it consumes a lot of memory,
+// hence making iOS devices hang and crash due to "Out of Memory" error.
+// TODO: Rename `Skeleton.android.tsx` file into `Skeleton.native.tsx` once an issue is resolved.
 import { UIKitSkeleton, UIKitSkeletonNativeView } from './UIKitSkeletonView';
+
+import type { UISkeletonProps } from './types';
 
 function UIKitSkeletonConfig() {
     const theme = useTheme();
