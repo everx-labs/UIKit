@@ -105,31 +105,6 @@ export enum ColorVariants {
     Transparent = 'Transparent',
     KeyboardStyle = 'KeyboardStyle',
 
-    /** Legacy colors */
-    TextNeutral = 'TextNeutral',
-    TextPrimaryInverted = 'TextPrimaryInverted',
-    TextOverlay = 'TextOverlay',
-    TextOverlayInverted = 'TextOverlayInverted',
-
-    BackgroundNeutral = 'BackgroundNeutral',
-    BackgroundPrimaryInverted = 'BackgroundPrimaryInverted',
-    BackgroundSecondaryInverted = 'BackgroundSecondaryInverted',
-    BackgroundTertiaryInverted = 'BackgroundTertiaryInverted',
-    BackgroundOverlay = 'BackgroundOverlay',
-    BackgroundOverlayInverted = 'BackgroundOverlayInverted',
-    BackgroundOverlayDark = 'BackgroundOverlayDark',
-    BackgroundOverlayLight = 'BackgroundOverlayLight',
-
-    GraphPrimaryInverted = 'GraphPrimaryInverted',
-    GraphNeutral = 'GraphNeutral',
-
-    LineOverlayLight = 'LineOverlayLight',
-    LineOverlayDark = 'LineOverlayDark',
-
-    IconAccent = 'IconAccent',
-    IconSecondary = 'IconSecondary',
-    IconNeutral = 'IconNeutral',
-
     StaticTextPrimaryDark = 'StaticTextPrimaryDark',
     StaticTextPrimaryLight = 'StaticTextPrimaryLight',
     StaticTextOverlayDark = 'StaticTextOverlayDark',
@@ -146,19 +121,32 @@ export enum ColorVariants {
     StaticBackgroundPositive = 'StaticBackgroundPositive',
     StaticBackgroundOverlay = 'StaticBackgroundOverlay',
 
-    /** Depracated color */
+    /** Depracated colors */
+    TextNeutral = 'TextNeutral',
+    TextPrimaryInverted = 'TextPrimaryInverted',
+    TextOverlay = 'TextOverlay',
+    TextOverlayInverted = 'TextOverlayInverted',
+    BackgroundNeutral = 'BackgroundNeutral',
+    BackgroundPrimaryInverted = 'BackgroundPrimaryInverted',
+    BackgroundSecondaryInverted = 'BackgroundSecondaryInverted',
+    BackgroundTertiaryInverted = 'BackgroundTertiaryInverted',
+    BackgroundOverlay = 'BackgroundOverlay',
+    BackgroundOverlayInverted = 'BackgroundOverlayInverted',
+    BackgroundOverlayDark = 'BackgroundOverlayDark',
+    BackgroundOverlayLight = 'BackgroundOverlayLight',
+    GraphPrimaryInverted = 'GraphPrimaryInverted',
+    GraphNeutral = 'GraphNeutral',
+    IconAccent = 'IconAccent',
+    IconSecondary = 'IconSecondary',
+    IconNeutral = 'IconNeutral',
     LinePrimary = 'LinePrimary',
-    /** Depracated color */
     LineSecondary = 'LineSecondary',
-    /** Depracated color */
     LineTertiary = 'LineTertiary',
-    /** Depracated color */
     LineNeutral = 'LineNeutral',
-    /** Depracated color */
     LineAccent = 'LineAccent',
-    /** Depracated color */
     LineNegative = 'LineNegative',
-    /** Depracated color */
+    LineOverlayLight = 'LineOverlayLight',
+    LineOverlayDark = 'LineOverlayDark',
     LinePositive = 'LinePositive',
 }
 
