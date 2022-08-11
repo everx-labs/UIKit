@@ -299,7 +299,7 @@ export const LightTheme: Theme = {
     [ColorVariants.SpecialNegativeLight]: '#D54343',
     [ColorVariants.SpecialNegativeDark]: '#A21010',
 
-    [ColorVariants.Transparent]: 'rgba(0,0,0,0)',
+    [ColorVariants.Transparent]: 'rgba(0, 0, 0, 0)',
     [ColorVariants.KeyboardStyle]: 'light',
 
     [ColorVariants.Shadow]: 'rgb(32, 38, 42)',
@@ -307,6 +307,9 @@ export const LightTheme: Theme = {
 };
 
 export const DarkThemeDeprecated = {
+    [ColorVariants.TextPrimaryInverted]: '#1C2124', // TextInverted
+    [ColorVariants.BackgroundPrimaryInverted]: '#EFEFF0', // BackgroundInverted
+    [ColorVariants.GraphPrimaryInverted]: '#1C2124', // GraphInverted
     [ColorVariants.LinePrimary]: '#1C2124', // GraphPrimaryInverted
     [ColorVariants.LineSecondary]: '#1C2124', // GraphPrimaryInverted
     [ColorVariants.LineTertiary]: '#1C2124', // GraphPrimaryInverted
@@ -314,69 +317,72 @@ export const DarkThemeDeprecated = {
     [ColorVariants.LineAccent]: '#4963E6', // GraphAccent
     [ColorVariants.LineNegative]: '#4963E6', // GraphNegative
     [ColorVariants.LinePositive]: '#00D359', // GraphPositive
+
+    /** Deprecated colors without analogues */
+    [ColorVariants.TextNeutral]: '#3B4043',
+    [ColorVariants.TextOverlay]: 'rgba(239, 239, 240, 0.4)', // EFEFF0 40%
+    [ColorVariants.TextOverlayInverted]: 'rgba(4, 4, 4, 0.6)', // #040404 60%
+    [ColorVariants.BackgroundNeutral]: '#3B4043',
+    [ColorVariants.BackgroundSecondaryInverted]: '#E8E9E9',
+    [ColorVariants.BackgroundTertiaryInverted]: '#494D51',
+    [ColorVariants.BackgroundOverlay]: 'rgba(4, 4, 4, 0.6)', // #040404 60%
+    [ColorVariants.BackgroundOverlayInverted]: 'rgba(239, 239, 240, 0.2)', // #EFEFF0 20%
+    [ColorVariants.BackgroundOverlayDark]: 'rgba(0, 0, 0, 0.08)', // #000000 8%
+    [ColorVariants.BackgroundOverlayLight]: 'rgba(255, 255, 255, 0.04)', // #FFFFFF 4%
+    [ColorVariants.LineOverlayDark]: 'rgba(0, 0, 0, 0.08)', // #000000 8%
+    [ColorVariants.LineOverlayLight]: 'rgba(255, 255, 255, 0.08)', // #FFFFFF 8%
+    [ColorVariants.IconAccent]: '#0073C4',
+    [ColorVariants.IconSecondary]: '#E8E9E9',
+    [ColorVariants.IconNeutral]: '#3B4043',
 };
 
 export const DarkTheme: Theme = {
     ...StaticTheme,
     ...getThemeWithWarning(DarkThemeDeprecated),
+    [ColorVariants.TextBW]: '#FFFFFF',
     [ColorVariants.TextPrimary]: '#EFEFF0',
-    [ColorVariants.TextSecondary]: '#EFEFF0',
-    [ColorVariants.TextTertiary]: '#D2D3D3',
-    [ColorVariants.TextPrimaryInverted]: '#1C2124',
-    [ColorVariants.TextNeutral]: '#3B4043',
+    [ColorVariants.TextSecondary]: '#A4A6A8',
+    [ColorVariants.TextTertiary]: '#494D51',
+    [ColorVariants.TextInverted]: '#1C2124',
     [ColorVariants.TextAccent]: '#4963E6',
-    [ColorVariants.TextNegative]: '#FF0C0C',
-    [ColorVariants.TextPositive]: '#00D359',
-    [ColorVariants.TextWarning]: '#FFB608',
-    [ColorVariants.TextOverlay]: 'rgba(253, 253, 253, 0.4)', // EFEFF0 40%
-    [ColorVariants.TextOverlayInverted]: 'rgba(4, 4, 4, 0.6)', // #040404 60%
+    [ColorVariants.TextNegative]: '#FF4747',
+    [ColorVariants.TextPositive]: '#26DA72',
+    [ColorVariants.TextWarning]: '#FFCA00',
     [ColorVariants.TextNulled]: 'rgba(0, 0, 0, 0)', // #000000 0%
 
+    [ColorVariants.BackgroundBW]: '#191E21',
     [ColorVariants.BackgroundPrimary]: '#1C2124',
-    [ColorVariants.BackgroundSecondary]: '#283035',
-    [ColorVariants.BackgroundTertiary]: '#3B474E',
-    [ColorVariants.BackgroundNeutral]: '#3B4043',
+    [ColorVariants.BackgroundSecondary]: '#1E2428',
+    [ColorVariants.BackgroundTertiary]: '#21282C',
+    [ColorVariants.BackgroundInverted]: '#EFEFF0',
     [ColorVariants.BackgroundAccent]: '#4963E6',
-    [ColorVariants.BackgroundNegative]: '#FF0C0C',
-    [ColorVariants.BackgroundPositive]: '#00D359',
-    [ColorVariants.BackgroundWarning]: '#FFB608',
-    [ColorVariants.BackgroundPrimaryInverted]: '#EFEFF0',
-    [ColorVariants.BackgroundSecondaryInverted]: '#E8E9E9',
-    [ColorVariants.BackgroundTertiaryInverted]: '#D2D3D3',
-    [ColorVariants.BackgroundOverlay]: 'rgba(4, 4, 4, 0.6)', // #040404 60%
-    [ColorVariants.BackgroundOverlayInverted]: 'rgba(253, 253, 253, 0.2)', // #EFEFF0 20%
-    [ColorVariants.BackgroundOverlayDark]: 'rgba(0, 0, 0, 0.08)', // #000000 8%
-    [ColorVariants.BackgroundOverlayLight]: 'rgba(255, 255, 255, 0.04)', // #FFFFFF 4%
+    [ColorVariants.BackgroundNegative]: '#FF4747',
+    [ColorVariants.BackgroundPositive]: '#26DA72',
+    [ColorVariants.BackgroundWarning]: '#FFCA00',
     [ColorVariants.BackgroundNulled]: 'rgba(0, 0, 0, 0)', // #000000 0%
-    [ColorVariants.BackgroundBW]: '#1C2125',
 
+    [ColorVariants.GraphBW]: '#FFFFFF',
     [ColorVariants.GraphPrimary]: '#EFEFF0',
-    [ColorVariants.GraphSecondary]: '#E8E9E9',
-    [ColorVariants.GraphTertiary]: '#D2D3D3',
-    [ColorVariants.GraphPrimaryInverted]: '#1C2124',
+    [ColorVariants.GraphSecondary]: '#A4A6A8',
+    [ColorVariants.GraphTertiary]: '#494D51',
+    [ColorVariants.GraphInverted]: '#1C2124',
     [ColorVariants.GraphNeutral]: '#3B4043',
     [ColorVariants.GraphAccent]: '#4963E6',
-    [ColorVariants.GraphNegative]: '#FF0C0C',
-    [ColorVariants.GraphPositive]: '#00D359',
-    [ColorVariants.GraphWarning]: '#FFB608',
+    [ColorVariants.GraphNegative]: '#FF4747',
+    [ColorVariants.GraphPositive]: '#26DA72',
+    [ColorVariants.GraphWarning]: '#FFCA00',
+    [ColorVariants.GraphNulled]: 'rgba(0, 0, 0, 0)', // #000000 0%
 
     [ColorVariants.SpecialAccentLight]: '#6184FF',
     [ColorVariants.SpecialAccentDark]: '#4259CF',
     [ColorVariants.SpecialNegativeLight]: '#D54343',
     [ColorVariants.SpecialNegativeDark]: '#A21010',
 
-    [ColorVariants.Transparent]: 'rgba(0,0,0,0)',
+    [ColorVariants.Transparent]: 'rgba(0, 0, 0, 0)',
     [ColorVariants.KeyboardStyle]: 'dark',
 
     [ColorVariants.Shadow]: 'rgb(19, 23, 25)',
     [ColorVariants.ShadowOpaque]: 'rgba(19, 23, 25, 0.4)',
-
-    /** Legacy colors */
-    [ColorVariants.LineOverlayDark]: 'rgba(0,0,0,.08)',
-    [ColorVariants.LineOverlayLight]: 'rgba(255, 255, 255, 0.08)',
-    [ColorVariants.IconAccent]: '#0073C4',
-    [ColorVariants.IconSecondary]: '#E8E9E9',
-    [ColorVariants.IconNeutral]: '#3B4043',
 };
 
 export const ThemeContext = React.createContext(LightTheme);
