@@ -218,14 +218,14 @@ const StaticTheme = {
 export const LightThemeDeprecated = {
     [ColorVariants.TextPrimaryInverted]: '#EFEFF0', // TextInverted
     [ColorVariants.TextNeutral]: '#3B4043',
-    [ColorVariants.TextOverlay]: 'rgba(28, 33, 36, 0.4)', // #1C2124 40%
-    [ColorVariants.TextOverlayInverted]: 'rgba(239, 239, 240, 0.6)', // #EFEFF0 60%
+    [ColorVariants.TextOverlay]: 'rgba(28, 33, 36, 0.4)', // TextPrimary 40%
+    [ColorVariants.TextOverlayInverted]: 'rgba(239, 239, 240, 0.6)', // TextInverted 60%
     [ColorVariants.BackgroundPrimaryInverted]: '#1C2124', // BackgroundInverted
-    [ColorVariants.BackgroundNeutral]: '#3B4043',
     [ColorVariants.BackgroundSecondaryInverted]: '#283035',
     [ColorVariants.BackgroundTertiaryInverted]: '#3B474E',
-    [ColorVariants.BackgroundOverlay]: 'rgba(4, 4, 4, 0.4)', // #040404 40%
-    [ColorVariants.BackgroundOverlayInverted]: 'rgba(239, 239, 240, 0.4)', // #EFEFF0 40%
+    [ColorVariants.BackgroundNeutral]: '#3B4043',
+    [ColorVariants.BackgroundOverlay]: 'rgba(4, 4, 4, 0.4)', // BackgroundPrimary 40%
+    [ColorVariants.BackgroundOverlayInverted]: 'rgba(239, 239, 240, 0.4)', // BackgroundPrimary 40%
     [ColorVariants.BackgroundOverlayDark]: 'rgba(0, 0, 0, 0.12)', // #000000 12%
     [ColorVariants.BackgroundOverlayLight]: 'rgba(255, 255, 255, 0.08)', // #FFFFFF 8%
     [ColorVariants.GraphPrimaryInverted]: '#EFEFF0', // GraphInverted
@@ -295,14 +295,14 @@ export const LightTheme: Theme = {
 export const DarkThemeDeprecated = {
     [ColorVariants.TextPrimaryInverted]: '#1C2124', // TextInverted
     [ColorVariants.TextNeutral]: '#3B4043',
-    [ColorVariants.TextOverlay]: 'rgba(239, 239, 240, 0.4)', // EFEFF0 40%
+    [ColorVariants.TextOverlay]: 'rgba(239, 239, 240, 0.4)', // TextPrimary 40%
     [ColorVariants.TextOverlayInverted]: 'rgba(4, 4, 4, 0.6)', // #040404 60%
     [ColorVariants.BackgroundPrimaryInverted]: '#EFEFF0', // BackgroundInverted
-    [ColorVariants.BackgroundNeutral]: '#3B4043',
     [ColorVariants.BackgroundSecondaryInverted]: '#E8E9E9',
     [ColorVariants.BackgroundTertiaryInverted]: '#494D51',
+    [ColorVariants.BackgroundNeutral]: '#3B4043',
     [ColorVariants.BackgroundOverlay]: 'rgba(4, 4, 4, 0.6)', // #040404 60%
-    [ColorVariants.BackgroundOverlayInverted]: 'rgba(239, 239, 240, 0.2)', // #EFEFF0 20%
+    [ColorVariants.BackgroundOverlayInverted]: 'rgba(239, 239, 240, 0.2)', // BackgroundInverted 20%
     [ColorVariants.BackgroundOverlayDark]: 'rgba(0, 0, 0, 0.08)', // #000000 8%
     [ColorVariants.BackgroundOverlayLight]: 'rgba(255, 255, 255, 0.04)', // #FFFFFF 4%
     [ColorVariants.GraphPrimaryInverted]: '#1C2124', // GraphInverted
