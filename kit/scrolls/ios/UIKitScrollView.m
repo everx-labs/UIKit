@@ -77,7 +77,7 @@
 }
 
 - (void)setAutomaticallyAdjustKeyboardInsets:(BOOL)automaticallyAdjustKeyboardInsets {
-    _automaticallyAdjustKeyboardInsets = automaticallyAdjustKeyboardInsets;
+    [super setAutomaticallyAdjustKeyboardInsets:automaticallyAdjustKeyboardInsets];
     
     [_insets setAutomaticallyAdjustKeyboardInsets:automaticallyAdjustKeyboardInsets];
     [_insets onInsetsShouldBeRecalculated];
