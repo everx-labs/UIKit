@@ -1,12 +1,14 @@
 import * as React from 'react';
 import Animated, {
     interpolate,
+    useAnimatedProps,
     useAnimatedRef,
     useAnimatedStyle,
     useDerivedValue,
+    withSpring,
 } from 'react-native-reanimated';
-import { NativeModules, Platform, TextStyle } from 'react-native';
-import { makeStyles, Theme, ColorVariants, useTheme } from '@tonlabs/uikit.themes';
+import { NativeModules, Platform, TextStyle, View } from 'react-native';
+import { makeStyles, Theme, ColorVariants, useTheme, UILabelAnimated } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UIAmountInputEnhancedRef, UIAmountInputEnhancedProps } from './types';
 import { AmountInputContext } from './constants';
@@ -16,7 +18,7 @@ import { TapHandler } from './TapHandler';
 import { InputMessage } from '../InputMessage';
 import { usePlaceholderVisibility } from './hooks/usePlaceholderVisibility';
 import { useExpandingValue } from './hooks/useExpandingValue';
-import { FloatingLabel } from './FloatingLabel';
+import { FloatingLabel, withSpringConfig } from './FloatingLabel';
 
 const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
 
@@ -37,11 +39,11 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     UIAmountInputEnhancedRef,
     UIAmountInputEnhancedProps
 >(function UIAmountInputEnhancedContent(
-    { children: _children, ...props }: UIAmountInputEnhancedProps,
+    { children: _children, placeholder, ...props }: UIAmountInputEnhancedProps,
     _forwardedRef: React.Ref<UIAmountInputEnhancedRef>,
 ) {
     const {
-        editable,
+        editable = true,
         onFocus,
         onBlur,
         onHover,
@@ -117,12 +119,61 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
         };
     });
 
-    const placeholderTextColor = React.useMemo(() => {
-        if (!isPlaceholderVisible) {
-            return ColorVariants.Transparent;
+    // const isInputHovered = useConvertToReactState(isHovered);
+    // const placeholderTextColor = React.useMemo(() => {
+    //     if (!isPlaceholderVisible) {
+    //         return ColorVariants.Transparent;
+    //     }
+    //     console.log({
+    //         isInputHovered,
+    //         editable,
+    //     });
+    //     return isInputHovered && editable
+    //         ? ColorVariants.TextSecondary
+    //         : ColorVariants.TextTertiary;
+    // }, [isPlaceholderVisible, isInputHovered, editable]);
+
+    const placeholderColors = useDerivedValue(() => {
+        return {
+            transparent: theme[ColorVariants.Transparent] as string,
+            hoverColor: theme[ColorVariants.TextSecondary] as string,
+            default: theme[ColorVariants.TextTertiary] as string,
+        };
+    }, [theme]);
+    const placeholderTextColor = useDerivedValue(() => {
+        if (!isPlaceholderVisible.value || formattedText.value) {
+            return placeholderColors.value.transparent;
         }
-        return isHovered && editable ? ColorVariants.TextSecondary : ColorVariants.TextTertiary;
-    }, [isPlaceholderVisible, isHovered, editable]);
+        return isHovered.value && editable
+            ? placeholderColors.value.hoverColor
+            : placeholderColors.value.default;
+    }, [editable]);
+
+    const animatedProps = useAnimatedProps(() => {
+        return {
+            color: withSpring(placeholderTextColor.value, withSpringConfig) as any as string,
+        };
+    });
+
+    // const animatedStyle = useAnimatedStyle(() => {
+    //     return {
+    //         color: withSpring(placeholderTextColor.value, withSpringConfig) as any as string,
+    //     };
+    // });
+
+    // const asd = useDerivedValue(() => {
+    //     console.log('placeholderTextColor', placeholderTextColor.value);
+    //     return {
+    //         placeholderTextColorRaw: withSpring(
+    //             placeholderTextColor.value,
+    //             withSpringConfig,
+    //         ) as any as string,
+    //     };
+    // });
+
+    // useDerivedValue(() => {
+    //     console.log(asd.value.placeholderTextColorRaw);
+    // });
 
     return (
         <InputMessage type={messageType} text={message}>
@@ -133,21 +184,28 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
                     onMouseEnter={onMouseEnter}
                     onMouseLeave={onMouseLeave}
                 >
-                    {/* <UITextViewAnimated {...props} ref={ref} /> */}
                     <Animated.View style={[styles.inputContainer, inputStyle]}>
-                        <UITextViewAnimated
-                            ref={ref}
-                            {...props}
-                            {...textViewHandlers}
-                            placeholderTextColor={placeholderTextColor}
-                            style={styles.input}
-                        />
+                        <View style={{ flex: 1 }}>
+                            <UITextViewAnimated
+                                ref={ref}
+                                {...props}
+                                {...textViewHandlers}
+                                style={[styles.input]}
+                            />
+                            <UILabelAnimated
+                                animatedProps={animatedProps}
+                                style={{ position: 'absolute' }}
+                            >
+                                {placeholder}
+                            </UILabelAnimated>
+                        </View>
+
                         <FloatingLabel
                             expandingValue={expandingValue}
                             isHovered={isHovered}
                             editable={editable}
                         >
-                            {labelRef.current}
+                            {label}
                         </FloatingLabel>
                     </Animated.View>
                     {/* {children} */}

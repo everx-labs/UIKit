@@ -29,12 +29,12 @@ export const Inputs = () => {
             <ExampleSection title="UIAmountInputEnhanced">
                 <View style={{ maxWidth: 400, padding: 20, alignSelf: 'stretch' }}>
                     <UIAmountInputEnhanced
-                        placeholder="Placeholder"
+                        placeholder="123"
                         precision="Precise"
                         onChangeAmount={amount => console.log('onChangeAmount', amount?.toString())}
                     />
                     <UIAmountInputEnhanced
-                        placeholder="Placeholder"
+                        placeholder="111"
                         precision="Precise"
                         onChangeAmount={amount => console.log('onChangeAmount', amount?.toString())}
                         multiline

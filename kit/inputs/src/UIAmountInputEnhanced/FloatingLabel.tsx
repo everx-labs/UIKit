@@ -87,11 +87,11 @@ function Label({ children, onLabelLayout, isHovered, editable }: LabelProps) {
     }, [theme]);
     const toColor = useDerivedValue(() => {
         return isHovered.value && editable ? colors.value.hoverColor : colors.value.default;
-    }, [editable, colors]);
+    }, [editable]);
 
     const animatedProps = useAnimatedProps(() => {
         return {
-            color: withSpring(toColor.value) as any as ColorValue,
+            color: withSpring(toColor.value, withSpringConfig) as any as ColorValue,
         };
     }, [editable]);
     return (

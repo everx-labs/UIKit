@@ -1,28 +1,40 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import * as React from 'react';
-import { runOnJS, SharedValue, useAnimatedReaction } from 'react-native-reanimated';
 
-export function usePlaceholderVisibility(isExpanded: SharedValue<boolean>, hasLabel: boolean) {
+import {
+    SharedValue,
+    useAnimatedReaction,
+    useSharedValue,
+    useWorkletCallback,
+} from 'react-native-reanimated';
+
+export function usePlaceholderVisibility(
+    isExpanded: SharedValue<boolean>,
+    hasLabel: boolean,
+): {
+    isPlaceholderVisible: SharedValue<boolean>;
+    /** @worklet */
+    showPlacehoder: () => void;
+} {
     /** The `hasLabel` can't change because it derived from immutable ref */
     if (!hasLabel) {
         return {
-            isPlaceholderVisible: true,
+            isPlaceholderVisible: useSharedValue(true),
             showPlacehoder: () => null,
         };
     }
 
-    const [isPlaceholderVisible, setPlaceholderVisible] = React.useState(isExpanded.value);
+    const isPlaceholderVisible = useSharedValue(isExpanded.value);
 
     /**
      * We need to show the placeholder after the expanding animation ends
      */
-    const showPlacehoder = React.useCallback(() => {
-        setPlaceholderVisible(true);
-    }, []);
+    const showPlacehoder = useWorkletCallback(() => {
+        isPlaceholderVisible.value = true;
+    });
 
-    const hidePlacehoder = React.useCallback(() => {
-        setPlaceholderVisible(false);
-    }, []);
+    const hidePlacehoder = useWorkletCallback(() => {
+        isPlaceholderVisible.value = false;
+    });
 
     useAnimatedReaction(
         () => isExpanded.value,
@@ -31,7 +43,7 @@ export function usePlaceholderVisibility(isExpanded: SharedValue<boolean>, hasLa
                 return;
             }
             if (!expanded) {
-                runOnJS(hidePlacehoder)();
+                hidePlacehoder();
             }
         },
     );

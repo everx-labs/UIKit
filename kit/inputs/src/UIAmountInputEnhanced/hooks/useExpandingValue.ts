@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import * as React from 'react';
 import {
-    runOnJS,
     SharedValue,
     useAnimatedReaction,
     useSharedValue,
@@ -51,7 +50,7 @@ export function useExpandingValue(
             'worklet';
 
             if (isFinished) {
-                runOnJS(showPlacehoder)();
+                showPlacehoder();
             }
         },
         [showPlacehoder],

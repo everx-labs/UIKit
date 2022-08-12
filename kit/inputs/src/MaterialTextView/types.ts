@@ -23,7 +23,10 @@ export type MaterialTextViewChild =
 export type MaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
     /**
      * Label of the MaterialTextView.
-     * Note: The value is immutable
+     * Note: If the value was passed during the first render, then it cannot be removed during next
+     * re-renders, the component will behave incorrectly.
+     * Note2: If the value was not passed during the first render, then it cannot be passed during
+     * next re-renders, the component will behave incorrectly.
      */
     label?: string;
     /**
