@@ -77,6 +77,8 @@ export type Font = {
     medium: FontVariant;
     semiBold: FontVariant;
     light: FontVariant;
+    bold: FontVariant;
+    extraBold: FontVariant;
 };
 
 // See picture here https://www.npmjs.com/package/font-measure#metrics-
@@ -88,6 +90,7 @@ const interFontUpperlineRatio = 0.92 / 1.15;
 const interFontCapHeightRatio = 0.51;
 const interFontDescentRatio = 1.05 / 1.15;
 
+// TODO Remove
 export const InterFont: Font = {
     semiBold: {
         fontFamily: 'Inter-SemiBold',
@@ -99,6 +102,34 @@ export const InterFont: Font = {
         fontFamily: 'Inter-Medium',
     },
     regular: {
+        fontFamily: 'Inter-Regular',
+    },
+    bold: {
+        fontFamily: 'Inter-SemiBold',
+    },
+    extraBold: {
+        fontFamily: 'Inter-SemiBold',
+    },
+};
+
+export const ManropeFont: Font = {
+    bold: {
+        fontFamily: 'Manrope-Bold',
+    },
+    extraBold: {
+        fontFamily: 'Manrope-ExtraBold',
+    },
+    medium: {
+        fontFamily: 'Manrope-Medium',
+    },
+    regular: {
+        fontFamily: 'Manrope-Regular',
+    },
+    semiBold: {
+        fontFamily: 'Manrope-SemiBold',
+    },
+    // TODO Remove
+    light: {
         fontFamily: 'Inter-Regular',
     },
 };
@@ -127,6 +158,39 @@ const InterFontNormalRegular: TextStyle = {
 const InterFontNormalLight: TextStyle = {
     fontFamily: InterFont.light.fontFamily,
     fontWeight: '300',
+    fontStyle: 'normal',
+};
+
+const ManropeFontNormalBold: TextStyle = {
+    fontFamily: ManropeFont.bold.fontFamily,
+    fontWeight: '700',
+    fontStyle: 'normal',
+};
+
+const ManropeFontNormalExtraBold: TextStyle = {
+    fontFamily: ManropeFont.extraBold.fontFamily,
+    fontWeight: '800',
+    fontStyle: 'normal',
+};
+
+const ManropeFontNormalMedium: TextStyle = {
+    fontFamily: ManropeFont.medium.fontFamily,
+    fontWeight: '500',
+    fontStyle: 'normal',
+};
+
+const ManropeFontNormalRegular: TextStyle = {
+    fontFamily: ManropeFont.regular.fontFamily,
+    fontWeight: '400',
+    fontStyle: 'normal',
+};
+
+const ManropeFontNormalSemiBold: TextStyle = {
+    fontFamily: ManropeFont.semiBold.fontFamily,
+    fontWeight: '600',
+    // TODO: think if fontStyle is proper place to put it here
+    // coz I could easily imagine some label with italic fontStyle
+    // Ask Eugene if it appliable to typography
     fontStyle: 'normal',
 };
 
