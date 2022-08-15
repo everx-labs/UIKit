@@ -148,466 +148,463 @@ export const ManropeFont: Font = {
     },
 };
 
-const ManropeFontNormalExtraBold: TextStyle = {
-    fontFamily: ManropeFont.extraBold.fontFamily,
-    fontWeight: '800',
-    fontStyle: 'normal',
+type FontStyleVariant =
+    | 'NormalExtraBold'
+    | 'NormalBold'
+    | 'NormalSemiBold'
+    | 'NormalMedium'
+    | 'NormalRegular';
+
+const FontStyle: Record<FontStyleVariant, TextStyle> = {
+    NormalExtraBold: {
+        fontFamily: ManropeFont.extraBold.fontFamily,
+        fontWeight: '800',
+        fontStyle: 'normal',
+    },
+    NormalBold: {
+        fontFamily: ManropeFont.bold.fontFamily,
+        fontWeight: '700',
+        fontStyle: 'normal',
+    },
+    NormalSemiBold: {
+        fontFamily: ManropeFont.semiBold.fontFamily,
+        fontWeight: '600',
+        fontStyle: 'normal',
+    },
+    NormalMedium: {
+        fontFamily: ManropeFont.medium.fontFamily,
+        fontWeight: '500',
+        fontStyle: 'normal',
+    },
+    NormalRegular: {
+        fontFamily: ManropeFont.regular.fontFamily,
+        fontWeight: '400',
+        fontStyle: 'normal',
+    },
 };
 
-const ManropeFontNormalBold: TextStyle = {
-    fontFamily: ManropeFont.bold.fontFamily,
-    fontWeight: '700',
-    fontStyle: 'normal',
-};
-
-const ManropeFontNormalSemiBold: TextStyle = {
-    fontFamily: ManropeFont.semiBold.fontFamily,
-    fontWeight: '600',
-    fontStyle: 'normal',
-};
-
-const ManropeFontNormalMedium: TextStyle = {
-    fontFamily: ManropeFont.medium.fontFamily,
-    fontWeight: '500',
-    fontStyle: 'normal',
-};
-
-const ManropeFontNormalRegular: TextStyle = {
-    fontFamily: ManropeFont.regular.fontFamily,
-    fontWeight: '400',
-    fontStyle: 'normal',
-};
-
-const FontSizeHeadlineBiggest: TextStyle = {
-    fontSize: 80,
-    lineHeight: 112,
-};
-
-const FontSizeHeadlineBig: TextStyle = {
-    fontSize: 64,
-    lineHeight: 96,
-};
-
-const FontSizeHeadlineLittle: TextStyle = {
-    fontSize: 48,
-    lineHeight: 72,
-};
-
-const FontSizeGreat: TextStyle = {
-    fontSize: 48,
-    lineHeight: 72,
-};
-
-const FontSizeHuge: TextStyle = {
-    fontSize: 32,
-    lineHeight: 48,
-};
-
-const FontSizeLarge: TextStyle = {
-    fontSize: 22,
-    lineHeight: 32,
-};
-
-const FontSizeNormal: TextStyle = {
-    fontSize: 16,
-    lineHeight: 24,
-};
-
-const FontSizeMedium: TextStyle = {
-    fontSize: 14,
-    lineHeight: 20,
-};
-
-const FontSizeSpecial: TextStyle = {
-    fontSize: 14,
-    lineHeight: 20,
-};
-
-const FontSizeSmall: TextStyle = {
-    fontSize: 12,
-    lineHeight: 16,
-};
-
-const FontSizeTiny: TextStyle = {
-    fontSize: 10,
-    lineHeight: 12,
+const FontSize = {
+    HeadlineBiggest: {
+        fontSize: 80,
+        lineHeight: 112,
+    },
+    HeadlineBig: {
+        fontSize: 64,
+        lineHeight: 96,
+    },
+    HeadlineLittle: {
+        fontSize: 48,
+        lineHeight: 72,
+    },
+    Great: {
+        fontSize: 48,
+        lineHeight: 72,
+    },
+    Huge: {
+        fontSize: 32,
+        lineHeight: 48,
+    },
+    Large: {
+        fontSize: 22,
+        lineHeight: 32,
+    },
+    Normal: {
+        fontSize: 16,
+        lineHeight: 24,
+    },
+    Medium: {
+        fontSize: 14,
+        lineHeight: 20,
+    },
+    Special: {
+        fontSize: 14,
+        lineHeight: 20,
+    },
+    Small: {
+        fontSize: 12,
+        lineHeight: 16,
+    },
+    Tiny: {
+        fontSize: 10,
+        lineHeight: 12,
+    },
 };
 
 export const Typography: TypographyT = StyleSheet.create({
     /** SurfTitle */
     [TypographyVariants.SurfTitleGreat]: {
-        ...ManropeFontNormalSemiBold,
-        ...FontSizeGreat,
+        ...FontStyle.NormalSemiBold,
+        ...FontSize.Great,
     },
     [TypographyVariants.SurfTitleHuge]: {
-        ...ManropeFontNormalBold,
-        ...FontSizeHuge,
+        ...FontStyle.NormalBold,
+        ...FontSize.Huge,
     },
     [TypographyVariants.SurfTitleLarge]: {
-        ...ManropeFontNormalBold,
-        ...FontSizeLarge,
+        ...FontStyle.NormalBold,
+        ...FontSize.Large,
     },
     [TypographyVariants.SurfTitleNormal]: {
-        ...ManropeFontNormalBold,
-        ...FontSizeNormal,
+        ...FontStyle.NormalBold,
+        ...FontSize.Normal,
     },
     [TypographyVariants.SurfTitleMedium]: {
-        ...ManropeFontNormalBold,
-        ...FontSizeMedium,
+        ...FontStyle.NormalBold,
+        ...FontSize.Medium,
     },
     [TypographyVariants.SurfTitleSmall]: {
-        ...ManropeFontNormalBold,
-        ...FontSizeSmall,
+        ...FontStyle.NormalBold,
+        ...FontSize.Small,
     },
     [TypographyVariants.SurfTitleTiny]: {
-        ...ManropeFontNormalBold,
-        ...FontSizeTiny,
+        ...FontStyle.NormalBold,
+        ...FontSize.Tiny,
     },
     [TypographyVariants.SurfTitleSpecial]: {
-        ...ManropeFontNormalBold,
-        ...FontSizeSpecial,
+        ...FontStyle.NormalBold,
+        ...FontSize.Special,
     },
 
     /** SurfAction */
     [TypographyVariants.SurfActionGreat]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeGreat,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Great,
     },
     [TypographyVariants.SurfActionHuge]: {
-        ...ManropeFontNormalSemiBold,
-        ...FontSizeHuge,
+        ...FontStyle.NormalSemiBold,
+        ...FontSize.Huge,
     },
     [TypographyVariants.SurfActionLarge]: {
-        ...ManropeFontNormalSemiBold,
-        ...FontSizeLarge,
+        ...FontStyle.NormalSemiBold,
+        ...FontSize.Large,
     },
     [TypographyVariants.SurfActionNormal]: {
-        ...ManropeFontNormalSemiBold,
-        ...FontSizeNormal,
+        ...FontStyle.NormalSemiBold,
+        ...FontSize.Normal,
     },
     [TypographyVariants.SurfActionMedium]: {
-        ...ManropeFontNormalSemiBold,
-        ...FontSizeMedium,
+        ...FontStyle.NormalSemiBold,
+        ...FontSize.Medium,
     },
     [TypographyVariants.SurfActionSmall]: {
-        ...ManropeFontNormalSemiBold,
-        ...FontSizeSmall,
+        ...FontStyle.NormalSemiBold,
+        ...FontSize.Small,
     },
     [TypographyVariants.SurfActionTiny]: {
-        ...ManropeFontNormalSemiBold,
-        ...FontSizeTiny,
+        ...FontStyle.NormalSemiBold,
+        ...FontSize.Tiny,
     },
     [TypographyVariants.SurfActionSpecial]: {
-        ...ManropeFontNormalSemiBold,
-        ...FontSizeSpecial,
+        ...FontStyle.NormalSemiBold,
+        ...FontSize.Special,
     },
 
     /** SurfParagraph */
     [TypographyVariants.SurfParagraphGreat]: {
-        ...ManropeFontNormalRegular,
-        ...FontSizeGreat,
+        ...FontStyle.NormalRegular,
+        ...FontSize.Great,
     },
     [TypographyVariants.SurfParagraphHuge]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeHuge,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Huge,
     },
     [TypographyVariants.SurfParagraphLarge]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeLarge,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Large,
     },
     [TypographyVariants.SurfParagraphNormal]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeNormal,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Normal,
     },
     [TypographyVariants.SurfParagraphMedium]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeMedium,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Medium,
     },
     [TypographyVariants.SurfParagraphSmall]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeSmall,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Small,
     },
     [TypographyVariants.SurfParagraphTiny]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeTiny,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Tiny,
     },
     [TypographyVariants.SurfParagraphSpecial]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeSpecial,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Special,
     },
 
     /** SurfMono */
     [TypographyVariants.SurfMonoGreat]: {
-        ...ManropeFontNormalRegular,
-        ...FontSizeGreat,
+        ...FontStyle.NormalRegular,
+        ...FontSize.Great,
     },
     [TypographyVariants.SurfMonoHuge]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeHuge,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Huge,
     },
     [TypographyVariants.SurfMonoLarge]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeLarge,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Large,
     },
     [TypographyVariants.SurfMonoNormal]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeNormal,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Normal,
     },
     [TypographyVariants.SurfMonoMedium]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeMedium,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Medium,
     },
     [TypographyVariants.SurfMonoSmall]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeSmall,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Small,
     },
     [TypographyVariants.SurfMonoTiny]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeTiny,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Tiny,
     },
     [TypographyVariants.SurfMonoSpecial]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeSpecial,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Special,
     },
 
     /** SurfHeadline */
     [TypographyVariants.SurfHeadlineBiggest]: {
-        ...ManropeFontNormalExtraBold,
-        ...FontSizeHeadlineBiggest,
+        ...FontStyle.NormalExtraBold,
+        ...FontSize.HeadlineBiggest,
     },
     [TypographyVariants.SurfHeadlineBig]: {
-        ...ManropeFontNormalExtraBold,
-        ...FontSizeHeadlineBig,
+        ...FontStyle.NormalExtraBold,
+        ...FontSize.HeadlineBig,
     },
     [TypographyVariants.SurfHeadlineLittle]: {
-        ...ManropeFontNormalExtraBold,
-        ...FontSizeHeadlineLittle,
+        ...FontStyle.NormalExtraBold,
+        ...FontSize.HeadlineLittle,
     },
 
     /** Legacy */
     [TypographyVariants.HeadersHuge]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeGreat,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Great,
     },
     [TypographyVariants.HeadersLarge]: {
-        ...ManropeFontNormalSemiBold,
-        ...FontSizeHuge,
+        ...FontStyle.NormalSemiBold,
+        ...FontSize.Huge,
     },
     [TypographyVariants.HeadersMedium]: {
-        ...ManropeFontNormalSemiBold,
-        ...FontSizeHuge,
+        ...FontStyle.NormalSemiBold,
+        ...FontSize.Huge,
     },
     [TypographyVariants.HeadersSmall]: {
-        ...ManropeFontNormalSemiBold,
-        ...FontSizeNormal,
+        ...FontStyle.NormalSemiBold,
+        ...FontSize.Normal,
     },
 
     [TypographyVariants.TitleHuge]: {
-        ...ManropeFontNormalSemiBold,
-        ...FontSizeGreat,
+        ...FontStyle.NormalSemiBold,
+        ...FontSize.Great,
     },
     [TypographyVariants.TitleLarge]: {
-        ...ManropeFontNormalBold,
-        ...FontSizeHuge,
+        ...FontStyle.NormalBold,
+        ...FontSize.Huge,
     },
     [TypographyVariants.TitleMedium]: {
-        ...ManropeFontNormalBold,
-        ...FontSizeLarge,
+        ...FontStyle.NormalBold,
+        ...FontSize.Large,
     },
     [TypographyVariants.TitleSmall]: {
-        ...ManropeFontNormalBold,
-        ...FontSizeLarge,
+        ...FontStyle.NormalBold,
+        ...FontSize.Large,
     },
 
     [TypographyVariants.PromoHuge]: {
-        ...ManropeFontNormalRegular,
-        ...FontSizeGreat,
+        ...FontStyle.NormalRegular,
+        ...FontSize.Great,
     },
     [TypographyVariants.PromoLarge]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeHuge,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Huge,
     },
     [TypographyVariants.PromoMedium]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeLarge,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Large,
     },
     [TypographyVariants.PromoSmall]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeLarge,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Large,
     },
 
     [TypographyVariants.HeadlineHead]: {
-        ...ManropeFontNormalBold,
-        ...FontSizeNormal,
+        ...FontStyle.NormalBold,
+        ...FontSize.Normal,
     },
     [TypographyVariants.HeadlineSubhead]: {
-        ...ManropeFontNormalBold,
-        ...FontSizeMedium,
+        ...FontStyle.NormalBold,
+        ...FontSize.Medium,
     },
     [TypographyVariants.HeadlineFootnote]: {
-        ...ManropeFontNormalBold,
-        ...FontSizeSmall,
+        ...FontStyle.NormalBold,
+        ...FontSize.Small,
     },
     [TypographyVariants.HeadlineLabel]: {
-        ...ManropeFontNormalBold,
-        ...FontSizeTiny,
+        ...FontStyle.NormalBold,
+        ...FontSize.Tiny,
     },
 
     [TypographyVariants.Action]: {
-        ...ManropeFontNormalSemiBold,
-        ...FontSizeNormal,
+        ...FontStyle.NormalSemiBold,
+        ...FontSize.Normal,
     },
     [TypographyVariants.ActionCallout]: {
-        ...ManropeFontNormalSemiBold,
-        ...FontSizeMedium,
+        ...FontStyle.NormalSemiBold,
+        ...FontSize.Medium,
     },
     [TypographyVariants.ActionFootnote]: {
-        ...ManropeFontNormalSemiBold,
-        ...FontSizeSmall,
+        ...FontStyle.NormalSemiBold,
+        ...FontSize.Small,
     },
     [TypographyVariants.ActionLabel]: {
-        ...ManropeFontNormalSemiBold,
-        ...FontSizeTiny,
+        ...FontStyle.NormalSemiBold,
+        ...FontSize.Tiny,
     },
 
     [TypographyVariants.ParagraphText]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeNormal,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Normal,
     },
     [TypographyVariants.ParagraphNote]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeMedium,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Medium,
     },
     [TypographyVariants.ParagraphFootnote]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeSmall,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Small,
     },
     [TypographyVariants.ParagraphLabel]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeTiny,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Tiny,
     },
 
     [TypographyVariants.MonoText]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeNormal,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Normal,
         fontVariant: ['tabular-nums'],
     },
     [TypographyVariants.MonoNote]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeMedium,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Medium,
         fontVariant: ['tabular-nums'],
     },
     [TypographyVariants.MonoFootnote]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeSmall,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Small,
         fontVariant: ['tabular-nums'],
     },
     [TypographyVariants.MonoLabel]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeTiny,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Tiny,
         fontVariant: ['tabular-nums'],
     },
 
     [TypographyVariants.LightHuge]: {
-        ...ManropeFontNormalRegular,
-        ...FontSizeGreat,
+        ...FontStyle.NormalRegular,
+        ...FontSize.Great,
     },
     [TypographyVariants.LightLarge]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeHuge,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Huge,
     },
     [TypographyVariants.LightMedium]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeLarge,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Large,
     },
     [TypographyVariants.LightSmall]: {
-        ...ManropeFontNormalMedium,
-        ...FontSizeLarge,
+        ...FontStyle.NormalMedium,
+        ...FontSize.Large,
     },
 
     [TypographyVariants.NarrowHeadlineText]: {
-        ...ManropeFontNormalSemiBold,
+        ...FontStyle.NormalSemiBold,
         fontSize: 17,
         lineHeight: 20,
     },
     [TypographyVariants.NarrowHeadlineNote]: {
-        ...ManropeFontNormalSemiBold,
+        ...FontStyle.NormalSemiBold,
         fontSize: 15,
         lineHeight: 16,
     },
     [TypographyVariants.NarrowHeadlineFootnote]: {
-        ...ManropeFontNormalSemiBold,
+        ...FontStyle.NormalSemiBold,
         fontSize: 13,
         lineHeight: 16,
     },
     [TypographyVariants.NarrowHeadlineLabel]: {
-        ...ManropeFontNormalSemiBold,
+        ...FontStyle.NormalSemiBold,
         fontSize: 11,
         lineHeight: 12,
     },
 
     [TypographyVariants.NarrowActionText]: {
-        ...ManropeFontNormalMedium,
+        ...FontStyle.NormalMedium,
         fontSize: 17,
         lineHeight: 20,
     },
     [TypographyVariants.NarrowActionNote]: {
-        ...ManropeFontNormalMedium,
+        ...FontStyle.NormalMedium,
         fontSize: 15,
         lineHeight: 16,
     },
     [TypographyVariants.NarrowActionFootnote]: {
-        ...ManropeFontNormalMedium,
+        ...FontStyle.NormalMedium,
         fontSize: 13,
         lineHeight: 16,
     },
     [TypographyVariants.NarrowActionLabel]: {
-        ...ManropeFontNormalMedium,
+        ...FontStyle.NormalMedium,
         fontSize: 11,
         lineHeight: 12,
     },
 
     [TypographyVariants.NarrowParagraphText]: {
-        ...ManropeFontNormalRegular,
+        ...FontStyle.NormalRegular,
         fontSize: 17,
         lineHeight: 20,
     },
     [TypographyVariants.NarrowParagraphNote]: {
-        ...ManropeFontNormalRegular,
+        ...FontStyle.NormalRegular,
         fontSize: 15,
         lineHeight: 16,
     },
     [TypographyVariants.NarrowParagraphFootnote]: {
-        ...ManropeFontNormalRegular,
+        ...FontStyle.NormalRegular,
         fontSize: 13,
         lineHeight: 16,
     },
     [TypographyVariants.NarrowParagraphLabel]: {
-        ...ManropeFontNormalRegular,
+        ...FontStyle.NormalRegular,
         fontSize: 11,
         lineHeight: 12,
     },
 
     [TypographyVariants.NarrowMonoText]: {
-        ...ManropeFontNormalRegular,
+        ...FontStyle.NormalRegular,
         fontSize: 17,
         lineHeight: 20,
         fontVariant: ['tabular-nums'],
     },
     [TypographyVariants.NarrowMonoNote]: {
-        ...ManropeFontNormalRegular,
+        ...FontStyle.NormalRegular,
         fontSize: 15,
         lineHeight: 16,
         fontVariant: ['tabular-nums'],
     },
     [TypographyVariants.NarrowMonoFootnote]: {
-        ...ManropeFontNormalRegular,
+        ...FontStyle.NormalRegular,
         fontSize: 13,
         lineHeight: 16,
         fontVariant: ['tabular-nums'],
     },
     [TypographyVariants.NarrowMonoLabel]: {
-        ...ManropeFontNormalRegular,
+        ...FontStyle.NormalRegular,
         fontSize: 11,
         lineHeight: 12,
         fontVariant: ['tabular-nums'],
