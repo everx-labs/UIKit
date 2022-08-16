@@ -112,6 +112,9 @@ export function useExtendedRef(
 ) {
     const changeAmount = React.useCallback(
         function changeAmount(amount: BigNumber | undefined, callOnChangeProp?: boolean) {
+            // .toString() always returns string with '.' separator
+            // and doesn't count current system locale
+            // so u'll get errors in locale with ',' separator
             const text = amount ? uiLocalized.amountToLocale(amount) : '';
             checkInputHasValue(text);
             localRef.current?.changeText(text, callOnChangeProp);
