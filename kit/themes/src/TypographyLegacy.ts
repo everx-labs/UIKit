@@ -1,8 +1,7 @@
-import { StyleSheet } from 'react-native';
 import type { TextStyle } from 'react-native';
 
 // eslint-disable-next-line no-shadow
-export enum TypographyVariants {
+export enum TypographyVariantsLegacy {
     HeadersHuge = 'HeadersHuge',
     HeadersLarge = 'HeadersLarge',
     HeadersMedium = 'HeadersMedium',
@@ -64,15 +63,15 @@ export enum TypographyVariants {
     NarrowMonoLabel = 'NarrowMonoLabel',
 }
 
-export type TypographyT = {
-    [variant in TypographyVariants]: TextStyle;
+export type TypographyTLegacy = {
+    [variant in TypographyVariantsLegacy]: TextStyle;
 };
 
 export type FontVariant = {
     fontFamily: string;
 };
 
-export type Font = {
+export type FontLegacy = {
     regular: FontVariant;
     medium: FontVariant;
     semiBold: FontVariant;
@@ -81,15 +80,17 @@ export type Font = {
 
 // See picture here https://www.npmjs.com/package/font-measure#metrics-
 // Calculated with https://codesandbox.io/s/npm-playground-forked-scqo2?file=/src/index.js
-const interFontBaselineRatio = 0.25 / 1.15;
-const interFontMiddlelineRatio = 0.58 / 1.15;
-const interFontLowerlineRatio = 0.71 / 1.15;
-const interFontUpperlineRatio = 0.92 / 1.15;
-const interFontCapHeightRatio = 0.51;
-const interFontDescentRatio = 1.05 / 1.15;
+export const fontBaseMeasurementsLegacy = {
+    interFontBaselineRatio: 0.25 / 1.15,
+    interFontMiddlelineRatio: 0.58 / 1.15,
+    interFontLowerlineRatio: 0.71 / 1.15,
+    interFontUpperlineRatio: 0.92 / 1.15,
+    interFontCapHeightRatio: 0.51,
+    interFontDescentRatio: 1.05 / 1.15,
+};
 
 // TODO Remove
-export const InterFont: Font = {
+export const InterFont: FontLegacy = {
     semiBold: {
         fontFamily: 'Inter-SemiBold',
     },
@@ -131,179 +132,179 @@ const InterFontNormalLight: TextStyle = {
     fontStyle: 'normal',
 };
 
-export const Typography: TypographyT = StyleSheet.create({
-    [TypographyVariants.HeadersHuge]: {
+export const TypographyLegacy: TypographyTLegacy = {
+    [TypographyVariantsLegacy.HeadersHuge]: {
         ...InterFontNormalMedium,
         fontSize: 33,
         lineHeight: 48,
         letterSpacing: -0.72,
     },
-    [TypographyVariants.HeadersLarge]: {
+    [TypographyVariantsLegacy.HeadersLarge]: {
         ...InterFontNormalMedium,
         fontSize: 29,
         lineHeight: 40,
         letterSpacing: -0.61,
     },
-    [TypographyVariants.HeadersMedium]: {
+    [TypographyVariantsLegacy.HeadersMedium]: {
         ...InterFontNormalMedium,
         fontSize: 25,
         lineHeight: 32,
         letterSpacing: -0.5,
     },
-    [TypographyVariants.HeadersSmall]: {
+    [TypographyVariantsLegacy.HeadersSmall]: {
         ...InterFontNormalMedium,
         fontSize: 21,
         lineHeight: 24,
         letterSpacing: -0.37,
     },
 
-    [TypographyVariants.TitleHuge]: {
+    [TypographyVariantsLegacy.TitleHuge]: {
         ...InterFontNormalSemiBold,
         fontSize: 36,
         lineHeight: 48,
         letterSpacing: -0.79,
     },
-    [TypographyVariants.TitleLarge]: {
+    [TypographyVariantsLegacy.TitleLarge]: {
         ...InterFontNormalSemiBold,
         fontSize: 30,
         lineHeight: 40,
         letterSpacing: -0.64,
     },
-    [TypographyVariants.TitleMedium]: {
+    [TypographyVariantsLegacy.TitleMedium]: {
         ...InterFontNormalSemiBold,
         fontSize: 22,
         lineHeight: 32,
         letterSpacing: -0.4,
     },
-    [TypographyVariants.TitleSmall]: {
+    [TypographyVariantsLegacy.TitleSmall]: {
         ...InterFontNormalSemiBold,
         fontSize: 18,
         lineHeight: 24,
         letterSpacing: -0.26,
     },
 
-    [TypographyVariants.PromoHuge]: {
+    [TypographyVariantsLegacy.PromoHuge]: {
         ...InterFontNormalRegular,
         fontSize: 36,
         lineHeight: 48,
         letterSpacing: -0.79,
     },
-    [TypographyVariants.PromoLarge]: {
+    [TypographyVariantsLegacy.PromoLarge]: {
         ...InterFontNormalRegular,
         fontSize: 30,
         lineHeight: 40,
         letterSpacing: -0.64,
     },
-    [TypographyVariants.PromoMedium]: {
+    [TypographyVariantsLegacy.PromoMedium]: {
         ...InterFontNormalRegular,
         fontSize: 22,
         lineHeight: 32,
         letterSpacing: -0.4,
     },
-    [TypographyVariants.PromoSmall]: {
+    [TypographyVariantsLegacy.PromoSmall]: {
         ...InterFontNormalRegular,
         fontSize: 18,
         lineHeight: 24,
         letterSpacing: -0.26,
     },
 
-    [TypographyVariants.HeadlineHead]: {
+    [TypographyVariantsLegacy.HeadlineHead]: {
         ...InterFontNormalSemiBold,
         fontSize: 17,
         lineHeight: 24,
         letterSpacing: -0.22,
     },
-    [TypographyVariants.HeadlineSubhead]: {
+    [TypographyVariantsLegacy.HeadlineSubhead]: {
         ...InterFontNormalSemiBold,
         fontSize: 15,
         lineHeight: 20,
         letterSpacing: -0.13,
     },
-    [TypographyVariants.HeadlineFootnote]: {
+    [TypographyVariantsLegacy.HeadlineFootnote]: {
         ...InterFontNormalSemiBold,
         fontSize: 13,
         lineHeight: 20,
         letterSpacing: -0.04,
     },
-    [TypographyVariants.HeadlineLabel]: {
+    [TypographyVariantsLegacy.HeadlineLabel]: {
         ...InterFontNormalSemiBold,
         fontSize: 11,
         lineHeight: 16,
         letterSpacing: 0.05,
     },
 
-    [TypographyVariants.Action]: {
+    [TypographyVariantsLegacy.Action]: {
         ...InterFontNormalMedium,
         fontSize: 17,
         lineHeight: 24,
         letterSpacing: -0.22,
     },
-    [TypographyVariants.ActionCallout]: {
+    [TypographyVariantsLegacy.ActionCallout]: {
         ...InterFontNormalMedium,
         fontSize: 15,
         lineHeight: 20,
         letterSpacing: -0.13,
     },
-    [TypographyVariants.ActionFootnote]: {
+    [TypographyVariantsLegacy.ActionFootnote]: {
         ...InterFontNormalMedium,
         fontSize: 13,
         lineHeight: 20,
         letterSpacing: -0.04,
     },
-    [TypographyVariants.ActionLabel]: {
+    [TypographyVariantsLegacy.ActionLabel]: {
         ...InterFontNormalMedium,
         fontSize: 11,
         lineHeight: 16,
         letterSpacing: 0.05,
     },
 
-    [TypographyVariants.ParagraphText]: {
+    [TypographyVariantsLegacy.ParagraphText]: {
         ...InterFontNormalRegular,
         fontSize: 17,
         lineHeight: 24,
         letterSpacing: -0.22,
     },
-    [TypographyVariants.ParagraphNote]: {
+    [TypographyVariantsLegacy.ParagraphNote]: {
         ...InterFontNormalRegular,
         fontSize: 15,
         lineHeight: 20,
         letterSpacing: -0.13,
     },
-    [TypographyVariants.ParagraphFootnote]: {
+    [TypographyVariantsLegacy.ParagraphFootnote]: {
         ...InterFontNormalRegular,
         fontSize: 13,
         lineHeight: 20,
         letterSpacing: -0.04,
     },
-    [TypographyVariants.ParagraphLabel]: {
+    [TypographyVariantsLegacy.ParagraphLabel]: {
         ...InterFontNormalRegular,
         fontSize: 11,
         lineHeight: 16,
         letterSpacing: 0.05,
     },
 
-    [TypographyVariants.MonoText]: {
+    [TypographyVariantsLegacy.MonoText]: {
         ...InterFontNormalRegular,
         fontSize: 17,
         lineHeight: 24,
         letterSpacing: -0.22,
         fontVariant: ['tabular-nums'],
     },
-    [TypographyVariants.MonoNote]: {
+    [TypographyVariantsLegacy.MonoNote]: {
         ...InterFontNormalRegular,
         fontSize: 15,
         lineHeight: 20,
         letterSpacing: -0.13,
         fontVariant: ['tabular-nums'],
     },
-    [TypographyVariants.MonoFootnote]: {
+    [TypographyVariantsLegacy.MonoFootnote]: {
         ...InterFontNormalRegular,
         fontSize: 13,
         lineHeight: 20,
         letterSpacing: -0.04,
         fontVariant: ['tabular-nums'],
     },
-    [TypographyVariants.MonoLabel]: {
+    [TypographyVariantsLegacy.MonoLabel]: {
         ...InterFontNormalRegular,
         fontSize: 11,
         lineHeight: 16,
@@ -311,159 +312,132 @@ export const Typography: TypographyT = StyleSheet.create({
         fontVariant: ['tabular-nums'],
     },
 
-    [TypographyVariants.LightHuge]: {
+    [TypographyVariantsLegacy.LightHuge]: {
         ...InterFontNormalLight,
         fontSize: 36,
         lineHeight: 48,
         letterSpacing: -0.79,
     },
-    [TypographyVariants.LightLarge]: {
+    [TypographyVariantsLegacy.LightLarge]: {
         ...InterFontNormalLight,
         fontSize: 30,
         lineHeight: 40,
         letterSpacing: -0.64,
     },
-    [TypographyVariants.LightMedium]: {
+    [TypographyVariantsLegacy.LightMedium]: {
         ...InterFontNormalLight,
         fontSize: 22,
         lineHeight: 32,
         letterSpacing: -0.4,
     },
-    [TypographyVariants.LightSmall]: {
+    [TypographyVariantsLegacy.LightSmall]: {
         ...InterFontNormalLight,
         fontSize: 18,
         lineHeight: 24,
         letterSpacing: -0.26,
     },
 
-    [TypographyVariants.NarrowHeadlineText]: {
+    [TypographyVariantsLegacy.NarrowHeadlineText]: {
         ...InterFontNormalSemiBold,
         fontSize: 17,
         lineHeight: 20,
         letterSpacing: -0.22,
     },
-    [TypographyVariants.NarrowHeadlineNote]: {
+    [TypographyVariantsLegacy.NarrowHeadlineNote]: {
         ...InterFontNormalSemiBold,
         fontSize: 15,
         lineHeight: 16,
         letterSpacing: -0.13,
     },
-    [TypographyVariants.NarrowHeadlineFootnote]: {
+    [TypographyVariantsLegacy.NarrowHeadlineFootnote]: {
         ...InterFontNormalSemiBold,
         fontSize: 13,
         lineHeight: 16,
         letterSpacing: -0.04,
     },
-    [TypographyVariants.NarrowHeadlineLabel]: {
+    [TypographyVariantsLegacy.NarrowHeadlineLabel]: {
         ...InterFontNormalSemiBold,
         fontSize: 11,
         lineHeight: 12,
         letterSpacing: 0.05,
     },
 
-    [TypographyVariants.NarrowActionText]: {
+    [TypographyVariantsLegacy.NarrowActionText]: {
         ...InterFontNormalMedium,
         fontSize: 17,
         lineHeight: 20,
         letterSpacing: -0.22,
     },
-    [TypographyVariants.NarrowActionNote]: {
+    [TypographyVariantsLegacy.NarrowActionNote]: {
         ...InterFontNormalMedium,
         fontSize: 15,
         lineHeight: 16,
         letterSpacing: -0.13,
     },
-    [TypographyVariants.NarrowActionFootnote]: {
+    [TypographyVariantsLegacy.NarrowActionFootnote]: {
         ...InterFontNormalMedium,
         fontSize: 13,
         lineHeight: 16,
         letterSpacing: -0.04,
     },
-    [TypographyVariants.NarrowActionLabel]: {
+    [TypographyVariantsLegacy.NarrowActionLabel]: {
         ...InterFontNormalMedium,
         fontSize: 11,
         lineHeight: 12,
         letterSpacing: 0.05,
     },
 
-    [TypographyVariants.NarrowParagraphText]: {
+    [TypographyVariantsLegacy.NarrowParagraphText]: {
         ...InterFontNormalRegular,
         fontSize: 17,
         lineHeight: 20,
         letterSpacing: -0.22,
     },
-    [TypographyVariants.NarrowParagraphNote]: {
+    [TypographyVariantsLegacy.NarrowParagraphNote]: {
         ...InterFontNormalRegular,
         fontSize: 15,
         lineHeight: 16,
         letterSpacing: -0.13,
     },
-    [TypographyVariants.NarrowParagraphFootnote]: {
+    [TypographyVariantsLegacy.NarrowParagraphFootnote]: {
         ...InterFontNormalRegular,
         fontSize: 13,
         lineHeight: 16,
         letterSpacing: -0.04,
     },
-    [TypographyVariants.NarrowParagraphLabel]: {
+    [TypographyVariantsLegacy.NarrowParagraphLabel]: {
         ...InterFontNormalRegular,
         fontSize: 11,
         lineHeight: 12,
         letterSpacing: 0.05,
     },
 
-    [TypographyVariants.NarrowMonoText]: {
+    [TypographyVariantsLegacy.NarrowMonoText]: {
         ...InterFontNormalRegular,
         fontSize: 17,
         lineHeight: 20,
         letterSpacing: -0.22,
         fontVariant: ['tabular-nums'],
     },
-    [TypographyVariants.NarrowMonoNote]: {
+    [TypographyVariantsLegacy.NarrowMonoNote]: {
         ...InterFontNormalRegular,
         fontSize: 15,
         lineHeight: 16,
         letterSpacing: -0.13,
         fontVariant: ['tabular-nums'],
     },
-    [TypographyVariants.NarrowMonoFootnote]: {
+    [TypographyVariantsLegacy.NarrowMonoFootnote]: {
         ...InterFontNormalRegular,
         fontSize: 13,
         lineHeight: 16,
         letterSpacing: -0.04,
         fontVariant: ['tabular-nums'],
     },
-    [TypographyVariants.NarrowMonoLabel]: {
+    [TypographyVariantsLegacy.NarrowMonoLabel]: {
         ...InterFontNormalRegular,
         fontSize: 11,
         lineHeight: 12,
         letterSpacing: 0.05,
         fontVariant: ['tabular-nums'],
     },
-});
-
-export function getFontMesurements(variant: TypographyVariants) {
-    const { lineHeight } = StyleSheet.flatten(Typography[variant]);
-
-    if (!lineHeight) {
-        return null;
-    }
-
-    const baseline = interFontBaselineRatio * lineHeight;
-    const lowerline = interFontLowerlineRatio * lineHeight;
-    const middleline = interFontMiddlelineRatio * lineHeight;
-    const upperline = interFontUpperlineRatio * lineHeight;
-    const capHeight = interFontCapHeightRatio * lineHeight;
-    const lowerHeight = lowerline - baseline;
-    const descent = interFontDescentRatio * lineHeight;
-    return {
-        lineHeight,
-        capHeight,
-        lowerHeight,
-        baseline,
-        middleline,
-        lowerline,
-        upperline,
-        descent,
-        descentBottom: lineHeight - descent,
-    };
-}
+};
