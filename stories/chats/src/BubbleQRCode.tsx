@@ -91,7 +91,13 @@ export const QRCodeContainer: React.FC<{
     onPress?: QRCodeMessage['onPress'];
     qrCodeRef: React.MutableRefObject<QRCodeRef | null>;
     style: StyleProp<ViewStyle>;
-}> = ({ qrCodeRef, children, style, onPress }) => {
+}> = ({
+    qrCodeRef,
+    // @ts-ignore
+    children,
+    style,
+    onPress,
+}) => {
     const onQRCodePress = React.useCallback(async () => {
         if (!qrCodeRef.current) {
             return;
@@ -152,6 +158,7 @@ export const BubbleQRCode: React.FC<QRCodeMessage> = (message: QRCodeMessage) =>
                     roundedCornerStyle,
                 ]}
             >
+                {/** @ts-ignore */}
                 <QRCodeContainer qrCodeRef={ref} style={styles.qrCode} onPress={message.onPress}>
                     <UIQRCodeView
                         ref={ref}

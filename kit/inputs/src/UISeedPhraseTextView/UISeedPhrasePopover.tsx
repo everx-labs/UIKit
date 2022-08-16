@@ -1,5 +1,13 @@
 import * as React from 'react';
-import { ColorValue, View, Platform, StyleSheet, FlatList, StatusBar } from 'react-native';
+import {
+    ColorValue,
+    View,
+    Platform,
+    StyleSheet,
+    FlatList,
+    StatusBar,
+    ListRenderItem,
+} from 'react-native';
 
 import {
     ColorVariants,
@@ -66,7 +74,7 @@ function UISeedPhrasePopoverContent(props: UISeedPhrasePopoverProps) {
         };
     }, [onHighlightedItemIndexChange]);
 
-    const renderItem = React.useCallback(
+    const renderItem: ListRenderItem<string> = React.useCallback(
         ({ item, index }) => {
             const cellBgStyle: {
                 backgroundColor: ColorValue;

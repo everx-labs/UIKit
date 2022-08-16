@@ -11,7 +11,7 @@ export function useHasScroll() {
     const hasScrollShared = useSharedValue(false);
 
     const setHasScrollGuarded = React.useCallback(
-        newHasScroll => {
+        (newHasScroll: boolean) => {
             if (newHasScroll !== hasScroll) {
                 setHasScroll(newHasScroll);
                 hasScrollShared.value = newHasScroll;

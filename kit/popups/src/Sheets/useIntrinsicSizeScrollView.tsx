@@ -82,7 +82,7 @@ export function useIntrinsicSizeScrollView() {
     const parentHeightCalculationProcess = React.useRef<number>();
 
     const onContentSizeChange: ScrollViewProps['onContentSizeChange'] = React.useCallback(
-        (_, height) => {
+        (_: number, height: number) => {
             /**
              * In ideal situation we can rely only on ready.value
              * but in real life there is a small time gap between

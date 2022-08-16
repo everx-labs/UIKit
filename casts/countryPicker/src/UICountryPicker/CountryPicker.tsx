@@ -108,7 +108,7 @@ function useCountriesSearch(
     );
 
     const filterCountries = React.useCallback(
-        list => {
+        (list: CountriesArray) => {
             const permittedCountries = list.filter((country: any) => checkIncludes(country.code));
             setCountriesList(permittedCountries);
         },

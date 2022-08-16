@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ScrollViewProps } from 'react-native';
+import type { LayoutChangeEvent, ScrollViewProps } from 'react-native';
 
 import { ScrollableContext } from '../Context';
 
@@ -25,7 +25,7 @@ export function useHasScroll(
     }, [setHasScroll]);
 
     const onLayout: ScrollViewProps['onLayout'] = React.useCallback(
-        event => {
+        (event: LayoutChangeEvent) => {
             const {
                 nativeEvent: {
                     layout: { height },
@@ -43,7 +43,7 @@ export function useHasScroll(
     );
 
     const onContentSizeChange: ScrollViewProps['onContentSizeChange'] = React.useCallback(
-        (width, height) => {
+        (width: number, height: number) => {
             if (onContentSizeChangeProp) {
                 onContentSizeChangeProp(width, height);
             }

@@ -31,7 +31,7 @@ export function useAutogrow(
     );
 
     const onMeasure = React.useCallback(
-        function onMeasure(_x, _y, _width, height) {
+        function onMeasure(_x: number, _y: number, _width: number, height: number) {
             onContentHeightMaybeChanged(height);
         },
         [onContentHeightMaybeChanged],

@@ -91,7 +91,7 @@ export const AccordionOverlayView = React.forwardRef<
     });
 
     const prevScrollTop = React.useRef(0);
-    const scrollListener = React.useCallback(event => {
+    const scrollListener = React.useCallback((event: any) => {
         // As we got to this point, then it's exist, only to silence TS
         if (overlayRef.current == null) {
             return;

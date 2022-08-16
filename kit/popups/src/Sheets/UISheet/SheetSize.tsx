@@ -38,7 +38,7 @@ function useSheetHeight() {
             nativeEvent: {
                 layout: { height: lHeight },
             },
-        }) => {
+        }: LayoutChangeEvent) => {
             height.value = lHeight;
         },
         [height],

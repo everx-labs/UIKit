@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { View, Platform } from 'react-native';
+import {
+    View,
+    Platform,
+    NativeSyntheticEvent,
+    TextInputSelectionChangeEventData,
+    TextInputFocusEventData,
+} from 'react-native';
 
 import { uiLocalized } from '@tonlabs/localization';
 
@@ -212,7 +218,7 @@ export const UISeedPhraseTextView = React.forwardRef<
     const [isFocused, setIsFocused] = React.useState(false);
 
     const onFocus = React.useCallback(
-        evt => {
+        (evt: NativeSyntheticEvent<TextInputFocusEventData>) => {
             setIsFocused(true);
 
             if (onFocusProp) {
@@ -223,7 +229,7 @@ export const UISeedPhraseTextView = React.forwardRef<
     );
 
     const onBlur = React.useCallback(
-        evt => {
+        (evt: NativeSyntheticEvent<TextInputFocusEventData>) => {
             // To handle taps on hints we need to delay handling a bit
             // to get a room for event to fire (at least on web)
             // or with isFocused == true hints will be re-rendered before click occur
@@ -521,7 +527,7 @@ export const UISeedPhraseTextView = React.forwardRef<
             nativeEvent: {
                 selection: { start, end },
             },
-        }) => {
+        }: NativeSyntheticEvent<TextInputSelectionChangeEventData>) => {
             // We want to protect seed phrase against copying
             // as it might be occasionally compromised in clipboard
             // NOTE: on android, this resets the input value for an unknown reason
