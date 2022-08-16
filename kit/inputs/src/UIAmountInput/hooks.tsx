@@ -112,7 +112,7 @@ export function useExtendedRef(
 ) {
     const changeAmount = React.useCallback(
         function changeAmount(amount: BigNumber | undefined, callOnChangeProp?: boolean) {
-            const text = amount ? amount.toString() : '';
+            const text = amount ? uiLocalized.amountToLocale(amount) : '';
             checkInputHasValue(text);
             localRef.current?.changeText(text, callOnChangeProp);
         },
