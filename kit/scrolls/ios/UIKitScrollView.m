@@ -81,11 +81,13 @@
 
 - (void)setAutomaticallyAdjustKeyboardInsets:(BOOL)automaticallyAdjustKeyboardInsets {
     // Note: `automaticallyAdjustKeyboardInsets` property of RCTScrollView
-    // is supported only on the newer versions of React Native
-    if ([super respondsToSelector:@selector(setAutomaticallyAdjustKeyboardInsets:)]) {
-        [super performSelector:@selector(setAutomaticallyAdjustKeyboardInsets:) withObject:0]; // == false
-    }
-
+    // is supported only on the newer versions of React Native.
+    // Thus we cannot safely call the following:
+    // [super setAutomaticallyAdjustKeyboardInsets:automaticallyAdjustKeyboardInsets];\
+    //
+    // Instead we could try checking either `[[self superclass] instancesRespondToSelector:]`,
+    // but there seem to be no need since this property sohuld be already `false` be default.
+    
     _automaticallyAdjustKeyboardInsetsInternal = automaticallyAdjustKeyboardInsets;
     
     [_insets setAutomaticallyAdjustKeyboardInsets:automaticallyAdjustKeyboardInsets];
