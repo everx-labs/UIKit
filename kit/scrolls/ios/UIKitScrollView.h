@@ -11,7 +11,6 @@
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge;
 
-@property (nonatomic, assign) BOOL automaticallyAdjustKeyboardInsets;
 @property (nonatomic, copy) NSString *keyboardInsetAdjustmentBehavior;
 
 @end
