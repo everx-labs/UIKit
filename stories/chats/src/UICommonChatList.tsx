@@ -4,6 +4,7 @@ import {
     SectionList,
     StyleSheet,
     Animated,
+    LayoutChangeEvent,
     NativeScrollEvent,
     NativeSyntheticEvent,
     SectionListProps,
@@ -173,7 +174,7 @@ export function useHasScroll() {
             nativeEvent: {
                 layout: { height },
             },
-        }) => {
+        }: LayoutChangeEvent) => {
             scrollViewOuterHeight.current = height;
 
             compareHeights();
@@ -182,7 +183,7 @@ export function useHasScroll() {
     );
 
     const onContentSizeChange = React.useCallback(
-        (_width, height) => {
+        (_width: number, height: number) => {
             scrollViewInnerHeight.current = height;
 
             compareHeights();
@@ -468,14 +469,14 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
     const handlers = useCloseKeyboardOnTap();
 
     const onLayout = React.useCallback(
-        e => {
+        (e: LayoutChangeEvent) => {
             onLayoutMeasureScroll(e);
             onLayoutLines();
         },
         [onLayoutMeasureScroll, onLayoutLines],
     );
     const onContentSizeChange = React.useCallback(
-        (w, h) => {
+        (w: number, h: number) => {
             onContentSizeChangeMeasureScroll(w, h);
             onContentSizeChangeLines();
         },

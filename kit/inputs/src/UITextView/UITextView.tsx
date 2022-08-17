@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TextInput, Platform, StyleSheet } from 'react-native';
+import { TextInput, Platform, StyleSheet, LayoutChangeEvent } from 'react-native';
 import { ColorVariants, useTheme, Typography, TypographyVariants } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { useAutogrow, useAutoFocus, useHandleRef } from './hooks';
@@ -52,7 +52,7 @@ export const UITextView = React.forwardRef<UITextViewRef, UITextViewProps>(
         useHandleRef(textInputRef, passedRef, remeasureInputHeight);
 
         const onLayout = React.useCallback(
-            function onLayout(event) {
+            function onLayout(event: LayoutChangeEvent) {
                 textInputProps.onLayout?.(event);
                 remeasureInputHeight?.();
             },

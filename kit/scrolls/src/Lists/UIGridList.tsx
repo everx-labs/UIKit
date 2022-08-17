@@ -29,7 +29,7 @@ export function UIGridList<T>({
     );
 
     const getItemLayout = React.useCallback(
-        (_, index: number) => {
+        (_: any, index: number) => {
             const itemWithOffset = itemHeight + UILayoutConstant.contentOffset;
             return {
                 length: itemWithOffset,

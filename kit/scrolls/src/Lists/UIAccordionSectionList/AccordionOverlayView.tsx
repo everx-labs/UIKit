@@ -91,6 +91,7 @@ export const AccordionOverlayView = React.forwardRef<
     );
 
     return (
+        // @ts-ignore
         <NativeAccordionOverlayView
             ref={nativeRef}
             // @ts-ignore

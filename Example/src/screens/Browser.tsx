@@ -641,11 +641,11 @@ export function Browser() {
 
     const menuVisible = useStore(({ menuVisible: _menuVisible }) => _menuVisible);
 
-    const onPressUrl = React.useCallback(url => {
+    const onPressUrl = React.useCallback((url: string) => {
         console.log('url handled', url);
     }, []);
 
-    const onLongPressText = React.useCallback(text => {
+    const onLongPressText = React.useCallback((text: string) => {
         Clipboard.setString(text);
         console.log('long press handled', text);
         setNoticeVisible(true);
