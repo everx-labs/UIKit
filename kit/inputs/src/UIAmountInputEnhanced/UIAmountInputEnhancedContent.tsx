@@ -11,14 +11,19 @@ import { NativeModules, Platform, TextStyle, View } from 'react-native';
 import { makeStyles, Theme, ColorVariants, useTheme, UILabelAnimated } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UIAmountInputEnhancedRef, UIAmountInputEnhancedProps } from './types';
-import { AmountInputContext } from './constants';
-import { useAmountInputHandlers, useAmountInputHover, useConnectOnChangeAmount } from './hooks';
+import { AmountInputContext, withSpringConfig } from './constants';
+import {
+    useAmountInputHandlers,
+    useAmountInputHover,
+    useConnectOnChangeAmount,
+    usePlaceholderColor,
+} from './hooks';
 import { UITextView, UITextViewRef } from '../UITextView';
 import { TapHandler } from './TapHandler';
 import { InputMessage } from '../InputMessage';
 import { usePlaceholderVisibility } from './hooks/usePlaceholderVisibility';
 import { useExpandingValue } from './hooks/useExpandingValue';
-import { FloatingLabel, withSpringConfig } from './FloatingLabel';
+import { FloatingLabel } from './FloatingLabel';
 
 const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
 
@@ -119,61 +124,19 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
         };
     });
 
-    // const isInputHovered = useConvertToReactState(isHovered);
-    // const placeholderTextColor = React.useMemo(() => {
-    //     if (!isPlaceholderVisible) {
-    //         return ColorVariants.Transparent;
-    //     }
-    //     console.log({
-    //         isInputHovered,
-    //         editable,
-    //     });
-    //     return isInputHovered && editable
-    //         ? ColorVariants.TextSecondary
-    //         : ColorVariants.TextTertiary;
-    // }, [isPlaceholderVisible, isInputHovered, editable]);
+    const placeholderColor = usePlaceholderColor(
+        theme,
+        isPlaceholderVisible,
+        formattedText,
+        isHovered,
+        editable,
+    );
 
-    const placeholderColors = useDerivedValue(() => {
+    const animatedPlaceholderProps = useAnimatedProps(() => {
         return {
-            transparent: theme[ColorVariants.Transparent] as string,
-            hoverColor: theme[ColorVariants.TextSecondary] as string,
-            default: theme[ColorVariants.TextTertiary] as string,
-        };
-    }, [theme]);
-    const placeholderTextColor = useDerivedValue(() => {
-        if (!isPlaceholderVisible.value || formattedText.value) {
-            return placeholderColors.value.transparent;
-        }
-        return isHovered.value && editable
-            ? placeholderColors.value.hoverColor
-            : placeholderColors.value.default;
-    }, [editable]);
-
-    const animatedProps = useAnimatedProps(() => {
-        return {
-            color: withSpring(placeholderTextColor.value, withSpringConfig) as any as string,
+            color: withSpring(placeholderColor.value, withSpringConfig) as any as string,
         };
     });
-
-    // const animatedStyle = useAnimatedStyle(() => {
-    //     return {
-    //         color: withSpring(placeholderTextColor.value, withSpringConfig) as any as string,
-    //     };
-    // });
-
-    // const asd = useDerivedValue(() => {
-    //     console.log('placeholderTextColor', placeholderTextColor.value);
-    //     return {
-    //         placeholderTextColorRaw: withSpring(
-    //             placeholderTextColor.value,
-    //             withSpringConfig,
-    //         ) as any as string,
-    //     };
-    // });
-
-    // useDerivedValue(() => {
-    //     console.log(asd.value.placeholderTextColorRaw);
-    // });
 
     return (
         <InputMessage type={messageType} text={message}>
@@ -190,21 +153,17 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
                                 ref={ref}
                                 {...props}
                                 {...textViewHandlers}
-                                style={[styles.input]}
+                                style={styles.input}
                             />
                             <UILabelAnimated
-                                animatedProps={animatedProps}
-                                style={{ position: 'absolute' }}
+                                animatedProps={animatedPlaceholderProps}
+                                style={styles.placeholder}
                             >
                                 {placeholder}
                             </UILabelAnimated>
                         </View>
 
-                        <FloatingLabel
-                            expandingValue={expandingValue}
-                            isHovered={isHovered}
-                            editable={editable}
-                        >
+                        <FloatingLabel expandingValue={expandingValue} color={placeholderColor}>
                             {label}
                         </FloatingLabel>
                     </Animated.View>
@@ -235,6 +194,17 @@ const useStyles = makeStyles((theme: Theme, editable: boolean = true) => ({
         ...Platform.select({
             web: {
                 ...(!editable ? ({ cursor: 'default' } as TextStyle) : null),
+            },
+        }),
+    },
+    placeholder: {
+        position: 'absolute',
+        ...Platform.select({
+            ios: {
+                top: 1.5,
+            },
+            android: {
+                top: 2,
             },
         }),
     },

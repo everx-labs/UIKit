@@ -10,30 +10,22 @@ import {
 } from 'react-native';
 import Animated, {
     interpolate,
-    SharedValue,
     useAnimatedProps,
     useAnimatedStyle,
     useDerivedValue,
     useSharedValue,
     withSpring,
-    WithSpringConfig,
     withTiming,
 } from 'react-native-reanimated';
 
-import {
-    ColorVariants,
-    Typography,
-    TypographyVariants,
-    UILabelAnimated,
-    useTheme,
-} from '@tonlabs/uikit.themes';
+import { Typography, TypographyVariants, UILabelAnimated } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { withSpringConfig } from './constants';
 
 export type FloatingLabelProps = {
     children: string | undefined;
     expandingValue: Readonly<Animated.SharedValue<number>>;
-    isHovered: SharedValue<boolean>;
-    editable: boolean | undefined;
+    color: Readonly<Animated.SharedValue<string>>;
 };
 
 const paragraphTextStyle: TextStyle = StyleSheet.flatten(
@@ -56,11 +48,6 @@ const POSITION_EXPANDED: number = 1;
 // @inline
 const LEFT_OFFSET_OF_UI_LABEL_TEXT_FROM_EDGE: number = 1;
 
-export const withSpringConfig: WithSpringConfig = {
-    stiffness: 1000,
-    overshootClamping: true,
-};
-
 function validateChildren(children: string): boolean {
     if (typeof children !== 'string') {
         if (__DEV__) {
@@ -71,29 +58,15 @@ function validateChildren(children: string): boolean {
     return true;
 }
 
-type LabelProps = {
-    children: string;
+type LabelProps = Pick<FloatingLabelProps, 'children' | 'color'> & {
     onLabelLayout: (layoutChangeEvent: LayoutChangeEvent) => void;
-    isHovered: SharedValue<boolean>;
-    editable: boolean | undefined;
 };
-function Label({ children, onLabelLayout, isHovered, editable }: LabelProps) {
-    const theme = useTheme();
-    const colors = useDerivedValue(() => {
-        return {
-            hoverColor: theme[ColorVariants.TextSecondary] as string,
-            default: theme[ColorVariants.TextTertiary] as string,
-        };
-    }, [theme]);
-    const toColor = useDerivedValue(() => {
-        return isHovered.value && editable ? colors.value.hoverColor : colors.value.default;
-    }, [editable]);
-
+function Label({ children, onLabelLayout, color }: LabelProps) {
     const animatedProps = useAnimatedProps(() => {
         return {
-            color: withSpring(toColor.value, withSpringConfig) as any as ColorValue,
+            color: withSpring(color.value, withSpringConfig) as any as ColorValue,
         };
-    }, [editable]);
+    });
     return (
         <UILabelAnimated
             animatedProps={animatedProps}
@@ -139,12 +112,7 @@ function useOnLabelLayout(
     );
 }
 
-export function FloatingLabel({
-    expandingValue,
-    children,
-    isHovered,
-    editable,
-}: FloatingLabelProps) {
+export function FloatingLabel({ expandingValue, children, color }: FloatingLabelProps) {
     /** Dimensions of label in the expanded state */
     const expandedLabelWidth: Animated.SharedValue<number> = useSharedValue<number>(0);
     const expandedLabelHeight: Animated.SharedValue<number> = useSharedValue<number>(0);
@@ -193,7 +161,7 @@ export function FloatingLabel({
     return (
         <View style={styles.container} pointerEvents="none">
             <Animated.View style={labelContainerStyle}>
-                <Label onLabelLayout={onLabelLayout} isHovered={isHovered} editable={editable}>
+                <Label onLabelLayout={onLabelLayout} color={color}>
                     {children}
                 </Label>
             </Animated.View>

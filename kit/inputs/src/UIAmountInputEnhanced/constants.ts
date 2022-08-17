@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { makeMutable } from 'react-native-reanimated';
+import { makeMutable, WithSpringConfig } from 'react-native-reanimated';
 import type { AmountInputContextDefaultValuesType, AmountInputContextType } from './types';
 
 export enum UIAmountInputEnhancedDecimalAspect {
@@ -34,4 +34,9 @@ export const UIConstants = {
         currency: 2,
         precision: 9,
     },
+};
+
+export const withSpringConfig: WithSpringConfig = {
+    stiffness: 1000,
+    overshootClamping: true,
 };
