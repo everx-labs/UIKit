@@ -1,5 +1,7 @@
 package tonlabs.uikit.localization;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import java.text.ParseException;
@@ -35,41 +37,50 @@ public class UIKitLocalizationModule extends ReactContextBaseJavaModule {
 
     @Override
     public Map<String, Object> getConstants() {
-        DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
-        final Map<String, Object> numbers = new HashMap<>();
-        numbers.put("grouping", Character.toString(symbols.getGroupingSeparator()));
-        numbers.put("thousands", Character.toString(symbols.getGroupingSeparator()));
-        numbers.put("decimal", Character.toString(symbols.getDecimalSeparator()));
-        numbers.put("decimalGrouping", "\u2009");
-        numbers.put("decimalAlternative", new String[] {
-                "\u044E",
-                "\u0431",
-                "/",
-                "?",
-                "<",
-                ">",
-                ",",
-                "."
-        });
-
-        final Map<String, Object> dates = new HashMap<>();
-        WritableNativeArray components = new WritableNativeArray();
-        DateInfo dateInfo = new DateInfo();
-        components.pushString(dateInfo.getComponents()[0]);
-        components.pushString(dateInfo.getComponents()[1]);
-        components.pushString(dateInfo.getComponents()[2]);
-
-        dates.put("separator", dateInfo.getSeparator());
-        dates.put("localePattern", dateInfo.getLocalePattern());
-        dates.put("components", components);
-
-        Calendar calendar = Calendar.getInstance();
-
-        dates.put("dayOfWeek", calendar.getFirstDayOfWeek());
-
         final Map<String, Object> localeInfo = new HashMap<>();
-        localeInfo.put("numbers", numbers);
-        localeInfo.put("dates", dates);
+
+        try {
+            DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+            final Map<String, Object> numbers = new HashMap<>();
+            numbers.put("grouping", Character.toString(symbols.getGroupingSeparator()));
+            numbers.put("thousands", Character.toString(symbols.getGroupingSeparator()));
+            numbers.put("decimal", Character.toString(symbols.getDecimalSeparator()));
+            numbers.put("decimalGrouping", "\u2009");
+            numbers.put("decimalAlternative", new String[] {
+                    "\u044E",
+                    "\u0431",
+                    "/",
+                    "?",
+                    "<",
+                    ">",
+                    ",",
+                    "."
+            });
+
+            final Map<String, Object> dates = new HashMap<>();
+            WritableNativeArray components = new WritableNativeArray();
+            DateInfo dateInfo = new DateInfo();
+            components.pushString(dateInfo.getComponents()[0]);
+            components.pushString(dateInfo.getComponents()[1]);
+            components.pushString(dateInfo.getComponents()[2]);
+
+            dates.put("separator", dateInfo.getSeparator());
+            dates.put("localePattern", dateInfo.getLocalePattern());
+            dates.put("components", components);
+
+            Calendar calendar = Calendar.getInstance();
+
+            dates.put("dayOfWeek", calendar.getFirstDayOfWeek());
+
+            localeInfo.put("numbers", numbers);
+            localeInfo.put("dates", dates);
+        } catch (Throwable err) {
+            Log.e(
+                    REACT_CLASS,
+                    String.format(
+                            "Couldn't create proper constants for UIKIt localization service with error: %s",
+                            err.toString()));
+        }
 
         return localeInfo;
     }
@@ -94,6 +105,8 @@ public class UIKitLocalizationModule extends ReactContextBaseJavaModule {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
             Date date = null;
 
+            String[] components;
+
             try {
                 date = sdf.parse(awesomeDate);
                 localeDate = dFormat.format(date);
@@ -109,6 +122,12 @@ public class UIKitLocalizationModule extends ReactContextBaseJavaModule {
                 localeComponents = localeDate.replaceAll("(yyyy)", "year");
                 localeComponents = localeComponents.replaceAll("(MM)", "month");
                 localeComponents = localeComponents.replaceAll("(dd)", "day");
+
+                components = localeComponents.split("\\" + separator);
+
+                if (components.length < 3) {
+                    throw new ParseException("Can't parse locale", 0);
+                }
             } catch (ParseException e) {
                 this.separator = "/";
                 this.localePattern = "yyyy/MM/dd";
@@ -118,7 +137,7 @@ public class UIKitLocalizationModule extends ReactContextBaseJavaModule {
             }
             this.separator = separator;
             this.localePattern = localeDate;
-            this.components = localeComponents.split("\\" + separator);
+            this.components = components;
         }
 
         public String getSeparator() {

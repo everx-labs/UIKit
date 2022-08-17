@@ -26,7 +26,11 @@ export type UIAddressTextViewValidateAddress = (
 type UIAddressTextViewProps = UIMaterialTextViewProps & {
     children?: UIMaterialTextViewChild;
     validateAddress: UIAddressTextViewValidateAddress;
-    qrCode: {
+    /**
+     * QR code parser to process a string read through a QR code.
+     * If the parser is passed, a button will be displayed to read the QR code through the camera.
+     */
+    qrCode?: {
         parseData: (data: any) => Promise<string>;
     };
 };
@@ -116,6 +120,7 @@ export const UIAddressTextView = React.forwardRef<UIMaterialTextViewRef, UIAddre
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             validateAddress,
             qrCode,
+            children,
             ...rest
         } = props;
         const { onBlur, onChangeText, onKeyPress, helperText, success, error } =
@@ -124,7 +129,12 @@ export const UIAddressTextView = React.forwardRef<UIMaterialTextViewRef, UIAddre
 
         const onRead = React.useCallback(
             async (e: any) => {
-                const address = await qrCode.parseData(e.data);
+                const address = await qrCode?.parseData(e.data);
+
+                if (!address) {
+                    setQrVisible(false);
+                    return;
+                }
 
                 if (ref && 'current' in ref) {
                     ref.current?.changeText(address);
@@ -139,21 +149,33 @@ export const UIAddressTextView = React.forwardRef<UIMaterialTextViewRef, UIAddre
             [qrCode, ref, onChangeText],
         );
 
-        const children = [
-            <UIMaterialTextView.Icon
-                key="address_text_view_scanner_button"
-                testID="address_text_view_scanner"
-                source={UIAssets.icons.addressInput.scan}
-                onPress={() => {
-                    setQrVisible(!qrVisible);
-                }}
-                tintColor={ColorVariants.LineNeutral}
-            />,
-        ];
+        const qrCodeIcon = React.useMemo(() => {
+            if (!qrCode) {
+                return null;
+            }
+            return (
+                <UIMaterialTextView.Icon
+                    key="address_text_view_scanner_button"
+                    testID="address_text_view_scanner"
+                    source={UIAssets.icons.addressInput.scan}
+                    onPress={() => {
+                        setQrVisible(prevQRVisible => !prevQRVisible);
+                    }}
+                    tintColor={ColorVariants.LineNeutral}
+                />
+            );
+        }, [qrCode]);
 
-        if (props.children) {
-            children.unshift(props.children);
-        }
+        const childrenToDisplay = React.useMemo(() => {
+            const childList = [];
+            if (qrCodeIcon) {
+                childList.unshift(qrCodeIcon);
+            }
+            if (children) {
+                childList.unshift(children);
+            }
+            return childList;
+        }, [children, qrCodeIcon]);
 
         return (
             <>
@@ -171,13 +193,15 @@ export const UIAddressTextView = React.forwardRef<UIMaterialTextViewRef, UIAddre
                     success={success}
                     error={error}
                 >
-                    {children}
+                    {childrenToDisplay}
                 </UIMaterialTextView>
-                <UIQRCodeScannerSheet
-                    visible={qrVisible}
-                    onClose={() => setQrVisible(false)}
-                    onRead={onRead}
-                />
+                {qrCode ? (
+                    <UIQRCodeScannerSheet
+                        visible={qrVisible}
+                        onClose={() => setQrVisible(false)}
+                        onRead={onRead}
+                    />
+                ) : null}
             </>
         );
     },

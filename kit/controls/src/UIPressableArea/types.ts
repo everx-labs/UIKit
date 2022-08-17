@@ -1,6 +1,6 @@
-import type { StyleProp, ViewStyle } from 'react-native';
+import type { PressableProps } from '../Pressable';
 
-export type UIPressableAreaProps = {
+export interface UIPressableAreaProps extends PressableProps {
     /**
      * Use it to define edge scaling points of events.
      */
@@ -9,29 +9,7 @@ export type UIPressableAreaProps = {
      * Children of PressableArea.
      */
     children: React.ReactNode;
-    /**
-     * Function will be called on button press
-     */
-    onPress?: () => void | Promise<void>;
-    /**
-     * Function will be called on button long press
-     */
-    onLongPress?: () => void | Promise<void>;
-    /**
-     * Whether the button is disabled or not.
-     * If the value is true, the button does not respond to events.
-     */
-    disabled?: boolean;
-    /**
-     * The `UIPressableArea` behaves like a usual `View` container
-     * and accepts all the appropriate styles
-     */
-    style?: StyleProp<ViewStyle>;
-    /**
-     * ID for usage in tests
-     */
-    testID?: string;
-};
+}
 
 export type UIPressableAreaScaleParameters = {
     /**
