@@ -16,7 +16,7 @@ import {
     useAmountInputHandlers,
     useAmountInputHover,
     useConnectOnChangeAmount,
-    usePlaceholderColor,
+    usePlaceholderColors,
 } from './hooks';
 import { UITextView, UITextViewRef } from '../UITextView';
 import { TapHandler } from './TapHandler';
@@ -124,17 +124,19 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
         };
     });
 
-    const placeholderColor = usePlaceholderColor(
-        theme,
-        isPlaceholderVisible,
-        formattedText,
-        isHovered,
-        editable,
-    );
+    const placeholderColors = usePlaceholderColors(theme);
+    const placeholderTextColor = useDerivedValue(() => {
+        if (!isPlaceholderVisible.value || formattedText.value) {
+            return placeholderColors.value.transparent;
+        }
+        return isHovered.value && editable
+            ? placeholderColors.value.hover
+            : placeholderColors.value.default;
+    }, [editable]);
 
     const animatedPlaceholderProps = useAnimatedProps(() => {
         return {
-            color: withSpring(placeholderColor.value, withSpringConfig) as any as string,
+            color: withSpring(placeholderTextColor.value, withSpringConfig) as any as string,
         };
     });
 
@@ -163,7 +165,12 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
                             </UILabelAnimated>
                         </View>
 
-                        <FloatingLabel expandingValue={expandingValue} color={placeholderColor}>
+                        <FloatingLabel
+                            expandingValue={expandingValue}
+                            isHovered={isHovered}
+                            editable={editable}
+                            colors={placeholderColors}
+                        >
                             {label}
                         </FloatingLabel>
                     </Animated.View>
