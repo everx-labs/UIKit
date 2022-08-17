@@ -129,22 +129,22 @@ export type Font = {
 
 // See picture here https://www.npmjs.com/package/font-measure#metrics-
 // Calculated with https://codesandbox.io/s/npm-playground-forked-bniuv8?file=/src/index.js
-const ManropeFontBaselineRatio = isLegacyTypographyEnabled
+const fontBaselineRatio = isLegacyTypographyEnabled
     ? fontBaseMeasurementsLegacy.interFontBaselineRatio
     : 0.23;
-const ManropeFontMiddlelineRatio = isLegacyTypographyEnabled
+const fontMiddlelineRatio = isLegacyTypographyEnabled
     ? fontBaseMeasurementsLegacy.interFontMiddlelineRatio
     : 0.51;
-const ManropeFontLowerlineRatio = isLegacyTypographyEnabled
+const fontLowerlineRatio = isLegacyTypographyEnabled
     ? fontBaseMeasurementsLegacy.interFontLowerlineRatio
     : 0.77;
-const ManropeFontUpperlineRatio = isLegacyTypographyEnabled
+const fontUpperlineRatio = isLegacyTypographyEnabled
     ? fontBaseMeasurementsLegacy.interFontUpperlineRatio
     : 0.95;
-const ManropeFontCapHeightRatio = isLegacyTypographyEnabled
+const fontCapHeightRatio = isLegacyTypographyEnabled
     ? fontBaseMeasurementsLegacy.interFontCapHeightRatio
     : 0.72;
-const ManropeFontDescentRatio = isLegacyTypographyEnabled
+const fontDescentRatio = isLegacyTypographyEnabled
     ? fontBaseMeasurementsLegacy.interFontDescentRatio
     : 1.01;
 
@@ -637,13 +637,13 @@ export function getFontMesurements(variant: TypographyVariants) {
         return null;
     }
 
-    const baseline = ManropeFontBaselineRatio * lineHeight;
-    const lowerline = ManropeFontLowerlineRatio * lineHeight;
-    const middleline = ManropeFontMiddlelineRatio * lineHeight;
-    const upperline = ManropeFontUpperlineRatio * lineHeight;
-    const capHeight = ManropeFontCapHeightRatio * lineHeight;
+    const baseline = fontBaselineRatio * lineHeight;
+    const lowerline = fontLowerlineRatio * lineHeight;
+    const middleline = fontMiddlelineRatio * lineHeight;
+    const upperline = fontUpperlineRatio * lineHeight;
+    const capHeight = fontCapHeightRatio * lineHeight;
     const lowerHeight = lowerline - baseline;
-    const descent = ManropeFontDescentRatio * lineHeight;
+    const descent = fontDescentRatio * lineHeight;
     return {
         lineHeight,
         capHeight,
