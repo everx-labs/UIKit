@@ -63,7 +63,6 @@ android {
                 cppFlags "-O2 -frtti -fexceptions -std=c++1y -Wall -Wno-unused-variable -fstack-protector-all"
                 abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
                 arguments "-DANDROID_STL=c++_shared",
-                        "-DONANDROID",
                         "-DANDROID_TOOLCHAIN=clang",
                         "-DREACT_NATIVE_VERSION=${REACT_NATIVE_VERSION}",
                         "-DNODE_MODULES_DIR=${NODE_MODULES_DIR}",
@@ -91,11 +90,6 @@ android {
 
     lintOptions {
         disable 'GradleCompatible'
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     configurations {
@@ -186,15 +180,21 @@ dependencies {
     //noinspection GradleDynamicVersion
     extractJNI "com.facebook.fbjni:fbjni:+"
 
-    def rnAAR = fileTree("${NODE_MODULES_DIR}/react-native/android").matching({ it.include "**/**/*.aar" }).singleFile
+    def buildType = "debug"
+    tasks.all({ task ->
+      if (task.name == "buildCMakeRelease") {
+        buildType = "release"
+      }
+    })
+    def rnAarMatcher = "**/react-native/**/*${buildType}.aar"
+    if (REACT_NATIVE_VERSION < 69) {
+      rnAarMatcher = "**/**/*.aar"
+    }
 
-    def inputFile = new File(NODE_MODULES_DIR, '/react-native/package.json')
-    def json = new JsonSlurper().parseText(inputFile.text)
-    def reactNativeVersion = json.version as String
-    def (major, minor, patch) = reactNativeVersion.tokenize('.')
+    def rnAAR = fileTree("${NODE_MODULES_DIR}/react-native/android/").matching({ it.include rnAarMatcher }).singleFile
 
     def jsEngine = FOR_HERMES ? "hermes" : "jsc"
-    def reaAAR = "${NODE_MODULES_DIR}/react-native-reanimated/android/react-native-reanimated-${minor}-${jsEngine}.aar"
+    def reaAAR = "${NODE_MODULES_DIR}/react-native-reanimated/android/react-native-reanimated-${REACT_NATIVE_VERSION}-${jsEngine}.aar"
 
     extractJNI(files(rnAAR, reaAAR))
 }

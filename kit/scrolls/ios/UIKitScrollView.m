@@ -12,6 +12,9 @@
     UIKitScrollViewInsets *_insets;
     // It's an actual prop of a superview,
     // but we want to have our own version that isn't synced
+    BOOL _automaticallyAdjustKeyboardInsetsInternal;
+    // It's an actual prop of a superview,
+    // but we want to have our own version that isn't synced
     BOOL _automaticallyAdjustContentInsetsInternal;
     // It's an actual prop of a superview,
     // but we want to have our own version that isn't synced
@@ -45,7 +48,7 @@
     [_insets setContentInset:_contentInsetInternal];
     [_insets setKeyboardInsetAdjustmentBehavior:self.keyboardInsetAdjustmentBehavior];
     [_insets setAutomaticallyAdjustContentInsets:_automaticallyAdjustContentInsetsInternal];
-    [_insets setAutomaticallyAdjustKeyboardInsets:self.automaticallyAdjustKeyboardInsets];
+    [_insets setAutomaticallyAdjustKeyboardInsets:_automaticallyAdjustKeyboardInsetsInternal];
     if ([_insets didMoveToWindow]) {
         [super setAutomaticallyAdjustContentInsets:NO];
         [_insets reset];
@@ -77,7 +80,15 @@
 }
 
 - (void)setAutomaticallyAdjustKeyboardInsets:(BOOL)automaticallyAdjustKeyboardInsets {
-    _automaticallyAdjustKeyboardInsets = automaticallyAdjustKeyboardInsets;
+    // Note: `automaticallyAdjustKeyboardInsets` property of RCTScrollView
+    // is supported only on the newer versions of React Native.
+    // Thus we cannot safely call the following:
+    // `[super setAutomaticallyAdjustKeyboardInsets:false];`
+    //
+    // Instead we could try checking if `[[self superclass] instancesRespondToSelector:...]`,
+    // but there seem to be no need since this property should already be `false` by default.
+    
+    _automaticallyAdjustKeyboardInsetsInternal = automaticallyAdjustKeyboardInsets;
     
     [_insets setAutomaticallyAdjustKeyboardInsets:automaticallyAdjustKeyboardInsets];
     [_insets onInsetsShouldBeRecalculated];
@@ -96,7 +107,7 @@
 }
 
 - (BOOL)setParentContentInset {
-    BOOL autoInsets = _automaticallyAdjustContentInsetsInternal || self.automaticallyAdjustKeyboardInsets;
+    BOOL autoInsets = _automaticallyAdjustContentInsetsInternal || _automaticallyAdjustKeyboardInsetsInternal;
     
     if (!autoInsets) {
         [super setContentInset:_contentInsetInternal];

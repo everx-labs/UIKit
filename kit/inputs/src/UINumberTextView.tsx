@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { uiLocalized } from '@tonlabs/localization';
+import type { NativeSyntheticEvent, TextInputSelectionChangeEventData } from 'react-native';
 import { UITextView, UITextViewProps, UITextViewRef } from './UITextView';
 import { moveCarret } from './moveCarret';
 
@@ -152,7 +153,7 @@ export function useNumberFormatting(
             nativeEvent: {
                 selection: { start, end },
             },
-        }) => {
+        }: NativeSyntheticEvent<TextInputSelectionChangeEventData>) => {
             selectionStart.current = start;
             selectionEnd.current = end;
         },

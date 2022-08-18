@@ -1,4 +1,5 @@
 import * as React from 'react';
+import type { LayoutChangeEvent } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 
 export const useNoticeHeight = () => {
@@ -9,7 +10,7 @@ export const useNoticeHeight = () => {
             nativeEvent: {
                 layout: { height: lHeight },
             },
-        }) => {
+        }: LayoutChangeEvent) => {
             noticeHeight.value = lHeight;
         },
         [noticeHeight],

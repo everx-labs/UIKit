@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Animated, StyleSheet, View, useWindowDimensions } from 'react-native';
+import { Animated, StyleSheet, View, useWindowDimensions, LayoutChangeEvent } from 'react-native';
 import type { ImageSourcePropType } from 'react-native';
 import { TapGestureHandler } from 'react-native-gesture-handler';
 
@@ -191,7 +191,7 @@ function UIFoldingNotice({ visible, icon, children, testID }: UINoticeCommonProp
             nativeEvent: {
                 layout: { width: lWidth },
             },
-        }) => {
+        }: LayoutChangeEvent) => {
             setContainerWidth(lWidth);
         },
         [],
@@ -202,7 +202,7 @@ function UIFoldingNotice({ visible, icon, children, testID }: UINoticeCommonProp
             nativeEvent: {
                 layout: { width: lWidth },
             },
-        }) => {
+        }: LayoutChangeEvent) => {
             setContentWidth(lWidth);
         },
         [],
@@ -287,7 +287,7 @@ function UIClosableNotice({ visible, onClose, icon, children, testID }: UINotice
             nativeEvent: {
                 layout: { width: lWidth },
             },
-        }) => {
+        }: LayoutChangeEvent) => {
             setContainerWidth(lWidth);
         },
         [],

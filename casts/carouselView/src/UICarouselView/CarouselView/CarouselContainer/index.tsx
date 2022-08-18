@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Pressable, ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
-import PagerView from 'react-native-pager-view';
+import PagerView, { PagerViewOnPageScrollEvent } from 'react-native-pager-view';
 
 import type { UICarouselViewContainerProps, UICarouselViewPageProps } from '../../types';
 import { usePageStyle } from '../animations';
@@ -110,7 +110,7 @@ export function CarouselViewContainer({
     }, []);
 
     const onPageScroll = React.useCallback(
-        ({ nativeEvent }) => {
+        ({ nativeEvent }: PagerViewOnPageScrollEvent) => {
             setOffset(nativeEvent.offset);
         },
         [setOffset],

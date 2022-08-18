@@ -13,7 +13,7 @@ import {
 } from '@tonlabs/uistory.chats';
 import { UIPopup } from '@tonlabs/uikit.popups';
 import { uiLocalized } from '@tonlabs/localization';
-import { useStickers } from '@tonlabs/uistory.stickers';
+import { useStickers, OnPickSticker } from '@tonlabs/uistory.stickers';
 import { UIInputAccessoryViewAvailability } from '@tonlabs/uicast.keyboard';
 
 import { useBase64Image } from './hooks/useBase64Image';
@@ -370,7 +370,7 @@ export function Chat() {
         console.log('url handled');
     }, []);
 
-    const onLongPressText = React.useCallback(text => {
+    const onLongPressText = React.useCallback((text: string) => {
         Clipboard.setString(text);
         console.log('long press handled', text);
         setNoticeVisible(true);
@@ -382,7 +382,7 @@ export function Chat() {
 
     const onSendMedia = React.useCallback(() => undefined, []);
     const onSendDocument = React.useCallback(() => undefined, []);
-    const onItemSelected = React.useCallback(
+    const onItemSelected: OnPickSticker = React.useCallback(
         stk => {
             setMessages([
                 {

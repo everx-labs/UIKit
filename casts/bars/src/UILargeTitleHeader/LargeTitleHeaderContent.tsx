@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import Animated, {
     Extrapolate,
     interpolate,
@@ -90,7 +90,7 @@ export const LargeTitleHeaderContent = React.memo(function LargeTitleHeaderConte
             nativeEvent: {
                 layout: { width },
             },
-        }) => {
+        }: LayoutChangeEvent) => {
             titleWidth.value = width;
         },
         [titleWidth],

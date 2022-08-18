@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { StyleSheet, Vibration, View } from 'react-native';
+import { LayoutChangeEvent, StyleSheet, Vibration, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
@@ -109,7 +109,7 @@ const ERROR_VIBRATION_DURATION = 400;
 
 function useErrorAnimation(onClose: () => void) {
     const show = Animated.useValue<ShowStates>(ShowStates.Hiding);
-    const errorHeight = Animated.useValue(0);
+    const errorHeight = Animated.useValue<number>(0);
 
     const translateY = React.useRef(getErrorTranslateY(show, errorHeight, onClose)).current;
 
@@ -118,7 +118,7 @@ function useErrorAnimation(onClose: () => void) {
             nativeEvent: {
                 layout: { height },
             },
-        }) => {
+        }: LayoutChangeEvent) => {
             errorHeight.setValue(height);
         },
         [errorHeight],
