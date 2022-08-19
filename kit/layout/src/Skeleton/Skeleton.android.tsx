@@ -28,10 +28,12 @@ export function UISkeleton({ children, show, style: styleProp }: UISkeletonProps
             {visible && (
                 <>
                     <View
-                        style={{
-                            flex: 1,
-                            backgroundColor: theme[ColorVariants.BackgroundSecondary],
-                        }}
+                        style={[
+                            StyleSheet.absoluteFill,
+                            {
+                                backgroundColor: theme[ColorVariants.BackgroundSecondary],
+                            },
+                        ]}
                     />
                 </>
             )}
