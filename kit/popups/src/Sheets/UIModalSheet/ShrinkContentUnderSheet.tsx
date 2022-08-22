@@ -1,11 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
-import Animated, {
-    Extrapolate,
-    interpolate,
-    useAnimatedStyle,
-    useSharedValue,
-} from 'react-native-reanimated';
+import Animated, { interpolate, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
@@ -45,8 +40,8 @@ export function ShrinkContentUnderSheet({
 
     const style = useAnimatedStyle(() => {
         const options = {
-            extrapolateLeft: Extrapolate.CLAMP,
-            extrapolateRight: Extrapolate.CLAMP,
+            extrapolateLeft: Animated.Extrapolate.CLAMP,
+            extrapolateRight: Animated.Extrapolate.CLAMP,
         };
         return {
             transform: [

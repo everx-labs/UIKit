@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import Animated, {
-    Extrapolate,
     interpolate,
     SharedValue,
     useAnimatedReaction,
@@ -76,7 +75,7 @@ function Dot({
                         placement - dotProgress.value,
                         initialPlacement.value,
                         dotsTranslations.value,
-                        Extrapolate.CLAMP,
+                        Animated.Extrapolate.CLAMP,
                     ),
                 },
             ],
