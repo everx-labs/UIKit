@@ -206,13 +206,5 @@ const useStyles = makeStyles((theme: Theme, editable: boolean = true) => ({
     },
     placeholder: {
         position: 'absolute',
-        ...Platform.select({
-            ios: {
-                top: 1.5,
-            },
-            android: {
-                top: 2,
-            },
-        }),
     },
 }));
