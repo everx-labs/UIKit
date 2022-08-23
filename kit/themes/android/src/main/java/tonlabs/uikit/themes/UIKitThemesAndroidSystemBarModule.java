@@ -9,7 +9,6 @@ import android.view.Window;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -19,11 +18,11 @@ import com.facebook.react.module.annotations.ReactModule;
 
 import org.jetbrains.annotations.NotNull;
 
-@ReactModule(name = UIKitThemesAndroidNavigationBarModule.REACT_CLASS)
-public class UIKitThemesAndroidNavigationBarModule extends ReactContextBaseJavaModule {
-    protected static final String REACT_CLASS = "UIKitThemesAndroidNavigationBarModule";
+@ReactModule(name = UIKitThemesAndroidSystemBarModule.REACT_CLASS)
+public class UIKitThemesAndroidSystemBarModule extends ReactContextBaseJavaModule {
+    protected static final String REACT_CLASS = "UIKitThemesAndroidSystemBarModule";
 
-    UIKitThemesAndroidNavigationBarModule(ReactApplicationContext reactContext) {
+    UIKitThemesAndroidSystemBarModule(ReactApplicationContext reactContext) {
         super(reactContext);
     }
 
@@ -31,7 +30,7 @@ public class UIKitThemesAndroidNavigationBarModule extends ReactContextBaseJavaM
     @NotNull
     @Override
     public String getName() {
-        return UIKitThemesAndroidNavigationBarModule.REACT_CLASS;
+        return UIKitThemesAndroidSystemBarModule.REACT_CLASS;
     }
 
     @ReactMethod
@@ -55,6 +54,7 @@ public class UIKitThemesAndroidNavigationBarModule extends ReactContextBaseJavaM
                 }
 
                 insetsController.setAppearanceLightNavigationBars("dark-content".equals(theme));
+                insetsController.setAppearanceLightStatusBars("dark-content".equals(theme));
 
                 if (VERSION.SDK_INT >= VERSION_CODES.Q) {
                     window.setNavigationBarColor(Color.TRANSPARENT);
