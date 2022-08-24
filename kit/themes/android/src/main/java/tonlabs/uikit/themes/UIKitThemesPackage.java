@@ -16,7 +16,7 @@ public class UIKitThemesPackage implements ReactPackage {
     @NonNull
     @Override
     public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
-        return Arrays.<NativeModule>asList(new UIKitThemesAndroidNavigationBarModule(reactContext));
+        return Arrays.<NativeModule>asList(new UIKitThemesAndroidSystemBarModule(reactContext));
         
     }
 

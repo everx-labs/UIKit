@@ -1,4 +1,4 @@
-import Animated, { interpolate, Extrapolate } from 'react-native-reanimated';
+import Animated, { interpolate } from 'react-native-reanimated';
 import type { Path } from 'react-native-redash';
 import { uiLocalized } from '@tonlabs/localization';
 import type {
@@ -14,7 +14,7 @@ import type {
 const scale = (value: number, domain: number[], range: number[]) => {
     'worklet';
 
-    return interpolate(value, domain, range, Extrapolate.CLAMP);
+    return interpolate(value, domain, range, Animated.Extrapolate.CLAMP);
 };
 
 /**

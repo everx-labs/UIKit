@@ -7,7 +7,7 @@
 
 import { FlatList, TouchableOpacity, GestureHandlerRootView } from 'react-native-gesture-handler';
 import React from 'react';
-import { I18nManager, NativeModules, Platform, StyleSheet, View, StatusBar } from 'react-native';
+import { I18nManager, NativeModules, Platform, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -30,7 +30,6 @@ import {
     ThemeContext,
     useTheme,
     UIStatusBarManager,
-    UIAndroidNavigationBar,
 } from '@tonlabs/uikit.themes';
 import { UISearchBarButton } from '@tonlabs/uicast.bars';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
@@ -294,10 +293,6 @@ const App = () => {
 
     const theme = useTheme();
     const themeSwitcher = React.useContext(ThemeSwitcher);
-
-    React.useEffect(() => {
-        StatusBar.setTranslucent(true);
-    }, []);
 
     return (
         <StoreProvider>
@@ -587,7 +582,6 @@ const AppWrapper = () => {
                             <App />
                         </SafeAreaProvider>
                     </UIStatusBarManager>
-                    <UIAndroidNavigationBar />
                 </ThemeSwitcher.Provider>
             </ThemeContext.Provider>
         </GestureHandlerRootView>
