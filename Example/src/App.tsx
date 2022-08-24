@@ -15,6 +15,7 @@ import { enableFreeze } from 'react-native-screens';
 
 import { PortalManager } from '@tonlabs/uikit.layout';
 import {
+    UIBoxButton,
     UILinkButton,
     UILinkButtonType,
     UISwitcher,
@@ -30,6 +31,8 @@ import {
     ThemeContext,
     useTheme,
     UIStatusBarManager,
+    setLegacyTypography,
+    getIsLegacyTypographyEnabled,
 } from '@tonlabs/uikit.themes';
 import { UISearchBarButton } from '@tonlabs/uicast.bars';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
@@ -79,6 +82,8 @@ const ThemeSwitcher = React.createContext({
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     toggleTheme: () => {},
 });
+
+setLegacyTypography(true);
 
 const Main = ({ navigation }: { navigation: any }) => {
     const [isSearchVisible, setIsSearchVisible] = React.useState(false);
@@ -294,10 +299,30 @@ const App = () => {
     const theme = useTheme();
     const themeSwitcher = React.useContext(ThemeSwitcher);
 
+    const [legacy, setLegacy] = React.useState(getIsLegacyTypographyEnabled());
+    const [visible, setVisible] = React.useState(true);
+    React.useEffect(() => {
+        visible || setVisible(true);
+    }, [visible]);
+    React.useEffect(() => {
+        setLegacyTypography(legacy);
+        setVisible(false);
+    }, [legacy]);
+    if (!visible) {
+        return null;
+    }
+
     return (
         <StoreProvider>
             <UIModalPortalManager maxMobileWidth={900}>
                 <NavigationContainer ref={navRef} linking={{ prefixes: ['/'] }}>
+                    <UIBoxButton
+                        title={getIsLegacyTypographyEnabled() ? 'legacy' : 'current'}
+                        onPress={() => {
+                            setLegacy(prev => !prev);
+                            // setLegacyTypography(!getIsLegacyTypographyEnabled());
+                        }}
+                    />
                     <Split.Navigator
                         initialRouteName="browser"
                         styles={{

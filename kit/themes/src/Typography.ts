@@ -2,10 +2,16 @@ import { StyleSheet } from 'react-native';
 import type { TextStyle } from 'react-native';
 import { fontBaseMeasurementsLegacy, TypographyLegacy } from './TypographyLegacy';
 
+let isLegacyTypographyEnabled = false;
 /**
- * Flag to turn to the old typography
+ * Function to turn on/off the old typography
  */
-export const isLegacyTypographyEnabled = false;
+export function setLegacyTypography(enableLegacy: boolean) {
+    isLegacyTypographyEnabled = enableLegacy;
+}
+export function getIsLegacyTypographyEnabled() {
+    return isLegacyTypographyEnabled;
+}
 
 // eslint-disable-next-line no-shadow
 export enum TypographyVariants {
@@ -129,22 +135,22 @@ export type Font = {
 
 // See picture here https://www.npmjs.com/package/font-measure#metrics-
 // Calculated with https://codesandbox.io/s/npm-playground-forked-bniuv8?file=/src/index.js
-const fontBaselineRatio = isLegacyTypographyEnabled
+const fontBaselineRatio = getIsLegacyTypographyEnabled()
     ? fontBaseMeasurementsLegacy.interFontBaselineRatio
     : 0.23;
-const fontMiddlelineRatio = isLegacyTypographyEnabled
+const fontMiddlelineRatio = getIsLegacyTypographyEnabled()
     ? fontBaseMeasurementsLegacy.interFontMiddlelineRatio
     : 0.51;
-const fontLowerlineRatio = isLegacyTypographyEnabled
+const fontLowerlineRatio = getIsLegacyTypographyEnabled()
     ? fontBaseMeasurementsLegacy.interFontLowerlineRatio
     : 0.77;
-const fontUpperlineRatio = isLegacyTypographyEnabled
+const fontUpperlineRatio = getIsLegacyTypographyEnabled()
     ? fontBaseMeasurementsLegacy.interFontUpperlineRatio
     : 0.95;
-const fontCapHeightRatio = isLegacyTypographyEnabled
+const fontCapHeightRatio = getIsLegacyTypographyEnabled()
     ? fontBaseMeasurementsLegacy.interFontCapHeightRatio
     : 0.72;
-const fontDescentRatio = isLegacyTypographyEnabled
+const fontDescentRatio = getIsLegacyTypographyEnabled()
     ? fontBaseMeasurementsLegacy.interFontDescentRatio
     : 1.01;
 
@@ -627,7 +633,7 @@ export const Typography: TypographyT = StyleSheet.create({
         lineHeight: 12,
         fontVariant: ['tabular-nums'],
     },
-    ...(isLegacyTypographyEnabled ? TypographyLegacy : null),
+    ...(getIsLegacyTypographyEnabled() ? TypographyLegacy : null),
 });
 
 export function getFontMesurements(variant: TypographyVariants) {

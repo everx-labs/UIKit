@@ -11,7 +11,7 @@ import '../assets/css/Manrope-Medium.css';
 import '../assets/css/Manrope-Regular.css';
 import '../assets/css/Manrope-SemiBold.css';
 
-import { Font, ManropeFont, isLegacyTypographyEnabled } from '../Typography';
+import { Font, ManropeFont, getIsLegacyTypographyEnabled } from '../Typography';
 import { FontLegacy, InterFont } from '../TypographyLegacy';
 
 const SYSTEM_FONTS =
@@ -99,7 +99,7 @@ export function useWebFonts(): void {
         return;
     }
 
-    if (isLegacyTypographyEnabled) {
+    if (getIsLegacyTypographyEnabled()) {
         setupFontsCssLegacy(InterFont);
         loadFonts(InterFont);
     } else {
