@@ -6,7 +6,6 @@ import {
     StyleProp,
     ViewStyle,
     StyleSheet,
-    PixelRatio,
     processColor,
 } from 'react-native';
 import {
@@ -26,7 +25,7 @@ import ReAnimated, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { UIImage } from '@tonlabs/uikit.media';
-import { useTheme, ColorVariants, useColorParts } from '@tonlabs/uikit.themes';
+import { useTheme, ColorVariants, useShadow } from '@tonlabs/uikit.themes';
 import { hapticSelection } from '@tonlabs/uikit.controls';
 import { ShadowView } from './ShadowView';
 
@@ -231,9 +230,7 @@ export function SplitBottomTabBar({
         return iconsMap[activeKey] != null;
     }, [activeKey, iconsMap]);
 
-    const { color: shadowColor, opacity: shadowOpacity } = useColorParts(
-        ColorVariants.ShadowOpaque,
-    );
+    const shadowStyle = useShadow(5);
 
     /**
      * Do not show tab bar when there're only
@@ -256,9 +253,8 @@ export function SplitBottomTabBar({
             <ShadowView
                 style={[
                     styles.iconsBox,
+                    shadowStyle,
                     {
-                        shadowColor,
-                        shadowOpacity,
                         backgroundColor: theme[ColorVariants.BackgroundPrimary],
                     },
                 ]}
@@ -351,10 +347,5 @@ const styles = StyleSheet.create({
         position: 'relative',
         flexDirection: 'row',
         borderRadius: TAB_BAR_HEIGHT / 2,
-        shadowRadius: 48 / PixelRatio.get(),
-        shadowOffset: {
-            width: 0,
-            height: 32 / PixelRatio.get(),
-        },
     },
 });

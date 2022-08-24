@@ -8,7 +8,7 @@ function useShadowParameters(isDarkTheme: boolean) {
          * We need different opacity for different platforms in a dark theme,
          * because different platforms make different color mixing in shadows.
          */
-        const darkThemeOpacity = Platform.select({
+        const opacity = Platform.select({
             android: isDarkTheme ? 0.3 : 0.1,
             ios: isDarkTheme ? 1 : 0.1,
             default: isDarkTheme ? 0.7 : 0.1,
@@ -23,7 +23,7 @@ function useShadowParameters(isDarkTheme: boolean) {
                     width: 0,
                     height: 1,
                 },
-                opacity: isDarkTheme ? darkThemeOpacity : 0.1,
+                opacity,
                 radius: 2,
             },
             2: {
@@ -31,7 +31,7 @@ function useShadowParameters(isDarkTheme: boolean) {
                     width: 0,
                     height: 3,
                 },
-                opacity: isDarkTheme ? darkThemeOpacity : 0.03,
+                opacity,
                 radius: 8,
             },
             3: {
@@ -39,7 +39,7 @@ function useShadowParameters(isDarkTheme: boolean) {
                     width: 0,
                     height: 6,
                 },
-                opacity: isDarkTheme ? darkThemeOpacity : 0.04,
+                opacity,
                 radius: 16,
             },
             4: {
@@ -47,7 +47,7 @@ function useShadowParameters(isDarkTheme: boolean) {
                     width: 0,
                     height: 4,
                 },
-                opacity: isDarkTheme ? darkThemeOpacity : 0.06,
+                opacity,
                 radius: 16,
             },
             5: {
@@ -55,7 +55,7 @@ function useShadowParameters(isDarkTheme: boolean) {
                     width: 0,
                     height: 8,
                 },
-                opacity: isDarkTheme ? darkThemeOpacity : 0.1,
+                opacity,
                 radius: 20,
             },
             6: {
@@ -63,7 +63,7 @@ function useShadowParameters(isDarkTheme: boolean) {
                     width: -1,
                     height: 1,
                 },
-                opacity: isDarkTheme ? darkThemeOpacity : 0.05,
+                opacity,
                 radius: 32,
             },
         };
