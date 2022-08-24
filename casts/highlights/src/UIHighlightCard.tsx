@@ -122,19 +122,20 @@ export function UIHighlightCard({
                     <View style={[styles.description, textLayoutToStyleMapping[textLayout]]}>
                         <View>
                             <UILabel
-                                role={UILabelRoles.SurfTitleNormal}
                                 color={ColorVariants.TextPrimary}
-                                numberOfLines={2}
+                                role={UILabelRoles.SurfTitleNormal}
                                 ellipsizeMode="tail"
+                                numberOfLines={2}
                             >
                                 {title}
                             </UILabel>
                             {caption !== '' && (
                                 <UILabel
-                                    role={UILabelRoles.SurfParagraphSmall}
                                     color={ColorVariants.TextSecondary}
+                                    role={UILabelRoles.SurfParagraphSmall}
                                     ellipsizeMode="tail"
                                     numberOfLines={4}
+                                    style={styles.caption}
                                 >
                                     {caption}
                                 </UILabel>
@@ -175,6 +176,9 @@ const styles = StyleSheet.create({
     },
     descriptionBottom: {
         justifyContent: 'flex-end',
+    },
+    caption: {
+        marginTop: 4,
     },
 });
 
