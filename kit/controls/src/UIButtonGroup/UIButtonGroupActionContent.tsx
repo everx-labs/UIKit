@@ -50,7 +50,7 @@ function Content({
             <View style={styles.textContainer}>
                 {children ? (
                     <UILabelAnimated
-                        role={UILabelRoles.ActionFootnote}
+                        role={UILabelRoles.SurfActionSpecial}
                         animatedProps={animatedLabelProps}
                         ellipsizeMode="tail"
                         numberOfLines={1}

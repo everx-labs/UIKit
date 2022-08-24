@@ -122,7 +122,7 @@ export function UIHighlightCard({
                     <View style={[styles.description, textLayoutToStyleMapping[textLayout]]}>
                         <View>
                             <UILabel
-                                role={UILabelRoles.TitleSmall}
+                                role={UILabelRoles.SurfTitleNormal}
                                 color={ColorVariants.TextPrimary}
                                 numberOfLines={2}
                                 ellipsizeMode="tail"
@@ -131,7 +131,7 @@ export function UIHighlightCard({
                             </UILabel>
                             {caption !== '' && (
                                 <UILabel
-                                    role={UILabelRoles.ParagraphFootnote}
+                                    role={UILabelRoles.SurfParagraphSmall}
                                     color={ColorVariants.TextSecondary}
                                     ellipsizeMode="tail"
                                     numberOfLines={4}
