@@ -213,98 +213,101 @@ export function UIHighlights({
     const nativeGestureRef = React.useRef<NativeViewGestureHandler>(null);
 
     return (
-        <View style={styles.container}>
-            <NativeViewGestureHandler
-                ref={nativeGestureRef}
-                disallowInterruption
-                shouldCancelWhenOutside={false}
-            >
-                <Animated.ScrollView
-                    ref={scrollRef}
-                    horizontal
-                    onScrollBeginDrag={scrollHandler}
-                    scrollEventThrottle={16}
-                    contentContainerStyle={contentStyle}
-                    disableIntervalMomentum
-                    showsHorizontalScrollIndicator={false}
-                    {...Platform.select({
-                        android: {
-                            // By default ScrollView in RN on Android doesn't sent momentum events
-                            // see https://github.com/facebook/react-native/blob/ef6ab3f5cad968d7b2c9127d834429b0f4e1b2cf/Libraries/Components/ScrollView/ScrollView.js#L1741-L1744
-                            onMomentumScrollBegin: () => undefined,
-                            // Deals with a bug on Android when `scrollTo`
-                            // doesn't work in scroll handlers.
-                            // It happens because by default `scrollTo`
-                            // doesn't stop `fling` effect,
-                            // so I had to extend horizontal scroll view
-                            // to be able to disable it
-                            //
-                            // This is done by us, see `UIKitHorizontalScrollViewManager.java`
-                            flingEnabled: !pagingEnabled,
-                        },
-                    })}
-                    {...onWheelProps}
-                >
-                    <HighlightsScrollRefProvider scrollRef={nativeGestureRef as any}>
-                        {React.Children.map(children, (child, itemIndex) => {
-                            if (!React.isValidElement(child)) {
-                                return null;
-                            }
-                            return (
-                                <View
-                                    key={child.key}
-                                    style={
-                                        itemIndex !== 0
-                                            ? {
-                                                  paddingLeft: spaceBetween,
-                                              }
-                                            : null
+        React.Children.count(children)
+            ? (
+                <View style={styles.container}>
+                    <NativeViewGestureHandler
+                        ref={nativeGestureRef}
+                        disallowInterruption
+                        shouldCancelWhenOutside={false}
+                    >
+                        <Animated.ScrollView
+                            ref={scrollRef}
+                            horizontal
+                            onScrollBeginDrag={scrollHandler}
+                            scrollEventThrottle={16}
+                            contentContainerStyle={contentStyle}
+                            disableIntervalMomentum
+                            showsHorizontalScrollIndicator={false}
+                            {...Platform.select({
+                                android: {
+                                    // By default ScrollView in RN on Android doesn't sent momentum events
+                                    // see https://github.com/facebook/react-native/blob/ef6ab3f5cad968d7b2c9127d834429b0f4e1b2cf/Libraries/Components/ScrollView/ScrollView.js#L1741-L1744
+                                    onMomentumScrollBegin: () => undefined,
+                                    // Deals with a bug on Android when `scrollTo`
+                                    // doesn't work in scroll handlers.
+                                    // It happens because by default `scrollTo`
+                                    // doesn't stop `fling` effect,
+                                    // so I had to extend horizontal scroll view
+                                    // to be able to disable it
+                                    //
+                                    // This is done by us, see `UIKitHorizontalScrollViewManager.java`
+                                    flingEnabled: !pagingEnabled,
+                                },
+                            })}
+                            {...onWheelProps}
+                        >
+                            <HighlightsScrollRefProvider scrollRef={nativeGestureRef as any}>
+                                {React.Children.map(children, (child, itemIndex) => {
+                                    if (!React.isValidElement(child)) {
+                                        return null;
                                     }
-                                    onLayout={({
-                                        nativeEvent: {
-                                            layout: { x },
-                                        },
-                                    }) => {
-                                        onItemLayout(
-                                            itemIndex,
-                                            // To have a visual feedback that
-                                            // there are some items to the left
-                                            // decrease the `x` coord by the `contentInset`
-                                            // if it's present
-                                            //
-                                            // Math.trunc here is to eliminate float coords,
-                                            // that due to IEEE 754 implementation in JS
-                                            // can lead to errors
-                                            Math.trunc(x - (contentInset.left ?? 0)),
-                                        );
-                                    }}
-                                >
-                                    {child}
-                                </View>
-                            );
-                        })}
-                    </HighlightsScrollRefProvider>
-                </Animated.ScrollView>
-            </NativeViewGestureHandler>
-            <View style={[styles.controlPanel, contentStyle]}>
-                <Dots
-                    currentProgress={currentProgress}
-                    currentGravityPosition={currentGravityPosition}
-                />
-                <WebPositionControl
-                    scrollRef={scrollRef}
-                    currentGravityPosition={currentGravityPosition}
-                    calculateClosestLeftX={calculateClosestLeftX}
-                    calculateClosestRightX={calculateClosestRightX}
-                />
-            </View>
-            {debug && (
-                <DebugView
-                    currentGravityPosition={currentGravityPosition}
-                    contentInset={contentInset}
-                />
-            )}
-        </View>
+                                    return (
+                                        <View
+                                            key={child.key}
+                                            style={
+                                                itemIndex !== 0
+                                                    ? {
+                                                        paddingLeft: spaceBetween,
+                                                    }
+                                                    : null
+                                            }
+                                            onLayout={({
+                                                           nativeEvent: {
+                                                               layout: { x },
+                                                           },
+                                                       }) => {
+                                                onItemLayout(
+                                                    itemIndex,
+                                                    // To have a visual feedback that
+                                                    // there are some items to the left
+                                                    // decrease the `x` coord by the `contentInset`
+                                                    // if it's present
+                                                    //
+                                                    // Math.trunc here is to eliminate float coords,
+                                                    // that due to IEEE 754 implementation in JS
+                                                    // can lead to errors
+                                                    Math.trunc(x - (contentInset.left ?? 0)),
+                                                );
+                                            }}
+                                        >
+                                            {child}
+                                        </View>
+                                    );
+                                })}
+                            </HighlightsScrollRefProvider>
+                        </Animated.ScrollView>
+                    </NativeViewGestureHandler>
+                    <View style={[styles.controlPanel, contentStyle]}>
+                        <Dots
+                            currentProgress={currentProgress}
+                            currentGravityPosition={currentGravityPosition}
+                        />
+                        <WebPositionControl
+                            scrollRef={scrollRef}
+                            currentGravityPosition={currentGravityPosition}
+                            calculateClosestLeftX={calculateClosestLeftX}
+                            calculateClosestRightX={calculateClosestRightX}
+                        />
+                    </View>
+                    {debug && (
+                        <DebugView
+                            currentGravityPosition={currentGravityPosition}
+                            contentInset={contentInset}
+                        />
+                    )}
+                </View>
+            ) : null
     );
 }
 
