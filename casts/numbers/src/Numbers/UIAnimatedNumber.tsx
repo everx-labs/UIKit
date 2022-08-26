@@ -12,7 +12,7 @@ import BigNumber from 'bignumber.js';
 
 import { uiLocalized } from '@tonlabs/localization';
 
-import { Typography, AnimateableText } from '@tonlabs/uikit.themes';
+import { Typography, AnimateableText, getFontMesurements } from '@tonlabs/uikit.themes';
 
 import { localizedNumberFormat, UINumberDecimalAspect } from './localizedNumberFormat';
 import { useNumberStaticStyles } from './UIStaticNumber';
@@ -20,6 +20,7 @@ import type { UINumberAppearance, UINumberGeneralProps } from './types';
 import { useTextLikeContainer } from './useTextLikeContainer';
 import { DebugGrid } from './DebugGrid';
 import { styles } from './styles';
+import { getDecimalPartDigitCount } from './getDecimalPartDigitCount';
 
 Animated.addWhitelistedNativeProps({ text: true });
 
@@ -48,8 +49,19 @@ export function UIAnimatedNumber({
     const { decimal: decimalSeparator, grouping: integerGroupChar } =
         uiLocalized.localeInfo.numbers;
 
+    const decimalDigitCount = React.useMemo(() => {
+        return getDecimalPartDigitCount(value, decimalAspect);
+    }, [decimalAspect, value]);
+
     const formatted = useSharedValue(
-        localizedNumberFormat(value, decimalAspect, decimalSeparator, integerGroupChar),
+        localizedNumberFormat(
+            value,
+            decimalAspect,
+            decimalDigitCount,
+            decimalSeparator,
+            integerGroupChar,
+            showPositiveSign,
+        ),
     );
 
     const updateRefs = React.useCallback(
@@ -59,6 +71,7 @@ export function UIAnimatedNumber({
                 formatted.value = localizedNumberFormat(
                     valueHolder.current,
                     decimalAspect,
+                    decimalDigitCount,
                     decimalSeparator,
                     integerGroupChar,
                     showPositiveSign,
@@ -69,7 +82,15 @@ export function UIAnimatedNumber({
                 diff.current.multipliedBy(progress.value),
             );
         },
-        [progress, decimalAspect, decimalSeparator, integerGroupChar, formatted, showPositiveSign],
+        [
+            progress.value,
+            formatted,
+            decimalAspect,
+            decimalDigitCount,
+            decimalSeparator,
+            integerGroupChar,
+            showPositiveSign,
+        ],
     );
 
     React.useEffect(() => {
@@ -89,7 +110,7 @@ export function UIAnimatedNumber({
                 runOnJS(updateRefs)(isFinished);
             },
         );
-    }, [value, progress, updateRefs]);
+    }, [value, progress, updateRefs, decimalAspect]);
 
     const applyFormatted = React.useCallback(
         (p: number) => {
@@ -97,12 +118,20 @@ export function UIAnimatedNumber({
             formatted.value = localizedNumberFormat(
                 newValue,
                 decimalAspect,
+                decimalDigitCount,
                 decimalSeparator,
                 integerGroupChar,
                 showPositiveSign,
             );
         },
-        [decimalAspect, decimalSeparator, integerGroupChar, formatted, showPositiveSign],
+        [
+            formatted,
+            decimalAspect,
+            decimalDigitCount,
+            decimalSeparator,
+            integerGroupChar,
+            showPositiveSign,
+        ],
     );
 
     useAnimatedReaction(
@@ -159,6 +188,12 @@ export function UIAnimatedNumber({
         (Text as any).defaultProps?.allowFontScaling ?? true,
     ).current;
 
+    const decimalWithIntegerBaselineDiff = React.useMemo(() => {
+        const decimalBaseline = getFontMesurements(decimalVariant)?.baseline ?? 0;
+        const integerBaseline = getFontMesurements(integerVariant)?.baseline ?? 0;
+        return decimalBaseline - integerBaseline;
+    }, [decimalVariant, integerVariant]);
+
     return (
         <View
             testID={testID}
@@ -175,7 +210,18 @@ export function UIAnimatedNumber({
             />
             <AnimateableText
                 testID="number-decimal"
-                style={[Typography[decimalVariant], decimalColorStyle, styles.decimal]}
+                style={[
+                    Typography[decimalVariant],
+                    decimalColorStyle,
+                    styles.decimal,
+                    {
+                        transform: [
+                            {
+                                translateY: decimalWithIntegerBaselineDiff,
+                            },
+                        ],
+                    },
+                ]}
                 animatedProps={animatedDecimalProps}
                 selectable={false}
                 allowFontScaling={defaultAllowFontScaling}

@@ -9,6 +9,7 @@ import { localizedNumberFormat, UINumberDecimalAspect } from './localizedNumberF
 import type { UINumberAppearance, UINumberGeneralProps } from './types';
 import { DebugGrid } from './DebugGrid';
 import { styles } from './styles';
+import { getDecimalPartDigitCount } from './getDecimalPartDigitCount';
 
 export function useNumberStaticStyles(integerColor: ColorVariants, decimalColor: ColorVariants) {
     const theme = useTheme();
@@ -40,9 +41,11 @@ export function UIStaticNumber({
         uiLocalized.localeInfo.numbers;
 
     const formatted = React.useMemo(() => {
+        const decimalDigitCount = getDecimalPartDigitCount(value, decimalAspect);
         return localizedNumberFormat(
             value,
             decimalAspect,
+            decimalDigitCount,
             decimalSeparator,
             integerGroupChar,
             showPositiveSign,

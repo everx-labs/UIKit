@@ -14,7 +14,7 @@ export function getRandomNum() {
     const num = Math.random();
     const symbols = 10 ** (Math.floor(Math.random() * 10) + 1);
 
-    return Math.floor(num * symbols) / 100;
+    return (num * symbols) / 100;
 }
 
 function Numbers() {
@@ -190,6 +190,7 @@ function Currencies() {
                         signChar="$"
                         loading={loading}
                         decimalAspect={UINumberDecimalAspect.Precision}
+                        showPositiveSign
                     >
                         {val}
                     </UICurrency>
@@ -216,7 +217,7 @@ function Currencies() {
                 title="+"
                 type={UIBoxButtonType.Tertiary}
                 onPress={() => {
-                    setVal(val.plus(10 ** Math.abs(Math.floor(Math.random() * 10) - 5)));
+                    setVal(val.plus(10 ** Math.abs(Math.random() * 10 - 5)));
                 }}
                 layout={{ marginBottom: 5 }}
             />
@@ -274,8 +275,6 @@ function TouchableUICurrency() {
             </TouchableOpacity>
             <View
                 style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
                     marginBottom: 10,
                 }}
             >
@@ -284,7 +283,7 @@ function TouchableUICurrency() {
                     signIcon={UIAssets.icons.brand.surfSymbolBlack}
                     decimalAspect={UINumberDecimalAspect.Short}
                     integerVariant={TypographyVariants.LightLarge}
-                    decimalVariant={TypographyVariants.LightLarge}
+                    decimalVariant={TypographyVariants.LightMedium}
                 >
                     {val}
                 </UICurrency>
@@ -292,24 +291,17 @@ function TouchableUICurrency() {
                     signIcon={UIAssets.icons.brand.surfSymbolBlack}
                     decimalAspect={UINumberDecimalAspect.Short}
                     integerVariant={TypographyVariants.LightLarge}
-                    decimalVariant={TypographyVariants.LightLarge}
+                    decimalVariant={TypographyVariants.LightMedium}
                 >
                     {val}
                 </UICurrency>
-            </View>
-            <View
-                style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                }}
-            >
                 <UICurrency
                     animated
                     loading
                     signIcon={UIAssets.icons.brand.surfSymbolBlack}
                     decimalAspect={UINumberDecimalAspect.Short}
                     integerVariant={TypographyVariants.LightLarge}
-                    decimalVariant={TypographyVariants.LightLarge}
+                    decimalVariant={TypographyVariants.LightMedium}
                 >
                     {val}
                 </UICurrency>
@@ -318,7 +310,7 @@ function TouchableUICurrency() {
                     signIcon={UIAssets.icons.brand.surfSymbolBlack}
                     decimalAspect={UINumberDecimalAspect.Short}
                     integerVariant={TypographyVariants.LightLarge}
-                    decimalVariant={TypographyVariants.LightLarge}
+                    decimalVariant={TypographyVariants.LightMedium}
                 >
                     {val}
                 </UICurrency>
