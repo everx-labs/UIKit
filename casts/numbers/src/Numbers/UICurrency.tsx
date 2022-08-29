@@ -42,6 +42,7 @@ export const UICurrency = React.memo(function UICurrency({
                     <UICurrencySign
                         loading={loading}
                         integerColor={integerColor}
+                        integerVariant={integerVariant}
                         signChar={signChar}
                         signVariant={signVariant || decimalVariant}
                         signIcon={signIcon}
@@ -70,6 +71,7 @@ export const UICurrency = React.memo(function UICurrency({
                 <UICurrencySign
                     loading={false}
                     integerColor={integerColor}
+                    integerVariant={integerVariant}
                     signChar={signChar}
                     signVariant={signVariant || decimalVariant}
                     signIcon={signIcon}

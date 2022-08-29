@@ -12,7 +12,7 @@ import BigNumber from 'bignumber.js';
 
 import { uiLocalized } from '@tonlabs/localization';
 
-import { Typography, AnimateableText, getFontMesurements } from '@tonlabs/uikit.themes';
+import { Typography, AnimateableText } from '@tonlabs/uikit.themes';
 
 import { localizedNumberFormat, UINumberDecimalAspect } from './localizedNumberFormat';
 import { useNumberStaticStyles } from './UIStaticNumber';
@@ -21,6 +21,7 @@ import { useTextLikeContainer } from './useTextLikeContainer';
 import { DebugGrid } from './DebugGrid';
 import { styles } from './styles';
 import { getDecimalPartDigitCount } from './getDecimalPartDigitCount';
+import { useBaselineDiff } from './useBaselineDiff';
 
 Animated.addWhitelistedNativeProps({ text: true });
 
@@ -163,7 +164,8 @@ export function UIAnimatedNumber({
      */
     const animatedIntegerProps: any = useAnimatedProps(() => {
         return {
-            text: formatted.value.integer,
+            // text: formatted.value.integer,
+            text: 'Aasdg',
         };
     });
     const animatedDecimalProps: any = useAnimatedProps(() => {
@@ -188,11 +190,7 @@ export function UIAnimatedNumber({
         (Text as any).defaultProps?.allowFontScaling ?? true,
     ).current;
 
-    const decimalWithIntegerBaselineDiff = React.useMemo(() => {
-        const decimalBaseline = getFontMesurements(decimalVariant)?.baseline ?? 0;
-        const integerBaseline = getFontMesurements(integerVariant)?.baseline ?? 0;
-        return decimalBaseline - integerBaseline;
-    }, [decimalVariant, integerVariant]);
+    const decimalWithIntegerBaselineDiff = useBaselineDiff(decimalVariant, integerVariant);
 
     return (
         <View
@@ -227,7 +225,7 @@ export function UIAnimatedNumber({
                 allowFontScaling={defaultAllowFontScaling}
             />
             {sign}
-            {showDebugGrid && <DebugGrid variant={decimalVariant} />}
+            {showDebugGrid && <DebugGrid variant={integerVariant} />}
         </View>
     );
 }
