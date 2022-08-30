@@ -96,6 +96,7 @@ function Currencies() {
                         animated
                         signIcon={UIAssets.icons.brand.surfSymbolBlack}
                         loading={loading}
+                        signVariant={TypographyVariants.HeadersHuge}
                     >
                         {val}
                     </UICurrency>
@@ -104,7 +105,11 @@ function Currencies() {
                         {val}
                     </UICurrency>
                     <View style={{ height: 10 }} />
-                    <UICurrency signIcon={UIAssets.icons.brand.surfSymbolBlack} loading={loading}>
+                    <UICurrency
+                        signIcon={UIAssets.icons.brand.surfSymbolBlack}
+                        loading={loading}
+                        signVariant={TypographyVariants.SurfParagraphTiny}
+                    >
                         {val}
                     </UICurrency>
                 </View>
@@ -280,7 +285,7 @@ function TouchableUICurrency() {
             >
                 <UICurrency
                     animated
-                    signIcon={UIAssets.icons.brand.surfSymbolBlack}
+                    signChar="PURR"
                     decimalAspect={UINumberDecimalAspect.Short}
                     integerVariant={TypographyVariants.LightLarge}
                     decimalVariant={TypographyVariants.LightMedium}
@@ -348,7 +353,7 @@ function IconsUICurrency() {
                     signIcon={icon}
                     decimalAspect={UINumberDecimalAspect.Short}
                     integerVariant={TypographyVariants.LightLarge}
-                    decimalVariant={TypographyVariants.LightLarge}
+                    decimalVariant={TypographyVariants.LightMedium}
                 >
                     {val}
                 </UICurrency>
@@ -366,7 +371,7 @@ function IconsUICurrency() {
                     signIcon={icon}
                     decimalAspect={UINumberDecimalAspect.Short}
                     integerVariant={TypographyVariants.LightLarge}
-                    decimalVariant={TypographyVariants.LightLarge}
+                    decimalVariant={TypographyVariants.LightMedium}
                 >
                     {val}
                 </UICurrency>
