@@ -89,6 +89,12 @@ type UIHighlightsProps = {
      * Whether debug view is visible
      */
     debug?: boolean;
+    /**
+     * Whether controls panel is visible
+     *
+     * Default - false
+     */
+    controlsHidden?: boolean;
 };
 
 /**
@@ -101,6 +107,7 @@ export function UIHighlights({
     debug = false,
     contentInset = { left: 0 },
     pagingEnabled = false,
+    controlsHidden = false,
 }: UIHighlightsProps) {
     const currentGravityPosition = useSharedValue(0);
     const currentProgress = useSharedValue(0);
@@ -286,18 +293,20 @@ export function UIHighlights({
                     </HighlightsScrollRefProvider>
                 </Animated.ScrollView>
             </NativeViewGestureHandler>
-            <View style={[styles.controlPanel, contentStyle]}>
-                <Dots
-                    currentProgress={currentProgress}
-                    currentGravityPosition={currentGravityPosition}
-                />
-                <WebPositionControl
-                    scrollRef={scrollRef}
-                    currentGravityPosition={currentGravityPosition}
-                    calculateClosestLeftX={calculateClosestLeftX}
-                    calculateClosestRightX={calculateClosestRightX}
-                />
-            </View>
+            {controlsHidden ? null : (
+                <View style={[styles.controlPanel, contentStyle]}>
+                    <Dots
+                        currentProgress={currentProgress}
+                        currentGravityPosition={currentGravityPosition}
+                    />
+                    <WebPositionControl
+                        scrollRef={scrollRef}
+                        currentGravityPosition={currentGravityPosition}
+                        calculateClosestLeftX={calculateClosestLeftX}
+                        calculateClosestRightX={calculateClosestRightX}
+                    />
+                </View>
+            )}
             {debug && (
                 <DebugView
                     currentGravityPosition={currentGravityPosition}
