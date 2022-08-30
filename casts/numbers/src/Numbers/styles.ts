@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
         //     android: {
         //         transform: [
         //             {
-        //                 translateY: getFontMesurements(integerVariant)?.descentBottom ?? 0,
+        //                 translateY: getFontMeasurements(integerVariant)?.descentBottom ?? 0,
         //             },
         //         ],
         //     },
@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
         //     android: {
         //         transform: [
         //             {
-        //                 translateY: getFontMesurements(decimalVariant)?.descentBottom ?? 0,
+        //                 translateY: getFontMeasurements(decimalVariant)?.descentBottom ?? 0,
         //             },
         //         ],
         //     },

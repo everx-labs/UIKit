@@ -10,8 +10,7 @@ import type { UINumberAppearance, UINumberGeneralProps } from './types';
 import { DebugGrid } from './DebugGrid';
 import { styles } from './styles';
 import { getDecimalPartDigitCount } from './getDecimalPartDigitCount';
-import { useTextLikeContainer } from './useTextLikeContainer';
-import { useBaselineDiff } from './useBaselineDiff';
+import { useTextLikeContainer, useBaselineDiff } from './hooks';
 
 export function useNumberStaticStyles(integerColor: ColorVariants, decimalColor: ColorVariants) {
     const theme = useTheme();

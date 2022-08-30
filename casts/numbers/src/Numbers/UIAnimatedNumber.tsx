@@ -17,11 +17,10 @@ import { Typography, AnimateableText } from '@tonlabs/uikit.themes';
 import { localizedNumberFormat, UINumberDecimalAspect } from './localizedNumberFormat';
 import { useNumberStaticStyles } from './UIStaticNumber';
 import type { UINumberAppearance, UINumberGeneralProps } from './types';
-import { useTextLikeContainer } from './useTextLikeContainer';
+import { useTextLikeContainer, useBaselineDiff } from './hooks';
 import { DebugGrid } from './DebugGrid';
 import { styles } from './styles';
 import { getDecimalPartDigitCount } from './getDecimalPartDigitCount';
-import { useBaselineDiff } from './useBaselineDiff';
 
 Animated.addWhitelistedNativeProps({ text: true });
 
@@ -164,8 +163,7 @@ export function UIAnimatedNumber({
      */
     const animatedIntegerProps: any = useAnimatedProps(() => {
         return {
-            // text: formatted.value.integer,
-            text: 'Aasdg',
+            text: formatted.value.integer,
         };
     });
     const animatedDecimalProps: any = useAnimatedProps(() => {
