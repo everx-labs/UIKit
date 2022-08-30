@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { StatusBar, StatusBarStyle } from 'react-native';
+import { Platform, StatusBar, StatusBarStyle } from 'react-native';
 
 import { ColorVariants } from './Colors';
+import { UIKitThemesAndroidSystemBarModule } from './UIKitThemesAndroidSystemBarModule';
 import { useIsDarkColor } from './useIsDarkColor';
 
 const StatusBarContext = React.createContext<{
@@ -123,10 +124,25 @@ export function UIStatusBarManager({ children }: { children: React.ReactNode }) 
         return state.styles[lastStyleId];
     }, [state.stack, state.styles]);
 
+    React.useEffect(() => {
+        if (Platform.OS === 'android') {
+            UIKitThemesAndroidSystemBarModule?.setAppearance?.(barStyle);
+        }
+    }, [barStyle]);
+
     return (
         <StatusBarContext.Provider value={manager}>
             {children}
-            <StatusBar barStyle={barStyle} backgroundColor="transparent" />
+            <StatusBar
+                /**
+                 * `barStyle` prop is used only for iOS platform.
+                 * Android platform has `UIKitThemesAndroidSystemBarModule.setAppearance` method
+                 * to manage colors.
+                 */
+                barStyle={barStyle}
+                backgroundColor="transparent"
+                translucent
+            />
         </StatusBarContext.Provider>
     );
 }

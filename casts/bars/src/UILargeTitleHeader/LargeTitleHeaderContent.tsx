@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import Animated, {
-    Extrapolate,
     interpolate,
     useAnimatedStyle,
     useDerivedValue,
@@ -67,7 +66,7 @@ export const LargeTitleHeaderContent = React.memo(function LargeTitleHeaderConte
                         [0, rubberBandEffectDistance.value],
                         [1, largeTitleScale.value],
                         {
-                            extrapolateLeft: Extrapolate.CLAMP,
+                            extrapolateLeft: Animated.Extrapolate.CLAMP,
                         },
                     ),
                 },
@@ -77,7 +76,7 @@ export const LargeTitleHeaderContent = React.memo(function LargeTitleHeaderConte
                         [0, rubberBandEffectDistance.value],
                         [0, (titleWidth.value * largeTitleScale.value - titleWidth.value) / 2],
                         {
-                            extrapolateLeft: Extrapolate.CLAMP,
+                            extrapolateLeft: Animated.Extrapolate.CLAMP,
                         },
                     ),
                 },
