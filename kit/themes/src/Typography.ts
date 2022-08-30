@@ -149,10 +149,10 @@ export const fontBaseMetrics = isLegacyTypographyEnabled
           },
           default: {
               baselineRatio: 0.23,
-              middlelineRatio: 0.51,
-              lowerlineRatio: 0.77,
-              upperlineRatio: 0.95,
-              capHeightRatio: 0.72,
+              middlelineRatio: 0.4,
+              lowerlineRatio: 0.615,
+              upperlineRatio: 0.73,
+              capHeightRatio: 0.5,
               descentRatio: 1.01,
           },
       });
