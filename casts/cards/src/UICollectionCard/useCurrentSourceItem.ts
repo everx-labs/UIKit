@@ -42,7 +42,7 @@ export function useCurrentSourceItem(
     }, []);
 
     React.useEffect(() => {
-        let timeout: NodeJS.Timeout | undefined;
+        let timeout: NodeJS.Timeout | number | undefined;
 
         function iterateThroughItems(items: MediaCardContent[]) {
             if (availableList.current.length < 2) {
