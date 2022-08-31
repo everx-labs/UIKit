@@ -14,20 +14,28 @@ RCT_EXPORT_MODULE()
 
 - (void)setText:(NSString *)value andCaretPosition:(int)caretPosition {
     if (_baseTextInputView != NULL) {
-        NSRange wholeTextRange = {0, [_baseTextInputView.attributedText length]};
-        NSString *newText = [_baseTextInputView textInputShouldChangeText:value inRange:wholeTextRange];
+        /** Setup text */
+        UITextRange *textRange = [
+            _baseTextInputView.backedTextInputView
+            textRangeFromPosition:_baseTextInputView.backedTextInputView.beginningOfDocument
+            toPosition:_baseTextInputView.backedTextInputView.endOfDocument
+        ];
+        [_baseTextInputView.backedTextInputView replaceRange:textRange withText:value];
 
-        if (newText == nil) {
-          return;
-        }
+        /** Setup caret position */
+        UITextPosition *caretTextPosition = [
+            _baseTextInputView.backedTextInputView
+            positionFromPosition:_baseTextInputView.backedTextInputView.beginningOfDocument
+            offset:caretPosition];
 
-        NSMutableAttributedString *attributedString = [_baseTextInputView.attributedText mutableCopy];
-        [attributedString replaceCharactersInRange:wholeTextRange withString:newText];
-        [_baseTextInputView.backedTextInputView setAttributedText:[attributedString copy]];
-
-        UITextPosition *textPosition = [_baseTextInputView.backedTextInputView positionFromPosition:_baseTextInputView.backedTextInputView.beginningOfDocument offset:caretPosition];
-
-        [_baseTextInputView.backedTextInputView setSelectedTextRange:[_baseTextInputView.backedTextInputView textRangeFromPosition:textPosition toPosition:textPosition] notifyDelegate:YES];
+        [_baseTextInputView.backedTextInputView
+            setSelectedTextRange:[
+                _baseTextInputView.backedTextInputView
+                textRangeFromPosition:caretTextPosition
+                toPosition:caretTextPosition
+            ]
+            notifyDelegate:YES
+        ];
     }
 }
 

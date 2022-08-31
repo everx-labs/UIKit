@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { runOnJS, useAnimatedRef, useSharedValue } from 'react-native-reanimated';
+import {
+    runOnJS,
+    runOnUI,
+    useAnimatedRef,
+    useSharedValue,
+    useWorkletCallback,
+} from 'react-native-reanimated';
 import { Platform } from 'react-native';
 import type { UIAmountInputEnhancedProps } from '../types';
 import { useTextViewHandler } from '../../useTextViewHandler';
@@ -17,6 +23,7 @@ export function useAmountInputHandlers(
     onSelectionChangeProp: UIAmountInputEnhancedProps['onSelectionChange'],
     precision: UIAmountInputEnhancedProps['precision'],
     multiline: UIAmountInputEnhancedProps['multiline'],
+    defaultAmount: UIAmountInputEnhancedProps['defaultAmount'],
 ) {
     const { isFocused, formattedText, selectionEndPosition, normalizedText } =
         React.useContext(AmountInputContext);
@@ -44,7 +51,33 @@ export function useAmountInputHandlers(
     // @ts-expect-error
     const inputManagerRef = useAnimatedRef<InputController | undefined>();
 
-    // const injectInputValue1 = useInjectInputValue(ref)
+    const setTest = useWorkletCallback((text: string): void => {
+        'worklet';
+
+        const {
+            formattedText: newFormattedText,
+            carretPosition: newCaretPosition,
+            normalizedText: newNormalizedText,
+        } = applyAmountMask(
+            text,
+            platformOS.value === 'ios' && multilineAnimated.value
+                ? prevCaretPosition
+                : selectionEndPosition,
+        );
+
+        if (text !== newFormattedText) {
+            setTextAndCaretPosition(ref, inputManagerRef, newFormattedText, newCaretPosition);
+        }
+
+        formattedText.value = newFormattedText;
+        selectionEndPosition.value = newCaretPosition;
+        normalizedText.value = newNormalizedText;
+    });
+
+    const defaultAmountRef = React.useRef(defaultAmount);
+    React.useEffect(() => {
+        runOnUI(setTest)(defaultAmountRef.current?.toString() ?? '');
+    }, [setTest]);
 
     const textViewHandlers = useTextViewHandler(
         {
@@ -83,30 +116,7 @@ export function useAmountInputHandlers(
             onChange: evt => {
                 'worklet';
 
-                const {
-                    formattedText: newFormattedText,
-                    carretPosition: newCaretPosition,
-                    normalizedText: newNormalizedText,
-                } = applyAmountMask(
-                    evt.text,
-                    platformOS.value === 'ios' && multilineAnimated.value
-                        ? prevCaretPosition
-                        : selectionEndPosition,
-                );
-
-                if (evt.text !== newFormattedText) {
-                    setTextAndCaretPosition(
-                        ref,
-                        inputManagerRef,
-                        newFormattedText,
-                        newCaretPosition,
-                    );
-                }
-
-                // inputText.value = evt.text;
-                formattedText.value = newFormattedText;
-                selectionEndPosition.value = newCaretPosition;
-                normalizedText.value = newNormalizedText;
+                setTest(evt.text);
             },
             onSelectionChange: evt => {
                 'worklet';
@@ -119,7 +129,7 @@ export function useAmountInputHandlers(
                 selectionEndPosition.value = evt.selection.end;
             },
         },
-        [onFocusProp, onBlurProp, onSelectionChangeProp],
+        [onFocusProp, onBlurProp, onSelectionChangeProp, setTest],
     );
 
     return textViewHandlers;

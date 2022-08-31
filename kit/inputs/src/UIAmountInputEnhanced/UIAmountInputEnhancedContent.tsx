@@ -44,7 +44,7 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     UIAmountInputEnhancedRef,
     UIAmountInputEnhancedProps
 >(function UIAmountInputEnhancedContent(
-    { children: _children, placeholder, ...props }: UIAmountInputEnhancedProps,
+    { children: _children, placeholder, defaultAmount, ...props }: UIAmountInputEnhancedProps,
     _forwardedRef: React.Ref<UIAmountInputEnhancedRef>,
 ) {
     const {
@@ -87,6 +87,7 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
         onSelectionChange,
         precision,
         multiline,
+        defaultAmount,
     );
 
     useConnectOnChangeAmount(onChangeAmountProp);
