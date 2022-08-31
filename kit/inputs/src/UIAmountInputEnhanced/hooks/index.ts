@@ -3,3 +3,4 @@ export * from './useAmountInputHover';
 export * from './amountMask';
 export * from './useConnectOnChangeAmount';
 export * from './usePlaceholderColors';
+export * from './useSetText';

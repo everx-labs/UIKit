@@ -1,13 +1,15 @@
 import * as React from 'react';
 import Animated, {
     interpolate,
+    runOnUI,
     useAnimatedProps,
     useAnimatedRef,
     useAnimatedStyle,
     useDerivedValue,
+    useSharedValue,
     withSpring,
 } from 'react-native-reanimated';
-import { NativeModules, Platform, TextStyle, View } from 'react-native';
+import { LayoutChangeEvent, NativeModules, Platform, TextStyle, View } from 'react-native';
 import { makeStyles, Theme, ColorVariants, useTheme, UILabelAnimated } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UIAmountInputEnhancedRef, UIAmountInputEnhancedProps } from './types';
@@ -17,6 +19,7 @@ import {
     useAmountInputHover,
     useConnectOnChangeAmount,
     usePlaceholderColors,
+    useSetText,
 } from './hooks';
 import { UITextView, UITextViewRef } from '../UITextView';
 import { TapHandler } from './TapHandler';
@@ -54,6 +57,7 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
         onHover,
         onSelectionChange,
         onChangeAmount: onChangeAmountProp,
+        onLayout: onLayoutProp,
         precision,
         multiline,
         message,
@@ -62,6 +66,7 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     } = props;
     // @ts-ignore
     const ref = useAnimatedRef<UITextViewRef>();
+    const defaultAmountRef = React.useRef(defaultAmount);
 
     const { isFocused, formattedText, isHovered, selectionEndPosition, normalizedText } =
         React.useContext(AmountInputContext);
@@ -79,15 +84,35 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
         });
     });
 
+    const prevCaretPosition = useSharedValue(selectionEndPosition.value);
+
+    const setText = useSetText(ref, precision, multiline, prevCaretPosition);
+
+    const [isLayoutFinished, setIsLayoutFinished] = React.useState(false);
+    const onLayout = React.useCallback(
+        (e: LayoutChangeEvent) => {
+            onLayoutProp?.(e);
+            setIsLayoutFinished(true);
+        },
+        [onLayoutProp],
+    );
+    React.useEffect(() => {
+        /**
+         * Setup default value should be done only after the first layout.
+         * Otherwise, it will lead to strange bugs.
+         */
+        if (isLayoutFinished) {
+            runOnUI(setText)(defaultAmountRef.current?.toString() ?? '');
+        }
+    }, [setText, isLayoutFinished]);
+
     const textViewHandlers = useAmountInputHandlers(
-        ref,
         editable,
         onFocus,
         onBlur,
         onSelectionChange,
-        precision,
-        multiline,
-        defaultAmount,
+        setText,
+        prevCaretPosition,
     );
 
     useConnectOnChangeAmount(onChangeAmountProp);
@@ -154,6 +179,7 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
                         <View style={{ flex: 1 }}>
                             <UITextViewAnimated
                                 ref={ref}
+                                onLayout={onLayout}
                                 {...props}
                                 {...textViewHandlers}
                                 style={styles.input}
