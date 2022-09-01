@@ -91,7 +91,7 @@ function getIntegerSign(integer: BigNumber, showPositiveSign?: boolean) {
     'worklet';
 
     if (showPositiveSign && integer.lt(0)) {
-        return '-';
+        return '−';
     }
 
     if (showPositiveSign && integer.gt(0)) {
