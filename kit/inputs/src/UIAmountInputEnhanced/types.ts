@@ -1,7 +1,8 @@
 import type BigNumber from 'bignumber.js';
+import type { TextInput } from 'react-native';
 import type { SharedValue } from 'react-native-reanimated';
 import type { InputMessageType } from '../InputMessage';
-import type { UIMaterialTextViewProps, UIMaterialTextViewRef } from '../UIMaterialTextView/types';
+import type { UIMaterialTextViewProps } from '../UIMaterialTextView/types';
 import type { InputChildren } from '../useInputChildren';
 import type { UIAmountInputEnhancedDecimalAspect } from './constants';
 
@@ -44,10 +45,10 @@ export type UIAmountInputEnhancedProps = Omit<
 
 export type UIAmountInputEnhancedPrecision =
     | 'Integer' // integer number (aspectRatio === 0)
-    | 'Precise' // precise numer (aspectRatio === 9)
+    | 'Precise' // precise numer (total digit count (integer and decimal) is less than 15)
     | 'Currency'; // currency number (aspectRatio === 2)
 
-export type UIAmountInputEnhancedRef = Omit<UIMaterialTextViewRef, 'changeText'> & {
+export type UIAmountInputEnhancedRef = Pick<TextInput, 'isFocused' | 'focus' | 'blur' | 'clear'> & {
     changeAmount: (amount: BigNumber | undefined, callOnChangeProp?: boolean) => void;
 };
 
@@ -65,4 +66,15 @@ export type AmountInputContextType = {
     [key in keyof AmountInputContextDefaultValuesType]: SharedValue<
         AmountInputContextDefaultValuesType[key]
     >;
+};
+
+export type FormatAndSetTextConfig = {
+    /**
+     * @default true
+     */
+    shouldSetTheSameText?: boolean;
+    /**
+     * @default true
+     */
+    callOnChangeProp?: boolean;
 };

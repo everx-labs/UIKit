@@ -12,14 +12,16 @@ import Animated, {
 import { LayoutChangeEvent, NativeModules, Platform, TextStyle, View } from 'react-native';
 import { makeStyles, Theme, ColorVariants, useTheme, UILabelAnimated } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import type { BigNumber } from 'bignumber.js';
+import { uiLocalized } from '@tonlabs/localization';
 import type { UIAmountInputEnhancedRef, UIAmountInputEnhancedProps } from './types';
 import { AmountInputContext, withSpringConfig } from './constants';
 import {
     useAmountInputHandlers,
     useAmountInputHover,
-    useConnectOnChangeAmount,
+    useExtendedRef,
     usePlaceholderColors,
-    useSetText,
+    useFormatAndSetText,
 } from './hooks';
 import { UITextView, UITextViewRef } from '../UITextView';
 import { TapHandler } from './TapHandler';
@@ -44,12 +46,14 @@ const POSITION_EXPANDED: number = 1;
 // @inline
 const EXPANDED_INPUT_OFFSET: number = 8;
 
+const decimalSeparator = uiLocalized.localeInfo.numbers.decimal;
+
 export const UIAmountInputEnhancedContent = React.forwardRef<
     UIAmountInputEnhancedRef,
     UIAmountInputEnhancedProps
 >(function UIAmountInputEnhancedContent(
     { children, placeholder, defaultAmount, ...props }: UIAmountInputEnhancedProps,
-    _forwardedRef: React.Ref<UIAmountInputEnhancedRef>,
+    forwardedRef: React.Ref<UIAmountInputEnhancedRef>,
 ) {
     const {
         editable = true,
@@ -72,22 +76,28 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     const { isFocused, formattedText, isHovered, selectionEndPosition, normalizedText } =
         React.useContext(AmountInputContext);
 
-    /**
-     * TODO Remove
-     */
-    useDerivedValue(() => {
-        console.log({
-            isHovered: isHovered.value,
-            isFocused: isFocused.value,
-            selectionEndPosition: selectionEndPosition.value,
-            normalizedText: normalizedText.value,
-            formattedText: formattedText.value,
-        });
-    });
+    // /**
+    //  * TODO Remove
+    //  */
+    // useDerivedValue(() => {
+    //     console.log({
+    //         isHovered: isHovered.value,
+    //         isFocused: isFocused.value,
+    //         selectionEndPosition: selectionEndPosition.value,
+    //         normalizedText: normalizedText.value,
+    //         formattedText: formattedText.value,
+    //     });
+    // });
 
     const prevCaretPosition = useSharedValue(selectionEndPosition.value);
 
-    const setText = useSetText(ref, decimalAspect, multiline, prevCaretPosition);
+    const formatAndSetText = useFormatAndSetText(
+        ref,
+        decimalAspect,
+        multiline,
+        prevCaretPosition,
+        onChangeAmountProp,
+    );
 
     const [isLayoutFinished, setIsLayoutFinished] = React.useState(false);
     const onLayout = React.useCallback(
@@ -102,21 +112,22 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
          * Setup default value should be done only after the first layout.
          * Otherwise, it will lead to strange bugs.
          */
-        if (isLayoutFinished) {
-            runOnUI(setText)(defaultAmountRef.current?.toString() ?? '');
+        if (isLayoutFinished && defaultAmountRef.current) {
+            runOnUI(formatAndSetText)(defaultAmountRef.current.toFormat({ decimalSeparator }), {
+                callOnChangeProp: false,
+            });
         }
-    }, [setText, isLayoutFinished]);
+    }, [formatAndSetText, isLayoutFinished]);
 
     const textViewHandlers = useAmountInputHandlers(
         editable,
         onFocus,
         onBlur,
         onSelectionChange,
-        setText,
+        formatAndSetText,
         prevCaretPosition,
     );
 
-    useConnectOnChangeAmount(onChangeAmountProp);
     const { onMouseEnter, onMouseLeave } = useAmountInputHover(onHover);
 
     const theme = useTheme();
@@ -168,6 +179,22 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     });
 
     const childrenProcessed = useInputChildren(children);
+
+    const changeAmount = React.useCallback(
+        function changeAmount(amount: BigNumber | undefined, callOnChangeProp?: boolean) {
+            if (amount) {
+                runOnUI(formatAndSetText)(amount.toFormat({ decimalSeparator }), {
+                    callOnChangeProp,
+                });
+            }
+
+            if (callOnChangeProp && onChangeAmountProp) {
+                onChangeAmountProp(amount);
+            }
+        },
+        [formatAndSetText, onChangeAmountProp],
+    );
+    useExtendedRef(forwardedRef, ref, changeAmount);
 
     return (
         <InputMessage type={messageType} text={message}>
