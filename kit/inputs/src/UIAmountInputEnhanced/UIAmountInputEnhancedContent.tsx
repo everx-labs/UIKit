@@ -27,6 +27,7 @@ import { InputMessage } from '../InputMessage';
 import { usePlaceholderVisibility } from './hooks/usePlaceholderVisibility';
 import { useExpandingValue } from './hooks/useExpandingValue';
 import { FloatingLabel } from './FloatingLabel';
+import { useInputChildren } from '../useInputChildren';
 
 const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
 
@@ -47,7 +48,7 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     UIAmountInputEnhancedRef,
     UIAmountInputEnhancedProps
 >(function UIAmountInputEnhancedContent(
-    { children: _children, placeholder, defaultAmount, ...props }: UIAmountInputEnhancedProps,
+    { children, placeholder, defaultAmount, ...props }: UIAmountInputEnhancedProps,
     _forwardedRef: React.Ref<UIAmountInputEnhancedRef>,
 ) {
     const {
@@ -58,7 +59,7 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
         onSelectionChange,
         onChangeAmount: onChangeAmountProp,
         onLayout: onLayoutProp,
-        precision,
+        decimalAspect,
         multiline,
         message,
         messageType,
@@ -86,7 +87,7 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
 
     const prevCaretPosition = useSharedValue(selectionEndPosition.value);
 
-    const setText = useSetText(ref, precision, multiline, prevCaretPosition);
+    const setText = useSetText(ref, decimalAspect, multiline, prevCaretPosition);
 
     const [isLayoutFinished, setIsLayoutFinished] = React.useState(false);
     const onLayout = React.useCallback(
@@ -166,6 +167,8 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
         };
     });
 
+    const childrenProcessed = useInputChildren(children);
+
     return (
         <InputMessage type={messageType} text={message}>
             <TapHandler inputRef={ref}>
@@ -201,7 +204,7 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
                             {label}
                         </FloatingLabel>
                     </Animated.View>
-                    {/* {children} */}
+                    {childrenProcessed}
                 </Animated.View>
             </TapHandler>
         </InputMessage>

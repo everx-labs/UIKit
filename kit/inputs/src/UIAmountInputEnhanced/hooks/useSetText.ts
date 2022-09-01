@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Platform } from 'react-native';
 import { SharedValue, useAnimatedRef, useWorkletCallback } from 'react-native-reanimated';
 import type { UITextViewRef } from '../../UITextView/types';
-import { AmountInputContext, UIConstants } from '../constants';
+import { AmountInputContext, UIAmountInputEnhancedDecimalAspect, UIConstants } from '../constants';
 import { setTextAndCaretPosition } from '../setTextAndCaretPosition';
 import type { UIAmountInputEnhancedProps } from '../types';
 import { useAmountMaskApplyer } from './amountMask';
@@ -10,7 +10,7 @@ import { useDerivedReactValue } from './hooks';
 
 export function useSetText(
     ref: React.RefObject<UITextViewRef>,
-    precision: UIAmountInputEnhancedProps['precision'],
+    decimalAspect: UIAmountInputEnhancedProps['decimalAspect'],
     multiline: UIAmountInputEnhancedProps['multiline'],
     prevCaretPosition: SharedValue<number>,
 ) {
@@ -23,16 +23,16 @@ export function useSetText(
     const platformOS = useDerivedReactValue(Platform.OS);
     const multilineAnimated = useDerivedReactValue(multiline);
     const numberOfDecimalDigits = React.useMemo(() => {
-        switch (precision) {
-            case 'Integer':
+        switch (decimalAspect) {
+            case UIAmountInputEnhancedDecimalAspect.Integer:
                 return UIConstants.decimalAspect.integer;
-            case 'Currency':
+            case UIAmountInputEnhancedDecimalAspect.Currency:
                 return UIConstants.decimalAspect.currency;
-            case 'Precise':
+            case UIAmountInputEnhancedDecimalAspect.Precision:
             default:
                 return UIConstants.decimalAspect.precision;
         }
-    }, [precision]);
+    }, [decimalAspect]);
 
     const applyAmountMask = useAmountMaskApplyer(numberOfDecimalDigits);
 

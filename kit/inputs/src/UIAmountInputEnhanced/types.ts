@@ -1,11 +1,8 @@
 import type BigNumber from 'bignumber.js';
 import type { SharedValue } from 'react-native-reanimated';
 import type { InputMessageType } from '../InputMessage';
-import type {
-    UIMaterialTextViewChild,
-    UIMaterialTextViewProps,
-    UIMaterialTextViewRef,
-} from '../UIMaterialTextView/types';
+import type { UIMaterialTextViewProps, UIMaterialTextViewRef } from '../UIMaterialTextView/types';
+import type { InputChildren } from '../useInputChildren';
 import type { UIAmountInputEnhancedDecimalAspect } from './constants';
 
 export type UIAmountInputEnhancedProps = Omit<
@@ -43,11 +40,6 @@ export type UIAmountInputEnhancedProps = Omit<
      *  `UIAmountInputEnhanced.Text`
      */
     children?: UIAmountInputEnhancedChild | UIAmountInputEnhancedChild[] | undefined;
-    /**
-     * Precision of the input value
-     * @default "Precise"
-     */
-    precision: UIAmountInputEnhancedPrecision;
 };
 
 export type UIAmountInputEnhancedPrecision =
@@ -59,7 +51,7 @@ export type UIAmountInputEnhancedRef = Omit<UIMaterialTextViewRef, 'changeText'>
     changeAmount: (amount: BigNumber | undefined, callOnChangeProp?: boolean) => void;
 };
 
-export type UIAmountInputEnhancedChild = UIMaterialTextViewChild;
+export type UIAmountInputEnhancedChild = InputChildren;
 
 export type AmountInputContextDefaultValuesType = {
     isHovered: boolean;

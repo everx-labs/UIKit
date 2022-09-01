@@ -1,14 +1,10 @@
 import * as React from 'react';
 // import type BigNumber from 'bignumber.js';
 // import type { SharedValue } from 'react-native-reanimated';
-import {
-    MaterialTextViewIcon,
-    MaterialTextViewAction,
-    MaterialTextViewText,
-} from '../MaterialTextView';
 import type { UIAmountInputEnhancedProps, UIAmountInputEnhancedRef } from './types';
 import { UIAmountInputEnhancedContent } from './UIAmountInputEnhancedContent';
 import { AmountInputContext, getDefaultContext } from './constants';
+import { InputIcon, InputAction, InputText } from '../useInputChildren/InputChildren';
 
 /*
 type FocusState = { isFocused: boolean };
@@ -60,11 +56,11 @@ export const UIAmountInputEnhancedForward = React.forwardRef<
 // @ts-expect-error
 // ts doesn't understand that we assign [Icon|Action|Text] later, and want to see it right away
 export const UIAmountInputEnhanced: typeof UIAmountInputEnhancedForward & {
-    Icon: typeof MaterialTextViewIcon;
-    Action: typeof MaterialTextViewAction;
-    Text: typeof MaterialTextViewText;
+    Icon: typeof InputIcon;
+    Action: typeof InputAction;
+    Text: typeof InputText;
 } = UIAmountInputEnhancedForward;
 
-UIAmountInputEnhanced.Icon = MaterialTextViewIcon;
-UIAmountInputEnhanced.Action = MaterialTextViewAction;
-UIAmountInputEnhanced.Text = MaterialTextViewText;
+UIAmountInputEnhanced.Icon = InputIcon;
+UIAmountInputEnhanced.Action = InputAction;
+UIAmountInputEnhanced.Text = InputText;

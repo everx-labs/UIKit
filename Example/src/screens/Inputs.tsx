@@ -31,16 +31,24 @@ export const Inputs = () => {
                     <UIAmountInputEnhanced
                         placeholder="123"
                         precision="Precise"
+                        defaultAmount={new BigNumber(12345.67)}
                         onChangeAmount={amount => console.log('onChangeAmount', amount?.toString())}
-                    />
+                    >
+                        <UIAmountInputEnhanced.Text>Text</UIAmountInputEnhanced.Text>
+                    </UIAmountInputEnhanced>
                     <UIAmountInputEnhanced
                         placeholder="111"
                         precision="Precise"
                         onChangeAmount={amount => console.log('onChangeAmount', amount?.toString())}
+                        defaultAmount={new BigNumber(11111.11)}
                         multiline
                         message="Caption"
                         label="Label"
-                    />
+                    >
+                        <UIAmountInputEnhanced.Action onPress={() => null}>
+                            Action
+                        </UIAmountInputEnhanced.Action>
+                    </UIAmountInputEnhanced>
                 </View>
             </ExampleSection>
             <ExampleSection title="UINumberTextView">
@@ -67,6 +75,7 @@ export const Inputs = () => {
                         testID="uiMaterialTextView_with_initial_value"
                         label="Label with initial value"
                         helperText="Caption"
+                        defaultValue="Initial value"
                     >
                         <UIMaterialTextView.Action>
                             EVER
