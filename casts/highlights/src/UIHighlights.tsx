@@ -219,6 +219,12 @@ export function UIHighlights({
 
     const nativeGestureRef = React.useRef<NativeViewGestureHandler>(null);
 
+    if (!React.Children.count(children)) {
+        // return null if the list of cards is empty;
+        // otherwise, controls will be visible
+        return null;
+    }
+
     return (
         <View style={styles.container}>
             <NativeViewGestureHandler
@@ -263,15 +269,15 @@ export function UIHighlights({
                                     style={
                                         itemIndex !== 0
                                             ? {
-                                                  paddingLeft: spaceBetween,
-                                              }
+                                                paddingLeft: spaceBetween,
+                                            }
                                             : null
                                     }
                                     onLayout={({
-                                        nativeEvent: {
-                                            layout: { x },
-                                        },
-                                    }) => {
+                                                   nativeEvent: {
+                                                       layout: { x },
+                                                   },
+                                               }) => {
                                         onItemLayout(
                                             itemIndex,
                                             // To have a visual feedback that

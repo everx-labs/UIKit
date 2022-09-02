@@ -42,7 +42,7 @@ export function ActionCell({
             ]}
         >
             <UILabel
-                role={TypographyVariants.Action}
+                role={TypographyVariants.SurfActionNormal}
                 color={actionColor}
                 numberOfLines={3}
                 style={
