@@ -12,11 +12,11 @@ export const contentColors: Record<
 > = {
     [UIActionButtonType.Primary]: {
         background: {
-            initialColor: ColorVariants.BackgroundBW,
-            pressedColor: ColorVariants.BackgroundBW,
-            hoveredColor: ColorVariants.BackgroundBW,
-            disabledColor: ColorVariants.BackgroundBW,
-            loadingColor: ColorVariants.BackgroundBW,
+            initialColor: ColorVariants.BackgroundSecondary,
+            pressedColor: ColorVariants.BackgroundSecondary,
+            hoveredColor: ColorVariants.BackgroundSecondary,
+            disabledColor: ColorVariants.BackgroundSecondary,
+            loadingColor: ColorVariants.BackgroundSecondary,
         },
         content: {
             initialColor: ColorVariants.TextAccent,

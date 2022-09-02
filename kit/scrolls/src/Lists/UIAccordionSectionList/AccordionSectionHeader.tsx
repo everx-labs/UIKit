@@ -48,7 +48,7 @@ export function AccordionSectionHeader({
             onPress={() => onSectionHeaderPress(sectionKey)}
             style={styles.sectionHeader}
         >
-            <UILabel role={UILabelRoles.HeadlineHead}>{title}</UILabel>
+            <UILabel role={UILabelRoles.SurfTitleNormal}>{title}</UILabel>
             <AnimatedUIImage
                 source={UIAssets.icons.ui.chevron}
                 style={[styles.chevron, chevronStyle]}
