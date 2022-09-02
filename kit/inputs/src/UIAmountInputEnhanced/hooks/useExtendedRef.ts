@@ -20,7 +20,9 @@ export function useExtendedRef(
     React.useImperativeHandle<Record<string, any>, UIAmountInputEnhancedRef>(
         forwardedRed,
         (): UIAmountInputEnhancedRef => ({
-            clear: localRef.current?.clear ?? getEmptyMethod('clear'),
+            clear: () => {
+                changeAmount(undefined, true);
+            },
             isFocused: localRef.current?.isFocused ?? getEmptyMethod('isFocused', false),
             focus: localRef.current?.focus ?? getEmptyMethod('focus'),
             blur: localRef.current?.blur ?? getEmptyMethod('blur'),

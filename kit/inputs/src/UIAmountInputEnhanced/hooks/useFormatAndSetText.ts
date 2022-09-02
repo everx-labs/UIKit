@@ -44,10 +44,8 @@ export function useFormatAndSetText(
 
     const onChangeNormalizedText = React.useCallback(
         (normalizedNumber: string) => {
-            if (onChangeAmountProp) {
-                const value = new BigNumber(normalizedNumber);
-                onChangeAmountProp(value);
-            }
+            const value = normalizedNumber ? new BigNumber(normalizedNumber) : undefined;
+            onChangeAmountProp(value);
         },
         [onChangeAmountProp],
     );
@@ -55,6 +53,10 @@ export function useFormatAndSetText(
     const formatAndSetText = useWorkletCallback(
         (text: string, config: FormatAndSetTextConfig = defaultConfig): void => {
             'worklet';
+
+            if (text === formattedText.value) {
+                return;
+            }
 
             const { shouldSetTheSameText = true, callOnChangeProp = true } = config;
             const {
@@ -68,6 +70,10 @@ export function useFormatAndSetText(
                     : selectionEndPosition,
             );
 
+            formattedText.value = newFormattedText;
+            selectionEndPosition.value = newCaretPosition;
+            normalizedText.value = newNormalizedText;
+
             if (text !== newFormattedText || shouldSetTheSameText) {
                 setTextAndCaretPosition(ref, inputManagerRef, newFormattedText, newCaretPosition);
             }
@@ -75,10 +81,6 @@ export function useFormatAndSetText(
             if (callOnChangeProp) {
                 runOnJS(onChangeNormalizedText)(newNormalizedText);
             }
-
-            formattedText.value = newFormattedText;
-            selectionEndPosition.value = newCaretPosition;
-            normalizedText.value = newNormalizedText;
         },
     );
 

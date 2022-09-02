@@ -54,7 +54,6 @@ export function useAmountInputHandlers(
             onChange: evt => {
                 'worklet';
 
-                console.log('onChange', evt.text);
                 formatAndSetText(evt.text, { shouldSetTheSameText: false });
             },
             onSelectionChange: evt => {

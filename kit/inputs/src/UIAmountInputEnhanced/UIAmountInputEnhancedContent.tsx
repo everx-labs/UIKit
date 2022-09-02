@@ -22,6 +22,7 @@ import {
     useExtendedRef,
     usePlaceholderColors,
     useFormatAndSetText,
+    useApplyDefaultValue,
 } from './hooks';
 import { UITextView, UITextViewRef } from '../UITextView';
 import { TapHandler } from './TapHandler';
@@ -71,9 +72,8 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     } = props;
     // @ts-ignore
     const ref = useAnimatedRef<UITextViewRef>();
-    const defaultAmountRef = React.useRef(defaultAmount);
 
-    const { isFocused, formattedText, isHovered, selectionEndPosition, normalizedText } =
+    const { isFocused, formattedText, isHovered, selectionEndPosition } =
         React.useContext(AmountInputContext);
 
     // /**
@@ -99,26 +99,23 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
         onChangeAmountProp,
     );
 
-    const [isLayoutFinished, setIsLayoutFinished] = React.useState(false);
+    const applyDefaultValue = useApplyDefaultValue(
+        defaultAmount,
+        formatAndSetText,
+        decimalSeparator,
+    );
+
     const onLayout = React.useCallback(
         (e: LayoutChangeEvent) => {
             onLayoutProp?.(e);
-            setIsLayoutFinished(true);
+            /**
+             * Setup default value should be done only after the first layout.
+             * Otherwise, it will lead to strange bugs, especially on iOS.
+             */
+            applyDefaultValue();
         },
-        [onLayoutProp],
+        [applyDefaultValue, onLayoutProp],
     );
-    React.useEffect(() => {
-        /**
-         * Setup default value should be done only after the first layout.
-         * Otherwise, it will lead to strange bugs.
-         */
-        if (isLayoutFinished && defaultAmountRef.current) {
-            runOnUI(formatAndSetText)(defaultAmountRef.current.toFormat({ decimalSeparator }), {
-                callOnChangeProp: false,
-            });
-        }
-    }, [formatAndSetText, isLayoutFinished]);
-
     const textViewHandlers = useAmountInputHandlers(
         editable,
         onFocus,
@@ -182,13 +179,11 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
 
     const changeAmount = React.useCallback(
         function changeAmount(amount: BigNumber | undefined, callOnChangeProp?: boolean) {
-            if (amount) {
-                runOnUI(formatAndSetText)(amount.toFormat({ decimalSeparator }), {
-                    callOnChangeProp,
-                });
-            }
+            runOnUI(formatAndSetText)(amount ? amount.toFormat({ decimalSeparator }) : '', {
+                callOnChangeProp,
+            });
 
-            if (callOnChangeProp && onChangeAmountProp) {
+            if (callOnChangeProp) {
                 onChangeAmountProp(amount);
             }
         },
