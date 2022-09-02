@@ -67,7 +67,7 @@ function UIHeaderIconItem({
     disabled,
     icon,
     iconElement,
-    iconTintColor = ColorVariants.IconAccent,
+    iconTintColor = ColorVariants.GraphAccent,
 }: HeaderItem): JSX.Element | null {
     if (iconElement) {
         return iconElement;

@@ -159,7 +159,7 @@ function HeaderLeftItems({
             icon: {
                 source: UIAssets.icons.ui.arrowLeftBlack,
             },
-            iconTintColor: ColorVariants.IconAccent,
+            iconTintColor: ColorVariants.GraphAccent,
             onPress: navigation.goBack,
         };
 
@@ -185,7 +185,7 @@ function HeaderLeftItems({
             icon: {
                 source: UIAssets.icons.ui.closeBlack,
             },
-            iconTintColor: ColorVariants.IconAccent,
+            iconTintColor: ColorVariants.GraphAccent,
             onPress: closeModal,
         };
 
