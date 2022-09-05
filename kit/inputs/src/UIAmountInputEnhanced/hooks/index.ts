@@ -4,4 +4,6 @@ export * from './amountMask';
 export * from './usePlaceholderColors';
 export * from './useFormatAndSetText';
 export * from './useExtendedRef';
-export * from './useApplyDefaultValue';
+export * from './useDefaultValue';
+export * from './useFormatText';
+export * from './useSetText';

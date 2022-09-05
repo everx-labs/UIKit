@@ -76,5 +76,9 @@ export type FormatAndSetTextConfig = {
     /**
      * @default true
      */
+    shouldSetText?: boolean;
+    /**
+     * @default true
+     */
     callOnChangeProp?: boolean;
 };

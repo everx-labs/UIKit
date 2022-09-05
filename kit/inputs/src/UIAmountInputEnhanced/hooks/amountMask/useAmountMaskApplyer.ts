@@ -18,7 +18,7 @@ export function useAmountMaskApplyer(numberOfDecimalDigits: number) {
         function applyAmountMask(inputText: string, caretEndPosition: SharedValue<number>) {
             'worklet';
 
-            const { formattedText, normalizedText, carretPosition } = runUIOnChangeAmount(
+            const { formattedText, normalizedText, caretPosition } = runUIOnChangeAmount(
                 inputText,
                 caretEndPosition,
                 integerSeparator,
@@ -30,11 +30,11 @@ export function useAmountMaskApplyer(numberOfDecimalDigits: number) {
                 numberOfDecimalDigits,
             );
 
-            // selectionEnd.value = carretPosition;
+            // selectionEnd.value = caretPosition;
             lastText.value = formattedText;
             lastNormalizedText.value = normalizedText;
 
-            return { formattedText, normalizedText, carretPosition };
+            return { formattedText, normalizedText, caretPosition };
         },
         [
             delimeter,

@@ -22,7 +22,9 @@ import {
     useExtendedRef,
     usePlaceholderColors,
     useFormatAndSetText,
-    useApplyDefaultValue,
+    useDefaultValue,
+    useFormatText,
+    useSetText,
 } from './hooks';
 import { UITextView, UITextViewRef } from '../UITextView';
 import { TapHandler } from './TapHandler';
@@ -72,8 +74,9 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     } = props;
     // @ts-ignore
     const ref = useAnimatedRef<UITextViewRef>();
+    const ref1 = useAnimatedRef<View>();
 
-    const { isFocused, formattedText, isHovered, selectionEndPosition } =
+    const { isFocused, formattedText, normalizedText, isHovered, selectionEndPosition } =
         React.useContext(AmountInputContext);
 
     // /**
@@ -99,22 +102,22 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
         onChangeAmountProp,
     );
 
-    const applyDefaultValue = useApplyDefaultValue(
-        defaultAmount,
-        formatAndSetText,
-        decimalSeparator,
+    const formatText = useFormatText(decimalAspect, multiline, prevCaretPosition);
+    const formatAmount = React.useCallback(
+        (amount: BigNumber) => {
+            const value = amount.toFormat({ decimalSeparator });
+            return formatText(value);
+        },
+        [formatText],
     );
+
+    const setText = useSetText(ref, onChangeAmountProp);
 
     const onLayout = React.useCallback(
         (e: LayoutChangeEvent) => {
             onLayoutProp?.(e);
-            /**
-             * Setup default value should be done only after the first layout.
-             * Otherwise, it will lead to strange bugs, especially on iOS.
-             */
-            applyDefaultValue();
         },
-        [applyDefaultValue, onLayoutProp],
+        [onLayoutProp],
     );
     const textViewHandlers = useAmountInputHandlers(
         editable,
@@ -191,6 +194,15 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     );
     useExtendedRef(forwardedRef, ref, changeAmount);
 
+    const defaultValue = useDefaultValue(defaultAmount, formatAmount);
+    React.useEffect(() => {
+        defaultValue &&
+            runOnUI(setText)(defaultValue, {
+                callOnChangeProp: false,
+                shouldSetText: false,
+            });
+    }, [defaultValue, setText]);
+
     return (
         <InputMessage type={messageType} text={message}>
             <TapHandler inputRef={ref}>
@@ -201,13 +213,14 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
                     onMouseLeave={onMouseLeave}
                 >
                     <Animated.View style={[styles.inputContainer, inputStyle]}>
-                        <View style={{ flex: 1 }}>
+                        <View style={{ flex: 1 }} ref={ref1}>
                             <UITextViewAnimated
                                 ref={ref}
                                 onLayout={onLayout}
                                 {...props}
                                 {...textViewHandlers}
                                 style={styles.input}
+                                defaultValue={defaultValue?.formattedText}
                             />
                             <UILabelAnimated
                                 animatedProps={animatedPlaceholderProps}

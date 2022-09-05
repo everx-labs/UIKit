@@ -1,6 +1,6 @@
 import type { SharedValue } from 'react-native-reanimated';
 import { runUIFormat } from './runUIFormat';
-import { runUIGetNewCarretPosition } from './runUIGetNewCarretPosition';
+import { runUIGetNewCaretPosition } from './runUIGetNewCaretPosition';
 
 export function runUIOnChangeAmount(
     inputText: string,
@@ -24,8 +24,8 @@ export function runUIOnChangeAmount(
         countOfDecimalDigits,
     );
 
-    // Adjust carret (calculation)
-    const carretPosition = runUIGetNewCarretPosition(
+    // Adjust caret (calculation)
+    const caretPosition = runUIGetNewCaretPosition(
         selectionEnd.value,
         formattedText,
         normalizedText,
@@ -38,6 +38,6 @@ export function runUIOnChangeAmount(
     return {
         formattedText,
         normalizedText,
-        carretPosition,
+        caretPosition,
     };
 }

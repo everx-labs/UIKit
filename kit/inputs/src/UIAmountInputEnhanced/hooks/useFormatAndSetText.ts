@@ -10,6 +10,7 @@ import { useAmountMaskApplyer } from './amountMask';
 import { useDerivedReactValue } from './hooks';
 
 const defaultConfig: FormatAndSetTextConfig = {
+    shouldSetText: true,
     shouldSetTheSameText: true,
     callOnChangeProp: true,
 };
@@ -58,10 +59,14 @@ export function useFormatAndSetText(
                 return;
             }
 
-            const { shouldSetTheSameText = true, callOnChangeProp = true } = config;
+            const {
+                shouldSetTheSameText = defaultConfig.shouldSetTheSameText,
+                callOnChangeProp = defaultConfig.callOnChangeProp,
+                shouldSetText = defaultConfig.shouldSetText,
+            } = config;
             const {
                 formattedText: newFormattedText,
-                carretPosition: newCaretPosition,
+                caretPosition: newCaretPosition,
                 normalizedText: newNormalizedText,
             } = applyAmountMask(
                 text,
@@ -74,7 +79,7 @@ export function useFormatAndSetText(
             selectionEndPosition.value = newCaretPosition;
             normalizedText.value = newNormalizedText;
 
-            if (text !== newFormattedText || shouldSetTheSameText) {
+            if (shouldSetText && (text !== newFormattedText || shouldSetTheSameText)) {
                 setTextAndCaretPosition(ref, inputManagerRef, newFormattedText, newCaretPosition);
             }
 
