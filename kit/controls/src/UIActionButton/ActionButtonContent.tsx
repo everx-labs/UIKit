@@ -47,6 +47,9 @@ export function ActionButtonContent({
                 <UILabelAnimated
                     animatedProps={animatedLabelProps}
                     style={styles.title}
+                    /**
+                     * NOTE: If you change the role, you should change paddingTop in style.
+                     */
                     role={TypographyVariants.NarrowActionNote}
                 >
                     {title}
@@ -75,6 +78,17 @@ const useStyles = makeStyles((icon: ImageSourcePropType | undefined, loading: bo
     title: {
         paddingLeft: icon ? UIConstant.smallContentOffset : 0,
         opacity: loading && !icon ? 0 : 1,
+        ...Platform.select({
+            native: {
+                /**
+                 * We need to add top padding to align text vertically for `role={TypographyVariants.NarrowActionNote}`.
+                 * This is because RN Text component has it's own bottom padding on native, and it cann't be changed.
+                 * NOTE: If the `role` of the text changes, we need to change this `paddintTop` (maybe remove it).
+                 */
+                paddingTop: 4,
+            },
+            default: null,
+        }),
     },
     actionButtonIcon: {
         /**
