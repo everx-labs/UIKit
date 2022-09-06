@@ -144,27 +144,14 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     /** The `hasLabel` can't change because it derived from immutable ref */
     const hasLabel = React.useMemo(() => !!labelRef.current, []);
 
-    const isExpanded = useDerivedValue(() => isFocused.value || !!formattedText.value);
-
-    const { isPlaceholderVisible, showPlacehoder } = usePlaceholderVisibility(
-        isExpanded,
-        hasLabel,
+    const { expansionState, expandingValue } = useExpandingValue(
+        isFocused,
         formattedText,
-    );
-
-    // useDerivedValue(() => {
-    //     console.log('useDerivedValue', {
-    //         isExpanded: isExpanded.value,
-    //         isPlaceholderVisible: isPlaceholderVisible.value,
-    //         formattedText: formattedText.value,
-    //     });
-    // });
-
-    const expandingValue: Readonly<Animated.SharedValue<number>> = useExpandingValue(
+        defaultAmount,
         hasLabel,
-        isExpanded,
-        showPlacehoder,
     );
+
+    const isPlaceholderVisible = usePlaceholderVisibility(expansionState, hasLabel, formattedText);
 
     const inputStyle = useAnimatedStyle(() => {
         return {

@@ -1,12 +1,16 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable react-hooks/rules-of-hooks */
-import * as React from 'react';
+import type BigNumber from 'bignumber.js';
 import {
     SharedValue,
     useAnimatedReaction,
+    useDerivedValue,
     useSharedValue,
+    useWorkletCallback,
     withSpring,
     WithSpringConfig,
 } from 'react-native-reanimated';
+import type { ExpansionState } from '../types';
 
 // @inline
 const POSITION_FOLDED: number = 0;
@@ -18,10 +22,12 @@ const withSpringConfig: WithSpringConfig = {
     overshootClamping: true,
 };
 
-function getPosition(isExpanded: boolean): number {
+function getPosition(expansionState: ExpansionState): number {
     'worklet';
 
-    return isExpanded ? POSITION_EXPANDED : POSITION_FOLDED;
+    return expansionState === 'Expanded' || expansionState === 'InExpandProgress'
+        ? POSITION_EXPANDED
+        : POSITION_FOLDED;
 }
 
 /**
@@ -29,48 +35,61 @@ function getPosition(isExpanded: boolean): number {
  * It can be in the range from POSITION_FOLDED to POSITION_EXPANDED
  */
 export function useExpandingValue(
+    isFocused: SharedValue<boolean>,
+    formattedText: SharedValue<string>,
+    defaultAmount: BigNumber | undefined,
     hasLabel: boolean,
-    isExpanded: SharedValue<boolean>,
-    showPlacehoder: () => void,
-): Readonly<SharedValue<number>> {
+) {
     /** The `hasLabel` can't change because it derived from immutable ref */
     if (!hasLabel) {
-        return useSharedValue(0);
+        return {
+            expandingValue: useSharedValue(0),
+            expansionState: useSharedValue<ExpansionState>('Expanded'),
+        };
     }
 
-    /**
-     * Label position switcher:
-     * `POSITION_FOLDED` or
-     * `POSITION_EXPANDED`
-     */
-    const position = useSharedValue(getPosition(isExpanded.value));
-
-    const onExpand = React.useCallback(
-        (isFinished?: boolean): void => {
-            'worklet';
-
-            if (isFinished) {
-                showPlacehoder();
-            }
-        },
-        [showPlacehoder],
+    const expansionState = useSharedValue<ExpansionState>(
+        isFocused.value || !!defaultAmount ? 'Expanded' : 'Collapsed',
     );
 
     useAnimatedReaction(
-        () => getPosition(isExpanded.value),
-        (expandingPosition, prevExpandingPosition) => {
-            /**
-             * We don't need to run animation if expandingPosition is already in correct state.
-             * It leads to unwanted calling of `onExpand` callback.
-             */
-            if (prevExpandingPosition === expandingPosition) {
+        () => ({
+            isFocused: isFocused.value,
+            hasText: !!formattedText.value,
+        }),
+        (currentState, prevState) => {
+            if (!prevState) {
                 return;
             }
-
-            const callback = prevExpandingPosition === POSITION_FOLDED ? onExpand : undefined;
-            position.value = withSpring(expandingPosition, withSpringConfig, callback);
+            if (
+                prevState.hasText !== currentState?.hasText ||
+                prevState.isFocused !== currentState.isFocused
+            ) {
+                expansionState.value =
+                    currentState.isFocused || currentState.hasText
+                        ? 'InExpandProgress'
+                        : 'InCollapseProgress';
+            }
         },
     );
+    const onEndAnimation = useWorkletCallback((isFinished?: boolean): void => {
+        if (isFinished) {
+            if (expansionState.value === 'InExpandProgress') {
+                expansionState.value = 'Expanded';
+            }
+            if (expansionState.value === 'InCollapseProgress') {
+                expansionState.value = 'Collapsed';
+            }
+        }
+    });
 
-    return position;
+    const expandingValue = useDerivedValue(() => {
+        const toPosition = getPosition(expansionState.value);
+        return withSpring(toPosition, withSpringConfig, onEndAnimation);
+    });
+
+    return {
+        expandingValue,
+        expansionState,
+    };
 }

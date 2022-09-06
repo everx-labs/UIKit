@@ -32,19 +32,12 @@ export function useFormatText(
     const formatText = useWorkletCallback((text: string) => {
         'worklet';
 
-        const asd = applyAmountMask(
+        return applyAmountMask(
             text,
             platformOS.value === 'ios' && multilineAnimated.value
                 ? prevCaretPosition
                 : selectionEndPosition,
         );
-        // console.log({
-        //     text,
-        //     prevCaretPosition: prevCaretPosition.value,
-        //     caretPosition: asd.caretPosition,
-        //     formatText: asd.formattedText,
-        // });
-        return asd;
     });
 
     return formatText;

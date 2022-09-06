@@ -86,3 +86,5 @@ export type TextAttributes = {
 };
 export type FormatText = (text: string) => TextAttributes;
 export type SetText = (textAttributes: TextAttributes, config: FormatAndSetTextConfig) => void;
+
+export type ExpansionState = 'Expanded' | 'Collapsed' | 'InExpandProgress' | 'InCollapseProgress';
