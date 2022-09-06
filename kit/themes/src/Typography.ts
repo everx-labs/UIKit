@@ -5,7 +5,7 @@ import { fontBaseMetricsLegacy, TypographyLegacy } from './TypographyLegacy';
 /**
  * Flag to turn to the old typography
  */
-export const isLegacyTypographyEnabled = false;
+export const isLegacyTypographyEnabled = true;
 
 // eslint-disable-next-line no-shadow
 export enum TypographyVariants {

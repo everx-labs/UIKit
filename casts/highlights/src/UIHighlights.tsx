@@ -89,6 +89,12 @@ type UIHighlightsProps = {
      * Whether debug view is visible
      */
     debug?: boolean;
+    /**
+     * Whether controls panel is visible
+     *
+     * Default - false
+     */
+    controlsHidden?: boolean;
 };
 
 /**
@@ -101,6 +107,7 @@ export function UIHighlights({
     debug = false,
     contentInset = { left: 0 },
     pagingEnabled = false,
+    controlsHidden = false,
 }: UIHighlightsProps) {
     const currentGravityPosition = useSharedValue(0);
     const currentProgress = useSharedValue(0);
@@ -212,6 +219,12 @@ export function UIHighlights({
 
     const nativeGestureRef = React.useRef<NativeViewGestureHandler>(null);
 
+    if (!React.Children.count(children)) {
+        // return null if the list of cards is empty;
+        // otherwise, controls will be visible
+        return null;
+    }
+
     return (
         <View style={styles.container}>
             <NativeViewGestureHandler
@@ -256,15 +269,15 @@ export function UIHighlights({
                                     style={
                                         itemIndex !== 0
                                             ? {
-                                                  paddingLeft: spaceBetween,
-                                              }
+                                                paddingLeft: spaceBetween,
+                                            }
                                             : null
                                     }
                                     onLayout={({
-                                        nativeEvent: {
-                                            layout: { x },
-                                        },
-                                    }) => {
+                                                   nativeEvent: {
+                                                       layout: { x },
+                                                   },
+                                               }) => {
                                         onItemLayout(
                                             itemIndex,
                                             // To have a visual feedback that
@@ -286,18 +299,20 @@ export function UIHighlights({
                     </HighlightsScrollRefProvider>
                 </Animated.ScrollView>
             </NativeViewGestureHandler>
-            <View style={[styles.controlPanel, contentStyle]}>
-                <Dots
-                    currentProgress={currentProgress}
-                    currentGravityPosition={currentGravityPosition}
-                />
-                <WebPositionControl
-                    scrollRef={scrollRef}
-                    currentGravityPosition={currentGravityPosition}
-                    calculateClosestLeftX={calculateClosestLeftX}
-                    calculateClosestRightX={calculateClosestRightX}
-                />
-            </View>
+            {controlsHidden ? null : (
+                <View style={[styles.controlPanel, contentStyle]}>
+                    <Dots
+                        currentProgress={currentProgress}
+                        currentGravityPosition={currentGravityPosition}
+                    />
+                    <WebPositionControl
+                        scrollRef={scrollRef}
+                        currentGravityPosition={currentGravityPosition}
+                        calculateClosestLeftX={calculateClosestLeftX}
+                        calculateClosestRightX={calculateClosestRightX}
+                    />
+                </View>
+            )}
             {debug && (
                 <DebugView
                     currentGravityPosition={currentGravityPosition}
