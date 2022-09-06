@@ -15,8 +15,8 @@ export const UICurrency = React.memo(function UICurrency({
     children,
     animated,
     decimalAspect = UINumberDecimalAspect.Short,
-    integerVariant = TypographyVariants.ParagraphText,
-    decimalVariant = TypographyVariants.ParagraphText,
+    integerVariant = TypographyVariants.SurfParagraphLarge,
+    decimalVariant = TypographyVariants.SurfParagraphNormal,
     integerColor = ColorVariants.TextPrimary,
     decimalColor = ColorVariants.TextSecondary,
     signChar,
@@ -42,6 +42,7 @@ export const UICurrency = React.memo(function UICurrency({
                     <UICurrencySign
                         loading={loading}
                         integerColor={integerColor}
+                        integerVariant={integerVariant}
                         signChar={signChar}
                         signVariant={signVariant || decimalVariant}
                         signIcon={signIcon}
@@ -70,6 +71,7 @@ export const UICurrency = React.memo(function UICurrency({
                 <UICurrencySign
                     loading={false}
                     integerColor={integerColor}
+                    integerVariant={integerVariant}
                     signChar={signChar}
                     signVariant={signVariant || decimalVariant}
                     signIcon={signIcon}

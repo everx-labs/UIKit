@@ -14,7 +14,7 @@ export function getRandomNum() {
     const num = Math.random();
     const symbols = 10 ** (Math.floor(Math.random() * 10) + 1);
 
-    return Math.floor(num * symbols) / 100;
+    return (num * symbols) / 100;
 }
 
 function Numbers() {
@@ -96,6 +96,7 @@ function Currencies() {
                         animated
                         signIcon={UIAssets.icons.brand.surfSymbolBlack}
                         loading={loading}
+                        signVariant={TypographyVariants.HeadersHuge}
                     >
                         {val}
                     </UICurrency>
@@ -104,7 +105,11 @@ function Currencies() {
                         {val}
                     </UICurrency>
                     <View style={{ height: 10 }} />
-                    <UICurrency signIcon={UIAssets.icons.brand.surfSymbolBlack} loading={loading}>
+                    <UICurrency
+                        signIcon={UIAssets.icons.brand.surfSymbolBlack}
+                        loading={loading}
+                        signVariant={TypographyVariants.SurfParagraphTiny}
+                    >
                         {val}
                     </UICurrency>
                 </View>
@@ -190,6 +195,7 @@ function Currencies() {
                         signChar="$"
                         loading={loading}
                         decimalAspect={UINumberDecimalAspect.Precision}
+                        showPositiveSign
                     >
                         {val}
                     </UICurrency>
@@ -216,7 +222,7 @@ function Currencies() {
                 title="+"
                 type={UIBoxButtonType.Tertiary}
                 onPress={() => {
-                    setVal(val.plus(10 ** Math.abs(Math.floor(Math.random() * 10) - 5)));
+                    setVal(val.plus(10 ** Math.abs(Math.random() * 10 - 5)));
                 }}
                 layout={{ marginBottom: 5 }}
             />
@@ -274,17 +280,15 @@ function TouchableUICurrency() {
             </TouchableOpacity>
             <View
                 style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
                     marginBottom: 10,
                 }}
             >
                 <UICurrency
                     animated
-                    signIcon={UIAssets.icons.brand.surfSymbolBlack}
+                    signChar="PURR"
                     decimalAspect={UINumberDecimalAspect.Short}
                     integerVariant={TypographyVariants.LightLarge}
-                    decimalVariant={TypographyVariants.LightLarge}
+                    decimalVariant={TypographyVariants.LightMedium}
                 >
                     {val}
                 </UICurrency>
@@ -292,24 +296,17 @@ function TouchableUICurrency() {
                     signIcon={UIAssets.icons.brand.surfSymbolBlack}
                     decimalAspect={UINumberDecimalAspect.Short}
                     integerVariant={TypographyVariants.LightLarge}
-                    decimalVariant={TypographyVariants.LightLarge}
+                    decimalVariant={TypographyVariants.LightMedium}
                 >
                     {val}
                 </UICurrency>
-            </View>
-            <View
-                style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                }}
-            >
                 <UICurrency
                     animated
                     loading
                     signIcon={UIAssets.icons.brand.surfSymbolBlack}
                     decimalAspect={UINumberDecimalAspect.Short}
                     integerVariant={TypographyVariants.LightLarge}
-                    decimalVariant={TypographyVariants.LightLarge}
+                    decimalVariant={TypographyVariants.LightMedium}
                 >
                     {val}
                 </UICurrency>
@@ -318,7 +315,7 @@ function TouchableUICurrency() {
                     signIcon={UIAssets.icons.brand.surfSymbolBlack}
                     decimalAspect={UINumberDecimalAspect.Short}
                     integerVariant={TypographyVariants.LightLarge}
-                    decimalVariant={TypographyVariants.LightLarge}
+                    decimalVariant={TypographyVariants.LightMedium}
                 >
                     {val}
                 </UICurrency>
@@ -356,7 +353,7 @@ function IconsUICurrency() {
                     signIcon={icon}
                     decimalAspect={UINumberDecimalAspect.Short}
                     integerVariant={TypographyVariants.LightLarge}
-                    decimalVariant={TypographyVariants.LightLarge}
+                    decimalVariant={TypographyVariants.LightMedium}
                 >
                     {val}
                 </UICurrency>
@@ -374,7 +371,7 @@ function IconsUICurrency() {
                     signIcon={icon}
                     decimalAspect={UINumberDecimalAspect.Short}
                     integerVariant={TypographyVariants.LightLarge}
-                    decimalVariant={TypographyVariants.LightLarge}
+                    decimalVariant={TypographyVariants.LightMedium}
                 >
                     {val}
                 </UICurrency>

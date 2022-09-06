@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import type { TextStyle } from 'react-native';
-import { fontBaseMeasurementsLegacy, TypographyLegacy } from './TypographyLegacy';
+import { fontBaseMetricsLegacy, TypographyLegacy } from './TypographyLegacy';
 
 /**
  * Flag to turn to the old typography
@@ -128,25 +128,34 @@ export type Font = {
 };
 
 // See picture here https://www.npmjs.com/package/font-measure#metrics-
-// Calculated with https://codesandbox.io/s/npm-playground-forked-bniuv8?file=/src/index.js
-const fontBaselineRatio = isLegacyTypographyEnabled
-    ? fontBaseMeasurementsLegacy.interFontBaselineRatio
-    : 0.23;
-const fontMiddlelineRatio = isLegacyTypographyEnabled
-    ? fontBaseMeasurementsLegacy.interFontMiddlelineRatio
-    : 0.51;
-const fontLowerlineRatio = isLegacyTypographyEnabled
-    ? fontBaseMeasurementsLegacy.interFontLowerlineRatio
-    : 0.77;
-const fontUpperlineRatio = isLegacyTypographyEnabled
-    ? fontBaseMeasurementsLegacy.interFontUpperlineRatio
-    : 0.95;
-const fontCapHeightRatio = isLegacyTypographyEnabled
-    ? fontBaseMeasurementsLegacy.interFontCapHeightRatio
-    : 0.72;
-const fontDescentRatio = isLegacyTypographyEnabled
-    ? fontBaseMeasurementsLegacy.interFontDescentRatio
-    : 1.01;
+export const fontBaseMetrics = isLegacyTypographyEnabled
+    ? fontBaseMetricsLegacy
+    : Platform.select({
+          ios: {
+              baselineRatio: 0.24,
+              middlelineRatio: 0.41,
+              lowerlineRatio: 0.62,
+              upperlineRatio: 0.74,
+              capHeightRatio: 0.5,
+              descentRatio: 1.01,
+          },
+          android: {
+              baselineRatio: 0.2,
+              middlelineRatio: 0.37,
+              lowerlineRatio: 0.59,
+              upperlineRatio: 0.7,
+              capHeightRatio: 0.5,
+              descentRatio: 1.01,
+          },
+          default: {
+              baselineRatio: 0.23,
+              middlelineRatio: 0.4,
+              lowerlineRatio: 0.615,
+              upperlineRatio: 0.73,
+              capHeightRatio: 0.5,
+              descentRatio: 1.01,
+          },
+      });
 
 export const ManropeFont: Font = {
     extraBold: {
@@ -630,20 +639,28 @@ export const Typography: TypographyT = StyleSheet.create({
     ...(isLegacyTypographyEnabled ? TypographyLegacy : null),
 });
 
-export function getFontMesurements(variant: TypographyVariants) {
-    const { lineHeight } = StyleSheet.flatten(Typography[variant]);
+export type FontMeasurements = {
+    lineHeight: number;
+    capHeight: number;
+    lowerHeight: number;
+    baseline: number;
+    middleline: number;
+    lowerline: number;
+    upperline: number;
+    descent: number;
+    descentBottom: number;
+};
 
-    if (!lineHeight) {
-        return null;
-    }
+export function getFontMeasurements(variant: TypographyVariants): FontMeasurements {
+    const { lineHeight = FontSize.Medium.lineHeight } = StyleSheet.flatten(Typography[variant]);
 
-    const baseline = fontBaselineRatio * lineHeight;
-    const lowerline = fontLowerlineRatio * lineHeight;
-    const middleline = fontMiddlelineRatio * lineHeight;
-    const upperline = fontUpperlineRatio * lineHeight;
-    const capHeight = fontCapHeightRatio * lineHeight;
+    const baseline = fontBaseMetrics.baselineRatio * lineHeight;
+    const lowerline = fontBaseMetrics.lowerlineRatio * lineHeight;
+    const middleline = fontBaseMetrics.middlelineRatio * lineHeight;
+    const upperline = fontBaseMetrics.upperlineRatio * lineHeight;
+    const capHeight = fontBaseMetrics.capHeightRatio * lineHeight;
     const lowerHeight = lowerline - baseline;
-    const descent = fontDescentRatio * lineHeight;
+    const descent = fontBaseMetrics.descentRatio * lineHeight;
     return {
         lineHeight,
         capHeight,

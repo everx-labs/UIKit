@@ -80,13 +80,13 @@ export type FontLegacy = {
 
 // See picture here https://www.npmjs.com/package/font-measure#metrics-
 // Calculated with https://codesandbox.io/s/npm-playground-forked-scqo2?file=/src/index.js
-export const fontBaseMeasurementsLegacy = {
-    interFontBaselineRatio: 0.25 / 1.15,
-    interFontMiddlelineRatio: 0.58 / 1.15,
-    interFontLowerlineRatio: 0.71 / 1.15,
-    interFontUpperlineRatio: 0.92 / 1.15,
-    interFontCapHeightRatio: 0.51,
-    interFontDescentRatio: 1.05 / 1.15,
+export const fontBaseMetricsLegacy = {
+    baselineRatio: 0.25 / 1.15,
+    middlelineRatio: 0.58 / 1.15,
+    lowerlineRatio: 0.71 / 1.15,
+    upperlineRatio: 0.92 / 1.15,
+    capHeightRatio: 0.51,
+    descentRatio: 1.05 / 1.15,
 };
 
 // TODO Remove

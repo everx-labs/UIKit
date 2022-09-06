@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
         position: 'relative',
         flexDirection: 'row',
         justifyContent: 'flex-start',
+        alignItems: 'flex-end',
     },
     // On RTL RN will reverse `flex-direction` so to draw
     // it properly we should reverse it again
@@ -24,5 +25,6 @@ const styles = StyleSheet.create({
         position: 'relative',
         flexDirection: 'row-reverse',
         justifyContent: 'flex-end',
+        alignItems: 'flex-end',
     },
 });
