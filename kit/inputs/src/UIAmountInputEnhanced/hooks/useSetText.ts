@@ -4,17 +4,21 @@ import { runOnJS, useAnimatedRef, useWorkletCallback } from 'react-native-reanim
 import type { UITextViewRef } from '../../UITextView/types';
 import { AmountInputContext } from '../constants';
 import { setTextAndCaretPosition } from '../setTextAndCaretPosition';
-import type { FormatAndSetTextConfig, UIAmountInputEnhancedProps } from '../types';
+import type {
+    FormatAndSetTextConfig,
+    SetText,
+    TextAttributes,
+    UIAmountInputEnhancedProps,
+} from '../types';
 
 const defaultConfig: FormatAndSetTextConfig = {
     shouldSetText: true,
-    shouldSetTheSameText: true,
     callOnChangeProp: true,
 };
 export function useSetText(
     ref: React.RefObject<UITextViewRef>,
     onChangeAmountProp: UIAmountInputEnhancedProps['onChangeAmount'],
-) {
+): SetText {
     // @ts-expect-error
     const inputManagerRef = useAnimatedRef<InputController | undefined>();
 
@@ -30,14 +34,7 @@ export function useSetText(
     );
 
     const setText = useWorkletCallback(
-        (
-            textAttributes: {
-                formattedText: string;
-                normalizedText: string;
-                caretPosition: number;
-            },
-            config: FormatAndSetTextConfig = defaultConfig,
-        ): void => {
+        (textAttributes: TextAttributes, config: FormatAndSetTextConfig = defaultConfig): void => {
             'worklet';
 
             const {
@@ -46,12 +43,7 @@ export function useSetText(
                 caretPosition: newCaretPosition,
             } = textAttributes;
 
-            if (newFormattedText === formattedText.value) {
-                return;
-            }
-
             const {
-                shouldSetTheSameText = defaultConfig.shouldSetTheSameText,
                 callOnChangeProp = defaultConfig.callOnChangeProp,
                 shouldSetText = defaultConfig.shouldSetText,
             } = config;
@@ -60,10 +52,7 @@ export function useSetText(
             selectionEndPosition.value = newCaretPosition;
             normalizedText.value = newNormalizedText;
 
-            if (
-                shouldSetText &&
-                (formattedText.value !== newFormattedText || shouldSetTheSameText)
-            ) {
+            if (shouldSetText) {
                 setTextAndCaretPosition(ref, inputManagerRef, newFormattedText, newCaretPosition);
             }
 

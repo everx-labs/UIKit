@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Platform } from 'react-native';
 import { SharedValue, useWorkletCallback } from 'react-native-reanimated';
 import { AmountInputContext, UIAmountInputEnhancedDecimalAspect, UIConstants } from '../constants';
-import type { UIAmountInputEnhancedProps } from '../types';
+import type { FormatText, UIAmountInputEnhancedProps } from '../types';
 import { useAmountMaskApplyer } from './amountMask';
 import { useDerivedReactValue } from './hooks';
 
@@ -10,11 +10,7 @@ export function useFormatText(
     decimalAspect: UIAmountInputEnhancedProps['decimalAspect'],
     multiline: UIAmountInputEnhancedProps['multiline'],
     prevCaretPosition: SharedValue<number>,
-): (text: string) => {
-    formattedText: string;
-    normalizedText: string;
-    caretPosition: number;
-} {
+): FormatText {
     const { selectionEndPosition } = React.useContext(AmountInputContext);
 
     const platformOS = useDerivedReactValue(Platform.OS);
@@ -36,22 +32,19 @@ export function useFormatText(
     const formatText = useWorkletCallback((text: string) => {
         'worklet';
 
-        const {
-            formattedText: newFormattedText,
-            caretPosition: newCaretPosition,
-            normalizedText: newNormalizedText,
-        } = applyAmountMask(
+        const asd = applyAmountMask(
             text,
             platformOS.value === 'ios' && multilineAnimated.value
                 ? prevCaretPosition
                 : selectionEndPosition,
         );
-
-        return {
-            formattedText: newFormattedText,
-            caretPosition: newCaretPosition,
-            normalizedText: newNormalizedText,
-        };
+        // console.log({
+        //     text,
+        //     prevCaretPosition: prevCaretPosition.value,
+        //     caretPosition: asd.caretPosition,
+        //     formatText: asd.formattedText,
+        // });
+        return asd;
     });
 
     return formatText;

@@ -72,13 +72,17 @@ export type FormatAndSetTextConfig = {
     /**
      * @default true
      */
-    shouldSetTheSameText?: boolean;
-    /**
-     * @default true
-     */
     shouldSetText?: boolean;
     /**
      * @default true
      */
     callOnChangeProp?: boolean;
 };
+
+export type TextAttributes = {
+    formattedText: string;
+    normalizedText: string;
+    caretPosition: number;
+};
+export type FormatText = (text: string) => TextAttributes;
+export type SetText = (textAttributes: TextAttributes, config: FormatAndSetTextConfig) => void;

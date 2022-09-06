@@ -21,7 +21,6 @@ import {
     useAmountInputHover,
     useExtendedRef,
     usePlaceholderColors,
-    useFormatAndSetText,
     useDefaultValue,
     useFormatText,
     useSetText,
@@ -74,7 +73,6 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     } = props;
     // @ts-ignore
     const ref = useAnimatedRef<UITextViewRef>();
-    const ref1 = useAnimatedRef<View>();
 
     const { isFocused, formattedText, normalizedText, isHovered, selectionEndPosition } =
         React.useContext(AmountInputContext);
@@ -94,17 +92,24 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
 
     const prevCaretPosition = useSharedValue(selectionEndPosition.value);
 
-    const formatAndSetText = useFormatAndSetText(
-        ref,
-        decimalAspect,
-        multiline,
-        prevCaretPosition,
-        onChangeAmountProp,
-    );
+    // const formatAndSetText = useFormatAndSetText(
+    //     ref,
+    //     decimalAspect,
+    //     multiline,
+    //     prevCaretPosition,
+    //     onChangeAmountProp,
+    // );
 
     const formatText = useFormatText(decimalAspect, multiline, prevCaretPosition);
     const formatAmount = React.useCallback(
-        (amount: BigNumber) => {
+        (amount: BigNumber | undefined) => {
+            if (!amount) {
+                return {
+                    formattedText: '',
+                    normalizedText: '',
+                    caretPosition: 0,
+                };
+            }
             const value = amount.toFormat({ decimalSeparator });
             return formatText(value);
         },
@@ -124,7 +129,8 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
         onFocus,
         onBlur,
         onSelectionChange,
-        formatAndSetText,
+        formatText,
+        setText,
         prevCaretPosition,
     );
 
@@ -140,7 +146,19 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
 
     const isExpanded = useDerivedValue(() => isFocused.value || !!formattedText.value);
 
-    const { isPlaceholderVisible, showPlacehoder } = usePlaceholderVisibility(isExpanded, hasLabel);
+    const { isPlaceholderVisible, showPlacehoder } = usePlaceholderVisibility(
+        isExpanded,
+        hasLabel,
+        formattedText,
+    );
+
+    // useDerivedValue(() => {
+    //     console.log('useDerivedValue', {
+    //         isExpanded: isExpanded.value,
+    //         isPlaceholderVisible: isPlaceholderVisible.value,
+    //         formattedText: formattedText.value,
+    //     });
+    // });
 
     const expandingValue: Readonly<Animated.SharedValue<number>> = useExpandingValue(
         hasLabel,
@@ -164,7 +182,7 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
 
     const placeholderColors = usePlaceholderColors(theme);
     const placeholderTextColor = useDerivedValue(() => {
-        if (!isPlaceholderVisible.value || formattedText.value) {
+        if (!isPlaceholderVisible.value) {
             return placeholderColors.value.transparent;
         }
         return isHovered.value && editable
@@ -182,15 +200,12 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
 
     const changeAmount = React.useCallback(
         function changeAmount(amount: BigNumber | undefined, callOnChangeProp?: boolean) {
-            runOnUI(formatAndSetText)(amount ? amount.toFormat({ decimalSeparator }) : '', {
+            const textAttributes = formatAmount(amount);
+            runOnUI(setText)(textAttributes, {
                 callOnChangeProp,
             });
-
-            if (callOnChangeProp) {
-                onChangeAmountProp(amount);
-            }
         },
-        [formatAndSetText, onChangeAmountProp],
+        [formatAmount, setText],
     );
     useExtendedRef(forwardedRef, ref, changeAmount);
 
@@ -213,7 +228,7 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
                     onMouseLeave={onMouseLeave}
                 >
                     <Animated.View style={[styles.inputContainer, inputStyle]}>
-                        <View style={{ flex: 1 }} ref={ref1}>
+                        <View style={{ flex: 1 }}>
                             <UITextViewAnimated
                                 ref={ref}
                                 onLayout={onLayout}

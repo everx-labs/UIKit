@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { runOnJS, SharedValue } from 'react-native-reanimated';
-import type { FormatAndSetTextConfig, UIAmountInputEnhancedProps } from '../types';
+import type { FormatText, SetText, UIAmountInputEnhancedProps } from '../types';
 import { useTextViewHandler } from '../../useTextViewHandler';
 import { AmountInputContext } from '../constants';
 import { useDerivedReactValue } from './hooks';
@@ -10,7 +10,8 @@ export function useAmountInputHandlers(
     onFocusProp: UIAmountInputEnhancedProps['onFocus'],
     onBlurProp: UIAmountInputEnhancedProps['onBlur'],
     onSelectionChangeProp: UIAmountInputEnhancedProps['onSelectionChange'],
-    formatAndSetText: (text: string, config?: FormatAndSetTextConfig | undefined) => void,
+    formatText: FormatText,
+    setText: SetText,
     prevCaretPosition: SharedValue<number>,
 ) {
     const { isFocused, selectionEndPosition } = React.useContext(AmountInputContext);
@@ -54,7 +55,10 @@ export function useAmountInputHandlers(
             onChange: evt => {
                 'worklet';
 
-                formatAndSetText(evt.text, { shouldSetTheSameText: false });
+                const textAttributes = formatText(evt.text);
+                setText(textAttributes, {
+                    shouldSetText: textAttributes.formattedText !== evt.text,
+                });
             },
             onSelectionChange: evt => {
                 'worklet';
@@ -68,7 +72,7 @@ export function useAmountInputHandlers(
                 selectionEndPosition.value = evt.selection.end;
             },
         },
-        [onFocusProp, onBlurProp, onSelectionChangeProp, formatAndSetText],
+        [onFocusProp, onBlurProp, onSelectionChangeProp, setText, formatText],
     );
 
     return textViewHandlers;

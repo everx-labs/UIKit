@@ -10,6 +10,7 @@ import {
 export function usePlaceholderVisibility(
     isExpanded: SharedValue<boolean>,
     hasLabel: boolean,
+    formattedText: SharedValue<string>,
 ): {
     isPlaceholderVisible: SharedValue<boolean>;
     /** @worklet */
@@ -37,12 +38,12 @@ export function usePlaceholderVisibility(
     });
 
     useAnimatedReaction(
-        () => isExpanded.value,
-        (expanded, prevExpanded) => {
-            if (expanded === prevExpanded) {
+        () => ({ isExpanded: isExpanded.value, formattedText: formattedText.value }),
+        (current, prev) => {
+            if (current.isExpanded === prev?.isExpanded) {
                 return;
             }
-            if (!expanded) {
+            if (!current.isExpanded && current.formattedText) {
                 hidePlacehoder();
             }
         },
