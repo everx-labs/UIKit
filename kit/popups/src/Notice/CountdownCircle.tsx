@@ -22,24 +22,17 @@ const AnimatedCircle = Animated.createAnimatedComponent(
  */
 const circleOffset = Platform.OS === 'android' ? 0.5 : 0;
 
-const radius =
-    (UIConstant.notice.countdownCircle.size -
-        UIConstant.notice.countdownCircle.strokeWidth -
-        circleOffset) /
-    2;
-const circumference = radius * 2 * Math.PI;
-
-const useCounter = (countdownValue: Animated.SharedValue<number>) => {
+const useCounter = (countdownValue: Animated.SharedValue<number> | undefined) => {
     const [count, setCount] = React.useState<number>(0);
     useAnimatedReaction(
         () => {
             return {
-                countdownValue: countdownValue.value,
+                countdownValue: countdownValue?.value,
             };
         },
         state => {
-            const currentCount = Math.ceil(state.countdownValue / 1000);
-            if (currentCount !== count) {
+            const currentCount = state.countdownValue && Math.ceil(state.countdownValue / 1000);
+            if (currentCount != null && currentCount !== count) {
                 runOnJS(setCount)(currentCount);
             }
         },
@@ -47,12 +40,38 @@ const useCounter = (countdownValue: Animated.SharedValue<number>) => {
     return count;
 };
 
+function Counter({
+    color,
+    countdownValue,
+}: Required<Pick<CountdownCirlceProps, 'color' | 'countdownValue'>>) {
+    const count = useCounter(countdownValue);
+    return (
+        <View style={styles.counter}>
+            <UILabel
+                role={TypographyVariants.HeadlineLabel}
+                color={color}
+                style={{
+                    textAlign: 'center',
+                }}
+            >
+                {count}
+            </UILabel>
+        </View>
+    );
+}
+
 export const CountdownCirlce = ({
     countdownValue,
     countdownProgress,
     color,
+    size = UIConstant.notice.countdownCircle.size,
+    strokeWidth = UIConstant.notice.countdownCircle.strokeWidth,
 }: CountdownCirlceProps) => {
     const theme = useTheme();
+
+    const radius = React.useMemo(() => size / 2, [size]);
+    const circumference = React.useMemo(() => radius * 2 * Math.PI, [radius]);
+
     const animatedProps = useAnimatedProps(() => {
         const strokeDashoffset = -circumference * countdownProgress.value;
         return {
@@ -63,21 +82,17 @@ export const CountdownCirlce = ({
         };
     });
 
-    const count = useCounter(countdownValue);
-
     return (
-        <View>
-            <View style={styles.counter}>
-                <UILabel
-                    role={TypographyVariants.HeadlineLabel}
-                    color={color}
-                    style={{
-                        textAlign: 'center',
-                    }}
-                >
-                    {count}
-                </UILabel>
-            </View>
+        <View
+            style={[
+                styles.container,
+                {
+                    width: size,
+                    height: size,
+                },
+            ]}
+        >
+            {countdownValue ? <Counter color={color} countdownValue={countdownValue} /> : null}
             <View
                 style={{
                     transform: [
@@ -88,18 +103,18 @@ export const CountdownCirlce = ({
                 }}
             >
                 <Svg
-                    width={UIConstant.notice.countdownCircle.size}
-                    height={UIConstant.notice.countdownCircle.size}
+                    width={size + strokeWidth + circleOffset * 2}
+                    height={size + strokeWidth + circleOffset * 2}
                 >
                     <AnimatedCircle
                         animatedProps={animatedProps}
                         stroke={theme[color] as string}
                         fill="none"
-                        cx={UIConstant.notice.countdownCircle.size / 2 + circleOffset / 2}
-                        cy={UIConstant.notice.countdownCircle.size / 2 - circleOffset / 2}
+                        cx={radius + strokeWidth / 2 + circleOffset}
+                        cy={radius + strokeWidth / 2 + circleOffset}
                         r={radius}
                         strokeDasharray={`${circumference} ${circumference}`}
-                        strokeWidth={UIConstant.notice.countdownCircle.strokeWidth}
+                        strokeWidth={strokeWidth}
                     />
                 </Svg>
             </View>
@@ -108,6 +123,11 @@ export const CountdownCirlce = ({
 };
 
 const styles = StyleSheet.create({
+    container: {
+        overflow: 'visible',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     counter: {
         ...StyleSheet.absoluteFillObject,
         justifyContent: 'center',
