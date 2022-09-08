@@ -10,9 +10,11 @@ import {
     UIBackgroundViewColors,
 } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { UIImage } from '@tonlabs/uikit.media';
+import { UIPressableArea } from '@tonlabs/uikit.controls';
+import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIConstant } from '../constants';
-import type { InteractiveNoticeProps, UINoticeActionAttributes } from './types';
-import { Action } from './Action';
+import type { InteractiveNoticeProps, UIInteractiveNoticeAction } from './types';
 import { CountdownCirlce } from '../Notice/CountdownCircle';
 
 function NoticeCountdown({
@@ -26,7 +28,17 @@ function NoticeCountdown({
 }): React.ReactElement | null {
     if (hasCountdown) {
         return (
-            <View style={style}>
+            <View
+                style={[
+                    {
+                        height: UILayoutConstant.iconSize,
+                        width: UILayoutConstant.iconSize,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    },
+                    style,
+                ]}
+            >
                 <CountdownCirlce
                     countdownProgress={countdownProgress}
                     color={ColorVariants.TextPrimary}
@@ -38,19 +50,87 @@ function NoticeCountdown({
     return null;
 }
 
-function NoticeAction({
-    action,
+function Action({ title, onTap }: UIInteractiveNoticeAction) {
+    return (
+        <UIPressableArea
+            style={{
+                paddingHorizontal: UILayoutConstant.contentOffset / 2,
+                paddingVertical: UILayoutConstant.contentInsetVerticalX2,
+            }}
+            onPress={onTap}
+        >
+            <UILabel testID="uiNotice_action" role={TypographyVariants.SurfActionSpecial}>
+                {title}
+            </UILabel>
+        </UIPressableArea>
+    );
+}
+
+function Actions({
+    actions,
     style,
-}: {
-    action: UINoticeActionAttributes | undefined;
+}: Pick<InteractiveNoticeProps, 'actions'> & {
     style: ViewStyle;
 }): React.ReactElement | null {
-    if (!action) {
+    const actionList = React.useMemo(() => {
+        if (!actions) {
+            return [];
+        }
+        if (Array.isArray(actions)) {
+            return actions;
+        }
+        return [actions];
+    }, [actions]);
+
+    if (actionList.length === 0) {
+        return null;
+    }
+    return (
+        <View
+            style={[
+                {
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    marginTop: UILayoutConstant.contentInsetVerticalX1,
+                    marginHorizontal: -UILayoutConstant.contentOffset / 2,
+                    marginBottom: -UILayoutConstant.contentInsetVerticalX2,
+                },
+                style,
+            ]}
+        >
+            {actionList.map(Action)}
+        </View>
+    );
+}
+
+function CloseButton({
+    style,
+    showCloseButton,
+    onClose,
+}: Pick<InteractiveNoticeProps, 'showCloseButton' | 'onClose'> & { style: ViewStyle }) {
+    if (!showCloseButton) {
         return null;
     }
     return (
         <View style={style}>
-            <Action action={action} />
+            <UIPressableArea
+                onPress={onClose}
+                style={{
+                    marginVertical: -UILayoutConstant.contentInsetVerticalX4,
+                    marginHorizontal: -UILayoutConstant.contentOffset,
+                    paddingVertical: UILayoutConstant.contentInsetVerticalX4,
+                    paddingHorizontal: UILayoutConstant.contentOffset,
+                }}
+            >
+                <UIImage
+                    source={UIAssets.icons.ui.closeBlack}
+                    tintColor={ColorVariants.GraphSecondary}
+                    style={{
+                        height: UILayoutConstant.iconSize,
+                        aspectRatio: 1,
+                    }}
+                />
+            </UIPressableArea>
         </View>
     );
 }
@@ -60,7 +140,10 @@ export function UIInteractiveNoticeContent({
     onPress,
     onLongPress,
     onPressOut,
-    action,
+    onClose,
+    icon,
+    actions,
+    showCloseButton,
     countdownProgress,
     hasCountdown,
 }: InteractiveNoticeProps) {
@@ -70,7 +153,6 @@ export function UIInteractiveNoticeContent({
             color={UIBackgroundViewColors.BackgroundSecondary}
             style={styles.underlay}
         >
-            {/* <View style={styles.container}> */}
             <TouchableWithoutFeedback
                 onPress={onPress}
                 onLongPress={onLongPress}
@@ -79,22 +161,37 @@ export function UIInteractiveNoticeContent({
             >
                 <View style={StyleSheet.absoluteFill} />
             </TouchableWithoutFeedback>
-            <NoticeCountdown
-                countdownProgress={countdownProgress}
-                style={styles.countdown}
-                hasCountdown={hasCountdown}
-            />
-            <View style={styles.labelContainer} pointerEvents="none">
-                <UILabel
-                    testID="message_default"
-                    role={TypographyVariants.ParagraphNote}
-                    color={ColorVariants.TextPrimary}
-                >
-                    {title}
-                </UILabel>
+            {icon ? (
+                <View style={styles.leftContainer}>
+                    <UIImage
+                        source={icon}
+                        style={{ height: UILayoutConstant.iconSize, aspectRatio: 1 }}
+                    />
+                </View>
+            ) : (
+                <NoticeCountdown
+                    countdownProgress={countdownProgress}
+                    style={styles.leftContainer}
+                    hasCountdown={hasCountdown}
+                />
+            )}
+            <View style={styles.centerContainer} pointerEvents="box-none">
+                <View pointerEvents="none">
+                    <UILabel
+                        testID="message_default"
+                        role={TypographyVariants.ParagraphNote}
+                        color={ColorVariants.TextPrimary}
+                    >
+                        {title}
+                    </UILabel>
+                </View>
+                <Actions actions={actions} style={{}} />
             </View>
-            <NoticeAction action={action} style={styles.action} />
-            {/* </View> */}
+            <CloseButton
+                showCloseButton={showCloseButton}
+                style={styles.closeButton}
+                onClose={onClose}
+            />
         </UIBackgroundView>
     );
 }
@@ -115,18 +212,18 @@ const useStyles = makeStyles(() => ({
         }),
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: UILayoutConstant.contentOffset,
+        paddingLeft: UILayoutConstant.contentOffset,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX4,
     },
-    container: {},
-    labelContainer: {
+    centerContainer: {
         flex: 1,
-        paddingVertical: UILayoutConstant.contentInsetVerticalX3,
+        paddingRight: UILayoutConstant.contentOffset,
     },
-    countdown: {
-        paddingRight: UILayoutConstant.contentInsetVerticalX2,
-        zIndex: -10,
+    leftContainer: {
+        marginRight: UILayoutConstant.contentOffset,
     },
-    action: {
-        marginHorizontal: -UILayoutConstant.contentInsetVerticalX3,
+    closeButton: {
+        paddingRight: UILayoutConstant.contentOffset,
+        alignSelf: 'flex-start',
     },
 }));

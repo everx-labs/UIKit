@@ -1,8 +1,24 @@
 import type { UIImageProps } from '@tonlabs/uikit.media';
 import type Animated from 'react-native-reanimated';
-import type { ActionProps, UINoticeActionAttributes, UINoticeDuration } from '../Notice';
+import type {
+    ActionProps,
+    UINoticeActionAttributes,
+    UINoticeDuration,
+    UINoticeType,
+} from '../Notice';
+
+export type UIInteractiveNoticeAction = {
+    title: string;
+    onTap: () => void;
+};
 
 export type UIInteractiveNoticeProps = {
+    /**
+     * Type of notification
+     *
+     * @default UINoticeType.BottomToast
+     */
+    type?: UINoticeType;
     /**
      * A title of the notification.
      */
@@ -35,18 +51,16 @@ export type UIInteractiveNoticeProps = {
      */
     icon?: UIImageProps['source'];
     hasCountdown?: boolean;
+    showCloseButton?: boolean;
+    testID?: string;
+    actions?: UIInteractiveNoticeAction | [UIInteractiveNoticeAction, UIInteractiveNoticeAction];
 };
 
-export type InteractiveNoticeProps = {
-    title: string;
+export type InteractiveNoticeProps = UIInteractiveNoticeProps & {
     onPress: () => void;
     onLongPress: () => void;
     onPressOut: () => void;
-    action?: UINoticeActionAttributes;
     countdownProgress: Animated.SharedValue<number>;
-    hasCountdown?: boolean;
-    testID?: string;
-    icon?: UIImageProps['source'];
 };
 
 export type { ActionProps, UINoticeActionAttributes };

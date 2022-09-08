@@ -4,20 +4,13 @@ import { Portal } from '@tonlabs/uikit.layout';
 
 import { ToastNoticeContainer } from '../Notice/ToastNoticeContainer';
 import { useNoticeVisibility } from '../Notice/hooks/useNoticeVisibility';
-import { UINoticeType } from '../Notice';
 
 import { UIInteractiveNoticeContent } from './UIInteractiveNoticeContent';
 import type { UIInteractiveNoticeProps } from './types';
+import { UINoticeType } from '../Notice';
 
-export function UIInteractiveNotice({
-    visible,
-    duration,
-    onClose,
-    onTap,
-    title,
-    icon,
-    hasCountdown,
-}: UIInteractiveNoticeProps) {
+export function UIInteractiveNotice(props: UIInteractiveNoticeProps) {
+    const { type = UINoticeType.BottomToast, visible, duration, onClose, onTap } = props;
     const {
         noticeVisible,
         countdownProgress,
@@ -33,7 +26,7 @@ export function UIInteractiveNotice({
     return (
         <Portal absoluteFill>
             <ToastNoticeContainer
-                type={UINoticeType.TopToast}
+                type={type}
                 visible={visible}
                 onTap={onTap}
                 onCloseAnimationEnd={onNoticeCloseAnimationFinished}
@@ -42,13 +35,11 @@ export function UIInteractiveNotice({
             >
                 {({ onPress, onLongPress, onPressOut }) => (
                     <UIInteractiveNoticeContent
-                        title={title}
-                        icon={icon}
+                        {...props}
                         countdownProgress={countdownProgress}
                         onPress={onPress}
                         onLongPress={onLongPress}
                         onPressOut={onPressOut}
-                        hasCountdown={hasCountdown}
                     />
                 )}
             </ToastNoticeContainer>
