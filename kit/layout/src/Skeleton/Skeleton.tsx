@@ -133,7 +133,7 @@ function SkeletonAnimatable({
                         end={{ x: 1, y: 0 }}
                         colors={[
                             theme[ColorVariants.BackgroundSecondary] as string,
-                            theme[ColorVariants.BackgroundNeutral] as string,
+                            theme[ColorVariants.BackgroundTertiary] as string,
                             theme[ColorVariants.BackgroundSecondary] as string,
                         ]}
                         style={styles.gradient}
