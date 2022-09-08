@@ -211,19 +211,19 @@ const useStyles = makeStyles(() => ({
             default: null,
         }),
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         paddingLeft: UILayoutConstant.contentOffset,
         paddingVertical: UILayoutConstant.contentInsetVerticalX4,
     },
     centerContainer: {
         flex: 1,
         paddingRight: UILayoutConstant.contentOffset,
+        alignSelf: 'center',
     },
     leftContainer: {
         marginRight: UILayoutConstant.contentOffset,
     },
     closeButton: {
         paddingRight: UILayoutConstant.contentOffset,
-        alignSelf: 'flex-start',
     },
 }));

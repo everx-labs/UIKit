@@ -5,6 +5,7 @@ import { View } from 'react-native';
 import { UILinkButton, UIBoxButton, UIBoxButtonVariant } from '@tonlabs/uikit.controls';
 import { UILabel } from '@tonlabs/uikit.themes';
 import { UIPopup, UINoticeColor, UINoticeType } from '@tonlabs/uikit.popups';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
@@ -25,7 +26,7 @@ function InteractiveNotice() {
                 hasCountdown
                 actions={[
                     {
-                        title: 'Action One Action',
+                        title: 'Action One',
                         onTap: () => {
                             console.log('Action One');
                         },
@@ -42,8 +43,9 @@ function InteractiveNotice() {
                 visible={bottomVisible}
                 onClose={() => setBottomVisible(false)}
                 onTap={() => setBottomVisible(false)}
-                title="Hello!"
-                icon={require('./assets/long-push-icon.png')}
+                title="Unfortunately, the everlink is not correct; please get in touch with the third-party service developers."
+                icon={UIAssets.icons.ui.warn}
+                showCloseButton
                 hasCountdown
             />
             <View
