@@ -1,10 +1,7 @@
 import * as React from 'react';
-
 import { Portal } from '@tonlabs/uikit.layout';
-
 import { ToastNoticeContainer } from '../Notice/ToastNoticeContainer';
 import { useNoticeVisibility } from '../Notice/hooks/useNoticeVisibility';
-
 import { UIInteractiveNoticeContent } from './UIInteractiveNoticeContent';
 import type { UIInteractiveNoticeProps } from './types';
 import { UINoticeType } from '../Notice';
