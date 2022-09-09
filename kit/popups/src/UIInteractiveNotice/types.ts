@@ -53,10 +53,7 @@ export type UIInteractiveNoticeProps = {
     /**
      * Action or action list
      */
-    actions?:
-        | UIInteractiveNoticeAction
-        | [UIInteractiveNoticeAction]
-        | [UIInteractiveNoticeAction, UIInteractiveNoticeAction];
+    actions?: UIInteractiveNoticeAction | UIInteractiveNoticeAction[];
     /**
      * Should notification show the close button
      */
