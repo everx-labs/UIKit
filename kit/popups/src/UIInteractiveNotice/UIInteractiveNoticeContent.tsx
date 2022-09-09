@@ -1,139 +1,19 @@
 import * as React from 'react';
-import { View, Platform, TouchableWithoutFeedback, StyleSheet, ViewStyle } from 'react-native';
-import type Animated from 'react-native-reanimated';
+import { View, Platform, TouchableWithoutFeedback, StyleSheet, ImageStyle } from 'react-native';
 import {
     TypographyVariants,
     UILabel,
     ColorVariants,
-    makeStyles,
     UIBackgroundView,
     UIBackgroundViewColors,
 } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIImage } from '@tonlabs/uikit.media';
-import { UIPressableArea } from '@tonlabs/uikit.controls';
-import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIConstant } from '../constants';
-import type { InteractiveNoticeContentProps, UIInteractiveNoticeAction } from './types';
-import { CountdownCirlce } from '../Notice/CountdownCircle';
-
-function NoticeCountdown({
-    countdownProgress,
-    style,
-    hasCountdown,
-}: {
-    countdownProgress: Animated.SharedValue<number>;
-    style: ViewStyle;
-    hasCountdown: boolean | undefined;
-}): React.ReactElement | null {
-    if (hasCountdown) {
-        return (
-            <View
-                style={[
-                    {
-                        height: UILayoutConstant.iconSize,
-                        width: UILayoutConstant.iconSize,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    },
-                    style,
-                ]}
-            >
-                <CountdownCirlce
-                    countdownProgress={countdownProgress}
-                    color={ColorVariants.TextPrimary}
-                    strokeWidth={UIConstant.interactiveNotice.countdownCircleStrokeWidth}
-                />
-            </View>
-        );
-    }
-    return null;
-}
-
-function Action({ title, onTap }: UIInteractiveNoticeAction) {
-    return (
-        <UIPressableArea
-            style={{
-                paddingHorizontal: UILayoutConstant.contentOffset / 2,
-                paddingVertical: UILayoutConstant.contentInsetVerticalX2,
-            }}
-            onPress={onTap}
-        >
-            <UILabel testID="uiNotice_action" role={TypographyVariants.SurfActionSpecial}>
-                {title}
-            </UILabel>
-        </UIPressableArea>
-    );
-}
-
-function Actions({
-    actions,
-    style,
-}: Pick<InteractiveNoticeContentProps, 'actions'> & {
-    style: ViewStyle;
-}): React.ReactElement | null {
-    const actionList = React.useMemo(() => {
-        if (!actions) {
-            return [];
-        }
-        if (Array.isArray(actions)) {
-            return actions;
-        }
-        return [actions];
-    }, [actions]);
-
-    if (actionList.length === 0) {
-        return null;
-    }
-    return (
-        <View
-            style={[
-                {
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                    marginTop: UILayoutConstant.contentInsetVerticalX1,
-                    marginHorizontal: -UILayoutConstant.contentOffset / 2,
-                    marginBottom: -UILayoutConstant.contentInsetVerticalX2,
-                },
-                style,
-            ]}
-        >
-            {actionList.map(Action)}
-        </View>
-    );
-}
-
-function CloseButton({
-    style,
-    showCloseButton,
-    onClose,
-}: Pick<InteractiveNoticeContentProps, 'showCloseButton' | 'onClose'> & { style: ViewStyle }) {
-    if (!showCloseButton) {
-        return null;
-    }
-    return (
-        <View style={style}>
-            <UIPressableArea
-                onPress={onClose}
-                style={{
-                    marginVertical: -UILayoutConstant.contentInsetVerticalX4,
-                    marginHorizontal: -UILayoutConstant.contentOffset,
-                    paddingVertical: UILayoutConstant.contentInsetVerticalX4,
-                    paddingHorizontal: UILayoutConstant.contentOffset,
-                }}
-            >
-                <UIImage
-                    source={UIAssets.icons.ui.closeBlack}
-                    tintColor={ColorVariants.GraphSecondary}
-                    style={{
-                        height: UILayoutConstant.iconSize,
-                        aspectRatio: 1,
-                    }}
-                />
-            </UIPressableArea>
-        </View>
-    );
-}
+import type { InteractiveNoticeContentProps } from './types';
+import { Actions } from './Actions';
+import { CloseButton } from './CloseButton';
+import { NoticeCountdown } from './NoticeCountdown';
 
 export function UIInteractiveNoticeContent({
     title,
@@ -147,7 +27,6 @@ export function UIInteractiveNoticeContent({
     countdownProgress,
     hasCountdown,
 }: InteractiveNoticeContentProps) {
-    const styles = useStyles();
     return (
         <UIBackgroundView
             color={UIBackgroundViewColors.BackgroundSecondary}
@@ -163,10 +42,7 @@ export function UIInteractiveNoticeContent({
             </TouchableWithoutFeedback>
             {icon ? (
                 <View style={styles.leftContainer}>
-                    <UIImage
-                        source={icon}
-                        style={{ height: UILayoutConstant.iconSize, aspectRatio: 1 }}
-                    />
+                    <UIImage source={icon} style={styles.image as ImageStyle} />
                 </View>
             ) : (
                 <NoticeCountdown
@@ -185,7 +61,7 @@ export function UIInteractiveNoticeContent({
                         {title}
                     </UILabel>
                 </View>
-                <Actions actions={actions} style={{}} />
+                <Actions actions={actions} />
             </View>
             <CloseButton
                 showCloseButton={showCloseButton}
@@ -196,7 +72,7 @@ export function UIInteractiveNoticeContent({
     );
 }
 
-const useStyles = makeStyles(() => ({
+const styles = StyleSheet.create({
     underlay: {
         maxWidth: UIConstant.maxWidth,
         flex: 1,
@@ -226,4 +102,8 @@ const useStyles = makeStyles(() => ({
     closeButton: {
         paddingRight: UILayoutConstant.contentOffset,
     },
-}));
+    image: {
+        height: UILayoutConstant.iconSize,
+        aspectRatio: 1,
+    },
+});

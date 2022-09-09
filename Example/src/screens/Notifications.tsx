@@ -19,7 +19,6 @@ function InteractiveNotice() {
                 type={UINoticeType.TopToast}
                 visible={visible}
                 onClose={() => setVisible(false)}
-                onTap={() => setVisible(false)}
                 title="Hello!"
                 showCloseButton
                 hasCountdown
