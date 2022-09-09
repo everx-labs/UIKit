@@ -1,11 +1,6 @@
 import type { UIImageProps } from '@tonlabs/uikit.media';
 import type Animated from 'react-native-reanimated';
-import type {
-    ActionProps,
-    UINoticeActionAttributes,
-    UINoticeDuration,
-    UINoticeType,
-} from '../Notice';
+import type { UINoticeDuration, UINoticeType } from '../Notice';
 
 export type UIInteractiveNoticeAction = {
     title: string;
@@ -37,6 +32,7 @@ export type UIInteractiveNoticeProps = {
     /**
      * A callback that is called when duration has expired,
      * and notice wants to be closed.
+     * Or the close button was pressed.
      *
      * One have to set `visible` to `false` in this callback,
      * as component is controlled.
@@ -50,17 +46,27 @@ export type UIInteractiveNoticeProps = {
      * Optional icon source
      */
     icon?: UIImageProps['source'];
+    /**
+     * Is the countdown displayed (default: false)
+     */
     hasCountdown?: boolean;
-    showCloseButton?: boolean;
-    testID?: string;
+    /**
+     * Action or action list
+     */
     actions?: UIInteractiveNoticeAction | [UIInteractiveNoticeAction, UIInteractiveNoticeAction];
+    /**
+     * Should notification show the close button
+     */
+    showCloseButton?: boolean;
+    /**
+     * ID for usage in tests
+     */
+    testID?: string;
 };
 
-export type InteractiveNoticeProps = UIInteractiveNoticeProps & {
+export type InteractiveNoticeContentProps = UIInteractiveNoticeProps & {
     onPress: () => void;
     onLongPress: () => void;
     onPressOut: () => void;
     countdownProgress: Animated.SharedValue<number>;
 };
-
-export type { ActionProps, UINoticeActionAttributes };

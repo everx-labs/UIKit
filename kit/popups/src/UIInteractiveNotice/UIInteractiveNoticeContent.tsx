@@ -14,7 +14,7 @@ import { UIImage } from '@tonlabs/uikit.media';
 import { UIPressableArea } from '@tonlabs/uikit.controls';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIConstant } from '../constants';
-import type { InteractiveNoticeProps, UIInteractiveNoticeAction } from './types';
+import type { InteractiveNoticeContentProps, UIInteractiveNoticeAction } from './types';
 import { CountdownCirlce } from '../Notice/CountdownCircle';
 
 function NoticeCountdown({
@@ -69,7 +69,7 @@ function Action({ title, onTap }: UIInteractiveNoticeAction) {
 function Actions({
     actions,
     style,
-}: Pick<InteractiveNoticeProps, 'actions'> & {
+}: Pick<InteractiveNoticeContentProps, 'actions'> & {
     style: ViewStyle;
 }): React.ReactElement | null {
     const actionList = React.useMemo(() => {
@@ -107,7 +107,7 @@ function CloseButton({
     style,
     showCloseButton,
     onClose,
-}: Pick<InteractiveNoticeProps, 'showCloseButton' | 'onClose'> & { style: ViewStyle }) {
+}: Pick<InteractiveNoticeContentProps, 'showCloseButton' | 'onClose'> & { style: ViewStyle }) {
     if (!showCloseButton) {
         return null;
     }
@@ -146,7 +146,7 @@ export function UIInteractiveNoticeContent({
     showCloseButton,
     countdownProgress,
     hasCountdown,
-}: InteractiveNoticeProps) {
+}: InteractiveNoticeContentProps) {
     const styles = useStyles();
     return (
         <UIBackgroundView

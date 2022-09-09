@@ -21,7 +21,6 @@ function InteractiveNotice() {
                 onClose={() => setVisible(false)}
                 onTap={() => setVisible(false)}
                 title="Hello!"
-                // icon={require('./assets/long-push-icon.png')}
                 showCloseButton
                 hasCountdown
                 actions={[
@@ -46,7 +45,6 @@ function InteractiveNotice() {
                 title="Unfortunately, the everlink is not correct; please get in touch with the third-party service developers."
                 icon={UIAssets.icons.ui.warn}
                 showCloseButton
-                hasCountdown
             />
             <View
                 style={{
