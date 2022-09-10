@@ -200,6 +200,17 @@
     "Edit": "수정하기",
     "Error": "오류",
     "Events": "이벤트",
+    "EverLinks": {
+        "Send": {
+            "Amount": "Amount",
+            "ActionTitle": "Send tokens",
+            "Confirm": "Confirm",
+            "NetworkFee": "Network fee",
+            "NetworkFeeTilde": "~ ",
+            "RecipientAddress": "Recipient’s address",
+            "Title": "Confirm external action"
+        }
+    },
     "Exchange": "교환",
     "ExchangeFrom": "보낸 사람",
     "ExchangeTo": "받는 사람",

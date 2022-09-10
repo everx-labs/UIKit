@@ -212,6 +212,17 @@
     "Edit": "Edit",
     "Error": "Error",
     "Events": "Events",
+    "EverLinks": {
+        "Send": {
+            "Amount": "Amount",
+            "ActionTitle": "Send tokens",
+            "Confirm": "Confirm",
+            "NetworkFee": "Network fee",
+            "NetworkFeeTilde": "~ ",
+            "RecipientAddress": "Recipient’s address",
+            "Title": "Confirm external action"
+        }
+    },
     "Exchange": "Exchange",
     "ExchangeFrom": "From",
     "ExchangeTo": "To",
