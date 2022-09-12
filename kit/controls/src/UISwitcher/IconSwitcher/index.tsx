@@ -117,10 +117,10 @@ const useStyles = makeStyles((theme: Theme, variant: UISwitcherVariant) => ({
         justifyContent: 'center',
     },
     disabledSwitcherStyle: {
-        backgroundColor: theme[ColorVariants.BackgroundNeutral],
+        backgroundColor: theme[ColorVariants.BackgroundTertiary],
     },
     disabledSwitcherBordersStyle: {
-        borderColor: theme[ColorVariants.BackgroundNeutral],
+        borderColor: theme[ColorVariants.BackgroundTertiary],
     },
     showPointer: {
         margin: 0,

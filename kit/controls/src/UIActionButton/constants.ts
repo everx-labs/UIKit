@@ -31,7 +31,7 @@ export const contentColors: Record<
             initialColor: ColorVariants.BackgroundAccent,
             pressedColor: ColorVariants.SpecialAccentDark,
             hoveredColor: ColorVariants.SpecialAccentLight,
-            disabledColor: ColorVariants.BackgroundNeutral,
+            disabledColor: ColorVariants.BackgroundTertiary,
             loadingColor: ColorVariants.BackgroundAccent,
         },
         content: {

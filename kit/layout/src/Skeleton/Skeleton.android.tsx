@@ -22,7 +22,7 @@ function UIKitSkeletonConfig() {
             shimmerDuration: 800,
             skeletonDuration: 2000,
             backgroundColor: theme[ColorVariants.BackgroundSecondary],
-            accentColor: theme[ColorVariants.BackgroundNeutral],
+            accentColor: theme[ColorVariants.BackgroundTertiary],
         });
         prevThemeRef.current = theme;
     }
