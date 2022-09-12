@@ -176,13 +176,13 @@
     "Events": "События",
     "EverLinks": {
         "Send": {
-            "Amount": "Amount",
-            "ActionTitle": "Send tokens",
-            "Confirm": "Confirm",
-            "NetworkFee": "Network fee",
+            "Amount": "Сумма",
+            "ActionTitle": "Отправить токены",
+            "Confirm": "Подтвердить",
+            "NetworkFee": "Комиссия сети",
             "NetworkFeeTilde": "~ ",
-            "RecipientAddress": "Recipient’s address",
-            "Title": "Confirm external action"
+            "RecipientAddress": "Адрес получателя",
+            "Title": "Подтвердить внешнюю операцию"
         }
     },
     "Exchange": "Обмен",
