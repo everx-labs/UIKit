@@ -1,15 +1,15 @@
 import type BigNumber from 'bignumber.js';
 
 // @inline
-const DECIMAL_ASPECT_NONE = 1;
+export const DECIMAL_ASPECT_NONE = 1;
 // @inline
-const DECIMAL_ASPECT_PRECISION = 2;
+export const DECIMAL_ASPECT_PRECISION = 2;
 // @inline
-const DECIMAL_ASPECT_SHORT = 3;
+export const DECIMAL_ASPECT_SHORT = 3;
 // @inline
-const DECIMAL_ASPECT_SHORT_ELLIPSIZED = 4;
+export const DECIMAL_ASPECT_SHORT_ELLIPSIZED = 4;
 // @inline
-const DECIMAL_ASPECT_MEDIUM = 5;
+export const DECIMAL_ASPECT_MEDIUM = 5;
 
 export enum UINumberDecimalAspect {
     None = DECIMAL_ASPECT_NONE,
@@ -36,61 +36,13 @@ enum Rounding {
 // TODO: move it to uiLocalized!
 // @inline
 const INTEGER_GROUP_SIZE = 3;
-
-export function getDecimalAspectDigits(aspect: UINumberDecimalAspect) {
-    'worklet';
-
-    if (aspect === DECIMAL_ASPECT_SHORT_ELLIPSIZED) {
-        return 1;
-    }
-    if (aspect === DECIMAL_ASPECT_SHORT) {
-        return 2;
-    }
-    if (aspect === DECIMAL_ASPECT_MEDIUM) {
-        return 4;
-    }
-    if (aspect === DECIMAL_ASPECT_PRECISION) {
-        return 9;
-    }
-
-    return 0;
-}
-
-/**
- * TODO: move it to uiLocalized to format number generally!
- *
- * @param rawString
- * @param groupSize
- * @param groupSeparator
- * @returns
- */
-const groupReversed = (rawString: string, groupSize: number, groupSeparator: string) => {
-    'worklet';
-
-    let groupedPart = '';
-
-    let i = rawString.length;
-    while (i > 0) {
-        if (groupSize < i) {
-            for (let j = 0; j < groupSize; j += 1) {
-                groupedPart = rawString[i - j - 1] + groupedPart;
-            }
-
-            groupedPart = groupSeparator + groupedPart;
-            i -= groupSize;
-        } else {
-            groupedPart = rawString[i - 1] + groupedPart;
-            i -= 1;
-        }
-    }
-
-    return groupedPart;
-};
+// @inline
+const DECIMAL_GROUP_SIZE = 3;
 
 function getIntegerSign(integer: BigNumber, showPositiveSign?: boolean) {
     'worklet';
 
-    if (showPositiveSign && integer.lt(0)) {
+    if (integer.lt(0)) {
         return '−';
     }
 
@@ -101,18 +53,9 @@ function getIntegerSign(integer: BigNumber, showPositiveSign?: boolean) {
     return '';
 }
 
-/**
- * TODO: move it to uiLocalized to format number generally!
- *
- * @param value number to format
- * @param decimalAspect predefined aspects how to format number
- * @param decimalSeparator localized separator from user's device
- * @param integerGroupChar localized char for group from user's device
- * @returns formatter number as string
- */
-export function localizedNumberFormat(
+export function formatNumber(
     value: BigNumber,
-    decimalAspect: UINumberDecimalAspect,
+    decimalDigitCount: number,
     decimalSeparator: string,
     integerGroupChar: string,
     showPositiveSign?: boolean,
@@ -120,11 +63,55 @@ export function localizedNumberFormat(
     'worklet';
 
     const integer = value.integerValue(Rounding.RoundDown);
-    const integerFormatted = `${getIntegerSign(value, showPositiveSign)}${groupReversed(
-        integer.abs().toFixed(0, Rounding.RoundDown),
-        INTEGER_GROUP_SIZE,
+    const integerFormatted = `${getIntegerSign(value, showPositiveSign)}${integer
+        .abs()
+        .toFormat(0, Rounding.RoundDown, {
+            groupSize: INTEGER_GROUP_SIZE,
+            groupSeparator: integerGroupChar,
+        })}`;
+
+    // decimal at the point would start with `0,` or `0.`
+    // if it's negative it would be `-0,` or `-0.`
+    const decimal = value.minus(integer);
+    const decimalFormatted = decimal
+        .toFormat(decimalDigitCount, Rounding.RoundDown, {
+            decimalSeparator,
+            fractionGroupSize: DECIMAL_GROUP_SIZE,
+            fractionGroupSeparator: ' ',
+        })
+        .slice(decimal.lt(0) ? 2 : 1);
+
+    return {
+        integer: integerFormatted,
+        decimal: decimalFormatted,
+    };
+}
+
+/**
+ * @param value number to format
+ * @param decimalAspect predefined aspects how to format number
+ * @param decimalDigitCount count of digits in decimal part of the number
+ * @param decimalSeparator localized separator from user's device
+ * @param integerGroupChar localized char for group from user's device
+ * @returns formatter number as string
+ */
+export function localizedNumberFormat(
+    value: BigNumber,
+    decimalAspect: UINumberDecimalAspect,
+    decimalDigitCount: number,
+    decimalSeparator: string,
+    integerGroupChar: string,
+    showPositiveSign: boolean | undefined,
+) {
+    'worklet';
+
+    const { integer: integerFormatted, decimal: decimalFormatted } = formatNumber(
+        value,
+        decimalDigitCount,
+        decimalSeparator,
         integerGroupChar,
-    )}`;
+        showPositiveSign,
+    );
 
     if (decimalAspect === DECIMAL_ASPECT_NONE) {
         return {
@@ -133,22 +120,15 @@ export function localizedNumberFormat(
         };
     }
 
-    const digits = getDecimalAspectDigits(decimalAspect);
-
-    // decimal at the point would start with `0,` or `0.`
-    // if it's negative it would be `-0,` or `-0.`
-    const decimalNumber = value.minus(value.toFixed(0, Rounding.RoundDown));
-    let decimal = decimalNumber
-        .toFixed(digits, Rounding.RoundDown)
-        .slice(decimalNumber.lt(0) ? 3 : 2)
-        .slice(0, digits);
-
     if (decimalAspect === DECIMAL_ASPECT_SHORT_ELLIPSIZED) {
-        decimal = `${decimal}..`;
+        return {
+            integer: integerFormatted,
+            decimal: `${decimalFormatted}..`,
+        };
     }
 
     return {
         integer: integerFormatted,
-        decimal: `${decimalSeparator}${decimal.padEnd(digits, '0')}`,
+        decimal: decimalFormatted,
     };
 }
