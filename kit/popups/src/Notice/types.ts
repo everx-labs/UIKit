@@ -1,6 +1,6 @@
 import type React from 'react';
-import type { ColorVariants } from '@tonlabs/uikit.themes';
 import type Animated from 'react-native-reanimated';
+import type { ColorVariants } from '@tonlabs/uikit.themes';
 
 // eslint-disable-next-line no-shadow
 export enum UINoticeType {
@@ -115,7 +115,9 @@ export type IUINotice = React.FC<UINoticeProps> & {
 };
 
 export type CountdownCirlceProps = {
-    countdownValue: Animated.SharedValue<number>;
+    countdownValue?: Animated.SharedValue<number>;
     countdownProgress: Animated.SharedValue<number>;
     color: ColorVariants;
+    size?: number;
+    strokeWidth?: number;
 };
