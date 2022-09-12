@@ -1,11 +1,8 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { observer } from 'mobx-react';
 import type BigNumber from 'bignumber.js';
 
 import { uiLocalized } from '@tonlabs/localization';
-
-// import type { TONNetNameKeytNameKey } from '@surf/packages.networks';
 
 import { UIBoxButton } from '@tonlabs/uikit.controls';
 import { UICardSheet } from '@tonlabs/uikit.popups';
@@ -17,20 +14,30 @@ import { UIListSeparator } from '@tonlabs/uicast.rows';
 import type { SendParams } from './types';
 
 type Props = {
+    onClose: () => void;
     sendParams: SendParams;
     visible: boolean;
-    onClose: () => void;
 };
 
-function CurrencyElement({
-    amount,
-    // net,
-}: {
-    amount: BigNumber;
-    // net: TONNetNameKey,
-}) {
-    const signChar = 'EVER'; // TODO: change; Ex.: Chars[net].toUpperCase();
+export function useUISendSheet() {
+    const [sendSheetVisible, setSendSheetVisible] = React.useState(false);
 
+    const openSendSheet = React.useCallback(() => {
+        setSendSheetVisible(true);
+    }, [setSendSheetVisible]);
+
+    const closeSendSheet = React.useCallback(() => {
+        setSendSheetVisible(false);
+    }, [setSendSheetVisible]);
+
+    return {
+        sendSheetVisible,
+        openSendSheet,
+        closeSendSheet,
+    };
+}
+
+function CurrencyElement({ amount, signChar }: { amount: BigNumber; signChar: string }) {
     return (
         <UICurrency
             integerColor={UILabelColors.TextPrimary}
@@ -46,9 +53,7 @@ function CurrencyElement({
     );
 }
 
-const SendSheetContent = observer(function SendSheetContent({ props }: { props: SendParams }) {
-    const { address, amount, fee, net, onConfirm } = props;
-
+function SendSheetContent({ address, amount, fee, onConfirm, signChar }: SendParams) {
     return (
         <View>
             <View style={styles.contentContainer}>
@@ -87,8 +92,7 @@ const SendSheetContent = observer(function SendSheetContent({ props }: { props: 
                         >
                             {uiLocalized.EverLinks.Send.Amount}
                         </UILabel>
-                        {/* @ts-ignore */}
-                        <CurrencyElement amount={amount} net={net} />
+                        <CurrencyElement amount={amount} signChar={signChar} />
                     </View>
                     <UIListSeparator />
                     <View style={styles.rowContainer}>
@@ -105,8 +109,7 @@ const SendSheetContent = observer(function SendSheetContent({ props }: { props: 
                             >
                                 {uiLocalized.EverLinks.Send.NetworkFeeTilde}
                             </UILabel>
-                            {/* @ts-ignore */}
-                            <CurrencyElement amount={fee} net={net} />
+                            <CurrencyElement amount={fee} signChar={signChar} />
                         </View>
                     </View>
                 </View>
@@ -119,17 +122,33 @@ const SendSheetContent = observer(function SendSheetContent({ props }: { props: 
             </View>
         </View>
     );
-});
+}
 
-export const SendSheet = observer(function SendSheet(props: Props) {
-    const { visible, onClose, sendParams } = props;
+export function UISendSheet(props: Props) {
+    const { onClose, sendParams, visible } = props;
+    const { address, amount, fee, onConfirm, signChar } = sendParams;
+
+    const onConfirmPress = React.useCallback(() => {
+        if (onConfirm) {
+            onConfirm();
+        }
+        if (onClose) {
+            onClose();
+        }
+    }, [onConfirm, onClose]);
 
     return (
         <UICardSheet visible={visible} onClose={onClose}>
-            <SendSheetContent props={sendParams} />
+            <SendSheetContent
+                address={address}
+                amount={amount}
+                fee={fee}
+                onConfirm={onConfirmPress}
+                signChar={signChar}
+            />
         </UICardSheet>
     );
-});
+}
 
 const styles = StyleSheet.create({
     contentContainer: {
