@@ -1,2 +1,2 @@
 export * from './UIInteractiveNotice';
-export type { UIInteractiveNoticeProps } from './types';
+export type { UIInteractiveNoticeProps, UIInteractiveNoticeAction } from './types';
