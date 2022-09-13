@@ -14,7 +14,7 @@ function usePageViews(
     pageStyle: ViewStyle,
 ) {
     const isInTransition = React.useRef(false);
-    const transitionTimeoutID = React.useRef<NodeJS.Timeout>();
+    const transitionTimeoutID = React.useRef<ReturnType<typeof setTimeout>>();
     const onPress = React.useCallback(
         (index: number) => {
             /**
