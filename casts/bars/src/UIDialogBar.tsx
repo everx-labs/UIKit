@@ -27,7 +27,7 @@ export function UIDialogBar({
                 <UIHeaderItems items={headerLeftItems} />
             </View>
             {hasPuller ? (
-                <UIBackgroundView color={ColorVariants.BackgroundNeutral} style={styles.puller} />
+                <UIBackgroundView color={ColorVariants.BackgroundTertiary} style={styles.puller} />
             ) : (
                 <View style={styles.emptyDivider} />
             )}

@@ -90,7 +90,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         justifyContent: 'flex-start',
     },
     disabledSwitcherStyle: {
-        backgroundColor: theme[ColorVariants.BackgroundNeutral],
+        backgroundColor: theme[ColorVariants.BackgroundTertiary],
     },
     showPointer: {
         margin: 0,

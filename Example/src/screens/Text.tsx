@@ -1,18 +1,60 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
+import {
+    TypographyVariants,
+    UILabel,
+    UILabelColors,
+    UILabelRoles,
+    Typography,
+} from '@tonlabs/uikit.themes';
 import { UIExpandableText } from '@tonlabs/uicast.texts';
-import { createStackNavigator } from '@tonlabs/uicast.stack-navigator';
+import { UILinkButton } from '@tonlabs/uikit.controls';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
-const TextStack = createStackNavigator();
+function renderTypographyVariant(variant: string) {
+    return (
+        <UILabel
+            testID={`uilabel_${variant}`}
+            role={variant as TypographyVariants}
+            style={{
+                borderWidth: 0.3,
+            }}
+            numberOfLines={1}
+        >
+            {variant}
+        </UILabel>
+    );
+}
 
-export const Text = () => {
+function TypographyList() {
+    const labelList = Object.keys(Typography).map(renderTypographyVariant);
+    return (
+        <View
+            style={{
+                minWidth: 300,
+                padding: 20,
+            }}
+        >
+            {labelList}
+        </View>
+    );
+}
+
+export const TextScreen = () => {
+    const [allTypograpyVisible, setAllTypograpyVisible] = React.useState(false);
     return (
         <ExampleScreen>
             <ExampleSection title="UILabel">
+                <UILinkButton
+                    title={allTypograpyVisible ? 'Hide all Typography' : 'Show all Typography'}
+                    onPress={() => {
+                        setAllTypograpyVisible(prev => !prev);
+                    }}
+                />
+                {allTypograpyVisible ? <TypographyList /> : null}
+
                 <View
                     style={{
                         minWidth: 300,
@@ -68,18 +110,3 @@ export const Text = () => {
         </ExampleScreen>
     );
 };
-
-export function TextScreen() {
-    return (
-        <TextStack.Navigator>
-            <TextStack.Screen
-                name="UITextWindow"
-                options={{
-                    useHeaderLargeTitle: true,
-                    title: 'UIText',
-                }}
-                component={Text}
-            />
-        </TextStack.Navigator>
-    );
-}

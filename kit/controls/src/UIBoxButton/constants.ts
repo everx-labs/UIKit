@@ -29,10 +29,10 @@ const PrimaryContent: PressableColors = {
 };
 const SecondaryBackground: PressableColors = {
     initialColor: ColorVariants.BackgroundSecondary,
-    pressedColor: ColorVariants.BackgroundNeutral,
+    pressedColor: ColorVariants.BackgroundTertiary,
     hoveredColor: ColorVariants.BackgroundTertiary,
     disabledColor: ColorVariants.TextOverlayInverted,
-    loadingColor: ColorVariants.BackgroundNeutral,
+    loadingColor: ColorVariants.BackgroundTertiary,
 };
 const TransparentBackground: PressableColors = {
     initialColor: ColorVariants.Transparent,
@@ -61,7 +61,7 @@ export const ContentColors: Record<
                 pressedColor: ColorVariants.BackgroundAccent,
                 hoveredColor: ColorVariants.BackgroundAccent,
                 disabledColor: ColorVariants.BackgroundAccent,
-                loadingColor: ColorVariants.BackgroundNeutral,
+                loadingColor: ColorVariants.BackgroundTertiary,
             },
             content: PrimaryContent,
         },
@@ -71,7 +71,7 @@ export const ContentColors: Record<
                 pressedColor: ColorVariants.BackgroundNegative,
                 hoveredColor: ColorVariants.BackgroundNegative,
                 disabledColor: ColorVariants.BackgroundNegative,
-                loadingColor: ColorVariants.BackgroundNeutral,
+                loadingColor: ColorVariants.BackgroundTertiary,
             },
             content: PrimaryContent,
         },
@@ -81,7 +81,7 @@ export const ContentColors: Record<
                 pressedColor: ColorVariants.BackgroundPositive,
                 hoveredColor: ColorVariants.BackgroundPositive,
                 disabledColor: ColorVariants.BackgroundPositive,
-                loadingColor: ColorVariants.BackgroundNeutral,
+                loadingColor: ColorVariants.BackgroundTertiary,
             },
             content: PrimaryContent,
         },

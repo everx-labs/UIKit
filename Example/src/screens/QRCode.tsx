@@ -68,7 +68,7 @@ export function QRCodeScreen() {
                     testID="qr-code-view"
                     style={{
                         padding: 32,
-                        backgroundColor: theme.BackgroundNeutral,
+                        backgroundColor: theme.BackgroundTertiary,
                         alignItems: 'center',
                         width: '100%',
                     }}
