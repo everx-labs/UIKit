@@ -5,10 +5,7 @@ import BigNumber from 'bignumber.js';
 import { UIBoxButton } from '@tonlabs/uikit.controls';
 import { UISendSheet, useUISendSheet } from '@tonlabs/uistory.ever-links';
 
-import { ExampleSection } from '../components/ExampleSection';
-import { ExampleScreen } from '../components/ExampleScreen';
-
-function SendLink() {
+export function EverLinksScreen() {
     const { sendSheetVisible, openSendSheet, closeSendSheet } = useUISendSheet();
 
     return (
@@ -40,15 +37,5 @@ function SendLink() {
                 }}
             />
         </>
-    );
-}
-
-export function EverLinksScreen() {
-    return (
-        <ExampleScreen>
-            <ExampleSection title="UISendSheet">
-                <SendLink />
-            </ExampleSection>
-        </ExampleScreen>
     );
 }
