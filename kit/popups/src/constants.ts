@@ -25,4 +25,7 @@ export const UIConstant = {
         maxWidth: 256,
         borderRadius: 12,
     },
+    interactiveNotice: {
+        countdownCircleStrokeWidth: 2,
+    },
 };

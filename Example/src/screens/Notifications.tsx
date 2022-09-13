@@ -4,10 +4,68 @@ import { View } from 'react-native';
 
 import { UILinkButton, UIBoxButton, UIBoxButtonVariant } from '@tonlabs/uikit.controls';
 import { UILabel } from '@tonlabs/uikit.themes';
-import { UIPopup, UINoticeColor } from '@tonlabs/uikit.popups';
+import { UIPopup, UINoticeColor, UINoticeType } from '@tonlabs/uikit.popups';
+import { UIAssets } from '@tonlabs/uikit.assets';
 
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
+
+function InteractiveNotice() {
+    const [visible, setVisible] = React.useState(false);
+    const [bottomVisible, setBottomVisible] = React.useState(false);
+    return (
+        <>
+            <UIPopup.InteractiveNotice
+                type={UINoticeType.TopToast}
+                visible={visible}
+                onClose={() => setVisible(false)}
+                title="Hello, you should choose one of the actions"
+                showCloseButton
+                hasCountdown
+                actions={[
+                    {
+                        title: 'Action One',
+                        onTap: () => {
+                            console.log('Action One');
+                        },
+                    },
+                    {
+                        title: 'Action Two',
+                        onTap: () => {
+                            console.log('Action Two');
+                        },
+                    },
+                ]}
+            />
+            <UIPopup.InteractiveNotice
+                visible={bottomVisible}
+                onClose={() => setBottomVisible(false)}
+                onTap={() => setBottomVisible(false)}
+                title="Unfortunately, the everlink is not correct; please get in touch with the third-party service developers."
+                icon={UIAssets.icons.ui.warn}
+                showCloseButton
+            />
+            <View
+                style={{
+                    flexDirection: 'column',
+                    paddingBottom: 30,
+                    width: 250,
+                }}
+            >
+                <UILinkButton
+                    testID="show_top_interactive_notice"
+                    title={`${visible ? 'Hide' : 'Show'} top InteractiveNotice`}
+                    onPress={() => setVisible(!visible)}
+                />
+                <UILinkButton
+                    testID="show_bottom_interactive_notice"
+                    title={`${bottomVisible ? 'Hide' : 'Show'} bottom InteractiveNotice`}
+                    onPress={() => setBottomVisible(prev => !prev)}
+                />
+            </View>
+        </>
+    );
+}
 
 function PushPopup() {
     const [visible, setVisible] = React.useState(false);
@@ -58,6 +116,9 @@ export function NotificationsScreen() {
     const [visibleTopToastNotice, setVisibleTopToastNotice] = React.useState<boolean>(false);
     return (
         <ExampleScreen>
+            <ExampleSection title="UIPopup.InteractiveNotice">
+                <InteractiveNotice />
+            </ExampleSection>
             <ExampleSection title="UINotice">
                 <View
                     style={{
