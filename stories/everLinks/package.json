@@ -37,7 +37,7 @@
     "@tonlabs/localization": "^3.0.2",
     "@tonlabs/uicast.rows": "^3.0.2",
     "@tonlabs/uikit.controls": "^3.1.1",
-    "@tonlabs/uikit.core": "^4.0.1",
+    "@tonlabs/uikit.layout": "^3.1.1",
     "@tonlabs/uicast.numbers": "^3.0.2",
     "@tonlabs/uikit.popups": "^4.0.1",
     "@tonlabs/uikit.themes": "^3.1.1",

@@ -6,9 +6,9 @@ import { uiLocalized } from '@tonlabs/localization';
 
 import { UIBoxButton } from '@tonlabs/uikit.controls';
 import { UICardSheet } from '@tonlabs/uikit.popups';
-import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { UICurrency, UINumberDecimalAspect } from '@tonlabs/uicast.numbers';
 import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIListSeparator } from '@tonlabs/uicast.rows';
 
 import type { SendParams } from './types';
@@ -57,20 +57,20 @@ function SendSheetContent({ address, amount, fee, onConfirm, signChar }: SendPar
     return (
         <View>
             <View style={styles.contentContainer}>
-                <View style={UIStyle.padding.verticalSmall()}>
+                <View style={styles.paddingVerticalSmall}>
                     <UILabel color={UILabelColors.TextPrimary} role={UILabelRoles.SurfTitleLarge}>
                         {uiLocalized.EverLinks.Send.Title}
                     </UILabel>
                 </View>
-                <View style={UIStyle.margin.topDefault()}>
+                <View style={styles.infoContainer}>
                     <UILabel
                         color={UILabelColors.TextPrimary}
                         role={UILabelRoles.SurfTitleNormal}
-                        style={[UIStyle.margin.topNormal(), UIStyle.margin.bottomNormal()]}
+                        style={styles.marginVerticalNormal}
                     >
                         {uiLocalized.EverLinks.Send.ActionTitle}
                     </UILabel>
-                    <View style={UIStyle.padding.verticalSmall()}>
+                    <View style={styles.paddingVerticalSmall}>
                         <UILabel
                             color={UILabelColors.TextSecondary}
                             role={UILabelRoles.SurfParagraphSmall}
@@ -153,19 +153,28 @@ export function UISendSheet(props: Props) {
 const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
-        paddingHorizontal: UIConstant.contentOffset(),
+        paddingHorizontal: UILayoutConstant.contentOffset,
+    },
+    paddingVerticalSmall: {
+        paddingVertical: UILayoutConstant.smallContentOffset,
+    },
+    marginVerticalNormal: {
+        marginVertical: UILayoutConstant.normalContentOffset,
+    },
+    infoContainer: {
+        marginTop: UILayoutConstant.contentOffset,
     },
     rowContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingVertical: UIConstant.contentOffset(),
+        paddingVertical: UILayoutConstant.contentOffset,
     },
     feeContainer: {
         flexDirection: 'row',
         alignItems: 'center',
     },
     boxButtonContainer: {
-        padding: UIConstant.contentOffset(),
+        padding: UILayoutConstant.contentOffset,
     },
 });
