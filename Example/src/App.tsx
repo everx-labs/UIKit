@@ -37,31 +37,32 @@ import { UIAssets } from '@tonlabs/uikit.assets';
 import { createSplitNavigator, useSplitTabBarHeight } from '@tonlabs/uicast.split-navigator';
 import { UIModalPortalManager } from '@tonlabs/uikit.popups';
 
-import { ButtonsScreen } from './screens/Buttons';
-import { Checkbox } from './screens/Checkbox';
-import { Inputs } from './screens/Inputs';
-import { ListsScreen } from './screens/Lists';
-import { Chart } from './screens/Chart';
-import { CardsScreen } from './screens/Cards';
-import { Images } from './screens/Images';
-import { Menus } from './screens/Menus';
-import { NotificationsScreen } from './screens/Notifications';
-import { Products } from './screens/Products';
-import { TextScreen } from './screens/Text';
-import { VideosScreen } from './screens/Videos';
 import { Browser } from './screens/Browser';
-import { Chat } from './screens/Chat';
+import { ButtonsScreen } from './screens/Buttons';
 import { CarouselScreen } from './screens/Carousel';
+import { CardsScreen } from './screens/Cards';
 import { CellsScreen } from './screens/Cells';
-import { Navigation } from './screens/Navigation';
-import { SectionsService } from './Search';
+import { Chart } from './screens/Chart';
+import { Chat } from './screens/Chat';
+import { Checkbox } from './screens/Checkbox';
+import { EverLinksScreen } from './screens/EverLinks';
+import { FinancesScreen } from './screens/Finances';
+import { Images } from './screens/Images';
+import { Inputs } from './screens/Inputs';
 // import { KeyboardScreen } from './screens/Keyboard';
 import { KeyboardScreen2 } from './screens/Keyboard2';
 import { LargeHeaderScreen } from './screens/LargeHeader';
+import { ListsScreen } from './screens/Lists';
+import { Menus } from './screens/Menus';
+import { Navigation } from './screens/Navigation';
+import { NotificationsScreen } from './screens/Notifications';
+import { Products } from './screens/Products';
 import { QRCodeScreen } from './screens/QRCode';
 import { RowsScreen } from './screens/Rows';
-import { FinancesScreen } from './screens/Finances';
 import { SkeletonsScreen } from './screens/Skeletons';
+import { SectionsService } from './Search';
+import { TextScreen } from './screens/Text';
+import { VideosScreen } from './screens/Videos';
 
 import { StoreProvider, updateStore } from './useStore';
 import { AutomaticInsetsTest } from './screens/AutomaticInsetsTest';
@@ -150,6 +151,12 @@ const Main = ({ navigation }: { navigation: any }) => {
                         layout={styles.button}
                     />
                     <UILinkButton
+                        title="Cards"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('cards')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
                         title="Carousel"
                         type={UILinkButtonType.Menu}
                         onPress={() => navigation.navigate('carousel')}
@@ -168,12 +175,6 @@ const Main = ({ navigation }: { navigation: any }) => {
                         layout={styles.button}
                     />
                     <UILinkButton
-                        title="Cards"
-                        type={UILinkButtonType.Menu}
-                        onPress={() => navigation.navigate('cards')}
-                        layout={styles.button}
-                    />
-                    <UILinkButton
                         title="Chat"
                         type={UILinkButtonType.Menu}
                         onPress={() => navigation.navigate('chat')}
@@ -186,9 +187,15 @@ const Main = ({ navigation }: { navigation: any }) => {
                         layout={styles.button}
                     />
                     <UILinkButton
-                        title="Lists"
+                        title="Ever Links"
                         type={UILinkButtonType.Menu}
-                        onPress={() => navigation.navigate('lists')}
+                        onPress={() => navigation.navigate('ever-links')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
+                        title="Finances"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('finances')}
                         layout={styles.button}
                     />
                     <UILinkButton
@@ -215,6 +222,12 @@ const Main = ({ navigation }: { navigation: any }) => {
                             onPress={() => navigation.navigate('large-header')}
                             layout={styles.button}
                         /> */}
+                    <UILinkButton
+                        title="Lists"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('lists')}
+                        layout={styles.button}
+                    />
                     <UILinkButton
                         title="Menus"
                         type={UILinkButtonType.Menu}
@@ -252,6 +265,12 @@ const Main = ({ navigation }: { navigation: any }) => {
                         layout={styles.button}
                     />
                     <UILinkButton
+                        title="Skeletons"
+                        type={UILinkButtonType.Menu}
+                        onPress={() => navigation.navigate('skeletons')}
+                        layout={styles.button}
+                    />
+                    <UILinkButton
                         title="Text"
                         type={UILinkButtonType.Menu}
                         onPress={() => navigation.navigate('text')}
@@ -261,18 +280,6 @@ const Main = ({ navigation }: { navigation: any }) => {
                         title="Videos"
                         type={UILinkButtonType.Menu}
                         onPress={() => navigation.navigate('videos')}
-                        layout={styles.button}
-                    />
-                    <UILinkButton
-                        title="Finances"
-                        type={UILinkButtonType.Menu}
-                        onPress={() => navigation.navigate('finances')}
-                        layout={styles.button}
-                    />
-                    <UILinkButton
-                        title="Skeletons"
-                        type={UILinkButtonType.Menu}
-                        onPress={() => navigation.navigate('skeletons')}
                         layout={styles.button}
                     />
                     {/* <UILinkButton
@@ -343,6 +350,14 @@ const App = () => {
                             }}
                         />
                         <Split.Screen
+                            name="cards"
+                            component={CardsScreen}
+                            options={{
+                                useHeaderLargeTitle: true,
+                                title: 'Cards',
+                            }}
+                        />
+                        <Split.Screen
                             name="carousel"
                             component={CarouselScreen}
                             options={{
@@ -367,14 +382,6 @@ const App = () => {
                             }}
                         />
                         <Split.Screen
-                            name="cards"
-                            component={CardsScreen}
-                            options={{
-                                useHeaderLargeTitle: true,
-                                title: 'Cards',
-                            }}
-                        />
-                        <Split.Screen
                             name="chat"
                             component={Chat}
                             options={{
@@ -390,10 +397,36 @@ const App = () => {
                             }}
                         />
                         <Split.Screen
-                            name="lists"
-                            component={ListsScreen}
+                            name="ever-links"
+                            component={EverLinksScreen}
                             options={{
-                                headerVisible: false,
+                                useHeaderLargeTitle: true,
+                                title: 'Ever Links',
+                            }}
+                        />
+                        <Split.Screen
+                            name="finances"
+                            component={FinancesScreen}
+                            options={{
+                                useHeaderLargeTitle: true,
+                                title: 'Finances',
+                                ...(Platform.OS === 'ios'
+                                    ? {
+                                        headerRightItems: [
+                                            {
+                                                label: `${
+                                                    I18nManager.isRTL ? 'Disable' : 'Enable'
+                                                } RTL`,
+                                                onPress: () => {
+                                                    I18nManager.forceRTL(!I18nManager.isRTL);
+                                                    NativeModules.DevSettings.reload();
+                                                },
+                                            },
+                                        ],
+                                    }
+                                    : {}),
+                                tabBarActiveIcon: UIAssets.icons.ui.buttonStickerEnabled,
+                                tabBarDisabledIcon: UIAssets.icons.ui.buttonStickerDisabled,
                             }}
                         />
                         <Split.Screen
@@ -421,6 +454,13 @@ const App = () => {
                             name="large-header"
                             component={LargeHeaderScreen}
                             options={{ headerVisible: false }}
+                        />
+                        <Split.Screen
+                            name="lists"
+                            component={ListsScreen}
+                            options={{
+                                headerVisible: false,
+                            }}
                         />
                         <Split.Screen
                             name="main"
@@ -497,32 +537,6 @@ const App = () => {
                                 ],
                             }}
                         />
-                        <Split.Screen name="text" component={TextScreen} />
-                        <Split.Screen
-                            name="finances"
-                            component={FinancesScreen}
-                            options={{
-                                useHeaderLargeTitle: true,
-                                title: 'Finances',
-                                ...(Platform.OS === 'ios'
-                                    ? {
-                                          headerRightItems: [
-                                              {
-                                                  label: `${
-                                                      I18nManager.isRTL ? 'Disable' : 'Enable'
-                                                  } RTL`,
-                                                  onPress: () => {
-                                                      I18nManager.forceRTL(!I18nManager.isRTL);
-                                                      NativeModules.DevSettings.reload();
-                                                  },
-                                              },
-                                          ],
-                                      }
-                                    : {}),
-                                tabBarActiveIcon: UIAssets.icons.ui.buttonStickerEnabled,
-                                tabBarDisabledIcon: UIAssets.icons.ui.buttonStickerDisabled,
-                            }}
-                        />
                         <Split.Screen
                             name="skeletons"
                             component={SkeletonsScreen}
@@ -533,6 +547,7 @@ const App = () => {
                                 tabBarDisabledIcon: UIAssets.icons.ui.checkboxSquareInactive,
                             }}
                         />
+                        <Split.Screen name="text" component={TextScreen} />
                         <Split.Screen
                             name="videos"
                             component={VideosScreen}
