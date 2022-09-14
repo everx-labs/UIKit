@@ -26,7 +26,7 @@ export function EverLinksScreen() {
             <UISendSheet
                 visible={sendSheetVisible}
                 onClose={closeSendSheet}
-                sendParams={{
+                params={{
                     address: '0:72f2197ebfcce77e16737996758219c7fa71807ef05d5e93e9e5acb9b07a8c0a',
                     amount: new BigNumber(10),
                     fee: new BigNumber(0.1),

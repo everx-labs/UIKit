@@ -11,13 +11,7 @@ import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIListSeparator } from '@tonlabs/uicast.rows';
 
-import type { UISendSheetParams } from './types';
-
-type Props = {
-    onClose: () => void;
-    sendParams: UISendSheetParams;
-    visible: boolean;
-};
+import type { UIEverLinkSheetProps, UISendSheetParams } from './types';
 
 export function useUISendSheet() {
     const [sendSheetVisible, setSendSheetVisible] = React.useState(false);
@@ -124,8 +118,8 @@ function SendSheetContent({ address, amount, fee, onConfirm, signChar }: UISendS
     );
 }
 
-export function UISendSheet(props: Props) {
-    const { onClose, sendParams, visible } = props;
+export function UISendSheet(props: UIEverLinkSheetProps) {
+    const { onClose, params: sendParams, visible } = props;
     const { address, amount, fee, onConfirm, signChar } = sendParams;
 
     const onConfirmPress = React.useCallback(() => {
