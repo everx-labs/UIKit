@@ -20,7 +20,7 @@ export type UIInteractiveNoticeProps = {
     title: string;
     /**
      * Notice is a controlled component,
-     * so to controll visibility use the prop.
+     * so to control visibility use the prop.
      */
     visible: boolean;
     /**
