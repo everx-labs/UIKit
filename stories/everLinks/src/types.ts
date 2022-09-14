@@ -1,6 +1,6 @@
 import type BigNumber from 'bignumber.js';
 
-export type SendParams = {
+export type UISendSheetParams = {
     address: string;
     amount: BigNumber;
     fee: BigNumber;

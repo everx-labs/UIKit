@@ -11,11 +11,11 @@ import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIListSeparator } from '@tonlabs/uicast.rows';
 
-import type { SendParams } from './types';
+import type { UISendSheetParams } from './types';
 
 type Props = {
     onClose: () => void;
-    sendParams: SendParams;
+    sendParams: UISendSheetParams;
     visible: boolean;
 };
 
@@ -53,7 +53,7 @@ function CurrencyElement({ amount, signChar }: { amount: BigNumber; signChar: st
     );
 }
 
-function SendSheetContent({ address, amount, fee, onConfirm, signChar }: SendParams) {
+function SendSheetContent({ address, amount, fee, onConfirm, signChar }: UISendSheetParams) {
     return (
         <View>
             <View style={styles.contentContainer}>
