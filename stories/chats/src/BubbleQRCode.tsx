@@ -180,7 +180,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         overflow: 'hidden',
     },
     errorBubble: {
-        backgroundColor: theme[ColorVariants.BackgroundNeutral],
+        backgroundColor: theme[ColorVariants.BackgroundTertiary],
     },
     errorContainer: {
         flexDirection: 'row',

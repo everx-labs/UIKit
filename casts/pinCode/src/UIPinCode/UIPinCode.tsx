@@ -94,7 +94,7 @@ function useAnimatedDot(
         };
     });
 
-    const bgNeutral = theme[ColorVariants.BackgroundNeutral] as string;
+    const bgNeutral = theme[ColorVariants.BackgroundTertiary] as string;
 
     const colorBgAccent = theme[ColorVariants.BackgroundAccent] as string;
     const colorBgPositive = theme[ColorVariants.BackgroundPositive] as string;

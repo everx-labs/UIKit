@@ -10,7 +10,7 @@ import * as React from 'react';
  * if the event loop does not have time to process its multiple calls
  */
 export function useCallWithTimeOut<T extends (...args: any[]) => any>(callback: T | undefined): T {
-    const callingCallback = React.useRef<NodeJS.Timeout | null>(null);
+    const callingCallback = React.useRef<ReturnType<typeof setTimeout> | null>(null);
     return React.useCallback<T>(
         // @ts-expect-error
         function callbackWithTimeOut(...args: any[]): any {
