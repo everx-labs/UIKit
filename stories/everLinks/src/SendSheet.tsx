@@ -38,7 +38,7 @@ function CurrencyElement({ amount, signChar }: { amount: BigNumber; signChar: st
             integerVariant={UILabelRoles.SurfMonoNormal}
             decimalColor={UILabelColors.TextPrimary}
             decimalVariant={UILabelRoles.SurfMonoNormal}
-            decimalAspect={UINumberDecimalAspect.Precision}
+            decimalAspect={UINumberDecimalAspect.Short}
             signChar={signChar}
             signVariant={UILabelRoles.SurfParagraphNormal}
         >
