@@ -45,7 +45,7 @@ export function UIShareSheet({ message, subtitle, ...sheetProps }: UIShareSheetP
                 icon: {
                     source: UIAssets.icons.ui.closeBlack,
                 },
-                iconTintColor: ColorVariants.IconAccent,
+                iconTintColor: ColorVariants.BackgroundAccent,
                 onPress: onClose,
             },
         ],
