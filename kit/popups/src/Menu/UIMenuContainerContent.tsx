@@ -123,6 +123,7 @@ const useStyles = makeStyles((theme: Theme, location: Location | null, shadow: a
         width: UIConstant.menu.width,
         paddingHorizontal: UILayoutConstant.contentOffset,
         overflow: 'hidden',
+        alignItems: 'stretch',
         ...shadow,
     },
 }));

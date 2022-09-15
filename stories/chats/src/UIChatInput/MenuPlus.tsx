@@ -50,7 +50,7 @@ export function MenuPlus({ menuPlus, menuPlusDisabled }: Props) {
                 <UIImage
                     source={UIAssets.icons.ui.buttonPlus}
                     style={commonStyles.icon}
-                    tintColor={ColorVariants.IconAccent}
+                    tintColor={ColorVariants.BackgroundAccent}
                 />
             </TouchableOpacity>
         );
@@ -70,7 +70,7 @@ export function MenuPlus({ menuPlus, menuPlusDisabled }: Props) {
                     <UIImage
                         source={UIAssets.icons.ui.buttonPlus}
                         style={commonStyles.icon}
-                        tintColor={ColorVariants.IconAccent}
+                        tintColor={ColorVariants.BackgroundAccent}
                     />
                 </TouchableOpacity>
             </View>

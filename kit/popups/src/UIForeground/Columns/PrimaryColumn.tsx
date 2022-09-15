@@ -47,7 +47,7 @@ export function PrimaryColumn({
 
 const styles = StyleSheet.create({
     primaryColumn: {
-        flexGrow: 1,
+        flex: 1,
         minWidth: '50%',
         flexDirection: 'row',
         alignItems: 'center',
