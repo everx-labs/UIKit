@@ -112,7 +112,7 @@ const useStyles = makeStyles((theme: Theme, editable: boolean) => ({
         borderRadius: UILayoutConstant.input.borderRadius,
         backgroundColor: editable
             ? theme[ColorVariants.BackgroundBW]
-            : theme[ColorVariants.BackgroundNeutral],
+            : theme[ColorVariants.BackgroundTertiary],
         paddingHorizontal: UILayoutConstant.contentOffset,
     },
     inputContainer: {

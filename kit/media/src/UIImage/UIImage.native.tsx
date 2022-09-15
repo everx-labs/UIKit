@@ -49,12 +49,15 @@ const UIImageSimple = React.forwardRef<RNImage, UIImageSimpleProps>(function UII
 });
 
 export const UIImage = React.memo(
-    React.forwardRef<RNImage, UIImageProps>(function UIImage(props: UIImageProps, ref) {
+    React.forwardRef<RNImage, UIImageProps>(function UIImage(
+        { tintColor, ...rest }: UIImageProps,
+        ref,
+    ) {
         const theme = useTheme();
         return React.createElement(UIImageSimple, {
-            ...props,
+            ...rest,
             ref,
-            tintColor: props.tintColor != null ? theme[props.tintColor] : null,
+            ...(tintColor != null ? { tintColor: theme[tintColor] } : {}),
         });
     }),
 );

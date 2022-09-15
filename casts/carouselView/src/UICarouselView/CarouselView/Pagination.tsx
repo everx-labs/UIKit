@@ -23,7 +23,7 @@ function Circle({ active, onPress }: CircleProps) {
                     color={
                         active
                             ? UIBackgroundViewColors.BackgroundAccent
-                            : UIBackgroundViewColors.BackgroundNeutral
+                            : UIBackgroundViewColors.BackgroundTertiary
                     }
                     style={styles.circle}
                 />

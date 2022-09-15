@@ -8,7 +8,7 @@ import {
     UILabelColors,
     useTheme,
     TypographyVariants,
-    getFontMesurements,
+    getFontMeasurements,
 } from '@tonlabs/uikit.themes';
 import { PortalManager, UILayoutConstant } from '@tonlabs/uikit.layout';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
@@ -57,13 +57,13 @@ const Column = React.memo(function Column({
     /**
      * Safari below 15 version not support aspect-ratio. So we have to provide width/height for day view.
      * To create a smooth circle, we need to get the font height.
-     * getFontMesurements() may return undefined, so we must also pass the default value.
+     * getFontMeasurements() may return undefined, so we must also pass the default value.
      * Also we have to provide padding size multiplied by two, according to our design.
      */
 
     const dayCellStyle = React.useMemo(() => {
         const daySize =
-            (getFontMesurements(TypographyVariants.Action)?.upperline ||
+            (getFontMeasurements(TypographyVariants.Action)?.upperline ||
                 UIConstant.calendar.dayCellDefaultFontHeight) +
             UIConstant.calendar.dayCellPadding * 2;
         return { width: daySize, height: daySize, borderRadius: daySize };

@@ -56,12 +56,18 @@ function NumberParameter({
                 {label}
             </UILabel>
             <UIPressableArea onPress={onPress} disabled={!onPress} style={styles.parameterValue}>
-                <UILabel role={TypographyVariants.ParagraphText}>
-                    {prefix}
-                    <UICurrency signChar={signChar} decimalAspect={UINumberDecimalAspect.Precision}>
+                <View style={styles.numberParameterValue}>
+                    {prefix ? (
+                        <UILabel role={TypographyVariants.SurfParagraphNormal}>{prefix}</UILabel>
+                    ) : null}
+                    <UICurrency
+                        signChar={signChar}
+                        decimalAspect={UINumberDecimalAspect.Precision}
+                        integerVariant={TypographyVariants.SurfParagraphLarge}
+                    >
                         {value}
                     </UICurrency>
-                </UILabel>
+                </View>
             </UIPressableArea>
         </View>
     );
@@ -191,6 +197,10 @@ const styles = StyleSheet.create({
     },
     parameterValue: {
         paddingBottom: UILayoutConstant.contentInsetVerticalX2,
+    },
+    numberParameterValue: {
+        flexDirection: 'row',
+        alignItems: 'baseline',
     },
     moreButton: {
         paddingVertical: UILayoutConstant.contentInsetVerticalX2,

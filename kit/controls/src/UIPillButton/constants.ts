@@ -30,7 +30,7 @@ export const ContentColors: Record<
             pressedColor: ColorVariants.BackgroundAccent,
             hoveredColor: ColorVariants.BackgroundAccent,
             disabledColor: ColorVariants.BackgroundAccent,
-            loadingColor: ColorVariants.BackgroundNeutral,
+            loadingColor: ColorVariants.BackgroundTertiary,
         },
         content: {
             initialColor: ColorVariants.StaticTextPrimaryLight,
@@ -46,7 +46,7 @@ export const ContentColors: Record<
             pressedColor: ColorVariants.BackgroundNegative,
             hoveredColor: ColorVariants.BackgroundNegative,
             disabledColor: ColorVariants.BackgroundNegative,
-            loadingColor: ColorVariants.BackgroundNeutral,
+            loadingColor: ColorVariants.BackgroundTertiary,
         },
         content: {
             initialColor: ColorVariants.StaticTextPrimaryLight,
@@ -62,7 +62,7 @@ export const ContentColors: Record<
             pressedColor: ColorVariants.BackgroundPositive,
             hoveredColor: ColorVariants.BackgroundPositive,
             disabledColor: ColorVariants.BackgroundPositive,
-            loadingColor: ColorVariants.BackgroundNeutral,
+            loadingColor: ColorVariants.BackgroundTertiary,
         },
         content: {
             initialColor: ColorVariants.StaticTextPrimaryLight,

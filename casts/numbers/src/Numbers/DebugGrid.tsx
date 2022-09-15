@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { getFontMesurements, TypographyVariants } from '@tonlabs/uikit.themes';
+import { getFontMeasurements, TypographyVariants } from '@tonlabs/uikit.themes';
 
 export function DebugGrid({ variant }: { variant: TypographyVariants }) {
     return (
@@ -8,28 +8,28 @@ export function DebugGrid({ variant }: { variant: TypographyVariants }) {
             <View
                 style={[
                     { position: 'absolute', left: 0, right: 0, bottom: 0 },
-                    { height: getFontMesurements(variant)?.baseline },
+                    { height: getFontMeasurements(variant)?.baseline },
                     { backgroundColor: 'rgba(0,255,0,0.8)' },
                 ]}
             />
             <View
                 style={[
                     { position: 'absolute', left: 0, right: 0, bottom: 0 },
-                    { height: getFontMesurements(variant)?.middleline },
+                    { height: getFontMeasurements(variant)?.middleline },
                     { backgroundColor: 'rgba(255,0,0,0.6)' },
                 ]}
             />
             <View
                 style={[
                     { position: 'absolute', left: 0, right: 0, bottom: 0 },
-                    { height: getFontMesurements(variant)?.lowerline },
+                    { height: getFontMeasurements(variant)?.lowerline },
                     { backgroundColor: 'rgba(200,0,200,0.4)' },
                 ]}
             />
             <View
                 style={[
                     { position: 'absolute', left: 0, right: 0, bottom: 0 },
-                    { height: getFontMesurements(variant)?.upperline },
+                    { height: getFontMeasurements(variant)?.upperline },
                     { backgroundColor: 'rgba(0,100,200,0.2)' },
                 ]}
             />

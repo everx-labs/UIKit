@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { uiLocalized } from '@tonlabs/localization';
 
@@ -9,6 +9,8 @@ import { localizedNumberFormat, UINumberDecimalAspect } from './localizedNumberF
 import type { UINumberAppearance, UINumberGeneralProps } from './types';
 import { DebugGrid } from './DebugGrid';
 import { styles } from './styles';
+import { getDecimalPartDigitCount } from './getDecimalPartDigitCount';
+import { useTextLikeContainer, useBaselineDiff } from './hooks';
 
 export function useNumberStaticStyles(integerColor: ColorVariants, decimalColor: ColorVariants) {
     const theme = useTheme();
@@ -40,30 +42,70 @@ export function UIStaticNumber({
         uiLocalized.localeInfo.numbers;
 
     const formatted = React.useMemo(() => {
+        const decimalDigitCount = getDecimalPartDigitCount(value, decimalAspect);
         return localizedNumberFormat(
             value,
             decimalAspect,
+            decimalDigitCount,
             decimalSeparator,
             integerGroupChar,
             showPositiveSign,
         );
     }, [value, decimalAspect, decimalSeparator, integerGroupChar, showPositiveSign]);
 
+    /**
+     * A dirty hack to respect default font scale setting of `Text`,
+     * as it's a common solution on SO to disable font scaling.
+     * Like here - https://stackoverflow.com/questions/41807843/how-to-disable-font-scaling-in-react-native-for-ios-app
+     */
+    const defaultAllowFontScaling = React.useRef(
+        (Text as any).defaultProps?.allowFontScaling ?? true,
+    ).current;
+
     const [integerColorStyle, decimalColorStyle] = useNumberStaticStyles(
         integerColor,
         decimalColor,
     );
 
+    const textLikeContainer = useTextLikeContainer();
+
+    const decimalWithIntegerBaselineDiff = useBaselineDiff(decimalVariant, integerVariant);
+
     return (
-        <Text testID={testID} accessibilityLabel={`${formatted.integer}${formatted.decimal}`}>
-            <Text style={[Typography[integerVariant], styles.integer, integerColorStyle]}>
+        <View
+            style={textLikeContainer}
+            testID={testID}
+            accessibilityLabel={`${formatted.integer}${formatted.decimal}`}
+        >
+            <Text
+                testID="number-integer"
+                style={[Typography[integerVariant], integerColorStyle, styles.integer]}
+                selectable={false}
+                allowFontScaling={defaultAllowFontScaling}
+            >
                 {formatted.integer}
             </Text>
-            <Text style={[Typography[decimalVariant], styles.decimal, decimalColorStyle]}>
+            <Text
+                testID="number-decimal"
+                style={[
+                    Typography[decimalVariant],
+                    decimalColorStyle,
+                    styles.decimal,
+                    {
+                        transform: [
+                            {
+                                translateY: decimalWithIntegerBaselineDiff,
+                            },
+                        ],
+                    },
+                ]}
+                selectable={false}
+                allowFontScaling={defaultAllowFontScaling}
+            >
                 {formatted.decimal}
             </Text>
             {sign}
-            {showDebugGrid && <DebugGrid variant={decimalVariant} />}
-        </Text>
+            {showDebugGrid && <DebugGrid variant={integerVariant} />}
+        </View>
     );
 }
