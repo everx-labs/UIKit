@@ -43,5 +43,6 @@ const styles = StyleSheet.create({
             UILayoutConstant.contentOffset - UILayoutConstant.normalContentOffset / 2,
         flexDirection: 'row',
         alignItems: 'center',
+        alignSelf: 'stretch',
     },
 });

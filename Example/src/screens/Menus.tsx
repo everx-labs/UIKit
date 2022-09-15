@@ -603,7 +603,7 @@ export const Menus = () => {
                         <UIPopup.Menu.CustomAction key="9">
                             <UIPopup.Menu.PrimaryColumn onPress={getMenuCallback('PrimaryColumn')}>
                                 <UIPopup.Menu.IconCell source={UIAssets.icons.ui.camera} />
-                                <UIPopup.Menu.ActionCell title="Action" />
+                                <UIPopup.Menu.ActionCell title="Let's try Long Action with many icons in the action." />
                             </UIPopup.Menu.PrimaryColumn>
                             <UIPopup.Menu.SecondaryColumn>
                                 <UIPopup.Menu.IconCell
@@ -619,7 +619,7 @@ export const Menus = () => {
                         </UIPopup.Menu.CustomAction>
                         <UIPopup.Menu.Action
                             type={UIPopup.Menu.Action.Type.Neutral}
-                            title="Neutral Action"
+                            title="Neutral Action also can be long and it can be multiline. Let's see how it works."
                             onPress={getMenuCallback('Neutral Action')}
                         />
                         <UIPopup.Menu.Action
