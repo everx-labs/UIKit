@@ -10,6 +10,7 @@ import {
     UIAmountInputDecimalAspect,
     UIAmountInputRef,
     UIAmountInputEnhanced,
+    UIAmountInputEnhancedDecimalAspect,
 } from '@tonlabs/uikit.inputs';
 import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAddressTextView } from '@tonlabs/uicast.address-text';
@@ -30,7 +31,13 @@ export const Inputs = () => {
                 <View style={{ maxWidth: 400, padding: 20, alignSelf: 'stretch' }}>
                     <UIAmountInputEnhanced
                         placeholder="123"
-                        precision="Precise"
+                        decimalAspect={UIAmountInputEnhancedDecimalAspect.Precision}
+                        defaultAmount={new BigNumber(12345.67)}
+                        onChangeAmount={amount => console.log('onChangeAmount', amount?.toString())}
+                    />
+                    <UIAmountInputEnhanced
+                        placeholder="123"
+                        decimalAspect={UIAmountInputEnhancedDecimalAspect.Precision}
                         defaultAmount={new BigNumber(12345.67)}
                         onChangeAmount={amount => console.log('onChangeAmount', amount?.toString())}
                     >
@@ -38,7 +45,7 @@ export const Inputs = () => {
                     </UIAmountInputEnhanced>
                     <UIAmountInputEnhanced
                         placeholder="111"
-                        precision="Precise"
+                        decimalAspect={UIAmountInputEnhancedDecimalAspect.Precision}
                         onChangeAmount={amount => console.log('onChangeAmount', amount?.toString())}
                         defaultAmount={new BigNumber(11111.11)}
                         multiline
@@ -48,6 +55,21 @@ export const Inputs = () => {
                         <UIAmountInputEnhanced.Action onPress={() => null}>
                             Action
                         </UIAmountInputEnhanced.Action>
+                    </UIAmountInputEnhanced>
+                    <UIAmountInputEnhanced
+                        placeholder="123"
+                        decimalAspect={UIAmountInputEnhancedDecimalAspect.Precision}
+                        defaultAmount={new BigNumber(12345.67)}
+                        onChangeAmount={amount => console.log('onChangeAmount', amount?.toString())}
+                    >
+                        <UIAmountInputEnhanced.Icon
+                            source={UIAssets.icons.ui.buttonClose}
+                            tintColor={ColorVariants.IconSecondary}
+                        />
+                        <UIAmountInputEnhanced.Icon
+                            source={UIAssets.icons.ui.buttonPlus}
+                            tintColor={ColorVariants.IconSecondary}
+                        />
                     </UIAmountInputEnhanced>
                 </View>
             </ExampleSection>

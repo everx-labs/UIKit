@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { TouchableOpacity } from '@tonlabs/uikit.controls';
+import { UIPressableArea } from '@tonlabs/uikit.controls';
 import { ColorVariants, UILabel, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UIImage } from '@tonlabs/uikit.media';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
@@ -41,9 +41,9 @@ function processChildren(
 
 export function InputIcon({ onPress, style, containerStyle, ...rest }: InputIconProps) {
     return (
-        <TouchableOpacity onPress={onPress} style={[styles.iconTapZone, containerStyle]}>
+        <UIPressableArea onPress={onPress} style={[styles.iconTapZone, containerStyle]}>
             <UIImage {...rest} style={[styles.iconSize, style]} />
-        </TouchableOpacity>
+        </UIPressableArea>
     );
 }
 
@@ -51,9 +51,9 @@ export function InputAction({ children, onPress }: InputActionProps) {
     const processedChildren = processChildren(children, ColorVariants.TextPrimary);
 
     return (
-        <TouchableOpacity onPress={onPress}>
-            <Animated.View style={styles.actionContainer}>{processedChildren}</Animated.View>
-        </TouchableOpacity>
+        <UIPressableArea onPress={onPress} style={styles.actionContainer}>
+            {processedChildren}
+        </UIPressableArea>
     );
 }
 
@@ -67,38 +67,38 @@ export const InputClearButton = React.memo(function InputClearButton({
     clear,
 }: InputClearButtonProps) {
     return (
-        <TouchableOpacity testID="clear_btn" style={styles.iconTapZone} onPress={clear}>
+        <UIPressableArea testID="clear_btn" style={styles.iconTapZone} onPress={clear}>
             <UIImage
                 source={UIAssets.icons.ui.clear}
                 tintColor={ColorVariants.BackgroundPrimaryInverted}
                 style={styles.iconSize}
             />
-        </TouchableOpacity>
+        </UIPressableArea>
     );
 });
 
 const styles = StyleSheet.create({
     iconTapZone: {
+        alignSelf: 'stretch',
+        paddingHorizontal: UILayoutConstant.contentOffset,
         alignItems: 'center',
         justifyContent: 'center',
-        padding: UILayoutConstant.normalContentOffset,
-        left: UILayoutConstant.normalContentOffset,
     },
     iconSize: {
         width: UILayoutConstant.iconSize,
         height: UILayoutConstant.iconSize,
     },
     actionContainer: {
+        alignSelf: 'stretch',
+        paddingHorizontal: UILayoutConstant.contentOffset,
         flexDirection: 'row',
         alignItems: 'center',
-        padding: UILayoutConstant.normalContentOffset,
-        left: UILayoutConstant.normalContentOffset,
     },
     textContainer: {
+        alignSelf: 'stretch',
+        paddingHorizontal: UILayoutConstant.contentOffset,
         flexDirection: 'row',
         alignItems: 'center',
-        padding: UILayoutConstant.normalContentOffset,
-        left: UILayoutConstant.normalContentOffset,
     },
     imageChild: {
         height: UILayoutConstant.iconSize,

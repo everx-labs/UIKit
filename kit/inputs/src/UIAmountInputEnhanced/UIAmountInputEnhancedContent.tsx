@@ -74,7 +74,7 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     // @ts-ignore
     const ref = useAnimatedRef<UITextViewRef>();
 
-    const { isFocused, formattedText, normalizedText, isHovered, selectionEndPosition } =
+    const { isFocused, formattedText, isHovered, selectionEndPosition } =
         React.useContext(AmountInputContext);
 
     // /**
@@ -137,7 +137,6 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     const { onMouseEnter, onMouseLeave } = useAmountInputHover(onHover);
 
     const theme = useTheme();
-    const styles = useStyles(theme, editable);
 
     /** Label is immutable */
     const labelRef = React.useRef(label);
@@ -184,6 +183,9 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     });
 
     const childrenProcessed = useInputChildren(children);
+    const hasChildren = React.useMemo(() => {
+        return React.Children.count(childrenProcessed) > 0;
+    }, [childrenProcessed]);
 
     const changeAmount = React.useCallback(
         function changeAmount(amount: BigNumber | undefined, callOnChangeProp?: boolean) {
@@ -205,17 +207,19 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
             });
     }, [defaultValue, setText]);
 
+    const styles = useStyles(theme, editable, hasChildren);
+
     return (
         <InputMessage type={messageType} text={message}>
-            <TapHandler inputRef={ref}>
-                <Animated.View
-                    style={styles.container}
-                    // @ts-expect-error
-                    onMouseEnter={onMouseEnter}
-                    onMouseLeave={onMouseLeave}
-                >
-                    <Animated.View style={[styles.inputContainer, inputStyle]}>
-                        <View style={{ flex: 1 }}>
+            <View
+                style={styles.container}
+                // @ts-expect-error
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
+            >
+                <TapHandler inputRef={ref}>
+                    <Animated.View style={styles.inputArea}>
+                        <Animated.View style={[styles.inputContainer, inputStyle]}>
                             <UITextViewAnimated
                                 ref={ref}
                                 onLayout={onLayout}
@@ -230,25 +234,25 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
                             >
                                 {placeholder}
                             </UILabelAnimated>
-                        </View>
 
-                        <FloatingLabel
-                            expandingValue={expandingValue}
-                            isHovered={isHovered}
-                            editable={editable}
-                            colors={placeholderColors}
-                        >
-                            {label}
-                        </FloatingLabel>
+                            <FloatingLabel
+                                expandingValue={expandingValue}
+                                isHovered={isHovered}
+                                editable={editable}
+                                colors={placeholderColors}
+                            >
+                                {label}
+                            </FloatingLabel>
+                        </Animated.View>
                     </Animated.View>
-                    {childrenProcessed}
-                </Animated.View>
-            </TapHandler>
+                </TapHandler>
+                {childrenProcessed}
+            </View>
         </InputMessage>
     );
 });
 
-const useStyles = makeStyles((theme: Theme, editable: boolean = true) => ({
+const useStyles = makeStyles((theme: Theme, editable: boolean, hasChildren: boolean) => ({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -256,22 +260,30 @@ const useStyles = makeStyles((theme: Theme, editable: boolean = true) => ({
         backgroundColor: editable
             ? theme[ColorVariants.BackgroundBW]
             : theme[ColorVariants.BackgroundNeutral],
-        paddingHorizontal: UILayoutConstant.contentOffset,
+    },
+    inputArea: {
+        flex: 1,
+        flexDirection: 'row',
+        paddingLeft: UILayoutConstant.contentOffset,
+        paddingRight: hasChildren
+            ? UILayoutConstant.smallContentOffset
+            : UILayoutConstant.contentOffset,
     },
     inputContainer: {
         flex: 1,
         flexDirection: 'row',
         paddingVertical: UILayoutConstant.contentInsetVerticalX4,
-        paddingRight: UILayoutConstant.smallContentOffset,
     },
     input: {
         ...Platform.select({
             web: {
                 ...(!editable ? ({ cursor: 'default' } as TextStyle) : null),
+                zIndex: 100,
             },
         }),
     },
     placeholder: {
         position: 'absolute',
+        alignSelf: 'center',
     },
 }));
