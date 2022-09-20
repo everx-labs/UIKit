@@ -51,7 +51,7 @@ export function MenuMore({ menuMore, menuMoreDisabled }: Props) {
                 <View style={styles.iconWrapper}>
                     <UIImage
                         source={UIAssets.icons.ui.buttonDots}
-                        tintColor={ColorVariants.IconAccent}
+                        tintColor={ColorVariants.BackgroundAccent}
                     />
                 </View>
             </TouchableOpacity>
@@ -72,7 +72,7 @@ export function MenuMore({ menuMore, menuMoreDisabled }: Props) {
                     <View style={styles.iconWrapper}>
                         <UIImage
                             source={UIAssets.icons.ui.buttonDots}
-                            tintColor={ColorVariants.IconAccent}
+                            tintColor={ColorVariants.BackgroundAccent}
                         />
                     </View>
                 </TouchableOpacity>

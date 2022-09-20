@@ -16,8 +16,8 @@ type Props = {
     onPress: OnStickersPress;
 };
 
-export function StickersButton(props: Props) {
-    if (!props.editable || props.inputHasValue) {
+export function StickersButton({ editable, inputHasValue, customKeyboardVisible, onPress }: Props) {
+    if (!editable || inputHasValue) {
         return null;
     }
 
@@ -25,14 +25,14 @@ export function StickersButton(props: Props) {
         <TouchableOpacity
             testID="stickers_btn"
             style={styles.buttonContainer}
-            onPress={() => props.onPress()}
+            onPress={() => onPress()}
         >
             <UIImage
                 style={styles.icon}
                 source={UIAssets.icons.ui.buttonStickerEnabled}
                 tintColor={
-                    !props.customKeyboardVisible
-                        ? ColorVariants.IconAccent
+                    !customKeyboardVisible
+                        ? ColorVariants.BackgroundAccent
                         : ColorVariants.IconNeutral
                 }
             />

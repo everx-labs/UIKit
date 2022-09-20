@@ -40,7 +40,7 @@ export const UIAmountInputForward = React.forwardRef<UIAmountInputRef, UIAmountI
         const mask: MaterialTextViewMask = useMask(decimalAspect);
 
         const defaultValue = React.useMemo(() => {
-            return defaultAmount?.toString();
+            return defaultAmount?.toFixed();
         }, [defaultAmount]);
 
         const { error, warning, success } = useHelperTextStatus(messageType);
@@ -49,7 +49,7 @@ export const UIAmountInputForward = React.forwardRef<UIAmountInputRef, UIAmountI
         const { isFocused, onFocus, onBlur } = useFocused(undefined, undefined);
         const { inputHasValue, checkInputHasValue } = useInputHasValue(
             undefined,
-            defaultAmount?.toString(),
+            defaultAmount?.toFixed(),
         );
         const processedChildren = useUIAmountInputChildren(
             children,

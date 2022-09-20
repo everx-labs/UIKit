@@ -49,7 +49,7 @@ export function QuickAction(props: Props) {
                             resizeMode="center"
                             source={action.icon}
                             style={commonStyles.icon}
-                            tintColor={ColorVariants.IconAccent}
+                            tintColor={ColorVariants.BackgroundAccent}
                         />
                     )}
                     {action.title != null && (
