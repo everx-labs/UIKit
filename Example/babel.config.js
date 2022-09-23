@@ -9,8 +9,6 @@ module.exports = {
                     '_hapticImpact',
                     '_hapticSelection',
                     '_hapticNotification',
-                    '_injectInputValue',
-                    '_moveInputCaret',
                     '_uiKitInputBinder',
                 ],
             },

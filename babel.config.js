@@ -11,8 +11,6 @@ module.exports = function (api) {
                     '_hapticImpact',
                     '_hapticSelection',
                     '_hapticNotification',
-                    '_injectInputValue',
-                    '_moveInputCaret',
                     '_uiKitInputBinder',
                 ],
             },

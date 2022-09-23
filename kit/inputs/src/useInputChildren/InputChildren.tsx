@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { UIPressableArea } from '@tonlabs/uikit.controls';
 import { ColorVariants, UILabel, UILabelRoles } from '@tonlabs/uikit.themes';
@@ -52,7 +52,7 @@ export function InputAction({ children, onPress }: InputActionProps) {
 
     return (
         <UIPressableArea onPress={onPress} style={styles.actionContainer}>
-            {processedChildren}
+            <View style={styles.actionContent}>{processedChildren}</View>
         </UIPressableArea>
     );
 }
@@ -60,7 +60,11 @@ export function InputAction({ children, onPress }: InputActionProps) {
 export function InputText({ children }: InputTextProps) {
     const processedChildren = processChildren(children, ColorVariants.TextTertiary);
 
-    return <Animated.View style={styles.textContainer}>{processedChildren}</Animated.View>;
+    return (
+        <Animated.View style={styles.textContainer}>
+            <View style={styles.textContent}>{processedChildren}</View>
+        </Animated.View>
+    );
 }
 
 export const InputClearButton = React.memo(function InputClearButton({
@@ -90,15 +94,21 @@ const styles = StyleSheet.create({
     },
     actionContainer: {
         alignSelf: 'stretch',
-        paddingHorizontal: UILayoutConstant.contentOffset,
+        justifyContent: 'center',
+    },
+    actionContent: {
         flexDirection: 'row',
         alignItems: 'center',
+        paddingHorizontal: UILayoutConstant.contentOffset,
     },
     textContainer: {
         alignSelf: 'stretch',
-        paddingHorizontal: UILayoutConstant.contentOffset,
+        justifyContent: 'center',
+    },
+    textContent: {
         flexDirection: 'row',
         alignItems: 'center',
+        paddingHorizontal: UILayoutConstant.contentOffset,
     },
     imageChild: {
         height: UILayoutConstant.iconSize,

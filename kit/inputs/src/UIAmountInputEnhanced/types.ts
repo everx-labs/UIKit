@@ -6,6 +6,13 @@ import type { UIMaterialTextViewProps } from '../UIMaterialTextView/types';
 import type { InputChildren } from '../useInputChildren';
 import type { UIAmountInputEnhancedDecimalAspect } from './constants';
 
+export enum UIAmountInputEnhancedMessageType {
+    Error = 'Error',
+    Warning = 'Warning',
+    Success = 'Success',
+    Info = 'Info',
+}
+
 export type UIAmountInputEnhancedProps = Omit<
     UIMaterialTextViewProps,
     'mask' | 'defaultValue' | 'value' | 'onChangeText'
@@ -27,9 +34,9 @@ export type UIAmountInputEnhancedProps = Omit<
     decimalAspect?: UIAmountInputEnhancedDecimalAspect;
     /**
      * Type of the message. Affects the style of the message.
-     * @default  InputMessageType.Info
+     * @default  UIAmountInputEnhancedMessageType.Info
      */
-    messageType?: InputMessageType;
+    messageType?: UIAmountInputEnhancedMessageType;
     /**
      * Message text.
      */

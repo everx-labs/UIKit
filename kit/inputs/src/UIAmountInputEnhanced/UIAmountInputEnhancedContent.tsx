@@ -14,7 +14,11 @@ import { makeStyles, Theme, ColorVariants, useTheme, UILabelAnimated } from '@to
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { BigNumber } from 'bignumber.js';
 import { uiLocalized } from '@tonlabs/localization';
-import type { UIAmountInputEnhancedRef, UIAmountInputEnhancedProps } from './types';
+import {
+    UIAmountInputEnhancedRef,
+    UIAmountInputEnhancedProps,
+    UIAmountInputEnhancedMessageType,
+} from './types';
 import { AmountInputContext, withSpringConfig } from './constants';
 import {
     useAmountInputHandlers,
@@ -27,7 +31,7 @@ import {
 } from './hooks';
 import { UITextView, UITextViewRef } from '../UITextView';
 import { TapHandler } from './TapHandler';
-import { InputMessage } from '../InputMessage';
+import { InputMessage, InputMessageType } from '../InputMessage';
 import { usePlaceholderVisibility } from './hooks/usePlaceholderVisibility';
 import { useExpandingValue } from './hooks/useExpandingValue';
 import { FloatingLabel } from './FloatingLabel';
@@ -207,10 +211,24 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
             });
     }, [defaultValue, setText]);
 
+    const inputMessageType: InputMessageType | undefined = React.useMemo(() => {
+        switch (messageType) {
+            case UIAmountInputEnhancedMessageType.Error:
+                return InputMessageType.Error;
+            case UIAmountInputEnhancedMessageType.Success:
+                return InputMessageType.Success;
+            case UIAmountInputEnhancedMessageType.Warning:
+                return InputMessageType.Warning;
+            case UIAmountInputEnhancedMessageType.Info:
+            default:
+                return InputMessageType.Info;
+        }
+    }, [messageType]);
+
     const styles = useStyles(theme, editable, hasChildren);
 
     return (
-        <InputMessage type={messageType} text={message}>
+        <InputMessage type={inputMessageType} text={message}>
             <View
                 style={styles.container}
                 // @ts-expect-error
@@ -259,7 +277,7 @@ const useStyles = makeStyles((theme: Theme, editable: boolean, hasChildren: bool
         borderRadius: UILayoutConstant.input.borderRadius,
         backgroundColor: editable
             ? theme[ColorVariants.BackgroundBW]
-            : theme[ColorVariants.BackgroundNeutral],
+            : theme[ColorVariants.BackgroundTertiary],
     },
     inputArea: {
         flex: 1,
