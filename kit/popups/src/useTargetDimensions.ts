@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { NativeMethods, ScaledSize } from 'react-native';
+import { NativeMethods, Platform, ScaledSize, StatusBar } from 'react-native';
 
 export type TargetDimensions = {
     x: number;
@@ -31,7 +31,10 @@ export function useTargetDimensions(
             }
             setTargetDimensions({
                 x,
-                y,
+                y: Platform.select({
+                    android: y + (StatusBar.currentHeight ?? 0),
+                    default: y,
+                }),
                 width,
                 height,
             });
