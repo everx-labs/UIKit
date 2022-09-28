@@ -13,7 +13,6 @@ import { useTargetDimensions, TargetDimensions } from '../useTargetDimensions';
 type Location = {
     left: number;
     top: number | undefined;
-    bottom: number | undefined;
 };
 type Size = {
     width: number;
@@ -46,21 +45,18 @@ function useMenuLocation(
         const boundaries = getBoundaries(windowDimensions, menuSize);
 
         let top: number | undefined = triggerDimensions.y + triggerDimensions.height;
-        let bottom: number | undefined;
         const left: number = Math.max(
             boundaries.left,
             Math.min(boundaries.right, triggerDimensions.x),
         );
 
         if (top > boundaries.bottom) {
-            top = undefined;
-            bottom = windowDimensions.height - triggerDimensions.y;
+            top = triggerDimensions.y - menuSize.height;
         }
 
         return {
             left,
             top,
-            bottom,
         };
     }, [triggerDimensions, windowDimensions, menuSize]);
 }
@@ -104,7 +100,9 @@ export function UIMenuContainerContent({
                 onLayout={onLayout}
                 testID={testID}
             >
-                <ShadowView style={styles.shadowContainer}>{children}</ShadowView>
+                <ShadowView style={styles.shadowContainer}>
+                    <View style={styles.shadowContent}>{children}</View>
+                </ShadowView>
             </Animated.View>
         </>
     );
@@ -118,12 +116,15 @@ const useStyles = makeStyles((theme: Theme, location: Location | null, shadow: a
         ...location,
     },
     shadowContainer: {
+        ...shadow,
         backgroundColor: theme[ColorVariants.BackgroundPrimary],
+        borderRadius: UILayoutConstant.alertBorderRadius,
+    },
+    shadowContent: {
         borderRadius: UILayoutConstant.alertBorderRadius,
         width: UIConstant.menu.width,
         paddingHorizontal: UILayoutConstant.contentOffset,
         overflow: 'hidden',
         alignItems: 'stretch',
-        ...shadow,
     },
 }));
