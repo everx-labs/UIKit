@@ -78,11 +78,12 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-    cliPath: "../node_modules/react-native/cli.js", // path is relative to `process.cwd`
-    composeSourceMapsPath: "../node_modules/react-native/scripts/compose-source-maps.js", // path is relative to `process.cwd`
+    cliPath: "../../../node_modules/react-native/cli.js", // path is relative to `process.cwd`
+    composeSourceMapsPath: "../../../node_modules/react-native/scripts/compose-source-maps.js", // path is relative to `process.cwd`
     enableHermes: true,  // clean and rebuild if changing
     entryFile: "index.js", // path is relative to `process.cwd`
     hermesCommand: "../../../node_modules/hermes-engine/osx-bin/hermesc",
+//    bundleInDebug: true,
 ]
 
 project.ext.themes = [

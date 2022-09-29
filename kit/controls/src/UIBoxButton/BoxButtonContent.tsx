@@ -46,7 +46,8 @@ export const BoxButtonContent = ({
     });
 
     const animatedBackgroundOverlayStyle = useAnimatedStyle(() => {
-        if (type === UIBoxButtonType.Primary) {
+        // if (type === UIBoxButtonType.Primary) {
+        if (type === 'Primary') {
             return {
                 backgroundColor: backgroundOverlayColor.value,
             };
