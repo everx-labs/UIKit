@@ -9,6 +9,7 @@ import {
     UIAmountInput,
     UIAmountInputDecimalAspect,
     UIAmountInputRef,
+    UISeedPhraseInput,
 } from '@tonlabs/uikit.inputs';
 import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAddressTextView } from '@tonlabs/uicast.address-text';
@@ -25,6 +26,35 @@ export const Inputs = () => {
     }, []);
     return (
         <ExampleScreen>
+            <ExampleSection title="UISeedPhraseInput">
+                <View style={{ maxWidth: 400, padding: 20, alignSelf: 'stretch' }}>
+                    <UISeedPhraseInput
+                        testID="uiNumberTextView_default"
+                        totalWords={[5, 10]}
+                        validatePhrase={async (_phrase, parts) => {
+                            if (parts == null) {
+                                return false;
+                            }
+                            for (let i = 0; i < parts.length; i += 1) {
+                                if (parts[i] !== mnemonicWords[i >= 5 ? i - 5 : i]) {
+                                    return false;
+                                }
+                            }
+                            if (parts.length === 5 || parts.length === 10) {
+                                return true;
+                            }
+                            return false;
+                        }}
+                        onSuccess={() => {
+                            console.log('valid!');
+                        }}
+                        onSubmit={() => {
+                            console.log('submit');
+                        }}
+                        placeholder="Secret phrase"
+                    />
+                </View>
+            </ExampleSection>
             <ExampleSection title="UINumberTextView">
                 <UINumberTextView testID="uiNumberTextView_default" placeholder="Put number" />
             </ExampleSection>
