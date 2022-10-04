@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {
-    View,
     Platform,
     NativeSyntheticEvent,
     TextInputSelectionChangeEventData,
@@ -9,41 +8,30 @@ import {
 
 import { uiLocalized } from '@tonlabs/localization';
 
-import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import {
-    UIMaterialTextView,
-    UIMaterialTextViewRef,
-    UIMaterialTextViewProps,
-} from '../UIMaterialTextView';
+import { UIMaterialTextView, UIMaterialTextViewRef } from '../UIMaterialTextView';
 
-import { useExtendedRef } from './hooks';
+import { useExtendedRef, useHelper } from './hooks';
+import type { UISeedPhraseInputProps, UISeedPhraseInputState } from './types';
 
 const SPLITTER = ` `;
 
 const WORDS_REG_EXP = /[\p{L}\p{N}]+/gu;
-const NOT_ENGLISH_LETTERS_REG_EXP = /[^a-zA-Z]/g;
+// const NOT_LATIN_LETTERS_REG_EXP = /[^a-zA-Z]/g;
 
-const splitPhrase = (phrase: string) => {
-    return phrase.split(SPLITTER);
-};
+function getWordList(text: string, totalWords: number[]): string[] {
+    const wordList = text.match(WORDS_REG_EXP);
 
-type UISeedPhraseInputState = {
-    phrase: string;
-    parts: string[];
-};
+    const maxWords = Math.max.apply(null, totalWords);
+    if (wordList && wordList.length > maxWords) {
+        return wordList.slice(0, maxWords);
+    }
+    return wordList ?? [];
+}
+
 const initialState: UISeedPhraseInputState = {
     phrase: '',
     parts: [],
 };
-// TODO Remove UILayoutConstant.dashSymbol
-
-export type UISeedPhraseInputProps = {
-    onSubmit: () => void | Promise<void>;
-    onSuccess: (phrase?: string, parts?: string[]) => void | Promise<void>;
-    testID?: string;
-    totalWords: number | number[];
-    validatePhrase: (phrase?: string, parts?: string[]) => Promise<boolean>;
-} & Pick<UIMaterialTextViewProps, 'onFocus' | 'onBlur'>;
 
 export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedPhraseInputProps>(
     function UISeedPhraseInputForwarded(props: UISeedPhraseInputProps, ref) {
@@ -65,7 +53,6 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
         }, [totalWordsProp]);
 
         const textInputRef = React.useRef<UIMaterialTextViewRef>(null);
-        const textInputBorderViewRef = React.useRef<View>(null);
 
         const [state, setState] = React.useState<UISeedPhraseInputState>(initialState);
 
@@ -73,15 +60,13 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
 
         // https://reactjs.org/docs/hooks-faq.html#how-to-read-an-often-changing-value-from-usecallback
         const phraseRef = React.useRef('');
-        const phrasePartsRef = React.useRef<string[] | null>(null);
 
-        const savePhrase = React.useCallback((phrase: string) => {
-            phraseRef.current = phrase;
-            phrasePartsRef.current = splitPhrase(phrase);
+        const savePhrase = React.useCallback((text: string) => {
+            phraseRef.current = text;
 
             setState({
-                phrase,
-                parts: phrasePartsRef.current,
+                phrase: text,
+                parts: text.split(SPLITTER),
             });
         }, []);
 
@@ -119,7 +104,10 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
             [textInputRef, onBlurProp],
         );
 
-        const [hasIncorrectCharacters, setHasIncorrectCharacters] = React.useState(false);
+        /**
+         * Uncomment and use in useHelper hook if you need addtitional hints for user.
+         */
+        // const [hasNonLatinCharacters, setHasNonLatinCharacters] = React.useState(false);
 
         const previousTextRawRef = React.useRef<string | null>(null);
 
@@ -138,52 +126,20 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
                 // For now we just need to ensure the string is not empty, when applying the function
                 const text = textRaw ? textRaw.toLocaleLowerCase() : '';
 
-                const wordList = text.match(WORDS_REG_EXP);
+                const wordList = getWordList(text, totalWords);
 
-                if (wordList?.join('').match(NOT_ENGLISH_LETTERS_REG_EXP)) {
-                    setHasIncorrectCharacters(true);
-                } else if (hasIncorrectCharacters) {
-                    setHasIncorrectCharacters(false);
-                }
+                /**
+                 * Uncomment and use in useHelper hook if you need addtitional hints for user.
+                 */
+                // if (wordList?.join('').match(NOT_LATIN_LETTERS_REG_EXP)) {
+                //     setHasNonLatinCharacters(true);
+                // } else {
+                //     setHasNonLatinCharacters(false);
+                // }
 
-                const lastSymbol = text[text.length - 1];
+                let newText = wordList?.join(SPLITTER).trim() ?? '';
 
-                if (text.length > phraseRef.current.length && lastSymbol === ' ') {
-                    // Prevent adding dash when there wasn't typed a word
-                    // i.e `word - - `
-                    if (text.endsWith('  ')) {
-                        textInputRef.current?.changeText(phraseRef.current, false);
-                        return;
-                    }
-                    const parts = text.split(SPLITTER);
-                    const newText =
-                        parts.length < Math.max.apply(null, totalWords)
-                            ? `${text}${UILayoutConstant.dashSymbol} `
-                            : text.trim();
-
-                    textInputRef.current?.changeText(newText, false);
-
-                    savePhrase(newText);
-
-                    return;
-                }
-
-                if (
-                    text.length < phraseRef.current.length &&
-                    lastSymbol === UILayoutConstant.dashSymbol
-                ) {
-                    const newText = text.slice(0, text.length - 2);
-
-                    textInputRef.current?.changeText(newText, false);
-
-                    savePhrase(newText);
-
-                    return;
-                }
-
-                let newText = text.match(/(\w+)/g)?.join(SPLITTER) ?? '';
-
-                if (text.endsWith(SPLITTER)) {
+                if (newText && text.endsWith(SPLITTER)) {
                     newText += SPLITTER;
                 }
 
@@ -193,7 +149,7 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
 
                 savePhrase(newText);
             },
-            [hasIncorrectCharacters, savePhrase, totalWords],
+            [savePhrase, totalWords],
         );
 
         const [isValid, setIsValid] = React.useState(false);
@@ -208,57 +164,22 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
         }, [validatePhrase, onSuccess]);
 
         React.useEffect(() => {
-            validatePhraseRef.current(state.phrase, state.parts).then(valid => {
+            const { phrase, parts } = state;
+            validatePhraseRef.current(phrase, parts).then(valid => {
                 setIsValid(valid);
                 if (valid) {
-                    onSuccessRef.current(state.phrase, state.parts);
+                    onSuccessRef.current(phrase, parts);
                 }
             });
-        }, [isValid, setIsValid, state.phrase, state.parts, textInputRef]);
+        }, [isValid, setIsValid, state, textInputRef]);
 
         const onSubmitEditing = React.useCallback(() => {
-            textInputRef.current?.changeText(phraseRef.current, false);
             if (isValid) {
-                onSubmit && onSubmit();
+                onSubmit?.();
             }
-        }, [isValid, onSubmit, textInputRef]);
+        }, [isValid, onSubmit]);
 
-        const totalWordsString = React.useMemo(() => {
-            if (typeof props.totalWords === 'number') {
-                return uiLocalized.localizedStringForValue(props.totalWords, 'words');
-            }
-
-            const lastIndex = props.totalWords.length - 1;
-            return props.totalWords.reduce((acc, num, index) => {
-                if (index === lastIndex) {
-                    return `${acc}${uiLocalized.localizedStringForValue(num, 'words')}`;
-                }
-
-                return `${acc}${num}${uiLocalized.orDelimeter}`;
-            }, '');
-        }, [props.totalWords]);
-
-        const hasValue = state.phrase.length > 0;
-
-        const [helperText, error] = React.useMemo(() => {
-            if (hasIncorrectCharacters) {
-                return [uiLocalized.seedPhraseWrongCharacter, true];
-            }
-            const entered = state.parts.filter(w => w.length > 0).length;
-
-            if (!isFocused && hasValue) {
-                if (isValid) {
-                    return [uiLocalized.greatMemory, false];
-                }
-                return [uiLocalized.seedPhraseTypo, true];
-            }
-
-            if (entered === 0) {
-                return [totalWordsString, false];
-            }
-
-            return [uiLocalized.localizedStringForValue(entered, 'words'), false];
-        }, [hasIncorrectCharacters, state.parts, isFocused, hasValue, isValid, totalWordsString]);
+        const { helperText, error } = useHelper(state, isFocused, isValid);
 
         const onSelectionChange = React.useCallback(
             ({
@@ -277,30 +198,27 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
         );
 
         return (
-            <>
-                <UIMaterialTextView
-                    ref={textInputRef}
-                    borderViewRef={textInputBorderViewRef}
-                    testID={testID}
-                    autoCapitalize="none"
-                    autoComplete="off"
-                    autoCorrect={false}
-                    multiline
-                    contextMenuHidden
-                    label={uiLocalized.MasterPassword}
-                    onChangeText={onChangeText}
-                    onFocus={onFocus}
-                    onBlur={onBlur}
-                    onSelectionChange={onSelectionChange}
-                    helperText={helperText}
-                    error={error}
-                    success={isValid && !isFocused}
-                    returnKeyType="done"
-                    onSubmitEditing={onSubmitEditing}
-                    blurOnSubmit
-                    noPersonalizedLearning
-                />
-            </>
+            <UIMaterialTextView
+                ref={textInputRef}
+                testID={testID}
+                autoCapitalize="none"
+                autoComplete="off"
+                autoCorrect={false}
+                multiline
+                contextMenuHidden
+                label={uiLocalized.MasterPassword}
+                onChangeText={onChangeText}
+                onFocus={onFocus}
+                onBlur={onBlur}
+                onSelectionChange={onSelectionChange}
+                helperText={helperText}
+                error={error}
+                success={isValid && !isFocused}
+                returnKeyType="done"
+                onSubmitEditing={onSubmitEditing}
+                blurOnSubmit
+                noPersonalizedLearning
+            />
         );
     },
 );
