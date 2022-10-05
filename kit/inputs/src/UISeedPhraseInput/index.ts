@@ -1,2 +1,3 @@
 export * from './UISeedPhraseInput';
-export type { UISeedPhraseInputProps } from './types';
+export type { UISeedPhraseInputProps, ValidationResult } from './types';
+export { UISeedPhraseInputMessageType } from './consts';

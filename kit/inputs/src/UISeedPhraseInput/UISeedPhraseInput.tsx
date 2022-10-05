@@ -11,7 +11,8 @@ import { uiLocalized } from '@tonlabs/localization';
 import { UIMaterialTextView, UIMaterialTextViewRef } from '../UIMaterialTextView';
 
 import { useExtendedRef, useHelper } from './hooks';
-import type { UISeedPhraseInputProps, UISeedPhraseInputState } from './types';
+import type { UISeedPhraseInputProps, UISeedPhraseInputState, ValidationResult } from './types';
+import { UISeedPhraseInputMessageType } from './consts';
 
 const SPLITTER = ` `;
 
@@ -43,6 +44,7 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
             testID,
             totalWords: totalWordsProp,
             validatePhrase,
+            placeholder,
         } = props;
         const totalWords = React.useMemo(() => {
             if (typeof totalWordsProp === 'number') {
@@ -152,7 +154,9 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
             [savePhrase, totalWords],
         );
 
-        const [isValid, setIsValid] = React.useState(false);
+        const [validationResult, setValidationResult] = React.useState<boolean | ValidationResult>(
+            false,
+        );
 
         // To not call validation at every prop change
         // (and prevent infinite cycles)
@@ -165,21 +169,33 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
 
         React.useEffect(() => {
             const { phrase, parts } = state;
-            validatePhraseRef.current(phrase, parts).then(valid => {
-                setIsValid(valid);
-                if (valid) {
+            validatePhraseRef.current(phrase, parts).then(result => {
+                setValidationResult(result);
+                if (
+                    result === true ||
+                    (typeof result === 'object' &&
+                        result.type === UISeedPhraseInputMessageType.Success)
+                ) {
                     onSuccessRef.current(phrase, parts);
                 }
             });
-        }, [isValid, setIsValid, state, textInputRef]);
+        }, [setValidationResult, state]);
 
         const onSubmitEditing = React.useCallback(() => {
-            if (isValid) {
+            if (
+                validationResult === true ||
+                (typeof validationResult === 'object' &&
+                    validationResult.type === UISeedPhraseInputMessageType.Success)
+            ) {
                 onSubmit?.();
             }
-        }, [isValid, onSubmit]);
+        }, [validationResult, onSubmit]);
 
-        const { helperText, error } = useHelper(state, isFocused, isValid);
+        const { helperText, error, warning, success } = useHelper(
+            state,
+            isFocused,
+            validationResult,
+        );
 
         const onSelectionChange = React.useCallback(
             ({
@@ -211,9 +227,11 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
                 onFocus={onFocus}
                 onBlur={onBlur}
                 onSelectionChange={onSelectionChange}
+                placeholder={placeholder}
                 helperText={helperText}
                 error={error}
-                success={isValid && !isFocused}
+                warning={warning}
+                success={success}
                 returnKeyType="done"
                 onSubmitEditing={onSubmitEditing}
                 blurOnSubmit

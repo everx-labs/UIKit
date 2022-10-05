@@ -10,6 +10,7 @@ import {
     UIAmountInputDecimalAspect,
     UIAmountInputRef,
     UISeedPhraseInput,
+    UISeedPhraseInputMessageType,
 } from '@tonlabs/uikit.inputs';
 import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAddressTextView } from '@tonlabs/uicast.address-text';
@@ -20,7 +21,7 @@ import { ExampleScreen } from '../components/ExampleScreen';
 
 export const Inputs = () => {
     const amountPrecisionRef = React.useRef<UIAmountInputRef>(null);
-    const mnemonicWords = ['report', 'replenish', 'meadow', 'village', 'slight'];
+    const mnemonicWords = ['report', 'village', 'slight'];
     const onChangeAmount = React.useCallback((amount: BigNumber | undefined) => {
         amountPrecisionRef.current?.changeAmount(amount, false);
     }, []);
@@ -30,20 +31,26 @@ export const Inputs = () => {
                 <View style={{ maxWidth: 400, padding: 20, alignSelf: 'stretch' }}>
                     <UISeedPhraseInput
                         testID="uiNumberTextView_default"
-                        totalWords={[5, 10]}
+                        totalWords={[3, 6]}
                         validatePhrase={async (_phrase, parts) => {
                             if (parts == null) {
                                 return false;
                             }
                             for (let i = 0; i < parts.length; i += 1) {
                                 if (parts[i] !== mnemonicWords[i >= 5 ? i - 5 : i]) {
-                                    return false;
+                                    return {
+                                        type: UISeedPhraseInputMessageType.Error,
+                                        message: 'Wrong words',
+                                    };
                                 }
                             }
-                            if (parts.length === 5 || parts.length === 10) {
+                            if (parts.length === 3 || parts.length === 6) {
                                 return true;
                             }
-                            return false;
+                            return {
+                                type: UISeedPhraseInputMessageType.Neutral,
+                                message: '3 or 6 words',
+                            };
                         }}
                         onSuccess={() => {
                             console.log('valid!');
@@ -51,7 +58,7 @@ export const Inputs = () => {
                         onSubmit={() => {
                             console.log('submit');
                         }}
-                        placeholder="Secret phrase"
+                        placeholder={mnemonicWords.join(' ')}
                     />
                 </View>
             </ExampleSection>
