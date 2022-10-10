@@ -61,11 +61,11 @@ export function Pressable({
         longPress = longPress.requireExternalGestureToFail(waitFor);
     }
 
-    const tapGestures = Gesture.Simultaneous(longPress, tap);
+    const simultaneousGesture = Gesture.Simultaneous(tap, longPress);
 
     return (
         <PressableStateContext.Provider value={pressableState}>
-            <GestureDetector gesture={tapGestures}>
+            <GestureDetector gesture={simultaneousGesture}>
                 <View style={style} testID={testID}>
                     {children}
                 </View>
