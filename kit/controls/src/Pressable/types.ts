@@ -1,7 +1,8 @@
-import type { ColorVariants } from '@tonlabs/uikit.themes';
 import type React from 'react';
 import type { StyleProp, ViewStyle } from 'react-native';
-import type { GestureType } from 'react-native-gesture-handler';
+import type { GestureRef } from 'react-native-gesture-handler/lib/typescript/handlers/gestures/gesture';
+
+import type { ColorVariants } from '@tonlabs/uikit.themes';
 
 export interface PressableProps {
     /**
@@ -38,7 +39,7 @@ export interface PressableProps {
     /**
      * Compatibility with https://docs.swmansion.com/react-native-gesture-handler/docs/next/guides/upgrading-to-2#replacing-waitfor-and-simultaneoushandlers
      */
-    waitFor?: React.RefObject<GestureType>;
+    waitFor?: Exclude<GestureRef, number>;
 }
 
 export type PressableStateType = 'Initial' | 'Disabled' | 'Hovered' | 'Pressed' | 'Loading';
