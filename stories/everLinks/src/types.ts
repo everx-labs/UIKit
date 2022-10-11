@@ -27,6 +27,10 @@ export type UISendSheetParams = {
      */
     amount: BigNumber;
     /**
+     * Send comment text
+     */
+    comment?: string;
+    /**
      * Network fees amount of Send external action.
      */
     fee: BigNumber;
