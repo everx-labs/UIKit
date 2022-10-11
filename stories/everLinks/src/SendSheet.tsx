@@ -47,7 +47,7 @@ function CurrencyElement({ amount, signChar }: { amount: BigNumber; signChar: st
     );
 }
 
-function SendSheetContent({ address, amount, fee, onConfirm, signChar }: UISendSheetParams) {
+function SendSheetContent({ address, amount, comment, fee, onConfirm, signChar }: UISendSheetParams) {
     return (
         <View>
             <View style={styles.contentContainer}>
@@ -78,6 +78,22 @@ function SendSheetContent({ address, amount, fee, onConfirm, signChar }: UISendS
                             {address}
                         </UILabel>
                     </View>
+                    {comment ? (
+                        <View style={styles.paddingVerticalSmall}>
+                            <UILabel
+                                color={UILabelColors.TextSecondary}
+                                role={UILabelRoles.SurfParagraphSmall}
+                            >
+                                {uiLocalized.EverLinks.Send.Comment}
+                            </UILabel>
+                            <UILabel
+                                color={UILabelColors.TextPrimary}
+                                role={UILabelRoles.SurfParagraphNormal}
+                            >
+                                {comment}
+                            </UILabel>
+                        </View>
+                    ) : null}
                     <UIListSeparator />
                     <View style={styles.rowContainer}>
                         <UILabel
@@ -120,7 +136,7 @@ function SendSheetContent({ address, amount, fee, onConfirm, signChar }: UISendS
 
 export function UISendSheet(props: UIEverLinkSheetProps) {
     const { onClose, params: sendParams, visible } = props;
-    const { address, amount, fee, onConfirm, signChar } = sendParams;
+    const { address, amount, comment, fee, onConfirm, signChar } = sendParams;
 
     const onConfirmPress = React.useCallback(() => {
         if (onConfirm) {
@@ -136,6 +152,7 @@ export function UISendSheet(props: UIEverLinkSheetProps) {
             <SendSheetContent
                 address={address}
                 amount={amount}
+                comment={comment}
                 fee={fee}
                 onConfirm={onConfirmPress}
                 signChar={signChar}

@@ -204,6 +204,7 @@
         "Send": {
             "Amount": "총액",
             "ActionTitle": "토큰 보내기",
+            "Comment": "Comment",
             "Confirm": "확인",
             "NetworkFee": "네트워크 수수료",
             "NetworkFeeTilde": "~ ",
