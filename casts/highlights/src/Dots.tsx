@@ -63,7 +63,7 @@ function Dot({
     const theme = useTheme();
 
     const activeColor = theme[ColorVariants.GraphPrimary];
-    const nonActiveColor = theme[ColorVariants.GraphTertiary];
+    const nonActiveColor = theme[ColorVariants.BackgroundTertiary];
 
     const wrapperStyle = useAnimatedStyle(() => {
         const placement = dotsContext.value.slots.findIndex(it => it === id) + 1;
