@@ -11,7 +11,8 @@ import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIListSeparator } from '@tonlabs/uicast.rows';
 
-import type { UIEverLinkSheetProps, UISendSheetParams } from './types';
+import type { UISendSheetParams } from './types';
+import type { UIEverLinkSheetProps } from '../types';
 
 export function useUISendSheet() {
     const [sendSheetVisible, setSendSheetVisible] = React.useState(false);
@@ -47,7 +48,7 @@ function CurrencyElement({ amount, signChar }: { amount: BigNumber; signChar: st
     );
 }
 
-function SendSheetContent({ address, amount, comment, fee, onConfirm, signChar }: UISendSheetParams) {
+function SendSheetContent({ actionTitle, address, amount, comment, fee, onConfirm, signChar }: UISendSheetParams) {
     return (
         <View>
             <View style={styles.contentContainer}>
@@ -62,7 +63,7 @@ function SendSheetContent({ address, amount, comment, fee, onConfirm, signChar }
                         role={UILabelRoles.SurfTitleNormal}
                         style={styles.marginVerticalNormal}
                     >
-                        {uiLocalized.EverLinks.Send.ActionTitle}
+                        {actionTitle}
                     </UILabel>
                     <View style={styles.paddingVerticalSmall}>
                         <UILabel
@@ -136,7 +137,7 @@ function SendSheetContent({ address, amount, comment, fee, onConfirm, signChar }
 
 export function UISendSheet(props: UIEverLinkSheetProps) {
     const { onClose, params: sendParams, visible } = props;
-    const { address, amount, comment, fee, onConfirm, signChar } = sendParams;
+    const { actionTitle, address, amount, comment, fee, onConfirm, signChar } = sendParams as UISendSheetParams;
 
     const onConfirmPress = React.useCallback(() => {
         if (onConfirm) {
@@ -150,6 +151,7 @@ export function UISendSheet(props: UIEverLinkSheetProps) {
     return (
         <UICardSheet visible={visible} onClose={onClose}>
             <SendSheetContent
+                actionTitle={actionTitle}
                 address={address}
                 amount={amount}
                 comment={comment}

@@ -1,3 +1,1 @@
-export * from './SendSheet';
-
-export * from './types';
+export * from './UISendSheet';

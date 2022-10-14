@@ -215,7 +215,6 @@
     "EverLinks": {
         "Send": {
             "Amount": "Amount",
-            "ActionTitle": "Send tokens",
             "Comment": "Comment",
             "Confirm": "Confirm",
             "NetworkFee": "Network fee",
