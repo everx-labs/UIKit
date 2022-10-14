@@ -254,5 +254,6 @@ export function usePositions(itemsCount: number) {
         calculateClosestLeftX,
         calculateClosestRightX,
         onItemLayout,
+        sharedContext,
     };
 }

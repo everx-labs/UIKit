@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, ViewStyle, Platform } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, Platform, LayoutChangeEvent } from 'react-native';
 import Animated, {
     runOnJS,
     scrollTo,
@@ -118,9 +118,25 @@ export function UIHighlights({
         calculateClosestX,
         calculateClosestLeftX,
         calculateClosestRightX,
+        sharedContext,
     } = usePositions(React.Children.count(children));
 
     const scrollRef = useAnimatedRef<Animated.ScrollView>();
+
+    const scrollViewWidthRef = React.useRef<number>(0);
+    const scrollViewContentWidthRef = React.useRef<number>(0);
+    const onScrollViewLayout = React.useCallback((event: LayoutChangeEvent) => {
+        const {
+            nativeEvent: {
+                layout: { width },
+            },
+        } = event;
+        scrollViewWidthRef.current = width;
+    }, []);
+
+    const onScrollViewSizeChange = React.useCallback((w: number) => {
+        scrollViewContentWidthRef.current = w;
+    }, []);
 
     type ScrollContext = { adjustOnMomentum: number };
     const scrollHandler = useAnimatedScrollHandler<ScrollContext>({
@@ -130,6 +146,14 @@ export function UIHighlights({
             } = event;
 
             if (x == null || isNaN(x)) {
+                return;
+            }
+
+            // Check if we've reached the end
+            if (x >= scrollViewContentWidthRef.current - scrollViewWidthRef.current) {
+                // Set the current gravity position as for the last item
+                currentGravityPosition.value = sharedContext.value.positions.length - 1;
+                currentProgress.value = 0;
                 return;
             }
 
@@ -267,6 +291,8 @@ export function UIHighlights({
                         },
                     })}
                     {...onWheelProps}
+                    onLayout={onScrollViewLayout}
+                    onContentSizeChange={onScrollViewSizeChange}
                 >
                     <HighlightsNativeGestureRefProvider gestureRef={nativeGestureRef}>
                         {React.Children.map(children, (child, itemIndex) => {
