@@ -11,8 +11,7 @@ import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIListSeparator } from '@tonlabs/uicast.rows';
 
-import type { UISendSheetParams } from './types';
-import type { UIEverLinkSheetProps } from '../types';
+import type { UIEverLinkSheetProps, UISendSheetParams } from './types';
 
 export function useUISendSheet() {
     const [sendSheetVisible, setSendSheetVisible] = React.useState(false);
