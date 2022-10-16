@@ -20,7 +20,7 @@ export type UISendSheetParams = {
     /**
      * Network fees amount of Send external action.
      */
-    fee: BigNumber;
+    fee?: BigNumber;
     /**
      * A callback that is fired on Send sheet's "Confirm" button.
      */

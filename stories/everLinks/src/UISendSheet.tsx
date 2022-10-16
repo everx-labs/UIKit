@@ -104,24 +104,28 @@ function SendSheetContent({ actionTitle, address, amount, comment, fee, onConfir
                         </UILabel>
                         <CurrencyElement amount={amount} signChar={signChar} />
                     </View>
-                    <UIListSeparator />
-                    <View style={styles.rowContainer}>
-                        <UILabel
-                            color={UILabelColors.TextSecondary}
-                            role={UILabelRoles.SurfParagraphNormal}
-                        >
-                            {uiLocalized.EverLinks.Send.NetworkFee}
-                        </UILabel>
-                        <View style={styles.feeContainer}>
-                            <UILabel
-                                color={UILabelColors.TextPrimary}
-                                role={UILabelRoles.SurfMonoNormal}
-                            >
-                                {uiLocalized.EverLinks.Send.NetworkFeeTilde}
-                            </UILabel>
-                            <CurrencyElement amount={fee} signChar={signChar} />
+                    {fee ? (
+                        <View>
+                            <UIListSeparator />
+                            <View style={styles.rowContainer}>
+                                <UILabel
+                                    color={UILabelColors.TextSecondary}
+                                    role={UILabelRoles.SurfParagraphNormal}
+                                >
+                                    {uiLocalized.EverLinks.Send.NetworkFee}
+                                </UILabel>
+                                <View style={styles.feeContainer}>
+                                    <UILabel
+                                        color={UILabelColors.TextPrimary}
+                                        role={UILabelRoles.SurfMonoNormal}
+                                    >
+                                        {uiLocalized.EverLinks.Send.NetworkFeeTilde}
+                                    </UILabel>
+                                    <CurrencyElement amount={fee} signChar={signChar} />
+                                </View>
+                            </View>
                         </View>
-                    </View>
+                    ) : null}
                 </View>
             </View>
             <View style={styles.boxButtonContainer}>
