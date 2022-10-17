@@ -1,23 +1,10 @@
 import type BigNumber from 'bignumber.js';
 
-export type UIEverLinkSheetProps = {
-    /**
-     * Prop to control Ever Link sheets visibility.
-     */
-    visible: boolean;
-    /**
-     * A callback that is called when the sheet closes;
-     *
-     * Set `visible` prop to `false` within it.
-     */
-    onClose: () => void;
-    /**
-     * Params list for the corresponding type of Ever Link sheet.
-     */
-    params: UISendSheetParams;
-};
-
 export type UISendSheetParams = {
+    /**
+     * External action title.
+     */
+    actionTitle: string;
     /**
      * Recipient's address string of Send external action.
      */
@@ -33,7 +20,7 @@ export type UISendSheetParams = {
     /**
      * Network fees amount of Send external action.
      */
-    fee: BigNumber;
+    fee?: BigNumber;
     /**
      * A callback that is fired on Send sheet's "Confirm" button.
      */
@@ -42,4 +29,21 @@ export type UISendSheetParams = {
      * Currency sign of Send external action.
      */
     signChar: string;
+};
+
+export type UIEverLinkSheetProps = {
+    /**
+     * Prop to control Ever Link sheets visibility.
+     */
+    visible: boolean;
+    /**
+     * A callback that is called when the sheet closes;
+     *
+     * Set `visible` prop to `false` within it.
+     */
+    onClose: () => void;
+    /**
+     * Params list for the corresponding type of Ever Link sheet.
+     */
+    params: UISendSheetParams;
 };

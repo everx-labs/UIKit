@@ -177,7 +177,6 @@
     "EverLinks": {
         "Send": {
             "Amount": "Сумма",
-            "ActionTitle": "Отправить токены",
             "Comment": "Комментарий",
             "Confirm": "Подтвердить",
             "NetworkFee": "Комиссия сети",
