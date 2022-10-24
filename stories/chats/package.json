@@ -73,7 +73,7 @@
         "react-native": "^0.67.4",
         "react-native-blob-util": "^0.13.18",
         "react-native-gesture-handler": "^2.4.2",
-        "react-native-reanimated": "^2.5.0",
+        "react-native-reanimated": "^2.10.0",
         "react-native-safe-area-context": "^3.3.2",
         "react-native-svg": "^12.3.0",
         "react-native-video": "git+https://github.com/tonlabs/react-native-video.git",
