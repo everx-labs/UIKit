@@ -99,7 +99,7 @@ export function UILinkButtonContent({
                             <View style={styles.actionContainer}>
                                 {title ? (
                                     <UILabelAnimated
-                                        role={UILabelRoles.SurfActionSpecial}
+                                        role={UILabelRoles.SurfActionNormal}
                                         animatedProps={animatedLabelProps}
                                         ellipsizeMode="tail"
                                         numberOfLines={1}
