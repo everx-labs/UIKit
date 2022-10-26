@@ -23,12 +23,13 @@ function ModalScreen<ParamList extends ParamListBase = ParamListBase>({
     descriptor: Descriptor<ParamListBase>;
     maxMobileWidth: number;
 }) {
-    const { name } = route;
+    const { name, onClose } = route;
 
     const hide = React.useCallback(() => {
         Keyboard.dismiss();
         descriptor.navigation.dispatch(ModalActions.hide(name));
-    }, [name, descriptor.navigation]);
+        onClose?.();
+    }, [onClose, descriptor.navigation, name]);
 
     return (
         <UIModalSheet
