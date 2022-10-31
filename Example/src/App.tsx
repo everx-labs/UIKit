@@ -7,7 +7,7 @@
 
 import { FlatList, TouchableOpacity, GestureHandlerRootView } from 'react-native-gesture-handler';
 import React from 'react';
-import { I18nManager, NativeModules, Platform, StyleSheet, View } from 'react-native';
+import { I18nManager, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -66,6 +66,10 @@ import { VideosScreen } from './screens/Videos';
 
 import { StoreProvider, updateStore } from './useStore';
 import { AutomaticInsetsTest } from './screens/AutomaticInsetsTest';
+
+import { switchRTL, recoverRTL } from './RTLManager';
+
+recoverRTL();
 
 // Optimize React rendering
 enableFreeze();
@@ -294,12 +298,33 @@ const Main = ({ navigation }: { navigation: any }) => {
     );
 };
 
+function useResetContent() {
+    const [contentVisible, setContentVisible] = React.useState(true);
+    const resetContent = React.useCallback(() => {
+        setContentVisible(false);
+        requestAnimationFrame(() => {
+            setContentVisible(true);
+        });
+    }, []);
+
+    return {
+        resetContent,
+        contentVisible,
+    };
+}
+
 const App = () => {
     const navRef = React.useRef(null);
     useReduxDevToolsExtension(navRef);
 
     const theme = useTheme();
     const themeSwitcher = React.useContext(ThemeSwitcher);
+
+    const { contentVisible, resetContent } = useResetContent();
+
+    if (!contentVisible) {
+        return null;
+    }
 
     return (
         <StoreProvider>
@@ -410,21 +435,6 @@ const App = () => {
                             options={{
                                 useHeaderLargeTitle: true,
                                 title: 'Finances',
-                                ...(Platform.OS === 'ios'
-                                    ? {
-                                        headerRightItems: [
-                                            {
-                                                label: `${
-                                                    I18nManager.isRTL ? 'Disable' : 'Enable'
-                                                } RTL`,
-                                                onPress: () => {
-                                                    I18nManager.forceRTL(!I18nManager.isRTL);
-                                                    NativeModules.DevSettings.reload();
-                                                },
-                                            },
-                                        ],
-                                    }
-                                    : {}),
                                 tabBarActiveIcon: UIAssets.icons.ui.buttonStickerEnabled,
                                 tabBarDisabledIcon: UIAssets.icons.ui.buttonStickerDisabled,
                             }}
@@ -470,12 +480,42 @@ const App = () => {
                                 title: 'Main',
                                 headerRightItems: [
                                     {
+                                        onPress: () => themeSwitcher.toggleTheme(),
                                         iconElement: (
-                                            <View testID="theme_switcher">
+                                            <View
+                                                testID="theme_switcher"
+                                                style={{
+                                                    alignItems: 'center',
+                                                }}
+                                                pointerEvents="none"
+                                            >
+                                                <UILabel>Dark theme</UILabel>
                                                 <UISwitcher
                                                     variant={UISwitcherVariant.Toggle}
                                                     active={themeSwitcher.isDarkTheme}
-                                                    onPress={() => themeSwitcher.toggleTheme()}
+                                                />
+                                            </View>
+                                        ),
+                                    },
+                                ],
+                                headerLeftItems: [
+                                    {
+                                        onPress: () => {
+                                            switchRTL();
+                                            resetContent();
+                                        },
+                                        iconElement: (
+                                            <View
+                                                testID="rtl_switcher"
+                                                style={{
+                                                    alignItems: 'center',
+                                                }}
+                                                pointerEvents="none"
+                                            >
+                                                <UILabel>RTL</UILabel>
+                                                <UISwitcher
+                                                    variant={UISwitcherVariant.Toggle}
+                                                    active={I18nManager.getConstants().isRTL}
                                                 />
                                             </View>
                                         ),

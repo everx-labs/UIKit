@@ -2,10 +2,10 @@
 
 buildscript {
     ext {
-        buildToolsVersion = "30.0.2"
+        buildToolsVersion = "31.0.0"
         minSdkVersion = 21
-        compileSdkVersion = 30
-        targetSdkVersion = 30
+        compileSdkVersion = 31
+        targetSdkVersion = 31
         ndkVersion = "21.4.7075529"
     }
     repositories {
@@ -46,8 +46,8 @@ subprojects {
     afterEvaluate {project ->
         if (project.hasProperty("android")) {
             android {
-                compileSdkVersion 30 // same as project's compileSdkVersion
-                buildToolsVersion "30.0.2" // same as project's buildToolsVersion
+                compileSdkVersion 31 // same as project's compileSdkVersion
+                buildToolsVersion "31.0.0" // same as project's buildToolsVersion
             }
         }
     }
