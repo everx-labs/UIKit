@@ -487,6 +487,7 @@ const App = () => {
                                                 style={{
                                                     alignItems: 'center',
                                                 }}
+                                                pointerEvents="none"
                                             >
                                                 <UILabel>Dark theme</UILabel>
                                                 <UISwitcher
@@ -509,6 +510,7 @@ const App = () => {
                                                 style={{
                                                     alignItems: 'center',
                                                 }}
+                                                pointerEvents="none"
                                             >
                                                 <UILabel>RTL</UILabel>
                                                 <UISwitcher
