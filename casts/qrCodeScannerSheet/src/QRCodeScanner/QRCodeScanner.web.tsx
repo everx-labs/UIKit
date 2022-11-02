@@ -57,7 +57,7 @@ export function QRCodeScanner(props: QRCodeScannerProps) {
             <View style={[styles.errorContainer, props.containerStyle]}>
                 <UILabel
                     role={UILabelRoles.TitleMedium}
-                    color={UILabelColors.TextPrimaryInverted}
+                    color={UILabelColors.TextInverted}
                     style={styles.errorText}
                 >
                     {uiLocalized.QRCodeScanner.ErrorPermissions}
@@ -70,7 +70,7 @@ export function QRCodeScanner(props: QRCodeScannerProps) {
             <View style={[styles.errorContainer, props.containerStyle]}>
                 <UILabel
                     role={UILabelRoles.TitleMedium}
-                    color={UILabelColors.TextPrimaryInverted}
+                    color={UILabelColors.TextInverted}
                     style={styles.errorText}
                 >
                     {uiLocalized.QRCodeScanner.ErrorUnexpected}

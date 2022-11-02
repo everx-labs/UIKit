@@ -45,10 +45,7 @@ export const Footer = ({ prompt, visibilityState }: FooterProps) => {
     return (
         <Animated.View style={[styles.footerContainer, footerStyle]} pointerEvents="box-none">
             <Animated.View style={styles.footer} pointerEvents="none">
-                <UILabel
-                    role={UILabelRoles.ParagraphText}
-                    color={ColorVariants.TextPrimaryInverted}
-                >
+                <UILabel role={UILabelRoles.ParagraphText} color={ColorVariants.TextInverted}>
                     {prompt}
                 </UILabel>
             </Animated.View>

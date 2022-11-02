@@ -18,7 +18,7 @@ export function QRCodeScanner(props: React.ComponentProps<typeof QRCodeScannerNa
                 <View style={styles.errorContainer}>
                     <UILabel
                         role={UILabelRoles.TitleMedium}
-                        color={UILabelColors.TextPrimaryInverted}
+                        color={UILabelColors.TextInverted}
                         style={styles.errorText}
                     >
                         {uiLocalized.QRCodeScanner.ErrorPermissions}

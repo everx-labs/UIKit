@@ -37,7 +37,7 @@ export function UIBanner(props: Props) {
         >
             <UILabel
                 role={UILabelRoles.ActionCallout}
-                color={textColor || UILabelColors.TextPrimaryInverted}
+                color={textColor || UILabelColors.TextInverted}
             >
                 {text}
             </UILabel>
