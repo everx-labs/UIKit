@@ -177,7 +177,7 @@ export function UISearchBar({
                 <UIImage
                     source={UIAssets.icons.ui.search}
                     style={styles.searchIcon}
-                    tintColor={ColorVariants.IconSecondary}
+                    tintColor={ColorVariants.TextSecondary}
                 />
                 <UITextView
                     ref={ref}

@@ -52,7 +52,7 @@ function UIBoxPickerItem<Box extends AbstractBox>({
                     </UILabel>
                     <UIImage
                         source={UIAssets.icons.ui.keyThin}
-                        tintColor={ColorVariants.IconSecondary}
+                        tintColor={ColorVariants.TextSecondary}
                         style={styles.itemKey}
                     />
                 </>

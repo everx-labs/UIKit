@@ -119,7 +119,7 @@ export const Inputs = () => {
                     >
                         <UIMaterialTextView.Icon
                             source={UIAssets.icons.ui.buttonClose}
-                            tintColor={ColorVariants.IconSecondary}
+                            tintColor={ColorVariants.TextSecondary}
                         />
                     </UIMaterialTextView>
                     <View style={{ height: 20 }} />
@@ -131,11 +131,11 @@ export const Inputs = () => {
                     >
                         <UIMaterialTextView.Icon
                             source={UIAssets.icons.ui.buttonPlus}
-                            tintColor={ColorVariants.IconSecondary}
+                            tintColor={ColorVariants.TextSecondary}
                         />
                         <UIMaterialTextView.Icon
                             source={UIAssets.icons.ui.buttonClose}
-                            tintColor={ColorVariants.IconSecondary}
+                            tintColor={ColorVariants.TextSecondary}
                         />
                     </UIMaterialTextView>
                     <View style={{ height: 20 }} />

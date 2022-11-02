@@ -59,7 +59,7 @@ export function UISearchBarButton({
                         <UIImage
                             source={UIAssets.icons.ui.search}
                             style={styles.searchIcon}
-                            tintColor={ColorVariants.IconSecondary}
+                            tintColor={ColorVariants.TextSecondary}
                         />
                         <UILabel
                             role={UILabelRoles.ParagraphText}
