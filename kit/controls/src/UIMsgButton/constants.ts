@@ -98,7 +98,7 @@ export const ContentColors: Record<
                 loadingColor: ColorVariants.TextSecondary,
             },
             border: {
-                initialColor: ColorVariants.LineAccent,
+                initialColor: ColorVariants.BackgroundAccent,
                 pressedColor: ColorVariants.BackgroundInverted,
                 hoveredColor: ColorVariants.BackgroundInverted,
                 disabledColor: ColorVariants.BackgroundTertiary,

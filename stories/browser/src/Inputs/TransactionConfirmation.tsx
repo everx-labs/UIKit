@@ -71,7 +71,7 @@ export function TransactionConfirmation({
                             styles.button,
                             styles.response,
                             {
-                                borderColor: theme[ColorVariants.LineAccent],
+                                borderColor: theme[ColorVariants.BackgroundAccent],
                             },
                         ]}
                     >

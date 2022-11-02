@@ -37,7 +37,7 @@ export const AnimatedCircle = Animated.createAnimatedComponent(
 );
 
 export const UIIndicator = React.memo(function UIIndicator({
-    color = ColorVariants.LineAccent,
+    color = ColorVariants.BackgroundAccent,
     size = UIConstant.indicator.defaultSize,
     trackWidth = UIConstant.indicator.defaultTrackWidth,
     style,

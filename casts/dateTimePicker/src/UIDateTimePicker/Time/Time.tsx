@@ -57,7 +57,7 @@ const TimeInput = React.forwardRef<UITextViewRef, TimeInputProps>(function TimeI
                 [TIME_INPUT_IS_NOT_IN_FOCUS, TIME_INPUT_IS_IN_FOCUS],
                 [
                     theme[ColorVariants.BackgroundTertiary] as string,
-                    theme[ColorVariants.LineAccent] as string,
+                    theme[ColorVariants.BackgroundAccent] as string,
                 ],
             ),
             backgroundColor: theme[ColorVariants.BackgroundTertiary],
