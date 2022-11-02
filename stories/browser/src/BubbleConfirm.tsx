@@ -68,7 +68,7 @@ export function BubbleConfirmButtons({
                 style={[
                     styles.button,
                     {
-                        borderColor: theme[ColorVariants.LineNegative],
+                        borderColor: theme[ColorVariants.BackgroundNegative],
                     },
                 ]}
                 onPress={onDecline}

@@ -115,7 +115,7 @@ export const ContentColors: Record<
                 loadingColor: ColorVariants.TextSecondary,
             },
             border: {
-                initialColor: ColorVariants.LineNegative,
+                initialColor: ColorVariants.BackgroundNegative,
                 pressedColor: ColorVariants.BackgroundInverted,
                 hoveredColor: ColorVariants.BackgroundInverted,
                 disabledColor: ColorVariants.BackgroundTertiary,
