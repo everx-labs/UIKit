@@ -272,7 +272,7 @@ function useLinesAnimation(hasScrollOverflow: React.RefObject<boolean>) {
     const lineStyle = React.useMemo(
         () => [
             styles.border,
-            UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.LineSecondary]),
+            UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.BackgroundSecondary]),
             {
                 opacity: topOpacity.current,
             },

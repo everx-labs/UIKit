@@ -87,7 +87,7 @@ export function ChatInputContainer({
                 style={[
                     styles.border,
                     {
-                        backgroundColor: theme[ColorVariants.LineSecondary],
+                        backgroundColor: theme[ColorVariants.BackgroundSecondary],
                         opacity: borderOpacity,
                     },
                 ]}
