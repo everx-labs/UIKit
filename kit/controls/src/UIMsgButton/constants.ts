@@ -94,8 +94,8 @@ export const ContentColors: Record<
                 initialColor: ColorVariants.TextAccent,
                 pressedColor: ColorVariants.TextPrimary,
                 hoveredColor: ColorVariants.TextPrimary,
-                disabledColor: ColorVariants.TextOverlay,
-                loadingColor: ColorVariants.TextOverlay,
+                disabledColor: ColorVariants.TextSecondary,
+                loadingColor: ColorVariants.TextSecondary,
             },
             border: {
                 initialColor: ColorVariants.LineAccent,
@@ -111,8 +111,8 @@ export const ContentColors: Record<
                 initialColor: ColorVariants.TextNegative,
                 pressedColor: ColorVariants.TextPrimary,
                 hoveredColor: ColorVariants.TextPrimary,
-                disabledColor: ColorVariants.TextOverlay,
-                loadingColor: ColorVariants.TextOverlay,
+                disabledColor: ColorVariants.TextSecondary,
+                loadingColor: ColorVariants.TextSecondary,
             },
             border: {
                 initialColor: ColorVariants.LineNegative,
@@ -128,8 +128,8 @@ export const ContentColors: Record<
                 initialColor: ColorVariants.TextPositive,
                 pressedColor: ColorVariants.TextPrimary,
                 hoveredColor: ColorVariants.TextPrimary,
-                disabledColor: ColorVariants.TextOverlay,
-                loadingColor: ColorVariants.TextOverlay,
+                disabledColor: ColorVariants.TextSecondary,
+                loadingColor: ColorVariants.TextSecondary,
             },
             border: {
                 initialColor: ColorVariants.LinePositive,

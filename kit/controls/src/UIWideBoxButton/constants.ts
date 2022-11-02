@@ -29,14 +29,14 @@ export const contentColors: Record<
         initialColor: ColorVariants.BackgroundAccent,
         pressedColor: ColorVariants.SpecialAccentDark,
         hoveredColor: ColorVariants.SpecialAccentLight,
-        disabledColor: ColorVariants.TextOverlay,
-        loadingColor: ColorVariants.TextOverlay,
+        disabledColor: ColorVariants.TextSecondary,
+        loadingColor: ColorVariants.TextSecondary,
     },
     nulled: {
         initialColor: ColorVariants.TextPrimary,
         pressedColor: ColorVariants.TextAccent,
         hoveredColor: ColorVariants.SpecialAccentLight,
-        disabledColor: ColorVariants.TextOverlay,
-        loadingColor: ColorVariants.TextOverlay,
+        disabledColor: ColorVariants.TextSecondary,
+        loadingColor: ColorVariants.TextSecondary,
     },
 };
