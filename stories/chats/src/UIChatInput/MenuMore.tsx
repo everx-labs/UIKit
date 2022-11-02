@@ -34,7 +34,7 @@ export function MenuMore({ menuMore, menuMoreDisabled }: Props) {
                 <View style={styles.iconWrapper}>
                     <UIImage
                         source={UIAssets.icons.ui.buttonDots}
-                        tintColor={ColorVariants.IconNeutral}
+                        tintColor={ColorVariants.TextTertiary}
                     />
                 </View>
             </View>

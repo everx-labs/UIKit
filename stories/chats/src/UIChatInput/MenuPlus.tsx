@@ -34,7 +34,7 @@ export function MenuPlus({ menuPlus, menuPlusDisabled }: Props) {
                 <UIImage
                     source={UIAssets.icons.ui.buttonPlus}
                     style={commonStyles.icon}
-                    tintColor={ColorVariants.IconNeutral}
+                    tintColor={ColorVariants.TextTertiary}
                 />
             </View>
         );

@@ -33,7 +33,7 @@ export function StickersButton({ editable, inputHasValue, customKeyboardVisible,
                 tintColor={
                     !customKeyboardVisible
                         ? ColorVariants.BackgroundAccent
-                        : ColorVariants.IconNeutral
+                        : ColorVariants.TextTertiary
                 }
             />
         </TouchableOpacity>
