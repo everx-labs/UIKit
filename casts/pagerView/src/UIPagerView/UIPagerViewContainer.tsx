@@ -307,7 +307,7 @@ export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
     const renderTabBar: TabBarComponent = useTabBar(
         pages,
         theme.TextPrimary,
-        theme.LinePrimary,
+        theme.BackgroundPrimary,
         type,
     );
 
