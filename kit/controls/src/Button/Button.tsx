@@ -82,7 +82,7 @@ const ButtonForward = React.forwardRef<TouchableWithoutFeedback, ButtonProps>(
                 <View style={Platform.OS === 'web' ? styles.content : null}>
                     {loading ? (
                         <UIIndicator
-                            color={ColorVariants.LineNeutral}
+                            color={ColorVariants.BackgroundInverted}
                             size={UIConstant.loaderSize}
                         />
                     ) : (

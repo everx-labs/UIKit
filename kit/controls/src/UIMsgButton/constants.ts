@@ -99,8 +99,8 @@ export const ContentColors: Record<
             },
             border: {
                 initialColor: ColorVariants.LineAccent,
-                pressedColor: ColorVariants.LineNeutral,
-                hoveredColor: ColorVariants.LineNeutral,
+                pressedColor: ColorVariants.BackgroundInverted,
+                hoveredColor: ColorVariants.BackgroundInverted,
                 disabledColor: ColorVariants.BackgroundTertiary,
                 loadingColor: ColorVariants.BackgroundTertiary,
             },
@@ -116,8 +116,8 @@ export const ContentColors: Record<
             },
             border: {
                 initialColor: ColorVariants.LineNegative,
-                pressedColor: ColorVariants.LineNeutral,
-                hoveredColor: ColorVariants.LineNeutral,
+                pressedColor: ColorVariants.BackgroundInverted,
+                hoveredColor: ColorVariants.BackgroundInverted,
                 disabledColor: ColorVariants.BackgroundTertiary,
                 loadingColor: ColorVariants.BackgroundTertiary,
             },
@@ -133,8 +133,8 @@ export const ContentColors: Record<
             },
             border: {
                 initialColor: ColorVariants.LinePositive,
-                pressedColor: ColorVariants.LineNeutral,
-                hoveredColor: ColorVariants.LineNeutral,
+                pressedColor: ColorVariants.BackgroundInverted,
+                hoveredColor: ColorVariants.BackgroundInverted,
                 disabledColor: ColorVariants.BackgroundTertiary,
                 loadingColor: ColorVariants.BackgroundTertiary,
             },

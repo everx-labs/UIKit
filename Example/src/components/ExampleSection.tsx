@@ -23,7 +23,7 @@ export function ExampleSection({ title, children }: { title: string; children: R
                     marginHorizontal: '2%',
                     marginTop: 20,
                     borderBottomWidth: 1,
-                    borderBottomColor: theme[ColorVariants.LineNeutral],
+                    borderBottomColor: theme[ColorVariants.BackgroundInverted],
                 }}
             >
                 <UILabel>{title}</UILabel>
