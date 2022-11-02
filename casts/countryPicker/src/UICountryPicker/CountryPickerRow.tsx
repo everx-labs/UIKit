@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     rowContainerInner: {
         paddingVertical: UILayoutConstant.contentOffset,
         flexDirection: 'row',
-        borderBottomColor: theme[ColorVariants.LineTertiary] as string,
+        borderBottomColor: theme[ColorVariants.BackgroundTertiary] as string,
         borderBottomWidth: 1,
     },
     rowContainer: {
