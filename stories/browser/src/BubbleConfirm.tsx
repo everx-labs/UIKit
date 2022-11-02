@@ -50,7 +50,7 @@ export function BubbleConfirmButtons({
                     styles.button,
                     {
                         marginRight: UIConstant.tinyContentOffset(),
-                        borderColor: theme[ColorVariants.LinePositive],
+                        borderColor: theme[ColorVariants.BackgroundPositive],
                     },
                 ]}
                 onPress={onSuccess}
