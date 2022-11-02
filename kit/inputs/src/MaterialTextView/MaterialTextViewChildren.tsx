@@ -75,7 +75,7 @@ export const MaterialTextViewClearButton = React.memo(function MaterialTextViewC
         <TouchableOpacity testID="clear_btn" style={styles.iconTapZone} onPress={clear}>
             <UIImage
                 source={UIAssets.icons.ui.clear}
-                tintColor={ColorVariants.BackgroundPrimaryInverted}
+                tintColor={ColorVariants.BackgroundInverted}
                 style={styles.iconSize}
             />
         </TouchableOpacity>

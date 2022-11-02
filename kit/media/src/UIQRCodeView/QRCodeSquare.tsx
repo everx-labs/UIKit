@@ -50,10 +50,7 @@ export const QRCodeSquare = ({ value, logo, size }: QRCodeProps) => {
         <View style={styles.container}>
             <View style={styles.qrContainer}>
                 <Svg width={qrCodeSize} height={qrCodeSize}>
-                    <Path
-                        fill={theme[ColorVariants.BackgroundPrimaryInverted] as string}
-                        d={qrSvg}
-                    />
+                    <Path fill={theme[ColorVariants.BackgroundInverted] as string} d={qrSvg} />
                 </Svg>
             </View>
             {logoRender}
