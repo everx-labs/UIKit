@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     separator: {
         height: 12,
         width: 1,
-        backgroundColor: theme[ColorVariants.BackgroundTertiaryInverted],
+        backgroundColor: theme[ColorVariants.BackgroundTertiary],
         marginHorizontal: UILayoutConstant.normalContentOffset,
     },
     arrows: {
