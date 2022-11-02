@@ -55,7 +55,7 @@ function UIHeaderActionItem({ disabled, label, accessibilityLabel }: HeaderItem)
     return (
         <UILabel
             role={UILabelRoles.Action}
-            color={disabled ? UILabelColors.TextNeutral : UILabelColors.TextAccent}
+            color={disabled ? UILabelColors.TextSecondary : UILabelColors.TextAccent}
             accessibilityLabel={accessibilityLabel}
         >
             {label}
