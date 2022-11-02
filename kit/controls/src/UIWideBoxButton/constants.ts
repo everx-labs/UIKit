@@ -22,8 +22,8 @@ export const contentColors: Record<
         initialColor: ColorVariants.StaticTextPrimaryLight,
         pressedColor: ColorVariants.StaticTextPrimaryLight,
         hoveredColor: ColorVariants.StaticTextPrimaryLight,
-        disabledColor: ColorVariants.TextOverlayInverted,
-        loadingColor: ColorVariants.TextOverlayInverted,
+        disabledColor: ColorVariants.TextTertiary,
+        loadingColor: ColorVariants.TextTertiary,
     },
     secondary: {
         initialColor: ColorVariants.BackgroundAccent,

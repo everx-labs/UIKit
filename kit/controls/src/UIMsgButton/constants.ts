@@ -29,7 +29,7 @@ const PrimaryContent: PressableColors = {
     initialColor: ColorVariants.StaticTextPrimaryLight,
     pressedColor: ColorVariants.StaticTextPrimaryLight,
     hoveredColor: ColorVariants.StaticTextPrimaryLight,
-    disabledColor: ColorVariants.TextOverlayInverted,
+    disabledColor: ColorVariants.TextTertiary,
     loadingColor: ColorVariants.StaticTextPrimaryLight,
 };
 const TransparentColors: PressableColors = {

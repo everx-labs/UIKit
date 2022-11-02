@@ -24,14 +24,14 @@ const PrimaryContent: PressableColors = {
     initialColor: ColorVariants.StaticTextPrimaryLight,
     pressedColor: ColorVariants.StaticTextPrimaryLight,
     hoveredColor: ColorVariants.StaticTextPrimaryLight,
-    disabledColor: ColorVariants.TextOverlayInverted,
+    disabledColor: ColorVariants.TextTertiary,
     loadingColor: ColorVariants.StaticTextPrimaryLight,
 };
 const SecondaryBackground: PressableColors = {
     initialColor: ColorVariants.BackgroundSecondary,
     pressedColor: ColorVariants.BackgroundTertiary,
     hoveredColor: ColorVariants.BackgroundTertiary,
-    disabledColor: ColorVariants.TextOverlayInverted,
+    disabledColor: ColorVariants.TextTertiary,
     loadingColor: ColorVariants.BackgroundTertiary,
 };
 const TransparentBackground: PressableColors = {

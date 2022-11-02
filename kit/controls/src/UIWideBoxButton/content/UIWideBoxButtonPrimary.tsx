@@ -23,12 +23,7 @@ function RightContent({
     });
 
     if (loading) {
-        return (
-            <UIIndicator
-                color={ColorVariants.TextOverlayInverted}
-                size={UILayoutConstant.iconSize}
-            />
-        );
+        return <UIIndicator color={ColorVariants.TextTertiary} size={UILayoutConstant.iconSize} />;
     }
     if (icon) {
         return (
