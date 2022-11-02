@@ -46,7 +46,7 @@ export const UIListSeparator = React.memo(function UIListSeparator() {
         <View
             style={[
                 {
-                    borderTopColor: theme[ColorVariants.LineOverlayLight],
+                    borderTopColor: theme[ColorVariants.BackgroundTertiary],
                 },
                 styles.separator,
             ]}
