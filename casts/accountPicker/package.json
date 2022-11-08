@@ -39,17 +39,17 @@
     },
     "devDependencies": {
         "@types/react": "17.0.44",
-        "@types/react-native": "0.67.4",
+        "@types/react-native": "0.67.5",
         "react": "17.0.2",
         "react-dom": "17.0.2",
-        "react-native": "0.67.4",
+        "react-native": "0.67.5",
         "react-native-builder-bob": "^0.18.2",
         "typescript": "4.4.3"
     },
     "peerDependencies": {
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
-        "react-native": "^0.67.4"
+        "react-native": "^0.67.5"
     },
     "react-native-builder-bob": {
         "source": "src",
