@@ -7,6 +7,7 @@ import {
     ViewStyle,
     StyleSheet,
     processColor,
+    I18nManager,
 } from 'react-native';
 import {
     GestureEvent,
@@ -17,6 +18,7 @@ import {
 } from 'react-native-gesture-handler';
 import ReAnimated, {
     runOnJS,
+    SharedValue,
     useAnimatedGestureHandler,
     useAnimatedStyle,
     useSharedValue,
@@ -138,23 +140,29 @@ function SplitBottomTabBarItem({
 const TAB_BAR_DOT_SIZE = 4;
 const TAB_BAR_DOT_BOTTOM = 8;
 
+function runUIGetDotPosition(index: number, isRTLShared: SharedValue<boolean>) {
+    'worklet';
+
+    return (
+        ((index + 1) * TAB_BAR_HEIGHT - TAB_BAR_HEIGHT / 2 - TAB_BAR_DOT_SIZE / 2) *
+        (isRTLShared.value ? -1 : 1)
+    );
+}
+
 type SplitBottomTabBarDotRef = { moveTo(index: number): void };
 type SplitBottomTabBarDotProps = { initialIndex: number };
 const SplitBottomTabBarDot = React.memo(
     React.forwardRef<SplitBottomTabBarDotRef, SplitBottomTabBarDotProps>(
         function SplitBottomTabBarDot({ initialIndex }: SplitBottomTabBarDotProps, ref) {
             const theme = useTheme();
-            const position = useSharedValue(
-                (initialIndex + 1) * TAB_BAR_HEIGHT - TAB_BAR_HEIGHT / 2 - TAB_BAR_DOT_SIZE / 2,
-            );
+            const isRTLShared = useSharedValue(I18nManager.getConstants().isRTL);
+            const position = useSharedValue(runUIGetDotPosition(initialIndex, isRTLShared));
+
             React.useImperativeHandle(ref, () => ({
                 moveTo(index: number) {
-                    position.value = withSpring(
-                        (index + 1) * TAB_BAR_HEIGHT - TAB_BAR_HEIGHT / 2 - TAB_BAR_DOT_SIZE / 2,
-                        {
-                            overshootClamping: true,
-                        },
-                    );
+                    position.value = withSpring(runUIGetDotPosition(index, isRTLShared), {
+                        overshootClamping: true,
+                    });
                 },
             }));
 
@@ -196,7 +204,6 @@ export function SplitBottomTabBar({
 
     const dotRef = React.useRef<SplitBottomTabBarDotRef>(null);
     const prevActiveKey = React.useRef(activeKey);
-    const initialDotIndex = React.useRef(-1);
 
     const prevIconsRef = React.useRef<typeof icons>();
     const iconsMapRef = React.useRef<Record<string, number>>();
@@ -209,9 +216,9 @@ export function SplitBottomTabBar({
     }
     const iconsMap = iconsMapRef.current;
 
-    if (initialDotIndex.current === -1 && iconsMap[activeKey] != null) {
-        initialDotIndex.current = iconsMap[activeKey];
-    }
+    const currentDotIndex = React.useMemo(() => {
+        return iconsMap[activeKey] ?? -1;
+    }, [activeKey, iconsMap]);
 
     React.useEffect(() => {
         if (activeKey === prevActiveKey.current) {
@@ -294,7 +301,7 @@ export function SplitBottomTabBar({
                     );
                 })}
                 {hasIconForActiveKey && (
-                    <SplitBottomTabBarDot ref={dotRef} initialIndex={initialDotIndex.current} />
+                    <SplitBottomTabBarDot ref={dotRef} initialIndex={currentDotIndex} />
                 )}
             </ShadowView>
         </View>

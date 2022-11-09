@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, ViewStyle, Platform } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, Platform, LayoutChangeEvent } from 'react-native';
 import Animated, {
     runOnJS,
     scrollTo,
@@ -9,14 +9,14 @@ import Animated, {
     useAnimatedScrollHandler,
     useSharedValue,
 } from 'react-native-reanimated';
-
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
+
 import { Dots } from './Dots';
 import { usePositions } from './usePositions';
 import { useOnWheelHandler } from './useOnWheelHandler';
 import { WebPositionControl } from './WebPositionControls';
 import { runOnUIPlatformSelect } from './runOnUIPlatformSelect';
-import { HighlightsScrollRefProvider } from './HighlightsScrollRefContext';
+import { HighlightsNativeGestureRefProvider } from './HighlightsNativeGestureRefContext';
 
 // @inline
 const ADJUST_NONE = 0;
@@ -118,9 +118,25 @@ export function UIHighlights({
         calculateClosestX,
         calculateClosestLeftX,
         calculateClosestRightX,
+        sharedContext,
     } = usePositions(React.Children.count(children));
 
     const scrollRef = useAnimatedRef<Animated.ScrollView>();
+
+    const scrollViewWidthRef = React.useRef<number>(0);
+    const scrollViewContentWidthRef = React.useRef<number>(0);
+    const onScrollViewLayout = React.useCallback((event: LayoutChangeEvent) => {
+        const {
+            nativeEvent: {
+                layout: { width },
+            },
+        } = event;
+        scrollViewWidthRef.current = width;
+    }, []);
+
+    const onScrollViewSizeChange = React.useCallback((w: number) => {
+        scrollViewContentWidthRef.current = w;
+    }, []);
 
     type ScrollContext = { adjustOnMomentum: number };
     const scrollHandler = useAnimatedScrollHandler<ScrollContext>({
@@ -130,6 +146,14 @@ export function UIHighlights({
             } = event;
 
             if (x == null || isNaN(x)) {
+                return;
+            }
+
+            // Check if we've reached the end
+            if (x >= scrollViewContentWidthRef.current - scrollViewWidthRef.current) {
+                // Set the current gravity position as for the last item
+                currentGravityPosition.value = sharedContext.value.positions.length - 1;
+                currentProgress.value = 0;
                 return;
             }
 
@@ -228,7 +252,17 @@ export function UIHighlights({
     return (
         <View style={styles.container}>
             <NativeViewGestureHandler
-                ref={nativeGestureRef}
+                {...Platform.select({
+                    // Note: We should provide a native gesture ref to `waitFor` it in
+                    // `Pressable` used in UIHighlightCard in order to allow scrolling
+                    // when pressing (tapping / long-pressing) the card.
+                    // Unfortunately when applying such behaviour on Android the "press" gestures
+                    // stop responding and do not call the corresponding events.
+                    // Looks like a bug in RNGH.
+                    ios: {
+                        ref: nativeGestureRef,
+                    },
+                })}
                 disallowInterruption
                 shouldCancelWhenOutside={false}
             >
@@ -257,8 +291,10 @@ export function UIHighlights({
                         },
                     })}
                     {...onWheelProps}
+                    onLayout={onScrollViewLayout}
+                    onContentSizeChange={onScrollViewSizeChange}
                 >
-                    <HighlightsScrollRefProvider scrollRef={nativeGestureRef as any}>
+                    <HighlightsNativeGestureRefProvider gestureRef={nativeGestureRef}>
                         {React.Children.map(children, (child, itemIndex) => {
                             if (!React.isValidElement(child)) {
                                 return null;
@@ -269,15 +305,15 @@ export function UIHighlights({
                                     style={
                                         itemIndex !== 0
                                             ? {
-                                                paddingLeft: spaceBetween,
-                                            }
+                                                  paddingLeft: spaceBetween,
+                                              }
                                             : null
                                     }
                                     onLayout={({
-                                                   nativeEvent: {
-                                                       layout: { x },
-                                                   },
-                                               }) => {
+                                        nativeEvent: {
+                                            layout: { x },
+                                        },
+                                    }) => {
                                         onItemLayout(
                                             itemIndex,
                                             // To have a visual feedback that
@@ -296,7 +332,7 @@ export function UIHighlights({
                                 </View>
                             );
                         })}
-                    </HighlightsScrollRefProvider>
+                    </HighlightsNativeGestureRefProvider>
                 </Animated.ScrollView>
             </NativeViewGestureHandler>
             {controlsHidden ? null : (

@@ -12,8 +12,8 @@ const controlColors: PressableColors = {
     initialColor: ColorVariants.GraphTertiary,
     pressedColor: ColorVariants.GraphSecondary,
     hoveredColor: ColorVariants.GraphPrimary,
-    disabledColor: ColorVariants.GraphNeutral,
-    loadingColor: ColorVariants.GraphNeutral,
+    disabledColor: ColorVariants.GraphTertiary,
+    loadingColor: ColorVariants.GraphTertiary,
 };
 
 function ControlContent({ children }: { children: ImageSourcePropType }) {

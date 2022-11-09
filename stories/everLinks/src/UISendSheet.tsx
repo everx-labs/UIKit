@@ -47,7 +47,7 @@ function CurrencyElement({ amount, signChar }: { amount: BigNumber; signChar: st
     );
 }
 
-function SendSheetContent({ address, amount, fee, onConfirm, signChar }: UISendSheetParams) {
+function SendSheetContent({ actionTitle, address, amount, comment, fee, onConfirm, signChar }: UISendSheetParams) {
     return (
         <View>
             <View style={styles.contentContainer}>
@@ -62,7 +62,7 @@ function SendSheetContent({ address, amount, fee, onConfirm, signChar }: UISendS
                         role={UILabelRoles.SurfTitleNormal}
                         style={styles.marginVerticalNormal}
                     >
-                        {uiLocalized.EverLinks.Send.ActionTitle}
+                        {actionTitle}
                     </UILabel>
                     <View style={styles.paddingVerticalSmall}>
                         <UILabel
@@ -78,6 +78,22 @@ function SendSheetContent({ address, amount, fee, onConfirm, signChar }: UISendS
                             {address}
                         </UILabel>
                     </View>
+                    {comment ? (
+                        <View style={styles.paddingVerticalSmall}>
+                            <UILabel
+                                color={UILabelColors.TextSecondary}
+                                role={UILabelRoles.SurfParagraphSmall}
+                            >
+                                {uiLocalized.EverLinks.Send.Comment}
+                            </UILabel>
+                            <UILabel
+                                color={UILabelColors.TextPrimary}
+                                role={UILabelRoles.SurfParagraphNormal}
+                            >
+                                {comment}
+                            </UILabel>
+                        </View>
+                    ) : null}
                     <UIListSeparator />
                     <View style={styles.rowContainer}>
                         <UILabel
@@ -88,24 +104,28 @@ function SendSheetContent({ address, amount, fee, onConfirm, signChar }: UISendS
                         </UILabel>
                         <CurrencyElement amount={amount} signChar={signChar} />
                     </View>
-                    <UIListSeparator />
-                    <View style={styles.rowContainer}>
-                        <UILabel
-                            color={UILabelColors.TextSecondary}
-                            role={UILabelRoles.SurfParagraphNormal}
-                        >
-                            {uiLocalized.EverLinks.Send.NetworkFee}
-                        </UILabel>
-                        <View style={styles.feeContainer}>
-                            <UILabel
-                                color={UILabelColors.TextPrimary}
-                                role={UILabelRoles.SurfMonoNormal}
-                            >
-                                {uiLocalized.EverLinks.Send.NetworkFeeTilde}
-                            </UILabel>
-                            <CurrencyElement amount={fee} signChar={signChar} />
+                    {fee ? (
+                        <View>
+                            <UIListSeparator />
+                            <View style={styles.rowContainer}>
+                                <UILabel
+                                    color={UILabelColors.TextSecondary}
+                                    role={UILabelRoles.SurfParagraphNormal}
+                                >
+                                    {uiLocalized.EverLinks.Send.NetworkFee}
+                                </UILabel>
+                                <View style={styles.feeContainer}>
+                                    <UILabel
+                                        color={UILabelColors.TextPrimary}
+                                        role={UILabelRoles.SurfMonoNormal}
+                                    >
+                                        {uiLocalized.EverLinks.Send.NetworkFeeTilde}
+                                    </UILabel>
+                                    <CurrencyElement amount={fee} signChar={signChar} />
+                                </View>
+                            </View>
                         </View>
-                    </View>
+                    ) : null}
                 </View>
             </View>
             <View style={styles.boxButtonContainer}>
@@ -120,7 +140,7 @@ function SendSheetContent({ address, amount, fee, onConfirm, signChar }: UISendS
 
 export function UISendSheet(props: UIEverLinkSheetProps) {
     const { onClose, params: sendParams, visible } = props;
-    const { address, amount, fee, onConfirm, signChar } = sendParams;
+    const { actionTitle, address, amount, comment, fee, onConfirm, signChar } = sendParams as UISendSheetParams;
 
     const onConfirmPress = React.useCallback(() => {
         if (onConfirm) {
@@ -134,8 +154,10 @@ export function UISendSheet(props: UIEverLinkSheetProps) {
     return (
         <UICardSheet visible={visible} onClose={onClose}>
             <SendSheetContent
+                actionTitle={actionTitle}
                 address={address}
                 amount={amount}
+                comment={comment}
                 fee={fee}
                 onConfirm={onConfirmPress}
                 signChar={signChar}

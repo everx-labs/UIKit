@@ -126,7 +126,7 @@ function UISeedPhrasePopoverContent(props: UISeedPhrasePopoverProps) {
                     height,
                     width: measurement.width,
                     backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                    top: measurement.y,
+                    top: measurement.y + UILayoutConstant.contentInsetVerticalX1,
                     left: measurement.x,
                 },
             ]}
@@ -164,14 +164,12 @@ const styles = StyleSheet.create({
     hintsContainer: {
         flex: 1,
         ...UILayoutConstant.cardShadow,
-        borderBottomLeftRadius: UILayoutConstant.borderRadius,
-        borderBottomRightRadius: UILayoutConstant.borderRadius,
+        borderRadius: UILayoutConstant.borderRadius,
     },
     hintsInner: {
         flex: 1,
         overflow: 'hidden',
-        borderBottomLeftRadius: UILayoutConstant.borderRadius,
-        borderBottomRightRadius: UILayoutConstant.borderRadius,
+        borderRadius: UILayoutConstant.borderRadius,
     },
     cellHint: {
         zIndex: 1,

@@ -5,6 +5,7 @@ import * as UISeedPhraseTextView from './UISeedPhraseTextView';
 import * as UITextView from './UITextView';
 import * as UIAmountInput from './UIAmountInput';
 import * as UIAmountInputEnhanced from './UIAmountInputEnhanced';
+import * as UISeedPhraseInput from './UISeedPhraseInput';
 
 import * as useAutogrowTextView from './useAutogrowTextView';
 
@@ -15,6 +16,7 @@ export * from './UISeedPhraseTextView';
 export * from './UITextView';
 export * from './UIAmountInput';
 export * from './UIAmountInputEnhanced';
+export * from './UISeedPhraseInput';
 
 export * from './useAutogrowTextView';
 
@@ -26,6 +28,7 @@ export const UIInputs = {
     UITextView,
     UIAmountInput,
     UIAmountInputEnhanced,
+    UISeedPhraseInput,
 
     useAutogrowTextView,
 };

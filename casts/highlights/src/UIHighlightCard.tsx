@@ -6,7 +6,7 @@ import { UIPressableArea, UIPressableAreaProps } from '@tonlabs/uikit.controls';
 import { ColorVariants, UILabel, UILabelRoles, useTheme } from '@tonlabs/uikit.themes';
 
 import { UIHighlightsConstants } from './constants';
-import { useHightlightsScrollRef } from './HighlightsScrollRefContext';
+import { useHighlightsNativeGestureRef } from './HighlightsNativeGestureRefContext';
 
 export enum UIHighlightCardTextLayout {
     Top,
@@ -90,7 +90,7 @@ export function UIHighlightCard({
         return height * formToAspectRatioMapping[form];
     }, [height, form]);
 
-    const scrollRef = useHightlightsScrollRef();
+    const nativeGestureRef = useHighlightsNativeGestureRef();
 
     return (
         <UIPressableArea
@@ -98,7 +98,7 @@ export function UIHighlightCard({
             // since the parent ScrollView has an intrinsic height,
             // hence the scale factor > 1 leads to cut vertical edges of the card
             scaleParameters={{ hovered: 0.99 }}
-            waitFor={scrollRef}
+            waitFor={nativeGestureRef}
             {...pressableProps}
         >
             <View
