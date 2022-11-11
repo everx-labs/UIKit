@@ -1,7 +1,6 @@
 import type BigNumber from 'bignumber.js';
 import type { TextInput } from 'react-native';
 import type { SharedValue } from 'react-native-reanimated';
-import type { InputMessageType } from '../InputMessage';
 import type { UIMaterialTextViewProps } from '../UIMaterialTextView/types';
 import type { InputChildren } from '../useInputChildren';
 import type { UIAmountInputEnhancedDecimalAspect } from './constants';
