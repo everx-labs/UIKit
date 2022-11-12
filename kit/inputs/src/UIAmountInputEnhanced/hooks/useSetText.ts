@@ -54,12 +54,8 @@ export function useSetText(
 
             if (shouldSetText) {
                 setTextAndCaretPosition(ref, inputManagerRef, newFormattedText, newCaretPosition);
-            } else if (callOnChangeProp) {
-                /**
-                 * We should call onChangeProp only if shouldSetText was not provided,
-                 * because setTextAndCaretPosition leads to onChange calling of the input
-                 * and runs this function and onChangeProp twice.
-                 */
+            }
+            if (callOnChangeProp) {
                 runOnJS(onChangeNormalizedText)(newNormalizedText);
             }
         },

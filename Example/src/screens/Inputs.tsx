@@ -10,6 +10,7 @@ import {
     UIAmountInputDecimalAspect,
     UIAmountInputRef,
     UIAmountInputEnhanced,
+    UIAmountInputEnhancedRef,
     UIAmountInputEnhancedDecimalAspect,
     UISeedPhraseInput,
     UISeedPhraseInputMessageType,
@@ -27,6 +28,7 @@ export const Inputs = () => {
     const onChangeAmount = React.useCallback((amount: BigNumber | undefined) => {
         amountPrecisionRef.current?.changeAmount(amount, false);
     }, []);
+    const amountInputEnhancedRef = React.useRef<UIAmountInputEnhancedRef>(null);
     return (
         <ExampleScreen>
             <ExampleSection title="UIAmountInputEnhanced">
@@ -35,13 +37,19 @@ export const Inputs = () => {
                         placeholder="123"
                         decimalAspect={UIAmountInputEnhancedDecimalAspect.Precision}
                         defaultAmount={new BigNumber(12345.67)}
-                        onChangeAmount={amount => console.log('onChangeAmount', amount?.toString())}
+                        onChangeAmount={amount => {
+                            console.log('onChangeAmount1', amount?.toString());
+                            amountInputEnhancedRef.current?.changeAmount(amount, false);
+                        }}
                     />
                     <UIAmountInputEnhanced
+                        ref={amountInputEnhancedRef}
                         placeholder="123"
                         decimalAspect={UIAmountInputEnhancedDecimalAspect.Precision}
                         defaultAmount={new BigNumber(12345.67)}
-                        onChangeAmount={amount => console.log('onChangeAmount', amount?.toString())}
+                        onChangeAmount={amount =>
+                            console.log('onChangeAmount2', amount?.toString())
+                        }
                     >
                         <UIAmountInputEnhanced.Text>Text</UIAmountInputEnhanced.Text>
                     </UIAmountInputEnhanced>

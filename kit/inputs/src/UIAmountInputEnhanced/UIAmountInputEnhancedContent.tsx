@@ -81,28 +81,7 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     const { isFocused, formattedText, isHovered, selectionEndPosition } =
         React.useContext(AmountInputContext);
 
-    // /**
-    //  * TODO Remove
-    //  */
-    // useDerivedValue(() => {
-    //     console.log({
-    //         isHovered: isHovered.value,
-    //         isFocused: isFocused.value,
-    //         selectionEndPosition: selectionEndPosition.value,
-    //         normalizedText: normalizedText.value,
-    //         formattedText: formattedText.value,
-    //     });
-    // });
-
     const prevCaretPosition = useSharedValue(selectionEndPosition.value);
-
-    // const formatAndSetText = useFormatAndSetText(
-    //     ref,
-    //     decimalAspect,
-    //     multiline,
-    //     prevCaretPosition,
-    //     onChangeAmountProp,
-    // );
 
     const formatText = useFormatText(decimalAspect, multiline, prevCaretPosition);
     const formatAmount = React.useCallback(

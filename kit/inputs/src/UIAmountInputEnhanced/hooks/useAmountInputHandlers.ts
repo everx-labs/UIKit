@@ -14,7 +14,7 @@ export function useAmountInputHandlers(
     setText: SetText,
     prevCaretPosition: SharedValue<number>,
 ) {
-    const { isFocused, selectionEndPosition } = React.useContext(AmountInputContext);
+    const { isFocused, selectionEndPosition, formattedText } = React.useContext(AmountInputContext);
 
     const editableAnimated = useDerivedReactValue(editableProp);
 
@@ -54,6 +54,13 @@ export function useAmountInputHandlers(
             },
             onChange: evt => {
                 'worklet';
+
+                /**
+                 * Nothing was changed
+                 */
+                if (formattedText.value === evt.text) {
+                    return;
+                }
 
                 const textAttributes = formatText(evt.text);
                 setText(textAttributes, {
