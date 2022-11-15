@@ -3,7 +3,7 @@ import { StyleSheet, I18nManager } from 'react-native';
 
 export function useTextLikeContainer() {
     return React.useMemo(() => {
-        if (I18nManager.isRTL) {
+        if (I18nManager.getConstants().isRTL) {
             return styles.rtlContainer;
         }
         return styles.ltrContainer;
