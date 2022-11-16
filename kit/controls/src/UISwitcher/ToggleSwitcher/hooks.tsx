@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { I18nManager } from 'react-native';
 import type {
     GestureEvent,
     PanGestureHandlerGestureEvent,
@@ -15,7 +16,7 @@ import Animated, {
     withSpring,
 } from 'react-native-reanimated';
 import type { WithSpringConfig } from 'react-native-reanimated';
-import { clamp, snapPoint } from 'react-native-redash';
+import { clamp } from 'react-native-redash';
 
 import { ColorVariants, Theme } from '@tonlabs/uikit.themes';
 
@@ -61,6 +62,8 @@ export const useImageStyle = (
     theme: Theme,
     onPress?: (() => void) | undefined,
 ) => {
+    const isRTL = useSharedValue(I18nManager.getConstants().isRTL);
+
     const iconSwitcherState = useSharedValue<IconSwitcherState>(IconSwitcherState.NotActive);
 
     React.useEffect(() => {
@@ -84,9 +87,10 @@ export const useImageStyle = (
                         [IconSwitcherState.NotActive, IconSwitcherState.Active],
                         [
                             0,
-                            UIConstant.switcher.toggleWidth -
+                            (UIConstant.switcher.toggleWidth -
                                 UIConstant.switcher.toggleDotSize -
-                                UIConstant.switcher.togglePadding * 2,
+                                UIConstant.switcher.togglePadding * 2) *
+                                (isRTL.value ? -1 : 1),
                         ],
                     ),
                 },
@@ -115,14 +119,10 @@ export const useImageStyle = (
             ctx.x = iconSwitcherState.value;
         },
         onActive: ({ translationX }) => {
-            iconSwitcherState.value = clamp(translationX, 0, 1);
+            iconSwitcherState.value = clamp(translationX * (isRTL.value ? -1 : 1), 0, 1);
         },
-        onEnd: ({ velocityX }) => {
-            const selectedSnapPoint = snapPoint(iconSwitcherState.value, velocityX, [0, 1]);
-            iconSwitcherState.value = withSpring(selectedSnapPoint);
-        },
-        onFinish: (_e, _, isCanceledOrFailed: boolean) => {
-            if (!isCanceledOrFailed && onPress) {
+        onFinish: (_e, ctx, isCanceledOrFailed: boolean) => {
+            if (!isCanceledOrFailed && iconSwitcherState.value !== ctx.x && onPress) {
                 hapticSelection();
                 runOnJS(onPress)();
             }
