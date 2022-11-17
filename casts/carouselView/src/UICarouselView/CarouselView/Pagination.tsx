@@ -11,14 +11,19 @@ import { usePaginationStyle } from './animations';
 type CircleProps = {
     active: boolean;
     onPress: (event: any) => void;
+    disabledPress: boolean;
 };
 
-function Circle({ active, onPress }: CircleProps) {
+function Circle({ active, onPress, disabledPress }: CircleProps) {
     const { animatedStyles } = usePaginationStyle(active);
 
     return (
         <Animated.View style={[animatedStyles, styles.circle]}>
-            <TouchableOpacity hitSlop={UIConstant.carousel.circleHitSlop} onPress={onPress}>
+            <TouchableOpacity
+                hitSlop={UIConstant.carousel.circleHitSlop}
+                onPress={onPress}
+                disabled={disabledPress}
+            >
                 <UIBackgroundView
                     color={
                         active
@@ -40,6 +45,7 @@ type PaginationProps = {
     pages: React.ReactElement[];
     onSetPage(index: number): void;
     initialPage?: number;
+    disabledPress?: boolean;
 };
 
 export type PaginationRef = {
@@ -48,7 +54,7 @@ export type PaginationRef = {
 
 export const Pagination = React.memo(
     React.forwardRef<PaginationRef, PaginationProps>(
-        ({ pages, onSetPage, initialPage }: PaginationProps, forwardRef) => {
+        ({ pages, onSetPage, initialPage, disabledPress = false }, forwardRef) => {
             const [activeIndex, setActiveIndex] = React.useState(initialPage ?? 0);
 
             React.useImperativeHandle(forwardRef, () => ({
@@ -73,6 +79,7 @@ export const Pagination = React.memo(
                                 key={`Circles_${index}`}
                                 active={index === activeIndex}
                                 onPress={() => onHandlePress(index)}
+                                disabledPress={disabledPress}
                             />
                         );
                     })}
