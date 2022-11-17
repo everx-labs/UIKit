@@ -11,7 +11,7 @@ import { usePaginationStyle } from './animations';
 type CircleProps = {
     active: boolean;
     onPress: (event: any) => void;
-    disabledPress: boolean;
+    disabledPress?: boolean;
 };
 
 function Circle({ active, onPress, disabledPress }: CircleProps) {
@@ -54,7 +54,7 @@ export type PaginationRef = {
 
 export const Pagination = React.memo(
     React.forwardRef<PaginationRef, PaginationProps>(
-        ({ pages, onSetPage, initialPage, disabledPress = false }, forwardRef) => {
+        ({ pages, onSetPage, initialPage, disabledPress }, forwardRef) => {
             const [activeIndex, setActiveIndex] = React.useState(initialPage ?? 0);
 
             React.useImperativeHandle(forwardRef, () => ({
