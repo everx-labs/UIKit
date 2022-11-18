@@ -1,12 +1,32 @@
 /* eslint-disable no-param-reassign */
 import * as React from 'react';
+import { I18nManager, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import { nanoid } from 'nanoid/non-secure';
 
 import { getWorkletFromParentHandler } from '@tonlabs/uikit.scrolls';
-import type { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
+import { clamp } from 'lodash';
 
 const END_THRESHOLD = 100;
 const ON_WHEEL_MIN_DELTA = 10;
+
+function preventDefaultScroll(scrollNode: HTMLElement | null) {
+    scrollNode?.addEventListener('scroll', e => e.preventDefault());
+    scrollNode?.addEventListener('mousewheel', e => e.preventDefault());
+    scrollNode?.addEventListener('touchmove', e => e.preventDefault());
+}
+
+interface HTMLElementExtended extends HTMLElement {
+    previousScrollLeft: number | null;
+}
+
+function getPreventedScrolNode(nativeID: string) {
+    const scrollNode = document.getElementById(nativeID);
+    if (scrollNode == null) {
+        return null;
+    }
+    (scrollNode as HTMLElementExtended).previousScrollLeft = null;
+    return scrollNode as HTMLElementExtended;
+}
 
 /**
  * if one day we want to deal with macos inertia problem,
@@ -21,10 +41,15 @@ function wrapVerticalToHorizontalWheelMovementHandler(
     nativeID: string,
     onWheel: (event: React.WheelEvent, contentOffset: { x: number; y: number }) => void,
 ) {
-    return function onWheelHandler(event: React.WheelEvent) {
-        const scrollNode = document.getElementById(nativeID);
+    const { isRTL } = I18nManager.getConstants();
 
+    let scrollNode = getPreventedScrolNode(nativeID);
+    preventDefaultScroll(scrollNode);
+
+    return function onWheelHandler(event: React.WheelEvent) {
         if (scrollNode == null) {
+            scrollNode = getPreventedScrolNode(nativeID);
+            preventDefaultScroll(scrollNode);
             return;
         }
         if (event.target == null) {
@@ -39,18 +64,28 @@ function wrapVerticalToHorizontalWheelMovementHandler(
         // don't propagate to an outter scroll view if any
         event.stopPropagation();
 
-        const deltaCoord = event.deltaY || event.deltaX;
-        // Note: e.deltaY is not present for `DOMMouseScroll` event (used by Firefox)
-        const factor = deltaCoord ? 1 : 100; // the factor value is chosen heuristically
-        const delta = deltaCoord || event.detail; // NB e.detail is used for DOMMouseScroll
-        const x = scrollNode.scrollLeft + delta * factor;
-        const newScrollXValue = Math.min(
-            Math.max(0, x),
-            scrollNode.scrollWidth - scrollNode.clientWidth,
-        );
-        scrollNode.scrollLeft = newScrollXValue;
+        const { scrollWidth, clientWidth, previousScrollLeft, scrollTop } = scrollNode;
 
-        onWheel(event, { x: scrollNode.scrollLeft, y: scrollNode.scrollTop });
+        const deltaY = isRTL ? -event.deltaY : event.deltaY;
+        const { deltaX } = event;
+
+        const scrollDelta = Math.abs(deltaY) > Math.abs(deltaX) ? deltaY : deltaX;
+
+        const minScrollLeft = isRTL ? -(scrollWidth - clientWidth) : 0;
+        const maxScrollLeft = isRTL ? 0 : scrollWidth - clientWidth;
+
+        const nextScrollLeft = clamp(
+            (previousScrollLeft ?? 0) + scrollDelta,
+            minScrollLeft,
+            maxScrollLeft,
+        );
+
+        scrollNode.previousScrollLeft = nextScrollLeft;
+        scrollNode.scrollLeft = nextScrollLeft;
+        onWheel(event, {
+            x: nextScrollLeft,
+            y: scrollTop,
+        });
     };
 }
 
