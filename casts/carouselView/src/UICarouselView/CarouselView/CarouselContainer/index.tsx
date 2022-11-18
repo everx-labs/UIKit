@@ -1,11 +1,14 @@
 import React from 'react';
-import { View, StyleSheet, Pressable, ViewStyle } from 'react-native';
+import { View, StyleSheet, Pressable, ViewStyle, Platform, I18nManager } from 'react-native';
 import Animated from 'react-native-reanimated';
 import PagerView, { PagerViewOnPageScrollEvent } from 'react-native-pager-view';
 
 import type { UICarouselViewContainerProps, UICarouselViewPageProps } from '../../types';
 import { usePageStyle } from '../animations';
 import { Pagination, PaginationRef } from '../Pagination';
+
+const { isRTL } = I18nManager.getConstants();
+const isIosRtl = Platform.OS === 'ios' && isRTL;
 
 function usePageViews(
     pages: React.ReactElement<UICarouselViewPageProps>[],
@@ -127,9 +130,15 @@ export function CarouselViewContainer({
         [setPage, pages],
     );
 
+    /**
+     * There is a bug with react-native-pager-view on iOS in RTL mode.
+     * The setPage callback doesn't lead to properly page scroll.
+     * And it makes all scroll logic to be broken.
+     * As workaround we make it impossible to sroll pages by tap on iOS in RTL mode (isIosRtl).
+     */
     const { pages: pagesProcessed, onTransitionEnd } = usePageViews(
         pages,
-        shouldPageMoveOnPress,
+        shouldPageMoveOnPress && !isIosRtl,
         nextPage,
         pageStyle,
     );
@@ -138,7 +147,7 @@ export function CarouselViewContainer({
         ({ nativeEvent }: any) => {
             pagerRef.current?.setScrollEnabled(true);
             onPageIndexChange && onPageIndexChange(nativeEvent.position);
-            // setCurrentIndex(nativeEvent.position);
+            paginationRef.current?.setPage(nativeEvent.position);
             onTransitionEnd();
         },
         [onPageIndexChange, onTransitionEnd],
@@ -165,6 +174,10 @@ export function CarouselViewContainer({
                     pages={pages}
                     initialPage={initialIndex}
                     onSetPage={setPage}
+                    /**
+                     * The same problem with react-native-pager-view on iOS in RTL mode as above.
+                     */
+                    disabledPress={isIosRtl}
                 />
             )}
         </View>
