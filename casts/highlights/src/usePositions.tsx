@@ -1,7 +1,8 @@
 /* eslint-disable no-bitwise */
 import * as React from 'react';
-import { useSharedValue } from 'react-native-reanimated';
+import { SharedValue, useSharedValue } from 'react-native-reanimated';
 import { debounce } from 'lodash';
+import { clamp } from 'react-native-redash';
 
 function calculateIsStable(xCoordinates: number[], xCoordsStableFlags: number) {
     'worklet';
@@ -19,7 +20,11 @@ type SharedContext = {
     isStable: boolean;
 };
 
-export function usePositions(itemsCount: number) {
+export function usePositions(
+    itemsCount: number,
+    scrollViewContentWidthShared: SharedValue<number>,
+    isRrlShared: SharedValue<boolean>,
+) {
     const sharedContext = useSharedValue<SharedContext>({
         positions: [],
         isStable: false,
@@ -50,8 +55,14 @@ export function usePositions(itemsCount: number) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const updateSharedContext = React.useCallback(
         debounce(() => {
+            /**
+             * We invert x-coordinate for RTL mode to simplify calculations
+             */
+            const positions = isRrlShared.value
+                ? xCoords.current.map(coordinate => scrollViewContentWidthShared.value - coordinate)
+                : xCoords.current.slice();
             sharedContext.value = {
-                positions: [...xCoords.current],
+                positions,
                 isStable: calculateIsStable(xCoords.current, xCoordsStableFlags.current),
             };
         }),
@@ -84,9 +95,10 @@ export function usePositions(itemsCount: number) {
             }
 
             const maxPosition = sharedContext.value.positions.length - 1;
-            const x = Math.min(
+            const x = clamp(
+                rawX,
+                sharedContext.value.positions[0],
                 sharedContext.value.positions[maxPosition],
-                Math.max(sharedContext.value.positions[0], rawX),
             );
 
             /**
@@ -131,13 +143,13 @@ export function usePositions(itemsCount: number) {
              * for example if X = 350, then we change "gravity position" to 2
              * and continue next calculations with it.
              */
-            const left = Math.max(0, gravityPosition - 1);
-            const right = Math.min(maxPosition, gravityPosition + 1);
+            const previousGravityPosition = Math.max(0, gravityPosition - 1);
+            const nextGravityPosition = Math.min(maxPosition, gravityPosition + 1);
 
-            const leftX = sharedContext.value.positions[left];
-            const rightX = sharedContext.value.positions[right];
+            const previousX = sharedContext.value.positions[previousGravityPosition];
+            const nextX = sharedContext.value.positions[nextGravityPosition];
 
-            if (x > leftX && x < rightX) {
+            if (x > previousX && x < nextX) {
                 const middleX = sharedContext.value.positions[gravityPosition];
                 if (x === middleX) {
                     return {
@@ -146,7 +158,7 @@ export function usePositions(itemsCount: number) {
                     };
                 }
                 if (x < middleX) {
-                    const progress = -1 * (1 - calculateProgress(left, x));
+                    const progress = -1 * (1 - calculateProgress(previousGravityPosition, x));
                     return {
                         gravityPosition,
                         progress,
@@ -158,41 +170,41 @@ export function usePositions(itemsCount: number) {
                     progress,
                 };
             }
-            if (x === leftX) {
+            if (x === previousX) {
                 return {
-                    gravityPosition: left,
+                    gravityPosition: previousGravityPosition,
                     progress: 0,
                 };
             }
-            if (x === rightX) {
+            if (x === nextX) {
                 return {
-                    gravityPosition: right,
+                    gravityPosition: nextGravityPosition,
                     progress: 0,
                 };
             }
-            if (x < leftX) {
-                if (left === gravityPosition) {
+            if (x < previousX) {
+                if (previousGravityPosition === gravityPosition) {
                     return {
                         gravityPosition,
                         progress: 0,
                     };
                 }
 
-                return calculateCurrentPosition(x, left);
+                return calculateCurrentPosition(x, previousGravityPosition);
             }
-            // x > rightX
-            if (right === gravityPosition) {
+            // x > nextX
+            if (nextGravityPosition === gravityPosition) {
                 return {
                     gravityPosition,
                     progress: 0,
                 };
             }
-            return calculateCurrentPosition(x, right);
+            return calculateCurrentPosition(x, nextGravityPosition);
         },
         [calculateProgress, sharedContext],
     );
 
-    const calculateClosestLeftX = React.useCallback(
+    const calculateClosestPreviousX = React.useCallback(
         function calcClosestPosition(gravityPosition: number) {
             'worklet';
 
@@ -200,12 +212,19 @@ export function usePositions(itemsCount: number) {
                 return 0;
             }
 
-            return sharedContext.value.positions[Math.max(0, gravityPosition - 1)];
+            /**
+             * positions was inverted to simplify calculations.
+             * So we need to re-invert them.
+             */
+            return (
+                sharedContext.value.positions[Math.max(0, gravityPosition - 1)] *
+                (isRrlShared.value ? -1 : 1)
+            );
         },
-        [sharedContext],
+        [isRrlShared, sharedContext],
     );
 
-    const calculateClosestRightX = React.useCallback(
+    const calculateClosestNextX = React.useCallback(
         function calcClosestPosition(gravityPosition: number) {
             'worklet';
 
@@ -214,9 +233,17 @@ export function usePositions(itemsCount: number) {
             }
 
             const maxPosition = sharedContext.value.positions.length - 1;
-            return sharedContext.value.positions[Math.min(maxPosition, gravityPosition + 1)];
+
+            /**
+             * positions was inverted to simplify calculations.
+             * So we need to re-invert them.
+             */
+            return (
+                sharedContext.value.positions[Math.min(maxPosition, gravityPosition + 1)] *
+                (isRrlShared.value ? -1 : 1)
+            );
         },
-        [sharedContext],
+        [isRrlShared, sharedContext],
     );
 
     const calculateClosestX = React.useCallback(
@@ -229,11 +256,11 @@ export function usePositions(itemsCount: number) {
                 return sharedContext.value.positions[gravityPosition];
             }
             if (progress < -0.5) {
-                return calculateClosestLeftX(gravityPosition);
+                return calculateClosestPreviousX(gravityPosition);
             }
-            return calculateClosestRightX(gravityPosition);
+            return calculateClosestNextX(gravityPosition);
         },
-        [sharedContext, calculateClosestLeftX, calculateClosestRightX, calculateCurrentPosition],
+        [sharedContext, calculateClosestPreviousX, calculateClosestNextX, calculateCurrentPosition],
     );
 
     const onItemLayout = React.useCallback(
@@ -251,8 +278,8 @@ export function usePositions(itemsCount: number) {
     return {
         calculateCurrentPosition,
         calculateClosestX,
-        calculateClosestLeftX,
-        calculateClosestRightX,
+        calculateClosestPreviousX,
+        calculateClosestNextX,
         onItemLayout,
         sharedContext,
     };
