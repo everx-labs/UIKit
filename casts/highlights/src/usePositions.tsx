@@ -1,8 +1,8 @@
 /* eslint-disable no-bitwise */
 import * as React from 'react';
-import { SharedValue, useSharedValue } from 'react-native-reanimated';
-import { debounce } from 'lodash';
+import { SharedValue, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 import { clamp } from 'react-native-redash';
+import { denormalizeScrollX } from './RtlConverter';
 
 function calculateIsStable(xCoordinates: number[], xCoordsStableFlags: number) {
     'worklet';
@@ -23,20 +23,21 @@ type SharedContext = {
 export function usePositions(
     itemsCount: number,
     scrollViewContentWidthShared: SharedValue<number>,
-    isRrlShared: SharedValue<boolean>,
+    scrollViewWidthShared: SharedValue<number>,
+    isRtlShared: SharedValue<boolean>,
 ) {
     const sharedContext = useSharedValue<SharedContext>({
         positions: [],
         isStable: false,
     });
 
-    const xCoords = React.useRef<number[]>([]);
+    const xCoords = useSharedValue<number[]>([]);
     const lastItemsCount = React.useRef(0);
 
     if (itemsCount !== lastItemsCount.current) {
-        xCoords.current = new Array(itemsCount).fill(null).map((c, i) => {
-            if (xCoords.current[i] != null) {
-                return xCoords.current[i];
+        xCoords.value = new Array(itemsCount).fill(null).map((c, i) => {
+            if (xCoords.value[i] != null) {
+                return xCoords.value[i];
             }
             return c;
         });
@@ -52,21 +53,29 @@ export function usePositions(
      */
     const xCoordsStableFlags = React.useRef(0);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const updateSharedContext = React.useCallback(
-        debounce(() => {
-            /**
-             * We invert x-coordinate for RTL mode to simplify calculations
-             */
-            const positions = isRrlShared.value
-                ? xCoords.current.map(coordinate => scrollViewContentWidthShared.value - coordinate)
-                : xCoords.current.slice();
-            sharedContext.value = {
-                positions,
-                isStable: calculateIsStable(xCoords.current, xCoordsStableFlags.current),
-            };
+    useAnimatedReaction(
+        () => ({
+            isStable: sharedContext.value.isStable,
+            scrollViewContentWidthShared: scrollViewContentWidthShared.value,
+            scrollViewWidthShared: scrollViewWidthShared.value,
         }),
-        [],
+        (currentState, previousState) => {
+            if (!previousState?.isStable && currentState.isStable) {
+                /**
+                 * We invert x-coordinate for RTL mode to simplify calculations
+                 */
+                const positions = isRtlShared.value
+                    ? xCoords.value.map(coordinate =>
+                          Math.trunc(scrollViewContentWidthShared.value - coordinate),
+                      )
+                    : xCoords.value.slice();
+
+                sharedContext.value = {
+                    ...sharedContext.value,
+                    positions,
+                };
+            }
+        },
     );
 
     const calculateProgress = React.useCallback(
@@ -216,12 +225,14 @@ export function usePositions(
              * positions was inverted to simplify calculations.
              * So we need to re-invert them.
              */
-            return (
-                sharedContext.value.positions[Math.max(0, gravityPosition - 1)] *
-                (isRrlShared.value ? -1 : 1)
+            return denormalizeScrollX(
+                sharedContext.value.positions[Math.max(0, gravityPosition - 1)],
+                isRtlShared.value,
+                scrollViewWidthShared.value,
+                scrollViewContentWidthShared.value,
             );
         },
-        [isRrlShared, sharedContext],
+        [isRtlShared, scrollViewContentWidthShared, scrollViewWidthShared, sharedContext],
     );
 
     const calculateClosestNextX = React.useCallback(
@@ -238,12 +249,14 @@ export function usePositions(
              * positions was inverted to simplify calculations.
              * So we need to re-invert them.
              */
-            return (
-                sharedContext.value.positions[Math.min(maxPosition, gravityPosition + 1)] *
-                (isRrlShared.value ? -1 : 1)
+            return denormalizeScrollX(
+                sharedContext.value.positions[Math.min(maxPosition, gravityPosition + 1)],
+                isRtlShared.value,
+                scrollViewWidthShared.value,
+                scrollViewContentWidthShared.value,
             );
         },
-        [isRrlShared, sharedContext],
+        [isRtlShared, scrollViewContentWidthShared, scrollViewWidthShared, sharedContext],
     );
 
     const calculateClosestX = React.useCallback(
@@ -267,12 +280,22 @@ export function usePositions(
         (index: number, value: number) => {
             'worklet';
 
-            xCoords.current[index] = value;
+            xCoords.value[index] = value;
             xCoordsStableFlags.current |= 1 << index;
 
-            updateSharedContext();
+            const isStable = calculateIsStable(xCoords.value, xCoordsStableFlags.current);
+            if (isStable) {
+                /**
+                 * Save xCoords in UI thread
+                 */
+                xCoords.value = xCoords.value.slice();
+                sharedContext.value = {
+                    ...sharedContext.value,
+                    isStable: true,
+                };
+            }
         },
-        [updateSharedContext],
+        [xCoords, sharedContext],
     );
 
     return {

@@ -27,6 +27,7 @@ import { runOnUIPlatformSelect } from './runOnUIPlatformSelect';
 import { HighlightsNativeGestureRefProvider } from './HighlightsNativeGestureRefContext';
 import { useCards } from './useCards';
 import type { UIHighlightsContentInset, UIHighlightsProps } from './types';
+import { normalizeScrollX } from './RtlConverter';
 
 // @inline
 const ADJUST_NONE = 0;
@@ -75,13 +76,13 @@ export function UIHighlights({
 }: UIHighlightsProps) {
     const scrollRef = useAnimatedRef<Animated.ScrollView>();
 
-    const scrollViewWidthRef = React.useRef<number>(0);
+    const scrollViewWidthShared = useSharedValue(0);
     const scrollViewContentWidthShared = useSharedValue(0);
 
     const currentGravityPosition = useSharedValue(0);
     const currentProgress = useSharedValue(0);
 
-    const isRrlShared = useSharedValue(I18nManager.getConstants().isRTL);
+    const isRtlShared = useSharedValue(I18nManager.getConstants().isRTL);
 
     const {
         onItemLayout,
@@ -89,16 +90,25 @@ export function UIHighlights({
         calculateClosestX,
         calculateClosestPreviousX,
         calculateClosestNextX,
-    } = usePositions(React.Children.count(children), scrollViewContentWidthShared, isRrlShared);
+    } = usePositions(
+        React.Children.count(children),
+        scrollViewContentWidthShared,
+        scrollViewWidthShared,
+        isRtlShared,
+    );
 
-    const onScrollViewLayout = React.useCallback((event: LayoutChangeEvent) => {
-        const {
-            nativeEvent: {
-                layout: { width },
-            },
-        } = event;
-        scrollViewWidthRef.current = width;
-    }, []);
+    const onScrollViewLayout = React.useCallback(
+        (event: LayoutChangeEvent) => {
+            const {
+                nativeEvent: {
+                    layout: { width },
+                },
+            } = event;
+
+            scrollViewWidthShared.value = width;
+        },
+        [scrollViewWidthShared],
+    );
 
     const onScrollViewSizeChange = React.useCallback(
         (w: number) => {
@@ -121,7 +131,12 @@ export function UIHighlights({
             /**
              * We invert x-coordinate for RTL mode to simplify calculations
              */
-            const x = isRrlShared.value ? -rawX : rawX;
+            const x = normalizeScrollX(
+                rawX,
+                isRtlShared.value,
+                scrollViewWidthShared.value,
+                scrollViewContentWidthShared.value,
+            );
 
             const { gravityPosition, progress } = calculateCurrentPosition(
                 x,
@@ -144,7 +159,7 @@ export function UIHighlights({
             if (velocity != null) {
                 if (velocity.x > 0) {
                     ctx.adjustOnMomentum = runOnUIPlatformSelect({
-                        android: ADJUST_LEFT,
+                        android: isRtlShared.value ? ADJUST_RIGHT : ADJUST_LEFT,
                         default: ADJUST_RIGHT,
                     });
 
@@ -152,7 +167,7 @@ export function UIHighlights({
                 }
                 if (velocity.x < 0) {
                     ctx.adjustOnMomentum = runOnUIPlatformSelect({
-                        android: ADJUST_RIGHT,
+                        android: isRtlShared.value ? ADJUST_LEFT : ADJUST_RIGHT,
                         default: ADJUST_LEFT,
                     });
                     return;
