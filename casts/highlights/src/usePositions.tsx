@@ -281,6 +281,5 @@ export function usePositions(
         calculateClosestPreviousX,
         calculateClosestNextX,
         onItemLayout,
-        sharedContext,
     };
 }

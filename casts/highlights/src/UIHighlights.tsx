@@ -89,7 +89,6 @@ export function UIHighlights({
         calculateClosestX,
         calculateClosestPreviousX,
         calculateClosestNextX,
-        sharedContext,
     } = usePositions(React.Children.count(children), scrollViewContentWidthShared, isRrlShared);
 
     const onScrollViewLayout = React.useCallback((event: LayoutChangeEvent) => {
@@ -123,14 +122,6 @@ export function UIHighlights({
              * We invert x-coordinate for RTL mode to simplify calculations
              */
             const x = isRrlShared.value ? -rawX : rawX;
-
-            // Check if we've reached the end
-            if (x >= scrollViewContentWidthShared.value - scrollViewWidthRef.current) {
-                // Set the current gravity position as for the last item
-                currentGravityPosition.value = sharedContext.value.positions.length - 1;
-                currentProgress.value = 0;
-                return;
-            }
 
             const { gravityPosition, progress } = calculateCurrentPosition(
                 x,

@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
         height: UIHighlightsConstants.controlItemHeight,
         paddingHorizontal: UIHighlightsConstants.controlsHorizontalOffset,
         borderRadius: UIHighlightsConstants.controlItemHeight / 2,
+        userSelect: 'none',
     },
     control: {
         alignItems: 'center',
