@@ -105,7 +105,7 @@ export function usePositions(
 
             const maxPosition = sharedContext.value.positions.length - 1;
             const x = clamp(
-                rawX,
+                Math.round(rawX),
                 sharedContext.value.positions[0],
                 sharedContext.value.positions[maxPosition],
             );
