@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { I18nManager, StyleSheet } from 'react-native';
 import Animated, {
     interpolate,
     SharedValue,
@@ -87,8 +87,14 @@ function Dot({
         };
     });
 
+    const dotWrapperOffset = React.useMemo(() => {
+        return I18nManager.getConstants().isRTL
+            ? styles.dotWrapperOffsetRTL
+            : styles.dotWrapperOffset;
+    }, []);
+
     return (
-        <Animated.View style={[styles.dotWrapper, wrapperStyle]}>
+        <Animated.View style={[styles.dotWrapper, dotWrapperOffset, wrapperStyle]}>
             <Animated.View style={[styles.dot, dotStyle]} />
         </Animated.View>
     );
@@ -111,6 +117,9 @@ function useInitialPlacement() {
         tTranslations.current = tPlacement.current.map(
             it => (it - 2) * UIHighlightsConstants.dotWrapperWidth,
         );
+        if (I18nManager.getConstants().isRTL) {
+            tTranslations.current = tTranslations.current.reverse();
+        }
     }
 
     return {
@@ -209,7 +218,12 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: UIHighlightsConstants.dotVerticalOffset,
         bottom: UIHighlightsConstants.dotVerticalOffset,
+    },
+    dotWrapperOffset: {
         left: UIHighlightsConstants.dotLeftOffset,
+    },
+    dotWrapperOffsetRTL: {
+        right: UIHighlightsConstants.dotLeftOffset,
     },
     dot: {
         width: UIHighlightsConstants.dotSize,
