@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, LayoutChangeEvent, Pressable } from 'react-native';
+import { StyleSheet, View, LayoutChangeEvent, Pressable, I18nManager } from 'react-native';
 import Animated, {
     interpolate,
     useAnimatedStyle,
@@ -20,6 +20,8 @@ type PageProps = {
     onPress: () => void;
     shouldPageMoveOnPress: boolean;
 };
+
+const { isRTL } = I18nManager.getConstants();
 
 const PageView: React.FC<PageProps> = React.memo(
     ({ page, index, currentIndex, width, offset, onPress, shouldPageMoveOnPress }: PageProps) => {
@@ -101,7 +103,7 @@ export function CarouselViewContainer({
 
     const jumpToIndex = React.useCallback(
         (index: number) => {
-            const offset = -index * layout.width;
+            const offset = index * layout.width * (isRTL ? 1 : -1);
             carouselOffset.value = withTiming(offset, { duration });
             itemOffset.value = withSequence(
                 withTiming(1, { duration: duration / 2 }),
