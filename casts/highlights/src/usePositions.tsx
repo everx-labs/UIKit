@@ -110,6 +110,17 @@ export function usePositions(
                 sharedContext.value.positions[maxPosition],
             );
 
+            // Check if we've reached the end
+            if (x >= scrollViewContentWidthShared.value - scrollViewWidthShared.value) {
+                // Set the current gravity position as for the last item
+                // currentGravityPosition.value = sharedContext.value.positions.length - 1;
+                // currentProgress.value = 0;
+                return {
+                    gravityPosition: maxPosition,
+                    progress: 0,
+                };
+            }
+
             /**
              * In highlights we want to know what the "position" of the left edge of
              * the visible area in ScrollView is regarding to items coordinates.
@@ -210,7 +221,7 @@ export function usePositions(
             }
             return calculateCurrentPosition(x, nextGravityPosition);
         },
-        [calculateProgress, sharedContext],
+        [calculateProgress, sharedContext, scrollViewWidthShared, scrollViewContentWidthShared],
     );
 
     const calculateClosestPreviousX = React.useCallback(

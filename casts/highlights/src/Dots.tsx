@@ -26,7 +26,7 @@ function rotateDots(slots: number[], activeIndex: number, direction: number) {
             tempDots.unshift(last as number);
         }
     } else {
-        index += 1;
+        index += direction;
         if (index > tempDots.length - 2) {
             index = tempDots.length - 2;
             const first = tempDots.shift();
