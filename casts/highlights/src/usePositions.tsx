@@ -1,7 +1,7 @@
 /* eslint-disable no-bitwise */
 import * as React from 'react';
 import { useSharedValue } from 'react-native-reanimated';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 
 function calculateIsStable(xCoordinates: number[], xCoordsStableFlags: number) {
     'worklet';
