@@ -4,7 +4,7 @@ import { I18nManager, NativeScrollEvent, NativeSyntheticEvent } from 'react-nati
 import { nanoid } from 'nanoid/non-secure';
 
 import { getWorkletFromParentHandler } from '@tonlabs/uikit.scrolls';
-import { clamp } from 'lodash';
+import clamp from 'lodash/clamp';
 
 const END_THRESHOLD = 100;
 const ON_WHEEL_MIN_DELTA = 10;
