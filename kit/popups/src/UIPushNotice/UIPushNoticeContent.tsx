@@ -59,10 +59,9 @@ function LineCountdown({
 }) {
     const { width } = useWindowDimensions();
 
-    const noticeWidth = React.useMemo(
-        () => width - UIConstant.toastIndentFromScreenEdges * 2,
-        [width],
-    );
+    const noticeWidth = React.useMemo(() => {
+        return Math.min(width - UIConstant.toastIndentFromScreenEdges * 2, UIConstant.maxWidth);
+    }, [width]);
 
     const countdownStyle = useAnimatedStyle(() => {
         return {
