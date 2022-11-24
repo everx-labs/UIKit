@@ -1,6 +1,12 @@
 import * as React from 'react';
-import { useWindowDimensions, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
-import Animated, { useAnimatedStyle } from 'react-native-reanimated';
+import {
+    useWindowDimensions,
+    StyleSheet,
+    TouchableWithoutFeedback,
+    View,
+    I18nManager,
+} from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
 import { UIImage, UIImageProps } from '@tonlabs/uikit.media';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
@@ -58,6 +64,7 @@ function LineCountdown({
     countdownProgress: ContentPrivateProps['countdownProgress'];
 }) {
     const { width } = useWindowDimensions();
+    const isRtlShared = useSharedValue(I18nManager.getConstants().isRTL);
 
     const noticeWidth = React.useMemo(() => {
         return Math.min(width - UIConstant.toastIndentFromScreenEdges * 2, UIConstant.maxWidth);
@@ -67,7 +74,8 @@ function LineCountdown({
         return {
             transform: [
                 {
-                    translateX: countdownProgress.value * noticeWidth * -1,
+                    translateX:
+                        countdownProgress.value * noticeWidth * (isRtlShared.value ? 1 : -1),
                 },
             ],
         };
