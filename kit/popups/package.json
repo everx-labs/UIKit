@@ -47,8 +47,8 @@
         "@tonlabs/uikit.media": "^3.1.1",
         "@tonlabs/uikit.scrolls": "^4.0.1",
         "@tonlabs/uikit.themes": "^3.1.1",
-        "react-native-safe-area-context": "^3.3.2",
-        "lodash": "^4.17.21"
+        "lodash": "^4.17.21",
+        "react-native-safe-area-context": "^3.3.2"
     },
     "devDependencies": {
         "@react-native-clipboard/clipboard": "^1.8.5",
