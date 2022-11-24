@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { LayoutChangeEvent, ScaledSize, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { LayoutChangeEvent, ScaledSize, StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { TapGestureHandler } from 'react-native-gesture-handler';
 import { ColorVariants, useTheme, Theme, makeStyles, useShadow } from '@tonlabs/uikit.themes';
@@ -8,6 +8,7 @@ import type { UIMenuContainerContentProps } from './types';
 import { UIConstant } from '../constants';
 import { ShadowView } from '../ShadowView';
 import { useTargetDimensions, TargetDimensions } from '../useTargetDimensions';
+import { useWindowDimensions } from '../useWindowDimensions';
 // import { usePopupLayoutAnimationFunctions } from '../usePopupLayoutAnimationFunctions';
 
 type Location = {
