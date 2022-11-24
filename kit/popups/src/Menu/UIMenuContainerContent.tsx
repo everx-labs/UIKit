@@ -9,9 +9,9 @@ import {
 } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { TapGestureHandler } from 'react-native-gesture-handler';
+import clamp from 'lodash/clamp';
 import { ColorVariants, useTheme, Theme, makeStyles, useShadow } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import clamp from 'lodash/clamp';
 import type { UIMenuContainerContentProps } from './types';
 import { UIConstant } from '../constants';
 import { ShadowView } from '../ShadowView';
