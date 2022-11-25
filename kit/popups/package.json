@@ -37,7 +37,6 @@
         "@react-native-community/hooks": "^2.6.0",
         "@tonlabs/localization": "^3.0.2",
         "@tonlabs/uicast.bars": "^3.1.1",
-        "@tonlabs/uicast.keyboard": "^3.1.2",
         "@tonlabs/uicast.linear-chart": "^3.0.2",
         "@tonlabs/uikit.assets": "^3.0.2",
         "@tonlabs/uikit.controls": "^3.1.1",
