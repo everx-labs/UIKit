@@ -1,4 +1,4 @@
-import { useDimensions } from '@tonlabs/uicast.keyboard';
+import { useDimensions } from '@tonlabs/uikit.layout';
 
 export function useWindowDimensions() {
     /**

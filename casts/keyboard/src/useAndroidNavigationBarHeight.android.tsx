@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useSharedValue } from 'react-native-reanimated';
 
-import { useDimensions } from './useDimensions';
+import { useDimensions } from '@tonlabs/uikit.layout';
 
 export function useAndroidNavigationBarHeight() {
     const { androidNavigationBarHeight } = useDimensions();
