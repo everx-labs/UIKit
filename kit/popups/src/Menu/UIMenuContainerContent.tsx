@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { LayoutChangeEvent, ScaledSize, StyleSheet, View } from 'react-native';
+import { I18nManager, LayoutChangeEvent, ScaledSize, StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { TapGestureHandler } from 'react-native-gesture-handler';
+import clamp from 'lodash/clamp';
 import { ColorVariants, useTheme, Theme, makeStyles, useShadow } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UIMenuContainerContentProps } from './types';
@@ -12,8 +13,9 @@ import { useWindowDimensions } from '../useWindowDimensions';
 // import { usePopupLayoutAnimationFunctions } from '../usePopupLayoutAnimationFunctions';
 
 type Location = {
-    left: number;
-    top: number | undefined;
+    top: number;
+    left?: number;
+    right?: number;
 };
 type Size = {
     width: number;
@@ -23,6 +25,10 @@ type Size = {
 const initialSize: Size = {
     width: 0,
     height: 0,
+};
+const initialPosition: Location = {
+    top: -10000,
+    left: -10000,
 };
 
 function getBoundaries(windowDimensions: ScaledSize, menuSize: Size) {
@@ -37,29 +43,36 @@ function useMenuLocation(
     triggerDimensions: TargetDimensions | null,
     windowDimensions: ScaledSize,
     menuSize: Size,
-): Location | null {
+): Location {
+    const isRTL = React.useMemo(() => I18nManager.getConstants().isRTL, []);
     return React.useMemo(() => {
         if (!menuSize.height || !menuSize.width || !triggerDimensions) {
-            return null;
+            return initialPosition;
         }
 
         const boundaries = getBoundaries(windowDimensions, menuSize);
 
         let top: number | undefined = triggerDimensions.y + triggerDimensions.height;
-        const left: number = Math.max(
+        const left: number = clamp(
+            isRTL
+                ? triggerDimensions.x - menuSize.width + triggerDimensions.width
+                : triggerDimensions.x,
             boundaries.left,
-            Math.min(boundaries.right, triggerDimensions.x),
+            boundaries.right,
         );
 
         if (top > boundaries.bottom) {
             top = triggerDimensions.y - menuSize.height;
         }
 
-        return {
-            left,
-            top,
-        };
-    }, [triggerDimensions, windowDimensions, menuSize]);
+        if (isRTL) {
+            return {
+                top,
+                right: left,
+            };
+        }
+        return { top, left };
+    }, [menuSize, triggerDimensions, windowDimensions, isRTL]);
 }
 
 export function UIMenuContainerContent({
@@ -87,7 +100,7 @@ export function UIMenuContainerContent({
     const menuLocation = useMenuLocation(triggerDimensions, windowDimensions, menuSize);
 
     const shadow = useShadow(5);
-    const styles = useStyles(theme, menuLocation, shadow);
+    const styles = useStyles(theme, shadow);
 
     return (
         <>
@@ -95,7 +108,7 @@ export function UIMenuContainerContent({
                 <View style={StyleSheet.absoluteFill} />
             </TapGestureHandler>
             <Animated.View
-                style={styles.container}
+                style={[styles.container, menuLocation]}
                 // entering={entering}
                 // exiting={exiting}
                 onLayout={onLayout}
@@ -109,12 +122,9 @@ export function UIMenuContainerContent({
     );
 }
 
-const useStyles = makeStyles((theme: Theme, location: Location | null, shadow: any) => ({
+const useStyles = makeStyles((theme: Theme, shadow: any) => ({
     container: {
         position: 'absolute',
-        top: -10000,
-        left: -10000,
-        ...location,
     },
     shadowContainer: {
         ...shadow,
