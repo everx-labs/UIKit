@@ -72,7 +72,14 @@ const UILabelBasic = React.forwardRef<Text, UILabelBasicProps>(function UILabelF
             // It's also part of a fix below with textMultiline
             numberOfLines={Platform.select({ web: undefined, default: numberOfLines })}
             style={[
-                { color },
+                {
+                    color,
+                    /**
+                     * specifying `textAlign` is necessary for proper alignment
+                     * when switching to RTL mode.
+                     */
+                    textAlign: 'left',
+                },
                 style,
                 // Override font styles if there were any
                 fontStyle,
