@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uicast.address-text",
-    "version": "3.0.2",
+    "version": "4.1.0",
     "description": "Address Text on Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",
@@ -34,10 +34,10 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/uicast.qr-code-scanner-sheet": "^3.1.1",
-        "@tonlabs/uikit.assets": "^3.0.2",
-        "@tonlabs/uikit.inputs": "^3.1.1",
-        "@tonlabs/uikit.themes": "^3.1.1"
+        "@tonlabs/uicast.qr-code-scanner-sheet": "^4.1.0",
+        "@tonlabs/uikit.assets": "^4.1.0",
+        "@tonlabs/uikit.inputs": "^4.1.0",
+        "@tonlabs/uikit.themes": "^4.1.0"
     },
     "devDependencies": {
         "@types/react": "17.0.44",

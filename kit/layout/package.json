@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uikit.layout",
-    "version": "3.1.1",
+    "version": "4.1.0",
     "description": "Layout for Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit",
@@ -34,7 +34,7 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/uikit.themes": "^3.1.1"
+        "@tonlabs/uikit.themes": "^4.1.0"
     },
     "devDependencies": {
         "@types/react": "17.0.44",

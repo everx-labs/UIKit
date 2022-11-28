@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uicast.banner",
-    "version": "3.0.2",
+    "version": "4.1.0",
     "description": "Banner on Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",
@@ -34,8 +34,8 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/uikit.layout": "^3.1.1",
-        "@tonlabs/uikit.themes": "^3.1.1"
+        "@tonlabs/uikit.layout": "^4.1.0",
+        "@tonlabs/uikit.themes": "^4.1.0"
     },
     "devDependencies": {
         "@types/react": "17.0.44",

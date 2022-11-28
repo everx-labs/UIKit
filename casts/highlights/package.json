@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uicast.highlights",
-    "version": "3.0.2",
+    "version": "4.1.0",
     "description": "Higlights scroller",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",
@@ -34,11 +34,11 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/localization": "^3.0.2",
-        "@tonlabs/uikit.controls": "^3.1.1",
-        "@tonlabs/uikit.themes": "^3.1.1",
-        "@tonlabs/uikit.scrolls": "^4.0.1",
-        "@tonlabs/uikit.media": "^3.1.1",
+        "@tonlabs/localization": "^4.1.0",
+        "@tonlabs/uikit.controls": "^4.1.0",
+        "@tonlabs/uikit.media": "^4.1.0",
+        "@tonlabs/uikit.scrolls": "^4.1.0",
+        "@tonlabs/uikit.themes": "^4.1.0",
         "lodash": "^4.17.21",
         "nanoid": "^3.3.1"
     },
