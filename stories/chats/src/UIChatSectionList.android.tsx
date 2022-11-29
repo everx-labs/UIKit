@@ -1,7 +1,6 @@
 /* eslint-disable react/no-unused-prop-types */
 import * as React from 'react';
 import {
-    Insets,
     SectionList,
     SectionListProps,
     DefaultSectionT,
@@ -13,13 +12,6 @@ import {
 import { UIStyle } from '@tonlabs/uikit.core';
 
 import type { ChatMessage } from './types';
-
-const emptyInsets: Insets = {
-    left: 0,
-    top: 0,
-    right: 0,
-    bottom: 0,
-};
 
 function getContentContainerPadding(padding: ViewStyle['padding'], inset: number | undefined) {
     if (padding == null) {
@@ -52,10 +44,6 @@ export const UIChatSectionList = React.memo(
         }: Props<ItemT, SectionT>,
         forwardRef: React.Ref<SectionList<ItemT, SectionT>>,
     ) {
-        const [internalContentInset, setInternalContentInset] = React.useState<Insets>(
-            contentInset || emptyInsets,
-        );
-
         const contentContainerStyle: ViewStyle = React.useMemo(() => {
             const style = StyleSheet.flatten(contentContainerStyleProp) || {};
 
@@ -65,30 +53,26 @@ export const UIChatSectionList = React.memo(
                 paddingVertical: undefined,
                 paddingLeft: getContentContainerPadding(
                     style.paddingLeft || style.paddingHorizontal,
-                    internalContentInset.left,
+                    contentInset?.left,
                 ),
                 // As the scrollable is inverted
                 // it's actually a top inset
                 paddingBottom: getContentContainerPadding(
                     style.paddingTop || style.paddingVertical,
-                    internalContentInset.top,
+                    contentInset?.top,
                 ),
                 paddingRight: getContentContainerPadding(
                     style.paddingRight || style.paddingHorizontal,
-                    internalContentInset.right,
+                    contentInset?.right,
                 ),
                 // As the scrollable is inverted
                 // it's actually a bottom inset
                 paddingTop: getContentContainerPadding(
                     style.paddingBottom || style.paddingVertical,
-                    internalContentInset.bottom,
+                    contentInset?.bottom,
                 ),
             };
-        }, [internalContentInset, contentContainerStyleProp]);
-
-        const onInsetsChange = React.useCallback(({ nativeEvent }: { nativeEvent: Insets }) => {
-            setInternalContentInset(nativeEvent);
-        }, []);
+        }, [contentInset, contentContainerStyleProp]);
 
         return (
             <View style={UIStyle.common.flex()}>
@@ -101,8 +85,6 @@ export const UIChatSectionList = React.memo(
                     automaticallyAdjustKeyboardInsets={automaticallyAdjustKeyboardInsets}
                     // @ts-ignore
                     keyboardInsetAdjustmentBehavior="inclusive"
-                    contentInset={contentInset}
-                    onInsetsChange={onInsetsChange}
                 />
             </View>
         );

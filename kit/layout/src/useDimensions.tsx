@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { Dimensions, ScaledSize } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function useDimensions() {
+    const { bottom: androidNavigationBarHeight } = useSafeAreaInsets();
+
     const [windowDimensions, setWindowDimensions] = React.useState(() => Dimensions.get('window'));
     const [screenDimensions, setScreenDimensions] = React.useState(() => Dimensions.get('screen'));
 
@@ -37,6 +40,6 @@ export function useDimensions() {
     return {
         window: windowDimensions,
         screen: screenDimensions,
-        androidNavigationBarHeight: screenDimensions.height - windowDimensions.height,
+        androidNavigationBarHeight,
     };
 }
