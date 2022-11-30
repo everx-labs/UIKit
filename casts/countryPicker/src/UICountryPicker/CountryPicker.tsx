@@ -232,7 +232,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     headerContainer: {
         backgroundColor: theme[ColorVariants.BackgroundPrimary] as string,
-        borderBottomColor: theme[ColorVariants.LineTertiary] as string,
+        borderBottomColor: theme[ColorVariants.BackgroundTertiary] as string,
         borderBottomWidth: 1,
         borderTopLeftRadius: 12,
         borderTopRightRadius: 12,

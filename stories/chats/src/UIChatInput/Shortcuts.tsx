@@ -34,8 +34,8 @@ export function Shortcuts(props: Props) {
                         styles.shortcut,
                         {
                             borderColor: shortcut.isDanger
-                                ? theme[ColorVariants.LineNegative]
-                                : theme[ColorVariants.LineAccent],
+                                ? theme[ColorVariants.BackgroundNegative]
+                                : theme[ColorVariants.BackgroundAccent],
                         },
                         UIStyle.color.getBackgroundColorStyle(
                             theme[ColorVariants.BackgroundPrimary],

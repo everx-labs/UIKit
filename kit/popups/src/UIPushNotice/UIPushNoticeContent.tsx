@@ -96,7 +96,7 @@ function LineCountdown({
 const useStyles = makeStyles((theme: Theme) => ({
     countdownLine: {
         flex: 1,
-        backgroundColor: theme[UIBackgroundViewColors.BackgroundPrimaryInverted],
+        backgroundColor: theme[UIBackgroundViewColors.BackgroundInverted],
     },
 }));
 

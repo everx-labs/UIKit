@@ -79,7 +79,10 @@ function Content() {
             return (
                 <>
                     <Calendar />
-                    <UIBackgroundView color={ColorVariants.LineTertiary} style={styles.divider} />
+                    <UIBackgroundView
+                        color={ColorVariants.BackgroundTertiary}
+                        style={styles.divider}
+                    />
                     <Time />
                 </>
             );

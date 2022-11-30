@@ -152,16 +152,13 @@ export const QRCodeCircle: React.FC<QRCodeProps> = ({ value, logo, size }: QRCod
                 <View style={styles.outerQrCodeContainer}>
                     <Svg width={diameterOfCircleQRCode} height={diameterOfCircleQRCode}>
                         <Path
-                            fill={theme[ColorVariants.BackgroundPrimaryInverted] as string}
+                            fill={theme[ColorVariants.BackgroundInverted] as string}
                             d={qrSvgOuter}
                         />
                     </Svg>
                 </View>
                 <Svg width={sizeOfInnerQRCode} height={sizeOfInnerQRCode}>
-                    <Path
-                        fill={theme[ColorVariants.BackgroundPrimaryInverted] as string}
-                        d={qrSvg}
-                    />
+                    <Path fill={theme[ColorVariants.BackgroundInverted] as string} d={qrSvg} />
                 </Svg>
             </View>
             {logoRender}

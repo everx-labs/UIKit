@@ -34,7 +34,7 @@ export function ActionButton({ inputHasValue, hasError, onPress, clear }: Action
                     <UIImage
                         source={UIAssets.icons.ui.closeRemove}
                         style={actionStyles.iconClear}
-                        tintColor={ColorVariants.LinePrimary}
+                        tintColor={ColorVariants.BackgroundPrimary}
                     />
                 </View>
             </TouchableOpacity>

@@ -71,7 +71,7 @@ const getTimeFontColor = (message: PlainTextMessage) => {
     }
 
     if (message.status === MessageStatus.Received) {
-        return UILabelColors.TextOverlay;
+        return UILabelColors.TextSecondary;
     }
 
     return UILabelColors.StaticTextOverlayLight;

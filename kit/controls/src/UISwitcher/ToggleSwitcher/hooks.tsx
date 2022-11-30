@@ -104,7 +104,7 @@ export const useImageStyle = (
                 animatedValue.value,
                 [IconSwitcherState.NotActive, IconSwitcherState.Active],
                 [
-                    theme[ColorVariants.BackgroundTertiaryInverted] as string,
+                    theme[ColorVariants.BackgroundTertiary] as string,
                     theme[ColorVariants.BackgroundAccent] as string,
                 ],
             ),

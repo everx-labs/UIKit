@@ -30,9 +30,7 @@ function MainAnimatedIconInner({
     const smallCircleRadius = (cx + 1) / 2;
     const smallCircleRadiusWithStroke = smallCircleRadius - STROKE_SIZE / 2;
     const { colorParts: bgColorParts } = useColorParts(ColorVariants.BackgroundAccent);
-    const { colorParts: borderColorParts } = useColorParts(
-        ColorVariants.BackgroundTertiaryInverted,
-    );
+    const { colorParts: borderColorParts } = useColorParts(ColorVariants.BackgroundTertiary);
     const circle2Props = useAnimatedProps(() => {
         return {
             r: interpolate(

@@ -128,9 +128,9 @@ export const useImageStyle = (
                 switcherState.value,
                 [SwitcherState.Active, SwitcherState.Hovered, SwitcherState.Pressed],
                 [
-                    theme[ColorVariants.BackgroundTertiaryInverted] as string,
-                    theme[ColorVariants.LineNeutral] as string,
-                    theme[ColorVariants.LineNeutral] as string,
+                    theme[ColorVariants.BackgroundTertiary] as string,
+                    theme[ColorVariants.BackgroundInverted] as string,
+                    theme[ColorVariants.BackgroundInverted] as string,
                 ],
             ),
         };

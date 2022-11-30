@@ -270,7 +270,7 @@ export const Navigation = () => {
                                 icon: {
                                     source: UIAssets.icons.ui.camera,
                                 },
-                                iconTintColor: ColorVariants.IconSecondary,
+                                iconTintColor: ColorVariants.TextSecondary,
                             },
                             {
                                 icon: {
@@ -279,19 +279,19 @@ export const Navigation = () => {
                                         width: 25,
                                     },
                                 },
-                                iconTintColor: ColorVariants.IconSecondary,
+                                iconTintColor: ColorVariants.TextSecondary,
                             },
                             {
                                 icon: {
                                     source: UIAssets.icons.ui.glass,
                                 },
-                                iconTintColor: ColorVariants.IconSecondary,
+                                iconTintColor: ColorVariants.TextSecondary,
                             },
                             {
                                 icon: {
                                     source: UIAssets.icons.ui.triangle,
                                 },
-                                iconTintColor: ColorVariants.IconSecondary,
+                                iconTintColor: ColorVariants.TextSecondary,
                             },
                         ]}
                         headerRightItems={[
@@ -299,7 +299,7 @@ export const Navigation = () => {
                                 icon: {
                                     source: UIAssets.icons.ui.camera,
                                 },
-                                iconTintColor: ColorVariants.IconSecondary,
+                                iconTintColor: ColorVariants.TextSecondary,
                             },
                             {
                                 icon: {
@@ -308,19 +308,19 @@ export const Navigation = () => {
                                         width: 25,
                                     },
                                 },
-                                iconTintColor: ColorVariants.IconSecondary,
+                                iconTintColor: ColorVariants.TextSecondary,
                             },
                             {
                                 icon: {
                                     source: UIAssets.icons.ui.glass,
                                 },
-                                iconTintColor: ColorVariants.IconSecondary,
+                                iconTintColor: ColorVariants.TextSecondary,
                             },
                             {
                                 icon: {
                                     source: UIAssets.icons.ui.triangle,
                                 },
-                                iconTintColor: ColorVariants.IconSecondary,
+                                iconTintColor: ColorVariants.TextSecondary,
                             },
                         ]}
                     />
@@ -408,7 +408,7 @@ export const Navigation = () => {
                                 icon: {
                                     source: UIAssets.icons.ui.camera,
                                 },
-                                iconTintColor: ColorVariants.IconSecondary,
+                                iconTintColor: ColorVariants.TextSecondary,
                             },
                             {
                                 icon: {
@@ -417,19 +417,19 @@ export const Navigation = () => {
                                         width: 25,
                                     },
                                 },
-                                iconTintColor: ColorVariants.IconSecondary,
+                                iconTintColor: ColorVariants.TextSecondary,
                             },
                             {
                                 icon: {
                                     source: UIAssets.icons.ui.glass,
                                 },
-                                iconTintColor: ColorVariants.IconSecondary,
+                                iconTintColor: ColorVariants.TextSecondary,
                             },
                             {
                                 icon: {
                                     source: UIAssets.icons.ui.triangle,
                                 },
-                                iconTintColor: ColorVariants.IconSecondary,
+                                iconTintColor: ColorVariants.TextSecondary,
                             },
                         ]}
                         headerRightItems={[
@@ -437,7 +437,7 @@ export const Navigation = () => {
                                 icon: {
                                     source: UIAssets.icons.ui.camera,
                                 },
-                                iconTintColor: ColorVariants.IconSecondary,
+                                iconTintColor: ColorVariants.TextSecondary,
                             },
                             {
                                 icon: {
@@ -446,19 +446,19 @@ export const Navigation = () => {
                                         width: 25,
                                     },
                                 },
-                                iconTintColor: ColorVariants.IconSecondary,
+                                iconTintColor: ColorVariants.TextSecondary,
                             },
                             {
                                 icon: {
                                     source: UIAssets.icons.ui.glass,
                                 },
-                                iconTintColor: ColorVariants.IconSecondary,
+                                iconTintColor: ColorVariants.TextSecondary,
                             },
                             {
                                 icon: {
                                     source: UIAssets.icons.ui.triangle,
                                 },
-                                iconTintColor: ColorVariants.IconSecondary,
+                                iconTintColor: ColorVariants.TextSecondary,
                             },
                         ]}
                     />

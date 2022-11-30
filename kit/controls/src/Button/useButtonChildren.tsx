@@ -110,7 +110,7 @@ export function ButtonIcon({
 
 export function ButtonTitle({
     children,
-    titleColor = UILabelColors.TextPrimaryInverted,
+    titleColor = UILabelColors.TextInverted,
     titleRole = UILabelRoles.Action,
     titleAnimStyle,
     numberOfLines = 1,

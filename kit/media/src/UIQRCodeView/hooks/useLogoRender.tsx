@@ -23,7 +23,7 @@ export const useLogoRender = (
             <UIImage
                 source={logo}
                 style={logoStyles.image as ImageStyle}
-                tintColor={ColorVariants.BackgroundPrimaryInverted}
+                tintColor={ColorVariants.BackgroundInverted}
             />
         );
     }

@@ -71,10 +71,7 @@ const Footer = React.memo(() => {
                 justifyContent: 'center',
             }}
         >
-            <UILabel
-                role={TypographyVariants.HeadersHuge}
-                color={ColorVariants.TextPrimaryInverted}
-            >
+            <UILabel role={TypographyVariants.HeadersHuge} color={ColorVariants.TextInverted}>
                 Loading...
             </UILabel>
         </View>
@@ -112,7 +109,7 @@ function MasonryList() {
                 >
                     <UILabel
                         role={TypographyVariants.HeadersHuge}
-                        color={ColorVariants.TextPrimaryInverted}
+                        color={ColorVariants.TextInverted}
                     >
                         {item.index}
                     </UILabel>

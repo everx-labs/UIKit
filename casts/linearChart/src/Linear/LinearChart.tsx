@@ -139,7 +139,7 @@ export const LinearChart: React.FC<IProps> = ({ data, testID }: IProps) => {
                         animatedProps={animatedPathProps}
                         fill="transparent"
                         // @ts-ignore
-                        stroke={theme[ColorVariants.LineAccent]}
+                        stroke={theme[ColorVariants.BackgroundAccent]}
                         strokeWidth={LINEAR_CHART_STROKE_WIDTH}
                     />
                 </AnimatedSvg>

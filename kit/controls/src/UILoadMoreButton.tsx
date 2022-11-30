@@ -54,7 +54,7 @@ export const UILoadMoreButton: React.FunctionComponent<Props> = ({
                 )}
                 {isLoadingMore && (
                     <UIIndicator
-                        color={ColorVariants.LinePrimary}
+                        color={ColorVariants.BackgroundPrimary}
                         size={20}
                         style={styles.indicator}
                     />

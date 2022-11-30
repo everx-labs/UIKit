@@ -25,7 +25,7 @@ function RightContent({
     });
 
     if (loading) {
-        return <UIIndicator color={ColorVariants.TextOverlay} size={UILayoutConstant.iconSize} />;
+        return <UIIndicator color={ColorVariants.TextSecondary} size={UILayoutConstant.iconSize} />;
     }
     if (icon) {
         return (

@@ -55,7 +55,7 @@ function UIHeaderActionItem({ disabled, label, accessibilityLabel }: HeaderItem)
     return (
         <UILabel
             role={UILabelRoles.Action}
-            color={disabled ? UILabelColors.TextNeutral : UILabelColors.TextAccent}
+            color={disabled ? UILabelColors.TextSecondary : UILabelColors.TextAccent}
             accessibilityLabel={accessibilityLabel}
         >
             {label}
@@ -73,7 +73,7 @@ function UIHeaderIconItem({
         return iconElement;
     }
 
-    const tintColor = disabled ? ColorVariants.IconNeutral : iconTintColor;
+    const tintColor = disabled ? ColorVariants.TextTertiary : iconTintColor;
 
     if (icon) {
         if (typeof icon === 'function') {

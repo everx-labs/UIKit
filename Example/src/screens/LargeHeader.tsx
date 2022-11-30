@@ -83,7 +83,7 @@ const renderBelowContent = () => {
                 marginVertical: 8,
             }}
         >
-            <UILabel color={UILabelColors.TextPrimaryInverted}>
+            <UILabel color={UILabelColors.TextInverted}>
                 A thing happened and it takes three whole lines to explain that it happened. This
                 isn’t likely in English but maybe in German. A thing happened and it takes three
                 whole lines to explain that it happened. This isn’t likely in English but maybe in
