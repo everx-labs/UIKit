@@ -30,12 +30,14 @@ export const UIAmountInputForward = React.forwardRef<UIAmountInputRef, UIAmountI
             messageType,
             message,
             children,
+            hideClearButton = false,
+            onFocus: onFocusProp,
+            onBlur: onBlurProp,
+            onHover: onHoverProp,
             ...restProps
         } = props;
 
         const localRef = React.useRef<MaterialTextViewRef>(null);
-
-        const onChangeText = useOnChangeText(onChangeAmount, localRef);
 
         const mask: MaterialTextViewMask = useMask(decimalAspect);
 
@@ -46,13 +48,16 @@ export const UIAmountInputForward = React.forwardRef<UIAmountInputRef, UIAmountI
         const { error, warning, success } = useHelperTextStatus(messageType);
 
         const [isHovered, setIsHovered] = React.useState<boolean>(false);
-        const { isFocused, onFocus, onBlur } = useFocused(undefined, undefined);
+        const { isFocused, onFocus, onBlur } = useFocused(onFocusProp, onBlurProp);
         const { inputHasValue, checkInputHasValue } = useInputHasValue(
             undefined,
             defaultAmount?.toFixed(),
         );
+        const onChangeText = useOnChangeText(onChangeAmount, checkInputHasValue, localRef);
+
         const processedChildren = useUIAmountInputChildren(
             children,
+            hideClearButton,
             inputHasValue,
             isFocused,
             isHovered,
@@ -60,6 +65,14 @@ export const UIAmountInputForward = React.forwardRef<UIAmountInputRef, UIAmountI
         );
 
         useExtendedRef(forwardedRed, checkInputHasValue, localRef);
+
+        const onHover = React.useCallback(
+            (hovered: boolean) => {
+                setIsHovered(hovered);
+                onHoverProp?.(hovered);
+            },
+            [onHoverProp],
+        );
 
         return (
             <MaterialTextView
@@ -72,7 +85,7 @@ export const UIAmountInputForward = React.forwardRef<UIAmountInputRef, UIAmountI
                 success={success}
                 mask={mask}
                 onChangeText={onChangeText}
-                onHover={setIsHovered}
+                onHover={onHover}
                 onFocus={onFocus}
                 onBlur={onBlur}
                 keyboardType="decimal-pad"
