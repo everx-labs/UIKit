@@ -34,6 +34,7 @@ function convertTextToBigNumber(text: string): BigNumber | undefined {
 
 export function useOnChangeText(
     onChangeAmount: (amount: BigNumber | undefined) => void,
+    checkInputHasValue: (text: string) => string,
     ref: React.RefObject<UIMaterialTextViewRef>,
 ) {
     const previousTextRef = React.useRef<string>('');
@@ -47,10 +48,11 @@ export function useOnChangeText(
                 ref.current?.changeText(previousTextRef.current, false);
                 return;
             }
+            checkInputHasValue(text);
             onChangeAmount(amount);
             previousTextRef.current = text;
         },
-        [onChangeAmount, ref],
+        [checkInputHasValue, onChangeAmount, ref],
     );
 }
 
@@ -134,6 +136,7 @@ export function useExtendedRef(
 
 export function useUIAmountInputChildren(
     children: UIAmountInputProps['children'],
+    hideClearButton: UIAmountInputProps['hideClearButton'],
     inputHasValue: boolean,
     isFocused: boolean,
     isHovered: boolean,
@@ -141,11 +144,11 @@ export function useUIAmountInputChildren(
 ): UIAmountInputProps['children'] {
     const materialTextViewChildren = useMaterialTextViewChildren(children);
 
-    if (materialTextViewChildren) {
+    if (materialTextViewChildren && materialTextViewChildren.length > 0) {
         return materialTextViewChildren;
     }
 
-    if (inputHasValue && (isFocused || isHovered)) {
+    if (!hideClearButton && inputHasValue && (isFocused || isHovered)) {
         return <MaterialTextViewClearButton clear={clear} />;
     }
 

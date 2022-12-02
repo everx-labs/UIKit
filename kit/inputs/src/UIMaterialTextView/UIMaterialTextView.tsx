@@ -23,7 +23,9 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
             onFocus: onFocusProp,
             onBlur: onBlurProp,
             onChangeText: onChangeTextProp,
+            onHover: onHoverProp,
             children,
+            hideClearButton = false,
             editable = true,
         } = props;
         const [isHovered, setIsHovered] = React.useState<boolean>(false);
@@ -31,6 +33,7 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
         const { inputHasValue, checkInputHasValue } = useInputHasValue(value, defaultValue);
         const processedChildren = useUIMaterialTextViewChildren(
             children,
+            hideClearButton,
             inputHasValue,
             isFocused,
             isHovered,
@@ -46,6 +49,14 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
             [checkInputHasValue, onChangeTextProp],
         );
 
+        const onHover = React.useCallback(
+            (hovered: boolean) => {
+                setIsHovered(hovered);
+                onHoverProp?.(hovered);
+            },
+            [onHoverProp],
+        );
+
         React.useImperativeHandle<Record<string, any>, MaterialTextViewRef>(
             passedRef,
             (): MaterialTextViewRef => ({
@@ -58,7 +69,7 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
             <MaterialTextView
                 {...props}
                 ref={ref}
-                onHover={setIsHovered}
+                onHover={onHover}
                 onFocus={onFocus}
                 onBlur={onBlur}
                 onChangeText={onChangeText}

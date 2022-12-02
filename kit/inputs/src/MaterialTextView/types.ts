@@ -60,6 +60,9 @@ export type MaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
      * It must not be changed between renders.
      */
     mask?: MaterialTextViewMask;
+    /**
+     * A callback that is called when the cursor is over the input.
+     */
     onHover?: (isHovered: boolean) => void;
 };
 

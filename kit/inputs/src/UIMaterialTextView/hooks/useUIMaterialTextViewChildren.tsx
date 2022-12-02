@@ -1,21 +1,19 @@
 import * as React from 'react';
-import {
-    MaterialTextViewProps,
-    MaterialTextViewClearButton,
-    useMaterialTextViewChildren,
-} from '../../MaterialTextView';
+import { MaterialTextViewClearButton, useMaterialTextViewChildren } from '../../MaterialTextView';
+import type { UIMaterialTextViewProps } from '../types';
 
 export function useUIMaterialTextViewChildren(
-    children: MaterialTextViewProps['children'],
+    children: UIMaterialTextViewProps['children'],
+    hideClearButton: UIMaterialTextViewProps['hideClearButton'],
     inputHasValue: boolean,
     isFocused: boolean,
     isHovered: boolean,
     editable: boolean,
     clear: (() => void) | undefined,
-): MaterialTextViewProps['children'] {
+): UIMaterialTextViewProps['children'] {
     const materialTextViewChildren = useMaterialTextViewChildren(children);
 
-    if (editable && inputHasValue && (isFocused || isHovered)) {
+    if (!hideClearButton && editable && inputHasValue && (isFocused || isHovered)) {
         return <MaterialTextViewClearButton clear={clear} />;
     }
 
