@@ -35,7 +35,10 @@ type UIAddressTextViewProps = UIMaterialTextViewProps & {
     };
 };
 
-function useAddressTextView(props: UIAddressTextViewProps) {
+function useAddressTextView(
+    props: UIAddressTextViewProps,
+    ref: React.RefObject<UIMaterialTextViewRef> | React.ForwardedRef<UIMaterialTextViewRef>,
+) {
     /**
      * ref is passed as null because types of ref are incompatible
      * and we don't need the clear method
@@ -73,7 +76,11 @@ function useAddressTextView(props: UIAddressTextViewProps) {
 
     const onChangeText = React.useCallback(
         async (t: string) => {
-            const text = onChangeTextBase(t);
+            const text = onChangeTextBase(t.trim());
+
+            if (t !== text && ref && 'current' in ref) {
+                ref.current?.changeText(text, false);
+            }
 
             const currentValidation = await validateAddress(text);
 
@@ -85,7 +92,7 @@ function useAddressTextView(props: UIAddressTextViewProps) {
                 setValidation(currentValidation);
             }
         },
-        [validateAddress, validation, onChangeTextBase],
+        [validateAddress, validation, onChangeTextBase, ref],
     );
 
     const onKeyPress = React.useCallback(
@@ -123,8 +130,10 @@ export const UIAddressTextView = React.forwardRef<UIMaterialTextViewRef, UIAddre
             children,
             ...rest
         } = props;
-        const { onBlur, onChangeText, onKeyPress, helperText, success, error } =
-            useAddressTextView(props);
+        const { onBlur, onChangeText, onKeyPress, helperText, success, error } = useAddressTextView(
+            props,
+            ref,
+        );
         const [qrVisible, setQrVisible] = React.useState(false);
 
         const onRead = React.useCallback(
