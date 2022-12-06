@@ -13,8 +13,16 @@ export function useUIMaterialTextViewChildren(
 ): UIMaterialTextViewProps['children'] {
     const materialTextViewChildren = useMaterialTextViewChildren(children);
 
-    if (!hideClearButton && editable && inputHasValue && (isFocused || isHovered)) {
+    if (hideClearButton) {
+        return materialTextViewChildren;
+    }
+
+    if (editable && inputHasValue && (isFocused || isHovered)) {
         return <MaterialTextViewClearButton clear={clear} />;
+    }
+
+    if (!materialTextViewChildren || materialTextViewChildren.length === 0) {
+        return <MaterialTextViewClearButton hiddenButton />;
     }
 
     return materialTextViewChildren;

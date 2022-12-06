@@ -148,9 +148,13 @@ export function useUIAmountInputChildren(
         return materialTextViewChildren;
     }
 
-    if (!hideClearButton && inputHasValue && (isFocused || isHovered)) {
+    if (hideClearButton) {
+        return undefined;
+    }
+
+    if (inputHasValue && (isFocused || isHovered)) {
         return <MaterialTextViewClearButton clear={clear} />;
     }
 
-    return undefined;
+    return <MaterialTextViewClearButton hiddenButton />;
 }

@@ -120,7 +120,8 @@ export type MaterialTextViewTextProps = {
 };
 
 export type MaterialTextViewClearButtonProps = {
-    clear: (() => void) | undefined;
+    clear?: (() => void) | undefined;
+    hiddenButton?: boolean;
 };
 
 export type MaterialTextViewInputState = {
