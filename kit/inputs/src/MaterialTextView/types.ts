@@ -120,7 +120,14 @@ export type MaterialTextViewTextProps = {
 };
 
 export type MaterialTextViewClearButtonProps = {
+    /**
+     * The callback that calls when the CleraButton was pressed
+     */
     clear?: (() => void) | undefined;
+    /**
+     * Should the button to be just empty container with size of the visible button
+     * to reserve space for the button.
+     */
     hiddenButton?: boolean;
 };
 

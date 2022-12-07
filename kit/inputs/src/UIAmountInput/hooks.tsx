@@ -140,21 +140,36 @@ export function useUIAmountInputChildren(
     inputHasValue: boolean,
     isFocused: boolean,
     isHovered: boolean,
+    editable: boolean,
     clear: (() => void) | undefined,
 ): UIAmountInputProps['children'] {
     const materialTextViewChildren = useMaterialTextViewChildren(children);
 
     if (materialTextViewChildren && materialTextViewChildren.length > 0) {
+        /**
+         * We don't show the ClearButton when we show any children
+         */
         return materialTextViewChildren;
     }
 
     if (hideClearButton) {
+        /**
+         * We don't need to reserve the place for the ClearButton
+         * because it can't appear if hideClearButton provided.
+         */
         return undefined;
     }
 
-    if (inputHasValue && (isFocused || isHovered)) {
+    if (editable && inputHasValue && (isFocused || isHovered)) {
+        /**
+         * Show the ClearButton only if no other children, some text is shown
+         * and the Input is editable and focused or hovered.
+         */
         return <MaterialTextViewClearButton clear={clear} />;
     }
 
+    /**
+     * Reserve space for the ClearButton because it may appear.
+     */
     return <MaterialTextViewClearButton hiddenButton />;
 }
