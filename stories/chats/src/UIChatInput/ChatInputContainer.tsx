@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { Animated, Platform, StyleSheet, View, LayoutChangeEvent } from 'react-native';
 
-import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
+import { UIStyle } from '@tonlabs/uikit.core';
 import { ColorVariants, useTheme, UIBackgroundView } from '@tonlabs/uikit.themes';
 
 import { Shortcuts } from './Shortcuts';
 import type { Shortcut } from './types';
 import { useChatOnScrollListener } from '../useChatOnScrollListener';
+import { UIChatInputConstants } from './constants';
 
 function useAnimatedBorder(hasSeveralLinesInInput: boolean) {
     const borderOpacity = React.useRef<Animated.Value>(new Animated.Value(0));
@@ -110,7 +111,7 @@ const styles = StyleSheet.create({
         // flex: 1,
         flexDirection: 'row',
         alignItems: 'flex-end',
-        minHeight: UIConstant.largeButtonHeight(),
+        minHeight: UIChatInputConstants.defaultHeight,
     },
     border: {
         height: 1,
