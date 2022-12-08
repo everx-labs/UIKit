@@ -34,6 +34,7 @@ export const UIAmountInputForward = React.forwardRef<UIAmountInputRef, UIAmountI
             onFocus: onFocusProp,
             onBlur: onBlurProp,
             onHover: onHoverProp,
+            editable = true,
             ...restProps
         } = props;
 
@@ -61,6 +62,7 @@ export const UIAmountInputForward = React.forwardRef<UIAmountInputRef, UIAmountI
             inputHasValue,
             isFocused,
             isHovered,
+            editable,
             localRef.current?.clear,
         );
 

@@ -9,7 +9,7 @@ export function useClear(
     return React.useCallback(
         function clear() {
             imperativeChangeText('');
-            ref.current?.clear();
+            ref.current?.remeasureInputHeight();
             ref.current?.focus();
         },
         [imperativeChangeText, ref],
