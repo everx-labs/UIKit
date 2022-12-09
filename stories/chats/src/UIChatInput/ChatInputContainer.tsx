@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Animated, Platform, StyleSheet, View, LayoutChangeEvent } from 'react-native';
+import { Animated, StyleSheet, View, LayoutChangeEvent } from 'react-native';
 
 import { UIStyle } from '@tonlabs/uikit.core';
 import { ColorVariants, useTheme, UIBackgroundView } from '@tonlabs/uikit.themes';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
 import { Shortcuts } from './Shortcuts';
 import type { Shortcut } from './types';
@@ -111,19 +112,15 @@ const styles = StyleSheet.create({
         // flex: 1,
         flexDirection: 'row',
         alignItems: 'flex-end',
-        minHeight: UIChatInputConstants.defaultHeight,
+        minHeight: UIChatInputConstants.chatInputMinHeight,
     },
     border: {
         height: 1,
     },
     inputMsg: {
         flex: 1,
-        marginVertical: 0,
-        paddingBottom: Platform.select({
-            // compensate mobile textContainer's default padding
-            android: 14,
-            default: 17,
-        }),
-        paddingTop: 10,
+        flexDirection: 'row',
+        alignSelf: 'center',
+        paddingVertical: UILayoutConstant.contentOffset,
     },
 });
