@@ -423,7 +423,7 @@ export function Chat() {
          * it's pretty safe to do.
          */
         Platform.select({ ios: false, default: true }),
-        UIChatInputConstants.defaultHeight,
+        UIChatInputConstants.chatInputMinHeight,
     );
 
     return (

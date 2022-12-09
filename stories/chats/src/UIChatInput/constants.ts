@@ -1,3 +1,3 @@
 export const UIChatInputConstants = {
-    defaultHeight: 72,
+    chatInputMinHeight: 56,
 };
