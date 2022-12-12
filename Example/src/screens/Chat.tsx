@@ -1,9 +1,11 @@
 import * as React from 'react';
+import { Platform } from 'react-native';
 import BigNumber from 'bignumber.js';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import {
     UIChatInput,
+    UIChatInputConstants,
     UIChatList,
     ChatMessageType,
     ChatMessage,
@@ -410,7 +412,19 @@ export function Chat() {
         onInputAccessoryViewUnavailable,
         contentInset,
         onHeightChange,
-    } = useAutoHandleInsets();
+    } = useAutoHandleInsets(
+        /**
+         * `false` is kinda important until we have
+         * two separate ways to handle insets in chat on iOS
+         * (automaticallyAdjustContentInsets, UIInputAccessoryView)
+         * since in this case they're conflict on initial render.
+         *
+         * As in chat for iOS we have an InputAccessoryView visible all the time
+         * it's pretty safe to do.
+         */
+        Platform.select({ ios: false, default: true }),
+        UIChatInputConstants.chatInputMinHeight,
+    );
 
     return (
         <>
