@@ -1,14 +1,7 @@
 import * as React from 'react';
 import { uiLocalized } from '@tonlabs/localization';
 import { UISeedPhraseInputMessageType } from '../consts';
-import type { ValidationResult, UISeedPhraseInputState } from '../types';
-
-type HelperCredentials = {
-    helperText?: string;
-    error?: boolean;
-    warning?: boolean;
-    success?: boolean;
-};
+import type { ValidationResult, UISeedPhraseInputState, HelperCredentials } from '../types';
 
 function convertValidationResultToHelperCredentials(
     validationResult: boolean | ValidationResult,
