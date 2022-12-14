@@ -10,7 +10,7 @@ import { uiLocalized } from '@tonlabs/localization';
 
 import { UIMaterialTextView, UIMaterialTextViewRef } from '../UIMaterialTextView';
 
-import { useExtendedRef, useHelper } from './hooks';
+import { useExtendedRef, useHelperCredentials } from './hooks';
 import type { UISeedPhraseInputProps, UISeedPhraseInputState, ValidationResult } from './types';
 import { UISeedPhraseInputMessageType } from './consts';
 
@@ -185,7 +185,7 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
             }
         }, [validationResult, onSubmit]);
 
-        const { helperText, error, warning, success } = useHelper(
+        const { helperText, error, warning, success } = useHelperCredentials(
             state,
             isFocused,
             hasNonLatinCharacters,
