@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { I18nManager, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 
@@ -26,11 +26,12 @@ export function useBubblePosition(status: MessageStatus): BubblePosition {
 }
 
 function getBubbleContainerPositionStyle(position: BubblePosition) {
+    const { isRTL } = I18nManager.getConstants();
     if (position === BubblePosition.left) {
-        return styles.containerLeft;
+        return isRTL ? styles.containerRight : styles.containerLeft;
     }
     if (position === BubblePosition.right) {
-        return styles.containerRight;
+        return isRTL ? styles.containerLeft : styles.containerRight;
     }
     return null;
 }
