@@ -223,15 +223,6 @@ export function BubbleChatPlainText(props: ChatPlainTextMessage) {
                     {text}
                 </ParsedText>
             </UILabel>
-            {/* The idea is to always draw time in a corner
-             * but it should be kinda wrapped by a main text.
-             * In order to achive it we draw it two times.
-             * First time we draw it with a main text of a message
-             * but at the same time make it invisible, this allow us
-             * to have a proper padding for the last line.
-             * That padding is needed for a time that we draw second time,
-             * except this time we place it with `position: absolute` in a corner.
-             */}
             <UILabel
                 testID={createTestId('chat_text_message%_time', text)}
                 role={UILabelRoles.NarrowParagraphNote}
