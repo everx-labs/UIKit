@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, I18nManager } from 'react-native';
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
@@ -22,9 +22,9 @@ type Props = TransactionComment & {
     type: TransactionType;
 };
 
-const getBubbleCornerStyle = (position: BubblePosition) => {
+const getBubbleCornerStyle = (position: BubblePosition, isRTL: boolean) => {
     if (position === BubblePosition.right) {
-        return styles.rightCorner;
+        return isRTL ? styles.leftCorner : styles.rightCorner;
     }
     return null;
 };
@@ -48,8 +48,10 @@ const useBubbleColor = (props: Props) => {
 };
 
 export function BubbleTransactionComment(props: Props) {
-    const position = useBubblePosition(props.status);
+    const { status, encrypted, text } = props;
+    const position = useBubblePosition(status);
     const bubbleColor = useBubbleColor(props);
+    const isRTL = React.useMemo(() => I18nManager.getConstants().isRTL, []);
 
     return (
         <View
@@ -57,21 +59,21 @@ export function BubbleTransactionComment(props: Props) {
                 styles.msgContainer,
                 UIStyle.padding.verticalSmall(),
                 UIStyle.padding.horizontalNormal(),
-                getBubbleCornerStyle(position),
+                getBubbleCornerStyle(position, isRTL),
                 bubbleColor,
-                props.status === MessageStatus.Pending && UIStyle.common.opacity70(),
-                props.encrypted && styles.msgContainerEncrypted,
+                status === MessageStatus.Pending && UIStyle.common.opacity70(),
+                encrypted && styles.msgContainerEncrypted,
             ]}
         >
             <UILabel
-                testID={`transaction_comment_${props.text}`}
+                testID={`transaction_comment_${text}`}
                 role={UILabelRoles.ParagraphText}
                 color={UILabelColors.StaticTextPrimaryLight}
                 style={styles.text}
             >
-                {props.text}
+                {text}
             </UILabel>
-            {props.encrypted && (
+            {encrypted && (
                 <View style={styles.keyThin}>
                     <Image source={UIAssets.icons.ui.keyThin} />
                 </View>
@@ -102,7 +104,7 @@ const styles = StyleSheet.create({
         right: UIConstant.smallContentOffset(),
     },
     leftCorner: {
-        borderBottomLeftRadius: 0,
+        borderTopLeftRadius: 0,
     },
     rightCorner: {
         borderTopRightRadius: 0,
