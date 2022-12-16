@@ -52,8 +52,7 @@ const styles = StyleSheet.create({
         height: UIConstant.giantCellHeight(),
     },
     time: {
-        marginRight: UIConstant.horizontalContentOffset(),
-        // bottom: UIConstant.verticalContentOffset(),
+        marginRight: 12, // TODO: use UILayout
         borderRadius: 10,
         paddingVertical: UIConstant.tinyContentOffset() / 2,
         paddingHorizontal: UIConstant.smallContentOffset(),

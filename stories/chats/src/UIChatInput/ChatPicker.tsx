@@ -52,6 +52,8 @@ const onPickDocument = async (doc: any, name: string, onSendDocument?: OnSendDoc
     }
 };
 
+const MAX_FILE_SIZE = 10000000;
+
 const onPickDocumentWeb = (e: any, onSendDocument?: OnSendDocument) => {
     e.preventDefault();
 
@@ -65,14 +67,14 @@ const onPickDocumentWeb = (e: any, onSendDocument?: OnSendDocument) => {
         return;
     }
 
-    if (file.size >= UIConstant.maxFileSize()) {
+    if (file.size >= MAX_FILE_SIZE) {
         // TODO: shared UIAlertView doesn't exist anymore
         //       please use modern popover
         //
         // in decimal
         // const msg = uiLocalized.formatString(
         //     uiLocalized.FileIsTooBig,
-        //     (UIConstant.maxFileSize() / 1000000).toFixed(),
+        //     ( MAX_FILE_SIZE / 1000000).toFixed(),
         // );
         // UIAlertView.showAlert(uiLocalized.Error, msg, [
         //     {
