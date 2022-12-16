@@ -1,7 +1,7 @@
 // @flow
 import { StyleSheet } from 'react-native';
 
-const backgroundColorStyles = {},
+const backgroundColorStyles = {};
 
 export default class UIStyleColor {
     static getBackgroundColorStyle(color: string) {
