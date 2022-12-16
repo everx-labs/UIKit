@@ -22,8 +22,7 @@ type Props = TransactionComment & {
     type: TransactionType;
 };
 
-const getBubbleCornerStyle = (position: BubblePosition) => {
-    const { isRTL } = I18nManager.getConstants();
+const getBubbleCornerStyle = (position: BubblePosition, isRTL: boolean) => {
     if (position === BubblePosition.right) {
         return isRTL ? styles.leftCorner : styles.rightCorner;
     }
@@ -52,6 +51,7 @@ export function BubbleTransactionComment(props: Props) {
     const { status, encrypted, text } = props;
     const position = useBubblePosition(status);
     const bubbleColor = useBubbleColor(props);
+    const isRTL = React.useMemo(() => I18nManager.getConstants().isRTL, []);
 
     return (
         <View
@@ -59,7 +59,7 @@ export function BubbleTransactionComment(props: Props) {
                 styles.msgContainer,
                 UIStyle.padding.verticalSmall(),
                 UIStyle.padding.horizontalNormal(),
-                getBubbleCornerStyle(position),
+                getBubbleCornerStyle(position, isRTL),
                 bubbleColor,
                 status === MessageStatus.Pending && UIStyle.common.opacity70(),
                 encrypted && styles.msgContainerEncrypted,

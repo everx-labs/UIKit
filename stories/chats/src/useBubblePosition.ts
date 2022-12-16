@@ -25,8 +25,7 @@ export function useBubblePosition(status: MessageStatus): BubblePosition {
     return config[status];
 }
 
-function getBubbleContainerPositionStyle(position: BubblePosition) {
-    const { isRTL } = I18nManager.getConstants();
+function getBubbleContainerPositionStyle(position: BubblePosition, isRTL: boolean) {
     if (position === BubblePosition.left) {
         return isRTL ? styles.containerRight : styles.containerLeft;
     }
@@ -41,13 +40,14 @@ export function useBubbleContainerStyle({
     firstFromChain,
 }: BubbleBaseT): StyleProp<ViewStyle> {
     const position = useBubblePosition(status);
+    const isRTL = React.useMemo(() => I18nManager.getConstants().isRTL, []);
 
     return React.useMemo(
         () => [
-            getBubbleContainerPositionStyle(position),
+            getBubbleContainerPositionStyle(position, isRTL),
             firstFromChain ? styles.firstFromChain : styles.notFirstFromChain,
         ],
-        [position, firstFromChain],
+        [position, isRTL, firstFromChain],
     );
 }
 

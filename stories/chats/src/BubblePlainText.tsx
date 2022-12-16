@@ -126,6 +126,7 @@ function BubbleTime(
 
 function PlainTextContainer(props: PlainTextMessage & { children: React.ReactNode }) {
     const { status, text, onLayout, onTouchText, children } = props;
+    const isRTL = React.useMemo(() => I18nManager.getConstants().isRTL, []);
     const scale = React.useRef(new Animated.Value(1)).current;
     const bubbleScaleAnimation = React.useCallback(
         (scaleIn = false) => {
@@ -169,6 +170,7 @@ function PlainTextContainer(props: PlainTextMessage & { children: React.ReactNod
                             UIStyle.padding.verticalSmall(),
                             UIStyle.padding.horizontalNormal(),
                             styles.msgContainer,
+                            isRTL ? styles.msgContainerRTL : null,
                             bubbleBackgroundColor,
                             roundedCornerStyle,
                             { transform: [{ scale }] },
@@ -284,10 +286,13 @@ const styles = StyleSheet.create({
     },
     msgContainer: {
         position: 'relative',
-        flexDirection: I18nManager.getConstants().isRTL ? 'row-reverse' : 'row',
+        flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'flex-end',
         alignItems: 'flex-end',
+    },
+    msgContainerRTL: {
+        flexDirection: 'row-reverse',
     },
     actionString: {
         textAlign: 'right',

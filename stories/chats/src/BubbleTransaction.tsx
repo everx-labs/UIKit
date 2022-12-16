@@ -28,12 +28,18 @@ const getContainerTestID = (message: TransactionMessage) => {
     return `transaction_message_${getValueForTestID(message)}`;
 };
 
-const getBubbleInner = (position: BubblePosition) => {
+const getBubbleInner = (position: BubblePosition, isRTL: boolean) => {
     if (position === BubblePosition.left) {
+        if (isRTL) {
+            return [styles.innerLeft, styles.innerLeftRTL];
+        }
         return styles.innerLeft;
     }
 
     if (position === BubblePosition.right) {
+        if (isRTL) {
+            return [styles.innerRight, styles.innerRightRTL];
+        }
         return styles.innerRight;
     }
     return null;
@@ -178,11 +184,12 @@ export function BubbleTransaction(props: TransactionMessage) {
     const position = useBubblePosition(status);
     const containerStyle = useBubbleContainerStyle(props);
     const actionString = getActionString(props);
+    const isRTL = React.useMemo(() => I18nManager.getConstants().isRTL, []);
 
     return (
         <View style={containerStyle} onLayout={onLayout}>
             <UIPressableArea onPress={onPress}>
-                <View style={getBubbleInner(position)}>
+                <View style={getBubbleInner(position, isRTL)}>
                     <BubbleTransactionMain {...props} />
                     {actionString && (
                         <UILabel
@@ -205,11 +212,17 @@ export function BubbleTransaction(props: TransactionMessage) {
 const styles = StyleSheet.create({
     innerLeft: {
         flexDirection: 'column',
-        alignItems: I18nManager.getConstants().isRTL ? 'flex-end' : 'flex-start',
+        alignItems: 'flex-start',
+    },
+    innerLeftRTL: {
+        alignItems: 'flex-end',
     },
     innerRight: {
         flexDirection: 'column',
-        alignItems: I18nManager.getConstants().isRTL ? 'flex-start' : 'flex-end',
+        alignItems: 'flex-end',
+    },
+    innerRightRTL: {
+        alignItems: 'flex-start',
     },
     trxCard: {
         paddingHorizontal: UIConstant.normalContentOffset(),
