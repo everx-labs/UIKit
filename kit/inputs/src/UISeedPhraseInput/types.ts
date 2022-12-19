@@ -47,3 +47,10 @@ export type UISeedPhraseInputProps = {
      */
     testID?: string;
 } & Pick<UIMaterialTextViewProps, 'onFocus' | 'onBlur'>;
+
+export type HelperCredentials = {
+    helperText?: string;
+    error?: boolean;
+    warning?: boolean;
+    success?: boolean;
+};

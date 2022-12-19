@@ -10,14 +10,14 @@ import { uiLocalized } from '@tonlabs/localization';
 
 import { UIMaterialTextView, UIMaterialTextViewRef } from '../UIMaterialTextView';
 
-import { useExtendedRef, useHelper } from './hooks';
+import { useExtendedRef, useHelperCredentials } from './hooks';
 import type { UISeedPhraseInputProps, UISeedPhraseInputState, ValidationResult } from './types';
 import { UISeedPhraseInputMessageType } from './consts';
 
 const SPLITTER = ` `;
 
 const WORDS_REG_EXP = /[\p{L}\p{N}]+/gu;
-// const NOT_LATIN_LETTERS_REG_EXP = /[^a-zA-Z]/g;
+const NOT_LATIN_LETTERS_REG_EXP = /[^a-zA-Z]/g;
 
 function getWordList(text: string, totalWords: number[]): string[] {
     const wordList = text.match(WORDS_REG_EXP);
@@ -106,10 +106,7 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
             [textInputRef, onBlurProp],
         );
 
-        /**
-         * Uncomment and use in useHelper hook if you need addtitional hints for user.
-         */
-        // const [hasNonLatinCharacters, setHasNonLatinCharacters] = React.useState(false);
+        const [hasNonLatinCharacters, setHasNonLatinCharacters] = React.useState(false);
 
         const previousTextRawRef = React.useRef<string | null>(null);
 
@@ -130,14 +127,11 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
 
                 const wordList = getWordList(text, totalWords);
 
-                /**
-                 * Uncomment and use in useHelper hook if you need addtitional hints for user.
-                 */
-                // if (wordList?.join('').match(NOT_LATIN_LETTERS_REG_EXP)) {
-                //     setHasNonLatinCharacters(true);
-                // } else {
-                //     setHasNonLatinCharacters(false);
-                // }
+                if (wordList?.join('').match(NOT_LATIN_LETTERS_REG_EXP)) {
+                    setHasNonLatinCharacters(true);
+                } else {
+                    setHasNonLatinCharacters(false);
+                }
 
                 let newText = wordList?.join(SPLITTER).trim() ?? '';
 
@@ -191,9 +185,11 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
             }
         }, [validationResult, onSubmit]);
 
-        const { helperText, error, warning, success } = useHelper(
+        const { helperText, error, warning, success } = useHelperCredentials(
             state,
             isFocused,
+            hasNonLatinCharacters,
+            totalWords,
             validationResult,
         );
 
