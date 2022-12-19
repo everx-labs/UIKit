@@ -2,10 +2,6 @@
 import { Platform, PixelRatio } from 'react-native';
 import MobileDetect from 'mobile-detect';
 import DeviceInfo from 'react-native-device-info';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
-
-const UI_STATUS_BAR_HEIGHT = Platform.OS === 'ios' ? getStatusBarHeight() : 0;
-const UI_NAVIGATION_BAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
 
 const UI_IS_DESKTOP_WEB =
     Platform.OS === 'web' && !new MobileDetect(window.navigator.userAgent).mobile();
@@ -28,11 +24,6 @@ const UI_IS_TABLET = Platform.OS !== 'web' ? DeviceInfo.isTablet() : UI_IS_TABLE
 
 const UI_IS_MOBILE = Platform.OS !== 'web' ? !DeviceInfo.isTablet() : UI_IS_MOBILE_WEB;
 
-const UI_IS_WEBKIT =
-    Platform.OS !== 'web'
-        ? Number.NaN
-        : new MobileDetect(window.navigator.userAgent).version('Webkit');
-
 const APP_NAME = Platform.OS !== 'web' ? DeviceInfo.getApplicationName() : '';
 
 const APP_VERSION = Platform.OS !== 'web' ? DeviceInfo.getReadableVersion() : '';
@@ -42,26 +33,6 @@ const DEVICE_MODEL = Platform.OS !== 'web' ? DeviceInfo.getModel() : 'Browser'; 
 const SYSTEM_VERSION = Platform.OS !== 'web' ? DeviceInfo.getSystemVersion() : 'Web'; // TODO:
 
 export default class UIDevice {
-    static statusBarHeight(): number {
-        return UI_STATUS_BAR_HEIGHT;
-    }
-
-    static navigationBarHeight(): number {
-        return UI_NAVIGATION_BAR_HEIGHT;
-    }
-
-    static isDesktopWeb(): boolean {
-        return UI_IS_DESKTOP_WEB;
-    }
-
-    static isMobileWeb(): boolean {
-        return UI_IS_MOBILE_WEB;
-    }
-
-    static isTabletWeb(): boolean {
-        return UI_IS_TABLET_WEB;
-    }
-
     static isDesktop(): boolean {
         return UI_IS_DESKTOP_WEB; // TODO:
     }
@@ -76,10 +47,6 @@ export default class UIDevice {
 
     static async isEmulator(): Promise<boolean> {
         return DeviceInfo.isEmulator();
-    }
-
-    static isWebkit(): boolean {
-        return !Number.isNaN(UI_IS_WEBKIT);
     }
 
     static appName(): string {

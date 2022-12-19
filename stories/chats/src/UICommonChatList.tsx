@@ -498,7 +498,7 @@ export function UICommonChatList<ItemT extends BubbleBaseT>({
                     onContentSizeChange,
                     onScroll: onScrollMessages,
                     onScrollToIndexFailed,
-                    scrollEventThrottle: UIConstant.maxScrollEventThrottle(),
+                    scrollEventThrottle: 16, // Max `scrollEventThrottle` value
                     style,
                     contentContainerStyle: styles.messagesList,
                     onViewableItemsChanged,
