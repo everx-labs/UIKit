@@ -108,10 +108,11 @@ function BubbleTime(
         isHidden?: boolean;
     },
 ) {
-    const { isHidden, style, formattedTime } = props;
+    const { isHidden, style, formattedTime, text } = props;
     return (
         <UILabel
-            role={UILabelRoles.ParagraphFootnote}
+            testID={createTestId('chat_text_message%_time', text)}
+            role={UILabelRoles.NarrowParagraphFootnote}
             color={isHidden ? UILabelColors.Transparent : getTimeFontColor(props)}
             style={style}
         >
@@ -225,12 +226,7 @@ export function BubbleChatPlainText(props: ChatPlainTextMessage) {
                     {text}
                 </ParsedText>
             </UILabel>
-            <UILabel
-                testID={createTestId('chat_text_message%_time', text)}
-                role={UILabelRoles.NarrowParagraphNote}
-            >
-                <BubbleTime {...props} formattedTime={formattedTime} />
-            </UILabel>
+            <BubbleTime {...props} formattedTime={formattedTime} />
         </PlainTextContainer>
     );
 }
@@ -272,17 +268,6 @@ const styles = StyleSheet.create({
     urlSent: {
         // Some android devices seem to render the underline wrongly
         textDecorationLine: Platform.OS === 'android' ? 'none' : 'underline',
-    },
-    timeHidden: {
-        // Beside we set transparent color
-        // (that needed mostly for Android)
-        // we need opacity for web
-        opacity: 0,
-        ...Platform.select({
-            web: {
-                userSelect: 'none',
-            },
-        }),
     },
     msgContainer: {
         position: 'relative',
