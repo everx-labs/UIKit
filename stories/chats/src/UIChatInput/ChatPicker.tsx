@@ -2,8 +2,6 @@ import * as React from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import BlobUtil from 'react-native-blob-util';
 
-import { UIConstant } from '@tonlabs/uikit.core';
-
 import type { OnSendMedia, OnSendDocument } from './types';
 
 const extractDocumentName = (e: any) => {
