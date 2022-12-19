@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, I18nManager } from 'react-native';
 
 import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
@@ -16,6 +16,7 @@ import { MessageStatus, TransactionType } from './constants';
 import type { TransactionMessage } from './types';
 import { useBubblePosition, BubblePosition, useBubbleContainerStyle } from './useBubblePosition';
 import { BubbleTransactionComment } from './BubbleTransactionComment';
+import { useBubbleRoundedCornerStyle } from './useBubbleStyle';
 
 const getValueForTestID = (message: TransactionMessage) => message.info.amount.toFixed(9);
 
@@ -27,12 +28,18 @@ const getContainerTestID = (message: TransactionMessage) => {
     return `transaction_message_${getValueForTestID(message)}`;
 };
 
-const getBubbleInner = (position: BubblePosition) => {
+const getBubbleInner = (position: BubblePosition, isRTL: boolean) => {
     if (position === BubblePosition.left) {
+        if (isRTL) {
+            return [styles.innerLeft, styles.innerLeftRTL];
+        }
         return styles.innerLeft;
     }
 
     if (position === BubblePosition.right) {
+        if (isRTL) {
+            return [styles.innerRight, styles.innerRightRTL];
+        }
         return styles.innerRight;
     }
     return null;
@@ -52,18 +59,6 @@ const useBubbleStyle = (message: TransactionMessage) => {
 
     if (type === TransactionType.Income) {
         return [UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.BackgroundPositive])];
-    }
-
-    return null;
-};
-
-const getBubbleCornerStyle = (position: BubblePosition) => {
-    if (position === BubblePosition.left) {
-        return styles.leftCorner;
-    }
-
-    if (position === BubblePosition.right) {
-        return styles.rightCorner;
     }
 
     return null;
@@ -102,7 +97,8 @@ const getActionStringColor = (message: TransactionMessage) => {
 };
 
 function TransactionSublabel(props: TransactionMessage) {
-    if (props.status === MessageStatus.Aborted) {
+    const { status, time } = props;
+    if (status === MessageStatus.Aborted) {
         return (
             <>
                 <UILabel
@@ -112,13 +108,13 @@ function TransactionSublabel(props: TransactionMessage) {
                 >
                     {uiLocalized.formatString(
                         uiLocalized.TransactionStatus.aborted,
-                        uiLocalized.formatDate(props.time),
+                        uiLocalized.formatDate(time),
                     )}
                 </UILabel>
             </>
         );
     }
-    if (props.status === MessageStatus.Pending) {
+    if (status === MessageStatus.Pending) {
         return (
             <>
                 <UILabel
@@ -142,16 +138,18 @@ function TransactionSublabel(props: TransactionMessage) {
                 role={UILabelRoles.ParagraphFootnote}
                 color={getCommentColor(props)}
             >
-                {uiLocalized.formatDate(props.time)}
+                {uiLocalized.formatDate(time)}
             </UILabel>
         </>
     );
 }
 
 function BubbleTransactionMain(props: TransactionMessage) {
-    const position = useBubblePosition(props.status);
+    const { status, info } = props;
+    const position = useBubblePosition(status);
     const bubbleStyle = useBubbleStyle(props);
-    const { balanceChange } = props.info;
+    const { balanceChange } = info;
+    const bubbleRoundedCornerStyle = useBubbleRoundedCornerStyle(props, position);
     return (
         <View
             testID={getContainerTestID(props)}
@@ -159,8 +157,8 @@ function BubbleTransactionMain(props: TransactionMessage) {
                 UIStyle.common.justifyCenter(),
                 styles.trxCard,
                 bubbleStyle,
-                getBubbleCornerStyle(position),
-                props.status === MessageStatus.Pending && UIStyle.common.opacity70(),
+                bubbleRoundedCornerStyle,
+                status === MessageStatus.Pending && UIStyle.common.opacity70(),
             ]}
         >
             <View
@@ -182,14 +180,16 @@ function BubbleTransactionMain(props: TransactionMessage) {
 }
 
 export function BubbleTransaction(props: TransactionMessage) {
-    const position = useBubblePosition(props.status);
+    const { status, info, onLayout, onPress, comment } = props;
+    const position = useBubblePosition(status);
     const containerStyle = useBubbleContainerStyle(props);
     const actionString = getActionString(props);
+    const isRTL = React.useMemo(() => I18nManager.getConstants().isRTL, []);
 
     return (
-        <View style={containerStyle} onLayout={props.onLayout}>
-            <UIPressableArea onPress={props.onPress}>
-                <View style={getBubbleInner(position)}>
+        <View style={containerStyle} onLayout={onLayout}>
+            <UIPressableArea onPress={onPress}>
+                <View style={getBubbleInner(position, isRTL)}>
                     <BubbleTransactionMain {...props} />
                     {actionString && (
                         <UILabel
@@ -200,12 +200,8 @@ export function BubbleTransaction(props: TransactionMessage) {
                             {actionString}
                         </UILabel>
                     )}
-                    {props.comment && (
-                        <BubbleTransactionComment
-                            {...props.comment}
-                            status={props.status}
-                            type={props.info.type}
-                        />
+                    {comment && (
+                        <BubbleTransactionComment {...comment} status={status} type={info.type} />
                     )}
                 </View>
             </UIPressableArea>
@@ -218,20 +214,19 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'flex-start',
     },
+    innerLeftRTL: {
+        alignItems: 'flex-end',
+    },
     innerRight: {
         flexDirection: 'column',
         alignItems: 'flex-end',
     },
+    innerRightRTL: {
+        alignItems: 'flex-start',
+    },
     trxCard: {
-        borderRadius: UIConstant.borderRadius(),
         paddingHorizontal: UIConstant.normalContentOffset(),
         paddingVertical: UIConstant.normalContentOffset(),
-    },
-    leftCorner: {
-        borderTopLeftRadius: 0,
-    },
-    rightCorner: {
-        borderBottomRightRadius: 0,
     },
     actionString: {
         paddingTop: UIConstant.tinyContentOffset(),

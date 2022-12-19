@@ -183,6 +183,7 @@ export const DuplicateContent = ({
 const useStyles = makeStyles((theme: Theme, insets: EdgeInsets) => ({
     duplicateContainer: {
         ...StyleSheet.absoluteFillObject,
+        overflow: 'hidden',
     },
     duplicate: {
         ...StyleSheet.absoluteFillObject,

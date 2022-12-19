@@ -10,7 +10,6 @@ import {
     UIAmountInputDecimalAspect,
     UIAmountInputRef,
     UISeedPhraseInput,
-    UISeedPhraseInputMessageType,
 } from '@tonlabs/uikit.inputs';
 import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UIAddressTextView } from '@tonlabs/uicast.address-text';
@@ -33,24 +32,27 @@ export const Inputs = () => {
                         testID="uiNumberTextView_default"
                         totalWords={[3, 6]}
                         validatePhrase={async (_phrase, parts) => {
-                            if (parts == null) {
+                            if (parts == null || (parts.length !== 3 && parts.length !== 6)) {
                                 return false;
+                                // return {
+                                //     type: UISeedPhraseInputMessageType.Neutral,
+                                //     message: 'Your neutral message',
+                                // };
                             }
                             for (let i = 0; i < parts.length; i += 1) {
-                                if (parts[i] !== mnemonicWords[i >= 5 ? i - 5 : i]) {
-                                    return {
-                                        type: UISeedPhraseInputMessageType.Error,
-                                        message: 'Wrong words',
-                                    };
+                                if (parts[i] !== mnemonicWords[i >= 3 ? i - 3 : i]) {
+                                    return false;
+                                    // return {
+                                    //     type: UISeedPhraseInputMessageType.Error,
+                                    //     message: 'Your error message',
+                                    // };
                                 }
                             }
-                            if (parts.length === 3 || parts.length === 6) {
-                                return true;
-                            }
-                            return {
-                                type: UISeedPhraseInputMessageType.Neutral,
-                                message: '3 or 6 words',
-                            };
+                            return true;
+                            // return {
+                            //     type: UISeedPhraseInputMessageType.Success,
+                            //     message: 'Your success message',
+                            // };
                         }}
                         onSuccess={() => {
                             console.log('valid!');

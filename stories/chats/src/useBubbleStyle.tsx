@@ -1,6 +1,7 @@
+import * as React from 'react';
 import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
-import type { StyleProp, ViewStyle } from 'react-native';
+import { I18nManager, StyleProp, ViewStyle } from 'react-native';
 
 import { MessageStatus } from './constants';
 import type { BubbleBaseT } from './types';
@@ -11,17 +12,18 @@ export const useBubbleRoundedCornerStyle = (
     position: BubblePosition,
     borderRadius?: number, // @default UIConstant.borderRadius()
 ) => {
+    const isRTL = React.useMemo(() => I18nManager.getConstants().isRTL, []);
     if (position === BubblePosition.left && message.firstFromChain) {
         return {
             borderRadius: borderRadius !== undefined ? borderRadius : UIConstant.borderRadius(),
-            borderTopLeftRadius: 0,
+            ...(isRTL ? { borderTopRightRadius: 0 } : { borderTopLeftRadius: 0 }),
         };
     }
 
     if (position === BubblePosition.right && message.lastFromChain) {
         return {
             borderRadius: borderRadius !== undefined ? borderRadius : UIConstant.borderRadius(),
-            borderBottomRightRadius: 0,
+            ...(isRTL ? { borderBottomLeftRadius: 0 } : { borderBottomRightRadius: 0 }),
         };
     }
 

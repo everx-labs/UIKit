@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { I18nManager, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
 import { UIConstant } from '@tonlabs/uikit.core';
 
@@ -25,12 +25,12 @@ export function useBubblePosition(status: MessageStatus): BubblePosition {
     return config[status];
 }
 
-function getBubbleContainerPositionStyle(position: BubblePosition) {
+function getBubbleContainerPositionStyle(position: BubblePosition, isRTL: boolean) {
     if (position === BubblePosition.left) {
-        return styles.containerLeft;
+        return isRTL ? styles.containerRight : styles.containerLeft;
     }
     if (position === BubblePosition.right) {
-        return styles.containerRight;
+        return isRTL ? styles.containerLeft : styles.containerRight;
     }
     return null;
 }
@@ -40,13 +40,14 @@ export function useBubbleContainerStyle({
     firstFromChain,
 }: BubbleBaseT): StyleProp<ViewStyle> {
     const position = useBubblePosition(status);
+    const isRTL = React.useMemo(() => I18nManager.getConstants().isRTL, []);
 
     return React.useMemo(
         () => [
-            getBubbleContainerPositionStyle(position),
+            getBubbleContainerPositionStyle(position, isRTL),
             firstFromChain ? styles.firstFromChain : styles.notFirstFromChain,
         ],
-        [position, firstFromChain],
+        [position, isRTL, firstFromChain],
     );
 }
 
