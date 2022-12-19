@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useWindowDimensions } from 'react-native';
+import { I18nManager, useWindowDimensions } from 'react-native';
 import Animated, {
     useDerivedValue,
     withSpring,
@@ -65,6 +65,7 @@ export const useAnimatedContainerStyle = (
     width: Animated.SharedValue<number>,
     height: Animated.SharedValue<number>,
 ) => {
+    const isRTLShared = useSharedValue(I18nManager.getConstants().isRTL);
     const { width: windowWidth, height: windowHeight } = useWindowDimensions();
     const maxWidth = React.useMemo(() => windowWidth, [windowWidth]);
     const maxHeight = React.useMemo(() => windowHeight * 0.8, [windowHeight]);
@@ -92,6 +93,14 @@ export const useAnimatedContainerStyle = (
         );
     }, [windowHeight]);
 
+    const closedXPosition = useDerivedValue(() => {
+        return isRTLShared.value ? pageX.value + width.value - maxWidth : pageX.value;
+    }, [maxWidth]);
+
+    const openedXPosition = useDerivedValue(() => {
+        return isRTLShared.value ? -centeredImageX.value : centeredImageX.value;
+    }, [maxWidth]);
+
     const animatedContainerStyle = useAnimatedStyle(() => {
         return {
             transform: [
@@ -99,7 +108,7 @@ export const useAnimatedContainerStyle = (
                     translateX: interpolate(
                         visibilityState.value,
                         [VISIBILITY_STATE_CLOSED, VISIBILITY_STATE_OPENED],
-                        [pageX.value, centeredImageX.value],
+                        [closedXPosition.value, openedXPosition.value],
                     ),
                 },
                 {
