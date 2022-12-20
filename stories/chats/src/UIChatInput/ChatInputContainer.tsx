@@ -119,7 +119,6 @@ const styles = StyleSheet.create({
     },
     inputMsg: {
         flex: 1,
-        flexDirection: 'row',
         alignSelf: 'center',
         paddingVertical: UILayoutConstant.contentOffset,
     },
