@@ -17,6 +17,7 @@ import Animated from 'react-native-reanimated';
 import { useTheme } from '@tonlabs/uikit.themes';
 
 import type { UIImageProps, UIImageSimpleProps } from './types';
+import { useFlippedImageIfRtl } from './hooks';
 
 export function prefetch(content: ImageURISource[] | ImageURISource): void {
     if (!content || (Array.isArray(content) && content.length === 0)) {
@@ -242,17 +243,19 @@ const UIImageSimple = React.forwardRef<RNImage, UIImageSimpleProps>(function UII
     props,
     ref,
 ) {
-    const { tintColor, ...rest } = props;
+    const { tintColor, style, ...rest } = props;
+
+    const maybeFlippedImageStyle = useFlippedImageIfRtl(style);
 
     /**
      * Delete TintUIImage and "if" block below when the issue is fixed:
      * https://github.com/necolas/react-native-web/issues/1914
      */
     if (tintColor) {
-        return <TintUIImage ref={ref} {...props} />;
+        return <TintUIImage ref={ref} {...props} style={maybeFlippedImageStyle} />;
     }
 
-    return <RNImage ref={ref} {...rest} />;
+    return <RNImage ref={ref} {...rest} style={maybeFlippedImageStyle} />;
 });
 
 export const UIImage = React.memo(
