@@ -10,6 +10,7 @@ import { useTheme } from '@tonlabs/uikit.themes';
 // eslint-disable-next-line import/extensions, import/no-unresolved
 import { Image } from './Image';
 import type { UIImageProps, UIImageSimpleProps } from './types';
+import { useFlippedImageIfRtl } from './hooks';
 
 export function prefetch(content: ImageURISource[] | ImageURISource): void {
     if (!content || (Array.isArray(content) && content.length === 0)) {
@@ -36,16 +37,20 @@ const UIImageSimple = React.forwardRef<RNImage, UIImageSimpleProps>(function UII
     props: UIImageSimpleProps,
     ref,
 ) {
-    if (props.tintColor) {
+    const { tintColor, style } = props;
+
+    const maybeFlippedImageStyle = useFlippedImageIfRtl(style);
+
+    if (tintColor) {
         /**
          * tintColor for some reason don't work properly with
          * react-native-fast-image, hence passing this prop
          * we force to use default <Image /> from RN
          */
-        return React.createElement(Image, { ...props, ref });
+        return React.createElement(Image, { ...props, ref, style: maybeFlippedImageStyle });
     }
     // @ts-expect-error
-    return React.createElement(FastImage, { ref, ...props });
+    return React.createElement(FastImage, { ref, ...props, style: maybeFlippedImageStyle });
 });
 
 export const UIImage = React.memo(
