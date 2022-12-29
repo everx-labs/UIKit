@@ -337,10 +337,37 @@
             "Yesterday": "어제"
         },
         "Debots": {
+            "addressInput": {
+                "auto": "기본 주소 선택",
+                "enterAddress": "주소를 입력하세요",
+                "invalidAddress": "잘못된 에버스케일 주소입니다.",
+                "manual": "수동으로 입력"
+            },
+            "agreement": {
+                "danger": {
+                    "action": "경고 무시",
+                    "message": "이 Debot은 데이터와 자금의 보안을 위협합니다"
+                },
+                "reminder": {
+                    "action": "알겠습니다",
+                    "message": "봇은 제3자 서비스이기 때문에 사용자 신원 및 기타 정보 공개할 수 있음을 주의하십시오."
+                },
+                "warning": {
+                    "action": "계속하기",
+                    "message": "이 DeBot은 데이터와 자금의 보안을 위협할 수 있습니다"
+                }
+            },
             "debotError": "이크! 저는 좀 망가졌어요. 연락을 유지해 주세요",
+            "defaultHello": "안녕하세요? 저는 DeBot입니다",
             "history": "기록",
             "newest": "최신",
+            "notFound": "Debot을 찾을 수 없습니다",
+            "queueEnd": "그뿐입니다! 제 도움이 필요하시면 저를 다시 실행해 주세요",
+            "queueEndWithManifest": "다시 시도하거나 재시도에 실패하면 DeBot을 다시 시작하십시오.",
             "open": "DeBot을 열기",
+            "publisher": "{0}(으)로",
+            "restart": "다시 시작",
+            "retry": "다시 시도",
             "securityCard": {
                 "notSupport": "불행하게도 귀하의 장치는 올바른 작동에 필요한 NFC를 지원하지 않습니다. 전원을 켜거나 다른 기기를 사용하세요."
             },
@@ -516,6 +543,7 @@
     "Import": "가져오기",
     "Important": "중요합니다!",
     "In": "안에",
+    "IncorrectLink": "불행하게도 에버링크가 잘못되었습니다. 타사 서비스 개발자에게 문의하십시오.",
     "Info": "정보",
     "Information": "정보",
     "KeyTextView": {
@@ -548,6 +576,14 @@
     "Messenger": "메신저",
     "MiddleName": "중간 이름",
     "Name": "이름",
+    "Networks": {
+        "switchAlert": {
+            "message": "링크는 사용자가 연결한 네트워크와 다른 네트워크가 있습니다 . 이 링크를 열려면 네트워크를 전환하세요",
+            "stay": "네트워크 유지",
+            "switch": "전환",
+            "title": "네트워크 전환"
+        }
+    },
     "Next": "다음",
     "No": "아니오",
     "NoThankYou": "아니요, 괜찮습니다",
