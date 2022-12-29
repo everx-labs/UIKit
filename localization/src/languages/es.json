@@ -348,10 +348,37 @@
             "Yesterday": "Yesterday"
         },
         "Debots": {
+            "addressInput": {
+                "auto": "Select main address",
+                "enterAddress": "Enter your address",
+                "invalidAddress": "Invalid address.",
+                "manual": "Introduzca manualmente"
+            },
+            "agreement": {
+                "warning": {
+                    "message": "This Debot can threaten the security of your data and funds",
+                    "action": "Continue anyway"
+                },
+                "reminder": {
+                    "message": "Remember that a Bot — third party service and may expose you to identity and other information disclosure that is out of the control of Surf.",
+                    "action": "I understand"
+                },
+                "danger": {
+                    "message": "This Debot threaten the security of your data and funds",
+                    "action": "Ignore a warning"
+                }
+            },
             "debotError": "¡¡Oops!! Estoy un poco roto. Mantente en contacto",
+            "defaultHello": "Hi! I'm DeBot",
             "history": "Recently",
             "newest": "Newest",
+            "notFound": "Debot not found",
+            "queueEnd": "That's all! Restart me in case you need my help again",
+            "queueEndWithManifest": "Try again or restart Debot if retries fail",
             "open": "Open DeBot",
+            "publisher": "por {0}",
+            "restart": "Restart",
+            "retry": "Retry",
             "securityCard": {
                 "notSupport": "Lamentablemente, su dispositivo no es compatible con NFC, que es necesario para un funcionamiento correcto. Habilite NFC o utilice otro dispositivo."
             },
@@ -496,6 +523,7 @@
     "Import": "Importar",
     "Important": "¡IMPORTANTE!",
     "In": "en",
+    "IncorrectLink": "Unfortunately, the everlink is not correct; please get in touch with the third-party service developers.",
     "Info": "Información",
     "Information": "Información",
     "LastMonth": "fue el mes pasado",
@@ -536,6 +564,14 @@
     "moreWords24": "más palabras",
     "moreWords50": "más palabras",
     "Name": "Nombre",
+    "Networks": {
+        "switchAlert": {
+            "title": "Switch the network",
+            "message": "The link has different network than you connected to. To open this link, switch the network",
+            "switch": "Switch",
+            "stay": "Stay in network"
+        }
+    },
     "Next": "Siguiente",
     "No": "No",
     "NotChosen": "No elegido",

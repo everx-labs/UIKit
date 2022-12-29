@@ -348,10 +348,37 @@
             "Yesterday": "Hier"
         },
         "Debots": {
+            "addressInput": {
+                "auto": "Sélectionnez l'adresse principale",
+                "enterAddress": "Entrez votre adresse",
+                "invalidAddress": "Adresse non valide.",
+                "manual": "Entrer manuellement"
+            },
+            "agreement": {
+                "warning": {
+                    "message": "This Debot can threaten the security of your data and funds",
+                    "action": "Continue anyway"
+                },
+                "reminder": {
+                    "message": "Remember that a Bot — third party service and may expose you to identity and other information disclosure that is out of the control of Surf.",
+                    "action": "Je comprends"
+                },
+                "danger": {
+                    "message": "This Debot threaten the security of your data and funds",
+                    "action": "Ignore a warning"
+                }
+            },
             "debotError": "Oops!! Je suis un peu cassé. Reste en contact",
+            "defaultHello": "Salut! Je suis DeBot",
             "history": "Recently",
             "newest": "Newest",
+            "notFound": "Debot non trouvé",
+            "queueEnd": "That's all! Restart me in case you need my help again",
+            "queueEndWithManifest": "Try again or restart Debot if retries fail",
             "open": "Open DeBot",
+            "publisher": "par {0}",
+            "restart": "Redémarrer",
+            "retry": "Retry",
             "securityCard": {
                 "notSupport": "Malheureusement, votre appareil ne prend pas en charge NFC, qui est nécessaire pour un bon fonctionnement. Veuillez activer NFC ou utiliser un autre appareil."
             },
@@ -496,6 +523,7 @@
     "Import": "Importer",
     "Important": "IMPORTANT!",
     "In": "dans",
+    "IncorrectLink": "Unfortunately, the everlink is not correct; please get in touch with the third-party service developers.",
     "Info": "Info",
     "Information": "Informations",
     "LastMonth": "a été le mois dernier",
@@ -536,6 +564,14 @@
     "moreWords24": "plus de mots",
     "moreWords50": "plus de mots",
     "Name": "Nom",
+    "Networks": {
+        "switchAlert": {
+            "title": "Switch the network",
+            "message": "The link has different network than you connected to. To open this link, switch the network",
+            "switch": "Switch",
+            "stay": "Stay in network"
+        }
+    },
     "Next": "Suivant",
     "No": "Non",
     "NotChosen": "Non choisi",

@@ -348,10 +348,37 @@
             "Yesterday": "昨天"
         },
         "Debots": {
+            "addressInput": {
+                "auto": "Select main address",
+                "enterAddress": "Enter your address",
+                "invalidAddress": "无效的地址。",
+                "manual": "Enter manually"
+            },
+            "agreement": {
+                "warning": {
+                    "message": "This Debot can threaten the security of your data and funds",
+                    "action": "Continue anyway"
+                },
+                "reminder": {
+                    "message": "Remember that a Bot — third party service and may expose you to identity and other information disclosure that is out of the control of Surf.",
+                    "action": "I understand"
+                },
+                "danger": {
+                    "message": "This Debot threaten the security of your data and funds",
+                    "action": "Ignore a warning"
+                }
+            },
             "debotError": "Oops!! I'm a little broken. Stay in touch",
+            "defaultHello": "Hi! I'm DeBot",
             "history": "Recently",
             "newest": "Newest",
+            "notFound": "Debot not found",
+            "queueEnd": "That's all! Restart me in case you need my help again",
+            "queueEndWithManifest": "Try again or restart Debot if retries fail",
             "open": "Open DeBot",
+            "publisher": "by {0}",
+            "restart": "Restart",
+            "retry": "Retry",
             "securityCard": {
                 "notSupport": "Unfortunately your device does not support NFC, which is required for proper operation. Please turn it on, or use another device."
             },
@@ -496,6 +523,7 @@
     "Import": "导入",
     "Important": "重要！",
     "In": "在",
+    "IncorrectLink": "Unfortunately, the everlink is not correct; please get in touch with the third-party service developers.",
     "Info": "消息",
     "Information": "信息",
     "LastMonth": "是上个月",
@@ -536,6 +564,14 @@
     "moreWords24": "更多的词",
     "moreWords50": "更多的词",
     "Name": "名字",
+    "Networks": {
+        "switchAlert": {
+            "title": "Switch the network",
+            "message": "The link has different network than you connected to. To open this link, switch the network",
+            "switch": "Switch",
+            "stay": "Stay in network"
+        }
+    },
     "Next": "下一个",
     "No": "不",
     "NotChosen": "未选择",
