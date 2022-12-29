@@ -15,7 +15,7 @@ export function useFlippedImageIfRtl(
         ? {
               transform: [
                   {
-                      rotateY: '180deg',
+                      scaleX: -1,
                   },
               ],
           }
