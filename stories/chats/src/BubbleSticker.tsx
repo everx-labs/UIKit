@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { uiLocalized } from '@tonlabs/localization';
 import { UIImage } from '@tonlabs/uikit.media';
 import { UILabel, UILabelRoles, ColorVariants, useTheme } from '@tonlabs/uikit.themes';
@@ -11,22 +11,27 @@ import type { StickerMessage } from './types';
 import { useBubbleContainerStyle } from './useBubblePosition';
 
 export const BubbleSticker = (props: StickerMessage) => {
+    const { onLayout, status, source, time } = props;
     const containerStyle = useBubbleContainerStyle(props);
     const theme = useTheme();
 
+    const opacity = React.useMemo(() => {
+        return status === MessageStatus.Pending ? 0.7 : 1;
+    }, [status]);
+
     return (
-        <View style={containerStyle} onLayout={props.onLayout}>
+        <View style={containerStyle} onLayout={onLayout}>
             <View style={styles.inner}>
-                <View style={props.status === MessageStatus.Pending && UIStyle.common.opacity70()}>
-                    <UIImage style={styles.sticker} source={props.source} />
+                <View style={{ opacity }}>
+                    <UIImage style={styles.sticker} source={source} />
                 </View>
                 <View
                     style={[
                         styles.time,
-                        UIStyle.color.getBackgroundColorStyle(
-                            theme[ColorVariants.BackgroundSecondary],
-                        ),
-                        props.status === MessageStatus.Pending && UIStyle.common.opacity70(),
+                        {
+                            backgroundColor: theme[ColorVariants.BackgroundSecondary],
+                            opacity,
+                        },
                     ]}
                 >
                     <UILabel
@@ -34,7 +39,7 @@ export const BubbleSticker = (props: StickerMessage) => {
                         role={UILabelRoles.ParagraphLabel}
                         style={styles.timeText}
                     >
-                        {uiLocalized.formatTime(props.time || Date.now())}
+                        {uiLocalized.formatTime(time || Date.now())}
                     </UILabel>
                 </View>
             </View>
@@ -48,14 +53,14 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
     },
     sticker: {
-        width: UIConstant.giantCellHeight(),
-        height: UIConstant.giantCellHeight(),
+        width: UILayoutConstant.giantCellHeight,
+        height: UILayoutConstant.giantCellHeight,
     },
     time: {
         marginRight: 12, // TODO: use UILayout
         borderRadius: 10,
-        paddingVertical: UIConstant.tinyContentOffset() / 2,
-        paddingHorizontal: UIConstant.smallContentOffset(),
+        paddingVertical: UILayoutConstant.contentInsetVerticalX1 / 2,
+        paddingHorizontal: UILayoutConstant.smallContentOffset,
     },
     timeText: {
         textAlign: 'right',

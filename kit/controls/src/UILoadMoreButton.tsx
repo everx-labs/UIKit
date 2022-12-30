@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { uiLocalized } from '@tonlabs/localization';
 import {
     UILabel,
@@ -40,7 +40,9 @@ export const UILoadMoreButton: React.FunctionComponent<Props> = ({
             <View
                 style={[
                     styles.wrapper,
-                    UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.BackgroundTertiary]),
+                    {
+                        backgroundColor: theme[ColorVariants.BackgroundTertiary],
+                    },
                 ]}
             >
                 {label && (
@@ -68,16 +70,16 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         alignItems: 'center',
-        paddingVertical: UIConstant.contentOffset(),
+        paddingVertical: UILayoutConstant.contentInsetVerticalX4,
     },
     wrapper: {
         flexShrink: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        height: UIConstant.smallCellHeight(),
-        borderRadius: UIConstant.smallCellHeight() / 2,
-        paddingVertical: UIConstant.tinyContentOffset() / 2,
-        paddingHorizontal: UIConstant.smallContentOffset(),
+        height: UILayoutConstant.smallCellHeight,
+        borderRadius: UILayoutConstant.smallCellHeight / 2,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX1 / 2,
+        paddingHorizontal: UILayoutConstant.smallContentOffset,
     },
     indicator: {
         position: 'absolute',

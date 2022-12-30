@@ -10,6 +10,7 @@ import {
     UILabel,
 } from '@tonlabs/uikit.themes';
 import { UIAnimatedImage } from '@tonlabs/uikit.media';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import {
     ContentColors,
     UILinkButtonIconPosition,
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
         minHeight: UIConstant.linkButtonHeight / 2,
     },
     content: {
-        paddingVertical: UIConstant.normalContentOffset,
+        paddingVertical: UILayoutConstant.normalContentOffset,
         alignSelf: 'stretch',
         flexDirection: 'row',
     },
@@ -151,7 +152,7 @@ const styles = StyleSheet.create({
      * Needed in order to leave space for icon in `UILinkButtonIconPosition.Right` position
      */
     extraPadding: {
-        paddingRight: UIConstant.iconSize,
+        paddingRight: UILayoutConstant.iconSize,
     },
     mainContent: {
         maxWidth: '100%',
@@ -162,14 +163,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     indicator: {
-        margin: UIConstant.normalContentOffset,
+        margin: UILayoutConstant.normalContentOffset,
     },
     icon: {
-        width: UIConstant.iconSize,
-        height: UIConstant.iconSize,
+        width: UILayoutConstant.iconSize,
+        height: UILayoutConstant.iconSize,
     },
     leftIcon: {
-        marginRight: UIConstant.smallContentOffset,
+        marginRight: UILayoutConstant.smallContentOffset,
     },
     rightIconContainer: {
         ...StyleSheet.absoluteFillObject,
@@ -178,6 +179,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     caption: {
-        marginTop: UIConstant.tinyContentOffset,
+        marginTop: UILayoutConstant.tinyContentOffset,
     },
 });

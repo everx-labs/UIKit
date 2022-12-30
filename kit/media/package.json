@@ -36,7 +36,6 @@
     "dependencies": {
         "@react-native-community/hooks": "^2.6.0",
         "@tonlabs/uikit.assets": "^4.1.0",
-        "@tonlabs/uikit.core": "^4.1.0",
         "@tonlabs/uikit.layout": "^4.1.0",
         "@tonlabs/uikit.themes": "^4.1.0",
         "html2canvas": "^1.0.0-rc.7",

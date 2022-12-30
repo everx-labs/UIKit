@@ -3,6 +3,7 @@ import { ColorValue, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
 import { ColorVariants, UILabelAnimated, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UIAnimatedImage } from '@tonlabs/uikit.media';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIConstant } from '../constants';
 import {
     UIBoxButtonType,
@@ -116,13 +117,13 @@ export const BoxButtonContent = ({
 const styles = StyleSheet.create({
     container: {
         height: UIConstant.boxButtonHeight,
-        borderRadius: UIConstant.alertBorderRadius,
+        borderRadius: UILayoutConstant.alertBorderRadius,
         overflow: 'hidden',
         alignItems: 'center',
         justifyContent: 'center',
     },
     content: {
-        padding: UIConstant.normalContentOffset,
+        padding: UILayoutConstant.normalContentOffset,
         alignSelf: 'stretch',
         flexDirection: 'row',
         justifyContent: 'center',
@@ -131,24 +132,24 @@ const styles = StyleSheet.create({
      * Needed in order to leave space for icon in `UIBoxButtonIconPosition.Right` position
      */
     extraPadding: {
-        paddingHorizontal: UIConstant.normalContentOffset + UIConstant.iconSize,
+        paddingHorizontal: UILayoutConstant.normalContentOffset + UILayoutConstant.iconSize,
     },
     centerContent: {
         flexDirection: 'row',
     },
     indicator: {
-        margin: UIConstant.normalContentOffset,
+        margin: UILayoutConstant.normalContentOffset,
     },
     icon: {
-        width: UIConstant.iconSize,
-        height: UIConstant.iconSize,
+        width: UILayoutConstant.iconSize,
+        height: UILayoutConstant.iconSize,
     },
     leftIcon: {
-        marginRight: UIConstant.smallContentOffset,
+        marginRight: UILayoutConstant.smallContentOffset,
     },
     rightIcon: {
         position: 'absolute',
-        right: UIConstant.normalContentOffset,
-        top: UIConstant.normalContentOffset,
+        right: UILayoutConstant.normalContentOffset,
+        top: UILayoutConstant.normalContentOffset,
     },
 });

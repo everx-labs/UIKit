@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { UIConstant } from '@tonlabs/uikit.core';
 import { UIBackgroundView, ColorVariants } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
@@ -77,11 +76,11 @@ const styles = StyleSheet.create({
         width: 64,
         height: 2,
         borderRadius: 2,
-        marginHorizontal: UIConstant.smallContentOffset(),
+        marginHorizontal: UILayoutConstant.smallContentOffset,
         alignSelf: 'center',
     },
     emptyDivider: {
-        marginHorizontal: UIConstant.smallContentOffset(),
+        marginHorizontal: UILayoutConstant.smallContentOffset,
     },
     headerLeftItems: {
         flex: 1,

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ColorValue, ImageSourcePropType, Platform, StyleSheet, View } from 'react-native';
 
 import { TypographyVariants, makeStyles, UILabelAnimated } from '@tonlabs/uikit.themes';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import { UIConstant } from '../constants';
@@ -63,9 +64,9 @@ const useStyles = makeStyles((icon: ImageSourcePropType | undefined, loading: bo
     container: {
         height: UIConstant.actionButtonHeight,
         minWidth: UIConstant.actionButtonHeight,
-        borderRadius: UIConstant.alertBorderRadius,
+        borderRadius: UILayoutConstant.alertBorderRadius,
         overflow: 'hidden',
-        paddingHorizontal: UIConstant.normalContentOffset,
+        paddingHorizontal: UILayoutConstant.normalContentOffset,
         flexDirection: 'row',
         alignItems: 'center',
         ...Platform.select({
@@ -76,7 +77,7 @@ const useStyles = makeStyles((icon: ImageSourcePropType | undefined, loading: bo
         }),
     },
     title: {
-        paddingLeft: icon ? UIConstant.smallContentOffset : 0,
+        paddingLeft: icon ? UILayoutConstant.smallContentOffset : 0,
         opacity: loading && !icon ? 0 : 1,
         ...Platform.select({
             native: {

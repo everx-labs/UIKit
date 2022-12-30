@@ -1,8 +1,6 @@
 /* eslint-disable react/no-unused-prop-types */
 import * as React from 'react';
-import { DefaultSectionT, SectionList, SectionListProps, View } from 'react-native';
-
-import { UIStyle } from '@tonlabs/uikit.core';
+import { DefaultSectionT, SectionList, SectionListProps, StyleSheet, View } from 'react-native';
 
 import type { ChatMessage } from './types';
 
@@ -25,7 +23,7 @@ export const UIChatSectionList = React.memo(
         forwardRef: React.Ref<SectionList<ItemT, SectionT>>,
     ) {
         return (
-            <View style={UIStyle.common.flex()}>
+            <View style={styles.container}>
                 <SectionList
                     ref={forwardRef}
                     {...chatListProps}
@@ -38,3 +36,9 @@ export const UIChatSectionList = React.memo(
         );
     }),
 );
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+});

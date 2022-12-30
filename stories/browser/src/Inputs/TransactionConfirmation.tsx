@@ -10,7 +10,7 @@ import {
     ColorVariants,
     useTheme,
 } from '@tonlabs/uikit.themes';
-import { UIConstant } from '@tonlabs/uikit.core';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { uiLocalized } from '@tonlabs/localization';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import type { TransactionConfirmationMessage } from '../types';
@@ -50,7 +50,7 @@ export function TransactionConfirmation({
                         type={UIMsgButtonType.Secondary}
                         onPress={onApprove}
                         layout={{
-                            marginRight: UIConstant.tinyContentOffset(),
+                            marginRight: UILayoutConstant.tinyContentOffset,
                         }}
                         icon={UIAssets.icons.ui.buttonConfirm}
                     />
@@ -97,14 +97,14 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         flexDirection: 'row',
         flexWrap: 'wrap',
-        paddingTop: UIConstant.smallContentOffset(),
+        paddingTop: UILayoutConstant.contentInsetVerticalX2,
     },
     responseContainer: {
         maxWidth: '100%',
         paddingLeft: '20%',
         alignSelf: 'flex-end',
         justifyContent: 'flex-end',
-        paddingTop: UIConstant.smallContentOffset(),
+        paddingTop: UILayoutConstant.contentInsetVerticalX2,
     },
     // TODO: change it to UIMsgButton (or similar)
     button: {
@@ -112,9 +112,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         height: 40,
-        paddingHorizontal: UIConstant.spaciousContentOffset(),
-        borderRadius: UIConstant.mediumBorderRadius(),
-        marginRight: UIConstant.tinyContentOffset(),
+        paddingHorizontal: 40,
+        borderRadius: 12,
+        marginRight: UILayoutConstant.tinyContentOffset,
     },
     response: {
         borderBottomRightRadius: 0,

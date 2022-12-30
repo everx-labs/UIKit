@@ -3,6 +3,7 @@ import { ColorValue, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
 import { UILabelAnimated, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UIAnimatedImage } from '@tonlabs/uikit.media';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIConstant } from '../constants';
 import {
     UIMsgButtonType,
@@ -129,14 +130,14 @@ export const MsgButtonContent = ({
 const styles = StyleSheet.create({
     container: {
         minHeight: UIConstant.msgButtonHeight,
-        borderRadius: UIConstant.alertBorderRadius,
+        borderRadius: UILayoutConstant.alertBorderRadius,
         overflow: 'hidden',
         alignItems: 'center',
         justifyContent: 'center',
     },
     content: {
-        paddingHorizontal: UIConstant.normalContentOffset,
-        paddingVertical: UIConstant.smallContentOffset,
+        paddingHorizontal: UILayoutConstant.normalContentOffset,
+        paddingVertical: UILayoutConstant.smallContentOffset,
         alignSelf: 'stretch',
         flexDirection: 'row',
         justifyContent: 'center',
@@ -146,7 +147,9 @@ const styles = StyleSheet.create({
      */
     extraPadding: {
         paddingHorizontal:
-            UIConstant.normalContentOffset + UIConstant.iconSize + UIConstant.smallContentOffset,
+            UILayoutConstant.normalContentOffset +
+            UILayoutConstant.iconSize +
+            UILayoutConstant.smallContentOffset,
     },
     centerContent: {
         maxWidth: '100%',
@@ -165,18 +168,18 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     indicator: {
-        margin: UIConstant.normalContentOffset,
+        margin: UILayoutConstant.normalContentOffset,
     },
     icon: {
-        width: UIConstant.iconSize,
-        height: UIConstant.iconSize,
+        width: UILayoutConstant.iconSize,
+        height: UILayoutConstant.iconSize,
     },
     leftIcon: {
-        marginRight: UIConstant.smallContentOffset,
+        marginRight: UILayoutConstant.smallContentOffset,
     },
     rightIconContainer: {
         ...StyleSheet.absoluteFillObject,
-        paddingRight: UIConstant.normalContentOffset,
+        paddingRight: UILayoutConstant.normalContentOffset,
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',

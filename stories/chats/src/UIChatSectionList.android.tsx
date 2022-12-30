@@ -9,8 +9,6 @@ import {
     View,
 } from 'react-native';
 
-import { UIStyle } from '@tonlabs/uikit.core';
-
 import type { ChatMessage } from './types';
 
 function getContentContainerPadding(padding: ViewStyle['padding'], inset: number | undefined) {
@@ -75,7 +73,7 @@ export const UIChatSectionList = React.memo(
         }, [contentInset, contentContainerStyleProp]);
 
         return (
-            <View style={UIStyle.common.flex()}>
+            <View style={styles.container}>
                 <SectionList
                     ref={forwardRef}
                     {...chatListProps}
@@ -90,3 +88,9 @@ export const UIChatSectionList = React.memo(
         );
     }),
 );
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+});

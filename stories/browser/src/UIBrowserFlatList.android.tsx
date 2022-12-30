@@ -2,8 +2,6 @@
 import * as React from 'react';
 import { FlatListProps, FlatList, ViewStyle, StyleSheet, View } from 'react-native';
 
-import { UIStyle } from '@tonlabs/uikit.core';
-
 function getContentContainerPadding(padding: ViewStyle['padding'], inset: number | undefined) {
     if (padding == null) {
         return inset ?? 0;
@@ -61,7 +59,7 @@ export const UIBrowserFlatList = React.memo(
         }, [contentInset, contentContainerStyleProp]);
 
         return (
-            <View style={UIStyle.common.flex()}>
+            <View style={styles.container}>
                 <FlatList
                     ref={forwardRef}
                     {...chatListProps}
@@ -76,3 +74,9 @@ export const UIBrowserFlatList = React.memo(
         );
     }),
 );
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+});

@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { Animated, LayoutAnimation } from 'react-native';
 
-import { UIConstant, UIDevice } from '@tonlabs/uikit.core';
+import { UIDeviceInfo } from '@tonlabs/uikit.layout';
 
 import { getEasingFunction } from './getEasingFunction';
+import { UIConstant } from './constants';
 
-const CustomKeyboardKeyboardHeight = UIDevice.isDesktop() ? 180 : 270;
+const CustomKeyboardKeyboardHeight = UIDeviceInfo.isDesktopWeb ? 180 : 270;
 
 function useCustomKeyboardWrapperAnimations(customKeyboardVisible: boolean) {
     const height = React.useRef(new Animated.Value(0)).current;
@@ -16,13 +17,13 @@ function useCustomKeyboardWrapperAnimations(customKeyboardVisible: boolean) {
             Animated.parallel([
                 Animated.timing(opacity, {
                     toValue: show ? 1.0 : 0.0,
-                    duration: UIConstant.animationDuration(),
+                    duration: UIConstant.animationDuration,
                     easing: getEasingFunction(LayoutAnimation.Types.keyboard),
                     useNativeDriver: true,
                 }),
                 Animated.timing(height, {
                     toValue: show ? CustomKeyboardKeyboardHeight : 0.0,
-                    duration: UIConstant.animationDuration(),
+                    duration: UIConstant.animationDuration,
                     easing: getEasingFunction(LayoutAnimation.Types.keyboard),
                     useNativeDriver: false,
                 }),

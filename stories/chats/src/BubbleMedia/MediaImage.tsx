@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { UIConstant as UICoreConstant } from '@tonlabs/uikit.core';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { makeStyles } from '@tonlabs/uikit.themes';
 import { UILightbox } from '@tonlabs/uikit.media';
 
@@ -51,7 +51,7 @@ const useStyles = makeStyles(() => ({
         paddingRight: 0,
     },
     bubble: {
-        borderRadius: UICoreConstant.mediumBorderRadius(),
+        borderRadius: UILayoutConstant.mediumBorderRadius,
         overflow: 'hidden',
     },
 }));
