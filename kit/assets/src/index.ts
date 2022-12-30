@@ -119,8 +119,6 @@ import iconScan from './resources/ico-scan/ico-scan.png';
 
 import countries from './resources/countries/countries.json'; // TODO
 
-import debot from './resources/debots/debot.png';
-
 export const UIAssets = {
     images: {
         404: image404,
@@ -260,10 +258,6 @@ export const UIAssets = {
         addressInput: {
             book: iconBook,
             scan: iconScan,
-        },
-
-        debots: {
-            default: debot,
         },
     },
     // TODO: need to make it lazy!
