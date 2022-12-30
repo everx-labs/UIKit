@@ -281,6 +281,14 @@
                     "message": "Коннекторы дебота не найдены",
                     "hint": "Для правильной работы дебота нужны коннекторы."
                 },
+                "signaturesServiceNotFound": {
+                    "message": "Signatures service is not found",
+                    "hint": "Please, provide signatures service."
+                },
+                "navigationServiceNotFound": {
+                    "message": "Navigation service is not found",
+                    "hint": "Please, provide navigation service."
+                },
                 "emptyQueue": {
                     "message": "Ошибка ожидания очереди сообщений",
                     "hint": "Пожалуйста, убедитесь в том, что дебот отправляет сообщения для Браузера"
