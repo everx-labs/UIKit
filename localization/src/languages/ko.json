@@ -240,6 +240,14 @@
                     "message": "DeBot connectors are not found",
                     "hint": "DeBot must have connectors to work correctly"
                 },
+                "signaturesServiceNotFound": {
+                    "message": "Signatures service is not found",
+                    "hint": "Please, provide signatures service."
+                },
+                "navigationServiceNotFound": {
+                    "message": "Navigation service is not found",
+                    "hint": "Please, provide navigation service."
+                },
                 "emptyQueue": {
                     "message": "Failed to wait for the non-empty queue",
                     "hint": "Please, check DeBot works properly as it has not returned any messages"
