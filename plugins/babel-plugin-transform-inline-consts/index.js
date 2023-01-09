@@ -1,4 +1,4 @@
-/* eslint-disable no-shadow */
+/* eslint-disable no-shadow, @typescript-eslint/no-shadow  */
 // eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-extraneous-dependencies
 // const traverse = require('@babel/traverse').default;
 
@@ -52,7 +52,9 @@ module.exports = function plugin({ types: t, traverse }) {
                             if (inlinedValue != null) {
                                 path.replaceWith(t.valueToNode(inlinedValue));
                             }
-                        } catch (err) {}
+                        } catch (err) {
+                            // Do nothing
+                        }
                     },
                 });
             },

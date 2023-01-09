@@ -11,7 +11,6 @@ import {
 import ParsedText from 'react-native-parsed-text';
 import { runOnUI } from 'react-native-reanimated';
 
-import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
 import { hapticImpact } from '@tonlabs/uikit.controls';
 import {
@@ -21,8 +20,9 @@ import {
     ColorVariants,
     useTheme,
 } from '@tonlabs/uikit.themes';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
-import { MessageStatus, RegExpConstants } from './constants';
+import { MessageStatus, RegExpConstants, UIConstant } from './constants';
 import type { OnLongPressText, OnPressUrl, ChatPlainTextMessage, PlainTextMessage } from './types';
 import { useBubblePosition, useBubbleContainerStyle } from './useBubblePosition';
 import { useBubbleBackgroundColor, useBubbleRoundedCornerStyle } from './useBubbleStyle';
@@ -132,7 +132,7 @@ function PlainTextContainer(props: PlainTextMessage & { children: React.ReactNod
     const bubbleScaleAnimation = React.useCallback(
         (scaleIn = false) => {
             Animated.spring(scale, {
-                toValue: scaleIn ? UIConstant.animationScaleInFactor() : 1.0,
+                toValue: scaleIn ? UIConstant.animationScaleInFactor : 1.0,
                 friction: 3,
                 useNativeDriver: true,
             }).start();
@@ -168,8 +168,10 @@ function PlainTextContainer(props: PlainTextMessage & { children: React.ReactNod
                 <View>
                     <Animated.View
                         style={[
-                            UIStyle.padding.verticalSmall(),
-                            UIStyle.padding.horizontalNormal(),
+                            {
+                                paddingVertical: UILayoutConstant.contentInsetVerticalX2,
+                                paddingHorizontal: UILayoutConstant.normalContentOffset,
+                            },
                             styles.msgContainer,
                             isRTL ? styles.msgContainerRTL : null,
                             bubbleBackgroundColor,
@@ -281,6 +283,6 @@ const styles = StyleSheet.create({
     },
     actionString: {
         textAlign: 'right',
-        paddingTop: UIConstant.tinyContentOffset(),
+        paddingTop: UILayoutConstant.contentInsetVerticalX1,
     },
 });

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { View, StyleSheet, I18nManager } from 'react-native';
+import { View, StyleSheet, I18nManager, ViewStyle, StyleProp } from 'react-native';
 
-import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { uiLocalized } from '@tonlabs/localization';
 import { UIPressableArea } from '@tonlabs/uikit.controls';
 import {
@@ -45,20 +45,26 @@ const getBubbleInner = (position: BubblePosition, isRTL: boolean) => {
     return null;
 };
 
-const useBubbleStyle = (message: TransactionMessage) => {
+const useBubbleStyle = (message: TransactionMessage): StyleProp<ViewStyle> => {
     const theme = useTheme();
     const { type } = message.info;
 
     if (message.status === MessageStatus.Aborted) {
-        return [UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.BackgroundNegative])];
+        return {
+            backgroundColor: theme[ColorVariants.BackgroundNegative],
+        };
     }
 
     if (type === TransactionType.Expense) {
-        return [UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.StaticBackgroundBlack])];
+        return {
+            backgroundColor: theme[ColorVariants.StaticBackgroundBlack],
+        };
     }
 
     if (type === TransactionType.Income) {
-        return [UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.BackgroundPositive])];
+        return {
+            backgroundColor: theme[ColorVariants.BackgroundPositive],
+        };
     }
 
     return null;
@@ -154,25 +160,20 @@ function BubbleTransactionMain(props: TransactionMessage) {
         <View
             testID={getContainerTestID(props)}
             style={[
-                UIStyle.common.justifyCenter(),
                 styles.trxCard,
                 bubbleStyle,
                 bubbleRoundedCornerStyle,
-                status === MessageStatus.Pending && UIStyle.common.opacity70(),
+                {
+                    opacity: status === MessageStatus.Pending ? 0.7 : 1,
+                },
             ]}
         >
-            <View
-                style={[
-                    UIStyle.common.flexRow(),
-                    UIStyle.margin.bottomTiny(),
-                    UIStyle.common.justifyStart(),
-                ]}
-            >
+            <View style={styles.balanceContainer}>
                 <UILabel role={UILabelRoles.PromoMedium} color={getAmountColor(props)}>
                     {balanceChange}
                 </UILabel>
             </View>
-            <View style={[UIStyle.common.flexRow(), UIStyle.common.justifyStart()]}>
+            <View style={styles.transactionSublabelContainer}>
                 <TransactionSublabel {...props} />
             </View>
         </View>
@@ -225,11 +226,21 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
     },
     trxCard: {
-        paddingHorizontal: UIConstant.normalContentOffset(),
-        paddingVertical: UIConstant.normalContentOffset(),
+        justifyContent: 'center',
+        paddingHorizontal: UILayoutConstant.normalContentOffset,
+        paddingVertical: UILayoutConstant.normalContentOffset,
+    },
+    balanceContainer: {
+        flexDirection: 'row',
+        marginBottom: UILayoutConstant.contentInsetVerticalX1,
+        justifyContent: 'flex-start',
     },
     actionString: {
-        paddingTop: UIConstant.tinyContentOffset(),
+        paddingTop: UILayoutConstant.contentInsetVerticalX1,
         textAlign: 'right',
+    },
+    transactionSublabelContainer: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
     },
 });

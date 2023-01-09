@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const webpack = require('webpack');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 
+// eslint-disable-next-line import/extensions
 const webpackModules = require('./webpack.js');
 
 module.exports = {

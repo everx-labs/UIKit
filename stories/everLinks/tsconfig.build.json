@@ -1,7 +1,7 @@
 {
-  "extends": "./tsconfig",
-  "compilerOptions": {
-    "paths": {},
-    "experimentalDecorators": true
-  }
+    "extends": "./tsconfig",
+    "compilerOptions": {
+        "paths": {},
+        "experimentalDecorators": true
+    }
 }

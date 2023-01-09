@@ -1,8 +1,6 @@
 /* eslint-disable react/no-unused-prop-types */
 import * as React from 'react';
-import { FlatListProps, FlatList, View } from 'react-native';
-
-import { UIStyle } from '@tonlabs/uikit.core';
+import { FlatListProps, FlatList, View, StyleSheet } from 'react-native';
 
 type Props<ItemT> = FlatListProps<ItemT> & {
     automaticallyAdjustContentInsets: boolean;
@@ -20,7 +18,7 @@ export const UIBrowserFlatList = React.memo(
         forwardRef: React.Ref<FlatList<ItemT>>,
     ) {
         return (
-            <View style={UIStyle.common.flex()}>
+            <View style={styles.container}>
                 <FlatList
                     ref={forwardRef}
                     {...chatListProps}
@@ -33,3 +31,9 @@ export const UIBrowserFlatList = React.memo(
         );
     }),
 );
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+});

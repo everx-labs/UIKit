@@ -5,8 +5,11 @@ import Animated, { useAnimatedProps, useAnimatedStyle } from 'react-native-reani
 import { UILabelRoles, UILabelAnimated } from '@tonlabs/uikit.themes';
 import { UIAnimatedImage } from '@tonlabs/uikit.media';
 import { UILayoutConstant, UISkeleton } from '@tonlabs/uikit.layout';
-import { ContentColors, UIButtonGroupActionIconPosition, UILayoutConstants } from './constants';
-import { UIConstant } from '../constants';
+import {
+    ContentColors,
+    UIButtonGroupActionIconPosition,
+    UIButtonGroupConstants,
+} from './constants';
 import type { UIButtonGroupActionProps } from './types';
 import { usePressableContentColor } from '../Pressable';
 
@@ -87,8 +90,8 @@ export function UIButtonGroupActionContent(props: UIButtonGroupActionProps) {
 const styles = StyleSheet.create({
     skeleton: {
         flex: 1,
-        height: UIConstant.iconSize,
-        borderRadius: UILayoutConstants.skeletonBorderRadius,
+        height: UILayoutConstant.iconSize,
+        borderRadius: UIButtonGroupConstants.skeletonBorderRadius,
     },
     container: {
         flex: 1,
@@ -104,7 +107,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     icon: {
-        width: UIConstant.iconSize,
-        height: UIConstant.iconSize,
+        width: UILayoutConstant.iconSize,
+        height: UILayoutConstant.iconSize,
     },
 });

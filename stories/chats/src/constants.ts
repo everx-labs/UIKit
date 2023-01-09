@@ -1,6 +1,5 @@
+/* eslint-disable no-useless-escape */
 import { Platform } from 'react-native';
-
-const GRID_LINE_HEIGHT = 4;
 
 export const RegExpConstants = {
     protocol: /^https?:\/\//,
@@ -13,11 +12,7 @@ export const UIConstant = {
         default: 3 / 4,
     }),
     mediaImageMaxSizesAspectRatio: 9 / 16,
-    contentInsetVerticalX2: 2 * GRID_LINE_HEIGHT,
-    contentInsetVerticalX3: 3 * GRID_LINE_HEIGHT,
-    contentInsetVerticalX4: 4 * GRID_LINE_HEIGHT,
-
-    contentOffset: 16,
+    animationScaleInFactor: 0.95,
 };
 
 // Semantically describe a bubble position

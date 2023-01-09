@@ -18,7 +18,7 @@ import {
     UILabelRoles,
     TypographyVariants,
 } from '@tonlabs/uikit.themes';
-import { UIConstant } from '../constants';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { TouchableOpacity } from '../TouchableOpacity';
 
 // eslint-disable-next-line no-shadow
@@ -80,8 +80,8 @@ export function ButtonIcon({
                     source={source}
                     style={[
                         {
-                            width: UIConstant.iconSize,
-                            height: UIConstant.iconSize,
+                            width: UILayoutConstant.iconSize,
+                            height: UILayoutConstant.iconSize,
                             tintColor: theme[ColorVariants[initialColor as ColorVariants]],
                         },
                         style,
@@ -92,8 +92,8 @@ export function ButtonIcon({
                     source={source}
                     style={[
                         {
-                            width: UIConstant.iconSize,
-                            height: UIConstant.iconSize,
+                            width: UILayoutConstant.iconSize,
+                            height: UILayoutConstant.iconSize,
                             tintColor: theme[ColorVariants[activeColor as ColorVariants]],
                             position: 'absolute',
                         },

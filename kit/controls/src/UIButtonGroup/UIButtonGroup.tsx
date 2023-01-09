@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIButtonGroupAction } from './UIButtonGroupAction';
-import { UILayoutConstants } from './constants';
 import type { UIButtonGroupProps, IUIButtonGroup } from './types';
 import { useButtonGroupChildren } from './hooks';
 
@@ -13,7 +13,7 @@ export function UIButtonGroupContainer(props: UIButtonGroupProps) {
 
 const styles = StyleSheet.create({
     container: {
-        borderRadius: UILayoutConstants.containerBorderRadius,
+        borderRadius: UILayoutConstant.mediumBorderRadius,
         overflow: 'hidden',
         flexDirection: 'row',
         alignItems: 'stretch',

@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { ColorVariants, UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIImage } from '@tonlabs/uikit.media';
-import { UIStyle } from '@tonlabs/uikit.core';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
 import type { QuickActionItem } from './types';
 import { commonStyles } from './styles';
@@ -36,13 +36,13 @@ export function QuickAction(props: Props) {
     }
 
     return (
-        <View style={UIStyle.flex.row()}>
+        <View style={styles.container}>
             {quickActions.map(action => (
                 <TouchableOpacity
                     key={`quickAction~${action.key}`}
                     testID={action.testID}
                     onPress={action.onPress}
-                    style={[commonStyles.buttonContainer, UIStyle.flex.row()]}
+                    style={[commonStyles.buttonContainer, styles.action]}
                 >
                     {action.icon != null && (
                         <UIImage
@@ -56,7 +56,7 @@ export function QuickAction(props: Props) {
                         <UILabel
                             color={UILabelColors.TextAccent}
                             role={UILabelRoles.Action}
-                            style={action.icon ? UIStyle.margin.leftSmall() : null}
+                            style={action.icon ? styles.titleWithIcon : null}
                         >
                             {action.title}
                         </UILabel>
@@ -66,3 +66,15 @@ export function QuickAction(props: Props) {
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+    },
+    action: {
+        flexDirection: 'row',
+    },
+    titleWithIcon: {
+        marginLeft: UILayoutConstant.smallContentOffset,
+    },
+});

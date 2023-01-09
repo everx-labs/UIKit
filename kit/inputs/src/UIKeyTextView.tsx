@@ -104,13 +104,13 @@ export function useKeyTextView(
         if (onSuccess) {
             onSuccess(success);
         }
-    }, [success]);
+    }, [onSuccess, success]);
 
     React.useEffect(() => {
         if (onError) {
             onError(error);
         }
-    }, [error]);
+    }, [error, onError]);
 
     return {
         helperText,

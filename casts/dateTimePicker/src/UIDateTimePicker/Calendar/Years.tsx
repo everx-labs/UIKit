@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     cellWrapper: {
         flex: 1,
         alignItems: 'center',
-        marginTop: UILayoutConstant.contentOffset,
+        marginTop: UILayoutConstant.contentInsetVerticalX4,
     },
     cell: {
         paddingVertical: UIConstant.calendar.dayCellPadding,

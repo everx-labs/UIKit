@@ -24,7 +24,6 @@ export const ContentColors: Record<'content' | 'background', PressableColors> = 
     },
 };
 
-export const UILayoutConstants = {
-    containerBorderRadius: 12,
+export const UIButtonGroupConstants = {
     skeletonBorderRadius: 5,
 };

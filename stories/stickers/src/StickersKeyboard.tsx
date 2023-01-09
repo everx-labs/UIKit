@@ -3,11 +3,11 @@ import { FlatList, StyleSheet, Platform, ViewStyle } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { UIConstant, UIDevice } from '@tonlabs/uikit.core';
 import { UIImage } from '@tonlabs/uikit.media';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { registerKeyboardComponent } from '@tonlabs/uicast.keyboard';
+import { UILayoutConstant, UIDeviceInfo } from '@tonlabs/uikit.layout';
 
 // Unfortunately we have to import it as UICustomKeyboard doesn't accept functional props :(
 import type {
@@ -105,12 +105,12 @@ export const StickersKeyboard = registerKeyboardComponent(StickerPickerKeyboardN
 
 const styles = StyleSheet.create({
     sticker: {
-        width: UIConstant.largeCellHeight(),
-        height: UIConstant.largeCellHeight(),
-        marginVertical: UIConstant.normalContentOffset(),
-        marginHorizontal: UIDevice.isDesktop()
-            ? UIConstant.contentOffset()
-            : UIConstant.normalContentOffset(),
+        width: UILayoutConstant.largeCellHeight,
+        height: UILayoutConstant.largeCellHeight,
+        marginVertical: UILayoutConstant.contentInsetVerticalX3,
+        marginHorizontal: UIDeviceInfo.isDesktopWeb
+            ? UILayoutConstant.contentOffset
+            : UILayoutConstant.normalContentOffset,
     },
     packageContainer: {
         flexDirection: 'row',

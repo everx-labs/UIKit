@@ -1,22 +1,30 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { UIStyle } from '@tonlabs/uikit.core';
 import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
 import type { SystemMessage } from './types';
 
-export function BubbleSystem(props: SystemMessage) {
+export function BubbleSystem({ text }: SystemMessage) {
     return (
-        <View style={[UIStyle.common.alignJustifyCenter(), UIStyle.padding.verticalTiny()]}>
+        <View style={styles.container}>
             <UILabel
                 role={UILabelRoles.ActionFootnote}
                 color={UILabelColors.TextTertiary}
                 numberOfLines={1}
                 ellipsizeMode="middle"
             >
-                {props.text}
+                {text}
             </UILabel>
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: UILayoutConstant.contentInsetVerticalX1,
+    },
+});

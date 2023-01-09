@@ -3,6 +3,7 @@ import { ColorValue, LayoutAnimation, Platform, StyleSheet, UIManager, View } fr
 import Animated, { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
 import { ColorVariants, UILabelAnimated, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UIAnimatedImage } from '@tonlabs/uikit.media';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIConstant } from '../constants';
 import {
     UIPillButtonVariant,
@@ -115,24 +116,24 @@ const styles = StyleSheet.create({
     },
     content: {
         maxWidth: '100%',
-        paddingVertical: UIConstant.tinyContentOffset,
-        paddingHorizontal: UIConstant.normalContentOffset,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX1,
+        paddingHorizontal: UILayoutConstant.normalContentOffset,
         alignSelf: 'stretch',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
     },
     leftIconContent: {
-        paddingLeft: UIConstant.tinyContentOffset,
+        paddingLeft: UILayoutConstant.tinyContentOffset,
     },
     rightIconContent: {
-        paddingRight: UIConstant.tinyContentOffset,
+        paddingRight: UILayoutConstant.tinyContentOffset,
     },
     title: {
-        paddingVertical: UIConstant.tinyContentOffset / 2,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX1 / 2,
     },
     icon: {
-        width: UIConstant.iconSize,
-        height: UIConstant.iconSize,
+        width: UILayoutConstant.iconSize,
+        height: UILayoutConstant.iconSize,
     },
 });

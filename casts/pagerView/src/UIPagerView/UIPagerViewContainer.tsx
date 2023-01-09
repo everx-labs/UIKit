@@ -79,7 +79,7 @@ const getPages = (children: React.ReactNode): React.ReactElement<UIPagerViewPage
             if (React.isValidElement(child)) {
                 const pages: React.ReactElement<UIPagerViewPageProps>[] = acc;
                 if (child.type === UIPagerViewPage) {
-                    pages.push(child);
+                    pages.push(child as React.ReactElement<UIPagerViewPageProps>);
                     return pages;
                 }
 
@@ -158,8 +158,8 @@ const renderLabel =
         if (!currentPage) {
             return null;
         }
-
-        const color: ColorVariants = getLabelColor(props.focused, currentPage);
+        const { focused, route } = props;
+        const color: ColorVariants = getLabelColor(focused, currentPage);
 
         return (
             <UILabel
@@ -170,7 +170,7 @@ const renderLabel =
                 numberOfLines={1}
                 ellipsizeMode="tail"
             >
-                {props.route.title}
+                {route.title}
             </UILabel>
         );
     };

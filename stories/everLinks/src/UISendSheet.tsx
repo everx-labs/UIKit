@@ -47,7 +47,15 @@ function CurrencyElement({ amount, signChar }: { amount: BigNumber; signChar: st
     );
 }
 
-function SendSheetContent({ actionTitle, address, amount, comment, fee, onConfirm, signChar }: UISendSheetParams) {
+function SendSheetContent({
+    actionTitle,
+    address,
+    amount,
+    comment,
+    fee,
+    onConfirm,
+    signChar,
+}: UISendSheetParams) {
     return (
         <View>
             <View style={styles.contentContainer}>
@@ -129,10 +137,7 @@ function SendSheetContent({ actionTitle, address, amount, comment, fee, onConfir
                 </View>
             </View>
             <View style={styles.boxButtonContainer}>
-                <UIBoxButton
-                    title={uiLocalized.EverLinks.Send.Confirm}
-                    onPress={onConfirm}
-                />
+                <UIBoxButton title={uiLocalized.EverLinks.Send.Confirm} onPress={onConfirm} />
             </View>
         </View>
     );
@@ -140,7 +145,8 @@ function SendSheetContent({ actionTitle, address, amount, comment, fee, onConfir
 
 export function UISendSheet(props: UIEverLinkSheetProps) {
     const { onClose, params: sendParams, visible } = props;
-    const { actionTitle, address, amount, comment, fee, onConfirm, signChar } = sendParams as UISendSheetParams;
+    const { actionTitle, address, amount, comment, fee, onConfirm, signChar } =
+        sendParams as UISendSheetParams;
 
     const onConfirmPress = React.useCallback(() => {
         if (onConfirm) {
@@ -172,25 +178,26 @@ const styles = StyleSheet.create({
         paddingHorizontal: UILayoutConstant.contentOffset,
     },
     paddingVerticalSmall: {
-        paddingVertical: UILayoutConstant.smallContentOffset,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX2,
     },
     marginVerticalNormal: {
-        marginVertical: UILayoutConstant.normalContentOffset,
+        marginVertical: UILayoutConstant.contentInsetVerticalX3,
     },
     infoContainer: {
-        marginTop: UILayoutConstant.contentOffset,
+        marginTop: UILayoutConstant.contentInsetVerticalX4,
     },
     rowContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingVertical: UILayoutConstant.contentOffset,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX4,
     },
     feeContainer: {
         flexDirection: 'row',
         alignItems: 'center',
     },
     boxButtonContainer: {
-        padding: UILayoutConstant.contentOffset,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX4,
+        paddingHorizontal: UILayoutConstant.contentOffset,
     },
 });

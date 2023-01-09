@@ -46,7 +46,6 @@
         "@tonlabs/uicast.texts": "*",
         "@tonlabs/uikit.assets": "*",
         "@tonlabs/uikit.controls": "*",
-        "@tonlabs/uikit.core": "*",
         "@tonlabs/uikit.inputs": "*",
         "@tonlabs/uikit.layout": "*",
         "@tonlabs/uikit.media": "*",

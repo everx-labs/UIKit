@@ -12,7 +12,7 @@ import Animated, {
     useAnimatedReaction,
 } from 'react-native-reanimated';
 
-import { UIConstant } from '@tonlabs/uikit.core';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { hapticNotification, UIIndicator } from '@tonlabs/uikit.controls';
 import {
     UILabel,
@@ -628,7 +628,7 @@ export type UIPinCodeRef = {
     getPasscodeWithBiometry(): Promise<void>;
 };
 
-const dotSize = UIConstant.tinyCellHeight();
+const dotSize = UILayoutConstant.tinyCellHeight;
 
 const styles = StyleSheet.create({
     container: {
@@ -651,7 +651,7 @@ const styles = StyleSheet.create({
     keysRow: { flexDirection: 'row' },
     dotsContainer: {
         flexDirection: 'row',
-        height: UIConstant.bigCellHeight(),
+        height: UILayoutConstant.bigCellHeight,
         alignItems: 'center',
         position: 'relative',
     },
@@ -659,7 +659,7 @@ const styles = StyleSheet.create({
         width: dotSize / 2,
         height: dotSize / 2,
         borderRadius: dotSize / 4,
-        marginHorizontal: UIConstant.normalContentOffset(),
+        marginHorizontal: UILayoutConstant.normalContentOffset,
     },
     dotInner: {
         width: dotSize / 2,

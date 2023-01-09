@@ -19,7 +19,7 @@ import {
 import { ScrollView } from 'react-native-gesture-handler';
 import { runOnJS, useAnimatedReaction } from 'react-native-reanimated';
 
-import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 import { useKeyboardBottomInset } from '@tonlabs/uicast.keyboard';
 
@@ -118,13 +118,17 @@ function useLayoutHelpers<ItemT extends BubbleBaseT>(
                 return cellsHeight.current.get(rowData.key) || 0;
             },
             getSectionFooterHeight: () => {
-                return UIConstant.smallCellHeight() + UIConstant.contentOffset() * 2;
+                return (
+                    UILayoutConstant.smallCellHeight + UILayoutConstant.contentInsetVerticalX4 * 2
+                );
             },
             listFooterHeight: () => {
                 if (!canLoadMore) {
                     return 0;
                 }
-                return UIConstant.smallCellHeight() + UIConstant.contentOffset() * 2;
+                return (
+                    UILayoutConstant.smallCellHeight + UILayoutConstant.contentInsetVerticalX4 * 2
+                );
             },
         }),
         [canLoadMore, cellsHeight, getItemLayoutFabric],
@@ -272,8 +276,8 @@ function useLinesAnimation(hasScrollOverflow: React.RefObject<boolean>) {
     const lineStyle = React.useMemo(
         () => [
             styles.border,
-            UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.LineSecondary]),
             {
+                backgroundColor: theme[ColorVariants.LineSecondary],
                 opacity: topOpacity.current,
             },
         ],
@@ -520,8 +524,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 0,
     },
     messagesList: {
-        paddingHorizontal: UIConstant.contentOffset(),
-        paddingVertical: UIConstant.contentOffset(),
+        paddingHorizontal: UILayoutConstant.contentOffset,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX4,
     },
     border: {
         height: 1,

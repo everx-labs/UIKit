@@ -31,7 +31,8 @@ const initialSize: Size = {
 function getBoundaries(windowDimensions: ScaledSize, tooltipSize: Size) {
     return {
         right: windowDimensions.width - UILayoutConstant.contentOffset - tooltipSize.width,
-        bottom: windowDimensions.height - UILayoutConstant.contentOffset - tooltipSize.height,
+        bottom:
+            windowDimensions.height - UILayoutConstant.contentInsetVerticalX4 - tooltipSize.height,
         left: UILayoutConstant.contentOffset,
     };
 }

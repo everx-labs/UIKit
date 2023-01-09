@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import { ColorVariants } from '@tonlabs/uikit.themes';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIConstant } from '@tonlabs/uikit.core';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIImage } from '@tonlabs/uikit.media';
 
 export type OnStickersPress = () => void | Promise<void>;
@@ -42,14 +42,14 @@ export function StickersButton({ editable, inputHasValue, customKeyboardVisible,
 
 const styles = StyleSheet.create({
     buttonContainer: {
-        padding: UIConstant.contentOffset(),
+        padding: UILayoutConstant.contentOffset,
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'flex-end',
-        height: UIConstant.largeButtonHeight(),
+        height: UILayoutConstant.largeButtonHeight,
     },
     icon: {
-        height: UIConstant.iconSize(),
-        width: UIConstant.iconSize(),
+        height: UILayoutConstant.iconSize,
+        width: UILayoutConstant.iconSize,
     },
 });

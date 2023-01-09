@@ -1,17 +1,17 @@
 import { StyleSheet } from 'react-native';
 
-import { UIConstant } from '@tonlabs/uikit.core';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
 export const commonStyles = StyleSheet.create({
     buttonContainer: {
-        padding: UIConstant.contentOffset(),
+        padding: UILayoutConstant.contentOffset,
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'flex-end',
-        height: UIConstant.largeButtonHeight(),
+        height: UILayoutConstant.largeButtonHeight,
     },
     icon: {
-        height: UIConstant.iconSize(),
-        width: UIConstant.iconSize(),
+        height: UILayoutConstant.iconSize,
+        width: UILayoutConstant.iconSize,
     },
 });

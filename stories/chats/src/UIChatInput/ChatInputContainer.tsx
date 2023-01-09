@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Animated, StyleSheet, View, LayoutChangeEvent } from 'react-native';
 
-import { UIStyle } from '@tonlabs/uikit.core';
 import { ColorVariants, useTheme, UIBackgroundView } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
@@ -94,7 +93,14 @@ export function ChatInputContainer({
                     },
                 ]}
             />
-            <View style={[styles.container, left == null ? UIStyle.margin.leftDefault() : null]}>
+            <View
+                style={[
+                    styles.container,
+                    {
+                        marginLeft: left == null ? UILayoutConstant.contentOffset : undefined,
+                    },
+                ]}
+            >
                 {left}
                 <View style={styles.inputMsg}>{children}</View>
                 {right}
@@ -120,6 +126,6 @@ const styles = StyleSheet.create({
     inputMsg: {
         flex: 1,
         alignSelf: 'center',
-        paddingVertical: UILayoutConstant.contentOffset,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX4,
     },
 });

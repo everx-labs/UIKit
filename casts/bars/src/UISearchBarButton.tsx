@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 
-import { UIConstant } from '@tonlabs/uikit.core';
 import { UIImage } from '@tonlabs/uikit.media';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
@@ -88,7 +87,7 @@ export function UISearchBarButton({
 const styles = StyleSheet.create({
     container: {
         minHeight: UILayoutConstant.headerHeight,
-        paddingVertical: UIConstant.smallContentOffset(),
+        paddingVertical: UILayoutConstant.contentInsetVerticalX2,
     },
     touchable: { flex: 1 },
     searchContainer: {
@@ -96,13 +95,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignSelf: 'stretch',
         alignItems: 'center',
-        borderRadius: UIConstant.mediumBorderRadius(),
+        borderRadius: UILayoutConstant.input.borderRadius,
         paddingLeft: 10,
         paddingRight: 14,
     },
     searchIcon: {
         width: UINavConstant.iconSearchSize,
         height: UINavConstant.iconSearchSize,
-        marginRight: UIConstant.tinyContentOffset(),
+        marginRight: UILayoutConstant.tinyContentOffset,
     },
 });

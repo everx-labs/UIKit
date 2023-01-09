@@ -45,7 +45,7 @@ export const CountryPickerRow: React.FC<CountryRowProps> = ({ item }: CountryRow
 
 const useStyles = makeStyles((theme: Theme) => ({
     rowContainerInner: {
-        paddingVertical: UILayoutConstant.contentOffset,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX4,
         flexDirection: 'row',
         borderBottomColor: theme[ColorVariants.LineTertiary] as string,
         borderBottomWidth: 1,

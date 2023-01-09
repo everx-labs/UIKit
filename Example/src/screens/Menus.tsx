@@ -4,7 +4,6 @@ import * as React from 'react';
 import { Platform, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { UIConstant } from '@tonlabs/uikit.core';
 import { UILargeTitleHeader } from '@tonlabs/uicast.bars';
 import { UIQRCodeScannerSheet } from '@tonlabs/uicast.qr-code-scanner-sheet';
 import {
@@ -147,7 +146,8 @@ function PinCodeMenu() {
                 forId="lockScreen"
                 style={{
                     backgroundColor: theme[ColorVariants.BackgroundPrimary],
-                    padding: UIConstant.contentOffset(),
+                    paddingVertical: UILayoutConstant.contentInsetVerticalX4,
+                    paddingHorizontal: UILayoutConstant.contentOffset,
                     borderRadius: Platform.select({ web: 10, default: 10 }),
                 }}
             >

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { I18nManager, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
-import { UIConstant } from '@tonlabs/uikit.core';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
 import { MessageStatus } from './constants';
 import type { BubbleBaseT } from './types';
@@ -64,6 +64,6 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
         justifyContent: 'flex-start',
     },
-    firstFromChain: { paddingTop: UIConstant.smallContentOffset() },
-    notFirstFromChain: { paddingTop: UIConstant.tinyContentOffset() },
+    firstFromChain: { paddingTop: UILayoutConstant.contentInsetVerticalX2 },
+    notFirstFromChain: { paddingTop: UILayoutConstant.contentInsetVerticalX1 },
 });

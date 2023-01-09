@@ -11,7 +11,7 @@ import {
     ColorVariants,
     useTheme,
 } from '@tonlabs/uikit.themes';
-import { UIConstant } from '@tonlabs/uikit.core';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
 export function BubbleConfirmSuccessful() {
     return (
@@ -49,7 +49,7 @@ export function BubbleConfirmButtons({
                 style={[
                     styles.button,
                     {
-                        marginRight: UIConstant.tinyContentOffset(),
+                        marginRight: UILayoutConstant.tinyContentOffset,
                         borderColor: theme[ColorVariants.LinePositive],
                     },
                 ]}
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
         paddingLeft: '20%',
         alignSelf: 'flex-end',
         justifyContent: 'flex-end',
-        paddingTop: UIConstant.smallContentOffset(),
+        paddingTop: UILayoutConstant.contentInsetVerticalX2,
     },
     containerLeft: {
         maxWidth: '100%',
@@ -100,23 +100,23 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         flexDirection: 'row',
         flexWrap: 'wrap',
-        paddingTop: UIConstant.smallContentOffset(),
+        paddingTop: UILayoutConstant.contentInsetVerticalX2,
     },
     answer: {
         alignItems: 'center',
         justifyContent: 'center',
-        paddingVertical: UIConstant.smallContentOffset(),
-        paddingHorizontal: UIConstant.normalContentOffset(),
-        borderRadius: UIConstant.borderRadius(),
+        paddingVertical: UILayoutConstant.contentInsetVerticalX2,
+        paddingHorizontal: UILayoutConstant.normalContentOffset,
+        borderRadius: UILayoutConstant.borderRadius,
         borderBottomRightRadius: 0,
     },
     button: {
         borderWidth: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        height: UIConstant.mediumButtonHeight(),
-        paddingHorizontal: UIConstant.normalContentOffset(),
-        borderRadius: UIConstant.borderRadius(),
+        height: UILayoutConstant.mediumButtonHeight,
+        paddingHorizontal: UILayoutConstant.normalContentOffset,
+        borderRadius: UILayoutConstant.borderRadius,
     },
     buttonTitle: {
         width: 96,
