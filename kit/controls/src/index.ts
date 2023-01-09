@@ -34,6 +34,7 @@ export * from './Haptics/Haptics';
 export * from './useHover';
 export * from './addNativeProps';
 export * from './types';
+export { UIConstant } from './constants';
 
 export const UIControl = {
     UIActionButton,
