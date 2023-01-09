@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies, @typescript-eslint/no-var-requires */
 const madge = require('madge');
 const path = require('path');
 const { parseDependencyTree, parseCircular, prettyCircular } = require('dpdm');

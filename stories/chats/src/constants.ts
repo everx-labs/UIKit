@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import { Platform } from 'react-native';
 
 export const RegExpConstants = {

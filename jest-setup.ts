@@ -1,6 +1,8 @@
 // @ts-ignore
+// eslint-disable-next-line import/no-extraneous-dependencies
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock';
 // @ts-ignore
+// eslint-disable-next-line import/no-extraneous-dependencies
 import mockDeviceInfo from 'react-native-device-info/jest/react-native-device-info-mock';
 
 jest.mock('@react-native-clipboard/clipboard', () => mockClipboard);

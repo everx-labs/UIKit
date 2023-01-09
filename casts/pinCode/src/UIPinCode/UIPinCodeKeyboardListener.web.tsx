@@ -56,7 +56,9 @@ export function useKeyboardListener(
         if (disabled) {
             document.removeEventListener('keydown', onWebKeyPressed);
 
-            return;
+            return () => {
+                // Do nothing
+            };
         }
 
         document.addEventListener('keydown', onWebKeyPressed);

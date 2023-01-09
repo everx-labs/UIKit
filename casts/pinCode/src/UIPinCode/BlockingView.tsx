@@ -17,7 +17,7 @@ function BlockingViewInner({ onBlockingViewReady, onBlockingViewGone }: Blocking
         onBlockingViewReady();
 
         return onBlockingViewGone;
-    }, []);
+    }, [onBlockingViewGone, onBlockingViewReady]);
 
     return null;
 }

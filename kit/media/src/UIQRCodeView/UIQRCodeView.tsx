@@ -45,8 +45,8 @@ export const UIQRCodeViewImpl: React.ForwardRefRenderFunction<QRCodeRef, QRCodeP
     props: QRCodeProps,
     ref: React.ForwardedRef<QRCodeRef>,
 ) => {
-    const { onError, onSuccess } = props;
-    const error = useQRCodeValueError(props.value, onError, onSuccess);
+    const { onError, onSuccess, value } = props;
+    const error = useQRCodeValueError(value, onError, onSuccess);
 
     if (error !== null) {
         return null;
