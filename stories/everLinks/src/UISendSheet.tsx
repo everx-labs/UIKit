@@ -178,25 +178,26 @@ const styles = StyleSheet.create({
         paddingHorizontal: UILayoutConstant.contentOffset,
     },
     paddingVerticalSmall: {
-        paddingVertical: UILayoutConstant.smallContentOffset,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX2,
     },
     marginVerticalNormal: {
-        marginVertical: UILayoutConstant.normalContentOffset,
+        marginVertical: UILayoutConstant.contentInsetVerticalX3,
     },
     infoContainer: {
-        marginTop: UILayoutConstant.contentOffset,
+        marginTop: UILayoutConstant.contentInsetVerticalX4,
     },
     rowContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingVertical: UILayoutConstant.contentOffset,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX4,
     },
     feeContainer: {
         flexDirection: 'row',
         alignItems: 'center',
     },
     boxButtonContainer: {
-        padding: UILayoutConstant.contentOffset,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX4,
+        paddingHorizontal: UILayoutConstant.contentOffset,
     },
 });

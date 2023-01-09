@@ -111,6 +111,6 @@ const styles = StyleSheet.create({
         marginRight: UILayoutConstant.contentOffset,
     },
     footerLabel: {
-        marginTop: UILayoutConstant.tinyContentOffset,
+        marginTop: UILayoutConstant.contentInsetVerticalX1,
     },
 });

@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
         minHeight: UIConstant.linkButtonHeight / 2,
     },
     content: {
-        paddingVertical: UILayoutConstant.normalContentOffset,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX3,
         alignSelf: 'stretch',
         flexDirection: 'row',
     },
@@ -179,6 +179,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     caption: {
-        marginTop: UILayoutConstant.tinyContentOffset,
+        marginTop: UILayoutConstant.contentInsetVerticalX1,
     },
 });

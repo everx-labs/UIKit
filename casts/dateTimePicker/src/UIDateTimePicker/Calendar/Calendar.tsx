@@ -224,6 +224,6 @@ const styles = StyleSheet.create({
     day: {
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: UILayoutConstant.contentOffset,
+        marginTop: UILayoutConstant.contentInsetVerticalX4,
     },
 });

@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     },
     lastItem: {
         paddingRight: UILayoutConstant.contentOffset,
-        paddingBottom: UILayoutConstant.contentOffset,
+        paddingBottom: UILayoutConstant.contentInsetVerticalX4,
     },
     itemSquare: {
         aspectRatio: 1,

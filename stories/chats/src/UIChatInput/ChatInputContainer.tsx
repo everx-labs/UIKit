@@ -126,6 +126,6 @@ const styles = StyleSheet.create({
     inputMsg: {
         flex: 1,
         alignSelf: 'center',
-        paddingVertical: UILayoutConstant.contentOffset,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX4,
     },
 });

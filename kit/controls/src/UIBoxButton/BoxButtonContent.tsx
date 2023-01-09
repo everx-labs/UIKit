@@ -150,6 +150,6 @@ const styles = StyleSheet.create({
     rightIcon: {
         position: 'absolute',
         right: UILayoutConstant.normalContentOffset,
-        top: UILayoutConstant.normalContentOffset,
+        top: UILayoutConstant.contentInsetVerticalX3,
     },
 });

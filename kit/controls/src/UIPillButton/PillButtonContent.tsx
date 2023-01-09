@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     },
     content: {
         maxWidth: '100%',
-        paddingVertical: UILayoutConstant.tinyContentOffset,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX1,
         paddingHorizontal: UILayoutConstant.normalContentOffset,
         alignSelf: 'stretch',
         flexDirection: 'row',
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
         paddingRight: UILayoutConstant.tinyContentOffset,
     },
     title: {
-        paddingVertical: UILayoutConstant.tinyContentOffset / 2,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX1 / 2,
     },
     icon: {
         width: UILayoutConstant.iconSize,

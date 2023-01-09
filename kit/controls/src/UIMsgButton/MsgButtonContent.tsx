@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     },
     content: {
         paddingHorizontal: UILayoutConstant.normalContentOffset,
-        paddingVertical: UILayoutConstant.smallContentOffset,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX2,
         alignSelf: 'stretch',
         flexDirection: 'row',
         justifyContent: 'center',

@@ -186,7 +186,7 @@ export function Time() {
 const styles = StyleSheet.create({
     wrapper: {
         paddingHorizontal: UILayoutConstant.contentOffset,
-        paddingTop: UILayoutConstant.contentOffset,
+        paddingTop: UILayoutConstant.contentInsetVerticalX4,
     },
     selectTimeInputContainer: {
         flexDirection: 'row',
