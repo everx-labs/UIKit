@@ -20,8 +20,8 @@ import {
     ColorVariants,
     useTheme,
 } from '@tonlabs/uikit.themes';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
-import { UILayoutConstant } from 'kit/layout/lib/typescript/src';
 import { MessageStatus, RegExpConstants, UIConstant } from './constants';
 import type { OnLongPressText, OnPressUrl, ChatPlainTextMessage, PlainTextMessage } from './types';
 import { useBubblePosition, useBubbleContainerStyle } from './useBubblePosition';
