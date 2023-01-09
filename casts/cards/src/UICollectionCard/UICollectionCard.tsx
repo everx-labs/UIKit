@@ -76,7 +76,7 @@ export function UICollectionCard({
                     <Badge
                         badge={badge}
                         testID={`collection_badge_${title}${
-                            typeof badge === 'string' ? '_count_' + badge : ''
+                            typeof badge === 'string' ? `_count_${  badge}` : ''
                         }`}
                     />
                 </View>
