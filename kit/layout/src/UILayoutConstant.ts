@@ -87,4 +87,6 @@ export const UILayoutConstant = {
 
     elasticWidthNormal: 768 /** 768 */,
     elasticWidthMax: 1280 /** 1280 */,
+
+    animationDuration: 250 /** 250 */,
 };
