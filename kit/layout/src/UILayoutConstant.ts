@@ -83,4 +83,7 @@ export const UILayoutConstant = {
     input: {
         borderRadius: 12 /** 12 */,
     },
+
+    elasticWidthNormal: 768 /** 768 */,
+    elasticWidthMax: 1280 /** 1280 */,
 };
