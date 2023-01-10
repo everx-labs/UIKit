@@ -44,6 +44,7 @@ export const UILayoutConstant = {
     contentInsetVerticalX3: 3 * GRID_LINE_HEIGHT /** 3 * GRID_LINE_HEIGHT */,
     contentInsetVerticalX4: 4 * GRID_LINE_HEIGHT /** 4 * GRID_LINE_HEIGHT */,
 
+    smallBorderRadius: 4 /** 4 */,
     borderRadius: 8 /** 8 */,
     mediumBorderRadius: 12 /** 12 */,
     alertBorderRadius: 16 /** 16 */,
