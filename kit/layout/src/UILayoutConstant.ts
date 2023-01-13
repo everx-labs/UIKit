@@ -77,23 +77,27 @@ export const UILayoutConstant = {
     spaciousContentOffset: 40,
     /** 48 */
     greatContentOffset: 48,
+    /** 56 */
+    bigContentOffset: 56,
     /** Vertical offset */
     /** 4 */
-    contentInsetVerticalX1: GRID_LINE_HEIGHT, // GRID_LINE_HEIGHT
+    contentInsetVerticalX1: GRID_LINE_HEIGHT,
     /** 8 */
-    contentInsetVerticalX2: 2 * GRID_LINE_HEIGHT, // 2 * GRID_LINE_HEIGHT
+    contentInsetVerticalX2: 2 * GRID_LINE_HEIGHT,
     /** 12 */
-    contentInsetVerticalX3: 3 * GRID_LINE_HEIGHT, // 3 * GRID_LINE_HEIGHT
+    contentInsetVerticalX3: 3 * GRID_LINE_HEIGHT,
     /** 16 */
-    contentInsetVerticalX4: 4 * GRID_LINE_HEIGHT, // 4 * GRID_LINE_HEIGHT
+    contentInsetVerticalX4: 4 * GRID_LINE_HEIGHT,
     /** 24 */
-    contentInsetVerticalX6: 6 * GRID_LINE_HEIGHT, // 6 * GRID_LINE_HEIGHT
+    contentInsetVerticalX6: 6 * GRID_LINE_HEIGHT,
     /** 32 */
-    contentInsetVerticalX8: 8 * GRID_LINE_HEIGHT, // 8 * GRID_LINE_HEIGHT
+    contentInsetVerticalX8: 8 * GRID_LINE_HEIGHT,
     /** 40 */
-    contentInsetVerticalX10: 10 * GRID_LINE_HEIGHT, // 10 * GRID_LINE_HEIGHT
+    contentInsetVerticalX10: 10 * GRID_LINE_HEIGHT,
     /** 48 */
-    contentInsetVerticalX12: 12 * GRID_LINE_HEIGHT, // 12 * GRID_LINE_HEIGHT
+    contentInsetVerticalX12: 12 * GRID_LINE_HEIGHT,
+    /** 56 */
+    contentInsetVerticalX14: 14 * GRID_LINE_HEIGHT,
 
     /** 4 */
     smallBorderRadius: 4,
