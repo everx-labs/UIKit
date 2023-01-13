@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { StyleSheet, View } from 'react-native';
 
 import { Portal } from '@tonlabs/uikit.layout';
 
@@ -57,26 +58,35 @@ export function UIPushNotice({
 
     return (
         <Portal absoluteFill>
-            <ToastNoticeContainer
-                type={UINoticeType.TopToast}
-                visible={visible}
-                onTap={onTap}
-                onCloseAnimationEnd={onNoticeCloseAnimationFinished}
-                suspendClosingTimer={clearClosingTimer}
-                continueClosingTimer={startClosingTimer}
-            >
-                {({ onPress, onLongPress, onPressOut }) => (
-                    <UIPushNoticeContent
-                        title={title}
-                        message={message}
-                        icon={icon}
-                        countdownProgress={countdownProgress}
-                        onPress={onPress}
-                        onLongPress={onLongPress}
-                        onPressOut={onPressOut}
-                    />
-                )}
-            </ToastNoticeContainer>
+            <View style={styles.container} pointerEvents="box-none">
+                <ToastNoticeContainer
+                    type={UINoticeType.TopToast}
+                    visible={visible}
+                    onTap={onTap}
+                    onCloseAnimationEnd={onNoticeCloseAnimationFinished}
+                    suspendClosingTimer={clearClosingTimer}
+                    continueClosingTimer={startClosingTimer}
+                >
+                    {({ onPress, onLongPress, onPressOut }) => (
+                        <UIPushNoticeContent
+                            title={title}
+                            message={message}
+                            icon={icon}
+                            countdownProgress={countdownProgress}
+                            onPress={onPress}
+                            onLongPress={onLongPress}
+                            onPressOut={onPressOut}
+                        />
+                    )}
+                </ToastNoticeContainer>
+            </View>
         </Portal>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        ...StyleSheet.absoluteFillObject,
+        overflow: 'hidden',
+    },
+});
