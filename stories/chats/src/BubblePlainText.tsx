@@ -1,18 +1,10 @@
 import * as React from 'react';
-import {
-    TouchableWithoutFeedback,
-    StyleSheet,
-    Platform,
-    View,
-    Animated,
-    TextStyle,
-    I18nManager,
-} from 'react-native';
+import { StyleSheet, Platform, View, Animated, TextStyle, I18nManager } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
 import { runOnUI } from 'react-native-reanimated';
 
 import { uiLocalized } from '@tonlabs/localization';
-import { hapticImpact } from '@tonlabs/uikit.controls';
+import { UIPressableArea, hapticImpact } from '@tonlabs/uikit.controls';
 import {
     UILabel,
     UILabelColors,
@@ -22,7 +14,7 @@ import {
 } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
-import { MessageStatus, RegExpConstants, UIConstant } from './constants';
+import { MessageStatus, RegExpConstants } from './constants';
 import type { OnLongPressText, OnPressUrl, ChatPlainTextMessage, PlainTextMessage } from './types';
 import { useBubblePosition, useBubbleContainerStyle } from './useBubblePosition';
 import { useBubbleBackgroundColor, useBubbleRoundedCornerStyle } from './useBubbleStyle';
@@ -129,16 +121,6 @@ function PlainTextContainer(props: PlainTextMessage & { children: React.ReactNod
     const { status, text, onLayout, onTouchText, children } = props;
     const isRTL = React.useMemo(() => I18nManager.getConstants().isRTL, []);
     const scale = React.useRef(new Animated.Value(1)).current;
-    const bubbleScaleAnimation = React.useCallback(
-        (scaleIn = false) => {
-            Animated.spring(scale, {
-                toValue: scaleIn ? UIConstant.animationScaleInFactor : 1.0,
-                friction: 3,
-                useNativeDriver: true,
-            }).start();
-        },
-        [scale],
-    );
     const position = useBubblePosition(status);
     const containerStyle = useBubbleContainerStyle(props);
     const bubbleBackgroundColor = useBubbleBackgroundColor(props);
@@ -148,7 +130,6 @@ function PlainTextContainer(props: PlainTextMessage & { children: React.ReactNod
     const textLongPressHandler = useTextLongPressHandler();
 
     const longPressHandle = React.useCallback(() => {
-        bubbleScaleAnimation(true);
         text && textLongPressHandler && textLongPressHandler(text);
         /**
          * Maybe it's not the best place to run haptic
@@ -156,14 +137,14 @@ function PlainTextContainer(props: PlainTextMessage & { children: React.ReactNod
          * so left it here, until we make new share manager
          */
         runOnUI(hapticImpact)('medium');
-    }, [text, textLongPressHandler, bubbleScaleAnimation]);
+    }, [text, textLongPressHandler]);
 
     return (
         <View style={containerStyle} onLayout={onLayout}>
-            <TouchableWithoutFeedback
-                onPressOut={() => bubbleScaleAnimation()}
+            <UIPressableArea
                 onPress={onTouchText}
                 onLongPress={longPressHandle}
+                scaleParameters={{ hovered: 1 }}
             >
                 <View>
                     <Animated.View
@@ -191,7 +172,7 @@ function PlainTextContainer(props: PlainTextMessage & { children: React.ReactNod
                         </UILabel>
                     )}
                 </View>
-            </TouchableWithoutFeedback>
+            </UIPressableArea>
         </View>
     );
 }

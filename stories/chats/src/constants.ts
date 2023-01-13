@@ -12,7 +12,6 @@ export const UIConstant = {
         default: 3 / 4,
     }),
     mediaImageMaxSizesAspectRatio: 9 / 16,
-    animationScaleInFactor: 0.95,
 };
 
 // Semantically describe a bubble position
