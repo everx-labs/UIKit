@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Platform, View, Animated, TextStyle, I18nManager } from 'react-native';
+import { StyleSheet, Platform, View, TextStyle, I18nManager } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
 import { runOnUI } from 'react-native-reanimated';
 
@@ -120,7 +120,6 @@ function BubbleTime(
 function PlainTextContainer(props: PlainTextMessage & { children: React.ReactNode }) {
     const { status, text, onLayout, onTouchText, children } = props;
     const isRTL = React.useMemo(() => I18nManager.getConstants().isRTL, []);
-    const scale = React.useRef(new Animated.Value(1)).current;
     const position = useBubblePosition(status);
     const containerStyle = useBubbleContainerStyle(props);
     const bubbleBackgroundColor = useBubbleBackgroundColor(props);
@@ -147,7 +146,7 @@ function PlainTextContainer(props: PlainTextMessage & { children: React.ReactNod
                 scaleParameters={{ hovered: 1 }}
             >
                 <View>
-                    <Animated.View
+                    <View
                         style={[
                             {
                                 paddingVertical: UILayoutConstant.contentInsetVerticalX2,
@@ -157,11 +156,10 @@ function PlainTextContainer(props: PlainTextMessage & { children: React.ReactNod
                             isRTL ? styles.msgContainerRTL : null,
                             bubbleBackgroundColor,
                             roundedCornerStyle,
-                            { transform: [{ scale }] },
                         ]}
                     >
                         {children}
-                    </Animated.View>
+                    </View>
                     {actionString && (
                         <UILabel
                             style={styles.actionString}
