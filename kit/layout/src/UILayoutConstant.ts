@@ -3,56 +3,127 @@ import { Platform } from 'react-native';
 const GRID_LINE_HEIGHT = 4;
 
 export const UILayoutConstant = {
-    iconSize: 24 /** 24 */,
+    /** 24 */
+    iconSize: 24,
+    /** 32 */
+    mediumIconSize: 32,
+    /** 128 */
+    largeIconSize: 128,
 
-    buttonBorderWidth: 1 /** 1 */,
+    /** 1 */
+    buttonBorderWidth: 1,
 
     /** ButtonHeight */
-    tinyButtonHeight: 20 /** 20 */,
-    smallButtonHeight: 32 /** 32 */,
-    mediumButtonHeight: 40 /** 40 */,
-    buttonHeight: 48 /** 48 */,
-    largeButtonHeight: 56 /** 56 */,
-    extraLargeButtonHeight: 72 /** 72 */,
+    /** 20 */
+    tinyButtonHeight: 20,
+    /** 32 */
+    smallButtonHeight: 32,
+    /** 40 */
+    mediumButtonHeight: 40,
+    /** 48 */
+    buttonHeight: 48,
+    /** 56 */
+    largeButtonHeight: 56,
+    /** 72 */
+    extraLargeButtonHeight: 72,
 
     /** CellHeight */
-    tinyCellHeight: 16 /** 16 */,
-    littleCellHeight: 20 /** 20 */,
-    smallCellHeight: 24 /** 24 */,
-    normalCellHeight: 32 /** 32 */,
-    mediumCellHeight: 40 /** 40 */,
-    defaultCellHeight: 48 /** 48 */,
-    bigCellHeight: 56 /** 56 */,
-    largeCellHeight: 64 /** 64 */,
-    greatCellHeight: 72 /** 72 */,
-    hugeCellHeight: 96 /** 96 */,
-    giantCellHeight: 128 /** 128 */,
+    /** 16 */
+    tinyCellHeight: 16,
+    /** 20 */
+    littleCellHeight: 20,
+    /** 24 */
+    smallCellHeight: 24,
+    /** 32 */
+    normalCellHeight: 32,
+    /** 40 */
+    mediumCellHeight: 40,
+    /** 48 */
+    defaultCellHeight: 48,
+    /** 56 */
+    bigCellHeight: 56,
+    /** 64 */
+    largeCellHeight: 64,
+    /** 72 */
+    greatCellHeight: 72,
+    /** 96 */
+    hugeCellHeight: 96,
+    /** 128 */
+    giantCellHeight: 128,
 
-    minimumWidthToShowFoldingNotice: 400 /** 400 */,
-    minNoticeSize: 88 /** 88 */,
-    minNoticeIconSize: 64 /** 64 */,
-    maxNoticeIconSize: 88 /** 88 */,
+    /** 400 */
+    minimumWidthToShowFoldingNotice: 400,
+    /** 88 */
+    minNoticeSize: 88,
+    /** 64 */
+    minNoticeIconSize: 64,
+    /** 88 */
+    maxNoticeIconSize: 88,
 
     /** Horizontal offset */
-    tinyContentOffset: 4 /** 4 */,
-    smallContentOffset: 8 /** 8 */,
-    normalContentOffset: 12 /** 12 */,
-    contentOffset: 16 /** 16 */,
+    /** 4 */
+    tinyContentOffset: 4,
+    /** 8 */
+    smallContentOffset: 8,
+    /** 12 */
+    normalContentOffset: 12,
+    /** 16 */
+    contentOffset: 16,
+    /** 24 */
+    mediumContentOffset: 24,
+    /** 32 */
+    hugeContentOffset: 32,
+    /** 40 */
+    spaciousContentOffset: 40,
+    /** 48 */
+    greatContentOffset: 48,
+    /** 56 */
+    bigContentOffset: 56,
     /** Vertical offset */
-    contentInsetVerticalX1: GRID_LINE_HEIGHT /** GRID_LINE_HEIGHT */,
-    contentInsetVerticalX2: 2 * GRID_LINE_HEIGHT /** 2 * GRID_LINE_HEIGHT */,
-    contentInsetVerticalX3: 3 * GRID_LINE_HEIGHT /** 3 * GRID_LINE_HEIGHT */,
-    contentInsetVerticalX4: 4 * GRID_LINE_HEIGHT /** 4 * GRID_LINE_HEIGHT */,
+    /** 4 */
+    contentInsetVerticalX1: GRID_LINE_HEIGHT,
+    /** 8 */
+    contentInsetVerticalX2: 2 * GRID_LINE_HEIGHT,
+    /** 12 */
+    contentInsetVerticalX3: 3 * GRID_LINE_HEIGHT,
+    /** 16 */
+    contentInsetVerticalX4: 4 * GRID_LINE_HEIGHT,
+    /** 24 */
+    contentInsetVerticalX6: 6 * GRID_LINE_HEIGHT,
+    /** 32 */
+    contentInsetVerticalX8: 8 * GRID_LINE_HEIGHT,
+    /** 40 */
+    contentInsetVerticalX10: 10 * GRID_LINE_HEIGHT,
+    /** 48 */
+    contentInsetVerticalX12: 12 * GRID_LINE_HEIGHT,
+    /** 56 */
+    contentInsetVerticalX14: 14 * GRID_LINE_HEIGHT,
 
-    borderRadius: 8 /** 8 */,
-    mediumBorderRadius: 12 /** 12 */,
-    alertBorderRadius: 16 /** 16 */,
-    pillButtonBorderRadius: 20 /** 20 */,
+    /** 4 */
+    smallBorderRadius: 4,
+    /** 6 */
+    normalBorderRadius: 6,
+    /** 8 */
+    borderRadius: 8,
+    /** 12 */
+    mediumBorderRadius: 12,
+    /** 16 */
+    alertBorderRadius: 16,
+    /** 20 */
+    pillButtonBorderRadius: 20,
 
-    elasticWidthCardSheet: 414 /** 414 */,
-    elasticWidthBottomSheet: 448 /** 448 */,
-    swipeThreshold: 50 /** 50 */,
-    rubberBandEffectDistance: 50 /** 50 */,
+    /** 768 */
+    elasticWidthNormal: 768,
+    /** 1280 */
+    elasticWidthMax: 1280,
+    /** 414 */
+    elasticWidthCardSheet: 414,
+    /** 448 */
+    elasticWidthBottomSheet: 448,
+    /** 50 */
+    swipeThreshold: 50,
+    /** 50 */
+    rubberBandEffectDistance: 50,
 
     cardShadow:
         Platform.OS === 'android'
@@ -78,9 +149,23 @@ export const UILayoutConstant = {
         right: 24,
     },
 
-    headerHeight: 56 /** 56 */,
+    /** 56 */
+    headerHeight: 56,
 
     input: {
-        borderRadius: 12 /** 12 */,
+        /** 12 */
+        borderRadius: 12,
     },
+
+    // Animations
+    /** 250 */
+    animationDuration: 250,
+    /** 100 */
+    feedbackDelay: 100,
+
+    // Infinite scroll
+    /** 12 */
+    initialRenderDataCount: 12, // good for displaying a tables of 1,2,3,4 columns
+    /** 0.25 */
+    infiniteScrollTreshold: 0.25, // quarter of the visible page (before was: 64);
 };

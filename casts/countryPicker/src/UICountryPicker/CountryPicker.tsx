@@ -9,6 +9,7 @@ import { UISearchBar } from '@tonlabs/uicast.bars';
 import { UIModalSheet } from '@tonlabs/uikit.popups';
 import { FlatList } from '@tonlabs/uikit.scrolls';
 import { UILinkButton } from '@tonlabs/uikit.controls';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import {
     TypographyVariants,
     UILabel,
@@ -26,7 +27,6 @@ import type {
 import { CountryPickerRow } from './CountryPickerRow';
 import { ListEmptyComponent } from './ListEmptyComponent';
 import { CountryPickerContext } from './CountryPickerContext';
-import { UIConstant } from '../constants';
 
 const COUNTRIES_URL = 'https://ton-uikit-example-7e797.web.app/countries.json';
 
@@ -218,7 +218,7 @@ export function CountryPicker({ visible, ...countryPickerProps }: WrappedCountry
             onClose={onClose}
             visible={visible}
             style={styles.sheet}
-            maxMobileWidth={UIConstant.elasticWidthNormal}
+            maxMobileWidth={UILayoutConstant.elasticWidthNormal}
         >
             <CountryPickerContent {...countryPickerProps} />
         </UIModalSheet>
