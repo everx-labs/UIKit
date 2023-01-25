@@ -1,4 +1,4 @@
-import type { SectionListProps } from 'react-native';
+import type { DefaultSectionT, SectionListProps } from 'react-native';
 
 export type SectionListDataProp = Array<{
     title: string;
@@ -28,13 +28,6 @@ export interface Parameters {
 }
 
 export type ListElement = SectionHeader | Row | SectionFooter;
-
-/**
- * @see https://reactnative.dev/docs/sectionlist
- */
-export type DefaultSectionT = {
-    [key: string]: any;
-};
 
 export type GetItemLayout<ItemT, SectionT = DefaultSectionT> = Required<
     SectionListProps<ItemT, SectionT>
