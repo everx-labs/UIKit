@@ -2,11 +2,11 @@ import * as React from 'react';
 import type { ViewProps, SectionListData, SectionList, Insets } from 'react-native';
 
 import { UILoadMoreButton } from '@tonlabs/uikit.controls';
+import { sectionListGetItemLayout } from '@tonlabs/uikit.scrolls';
 
 import { SectionExtra, UIChatListFormatter } from './UIChatListFormatter';
 import { UICommonChatList } from './UICommonChatList';
 import { DateSeparator } from './DateSeparator';
-import { sectionListGetItemLayout } from './UIChatListLayout';
 import { BubbleChatPlainText } from './BubblePlainText';
 import { BubbleSystem } from './BubbleSystem';
 import { BubbleTransaction } from './BubbleTransaction';
