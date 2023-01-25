@@ -1,52 +1,17 @@
 // Original code is taken from https://github.com/jsoendermann/rn-section-list-get-item-layout
 // with some changes applied
 
-import type { SectionListProps } from 'react-native';
-import type { ChatMessage } from './types';
-import type { SectionExtra } from './UIChatListFormatter';
+import type { DefaultSectionT } from 'react-native';
+import type { GetItemLayout, ListElement, Parameters } from './types';
 
-export type SectionListDataProp = Array<{
-    title: string;
-    data: any[];
-}>;
-
-interface SectionHeader {
-    type: 'SECTION_HEADER';
-}
-
-interface Row {
-    type: 'ROW';
-    index: number;
-}
-
-interface SectionFooter {
-    type: 'SECTION_FOOTER';
-}
-
-type ListElement = SectionHeader | Row | SectionFooter;
-
-export interface Parameters {
-    getItemHeight: (rowData?: any, sectionIndex?: number, rowIndex?: number) => number;
-    getSeparatorHeight?: (sectionIndex?: number, rowIndex?: number) => number;
-    getSectionHeaderHeight?: (sectionIndex: number) => number;
-    getSectionFooterHeight?: (sectionIndex: number) => number;
-    listHeaderHeight?: () => number;
-    listFooterHeight?: () => number;
-}
-
-type GetItemLayout = Required<SectionListProps<ChatMessage, SectionExtra>>['getItemLayout'];
-
-export type SectionListGetItemLayout = (args: Parameters) => GetItemLayout;
-
-export const sectionListGetItemLayout: SectionListGetItemLayout =
-    ({
-        getItemHeight,
-        getSeparatorHeight = () => 0,
-        getSectionHeaderHeight = () => 0,
-        getSectionFooterHeight = () => 0,
-        listHeaderHeight = () => 0,
-    }) =>
-    (data, index) => {
+export function sectionListGetItemLayout<ItemT, SectionT = DefaultSectionT>({
+    getItemHeight,
+    getSeparatorHeight = () => 0,
+    getSectionHeaderHeight = () => 0,
+    getSectionFooterHeight = () => 0,
+    listHeaderHeight = () => 0,
+}: Parameters): GetItemLayout<ItemT, SectionT> {
+    return (data, index) => {
         if (data == null) {
             return {
                 length: 0,
@@ -131,3 +96,4 @@ export const sectionListGetItemLayout: SectionListGetItemLayout =
 
         return { length, offset, index };
     };
+}
