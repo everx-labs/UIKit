@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { StyleSheet, View } from 'react-native';
 
 import { Portal } from '@tonlabs/uikit.layout';
 
@@ -7,10 +8,18 @@ import { ToastNoticeContainer } from './ToastNoticeContainer';
 import { useNoticeVisibility } from './hooks/useNoticeVisibility';
 import { Notice } from './Notice';
 
-export const UINotice: React.FC<UINoticeProps> = (props: UINoticeProps) => {
-    const { onClose, visible, type, duration, title, color, testID, action, hasCountdown, onTap } =
-        props;
-
+export const UINotice: React.FC<UINoticeProps> = ({
+    onClose,
+    visible,
+    type,
+    duration,
+    title,
+    color,
+    testID,
+    action,
+    hasCountdown,
+    onTap,
+}: UINoticeProps) => {
     const {
         noticeVisible,
         countdownValue,
@@ -30,30 +39,39 @@ export const UINotice: React.FC<UINoticeProps> = (props: UINoticeProps) => {
         default:
             return (
                 <Portal absoluteFill>
-                    <ToastNoticeContainer
-                        type={type}
-                        visible={visible}
-                        onTap={onTap}
-                        onCloseAnimationEnd={onNoticeCloseAnimationFinished}
-                        suspendClosingTimer={clearClosingTimer}
-                        continueClosingTimer={startClosingTimer}
-                    >
-                        {({ onPress, onLongPress, onPressOut }) => (
-                            <Notice
-                                title={title}
-                                color={color}
-                                testID={testID}
-                                onPress={onPress}
-                                onLongPress={onLongPress}
-                                onPressOut={onPressOut}
-                                action={action}
-                                countdownValue={countdownValue}
-                                countdownProgress={countdownProgress}
-                                hasCountdown={hasCountdown}
-                            />
-                        )}
-                    </ToastNoticeContainer>
+                    <View style={styles.container} pointerEvents="box-none">
+                        <ToastNoticeContainer
+                            type={type}
+                            visible={visible}
+                            onTap={onTap}
+                            onCloseAnimationEnd={onNoticeCloseAnimationFinished}
+                            suspendClosingTimer={clearClosingTimer}
+                            continueClosingTimer={startClosingTimer}
+                        >
+                            {({ onPress, onLongPress, onPressOut }) => (
+                                <Notice
+                                    title={title}
+                                    color={color}
+                                    testID={testID}
+                                    onPress={onPress}
+                                    onLongPress={onLongPress}
+                                    onPressOut={onPressOut}
+                                    action={action}
+                                    countdownValue={countdownValue}
+                                    countdownProgress={countdownProgress}
+                                    hasCountdown={hasCountdown}
+                                />
+                            )}
+                        </ToastNoticeContainer>
+                    </View>
                 </Portal>
             );
     }
 };
+
+const styles = StyleSheet.create({
+    container: {
+        ...StyleSheet.absoluteFillObject,
+        overflow: 'hidden',
+    },
+});

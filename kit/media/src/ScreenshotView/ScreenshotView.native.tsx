@@ -9,6 +9,7 @@ export const ScreenshotViewImpl: React.ForwardRefRenderFunction<QRCodeRef, Scree
     ref,
 ) => {
     const screenshotRef = React.useRef<ViewShot | null>(null);
+    const { children } = props;
 
     React.useImperativeHandle(
         ref,
@@ -23,7 +24,7 @@ export const ScreenshotViewImpl: React.ForwardRefRenderFunction<QRCodeRef, Scree
     return (
         // @ts-ignore
         <ViewShot ref={screenshotRef} options={{ format: 'png', result: 'base64' }}>
-            {props.children}
+            {children}
         </ViewShot>
     );
 };

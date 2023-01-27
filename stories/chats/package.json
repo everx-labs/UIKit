@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uistory.chats",
-    "version": "4.0.1",
+    "version": "4.1.0",
     "description": "Chat components for Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit",
@@ -34,24 +34,23 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/localization": "^3.0.2",
-        "@tonlabs/uicast.keyboard": "^3.1.2",
-        "@tonlabs/uikit.assets": "^3.0.2",
-        "@tonlabs/uikit.controls": "^3.1.1",
-        "@tonlabs/uikit.core": "^4.0.1",
-        "@tonlabs/uikit.inputs": "^3.1.1",
-        "@tonlabs/uikit.layout": "^3.1.1",
-        "@tonlabs/uikit.media": "^3.1.1",
-        "@tonlabs/uikit.popups": "^4.0.1",
-        "@tonlabs/uikit.scrolls": "^4.0.1",
-        "@tonlabs/uikit.themes": "^3.1.1",
+        "@tonlabs/localization": "^4.1.0",
+        "@tonlabs/uicast.keyboard": "^4.1.0",
+        "@tonlabs/uikit.assets": "^4.1.0",
+        "@tonlabs/uikit.controls": "^4.1.0",
+        "@tonlabs/uikit.inputs": "^4.1.0",
+        "@tonlabs/uikit.layout": "^4.1.0",
+        "@tonlabs/uikit.media": "^4.1.0",
+        "@tonlabs/uikit.popups": "^4.1.0",
+        "@tonlabs/uikit.scrolls": "^4.1.0",
+        "@tonlabs/uikit.themes": "^4.1.0",
         "bignumber.js": "9.0.0",
         "dayjs": "1.9.1",
         "react-native-parsed-text": "git+https://github.com/FactorBench/react-native-parsed-text.git",
         "react-native-safe-area-context": "^3.3.2"
     },
     "devDependencies": {
-        "@tonlabs/babel-plugin-transform-inline-consts": "^3.1.0",
+        "@tonlabs/babel-plugin-transform-inline-consts": "^4.1.0",
         "@types/react": "17.0.44",
         "@types/react-native": "0.67.5",
         "@types/react-native-video": "^5.0.10",
@@ -63,7 +62,7 @@
         "react-native-reanimated": "2.10.0",
         "react-native-safe-area-context": "^3.3.2",
         "react-native-svg": "^12.3.0",
-        "react-native-video": "git+https://github.com/tonlabs/react-native-video.git",
+        "react-native-video": "^6.0.0-alpha.4",
         "react-player": "^2.9.0",
         "typescript": "4.4.3"
     },
@@ -76,7 +75,7 @@
         "react-native-reanimated": "^2.10.0",
         "react-native-safe-area-context": "^3.3.2",
         "react-native-svg": "^12.3.0",
-        "react-native-video": "git+https://github.com/tonlabs/react-native-video.git",
+        "react-native-video": "^6.0.0-alpha.4",
         "react-player": "^2.9.0"
     },
     "react-native-builder-bob": {

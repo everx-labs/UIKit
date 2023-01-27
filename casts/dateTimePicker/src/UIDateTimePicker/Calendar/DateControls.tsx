@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: UILayoutConstant.smallContentOffset,
-        paddingVertical: UILayoutConstant.tinyContentOffset,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX1,
     },
     separator: {
         height: 12,

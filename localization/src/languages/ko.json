@@ -39,6 +39,261 @@
             "Prompt": "암호화 키 선택:",
             "UseKey": "키 사용"
         },
+        "Exceptions": {
+            "abi": {
+                "notSupported": {
+                    "message": "Sorry, ABI version is not supported",
+                    "hint": "Maybe we'll support it soon"
+                }
+            },
+            "browser": {
+                "startWithoutId": {
+                    "message": "Unable to start Debot with no ID specified."
+                },
+                "notInitialized": {
+                    "message": "DeBot is not initialized",
+                    "hint": "Please, initialize this Debot."
+                },
+                "interfaceNotFound": {
+                    "message": "Interface \"{0}\" is not found",
+                    "hint": "Please, use interfaces described in the DeBot Interface Specifications (IS) Consortium"
+                }
+            },
+            "default": {
+                "hints": {
+                    "sendReport": "Please, contact our Support Team"
+                },
+                "messages": {
+                    "somethingWentWrong": "Unknown error",
+                    "failedSendToDeBot": "Surf cannot send data to Debot. They can be corrupted or something else is happened"
+                }
+            },
+            "interfaces": {
+                "notFound": {
+                    "message": "Interface with address \"{0}\" is not found",
+                    "hint": "Interface with ID \"{0}\" is not supported"
+                },
+                "failedToDecode": {
+                    "message": "Cannot decode the Debot message",
+                    "hint": "Invalid message body in DeBot"
+                },
+                "methodUnsupported": {
+                    "message": "Method \"{0}\" for interface \"{1}\" is not supported",
+                    "hint": "Please, check the interface method name."
+                },
+                "failedToRunMethod": {
+                    "message": "Unable to run method \"{0}\"",
+                    "hint": "Please, check the interface method name."
+                },
+                "notSupported": {
+                    "message": "Interface is not supported",
+                    "hint": "Interface with ID \"{0}\" is not supported"
+                },
+                "failedSendToDeBot": {
+                    "message": "Unable to send data to Debot",
+                    "hint": "Please, contact our Support Team and describe your issue."
+                },
+                "addressInput": {
+                    "failedToCreateMessage": {
+                        "message": "Debot cannot create the address input interactive message because the main account isn't found"
+                    }
+                },
+                "dateInput": {
+                    "dateNotReturned": {
+                        "message": "Date was not been returned"
+                    },
+                    "timeNotReturned": {
+                        "message": "Time was not been returned"
+                    },
+                    "dateAndTimeNotFound": {
+                        "message": "DateTime was not been found"
+                    }
+                },
+                "encryption": {
+                    "wrongNonceLength": {
+                        "message": "Incorrect nonce length",
+                        "hint": "Please, check your nonce"
+                    },
+                    "failedToCreate": {
+                        "message": "Unable to run an encryption",
+                        "hint": "Please, contact our Support Team and describe your issue."
+                    }
+                },
+                "media": {
+                    "dataIsEmpty": {
+                        "message": "Data is empty",
+                        "hint": "Please, check that there is no empty data in the contract."
+                    },
+                    "dataIsInvalid": {
+                        "message": "Data is invalid",
+                        "hint": "Please, check that data in the contract is valid"
+                    }
+                },
+                "menu": {
+                    "predefinedMenuNotFound": {
+                        "message": "Predefined menu is not found",
+                        "hint": "Please, check that you have a correct chain link for this step"
+                    }
+                },
+                "securityCard": {
+                    "notPersonalized": {
+                        "message": "Card is not activated",
+                        "hint": "Please, activate your card to use it."
+                    },
+                    "notSupported": {
+                        "message": "Device is not supported",
+                        "hint": "Please, use the other NFC-equipped device."
+                    }
+                },
+                "signingBox": {
+                    "incorrectHandler": {
+                        "message": "Incorrect signing box handler in the chain link",
+                        "hint": "Please, check the chain links in the manifest"
+                    }
+                },
+                "surfSigningBox": {
+                    "incorrectGoldHandler": {
+                        "message": "Failed to get a golden key"
+                    },
+                    "incorrectSilverHandler": {
+                        "message": "Failed to get a silver key"
+                    },
+                    "incorrectBronzeHandler": {
+                        "message": "Failed to get a bronze key"
+                    }
+                },
+                "userInfo": {
+                    "failedToGetMainAccount": {
+                        "message": "Failed to get the main account address"
+                    },
+                    "failedToGetPublicKey": {
+                        "message": "Failed to get the public key of main account"
+                    },
+                    "failedToGetSigningBox": {
+                        "message": "Failed to get the signing box of main account"
+                    }
+                }
+            },
+            "manifest": {
+                "incorrectManifest": {
+                    "message": "Incorrect manifest",
+                    "hint": "Please, check your manifest."
+                },
+                "notFound": {
+                    "message": "Manifest is not found",
+                    "hint": "Manifest cannot be empty"
+                },
+                "chainNotFound": {
+                    "message": "Chain is not found",
+                    "hint": "Please, check the \"chain\" section in your manifest."
+                },
+                "incorrectChainLink": {
+                    "message": "Incorrect chain link",
+                    "hint": "Please, check that the chain link is correct."
+                },
+                "failedToApplyChainLink": {
+                    "message": "Failed to apply the chain link",
+                    "hint": "Please, check the chain links in the manifest"
+                },
+                "missedChainLink": {
+                    "message": "Failed to get the next chain link",
+                    "hint": "Please, check that all steps have a chain link"
+                },
+                "missedABI": {
+                    "message": "ABI is not found",
+                    "hint": "Unable to find the Debot ABI"
+                },
+                "failedToDecodeMessage": {
+                    "message": "Unable to decode a message from Debot.",
+                    "hint": "Please, check that DeBot has the correct ABI."
+                }
+            },
+            "queue": {
+                "empty": {
+                    "message": "DeBot queue is empty",
+                    "hint": "Please, check that DeBot is working correctly."
+                },
+                "incorrectInterfaceAddress": {
+                    "message": "Incorrect interface address",
+                    "hint": "Please, check that the message has a correct destination address."
+                },
+                "noHandle": {
+                    "message": "No debot handle is set for another browser",
+                    "hint": "Please, check that Debot with address \"{0}\" is working correctly."
+                }
+            },
+            "service": {
+                "connectorNotSet": {
+                    "message": "Connectors are not set"
+                }
+            },
+            "store": {
+                "addressNotFound": {
+                    "message": "DeBot address is not found",
+                    "hint": "Please, specify the Debot address."
+                },
+                "netNotFound": {
+                    "message": "DeBot net is not specified",
+                    "hint": "Please, specify the Debot network."
+                },
+                "connectorNotFound": {
+                    "message": "DeBot connectors are not found",
+                    "hint": "DeBot must have connectors to work correctly"
+                },
+                "signaturesServiceNotFound": {
+                    "message": "Signatures service is not found",
+                    "hint": "Please, provide signatures service."
+                },
+                "navigationServiceNotFound": {
+                    "message": "Navigation service is not found",
+                    "hint": "Please, provide navigation service."
+                },
+                "emptyQueue": {
+                    "message": "Failed to wait for the non-empty queue",
+                    "hint": "Please, check DeBot works properly as it has not returned any messages"
+                },
+                "failedToGetInfo": {
+                    "message": "Unable to get the Debot info",
+                    "hint": "Please, check the info his Debot has."
+                },
+                "failedToRestart": {
+                    "message": "Unable to run Debot after the restart",
+                    "hint": "Please, try to restart Debot once again."
+                },
+                "failedToFetch": {
+                    "message": "Unable to fetch Debot",
+                    "hint": "Please, check the DeBot's address and network."
+                },
+                "failedToStop": {
+                    "message": "Failed to stop the browser"
+                },
+                "manifestPreparingFailed": {
+                    "message": "Incorrect chain setting has been passed. The sending has failed!"
+                },
+                "presetPreparingFailed": {
+                    "message": "Preset preparation has crashed",
+                    "hint": "Check, that the message is correct"
+                },
+                "deBotWithListenerCrashed": {
+                    "message": "DeBot running with the manifest and the listener has crashed"
+                },
+                "createTransactionConfirmationMessageFailed": {
+                    "message": "Unable to create a transaction confirmation message."
+                },
+                "signingBoxNotFound": {
+                    "message": "Signing box is not found",
+                    "hint": "Please, check that the Debot has correct data for Signing box."
+                },
+                "signatureNotFound": {
+                    "message": "Signature is not found",
+                    "hint": "Please, check that Debot has correct data for Signature."
+                }
+            },
+            "unknown": {
+                "message": "Unknown error",
+                "hint": "Please, contact our Support Team and describe your issue."
+            }
+        },
         "Menu": {
             "More": "더..."
         },
@@ -88,6 +343,60 @@
         "DateSeparators": {
             "Today": "오늘",
             "Yesterday": "어제"
+        },
+        "Debots": {
+            "addressInput": {
+                "auto": "기본 주소 선택",
+                "enterAddress": "주소를 입력하세요",
+                "invalidAddress": "잘못된 에버스케일 주소입니다.",
+                "manual": "수동으로 입력"
+            },
+            "agreement": {
+                "danger": {
+                    "action": "경고 무시",
+                    "message": "이 Debot은 데이터와 자금의 보안을 위협합니다"
+                },
+                "reminder": {
+                    "action": "알겠습니다",
+                    "message": "봇은 제3자 서비스이기 때문에 사용자 신원 및 기타 정보 공개할 수 있음을 주의하십시오."
+                },
+                "warning": {
+                    "action": "계속하기",
+                    "message": "이 DeBot은 데이터와 자금의 보안을 위협할 수 있습니다"
+                }
+            },
+            "debotError": "이크! 저는 좀 망가졌어요. 연락을 유지해 주세요",
+            "defaultHello": "안녕하세요? 저는 DeBot입니다",
+            "history": "기록",
+            "newest": "최신",
+            "notFound": "Debot을 찾을 수 없습니다",
+            "queueEnd": "그뿐입니다! 제 도움이 필요하시면 저를 다시 실행해 주세요",
+            "queueEndWithManifest": "다시 시도하거나 재시도에 실패하면 DeBot을 다시 시작하십시오.",
+            "open": "DeBot을 열기",
+            "publisher": "{0}(으)로",
+            "restart": "다시 시작",
+            "retry": "다시 시도",
+            "securityCard": {
+                "notSupport": "불행하게도 귀하의 장치는 올바른 작동에 필요한 NFC를 지원하지 않습니다. 전원을 켜거나 다른 기기를 사용하세요."
+            },
+            "errors": {
+                "common": {
+                    "fetch": "DeBot 로딩 오류",
+                    "init": "DeBot 초기화 오류",
+                    "restart": "DeBot 재시작 오류"
+                },
+                "interface": {
+                    "one": "",
+                    "other": ""
+                },
+                "manifest": {
+                    "chainLinkNotFound": "체인 링크를 찾을 수 없음",
+                    "incorrect": "잘못된 매니페스트",
+                    "incorrectAbi": "잘못된 ABI 매니페스트",
+                    "incorrectChainLink": "잘못된 체인 링크",
+                    "notFound": "매니페스트를 찾을 수 없음"
+                }
+            }
         },
         "QRCode": {
             "errorReceived": "QR 코드가 생성되지 않았습니다",
@@ -242,6 +551,7 @@
     "Import": "가져오기",
     "Important": "중요합니다!",
     "In": "안에",
+    "IncorrectLink": "불행하게도 에버링크가 잘못되었습니다. 타사 서비스 개발자에게 문의하십시오.",
     "Info": "정보",
     "Information": "정보",
     "KeyTextView": {
@@ -274,6 +584,14 @@
     "Messenger": "메신저",
     "MiddleName": "중간 이름",
     "Name": "이름",
+    "Networks": {
+        "switchAlert": {
+            "message": "링크는 사용자가 연결한 네트워크와 다른 네트워크가 있습니다 . 이 링크를 열려면 네트워크를 전환하세요",
+            "stay": "네트워크 유지",
+            "switch": "전환",
+            "title": "네트워크 전환"
+        }
+    },
     "Next": "다음",
     "No": "아니오",
     "NoThankYou": "아니요, 괜찮습니다",

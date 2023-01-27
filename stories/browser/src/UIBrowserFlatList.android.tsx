@@ -1,15 +1,6 @@
 /* eslint-disable react/no-unused-prop-types */
 import * as React from 'react';
-import { FlatListProps, FlatList, Insets, ViewStyle, StyleSheet, View } from 'react-native';
-
-import { UIStyle } from '@tonlabs/uikit.core';
-
-const emptyInsets: Insets = {
-    left: 0,
-    top: 0,
-    right: 0,
-    bottom: 0,
-};
+import { FlatListProps, FlatList, ViewStyle, StyleSheet, View } from 'react-native';
 
 function getContentContainerPadding(padding: ViewStyle['padding'], inset: number | undefined) {
     if (padding == null) {
@@ -39,10 +30,6 @@ export const UIBrowserFlatList = React.memo(
         }: Props<ItemT>,
         forwardRef: React.Ref<FlatList<ItemT>>,
     ) {
-        const [internalContentInset, setInternalContentInset] = React.useState<Insets>(
-            contentInset || emptyInsets,
-        );
-
         const contentContainerStyle: ViewStyle = React.useMemo(() => {
             const style = StyleSheet.flatten(contentContainerStyleProp) || {};
 
@@ -52,31 +39,27 @@ export const UIBrowserFlatList = React.memo(
                 paddingVertical: undefined,
                 paddingLeft: getContentContainerPadding(
                     style.paddingLeft || style.paddingHorizontal,
-                    internalContentInset.left,
+                    contentInset?.left,
                 ),
                 // As the scrollable is inverted
                 paddingBottom: getContentContainerPadding(
                     style.paddingTop || style.paddingVertical,
-                    internalContentInset.top,
+                    contentInset?.top,
                 ),
                 paddingRight: getContentContainerPadding(
                     style.paddingRight || style.paddingHorizontal,
-                    internalContentInset.right,
+                    contentInset?.right,
                 ),
                 // As the scrollable is inverted
                 paddingTop: getContentContainerPadding(
                     style.paddingBottom || style.paddingVertical,
-                    internalContentInset.bottom,
+                    contentInset?.bottom,
                 ),
             };
-        }, [internalContentInset, contentContainerStyleProp]);
-
-        const onInsetsChange = React.useCallback(({ nativeEvent }: { nativeEvent: Insets }) => {
-            setInternalContentInset(nativeEvent);
-        }, []);
+        }, [contentInset, contentContainerStyleProp]);
 
         return (
-            <View style={UIStyle.common.flex()}>
+            <View style={styles.container}>
                 <FlatList
                     ref={forwardRef}
                     {...chatListProps}
@@ -86,10 +69,14 @@ export const UIBrowserFlatList = React.memo(
                     automaticallyAdjustKeyboardInsets={automaticallyAdjustKeyboardInsets}
                     // @ts-ignore
                     keyboardInsetAdjustmentBehavior="inclusive"
-                    contentInset={contentInset}
-                    onInsetsChange={onInsetsChange}
                 />
             </View>
         );
     }),
 );
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+});

@@ -3,13 +3,18 @@ import type { TextInput } from 'react-native';
 import type { SharedValue } from 'react-native-reanimated';
 import type { UIMaterialTextViewProps } from '../UIMaterialTextView/types';
 import type { InputChildren } from '../useInputChildren';
-import type { UIAmountInputEnhancedDecimalAspect } from './constants';
 
 export enum UIAmountInputEnhancedMessageType {
     Error = 'Error',
     Warning = 'Warning',
     Success = 'Success',
     Info = 'Info',
+}
+
+export enum UIAmountInputEnhancedDecimalAspect {
+    Integer = 'Integer',
+    Currency = 'Currency',
+    Precision = 'Precision',
 }
 
 export type UIAmountInputEnhancedProps = Omit<

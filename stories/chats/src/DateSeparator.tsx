@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import dayjs from 'dayjs';
 
-import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { uiLocalized } from '@tonlabs/localization';
 import {
     UILabel,
@@ -40,7 +40,9 @@ export const DateSeparator = React.memo(({ time }: { time: number }) => {
             <View
                 style={[
                     styles.dateSeparator,
-                    UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.BackgroundSecondary]),
+                    {
+                        backgroundColor: theme[ColorVariants.BackgroundSecondary],
+                    },
                 ]}
             >
                 <UILabel role={UILabelRoles.HeadlineLabel} color={UILabelColors.TextSecondary}>
@@ -56,15 +58,15 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        paddingTop: UIConstant.contentOffset(),
-        paddingBottom: UIConstant.contentOffset(),
+        paddingTop: UILayoutConstant.contentInsetVerticalX4,
+        paddingBottom: UILayoutConstant.contentInsetVerticalX4,
     },
     dateSeparator: {
         flexShrink: 1,
         justifyContent: 'center',
-        height: UIConstant.smallCellHeight(),
-        paddingVertical: UIConstant.tinyContentOffset() / 2, // TODO: use specified value instead of calculation
-        paddingHorizontal: UIConstant.smallContentOffset(),
-        borderRadius: UIConstant.smallCellHeight() / 2, // TODO: use specified value instead of calculation
+        height: UILayoutConstant.smallCellHeight,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX1 / 2, // TODO: use specified value instead of calculation
+        paddingHorizontal: UILayoutConstant.smallContentOffset,
+        borderRadius: UILayoutConstant.smallCellHeight / 2, // TODO: use specified value instead of calculation
     },
 });

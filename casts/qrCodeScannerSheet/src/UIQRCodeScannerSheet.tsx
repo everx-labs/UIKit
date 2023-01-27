@@ -215,10 +215,10 @@ export function UIQRCodeScannerSheet({
                 <TouchableOpacity
                     onPress={onClose}
                     hitSlop={{
-                        top: UILayoutConstant.contentOffset,
+                        top: UILayoutConstant.contentInsetVerticalX4,
                         left: UILayoutConstant.contentOffset,
                         right: UILayoutConstant.contentOffset,
-                        bottom: UILayoutConstant.contentOffset,
+                        bottom: UILayoutConstant.contentInsetVerticalX4,
                     }}
                     containerStyle={[styles.closeButtonContainer]}
                     style={[

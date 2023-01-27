@@ -2,12 +2,6 @@ import * as React from 'react';
 import { makeMutable, WithSpringConfig } from 'react-native-reanimated';
 import type { AmountInputContextDefaultValuesType, AmountInputContextType } from './types';
 
-export enum UIAmountInputEnhancedDecimalAspect {
-    Integer = 'Integer',
-    Currency = 'Currency',
-    Precision = 'Precision',
-}
-
 export const defaultContextValue: AmountInputContextDefaultValuesType = {
     isHovered: false,
     isFocused: false,

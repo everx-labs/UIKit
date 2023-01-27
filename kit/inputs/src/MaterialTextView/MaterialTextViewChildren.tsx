@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import { ColorVariants, UILabel, UILabelRoles } from '@tonlabs/uikit.themes';
@@ -70,7 +70,15 @@ export function MaterialTextViewText({ children }: MaterialTextViewTextProps) {
 
 export const MaterialTextViewClearButton = React.memo(function MaterialTextViewClearButton({
     clear,
+    hiddenButton = false,
 }: MaterialTextViewClearButtonProps) {
+    if (hiddenButton) {
+        return (
+            <View style={styles.iconTapZone}>
+                <View style={styles.iconSize} />
+            </View>
+        );
+    }
     return (
         <TouchableOpacity testID="clear_btn" style={styles.iconTapZone} onPress={clear}>
             <UIImage

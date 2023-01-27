@@ -2,7 +2,6 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import { UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
 import { TouchableOpacity, UIBoxButton } from '@tonlabs/uikit.controls';
 import { UILayoutConstant, PortalManager, Portal } from '@tonlabs/uikit.layout';
@@ -64,7 +63,7 @@ export function UIShareSheet({ message, subtitle, ...sheetProps }: UIShareSheetP
                         <UILabel
                             color={UILabelColors.TextSecondary}
                             role={UILabelRoles.ParagraphNote}
-                            style={UIStyle.margin.topDefault()}
+                            style={styles.headerSubtitle}
                         >
                             {subtitle || uiLocalized.ShareToTalk}
                         </UILabel>
@@ -109,7 +108,10 @@ export function UIShareSheet({ message, subtitle, ...sheetProps }: UIShareSheetP
 const styles = StyleSheet.create({
     header: {
         paddingHorizontal: UILayoutConstant.contentOffset,
-        paddingVertical: UILayoutConstant.contentOffset,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX4,
+    },
+    headerSubtitle: {
+        marginTop: UILayoutConstant.contentInsetVerticalX4,
     },
     messageContainer: {
         flex: 1,
@@ -119,6 +121,6 @@ const styles = StyleSheet.create({
     },
     btn: {
         marginHorizontal: UILayoutConstant.contentOffset,
-        marginBottom: UILayoutConstant.contentOffset,
+        marginBottom: UILayoutConstant.contentInsetVerticalX4,
     },
 });

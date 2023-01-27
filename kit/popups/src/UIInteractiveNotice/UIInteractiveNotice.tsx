@@ -1,5 +1,8 @@
 import * as React from 'react';
+import { StyleSheet, View } from 'react-native';
+
 import { Portal } from '@tonlabs/uikit.layout';
+
 import { ToastNoticeContainer } from '../Notice/ToastNoticeContainer';
 import { useNoticeVisibility } from '../Notice/hooks/useNoticeVisibility';
 import { UIInteractiveNoticeContent } from './UIInteractiveNoticeContent';
@@ -22,24 +25,33 @@ export function UIInteractiveNotice(props: UIInteractiveNoticeProps) {
 
     return (
         <Portal absoluteFill>
-            <ToastNoticeContainer
-                type={type}
-                visible={visible}
-                onTap={onTap}
-                onCloseAnimationEnd={onNoticeCloseAnimationFinished}
-                suspendClosingTimer={clearClosingTimer}
-                continueClosingTimer={startClosingTimer}
-            >
-                {({ onPress, onLongPress, onPressOut }) => (
-                    <UIInteractiveNoticeContent
-                        {...props}
-                        countdownProgress={countdownProgress}
-                        onPress={onPress}
-                        onLongPress={onLongPress}
-                        onPressOut={onPressOut}
-                    />
-                )}
-            </ToastNoticeContainer>
+            <View style={styles.container} pointerEvents="box-none">
+                <ToastNoticeContainer
+                    type={type}
+                    visible={visible}
+                    onTap={onTap}
+                    onCloseAnimationEnd={onNoticeCloseAnimationFinished}
+                    suspendClosingTimer={clearClosingTimer}
+                    continueClosingTimer={startClosingTimer}
+                >
+                    {({ onPress, onLongPress, onPressOut }) => (
+                        <UIInteractiveNoticeContent
+                            {...props}
+                            countdownProgress={countdownProgress}
+                            onPress={onPress}
+                            onLongPress={onLongPress}
+                            onPressOut={onPressOut}
+                        />
+                    )}
+                </ToastNoticeContainer>
+            </View>
         </Portal>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        ...StyleSheet.absoluteFillObject,
+        overflow: 'hidden',
+    },
+});

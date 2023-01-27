@@ -18,7 +18,6 @@ import {
     UILabelRoles,
     ColorVariants,
 } from '@tonlabs/uikit.themes';
-import { UIConstant } from '@tonlabs/uikit.core';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { uiLocalized } from '@tonlabs/localization';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
@@ -50,10 +49,10 @@ function renderRightAction({ label, onPress, accessibilityLabel }: UISearchBarRi
     return (
         <TouchableOpacity
             hitSlop={{
-                top: UIConstant.smallContentOffset(),
-                bottom: UIConstant.smallContentOffset(),
-                left: UIConstant.contentOffset(),
-                right: UIConstant.contentOffset(),
+                top: UILayoutConstant.contentInsetVerticalX2,
+                bottom: UILayoutConstant.contentInsetVerticalX2,
+                left: UILayoutConstant.contentOffset,
+                right: UILayoutConstant.contentOffset,
             }}
             onPress={onPress}
             style={styles.actionButton}
@@ -202,29 +201,29 @@ const styles = StyleSheet.create({
         minHeight: UILayoutConstant.headerHeight,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: UIConstant.smallContentOffset(),
-        paddingHorizontal: UIConstant.contentOffset(),
+        paddingVertical: UILayoutConstant.contentInsetVerticalX2,
+        paddingHorizontal: UILayoutConstant.contentOffset,
     },
     searchContainer: {
         flex: 1,
         flexDirection: 'row',
         alignSelf: 'stretch',
         alignItems: 'center',
-        borderRadius: UIConstant.mediumBorderRadius(),
+        borderRadius: UILayoutConstant.input.borderRadius,
         paddingLeft: 10,
         paddingRight: 8,
     },
     searchIcon: {
         width: UINavConstant.iconSearchSize,
         height: UINavConstant.iconSearchSize,
-        marginRight: UIConstant.tinyContentOffset(),
+        marginRight: UILayoutConstant.tinyContentOffset,
     },
     loadingIcon: {
         flex: undefined,
-        marginLeft: UIConstant.tinyContentOffset(),
+        marginLeft: UILayoutConstant.tinyContentOffset,
         marginRight: 6,
     },
     actionButton: {
-        marginLeft: UIConstant.contentOffset(),
+        marginLeft: UILayoutConstant.contentOffset,
     },
 });

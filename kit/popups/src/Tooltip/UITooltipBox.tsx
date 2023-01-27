@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { LayoutChangeEvent, ScaledSize, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { I18nManager, LayoutChangeEvent, ScaledSize, StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
+import clamp from 'lodash/clamp';
 import { ColorVariants, useTheme, Theme, makeStyles, useShadow } from '@tonlabs/uikit.themes';
 import { UILayoutConstant, Portal } from '@tonlabs/uikit.layout';
 import type { UITooltipBoxProps } from './types';
@@ -10,11 +11,13 @@ import { TargetDimensions, useTargetDimensions } from '../useTargetDimensions';
 // import { usePopupLayoutAnimationFunctions } from '../usePopupLayoutAnimationFunctions';
 import { UITooltipContent } from './UITooltipContent';
 import { UITooltipBackdrop } from './UITooltipBackdrop';
+import { useWindowDimensions } from '../useWindowDimensions';
 
 type Location = {
-    left: number;
-    top: number | undefined;
-    bottom: number | undefined;
+    top?: number;
+    bottom?: number;
+    left?: number;
+    right?: number;
 };
 type Size = {
     width: number;
@@ -28,7 +31,8 @@ const initialSize: Size = {
 function getBoundaries(windowDimensions: ScaledSize, tooltipSize: Size) {
     return {
         right: windowDimensions.width - UILayoutConstant.contentOffset - tooltipSize.width,
-        bottom: windowDimensions.height - UILayoutConstant.contentOffset - tooltipSize.height,
+        bottom:
+            windowDimensions.height - UILayoutConstant.contentInsetVerticalX4 - tooltipSize.height,
         left: UILayoutConstant.contentOffset,
     };
 }
@@ -38,6 +42,7 @@ function useTooltipLocation(
     windowDimensions: ScaledSize,
     tooltipSize: Size,
 ): Location | null {
+    const isRTL = React.useMemo(() => I18nManager.getConstants().isRTL, []);
     return React.useMemo(() => {
         if (!tooltipSize.height || !tooltipSize.width || !triggerDimensions) {
             return null;
@@ -49,9 +54,10 @@ function useTooltipLocation(
 
         let top: number | undefined = triggerDimensions.y + triggerDimensions.height;
         let bottom: number | undefined;
-        const left: number = Math.max(
+        const left: number = clamp(
+            triggerDimensions.x + horizontalOffsetToCenterTooltip,
             boundaries.left,
-            Math.min(boundaries.right, triggerDimensions.x + horizontalOffsetToCenterTooltip),
+            boundaries.right,
         );
 
         if (top > boundaries.bottom) {
@@ -59,12 +65,15 @@ function useTooltipLocation(
             bottom = windowDimensions.height - triggerDimensions.y;
         }
 
-        return {
-            left,
-            top,
-            bottom,
-        };
-    }, [triggerDimensions, windowDimensions, tooltipSize]);
+        if (isRTL) {
+            return {
+                top,
+                right: left,
+                bottom,
+            };
+        }
+        return { top, left, bottom };
+    }, [tooltipSize, triggerDimensions, windowDimensions, isRTL]);
 }
 
 function useTooltipMeasuring() {
@@ -94,7 +103,7 @@ export function UITooltipBox({ message, triggerRef, onClose, forId, testID }: UI
     const tooltipLocation = useTooltipLocation(triggerDimensions, windowDimensions, tooltipSize);
 
     const shadow = useShadow(4);
-    const styles = useStyles(theme, tooltipLocation, shadow);
+    const styles = useStyles(theme, shadow);
 
     if (!tooltipLocation) {
         return (
@@ -108,7 +117,7 @@ export function UITooltipBox({ message, triggerRef, onClose, forId, testID }: UI
         <Portal absoluteFill forId={forId}>
             <UITooltipBackdrop onTap={onClose} triggerRef={triggerRef} contentRef={contentRef} />
             <Animated.View
-                style={styles.container}
+                style={[styles.container, tooltipLocation]}
                 // entering={entering}
                 // exiting={exiting}
                 testID={testID}
@@ -123,7 +132,7 @@ export function UITooltipBox({ message, triggerRef, onClose, forId, testID }: UI
     );
 }
 
-const useStyles = makeStyles((theme: Theme, tooltipLocation: Location | null, shadow: any) => ({
+const useStyles = makeStyles((theme: Theme, shadow: any) => ({
     measureContainer: {
         position: 'absolute',
         width: UIConstant.tooltip.maxWidth,
@@ -132,7 +141,6 @@ const useStyles = makeStyles((theme: Theme, tooltipLocation: Location | null, sh
     },
     container: {
         position: 'absolute',
-        ...tooltipLocation,
     },
     shadowContainer: {
         backgroundColor: theme[ColorVariants.BackgroundBW],

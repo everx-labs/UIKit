@@ -7,7 +7,6 @@ export * from './UIChatInput/useHasSeveralLinesInInput';
 export * from './BubbleQRCode';
 export * from './BubbleMedia';
 export * from './Bubble';
-export { sectionListGetItemLayout } from './UIChatListLayout';
 export * from './useAutoHandleInsets';
 
 export {

@@ -24,7 +24,7 @@ export const ToggleSwitcher: React.FC<UISwitcherProps> = ({
 
     const cursorStyle = React.useMemo(() => {
         return disabled ? styles.showDefault : styles.showPointer;
-    }, [disabled]);
+    }, [disabled, styles]);
 
     const { toggleBackgroundStyle, panGestureHandler, toggleImageOnStyle } = useImageStyle(
         active,
@@ -34,7 +34,7 @@ export const ToggleSwitcher: React.FC<UISwitcherProps> = ({
 
     const switcherStyle = React.useMemo(() => {
         return disabled ? styles.disabledSwitcherStyle : toggleBackgroundStyle;
-    }, [disabled, toggleBackgroundStyle]);
+    }, [disabled, styles, toggleBackgroundStyle]);
 
     return (
         <TapGestureHandler

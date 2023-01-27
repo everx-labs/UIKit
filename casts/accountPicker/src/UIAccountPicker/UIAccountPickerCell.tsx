@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 
-import { UIStyle } from '@tonlabs/uikit.core';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
 
 import type { AccountPickerCellProps, CellContainerPropsBase } from './types';
@@ -59,13 +59,13 @@ export function UIAccountPickerCell({
         }
 
         return (
-            <View style={UIStyle.common.flexRow()}>
+            <View style={styles.accountContainer}>
                 <UILabel
                     color={accountNameColor}
                     ellipsizeMode="middle"
                     numberOfLines={1}
                     role={accountNameRole}
-                    style={[UIStyle.common.flex(), UIStyle.margin.rightDefault()]}
+                    style={styles.accountLabel}
                 >
                     {getAccountName}
                 </UILabel>
@@ -83,7 +83,7 @@ export function UIAccountPickerCell({
             <UILabel
                 color={UILabelColors.TextTertiary}
                 role={UILabelRoles.ParagraphFootnote}
-                style={UIStyle.margin.topTiny()}
+                style={styles.footerLabel}
             >
                 {account.name}
             </UILabel>
@@ -101,3 +101,16 @@ export function UIAccountPickerCell({
         </CellContainer>
     );
 }
+
+const styles = StyleSheet.create({
+    accountContainer: {
+        flexDirection: 'row',
+    },
+    accountLabel: {
+        flex: 1,
+        marginRight: UILayoutConstant.contentOffset,
+    },
+    footerLabel: {
+        marginTop: UILayoutConstant.contentInsetVerticalX1,
+    },
+});

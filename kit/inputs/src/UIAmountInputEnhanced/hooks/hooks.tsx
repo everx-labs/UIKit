@@ -3,8 +3,11 @@ import BigNumber from 'bignumber.js';
 import { uiLocalized } from '@tonlabs/localization';
 import { DerivedValue, useSharedValue } from 'react-native-reanimated';
 import type { UIMaterialTextViewRef, UIMaterialTextViewMask } from '../../UIMaterialTextView';
-import { UIAmountInputEnhancedDecimalAspect } from '../constants';
-import type { UIAmountInputEnhancedProps, UIAmountInputEnhancedRef } from '../types';
+import {
+    UIAmountInputEnhancedProps,
+    UIAmountInputEnhancedDecimalAspect,
+    UIAmountInputEnhancedRef,
+} from '../types';
 import {
     getEmptyUIMaterialTextViewRef,
     useMaterialTextViewChildren,

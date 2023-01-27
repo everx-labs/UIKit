@@ -9,7 +9,6 @@ import {
     UIQRCodeView,
     useQRCodeValueError,
 } from '@tonlabs/uikit.media';
-import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import {
@@ -21,6 +20,7 @@ import {
     useTheme,
 } from '@tonlabs/uikit.themes';
 import { UIPressableArea } from '@tonlabs/uikit.controls';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
 import { useBubbleContainerStyle, useBubblePosition } from './useBubblePosition';
 import { useBubbleBackgroundColor, useBubbleRoundedCornerStyle } from './useBubbleStyle';
@@ -70,8 +70,10 @@ const renderError = (
             <View
                 style={[
                     roundedCornerStyle,
-                    UIStyle.padding.verticalNormal(),
-                    UIStyle.padding.horizontalNormal(),
+                    {
+                        paddingVertical: UILayoutConstant.contentInsetVerticalX3,
+                        paddingHorizontal: UILayoutConstant.normalContentOffset,
+                    },
                     errorBubble,
                 ]}
             >
@@ -108,8 +110,8 @@ export const QRCodeContainer: React.FC<{
             return;
         }
 
-        onPress!(base64);
-    }, [onPress]);
+        onPress?.(base64);
+    }, [onPress, qrCodeRef]);
 
     if (onPress) {
         return (
@@ -123,7 +125,7 @@ export const QRCodeContainer: React.FC<{
 };
 
 export const BubbleQRCode: React.FC<QRCodeMessage> = (message: QRCodeMessage) => {
-    const { status, data, onError, onSuccess } = message;
+    const { status, data, onError, onSuccess, onLayout, onPress } = message;
     const theme = useTheme();
     const position = useBubblePosition(status);
     const containerStyle = useBubbleContainerStyle(message);
@@ -131,7 +133,7 @@ export const BubbleQRCode: React.FC<QRCodeMessage> = (message: QRCodeMessage) =>
     const roundedCornerStyle = useBubbleRoundedCornerStyle(
         message,
         position,
-        UIConstant.mediumBorderRadius(),
+        UILayoutConstant.mediumBorderRadius,
     );
     const styles = useStyles(theme);
     const ref = React.useRef<QRCodeRef | null>(null);
@@ -149,17 +151,19 @@ export const BubbleQRCode: React.FC<QRCodeMessage> = (message: QRCodeMessage) =>
     }
 
     return (
-        <View style={containerStyle} onLayout={message.onLayout}>
+        <View style={containerStyle} onLayout={onLayout}>
             <View
                 style={[
-                    UIStyle.padding.verticalNormal(),
-                    UIStyle.padding.horizontalNormal(),
+                    {
+                        paddingVertical: UILayoutConstant.contentInsetVerticalX3,
+                        paddingHorizontal: UILayoutConstant.normalContentOffset,
+                    },
                     bubbleBackgroundColor,
                     roundedCornerStyle,
                 ]}
             >
                 {/** @ts-ignore */}
-                <QRCodeContainer qrCodeRef={ref} style={styles.qrCode} onPress={message.onPress}>
+                <QRCodeContainer qrCodeRef={ref} style={styles.qrCode} onPress={onPress}>
                     <UIQRCodeView
                         ref={ref}
                         size={QRCodeSize.Medium}
@@ -176,7 +180,7 @@ export const BubbleQRCode: React.FC<QRCodeMessage> = (message: QRCodeMessage) =>
 
 const useStyles = makeStyles((theme: Theme) => ({
     qrCode: {
-        borderRadius: UIConstant.mediumBorderRadius(),
+        borderRadius: UILayoutConstant.borderRadius,
         overflow: 'hidden',
     },
     errorBubble: {

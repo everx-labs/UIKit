@@ -48,6 +48,7 @@ import iconButtonPlus from './resources/btn_plus/btn_plus.png';
 import iconButtonPlusDisabled from './resources/btn_plus_disabled/btn_plus_disabled.png';
 import iconButtonStickerEnabled from './resources/btn_sticker_enabled/stickerEnabled.png';
 import iconButtonStickerDisabled from './resources/btn_sticker_disabled/stickerDisabled.png';
+import iconAlertError from './resources/ico-error/alert-error.png';
 import iconArrowDownWhite from './resources/ico-arrow-down/ico-arrow-down-white.png';
 import iconArrowLeft from './resources/ico-arrow-left/ico-arrow-left.png';
 import iconArrowLeftBlack from './resources/ico-arrow-left/ico-arrow-left-black.png';
@@ -182,6 +183,7 @@ export const UIAssets = {
             buttonPlusDisabled: iconButtonPlusDisabled,
             buttonStickerDisabled: iconButtonStickerDisabled,
             buttonStickerEnabled: iconButtonStickerEnabled,
+            alertError: iconAlertError,
             arrowDownWhite: iconArrowDownWhite,
             arrowLeft: iconArrowLeft,
             arrowLeftBlack: iconArrowLeftBlack,

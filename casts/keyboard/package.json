@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uicast.keyboard",
-    "version": "3.1.2",
+    "version": "4.1.0",
     "description": "Keyboard related things for UIKit",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",
@@ -35,9 +35,9 @@
     ],
     "dependencies": {
         "@react-native-community/hooks": "^2.6.0",
-        "@tonlabs/uikit.core": "^4.0.1",
-        "@tonlabs/uikit.inputs": "^3.1.1",
-        "@tonlabs/uikit.themes": "^3.1.1"
+        "@tonlabs/uikit.inputs": "^4.1.0",
+        "@tonlabs/uikit.layout": "^4.1.0",
+        "@tonlabs/uikit.themes": "^4.1.0"
     },
     "devDependencies": {
         "@types/react": "17.0.44",

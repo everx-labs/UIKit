@@ -1,28 +1,23 @@
 import type { WithSpringConfig } from 'react-native-reanimated';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
 export const UIConstant = {
-    iconSize: 24,
-
     loaderSize: 18,
 
     buttonBorderWidth: 1,
 
-    boxButtonHeight: 48,
-    msgButtonHeight: 40,
-    pillButtonHeight: 32,
-    linkButtonHeight: 48,
-    actionButtonHeight: 40,
+    boxButtonHeight: UILayoutConstant.buttonHeight,
+    msgButtonHeight: UILayoutConstant.mediumButtonHeight,
+    pillButtonHeight: UILayoutConstant.smallButtonHeight,
+    linkButtonHeight: UILayoutConstant.buttonHeight,
+    actionButtonHeight: UILayoutConstant.mediumButtonHeight,
     actionButtonIconSize: 16,
 
     showMoreButtonIndicatorSizeMedium: 18,
     showMoreButtonIndicatorSizeSmall: 12,
-    showMoreButtonSizeMedium: 40,
-    showMoreButtonSizeSmall: 32,
+    showMoreButtonSizeMedium: UILayoutConstant.mediumButtonHeight,
+    showMoreButtonSizeSmall: UILayoutConstant.smallButtonHeight,
 
-    tinyContentOffset: 4,
-    smallContentOffset: 8,
-    normalContentOffset: 12,
-    alertBorderRadius: 12,
     pillButtonBorderRadius: 20,
 
     switcher: {

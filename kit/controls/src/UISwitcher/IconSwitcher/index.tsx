@@ -2,6 +2,7 @@ import * as React from 'react';
 import { processColor, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { ColorVariants, Theme, useTheme, makeStyles } from '@tonlabs/uikit.themes';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { RawButton } from '../RawButton';
 import { UISwitcherProps, UISwitcherVariant } from '../types';
 import { useHover } from '../../useHover';
@@ -18,17 +19,17 @@ const getShape = (variant: UISwitcherVariant) => {
     switch (variant) {
         case UISwitcherVariant.Check:
             return {
-                width: UIConstant.iconSize - UIConstant.switcher.squarePadding * 2,
-                height: UIConstant.iconSize - UIConstant.switcher.squarePadding * 2,
+                width: UILayoutConstant.iconSize - UIConstant.switcher.squarePadding * 2,
+                height: UILayoutConstant.iconSize - UIConstant.switcher.squarePadding * 2,
                 borderRadius: UIConstant.switcher.squareBorderRadius,
             };
         case UISwitcherVariant.Radio:
         case UISwitcherVariant.Select:
         default:
             return {
-                width: UIConstant.iconSize - UIConstant.switcher.circlePadding * 2,
-                height: UIConstant.iconSize - UIConstant.switcher.circlePadding * 2,
-                borderRadius: UIConstant.iconSize - UIConstant.switcher.circlePadding * 2,
+                width: UILayoutConstant.iconSize - UIConstant.switcher.circlePadding * 2,
+                height: UILayoutConstant.iconSize - UIConstant.switcher.circlePadding * 2,
+                borderRadius: UILayoutConstant.iconSize - UIConstant.switcher.circlePadding * 2,
             };
     }
 };
@@ -54,7 +55,7 @@ export const IconSwitcher: React.FC<UISwitcherProps> = ({
 
     const cursorStyle = React.useMemo(() => {
         return disabled ? styles.showDefault : styles.showPointer;
-    }, [disabled]);
+    }, [disabled, styles]);
 
     const { imageOnStyle, imageOffOpacity, imageOffBorderColor } = useImageStyle(
         active,
@@ -111,8 +112,8 @@ const useStyles = makeStyles((theme: Theme, variant: UISwitcherVariant) => ({
         justifyContent: 'center',
     },
     buttonSwitcherStyle: {
-        width: UIConstant.iconSize,
-        height: UIConstant.iconSize,
+        width: UILayoutConstant.iconSize,
+        height: UILayoutConstant.iconSize,
         alignItems: 'center',
         justifyContent: 'center',
     },

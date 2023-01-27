@@ -195,6 +195,6 @@ const styles = StyleSheet.create({
     divider: {
         height: 1,
         marginHorizontal: UILayoutConstant.contentOffset,
-        marginTop: UILayoutConstant.contentOffset,
+        marginTop: UILayoutConstant.contentInsetVerticalX4,
     },
 });

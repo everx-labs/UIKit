@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uicast.bars",
-    "version": "3.1.1",
+    "version": "4.1.0",
     "description": "Bars on Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",
@@ -36,15 +36,14 @@
     "dependencies": {
         "@react-native-community/hooks": "^2.6.0",
         "@react-navigation/core": "^5.16.1",
-        "@tonlabs/localization": "^3.0.2",
-        "@tonlabs/uikit.assets": "^3.0.2",
-        "@tonlabs/uikit.controls": "^3.1.1",
-        "@tonlabs/uikit.core": "^4.0.1",
-        "@tonlabs/uikit.inputs": "^3.1.1",
-        "@tonlabs/uikit.layout": "^3.1.1",
-        "@tonlabs/uikit.media": "^3.1.1",
-        "@tonlabs/uikit.scrolls": "^4.0.1",
-        "@tonlabs/uikit.themes": "^3.1.1",
+        "@tonlabs/localization": "^4.1.0",
+        "@tonlabs/uikit.assets": "^4.1.0",
+        "@tonlabs/uikit.controls": "^4.1.0",
+        "@tonlabs/uikit.inputs": "^4.1.0",
+        "@tonlabs/uikit.layout": "^4.1.0",
+        "@tonlabs/uikit.media": "^4.1.0",
+        "@tonlabs/uikit.scrolls": "^4.1.0",
+        "@tonlabs/uikit.themes": "^4.1.0",
         "react-native-safe-area-context": "^3.3.2"
     },
     "devDependencies": {

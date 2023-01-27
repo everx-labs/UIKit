@@ -34,6 +34,7 @@ function convertTextToBigNumber(text: string): BigNumber | undefined {
 
 export function useOnChangeText(
     onChangeAmount: (amount: BigNumber | undefined) => void,
+    checkInputHasValue: (text: string) => string,
     ref: React.RefObject<UIMaterialTextViewRef>,
 ) {
     const previousTextRef = React.useRef<string>('');
@@ -47,10 +48,11 @@ export function useOnChangeText(
                 ref.current?.changeText(previousTextRef.current, false);
                 return;
             }
+            checkInputHasValue(text);
             onChangeAmount(amount);
             previousTextRef.current = text;
         },
-        [onChangeAmount, ref],
+        [checkInputHasValue, onChangeAmount, ref],
     );
 }
 
@@ -134,20 +136,40 @@ export function useExtendedRef(
 
 export function useUIAmountInputChildren(
     children: UIAmountInputProps['children'],
+    hideClearButton: UIAmountInputProps['hideClearButton'],
     inputHasValue: boolean,
     isFocused: boolean,
     isHovered: boolean,
+    editable: boolean,
     clear: (() => void) | undefined,
 ): UIAmountInputProps['children'] {
     const materialTextViewChildren = useMaterialTextViewChildren(children);
 
-    if (materialTextViewChildren) {
+    if (materialTextViewChildren && materialTextViewChildren.length > 0) {
+        /**
+         * We don't show the ClearButton when we show any children
+         */
         return materialTextViewChildren;
     }
 
-    if (inputHasValue && (isFocused || isHovered)) {
+    if (hideClearButton) {
+        /**
+         * We don't need to reserve the place for the ClearButton
+         * because it can't appear if hideClearButton provided.
+         */
+        return undefined;
+    }
+
+    if (editable && inputHasValue && (isFocused || isHovered)) {
+        /**
+         * Show the ClearButton only if no other children, some text is shown
+         * and the Input is editable and focused or hovered.
+         */
         return <MaterialTextViewClearButton clear={clear} />;
     }
 
-    return undefined;
+    /**
+     * Reserve space for the ClearButton because it may appear.
+     */
+    return <MaterialTextViewClearButton hiddenButton />;
 }

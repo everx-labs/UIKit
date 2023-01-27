@@ -5,7 +5,7 @@ import { TapGestureHandler } from 'react-native-gesture-handler';
 
 import { UIAssets } from '@tonlabs/uikit.assets';
 
-import { Portal } from '@tonlabs/uikit.layout';
+import { Portal, UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIImage } from '@tonlabs/uikit.media';
 import { TouchableOpacity, useHover } from '@tonlabs/uikit.controls';
 import { UIBackgroundView, UIBackgroundViewColors, ColorVariants } from '@tonlabs/uikit.themes';
@@ -38,7 +38,7 @@ function UIFoldingNotice({ visible, icon, children, testID }: UINoticeCommonProp
     const visibleAnim = React.useRef(new Animated.Value(-containerWidth)).current;
     const foldingAnim = React.useRef(new Animated.Value(0)).current;
     const iconPaddingAnim = React.useRef(
-        new Animated.Value(UIConstant.normalContentOffset),
+        new Animated.Value(UILayoutConstant.normalContentOffset),
     ).current;
     const iconHoverAnim = React.useRef(new Animated.Value(UIConstant.minNoticeIconSize)).current;
     const windowWidth = useWindowDimensions().width;
@@ -56,14 +56,14 @@ function UIFoldingNotice({ visible, icon, children, testID }: UINoticeCommonProp
 
     const show = React.useCallback(() => {
         Animated.spring(visibleAnim, {
-            toValue: UIConstant.contentOffset * 2,
+            toValue: UILayoutConstant.contentOffset * 2,
             useNativeDriver: false,
         }).start();
     }, [visibleAnim]);
 
     const hide = React.useCallback(() => {
         Animated.spring(visibleAnim, {
-            toValue: -containerWidth - UIConstant.contentOffset * 2,
+            toValue: -containerWidth - UILayoutConstant.contentOffset * 2,
             useNativeDriver: false,
         }).start();
     }, [visibleAnim, containerWidth]);
@@ -90,7 +90,7 @@ function UIFoldingNotice({ visible, icon, children, testID }: UINoticeCommonProp
                 duration: 150,
             }),
             Animated.timing(iconPaddingAnim, {
-                toValue: UIConstant.normalContentOffset,
+                toValue: UILayoutConstant.normalContentOffset,
                 useNativeDriver: false,
                 duration: 150,
             }),
@@ -252,14 +252,14 @@ function UIClosableNotice({ visible, onClose, icon, children, testID }: UINotice
 
     const show = React.useCallback(() => {
         Animated.spring(visibleAnim, {
-            toValue: UIConstant.contentOffset * 2,
+            toValue: UILayoutConstant.contentOffset * 2,
             useNativeDriver: false,
         }).start();
     }, [visibleAnim]);
 
     const hide = React.useCallback(() => {
         Animated.spring(visibleAnim, {
-            toValue: -containerWidth - UIConstant.contentOffset * 2,
+            toValue: -containerWidth - UILayoutConstant.contentOffset * 2,
             useNativeDriver: false,
         }).start();
     }, [visibleAnim, containerWidth]);
@@ -337,8 +337,8 @@ export function UIPromoNotice({ folding = false, ...props }: UIPromoNoticeProps)
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
-        bottom: UIConstant.contentOffset * 2,
-        right: UIConstant.contentOffset * 2,
+        bottom: UILayoutConstant.contentOffset * 2,
+        right: UILayoutConstant.contentOffset * 2,
     },
     notice: {
         width: '100%',
@@ -347,11 +347,11 @@ const styles = StyleSheet.create({
         maxWidth: 'auto',
         flexDirection: 'row',
         overflow: 'hidden',
-        borderRadius: UIConstant.alertBorderRadius,
-        ...UIConstant.cardShadow,
+        borderRadius: UILayoutConstant.alertBorderRadius,
+        ...UILayoutConstant.cardShadow,
     },
     noticeIcon: {
-        borderRadius: UIConstant.alertBorderRadius,
+        borderRadius: UILayoutConstant.alertBorderRadius,
         justifyContent: 'center',
         alignItems: 'center',
         overflow: 'hidden',
@@ -359,18 +359,19 @@ const styles = StyleSheet.create({
     closableNoticeIcon: {
         width: UIConstant.minNoticeIconSize,
         height: UIConstant.minNoticeIconSize,
-        margin: UIConstant.normalContentOffset,
+        marginVertical: UILayoutConstant.contentInsetVerticalX3,
+        marginHorizontal: UILayoutConstant.normalContentOffset,
     },
     content: {
-        paddingVertical: UIConstant.normalContentOffset,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX4,
         flexDirection: 'row',
     },
     contentContainer: {
-        paddingHorizontal: UIConstant.tinyContentOffset,
+        paddingHorizontal: UILayoutConstant.tinyContentOffset,
         justifyContent: 'center',
     },
     noticeButton: {
-        marginHorizontal: UIConstant.normalContentOffset,
-        height: UIConstant.smallCellHeight,
+        marginHorizontal: UILayoutConstant.normalContentOffset,
+        height: UILayoutConstant.smallCellHeight,
     },
 });

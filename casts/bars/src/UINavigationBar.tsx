@@ -3,7 +3,6 @@ import { Platform, StyleSheet, View } from 'react-native';
 
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
-import { UIConstant } from '@tonlabs/uikit.core';
 import { TouchableOpacity } from '@tonlabs/uikit.controls';
 import {
     UIBackgroundView,
@@ -204,11 +203,11 @@ const styles = StyleSheet.create({
         top: UILayoutConstant.contentInsetVerticalX2,
         bottom: UILayoutConstant.contentInsetVerticalX2,
         left:
-            UIConstant.iconSize() +
+            UILayoutConstant.iconSize +
             UILayoutConstant.contentInsetVerticalX2 +
             UINavConstant.scrollContentInsetHorizontal,
         right:
-            UIConstant.iconSize() +
+            UILayoutConstant.iconSize +
             UILayoutConstant.contentInsetVerticalX2 +
             UINavConstant.scrollContentInsetHorizontal,
         alignItems: 'center',

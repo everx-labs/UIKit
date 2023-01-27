@@ -1,8 +1,12 @@
 import * as React from 'react';
 import { Platform } from 'react-native';
 import { SharedValue, useWorkletCallback } from 'react-native-reanimated';
-import { AmountInputContext, UIAmountInputEnhancedDecimalAspect, UIConstants } from '../constants';
-import type { FormatText, UIAmountInputEnhancedProps } from '../types';
+import { AmountInputContext, UIConstants } from '../constants';
+import {
+    FormatText,
+    UIAmountInputEnhancedProps,
+    UIAmountInputEnhancedDecimalAspect,
+} from '../types';
 import { useAmountMaskApplyer } from './amountMask';
 import { useDerivedReactValue } from './hooks';
 

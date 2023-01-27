@@ -4,6 +4,7 @@ export * from './SectionList';
 export * from './useHasScroll';
 export * from './wrapScrollableComponent';
 export * from './Lists';
+export * from './SectionListGetItemLayout';
 
 export type { ScrollableParentScrollHandler } from './Context';
 export {

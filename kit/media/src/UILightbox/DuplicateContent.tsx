@@ -8,7 +8,6 @@ import Animated, {
 } from 'react-native-reanimated';
 import { ColorVariants, Theme, useTheme, makeStyles, useStatusBar } from '@tonlabs/uikit.themes';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { UIConstant as UICoreConstant } from '@tonlabs/uikit.core';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { useBackHandler } from '@react-native-community/hooks';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -183,6 +182,7 @@ export const DuplicateContent = ({
 const useStyles = makeStyles((theme: Theme, insets: EdgeInsets) => ({
     duplicateContainer: {
         ...StyleSheet.absoluteFillObject,
+        overflow: 'hidden',
     },
     duplicate: {
         ...StyleSheet.absoluteFillObject,
@@ -213,7 +213,7 @@ const useStyles = makeStyles((theme: Theme, insets: EdgeInsets) => ({
         paddingHorizontal: UILayoutConstant.contentOffset,
     },
     backButton: {
-        width: UICoreConstant.iconSize(),
-        height: UICoreConstant.iconSize(),
+        width: UILayoutConstant.iconSize,
+        height: UILayoutConstant.iconSize,
     },
 }));

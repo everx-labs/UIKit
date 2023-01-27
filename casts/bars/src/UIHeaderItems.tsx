@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ImageProps, ImageStyle, StyleProp, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { UIConstant } from '@tonlabs/uikit.core';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIImage } from '@tonlabs/uikit.media';
 import { UILabel, UILabelColors, UILabelRoles, ColorVariants } from '@tonlabs/uikit.themes';
 
@@ -197,8 +197,8 @@ export function UIHeaderItems({ items = [] }: { items?: HeaderItem[] }) {
  * increased clickable area.
  */
 export const hitSlop = {
-    top: UIConstant.contentOffset(),
-    bottom: UIConstant.contentOffset(),
+    top: UILayoutConstant.contentInsetVerticalX4,
+    bottom: UILayoutConstant.contentInsetVerticalX4,
     // it's non-standart to achieve 26 (by design) between items
     left: UINavConstant.headerItemHorizontalInset,
     right: UINavConstant.headerItemHorizontalInset,
@@ -211,8 +211,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     headerIcon: {
-        width: UIConstant.iconSize(),
-        height: UIConstant.iconSize(),
+        width: UILayoutConstant.iconSize,
+        height: UILayoutConstant.iconSize,
     },
     headerItemMargin: {
         marginLeft: 26,

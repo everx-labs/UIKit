@@ -35,6 +35,12 @@ export type UIAmountInputProps = Omit<
      */
     message?: string;
     /**
+     * If set, the clear button will not be displayed when the input:
+     * (editable) and (doesn't have children) and (contains text content) and (is in focus or hovered)
+     * @default false
+     */
+    hideClearButton?: boolean;
+    /**
      *  As children you can provide only one or two of this component:
      *  `UIAmountInput.Icon`
      *  `UIAmountInput.Action`

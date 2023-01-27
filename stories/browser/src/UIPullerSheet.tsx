@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { UIConstant } from '@tonlabs/uikit.core';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIBottomSheet, useIntrinsicSizeScrollView } from '@tonlabs/uikit.popups';
 import { ScrollView } from '@tonlabs/uikit.scrolls';
@@ -9,7 +8,7 @@ import { ScrollView } from '@tonlabs/uikit.scrolls';
 function SheetContent({ children }: { children: React.ReactNode }) {
     const insets = useSafeAreaInsets();
 
-    const paddingBottom = Math.max(insets?.bottom || 0, UIConstant.contentOffset());
+    const paddingBottom = Math.max(insets?.bottom || 0, UILayoutConstant.contentInsetVerticalX4);
     const { style: scrollIntrinsicStyle, onContentSizeChange } = useIntrinsicSizeScrollView();
     return (
         <ScrollView

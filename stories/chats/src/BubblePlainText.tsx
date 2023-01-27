@@ -1,19 +1,10 @@
 import * as React from 'react';
-import {
-    TouchableWithoutFeedback,
-    StyleSheet,
-    Platform,
-    View,
-    Animated,
-    Text,
-    TextStyle,
-} from 'react-native';
+import { StyleSheet, Platform, View, TextStyle, I18nManager } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
 import { runOnUI } from 'react-native-reanimated';
 
-import { UIConstant, UIStyle } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
-import { hapticImpact } from '@tonlabs/uikit.controls';
+import { UIPressableArea, hapticImpact } from '@tonlabs/uikit.controls';
 import {
     UILabel,
     UILabelColors,
@@ -21,6 +12,7 @@ import {
     ColorVariants,
     useTheme,
 } from '@tonlabs/uikit.themes';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
 import { MessageStatus, RegExpConstants } from './constants';
 import type { OnLongPressText, OnPressUrl, ChatPlainTextMessage, PlainTextMessage } from './types';
@@ -108,31 +100,27 @@ function BubbleTime(
         isHidden?: boolean;
     },
 ) {
+    const { isHidden, style, formattedTime, text } = props;
     return (
         <UILabel
-            role={UILabelRoles.ParagraphFootnote}
-            color={props.isHidden ? UILabelColors.Transparent : getTimeFontColor(props)}
-            style={props.style}
+            testID={createTestId('chat_text_message%_time', text)}
+            role={UILabelRoles.NarrowParagraphFootnote}
+            color={isHidden ? UILabelColors.Transparent : getTimeFontColor(props)}
+            style={style}
         >
             {/* Use spaces instead of margins
              *  since they're not working for nested text
              *  \u00A0 is https://en.wikipedia.org/wiki/Non-breaking_space
              */}
-            {`\u00A0\u00A0${props.formattedTime}`}
+            {`\u00A0\u00A0${formattedTime}`}
         </UILabel>
     );
 }
 
 function PlainTextContainer(props: PlainTextMessage & { children: React.ReactNode }) {
-    const scale = React.useRef(new Animated.Value(1)).current;
-    const bubbleScaleAnimation = (scaleIn = false) => {
-        Animated.spring(scale, {
-            toValue: scaleIn ? UIConstant.animationScaleInFactor() : 1.0,
-            friction: 3,
-            useNativeDriver: true,
-        }).start();
-    };
-    const position = useBubblePosition(props.status);
+    const { status, text, onLayout, onTouchText, children } = props;
+    const isRTL = React.useMemo(() => I18nManager.getConstants().isRTL, []);
+    const position = useBubblePosition(status);
     const containerStyle = useBubbleContainerStyle(props);
     const bubbleBackgroundColor = useBubbleBackgroundColor(props);
     const roundedCornerStyle = useBubbleRoundedCornerStyle(props, position);
@@ -141,36 +129,37 @@ function PlainTextContainer(props: PlainTextMessage & { children: React.ReactNod
     const textLongPressHandler = useTextLongPressHandler();
 
     const longPressHandle = React.useCallback(() => {
-        bubbleScaleAnimation(true);
-        props.text && textLongPressHandler && textLongPressHandler(props.text);
+        text && textLongPressHandler && textLongPressHandler(text);
         /**
          * Maybe it's not the best place to run haptic
          * but I don't want to put it in legacy package
          * so left it here, until we make new share manager
          */
         runOnUI(hapticImpact)('medium');
-    }, [props.text, textLongPressHandler, bubbleScaleAnimation]);
+    }, [text, textLongPressHandler]);
 
     return (
-        <View style={containerStyle} onLayout={props.onLayout}>
-            <TouchableWithoutFeedback
-                onPressOut={() => bubbleScaleAnimation()}
-                onPress={props.onTouchText}
+        <View style={containerStyle} onLayout={onLayout}>
+            <UIPressableArea
+                onPress={onTouchText}
                 onLongPress={longPressHandle}
+                scaleParameters={{ hovered: 1 }}
             >
                 <View>
-                    <Animated.View
+                    <View
                         style={[
-                            UIStyle.padding.verticalSmall(),
-                            UIStyle.padding.horizontalNormal(),
+                            {
+                                paddingVertical: UILayoutConstant.contentInsetVerticalX2,
+                                paddingHorizontal: UILayoutConstant.normalContentOffset,
+                            },
                             styles.msgContainer,
+                            isRTL ? styles.msgContainerRTL : null,
                             bubbleBackgroundColor,
                             roundedCornerStyle,
-                            { transform: [{ scale }] },
                         ]}
                     >
-                        {props.children}
-                    </Animated.View>
+                        {children}
+                    </View>
                     {actionString && (
                         <UILabel
                             style={styles.actionString}
@@ -181,27 +170,24 @@ function PlainTextContainer(props: PlainTextMessage & { children: React.ReactNod
                         </UILabel>
                     )}
                 </View>
-            </TouchableWithoutFeedback>
+            </UIPressableArea>
         </View>
     );
 }
 
 export function BubbleChatPlainText(props: ChatPlainTextMessage) {
-    const urlStyle = useUrlStyle(props.status);
-    const formattedTime = React.useMemo(
-        () => uiLocalized.formatTime(props.time || Date.now()),
-        [props.time],
-    );
+    const { status, time, text } = props;
+    const urlStyle = useUrlStyle(status);
+    const formattedTime = React.useMemo(() => uiLocalized.formatTime(time || Date.now()), [time]);
 
     const urlPressHandler = useUrlPressHandler();
 
     return (
         <PlainTextContainer {...props}>
             <UILabel
-                testID={createTestId('chat_text_message%', props.text)}
+                testID={createTestId('chat_text_message%', text)}
                 role={UILabelRoles.ParagraphText}
                 color={getFontColor(props)}
-                style={styles.textCell}
             >
                 <ParsedText
                     parse={[
@@ -218,45 +204,25 @@ export function BubbleChatPlainText(props: ChatPlainTextMessage) {
                         },
                     ]}
                 >
-                    {props.text}
+                    {text}
                 </ParsedText>
-                <BubbleTime
-                    {...props}
-                    isHidden
-                    style={styles.timeHidden}
-                    formattedTime={formattedTime}
-                />
             </UILabel>
-            {/* The idea is to always draw time in a corner
-             * but it should be kinda wrapped by a main text.
-             * In order to achive it we draw it two times.
-             * First time we draw it with a main text of a message
-             * but at the same time make it invisible, this allow us
-             * to have a proper padding for the last line.
-             * That padding is needed for a time that we draw second time,
-             * except this time we place it with `position: absolute` in a corner.
-             */}
-            <Text
-                testID={createTestId('chat_text_message%_time', props.text)}
-                style={styles.timeFloating}
-            >
-                <BubbleTime {...props} formattedTime={formattedTime} />
-            </Text>
+            <BubbleTime {...props} formattedTime={formattedTime} />
         </PlainTextContainer>
     );
 }
 
 export function BubbleSimplePlainText(props: PlainTextMessage) {
-    const urlStyle = useUrlStyle(props.status);
+    const { status, text } = props;
+    const urlStyle = useUrlStyle(status);
     const urlPressHandler = useUrlPressHandler();
 
     return (
         <PlainTextContainer {...props}>
             <UILabel
-                testID={createTestId('chat_text_message%', props.text)}
+                testID={createTestId('chat_text_message%', text)}
                 role={UILabelRoles.ParagraphText}
                 color={getFontColor(props)}
-                style={styles.textCell}
             >
                 <ParsedText
                     parse={[
@@ -268,7 +234,7 @@ export function BubbleSimplePlainText(props: PlainTextMessage) {
                         },
                     ]}
                 >
-                    {props.text}
+                    {text}
                 </ParsedText>
             </UILabel>
         </PlainTextContainer>
@@ -276,9 +242,6 @@ export function BubbleSimplePlainText(props: PlainTextMessage) {
 }
 
 const styles = StyleSheet.create({
-    textCell: {
-        textAlign: 'left',
-    },
     urlReceived: {
         // Some android devices seem to render the underline wrongly
         textDecorationLine: Platform.OS === 'android' ? 'none' : 'underline',
@@ -287,32 +250,18 @@ const styles = StyleSheet.create({
         // Some android devices seem to render the underline wrongly
         textDecorationLine: Platform.OS === 'android' ? 'none' : 'underline',
     },
-    timeHidden: {
-        // Beside we set transparent color
-        // (that needed mostly for Android)
-        // we need opacity for web
-        opacity: 0,
-        ...Platform.select({
-            web: {
-                userSelect: 'none',
-            },
-        }),
-    },
-    timeFloating: {
-        position: 'absolute',
-        lineHeight: Platform.select({
-            web: 24,
-            // Less then ParagraphText by 2, for some reason it works better
-            default: 22,
-        }),
-        bottom: UIConstant.smallContentOffset(),
-        right: UIConstant.normalContentOffset(),
-    },
     msgContainer: {
         position: 'relative',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
+    },
+    msgContainerRTL: {
+        flexDirection: 'row-reverse',
     },
     actionString: {
         textAlign: 'right',
-        paddingTop: UIConstant.tinyContentOffset(),
+        paddingTop: UILayoutConstant.contentInsetVerticalX1,
     },
 });

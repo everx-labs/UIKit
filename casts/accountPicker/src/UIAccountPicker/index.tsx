@@ -1,8 +1,8 @@
 import React from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { UIStyle } from '@tonlabs/uikit.core';
 import { UILabel, UILabelColors, UILabelRoles } from '@tonlabs/uikit.themes';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { AccountPickerProps } from './types';
 import { UIAccountPickerCell } from './UIAccountPickerCell';
 
@@ -20,7 +20,7 @@ export function UIAccountPicker({
             <UILabel
                 color={UILabelColors.TextTertiary}
                 role={UILabelRoles.ParagraphLabel}
-                style={UIStyle.margin.bottomTiny()}
+                style={style.title}
             >
                 {title}
             </UILabel>
@@ -51,3 +51,9 @@ export function UIAccountPicker({
         </View>
     );
 }
+
+const style = StyleSheet.create({
+    title: {
+        marginBottom: UILayoutConstant.contentInsetVerticalX1,
+    },
+});

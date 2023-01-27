@@ -64,6 +64,9 @@ export type MaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
      * It must not be changed between renders.
      */
     mask?: MaterialTextViewMask;
+    /**
+     * A callback that is called when the cursor is over the input.
+     */
     onHover?: (isHovered: boolean) => void;
 };
 
@@ -121,7 +124,15 @@ export type MaterialTextViewTextProps = {
 };
 
 export type MaterialTextViewClearButtonProps = {
-    clear: (() => void) | undefined;
+    /**
+     * The callback that calls when the CleraButton was pressed
+     */
+    clear?: (() => void) | undefined;
+    /**
+     * Should the button to be just empty container with size of the visible button
+     * to reserve space for the button.
+     */
+    hiddenButton?: boolean;
 };
 
 export type MaterialTextViewInputState = {

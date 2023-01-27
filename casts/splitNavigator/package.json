@@ -1,6 +1,6 @@
 {
     "name": "@tonlabs/uicast.split-navigator",
-    "version": "3.1.1",
+    "version": "4.1.0",
     "description": "Split navigator on Tonlabs's UIKit",
     "scripts": {
         "tsc": "tsc --noEmit --composite false",
@@ -34,10 +34,10 @@
         "src/"
     ],
     "dependencies": {
-        "@tonlabs/uicast.stack-navigator": "^3.1.1",
-        "@tonlabs/uikit.controls": "^3.1.1",
-        "@tonlabs/uikit.media": "^3.1.1",
-        "@tonlabs/uikit.themes": "^3.1.1",
+        "@tonlabs/uicast.stack-navigator": "^4.1.0",
+        "@tonlabs/uikit.controls": "^4.1.0",
+        "@tonlabs/uikit.media": "^4.1.0",
+        "@tonlabs/uikit.themes": "^4.1.0",
         "nanoid": "^3.3.1",
         "react-native-safe-area-context": "^3.3.2"
     },

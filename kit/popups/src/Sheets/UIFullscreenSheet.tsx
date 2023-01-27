@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { Platform, StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import { useDimensions } from '@tonlabs/uicast.keyboard';
 
 import { UISheet, UISheetProps } from './UISheet/UISheet';
+import { useWindowDimensions } from '../useWindowDimensions';
 
 export type UIFullscreenSheetProps = UISheetProps & {
     style?: StyleProp<ViewStyle>;
@@ -21,31 +21,11 @@ export function UIFullscreenSheet({
     statusBarTriggerColor = 'primary',
     ...rest
 }: UIFullscreenSheetProps) {
-    const {
-        screen: { height: screenHeight },
-        window: { height: windowHeight },
-    } = useDimensions();
+    const { height } = useWindowDimensions();
 
     const fullscreenHeight = React.useMemo(() => {
-        /**
-         * On different platforms it behave differently.
-         *
-         * On web `screenHeight` is equal to a device screen height
-         * a browser window is usually smaller (and can be resized).
-         */
-        if (Platform.OS === 'web') {
-            return windowHeight + UILayoutConstant.rubberBandEffectDistance;
-        }
-
-        /**
-         * On iOS it seems `windowHeight` is equal to screenHeight.
-         *
-         * On Android `windowHeight` doesn't include a status bar height and
-         * a navigation bar (the one on the bottom). Since we use edge-to-edge
-         * right now we want to use `screenHeight` to be fullscreen.
-         */
-        return screenHeight + UILayoutConstant.rubberBandEffectDistance;
-    }, [screenHeight, windowHeight]);
+        return height + UILayoutConstant.rubberBandEffectDistance;
+    }, [height]);
 
     const sheetStyle = React.useMemo(() => {
         const flattenStyle = StyleSheet.flatten(style);

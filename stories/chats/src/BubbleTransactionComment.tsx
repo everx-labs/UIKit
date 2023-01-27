@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, I18nManager, StyleProp, ViewStyle } from 'react-native';
 
-import { UIStyle, UIConstant } from '@tonlabs/uikit.core';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import {
     UILabel,
@@ -22,56 +22,66 @@ type Props = TransactionComment & {
     type: TransactionType;
 };
 
-const getBubbleCornerStyle = (position: BubblePosition) => {
+const getBubbleCornerStyle = (position: BubblePosition, isRTL: boolean) => {
     if (position === BubblePosition.right) {
-        return styles.rightCorner;
+        return isRTL ? styles.leftCorner : styles.rightCorner;
     }
     return null;
 };
 
-const useBubbleColor = (props: Props) => {
+const useBubbleColor = (props: Props): StyleProp<ViewStyle> => {
     const theme = useTheme();
 
     if (props.status === MessageStatus.Aborted) {
-        return [UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.BackgroundNegative])];
+        return {
+            backgroundColor: theme[ColorVariants.BackgroundNegative],
+        };
     }
 
     if (props.type === TransactionType.Expense) {
-        return [UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.StaticBackgroundBlack])];
+        return {
+            backgroundColor: theme[ColorVariants.StaticBackgroundBlack],
+        };
     }
 
     if (props.type === TransactionType.Income) {
-        return [UIStyle.color.getBackgroundColorStyle(theme[ColorVariants.BackgroundPositive])];
+        return {
+            backgroundColor: theme[ColorVariants.BackgroundPositive],
+        };
     }
 
     return null;
 };
 
 export function BubbleTransactionComment(props: Props) {
-    const position = useBubblePosition(props.status);
+    const { status, encrypted, text } = props;
+    const position = useBubblePosition(status);
     const bubbleColor = useBubbleColor(props);
+    const isRTL = React.useMemo(() => I18nManager.getConstants().isRTL, []);
 
     return (
         <View
             style={[
                 styles.msgContainer,
-                UIStyle.padding.verticalSmall(),
-                UIStyle.padding.horizontalNormal(),
-                getBubbleCornerStyle(position),
+                {
+                    paddingVertical: UILayoutConstant.contentInsetVerticalX2,
+                    paddingHorizontal: UILayoutConstant.normalContentOffset,
+                    opacity: status === MessageStatus.Pending ? 0.7 : 1,
+                },
+                getBubbleCornerStyle(position, isRTL),
                 bubbleColor,
-                props.status === MessageStatus.Pending && UIStyle.common.opacity70(),
-                props.encrypted && styles.msgContainerEncrypted,
+                encrypted && styles.msgContainerEncrypted,
             ]}
         >
             <UILabel
-                testID={`transaction_comment_${props.text}`}
+                testID={`transaction_comment_${text}`}
                 role={UILabelRoles.ParagraphText}
                 color={UILabelColors.StaticTextPrimaryLight}
                 style={styles.text}
             >
-                {props.text}
+                {text}
             </UILabel>
-            {props.encrypted && (
+            {encrypted && (
                 <View style={styles.keyThin}>
                     <Image source={UIAssets.icons.ui.keyThin} />
                 </View>
@@ -85,12 +95,12 @@ const KEY_THIN_WIDTH = 16;
 const styles = StyleSheet.create({
     msgContainer: {
         position: 'relative',
-        borderRadius: UIConstant.borderRadius(),
-        marginTop: UIConstant.tinyContentOffset(),
+        borderRadius: UILayoutConstant.borderRadius,
+        marginTop: UILayoutConstant.contentInsetVerticalX1,
         maxWidth: '100%',
     },
     msgContainerEncrypted: {
-        paddingRight: KEY_THIN_WIDTH + UIConstant.smallContentOffset(), // take the place for the key icon
+        paddingRight: KEY_THIN_WIDTH + UILayoutConstant.smallContentOffset, // take the place for the key icon
     },
     text: {
         textAlign: 'left', // TODO: LTR support?
@@ -98,11 +108,11 @@ const styles = StyleSheet.create({
     keyThin: {
         position: 'absolute',
         width: KEY_THIN_WIDTH,
-        bottom: UIConstant.smallContentOffset(),
-        right: UIConstant.smallContentOffset(),
+        bottom: UILayoutConstant.contentInsetVerticalX2,
+        right: UILayoutConstant.smallContentOffset,
     },
     leftCorner: {
-        borderBottomLeftRadius: 0,
+        borderTopLeftRadius: 0,
     },
     rightCorner: {
         borderTopRightRadius: 0,

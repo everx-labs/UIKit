@@ -33,6 +33,8 @@
         "flow",
         "tsc",
         "tsc-example",
+        "eslint:check",
+        "prettier:check",
         "cycles:check"
     ],
     "devDependencies": {

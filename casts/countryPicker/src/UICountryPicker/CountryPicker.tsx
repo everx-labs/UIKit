@@ -4,12 +4,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { View, Platform, Keyboard } from 'react-native';
 import { useKeyboard } from '@react-native-community/hooks';
 
-import { UIConstant } from '@tonlabs/uikit.core';
 import { uiLocalized } from '@tonlabs/localization';
 import { UISearchBar } from '@tonlabs/uicast.bars';
 import { UIModalSheet } from '@tonlabs/uikit.popups';
 import { FlatList } from '@tonlabs/uikit.scrolls';
 import { UILinkButton } from '@tonlabs/uikit.controls';
+import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import {
     TypographyVariants,
     UILabel,
@@ -218,7 +218,7 @@ export function CountryPicker({ visible, ...countryPickerProps }: WrappedCountry
             onClose={onClose}
             visible={visible}
             style={styles.sheet}
-            maxMobileWidth={UIConstant.elasticWidthNormal()}
+            maxMobileWidth={UILayoutConstant.elasticWidthNormal}
         >
             <CountryPickerContent {...countryPickerProps} />
         </UIModalSheet>

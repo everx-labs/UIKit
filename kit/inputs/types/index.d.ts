@@ -1,5 +1,3 @@
-declare module '@tonlabs/uikit.core';
-
 type InputController = {
     setTextAndCaretPosition: (text: string, caretPosition: number) => void;
 };

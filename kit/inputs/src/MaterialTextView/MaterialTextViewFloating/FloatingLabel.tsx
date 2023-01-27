@@ -1,7 +1,16 @@
 import * as React from 'react';
-import { LayoutChangeEvent, StyleSheet, View, TextStyle, ViewStyle, StyleProp } from 'react-native';
+import {
+    LayoutChangeEvent,
+    StyleSheet,
+    View,
+    TextStyle,
+    ViewStyle,
+    StyleProp,
+    I18nManager,
+} from 'react-native';
 import Animated, {
     interpolate,
+    SharedValue,
     useAnimatedStyle,
     useDerivedValue,
     useSharedValue,
@@ -68,10 +77,12 @@ function Label({ children, onLabelLayout, isHovered, editable }: LabelProps) {
     );
 }
 
-function getFoldedX(width: number): number {
+function getFoldedX(width: number, isRTLShared: SharedValue<boolean>): number {
     'worklet';
 
-    return (width * (1 - FOLDED_LABEL_SCALE)) / 2 - LEFT_OFFSET_OF_UI_LABEL_TEXT_FROM_EDGE / 2;
+    const xOffset =
+        (width * (1 - FOLDED_LABEL_SCALE)) / 2 - LEFT_OFFSET_OF_UI_LABEL_TEXT_FROM_EDGE / 2;
+    return isRTLShared.value ? -xOffset : xOffset;
 }
 
 function useOnLabelLayout(
@@ -116,8 +127,10 @@ export function FloatingLabel({
         return expandedLabelWidth.value && expandedLabelHeight.value ? 1 : 0;
     });
 
+    const isRTLShared = useSharedValue(I18nManager.getConstants().isRTL);
+
     const labelContainerStyle: StyleProp<ViewStyle> = useAnimatedStyle(() => {
-        const foldedX: number = getFoldedX(expandedLabelWidth.value);
+        const foldedX: number = getFoldedX(expandedLabelWidth.value, isRTLShared);
         const expandedYValue =
             (expandedLabelHeight.value * (1 - FOLDED_LABEL_SCALE)) / 2 - expandedLabelHeight.value;
         return {

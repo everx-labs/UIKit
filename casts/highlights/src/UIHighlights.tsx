@@ -1,5 +1,13 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, ViewStyle, Platform, LayoutChangeEvent } from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    ViewStyle,
+    Platform,
+    LayoutChangeEvent,
+    I18nManager,
+} from 'react-native';
 import Animated, {
     runOnJS,
     scrollTo,
@@ -17,6 +25,9 @@ import { useOnWheelHandler } from './useOnWheelHandler';
 import { WebPositionControl } from './WebPositionControls';
 import { runOnUIPlatformSelect } from './runOnUIPlatformSelect';
 import { HighlightsNativeGestureRefProvider } from './HighlightsNativeGestureRefContext';
+import { useCards } from './useCards';
+import type { UIHighlightsContentInset, UIHighlightsProps } from './types';
+import { normalizeScrollX } from './RtlConverter';
 
 // @inline
 const ADJUST_NONE = 0;
@@ -24,8 +35,6 @@ const ADJUST_NONE = 0;
 const ADJUST_LEFT = 1;
 // @inline
 const ADJUST_RIGHT = 2;
-
-type UIHighlightsContentInset = { left?: number; right?: number };
 
 function DebugView({
     currentGravityPosition,
@@ -53,50 +62,6 @@ function DebugView({
     );
 }
 
-type UIHighlightsProps = {
-    /**
-     * Items of underlying ScrollView.
-     * Be aware that though it was built for any children,
-     * we still recommend to use pre-defined one,
-     * see UIHighlightCard // TODO
-     */
-    children: React.ReactNode;
-    /**
-     * Space between children, doesn't apply for a first item.
-     */
-    spaceBetween?: number;
-    /**
-     * Space from edges to be applied from either left or right side.
-     *
-     * It's recommended to set `left` edge to more than 0, since it applies
-     * visual feedback for items that are on the left side,
-     * they will be visible for the size of the `left` property,
-     * that make it clear for a user that there's a content to the left
-     */
-    contentInset?: UIHighlightsContentInset;
-    /**
-     * Mobile only
-     *
-     * Whether items should stick to the left edge
-     * after drag was end.
-     *
-     * Default - false
-     *
-     * Doesn't work on the web due to macos scroll inertia problem
-     */
-    pagingEnabled?: boolean;
-    /**
-     * Whether debug view is visible
-     */
-    debug?: boolean;
-    /**
-     * Whether controls panel is visible
-     *
-     * Default - false
-     */
-    controlsHidden?: boolean;
-};
-
 /**
  * Works kind of like a https://reactnative.dev/docs/scrollview#pagingenabled
  * except it's made from scratch to unify behaviour on all platforms
@@ -109,53 +74,69 @@ export function UIHighlights({
     pagingEnabled = false,
     controlsHidden = false,
 }: UIHighlightsProps) {
+    const scrollRef = useAnimatedRef<Animated.ScrollView>();
+
+    const scrollViewWidthShared = useSharedValue(0);
+    const scrollViewContentWidthShared = useSharedValue(0);
+
     const currentGravityPosition = useSharedValue(0);
     const currentProgress = useSharedValue(0);
+
+    const isRtlShared = useSharedValue(I18nManager.getConstants().isRTL);
 
     const {
         onItemLayout,
         calculateCurrentPosition,
         calculateClosestX,
-        calculateClosestLeftX,
-        calculateClosestRightX,
-        sharedContext,
-    } = usePositions(React.Children.count(children));
+        calculateClosestPreviousX,
+        calculateClosestNextX,
+    } = usePositions(
+        React.Children.count(children),
+        scrollViewContentWidthShared,
+        scrollViewWidthShared,
+        isRtlShared,
+    );
 
-    const scrollRef = useAnimatedRef<Animated.ScrollView>();
+    const onScrollViewLayout = React.useCallback(
+        (event: LayoutChangeEvent) => {
+            const {
+                nativeEvent: {
+                    layout: { width },
+                },
+            } = event;
 
-    const scrollViewWidthRef = React.useRef<number>(0);
-    const scrollViewContentWidthRef = React.useRef<number>(0);
-    const onScrollViewLayout = React.useCallback((event: LayoutChangeEvent) => {
-        const {
-            nativeEvent: {
-                layout: { width },
-            },
-        } = event;
-        scrollViewWidthRef.current = width;
-    }, []);
+            scrollViewWidthShared.value = width;
+        },
+        [scrollViewWidthShared],
+    );
 
-    const onScrollViewSizeChange = React.useCallback((w: number) => {
-        scrollViewContentWidthRef.current = w;
-    }, []);
+    const onScrollViewSizeChange = React.useCallback(
+        (w: number) => {
+            scrollViewContentWidthShared.value = w;
+        },
+        [scrollViewContentWidthShared],
+    );
 
     type ScrollContext = { adjustOnMomentum: number };
     const scrollHandler = useAnimatedScrollHandler<ScrollContext>({
         onScroll(event) {
             const {
-                contentOffset: { x },
+                contentOffset: { x: rawX },
             } = event;
 
-            if (x == null || isNaN(x)) {
+            if (rawX == null || isNaN(rawX)) {
                 return;
             }
 
-            // Check if we've reached the end
-            if (x >= scrollViewContentWidthRef.current - scrollViewWidthRef.current) {
-                // Set the current gravity position as for the last item
-                currentGravityPosition.value = sharedContext.value.positions.length - 1;
-                currentProgress.value = 0;
-                return;
-            }
+            /**
+             * We invert x-coordinate for RTL mode to simplify calculations
+             */
+            const x = normalizeScrollX(
+                rawX,
+                isRtlShared.value,
+                scrollViewWidthShared.value,
+                scrollViewContentWidthShared.value,
+            );
 
             const { gravityPosition, progress } = calculateCurrentPosition(
                 x,
@@ -178,7 +159,7 @@ export function UIHighlights({
             if (velocity != null) {
                 if (velocity.x > 0) {
                     ctx.adjustOnMomentum = runOnUIPlatformSelect({
-                        android: ADJUST_LEFT,
+                        android: isRtlShared.value ? ADJUST_RIGHT : ADJUST_LEFT,
                         default: ADJUST_RIGHT,
                     });
 
@@ -186,7 +167,7 @@ export function UIHighlights({
                 }
                 if (velocity.x < 0) {
                     ctx.adjustOnMomentum = runOnUIPlatformSelect({
-                        android: ADJUST_RIGHT,
+                        android: isRtlShared.value ? ADJUST_LEFT : ADJUST_RIGHT,
                         default: ADJUST_LEFT,
                     });
                     return;
@@ -214,9 +195,9 @@ export function UIHighlights({
             let closestX = 0;
 
             if (ctx.adjustOnMomentum === ADJUST_LEFT) {
-                closestX = calculateClosestLeftX(currentGravityPosition.value);
+                closestX = calculateClosestPreviousX(currentGravityPosition.value);
             } else if (ctx.adjustOnMomentum === ADJUST_RIGHT) {
-                closestX = calculateClosestRightX(currentGravityPosition.value);
+                closestX = calculateClosestNextX(currentGravityPosition.value);
             } else {
                 closestX = calculateClosestX(x, currentGravityPosition.value);
             }
@@ -242,6 +223,8 @@ export function UIHighlights({
     );
 
     const nativeGestureRef = React.useRef<NativeViewGestureHandler>(null);
+
+    const cards = useCards(children, contentInset, spaceBetween, onItemLayout);
 
     if (!React.Children.count(children)) {
         // return null if the list of cards is empty;
@@ -295,43 +278,7 @@ export function UIHighlights({
                     onContentSizeChange={onScrollViewSizeChange}
                 >
                     <HighlightsNativeGestureRefProvider gestureRef={nativeGestureRef}>
-                        {React.Children.map(children, (child, itemIndex) => {
-                            if (!React.isValidElement(child)) {
-                                return null;
-                            }
-                            return (
-                                <View
-                                    key={child.key}
-                                    style={
-                                        itemIndex !== 0
-                                            ? {
-                                                  paddingLeft: spaceBetween,
-                                              }
-                                            : null
-                                    }
-                                    onLayout={({
-                                        nativeEvent: {
-                                            layout: { x },
-                                        },
-                                    }) => {
-                                        onItemLayout(
-                                            itemIndex,
-                                            // To have a visual feedback that
-                                            // there are some items to the left
-                                            // decrease the `x` coord by the `contentInset`
-                                            // if it's present
-                                            //
-                                            // Math.trunc here is to eliminate float coords,
-                                            // that due to IEEE 754 implementation in JS
-                                            // can lead to errors
-                                            Math.trunc(x - (contentInset.left ?? 0)),
-                                        );
-                                    }}
-                                >
-                                    {child}
-                                </View>
-                            );
-                        })}
+                        {cards}
                     </HighlightsNativeGestureRefProvider>
                 </Animated.ScrollView>
             </NativeViewGestureHandler>
@@ -344,8 +291,8 @@ export function UIHighlights({
                     <WebPositionControl
                         scrollRef={scrollRef}
                         currentGravityPosition={currentGravityPosition}
-                        calculateClosestLeftX={calculateClosestLeftX}
-                        calculateClosestRightX={calculateClosestRightX}
+                        calculateClosestPreviousX={calculateClosestPreviousX}
+                        calculateClosestNextX={calculateClosestNextX}
                     />
                 </View>
             )}

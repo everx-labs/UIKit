@@ -118,6 +118,6 @@ const styles = StyleSheet.create({
         borderRadius: UIConstant.calendar.dayCellPaddingBorderRadius,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: UILayoutConstant.contentOffset,
+        marginTop: UILayoutConstant.contentInsetVerticalX4,
     },
 });
