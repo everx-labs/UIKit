@@ -48,16 +48,16 @@ export function useSetText(
                 shouldSetText = defaultConfig.shouldSetText,
             } = config;
 
-            formattedText.value = newFormattedText;
-            selectionEndPosition.value = newCaretPosition;
-            normalizedText.value = newNormalizedText;
-
             if (shouldSetText) {
                 setTextAndCaretPosition(ref, inputManagerRef, newFormattedText, newCaretPosition);
             }
-            if (callOnChangeProp) {
+            if (callOnChangeProp && newNormalizedText !== normalizedText.value) {
                 runOnJS(onChangeNormalizedText)(newNormalizedText);
             }
+
+            formattedText.value = newFormattedText;
+            selectionEndPosition.value = newCaretPosition;
+            normalizedText.value = newNormalizedText;
         },
     );
 
