@@ -16,7 +16,7 @@ type InputMessageProps = {
     children: React.ReactNode;
 };
 
-export function InputMessage({ text, type, children }: InputMessageProps) {
+export function InputMessage({ text, type = InputMessageType.Info, children }: InputMessageProps) {
     const commentColor = React.useMemo(() => {
         switch (type) {
             case InputMessageType.Error:

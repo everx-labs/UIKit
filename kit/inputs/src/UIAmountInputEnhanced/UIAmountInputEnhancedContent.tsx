@@ -1,56 +1,32 @@
 import * as React from 'react';
-import Animated, {
-    interpolate,
-    runOnUI,
-    useAnimatedProps,
-    useAnimatedRef,
-    useAnimatedStyle,
-    useDerivedValue,
-    useSharedValue,
-    withSpring,
-} from 'react-native-reanimated';
-import { LayoutChangeEvent, NativeModules, Platform, TextStyle, View } from 'react-native';
+import Animated, { runOnUI, useAnimatedRef, useSharedValue } from 'react-native-reanimated';
+import { NativeModules, Platform, TextStyle, View } from 'react-native';
 import { makeStyles, Theme, ColorVariants, useTheme, UILabelAnimated } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { BigNumber } from 'bignumber.js';
 import { uiLocalized } from '@tonlabs/localization';
-import {
-    UIAmountInputEnhancedRef,
-    UIAmountInputEnhancedProps,
-    UIAmountInputEnhancedMessageType,
-} from './types';
-import { AmountInputContext, withSpringConfig } from './constants';
+import type { UIAmountInputEnhancedRef, UIAmountInputEnhancedProps } from './types';
+import { AmountInputContext } from './constants';
 import {
     useAmountInputHandlers,
     useAmountInputHover,
+    useExpandingValue,
     useExtendedRef,
-    usePlaceholderColors,
     useDefaultValue,
     useFormatText,
     useSetText,
+    useInputVerticalMovementStyle,
+    usePlaceholderAttributes,
 } from './hooks';
 import { UITextView, UITextViewRef } from '../UITextView';
 import { TapHandler } from './TapHandler';
-import { InputMessage, InputMessageType } from '../InputMessage';
-import { usePlaceholderVisibility } from './hooks/usePlaceholderVisibility';
-import { useExpandingValue } from './hooks/useExpandingValue';
+import { InputMessage } from '../InputMessage';
 import { FloatingLabel } from './FloatingLabel';
 import { useInputChildren } from '../useInputChildren';
 
 const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
 
 NativeModules.UIKitInputModule?.install();
-
-// @inline
-const POSITION_FOLDED: number = 0;
-// @inline
-const POSITION_EXPANDED: number = 1;
-/**
- * Expanded position vertical offset of the Label
- * It was calculated as (UILayoutConstant.contentOffset - UILayoutConstant.contentInsetVerticalX2)
- */
-// @inline
-const EXPANDED_INPUT_OFFSET: number = 8;
 
 const decimalSeparator = uiLocalized.localeInfo.numbers.decimal;
 
@@ -68,7 +44,6 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
         onHover,
         onSelectionChange,
         onChangeAmount: onChangeAmountProp,
-        onLayout: onLayoutProp,
         decimalAspect,
         multiline,
         message,
@@ -83,6 +58,9 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
 
     const prevCaretPosition = useSharedValue(selectionEndPosition.value);
 
+    /**
+     * Format the text according to the "mask" of the amount input.
+     */
     const formatText = useFormatText(decimalAspect, multiline, prevCaretPosition);
     const formatAmount = React.useCallback(
         (amount: BigNumber | undefined) => {
@@ -99,14 +77,16 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
         [formatText],
     );
 
+    /**
+     * Set a new text value in the input.
+     */
     const setText = useSetText(ref, onChangeAmountProp);
 
-    const onLayout = React.useCallback(
-        (e: LayoutChangeEvent) => {
-            onLayoutProp?.(e);
-        },
-        [onLayoutProp],
-    );
+    /**
+     * Handlers to process the input events:
+     * `onFocus`, `onBlur`, `onChange`, `onSelectionChange`.
+     * Synchronize the input state.
+     */
     const textViewHandlers = useAmountInputHandlers(
         editable,
         onFocus,
@@ -117,14 +97,14 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
         prevCaretPosition,
     );
 
+    /**
+     * Handlers to process the input event `isHovered`
+     * Synchronize the input `isHovered` state.
+     */
     const { onMouseEnter, onMouseLeave } = useAmountInputHover(onHover);
 
-    const theme = useTheme();
-
     /** Label is immutable */
-    const labelRef = React.useRef(label);
-    /** The `hasLabel` can't change because it derived from immutable ref */
-    const hasLabel = React.useMemo(() => !!labelRef.current, []);
+    const hasLabel = React.useRef(!!label).current;
 
     const { expansionState, expandingValue } = useExpandingValue(
         isFocused,
@@ -133,55 +113,25 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
         hasLabel,
     );
 
-    const isPlaceholderVisible = usePlaceholderVisibility(expansionState, hasLabel, formattedText);
+    const inputVerticalMovementStyle = useInputVerticalMovementStyle(expandingValue);
 
-    const inputStyle = useAnimatedStyle(() => {
-        return {
-            transform: [
-                {
-                    translateY: interpolate(
-                        expandingValue.value,
-                        [POSITION_FOLDED, POSITION_EXPANDED],
-                        [0, EXPANDED_INPUT_OFFSET],
-                    ),
-                },
-            ],
-        };
-    });
-
-    const placeholderColors = usePlaceholderColors(theme);
-    const placeholderTextColor = useDerivedValue(() => {
-        if (!isPlaceholderVisible.value) {
-            return placeholderColors.value.transparent;
-        }
-        return isHovered.value && editable
-            ? placeholderColors.value.hover
-            : placeholderColors.value.default;
-    }, [editable]);
-
-    const animatedPlaceholderProps = useAnimatedProps(() => {
-        return {
-            color: withSpring(placeholderTextColor.value, withSpringConfig) as any as string,
-        };
-    });
+    const { placeholderColors, animatedPlaceholderProps } = usePlaceholderAttributes(
+        expansionState,
+        hasLabel,
+        editable,
+    );
 
     const childrenProcessed = useInputChildren(children);
-    const hasChildren = React.useMemo(() => {
-        return React.Children.count(childrenProcessed) > 0;
-    }, [childrenProcessed]);
 
-    const changeAmount = React.useCallback(
-        function changeAmount(amount: BigNumber | undefined, callOnChangeProp?: boolean) {
-            const textAttributes = formatAmount(amount);
-            runOnUI(setText)(textAttributes, {
-                callOnChangeProp,
-            });
-        },
-        [formatAmount, setText],
-    );
-    useExtendedRef(forwardedRef, ref, changeAmount);
+    /**
+     * Setup the AmountInput ref.
+     */
+    useExtendedRef(forwardedRef, ref, formatAmount, setText);
 
     const defaultValue = useDefaultValue(defaultAmount, formatAmount);
+    /**
+     * Make the input state consistent with defaultValue.
+     */
     React.useEffect(() => {
         defaultValue &&
             runOnUI(setText)(defaultValue, {
@@ -190,24 +140,14 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
             });
     }, [defaultValue, setText]);
 
-    const inputMessageType: InputMessageType | undefined = React.useMemo(() => {
-        switch (messageType) {
-            case UIAmountInputEnhancedMessageType.Error:
-                return InputMessageType.Error;
-            case UIAmountInputEnhancedMessageType.Success:
-                return InputMessageType.Success;
-            case UIAmountInputEnhancedMessageType.Warning:
-                return InputMessageType.Warning;
-            case UIAmountInputEnhancedMessageType.Info:
-            default:
-                return InputMessageType.Info;
-        }
-    }, [messageType]);
-
+    const hasChildren = React.useMemo(() => {
+        return React.Children.count(childrenProcessed) > 0;
+    }, [childrenProcessed]);
+    const theme = useTheme();
     const styles = useStyles(theme, editable, hasChildren);
 
     return (
-        <InputMessage type={inputMessageType} text={message}>
+        <InputMessage type={messageType} text={message}>
             <View
                 style={styles.container}
                 // @ts-expect-error
@@ -216,10 +156,9 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
             >
                 <TapHandler inputRef={ref}>
                     <Animated.View style={styles.inputArea}>
-                        <Animated.View style={[styles.inputContainer, inputStyle]}>
+                        <Animated.View style={[styles.inputContainer, inputVerticalMovementStyle]}>
                             <UITextViewAnimated
                                 ref={ref}
-                                onLayout={onLayout}
                                 {...props}
                                 {...textViewHandlers}
                                 style={styles.input}

@@ -3,13 +3,7 @@ import type { TextInput } from 'react-native';
 import type { SharedValue } from 'react-native-reanimated';
 import type { UIMaterialTextViewProps } from '../UIMaterialTextView/types';
 import type { InputChildren } from '../useInputChildren';
-
-export enum UIAmountInputEnhancedMessageType {
-    Error = 'Error',
-    Warning = 'Warning',
-    Success = 'Success',
-    Info = 'Info',
-}
+import type { InputMessageType } from '../InputMessage';
 
 export enum UIAmountInputEnhancedDecimalAspect {
     Integer = 'Integer',
@@ -38,9 +32,9 @@ export type UIAmountInputEnhancedProps = Omit<
     decimalAspect?: UIAmountInputEnhancedDecimalAspect;
     /**
      * Type of the message. Affects the style of the message.
-     * @default  UIAmountInputEnhancedMessageType.Info
+     * @default InputMessageType.Info
      */
-    messageType?: UIAmountInputEnhancedMessageType;
+    messageType?: InputMessageType;
     /**
      * Message text.
      */

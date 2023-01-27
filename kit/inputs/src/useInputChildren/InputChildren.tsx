@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
     actionContainer: {
         alignSelf: 'stretch',
         justifyContent: 'center',
+        userSelect: 'none',
     },
     actionContent: {
         flexDirection: 'row',

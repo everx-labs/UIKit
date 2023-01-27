@@ -55,7 +55,9 @@ export const Inputs = () => {
                     <UIAmountInputEnhanced
                         placeholder="111"
                         decimalAspect={UIAmountInputEnhancedDecimalAspect.Precision}
-                        onChangeAmount={amount => console.log('onChangeAmount', amount?.toString())}
+                        onChangeAmount={amount =>
+                            console.log('onChangeAmount3', amount?.toString())
+                        }
                         defaultAmount={new BigNumber(11111.11)}
                         multiline
                         message="Caption"
@@ -69,7 +71,9 @@ export const Inputs = () => {
                         placeholder="123"
                         decimalAspect={UIAmountInputEnhancedDecimalAspect.Precision}
                         defaultAmount={new BigNumber(12345.67)}
-                        onChangeAmount={amount => console.log('onChangeAmount', amount?.toString())}
+                        onChangeAmount={amount =>
+                            console.log('onChangeAmount4', amount?.toString())
+                        }
                     >
                         <UIAmountInputEnhanced.Icon
                             source={UIAssets.icons.ui.buttonClose}
