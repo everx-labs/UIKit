@@ -8,3 +8,4 @@ export * from './useFormatText';
 export * from './useSetText';
 export * from './useInputVerticalMovementStyle';
 export * from './usePlaceholderAttributes';
+export * from './useInputMessageType';

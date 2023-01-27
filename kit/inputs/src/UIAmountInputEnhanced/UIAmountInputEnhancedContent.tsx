@@ -5,7 +5,12 @@ import { makeStyles, Theme, ColorVariants, useTheme, UILabelAnimated } from '@to
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { BigNumber } from 'bignumber.js';
 import { uiLocalized } from '@tonlabs/localization';
-import type { UIAmountInputEnhancedRef, UIAmountInputEnhancedProps } from './types';
+import {
+    UIAmountInputEnhancedRef,
+    UIAmountInputEnhancedProps,
+    UIAmountInputEnhancedMessageType,
+    UIAmountInputEnhancedDecimalAspect,
+} from './types';
 import { AmountInputContext } from './constants';
 import {
     useAmountInputHandlers,
@@ -17,6 +22,7 @@ import {
     useSetText,
     useInputVerticalMovementStyle,
     usePlaceholderAttributes,
+    useInputMessageType,
 } from './hooks';
 import { UITextView, UITextViewRef } from '../UITextView';
 import { TapHandler } from './TapHandler';
@@ -44,10 +50,10 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
         onHover,
         onSelectionChange,
         onChangeAmount: onChangeAmountProp,
-        decimalAspect,
+        decimalAspect = UIAmountInputEnhancedDecimalAspect.Precision,
         multiline,
         message,
-        messageType,
+        messageType = UIAmountInputEnhancedMessageType.Info,
         label,
     } = props;
     // @ts-ignore
@@ -140,6 +146,8 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
             });
     }, [defaultValue, setText]);
 
+    const inputMessageType = useInputMessageType(messageType);
+
     const hasChildren = React.useMemo(() => {
         return React.Children.count(childrenProcessed) > 0;
     }, [childrenProcessed]);
@@ -147,7 +155,7 @@ export const UIAmountInputEnhancedContent = React.forwardRef<
     const styles = useStyles(theme, editable, hasChildren);
 
     return (
-        <InputMessage type={messageType} text={message}>
+        <InputMessage type={inputMessageType} text={message}>
             <View
                 style={styles.container}
                 // @ts-expect-error
