@@ -17,23 +17,22 @@ RCT_EXPORT_MODULE()
     if (_baseTextInputView != NULL) {
         /** Setup text */
         NSString *previousValue = _baseTextInputView.backedTextInputView.attributedText.string;
-        if (previousValue == value) {
-            return;
+        if (previousValue != value) {
+            NSMutableAttributedString *newAttributedText =
+                [_baseTextInputView.backedTextInputView.attributedText mutableCopy];
+            // Apply text attributes if original input view doesn't have text.
+            if (_baseTextInputView.backedTextInputView.attributedText.length == 0) {
+                newAttributedText = [
+                    [NSMutableAttributedString alloc]
+                    initWithString:[_baseTextInputView.textAttributes applyTextAttributesToText:value]
+                    attributes:_baseTextInputView.textAttributes.effectiveTextAttributes
+                ];
+            } else {
+                NSRange range = [previousValue rangeOfString:previousValue];
+                [newAttributedText replaceCharactersInRange:range withString:value];
+            }
+            _baseTextInputView.backedTextInputView.attributedText = newAttributedText;
         }
-        NSMutableAttributedString *newAttributedText =
-            [_baseTextInputView.backedTextInputView.attributedText mutableCopy];
-        // Apply text attributes if original input view doesn't have text.
-        if (_baseTextInputView.backedTextInputView.attributedText.length == 0) {
-            newAttributedText = [
-                [NSMutableAttributedString alloc]
-                initWithString:[_baseTextInputView.textAttributes applyTextAttributesToText:value]
-                attributes:_baseTextInputView.textAttributes.effectiveTextAttributes
-            ];
-        } else {
-            NSRange range = [previousValue rangeOfString:previousValue];
-            [newAttributedText replaceCharactersInRange:range withString:value];
-        }
-        _baseTextInputView.backedTextInputView.attributedText = newAttributedText;
         
         /** Setup caret position */
         UITextPosition *caretTextPosition = [
@@ -41,7 +40,6 @@ RCT_EXPORT_MODULE()
             positionFromPosition:_baseTextInputView.backedTextInputView.beginningOfDocument
             offset:caretPosition
         ];
-
         [_baseTextInputView.backedTextInputView
             setSelectedTextRange:[
                 _baseTextInputView.backedTextInputView
