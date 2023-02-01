@@ -2,20 +2,20 @@ import type BigNumber from 'bignumber.js';
 import React from 'react';
 import { runOnUI } from 'react-native-reanimated';
 
-import type { SetText, TextAttributes, UIAmountInputEnhancedRef } from '../types';
+import type { SetText, TextAttributes, UIAmountInputRef } from '../types';
 import type { UITextViewRef } from '../../UITextView';
 
 function getEmptyMethod(name: string, returnedValue: any = null) {
     return function emptyMethod() {
         console.error(
-            `[UIAmountInputEnhanced/hooks/useExtendedRef]: You tried to call method [${name}]. This method is not implemented.`,
+            `[UIAmountInput/hooks/useExtendedRef]: You tried to call method [${name}]. This method is not implemented.`,
         );
         return returnedValue;
     };
 }
 
 export function useExtendedRef(
-    forwardedRed: React.Ref<UIAmountInputEnhancedRef>,
+    forwardedRed: React.Ref<UIAmountInputRef>,
     localRef: React.RefObject<UITextViewRef>,
     formatAmount: (amount: BigNumber | undefined) => TextAttributes,
     setText: SetText,
@@ -30,9 +30,9 @@ export function useExtendedRef(
         [formatAmount, setText],
     );
 
-    React.useImperativeHandle<Record<string, any>, UIAmountInputEnhancedRef>(
+    React.useImperativeHandle<Record<string, any>, UIAmountInputRef>(
         forwardedRed,
-        (): UIAmountInputEnhancedRef => ({
+        (): UIAmountInputRef => ({
             clear: () => {
                 changeAmount(undefined, true);
             },

@@ -4,20 +4,20 @@ import type { SharedValue } from 'react-native-reanimated';
 import type { UIMaterialTextViewProps } from '../UIMaterialTextView/types';
 import type { InputChildren } from '../useInputChildren';
 
-export enum UIAmountInputEnhancedMessageType {
+export enum UIAmountInputMessageType {
     Error = 'Error',
     Warning = 'Warning',
     Success = 'Success',
     Info = 'Info',
 }
 
-export enum UIAmountInputEnhancedDecimalAspect {
+export enum UIAmountInputDecimalAspect {
     Integer = 'Integer',
     Currency = 'Currency',
     Precision = 'Precision',
 }
 
-export type UIAmountInputEnhancedProps = Omit<
+export type UIAmountInputProps = Omit<
     UIMaterialTextViewProps,
     'mask' | 'defaultValue' | 'value' | 'onChangeText'
 > & {
@@ -33,37 +33,37 @@ export type UIAmountInputEnhancedProps = Omit<
      * How many digits to draw for decimal part.
      *
      * You should choose from predefined ones.
-     * @default  UIAmountInputEnhancedDecimalAspect.Precision
+     * @default  UIAmountInputDecimalAspect.Precision
      */
-    decimalAspect?: UIAmountInputEnhancedDecimalAspect;
+    decimalAspect?: UIAmountInputDecimalAspect;
     /**
      * Type of the message. Affects the style of the message.
-     * @default  UIAmountInputEnhancedMessageType.Info
+     * @default  UIAmountInputMessageType.Info
      */
-    messageType?: UIAmountInputEnhancedMessageType;
+    messageType?: UIAmountInputMessageType;
     /**
      * Message text.
      */
     message?: string;
     /**
      *  As children you can provide only one or two of this component:
-     *  `UIAmountInputEnhanced.Icon`
-     *  `UIAmountInputEnhanced.Action`
-     *  `UIAmountInputEnhanced.Text`
+     *  `UIAmountInput.Icon`
+     *  `UIAmountInput.Action`
+     *  `UIAmountInput.Text`
      */
-    children?: UIAmountInputEnhancedChild | UIAmountInputEnhancedChild[] | undefined;
+    children?: UIAmountInputChild | UIAmountInputChild[] | undefined;
 };
 
-export type UIAmountInputEnhancedPrecision =
+export type UIAmountInputPrecision =
     | 'Integer' // integer number (aspectRatio === 0)
     | 'Precise' // precise numer (total digit count (integer and decimal) is less than 15)
     | 'Currency'; // currency number (aspectRatio === 2)
 
-export type UIAmountInputEnhancedRef = Pick<TextInput, 'isFocused' | 'focus' | 'blur' | 'clear'> & {
+export type UIAmountInputRef = Pick<TextInput, 'isFocused' | 'focus' | 'blur' | 'clear'> & {
     changeAmount: (amount: BigNumber | undefined, callOnChangeProp?: boolean) => void;
 };
 
-export type UIAmountInputEnhancedChild = InputChildren;
+export type UIAmountInputChild = InputChildren;
 
 export type AmountInputContextDefaultValuesType = {
     isHovered: boolean;

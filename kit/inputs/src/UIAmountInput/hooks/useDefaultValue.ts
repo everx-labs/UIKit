@@ -1,9 +1,9 @@
 import type BigNumber from 'bignumber.js';
 import React from 'react';
-import type { UIAmountInputEnhancedProps } from '../types';
+import type { UIAmountInputProps } from '../types';
 
 export function useDefaultValue(
-    defaultAmount: UIAmountInputEnhancedProps['defaultAmount'],
+    defaultAmount: UIAmountInputProps['defaultAmount'],
     formatAmount: (amount: BigNumber) => {
         formattedText: string;
         normalizedText: string;

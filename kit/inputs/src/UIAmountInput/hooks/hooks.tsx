@@ -3,11 +3,7 @@ import BigNumber from 'bignumber.js';
 import { uiLocalized } from '@tonlabs/localization';
 import { DerivedValue, useSharedValue } from 'react-native-reanimated';
 import type { UIMaterialTextViewRef, UIMaterialTextViewMask } from '../../UIMaterialTextView';
-import {
-    UIAmountInputEnhancedProps,
-    UIAmountInputEnhancedDecimalAspect,
-    UIAmountInputEnhancedRef,
-} from '../types';
+import { UIAmountInputProps, UIAmountInputDecimalAspect, UIAmountInputRef } from '../types';
 import {
     getEmptyUIMaterialTextViewRef,
     useMaterialTextViewChildren,
@@ -47,7 +43,7 @@ export function useOnChangeText(
             const amount = convertTextToBigNumber(text);
             if (amount?.isNaN()) {
                 console.error(
-                    `[UIAmountInputEnhanced] useOnChangeText: an incorrect character was entered. Input changes were prevented`,
+                    `[UIAmountInput] useOnChangeText: an incorrect character was entered. Input changes were prevented`,
                 );
                 ref.current?.changeText(previousTextRef.current, false);
                 return;
@@ -92,15 +88,15 @@ export function useHelperTextStatus(messageType: InputMessageType | undefined) {
 }
 
 export function useMask(
-    decimalAspect: UIAmountInputEnhancedDecimalAspect | undefined,
+    decimalAspect: UIAmountInputDecimalAspect | undefined,
 ): UIMaterialTextViewMask {
     return React.useMemo((): UIMaterialTextViewMask => {
         switch (decimalAspect) {
-            case UIAmountInputEnhancedDecimalAspect.Integer:
+            case UIAmountInputDecimalAspect.Integer:
                 return 'AmountInteger';
-            case UIAmountInputEnhancedDecimalAspect.Currency:
+            case UIAmountInputDecimalAspect.Currency:
                 return 'AmountCurrency';
-            case UIAmountInputEnhancedDecimalAspect.Precision:
+            case UIAmountInputDecimalAspect.Precision:
             default:
                 return 'AmountPrecision';
         }
@@ -108,12 +104,10 @@ export function useMask(
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const { changeText, ...defaultRef } = getEmptyUIMaterialTextViewRef(
-    'UIAmountInputEnhanced/hooks.ts',
-);
+const { changeText, ...defaultRef } = getEmptyUIMaterialTextViewRef('UIAmountInput/hooks.ts');
 
 export function useExtendedRef(
-    forwardedRed: React.Ref<UIAmountInputEnhancedRef>,
+    forwardedRed: React.Ref<UIAmountInputRef>,
     checkInputHasValue: (text: string) => string,
     localRef: React.RefObject<UIMaterialTextViewRef>,
 ) {
@@ -126,9 +120,9 @@ export function useExtendedRef(
         [checkInputHasValue, localRef],
     );
 
-    React.useImperativeHandle<Record<string, any>, UIAmountInputEnhancedRef>(
+    React.useImperativeHandle<Record<string, any>, UIAmountInputRef>(
         forwardedRed,
-        (): UIAmountInputEnhancedRef => ({
+        (): UIAmountInputRef => ({
             ...defaultRef,
             ...localRef.current,
             changeAmount,
@@ -136,13 +130,13 @@ export function useExtendedRef(
     );
 }
 
-export function useUIAmountInputEnhancedChildren(
-    children: UIAmountInputEnhancedProps['children'],
+export function useUIAmountInputChildren(
+    children: UIAmountInputProps['children'],
     inputHasValue: boolean,
     isFocused: boolean,
     isHovered: boolean,
     clear: (() => void) | undefined,
-): UIAmountInputEnhancedProps['children'] {
+): UIAmountInputProps['children'] {
     const materialTextViewChildren = useMaterialTextViewChildren(children);
 
     if (materialTextViewChildren) {

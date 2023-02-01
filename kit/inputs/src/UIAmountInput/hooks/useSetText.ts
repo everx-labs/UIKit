@@ -4,12 +4,7 @@ import { runOnJS, useAnimatedRef, useWorkletCallback } from 'react-native-reanim
 import type { UITextViewRef } from '../../UITextView/types';
 import { AmountInputContext } from '../constants';
 import { setTextAndCaretPosition } from '../setTextAndCaretPosition';
-import type {
-    FormatAndSetTextConfig,
-    SetText,
-    TextAttributes,
-    UIAmountInputEnhancedProps,
-} from '../types';
+import type { FormatAndSetTextConfig, SetText, TextAttributes, UIAmountInputProps } from '../types';
 
 const defaultConfig: FormatAndSetTextConfig = {
     shouldSetText: true,
@@ -17,7 +12,7 @@ const defaultConfig: FormatAndSetTextConfig = {
 };
 export function useSetText(
     ref: React.RefObject<UITextViewRef>,
-    onChangeAmountProp: UIAmountInputEnhancedProps['onChangeAmount'],
+    onChangeAmountProp: UIAmountInputProps['onChangeAmount'],
 ): SetText {
     // @ts-expect-error
     const inputManagerRef = useAnimatedRef<InputController | undefined>();

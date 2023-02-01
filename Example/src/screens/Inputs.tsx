@@ -9,9 +9,6 @@ import {
     UIAmountInput,
     UIAmountInputDecimalAspect,
     UIAmountInputRef,
-    UIAmountInputEnhanced,
-    UIAmountInputEnhancedRef,
-    UIAmountInputEnhancedDecimalAspect,
     UISeedPhraseInput,
 } from '@tonlabs/uikit.inputs';
 import { ColorVariants } from '@tonlabs/uikit.themes';
@@ -27,65 +24,8 @@ export const Inputs = () => {
     const onChangeAmount = React.useCallback((amount: BigNumber | undefined) => {
         amountPrecisionRef.current?.changeAmount(amount, false);
     }, []);
-    const amountInputEnhancedRef = React.useRef<UIAmountInputEnhancedRef>(null);
     return (
         <ExampleScreen>
-            <ExampleSection title="UIAmountInputEnhanced">
-                <View style={{ maxWidth: 400, padding: 20, alignSelf: 'stretch' }}>
-                    <UIAmountInputEnhanced
-                        placeholder="123"
-                        decimalAspect={UIAmountInputEnhancedDecimalAspect.Precision}
-                        defaultAmount={new BigNumber(12345.67)}
-                        onChangeAmount={amount => {
-                            console.log('onChangeAmount1', amount?.toString());
-                            amountInputEnhancedRef.current?.changeAmount(amount, false);
-                        }}
-                    />
-                    <UIAmountInputEnhanced
-                        ref={amountInputEnhancedRef}
-                        placeholder="123"
-                        decimalAspect={UIAmountInputEnhancedDecimalAspect.Precision}
-                        defaultAmount={new BigNumber(12345.67)}
-                        onChangeAmount={amount =>
-                            console.log('onChangeAmount2', amount?.toString())
-                        }
-                    >
-                        <UIAmountInputEnhanced.Text>Text</UIAmountInputEnhanced.Text>
-                    </UIAmountInputEnhanced>
-                    <UIAmountInputEnhanced
-                        placeholder="111"
-                        decimalAspect={UIAmountInputEnhancedDecimalAspect.Precision}
-                        onChangeAmount={amount =>
-                            console.log('onChangeAmount3', amount?.toString())
-                        }
-                        defaultAmount={new BigNumber(11111.11)}
-                        multiline
-                        message="Caption"
-                        label="Label"
-                    >
-                        <UIAmountInputEnhanced.Action onPress={() => null}>
-                            Action
-                        </UIAmountInputEnhanced.Action>
-                    </UIAmountInputEnhanced>
-                    <UIAmountInputEnhanced
-                        placeholder="123"
-                        decimalAspect={UIAmountInputEnhancedDecimalAspect.Precision}
-                        defaultAmount={new BigNumber(12345.67)}
-                        onChangeAmount={amount =>
-                            console.log('onChangeAmount4', amount?.toString())
-                        }
-                    >
-                        <UIAmountInputEnhanced.Icon
-                            source={UIAssets.icons.ui.buttonClose}
-                            tintColor={ColorVariants.IconSecondary}
-                        />
-                        <UIAmountInputEnhanced.Icon
-                            source={UIAssets.icons.ui.buttonPlus}
-                            tintColor={ColorVariants.IconSecondary}
-                        />
-                    </UIAmountInputEnhanced>
-                </View>
-            </ExampleSection>
             <ExampleSection title="UISeedPhraseInput">
                 <View style={{ maxWidth: 400, padding: 20, alignSelf: 'stretch' }}>
                     <UISeedPhraseInput

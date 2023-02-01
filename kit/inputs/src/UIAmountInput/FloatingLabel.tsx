@@ -22,9 +22,9 @@ import Animated, {
 import { Typography, TypographyVariants, UILabelAnimated } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { withSpringConfig } from './constants';
-import type { UIAmountInputEnhancedProps } from './types';
+import type { UIAmountInputProps } from './types';
 
-export type FloatingLabelProps = Pick<UIAmountInputEnhancedProps, 'editable'> & {
+export type FloatingLabelProps = Pick<UIAmountInputProps, 'editable'> & {
     /** Text content of the label */
     children: string | undefined;
     /**

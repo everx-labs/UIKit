@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { runOnJS, SharedValue } from 'react-native-reanimated';
-import type { FormatText, SetText, UIAmountInputEnhancedProps } from '../types';
+import type { FormatText, SetText, UIAmountInputProps } from '../types';
 import { useTextViewHandler } from '../../useTextViewHandler';
 import { AmountInputContext } from '../constants';
 import { useDerivedReactValue } from './hooks';
 
 export function useAmountInputHandlers(
-    editableProp: UIAmountInputEnhancedProps['editable'],
-    onFocusProp: UIAmountInputEnhancedProps['onFocus'],
-    onBlurProp: UIAmountInputEnhancedProps['onBlur'],
-    onSelectionChangeProp: UIAmountInputEnhancedProps['onSelectionChange'],
+    editableProp: UIAmountInputProps['editable'],
+    onFocusProp: UIAmountInputProps['onFocus'],
+    onBlurProp: UIAmountInputProps['onBlur'],
+    onSelectionChangeProp: UIAmountInputProps['onSelectionChange'],
     formatText: FormatText,
     setText: SetText,
     prevCaretPosition: SharedValue<number>,

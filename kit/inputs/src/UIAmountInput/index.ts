@@ -1,3 +1,3 @@
-export * from './UIAmountInputEnhanced';
+export * from './UIAmountInput';
 export * from './types';
 export * from './constants';
