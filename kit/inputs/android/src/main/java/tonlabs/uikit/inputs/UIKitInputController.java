@@ -38,21 +38,23 @@ public class UIKitInputController {
         if (mUiManagerModule == null) {
             return null;
         }
-        View view = null;
+
         try {
-            view = mUiManagerModule.resolveView(reactTag);
+            View view = mUiManagerModule.resolveView(reactTag);
+            if (view instanceof ReactEditText) {
+                return (ReactEditText) view;
+            }
         } catch (IllegalViewOperationException e) {
             e.printStackTrace();
         }
-
-        if (view instanceof ReactEditText) {
-            return (ReactEditText) view;
-        } else return null;
+        return null;
     }
 
-    private void applyText(@NonNull ReactEditText reactEditText, String value) {
-        Editable editableText = reactEditText.getEditableText();
-        editableText.replace(0, editableText.length(), value);
+    private void setText(@NonNull ReactEditText reactEditText, String value) {
+        @Nullable Editable editableText = reactEditText.getText();
+        if (editableText != null) {
+            editableText.replace(0, editableText.length(), value);
+        }
     }
 
     private void moveCaret(@NonNull ReactEditText reactEditText, int caretPosition) {
@@ -62,25 +64,21 @@ public class UIKitInputController {
     @SuppressWarnings("unused")
     public void setTextAndCaretPosition(String value, int caretPosition) {
         /*
-        There are situations when the call to setText occurs before the execution
-        of the resolveView method on runOnUiQueueThread completes.
-        Therefore, we have to execute the resolveView method here explicitly.
-         */
-        if (mReactEditText == null) {
-            mReactApplicationContext.runOnUiQueueThread(
-                () -> {
-                    if (mReactEditText == null) {
-                        mReactEditText = resolveView(mReactTag);
-                    }
-                    if (mReactEditText != null) {
-                        applyText(mReactEditText, value);
-                        moveCaret(mReactEditText, caretPosition);
-                    }
+        `resolveView` must be called inside the `runOnUiQueueThread` to find the view.
+
+        We change text in `runOnUiQueueThread`, otherwise `StringIndexOutOfBoundsException`
+        is thrown on deleting characters when changes happen fast enough.
+        */
+        mReactApplicationContext.runOnUiQueueThread(
+            () -> {
+                if (mReactEditText == null) {
+                    mReactEditText = resolveView(mReactTag);
                 }
-            );
-        } else {
-            applyText(mReactEditText, value);
-            moveCaret(mReactEditText, caretPosition);
-        }
+                if (mReactEditText != null) {
+                    setText(mReactEditText, value);
+                    moveCaret(mReactEditText, caretPosition);
+                }
+            }
+        );
     }
 }
