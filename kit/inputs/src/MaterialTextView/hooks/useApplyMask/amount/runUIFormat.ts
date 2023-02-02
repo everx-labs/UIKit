@@ -61,7 +61,7 @@ export function runUIFormat(
             normalizedDecimalPart = normalizedDecimalPart.slice(0, countOfDecimalDigits);
         }
 
-        normalizedText += '.';
+        normalizedText += delimeter;
         normalizedText += normalizedDecimalPart;
 
         const groupedDecimalPart = runUIGroup(
