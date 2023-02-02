@@ -4,7 +4,7 @@ import { SharedValue, useWorkletCallback } from 'react-native-reanimated';
 import { AmountInputContext, UIConstants } from '../constants';
 import { FormatText, UIAmountInputProps, UIAmountInputDecimalAspect } from '../types';
 import { useAmountMaskApplyer } from './amountMask';
-import { useDerivedReactValue } from './hooks';
+import { useDerivedReactValue } from './useDerivedReactValue';
 
 export function useFormatText(
     decimalAspect: UIAmountInputProps['decimalAspect'],

@@ -3,7 +3,7 @@ import { runOnJS, SharedValue } from 'react-native-reanimated';
 import type { FormatText, SetText, UIAmountInputProps } from '../types';
 import { useTextViewHandler } from '../../useTextViewHandler';
 import { AmountInputContext } from '../constants';
-import { useDerivedReactValue } from './hooks';
+import { useDerivedReactValue } from './useDerivedReactValue';
 
 export function useAmountInputHandlers(
     editableProp: UIAmountInputProps['editable'],
