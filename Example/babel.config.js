@@ -6,7 +6,12 @@ module.exports = {
         [
             'react-native-reanimated/plugin',
             {
-                globals: ['_hapticImpact', '_hapticSelection', '_hapticNotification'],
+                globals: [
+                    '_hapticImpact',
+                    '_hapticSelection',
+                    '_hapticNotification',
+                    '_uiKitInputBinder',
+                ],
             },
         ],
         ['transform-react-remove-prop-types', { mode: 'wrap' }],

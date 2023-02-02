@@ -31,6 +31,7 @@ export function useTextViewHandler<Context extends Record<string, unknown>>(
     }
     if (textViewHandlers.onSelectionChange != null) {
         subscribeForEvent.push('topSelectionChange');
+        subscribeForEvent.push('onSelectionChange');
     }
 
     return {
@@ -52,7 +53,11 @@ export function useTextViewHandler<Context extends Record<string, unknown>>(
                     onChange(event, context);
                     return;
                 }
-                if (onSelectionChange && event.eventName.endsWith('topSelectionChange')) {
+                if (
+                    onSelectionChange &&
+                    (event.eventName.endsWith('topSelectionChange') ||
+                        event.eventName.endsWith('onSelectionChange'))
+                ) {
                     onSelectionChange(event, context);
                 }
             },

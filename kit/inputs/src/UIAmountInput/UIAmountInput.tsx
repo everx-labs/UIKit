@@ -1,99 +1,21 @@
 import * as React from 'react';
-import {
-    MaterialTextView,
-    MaterialTextViewRef,
-    MaterialTextViewMask,
-    MaterialTextViewIcon,
-    MaterialTextViewAction,
-    MaterialTextViewText,
-    useInputHasValue,
-} from '../MaterialTextView';
-import { useFocused } from '../UITextView';
-import {
-    useExtendedRef,
-    useHelperTextStatus,
-    useMask,
-    useOnChangeText,
-    useUIAmountInputChildren,
-} from './hooks';
+// import type BigNumber from 'bignumber.js';
+// import type { SharedValue } from 'react-native-reanimated';
 import type { UIAmountInputProps, UIAmountInputRef } from './types';
+import { UIAmountInputContent } from './UIAmountInputContent';
+import { AmountInputContext, getDefaultContext } from './constants';
+import { InputIcon, InputAction, InputText } from '../useInputChildren/InputChildren';
 
 export const UIAmountInputForward = React.forwardRef<UIAmountInputRef, UIAmountInputProps>(
     function UIAmountInputForward(
         props: UIAmountInputProps,
-        forwardedRed: React.Ref<UIAmountInputRef>,
+        forwardedRef: React.Ref<UIAmountInputRef>,
     ) {
-        const {
-            onChangeAmount,
-            defaultAmount,
-            decimalAspect,
-            messageType,
-            message,
-            children,
-            hideClearButton = false,
-            onFocus: onFocusProp,
-            onBlur: onBlurProp,
-            onHover: onHoverProp,
-            editable = true,
-            ...restProps
-        } = props;
-
-        const localRef = React.useRef<MaterialTextViewRef>(null);
-
-        const mask: MaterialTextViewMask = useMask(decimalAspect);
-
-        const defaultValue = React.useMemo(() => {
-            return defaultAmount?.toFixed();
-        }, [defaultAmount]);
-
-        const { error, warning, success } = useHelperTextStatus(messageType);
-
-        const [isHovered, setIsHovered] = React.useState<boolean>(false);
-        const { isFocused, onFocus, onBlur } = useFocused(onFocusProp, onBlurProp);
-        const { inputHasValue, checkInputHasValue } = useInputHasValue(
-            undefined,
-            defaultAmount?.toFixed(),
-        );
-        const onChangeText = useOnChangeText(onChangeAmount, checkInputHasValue, localRef);
-
-        const processedChildren = useUIAmountInputChildren(
-            children,
-            hideClearButton,
-            inputHasValue,
-            isFocused,
-            isHovered,
-            editable,
-            localRef.current?.clear,
-        );
-
-        useExtendedRef(forwardedRed, checkInputHasValue, localRef);
-
-        const onHover = React.useCallback(
-            (hovered: boolean) => {
-                setIsHovered(hovered);
-                onHoverProp?.(hovered);
-            },
-            [onHoverProp],
-        );
-
+        const contextValue = React.useMemo(() => getDefaultContext(), []);
         return (
-            <MaterialTextView
-                {...restProps}
-                ref={localRef}
-                defaultValue={defaultValue}
-                helperText={message}
-                error={error}
-                warning={warning}
-                success={success}
-                mask={mask}
-                onChangeText={onChangeText}
-                onHover={onHover}
-                onFocus={onFocus}
-                onBlur={onBlur}
-                keyboardType="decimal-pad"
-            >
-                {processedChildren}
-            </MaterialTextView>
+            <AmountInputContext.Provider value={contextValue}>
+                <UIAmountInputContent ref={forwardedRef} {...props} />
+            </AmountInputContext.Provider>
         );
     },
 );
@@ -101,11 +23,11 @@ export const UIAmountInputForward = React.forwardRef<UIAmountInputRef, UIAmountI
 // @ts-expect-error
 // ts doesn't understand that we assign [Icon|Action|Text] later, and want to see it right away
 export const UIAmountInput: typeof UIAmountInputForward & {
-    Icon: typeof MaterialTextViewIcon;
-    Action: typeof MaterialTextViewAction;
-    Text: typeof MaterialTextViewText;
+    Icon: typeof InputIcon;
+    Action: typeof InputAction;
+    Text: typeof InputText;
 } = UIAmountInputForward;
 
-UIAmountInput.Icon = MaterialTextViewIcon;
-UIAmountInput.Action = MaterialTextViewAction;
-UIAmountInput.Text = MaterialTextViewText;
+UIAmountInput.Icon = InputIcon;
+UIAmountInput.Action = InputAction;
+UIAmountInput.Text = InputText;

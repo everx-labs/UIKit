@@ -88,6 +88,7 @@ export const Inputs = () => {
                         testID="uiMaterialTextView_with_initial_value"
                         label="Label with initial value"
                         helperText="Caption"
+                        defaultValue="Initial value"
                     >
                         <UIMaterialTextView.Action>
                             EVER

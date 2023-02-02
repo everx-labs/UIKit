@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TextInput, Platform, StyleSheet, LayoutChangeEvent } from 'react-native';
+import { TextInput, Platform, StyleSheet, LayoutChangeEvent, TextStyle } from 'react-native';
 import { ColorVariants, useTheme, Typography, TypographyVariants } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { useAutogrow, useAutoFocus, useHandleRef } from './hooks';
@@ -10,15 +10,29 @@ const inputTypographyStyle = StyleSheet.flatten(Typography[textViewTypographyVar
 const textViewLineHeight = inputTypographyStyle.lineHeight ?? UILayoutConstant.smallCellHeight;
 
 /**
- * The singleline input on the ios platform has a bug -
- * if `(lineHeight - fontSize) > 5` it starts to crop
- * letters from the bottom (letters like "g", "j").
- * Style prop `textAlignVertical` works only on Android.
+ * Android TextInput does not respond to lineHeight changes,
+ * so I decided just to align input text and height with regular UILabel text and height via marginVertical.
  */
-const singleLineInputLineHeightForIOS =
-    inputTypographyStyle.fontSize && textViewLineHeight - inputTypographyStyle.fontSize > 5
-        ? inputTypographyStyle.fontSize + 5
-        : textViewLineHeight;
+function fixAndroidTextInputHeight(): TextStyle {
+    const { fontSize, lineHeight } = inputTypographyStyle;
+    if (fontSize == null || lineHeight == null) {
+        return {};
+    }
+    let textInputHeight = 0;
+    /**
+     * This calculation were carried out experimentally.
+     */
+    if (fontSize <= 20) {
+        textInputHeight = 27.636363983154297;
+    } else {
+        textInputHeight = fontSize * 1.336;
+    }
+
+    const diff = textInputHeight - lineHeight;
+    return {
+        marginVertical: -diff / 2,
+    };
+}
 
 export const UITextView = React.forwardRef<UITextViewRef, UITextViewProps>(
     function UITextViewForwarded(
@@ -104,25 +118,30 @@ const styles = StyleSheet.create({
             },
             android: {
                 padding: 0,
+                ...fixAndroidTextInputHeight(),
             },
         }),
     },
     inputMultiline: Platform.select({
         ios: {
             /**
-             * The input on the ios platform has a feature -
-             * its height in `multiline={true}` mode is greater than in `multiline={false}`.
-             * Experimentally, it was found that it increases from above by 4pt, and from below by 1pt.
+             * multiline input on ios has unpredictable paddings
+             * and wrong vertical text alignment.
              */
-            paddingTop: -4,
-            paddingBottom: -1,
+            paddingTop: 0,
+            paddingBottom: 0,
+            top: -1,
         },
         default: {},
     }),
     inputSingleline: Platform.select({
         ios: {
-            lineHeight: singleLineInputLineHeightForIOS,
+            /**
+             * This was made to align the text vertically.
+             */
+            lineHeight: undefined,
             height: textViewLineHeight,
+            top: 0.5,
         },
         default: {},
     }),
