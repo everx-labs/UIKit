@@ -38,7 +38,7 @@ const decimalSeparator = uiLocalized.localeInfo.numbers.decimal;
 
 export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountInputProps>(
     function UIAmountInputContent(
-        { children, placeholder, defaultAmount, ...props }: UIAmountInputProps,
+        { children, placeholder = '', defaultAmount, ...props }: UIAmountInputProps,
         forwardedRef: React.Ref<UIAmountInputRef>,
     ) {
         const {
