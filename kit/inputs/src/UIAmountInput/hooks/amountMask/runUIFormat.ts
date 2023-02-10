@@ -61,7 +61,11 @@ export function runUIFormat(
             normalizedDecimalPart = normalizedDecimalPart.slice(0, countOfDecimalDigits);
         }
 
-        normalizedText += delimeter;
+        /**
+         * normalizedText used for simple converting string to BigNumber
+         * So we need `.` as delimiter instead of `delimeter`
+         */
+        normalizedText += '.';
         normalizedText += normalizedDecimalPart;
 
         const groupedDecimalPart = runUIGroup(
