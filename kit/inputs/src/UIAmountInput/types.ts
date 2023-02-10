@@ -68,7 +68,15 @@ export type UIAmountInputChild = InputChildren;
 export type AmountInputContextDefaultValuesType = {
     isHovered: boolean;
     isFocused: boolean;
+    /**
+     * String to convenient converting to BigNumber
+     * e.g. '11111.1111'
+     */
     normalizedText: string;
+    /**
+     * String for representation according to localization
+     * e.g. '11 111,111 1'
+     */
     formattedText: string;
     selectionEndPosition: number;
 };
