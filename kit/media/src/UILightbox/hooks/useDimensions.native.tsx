@@ -31,10 +31,12 @@ export const useDimensions = (
                 ) {
                     const measurements = measure(state.forwardedRef);
 
-                    width.value = measurements.width;
-                    height.value = measurements.height;
-                    pageY.value = measurements.pageY;
-                    pageX.value = measurements.pageX;
+                    if (measurements) {
+                        width.value = measurements.width;
+                        height.value = measurements.height;
+                        pageY.value = measurements.pageY;
+                        pageX.value = measurements.pageX;
+                    }
 
                     onMeasureEnd();
                 }

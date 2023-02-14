@@ -56,7 +56,7 @@ export default function onScroll(
 
         if (largeTitleHeight.value === 0) {
             try {
-                largeTitleHeight.value = (await measure(largeTitleViewRef)).height || 0;
+                largeTitleHeight.value = (await measure(largeTitleViewRef))?.height || 0;
             } catch (e) {
                 // nothing
             }

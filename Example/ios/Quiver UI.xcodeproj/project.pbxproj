@@ -8,14 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* ReactNavigationSurfTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ReactNavigationSurfTests.m */; };
-		137F8A98A77769BBB45BB98F /* libPods-Quiver UI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6514A8C6CC5A82913914A6D6 /* libPods-Quiver UI.a */; };
+		1013BC3368C5184ED36D5318 /* libPods-Quiver UI-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07B85B4FD25DEF6875ABF6C1 /* libPods-Quiver UI-tvOSTests.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		1C35FC4EE0A072D56C0D2B43 /* libPods-Quiver UI-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 920B7E7862E0BC2B9C24DE6A /* libPods-Quiver UI-tvOSTests.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* ReactNavigationSurfTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ReactNavigationSurfTests.m */; };
+		91142BCA8264D8F4B41FC569 /* libPods-Quiver UI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E37A9AE15A0859BDEF78D834 /* libPods-Quiver UI.a */; };
 		9CA4A7D028A67FE9008C4454 /* Manrope-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CA4A7CB28A67FE9008C4454 /* Manrope-Bold.ttf */; };
 		9CA4A7D128A67FE9008C4454 /* Manrope-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CA4A7CC28A67FE9008C4454 /* Manrope-ExtraBold.ttf */; };
 		9CA4A7D228A67FE9008C4454 /* Manrope-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CA4A7CD28A67FE9008C4454 /* Manrope-SemiBold.ttf */; };
@@ -30,8 +30,8 @@
 		9CA560C426FB28D80071F1E6 /* SFProText-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CA560C026FB28D80071F1E6 /* SFProText-Regular.ttf */; };
 		9CA560C526FB28D80071F1E6 /* SFProText-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CA560C126FB28D80071F1E6 /* SFProText-Medium.ttf */; };
 		A60D4178253DCC370046B610 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A60D4177253DCC370046B610 /* Images.xcassets */; };
-		A9F25BF479AD46690EDC59F7 /* libPods-Quiver UI-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC1E7B3792F6703709E9BE7A /* libPods-Quiver UI-tvOS.a */; };
-		DFE32877C0459E80C54C110A /* libPods-Quiver UI-Quiver UITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0955AE379B94AF246A75215 /* libPods-Quiver UI-Quiver UITests.a */; };
+		ADCCFD9AA4DADF649374EF00 /* libPods-Quiver UI-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD69A58708158558933B7713 /* libPods-Quiver UI-tvOS.a */; };
+		E753D1BD73E5F13F005F0802 /* libPods-Quiver UI-Quiver UITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 37CB9F8D3F96C737C0E8D774 /* libPods-Quiver UI-Quiver UITests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,7 +55,9 @@
 		00E356EE1AD99517003FC87E /* Quiver UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Quiver UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* ReactNavigationSurfTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReactNavigationSurfTests.m; sourceTree = "<group>"; };
-		0D289A5D8B1E5788B9D470EA /* Pods-Quiver UI-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Quiver UI-tvOSTests/Pods-Quiver UI-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		02C20A179DEB27738A71A130 /* Pods-Quiver UI-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Quiver UI-tvOSTests/Pods-Quiver UI-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		0496BA994BD548ED2E14D308 /* Pods-Quiver UI-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Quiver UI-tvOS/Pods-Quiver UI-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		07B85B4FD25DEF6875ABF6C1 /* libPods-Quiver UI-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Quiver UI-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* Quiver UI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Quiver UI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
@@ -64,11 +66,11 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* Quiver UI-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Quiver UI-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* Quiver UI-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Quiver UI-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3F60FF12A12CEC7085BE1C2C /* libPods-ReactNavigationSurf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReactNavigationSurf.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		59539D78125A9EE36E0F0D05 /* Pods-Quiver UI-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Quiver UI-tvOS/Pods-Quiver UI-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		6514A8C6CC5A82913914A6D6 /* libPods-Quiver UI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Quiver UI.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6F4C5F87858C1A722DD4EFBA /* Pods-Quiver UI-Quiver UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI-Quiver UITests.release.xcconfig"; path = "Target Support Files/Pods-Quiver UI-Quiver UITests/Pods-Quiver UI-Quiver UITests.release.xcconfig"; sourceTree = "<group>"; };
-		920B7E7862E0BC2B9C24DE6A /* libPods-Quiver UI-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Quiver UI-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2FFE9495A0F36CF0171F9B28 /* Pods-Quiver UI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI.debug.xcconfig"; path = "Target Support Files/Pods-Quiver UI/Pods-Quiver UI.debug.xcconfig"; sourceTree = "<group>"; };
+		37CB9F8D3F96C737C0E8D774 /* libPods-Quiver UI-Quiver UITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Quiver UI-Quiver UITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4767296B03B75B888954AB3D /* Pods-Quiver UI-Quiver UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI-Quiver UITests.debug.xcconfig"; path = "Target Support Files/Pods-Quiver UI-Quiver UITests/Pods-Quiver UI-Quiver UITests.debug.xcconfig"; sourceTree = "<group>"; };
+		5412437B3505F744A1C90D33 /* Pods-Quiver UI-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Quiver UI-tvOS/Pods-Quiver UI-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		63584935F70A6FC24D86BAA4 /* Pods-Quiver UI-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Quiver UI-tvOSTests/Pods-Quiver UI-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		9CA4A7CB28A67FE9008C4454 /* Manrope-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Manrope-Bold.ttf"; path = "../../../kit/themes/src/assets/fonts/Manrope-Bold.ttf"; sourceTree = "<group>"; };
 		9CA4A7CC28A67FE9008C4454 /* Manrope-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Manrope-ExtraBold.ttf"; path = "../../../kit/themes/src/assets/fonts/Manrope-ExtraBold.ttf"; sourceTree = "<group>"; };
 		9CA4A7CD28A67FE9008C4454 /* Manrope-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Manrope-SemiBold.ttf"; path = "../../../kit/themes/src/assets/fonts/Manrope-SemiBold.ttf"; sourceTree = "<group>"; };
@@ -83,15 +85,12 @@
 		9CA560C026FB28D80071F1E6 /* SFProText-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Regular.ttf"; path = "../../assets/fonts/SFProText-Regular.ttf"; sourceTree = "<group>"; };
 		9CA560C126FB28D80071F1E6 /* SFProText-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Medium.ttf"; path = "../../assets/fonts/SFProText-Medium.ttf"; sourceTree = "<group>"; };
 		A60D4177253DCC370046B610 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		B0955AE379B94AF246A75215 /* libPods-Quiver UI-Quiver UITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Quiver UI-Quiver UITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B7083FA2B9E71BE3A4E39210 /* Pods-Quiver UI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI.release.xcconfig"; path = "Target Support Files/Pods-Quiver UI/Pods-Quiver UI.release.xcconfig"; sourceTree = "<group>"; };
-		C37FD4F69612A9731C064BBD /* Pods-Quiver UI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI.debug.xcconfig"; path = "Target Support Files/Pods-Quiver UI/Pods-Quiver UI.debug.xcconfig"; sourceTree = "<group>"; };
-		DC1E7B3792F6703709E9BE7A /* libPods-Quiver UI-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Quiver UI-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E627402D77B0E9F3D62DE311 /* Pods-Quiver UI-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Quiver UI-tvOSTests/Pods-Quiver UI-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		EC3E581BCA3A297ABD1105C3 /* Pods-Quiver UI-Quiver UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI-Quiver UITests.debug.xcconfig"; path = "Target Support Files/Pods-Quiver UI-Quiver UITests/Pods-Quiver UI-Quiver UITests.debug.xcconfig"; sourceTree = "<group>"; };
+		AD69A58708158558933B7713 /* libPods-Quiver UI-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Quiver UI-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AEAE629856BE22A407BF711D /* Pods-Quiver UI-Quiver UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI-Quiver UITests.release.xcconfig"; path = "Target Support Files/Pods-Quiver UI-Quiver UITests/Pods-Quiver UI-Quiver UITests.release.xcconfig"; sourceTree = "<group>"; };
+		E37A9AE15A0859BDEF78D834 /* libPods-Quiver UI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Quiver UI.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		ECE863502E12D158D00947B9 /* Pods-Quiver UI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI.release.xcconfig"; path = "Target Support Files/Pods-Quiver UI/Pods-Quiver UI.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		F63E59532F0DABD263B45D96 /* Pods-Quiver UI-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiver UI-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Quiver UI-tvOS/Pods-Quiver UI-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,7 +98,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DFE32877C0459E80C54C110A /* libPods-Quiver UI-Quiver UITests.a in Frameworks */,
+				E753D1BD73E5F13F005F0802 /* libPods-Quiver UI-Quiver UITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,7 +106,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				137F8A98A77769BBB45BB98F /* libPods-Quiver UI.a in Frameworks */,
+				91142BCA8264D8F4B41FC569 /* libPods-Quiver UI.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,7 +114,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A9F25BF479AD46690EDC59F7 /* libPods-Quiver UI-tvOS.a in Frameworks */,
+				ADCCFD9AA4DADF649374EF00 /* libPods-Quiver UI-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,7 +122,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1C35FC4EE0A072D56C0D2B43 /* libPods-Quiver UI-tvOSTests.a in Frameworks */,
+				1013BC3368C5184ED36D5318 /* libPods-Quiver UI-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -165,11 +164,10 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				3F60FF12A12CEC7085BE1C2C /* libPods-ReactNavigationSurf.a */,
-				6514A8C6CC5A82913914A6D6 /* libPods-Quiver UI.a */,
-				B0955AE379B94AF246A75215 /* libPods-Quiver UI-Quiver UITests.a */,
-				DC1E7B3792F6703709E9BE7A /* libPods-Quiver UI-tvOS.a */,
-				920B7E7862E0BC2B9C24DE6A /* libPods-Quiver UI-tvOSTests.a */,
+				E37A9AE15A0859BDEF78D834 /* libPods-Quiver UI.a */,
+				37CB9F8D3F96C737C0E8D774 /* libPods-Quiver UI-Quiver UITests.a */,
+				AD69A58708158558933B7713 /* libPods-Quiver UI-tvOS.a */,
+				07B85B4FD25DEF6875ABF6C1 /* libPods-Quiver UI-tvOSTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -231,14 +229,14 @@
 		F1C06A65FCFB57C82C3593B9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				C37FD4F69612A9731C064BBD /* Pods-Quiver UI.debug.xcconfig */,
-				B7083FA2B9E71BE3A4E39210 /* Pods-Quiver UI.release.xcconfig */,
-				EC3E581BCA3A297ABD1105C3 /* Pods-Quiver UI-Quiver UITests.debug.xcconfig */,
-				6F4C5F87858C1A722DD4EFBA /* Pods-Quiver UI-Quiver UITests.release.xcconfig */,
-				F63E59532F0DABD263B45D96 /* Pods-Quiver UI-tvOS.debug.xcconfig */,
-				59539D78125A9EE36E0F0D05 /* Pods-Quiver UI-tvOS.release.xcconfig */,
-				E627402D77B0E9F3D62DE311 /* Pods-Quiver UI-tvOSTests.debug.xcconfig */,
-				0D289A5D8B1E5788B9D470EA /* Pods-Quiver UI-tvOSTests.release.xcconfig */,
+				2FFE9495A0F36CF0171F9B28 /* Pods-Quiver UI.debug.xcconfig */,
+				ECE863502E12D158D00947B9 /* Pods-Quiver UI.release.xcconfig */,
+				4767296B03B75B888954AB3D /* Pods-Quiver UI-Quiver UITests.debug.xcconfig */,
+				AEAE629856BE22A407BF711D /* Pods-Quiver UI-Quiver UITests.release.xcconfig */,
+				5412437B3505F744A1C90D33 /* Pods-Quiver UI-tvOS.debug.xcconfig */,
+				0496BA994BD548ED2E14D308 /* Pods-Quiver UI-tvOS.release.xcconfig */,
+				02C20A179DEB27738A71A130 /* Pods-Quiver UI-tvOSTests.debug.xcconfig */,
+				63584935F70A6FC24D86BAA4 /* Pods-Quiver UI-tvOSTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -250,12 +248,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "Quiver UITests" */;
 			buildPhases = (
-				835D8AAE5BFD46033004B2B8 /* [CP] Check Pods Manifest.lock */,
+				4A2E32AC5FE320B940101009 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				08762156B710109B675474F4 /* [CP] Copy Pods Resources */,
-				2C46963933DC6D8FB76E7DCC /* [CP] Embed Pods Frameworks */,
+				BE2A35AADD59ACC9D18F1A7A /* [CP] Embed Pods Frameworks */,
+				0DD76D9C19C85C3FE3AA3241 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -271,14 +269,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Quiver UI" */;
 			buildPhases = (
-				EE680C6F5F4B8C7F1A7F4011 /* [CP] Check Pods Manifest.lock */,
+				86DB1947446E1745AB1602C6 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				6859997AE6A071E3DB3CD433 /* [CP] Copy Pods Resources */,
-				5B253B35AA74E937C57F2F87 /* [CP] Embed Pods Frameworks */,
+				3125B3B9F7437F188E73F189 /* [CP] Embed Pods Frameworks */,
+				59BAE62A9FA41CAF3A8CE5A7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -293,7 +291,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Quiver UI-tvOS" */;
 			buildPhases = (
-				9C6B62F986608769DC2D7612 /* [CP] Check Pods Manifest.lock */,
+				F36399F17F67F2A09D3E1102 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -313,7 +311,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Quiver UI-tvOSTests" */;
 			buildPhases = (
-				0EE596F1C19CE9098EE356FB /* [CP] Check Pods Manifest.lock */,
+				57E772846A67CC08B412A7EE /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -437,7 +435,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\nexport PROJECT_ROOT=$PWD/..\n../../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		08762156B710109B675474F4 /* [CP] Copy Pods Resources */ = {
+		0DD76D9C19C85C3FE3AA3241 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -457,50 +455,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Quiver UI-Quiver UITests/Pods-Quiver UI-Quiver UITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		0EE596F1C19CE9098EE356FB /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Quiver UI-tvOSTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		2C46963933DC6D8FB76E7DCC /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Quiver UI-Quiver UITests/Pods-Quiver UI-Quiver UITests-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-DoubleConversion/double-conversion.framework/double-conversion",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/hermes.framework/hermes",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/double-conversion.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Quiver UI-Quiver UITests/Pods-Quiver UI-Quiver UITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -515,7 +469,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		5B253B35AA74E937C57F2F87 /* [CP] Embed Pods Frameworks */ = {
+		3125B3B9F7437F188E73F189 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -537,27 +491,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Quiver UI/Pods-Quiver UI-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		6859997AE6A071E3DB3CD433 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Quiver UI/Pods-Quiver UI-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/UIKitLayout/UIKitLayout.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UIKitLayout.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Quiver UI/Pods-Quiver UI-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		835D8AAE5BFD46033004B2B8 /* [CP] Check Pods Manifest.lock */ = {
+		4A2E32AC5FE320B940101009 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -579,7 +513,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		9C6B62F986608769DC2D7612 /* [CP] Check Pods Manifest.lock */ = {
+		57E772846A67CC08B412A7EE /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -594,14 +528,34 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Quiver UI-tvOS-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Quiver UI-tvOSTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		EE680C6F5F4B8C7F1A7F4011 /* [CP] Check Pods Manifest.lock */ = {
+		59BAE62A9FA41CAF3A8CE5A7 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Quiver UI/Pods-Quiver UI-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/UIKitLayout/UIKitLayout.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UIKitLayout.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Quiver UI/Pods-Quiver UI-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		86DB1947446E1745AB1602C6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -617,6 +571,50 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-Quiver UI-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BE2A35AADD59ACC9D18F1A7A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Quiver UI-Quiver UITests/Pods-Quiver UI-Quiver UITests-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-DoubleConversion/double-conversion.framework/double-conversion",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/double-conversion.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Quiver UI-Quiver UITests/Pods-Quiver UI-Quiver UITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F36399F17F67F2A09D3E1102 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Quiver UI-tvOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -727,7 +725,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EC3E581BCA3A297ABD1105C3 /* Pods-Quiver UI-Quiver UITests.debug.xcconfig */;
+			baseConfigurationReference = 4767296B03B75B888954AB3D /* Pods-Quiver UI-Quiver UITests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -750,7 +748,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6F4C5F87858C1A722DD4EFBA /* Pods-Quiver UI-Quiver UITests.release.xcconfig */;
+			baseConfigurationReference = AEAE629856BE22A407BF711D /* Pods-Quiver UI-Quiver UITests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -770,7 +768,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C37FD4F69612A9731C064BBD /* Pods-Quiver UI.debug.xcconfig */;
+			baseConfigurationReference = 2FFE9495A0F36CF0171F9B28 /* Pods-Quiver UI.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "$(inherited)";
@@ -802,7 +800,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B7083FA2B9E71BE3A4E39210 /* Pods-Quiver UI.release.xcconfig */;
+			baseConfigurationReference = ECE863502E12D158D00947B9 /* Pods-Quiver UI.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "$(inherited)";
@@ -828,7 +826,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F63E59532F0DABD263B45D96 /* Pods-Quiver UI-tvOS.debug.xcconfig */;
+			baseConfigurationReference = 5412437B3505F744A1C90D33 /* Pods-Quiver UI-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -856,7 +854,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 59539D78125A9EE36E0F0D05 /* Pods-Quiver UI-tvOS.release.xcconfig */;
+			baseConfigurationReference = 0496BA994BD548ED2E14D308 /* Pods-Quiver UI-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -884,7 +882,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E627402D77B0E9F3D62DE311 /* Pods-Quiver UI-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = 02C20A179DEB27738A71A130 /* Pods-Quiver UI-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -911,7 +909,7 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0D289A5D8B1E5788B9D470EA /* Pods-Quiver UI-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = 63584935F70A6FC24D86BAA4 /* Pods-Quiver UI-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
