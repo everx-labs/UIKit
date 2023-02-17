@@ -38,7 +38,7 @@ const decimalSeparator = uiLocalized.localeInfo.numbers.decimal;
 
 export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountInputProps>(
     function UIAmountInputContent(
-        { children, placeholder = '', defaultAmount, ...props }: UIAmountInputProps,
+        { children, placeholder = '', defaultAmount, onMessagePress, ...props }: UIAmountInputProps,
         forwardedRef: React.Ref<UIAmountInputRef>,
     ) {
         const {
@@ -153,7 +153,7 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
         const styles = useStyles(theme, editable, hasChildren);
 
         return (
-            <InputMessage type={inputMessageType} text={message}>
+            <>
                 <View
                     style={styles.container}
                     // @ts-expect-error
@@ -192,7 +192,10 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
                     </TapHandler>
                     {childrenProcessed}
                 </View>
-            </InputMessage>
+                <InputMessage type={inputMessageType} onPress={onMessagePress}>
+                    {message}
+                </InputMessage>
+            </>
         );
     },
 );

@@ -259,7 +259,13 @@ export const Inputs = () => {
                         testID="uiMaterialTextView_amount"
                         placeholder="0.000"
                         label="Amount Precision"
-                        message="Caption"
+                        message="9999.9999 is recommended"
+                        onMessagePress={() => {
+                            amountPrecisionRef.current?.changeAmount(
+                                new BigNumber(9999.9999),
+                                false,
+                            );
+                        }}
                         onChangeAmount={_value => null}
                         decimalAspect={UIAmountInputDecimalAspect.Precision}
                     />

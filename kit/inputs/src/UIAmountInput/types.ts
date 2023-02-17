@@ -46,6 +46,12 @@ export type UIAmountInputProps = Omit<
      */
     message?: string;
     /**
+     * @web
+     * Callback that calls when the message text was tapped.
+     * Note: It works only for web.
+     */
+    onMessagePress?: () => void | undefined;
+    /**
      *  As children you can provide only one or two of this component:
      *  `UIAmountInput.Icon`
      *  `UIAmountInput.Action`
