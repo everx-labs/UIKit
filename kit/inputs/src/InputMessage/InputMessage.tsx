@@ -3,20 +3,10 @@ import { StyleSheet, View } from 'react-native';
 
 import { ColorVariants, UILabel, TypographyVariants, Typography } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { InputMessageProps, InputMessageType } from './types';
+import { InputMessageContainer } from './InputMessageContainer';
 
-export enum InputMessageType {
-    Error = 'Error',
-    Warning = 'Warning',
-    Success = 'Success',
-    Info = 'Info',
-}
-type InputMessageProps = {
-    text: string | undefined;
-    type: InputMessageType | undefined;
-    children: React.ReactNode;
-};
-
-export function InputMessage({ text, type = InputMessageType.Info, children }: InputMessageProps) {
+export function InputMessage({ children, type, onPress }: InputMessageProps) {
     const commentColor = React.useMemo(() => {
         switch (type) {
             case InputMessageType.Error:
@@ -31,25 +21,27 @@ export function InputMessage({ text, type = InputMessageType.Info, children }: I
         }
     }, [type]);
 
+    if (!children) {
+        return <View style={styles.bottomDefaultOffset} />;
+    }
+
     return (
-        <>
-            {children}
-            {text ? (
-                <UILabel
-                    role={TypographyVariants.ParagraphLabel}
-                    color={commentColor}
-                    style={styles.comment}
-                >
-                    {text}
-                </UILabel>
-            ) : (
-                <View style={styles.bottomDefaultOffset} />
-            )}
-        </>
+        <InputMessageContainer onPress={onPress} style={styles.container}>
+            <UILabel
+                role={TypographyVariants.ParagraphLabel}
+                color={commentColor}
+                style={styles.comment}
+            >
+                {children}
+            </UILabel>
+        </InputMessageContainer>
     );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        alignSelf: 'flex-start',
+    },
     comment: {
         paddingTop: UILayoutConstant.contentInsetVerticalX1,
         paddingHorizontal: UILayoutConstant.contentOffset,
