@@ -8,18 +8,17 @@ import { AnimatedContainer } from './AnimatedContainer';
 export function InputMessageContainer({
     children,
     onPress,
-    style,
 }: InputMessageContainerProps): JSX.Element {
     if (!onPress) {
-        return <AnimatedContainer style={[styles.container, style]}>{children}</AnimatedContainer>;
+        return <AnimatedContainer style={styles.container}>{children}</AnimatedContainer>;
     }
 
     return (
         <UIPressableArea
             onPress={onPress}
-            style={[styles.container, styles.unSelectableText, style]}
+            style={[styles.container, styles.pressableContainer, styles.unSelectableText]}
         >
-            <AnimatedContainer style={[styles.container, style]}>{children}</AnimatedContainer>
+            <AnimatedContainer>{children}</AnimatedContainer>
         </UIPressableArea>
     );
 }
@@ -27,6 +26,10 @@ export function InputMessageContainer({
 const styles = StyleSheet.create({
     container: {
         overflow: 'hidden',
+    },
+    pressableContainer: {
+        // To make the pressable area zoom relative to the center of the text
+        alignSelf: 'flex-start',
     },
     unSelectableText: {
         display: 'flex',

@@ -22,7 +22,7 @@ export function InputMessage({ children, type, onPress }: InputMessageProps) {
     }, [type]);
 
     return (
-        <InputMessageContainer onPress={onPress} style={styles.container} message={children}>
+        <InputMessageContainer onPress={onPress} message={children}>
             {children && children.length > 0 ? (
                 <UILabel
                     role={TypographyVariants.ParagraphLabel}
@@ -37,9 +37,6 @@ export function InputMessage({ children, type, onPress }: InputMessageProps) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        alignSelf: 'flex-start',
-    },
     comment: {
         paddingTop: UILayoutConstant.contentInsetVerticalX1,
         paddingHorizontal: UILayoutConstant.contentOffset,
