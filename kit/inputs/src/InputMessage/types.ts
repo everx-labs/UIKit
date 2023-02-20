@@ -16,4 +16,5 @@ export type InputMessageContainerProps = {
     children: React.ReactNode;
     onPress?: () => void | undefined;
     style?: StyleProp<ViewStyle>;
+    message?: string;
 };

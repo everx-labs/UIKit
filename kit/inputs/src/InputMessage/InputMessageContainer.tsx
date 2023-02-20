@@ -8,10 +8,11 @@ import type { InputMessageContainerProps } from './types';
 export function InputMessageContainer({
     children,
     style,
+    message,
 }: InputMessageContainerProps): JSX.Element {
     React.useLayoutEffect(() => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    }, [children]);
+    }, [message]);
 
     return <View style={[styles.container, style]}>{children}</View>;
 }
