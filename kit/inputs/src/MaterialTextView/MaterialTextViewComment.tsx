@@ -1,27 +1,25 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
-
-import { ColorVariants, UILabel, TypographyVariants, Typography } from '@tonlabs/uikit.themes';
-import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { View } from 'react-native';
 
 import type { MaterialTextViewProps } from './types';
+import { InputMessage, InputMessageType } from '../InputMessage';
 
-function useCommentColor(
+function useMessageType(
     success: boolean | undefined,
     warning: boolean | undefined,
     error: boolean | undefined,
-): ColorVariants {
+) {
     return React.useMemo(() => {
         if (error) {
-            return ColorVariants.TextNegative;
+            return InputMessageType.Error;
         }
         if (warning) {
-            return ColorVariants.TextPrimary;
+            return InputMessageType.Warning;
         }
         if (success) {
-            return ColorVariants.TextPositive;
+            return InputMessageType.Success;
         }
-        return ColorVariants.TextTertiary;
+        return InputMessageType.Info;
     }, [success, warning, error]);
 }
 
@@ -30,35 +28,16 @@ export function MaterialTextViewComment(
         children: React.ReactNode;
     },
 ) {
-    const { helperText, onLayout, children, success, warning, error } = props;
+    const { helperText, onLayout, children, success, warning, error, onHelperTextPress } = props;
 
-    const commentColor = useCommentColor(success, warning, error);
+    const inputMessageType = useMessageType(success, warning, error);
 
     return (
         <View onLayout={onLayout}>
             {children}
-            {helperText ? (
-                <UILabel
-                    role={TypographyVariants.ParagraphLabel}
-                    color={commentColor}
-                    style={styles.comment}
-                >
-                    {helperText}
-                </UILabel>
-            ) : (
-                <View style={styles.bottomDefaultOffset} />
-            )}
+            <InputMessage type={inputMessageType} onPress={onHelperTextPress}>
+                {helperText}
+            </InputMessage>
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    comment: {
-        paddingTop: UILayoutConstant.contentInsetVerticalX1,
-        paddingHorizontal: UILayoutConstant.contentOffset,
-    },
-    bottomDefaultOffset: {
-        marginTop: UILayoutConstant.contentInsetVerticalX1,
-        height: StyleSheet.flatten(Typography[TypographyVariants.ParagraphLabel]).lineHeight,
-    },
-});
