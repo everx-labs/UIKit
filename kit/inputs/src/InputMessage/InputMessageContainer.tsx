@@ -2,9 +2,6 @@ import * as React from 'react';
 import { LayoutAnimation, StyleSheet, View } from 'react-native';
 import type { InputMessageContainerProps } from './types';
 
-/**
- * It's required only for web.
- */
 export function InputMessageContainer({
     children,
     style,
