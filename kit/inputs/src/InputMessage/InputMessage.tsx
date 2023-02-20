@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { ColorVariants, UILabel, TypographyVariants, Typography } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
@@ -21,19 +21,17 @@ export function InputMessage({ children, type, onPress }: InputMessageProps) {
         }
     }, [type]);
 
-    if (!children) {
-        return <View style={styles.bottomDefaultOffset} />;
-    }
-
     return (
         <InputMessageContainer onPress={onPress} style={styles.container}>
-            <UILabel
-                role={TypographyVariants.ParagraphLabel}
-                color={commentColor}
-                style={styles.comment}
-            >
-                {children}
-            </UILabel>
+            {children && children.length > 0 ? (
+                <UILabel
+                    role={TypographyVariants.ParagraphLabel}
+                    color={commentColor}
+                    style={styles.comment}
+                >
+                    {children}
+                </UILabel>
+            ) : null}
         </InputMessageContainer>
     );
 }

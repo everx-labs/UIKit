@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { LayoutAnimation, StyleSheet, View } from 'react-native';
 import type { InputMessageContainerProps } from './types';
 
 /**
@@ -9,5 +9,15 @@ export function InputMessageContainer({
     children,
     style,
 }: InputMessageContainerProps): JSX.Element {
-    return <View style={style}>{children}</View>;
+    React.useLayoutEffect(() => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    }, [children]);
+
+    return <View style={[styles.container, style]}>{children}</View>;
 }
+
+const styles = StyleSheet.create({
+    container: {
+        overflow: 'hidden',
+    },
+});
