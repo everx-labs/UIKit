@@ -1,1 +1,1 @@
-export * from './useAnimatedHeight';
+export * from './useAnimatedMessageStyle';
