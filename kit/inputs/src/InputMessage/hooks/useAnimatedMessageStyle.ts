@@ -27,7 +27,7 @@ export function useAnimatedMessageStyle() {
             overshootClamping: true,
         });
 
-        const newOpacity = animatedHeight.value > 0 ? 1 : 0;
+        const newOpacity = height > 0 ? 1 : 0;
         opacity.value = withTiming(newOpacity, { easing: Easing.in(Easing.ease) });
     }, []);
 
