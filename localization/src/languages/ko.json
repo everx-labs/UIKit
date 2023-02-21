@@ -408,6 +408,70 @@
     "ClearHistory": "기록 지우기",
     "Close": "닫기",
     "Code": "코드",
+    "CommonAssets": {
+        "accounts": {
+            "saving": {
+                "everStakesDesc": "연간 최대 {0}% 받기",
+                "surfStaking": "서프 스테이킹"
+            },
+            "separators": {
+                "accounts": "계정",
+                "farming": "이자 농사",
+                "investments": "저축",
+                "tokens": "토큰"
+            },
+            "showHidden": "숨겨진 계정 보이기",
+            "subscriptions": {
+                "assetsSubtitle": "구독",
+                "titleSubscription": "구독"
+            }
+        },
+        "currencies": {
+            "assets": {
+                "EVER": {
+                    "comment": "에버스케일 토큰",
+                    "title": "에버"
+                },
+                "CUSTOM": {
+                    "comment": "{0} 토큰",
+                    "title": "{0} 토큰"
+                },
+                "DEVER": {
+                    "comment": "에버스케일 테스트 토큰",
+                    "title": "데버"
+                }
+            }
+        },
+        "networks": {
+            "names": {
+                "devnet": "데브넷",
+                "fldnet": "FLD 테스트 네트워크",
+                "mainnet": "메인넷",
+                "rustnet": "Rustnet"
+            }
+        },
+        "staking": {
+            "age": "수명 (age)",
+            "assurance": "보증금",
+            "availablePool": "사용 가능한 풀",
+            "balance": "잔액",
+            "fee": "보상 수수료",
+            "members": "회원",
+            "minStake": "최소 스테이킹 금액",
+            "period": "락업 기간",
+            "reward": "예상 연간 보상",
+            "rewardPaid": "적립된 보상",
+            "rewarded": "보상",
+            "successfulRounds": "성공적인 라운드"
+        },
+        "wallet": {
+            "main": {
+                "devers": "데버",
+                "evers": "에버",
+                "tokens": "토큰"
+            }
+        }
+    },
     "ConfirmAndTransfer": "확인 및 전송",
     "ConfirmIdentity": "계속하려면 전화번호로 코드가 포함된 SMS 문자를 보내 신원을 확인해야 합니다",
     "ConfirmPassword": "암호 확인",

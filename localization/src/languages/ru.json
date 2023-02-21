@@ -417,6 +417,70 @@
     "ClearHistory": "Очистить историю",
     "Close": "Закрыть",
     "Code": "Код",
+    "CommonAssets": {
+        "accounts": {
+            "saving": {
+                "surfStaking": "Surf Стейкинг",
+                "everStakesDesc": "Получайте до {0} % годовых"
+            },
+            "separators": {
+                "accounts": "Счета",
+                "farming": "Фарминг",
+                "investments": "Сервисы",
+                "tokens": "Токены"
+            },
+            "showHidden": "Показать скрытые счета",
+            "subscriptions": {
+                "assetsSubtitle": "Подписки",
+                "titleSubscription": "Подписка"
+            }
+        },
+        "currencies": {
+            "assets": {
+                "EVER": {
+                    "comment": "Токены Everscale",
+                    "title": "Эверы"
+                },
+                "CUSTOM": {
+                    "comment": "{0} tokens",
+                    "title": "{0} tokens"
+                },
+                "DEVER": {
+                    "comment": "Тестовые токены Everscale",
+                    "title": "Дэверы"
+                }
+            }
+        },
+        "networks": {
+            "names": {
+                "devnet": "Сеть для тестирования",
+                "fldnet": "Сеть FLD",
+                "mainnet": "Основная сеть",
+                "rustnet": "Rust-сеть"
+            }
+        },
+        "staking": {
+            "age": "Возраст",
+            "assurance": "Гарант. обеспечение",
+            "availablePool": "Доступный пул",
+            "balance": "Баланс",
+            "fee": "Комиссия за стейкинг",
+            "members": "Участники",
+            "minStake": "Мин. стейк",
+            "period": "Период блокировки",
+            "reward": "Ежегодное вознаграждение",
+            "rewardPaid": "Выплачено",
+            "rewarded": "Моё вознаграждение",
+            "successfulRounds": "Успешные раунды"
+        },
+        "wallet": {
+            "main": {
+                "devers": "Дэверов",
+                "evers": "Эверов",
+                "tokens": "Токенов"
+            }
+        }
+    },
     "ConfirmAndTransfer": "Подтвердить и перевести",
     "Confirmed": "Подтвержденный",
     "ConfirmIdentity": "Для продолжения необходимо подтвердить вашу личность. Мы отправим СМС с кодом на ваш номер телефона",
