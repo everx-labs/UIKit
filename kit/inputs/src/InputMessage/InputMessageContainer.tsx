@@ -1,20 +1,33 @@
 import * as React from 'react';
-import { LayoutAnimation, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
+
+import { UIPressableArea } from '@tonlabs/uikit.controls';
+
 import type { InputMessageContainerProps } from './types';
+import { AnimatedContainer } from './AnimatedContainer';
 
 export function InputMessageContainer({
     children,
-    message,
+    onPress,
 }: InputMessageContainerProps): JSX.Element {
-    React.useLayoutEffect(() => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    }, [message]);
+    if (Platform.OS === 'web' && onPress) {
+        return (
+            <AnimatedContainer>
+                <UIPressableArea onPress={onPress} style={styles.pressableContainer}>
+                    {children}
+                </UIPressableArea>
+            </AnimatedContainer>
+        );
+    }
 
-    return <View style={styles.container}>{children}</View>;
+    return <AnimatedContainer>{children}</AnimatedContainer>;
 }
 
 const styles = StyleSheet.create({
-    container: {
-        overflow: 'hidden',
+    pressableContainer: {
+        // To make the pressable area zooms relative to the center of the text
+        alignSelf: 'flex-start',
+
+        userSelect: 'none',
     },
 });

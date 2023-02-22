@@ -22,7 +22,7 @@ export function InputMessage({ children, type, onPress }: InputMessageProps) {
     }, [type]);
 
     return (
-        <InputMessageContainer onPress={onPress} message={children}>
+        <InputMessageContainer onPress={onPress}>
             {children && children.length > 0 ? (
                 <UILabel
                     role={TypographyVariants.ParagraphLabel}

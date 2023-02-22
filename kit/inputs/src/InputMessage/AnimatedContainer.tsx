@@ -10,10 +10,11 @@ type AnimatedContainerProps = {
 
 export function AnimatedContainer({ children }: AnimatedContainerProps) {
     const { onChildrenLayout, animatedStyle } = useAnimatedMessageStyle();
-
     return (
         <Animated.View style={[styles.container, animatedStyle]}>
-            <Animated.View onLayout={onChildrenLayout}>{children}</Animated.View>
+            <Animated.View style={styles.content} onLayout={onChildrenLayout}>
+                {children}
+            </Animated.View>
         </Animated.View>
     );
 }
@@ -21,5 +22,11 @@ export function AnimatedContainer({ children }: AnimatedContainerProps) {
 const styles = StyleSheet.create({
     container: {
         overflow: 'hidden',
+        alignSelf: 'stretch',
+    },
+    content: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
     },
 });
