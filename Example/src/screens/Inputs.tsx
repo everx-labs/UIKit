@@ -12,6 +12,7 @@ import {
     UISeedPhraseInput,
 } from '@tonlabs/uikit.inputs';
 import { ColorVariants } from '@tonlabs/uikit.themes';
+import { UISearchBar } from '@tonlabs/uicast.bars';
 import { UIAddressTextView } from '@tonlabs/uicast.address-text';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import { UIImage } from '@tonlabs/uikit.media';
@@ -26,6 +27,11 @@ export const Inputs = () => {
     }, []);
     return (
         <ExampleScreen>
+            <ExampleSection title="UISearchBar">
+                <View style={{ maxWidth: 400, alignSelf: 'stretch' }}>
+                    <UISearchBar />
+                </View>
+            </ExampleSection>
             <ExampleSection title="UISeedPhraseInput">
                 <View style={{ maxWidth: 400, padding: 20, alignSelf: 'stretch' }}>
                     <UISeedPhraseInput
