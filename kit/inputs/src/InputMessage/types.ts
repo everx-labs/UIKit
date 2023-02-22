@@ -25,3 +25,7 @@ export type InputMessageContainerProps = {
     children: React.ReactNode;
     onPress?: () => void | undefined;
 };
+
+export type InputMessageAnimatedContainerProps = {
+    children: React.ReactNode;
+};

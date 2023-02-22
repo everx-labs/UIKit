@@ -1,2 +1,3 @@
 export * from './InputMessage';
-export * from './types';
+export { InputMessageType } from './types';
+export type { InputMessageProps } from './types';

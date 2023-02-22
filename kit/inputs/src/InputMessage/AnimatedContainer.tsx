@@ -3,12 +3,9 @@ import { StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { useAnimatedMessageStyle } from './hooks';
+import type { InputMessageAnimatedContainerProps } from './types';
 
-type AnimatedContainerProps = {
-    children: React.ReactNode;
-};
-
-export function AnimatedContainer({ children }: AnimatedContainerProps) {
+export function AnimatedContainer({ children }: InputMessageAnimatedContainerProps) {
     const { onChildrenLayout, animatedStyle } = useAnimatedMessageStyle();
     return (
         <Animated.View style={[styles.container, animatedStyle]}>
@@ -26,7 +23,5 @@ const styles = StyleSheet.create({
     },
     content: {
         position: 'absolute',
-        top: 0,
-        left: 0,
     },
 });
