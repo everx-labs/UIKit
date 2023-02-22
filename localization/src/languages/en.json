@@ -405,6 +405,70 @@
     "ClearHistory": "Clear History",
     "Close": "Close",
     "Code": "Code",
+    "CommonAssets": {
+        "accounts": {
+            "saving": {
+                "surfStaking": "Surf Stakes",
+                "everStakesDesc": "Get up to {0} % a year"
+            },
+            "separators": {
+                "accounts": "Accounts",
+                "farming": "Farming",
+                "investments": "Savings",
+                "tokens": "Tokens"
+            },
+            "showHidden": "Show hidden",
+            "subscriptions": {
+                "assetsSubtitle": "Subscriptions",
+                "titleSubscription": "Subscription"
+            }
+        },
+        "currencies": {
+            "assets": {
+                "EVER": {
+                    "comment": "Everscale tokens",
+                    "title": "Evers"
+                },
+                "CUSTOM": {
+                    "comment": "{0} tokens",
+                    "title": "{0} tokens"
+                },
+                "DEVER": {
+                    "comment": "Everscale test tokens",
+                    "title": "Devers"
+                }
+            }
+        },
+        "networks": {
+            "names": {
+                "devnet": "Devnet",
+                "fldnet": "FLD network",
+                "mainnet": "Mainnet",
+                "rustnet": "Rustnet"
+            }
+        },
+        "staking": {
+            "age": "Age",
+            "assurance": "Assurance",
+            "availablePool": "Available pool",
+            "balance": "Balance",
+            "fee": "Reward fee",
+            "members": "Members",
+            "minStake": "Min. stake",
+            "period": "Lock-up period",
+            "reward": "Annual reward",
+            "rewardPaid": "Reward paid",
+            "rewarded": "My reward",
+            "successfulRounds": "Successful rounds"
+        },
+        "wallet": {
+            "main": {
+                "devers": "Devers",
+                "evers": "Evers",
+                "tokens": "Tokens"
+            }
+        }
+    },
     "ConfirmAndTransfer": "Confirm & Transfer",
     "Confirmed": "Confirmed",
     "ConfirmIdentity": "To proceed, we need to confirm your identity by sending an SMS text with a code to your phone number",

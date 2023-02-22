@@ -417,6 +417,70 @@
     "ClearHistory": "清除历史记录",
     "Close": "关闭",
     "Code": "代码",
+    "CommonAssets": {
+        "accounts": {
+            "saving": {
+                "surfStaking": "Surf Stakes",
+                "everStakesDesc": "Get up to {0} % a year"
+            },
+            "separators": {
+                "accounts": "账户",
+                "farming": "Farming",
+                "investments": "服务",
+                "tokens": "Tokens"
+            },
+            "showHidden": "Show hidden",
+            "subscriptions": {
+                "assetsSubtitle": "Subscriptions",
+                "titleSubscription": "Subscription"
+            }
+        },
+        "currencies": {
+            "assets": {
+                "EVER": {
+                    "comment": "Everscale tokens",
+                    "title": "Evers"
+                },
+                "CUSTOM": {
+                    "comment": "{0} tokens",
+                    "title": "{0} tokens"
+                },
+                "DEVER": {
+                    "comment": "Everscale test tokens",
+                    "title": "Devers"
+                }
+            }
+        },
+        "networks": {
+            "names": {
+                "devnet": "开发网",
+                "fldnet": "FLD network",
+                "mainnet": "Mainnet",
+                "rustnet": "Rustnet"
+            }
+        },
+        "staking": {
+            "age": "Age",
+            "assurance": "Assurance",
+            "availablePool": "Available pool",
+            "balance": "Balance",
+            "fee": "Reward fee",
+            "members": "Members",
+            "minStake": "Min. stake",
+            "period": "Lock-up period",
+            "reward": "Annual reward",
+            "rewardPaid": "Reward paid",
+            "rewarded": "My reward",
+            "successfulRounds": "Successful rounds"
+        },
+        "wallet": {
+            "main": {
+                "devers": "Devers",
+                "evers": "Evers",
+                "tokens": "Tokens"
+            }
+        }
+    },
     "ConfirmAndTransfer": "确认和转移",
     "Confirmed": "已确认",
     "ConfirmIdentity": "要继续，我们需要通过向您的电话号码发送带有代码的短信来确认您的身份",

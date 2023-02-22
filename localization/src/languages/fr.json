@@ -417,6 +417,70 @@
     "ClearHistory": "Effacer l’historique",
     "Close": "Fermer",
     "Code": "Code",
+    "CommonAssets": {
+        "accounts": {
+            "saving": {
+                "surfStaking": "Surf Stakes",
+                "everStakesDesc": "Get up to {0} % a year"
+            },
+            "separators": {
+                "accounts": "Comptes",
+                "farming": "Farming",
+                "investments": "Services",
+                "tokens": "Tokens"
+            },
+            "showHidden": "Show hidden",
+            "subscriptions": {
+                "assetsSubtitle": "Abonnements",
+                "titleSubscription": "Abonnement"
+            }
+        },
+        "currencies": {
+            "assets": {
+                "EVER": {
+                    "comment": "Jetons Everscale",
+                    "title": "Evers"
+                },
+                "CUSTOM": {
+                    "comment": "{0} tokens",
+                    "title": "{0} tokens"
+                },
+                "DEVER": {
+                    "comment": "Jetons de test Everscale",
+                    "title": "Devers"
+                }
+            }
+        },
+        "networks": {
+            "names": {
+                "devnet": "Devnet",
+                "fldnet": "FLD network",
+                "mainnet": "Mainnet",
+                "rustnet": "Rustnet"
+            }
+        },
+        "staking": {
+            "age": "Âge",
+            "assurance": "Assurance",
+            "availablePool": "Pool disponible",
+            "balance": "Solde",
+            "fee": "Frais de récompense",
+            "members": "Membres",
+            "minStake": "Stake min.",
+            "period": "Période de blocage",
+            "reward": "Récompense annuelle estimée",
+            "rewardPaid": "Récompense payée",
+            "rewarded": "My reward",
+            "successfulRounds": "Tours réussis"
+        },
+        "wallet": {
+            "main": {
+                "devers": "Devers",
+                "evers": "Evers",
+                "tokens": "Tokens"
+            }
+        }
+    },
     "ConfirmAndTransfer": "Confirmer et transférer",
     "Confirmed": "Confirmé",
     "ConfirmIdentity": "Pour continuer, nous devons confirmer votre identité en envoyant un SMS avec un code à votre numéro de téléphone",

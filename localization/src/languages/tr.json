@@ -417,6 +417,70 @@
     "ClearHistory": "Geçmişi Temizle",
     "Close": "Kapat",
     "Code": "Kod",
+    "CommonAssets": {
+        "accounts": {
+            "saving": {
+                "surfStaking": "Surf Stakes",
+                "everStakesDesc": "Get up to {0} % a year"
+            },
+            "separators": {
+                "accounts": "Hesaplar",
+                "farming": "Farming",
+                "investments": "Hizmetler",
+                "tokens": "Tokens"
+            },
+            "showHidden": "Show hidden",
+            "subscriptions": {
+                "assetsSubtitle": "Abonelik",
+                "titleSubscription": "Abonelik"
+            }
+        },
+        "currencies": {
+            "assets": {
+                "EVER": {
+                    "comment": "Everscale tokens",
+                    "title": "Evers"
+                },
+                "CUSTOM": {
+                    "comment": "{0} tokens",
+                    "title": "{0} tokens"
+                },
+                "DEVER": {
+                    "comment": "Everscale test tokens",
+                    "title": "Devers"
+                }
+            }
+        },
+        "networks": {
+            "names": {
+                "devnet": "Geliştirici ağı",
+                "fldnet": "FLD network",
+                "mainnet": "Mainnet",
+                "rustnet": "Rustnet"
+            }
+        },
+        "staking": {
+            "age": "Age",
+            "assurance": "Güvence",
+            "availablePool": "Available pool",
+            "balance": "Bakiye",
+            "fee": "Stake etme ücreti",
+            "members": "Üye sayısı",
+            "minStake": "En az stake miktarı",
+            "period": "Kilitlenme süresi",
+            "reward": "Yıllık ödül",
+            "rewardPaid": "Ödül ödendi",
+            "rewarded": "My reward",
+            "successfulRounds": "Successful rounds"
+        },
+        "wallet": {
+            "main": {
+                "devers": "Devers",
+                "evers": "Evers",
+                "tokens": "Tokens"
+            }
+        }
+    },
     "ConfirmAndTransfer": "Onayla ve Aktar",
     "Confirmed": "Onaylanmış",
     "ConfirmIdentity": "Devam etmek için, telefon numaranıza bir kod içeren bir kısa mesajla metni göndererek kimliğinizi onaylamamız gerekiyor",
