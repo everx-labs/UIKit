@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import {
     UITextView,
@@ -68,25 +68,49 @@ function renderRightAction({ label, onPress, accessibilityLabel }: UISearchBarRi
     );
 }
 
-function useInnerRightAction(
-    inputHasValue: boolean,
-    isFocused: boolean,
-    isHovered: boolean,
-    searching: boolean | undefined,
-    clear: () => void,
-) {
+/**
+ * This is a container for the right action to align it vertically
+ * and make it to not affect the input height
+ */
+function InnerRightActionContainer({ children }: { children: React.ReactNode }) {
+    return (
+        <View style={styles.rightInnerActionContainer}>
+            <View style={styles.rightInnerActionContent}>{children}</View>
+        </View>
+    );
+}
+
+function InnerRightAction({
+    inputHasValue,
+    isFocused,
+    isHovered,
+    searching,
+    onClear,
+}: {
+    inputHasValue: boolean;
+    isFocused: boolean;
+    isHovered: boolean;
+    searching: boolean | undefined;
+    onClear: () => void;
+}) {
     if (searching) {
         return (
-            <UIIndicator
-                style={styles.loadingIcon}
-                size={UINavConstant.iconSearchingIndicatorSize}
-                trackWidth={2}
-            />
+            <InnerRightActionContainer>
+                <UIIndicator
+                    style={styles.loadingIcon}
+                    size={UINavConstant.iconSearchingIndicatorSize}
+                    trackWidth={2}
+                />
+            </InnerRightActionContainer>
         );
     }
 
     if (inputHasValue && (isFocused || isHovered)) {
-        return <UIMaterialTextViewClearButton clear={clear} />;
+        return (
+            <InnerRightActionContainer>
+                <UIMaterialTextViewClearButton clear={onClear} />
+            </InnerRightActionContainer>
+        );
     }
 
     return null;
@@ -154,14 +178,6 @@ export function UISearchBar({
     const { isFocused, onFocus, onBlur } = useFocused(inputProps.onFocus, inputProps.onBlur);
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
-    const innerRightAction = useInnerRightAction(
-        inputHasValue,
-        isFocused,
-        isHovered,
-        searching,
-        onClear,
-    );
-
     return (
         <UIBackgroundView
             style={styles.container}
@@ -186,7 +202,13 @@ export function UISearchBar({
                     onBlur={onBlur}
                     {...inputProps}
                 />
-                {innerRightAction}
+                <InnerRightAction
+                    inputHasValue={inputHasValue}
+                    isFocused={isFocused}
+                    isHovered={isHovered}
+                    searching={searching}
+                    onClear={onClear}
+                />
             </UIBackgroundView>
             {headerRight({
                 label: headerRightLabel,
@@ -211,7 +233,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: UILayoutConstant.input.borderRadius,
         paddingLeft: 10,
-        paddingRight: 8,
+        paddingRight: UILayoutConstant.smallContentOffset,
     },
     searchIcon: {
         width: UINavConstant.iconSearchSize,
@@ -220,10 +242,19 @@ const styles = StyleSheet.create({
     },
     loadingIcon: {
         flex: undefined,
-        marginLeft: UILayoutConstant.tinyContentOffset,
-        marginRight: 6,
+        marginHorizontal: UILayoutConstant.tinyContentOffset,
     },
     actionButton: {
         marginLeft: UILayoutConstant.contentOffset,
+    },
+    rightInnerActionContainer: {
+        alignSelf: 'stretch',
+        width: UINavConstant.searchBarRightInnerActionWidth,
+        justifyContent: 'center',
+        overflow: 'hidden',
+    },
+    rightInnerActionContent: {
+        position: 'absolute',
+        right: 0,
     },
 });
