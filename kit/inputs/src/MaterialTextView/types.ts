@@ -34,6 +34,10 @@ export type MaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
      */
     helperText?: string;
     /**
+     * Callback called by clicking/tapping on the helperText
+     */
+    onHelperTextPress?: () => void;
+    /**
      * Validation error
      * Defines the helperText style.
      */

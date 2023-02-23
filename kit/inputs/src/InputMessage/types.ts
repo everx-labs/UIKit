@@ -1,5 +1,3 @@
-import type { StyleProp, ViewStyle } from 'react-native';
-
 export enum InputMessageType {
     Error = 'Error',
     Warning = 'Warning',
@@ -7,13 +5,27 @@ export enum InputMessageType {
     Info = 'Info',
 }
 export type InputMessageProps = {
+    /**
+     * Message to display.
+     */
     children: string | undefined;
+    /**
+     * Type of the message.
+     * @default InputMessageType.Info
+     */
     type: InputMessageType;
+    /**
+     * Callback that is called when the message is pressed.
+     * Used only for web.
+     */
     onPress?: () => void | undefined;
 };
 
 export type InputMessageContainerProps = {
     children: React.ReactNode;
     onPress?: () => void | undefined;
-    style?: StyleProp<ViewStyle>;
+};
+
+export type InputMessageAnimatedContainerProps = {
+    children: React.ReactNode;
 };
