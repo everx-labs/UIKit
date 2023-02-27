@@ -386,16 +386,8 @@ export const UISeedPhraseTextView = React.forwardRef<
 
     const [hasIncorrectCharacters, setHasIncorrectCharacters] = React.useState(false);
 
-    const previousTextRawRef = React.useRef<string | null>(null);
-
     const onChangeText = React.useCallback(
         (textRaw: string) => {
-            /** To prevent onChangeText from being called twice with one actual text change */
-            if (previousTextRawRef.current === textRaw) {
-                return;
-            }
-            previousTextRawRef.current = textRaw;
-
             // Note: there is an issue with `.toLocaleLowerCase` on Android on some old API version
             // when `Hermes` is used. See issue: https://github.com/facebook/hermes/issues/582
             // The given function returns some incorrect result when applied to an empty string.

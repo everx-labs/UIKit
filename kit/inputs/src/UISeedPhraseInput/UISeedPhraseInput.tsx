@@ -154,7 +154,7 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
                     onSuccessRef.current(phrase, parts);
                 }
             });
-        }, [setValidationResult, state]);
+        }, [state]);
 
         const onSubmitEditing = React.useCallback(() => {
             if (
