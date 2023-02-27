@@ -50,6 +50,7 @@ export function useImperativeChange(
                 ref.current?.setNativeProps({
                     text: formattedText,
                 });
+                ref.current?.remeasureInputHeight();
             }
 
             if (
