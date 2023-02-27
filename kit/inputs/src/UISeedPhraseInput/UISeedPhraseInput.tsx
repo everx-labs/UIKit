@@ -19,10 +19,9 @@ const SPLITTER = ` `;
 const WORDS_REG_EXP = /[\p{L}\p{N}]+/gu;
 const NOT_LATIN_LETTERS_REG_EXP = /[^a-zA-Z]/g;
 
-function getWordList(text: string, totalWords: number[]): string[] {
+function getWordList(text: string, maxWords: number): string[] {
     const wordList = text.match(WORDS_REG_EXP);
 
-    const maxWords = Math.max.apply(null, totalWords);
     if (wordList && wordList.length > maxWords) {
         return wordList.slice(0, maxWords);
     }
@@ -60,18 +59,6 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
 
         useExtendedRef(ref, textInputRef);
 
-        // https://reactjs.org/docs/hooks-faq.html#how-to-read-an-often-changing-value-from-usecallback
-        const phraseRef = React.useRef('');
-
-        const savePhrase = React.useCallback((text: string) => {
-            phraseRef.current = text;
-
-            setState({
-                phrase: text,
-                parts: text.split(SPLITTER),
-            });
-        }, []);
-
         const [isFocused, setIsFocused] = React.useState(false);
 
         const onFocus = React.useCallback(
@@ -108,16 +95,10 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
 
         const [hasNonLatinCharacters, setHasNonLatinCharacters] = React.useState(false);
 
-        const previousTextRawRef = React.useRef<string | null>(null);
+        const maxWords = React.useMemo(() => Math.max.apply(null, totalWords), [totalWords]);
 
         const onChangeText = React.useCallback(
             (textRaw: string) => {
-                /** To prevent onChangeText from being called twice with one actual text change */
-                if (previousTextRawRef.current === textRaw) {
-                    return;
-                }
-                previousTextRawRef.current = textRaw;
-
                 // Note: there is an issue with `.toLocaleLowerCase` on Android on some old API version
                 // when `Hermes` is used. See issue: https://github.com/facebook/hermes/issues/582
                 // The given function returns some incorrect result when applied to an empty string.
@@ -125,7 +106,7 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
                 // For now we just need to ensure the string is not empty, when applying the function
                 const text = textRaw ? textRaw.toLocaleLowerCase() : '';
 
-                const wordList = getWordList(text, totalWords);
+                const wordList = getWordList(text, maxWords);
 
                 if (wordList?.join('').match(NOT_LATIN_LETTERS_REG_EXP)) {
                     setHasNonLatinCharacters(true);
@@ -135,7 +116,7 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
 
                 let newText = wordList?.join(SPLITTER).trim() ?? '';
 
-                if (newText && text.endsWith(SPLITTER)) {
+                if (newText && text.endsWith(SPLITTER) && wordList.length < maxWords) {
                     newText += SPLITTER;
                 }
 
@@ -143,9 +124,9 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
                     textInputRef.current?.changeText(newText, false);
                 }
 
-                savePhrase(newText);
+                setState({ phrase: newText, parts: wordList });
             },
-            [savePhrase, totalWords],
+            [maxWords],
         );
 
         const [validationResult, setValidationResult] = React.useState<boolean | ValidationResult>(
