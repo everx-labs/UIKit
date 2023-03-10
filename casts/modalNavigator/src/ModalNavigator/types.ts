@@ -7,7 +7,7 @@ import type {
     RouteProp,
 } from '@react-navigation/native';
 
-import { UIModalSheetProps } from '@tonlabs/uikit.popups';
+import type { UIModalSheetProps } from '@tonlabs/uikit.popups';
 
 import type { ModalActionHelpers, ModalNavigationRoute, ModalNavigationState } from './ModalRouter';
 
