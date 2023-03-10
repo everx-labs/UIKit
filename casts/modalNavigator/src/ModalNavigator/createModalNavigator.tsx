@@ -1,29 +1,32 @@
 import * as React from 'react';
 import { Keyboard } from 'react-native';
-import type { NavigationProp, RouteProp } from '@react-navigation/core';
+import type { NavigationProp } from '@react-navigation/core';
 import {
     NavigationHelpersContext,
     useNavigationBuilder,
     createNavigatorFactory,
 } from '@react-navigation/native';
-import type { Descriptor, ParamListBase, EventMapBase } from '@react-navigation/native';
+import type { ParamListBase, EventMapBase } from '@react-navigation/native';
 
 import { PortalManager } from '@tonlabs/uikit.layout';
 import { UIModalSheet } from '@tonlabs/uikit.popups';
 
 import { ModalRouter, ModalActions, ModalActionHelpers } from './ModalRouter';
-import type { ModalNavigationState, ModalNavigationRoute } from './ModalRouter';
+import type { ModalNavigationState } from './ModalRouter';
+import type {
+    ModalNavigatorScreenProps,
+    ModalNavigatorProps,
+    ModalRouterOptions,
+    ModalScreenOptions,
+} from './types';
 
 function ModalScreen<ParamList extends ParamListBase = ParamListBase>({
     route,
     descriptor,
     maxMobileWidth,
-}: {
-    route: ModalNavigationRoute<ParamList, keyof ParamList>;
-    descriptor: Descriptor<ParamListBase>;
-    maxMobileWidth: number;
-}) {
-    const { name, onClose } = route;
+}: ModalNavigatorScreenProps<ParamList>) {
+    const { name } = route;
+    const { onClose } = descriptor.options;
 
     const hide = React.useCallback(() => {
         Keyboard.dismiss();
@@ -43,16 +46,17 @@ function ModalScreen<ParamList extends ParamListBase = ParamListBase>({
     );
 }
 
-const ModalNavigator = ({
-    children,
-    maxMobileWidth,
-}: {
-    children: React.ReactNode;
-    maxMobileWidth: number;
-}) => {
-    const { state, navigation, descriptors } = useNavigationBuilder(ModalRouter, {
+const ModalNavigator = ({ children, maxMobileWidth, screenOptions }: ModalNavigatorProps) => {
+    const { state, navigation, descriptors } = useNavigationBuilder<
+        ModalNavigationState,
+        ModalRouterOptions,
+        ModalActionHelpers,
+        ModalScreenOptions,
+        NavigationProp<ParamListBase>
+    >(ModalRouter, {
         children,
         childrenForConfigs: children,
+        screenOptions,
     });
 
     return (
@@ -77,23 +81,6 @@ const ModalNavigator = ({
             </NavigationHelpersContext.Provider>
         </PortalManager>
     );
-};
-
-type ModalScreenOptions = {
-    defaultProps: Record<string, unknown>;
-};
-
-export type ModalNavigationProp<
-    ParamList extends ParamListBase,
-    RouteName extends keyof ParamList = string,
-> = NavigationProp<ParamList, RouteName, ModalNavigationState<ParamList>, /* TODO */ any> &
-    ModalActionHelpers;
-export type ModalScreenProps<
-    ParamList extends ParamListBase,
-    RouteName extends keyof ParamList = string,
-> = {
-    navigation: ModalNavigationProp<ParamList, RouteName>;
-    route: RouteProp<ParamList, RouteName>;
 };
 
 export const createModalNavigator = createNavigatorFactory<
