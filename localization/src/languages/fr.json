@@ -449,6 +449,14 @@
                     "comment": "Jetons de test Everscale",
                     "title": "Devers"
                 }
+            },
+            "crypto": {
+                "BTC": "Bitcoin",
+                "ETH": "Ethereum"
+            },
+            "fiat": {
+                "EUR": "Euro",
+                "USD": "Dollars américain"
             }
         },
         "networks": {
@@ -506,7 +514,6 @@
     "Create": "Créer",
     "CreateNewAccount": "Créer un nouveau compte",
     "Creator": "Créateur",
-    "Currencies": "Monnaies",
     "Date": "Date",
     "DateSymbols": {
         "day": "DD",

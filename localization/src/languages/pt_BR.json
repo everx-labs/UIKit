@@ -449,6 +449,14 @@
                     "comment": "Everscale test tokens",
                     "title": "Devers"
                 }
+            },
+            "crypto": {
+                "BTC": "Bitcoin",
+                "ETH": "Ethereum"
+            },
+            "fiat": {
+                "EUR": "Euro",
+                "USD": "Dólar americano"
             }
         },
         "networks": {
@@ -506,7 +514,6 @@
     "Create": "Criar",
     "CreateNewAccount": "Criar nova conta",
     "Creator": "Criador",
-    "Currencies": "Moedas",
     "Date": "Data",
     "DateSymbols": {
         "day": "DD",

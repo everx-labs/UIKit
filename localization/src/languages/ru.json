@@ -449,6 +449,14 @@
                     "comment": "Тестовые токены Everscale",
                     "title": "Дэверы"
                 }
+            },
+            "crypto": {
+                "BTC": "Биткойн",
+                "ETH": "Эфириум"
+            },
+            "fiat": {
+                "EUR": "Евро",
+                "USD": "Доллар США"
             }
         },
         "networks": {
@@ -506,7 +514,6 @@
     "Create": "Создать",
     "CreateNewAccount": "Создать новый аккаунт",
     "Creator": "Создатель",
-    "Currencies": "Валюты",
     "Date": "Дата",
     "DateSymbols": {
         "day": "ДД",
