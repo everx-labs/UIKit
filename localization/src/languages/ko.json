@@ -440,6 +440,14 @@
                     "comment": "에버스케일 테스트 토큰",
                     "title": "데버"
                 }
+            },
+            "crypto": {
+                "BTC": "비트코인",
+                "ETH": "이더리움"
+            },
+            "fiat": {
+                "EUR": "유로",
+                "USD": "미국 달러"
             }
         },
         "networks": {
@@ -497,7 +505,6 @@
     "Create": "만들기",
     "CreateNewAccount": "새 계정 만들기",
     "Creator": "크리에이터",
-    "Currencies": "통화",
     "Date": "날짜",
     "DateSymbols": {
         "day": "DD",

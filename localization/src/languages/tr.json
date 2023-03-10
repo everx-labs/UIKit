@@ -449,6 +449,14 @@
                     "comment": "Everscale test tokens",
                     "title": "Devers"
                 }
+            },
+            "crypto": {
+                "BTC": "Bitcoin",
+                "ETH": "Ethereum"
+            },
+            "fiat": {
+                "EUR": "Avro",
+                "USD": "ABD Doları"
             }
         },
         "networks": {
@@ -506,7 +514,6 @@
     "Create": "Oluştur",
     "CreateNewAccount": "Yeni hesap oluştur",
     "Creator": "Sahip",
-    "Currencies": "Dövizler",
     "Date": "Tarih",
     "DateSymbols": {
         "day": "GG",

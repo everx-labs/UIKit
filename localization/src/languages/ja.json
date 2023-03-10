@@ -449,6 +449,14 @@
                     "comment": "Everscale test tokens",
                     "title": "Devers"
                 }
+            },
+            "crypto": {
+                "BTC": "Bitcoin",
+                "ETH": "Ethereum"
+            },
+            "fiat": {
+                "EUR": "Euro",
+                "USD": "US Dollar"
             }
         },
         "networks": {
@@ -506,7 +514,6 @@
     "Create": "作成する",
     "CreateNewAccount": "新しいアカウントを作成する",
     "Creator": "作成者",
-    "Currencies": "通貨",
     "Date": "日付",
     "DateSymbols": {
         "day": "日",
