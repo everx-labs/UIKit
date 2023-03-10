@@ -50,6 +50,7 @@ const ModalNavigator = ({ children, maxMobileWidth, screenOptions }: ModalNaviga
     const { state, navigation, descriptors } = useNavigationBuilder<
         ModalNavigationState,
         ModalRouterOptions,
+        // @ts-ignore
         ModalActionHelpers,
         ModalScreenOptions,
         NavigationProp<ParamListBase>

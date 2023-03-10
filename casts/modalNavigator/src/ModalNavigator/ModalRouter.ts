@@ -92,7 +92,7 @@ export const ModalActions = {
     },
 };
 
-export type ModalActionHelpers = Record<string, () => void> & {
+export type ModalActionHelpers = {
     show(name: string, params?: Record<string, unknown>): void;
     hide(name?: string): void;
     hideAll(): void;
