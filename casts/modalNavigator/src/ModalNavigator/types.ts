@@ -1,7 +1,6 @@
 import type {
     DefaultRouterOptions,
     Descriptor,
-    EventMapBase,
     NavigationProp,
     ParamListBase,
     RouteProp,
@@ -17,12 +16,13 @@ export type ModalScreenOptions = {
      */
     onClose?: UIModalSheetProps['onClose'];
 };
-export type ModalDescriptor = Descriptor<
-    Record<string, any>,
-    string,
+export type ModalDescriptor<ParamList extends ParamListBase = ParamListBase> = Descriptor<
+    ParamList,
+    keyof ParamList,
     ModalNavigationState,
     ModalScreenOptions,
-    EventMapBase
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    {}
 >;
 
 export type ModalNavigatorProps = {
@@ -33,7 +33,7 @@ export type ModalNavigatorProps = {
 
 export type ModalNavigatorScreenProps<ParamList extends ParamListBase = ParamListBase> = {
     route: ModalNavigationRoute<ParamList, keyof ParamList>;
-    descriptor: ModalDescriptor;
+    descriptor: ModalDescriptor<ParamList>;
     maxMobileWidth: number;
 };
 
