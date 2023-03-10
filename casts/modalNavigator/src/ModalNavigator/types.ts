@@ -46,7 +46,12 @@ export type ModalRouterOptions<ParamList extends ParamListBase = ParamListBase> 
 export type ModalNavigationProp<
     ParamList extends ParamListBase,
     RouteName extends keyof ParamList = string,
-> = NavigationProp<ParamList, RouteName, ModalNavigationState<ParamList>, ModalScreenOptions> &
+> = NavigationProp<
+    ParamList,
+    RouteName,
+    ModalNavigationState<ParamList>,
+    /* TODO add ModalScreenOptions and resolve TS errors */ any
+> &
     ModalActionHelpers;
 
 export type ModalScreenProps<
