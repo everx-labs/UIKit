@@ -67,8 +67,8 @@ export type UIAmountInputProps = Omit<
      * @default
      * ```ts
      *  {
-     *      regular: 'ColorVariants.BackgroundBW',
-     *      disabled: 'ColorVariants.BackgroundTertiary',
+     *      regular: ColorVariants.BackgroundBW,
+     *      disabled: ColorVariants.BackgroundTertiary,
      *  }
      * ```
      */

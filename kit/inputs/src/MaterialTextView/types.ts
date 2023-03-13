@@ -90,8 +90,8 @@ export type MaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
      * @default
      * ```ts
      *  {
-     *      regular: 'ColorVariants.BackgroundBW',
-     *      disabled: 'ColorVariants.BackgroundTertiary',
+     *      regular: ColorVariants.BackgroundBW,
+     *      disabled: ColorVariants.BackgroundTertiary,
      *  }
      * ```
      */
