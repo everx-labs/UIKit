@@ -62,7 +62,7 @@ export type UIAmountInputProps = Omit<
      */
     children?: UIAmountInputChild | UIAmountInputChild[] | undefined;
     /**
-     * Background colors of the TextView in regular and disabled (`editable={false}`) states.
+     * Background colors of the AmountInput in regular and disabled (`editable={false}`) states.
      *
      * @default
      * ```ts
@@ -131,11 +131,11 @@ export type ExpansionState = 'Expanded' | 'Collapsed' | 'InExpandProgress' | 'In
 
 export type BackgroundColors = {
     /**
-     * Background color of the TextView in regular state.
+     * Background color of the AmountInput in regular state.
      */
     regular: ColorVariants;
     /**
-     * Background color of the TextView in disabled (`editable={false}`) state.
+     * Background color of the AmountInput in disabled (`editable={false}`) state.
      */
     disabled: ColorVariants;
 };
