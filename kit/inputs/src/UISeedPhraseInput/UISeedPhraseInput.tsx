@@ -44,6 +44,7 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
             totalWords: totalWordsProp,
             validatePhrase,
             placeholder,
+            backgroundColors,
         } = props;
         const totalWords = React.useMemo(() => {
             if (typeof totalWordsProp === 'number') {
@@ -213,6 +214,7 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
                 onSubmitEditing={onSubmitEditing}
                 blurOnSubmit
                 noPersonalizedLearning
+                backgroundColors={backgroundColors}
             />
         );
     },

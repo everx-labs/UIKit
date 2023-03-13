@@ -46,7 +46,7 @@ export type UISeedPhraseInputProps = {
      * ID for usage in tests
      */
     testID?: string;
-} & Pick<UIMaterialTextViewProps, 'onFocus' | 'onBlur'>;
+} & Pick<UIMaterialTextViewProps, 'onFocus' | 'onBlur' | 'backgroundColors'>;
 
 export type HelperCredentials = {
     helperText?: string;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Animated, { runOnUI, useAnimatedRef, useSharedValue } from 'react-native-reanimated';
 import { NativeModules, Platform, TextStyle, View } from 'react-native';
-import { makeStyles, Theme, ColorVariants, useTheme, UILabelAnimated } from '@tonlabs/uikit.themes';
+import { makeStyles, Theme, useTheme, UILabelAnimated } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { BigNumber } from 'bignumber.js';
 import { uiLocalized } from '@tonlabs/localization';
@@ -10,8 +10,9 @@ import {
     UIAmountInputProps,
     UIAmountInputMessageType,
     UIAmountInputDecimalAspect,
+    BackgroundColors,
 } from './types';
-import { AmountInputContext } from './constants';
+import { AmountInputContext, defaultBackgroundColors } from './constants';
 import {
     useAmountInputHandlers,
     useAmountInputHover,
@@ -38,7 +39,14 @@ const decimalSeparator = uiLocalized.localeInfo.numbers.decimal;
 
 export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountInputProps>(
     function UIAmountInputContent(
-        { children, placeholder = '', defaultAmount, onMessagePress, ...props }: UIAmountInputProps,
+        {
+            children,
+            placeholder = '',
+            defaultAmount,
+            onMessagePress,
+            backgroundColors = defaultBackgroundColors,
+            ...props
+        }: UIAmountInputProps,
         forwardedRef: React.Ref<UIAmountInputRef>,
     ) {
         const {
@@ -150,7 +158,7 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
             return React.Children.count(childrenProcessed) > 0;
         }, [childrenProcessed]);
         const theme = useTheme();
-        const styles = useStyles(theme, editable, hasChildren);
+        const styles = useStyles(theme, editable, hasChildren, backgroundColors);
 
         return (
             <>
@@ -200,38 +208,45 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
     },
 );
 
-const useStyles = makeStyles((theme: Theme, editable: boolean, hasChildren: boolean) => ({
-    container: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderRadius: UILayoutConstant.input.borderRadius,
-        backgroundColor: editable
-            ? theme[ColorVariants.BackgroundBW]
-            : theme[ColorVariants.BackgroundTertiary],
-    },
-    inputArea: {
-        flex: 1,
-        flexDirection: 'row',
-        paddingLeft: UILayoutConstant.contentOffset,
-        paddingRight: hasChildren
-            ? UILayoutConstant.smallContentOffset
-            : UILayoutConstant.contentOffset,
-    },
-    inputContainer: {
-        flex: 1,
-        flexDirection: 'row',
-        paddingVertical: UILayoutConstant.contentInsetVerticalX4,
-    },
-    input: {
-        ...Platform.select({
-            web: {
-                ...(!editable ? ({ cursor: 'default' } as TextStyle) : null),
-                zIndex: 100,
-            },
-        }),
-    },
-    placeholder: {
-        position: 'absolute',
-        alignSelf: 'center',
-    },
-}));
+const useStyles = makeStyles(
+    (
+        theme: Theme,
+        editable: boolean,
+        hasChildren: boolean,
+        backgroundColors: BackgroundColors,
+    ) => ({
+        container: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            borderRadius: UILayoutConstant.input.borderRadius,
+            backgroundColor: editable
+                ? theme[backgroundColors.regular]
+                : theme[backgroundColors.disabled],
+        },
+        inputArea: {
+            flex: 1,
+            flexDirection: 'row',
+            paddingLeft: UILayoutConstant.contentOffset,
+            paddingRight: hasChildren
+                ? UILayoutConstant.smallContentOffset
+                : UILayoutConstant.contentOffset,
+        },
+        inputContainer: {
+            flex: 1,
+            flexDirection: 'row',
+            paddingVertical: UILayoutConstant.contentInsetVerticalX4,
+        },
+        input: {
+            ...Platform.select({
+                web: {
+                    ...(!editable ? ({ cursor: 'default' } as TextStyle) : null),
+                    zIndex: 100,
+                },
+            }),
+        },
+        placeholder: {
+            position: 'absolute',
+            alignSelf: 'center',
+        },
+    }),
+);

@@ -159,7 +159,7 @@ export type UISeedPhraseTextViewProps = {
     totalWords: number | number[];
     validatePhrase: (phrase?: string, parts?: string[]) => Promise<boolean>;
     words: string[];
-} & Pick<UIMaterialTextViewProps, 'onFocus' | 'onBlur'>;
+} & Pick<UIMaterialTextViewProps, 'onFocus' | 'onBlur' | 'backgroundColors'>;
 
 export const UISeedPhraseTextView = React.forwardRef<
     UIMaterialTextViewRef,
@@ -175,6 +175,7 @@ export const UISeedPhraseTextView = React.forwardRef<
         totalWords: totalWordsProp,
         validatePhrase,
         words,
+        backgroundColors,
     } = props;
     const totalWords = React.useMemo(() => {
         if (typeof totalWordsProp === 'number') {
@@ -575,6 +576,7 @@ export const UISeedPhraseTextView = React.forwardRef<
                 blurOnSubmit
                 onHeightChange={onHeightChange}
                 noPersonalizedLearning
+                backgroundColors={backgroundColors}
             />
             <UISeedPhrasePopover
                 forId={forId}

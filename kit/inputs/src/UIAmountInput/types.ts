@@ -1,6 +1,9 @@
 import type BigNumber from 'bignumber.js';
 import type { TextInput } from 'react-native';
 import type { SharedValue } from 'react-native-reanimated';
+
+import type { ColorVariants } from '@tonlabs/uikit.themes';
+
 import type { UIMaterialTextViewProps } from '../UIMaterialTextView/types';
 import type { InputChildren } from '../useInputChildren';
 
@@ -58,6 +61,18 @@ export type UIAmountInputProps = Omit<
      *  `UIAmountInput.Text`
      */
     children?: UIAmountInputChild | UIAmountInputChild[] | undefined;
+    /**
+     * Background colors of the TextView in regular and disabled (`editable={false}`) states.
+     *
+     * @default
+     * ```ts
+     *  {
+     *      regular: 'ColorVariants.BackgroundBW',
+     *      disabled: 'ColorVariants.BackgroundTertiary',
+     *  }
+     * ```
+     */
+    backgroundColors?: BackgroundColors;
 };
 
 export type UIAmountInputPrecision =
@@ -113,3 +128,14 @@ export type FormatText = (text: string) => TextAttributes;
 export type SetText = (textAttributes: TextAttributes, config: FormatAndSetTextConfig) => void;
 
 export type ExpansionState = 'Expanded' | 'Collapsed' | 'InExpandProgress' | 'InCollapseProgress';
+
+export type BackgroundColors = {
+    /**
+     * Background color of the TextView in regular state.
+     */
+    regular: ColorVariants;
+    /**
+     * Background color of the TextView in disabled (`editable={false}`) state.
+     */
+    disabled: ColorVariants;
+};
