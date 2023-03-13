@@ -47,11 +47,12 @@ export function InputIcon({ onPress, style, containerStyle, ...rest }: InputIcon
     );
 }
 
-export function InputAction({ children, onPress }: InputActionProps) {
-    const processedChildren = processChildren(children, ColorVariants.TextPrimary);
+export function InputAction({ children, disabled = false, onPress, tintColor }: InputActionProps) {
+    const childrenTintColor = disabled ? ColorVariants.TextTertiary : (tintColor || ColorVariants.TextPrimary);
+    const processedChildren = processChildren(children, childrenTintColor);
 
     return (
-        <UIPressableArea onPress={onPress} style={styles.actionContainer}>
+        <UIPressableArea disabled={disabled} onPress={onPress} style={styles.actionContainer}>
             <View style={styles.actionContent}>{processedChildren}</View>
         </UIPressableArea>
     );
