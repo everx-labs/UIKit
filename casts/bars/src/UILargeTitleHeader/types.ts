@@ -1,4 +1,5 @@
 import type * as React from 'react';
+import type { ColorVariants } from '@tonlabs/uikit.themes';
 import type { UINavigationBarProps } from '../UINavigationBar';
 import type { OnRefresh } from './RefreshControl';
 
@@ -67,4 +68,8 @@ export type UILargeTitleHeaderProps = UINavigationBarProps & {
      * Header has a context provider for children to use in scrollables
      */
     children: React.ReactNode;
+    /**
+     * Background color of the header
+     */
+    backgroundColor?: ColorVariants;
 };

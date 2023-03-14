@@ -10,6 +10,7 @@ import {
     UILabel,
     UILabelColors,
     UILabelRoles,
+    ColorVariants,
 } from '@tonlabs/uikit.themes';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
@@ -97,6 +98,10 @@ export type UINavigationBarProps = {
      * A callback that fires when user taps on title area (including caption)
      */
     onTitlePress?: () => void;
+    /**
+     * Background color of the bar
+     */
+    backgroundColor?: ColorVariants;
 };
 
 type PrivateProps = {
@@ -115,6 +120,7 @@ export const UINavigationBar = React.memo(function UINavigationBar({
     caption,
     captionTestID,
     onTitlePress,
+    backgroundColor,
     // private
     headerTitleOpacity,
 }: UINavigationBarProps & PrivateProps) {
@@ -174,7 +180,7 @@ export const UINavigationBar = React.memo(function UINavigationBar({
     }
 
     return (
-        <UIBackgroundView style={styles.container} testID={testID}>
+        <UIBackgroundView style={styles.container} testID={testID} color={backgroundColor}>
             <View style={styles.headerLeftItems}>{headerLeftElement}</View>
             <View style={styles.headerRightItems}>{headerRightElement}</View>
             <View style={styles.titleContainer} pointerEvents="box-none">

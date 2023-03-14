@@ -124,6 +124,7 @@ export function UILargeTitleHeader({
     onHeaderLargeTitlePress,
     onHeaderLargeTitleLongPress,
     onRefresh,
+    backgroundColor,
     ...navigationBarProps
 }: UILargeTitleHeaderProps) {
     const defaultShift = React.useMemo(() => getDefaultShift(onRefresh), [onRefresh]);
@@ -229,7 +230,12 @@ export function UILargeTitleHeader({
     const refreshControl = usePullToRefresh(scrollRef, shift, scrollInProgress, onRefresh);
 
     return (
-        <UIBackgroundView style={styles.container} ref={contentContainerRef} collapsable={false}>
+        <UIBackgroundView
+            style={styles.container}
+            ref={contentContainerRef}
+            collapsable={false}
+            color={backgroundColor}
+        >
             <View style={styles.mainHeaderFiller} />
             <Animated.View style={[styles.inner, style]}>
                 <Animated.View ref={largeTitleViewRef} onLayout={onLargeTitleLayout}>
