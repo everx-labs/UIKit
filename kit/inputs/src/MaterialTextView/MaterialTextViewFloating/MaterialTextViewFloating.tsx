@@ -6,9 +6,10 @@ import { makeStyles, useTheme, Theme, ColorVariants } from '@tonlabs/uikit.theme
 import Animated, { interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated';
 import { UITextView, UITextViewRef } from '../../UITextView';
 import { FloatingLabel } from './FloatingLabel';
-import type { MaterialTextViewLayoutProps } from '../types';
+import type { BackgroundColors, MaterialTextViewLayoutProps } from '../types';
 import { MaterialTextViewComment } from '../MaterialTextViewComment';
 import { useExpandingValue, usePlaceholderVisibility } from './hooks';
+import { defaultBackgroundColors } from '../constants';
 
 // @inline
 const POSITION_FOLDED: number = 0;
@@ -37,6 +38,7 @@ export const MaterialTextViewFloating = React.forwardRef<
         isHovered,
         hasValue,
         isFocused,
+        backgroundColors = defaultBackgroundColors,
         ...rest
     } = props;
     const { editable = true } = rest;
@@ -65,7 +67,7 @@ export const MaterialTextViewFloating = React.forwardRef<
         };
     });
 
-    const styles = useStyles(theme, editable);
+    const styles = useStyles(theme, editable, backgroundColors);
 
     const placeholderTextColor = React.useMemo(() => {
         if (!isPlaceholderVisible) {
@@ -105,27 +107,29 @@ export const MaterialTextViewFloating = React.forwardRef<
     );
 });
 
-const useStyles = makeStyles((theme: Theme, editable: boolean) => ({
-    container: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderRadius: UILayoutConstant.input.borderRadius,
-        backgroundColor: editable
-            ? theme[ColorVariants.BackgroundBW]
-            : theme[ColorVariants.BackgroundTertiary],
-        paddingHorizontal: UILayoutConstant.contentOffset,
-    },
-    inputContainer: {
-        flex: 1,
-        flexDirection: 'row',
-        paddingVertical: UILayoutConstant.contentInsetVerticalX4,
-        paddingRight: UILayoutConstant.smallContentOffset,
-    },
-    input: {
-        ...Platform.select({
-            web: {
-                ...(!editable ? ({ cursor: 'default' } as TextStyle) : null),
-            },
-        }),
-    },
-}));
+const useStyles = makeStyles(
+    (theme: Theme, editable: boolean, backgroundColors: BackgroundColors) => ({
+        container: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            borderRadius: UILayoutConstant.input.borderRadius,
+            backgroundColor: editable
+                ? theme[backgroundColors.regular]
+                : theme[backgroundColors.disabled],
+            paddingHorizontal: UILayoutConstant.contentOffset,
+        },
+        inputContainer: {
+            flex: 1,
+            flexDirection: 'row',
+            paddingVertical: UILayoutConstant.contentInsetVerticalX4,
+            paddingRight: UILayoutConstant.smallContentOffset,
+        },
+        input: {
+            ...Platform.select({
+                web: {
+                    ...(!editable ? ({ cursor: 'default' } as TextStyle) : null),
+                },
+            }),
+        },
+    }),
+);

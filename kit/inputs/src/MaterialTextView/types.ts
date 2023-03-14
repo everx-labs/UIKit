@@ -3,6 +3,7 @@ import type { View, ViewStyle, StyleProp, TextInput } from 'react-native';
 import type { SharedValue } from 'react-native-reanimated';
 
 import type { UIImageProps } from '@tonlabs/uikit.media';
+import type { ColorVariants } from '@tonlabs/uikit.themes';
 
 import type { UITextViewProps } from '../UITextView';
 
@@ -19,6 +20,17 @@ export type MaterialTextViewChild =
     | MaterialTextViewIconChild
     | MaterialTextViewActionChild
     | MaterialTextViewTextChild;
+
+export type BackgroundColors = {
+    /**
+     * Background color of the TextView in regular state.
+     */
+    regular: ColorVariants;
+    /**
+     * Background color of the TextView in disabled (`editable={false}`) state.
+     */
+    disabled: ColorVariants;
+};
 
 export type MaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
     /**
@@ -72,6 +84,18 @@ export type MaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
      * A callback that is called when the cursor is over the input.
      */
     onHover?: (isHovered: boolean) => void;
+    /**
+     * Background colors of the TextView in regular and disabled (`editable={false}`) states.
+     *
+     * @default
+     * ```ts
+     *  {
+     *      regular: ColorVariants.BackgroundBW,
+     *      disabled: ColorVariants.BackgroundTertiary,
+     *  }
+     * ```
+     */
+    backgroundColors?: BackgroundColors;
 };
 
 export type MaterialTextViewLayoutProps = MaterialTextViewProps & {

@@ -5,18 +5,27 @@ import { makeStyles, useTheme, Theme, ColorVariants } from '@tonlabs/uikit.theme
 import Animated from 'react-native-reanimated';
 import { UITextView, UITextViewRef } from '../UITextView';
 
-import type { MaterialTextViewLayoutProps } from './types';
+import type { BackgroundColors, MaterialTextViewLayoutProps } from './types';
 import { MaterialTextViewComment } from './MaterialTextViewComment';
+import { defaultBackgroundColors } from './constants';
 
 const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
 
 export const MaterialTextViewSimple = React.forwardRef<UITextViewRef, MaterialTextViewLayoutProps>(
     function MaterialTextViewSimpleForwarded(props: MaterialTextViewLayoutProps, passedRef) {
-        const { children, onMouseEnter, onMouseLeave, borderViewRef, isHovered, ...rest } = props;
+        const {
+            children,
+            onMouseEnter,
+            onMouseLeave,
+            borderViewRef,
+            isHovered,
+            backgroundColors = defaultBackgroundColors,
+            ...rest
+        } = props;
         const { editable = true } = rest;
         const theme = useTheme();
 
-        const styles = useStyles(theme, editable);
+        const styles = useStyles(theme, editable, backgroundColors);
 
         return (
             <MaterialTextViewComment {...props}>
@@ -47,27 +56,29 @@ export const MaterialTextViewSimple = React.forwardRef<UITextViewRef, MaterialTe
     },
 );
 
-const useStyles = makeStyles((theme: Theme, editable: boolean) => ({
-    container: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderRadius: UILayoutConstant.input.borderRadius,
-        backgroundColor: editable
-            ? theme[ColorVariants.BackgroundBW]
-            : theme[ColorVariants.BackgroundTertiary],
-        paddingHorizontal: UILayoutConstant.contentOffset,
-    },
-    inputContainer: {
-        flex: 1,
-        flexDirection: 'row',
-        paddingVertical: UILayoutConstant.contentInsetVerticalX4,
-        paddingRight: UILayoutConstant.smallContentOffset,
-    },
-    input: {
-        ...Platform.select({
-            web: {
-                ...(!editable ? ({ cursor: 'default' } as TextStyle) : null),
-            },
-        }),
-    },
-}));
+const useStyles = makeStyles(
+    (theme: Theme, editable: boolean, backgroundColors: BackgroundColors) => ({
+        container: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            borderRadius: UILayoutConstant.input.borderRadius,
+            backgroundColor: editable
+                ? theme[backgroundColors.regular]
+                : theme[backgroundColors.disabled],
+            paddingHorizontal: UILayoutConstant.contentOffset,
+        },
+        inputContainer: {
+            flex: 1,
+            flexDirection: 'row',
+            paddingVertical: UILayoutConstant.contentInsetVerticalX4,
+            paddingRight: UILayoutConstant.smallContentOffset,
+        },
+        input: {
+            ...Platform.select({
+                web: {
+                    ...(!editable ? ({ cursor: 'default' } as TextStyle) : null),
+                },
+            }),
+        },
+    }),
+);

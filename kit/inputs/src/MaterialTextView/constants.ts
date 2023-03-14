@@ -1,3 +1,6 @@
+import { ColorVariants } from '@tonlabs/uikit.themes';
+import type { BackgroundColors } from './types';
+
 export const UIConstants = {
     amount: {
         decimalAspect: {
@@ -6,4 +9,9 @@ export const UIConstants = {
             precision: 9,
         },
     },
+};
+
+export const defaultBackgroundColors: BackgroundColors = {
+    regular: ColorVariants.BackgroundBW,
+    disabled: ColorVariants.BackgroundTertiary,
 };
