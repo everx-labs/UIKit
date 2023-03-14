@@ -48,7 +48,9 @@ export function InputIcon({ onPress, style, containerStyle, ...rest }: InputIcon
 }
 
 export function InputAction({ children, disabled = false, onPress, tintColor }: InputActionProps) {
-    const childrenTintColor = disabled ? ColorVariants.TextTertiary : (tintColor || ColorVariants.TextPrimary);
+    const childrenTintColor = disabled
+        ? ColorVariants.TextTertiary
+        : tintColor || ColorVariants.TextPrimary;
     const processedChildren = processChildren(children, childrenTintColor);
 
     return (
