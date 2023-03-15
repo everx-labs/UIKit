@@ -7,7 +7,7 @@ import {
 } from '@react-navigation/native';
 import type { Descriptor, StackNavigationState, ParamListBase } from '@react-navigation/native';
 
-import { UIBackgroundView, ColorVariants } from '@tonlabs/uikit.themes';
+import { UIBackgroundView } from '@tonlabs/uikit.themes';
 import { PortalManager, UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UILargeTitleHeader, UIStackNavigationBar } from '@tonlabs/uicast.bars';
 
@@ -57,7 +57,7 @@ function ScreenWithHeaderContent({
     if (descriptor.options.headerVisible === false) {
         return (
             <UIBackgroundView
-                color={descriptor.options.backgroundColor || ColorVariants.BackgroundPrimary}
+                color={descriptor.options.backgroundColor}
                 style={styles.screenContainer}
             >
                 <PortalManager id="scene">{children}</PortalManager>
@@ -67,7 +67,7 @@ function ScreenWithHeaderContent({
 
     return (
         <UIBackgroundView
-            color={descriptor.options.backgroundColor || ColorVariants.BackgroundPrimary}
+            color={descriptor.options.backgroundColor}
             style={[styles.screenContainer, topInsetStyle]}
         >
             {descriptor.options.useHeaderLargeTitle ? (
@@ -95,6 +95,7 @@ function ScreenWithHeaderContent({
                         headerBackButton={descriptor.options.headerBackButton}
                         headerRight={descriptor.options.headerRight}
                         headerRightItems={descriptor.options.headerRightItems}
+                        backgroundColor={descriptor.options.backgroundColor}
                     >
                         {children}
                     </UILargeTitleHeader>
@@ -118,6 +119,7 @@ function ScreenWithHeaderContent({
                             headerBackButton={descriptor.options.headerBackButton}
                             headerRight={descriptor.options.headerRight}
                             headerRightItems={descriptor.options.headerRightItems}
+                            backgroundColor={descriptor.options.backgroundColor}
                         />
                     )}
                     {children}

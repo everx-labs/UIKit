@@ -19,6 +19,10 @@ export type UIBottomSheetProps = Omit<UISheetProps, 'style'> & {
      * You can use it if you need a header customization
      */
     headerOptions?: Pick<UIDialogBarProps, 'headerLeftItems' | 'headerRightItems'>;
+    /**
+     * Background color of the UIBottomSheet
+     */
+    backgroundColor?: ColorVariants;
 };
 
 export function UIBottomSheet({
@@ -26,6 +30,7 @@ export function UIBottomSheet({
     hasDefaultInset = true,
     hasHeader = true,
     headerOptions,
+    backgroundColor = ColorVariants.BackgroundPrimary,
     ...rest
 }: UIBottomSheetProps) {
     const { visible, forId } = rest;
@@ -33,7 +38,7 @@ export function UIBottomSheet({
     const { bottom } = useSafeAreaInsets();
     const defaultInset = React.useMemo(() => getMaxPossibleDefaultBottomInset(bottom), [bottom]);
 
-    const styles = useStyles(defaultInset, theme);
+    const styles = useStyles(defaultInset, theme, backgroundColor);
 
     return (
         <UISheet.Container visible={visible} forId={forId}>
@@ -43,7 +48,13 @@ export function UIBottomSheet({
             >
                 <UISheet.IntrinsicSize>
                     <UISheet.Content {...rest} containerStyle={styles.sheet} style={styles.card}>
-                        {hasHeader ? <UIDialogBar hasPuller {...headerOptions} /> : null}
+                        {hasHeader ? (
+                            <UIDialogBar
+                                hasPuller
+                                {...headerOptions}
+                                backgroundColor={backgroundColor}
+                            />
+                        ) : null}
                         {children}
                     </UISheet.Content>
                 </UISheet.IntrinsicSize>
@@ -52,18 +63,20 @@ export function UIBottomSheet({
     );
 }
 
-const useStyles = makeStyles((defaultInset: number, theme: Theme) => ({
-    sheet: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-    },
-    card: {
-        flex: 1,
-        maxWidth: UILayoutConstant.elasticWidthCardSheet,
-        borderTopLeftRadius: UILayoutConstant.alertBorderRadius,
-        borderTopRightRadius: UILayoutConstant.alertBorderRadius,
-        overflow: 'hidden',
-        backgroundColor: theme[ColorVariants.BackgroundPrimary],
-        paddingBottom: defaultInset + UILayoutConstant.rubberBandEffectDistance,
-    },
-}));
+const useStyles = makeStyles(
+    (defaultInset: number, theme: Theme, backgroundColor: ColorVariants) => ({
+        sheet: {
+            flexDirection: 'row',
+            justifyContent: 'center',
+        },
+        card: {
+            flex: 1,
+            maxWidth: UILayoutConstant.elasticWidthCardSheet,
+            borderTopLeftRadius: UILayoutConstant.alertBorderRadius,
+            borderTopRightRadius: UILayoutConstant.alertBorderRadius,
+            overflow: 'hidden',
+            backgroundColor: theme[backgroundColor],
+            paddingBottom: defaultInset + UILayoutConstant.rubberBandEffectDistance,
+        },
+    }),
+);

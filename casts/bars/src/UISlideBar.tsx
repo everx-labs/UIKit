@@ -34,6 +34,10 @@ type UISlideBarProps = {
     headerBackButton?: HeaderItem;
     headerRightItems?: HeaderItem[];
     hasPuller?: boolean;
+    /**
+     * Background color of the bar
+     */
+    backgroundColor?: ColorVariants;
 };
 
 export function UISlideBar({
@@ -43,6 +47,7 @@ export function UISlideBar({
     headerBackButton,
     headerRightItems,
     hasPuller = true,
+    backgroundColor,
 }: UISlideBarProps) {
     const headerLeftElement = useNavigationHeaderLeftItems(
         headerLeft,
@@ -52,7 +57,7 @@ export function UISlideBar({
     );
 
     return (
-        <UIBackgroundView style={styles.container} testID={testID}>
+        <UIBackgroundView style={styles.container} testID={testID} color={backgroundColor}>
             <View style={styles.headerLeftItems}>{headerLeftElement}</View>
             {hasPuller ? (
                 <UIBackgroundView color={ColorVariants.BackgroundTertiary} style={styles.puller} />

@@ -12,16 +12,18 @@ export type UIDialogBarProps = {
     headerLeftItems?: HeaderItem[];
     headerRightItems?: HeaderItem[];
     hasPuller?: boolean;
+    backgroundColor?: ColorVariants;
 };
 
 export function UIDialogBar({
     testID,
     headerLeftItems,
     headerRightItems,
+    backgroundColor = ColorVariants.BackgroundPrimary,
     hasPuller = true,
 }: UIDialogBarProps) {
     return (
-        <UIBackgroundView style={styles.container} testID={testID}>
+        <UIBackgroundView style={styles.container} testID={testID} color={backgroundColor}>
             <View style={styles.headerLeftItems}>
                 <UIHeaderItems items={headerLeftItems} />
             </View>
