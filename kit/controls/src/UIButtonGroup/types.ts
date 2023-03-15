@@ -1,6 +1,7 @@
 import type { ImageSourcePropType } from 'react-native';
 import type { UILayout } from '../types';
 import type { UIButtonGroupActionIconPosition } from './constants';
+import type { PressableColors } from '../Pressable';
 
 export type UIButtonGroupActionProps = {
     /**
@@ -37,6 +38,36 @@ export type UIButtonGroupActionProps = {
      * ID for usage in tests
      */
     testID?: string;
+    /**
+     * Background colors of the ButtonGroupAction.
+     *
+     * @default
+     * ```ts
+     *  {
+     *      initialColor: ColorVariants.BackgroundBW,
+     *      pressedColor: ColorVariants.BackgroundSecondary,
+     *      hoveredColor: ColorVariants.BackgroundSecondary,
+     *      disabledColor: ColorVariants.BackgroundBW,
+     *      loadingColor: ColorVariants.BackgroundBW,
+     *  }
+     * ```
+     */
+    backgroundColors?: UIButtonGroupActionBackgroundColors;
+    /**
+     * Content colors of the ButtonGroupAction.
+     *
+     * @default
+     * ```ts
+     *  {
+     *      initialColor: ColorVariants.TextPrimary,
+     *      pressedColor: ColorVariants.SpecialAccentDark,
+     *      hoveredColor: ColorVariants.TextPrimary,
+     *      disabledColor: ColorVariants.TextSecondary,
+     *      loadingColor: ColorVariants.TextPrimary,
+     *  }
+     * ```
+     */
+    contentColors?: UIButtonGroupActionBackgroundColors;
 };
 
 export type UIButtonGroupChildType = React.ReactElement<UIButtonGroupActionProps>;
@@ -64,3 +95,5 @@ export type IUIButtonGroup = React.FC<UIButtonGroupProps> & {
     /** Action component */
     Action: React.FC<UIButtonGroupActionProps>;
 };
+
+export type UIButtonGroupActionBackgroundColors = PressableColors;
