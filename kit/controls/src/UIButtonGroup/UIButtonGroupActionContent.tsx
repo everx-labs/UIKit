@@ -36,8 +36,9 @@ function Content({
     icon,
     iconPosition = UIButtonGroupActionIconPosition.Left,
     children,
+    contentColors,
 }: UIButtonGroupActionProps) {
-    const contentColor = usePressableContentColor(ContentColors.content);
+    const contentColor = usePressableContentColor(contentColors ?? ContentColors.content);
 
     const animatedLabelProps = useAnimatedProps(() => {
         return {
@@ -71,8 +72,8 @@ function Content({
 }
 
 export function UIButtonGroupActionContent(props: UIButtonGroupActionProps) {
-    const { loading } = props;
-    const backgroundColor = usePressableContentColor(ContentColors.background);
+    const { loading, backgroundColors } = props;
+    const backgroundColor = usePressableContentColor(backgroundColors ?? ContentColors.background);
 
     const animatedContainerStyle = useAnimatedStyle(() => {
         return {
