@@ -8,12 +8,12 @@ export type UIModalSheetProps = UISheetProps & {
     style?: StyleProp<ViewStyle>;
     maxMobileWidth: number;
     /**
-     * Whether UIBottomSheet has a header
+     * Whether UIModalSheet has a header
      * Default: false
      */
     hasHeader?: boolean;
     /**
-     * Background color of the UIBottomSheet
+     * Background color of the UIModalSheet
      */
     backgroundColor?: ColorVariants;
 };
@@ -26,7 +26,7 @@ export type UIDesktopModalSheetProps = UIModalSheetProps & { style?: StyleProp<V
 
 export type ModalSheetHeaderProps = {
     /**
-     * Background color of the UIBottomSheet
+     * Background color of the ModalSheetHeader
      */
     backgroundColor?: ColorVariants;
     /**
