@@ -12,6 +12,15 @@ const getIsMobile = (width: number, dividerWidth: number) => width <= dividerWid
 export type UIModalSheetProps = UISheetProps & {
     style?: StyleProp<ViewStyle>;
     maxMobileWidth: number;
+    /**
+     * Whether UIBottomSheet has a header
+     * Default: false
+     */
+    hasHeader?: boolean;
+    /**
+     * Background color of the UIBottomSheet
+     */
+    backgroundColor?: ColorVariants;
 };
 
 export function useIsMobile(maxMobileWidth: number) {
@@ -22,7 +31,12 @@ export function useIsMobile(maxMobileWidth: number) {
     }, [width, maxMobileWidth]);
 }
 
-export function UIModalSheet({ maxMobileWidth, style: styleProp, ...rest }: UIModalSheetProps) {
+export function UIModalSheet(props: UIModalSheetProps) {
+    const {
+        maxMobileWidth,
+        style: styleProp,
+        backgroundColor = ColorVariants.BackgroundPrimary,
+    } = props;
     const isMobile = useIsMobile(maxMobileWidth);
     const theme = useTheme();
 
@@ -30,15 +44,15 @@ export function UIModalSheet({ maxMobileWidth, style: styleProp, ...rest }: UIMo
         () => [
             styleProp,
             {
-                backgroundColor: theme[ColorVariants.BackgroundPrimary],
+                backgroundColor: theme[backgroundColor],
             },
         ],
-        [styleProp, theme],
+        [backgroundColor, styleProp, theme],
     );
 
     if (isMobile) {
-        return <UIMobileModalSheet {...rest} style={style} />;
+        return <UIMobileModalSheet {...props} style={style} />;
     }
 
-    return <UIDesktopModalSheet {...rest} style={style} />;
+    return <UIDesktopModalSheet {...props} style={style} />;
 }

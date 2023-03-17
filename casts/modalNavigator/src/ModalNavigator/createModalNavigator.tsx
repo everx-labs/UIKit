@@ -40,6 +40,8 @@ function ModalScreen<ParamList extends ParamListBase = ParamListBase>({
             visible={route.visible}
             onClose={hide}
             maxMobileWidth={maxMobileWidth}
+            hasHeader={descriptor.options.headerVisible}
+            backgroundColor={descriptor.options.backgroundColor}
         >
             {descriptor.render()}
         </UIModalSheet>
