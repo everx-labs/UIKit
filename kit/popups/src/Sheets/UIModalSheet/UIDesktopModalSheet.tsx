@@ -1,14 +1,12 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, ViewStyle, useWindowDimensions } from 'react-native';
+import { StyleSheet, useWindowDimensions } from 'react-native';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { ColorVariants } from '@tonlabs/uikit.themes';
 
 import { UISheet } from '../UISheet/UISheet';
 import type { KeyboardAwareSheetProps } from '../UISheet/KeyboardAwareSheet';
-import type { UIModalSheetProps } from './UIModalSheet';
 import { ModalSheetHeader } from './ModalSheetHeader';
-
-export type UIDesktopModalSheetProps = UIModalSheetProps & { style?: StyleProp<ViewStyle> };
+import type { UIDesktopModalSheetProps } from './types';
 
 const PAGE_SHEET_HEIGHT_RATIO = 0.8;
 

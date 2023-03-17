@@ -2,17 +2,7 @@ import * as React from 'react';
 import { StyleSheet } from 'react-native';
 
 import { UIBackgroundView, ColorVariants } from '@tonlabs/uikit.themes';
-
-export type ModalSheetHeaderProps = {
-    /**
-     * Background color of the UIBottomSheet
-     */
-    backgroundColor?: ColorVariants;
-    /**
-     * TestID for testing purposes
-     */
-    testID?: string;
-};
+import type { ModalSheetHeaderProps } from './types';
 
 export function ModalSheetHeader({ backgroundColor, testID }: ModalSheetHeaderProps) {
     return (

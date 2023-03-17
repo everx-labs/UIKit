@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, ViewStyle, useWindowDimensions } from 'react-native';
+import { StyleSheet, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAnimatedReaction } from 'react-native-reanimated';
 
@@ -7,15 +7,11 @@ import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { useAndroidNavigationBarHeight } from '@tonlabs/uicast.keyboard';
 import { ColorVariants } from '@tonlabs/uikit.themes';
 
-import type { UIModalSheetProps } from './UIModalSheet';
 import { UISheet } from '../UISheet/UISheet';
 import { useShrinkContentUnderSheetContextProgress } from './ShrinkContentUnderSheet';
 import { useSheetProgress } from '../UISheet/usePosition';
 import { ModalSheetHeader } from './ModalSheetHeader';
-
-export type UIMobileModalSheetProps = UIModalSheetProps & {
-    style?: StyleProp<ViewStyle>;
-};
+import type { UIMobileModalSheetProps } from './types';
 
 const MoveContentUnderSheet = React.memo(function MoveContentUnderSheet() {
     const contentUnderSheetProgress = useShrinkContentUnderSheetContextProgress();
