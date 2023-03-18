@@ -1,18 +1,17 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, ViewStyle, useWindowDimensions } from 'react-native';
+import { StyleSheet, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAnimatedReaction } from 'react-native-reanimated';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { useAndroidNavigationBarHeight } from '@tonlabs/uicast.keyboard';
+import { ColorVariants } from '@tonlabs/uikit.themes';
 
-import { UISheet, UISheetProps } from '../UISheet/UISheet';
+import { UISheet } from '../UISheet/UISheet';
 import { useShrinkContentUnderSheetContextProgress } from './ShrinkContentUnderSheet';
 import { useSheetProgress } from '../UISheet/usePosition';
-
-export type UIMobileModalSheetProps = UISheetProps & {
-    style?: StyleProp<ViewStyle>;
-};
+import { ModalSheetHeader } from './ModalSheetHeader';
+import type { UIMobileModalSheetProps } from './types';
 
 const MoveContentUnderSheet = React.memo(function MoveContentUnderSheet() {
     const contentUnderSheetProgress = useShrinkContentUnderSheetContextProgress();
@@ -35,7 +34,13 @@ const MoveContentUnderSheet = React.memo(function MoveContentUnderSheet() {
     return null;
 });
 
-export function UIMobileModalSheet({ children, style, ...rest }: UIMobileModalSheetProps) {
+export function UIMobileModalSheet({
+    children,
+    style,
+    hasHeader = false,
+    backgroundColor = ColorVariants.BackgroundPrimary,
+    ...rest
+}: UIMobileModalSheetProps) {
     const { height } = useWindowDimensions();
     const { top: topInset } = useSafeAreaInsets();
     const { height: androidNavigationBarHeight } = useAndroidNavigationBarHeight();
@@ -71,6 +76,7 @@ export function UIMobileModalSheet({ children, style, ...rest }: UIMobileModalSh
                 <UISheet.FixedSize height={fullscreenHeight}>
                     <UISheet.Content {...rest} style={[styles.bottom, style, sheetStyle]}>
                         <MoveContentUnderSheet />
+                        {hasHeader ? <ModalSheetHeader backgroundColor={backgroundColor} /> : null}
                         {children}
                     </UISheet.Content>
                 </UISheet.FixedSize>

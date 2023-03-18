@@ -7,6 +7,7 @@ import type {
 } from '@react-navigation/native';
 
 import type { UIModalSheetProps } from '@tonlabs/uikit.popups';
+import type { ColorVariants } from '@tonlabs/uikit.themes';
 
 import type { ModalActionHelpers, ModalNavigationRoute, ModalNavigationState } from './ModalRouter';
 
@@ -15,6 +16,16 @@ export type ModalScreenOptions = {
      * Callback that is called when the user close the modal.
      */
     onClose?: UIModalSheetProps['onClose'];
+    /**
+     * Whether to show header or not
+     *
+     * Defaults to false
+     */
+    headerVisible?: boolean;
+    /**
+     * Background color for the whole screen
+     */
+    backgroundColor?: ColorVariants;
 };
 export type ModalDescriptor<ParamList extends ParamListBase = ParamListBase> = Descriptor<
     ParamList,

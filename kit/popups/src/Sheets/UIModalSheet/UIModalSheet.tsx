@@ -1,18 +1,13 @@
 import * as React from 'react';
-import { StyleProp, useWindowDimensions, ViewStyle } from 'react-native';
+import { useWindowDimensions } from 'react-native';
 
 import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 
-import type { UISheetProps } from '../UISheet/UISheet';
 import { UIMobileModalSheet } from './UIMobileModalSheet';
 import { UIDesktopModalSheet } from './UIDesktopModalSheet';
+import type { UIModalSheetProps } from './types';
 
 const getIsMobile = (width: number, dividerWidth: number) => width <= dividerWidth;
-
-export type UIModalSheetProps = UISheetProps & {
-    style?: StyleProp<ViewStyle>;
-    maxMobileWidth: number;
-};
 
 export function useIsMobile(maxMobileWidth: number) {
     const { width } = useWindowDimensions();
@@ -22,7 +17,12 @@ export function useIsMobile(maxMobileWidth: number) {
     }, [width, maxMobileWidth]);
 }
 
-export function UIModalSheet({ maxMobileWidth, style: styleProp, ...rest }: UIModalSheetProps) {
+export function UIModalSheet(props: UIModalSheetProps) {
+    const {
+        maxMobileWidth,
+        style: styleProp,
+        backgroundColor = ColorVariants.BackgroundPrimary,
+    } = props;
     const isMobile = useIsMobile(maxMobileWidth);
     const theme = useTheme();
 
@@ -30,15 +30,15 @@ export function UIModalSheet({ maxMobileWidth, style: styleProp, ...rest }: UIMo
         () => [
             styleProp,
             {
-                backgroundColor: theme[ColorVariants.BackgroundPrimary],
+                backgroundColor: theme[backgroundColor],
             },
         ],
-        [styleProp, theme],
+        [backgroundColor, styleProp, theme],
     );
 
     if (isMobile) {
-        return <UIMobileModalSheet {...rest} style={style} />;
+        return <UIMobileModalSheet {...props} style={style} />;
     }
 
-    return <UIDesktopModalSheet {...rest} style={style} />;
+    return <UIDesktopModalSheet {...props} style={style} />;
 }
