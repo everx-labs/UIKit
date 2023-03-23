@@ -26,23 +26,18 @@ type SurfStackNavigatorProps = {
     children?: React.ReactNode;
     initialRouteName: string;
     screenOptions?:
-        | StackRouterOptions
+        | StackNavigationOptions
         | ((props: {
               route: RouteProp<ParamListBase, string>;
               navigation: any;
-          }) => StackRouterOptions);
+          }) => StackNavigationOptions);
 };
 
 const processScreenOptions = (
     screenOptions: SurfStackNavigatorProps['screenOptions'],
     doesSupportNative: boolean,
-):
-    | StackRouterOptions
-    | ((props: {
-          route: RouteProp<ParamListBase, string>;
-          navigation: any;
-      }) => StackRouterOptions) => {
-    const commonOptions: StackRouterOptions = {
+): SurfStackNavigatorProps['screenOptions'] => {
+    const commonOptions: StackNavigationOptions = {
         // @ts-ignore
         headerShown: false,
         ...(doesSupportNative
