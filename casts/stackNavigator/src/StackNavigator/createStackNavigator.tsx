@@ -8,6 +8,7 @@ import {
     StackActionHelpers,
     StackActions,
     EventArg,
+    RouteProp,
 } from '@react-navigation/native';
 import type { StackNavigationState, ParamListBase } from '@react-navigation/native';
 import { screensEnabled } from 'react-native-screens';
@@ -21,17 +22,54 @@ import {
 } from './useWrapScreensWithUILargeTitleHeader';
 import type { StackNavigationOptions } from './types';
 
-type SurfSplitNavigatorProps = {
+type SurfStackNavigatorProps = {
     children?: React.ReactNode;
     initialRouteName: string;
-    screenOptions: StackRouterOptions;
+    screenOptions?:
+        | StackRouterOptions
+        | ((props: {
+              route: RouteProp<ParamListBase, string>;
+              navigation: any;
+          }) => StackRouterOptions);
+};
+
+const processScreenOptions = (
+    screenOptions: SurfStackNavigatorProps['screenOptions'],
+    doesSupportNative: boolean,
+):
+    | StackRouterOptions
+    | ((props: {
+          route: RouteProp<ParamListBase, string>;
+          navigation: any;
+      }) => StackRouterOptions) => {
+    const commonOptions: StackRouterOptions = {
+        // @ts-ignore
+        headerShown: false,
+        ...(doesSupportNative
+            ? Platform.select({
+                  android: {
+                      stackAnimation: 'slide_from_right',
+                  },
+                  default: null,
+              })
+            : {
+                  ...TransitionPresets.SlideFromRightIOS,
+                  animationEnabled: true,
+              }),
+    };
+
+    if (typeof screenOptions === 'function') {
+        return props => ({ ...screenOptions(props), ...commonOptions });
+    }
+
+    return { ...screenOptions, ...commonOptions };
 };
 
 export const StackNavigator = ({
     children,
     initialRouteName,
     screenOptions,
-}: SurfSplitNavigatorProps) => {
+}: SurfStackNavigatorProps) => {
     const doesSupportNative = Platform.OS !== 'web' && screensEnabled?.();
 
     const {
@@ -47,22 +85,7 @@ export const StackNavigator = ({
     >(StackRouter, {
         children,
         initialRouteName,
-        screenOptions: {
-            ...screenOptions,
-            // @ts-ignore
-            headerShown: false,
-            ...(doesSupportNative
-                ? Platform.select({
-                      android: {
-                          stackAnimation: 'slide_from_right',
-                      },
-                      default: null,
-                  })
-                : {
-                      ...TransitionPresets.SlideFromRightIOS,
-                      animationEnabled: true,
-                  }),
-        },
+        screenOptions: processScreenOptions(screenOptions, doesSupportNative),
     });
 
     React.useEffect(
