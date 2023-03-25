@@ -3,6 +3,8 @@ import { View } from 'react-native';
 
 import type { MaterialTextViewProps } from './types';
 import { InputMessage, InputMessageType } from '../InputMessage';
+import { MaterialTextViewColorScheme } from './types';
+import { useInputMessageColorScheme } from './hooks';
 
 function useMessageType(
     success: boolean | undefined,
@@ -28,14 +30,29 @@ export function MaterialTextViewComment(
         children: React.ReactNode;
     },
 ) {
-    const { helperText, onLayout, children, success, warning, error, onHelperTextPress } = props;
+    const {
+        helperText,
+        onLayout,
+        children,
+        success,
+        warning,
+        error,
+        onHelperTextPress,
+        colorScheme = MaterialTextViewColorScheme.Default,
+    } = props;
 
     const inputMessageType = useMessageType(success, warning, error);
+
+    const inputMessageColorScheme = useInputMessageColorScheme(colorScheme);
 
     return (
         <View onLayout={onLayout}>
             {children}
-            <InputMessage type={inputMessageType} onPress={onHelperTextPress}>
+            <InputMessage
+                type={inputMessageType}
+                onPress={onHelperTextPress}
+                colorScheme={inputMessageColorScheme}
+            >
                 {helperText}
             </InputMessage>
         </View>

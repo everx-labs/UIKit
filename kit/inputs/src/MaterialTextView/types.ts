@@ -32,6 +32,11 @@ export type BackgroundColors = {
     disabled: ColorVariants;
 };
 
+export enum MaterialTextViewColorScheme {
+    Default = 'Default',
+    Secondary = 'Secondary',
+}
+
 export type MaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
     /**
      * Label of the MaterialTextView.
@@ -84,6 +89,11 @@ export type MaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
      * A callback that is called when the cursor is over the input.
      */
     onHover?: (isHovered: boolean) => void;
+    /**
+     * Color scheme of the TextView.
+     * @default MaterialTextViewColorScheme.Default
+     */
+    colorScheme?: MaterialTextViewColorScheme;
     /**
      * Background colors of the TextView in regular and disabled (`editable={false}`) states.
      *

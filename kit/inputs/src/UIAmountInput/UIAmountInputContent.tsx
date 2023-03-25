@@ -24,12 +24,14 @@ import {
     useInputVerticalMovementStyle,
     usePlaceholderAttributes,
     useInputMessageType,
+    useInputMessageColorScheme,
 } from './hooks';
 import { UITextView, UITextViewRef } from '../UITextView';
 import { TapHandler } from './TapHandler';
 import { InputMessage } from '../InputMessage';
 import { FloatingLabel } from './FloatingLabel';
 import { useInputChildren } from '../useInputChildren';
+import { MaterialTextViewColorScheme } from '../MaterialTextView';
 
 const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
 
@@ -45,6 +47,7 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
             defaultAmount,
             onMessagePress,
             backgroundColors = defaultBackgroundColors,
+            colorScheme = MaterialTextViewColorScheme.Default,
             ...props
         }: UIAmountInputProps,
         forwardedRef: React.Ref<UIAmountInputRef>,
@@ -154,6 +157,8 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
 
         const inputMessageType = useInputMessageType(messageType);
 
+        const inputMessageColorScheme = useInputMessageColorScheme(colorScheme);
+
         const hasChildren = React.useMemo(() => {
             return React.Children.count(childrenProcessed) > 0;
         }, [childrenProcessed]);
@@ -200,7 +205,11 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
                     </TapHandler>
                     {childrenProcessed}
                 </View>
-                <InputMessage type={inputMessageType} onPress={onMessagePress}>
+                <InputMessage
+                    type={inputMessageType}
+                    onPress={onMessagePress}
+                    colorScheme={inputMessageColorScheme}
+                >
                     {message}
                 </InputMessage>
             </>

@@ -10,6 +10,7 @@ import { UIShowMoreButton } from './UIShowMoreButton';
 import { UISwitcher } from './UISwitcher';
 import { UIWideBoxButton } from './UIWideBoxButton';
 import { UIPressableArea } from './UIPressableArea';
+import { UIPressableLabel } from './UIPressableLabel';
 import { UIButtonGroup } from './UIButtonGroup';
 
 import * as Haptics from './Haptics/Haptics';
@@ -27,6 +28,7 @@ export * from './UIShowMoreButton';
 export * from './UISwitcher';
 export * from './UIWideBoxButton';
 export * from './UIPressableArea';
+export * from './UIPressableLabel';
 export * from './Pressable';
 export * from './UIButtonGroup';
 
@@ -49,6 +51,7 @@ export const UIControl = {
     UISwitcher,
     UIWideBoxButton,
     UIPressableArea,
+    UIPressableLabel,
     UIButtonGroup,
 
     Haptics,

@@ -1,38 +1,35 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 
-import { ColorVariants, UILabel, TypographyVariants, Typography } from '@tonlabs/uikit.themes';
+import { TypographyVariants, Typography } from '@tonlabs/uikit.themes';
+import { UIPressableLabel } from '@tonlabs/uikit.controls';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import { InputMessageProps, InputMessageType } from './types';
-import { InputMessageContainer } from './InputMessageContainer';
 
-export function InputMessage({ children, type, onPress }: InputMessageProps) {
-    const commentColor = React.useMemo(() => {
-        switch (type) {
-            case InputMessageType.Error:
-                return ColorVariants.TextNegative;
-            case InputMessageType.Warning:
-                return ColorVariants.TextPrimary;
-            case InputMessageType.Success:
-                return ColorVariants.TextPositive;
-            case InputMessageType.Info:
-            default:
-                return ColorVariants.TextTertiary;
-        }
-    }, [type]);
+import { InputMessageColorScheme, InputMessageProps } from './types';
+import { useMessageColors } from './hooks';
+import { AnimatedContainer } from './AnimatedContainer';
+
+export function InputMessage({
+    children,
+    type,
+    onPress,
+    colorScheme = InputMessageColorScheme.Default,
+    ...rest
+}: InputMessageProps) {
+    const colors = useMessageColors(type, colorScheme);
 
     return (
-        <InputMessageContainer onPress={onPress}>
-            {children && children.length > 0 ? (
-                <UILabel
-                    role={TypographyVariants.ParagraphLabel}
-                    color={commentColor}
-                    style={styles.comment}
-                >
-                    {children}
-                </UILabel>
-            ) : null}
-        </InputMessageContainer>
+        <AnimatedContainer>
+            <UIPressableLabel
+                onPress={onPress}
+                role={TypographyVariants.ParagraphLabel}
+                style={styles.comment}
+                colors={colors}
+                {...rest}
+            >
+                {children}
+            </UIPressableLabel>
+        </AnimatedContainer>
     );
 }
 
