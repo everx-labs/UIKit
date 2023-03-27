@@ -22,7 +22,7 @@ export enum UIAmountInputDecimalAspect {
 
 export type UIAmountInputProps = Omit<
     UIMaterialTextViewProps,
-    'mask' | 'defaultValue' | 'value' | 'onChangeText'
+    'mask' | 'defaultValue' | 'value' | 'onChangeText' | 'colorScheme'
 > & {
     /**
      * A callback that is called after changing the value in the input by the user.
@@ -61,6 +61,11 @@ export type UIAmountInputProps = Omit<
      *  `UIAmountInput.Text`
      */
     children?: UIAmountInputChild | UIAmountInputChild[] | undefined;
+    /**
+     * Color scheme of the TextView.
+     * @default UIAmountInputColorScheme.Default
+     */
+    colorScheme?: UIAmountInputColorScheme;
     /**
      * Background colors of the AmountInput in regular and disabled (`editable={false}`) states.
      *
@@ -139,3 +144,8 @@ export type BackgroundColors = {
      */
     disabled: ColorVariants;
 };
+
+export enum UIAmountInputColorScheme {
+    Default = 'Default',
+    Secondary = 'Secondary',
+}

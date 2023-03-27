@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 import { UILabel } from '@tonlabs/uikit.themes';
 
@@ -37,6 +37,11 @@ export function UIPressableLabel({
 const styles = StyleSheet.create({
     pressableContainer: {
         display: 'flex',
-        userSelect: 'none',
+        ...Platform.select({
+            web: {
+                userSelect: 'none',
+            },
+            default: {},
+        }),
     },
 });

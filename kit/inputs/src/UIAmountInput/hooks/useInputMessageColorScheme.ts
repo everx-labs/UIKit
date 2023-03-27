@@ -1,16 +1,16 @@
 import * as React from 'react';
 
 import { InputMessageColorScheme } from '../../InputMessage';
-import { MaterialTextViewColorScheme } from '../../MaterialTextView';
+import { UIAmountInputColorScheme } from '../types';
 
 export function useInputMessageColorScheme(
-    colorScheme: MaterialTextViewColorScheme,
+    colorScheme: UIAmountInputColorScheme,
 ): InputMessageColorScheme {
     return React.useMemo(() => {
         switch (colorScheme) {
-            case MaterialTextViewColorScheme.Secondary:
+            case UIAmountInputColorScheme.Secondary:
                 return InputMessageColorScheme.Secondary;
-            case MaterialTextViewColorScheme.Default:
+            case UIAmountInputColorScheme.Default:
             default:
                 return InputMessageColorScheme.Default;
         }

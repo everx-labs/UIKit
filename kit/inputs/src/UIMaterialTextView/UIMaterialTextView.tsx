@@ -9,8 +9,12 @@ import {
     MaterialTextViewRef,
 } from '../MaterialTextView';
 import { useFocused } from '../UITextView';
-import { useUIMaterialTextViewChildren } from './hooks';
-import type { UIMaterialTextViewRef, UIMaterialTextViewProps } from './types';
+import { useMaterialTextViewColorScheme, useUIMaterialTextViewChildren } from './hooks';
+import {
+    UIMaterialTextViewRef,
+    UIMaterialTextViewProps,
+    UIMaterialTextViewColorScheme,
+} from './types';
 
 const emptyUIMaterialTextViewRef = getEmptyUIMaterialTextViewRef('UIMaterialTextView');
 
@@ -27,6 +31,7 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
             children,
             hideClearButton = false,
             editable = true,
+            colorScheme = UIMaterialTextViewColorScheme.Default,
         } = props;
         const [isHovered, setIsHovered] = React.useState<boolean>(false);
         const { isFocused, onFocus, onBlur } = useFocused(onFocusProp, onBlurProp);
@@ -65,6 +70,8 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
             }),
         );
 
+        const materialTextViewColorScheme = useMaterialTextViewColorScheme(colorScheme);
+
         return (
             <MaterialTextView
                 {...props}
@@ -73,6 +80,7 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
                 onFocus={onFocus}
                 onBlur={onBlur}
                 onChangeText={onChangeText}
+                colorScheme={materialTextViewColorScheme}
             >
                 {processedChildren}
             </MaterialTextView>

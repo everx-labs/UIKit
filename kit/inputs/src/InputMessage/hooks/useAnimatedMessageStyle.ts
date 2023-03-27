@@ -15,20 +15,25 @@ export function useAnimatedMessageStyle() {
 
     const onChildrenLayout = useWorkletCallback((event: LayoutChangeEvent) => {
         const { height } = event.nativeEvent.layout;
+        const newOpacity = height > 0 ? 1 : 0;
+
         // The first render is not animated
         if (isFirstRender.value) {
             isFirstRender.value = false;
-            animatedHeight.value = height;
-            opacity.value = height > 0 ? 1 : 0;
+            animatedHeight.value = withTiming(height, { duration: 0 });
+            opacity.value = withTiming(newOpacity, { duration: 0 });
             return;
         }
 
-        animatedHeight.value = withSpring(height, {
-            overshootClamping: true,
-        });
+        if (animatedHeight.value !== height) {
+            animatedHeight.value = withSpring(height, {
+                overshootClamping: true,
+            });
+        }
 
-        const newOpacity = height > 0 ? 1 : 0;
-        opacity.value = withTiming(newOpacity, { easing: Easing.in(Easing.ease) });
+        if (opacity.value !== newOpacity) {
+            opacity.value = withTiming(newOpacity, { easing: Easing.in(Easing.ease) });
+        }
     }, []);
 
     const animatedStyle = useAnimatedStyle(() => {
