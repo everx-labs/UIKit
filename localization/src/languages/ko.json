@@ -421,6 +421,8 @@
                 "tokens": "토큰"
             },
             "showHidden": "숨겨진 계정 보이기",
+            "showMore": "Показать больше",
+            "showLess": "Показать меньше",
             "subscriptions": {
                 "assetsSubtitle": "구독",
                 "titleSubscription": "구독"

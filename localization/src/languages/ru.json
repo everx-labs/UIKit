@@ -430,6 +430,8 @@
                 "tokens": "Токены"
             },
             "showHidden": "Показать скрытые счета",
+            "showMore": "Показать больше",
+            "showLess": "Показать меньше",
             "subscriptions": {
                 "assetsSubtitle": "Подписки",
                 "titleSubscription": "Подписка"
