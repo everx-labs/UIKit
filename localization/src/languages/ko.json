@@ -420,9 +420,8 @@
                 "investments": "저축",
                 "tokens": "토큰"
             },
-            "showHidden": "숨겨진 계정 보이기",
-            "showMore": "Показать больше",
-            "showLess": "Показать меньше",
+            "showMore": "자세히 보기",
+            "showLess": "적게 표시",
             "subscriptions": {
                 "assetsSubtitle": "구독",
                 "titleSubscription": "구독"
