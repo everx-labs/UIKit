@@ -35,9 +35,10 @@ export function UIStaticNumber({
     decimalColor,
     decimalAspect = UINumberDecimalAspect.None,
     sign,
+    signBeforeNumber = false,
     showDebugGrid,
     showPositiveSign,
-}: UINumberGeneralProps & UINumberAppearance & { sign?: React.ReactNode }) {
+}: UINumberGeneralProps & UINumberAppearance & { sign?: React.ReactNode; signBeforeNumber?: boolean }) {
     const { decimal: decimalSeparator, grouping: integerGroupChar } =
         uiLocalized.localeInfo.numbers;
 
@@ -77,6 +78,9 @@ export function UIStaticNumber({
             testID={testID}
             accessibilityLabel={`${formatted.integer}${formatted.decimal}`}
         >
+            {signBeforeNumber ? sign : null}
+            {/* eslint-disable-next-line no-irregular-whitespace */}
+            {signBeforeNumber ? <Text> </Text> : null}
             <Text
                 testID="number-integer"
                 style={[Typography[integerVariant], integerColorStyle, styles.integer]}
@@ -104,7 +108,7 @@ export function UIStaticNumber({
             >
                 {formatted.decimal}
             </Text>
-            {sign}
+            {signBeforeNumber ? null : sign}
             {showDebugGrid && <DebugGrid variant={integerVariant} />}
         </View>
     );
