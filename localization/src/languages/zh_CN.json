@@ -429,7 +429,8 @@
                 "investments": "服务",
                 "tokens": "Tokens"
             },
-            "showHidden": "Show hidden",
+            "showMore": "Show more",
+            "showLess": "Show less",
             "subscriptions": {
                 "assetsSubtitle": "Subscriptions",
                 "titleSubscription": "Subscription"
