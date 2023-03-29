@@ -150,15 +150,13 @@ export type MaterialTextViewActionProps = MaterialTextViewTextProps & {
 
 export type MaterialTextViewTextProps = {
     /**
-     * You can pass a `string`, `Image`, or any other element as children.
+     * You can pass a `string` or `UIImage`.
      *
-     * If it is a `string`, it will be placed in a `Label` with suitable styles.
+     * If it is a `string`, it will be placed in a `UILabel` with suitable styles.
      *
-     * If it is the `Image`, a suitable `tintColor` prop and size styles will be passed to it.
-     *
-     * Any other element will be displayed unchanged.
+     * If it is the `UIImage`, a suitable color and size styles will be passed to it.
      */
-    children: React.ReactNode;
+    children: string | React.ReactElement<UIImageProps>;
 };
 
 export type MaterialTextViewClearButtonProps = {

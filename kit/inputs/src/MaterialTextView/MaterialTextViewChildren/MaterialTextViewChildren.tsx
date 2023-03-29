@@ -11,7 +11,7 @@ import type {
     MaterialTextViewActionProps,
     MaterialTextViewTextProps,
     MaterialTextViewClearButtonProps,
-} from './types';
+} from '../types';
 
 function processChildren(
     children: React.ReactNode,
