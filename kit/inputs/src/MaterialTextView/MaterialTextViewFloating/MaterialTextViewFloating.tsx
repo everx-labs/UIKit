@@ -6,7 +6,11 @@ import { makeStyles, useTheme, Theme, ColorVariants } from '@tonlabs/uikit.theme
 import Animated, { interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated';
 import { UITextView, UITextViewRef } from '../../UITextView';
 import { FloatingLabel } from './FloatingLabel';
-import type { BackgroundColors, MaterialTextViewLayoutProps } from '../types';
+import {
+    BackgroundColors,
+    MaterialTextViewColorScheme,
+    MaterialTextViewLayoutProps,
+} from '../types';
 import { MaterialTextViewComment } from '../MaterialTextViewComment';
 import { useExpandingValue, usePlaceholderVisibility } from './hooks';
 import { defaultBackgroundColors } from '../constants';
@@ -39,6 +43,7 @@ export const MaterialTextViewFloating = React.forwardRef<
         hasValue,
         isFocused,
         backgroundColors = defaultBackgroundColors,
+        colorScheme = MaterialTextViewColorScheme.Default,
         ...rest
     } = props;
     const { editable = true } = rest;
@@ -97,6 +102,7 @@ export const MaterialTextViewFloating = React.forwardRef<
                         expandingValue={expandingValue}
                         isHovered={isHovered}
                         editable={editable}
+                        colorScheme={colorScheme}
                     >
                         {label}
                     </FloatingLabel>

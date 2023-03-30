@@ -134,6 +134,7 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
             expansionState,
             hasLabel,
             editable,
+            colorScheme,
         );
 
         const childrenProcessed = useInputChildren(children);

@@ -13,7 +13,7 @@ export const inputMessageColors: Record<InputMessageColorScheme, PressableColors
     },
     [InputMessageColorScheme.Secondary]: {
         initialColor: ColorVariants.TextSecondary,
-        pressedColor: ColorVariants.TextPrimary,
+        pressedColor: ColorVariants.TextTertiary,
         hoveredColor: ColorVariants.TextBW,
         disabledColor: ColorVariants.TextSecondary,
         loadingColor: ColorVariants.TextSecondary,
