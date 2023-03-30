@@ -8,7 +8,6 @@ import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIAssets } from '@tonlabs/uikit.assets';
 import type {
     MaterialTextViewIconProps,
-    MaterialTextViewActionProps,
     MaterialTextViewTextProps,
     MaterialTextViewClearButtonProps,
 } from '../types';
@@ -48,16 +47,6 @@ export function MaterialTextViewIcon({
     return (
         <TouchableOpacity onPress={onPress} style={[styles.iconTapZone, containerStyle]}>
             <UIImage {...rest} style={[styles.iconSize, style]} />
-        </TouchableOpacity>
-    );
-}
-
-export function MaterialTextViewAction({ children, onPress }: MaterialTextViewActionProps) {
-    const processedChildren = processChildren(children, ColorVariants.TextPrimary);
-
-    return (
-        <TouchableOpacity onPress={onPress}>
-            <Animated.View style={styles.actionContainer}>{processedChildren}</Animated.View>
         </TouchableOpacity>
     );
 }

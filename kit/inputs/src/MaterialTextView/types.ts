@@ -156,7 +156,10 @@ export type MaterialTextViewTextProps = {
      *
      * If it is the `UIImage`, a suitable color and size styles will be passed to it.
      */
-    children: string | React.ReactElement<UIImageProps>;
+    children:
+        | string
+        | React.ReactElement<UIImageProps>
+        | (string | React.ReactElement<UIImageProps>)[];
 };
 
 export type MaterialTextViewClearButtonProps = {
@@ -176,3 +179,11 @@ export type MaterialTextViewInputState = {
     carretPosition: number | null;
 };
 export type MaterialTextViewApplyMask = (text: string) => MaterialTextViewInputState;
+
+export type MaterialTextViewContextType = {
+    /**
+     * Color scheme of the TextView.
+     * @default MaterialTextViewColorScheme.Default
+     */
+    colorScheme: MaterialTextViewColorScheme;
+};

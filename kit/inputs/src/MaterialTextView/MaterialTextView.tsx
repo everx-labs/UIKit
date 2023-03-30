@@ -24,6 +24,8 @@ import {
     MaterialTextViewText,
 } from './MaterialTextViewChildren';
 import { useTextViewHandler } from '../useTextViewHandler';
+import { MaterialTextViewContext } from './MaterialTextViewContext';
+import { defaultMaterialTextViewColorScheme } from './constants';
 
 function useExtendedProps(
     props: MaterialTextViewProps,
@@ -163,13 +165,25 @@ function useExtendedProps(
 const MaterialTextViewForward = React.forwardRef<MaterialTextViewRef, MaterialTextViewProps>(
     function MaterialTextViewForward(props: MaterialTextViewProps, passedRef) {
         const ref = React.useRef<UITextViewRef>(null);
-        const { label } = props;
+        const { label, colorScheme } = props;
         const extendedProps = useExtendedProps(props, ref, passedRef);
 
-        if (label) {
-            return <MaterialTextViewFloating {...extendedProps} ref={ref} />;
-        }
-        return <MaterialTextViewSimple {...extendedProps} ref={ref} />;
+        const materialTextViewContextValue = React.useMemo(
+            () => ({
+                colorScheme: colorScheme ?? defaultMaterialTextViewColorScheme,
+            }),
+            [colorScheme],
+        );
+
+        return (
+            <MaterialTextViewContext.Provider value={materialTextViewContextValue}>
+                {label ? (
+                    <MaterialTextViewFloating {...extendedProps} ref={ref} />
+                ) : (
+                    <MaterialTextViewSimple {...extendedProps} ref={ref} />
+                )}
+            </MaterialTextViewContext.Provider>
+        );
     },
 );
 
