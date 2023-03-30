@@ -137,6 +137,7 @@ export type MaterialTextViewIconProps = UIImageProps & {
     onPress?: () => void;
     /**
      * Style of icon container view
+     * Overwrites the predefined container style.
      */
     containerStyle?: StyleProp<ViewStyle>;
 };

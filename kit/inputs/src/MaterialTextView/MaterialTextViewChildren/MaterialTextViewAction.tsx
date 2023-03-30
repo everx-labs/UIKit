@@ -10,7 +10,7 @@ import type { MaterialTextViewActionProps } from '../types';
 import { StringPressableChild } from './StringPressableChild';
 import { ImagePressableChild } from './ImagePressableChild';
 
-function useProcessChildren(children: MaterialTextViewActionProps['children']) {
+function useProcessedChildren(children: MaterialTextViewActionProps['children']) {
     return React.useMemo(
         () =>
             React.Children.map(children, (child: React.ReactNode) => {
@@ -35,7 +35,7 @@ function useProcessChildren(children: MaterialTextViewActionProps['children']) {
 }
 
 export function MaterialTextViewAction({ children, onPress }: MaterialTextViewActionProps) {
-    const processedChildren = useProcessChildren(children);
+    const processedChildren = useProcessedChildren(children);
 
     return (
         <Pressable onPress={onPress} style={styles.container}>
