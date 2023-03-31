@@ -245,7 +245,7 @@ const FontSize = {
     },
     Special: {
         fontSize: 14,
-        lineHeight: 20,
+        lineHeight: 24,
     },
     Small: {
         fontSize: 12,
