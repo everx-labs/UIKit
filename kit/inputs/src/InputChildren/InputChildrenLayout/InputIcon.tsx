@@ -1,18 +1,18 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { Pressable } from '@tonlabs/uikit.controls';
 
-import type { MaterialTextViewIconProps } from '../types';
+import type { InputIconProps } from '../types';
 import { ImagePressableChild } from './ImagePressableChild';
 
-export function MaterialTextViewIcon({
+export function InputIcon({
     onPress,
     style,
     containerStyle = styles.iconTapZone,
     ...rest
-}: MaterialTextViewIconProps) {
+}: InputIconProps) {
     return (
         <Pressable onPress={onPress} style={containerStyle}>
             <ImagePressableChild
@@ -28,10 +28,16 @@ export function MaterialTextViewIcon({
 
 const styles = StyleSheet.create({
     iconTapZone: {
+        alignSelf: 'stretch',
+        paddingHorizontal: UILayoutConstant.contentOffset,
         alignItems: 'center',
         justifyContent: 'center',
-        padding: UILayoutConstant.normalContentOffset,
-        left: UILayoutConstant.normalContentOffset,
+        ...Platform.select({
+            web: {
+                userSelect: 'none',
+            },
+            default: {},
+        }),
     },
     iconSize: {
         width: UILayoutConstant.iconSize,

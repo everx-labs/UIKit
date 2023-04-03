@@ -1,36 +1,39 @@
 import * as React from 'react';
-import { InputIcon, InputAction, InputText } from './InputChildren';
+import { InputIcon, InputAction, InputText } from './InputChildrenLayout';
 import type {
     InputChildren,
     InputIconChild,
     InputActionChild,
     InputTextChild,
-    InputActionProps,
-    InputIconProps,
-    InputTextProps,
+    InputChild,
+    InputChildrenColorScheme,
 } from './types';
 
-const getChildList = (children: React.ReactNode) => {
-    const configs = React.Children.toArray(children).reduce<React.ReactNode[]>((acc, child) => {
+const getChildList = (children: React.ReactNode, colorScheme: InputChildrenColorScheme) => {
+    return React.Children.toArray(children).reduce<InputChild[]>((acc, child) => {
         if (React.isValidElement(child)) {
             if (
                 child.type === InputIcon ||
                 child.type === InputAction ||
                 child.type === InputText
             ) {
-                acc.push(child);
+                const newChild = React.cloneElement(child, {
+                    colorScheme,
+                    ...child.props,
+                });
+                acc.push(newChild as InputChild);
                 return acc;
             }
 
             if (child.type === React.Fragment) {
-                acc.push(...getChildList(child.props.children));
+                acc.push(...getChildList(child.props.children, colorScheme));
 
                 return acc;
             }
         }
 
         throw new Error(
-            `A MaterialText can only contain 'Input.[Icon|Action|Text]' components as its direct children (found ${
+            `A Input can only contain 'Input.[Icon|Action|Text]' components as its direct children (found ${
                 // eslint-disable-next-line no-nested-ternary
                 React.isValidElement(child)
                     ? `${typeof child.type === 'string' ? child.type : child.type?.name}`
@@ -40,12 +43,10 @@ const getChildList = (children: React.ReactNode) => {
             })`,
         );
     }, []);
-
-    return configs;
 };
 
-export function useInputChildren(children: InputChildren): InputChildren {
-    const { icons, action, text } = getChildList(children).reduce<{
+function sortInputChildList(children: InputChild[]) {
+    return children.reduce<{
         icons: (InputIconChild | undefined)[];
         action: InputActionChild | undefined;
         text: InputTextChild | undefined;
@@ -53,11 +54,11 @@ export function useInputChildren(children: InputChildren): InputChildren {
         (acc, child) => {
             if (React.isValidElement(child)) {
                 if (child.type === InputIcon) {
-                    acc.icons.push(child as React.ReactElement<InputIconProps>);
+                    acc.icons.push(child as InputIconChild);
                 } else if (child.type === InputAction) {
-                    acc.action = child as React.ReactElement<InputActionProps>;
+                    acc.action = child as InputActionChild;
                 } else if (child.type === InputText) {
-                    acc.text = child as React.ReactElement<InputTextProps>;
+                    acc.text = child as InputTextChild;
                 }
             }
 
@@ -69,6 +70,14 @@ export function useInputChildren(children: InputChildren): InputChildren {
             text: undefined,
         },
     );
+}
+
+export function useInputChildren(
+    children: InputChildren,
+    colorScheme: InputChildrenColorScheme,
+): InputChild[] {
+    const childList = getChildList(children, colorScheme);
+    const { icons, action, text } = sortInputChildList(childList);
 
     const hasIcons = icons.length > 0;
     const hasAction = action != null;
@@ -98,8 +107,8 @@ export function useInputChildren(children: InputChildren): InputChildren {
             throw new Error(`You can't pass Input.Text with Action at the same time.`);
         }
 
-        return action;
+        return [action];
     }
 
-    return text;
+    return text ? [text] : [];
 }

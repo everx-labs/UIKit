@@ -3,13 +3,13 @@ import { StyleSheet, View } from 'react-native';
 import { Pressable } from '@tonlabs/uikit.controls';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import type { MaterialTextViewClearButtonProps } from '../types';
+import type { InputClearButtonProps } from '../types';
 import { ImagePressableChild } from './ImagePressableChild';
 
-export const MaterialTextViewClearButton = React.memo(function MaterialTextViewClearButton({
+export const InputClearButton = React.memo(function InputClearButton({
     clear,
     hiddenButton = false,
-}: MaterialTextViewClearButtonProps) {
+}: InputClearButtonProps) {
     if (hiddenButton) {
         return (
             <View style={styles.iconTapZone}>
@@ -26,10 +26,10 @@ export const MaterialTextViewClearButton = React.memo(function MaterialTextViewC
 
 const styles = StyleSheet.create({
     iconTapZone: {
+        alignSelf: 'stretch',
+        paddingHorizontal: UILayoutConstant.contentOffset,
         alignItems: 'center',
         justifyContent: 'center',
-        padding: UILayoutConstant.normalContentOffset,
-        left: UILayoutConstant.normalContentOffset,
     },
     iconSize: {
         width: UILayoutConstant.iconSize,

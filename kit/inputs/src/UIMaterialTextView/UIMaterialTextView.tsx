@@ -1,9 +1,6 @@
 import * as React from 'react';
 import {
     getEmptyUIMaterialTextViewRef,
-    MaterialTextViewIcon,
-    MaterialTextViewAction,
-    MaterialTextViewText,
     MaterialTextView,
     useInputHasValue,
     MaterialTextViewRef,
@@ -15,6 +12,7 @@ import {
     UIMaterialTextViewProps,
     UIMaterialTextViewColorScheme,
 } from './types';
+import { InputIcon, InputAction, InputText } from '../InputChildren';
 
 const emptyUIMaterialTextViewRef = getEmptyUIMaterialTextViewRef('UIMaterialTextView');
 
@@ -36,8 +34,10 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
         const [isHovered, setIsHovered] = React.useState<boolean>(false);
         const { isFocused, onFocus, onBlur } = useFocused(onFocusProp, onBlurProp);
         const { inputHasValue, checkInputHasValue } = useInputHasValue(value, defaultValue);
+
         const processedChildren = useUIMaterialTextViewChildren(
             children,
+            colorScheme,
             hideClearButton,
             inputHasValue,
             isFocused,
@@ -91,11 +91,11 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
 // @ts-expect-error
 // ts doesn't understand that we assign [Icon|Action|Text] later, and want to see it right away
 export const UIMaterialTextView: typeof UIMaterialTextViewForward & {
-    Icon: typeof MaterialTextViewIcon;
-    Action: typeof MaterialTextViewAction;
-    Text: typeof MaterialTextViewText;
+    Icon: typeof InputIcon;
+    Action: typeof InputAction;
+    Text: typeof InputText;
 } = UIMaterialTextViewForward;
 
-UIMaterialTextView.Icon = MaterialTextViewIcon;
-UIMaterialTextView.Action = MaterialTextViewAction;
-UIMaterialTextView.Text = MaterialTextViewText;
+UIMaterialTextView.Icon = InputIcon;
+UIMaterialTextView.Action = InputAction;
+UIMaterialTextView.Text = InputText;

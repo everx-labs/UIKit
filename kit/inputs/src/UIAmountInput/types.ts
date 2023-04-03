@@ -5,7 +5,7 @@ import type { SharedValue } from 'react-native-reanimated';
 import type { ColorVariants } from '@tonlabs/uikit.themes';
 
 import type { UIMaterialTextViewProps } from '../UIMaterialTextView/types';
-import type { InputChildren } from '../useInputChildren';
+import type { InputChildren } from '../InputChildren';
 
 export enum UIAmountInputMessageType {
     Error = 'Error',
@@ -60,7 +60,7 @@ export type UIAmountInputProps = Omit<
      *  `UIAmountInput.Action`
      *  `UIAmountInput.Text`
      */
-    children?: UIAmountInputChild | UIAmountInputChild[] | undefined;
+    children?: UIAmountInputChildren;
     /**
      * Color scheme of the TextView.
      * @default UIAmountInputColorScheme.Default
@@ -89,7 +89,7 @@ export type UIAmountInputRef = Pick<TextInput, 'isFocused' | 'focus' | 'blur' | 
     changeAmount: (amount: BigNumber | undefined, callOnChangeProp?: boolean) => void;
 };
 
-export type UIAmountInputChild = InputChildren;
+export type UIAmountInputChildren = InputChildren;
 
 export type AmountInputContextDefaultValuesType = {
     isHovered: boolean;

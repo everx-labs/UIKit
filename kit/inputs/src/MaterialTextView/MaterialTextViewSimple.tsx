@@ -25,7 +25,10 @@ export const MaterialTextViewSimple = React.forwardRef<UITextViewRef, MaterialTe
         const { editable = true } = rest;
         const theme = useTheme();
 
-        const styles = useStyles(theme, editable, backgroundColors);
+        const hasChildren = React.useMemo(() => {
+            return React.Children.count(children) > 0;
+        }, [children]);
+        const styles = useStyles(theme, editable, backgroundColors, hasChildren);
 
         return (
             <MaterialTextViewComment {...props}>
@@ -57,7 +60,7 @@ export const MaterialTextViewSimple = React.forwardRef<UITextViewRef, MaterialTe
 );
 
 const useStyles = makeStyles(
-    (theme: Theme, editable: boolean, backgroundColors: BackgroundColors) => ({
+    (theme: Theme, editable: boolean, backgroundColors: BackgroundColors, hasChildren) => ({
         container: {
             flexDirection: 'row',
             alignItems: 'center',
@@ -65,13 +68,15 @@ const useStyles = makeStyles(
             backgroundColor: editable
                 ? theme[backgroundColors.regular]
                 : theme[backgroundColors.disabled],
-            paddingHorizontal: UILayoutConstant.contentOffset,
         },
         inputContainer: {
             flex: 1,
             flexDirection: 'row',
             paddingVertical: UILayoutConstant.contentInsetVerticalX4,
-            paddingRight: UILayoutConstant.smallContentOffset,
+            paddingRight: hasChildren
+                ? UILayoutConstant.smallContentOffset
+                : UILayoutConstant.contentOffset,
+            paddingLeft: UILayoutConstant.contentOffset,
         },
         input: {
             ...Platform.select({

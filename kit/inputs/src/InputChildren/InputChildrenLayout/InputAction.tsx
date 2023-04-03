@@ -6,11 +6,11 @@ import { Pressable } from '@tonlabs/uikit.controls';
 import { UIImage } from '@tonlabs/uikit.media';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
-import type { MaterialTextViewActionProps } from '../types';
+import type { InputActionProps } from '../types';
 import { StringPressableChild } from './StringPressableChild';
 import { ImagePressableChild } from './ImagePressableChild';
 
-function useProcessedChildren(children: MaterialTextViewActionProps['children']) {
+function useProcessedChildren(children: InputActionProps['children']) {
     return React.useMemo(
         () =>
             React.Children.map(children, (child: React.ReactNode) => {
@@ -34,7 +34,7 @@ function useProcessedChildren(children: MaterialTextViewActionProps['children'])
     );
 }
 
-export function MaterialTextViewAction({ children, onPress }: MaterialTextViewActionProps) {
+export function InputAction({ children, onPress }: InputActionProps) {
     const processedChildren = useProcessedChildren(children);
 
     return (
@@ -46,9 +46,10 @@ export function MaterialTextViewAction({ children, onPress }: MaterialTextViewAc
 
 const styles = StyleSheet.create({
     container: {
+        alignSelf: 'stretch',
+        justifyContent: 'center',
         ...Platform.select({
             web: {
-                display: 'flex',
                 userSelect: 'none',
             },
             default: {},
@@ -57,8 +58,7 @@ const styles = StyleSheet.create({
     actionContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        padding: UILayoutConstant.normalContentOffset,
-        left: UILayoutConstant.normalContentOffset,
+        paddingHorizontal: UILayoutConstant.contentOffset,
     },
     imageChild: {
         height: UILayoutConstant.iconSize,

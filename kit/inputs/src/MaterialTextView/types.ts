@@ -1,8 +1,7 @@
 import type React from 'react';
-import type { View, ViewStyle, StyleProp, TextInput } from 'react-native';
+import type { View, TextInput } from 'react-native';
 import type { SharedValue } from 'react-native-reanimated';
 
-import type { UIImageProps } from '@tonlabs/uikit.media';
 import type { ColorVariants } from '@tonlabs/uikit.themes';
 
 import type { UITextViewProps } from '../UITextView';
@@ -12,14 +11,6 @@ export type MaterialTextViewAmountMask =
     | 'AmountPrecision' // precision numer (aspectRatio === 9)
     | 'AmountCurrency'; // currency number (aspectRatio === 2)
 export type MaterialTextViewMask = MaterialTextViewAmountMask;
-
-export type MaterialTextViewIconChild = React.ReactElement<MaterialTextViewIconProps>;
-export type MaterialTextViewActionChild = React.ReactElement<MaterialTextViewActionProps>;
-export type MaterialTextViewTextChild = React.ReactElement<MaterialTextViewTextProps>;
-export type MaterialTextViewChild =
-    | MaterialTextViewIconChild
-    | MaterialTextViewActionChild
-    | MaterialTextViewTextChild;
 
 export type BackgroundColors = {
     /**
@@ -74,12 +65,9 @@ export type MaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
      */
     borderViewRef?: React.Ref<View>;
     /**
-     *  As children you can provide only one or two of this component:
-     *  `MaterialTextView.Icon`
-     *  `MaterialTextView.Action`
-     *  `MaterialTextView.Text`
+     * This component will be rendered inside the MaterialTextView in front of inputed text.
      */
-    children?: MaterialTextViewChild | MaterialTextViewChild[] | undefined;
+    children?: React.ReactNode;
     /**
      * Provides a input mask.
      * It must not be changed between renders.
@@ -130,61 +118,8 @@ export type ImperativeChangeTextConfig = {
 };
 export type ImperativeChangeText = (text: string, config?: ImperativeChangeTextConfig) => void;
 
-export type MaterialTextViewIconProps = UIImageProps & {
-    /**
-     * Callback called by clicking/tapping on the icon
-     */
-    onPress?: () => void;
-    /**
-     * Style of icon container view
-     * Overwrites the predefined container style.
-     */
-    containerStyle?: StyleProp<ViewStyle>;
-};
-
-export type MaterialTextViewActionProps = MaterialTextViewTextProps & {
-    /**
-     * Callback called by clicking/tapping on the action
-     */
-    onPress?: () => void;
-};
-
-export type MaterialTextViewTextProps = {
-    /**
-     * You can pass a `string` or `UIImage`.
-     *
-     * If it is a `string`, it will be placed in a `UILabel` with suitable styles.
-     *
-     * If it is the `UIImage`, a suitable color and size styles will be passed to it.
-     */
-    children:
-        | string
-        | React.ReactElement<UIImageProps>
-        | (string | React.ReactElement<UIImageProps>)[];
-};
-
-export type MaterialTextViewClearButtonProps = {
-    /**
-     * The callback that calls when the CleraButton was pressed
-     */
-    clear?: (() => void) | undefined;
-    /**
-     * Should the button to be just empty container with size of the visible button
-     * to reserve space for the button.
-     */
-    hiddenButton?: boolean;
-};
-
 export type MaterialTextViewInputState = {
     formattedText: string;
     carretPosition: number | null;
 };
 export type MaterialTextViewApplyMask = (text: string) => MaterialTextViewInputState;
-
-export type MaterialTextViewContextType = {
-    /**
-     * Color scheme of the TextView.
-     * @default MaterialTextViewColorScheme.Default
-     */
-    colorScheme: MaterialTextViewColorScheme;
-};

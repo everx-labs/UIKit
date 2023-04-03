@@ -18,14 +18,7 @@ import type {
     MaterialTextViewLayoutProps,
 } from './types';
 import type { UITextViewRef } from '../UITextView';
-import {
-    MaterialTextViewIcon,
-    MaterialTextViewAction,
-    MaterialTextViewText,
-} from './MaterialTextViewChildren';
 import { useTextViewHandler } from '../useTextViewHandler';
-import { MaterialTextViewContext } from './MaterialTextViewContext';
-import { defaultMaterialTextViewColorScheme } from './constants';
 
 function useExtendedProps(
     props: MaterialTextViewProps,
@@ -165,36 +158,14 @@ function useExtendedProps(
 const MaterialTextViewForward = React.forwardRef<MaterialTextViewRef, MaterialTextViewProps>(
     function MaterialTextViewForward(props: MaterialTextViewProps, passedRef) {
         const ref = React.useRef<UITextViewRef>(null);
-        const { label, colorScheme } = props;
+        const { label } = props;
         const extendedProps = useExtendedProps(props, ref, passedRef);
 
-        const materialTextViewContextValue = React.useMemo(
-            () => ({
-                colorScheme: colorScheme ?? defaultMaterialTextViewColorScheme,
-            }),
-            [colorScheme],
-        );
-
-        return (
-            <MaterialTextViewContext.Provider value={materialTextViewContextValue}>
-                {label ? (
-                    <MaterialTextViewFloating {...extendedProps} ref={ref} />
-                ) : (
-                    <MaterialTextViewSimple {...extendedProps} ref={ref} />
-                )}
-            </MaterialTextViewContext.Provider>
-        );
+        if (label) {
+            return <MaterialTextViewFloating {...extendedProps} ref={ref} />;
+        }
+        return <MaterialTextViewSimple {...extendedProps} ref={ref} />;
     },
 );
 
-// @ts-expect-error
-// ts doesn't understand that we assign [Icon|Action|Text] later, and want to see it right away
-export const MaterialTextView: typeof MaterialTextViewForward & {
-    Icon: typeof MaterialTextViewIcon;
-    Action: typeof MaterialTextViewAction;
-    Text: typeof MaterialTextViewText;
-} = MaterialTextViewForward;
-
-MaterialTextView.Icon = MaterialTextViewIcon;
-MaterialTextView.Action = MaterialTextViewAction;
-MaterialTextView.Text = MaterialTextViewText;
+export const MaterialTextView: typeof MaterialTextViewForward = MaterialTextViewForward;

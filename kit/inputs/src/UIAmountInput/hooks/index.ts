@@ -10,3 +10,4 @@ export * from './useInputVerticalMovementStyle';
 export * from './usePlaceholderAttributes';
 export * from './useInputMessageType';
 export * from './useInputMessageColorScheme';
+export * from './useInputChildrenColorScheme';

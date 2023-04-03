@@ -7,7 +7,7 @@ import {
     useUITextViewValue,
     UIMaterialTextView,
     UIMaterialTextViewProps,
-    UIMaterialTextViewChild,
+    InputChild,
     UIMaterialTextViewRef,
 } from '@tonlabs/uikit.inputs';
 import { ColorVariants } from '@tonlabs/uikit.themes';
@@ -24,7 +24,6 @@ export type UIAddressTextViewValidateAddress = (
 ) => Promise<UIAddressTextViewValidationResult | null>;
 
 type UIAddressTextViewProps = UIMaterialTextViewProps & {
-    children?: UIMaterialTextViewChild;
     validateAddress: UIAddressTextViewValidateAddress;
     /**
      * QR code parser to process a string read through a QR code.
@@ -175,13 +174,13 @@ export const UIAddressTextView = React.forwardRef<UIMaterialTextViewRef, UIAddre
             );
         }, [qrCode]);
 
-        const childrenToDisplay = React.useMemo(() => {
-            const childList = [];
+        const childrenToDisplay = React.useMemo<InputChild[]>(() => {
+            const childList: InputChild[] = [];
             if (qrCodeIcon) {
                 childList.unshift(qrCodeIcon);
             }
             if (children) {
-                childList.unshift(children);
+                childList.unshift(...(React.Children.toArray(children) as InputChild[]));
             }
             return childList;
         }, [children, qrCodeIcon]);

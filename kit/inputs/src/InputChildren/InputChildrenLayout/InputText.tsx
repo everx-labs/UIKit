@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { UIImage } from '@tonlabs/uikit.media';
 import { ColorVariants, UILabel, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
-import { MaterialTextViewColorScheme, MaterialTextViewTextProps } from '../types';
-import { MaterialTextViewContext } from '../MaterialTextViewContext';
+import { InputChildrenColorScheme, InputTextProps } from '../types';
 
 function useProcessedChildren(
     children: React.ReactNode,
@@ -39,14 +38,12 @@ function useProcessedChildren(
     );
 }
 
-export function MaterialTextViewText({ children }: MaterialTextViewTextProps) {
-    const { colorScheme } = React.useContext(MaterialTextViewContext);
-
+export function InputText({ children, colorScheme }: InputTextProps) {
     const color = React.useMemo(() => {
         switch (colorScheme) {
-            case MaterialTextViewColorScheme.Secondary:
+            case InputChildrenColorScheme.Secondary:
                 return ColorVariants.TextTertiary;
-            case MaterialTextViewColorScheme.Default:
+            case InputChildrenColorScheme.Default:
             default:
                 return ColorVariants.TextPrimary;
         }
@@ -54,15 +51,22 @@ export function MaterialTextViewText({ children }: MaterialTextViewTextProps) {
 
     const processedChildren = useProcessedChildren(children, color);
 
-    return <Animated.View style={styles.textContainer}>{processedChildren}</Animated.View>;
+    return (
+        <Animated.View style={styles.textContainer}>
+            <View style={styles.textContent}>{processedChildren}</View>
+        </Animated.View>
+    );
 }
 
 const styles = StyleSheet.create({
     textContainer: {
+        alignSelf: 'stretch',
+        justifyContent: 'center',
+    },
+    textContent: {
         flexDirection: 'row',
         alignItems: 'center',
-        padding: UILayoutConstant.normalContentOffset,
-        left: UILayoutConstant.normalContentOffset,
+        paddingHorizontal: UILayoutConstant.contentOffset,
     },
     imageChild: {
         height: UILayoutConstant.iconSize,

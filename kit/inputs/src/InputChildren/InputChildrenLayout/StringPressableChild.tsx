@@ -4,14 +4,18 @@ import { useAnimatedProps } from 'react-native-reanimated';
 
 import { PressableColors, usePressableContentColor } from '@tonlabs/uikit.controls';
 import { UILabelAnimated, UILabelRoles } from '@tonlabs/uikit.themes';
-import { MaterialTextViewContext } from '../MaterialTextViewContext';
-import { materialTextViewChildrenColors } from '../constants';
+import { defaultInputColorScheme, inputChildrenColors } from '../constants';
+import type { InputChildrenColorScheme } from '../types';
 
-export function StringPressableChild({ children }: { children: string }) {
-    const { colorScheme } = React.useContext(MaterialTextViewContext);
-
+export function StringPressableChild({
+    children,
+    colorScheme,
+}: {
+    children: string;
+    colorScheme?: InputChildrenColorScheme;
+}) {
     const colors = React.useMemo<PressableColors>(() => {
-        return materialTextViewChildrenColors[colorScheme];
+        return inputChildrenColors[colorScheme ?? defaultInputColorScheme];
     }, [colorScheme]);
 
     const contentColor = usePressableContentColor(colors);

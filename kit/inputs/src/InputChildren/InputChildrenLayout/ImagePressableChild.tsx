@@ -5,16 +5,16 @@ import { useAnimatedProps } from 'react-native-reanimated';
 import { PressableColors, usePressableContentColor } from '@tonlabs/uikit.controls';
 import { UIAnimatedImage, UIImageProps } from '@tonlabs/uikit.media';
 
-import { MaterialTextViewContext } from '../MaterialTextViewContext';
-import { materialTextViewChildrenColors } from '../constants';
+import { defaultInputColorScheme, inputChildrenColors } from '../constants';
+import type { InputChildrenColorScheme } from '../types';
 
-type ImagePressableChildProps = Omit<UIImageProps, 'tintColor'>;
+type ImagePressableChildProps = Omit<UIImageProps, 'tintColor'> & {
+    colorScheme?: InputChildrenColorScheme;
+};
 
-export function ImagePressableChild(props: ImagePressableChildProps) {
-    const { colorScheme } = React.useContext(MaterialTextViewContext);
-
+export function ImagePressableChild({ colorScheme, ...props }: ImagePressableChildProps) {
     const colors = React.useMemo<PressableColors>(() => {
-        return materialTextViewChildrenColors[colorScheme];
+        return inputChildrenColors[colorScheme ?? defaultInputColorScheme];
     }, [colorScheme]);
 
     const contentColor = usePressableContentColor(colors);

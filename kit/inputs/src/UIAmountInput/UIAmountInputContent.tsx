@@ -26,12 +26,13 @@ import {
     usePlaceholderAttributes,
     useInputMessageType,
     useInputMessageColorScheme,
+    useInputChildrenColorScheme,
 } from './hooks';
 import { UITextView, UITextViewRef } from '../UITextView';
 import { TapHandler } from './TapHandler';
 import { InputMessage } from '../InputMessage';
 import { FloatingLabel } from './FloatingLabel';
-import { useInputChildren } from '../useInputChildren';
+import { useInputChildren } from '../InputChildren';
 
 const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
 
@@ -137,7 +138,8 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
             colorScheme,
         );
 
-        const childrenProcessed = useInputChildren(children);
+        const inputChildrenColorScheme = useInputChildrenColorScheme(colorScheme);
+        const childrenProcessed = useInputChildren(children, inputChildrenColorScheme);
 
         /**
          * Setup the AmountInput ref.
