@@ -6,7 +6,8 @@ import { UIImage } from '@tonlabs/uikit.media';
 import { ColorVariants, UILabel, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
-import { InputChildrenColorScheme, InputTextProps } from '../types';
+import type { InputTextProps } from '../types';
+import { inputChildrenTextColor } from '../constants';
 
 function useProcessedChildren(
     children: React.ReactNode,
@@ -38,21 +39,8 @@ function useProcessedChildren(
     );
 }
 
-export function InputText({
-    children,
-    colorScheme = InputChildrenColorScheme.Default,
-}: InputTextProps) {
-    const color = React.useMemo(() => {
-        switch (colorScheme) {
-            case InputChildrenColorScheme.Secondary:
-                return ColorVariants.TextTertiary;
-            case InputChildrenColorScheme.Default:
-            default:
-                return ColorVariants.TextPrimary;
-        }
-    }, [colorScheme]);
-
-    const processedChildren = useProcessedChildren(children, color);
+export function InputText({ children }: InputTextProps) {
+    const processedChildren = useProcessedChildren(children, inputChildrenTextColor);
 
     return (
         <Animated.View style={styles.textContainer}>

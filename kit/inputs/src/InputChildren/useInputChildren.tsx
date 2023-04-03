@@ -9,7 +9,7 @@ import type {
     InputChildrenColorScheme,
 } from './types';
 
-const getChildList = (children: React.ReactNode, colorScheme: InputChildrenColorScheme) => {
+const getChildList = (children: InputChildren, colorScheme: InputChildrenColorScheme) => {
     return React.Children.toArray(children).reduce<InputChild[]>((acc, child) => {
         if (React.isValidElement(child)) {
             if (
@@ -20,8 +20,9 @@ const getChildList = (children: React.ReactNode, colorScheme: InputChildrenColor
                 const newChild = React.cloneElement(child, {
                     colorScheme,
                     ...child.props,
-                });
-                acc.push(newChild as InputChild);
+                }) as InputChild;
+
+                acc.push(newChild);
                 return acc;
             }
 
@@ -85,9 +86,7 @@ export function useInputChildren(
 
     if (hasIcons) {
         if (hasAction || hasText) {
-            throw new Error(
-                `You can't pass Input.Action or Input.Text with icons at the same time.`,
-            );
+            console.error(`You can't pass Input.Action or Input.Text with icons at the same time.`);
         }
 
         return icons
@@ -104,7 +103,7 @@ export function useInputChildren(
 
     if (hasAction) {
         if (hasText) {
-            throw new Error(`You can't pass Input.Text with Action at the same time.`);
+            console.error(`You can't pass Input.Text with Action at the same time.`);
         }
 
         return [action];

@@ -3,12 +3,13 @@ import { StyleSheet, View } from 'react-native';
 import { Pressable } from '@tonlabs/uikit.controls';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import type { InputClearButtonProps } from '../types';
+import { InputChildrenColorScheme, InputClearButtonProps } from '../types';
 import { ImagePressableChild } from './ImagePressableChild';
 
 export const InputClearButton = React.memo(function InputClearButton({
     clear,
     hiddenButton = false,
+    colorScheme = InputChildrenColorScheme.Default,
 }: InputClearButtonProps) {
     if (hiddenButton) {
         return (
@@ -19,7 +20,11 @@ export const InputClearButton = React.memo(function InputClearButton({
     }
     return (
         <Pressable testID="clear_btn" style={styles.iconTapZone} onPress={clear}>
-            <ImagePressableChild source={UIAssets.icons.ui.clear} style={styles.iconSize} />
+            <ImagePressableChild
+                source={UIAssets.icons.ui.clear}
+                style={styles.iconSize}
+                colorScheme={colorScheme}
+            />
         </Pressable>
     );
 });

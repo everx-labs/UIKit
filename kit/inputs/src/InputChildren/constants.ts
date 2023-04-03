@@ -5,7 +5,7 @@ import { InputChildrenColorScheme } from './types';
 
 export const defaultInputColorScheme: InputChildrenColorScheme = InputChildrenColorScheme.Default;
 
-export const inputChildrenColors: Record<InputChildrenColorScheme, PressableColors> = {
+export const inputChildrenPressableColors: Record<InputChildrenColorScheme, PressableColors> = {
     [InputChildrenColorScheme.Default]: {
         initialColor: ColorVariants.TextPrimary,
         pressedColor: ColorVariants.TextTertiary,
@@ -21,3 +21,5 @@ export const inputChildrenColors: Record<InputChildrenColorScheme, PressableColo
         loadingColor: ColorVariants.TextTertiary,
     },
 };
+
+export const inputChildrenTextColor = ColorVariants.TextTertiary;

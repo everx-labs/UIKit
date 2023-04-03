@@ -63,6 +63,11 @@ export type InputClearButtonProps = {
      * to reserve space for the button.
      */
     hiddenButton?: boolean;
+    /**
+     * ColorScheme of the clear button.
+     * This prop is not required. If not passed, the colorScheme of the parent component will be used.
+     */
+    colorScheme?: InputChildrenColorScheme;
 };
 
 export type InputIconChild = React.ReactElement<InputIconProps>;

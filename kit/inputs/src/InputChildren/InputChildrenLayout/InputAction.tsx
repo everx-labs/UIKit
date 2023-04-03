@@ -6,21 +6,29 @@ import { Pressable } from '@tonlabs/uikit.controls';
 import { UIImage } from '@tonlabs/uikit.media';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
-import type { InputActionProps } from '../types';
+import { InputActionProps, InputChildrenColorScheme } from '../types';
 import { StringPressableChild } from './StringPressableChild';
 import { ImagePressableChild } from './ImagePressableChild';
 
-function useProcessedChildren(children: InputActionProps['children']) {
+function useProcessedChildren(
+    children: InputActionProps['children'],
+    colorScheme: InputChildrenColorScheme,
+) {
     return React.useMemo(
         () =>
             React.Children.map(children, (child: React.ReactNode) => {
                 if (typeof child === 'string') {
-                    return <StringPressableChild>{child}</StringPressableChild>;
+                    return (
+                        <StringPressableChild colorScheme={colorScheme}>
+                            {child}
+                        </StringPressableChild>
+                    );
                 }
                 if (React.isValidElement(child) && child.type === UIImage) {
                     return (
                         <ImagePressableChild
                             {...child.props}
+                            colorScheme={colorScheme}
                             style={{
                                 ...styles.imageChild,
                                 ...StyleSheet.flatten(child.props.style),
@@ -30,12 +38,16 @@ function useProcessedChildren(children: InputActionProps['children']) {
                 }
                 return null;
             }),
-        [children],
+        [children, colorScheme],
     );
 }
 
-export function InputAction({ children, onPress }: InputActionProps) {
-    const processedChildren = useProcessedChildren(children);
+export function InputAction({
+    children,
+    onPress,
+    colorScheme = InputChildrenColorScheme.Default,
+}: InputActionProps) {
+    const processedChildren = useProcessedChildren(children, colorScheme);
 
     return (
         <Pressable onPress={onPress} style={styles.container}>
