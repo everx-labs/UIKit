@@ -38,7 +38,10 @@ function useProcessedChildren(
     );
 }
 
-export function InputText({ children, colorScheme }: InputTextProps) {
+export function InputText({
+    children,
+    colorScheme = InputChildrenColorScheme.Default,
+}: InputTextProps) {
     const color = React.useMemo(() => {
         switch (colorScheme) {
             case InputChildrenColorScheme.Secondary:
