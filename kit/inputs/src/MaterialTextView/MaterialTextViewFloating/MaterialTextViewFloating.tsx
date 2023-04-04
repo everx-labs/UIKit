@@ -1,15 +1,17 @@
 import * as React from 'react';
 import { ColorValue, Platform, TextStyle, View } from 'react-native';
+import Animated, { interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import { makeStyles, ColorVariants } from '@tonlabs/uikit.themes';
-import Animated, { interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated';
+import { makeStyles } from '@tonlabs/uikit.themes';
+
 import { UITextView, UITextViewRef } from '../../UITextView';
 import { FloatingLabel } from './FloatingLabel';
 import type { MaterialTextViewLayoutProps } from '../types';
 import { MaterialTextViewComment } from '../MaterialTextViewComment';
 import { useExpandingValue, usePlaceholderVisibility } from './hooks';
 import { InputColorScheme, useInputBackgroundColor } from '../../Common';
+import { usePlaceholderColors } from '../hooks';
 
 // @inline
 const POSITION_FOLDED: number = 0;
@@ -72,12 +74,13 @@ export const MaterialTextViewFloating = React.forwardRef<
     const backgroundColor = useInputBackgroundColor(colorScheme, editable);
     const styles = useStyles(editable, backgroundColor, hasChildren);
 
+    const placeholderColors = usePlaceholderColors(colorScheme);
     const placeholderTextColor = React.useMemo(() => {
         if (!isPlaceholderVisible) {
-            return ColorVariants.Transparent;
+            return placeholderColors.transparent;
         }
-        return isHovered && editable ? ColorVariants.TextSecondary : ColorVariants.TextTertiary;
-    }, [isPlaceholderVisible, isHovered, editable]);
+        return isHovered && editable ? placeholderColors.default : placeholderColors.hover;
+    }, [isPlaceholderVisible, isHovered, editable, placeholderColors]);
 
     return (
         <MaterialTextViewComment {...props}>

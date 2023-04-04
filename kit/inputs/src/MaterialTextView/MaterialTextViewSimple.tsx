@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { ColorValue, Platform, TextStyle, View } from 'react-native';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import { makeStyles, ColorVariants } from '@tonlabs/uikit.themes';
+import { makeStyles } from '@tonlabs/uikit.themes';
 import Animated from 'react-native-reanimated';
 import { UITextView, UITextViewRef } from '../UITextView';
 
 import type { MaterialTextViewLayoutProps } from './types';
 import { MaterialTextViewComment } from './MaterialTextViewComment';
 import { InputColorScheme, useInputBackgroundColor } from '../Common';
+import { usePlaceholderColors } from './hooks';
 
 const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
 
@@ -27,6 +28,12 @@ export const MaterialTextViewSimple = React.forwardRef<UITextViewRef, MaterialTe
         const hasChildren = React.useMemo(() => {
             return React.Children.count(children) > 0;
         }, [children]);
+
+        const placeholderColors = usePlaceholderColors(colorScheme);
+        const placeholderTextColor = React.useMemo(() => {
+            return isHovered && editable ? placeholderColors.default : placeholderColors.hover;
+        }, [isHovered, editable, placeholderColors]);
+
         const backgroundColor = useInputBackgroundColor(colorScheme, editable);
         const styles = useStyles(editable, backgroundColor, hasChildren);
 
@@ -44,11 +51,7 @@ export const MaterialTextViewSimple = React.forwardRef<UITextViewRef, MaterialTe
                             ref={passedRef}
                             {...rest}
                             placeholder={props.placeholder}
-                            placeholderTextColor={
-                                isHovered && editable
-                                    ? ColorVariants.TextSecondary
-                                    : ColorVariants.TextTertiary
-                            }
+                            placeholderTextColor={placeholderTextColor}
                             style={styles.input}
                         />
                     </Animated.View>
