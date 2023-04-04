@@ -79,7 +79,7 @@ export const MaterialTextViewFloating = React.forwardRef<
         if (!isPlaceholderVisible) {
             return placeholderColors.transparent;
         }
-        return isHovered && editable ? placeholderColors.default : placeholderColors.hover;
+        return isHovered && editable ? placeholderColors.hover : placeholderColors.default;
     }, [isPlaceholderVisible, isHovered, editable, placeholderColors]);
 
     return (

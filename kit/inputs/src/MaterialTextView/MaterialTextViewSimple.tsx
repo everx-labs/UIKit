@@ -31,7 +31,7 @@ export const MaterialTextViewSimple = React.forwardRef<UITextViewRef, MaterialTe
 
         const placeholderColors = usePlaceholderColors(colorScheme);
         const placeholderTextColor = React.useMemo(() => {
-            return isHovered && editable ? placeholderColors.default : placeholderColors.hover;
+            return isHovered && editable ? placeholderColors.hover : placeholderColors.default;
         }, [isHovered, editable, placeholderColors]);
 
         const backgroundColor = useInputBackgroundColor(colorScheme, editable);
