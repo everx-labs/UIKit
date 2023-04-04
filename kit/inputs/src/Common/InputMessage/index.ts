@@ -1,3 +1,3 @@
 export * from './InputMessage';
-export { InputMessageType, InputMessageColorScheme } from './types';
+export { InputMessageType } from './types';
 export type { InputMessageProps } from './types';

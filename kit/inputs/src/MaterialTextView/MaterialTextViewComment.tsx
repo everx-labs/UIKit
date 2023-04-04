@@ -2,9 +2,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 
 import type { MaterialTextViewProps } from './types';
-import { InputMessage, InputMessageType } from '../InputMessage';
-import { MaterialTextViewColorScheme } from './types';
-import { useInputMessageColorScheme } from './hooks';
+import { InputColorScheme, InputMessage, InputMessageType } from '../Common';
 
 function useMessageType(
     success: boolean | undefined,
@@ -38,12 +36,10 @@ export function MaterialTextViewComment(
         warning,
         error,
         onHelperTextPress,
-        colorScheme = MaterialTextViewColorScheme.Default,
+        colorScheme = InputColorScheme.Default,
     } = props;
 
     const inputMessageType = useMessageType(success, warning, error);
-
-    const inputMessageColorScheme = useInputMessageColorScheme(colorScheme);
 
     return (
         <View onLayout={onLayout}>
@@ -51,7 +47,7 @@ export function MaterialTextViewComment(
             <InputMessage
                 type={inputMessageType}
                 onPress={onHelperTextPress}
-                colorScheme={inputMessageColorScheme}
+                colorScheme={colorScheme}
             >
                 {helperText}
             </InputMessage>

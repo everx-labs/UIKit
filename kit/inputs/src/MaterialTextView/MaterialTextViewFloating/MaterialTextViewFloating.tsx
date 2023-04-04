@@ -1,19 +1,15 @@
 import * as React from 'react';
-import { Platform, TextStyle, View } from 'react-native';
+import { ColorValue, Platform, TextStyle, View } from 'react-native';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import { makeStyles, useTheme, Theme, ColorVariants } from '@tonlabs/uikit.themes';
+import { makeStyles, ColorVariants } from '@tonlabs/uikit.themes';
 import Animated, { interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated';
 import { UITextView, UITextViewRef } from '../../UITextView';
 import { FloatingLabel } from './FloatingLabel';
-import {
-    BackgroundColors,
-    MaterialTextViewColorScheme,
-    MaterialTextViewLayoutProps,
-} from '../types';
+import type { MaterialTextViewLayoutProps } from '../types';
 import { MaterialTextViewComment } from '../MaterialTextViewComment';
 import { useExpandingValue, usePlaceholderVisibility } from './hooks';
-import { defaultBackgroundColors } from '../constants';
+import { InputColorScheme, useInputBackgroundColor } from '../../Common';
 
 // @inline
 const POSITION_FOLDED: number = 0;
@@ -42,13 +38,10 @@ export const MaterialTextViewFloating = React.forwardRef<
         isHovered,
         hasValue,
         isFocused,
-        backgroundColors = defaultBackgroundColors,
-        colorScheme = MaterialTextViewColorScheme.Default,
+        colorScheme = InputColorScheme.Default,
         ...rest
     } = props;
     const { editable = true } = rest;
-    const theme = useTheme();
-
     const isExpanded = useDerivedValue(() => isFocused.value || hasValue.value);
 
     const { isPlaceholderVisible, showPlacehoder } = usePlaceholderVisibility(isExpanded);
@@ -76,7 +69,8 @@ export const MaterialTextViewFloating = React.forwardRef<
         return React.Children.count(children) > 0;
     }, [children]);
 
-    const styles = useStyles(theme, editable, backgroundColors, hasChildren);
+    const backgroundColor = useInputBackgroundColor(colorScheme, editable);
+    const styles = useStyles(editable, backgroundColor, hasChildren);
 
     const placeholderTextColor = React.useMemo(() => {
         if (!isPlaceholderVisible) {
@@ -118,19 +112,12 @@ export const MaterialTextViewFloating = React.forwardRef<
 });
 
 const useStyles = makeStyles(
-    (
-        theme: Theme,
-        editable: boolean,
-        backgroundColors: BackgroundColors,
-        hasChildren: boolean,
-    ) => ({
+    (editable: boolean, backgroundColor: ColorValue, hasChildren: boolean) => ({
         container: {
             flexDirection: 'row',
             alignItems: 'center',
             borderRadius: UILayoutConstant.input.borderRadius,
-            backgroundColor: editable
-                ? theme[backgroundColors.regular]
-                : theme[backgroundColors.disabled],
+            backgroundColor,
         },
         inputContainer: {
             flex: 1,

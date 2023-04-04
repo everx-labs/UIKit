@@ -6,14 +6,14 @@ import { PressableColors, usePressableContentColor } from '@tonlabs/uikit.contro
 import { UIAnimatedImage, UIImageProps } from '@tonlabs/uikit.media';
 
 import { defaultInputColorScheme, inputChildrenPressableColors } from '../constants';
-import { InputChildrenColorScheme } from '../types';
+import { InputColorScheme } from '../../constants';
 
 type ImagePressableChildProps = Omit<UIImageProps, 'tintColor'> & {
-    colorScheme?: InputChildrenColorScheme;
+    colorScheme?: InputColorScheme;
 };
 
 export function ImagePressableChild({
-    colorScheme = InputChildrenColorScheme.Default,
+    colorScheme = InputColorScheme.Default,
     ...props
 }: ImagePressableChildProps) {
     const colors = React.useMemo<PressableColors>(() => {

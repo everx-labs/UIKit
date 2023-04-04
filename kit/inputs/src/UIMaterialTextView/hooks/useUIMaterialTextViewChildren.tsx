@@ -1,11 +1,11 @@
 import * as React from 'react';
 import type { UIMaterialTextViewProps } from '../types';
-import { useInputChildren, InputClearButton } from '../../InputChildren';
-import { useInputChildrenColorScheme } from './useInputChildrenColorScheme';
+import { useInputChildren, InputClearButton } from '../../Common/InputChildren';
+import { InputColorScheme } from '../../Common';
 
 export function useUIMaterialTextViewChildren(
     children: UIMaterialTextViewProps['children'],
-    colorScheme: UIMaterialTextViewProps['colorScheme'],
+    colorScheme: UIMaterialTextViewProps['colorScheme'] = InputColorScheme.Default,
     hideClearButton: UIMaterialTextViewProps['hideClearButton'],
     inputHasValue: boolean,
     isFocused: boolean,
@@ -13,9 +13,7 @@ export function useUIMaterialTextViewChildren(
     editable: boolean,
     clear: (() => void) | undefined,
 ): UIMaterialTextViewProps['children'] {
-    const inputChildrenColorScheme = useInputChildrenColorScheme(colorScheme);
-
-    const materialTextViewChildren = useInputChildren(children, inputChildrenColorScheme);
+    const materialTextViewChildren = useInputChildren(children, colorScheme);
 
     if (hideClearButton) {
         /**

@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { Platform, TextStyle, View } from 'react-native';
+import { ColorValue, Platform, TextStyle, View } from 'react-native';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import { makeStyles, useTheme, Theme, ColorVariants } from '@tonlabs/uikit.themes';
+import { makeStyles, ColorVariants } from '@tonlabs/uikit.themes';
 import Animated from 'react-native-reanimated';
 import { UITextView, UITextViewRef } from '../UITextView';
 
-import type { BackgroundColors, MaterialTextViewLayoutProps } from './types';
+import type { MaterialTextViewLayoutProps } from './types';
 import { MaterialTextViewComment } from './MaterialTextViewComment';
-import { defaultBackgroundColors } from './constants';
+import { InputColorScheme, useInputBackgroundColor } from '../Common';
 
 const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
 
@@ -19,16 +19,16 @@ export const MaterialTextViewSimple = React.forwardRef<UITextViewRef, MaterialTe
             onMouseLeave,
             borderViewRef,
             isHovered,
-            backgroundColors = defaultBackgroundColors,
+            colorScheme = InputColorScheme.Default,
             ...rest
         } = props;
         const { editable = true } = rest;
-        const theme = useTheme();
 
         const hasChildren = React.useMemo(() => {
             return React.Children.count(children) > 0;
         }, [children]);
-        const styles = useStyles(theme, editable, backgroundColors, hasChildren);
+        const backgroundColor = useInputBackgroundColor(colorScheme, editable);
+        const styles = useStyles(editable, backgroundColor, hasChildren);
 
         return (
             <MaterialTextViewComment {...props}>
@@ -59,31 +59,27 @@ export const MaterialTextViewSimple = React.forwardRef<UITextViewRef, MaterialTe
     },
 );
 
-const useStyles = makeStyles(
-    (theme: Theme, editable: boolean, backgroundColors: BackgroundColors, hasChildren) => ({
-        container: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            borderRadius: UILayoutConstant.input.borderRadius,
-            backgroundColor: editable
-                ? theme[backgroundColors.regular]
-                : theme[backgroundColors.disabled],
-        },
-        inputContainer: {
-            flex: 1,
-            flexDirection: 'row',
-            paddingVertical: UILayoutConstant.contentInsetVerticalX4,
-            paddingRight: hasChildren
-                ? UILayoutConstant.smallContentOffset
-                : UILayoutConstant.contentOffset,
-            paddingLeft: UILayoutConstant.contentOffset,
-        },
-        input: {
-            ...Platform.select({
-                web: {
-                    ...(!editable ? ({ cursor: 'default' } as TextStyle) : null),
-                },
-            }),
-        },
-    }),
-);
+const useStyles = makeStyles((editable: boolean, backgroundColor: ColorValue, hasChildren) => ({
+    container: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: UILayoutConstant.input.borderRadius,
+        backgroundColor,
+    },
+    inputContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        paddingVertical: UILayoutConstant.contentInsetVerticalX4,
+        paddingRight: hasChildren
+            ? UILayoutConstant.smallContentOffset
+            : UILayoutConstant.contentOffset,
+        paddingLeft: UILayoutConstant.contentOffset,
+    },
+    input: {
+        ...Platform.select({
+            web: {
+                ...(!editable ? ({ cursor: 'default' } as TextStyle) : null),
+            },
+        }),
+    },
+}));

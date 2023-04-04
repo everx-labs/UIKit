@@ -6,13 +6,14 @@ import { Pressable } from '@tonlabs/uikit.controls';
 import { UIImage } from '@tonlabs/uikit.media';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
-import { InputActionProps, InputChildrenColorScheme } from '../types';
+import type { InputActionProps } from '../types';
 import { StringPressableChild } from './StringPressableChild';
 import { ImagePressableChild } from './ImagePressableChild';
+import { InputColorScheme } from '../../constants';
 
 function useProcessedChildren(
     children: InputActionProps['children'],
-    colorScheme: InputChildrenColorScheme,
+    colorScheme: InputColorScheme,
 ) {
     return React.useMemo(
         () =>
@@ -45,7 +46,7 @@ function useProcessedChildren(
 export function InputAction({
     children,
     onPress,
-    colorScheme = InputChildrenColorScheme.Default,
+    colorScheme = InputColorScheme.Default,
 }: InputActionProps) {
     const processedChildren = useProcessedChildren(children, colorScheme);
 

@@ -19,14 +19,14 @@ import Animated, {
 
 import { ColorVariants, Typography, TypographyVariants, UILabel } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import { MaterialTextViewColorScheme } from '../types';
+import { InputColorScheme } from '../../Common';
 
 export type FloatingLabelProps = {
     children: string;
     expandingValue: Readonly<Animated.SharedValue<number>>;
     isHovered: boolean;
     editable: boolean;
-    colorScheme: MaterialTextViewColorScheme;
+    colorScheme: InputColorScheme;
 };
 
 const paragraphTextStyle: TextStyle = StyleSheet.flatten(
@@ -64,14 +64,14 @@ type LabelProps = {
     onLabelLayout: (layoutChangeEvent: LayoutChangeEvent) => void;
     isHovered: boolean;
     editable: boolean;
-    colorScheme: MaterialTextViewColorScheme;
+    colorScheme: InputColorScheme;
 };
 function Label({ children, onLabelLayout, isHovered, editable, colorScheme }: LabelProps) {
     const color = React.useMemo(() => {
         switch (colorScheme) {
-            case MaterialTextViewColorScheme.Secondary:
+            case InputColorScheme.Secondary:
                 return isHovered && editable ? ColorVariants.TextBW : ColorVariants.TextSecondary;
-            case MaterialTextViewColorScheme.Default:
+            case InputColorScheme.Default:
             default:
                 return isHovered && editable
                     ? ColorVariants.TextSecondary

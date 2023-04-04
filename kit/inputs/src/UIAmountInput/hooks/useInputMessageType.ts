@@ -1,4 +1,4 @@
-import { InputMessageType } from '../../InputMessage';
+import { InputMessageType } from '../../Common/InputMessage';
 import { UIAmountInputMessageType } from '../types';
 
 export function useInputMessageType(messageType: UIAmountInputMessageType): InputMessageType {

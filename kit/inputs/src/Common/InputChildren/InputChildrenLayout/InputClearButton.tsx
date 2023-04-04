@@ -3,13 +3,14 @@ import { StyleSheet, View } from 'react-native';
 import { Pressable } from '@tonlabs/uikit.controls';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { UIAssets } from '@tonlabs/uikit.assets';
-import { InputChildrenColorScheme, InputClearButtonProps } from '../types';
+import type { InputClearButtonProps } from '../types';
 import { ImagePressableChild } from './ImagePressableChild';
+import { InputColorScheme } from '../../constants';
 
 export const InputClearButton = React.memo(function InputClearButton({
     clear,
     hiddenButton = false,
-    colorScheme = InputChildrenColorScheme.Default,
+    colorScheme = InputColorScheme.Default,
 }: InputClearButtonProps) {
     if (hiddenButton) {
         return (

@@ -1,19 +1,18 @@
 import type { PressableColors } from '@tonlabs/uikit.controls';
 import { ColorVariants } from '@tonlabs/uikit.themes';
+import { InputColorScheme } from '../constants';
 
-import { InputChildrenColorScheme } from './types';
+export const defaultInputColorScheme: InputColorScheme = InputColorScheme.Default;
 
-export const defaultInputColorScheme: InputChildrenColorScheme = InputChildrenColorScheme.Default;
-
-export const inputChildrenPressableColors: Record<InputChildrenColorScheme, PressableColors> = {
-    [InputChildrenColorScheme.Default]: {
+export const inputChildrenPressableColors: Record<InputColorScheme, PressableColors> = {
+    [InputColorScheme.Default]: {
         initialColor: ColorVariants.TextPrimary,
         pressedColor: ColorVariants.TextTertiary,
         hoveredColor: ColorVariants.TextSecondary,
         disabledColor: ColorVariants.TextTertiary,
         loadingColor: ColorVariants.TextTertiary,
     },
-    [InputChildrenColorScheme.Secondary]: {
+    [InputColorScheme.Secondary]: {
         initialColor: ColorVariants.TextSecondary,
         pressedColor: ColorVariants.TextTertiary,
         hoveredColor: ColorVariants.TextPrimary,

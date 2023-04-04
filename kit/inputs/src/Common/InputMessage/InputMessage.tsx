@@ -5,15 +5,16 @@ import { TypographyVariants, Typography } from '@tonlabs/uikit.themes';
 import { UIPressableLabel } from '@tonlabs/uikit.controls';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
-import { InputMessageColorScheme, InputMessageProps } from './types';
+import type { InputMessageProps } from './types';
 import { useMessageColors } from './hooks';
 import { AnimatedContainer } from './AnimatedContainer';
+import { InputColorScheme } from '../constants';
 
 export function InputMessage({
     children,
     type,
     onPress,
-    colorScheme = InputMessageColorScheme.Default,
+    colorScheme = InputColorScheme.Default,
     ...rest
 }: InputMessageProps) {
     const colors = useMessageColors(type, colorScheme);

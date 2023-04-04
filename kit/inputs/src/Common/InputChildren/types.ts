@@ -1,6 +1,7 @@
 import type { StyleProp, ViewStyle } from 'react-native';
 import type { ColorVariants } from '@tonlabs/uikit.themes';
 import type { UIImageProps } from '@tonlabs/uikit.media';
+import type { InputColorScheme } from '../constants';
 
 export type InputIconProps = UIImageProps & {
     /**
@@ -16,7 +17,7 @@ export type InputIconProps = UIImageProps & {
      * ColorScheme of the icon.
      * This prop is not required. If not passed, the colorScheme of the parent component will be used.
      */
-    colorScheme?: InputChildrenColorScheme;
+    colorScheme?: InputColorScheme;
 };
 
 export type InputActionProps = InputTextProps & {
@@ -50,7 +51,7 @@ export type InputTextProps = {
      * ColorScheme of the text or image.
      * This prop is not required. If not passed, the colorScheme of the parent component will be used.
      */
-    colorScheme?: InputChildrenColorScheme;
+    colorScheme?: InputColorScheme;
 };
 
 export type InputClearButtonProps = {
@@ -67,7 +68,7 @@ export type InputClearButtonProps = {
      * ColorScheme of the clear button.
      * This prop is not required. If not passed, the colorScheme of the parent component will be used.
      */
-    colorScheme?: InputChildrenColorScheme;
+    colorScheme?: InputColorScheme;
 };
 
 export type InputIconChild = React.ReactElement<InputIconProps>;
@@ -77,15 +78,10 @@ export type InputChild = InputIconChild | InputActionChild | InputTextChild;
 
 export type InputChildren = InputChild | InputChild[] | undefined;
 
-export enum InputChildrenColorScheme {
-    Default = 'Default',
-    Secondary = 'Secondary',
-}
-
 export type InputChildrenContextType = {
     /**
      * Color scheme of the TextView.
      * @default InputColorScheme.Default
      */
-    colorScheme: InputChildrenColorScheme;
+    colorScheme: InputColorScheme;
 };

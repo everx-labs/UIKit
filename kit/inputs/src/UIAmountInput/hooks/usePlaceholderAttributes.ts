@@ -10,13 +10,14 @@ import { useTheme } from '@tonlabs/uikit.themes';
 import { AmountInputContext, withSpringConfig } from '../constants';
 import { usePlaceholderColors } from './usePlaceholderColors';
 import { usePlaceholderVisibility } from './usePlaceholderVisibility';
-import type { ExpansionState, UIAmountInputColorScheme } from '../types';
+import type { ExpansionState } from '../types';
+import type { InputColorScheme } from '../../Common';
 
 export function usePlaceholderAttributes(
     expansionState: SharedValue<ExpansionState>,
     hasLabel: boolean,
     editable: boolean,
-    colorScheme: UIAmountInputColorScheme,
+    colorScheme: InputColorScheme,
 ) {
     const { formattedText, isHovered } = React.useContext(AmountInputContext);
     const theme = useTheme();

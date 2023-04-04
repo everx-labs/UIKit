@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { useDerivedValue } from 'react-native-reanimated';
 import { ColorVariants, Theme } from '@tonlabs/uikit.themes';
-import { UIAmountInputColorScheme } from '../types';
+import { InputColorScheme } from '../../Common';
 
-export function usePlaceholderColors(theme: Theme, colorScheme: UIAmountInputColorScheme) {
+export function usePlaceholderColors(theme: Theme, colorScheme: InputColorScheme) {
     const placeholderJSColors = React.useMemo(() => {
         switch (colorScheme) {
-            case UIAmountInputColorScheme.Secondary:
+            case InputColorScheme.Secondary:
                 return {
                     transparent: theme[ColorVariants.Transparent] as string,
                     hover: theme[ColorVariants.TextBW] as string,
                     default: theme[ColorVariants.TextSecondary] as string,
                 };
-            case UIAmountInputColorScheme.Default:
+            case InputColorScheme.Default:
             default:
                 return {
                     transparent: theme[ColorVariants.Transparent] as string,

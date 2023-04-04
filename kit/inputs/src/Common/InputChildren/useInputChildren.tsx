@@ -6,10 +6,10 @@ import type {
     InputActionChild,
     InputTextChild,
     InputChild,
-    InputChildrenColorScheme,
 } from './types';
+import type { InputColorScheme } from '../constants';
 
-const getChildList = (children: InputChildren, colorScheme: InputChildrenColorScheme) => {
+const getChildList = (children: InputChildren, colorScheme: InputColorScheme) => {
     return React.Children.toArray(children).reduce<InputChild[]>((acc, child) => {
         if (React.isValidElement(child)) {
             if (
@@ -75,7 +75,7 @@ function sortInputChildList(children: InputChild[]) {
 
 export function useInputChildren(
     children: InputChildren,
-    colorScheme: InputChildrenColorScheme,
+    colorScheme: InputColorScheme,
 ): InputChild[] {
     const childList = getChildList(children, colorScheme);
     const { icons, action, text } = sortInputChildList(childList);

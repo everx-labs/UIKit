@@ -4,14 +4,15 @@ import { Platform, StyleSheet } from 'react-native';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { Pressable } from '@tonlabs/uikit.controls';
 
-import { InputChildrenColorScheme, InputIconProps } from '../types';
+import type { InputIconProps } from '../types';
 import { ImagePressableChild } from './ImagePressableChild';
+import { InputColorScheme } from '../../constants';
 
 export function InputIcon({
     onPress,
     style,
     containerStyle = styles.iconTapZone,
-    colorScheme = InputChildrenColorScheme.Default,
+    colorScheme = InputColorScheme.Default,
     ...rest
 }: InputIconProps) {
     return (

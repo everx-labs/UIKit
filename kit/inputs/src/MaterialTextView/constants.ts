@@ -1,7 +1,3 @@
-import { ColorVariants } from '@tonlabs/uikit.themes';
-
-import { BackgroundColors, MaterialTextViewColorScheme } from './types';
-
 export const UIConstants = {
     amount: {
         decimalAspect: {
@@ -11,11 +7,3 @@ export const UIConstants = {
         },
     },
 };
-
-export const defaultBackgroundColors: BackgroundColors = {
-    regular: ColorVariants.BackgroundBW,
-    disabled: ColorVariants.BackgroundTertiary,
-};
-
-export const defaultMaterialTextViewColorScheme: MaterialTextViewColorScheme =
-    MaterialTextViewColorScheme.Default;

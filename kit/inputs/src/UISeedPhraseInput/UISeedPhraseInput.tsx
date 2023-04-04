@@ -13,6 +13,7 @@ import { UIMaterialTextView, UIMaterialTextViewRef } from '../UIMaterialTextView
 import { useExtendedRef, useHelperCredentials } from './hooks';
 import type { UISeedPhraseInputProps, UISeedPhraseInputState, ValidationResult } from './types';
 import { UISeedPhraseInputMessageType } from './consts';
+import { InputColorScheme } from '../Common';
 
 const SPLITTER = ` `;
 
@@ -44,7 +45,7 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
             totalWords: totalWordsProp,
             validatePhrase,
             placeholder,
-            backgroundColors,
+            colorScheme = InputColorScheme.Default,
         } = props;
         const totalWords = React.useMemo(() => {
             if (typeof totalWordsProp === 'number') {
@@ -214,7 +215,7 @@ export const UISeedPhraseInput = React.forwardRef<UIMaterialTextViewRef, UISeedP
                 onSubmitEditing={onSubmitEditing}
                 blurOnSubmit
                 noPersonalizedLearning
-                backgroundColors={backgroundColors}
+                colorScheme={colorScheme}
             />
         );
     },

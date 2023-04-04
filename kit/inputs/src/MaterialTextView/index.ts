@@ -7,6 +7,5 @@ export type {
     MaterialTextViewRefChangeText,
     MaterialTextViewRefMoveCarret,
 } from './types';
-export { MaterialTextViewColorScheme } from './types';
 export { useInputHasValue } from './hooks';
 export * from './getEmptyUIMaterialTextViewRef';

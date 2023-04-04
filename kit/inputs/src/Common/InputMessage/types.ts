@@ -1,13 +1,10 @@
+import type { InputColorScheme } from '../constants';
+
 export enum InputMessageType {
     Error = 'Error',
     Warning = 'Warning',
     Success = 'Success',
     Info = 'Info',
-}
-
-export enum InputMessageColorScheme {
-    Default = 'Default',
-    Secondary = 'Secondary',
 }
 
 export type InputMessageProps = {
@@ -27,9 +24,9 @@ export type InputMessageProps = {
     onPress?: () => void | undefined;
     /**
      * Color scheme of the TextView.
-     * @default InputMessageColorScheme.Default
+     * @default InputColorScheme.Default
      */
-    colorScheme?: InputMessageColorScheme;
+    colorScheme?: InputColorScheme;
 };
 
 export type InputMessageContainerProps = {

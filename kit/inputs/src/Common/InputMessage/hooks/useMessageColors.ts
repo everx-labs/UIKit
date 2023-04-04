@@ -3,12 +3,13 @@ import * as React from 'react';
 import { ColorVariants } from '@tonlabs/uikit.themes';
 import type { PressableColors } from '@tonlabs/uikit.controls';
 
-import { InputMessageColorScheme, InputMessageType } from '../types';
+import { InputMessageType } from '../types';
 import { inputMessageColors } from '../constants';
+import type { InputColorScheme } from '../../constants';
 
 export function useMessageColors(
     type: InputMessageType,
-    colorScheme: InputMessageColorScheme,
+    colorScheme: InputColorScheme,
 ): PressableColors {
     const initialCommentColor = React.useMemo(() => {
         switch (type) {

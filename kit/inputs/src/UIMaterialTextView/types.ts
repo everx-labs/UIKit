@@ -1,4 +1,4 @@
-import type { InputChildren } from '../InputChildren';
+import type { InputChildren } from '../Common/InputChildren';
 import type { MaterialTextViewProps } from '../MaterialTextView';
 
 export type {
@@ -9,18 +9,13 @@ export type {
     MaterialTextViewRef as UIMaterialTextViewRef,
 } from '../MaterialTextView';
 
-export type UIMaterialTextViewProps = Omit<MaterialTextViewProps, 'colorScheme'> & {
+export type UIMaterialTextViewProps = MaterialTextViewProps & {
     /**
      * If set, the clear button will not be displayed when the input:
      * (editable) and (contains text content) and (is in focus or hovered)
      * @default false
      */
     hideClearButton?: boolean;
-    /**
-     * Color scheme of the TextView.
-     * @default UIMaterialTextViewColorScheme.Default
-     */
-    colorScheme?: UIMaterialTextViewColorScheme;
     /**
      *  As children you can provide only one or two of this component:
      *  `UIMaterialTextView.Icon`

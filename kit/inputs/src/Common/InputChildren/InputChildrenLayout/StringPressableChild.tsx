@@ -5,14 +5,14 @@ import { useAnimatedProps } from 'react-native-reanimated';
 import { PressableColors, usePressableContentColor } from '@tonlabs/uikit.controls';
 import { UILabelAnimated, UILabelRoles } from '@tonlabs/uikit.themes';
 import { defaultInputColorScheme, inputChildrenPressableColors } from '../constants';
-import { InputChildrenColorScheme } from '../types';
+import { InputColorScheme } from '../../constants';
 
 export function StringPressableChild({
     children,
-    colorScheme = InputChildrenColorScheme.Default,
+    colorScheme = InputColorScheme.Default,
 }: {
     children: string;
-    colorScheme?: InputChildrenColorScheme;
+    colorScheme?: InputColorScheme;
 }) {
     const colors = React.useMemo<PressableColors>(() => {
         return inputChildrenPressableColors[colorScheme ?? defaultInputColorScheme];

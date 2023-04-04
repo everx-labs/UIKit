@@ -2,10 +2,9 @@ import type BigNumber from 'bignumber.js';
 import type { TextInput } from 'react-native';
 import type { SharedValue } from 'react-native-reanimated';
 
-import type { ColorVariants } from '@tonlabs/uikit.themes';
-
 import type { UIMaterialTextViewProps } from '../UIMaterialTextView/types';
-import type { InputChildren } from '../InputChildren';
+import type { InputChildren } from '../Common/InputChildren';
+import type { InputColorScheme } from '../Common/constants';
 
 export enum UIAmountInputMessageType {
     Error = 'Error',
@@ -63,21 +62,9 @@ export type UIAmountInputProps = Omit<
     children?: UIAmountInputChildren;
     /**
      * Color scheme of the TextView.
-     * @default UIAmountInputColorScheme.Default
+     * @default InputColorScheme.Default
      */
-    colorScheme?: UIAmountInputColorScheme;
-    /**
-     * Background colors of the AmountInput in regular and disabled (`editable={false}`) states.
-     *
-     * @default
-     * ```ts
-     *  {
-     *      regular: ColorVariants.BackgroundBW,
-     *      disabled: ColorVariants.BackgroundTertiary,
-     *  }
-     * ```
-     */
-    backgroundColors?: BackgroundColors;
+    colorScheme?: InputColorScheme;
 };
 
 export type UIAmountInputPrecision =
@@ -133,19 +120,3 @@ export type FormatText = (text: string) => TextAttributes;
 export type SetText = (textAttributes: TextAttributes, config: FormatAndSetTextConfig) => void;
 
 export type ExpansionState = 'Expanded' | 'Collapsed' | 'InExpandProgress' | 'InCollapseProgress';
-
-export type BackgroundColors = {
-    /**
-     * Background color of the AmountInput in regular state.
-     */
-    regular: ColorVariants;
-    /**
-     * Background color of the AmountInput in disabled (`editable={false}`) state.
-     */
-    disabled: ColorVariants;
-};
-
-export enum UIAmountInputColorScheme {
-    Default = 'Default',
-    Secondary = 'Secondary',
-}

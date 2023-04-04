@@ -2,31 +2,14 @@ import type React from 'react';
 import type { View, TextInput } from 'react-native';
 import type { SharedValue } from 'react-native-reanimated';
 
-import type { ColorVariants } from '@tonlabs/uikit.themes';
-
 import type { UITextViewProps } from '../UITextView';
+import type { InputColorScheme } from '../Common';
 
 export type MaterialTextViewAmountMask =
     | 'AmountInteger' // integer number (aspectRatio === 0)
     | 'AmountPrecision' // precision numer (aspectRatio === 9)
     | 'AmountCurrency'; // currency number (aspectRatio === 2)
 export type MaterialTextViewMask = MaterialTextViewAmountMask;
-
-export type BackgroundColors = {
-    /**
-     * Background color of the TextView in regular state.
-     */
-    regular: ColorVariants;
-    /**
-     * Background color of the TextView in disabled (`editable={false}`) state.
-     */
-    disabled: ColorVariants;
-};
-
-export enum MaterialTextViewColorScheme {
-    Default = 'Default',
-    Secondary = 'Secondary',
-}
 
 export type MaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
     /**
@@ -79,21 +62,9 @@ export type MaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
     onHover?: (isHovered: boolean) => void;
     /**
      * Color scheme of the TextView.
-     * @default MaterialTextViewColorScheme.Default
+     * @default InputColorScheme.Default
      */
-    colorScheme?: MaterialTextViewColorScheme;
-    /**
-     * Background colors of the TextView in regular and disabled (`editable={false}`) states.
-     *
-     * @default
-     * ```ts
-     *  {
-     *      regular: ColorVariants.BackgroundBW,
-     *      disabled: ColorVariants.BackgroundTertiary,
-     *  }
-     * ```
-     */
-    backgroundColors?: BackgroundColors;
+    colorScheme?: InputColorScheme;
 };
 
 export type MaterialTextViewLayoutProps = MaterialTextViewProps & {
