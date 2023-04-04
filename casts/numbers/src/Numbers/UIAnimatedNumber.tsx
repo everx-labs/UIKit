@@ -38,7 +38,8 @@ export function UIAnimatedNumber({
     signBeforeNumber = false,
     showDebugGrid,
     showPositiveSign,
-}: UINumberGeneralProps & UINumberAppearance & { sign?: React.ReactNode; signBeforeNumber?: boolean }) {
+}: UINumberGeneralProps &
+    UINumberAppearance & { sign?: React.ReactNode; signBeforeNumber?: boolean }) {
     // Basically we need it only to not re-create `updateRefs`
     const valueHolder = React.useRef(value);
     valueHolder.current = value; // To have it always up to date

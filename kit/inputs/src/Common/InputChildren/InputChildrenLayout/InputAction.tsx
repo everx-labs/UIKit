@@ -47,11 +47,12 @@ export function InputAction({
     children,
     onPress,
     colorScheme = InputColorScheme.Default,
+    disabled = false,
 }: InputActionProps) {
     const processedChildren = useProcessedChildren(children, colorScheme);
 
     return (
-        <Pressable onPress={onPress} style={styles.container}>
+        <Pressable onPress={onPress} style={styles.container} disabled={disabled}>
             <Animated.View style={styles.actionContainer}>{processedChildren}</Animated.View>
         </Pressable>
     );

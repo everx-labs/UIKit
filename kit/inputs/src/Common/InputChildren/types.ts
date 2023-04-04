@@ -1,5 +1,4 @@
 import type { StyleProp, ViewStyle } from 'react-native';
-import type { ColorVariants } from '@tonlabs/uikit.themes';
 import type { UIImageProps } from '@tonlabs/uikit.media';
 import type { InputColorScheme } from '../constants';
 
@@ -29,10 +28,6 @@ export type InputActionProps = InputTextProps & {
      * Callback called by clicking/tapping on the action
      */
     onPress?: () => void;
-    /**
-     * Children tint color
-     */
-    tintColor?: ColorVariants;
 };
 
 export type InputTextProps = {
