@@ -46,7 +46,7 @@ export type InputTextProps = {
     children:
         | string
         | React.ReactElement<UIImageProps>
-        | (string | React.ReactElement<UIImageProps>)[];
+        | (string | React.ReactElement<UIImageProps> | null | undefined)[];
     /**
      * ColorScheme of the text or image.
      * This prop is not required. If not passed, the colorScheme of the parent component will be used.
