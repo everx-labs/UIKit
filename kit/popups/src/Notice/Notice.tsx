@@ -109,7 +109,7 @@ export function Notice({
                 <View style={styles.labelContainer} pointerEvents="none">
                     <UILabel
                         testID="message_default"
-                        role={TypographyVariants.ParagraphNote}
+                        role={TypographyVariants.SurfParagraphSpecial}
                         color={ColorVariants.TextPrimary}
                     >
                         {title}
@@ -145,7 +145,7 @@ const useStyles = makeStyles((color: UINoticeColor, theme: Theme) => ({
     },
     labelContainer: {
         flex: 1,
-        paddingVertical: UILayoutConstant.contentInsetVerticalX3,
+        paddingVertical: UILayoutConstant.contentInsetVerticalX4,
     },
     countdown: {
         paddingRight: UILayoutConstant.contentInsetVerticalX2,

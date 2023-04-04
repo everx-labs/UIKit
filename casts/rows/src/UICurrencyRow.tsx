@@ -18,7 +18,7 @@ export type UICurrencyRowProps = {
     nameTestID?: string;
     description?: string;
     descriptionTestID?: string;
-    amount: BigNumber;
+    amount: BigNumber | null;
     amountTestID?: string;
     currencySignProps?: Partial<UICurrencySignProps>;
     loading: boolean;
@@ -44,7 +44,7 @@ export const UICurrencyRow = React.memo(function UICurrencyRow({
     payload,
 }: UICurrencyRowProps & { payload?: any }) {
     const amountColor = React.useMemo(() => {
-        const isAmountZero = zeroBigNumber.isEqualTo(amount);
+        const isAmountZero = amount == null || zeroBigNumber.isEqualTo(amount);
         if (isAmountZero) {
             return UILabelColors.TextSecondary;
         }
@@ -88,14 +88,16 @@ export const UICurrencyRow = React.memo(function UICurrencyRow({
                         </UILabel>
                     )}
                 </View>
-                <UICurrency
-                    testID={amountTestID}
-                    integerColor={amountColor}
-                    decimalColor={amountColor}
-                    {...currencySignProps}
-                >
-                    {amount}
-                </UICurrency>
+                {amount != null && (
+                    <UICurrency
+                        testID={amountTestID}
+                        integerColor={amountColor}
+                        decimalColor={amountColor}
+                        {...currencySignProps}
+                    >
+                        {amount}
+                    </UICurrency>
+                )}
             </UISkeleton>
         </TouchableOpacity>
     );

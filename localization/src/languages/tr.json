@@ -429,7 +429,8 @@
                 "investments": "Hizmetler",
                 "tokens": "Tokens"
             },
-            "showHidden": "Show hidden",
+            "showMore": "Show more",
+            "showLess": "Show less",
             "subscriptions": {
                 "assetsSubtitle": "Abonelik",
                 "titleSubscription": "Abonelik"

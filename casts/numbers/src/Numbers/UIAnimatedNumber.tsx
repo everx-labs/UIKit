@@ -35,9 +35,10 @@ export function UIAnimatedNumber({
     decimalColor,
     // sign customization
     sign,
+    signBeforeNumber = false,
     showDebugGrid,
     showPositiveSign,
-}: UINumberGeneralProps & UINumberAppearance & { sign?: React.ReactNode }) {
+}: UINumberGeneralProps & UINumberAppearance & { sign?: React.ReactNode; signBeforeNumber?: boolean }) {
     // Basically we need it only to not re-create `updateRefs`
     const valueHolder = React.useRef(value);
     valueHolder.current = value; // To have it always up to date
@@ -197,6 +198,9 @@ export function UIAnimatedNumber({
             // TODO: This component contains wrong values after animation
             accessibilityLabel={`${formatted.value.integer}${formatted.value.decimal}`}
         >
+            {signBeforeNumber ? sign : null}
+            {/* eslint-disable-next-line no-irregular-whitespace */}
+            {signBeforeNumber ? <Text> </Text> : null}
             <AnimateableText
                 testID="number-integer"
                 style={[Typography[integerVariant], integerColorStyle, styles.integer]}
@@ -222,7 +226,7 @@ export function UIAnimatedNumber({
                 selectable={false}
                 allowFontScaling={defaultAllowFontScaling}
             />
-            {sign}
+            {signBeforeNumber ? null : sign}
             {showDebugGrid && <DebugGrid variant={integerVariant} />}
         </View>
     );

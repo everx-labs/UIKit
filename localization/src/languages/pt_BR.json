@@ -429,7 +429,8 @@
                 "investments": "Serviços",
                 "tokens": "Tokens"
             },
-            "showHidden": "Show hidden",
+            "showMore": "Show more",
+            "showLess": "Show less",
             "subscriptions": {
                 "assetsSubtitle": "Subscrições",
                 "titleSubscription": "Subscrição"
