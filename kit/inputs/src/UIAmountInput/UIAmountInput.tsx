@@ -4,7 +4,7 @@ import * as React from 'react';
 import type { UIAmountInputProps, UIAmountInputRef } from './types';
 import { UIAmountInputContent } from './UIAmountInputContent';
 import { AmountInputContext, getDefaultContext } from './constants';
-import { InputIcon, InputAction, InputText } from '../Common/InputChildren';
+import { InputIcon, InputAction, InputText } from '../Common';
 
 export const UIAmountInputForward = React.forwardRef<UIAmountInputRef, UIAmountInputProps>(
     function UIAmountInputForward(

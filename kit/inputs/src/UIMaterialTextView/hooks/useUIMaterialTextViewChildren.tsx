@@ -1,7 +1,6 @@
 import * as React from 'react';
 import type { UIMaterialTextViewProps } from '../types';
-import { useInputChildren, InputClearButton } from '../../Common/InputChildren';
-import { InputColorScheme } from '../../Common';
+import { useInputChildren, InputClearButton, InputColorScheme } from '../../Common';
 
 export function useUIMaterialTextViewChildren(
     children: UIMaterialTextViewProps['children'],

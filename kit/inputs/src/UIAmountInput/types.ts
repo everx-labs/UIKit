@@ -3,8 +3,7 @@ import type { TextInput } from 'react-native';
 import type { SharedValue } from 'react-native-reanimated';
 
 import type { UIMaterialTextViewProps } from '../UIMaterialTextView/types';
-import type { InputChildren } from '../Common/InputChildren';
-import type { InputColorScheme } from '../Common/constants';
+import type { InputChildren, InputColorScheme } from '../Common';
 
 export enum UIAmountInputMessageType {
     Error = 'Error',

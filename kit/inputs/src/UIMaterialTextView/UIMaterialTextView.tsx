@@ -8,8 +8,7 @@ import {
 import { useFocused } from '../UITextView';
 import { useUIMaterialTextViewChildren } from './hooks';
 import type { UIMaterialTextViewRef, UIMaterialTextViewProps } from './types';
-import { InputIcon, InputAction, InputText } from '../Common/InputChildren';
-import { InputColorScheme } from '../Common';
+import { InputIcon, InputAction, InputText, InputColorScheme } from '../Common';
 
 const emptyUIMaterialTextViewRef = getEmptyUIMaterialTextViewRef('UIMaterialTextView');
 
