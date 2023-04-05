@@ -1,15 +1,17 @@
 import * as React from 'react';
-import { Platform, TextStyle, View } from 'react-native';
+import { ColorValue, Platform, TextStyle, View } from 'react-native';
+import Animated, { interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated';
 
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import { makeStyles, useTheme, Theme, ColorVariants } from '@tonlabs/uikit.themes';
-import Animated, { interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated';
+import { makeStyles } from '@tonlabs/uikit.themes';
+
 import { UITextView, UITextViewRef } from '../../UITextView';
 import { FloatingLabel } from './FloatingLabel';
-import type { BackgroundColors, MaterialTextViewLayoutProps } from '../types';
+import type { MaterialTextViewLayoutProps } from '../types';
 import { MaterialTextViewComment } from '../MaterialTextViewComment';
 import { useExpandingValue, usePlaceholderVisibility } from './hooks';
-import { defaultBackgroundColors } from '../constants';
+import { InputColorScheme, useInputBackgroundColor } from '../../Common';
+import { usePlaceholderColors } from '../hooks';
 
 // @inline
 const POSITION_FOLDED: number = 0;
@@ -38,12 +40,10 @@ export const MaterialTextViewFloating = React.forwardRef<
         isHovered,
         hasValue,
         isFocused,
-        backgroundColors = defaultBackgroundColors,
+        colorScheme = InputColorScheme.Default,
         ...rest
     } = props;
     const { editable = true } = rest;
-    const theme = useTheme();
-
     const isExpanded = useDerivedValue(() => isFocused.value || hasValue.value);
 
     const { isPlaceholderVisible, showPlacehoder } = usePlaceholderVisibility(isExpanded);
@@ -67,14 +67,20 @@ export const MaterialTextViewFloating = React.forwardRef<
         };
     });
 
-    const styles = useStyles(theme, editable, backgroundColors);
+    const hasChildren = React.useMemo(() => {
+        return React.Children.count(children) > 0;
+    }, [children]);
 
+    const backgroundColor = useInputBackgroundColor(colorScheme, editable);
+    const styles = useStyles(editable, backgroundColor, hasChildren);
+
+    const placeholderColors = usePlaceholderColors(colorScheme);
     const placeholderTextColor = React.useMemo(() => {
         if (!isPlaceholderVisible) {
-            return ColorVariants.Transparent;
+            return placeholderColors.transparent;
         }
-        return isHovered && editable ? ColorVariants.TextSecondary : ColorVariants.TextTertiary;
-    }, [isPlaceholderVisible, isHovered, editable]);
+        return isHovered && editable ? placeholderColors.hover : placeholderColors.default;
+    }, [isPlaceholderVisible, isHovered, editable, placeholderColors]);
 
     return (
         <MaterialTextViewComment {...props}>
@@ -97,6 +103,7 @@ export const MaterialTextViewFloating = React.forwardRef<
                         expandingValue={expandingValue}
                         isHovered={isHovered}
                         editable={editable}
+                        colorScheme={colorScheme}
                     >
                         {label}
                     </FloatingLabel>
@@ -108,21 +115,21 @@ export const MaterialTextViewFloating = React.forwardRef<
 });
 
 const useStyles = makeStyles(
-    (theme: Theme, editable: boolean, backgroundColors: BackgroundColors) => ({
+    (editable: boolean, backgroundColor: ColorValue, hasChildren: boolean) => ({
         container: {
             flexDirection: 'row',
             alignItems: 'center',
             borderRadius: UILayoutConstant.input.borderRadius,
-            backgroundColor: editable
-                ? theme[backgroundColors.regular]
-                : theme[backgroundColors.disabled],
-            paddingHorizontal: UILayoutConstant.contentOffset,
+            backgroundColor,
+            paddingLeft: UILayoutConstant.contentOffset,
         },
         inputContainer: {
             flex: 1,
             flexDirection: 'row',
             paddingVertical: UILayoutConstant.contentInsetVerticalX4,
-            paddingRight: UILayoutConstant.smallContentOffset,
+            paddingRight: hasChildren
+                ? UILayoutConstant.smallContentOffset
+                : UILayoutConstant.contentOffset,
         },
         input: {
             ...Platform.select({

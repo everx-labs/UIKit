@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { Platform, TextStyle, View } from 'react-native';
+import { ColorValue, Platform, TextStyle, View } from 'react-native';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import { makeStyles, useTheme, Theme, ColorVariants } from '@tonlabs/uikit.themes';
+import { makeStyles } from '@tonlabs/uikit.themes';
 import Animated from 'react-native-reanimated';
 import { UITextView, UITextViewRef } from '../UITextView';
 
-import type { BackgroundColors, MaterialTextViewLayoutProps } from './types';
+import type { MaterialTextViewLayoutProps } from './types';
 import { MaterialTextViewComment } from './MaterialTextViewComment';
-import { defaultBackgroundColors } from './constants';
+import { InputColorScheme, useInputBackgroundColor } from '../Common';
+import { usePlaceholderColors } from './hooks';
 
 const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
 
@@ -19,13 +20,22 @@ export const MaterialTextViewSimple = React.forwardRef<UITextViewRef, MaterialTe
             onMouseLeave,
             borderViewRef,
             isHovered,
-            backgroundColors = defaultBackgroundColors,
+            colorScheme = InputColorScheme.Default,
             ...rest
         } = props;
         const { editable = true } = rest;
-        const theme = useTheme();
 
-        const styles = useStyles(theme, editable, backgroundColors);
+        const hasChildren = React.useMemo(() => {
+            return React.Children.count(children) > 0;
+        }, [children]);
+
+        const placeholderColors = usePlaceholderColors(colorScheme);
+        const placeholderTextColor = React.useMemo(() => {
+            return isHovered && editable ? placeholderColors.hover : placeholderColors.default;
+        }, [isHovered, editable, placeholderColors]);
+
+        const backgroundColor = useInputBackgroundColor(colorScheme, editable);
+        const styles = useStyles(editable, backgroundColor, hasChildren);
 
         return (
             <MaterialTextViewComment {...props}>
@@ -41,11 +51,7 @@ export const MaterialTextViewSimple = React.forwardRef<UITextViewRef, MaterialTe
                             ref={passedRef}
                             {...rest}
                             placeholder={props.placeholder}
-                            placeholderTextColor={
-                                isHovered && editable
-                                    ? ColorVariants.TextSecondary
-                                    : ColorVariants.TextTertiary
-                            }
+                            placeholderTextColor={placeholderTextColor}
                             style={styles.input}
                         />
                     </Animated.View>
@@ -56,29 +62,27 @@ export const MaterialTextViewSimple = React.forwardRef<UITextViewRef, MaterialTe
     },
 );
 
-const useStyles = makeStyles(
-    (theme: Theme, editable: boolean, backgroundColors: BackgroundColors) => ({
-        container: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            borderRadius: UILayoutConstant.input.borderRadius,
-            backgroundColor: editable
-                ? theme[backgroundColors.regular]
-                : theme[backgroundColors.disabled],
-            paddingHorizontal: UILayoutConstant.contentOffset,
-        },
-        inputContainer: {
-            flex: 1,
-            flexDirection: 'row',
-            paddingVertical: UILayoutConstant.contentInsetVerticalX4,
-            paddingRight: UILayoutConstant.smallContentOffset,
-        },
-        input: {
-            ...Platform.select({
-                web: {
-                    ...(!editable ? ({ cursor: 'default' } as TextStyle) : null),
-                },
-            }),
-        },
-    }),
-);
+const useStyles = makeStyles((editable: boolean, backgroundColor: ColorValue, hasChildren) => ({
+    container: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: UILayoutConstant.input.borderRadius,
+        backgroundColor,
+        paddingLeft: UILayoutConstant.contentOffset,
+    },
+    inputContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        paddingVertical: UILayoutConstant.contentInsetVerticalX4,
+        paddingRight: hasChildren
+            ? UILayoutConstant.smallContentOffset
+            : UILayoutConstant.contentOffset,
+    },
+    input: {
+        ...Platform.select({
+            web: {
+                ...(!editable ? ({ cursor: 'default' } as TextStyle) : null),
+            },
+        }),
+    },
+}));

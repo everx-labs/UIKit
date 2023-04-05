@@ -1,11 +1,6 @@
 import * as React from 'react';
 import { makeMutable, WithSpringConfig } from 'react-native-reanimated';
-import { ColorVariants } from '@tonlabs/uikit.themes';
-import type {
-    AmountInputContextDefaultValuesType,
-    AmountInputContextType,
-    BackgroundColors,
-} from './types';
+import type { AmountInputContextDefaultValuesType, AmountInputContextType } from './types';
 
 export const defaultContextValue: AmountInputContextDefaultValuesType = {
     isHovered: false,
@@ -38,9 +33,4 @@ export const UIConstants = {
 export const withSpringConfig: WithSpringConfig = {
     stiffness: 1000,
     overshootClamping: true,
-};
-
-export const defaultBackgroundColors: BackgroundColors = {
-    regular: ColorVariants.BackgroundBW,
-    disabled: ColorVariants.BackgroundTertiary,
 };

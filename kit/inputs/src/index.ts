@@ -15,6 +15,7 @@ export * from './UISeedPhraseTextView';
 export * from './UITextView';
 export * from './UIAmountInput';
 export * from './UISeedPhraseInput';
+export * from './Common';
 
 export * from './useAutogrowTextView';
 

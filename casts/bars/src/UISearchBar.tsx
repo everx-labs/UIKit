@@ -5,7 +5,7 @@ import {
     UITextView,
     UITextViewProps,
     useUITextViewValue,
-    UIMaterialTextViewClearButton,
+    InputClearButton,
     useFocused,
     UITextViewRef,
 } from '@tonlabs/uikit.inputs';
@@ -108,7 +108,7 @@ function InnerRightAction({
     if (inputHasValue && (isFocused || isHovered)) {
         return (
             <InnerRightActionContainer>
-                <UIMaterialTextViewClearButton clear={onClear} />
+                <InputClearButton clear={onClear} />
             </InnerRightActionContainer>
         );
     }

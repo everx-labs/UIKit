@@ -1,36 +1,15 @@
 import type React from 'react';
-import type { View, ViewStyle, StyleProp, TextInput } from 'react-native';
+import type { View, TextInput } from 'react-native';
 import type { SharedValue } from 'react-native-reanimated';
 
-import type { UIImageProps } from '@tonlabs/uikit.media';
-import type { ColorVariants } from '@tonlabs/uikit.themes';
-
 import type { UITextViewProps } from '../UITextView';
+import type { InputColorScheme } from '../Common';
 
 export type MaterialTextViewAmountMask =
     | 'AmountInteger' // integer number (aspectRatio === 0)
     | 'AmountPrecision' // precision numer (aspectRatio === 9)
     | 'AmountCurrency'; // currency number (aspectRatio === 2)
 export type MaterialTextViewMask = MaterialTextViewAmountMask;
-
-export type MaterialTextViewIconChild = React.ReactElement<MaterialTextViewIconProps>;
-export type MaterialTextViewActionChild = React.ReactElement<MaterialTextViewActionProps>;
-export type MaterialTextViewTextChild = React.ReactElement<MaterialTextViewTextProps>;
-export type MaterialTextViewChild =
-    | MaterialTextViewIconChild
-    | MaterialTextViewActionChild
-    | MaterialTextViewTextChild;
-
-export type BackgroundColors = {
-    /**
-     * Background color of the TextView in regular state.
-     */
-    regular: ColorVariants;
-    /**
-     * Background color of the TextView in disabled (`editable={false}`) state.
-     */
-    disabled: ColorVariants;
-};
 
 export type MaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
     /**
@@ -69,12 +48,9 @@ export type MaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
      */
     borderViewRef?: React.Ref<View>;
     /**
-     *  As children you can provide only one or two of this component:
-     *  `MaterialTextView.Icon`
-     *  `MaterialTextView.Action`
-     *  `MaterialTextView.Text`
+     * This component will be rendered inside the MaterialTextView in front of inputed text.
      */
-    children?: MaterialTextViewChild | MaterialTextViewChild[] | undefined;
+    children?: React.ReactNode;
     /**
      * Provides a input mask.
      * It must not be changed between renders.
@@ -85,17 +61,10 @@ export type MaterialTextViewProps = Omit<UITextViewProps, 'style'> & {
      */
     onHover?: (isHovered: boolean) => void;
     /**
-     * Background colors of the TextView in regular and disabled (`editable={false}`) states.
-     *
-     * @default
-     * ```ts
-     *  {
-     *      regular: ColorVariants.BackgroundBW,
-     *      disabled: ColorVariants.BackgroundTertiary,
-     *  }
-     * ```
+     * Color scheme of the TextView.
+     * @default InputColorScheme.Default
      */
-    backgroundColors?: BackgroundColors;
+    colorScheme?: InputColorScheme;
 };
 
 export type MaterialTextViewLayoutProps = MaterialTextViewProps & {
@@ -119,49 +88,6 @@ export type ImperativeChangeTextConfig = {
     shouldSetNativeProps?: boolean;
 };
 export type ImperativeChangeText = (text: string, config?: ImperativeChangeTextConfig) => void;
-
-export type MaterialTextViewIconProps = UIImageProps & {
-    /**
-     * Callback called by clicking/tapping on the icon
-     */
-    onPress?: () => void;
-    /**
-     * Style of icon container view
-     */
-    containerStyle?: StyleProp<ViewStyle>;
-};
-
-export type MaterialTextViewActionProps = MaterialTextViewTextProps & {
-    /**
-     * Callback called by clicking/tapping on the action
-     */
-    onPress?: () => void;
-};
-
-export type MaterialTextViewTextProps = {
-    /**
-     * You can pass a `string`, `Image`, or any other element as children.
-     *
-     * If it is a `string`, it will be placed in a `Label` with suitable styles.
-     *
-     * If it is the `Image`, a suitable `tintColor` prop and size styles will be passed to it.
-     *
-     * Any other element will be displayed unchanged.
-     */
-    children: React.ReactNode;
-};
-
-export type MaterialTextViewClearButtonProps = {
-    /**
-     * The callback that calls when the CleraButton was pressed
-     */
-    clear?: (() => void) | undefined;
-    /**
-     * Should the button to be just empty container with size of the visible button
-     * to reserve space for the button.
-     */
-    hiddenButton?: boolean;
-};
 
 export type MaterialTextViewInputState = {
     formattedText: string;

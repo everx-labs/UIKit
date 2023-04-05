@@ -1,17 +1,11 @@
+import type { InputChildren } from '../Common/InputChildren';
 import type { MaterialTextViewProps } from '../MaterialTextView';
 
 export type {
-    MaterialTextViewActionChild as UIMaterialTextViewActionChild,
-    MaterialTextViewActionProps as UIMaterialTextViewActionProps,
     MaterialTextViewAmountMask as UIMaterialTextViewAmountMask,
-    MaterialTextViewChild as UIMaterialTextViewChild,
-    MaterialTextViewIconChild as UIMaterialTextViewIconChild,
-    MaterialTextViewIconProps as UIMaterialTextViewIconProps,
     MaterialTextViewMask as UIMaterialTextViewMask,
     MaterialTextViewRefChangeText as UIMaterialTextViewRefChangeText,
     MaterialTextViewRefMoveCarret as UIMaterialTextViewRefMoveCarret,
-    MaterialTextViewTextChild as UIMaterialTextViewTextChild,
-    MaterialTextViewTextProps as UIMaterialTextViewTextProps,
     MaterialTextViewRef as UIMaterialTextViewRef,
 } from '../MaterialTextView';
 
@@ -22,4 +16,16 @@ export type UIMaterialTextViewProps = MaterialTextViewProps & {
      * @default false
      */
     hideClearButton?: boolean;
+    /**
+     *  As children you can provide only one or two of this component:
+     *  `UIMaterialTextView.Icon`
+     *  `UIMaterialTextView.Action`
+     *  `UIMaterialTextView.Text`
+     */
+    children?: InputChildren;
 };
+
+export enum UIMaterialTextViewColorScheme {
+    Default = 'Default',
+    Secondary = 'Secondary',
+}

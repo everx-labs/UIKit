@@ -38,7 +38,8 @@ export function UIStaticNumber({
     signBeforeNumber = false,
     showDebugGrid,
     showPositiveSign,
-}: UINumberGeneralProps & UINumberAppearance & { sign?: React.ReactNode; signBeforeNumber?: boolean }) {
+}: UINumberGeneralProps &
+    UINumberAppearance & { sign?: React.ReactNode; signBeforeNumber?: boolean }) {
     const { decimal: decimalSeparator, grouping: integerGroupChar } =
         uiLocalized.localeInfo.numbers;
 

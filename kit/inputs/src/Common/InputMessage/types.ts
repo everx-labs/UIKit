@@ -1,24 +1,32 @@
+import type { InputColorScheme } from '../constants';
+
 export enum InputMessageType {
     Error = 'Error',
     Warning = 'Warning',
     Success = 'Success',
     Info = 'Info',
 }
+
 export type InputMessageProps = {
-    /**
-     * Message to display.
-     */
-    children: string | undefined;
     /**
      * Type of the message.
      * @default InputMessageType.Info
      */
     type: InputMessageType;
     /**
-     * Callback that is called when the message is pressed.
+     * Text to display.
+     */
+    children: string | undefined;
+    /**
+     * Callback that is called when the text is pressed.
      * Used only for web.
      */
     onPress?: () => void | undefined;
+    /**
+     * Color scheme of the TextView.
+     * @default InputColorScheme.Default
+     */
+    colorScheme?: InputColorScheme;
 };
 
 export type InputMessageContainerProps = {

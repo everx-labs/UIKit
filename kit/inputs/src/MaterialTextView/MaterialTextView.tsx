@@ -18,11 +18,6 @@ import type {
     MaterialTextViewLayoutProps,
 } from './types';
 import type { UITextViewRef } from '../UITextView';
-import {
-    MaterialTextViewIcon,
-    MaterialTextViewAction,
-    MaterialTextViewText,
-} from './MaterialTextViewChildren';
 import { useTextViewHandler } from '../useTextViewHandler';
 
 function useExtendedProps(
@@ -173,14 +168,4 @@ const MaterialTextViewForward = React.forwardRef<MaterialTextViewRef, MaterialTe
     },
 );
 
-// @ts-expect-error
-// ts doesn't understand that we assign [Icon|Action|Text] later, and want to see it right away
-export const MaterialTextView: typeof MaterialTextViewForward & {
-    Icon: typeof MaterialTextViewIcon;
-    Action: typeof MaterialTextViewAction;
-    Text: typeof MaterialTextViewText;
-} = MaterialTextViewForward;
-
-MaterialTextView.Icon = MaterialTextViewIcon;
-MaterialTextView.Action = MaterialTextViewAction;
-MaterialTextView.Text = MaterialTextViewText;
+export const MaterialTextView: typeof MaterialTextViewForward = MaterialTextViewForward;

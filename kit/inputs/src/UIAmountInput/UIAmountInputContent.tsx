@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Animated, { runOnUI, useAnimatedRef, useSharedValue } from 'react-native-reanimated';
-import { NativeModules, Platform, TextStyle, View } from 'react-native';
-import { makeStyles, Theme, useTheme, UILabelAnimated } from '@tonlabs/uikit.themes';
+import { ColorValue, NativeModules, Platform, TextStyle, View } from 'react-native';
+import { makeStyles, UILabelAnimated } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { BigNumber } from 'bignumber.js';
 import { uiLocalized } from '@tonlabs/localization';
@@ -10,9 +10,8 @@ import {
     UIAmountInputProps,
     UIAmountInputMessageType,
     UIAmountInputDecimalAspect,
-    BackgroundColors,
 } from './types';
-import { AmountInputContext, defaultBackgroundColors } from './constants';
+import { AmountInputContext } from './constants';
 import {
     useAmountInputHandlers,
     useAmountInputHover,
@@ -27,9 +26,13 @@ import {
 } from './hooks';
 import { UITextView, UITextViewRef } from '../UITextView';
 import { TapHandler } from './TapHandler';
-import { InputMessage } from '../InputMessage';
 import { FloatingLabel } from './FloatingLabel';
-import { useInputChildren } from '../useInputChildren';
+import {
+    useInputChildren,
+    useInputBackgroundColor,
+    InputColorScheme,
+    InputMessage,
+} from '../Common';
 
 const UITextViewAnimated = Animated.createAnimatedComponent(UITextView);
 
@@ -44,7 +47,7 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
             placeholder = '',
             defaultAmount,
             onMessagePress,
-            backgroundColors = defaultBackgroundColors,
+            colorScheme = InputColorScheme.Default,
             ...props
         }: UIAmountInputProps,
         forwardedRef: React.Ref<UIAmountInputRef>,
@@ -131,9 +134,10 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
             expansionState,
             hasLabel,
             editable,
+            colorScheme,
         );
 
-        const childrenProcessed = useInputChildren(children);
+        const childrenProcessed = useInputChildren(children, colorScheme);
 
         /**
          * Setup the AmountInput ref.
@@ -157,8 +161,8 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
         const hasChildren = React.useMemo(() => {
             return React.Children.count(childrenProcessed) > 0;
         }, [childrenProcessed]);
-        const theme = useTheme();
-        const styles = useStyles(theme, editable, hasChildren, backgroundColors);
+        const backgroundColor = useInputBackgroundColor(colorScheme, editable);
+        const styles = useStyles(editable, hasChildren, backgroundColor);
 
         return (
             <>
@@ -200,7 +204,11 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
                     </TapHandler>
                     {childrenProcessed}
                 </View>
-                <InputMessage type={inputMessageType} onPress={onMessagePress}>
+                <InputMessage
+                    type={inputMessageType}
+                    onPress={onMessagePress}
+                    colorScheme={colorScheme}
+                >
                     {message}
                 </InputMessage>
             </>
@@ -209,19 +217,12 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
 );
 
 const useStyles = makeStyles(
-    (
-        theme: Theme,
-        editable: boolean,
-        hasChildren: boolean,
-        backgroundColors: BackgroundColors,
-    ) => ({
+    (editable: boolean, hasChildren: boolean, backgroundColor: ColorValue) => ({
         container: {
             flexDirection: 'row',
             alignItems: 'center',
             borderRadius: UILayoutConstant.input.borderRadius,
-            backgroundColor: editable
-                ? theme[backgroundColors.regular]
-                : theme[backgroundColors.disabled],
+            backgroundColor,
         },
         inputArea: {
             flex: 1,

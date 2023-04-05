@@ -19,12 +19,14 @@ import Animated, {
 
 import { ColorVariants, Typography, TypographyVariants, UILabel } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
+import { InputColorScheme } from '../../Common';
 
 export type FloatingLabelProps = {
     children: string;
     expandingValue: Readonly<Animated.SharedValue<number>>;
     isHovered: boolean;
     editable: boolean;
+    colorScheme: InputColorScheme;
 };
 
 const paragraphTextStyle: TextStyle = StyleSheet.flatten(
@@ -62,12 +64,24 @@ type LabelProps = {
     onLabelLayout: (layoutChangeEvent: LayoutChangeEvent) => void;
     isHovered: boolean;
     editable: boolean;
+    colorScheme: InputColorScheme;
 };
-function Label({ children, onLabelLayout, isHovered, editable }: LabelProps) {
+function Label({ children, onLabelLayout, isHovered, editable, colorScheme }: LabelProps) {
+    const color = React.useMemo(() => {
+        switch (colorScheme) {
+            case InputColorScheme.Secondary:
+                return isHovered && editable ? ColorVariants.TextBW : ColorVariants.TextSecondary;
+            case InputColorScheme.Default:
+            default:
+                return isHovered && editable
+                    ? ColorVariants.TextSecondary
+                    : ColorVariants.TextTertiary;
+        }
+    }, [colorScheme, editable, isHovered]);
     return (
         <UILabel
             role={TypographyVariants.ParagraphText}
-            color={isHovered && editable ? ColorVariants.TextSecondary : ColorVariants.TextTertiary}
+            color={color}
             onLayout={onLabelLayout}
             numberOfLines={1}
             lineBreakMode="tail"
@@ -116,6 +130,7 @@ export function FloatingLabel({
     children,
     isHovered,
     editable,
+    colorScheme,
 }: FloatingLabelProps) {
     /** Dimensions of label in the expanded state */
     const expandedLabelWidth: Animated.SharedValue<number> = useSharedValue<number>(0);
@@ -167,7 +182,12 @@ export function FloatingLabel({
     return (
         <View style={styles.container} pointerEvents="none">
             <Animated.View style={labelContainerStyle}>
-                <Label onLabelLayout={onLabelLayout} isHovered={isHovered} editable={editable}>
+                <Label
+                    onLabelLayout={onLabelLayout}
+                    isHovered={isHovered}
+                    editable={editable}
+                    colorScheme={colorScheme}
+                >
                     {children}
                 </Label>
             </Animated.View>

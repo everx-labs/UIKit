@@ -2,10 +2,8 @@ import type BigNumber from 'bignumber.js';
 import type { TextInput } from 'react-native';
 import type { SharedValue } from 'react-native-reanimated';
 
-import type { ColorVariants } from '@tonlabs/uikit.themes';
-
 import type { UIMaterialTextViewProps } from '../UIMaterialTextView/types';
-import type { InputChildren } from '../useInputChildren';
+import type { InputChildren, InputColorScheme } from '../Common';
 
 export enum UIAmountInputMessageType {
     Error = 'Error',
@@ -22,7 +20,7 @@ export enum UIAmountInputDecimalAspect {
 
 export type UIAmountInputProps = Omit<
     UIMaterialTextViewProps,
-    'mask' | 'defaultValue' | 'value' | 'onChangeText'
+    'mask' | 'defaultValue' | 'value' | 'onChangeText' | 'colorScheme'
 > & {
     /**
      * A callback that is called after changing the value in the input by the user.
@@ -60,19 +58,12 @@ export type UIAmountInputProps = Omit<
      *  `UIAmountInput.Action`
      *  `UIAmountInput.Text`
      */
-    children?: UIAmountInputChild | UIAmountInputChild[] | undefined;
+    children?: UIAmountInputChildren;
     /**
-     * Background colors of the AmountInput in regular and disabled (`editable={false}`) states.
-     *
-     * @default
-     * ```ts
-     *  {
-     *      regular: ColorVariants.BackgroundBW,
-     *      disabled: ColorVariants.BackgroundTertiary,
-     *  }
-     * ```
+     * Color scheme of the TextView.
+     * @default InputColorScheme.Default
      */
-    backgroundColors?: BackgroundColors;
+    colorScheme?: InputColorScheme;
 };
 
 export type UIAmountInputPrecision =
@@ -84,7 +75,7 @@ export type UIAmountInputRef = Pick<TextInput, 'isFocused' | 'focus' | 'blur' | 
     changeAmount: (amount: BigNumber | undefined, callOnChangeProp?: boolean) => void;
 };
 
-export type UIAmountInputChild = InputChildren;
+export type UIAmountInputChildren = InputChildren;
 
 export type AmountInputContextDefaultValuesType = {
     isHovered: boolean;
@@ -128,14 +119,3 @@ export type FormatText = (text: string) => TextAttributes;
 export type SetText = (textAttributes: TextAttributes, config: FormatAndSetTextConfig) => void;
 
 export type ExpansionState = 'Expanded' | 'Collapsed' | 'InExpandProgress' | 'InCollapseProgress';
-
-export type BackgroundColors = {
-    /**
-     * Background color of the AmountInput in regular state.
-     */
-    regular: ColorVariants;
-    /**
-     * Background color of the AmountInput in disabled (`editable={false}`) state.
-     */
-    disabled: ColorVariants;
-};

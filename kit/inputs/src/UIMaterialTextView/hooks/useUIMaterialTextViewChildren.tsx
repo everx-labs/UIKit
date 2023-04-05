@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { MaterialTextViewClearButton, useMaterialTextViewChildren } from '../../MaterialTextView';
 import type { UIMaterialTextViewProps } from '../types';
+import { useInputChildren, InputClearButton, InputColorScheme } from '../../Common';
 
 export function useUIMaterialTextViewChildren(
     children: UIMaterialTextViewProps['children'],
+    colorScheme: UIMaterialTextViewProps['colorScheme'] = InputColorScheme.Default,
     hideClearButton: UIMaterialTextViewProps['hideClearButton'],
     inputHasValue: boolean,
     isFocused: boolean,
@@ -11,7 +12,7 @@ export function useUIMaterialTextViewChildren(
     editable: boolean,
     clear: (() => void) | undefined,
 ): UIMaterialTextViewProps['children'] {
-    const materialTextViewChildren = useMaterialTextViewChildren(children);
+    const materialTextViewChildren = useInputChildren(children, colorScheme);
 
     if (hideClearButton) {
         /**
@@ -25,14 +26,14 @@ export function useUIMaterialTextViewChildren(
          * Show the ClearButton and hide other children
          * when some text is shown and the Input is editable and focused or hovered.
          */
-        return <MaterialTextViewClearButton clear={clear} />;
+        return <InputClearButton clear={clear} />;
     }
 
     if (!materialTextViewChildren || materialTextViewChildren.length === 0) {
         /**
          * Reserve space for the ClearButton because it may appear.
          */
-        return <MaterialTextViewClearButton hiddenButton />;
+        return <InputClearButton hiddenButton />;
     }
 
     /**
