@@ -68,6 +68,7 @@ const useStyles = makeStyles((editable: boolean, backgroundColor: ColorValue, ha
         alignItems: 'center',
         borderRadius: UILayoutConstant.input.borderRadius,
         backgroundColor,
+        paddingLeft: UILayoutConstant.contentOffset,
     },
     inputContainer: {
         flex: 1,
@@ -76,7 +77,6 @@ const useStyles = makeStyles((editable: boolean, backgroundColor: ColorValue, ha
         paddingRight: hasChildren
             ? UILayoutConstant.smallContentOffset
             : UILayoutConstant.contentOffset,
-        paddingLeft: UILayoutConstant.contentOffset,
     },
     input: {
         ...Platform.select({

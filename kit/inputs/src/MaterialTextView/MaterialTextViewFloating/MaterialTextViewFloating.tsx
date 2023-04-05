@@ -121,6 +121,7 @@ const useStyles = makeStyles(
             alignItems: 'center',
             borderRadius: UILayoutConstant.input.borderRadius,
             backgroundColor,
+            paddingLeft: UILayoutConstant.contentOffset,
         },
         inputContainer: {
             flex: 1,
@@ -129,7 +130,6 @@ const useStyles = makeStyles(
             paddingRight: hasChildren
                 ? UILayoutConstant.smallContentOffset
                 : UILayoutConstant.contentOffset,
-            paddingLeft: UILayoutConstant.contentOffset,
         },
         input: {
             ...Platform.select({
