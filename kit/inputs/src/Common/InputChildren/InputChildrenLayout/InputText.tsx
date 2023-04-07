@@ -13,30 +13,33 @@ function useProcessedChildren(
     children: React.ReactNode,
     tintColor: ColorVariants | undefined,
 ): React.ReactNode {
-    return React.useMemo(
-        () =>
-            React.Children.map(children, (child: React.ReactNode) => {
-                if (typeof child === 'string') {
-                    return (
-                        <UILabel role={UILabelRoles.Action} color={tintColor}>
-                            {child}
-                        </UILabel>
-                    );
-                }
-                if (React.isValidElement(child) && child.type === UIImage) {
-                    return React.createElement(UIImage, {
-                        ...child.props,
-                        tintColor,
-                        style: {
-                            ...styles.imageChild,
-                            ...StyleSheet.flatten(child.props.style),
-                        },
-                    });
-                }
-                return child;
-            }),
-        [children, tintColor],
-    );
+    return React.useMemo(() => {
+        const length = React.Children.count(children);
+        return React.Children.map(children, (child: React.ReactNode, index: number) => {
+            const isLast = index === length - 1;
+            const marginRight = !isLast ? UILayoutConstant.tinyContentOffset : 0;
+
+            if (typeof child === 'string') {
+                return (
+                    <UILabel role={UILabelRoles.Action} color={tintColor} style={{ marginRight }}>
+                        {child}
+                    </UILabel>
+                );
+            }
+            if (React.isValidElement(child) && child.type === UIImage) {
+                return React.createElement(UIImage, {
+                    ...child.props,
+                    tintColor,
+                    style: {
+                        ...styles.imageChild,
+                        ...{ marginRight },
+                        ...StyleSheet.flatten(child.props.style),
+                    },
+                });
+            }
+            return child;
+        });
+    }, [children, tintColor]);
 }
 
 export function InputText({ children }: InputTextProps) {
