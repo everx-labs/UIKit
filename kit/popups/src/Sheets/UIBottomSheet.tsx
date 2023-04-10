@@ -23,6 +23,10 @@ export type UIBottomSheetProps = Omit<UISheetProps, 'style'> & {
      * Background color of the UIBottomSheet
      */
     backgroundColor?: ColorVariants;
+    /**
+     * Puller color of the UIBottomSheet
+     */
+    pullerColor?: ColorVariants;
 };
 
 export function UIBottomSheet({
@@ -31,6 +35,7 @@ export function UIBottomSheet({
     hasHeader = true,
     headerOptions,
     backgroundColor = ColorVariants.BackgroundPrimary,
+    pullerColor = ColorVariants.BackgroundTertiary,
     ...rest
 }: UIBottomSheetProps) {
     const { visible, forId } = rest;
@@ -53,6 +58,7 @@ export function UIBottomSheet({
                                 hasPuller
                                 {...headerOptions}
                                 backgroundColor={backgroundColor}
+                                pullerColor={pullerColor}
                             />
                         ) : null}
                         {children}
