@@ -80,6 +80,7 @@ export function UIMenuContainerContent({
     triggerRef,
     onClose,
     testID,
+    width = UIConstant.menu.width,
 }: UIMenuContainerContentProps) {
     const theme = useTheme();
     // const { entering, exiting } = usePopupLayoutAnimationFunctions();
@@ -89,10 +90,10 @@ export function UIMenuContainerContent({
     const [menuSize, setMenuSize] = React.useState<Size>(initialSize);
     const onLayout = React.useCallback(
         function onLayout(event: LayoutChangeEvent) {
-            const width = Math.round(event.nativeEvent.layout.width);
-            const height = Math.round(event.nativeEvent.layout.height);
-            if (menuSize.width !== width || menuSize.height !== height) {
-                setMenuSize({ width, height });
+            const containerWidth = Math.round(event.nativeEvent.layout.width);
+            const containerHeight = Math.round(event.nativeEvent.layout.height);
+            if (menuSize.width !== containerWidth || menuSize.height !== containerHeight) {
+                setMenuSize({ width: containerWidth, height: containerHeight });
             }
         },
         [menuSize],
@@ -100,7 +101,7 @@ export function UIMenuContainerContent({
     const menuLocation = useMenuLocation(triggerDimensions, windowDimensions, menuSize);
 
     const shadow = useShadow(5);
-    const styles = useStyles(theme, shadow);
+    const styles = useStyles(theme, shadow, width);
 
     return (
         <>
@@ -122,7 +123,7 @@ export function UIMenuContainerContent({
     );
 }
 
-const useStyles = makeStyles((theme: Theme, shadow: any) => ({
+const useStyles = makeStyles((theme: Theme, shadow: any, menuWidth: number) => ({
     container: {
         position: 'absolute',
     },
@@ -133,7 +134,7 @@ const useStyles = makeStyles((theme: Theme, shadow: any) => ({
     },
     shadowContent: {
         borderRadius: UILayoutConstant.alertBorderRadius,
-        width: UIConstant.menu.width,
+        width: menuWidth,
         paddingHorizontal: UILayoutConstant.contentOffset,
         overflow: 'hidden',
         alignItems: 'stretch',
