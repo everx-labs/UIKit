@@ -70,6 +70,12 @@ export type UIMenuContainerContentProps = {
      */
     children: UIMenuContainerChildType | (UIMenuContainerChildType | UIMenuContainerChildType[])[];
     /**
+     * Width of the menu
+     *
+     * Default: `UIConstant.menu.width: 256`
+     */
+    width?: number;
+    /**
      * ID for usage in tests
      */
     testID?: string;
