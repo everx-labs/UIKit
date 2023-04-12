@@ -13,6 +13,7 @@ export type UIDialogBarProps = {
     headerRightItems?: HeaderItem[];
     hasPuller?: boolean;
     backgroundColor?: ColorVariants;
+    pullerColor?: ColorVariants;
 };
 
 export function UIDialogBar({
@@ -20,6 +21,7 @@ export function UIDialogBar({
     headerLeftItems,
     headerRightItems,
     backgroundColor = ColorVariants.BackgroundPrimary,
+    pullerColor = ColorVariants.BackgroundTertiary,
     hasPuller = true,
 }: UIDialogBarProps) {
     return (
@@ -28,7 +30,7 @@ export function UIDialogBar({
                 <UIHeaderItems items={headerLeftItems} />
             </View>
             {hasPuller ? (
-                <UIBackgroundView color={ColorVariants.BackgroundTertiary} style={styles.puller} />
+                <UIBackgroundView color={pullerColor} style={styles.puller} />
             ) : (
                 <View style={styles.emptyDivider} />
             )}
