@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Image as RNImage, ImageProps as RNImageProps, StyleSheet } from 'react-native';
-import type { ImageStyle } from 'react-native-fast-image';
+import { Image as RNImage, ImageProps as RNImageProps, ImageStyle, StyleSheet } from 'react-native';
 // @ts-expect-error
 import ImageViewNativeComponent from 'react-native/Libraries/Image/ImageViewNativeComponent';
 // @ts-expect-error

@@ -38,7 +38,7 @@ type UILabelStyle = Pick<
 
 type UILabelBasicStyle = UILabelStyle & Pick<TextStyle, 'color'>;
 
-export type UILabelBasicProps = Omit<TextProps, 'style'> & {
+export type UILabelBasicProps = Omit<TextProps, 'style' | 'role'> & {
     role?: TypographyVariants;
     color?: ColorValue;
     style?: StyleProp<UILabelBasicStyle>;

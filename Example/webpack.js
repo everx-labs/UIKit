@@ -2,7 +2,7 @@
 const path = require('path');
 
 module.exports = {
-    entry: path.join(__dirname, './index.web.js'),
+    entry: path.join(__dirname, './index.web.ts'),
     output: {
         path: path.join(__dirname, './web/assets'),
         publicPath: 'assets/',
@@ -14,7 +14,7 @@ module.exports = {
                 test: /\.(j|t)sx?$/,
                 // exclude: /node_modules/,
                 include: [
-                    path.resolve(__dirname, './index.web.js'),
+                    path.resolve(__dirname, './index.web.ts'),
                     path.resolve(__dirname, './src/'),
                     path.resolve(__dirname, '../node_modules/react-native-web/'),
                     path.resolve(__dirname, '../packages/'),
@@ -31,6 +31,7 @@ module.exports = {
                     path.resolve(__dirname, '../node_modules/react-native-reanimated/'),
                     path.resolve(__dirname, '../node_modules/react-native-view-shot/'),
                     path.resolve(__dirname, '../node_modules/react-native-web-linear-gradient/'),
+                    path.resolve(__dirname, '../node_modules/@react-navigation/'),
                 ],
                 loader: 'babel-loader',
                 query: {
