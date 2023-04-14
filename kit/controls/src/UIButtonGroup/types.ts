@@ -1,4 +1,4 @@
-import type { ImageSourcePropType } from 'react-native';
+import type { ImageSourcePropType, StyleProp, ViewStyle } from 'react-native';
 import type { UILayout } from '../types';
 import type { UIButtonGroupActionIconPosition } from './constants';
 import type { PressableColors } from '../Pressable';
@@ -68,6 +68,10 @@ export type UIButtonGroupActionProps = {
      * ```
      */
     contentColors?: UIButtonGroupActionBackgroundColors;
+    /**
+     * Style prop for passing some additionally required styles to the ButtonGroupAction content container view.
+     */
+    contentContainerStyle?: StyleProp<ViewStyle>;
 };
 
 export type UIButtonGroupChildType = React.ReactElement<UIButtonGroupActionProps>;

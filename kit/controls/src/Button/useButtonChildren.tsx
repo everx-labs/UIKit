@@ -139,7 +139,7 @@ export function ButtonTitle({
     );
 }
 
-const getChilds = (children: React.ReactNode) => {
+const processChildren = (children: React.ReactNode) => {
     const childElements = React.Children.toArray(children).reduce<React.ReactNode[]>(
         (acc, child) => {
             if (React.isValidElement(child)) {
@@ -153,7 +153,7 @@ const getChilds = (children: React.ReactNode) => {
                 }
 
                 if (child.type === React.Fragment) {
-                    acc.push(...getChilds(child.props.children));
+                    acc.push(...processChildren(child.props.children));
                     return acc;
                 }
             }
@@ -179,11 +179,11 @@ export const useButtonChildren = (children: React.ReactNode) => {
     // here we may need to order children in a particular way or add some styles
     // TODO: understand whether we need to limit icons to one at a time and remove others
 
-    const childElements = getChilds(children);
-    const { length } = childElements;
+    const childrenElements = processChildren(children);
+    const { length } = childrenElements;
 
     if (length === 1) {
-        return <View style={styles.singleElementContainer}>{childElements}</View>;
+        return <View style={styles.singleElementContainer}>{childrenElements}</View>;
     }
     if (length === 2) {
         // TODO: add checking of child type
@@ -191,13 +191,13 @@ export const useButtonChildren = (children: React.ReactNode) => {
         return (
             <View style={styles.moreThanOneElementContainer}>
                 <View style={styles.left} />
-                <View style={styles.center}>{childElements[0]}</View>
-                <View style={styles.right}>{childElements[1]}</View>
+                <View style={styles.center}>{childrenElements[0]}</View>
+                <View style={styles.right}>{childrenElements[1]}</View>
             </View>
         );
     }
 
-    return childElements;
+    return childrenElements;
 };
 
 const styles = StyleSheet.create({

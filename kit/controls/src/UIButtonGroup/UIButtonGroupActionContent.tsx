@@ -72,7 +72,7 @@ function Content({
 }
 
 export function UIButtonGroupActionContent(props: UIButtonGroupActionProps) {
-    const { loading, backgroundColors } = props;
+    const { loading, backgroundColors, contentContainerStyle } = props;
     const backgroundColor = usePressableContentColor(backgroundColors ?? ContentColors.background);
 
     const animatedContainerStyle = useAnimatedStyle(() => {
@@ -82,7 +82,7 @@ export function UIButtonGroupActionContent(props: UIButtonGroupActionProps) {
     });
 
     return (
-        <Animated.View style={[styles.container, animatedContainerStyle]}>
+        <Animated.View style={[styles.container, animatedContainerStyle, contentContainerStyle]}>
             {loading ? <UISkeleton style={styles.skeleton} show /> : <Content {...props} />}
         </Animated.View>
     );

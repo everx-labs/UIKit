@@ -2,8 +2,8 @@ import * as React from 'react';
 import type { UIButtonGroupProps } from '../types';
 import { UIButtonGroupAction } from '../UIButtonGroupAction';
 
-function getChilds(children: React.ReactNode): React.ReactNode[] {
-    const childElements = React.Children.toArray(children).reduce<React.ReactNode[]>(
+function processChildren(children: React.ReactNode): React.ReactNode[] {
+    const childrenElements = React.Children.toArray(children).reduce<React.ReactNode[]>(
         (acc, child) => {
             if (React.isValidElement(child)) {
                 if (child.type === UIButtonGroupAction) {
@@ -12,7 +12,7 @@ function getChilds(children: React.ReactNode): React.ReactNode[] {
                 }
 
                 if (child.type === React.Fragment) {
-                    acc.push(...getChilds(child.props.children));
+                    acc.push(...processChildren(child.props.children));
                     return acc;
                 }
             }
@@ -31,9 +31,9 @@ function getChilds(children: React.ReactNode): React.ReactNode[] {
         [],
     );
 
-    return childElements;
+    return childrenElements;
 }
 
 export function useButtonGroupChildren(children: UIButtonGroupProps['children']) {
-    return React.useMemo(() => getChilds(children), [children]);
+    return React.useMemo(() => processChildren(children), [children]);
 }
