@@ -88,20 +88,3 @@ export function disableLocalizationHints() {
         message.remove();
     }
 }
-
-export function initLiveEditScript(projectId: string, language: string): void {
-    if (Platform.OS === 'web') {
-        // @ts-ignore
-        window.LOKALISE_CONFIG = {
-            projectId,
-            locale: language,
-            disableAdvancedHtml: true,
-        };
-
-        const element = document.createElement('script');
-        element.type = 'text/javascript';
-        element.async = true;
-        element.src = `https://app.lokalise.com/live-js/script.min.js?${new Date().getTime()}`;
-        document.body.appendChild(element);
-    }
-}
