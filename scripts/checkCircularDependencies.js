@@ -45,9 +45,6 @@ const checkCircularDependencies = async () => {
             'stories/browser/src/index.ts',
             'stories/chats/src/index.ts',
             'stories/stickers/src/index.ts',
-
-            'packages/components/src/index.js',
-            'packages/core/src/index.js',
         ];
         const tree = await parseDependencyTree(sources, {
             extensions: [

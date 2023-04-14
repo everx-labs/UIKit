@@ -20,7 +20,7 @@
 
 ### Редактирование на GitHub
 
-1. Откройте нужный языковой файл нажав на [него](https://github.com/tonlabs/UIKit/tree/development/packages/localization/src/languages)
+1. Откройте нужный языковой файл нажав на [него](https://github.com/tonlabs/UIKit/tree/development/localization/src/languages)
 2. Нажмите на иконку редактирования в форме карандаша, расположенную в верхнем правом углу
 3. Сделайте нужные изменения в файле.
 

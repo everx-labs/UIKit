@@ -4,15 +4,7 @@
             "registry": "https://npm.pkg.github.com"
         }
     },
-    "packages": [
-        "packages/*",
-        "kit/*",
-        "casts/*",
-        "stories/*",
-        "plugins/*",
-        "Example",
-        "localization"
-    ],
+    "packages": ["kit/*", "casts/*", "stories/*", "plugins/*", "Example", "localization"],
     "npmClient": "yarn",
     "useWorkspaces": true,
     "version": "4.1.0"

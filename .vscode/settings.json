@@ -16,7 +16,7 @@
     "[javascript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "eslint.options": { "configFile": ".eslintrc", "resolvePluginsRelativeTo": "." },
+    "eslint.options": { "overrideConfigFile": ".eslintrc", "resolvePluginsRelativeTo": "." },
     "eslint.validate": ["typescript", "typescriptreact", "javascript", "javascriptreact"],
     "javascript.validate.enable": false,
     "[java]": {
