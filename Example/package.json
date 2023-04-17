@@ -9,8 +9,6 @@
         "start": "npx react-native start",
         "test": "jest",
         "tsc": "tsc --noEmit --composite false",
-        "secret:reveal": "git secret reveal -f",
-        "secret:hide": "git secret hide -m && git add *.secret",
         "web": "webpack-dev-server -d --config webpack.config.js --progress --colors --host 0.0.0.0 --display-cached",
         "web:bundle": "webpack -p --config webpack.config.prod.js --progress --colors --display-error-details",
         "web:bundle:dev": "webpack -d --config webpack.config.js --progress --colors --display-error-details"

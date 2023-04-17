@@ -19,6 +19,8 @@
         "test": "jest",
         "tsc": "lerna run tsc",
         "tsc-example": "cd ./Example && yarn run tsc",
+        "secret:reveal": "git secret reveal -f",
+        "secret:hide": "git secret hide -m && git add *.secret",
         "test:coverage": "jest --coverage",
         "web": "webpack-dev-server -d --config Example/webpack.config.js --progress --colors --host 0.0.0.0 --display-cached",
         "cycles:check": "node scripts/checkCircularDependencies.js",
