@@ -9,7 +9,7 @@ export type OnCustomKeyboardVisible = (visible: boolean) => void | Promise<void>
 const callbacks: { [id: string]: OnEvent | undefined } = {};
 const dismisses: { [id: string]: (() => void) | undefined } = {};
 
-export function registerKeyboardComponent<KeyboardProps extends {}>(
+export function registerKeyboardComponent<KeyboardProps extends object>(
     moduleName: string,
     keyboardComponent: React.ComponentType<KeyboardProps>,
 ) {

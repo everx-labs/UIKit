@@ -22,7 +22,7 @@ function renderEmptyList() {
         </>
     );
 }
-export const ListEmptyComponent = () => {
+export function ListEmptyComponent() {
     const { loading } = React.useContext(CountryPickerContext);
 
     const renderContent = React.useMemo(() => {
@@ -33,7 +33,7 @@ export const ListEmptyComponent = () => {
     }, [loading]);
 
     return <View style={styles.emptyContainer}>{renderContent}</View>;
-};
+}
 
 const styles = StyleSheet.create({
     emptyContainer: {

@@ -25,14 +25,14 @@ const convertMediaMessageErrorToMediaOutputMessageStatus = (
     }
 };
 
-export const MediaOutput = ({
+export function MediaOutput({
     data,
     preview,
     status,
     onLayout,
     prompt,
     onOutput,
-}: MediaOutputMessage) => {
+}: MediaOutputMessage) {
     const onError = React.useCallback(
         (error: MediaMessageError) => {
             if (onOutput) {
@@ -69,4 +69,4 @@ export const MediaOutput = ({
             )}
         </View>
     );
-};
+}

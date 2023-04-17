@@ -1,1 +1,3 @@
-export const BubbleDocument = () => null;
+export function BubbleDocument() {
+    return null;
+}

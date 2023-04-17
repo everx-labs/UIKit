@@ -13,7 +13,7 @@ type CountryRowProps = {
     item: Country;
 };
 
-export const CountryPickerRow: React.FC<CountryRowProps> = ({ item }: CountryRowProps) => {
+export function CountryPickerRow({ item }: CountryRowProps) {
     const { onSelect } = React.useContext(CountryPickerContext);
 
     const theme = useTheme();
@@ -41,7 +41,7 @@ export const CountryPickerRow: React.FC<CountryRowProps> = ({ item }: CountryRow
             </View>
         </TouchableOpacity>
     );
-};
+}
 
 const useStyles = makeStyles((theme: Theme) => ({
     rowContainerInner: {

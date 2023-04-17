@@ -62,62 +62,63 @@ function flatListGetItemLayoutFabric({
     };
 }
 
-const renderBubble = () => (item: BrowserMessage, onLayout: ViewProps['onLayout']) => {
-    if (item.type === ChatMessageType.PlainText) {
-        return <BubbleSimplePlainText {...item} onLayout={onLayout} />;
-    }
-    if (item.type === ChatMessageType.ActionButton) {
-        return <BubbleActionButton {...item} onLayout={onLayout} />;
-    }
+const renderBubble = () =>
+    function Bubble(item: BrowserMessage, onLayout: ViewProps['onLayout']) {
+        if (item.type === ChatMessageType.PlainText) {
+            return <BubbleSimplePlainText {...item} onLayout={onLayout} />;
+        }
+        if (item.type === ChatMessageType.ActionButton) {
+            return <BubbleActionButton {...item} onLayout={onLayout} />;
+        }
 
-    if (item.type === InteractiveMessageType.AddressInput) {
-        return <AddressInput {...item} onLayout={onLayout} />;
-    }
-    if (item.type === InteractiveMessageType.Terminal) {
-        return <TerminalInput {...item} onLayout={onLayout} />;
-    }
-    if (item.type === InteractiveMessageType.Menu) {
-        return <MenuInput {...item} onLayout={onLayout} />;
-    }
-    if (item.type === InteractiveMessageType.Confirm) {
-        return <ConfirmInput {...item} onLayout={onLayout} />;
-    }
-    if (item.type === InteractiveMessageType.AmountInput) {
-        return <AmountInput {...item} onLayout={onLayout} />;
-    }
-    if (item.type === InteractiveMessageType.SigningBox) {
-        return <SigningBox {...item} onLayout={onLayout} />;
-    }
-    if (item.type === InteractiveMessageType.EncryptionBox) {
-        return <EncryptionBox {...item} onLayout={onLayout} />;
-    }
-    if (item.type === InteractiveMessageType.TransactionConfirmation) {
-        return <TransactionConfirmation {...item} onLayout={onLayout} />;
-    }
-    if (item.type === InteractiveMessageType.QRCodeScanner) {
-        return <QRCodeScanner {...item} onLayout={onLayout} />;
-    }
-    if (item.type === InteractiveMessageType.Date) {
-        return <DatePicker {...item} onLayout={onLayout} />;
-    }
-    if (item.type === InteractiveMessageType.Time) {
-        return <TimePicker {...item} onLayout={onLayout} />;
-    }
-    if (item.type === InteractiveMessageType.DateTime) {
-        return <DateTimePicker {...item} onLayout={onLayout} />;
-    }
-    if (item.type === InteractiveMessageType.MediaOutput) {
-        return <MediaOutput {...item} onLayout={onLayout} />;
-    }
-    if (item.type === InteractiveMessageType.QRCodeDraw) {
-        return <QRCodeDraw {...item} onLayout={onLayout} />;
-    }
-    if (item.type === InteractiveMessageType.Country) {
-        return <CountryPicker {...item} onLayout={onLayout} />;
-    }
+        if (item.type === InteractiveMessageType.AddressInput) {
+            return <AddressInput {...item} onLayout={onLayout} />;
+        }
+        if (item.type === InteractiveMessageType.Terminal) {
+            return <TerminalInput {...item} onLayout={onLayout} />;
+        }
+        if (item.type === InteractiveMessageType.Menu) {
+            return <MenuInput {...item} onLayout={onLayout} />;
+        }
+        if (item.type === InteractiveMessageType.Confirm) {
+            return <ConfirmInput {...item} onLayout={onLayout} />;
+        }
+        if (item.type === InteractiveMessageType.AmountInput) {
+            return <AmountInput {...item} onLayout={onLayout} />;
+        }
+        if (item.type === InteractiveMessageType.SigningBox) {
+            return <SigningBox {...item} onLayout={onLayout} />;
+        }
+        if (item.type === InteractiveMessageType.EncryptionBox) {
+            return <EncryptionBox {...item} onLayout={onLayout} />;
+        }
+        if (item.type === InteractiveMessageType.TransactionConfirmation) {
+            return <TransactionConfirmation {...item} onLayout={onLayout} />;
+        }
+        if (item.type === InteractiveMessageType.QRCodeScanner) {
+            return <QRCodeScanner {...item} onLayout={onLayout} />;
+        }
+        if (item.type === InteractiveMessageType.Date) {
+            return <DatePicker {...item} onLayout={onLayout} />;
+        }
+        if (item.type === InteractiveMessageType.Time) {
+            return <TimePicker {...item} onLayout={onLayout} />;
+        }
+        if (item.type === InteractiveMessageType.DateTime) {
+            return <DateTimePicker {...item} onLayout={onLayout} />;
+        }
+        if (item.type === InteractiveMessageType.MediaOutput) {
+            return <MediaOutput {...item} onLayout={onLayout} />;
+        }
+        if (item.type === InteractiveMessageType.QRCodeDraw) {
+            return <QRCodeDraw {...item} onLayout={onLayout} />;
+        }
+        if (item.type === InteractiveMessageType.Country) {
+            return <CountryPicker {...item} onLayout={onLayout} />;
+        }
 
-    return null;
-};
+        return null;
+    };
 
 export const UIBrowserList = React.forwardRef<FlatList, UIBrowserListProps>(
     function UIBrowserListForwarded(

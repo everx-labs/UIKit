@@ -19,7 +19,7 @@ import { UIImage } from '@tonlabs/uikit.media';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
-export const Inputs = () => {
+export function Inputs() {
     const amountPrecisionRef = React.useRef<UIAmountInputRef>(null);
     const mnemonicWords = ['report', 'village', 'slight'];
     const onChangeAmount = React.useCallback((amount: BigNumber | undefined) => {
@@ -279,4 +279,4 @@ export const Inputs = () => {
             </ExampleSection>
         </ExampleScreen>
     );
-};
+}

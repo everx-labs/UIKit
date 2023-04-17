@@ -4,6 +4,6 @@ import {
     WrappedCountryPickerProps,
 } from '@tonlabs/uicast.country-picker';
 
-export const UICountryPicker = (props: WrappedCountryPickerProps) => {
+export function UICountryPicker(props: WrappedCountryPickerProps) {
     return <CountryPicker {...props} />;
-};
+}

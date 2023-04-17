@@ -2,12 +2,7 @@ import * as React from 'react';
 import { UIMenuActionProps, UIMenuActionType } from './types';
 import { UIForeground } from '../UIForeground';
 
-export const UIMenuAction: React.FC<UIMenuActionProps> = ({
-    type,
-    title,
-    onPress,
-    testID,
-}: UIMenuActionProps) => {
+export function UIMenuAction({ type, title, onPress, testID }: UIMenuActionProps) {
     return (
         <UIForeground.Container key={title}>
             <UIForeground.PrimaryColumn>
@@ -21,4 +16,4 @@ export const UIMenuAction: React.FC<UIMenuActionProps> = ({
             </UIForeground.PrimaryColumn>
         </UIForeground.Container>
     );
-};
+}

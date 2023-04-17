@@ -96,14 +96,14 @@ function Header({ title, note, icon }: HeaderProps): React.ReactElement<View> | 
     );
 }
 
-export const UIAlertViewContainer: React.FC<UIAlertViewContainerProps> = ({
+export function UIAlertViewContainer({
     visible,
     title,
     note,
     icon,
     testID,
     children,
-}: UIAlertViewContainerProps) => {
+}: UIAlertViewContainerProps) {
     const alertViewActions: AlertViewActions = React.useMemo(
         () => getAlertViewActions(children),
         [children],
@@ -131,7 +131,7 @@ export const UIAlertViewContainer: React.FC<UIAlertViewContainerProps> = ({
             </View>
         </AlertBox>
     );
-};
+}
 
 const useStyles = makeStyles(() => ({
     container: {

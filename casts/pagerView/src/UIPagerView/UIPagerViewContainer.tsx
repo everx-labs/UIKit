@@ -147,18 +147,17 @@ const getLabelColor = (
     return UILabelColors.TextSecondary;
 };
 
-const renderLabel =
-    (pages: React.ReactElement<UIPagerViewPageProps>[]) =>
-    (props: LabelProps): React.ReactElement<typeof UILabel> | null => {
+const renderLabel = (pages: React.ReactElement<UIPagerViewPageProps>[]) =>
+    function Label(props: LabelProps): React.ReactElement<typeof UILabel> | null {
+        const { focused, route } = props;
         const currentPage: React.ReactElement<UIPagerViewPageProps> | undefined = pages.find(
             (page: React.ReactElement<UIPagerViewPageProps>): boolean =>
-                page.props.id === props.route.key,
+                page.props.id === route.key,
         );
 
         if (!currentPage) {
             return null;
         }
-        const { focused, route } = props;
         const color: ColorVariants = getLabelColor(focused, currentPage);
 
         return (
@@ -269,13 +268,13 @@ const useTabBar = (
         [pages, indicatorColor, indicatorContainerColor, type],
     );
 
-export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
+export function UIPagerViewContainer({
     type,
     initialPageIndex = 0,
     onPageIndexChange,
     children,
     testID,
-}: UIPagerViewContainerProps) => {
+}: UIPagerViewContainerProps) {
     const theme = useTheme();
     const [layout, setLayout] = React.useState<LayoutRectangle>({
         x: 0,
@@ -330,7 +329,7 @@ export const UIPagerViewContainer: React.FC<UIPagerViewContainerProps> = ({
             />
         </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {

@@ -97,6 +97,7 @@ const PortalView = React.memo<PortalItem>(function PortalView({
         );
     }
 
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     return <>{children}</>;
 });
 

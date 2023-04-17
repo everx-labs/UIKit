@@ -19,13 +19,13 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
     UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-export const PillButtonContent = ({
+export function PillButtonContent({
     icon,
     iconPosition = UIPillButtonIconPosition.Left,
     loading,
     title,
     variant = UIPillButtonVariant.Neutral,
-}: UIPillButtonProps) => {
+}: UIPillButtonProps) {
     const backgroundColor = usePressableContentColor(ContentColors[variant].background);
     const contentColor = usePressableContentColor(ContentColors[variant].content);
     const backgroundOverlayColor = usePressableContentColor(BackgroundOverlayColors);
@@ -103,7 +103,7 @@ export const PillButtonContent = ({
             )}
         </Animated.View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {

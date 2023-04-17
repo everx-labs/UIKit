@@ -1,7 +1,6 @@
-# npx lerna bootstrap
-# npx lerna run prepare
+npx lerna bootstrap
+npx lerna run prepare
 
-# rvm use ruby-$(cat .ruby-version)
 bundle install
 
 cd ios

@@ -5,11 +5,7 @@ import type { DuplicateImageProps } from './types';
 
 const DuplicateImageNative = requireNativeComponent('HDuplicateImageView');
 
-export const DuplicateImage: React.FC<DuplicateImageProps> = ({
-    source,
-    children,
-    ...rest
-}: DuplicateImageProps) => {
+export function DuplicateImage({ source, children, ...rest }: DuplicateImageProps) {
     if (source.current == null) {
         return children;
     }
@@ -26,4 +22,4 @@ export const DuplicateImage: React.FC<DuplicateImageProps> = ({
             {...rest}
         />
     );
-};
+}

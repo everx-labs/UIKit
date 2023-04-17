@@ -10,7 +10,7 @@ import { MessageStatus } from './constants';
 import type { StickerMessage } from './types';
 import { useBubbleContainerStyle } from './useBubblePosition';
 
-export const BubbleSticker = (props: StickerMessage) => {
+export function BubbleSticker(props: StickerMessage) {
     const { onLayout, status, source, time } = props;
     const containerStyle = useBubbleContainerStyle(props);
     const theme = useTheme();
@@ -45,7 +45,7 @@ export const BubbleSticker = (props: StickerMessage) => {
             </View>
         </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     inner: {

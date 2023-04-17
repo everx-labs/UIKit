@@ -48,7 +48,7 @@ function ModalScreen<ParamList extends ParamListBase = ParamListBase>({
     );
 }
 
-const ModalNavigator = ({ children, maxMobileWidth, screenOptions }: ModalNavigatorProps) => {
+function ModalNavigator({ children, maxMobileWidth, screenOptions }: ModalNavigatorProps) {
     const { state, navigation, descriptors } = useNavigationBuilder<
         ModalNavigationState,
         ModalRouterOptions,
@@ -84,7 +84,7 @@ const ModalNavigator = ({ children, maxMobileWidth, screenOptions }: ModalNaviga
             </NavigationHelpersContext.Provider>
         </PortalManager>
     );
-};
+}
 
 export const createModalNavigator = createNavigatorFactory<
     ModalNavigationState,

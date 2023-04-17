@@ -20,11 +20,11 @@ type Props = {
     onLoadMore?: () => void;
 };
 
-export const UILoadMoreButton: React.FunctionComponent<Props> = ({
+export function UILoadMoreButton({
     label = uiLocalized.LoadMore,
     isLoadingMore = false,
     onLoadMore,
-}: Props) => {
+}: Props) {
     const theme = useTheme();
 
     return (
@@ -64,7 +64,7 @@ export const UILoadMoreButton: React.FunctionComponent<Props> = ({
             </View>
         </TouchableOpacity>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {

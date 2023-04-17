@@ -74,8 +74,15 @@ function Content() {
     const { mode } = useDateTimeState();
 
     switch (mode) {
-        default:
+        // TODO!!!!
+        // case UIDateTimePickerMode.MonthYear:
+        //     return <SelectMonth />;
+        case UIDateTimePickerMode.Date:
+            return <Calendar />;
+        case UIDateTimePickerMode.Time:
+            return <Time />;
         case UIDateTimePickerMode.DateTime:
+        default:
             return (
                 <>
                     <Calendar />
@@ -83,26 +90,11 @@ function Content() {
                     <Time />
                 </>
             );
-        // TODO!!!!
-        // case UIDateTimePickerMode.MonthYear:
-        //     return <SelectMonth />;
-        case UIDateTimePickerMode.Date:
-            return (
-                <>
-                    <Calendar />
-                </>
-            );
-        case UIDateTimePickerMode.Time:
-            return (
-                <>
-                    <Time />
-                </>
-            );
     }
 }
 
 function DatePickerContent(props: UIDateTimePickerProps) {
-    const { defaultDate, isAmPmTime, mode, onClose, min, max } = props;
+    const { defaultDate, isAmPmTime, mode, onClose, min, max, onValueRetrieved } = props;
 
     const initialDate = React.useMemo(() => {
         const date = dayjs(defaultDate);
@@ -153,8 +145,8 @@ function DatePickerContent(props: UIDateTimePickerProps) {
                     {
                         label: uiLocalized.Done,
                         onPress: () => {
-                            if (props.onValueRetrieved && state.selectedTime) {
-                                props.onValueRetrieved(
+                            if (onValueRetrieved && state.selectedTime) {
+                                onValueRetrieved(
                                     state.selectedDate
                                         .hour(state.selectedTime.hour())
                                         .minute(state.selectedTime.minute())

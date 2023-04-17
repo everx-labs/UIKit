@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme, qrCodeSize: number, qrCodeBorderWidth: numb
     };
 });
 
-export const QRCodeSquare = ({ value, logo, size }: QRCodeProps) => {
+export function QRCodeSquare({ value, logo, size }: QRCodeProps) {
     const theme = useTheme();
     const qrCodeSize = useQRCodeSize(size);
     const qrCodeBorderWidth = useQRCodeBorderWidth(size);
@@ -59,4 +59,4 @@ export const QRCodeSquare = ({ value, logo, size }: QRCodeProps) => {
             {logoRender}
         </View>
     );
-};
+}

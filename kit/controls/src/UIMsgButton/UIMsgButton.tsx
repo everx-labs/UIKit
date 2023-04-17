@@ -4,7 +4,7 @@ import type { UIMsgButtonProps } from './types';
 import { Pressable } from '../Pressable';
 import { MsgButtonContent } from './MsgButtonContent';
 
-export const UIMsgButton = (props: UIMsgButtonProps) => {
+export function UIMsgButton(props: UIMsgButtonProps) {
     const { disabled, loading, onPress, testID, layout, type } = props;
 
     return (
@@ -18,7 +18,7 @@ export const UIMsgButton = (props: UIMsgButtonProps) => {
             <MsgButtonContent {...props} key={`UIMsgButton-${type}`} />
         </Pressable>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {

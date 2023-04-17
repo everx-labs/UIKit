@@ -52,6 +52,11 @@
         "react/require-default-props": "off",
         "react/jsx-props-no-spreading": "off",
 
+        // has a lot of false positives
+        "react/no-unused-prop-types": [0],
+        // has a lot of false positives
+        "react/no-unused-class-component-methods": "off",
+
         "arrow-body-style": "off",
         "arrow-parens": ["error", "as-needed"],
         "quote-props": "off",

@@ -42,7 +42,7 @@ function TypographyList() {
     );
 }
 
-export const TextScreen = () => {
+export function TextScreen() {
     const [allTypograpyVisible, setAllTypograpyVisible] = React.useState(false);
     return (
         <ExampleScreen>
@@ -109,4 +109,4 @@ export const TextScreen = () => {
             </ExampleSection>
         </ExampleScreen>
     );
-};
+}

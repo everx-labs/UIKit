@@ -70,12 +70,12 @@ const renderHeader = (
     );
 };
 
-export const UIActionSheetContainer: React.FC<UIActionSheetContainerProps> = ({
+export function UIActionSheetContainer({
     note,
     visible,
     testID,
     children,
-}: UIActionSheetContainerProps) => {
+}: UIActionSheetContainerProps) {
     const actionSheetActions: ActionSheetActions = React.useMemo(
         () => getActionSheetActions(children),
         [children],
@@ -95,7 +95,7 @@ export const UIActionSheetContainer: React.FC<UIActionSheetContainerProps> = ({
             </View>
         </UICardSheet>
     );
-};
+}
 
 const useStyles = makeStyles(() => ({
     container: {

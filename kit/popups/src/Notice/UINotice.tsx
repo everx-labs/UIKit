@@ -8,7 +8,7 @@ import { ToastNoticeContainer } from './ToastNoticeContainer';
 import { useNoticeVisibility } from './hooks/useNoticeVisibility';
 import { Notice } from './Notice';
 
-export const UINotice: React.FC<UINoticeProps> = ({
+export function UINotice({
     onClose,
     visible,
     type,
@@ -19,7 +19,7 @@ export const UINotice: React.FC<UINoticeProps> = ({
     action,
     hasCountdown,
     onTap,
-}: UINoticeProps) => {
+}: UINoticeProps) {
     const {
         noticeVisible,
         countdownValue,
@@ -67,7 +67,7 @@ export const UINotice: React.FC<UINoticeProps> = ({
                 </Portal>
             );
     }
-};
+}
 
 const styles = StyleSheet.create({
     container: {

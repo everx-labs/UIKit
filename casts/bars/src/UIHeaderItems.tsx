@@ -100,16 +100,14 @@ function UIHeaderItemPressable({
     children: React.ReactNode;
 }) {
     return (
-        <>
-            <TouchableOpacity
-                testID={testID}
-                containerStyle={styles.headerItemTouchable}
-                disabled={disabled}
-                onPress={onPress}
-            >
-                {children}
-            </TouchableOpacity>
-        </>
+        <TouchableOpacity
+            testID={testID}
+            containerStyle={styles.headerItemTouchable}
+            disabled={disabled}
+            onPress={onPress}
+        >
+            {children}
+        </TouchableOpacity>
     );
 }
 
@@ -124,11 +122,7 @@ function UIHeaderItem(item: HeaderItem) {
     }
     if (icon != null || iconElement != null) {
         return (
-            <UIHeaderItemPressable
-                testID={item.testID}
-                disabled={item.disabled}
-                onPress={item.onPress}
-            >
+            <UIHeaderItemPressable testID={testID} disabled={disabled} onPress={onPress}>
                 <UIHeaderIconItem {...item} />
             </UIHeaderItemPressable>
         );

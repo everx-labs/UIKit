@@ -35,13 +35,13 @@ const VISIBILITY_STATE_CLOSED: VisibilityState = 0;
 // @inline
 const VISIBILITY_STATE_OPENED: VisibilityState = 1;
 
-export const DuplicateContent = ({
+export function DuplicateContent({
     fullSizeImage,
     previewImage,
     onClose,
     forwardedRef,
     prompt,
-}: DuplicateContentProps) => {
+}: DuplicateContentProps) {
     const theme = useTheme();
     const insets = useSafeAreaInsets();
 
@@ -177,7 +177,7 @@ export const DuplicateContent = ({
             <Footer prompt={prompt} visibilityState={resultVisibilityState} />
         </Animated.View>
     );
-};
+}
 
 const useStyles = makeStyles((theme: Theme, insets: EdgeInsets) => ({
     duplicateContainer: {

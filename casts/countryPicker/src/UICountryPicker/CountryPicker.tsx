@@ -186,10 +186,14 @@ function CountryPickerContent({ banned, permitted, onClose, onSelect }: CountryP
 
     const { loading, searching, countries, onSearch } = useCountriesSearch(banned, permitted);
 
+    const countryPickerContextValue = React.useMemo(() => {
+        return { loading, onSelect };
+    }, [loading, onSelect]);
+
     return (
         <>
             <SearchHeader searching={searching} onClose={onClose} onSearch={onSearch} />
-            <CountryPickerContext.Provider value={{ loading, onSelect }}>
+            <CountryPickerContext.Provider value={countryPickerContextValue}>
                 <FlatList
                     data={countries}
                     renderItem={renderCountryRow}

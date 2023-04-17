@@ -27,23 +27,19 @@ import { useBubbleBackgroundColor, useBubbleRoundedCornerStyle } from './useBubb
 import { MessageStatus } from './constants';
 import type { ChatQRCodeMessage, QRCodeMessage } from './types';
 
-export const ChatBubbleQRCode: React.FC<ChatQRCodeMessage> = (message: ChatQRCodeMessage) => {
-    return <BubbleQRCode {...message} />;
-};
-
-const getErrorMessage = (messageStatus: MessageStatus): string => {
+function getErrorMessage(messageStatus: MessageStatus): string {
     switch (messageStatus) {
         case MessageStatus.Received:
             return uiLocalized.Chats.QRCode.errorReceived;
         default:
             return uiLocalized.Chats.QRCode.errorSent;
     }
-};
+}
 
-const renderErrorIcon = (
+function renderErrorIcon(
     messageStatus: MessageStatus,
     iconStyles: StyleProp<ImageStyle>,
-): React.ReactElement | null => {
+): React.ReactElement | null {
     switch (messageStatus) {
         case MessageStatus.Received:
             return null;
@@ -56,7 +52,7 @@ const renderErrorIcon = (
                 />
             );
     }
-};
+}
 
 const renderError = (
     messageStatus: MessageStatus,
@@ -89,17 +85,18 @@ const renderError = (
     );
 };
 
-export const QRCodeContainer: React.FC<{
-    onPress?: QRCodeMessage['onPress'];
-    qrCodeRef: React.MutableRefObject<QRCodeRef | null>;
-    style: StyleProp<ViewStyle>;
-}> = ({
+export function QRCodeContainer({
     qrCodeRef,
     // @ts-ignore
     children,
     style,
     onPress,
-}) => {
+}: {
+    onPress?: QRCodeMessage['onPress'];
+    qrCodeRef: React.MutableRefObject<QRCodeRef | null>;
+    style: StyleProp<ViewStyle>;
+    children: React.ReactNode;
+}) {
     const onQRCodePress = React.useCallback(async () => {
         if (!qrCodeRef.current) {
             return;
@@ -122,9 +119,9 @@ export const QRCodeContainer: React.FC<{
     }
 
     return <View style={style}>{children}</View>;
-};
+}
 
-export const BubbleQRCode: React.FC<QRCodeMessage> = (message: QRCodeMessage) => {
+export function BubbleQRCode(message: QRCodeMessage) {
     const { status, data, onError, onSuccess, onLayout, onPress } = message;
     const theme = useTheme();
     const position = useBubblePosition(status);
@@ -142,7 +139,7 @@ export const BubbleQRCode: React.FC<QRCodeMessage> = (message: QRCodeMessage) =>
 
     if (error) {
         return renderError(
-            message.status,
+            status,
             [containerStyle, styles.errorContainer],
             roundedCornerStyle,
             styles.errorBubble,
@@ -176,7 +173,11 @@ export const BubbleQRCode: React.FC<QRCodeMessage> = (message: QRCodeMessage) =>
             </View>
         </View>
     );
-};
+}
+
+export function ChatBubbleQRCode(message: ChatQRCodeMessage) {
+    return <BubbleQRCode {...message} />;
+}
 
 const useStyles = makeStyles((theme: Theme) => ({
     qrCode: {

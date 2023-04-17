@@ -147,7 +147,7 @@ export class LocalizationService<T> extends LocalizedStringsService<any> {
         dayjs.locale(this.dayJSLocale);
     };
 
-    formatTime = (time: number | Date, format: string = TIME_FORMAT): string => {
+    static formatTime = (time: number | Date, format: string = TIME_FORMAT): string => {
         return dayjs(time).format(format);
     };
 
@@ -172,7 +172,7 @@ export class LocalizationService<T> extends LocalizedStringsService<any> {
         return dayjs(time).format(`D MMM ${TIME_FORMAT}`);
     };
 
-    formatDateOnly = (date: number | Date): string => {
+    static formatDateOnly = (date: number | Date): string => {
         return dayjs(date).format(`D MMM`);
     };
 

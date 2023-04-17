@@ -320,7 +320,7 @@ function FlexibleSizeBottomSheet() {
     );
 }
 
-export const Menus = () => {
+export function Menus() {
     const [actionSheetVisible, setActionSheetVisible] = React.useState(false);
     const [cardSheetVisible, setCardSheetVisible] = React.useState(false);
     const [cardSheet2Visible, setCardSheet2Visible] = React.useState(false);
@@ -646,4 +646,4 @@ export const Menus = () => {
             </ExampleSection>
         </ExampleScreen>
     );
-};
+}

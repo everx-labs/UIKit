@@ -53,13 +53,7 @@ type ContentProps = AlertBoxProps & {
     onDisappeared: () => void;
 };
 
-const Content: React.FC<ContentProps> = ({
-    children,
-    testID,
-    visible,
-    onDisappeared,
-    onTapUnderlay,
-}: ContentProps) => {
+function Content({ children, testID, visible, onDisappeared, onTapUnderlay }: ContentProps) {
     const theme = useTheme();
     const styles = useStyles(theme);
     const displayState = useSharedValue<DisplayState>(DisplayState.HIDDEN);
@@ -158,7 +152,7 @@ const Content: React.FC<ContentProps> = ({
             </Animated.View>
         </Portal>
     );
-};
+}
 
 export type AlertBoxProps = {
     /**
@@ -179,7 +173,7 @@ export type AlertBoxProps = {
     testID?: string;
 };
 
-export const AlertBox: React.FC<AlertBoxProps> = (props: AlertBoxProps) => {
+export function AlertBox(props: AlertBoxProps) {
     const { visible } = props;
     /** It is needed to see how the alert disappears animatedly */
     const [isComponentVisible, setIsComponentVisible] = React.useState<boolean>(false);
@@ -198,4 +192,4 @@ export const AlertBox: React.FC<AlertBoxProps> = (props: AlertBoxProps) => {
         return null;
     }
     return <Content {...props} onDisappeared={onDisappeared} />;
-};
+}

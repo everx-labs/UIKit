@@ -28,7 +28,7 @@ const usePlatformMethods = (properties: { [key: string]: true }) => {
     }, [properties]);
 };
 
-export const addNativeProps = <P extends {}>(
+export const addNativeProps = <P extends object>(
     component: React.ComponentClass<P>,
     properties: {
         [key: string]: true;

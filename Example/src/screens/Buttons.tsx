@@ -34,9 +34,9 @@ import { ColorVariants, UIBackgroundView, UILabel } from '@tonlabs/uikit.themes'
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
-const Separator = () => (
-    <UIBackgroundView color={ColorVariants.BackgroundOverlay} style={{ height: 1 }} />
-);
+function Separator() {
+    return <UIBackgroundView color={ColorVariants.BackgroundOverlay} style={{ height: 1 }} />;
+}
 
 export function ButtonsScreen() {
     const [progress, setProgress] = React.useState<boolean>(false);

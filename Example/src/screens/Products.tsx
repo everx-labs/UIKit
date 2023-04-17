@@ -11,7 +11,7 @@ import { UIPromoNotice } from '@tonlabs/uicast.promo-notice';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
-export const Products = () => {
+export function Products() {
     const [displayPromoNotice, setDisplayPromoNotice] = useState(false);
 
     return (
@@ -48,4 +48,4 @@ export const Products = () => {
             </ExampleSection>
         </ExampleScreen>
     );
-};
+}

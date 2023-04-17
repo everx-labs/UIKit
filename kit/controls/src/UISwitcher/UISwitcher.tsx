@@ -3,8 +3,9 @@ import { IconSwitcher } from './IconSwitcher';
 import { ToggleSwitcher } from './ToggleSwitcher';
 import { UISwitcherProps, UISwitcherVariant } from './types';
 
-export const UISwitcher: React.FC<UISwitcherProps> = (props: UISwitcherProps) => {
-    switch (props.variant) {
+export function UISwitcher(props: UISwitcherProps) {
+    const { variant } = props;
+    switch (variant) {
         case UISwitcherVariant.Toggle:
             return <ToggleSwitcher {...props} />;
         case UISwitcherVariant.Select:
@@ -13,4 +14,4 @@ export const UISwitcher: React.FC<UISwitcherProps> = (props: UISwitcherProps) =>
         default:
             return <IconSwitcher {...props} />;
     }
-};
+}

@@ -7,7 +7,7 @@ import { UILabel } from '@tonlabs/uikit.themes';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
-export const Checkbox = () => {
+export function Checkbox() {
     const [switcherSelected, setSwitcherSelected] = useState(false);
     return (
         <ExampleScreen>
@@ -169,4 +169,4 @@ export const Checkbox = () => {
             </ExampleSection>
         </ExampleScreen>
     );
-};
+}

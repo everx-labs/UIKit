@@ -18,21 +18,27 @@ import { ExampleScreen } from '../components/ExampleScreen';
 
 const DATA = ['Hello', 'this', 'is', 'UICarouselView'];
 
+function Content({ title }: { title: string }) {
+    return (
+        <View style={{ height: 200, justifyContent: 'center', alignItems: 'center' }}>
+            <UIImage
+                style={{ height: 100, width: '100%', resizeMode: 'contain' }}
+                source={UIAssets.images[404]}
+            />
+            <Text style={{ textAlign: 'center', fontSize: 30, color: '#000' }}>{title}</Text>
+        </View>
+    );
+}
+
+function getComponent(title: string) {
+    return function CarouselComponent(): React.ReactElement<View> {
+        return <Content title={title} />;
+    };
+}
+
 export function CarouselScreen() {
     const onPageIndexChange = (index: number) => {
         console.log('page changed', index);
-    };
-
-    const component = (title: string) => (): React.ReactElement<View> => {
-        return (
-            <View style={{ height: 200, justifyContent: 'center', alignItems: 'center' }}>
-                <UIImage
-                    style={{ height: 100, width: '100%', resizeMode: 'contain' }}
-                    source={UIAssets.images[404]}
-                />
-                <Text style={{ textAlign: 'center', fontSize: 30, color: '#000' }}>{title}</Text>
-            </View>
-        );
     };
 
     const [pagingEnabled, setPagingEnabled] = React.useState(false);
@@ -53,7 +59,9 @@ export function CarouselScreen() {
                         onPageIndexChange={onPageIndexChange}
                     >
                         {DATA.map(text => {
-                            return <UICarouselView.Page key={text} component={component(text)} />;
+                            return (
+                                <UICarouselView.Page key={text} component={getComponent(text)} />
+                            );
                         })}
                     </UICarouselView.Container>
                 </View>

@@ -60,13 +60,13 @@ function Counter({
     );
 }
 
-export const CountdownCirlce = ({
+export function CountdownCirlce({
     countdownValue,
     countdownProgress,
     color,
     size = UIConstant.notice.countdownCircle.size,
     strokeWidth = UIConstant.notice.countdownCircle.strokeWidth,
-}: CountdownCirlceProps) => {
+}: CountdownCirlceProps) {
     const theme = useTheme();
 
     const radius = React.useMemo(() => size / 2, [size]);
@@ -120,7 +120,7 @@ export const CountdownCirlce = ({
             </View>
         </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {

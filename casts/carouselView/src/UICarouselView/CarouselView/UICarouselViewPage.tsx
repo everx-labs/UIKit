@@ -1,3 +1,5 @@
 import type { UICarouselViewPageProps } from '../types';
 
-export const UICarouselViewPage: React.FC<UICarouselViewPageProps> = () => null;
+export function UICarouselViewPage(_props: UICarouselViewPageProps) {
+    return null;
+}

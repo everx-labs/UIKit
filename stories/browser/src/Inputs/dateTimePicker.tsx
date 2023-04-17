@@ -21,27 +21,24 @@ export function DateTimePicker({ onLayout, ...message }: DateTimeMessage) {
 
     if (message.externalState != null) {
         return (
-            <>
-                <View onLayout={onLayout}>
+            <View onLayout={onLayout}>
+                <BubbleSimplePlainText
+                    type={ChatMessageType.PlainText}
+                    key="date-picker-box-bubble-prompt"
+                    text={
+                        message.prompt || uiLocalized.Browser.DateTimeInput.DoYouWantChooseDateTime
+                    }
+                    status={MessageStatus.Received}
+                />
+                {message.externalState.datetime != null && (
                     <BubbleSimplePlainText
                         type={ChatMessageType.PlainText}
-                        key="date-picker-box-bubble-prompt"
-                        text={
-                            message.prompt ||
-                            uiLocalized.Browser.DateTimeInput.DoYouWantChooseDateTime
-                        }
-                        status={MessageStatus.Received}
+                        key="time-picker-value-bubble-chosen-time"
+                        text={uiLocalized.formatDate(message.externalState.datetime)}
+                        status={MessageStatus.Sent}
                     />
-                    {message.externalState.datetime != null && (
-                        <BubbleSimplePlainText
-                            type={ChatMessageType.PlainText}
-                            key="time-picker-value-bubble-chosen-time"
-                            text={uiLocalized.formatDate(message.externalState.datetime)}
-                            status={MessageStatus.Sent}
-                        />
-                    )}
-                </View>
-            </>
+                )}
+            </View>
         );
     }
 

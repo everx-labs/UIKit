@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export const addNativeProps = <P extends {}>(
+export const addNativeProps = <P extends object>(
     component: React.ComponentClass<P>,
 ): React.ForwardRefExoticComponent<P> => {
     return React.forwardRef<any, any>((props, ref: React.ForwardedRef<any>) => {

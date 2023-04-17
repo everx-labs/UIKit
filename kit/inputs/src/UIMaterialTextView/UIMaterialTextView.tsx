@@ -33,13 +33,13 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
 
         const processedChildren = useUIMaterialTextViewChildren(
             children,
-            colorScheme,
             hideClearButton,
             inputHasValue,
             isFocused,
             isHovered,
             editable,
             ref.current?.clear,
+            colorScheme,
         );
 
         const onChangeText = React.useCallback(
