@@ -40,8 +40,7 @@ export function UIStaticNumber({
     showPositiveSign,
 }: UINumberGeneralProps &
     UINumberAppearance & { sign?: React.ReactNode; signBeforeNumber?: boolean }) {
-    const { decimal: decimalSeparator, grouping: integerGroupChar } =
-        uiLocalized.localeInfo.numbers;
+    const { grouping: integerGroupChar } = uiLocalized.localeInfo.numbers;
 
     const formatted = React.useMemo(() => {
         const decimalDigitCount = getDecimalPartDigitCount(value, decimalAspect);
@@ -49,11 +48,10 @@ export function UIStaticNumber({
             value,
             decimalAspect,
             decimalDigitCount,
-            decimalSeparator,
             integerGroupChar,
             showPositiveSign,
         );
-    }, [value, decimalAspect, decimalSeparator, integerGroupChar, showPositiveSign]);
+    }, [value, decimalAspect, integerGroupChar, showPositiveSign]);
 
     /**
      * A dirty hack to respect default font scale setting of `Text`,
