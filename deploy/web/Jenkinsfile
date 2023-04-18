@@ -6,15 +6,12 @@ G_webbuild = "Not set"
 G_webdeploy = "Not set"
 G_statusMergedPR = 'closed'
 G_developmentBranch = 'development'
-G_global_npm_path = "/var/jenkins_home/workspace/Front"
+G_global_npm_path = null
+G_buildImage = null
 
 pipeline {
     agent {
-        dockerfile {
-            dir 'deploy/dockerfiles'
-            filename 'Dockerfile_Web'
-            label 'master'
-        }
+        label 'linux'
     }
     parameters {
         string(name: 'BRANCH', defaultValue: 'development', description: 'Branch for the build')
@@ -48,79 +45,70 @@ pipeline {
         disableConcurrentBuilds()
     }
     stages {
+        stage('Prepare environment') {
+            steps {
+                script {
+                    G_buildImage = "uikit-build-${UUID.randomUUID().toString().toLowerCase()}"
+                    docker.build(G_buildImage, '--no-cache --force-rm -f deploy/dockerfiles/Dockerfile_Web deploy')
+                }
+            }
+        }
         stage('Check the merge to development') {
             when { anyOf { environment name: 'FORCE', value: 'true'; allOf {expression { "${action}" == G_statusMergedPR}; expression { "${destination_branch}" == G_developmentBranch}}}}
-            stages {
-                stage('Pre-setup') {
-                    steps {
-                        script {
-                            def buildCause = currentBuild.getBuildCauses()
-                            echo "buildCause: ${buildCause}";
-                        }
-                    }
-                    post {
-                        success {
-                            script{G_setup = "success"}
-                        }
-                        failure {
-                            script{G_setup = "failure"}
-                        }
-                    }
-                }
-                stage('Lerna boostrap') {
-                    steps{
-                        script {
-                            sshagent (credentials: [G_gitcred]) {
-                                sh """
-                                    npx lerna bootstrap && npx lerna run prepare
-                                """
+            steps {
+                script {
+                    docker.image(G_buildImage).inside() {
+                        stage('Pre-setup') {
+                            G_global_npm_path = pwd()
+                            try {
+                                def buildCause = currentBuild.getBuildCauses()
+                                echo "buildCause: ${buildCause}"
+                                G_setup = "success"
+                            } catch(ex) {
+                                G_setup = "failure"
+                                error "Pre-setup failed"
                             }
                         }
-                    }
-                    post {
-                        success {
-                            script{G_install = "success"}
+                        stage('Lerna boostrap') {
+                            try {
+                                sshagent (credentials: [G_gitcred]) {
+                                    sh """
+                                        npm install
+                                        npx lerna bootstrap
+                                        npx lerna run prepare
+                                    """
+                                }
+                                G_install = "success"
+                            } catch(ex) {
+                                G_install = "failure"
+                                error "Lerna boostrap failed"
+                            }
                         }
-                        failure {
-                            script{G_install = "failure"}
+                        stage('Webapp build'){
+                            try {
+                                sh """
+                                    cd Example
+                                    yarn run web:bundle
+                                """
+                                G_webbuild = "success"
+                            } catch(ex) {
+                                G_webbuild = "failure"
+                                error "Lerna boostrap failed"
+                            }
                         }
-                    }
-                }
-                stage('Webapp build'){
-                    steps {
-                        script {
-                            sh """
-                                cd Example
-                                yarn run web:bundle
-                            """
-                        }
-                    }
-                    post {
-                        success {
-                            script{G_webbuild = "success"}
-                        }
-                        failure {
-                            script{G_webbuild = "failure"}
-                        }
-                    }
-                }
-                stage('Webapp deploy'){
-                    steps {
-                        script {
-                            sh """
-                                npm config set prefix $G_global_npm_path
-                                alias firebase="`npm config get prefix`/bin/firebase"
-                                cd Example
-                                firebase deploy --token "$token"
-                            """
-                        }
-                    }
-                    post {
-                        success {
-                            script{G_webdeploy = "success"}
-                        }
-                        failure {
-                            script{G_webdeploy = "failure"}
+                        stage('Webapp deploy'){
+                            try {
+                                sh """
+                                    npm config set prefix $G_global_npm_path
+                                    alias firebase="`npm config get prefix`/bin/firebase"
+                                    cd Example
+                                    firebase deploy --token "$token"
+                                """
+                                G_webdeploy = "success"
+                            } catch(ex) {
+                                G_webdeploy = "failure"
+                                error "Webapp deploy failed"
+                            }
                         }
                     }
                 }
