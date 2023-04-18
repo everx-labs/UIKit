@@ -36,8 +36,6 @@ enum Rounding {
 // TODO: move it to uiLocalized!
 // @inline
 const INTEGER_GROUP_SIZE = 3;
-// @inline
-const DECIMAL_GROUP_SIZE = 3;
 
 function getIntegerSign(integer: BigNumber, showPositiveSign?: boolean) {
     'worklet';
@@ -56,7 +54,6 @@ function getIntegerSign(integer: BigNumber, showPositiveSign?: boolean) {
 export function formatNumber(
     value: BigNumber,
     decimalDigitCount: number,
-    decimalSeparator: string,
     integerGroupChar: string,
     showPositiveSign?: boolean,
 ) {
@@ -74,11 +71,7 @@ export function formatNumber(
     // if it's negative it would be `-0,` or `-0.`
     const decimal = value.minus(integer);
     const decimalFormatted = decimal
-        .toFormat(decimalDigitCount, Rounding.RoundDown, {
-            decimalSeparator,
-            fractionGroupSize: DECIMAL_GROUP_SIZE,
-            fractionGroupSeparator: ' ',
-        })
+        .toFormat(decimalDigitCount, Rounding.RoundDown)
         .slice(decimal.lt(0) ? 2 : 1);
 
     return {
@@ -91,7 +84,6 @@ export function formatNumber(
  * @param value number to format
  * @param decimalAspect predefined aspects how to format number
  * @param decimalDigitCount count of digits in decimal part of the number
- * @param decimalSeparator localized separator from user's device
  * @param integerGroupChar localized char for group from user's device
  * @returns formatter number as string
  */
@@ -99,7 +91,6 @@ export function localizedNumberFormat(
     value: BigNumber,
     decimalAspect: UINumberDecimalAspect,
     decimalDigitCount: number,
-    decimalSeparator: string,
     integerGroupChar: string,
     showPositiveSign: boolean | undefined,
 ) {
@@ -108,7 +99,6 @@ export function localizedNumberFormat(
     const { integer: integerFormatted, decimal: decimalFormatted } = formatNumber(
         value,
         decimalDigitCount,
-        decimalSeparator,
         integerGroupChar,
         showPositiveSign,
     );

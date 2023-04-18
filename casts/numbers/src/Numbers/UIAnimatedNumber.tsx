@@ -48,8 +48,7 @@ export function UIAnimatedNumber({
     const diff = React.useRef(new BigNumber(0));
 
     const progress = useSharedValue(0);
-    const { decimal: decimalSeparator, grouping: integerGroupChar } =
-        uiLocalized.localeInfo.numbers;
+    const { grouping: integerGroupChar } = uiLocalized.localeInfo.numbers;
 
     const decimalDigitCount = React.useMemo(() => {
         return getDecimalPartDigitCount(value, decimalAspect);
@@ -60,7 +59,6 @@ export function UIAnimatedNumber({
             value,
             decimalAspect,
             decimalDigitCount,
-            decimalSeparator,
             integerGroupChar,
             showPositiveSign,
         ),
@@ -74,7 +72,6 @@ export function UIAnimatedNumber({
                     valueHolder.current,
                     decimalAspect,
                     decimalDigitCount,
-                    decimalSeparator,
                     integerGroupChar,
                     showPositiveSign,
                 );
@@ -89,7 +86,6 @@ export function UIAnimatedNumber({
             formatted,
             decimalAspect,
             decimalDigitCount,
-            decimalSeparator,
             integerGroupChar,
             showPositiveSign,
         ],
@@ -121,19 +117,11 @@ export function UIAnimatedNumber({
                 newValue,
                 decimalAspect,
                 decimalDigitCount,
-                decimalSeparator,
                 integerGroupChar,
                 showPositiveSign,
             );
         },
-        [
-            formatted,
-            decimalAspect,
-            decimalDigitCount,
-            decimalSeparator,
-            integerGroupChar,
-            showPositiveSign,
-        ],
+        [formatted, decimalAspect, decimalDigitCount, integerGroupChar, showPositiveSign],
     );
 
     useAnimatedReaction(
