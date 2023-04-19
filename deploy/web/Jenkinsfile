@@ -6,7 +6,7 @@ G_webbuild = "Not set"
 G_webdeploy = "Not set"
 G_statusMergedPR = 'closed'
 G_developmentBranch = 'development'
-G_global_npm_path = null
+G_global_npm_path = "/var/jenkins_home/workspace/Front"
 G_buildImage = null
 
 pipeline {
@@ -97,6 +97,7 @@ pipeline {
                         stage('Webapp deploy'){
                             try {
                                 sh """
+                                    yarn config set prefix $G_global_npm_path
                                     yarn global add firebase-tools
                                     npm config set prefix $G_global_npm_path
                                     alias firebase="`npm config get prefix`/bin/firebase"
