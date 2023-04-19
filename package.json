@@ -63,6 +63,7 @@
         "eslint-plugin-module-resolver": "1.4.0",
         "eslint-plugin-react": "7.24.0",
         "eslint-plugin-react-hooks": "4.2.0",
+        "firebase": "8.10.1",
         "flow-bin": "0.162.0",
         "jest": "26.6.3",
         "jetifier": "2.0.0",
