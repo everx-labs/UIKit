@@ -36,7 +36,7 @@ const getAlertViewActions = (children: React.ReactNode): AlertViewActions => {
     React.Children.toArray(children).forEach((child: React.ReactNode): void => {
         if (React.isValidElement(child)) {
             if (child.type === UIAlertViewAction) {
-                sortAction(child);
+                sortAction(child as React.ReactElement<UIAlertViewActionProps>);
             }
             if (child.type === React.Fragment) {
                 const alertViewActions: AlertViewActions = getAlertViewActions(
@@ -96,14 +96,14 @@ function Header({ title, note, icon }: HeaderProps): React.ReactElement<View> | 
     );
 }
 
-export const UIAlertViewContainer: React.FC<UIAlertViewContainerProps> = ({
+export function UIAlertViewContainer({
     visible,
     title,
     note,
     icon,
     testID,
     children,
-}: UIAlertViewContainerProps) => {
+}: UIAlertViewContainerProps) {
     const alertViewActions: AlertViewActions = React.useMemo(
         () => getAlertViewActions(children),
         [children],
@@ -131,7 +131,7 @@ export const UIAlertViewContainer: React.FC<UIAlertViewContainerProps> = ({
             </View>
         </AlertBox>
     );
-};
+}
 
 const useStyles = makeStyles(() => ({
     container: {

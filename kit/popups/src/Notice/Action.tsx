@@ -4,7 +4,7 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import type { ActionProps } from './types';
 
-export const Action = ({ action }: ActionProps) => {
+export function Action({ action }: ActionProps) {
     if (!action) {
         return null;
     }
@@ -20,7 +20,7 @@ export const Action = ({ action }: ActionProps) => {
             />
         </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {

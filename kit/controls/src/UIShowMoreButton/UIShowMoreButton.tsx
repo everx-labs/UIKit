@@ -53,14 +53,14 @@ function getSize(showMoreButtonHeight: UIShowMoreButtonHeight): number {
     }
 }
 
-export const UIShowMoreButton: React.FunctionComponent<UIShowMoreButtonProps> = ({
+export function UIShowMoreButton({
     label = uiLocalized.ShowMore,
     progress = false,
     height = UIShowMoreButtonHeight.Medium,
     onPress: onPressProp,
     type = UIShowMoreButtonType.Default,
     testID,
-}: UIShowMoreButtonProps) => {
+}: UIShowMoreButtonProps) {
     const theme = useTheme();
 
     const onPress = React.useCallback(() => {
@@ -109,7 +109,7 @@ export const UIShowMoreButton: React.FunctionComponent<UIShowMoreButtonProps> = 
             </View>
         </UIPressableArea>
     );
-};
+}
 
 const useStyles = makeStyles(
     (backgroundColor: ColorValue, showMoreButtonHeight: UIShowMoreButtonHeight) => {

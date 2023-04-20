@@ -92,7 +92,7 @@ type IProps = {
     testID?: string;
 };
 
-export const LinearChart: React.FC<IProps> = ({ data, testID }: IProps) => {
+export function LinearChart({ data, testID }: IProps) {
     const theme = useTheme();
     const dimensions = useSharedValue<LinearChartDimensions>({
         ...LINEAR_CHART_INITIAL_DIMENSIONS,
@@ -201,4 +201,4 @@ export const LinearChart: React.FC<IProps> = ({ data, testID }: IProps) => {
             </View>
         </View>
     );
-};
+}

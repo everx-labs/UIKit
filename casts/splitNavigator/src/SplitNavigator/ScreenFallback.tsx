@@ -18,19 +18,19 @@ try {
     // Ignore
 }
 
-export const MaybeScreenContainer = ({
+export function MaybeScreenContainer({
     enabled,
     ...rest
 }: ViewProps & {
     enabled: boolean;
     children: React.ReactNode;
-}) => {
+}) {
     if (Screens?.screensEnabled?.()) {
         return <Screens.ScreenContainer enabled={enabled} {...rest} />;
     }
 
     return <View {...rest} />;
-};
+}
 
 function MaybeNativeScreen({ visible, children, ...rest }: Props) {
     const Screen = React.useContext(

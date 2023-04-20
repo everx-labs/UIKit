@@ -21,29 +21,25 @@ export function TimePicker({ onLayout, ...message }: TimeMessage) {
 
     if (message.externalState != null) {
         return (
-            <>
-                <View onLayout={onLayout}>
+            <View onLayout={onLayout}>
+                <BubbleSimplePlainText
+                    type={ChatMessageType.PlainText}
+                    key="date-picker-box-bubble-prompt"
+                    text={message.prompt || uiLocalized.Browser.DateTimeInput.DoYouWantChooseTime}
+                    status={MessageStatus.Received}
+                />
+                {message.externalState.time != null && (
                     <BubbleSimplePlainText
                         type={ChatMessageType.PlainText}
-                        key="date-picker-box-bubble-prompt"
-                        text={
-                            message.prompt || uiLocalized.Browser.DateTimeInput.DoYouWantChooseTime
-                        }
-                        status={MessageStatus.Received}
+                        key="time-picker-value-bubble-chosen-time"
+                        text={uiLocalized.formatTime(
+                            message.externalState.time,
+                            message.isAmPmTime ? 'hh:mm A' : 'HH:mm',
+                        )}
+                        status={MessageStatus.Sent}
                     />
-                    {message.externalState.time != null && (
-                        <BubbleSimplePlainText
-                            type={ChatMessageType.PlainText}
-                            key="time-picker-value-bubble-chosen-time"
-                            text={uiLocalized.formatTime(
-                                message.externalState.time,
-                                message.isAmPmTime ? 'hh:mm A' : 'HH:mm',
-                            )}
-                            status={MessageStatus.Sent}
-                        />
-                    )}
-                </View>
-            </>
+                )}
+            </View>
         );
     }
 

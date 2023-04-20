@@ -4,10 +4,6 @@ import { MediaMessageError } from '../constants';
 import type { ChatMediaMessage, MediaMessage } from '../types';
 import { MediaImage } from './MediaImage';
 
-export const ChatBubbleMedia: React.FC<ChatMediaMessage> = (message: ChatMediaMessage) => {
-    return <BubbleMedia {...message} />;
-};
-
 // eslint-disable-next-line no-shadow
 enum DataType {
     Image,
@@ -27,7 +23,7 @@ const useDataType = (data: string | null): DataType => {
     }, [data]);
 };
 
-export const BubbleMedia: React.FC<MediaMessage> = (message: MediaMessage) => {
+export function BubbleMedia(message: MediaMessage) {
     const { data, onError } = message;
     const dataType = useDataType(data);
 
@@ -46,4 +42,8 @@ export const BubbleMedia: React.FC<MediaMessage> = (message: MediaMessage) => {
             }
             return null;
     }
-};
+}
+
+export function ChatBubbleMedia(message: ChatMediaMessage) {
+    return <BubbleMedia {...message} />;
+}

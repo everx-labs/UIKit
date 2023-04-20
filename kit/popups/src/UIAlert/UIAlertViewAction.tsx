@@ -2,12 +2,7 @@ import * as React from 'react';
 import { UIAlertViewActionProps, UIAlertViewActionType } from './types';
 import { UIForeground } from '../UIForeground';
 
-export const UIAlertViewAction: React.FC<UIAlertViewActionProps> = ({
-    type,
-    title,
-    onPress,
-    testID,
-}: UIAlertViewActionProps) => {
+export function UIAlertViewAction({ type, title, onPress, testID }: UIAlertViewActionProps) {
     if (type === UIAlertViewActionType.Cancel) {
         return (
             <UIForeground.Container key={title}>
@@ -30,4 +25,4 @@ export const UIAlertViewAction: React.FC<UIAlertViewActionProps> = ({
             </UIForeground.PrimaryColumn>
         </UIForeground.Container>
     );
-};
+}

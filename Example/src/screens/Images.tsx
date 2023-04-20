@@ -49,8 +49,10 @@ function DuplicateImageCheck() {
     );
 }
 
-export const Images = () => (
-    <ExampleScreen>
-        <DuplicateImageCheck />
-    </ExampleScreen>
-);
+export function Images() {
+    return (
+        <ExampleScreen>
+            <DuplicateImageCheck />
+        </ExampleScreen>
+    );
+}

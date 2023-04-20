@@ -9,7 +9,7 @@ export type OnCustomKeyboardVisible = (visible: boolean) => void | Promise<void>
 const callbacks: { [id: string]: OnEvent | undefined } = {};
 const dismisses: { [id: string]: (() => void) | undefined } = {};
 
-export function registerKeyboardComponent<KeyboardProps>(
+export function registerKeyboardComponent<KeyboardProps extends object>(
     moduleName: string,
     keyboardComponent: React.ComponentType<KeyboardProps>,
 ) {
@@ -92,7 +92,7 @@ export function useCustomKeyboard(
 
     const toggle = React.useCallback(() => {
         if (Platform.OS === 'android' && inputRef && 'current' in inputRef) {
-            // Unfortunatelly when you tap a button on Android
+            // Unfortunately when you tap a button on Android
             // TextInput doesn't lose focus, that lead to a case
             // when custom keyboard is opened, and then on tap
             // on TextInput we want to see regular one

@@ -22,7 +22,7 @@ type FooterProps = {
     prompt?: string;
 };
 
-export const Footer = ({ prompt, visibilityState }: FooterProps) => {
+export function Footer({ prompt, visibilityState }: FooterProps) {
     const theme = useTheme();
     const insets = useSafeAreaInsets();
 
@@ -54,7 +54,7 @@ export const Footer = ({ prompt, visibilityState }: FooterProps) => {
             </Animated.View>
         </Animated.View>
     );
-};
+}
 
 const useStyles = makeStyles((theme: Theme, insets: EdgeInsets) => ({
     footerContainer: {

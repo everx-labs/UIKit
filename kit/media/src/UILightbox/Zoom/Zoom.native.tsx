@@ -13,14 +13,14 @@ import {
 
 const INITIAL_VALUE = -1;
 
-export const Zoom: React.FC<ZoomProps> = ({
+export function Zoom({
     children,
     contentWidth,
     contentHeight,
     onClose,
     underlayOpacity,
     visibilityState,
-}: ZoomProps) => {
+}: ZoomProps) {
     const pinchRef = useAnimatedRef();
     const panRef = useAnimatedRef();
 
@@ -129,7 +129,7 @@ export const Zoom: React.FC<ZoomProps> = ({
             </PinchGestureHandler>
         </Animated.View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     fullScreen: {

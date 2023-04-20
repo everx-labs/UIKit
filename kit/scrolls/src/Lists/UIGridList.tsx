@@ -16,16 +16,17 @@ export function UIGridList<T>({
         ({ item, index, separators }) => {
             const height = itemHeight ? { height: itemHeight } : styles.itemSquare;
             const isLonelyItem =
-                data?.length &&
-                data?.length % UIConstant.grid.numColumns &&
-                index === data?.length - 1;
+                data != null &&
+                data.length &&
+                data.length % UIConstant.grid.numColumns &&
+                index === data.length - 1;
             return (
                 <View style={[styles.item, height, !!isLonelyItem && styles.lastItem]}>
                     {renderItemProp({ item, index, separators })}
                 </View>
             );
         },
-        [itemHeight, data?.length, renderItemProp],
+        [itemHeight, data, renderItemProp],
     );
 
     const getItemLayout = React.useCallback(

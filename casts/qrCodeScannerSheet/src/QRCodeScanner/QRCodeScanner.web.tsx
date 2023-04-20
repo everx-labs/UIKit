@@ -25,18 +25,23 @@ enum QR_CODE_ERROR {
     UNRECOGNIZED = 2,
 }
 
-export function QRCodeScanner(props: QRCodeScannerProps) {
+export function QRCodeScanner({
+    containerStyle,
+    onRead,
+    reactivate,
+    reactivateTimeout,
+}: QRCodeScannerProps) {
     const [qrCodeError, setQrCodeError] = React.useState(QR_CODE_ERROR.NONE);
 
     if (qrCodeError === QR_CODE_ERROR.NONE) {
         return (
-            <View style={props.containerStyle}>
+            <View style={containerStyle}>
                 <QRCodeScannerWeb
                     onScan={(data: any) => {
                         if (data == null) {
                             return;
                         }
-                        props.onRead({ data });
+                        onRead({ data });
                     }}
                     onError={(err: DOMException) => {
                         if (/Permission denied/.test(err.message)) {
@@ -47,14 +52,14 @@ export function QRCodeScanner(props: QRCodeScannerProps) {
                     }}
                     showViewFinder={false}
                     resolution={UILayoutConstant.elasticWidthCardSheet}
-                    delay={props.reactivate ? props.reactivateTimeout || 500 : false}
+                    delay={reactivate ? reactivateTimeout || 500 : false}
                 />
             </View>
         );
     }
     if (qrCodeError === QR_CODE_ERROR.PERMISSION) {
         return (
-            <View style={[styles.errorContainer, props.containerStyle]}>
+            <View style={[styles.errorContainer, containerStyle]}>
                 <UILabel
                     role={UILabelRoles.TitleMedium}
                     color={UILabelColors.TextPrimaryInverted}
@@ -67,7 +72,7 @@ export function QRCodeScanner(props: QRCodeScannerProps) {
     }
     if (qrCodeError === QR_CODE_ERROR.UNRECOGNIZED) {
         return (
-            <View style={[styles.errorContainer, props.containerStyle]}>
+            <View style={[styles.errorContainer, containerStyle]}>
                 <UILabel
                     role={UILabelRoles.TitleMedium}
                     color={UILabelColors.TextPrimaryInverted}

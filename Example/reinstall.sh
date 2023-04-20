@@ -1,7 +1,6 @@
 npx lerna bootstrap
 npx lerna run prepare
 
-rvm use ruby-$(cat .ruby-version)
 bundle install
 
 cd ios
@@ -14,7 +13,9 @@ then
   osascript -e "display notification \"Waiting for secret files revealing\" with title \"Quiver UI\""
 fi
 
+cd ..
 yarn run secret:reveal
+cd Example
 
 if command -v osascript &> /dev/null
 then

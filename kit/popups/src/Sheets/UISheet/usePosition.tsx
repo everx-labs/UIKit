@@ -112,12 +112,12 @@ export function useSheetProgress() {
 export function usePosition(
     height: Animated.SharedValue<number>,
     origin: Animated.SharedValue<number>,
-    hasOpenAnimation: boolean = true,
-    hasCloseAnimation: boolean = true,
     onCloseProp: OnClose | undefined,
     onCloseModal: OnClose,
     onOpenEndProp: OnOpen | undefined,
     onCloseEndProp: OnClose | undefined,
+    hasOpenAnimation: boolean = true,
+    hasCloseAnimation: boolean = true,
 ) {
     const showState = useSharedValue<ShowStates>(SHOW_STATE_CLOSING);
 

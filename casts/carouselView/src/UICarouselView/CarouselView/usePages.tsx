@@ -13,7 +13,7 @@ export function getPages(children: React.ReactNode): React.ReactElement<UICarous
             if (React.isValidElement(child)) {
                 const pages: React.ReactElement<UICarouselViewPageProps>[] = acc;
                 if (child.type === UICarouselViewPage) {
-                    pages.push(child);
+                    pages.push(child as React.ReactElement<UICarouselViewPageProps>);
                     return pages;
                 }
 

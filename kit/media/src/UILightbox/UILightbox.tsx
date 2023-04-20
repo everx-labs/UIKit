@@ -15,7 +15,7 @@ import { useImages } from './hooks/useImages';
 import { useImageSize } from './hooks/useImageSize';
 import { UIConstant } from '../constants';
 
-export const UILightbox = ({
+export function UILightbox({
     image,
     preview,
     prompt,
@@ -26,7 +26,7 @@ export const UILightbox = ({
     onLoad,
     onError,
     testID,
-}: UILightboxProps) => {
+}: UILightboxProps) {
     const ref = useAnimatedRef<View>();
     const previewRef = React.useRef<Image>(null);
     const [isImageOpen, setImageOpen] = React.useState<boolean>(false);
@@ -90,7 +90,7 @@ export const UILightbox = ({
             />
         </View>
     );
-};
+}
 
 const useStyles = makeStyles((maxHeight: number, maxWidth: number | undefined) => ({
     skeleton: {

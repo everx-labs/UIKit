@@ -71,9 +71,11 @@ export function RefreshControl({
         refreshingGuard.value = true;
         setRefreshing(true);
 
-        // If onResresh is blocking it can prevent loader to draw
+        // If onRefresh is blocking it can prevent loader to draw
         // so that start it only when update is done
-        await new Promise(res => requestAnimationFrame(res));
+        await new Promise(res => {
+            requestAnimationFrame(res);
+        });
 
         try {
             await allSettled([
@@ -90,7 +92,7 @@ export function RefreshControl({
                 console.warn('Unhandled error has been caught during the refresh:', err);
             }
         } finally {
-            // Do not interupt active scroll
+            // Do not interrupt active scroll
             if (scrollInProgress.value) {
                 stopRefreshing();
                 waitForScrollEnd.value = true;

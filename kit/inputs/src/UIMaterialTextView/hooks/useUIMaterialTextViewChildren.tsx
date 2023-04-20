@@ -4,13 +4,13 @@ import { useInputChildren, InputClearButton, InputColorScheme } from '../../Comm
 
 export function useUIMaterialTextViewChildren(
     children: UIMaterialTextViewProps['children'],
-    colorScheme: UIMaterialTextViewProps['colorScheme'] = InputColorScheme.Default,
     hideClearButton: UIMaterialTextViewProps['hideClearButton'],
     inputHasValue: boolean,
     isFocused: boolean,
     isHovered: boolean,
     editable: boolean,
     clear: (() => void) | undefined,
+    colorScheme: UIMaterialTextViewProps['colorScheme'] = InputColorScheme.Default,
 ): UIMaterialTextViewProps['children'] {
     const materialTextViewChildren = useInputChildren(children, colorScheme);
 

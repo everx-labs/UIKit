@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Platform, Pressable, TouchableOpacity } from 'react-native';
+import { Platform, Pressable, View } from 'react-native';
 import { makeStyles } from '@tonlabs/uikit.themes';
 import type { UITooltipProps } from './types';
 import { UITooltipBox } from './UITooltipBox';
 
 export function UITooltip({ children, ...restProps }: UITooltipProps) {
-    const containerRef = React.useRef<TouchableOpacity>(null);
+    const containerRef = React.useRef<View>(null);
     const [visible, setVisible] = React.useState(false);
 
     const onClose = React.useCallback(function onClose() {

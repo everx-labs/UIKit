@@ -7,12 +7,7 @@ import { useHover } from '../../useHover';
 import { useImageStyle, useOverlayStyle, useSwitcherGestureEvent, useSwitcherState } from './hooks';
 import { UIConstant } from '../../constants';
 
-export const ToggleSwitcher: React.FC<UISwitcherProps> = ({
-    active,
-    disabled,
-    onPress,
-    testID,
-}: UISwitcherProps) => {
+export function ToggleSwitcher({ active, disabled, onPress, testID }: UISwitcherProps) {
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
     const theme = useTheme();
@@ -59,7 +54,7 @@ export const ToggleSwitcher: React.FC<UISwitcherProps> = ({
             </Animated.View>
         </TapGestureHandler>
     );
-};
+}
 
 const toggleShapeStyles = {
     width: UIConstant.switcher.toggleWidth,

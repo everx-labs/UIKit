@@ -5,12 +5,12 @@ import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { IconProps } from './types';
 
-export const Icon: React.FC<IconProps> = ({ source }: IconProps) => {
+export function Icon({ source }: IconProps) {
     if (!source) {
         return null;
     }
     return <UIImage source={source} style={styles.image} tintColor={ColorVariants.TextPrimary} />;
-};
+}
 
 const styles = StyleSheet.create({
     image: {

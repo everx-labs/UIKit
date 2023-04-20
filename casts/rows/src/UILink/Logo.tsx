@@ -5,7 +5,7 @@ import { UILayoutConstant, UISkeleton } from '@tonlabs/uikit.layout';
 import type { LogoProps } from './types';
 import { UIConstant } from '../constants';
 
-export const Logo: React.FC<LogoProps> = ({ logo, loading }: LogoProps) => {
+export function Logo({ logo, loading }: LogoProps) {
     if (loading) {
         return (
             <View style={styles.container}>
@@ -27,7 +27,7 @@ export const Logo: React.FC<LogoProps> = ({ logo, loading }: LogoProps) => {
             <UIImage source={logo} style={styles.image} />
         </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {

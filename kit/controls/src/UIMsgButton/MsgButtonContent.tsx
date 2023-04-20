@@ -15,7 +15,7 @@ import type { UIMsgButtonProps } from './types';
 import { UIIndicator } from '../UIIndicator';
 import { useColorValues, useCornerStyle } from './hooks';
 
-export const MsgButtonContent = ({
+export function MsgButtonContent({
     icon,
     iconPosition = UIMsgButtonIconPosition.Left,
     loading,
@@ -24,7 +24,7 @@ export const MsgButtonContent = ({
     cornerPosition,
     type = UIMsgButtonType.Primary,
     variant = UIMsgButtonVariant.Neutral,
-}: UIMsgButtonProps) => {
+}: UIMsgButtonProps) {
     const typeRef = React.useRef(type);
     const { backgroundColor, borderColor, contentColor, backgroundOverlayColor } = useColorValues(
         typeRef.current,
@@ -125,7 +125,7 @@ export const MsgButtonContent = ({
             )}
         </Animated.View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {

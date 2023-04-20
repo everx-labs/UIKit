@@ -131,12 +131,12 @@ function SheetContent({
     } = usePosition(
         height,
         origin,
-        hasOpenAnimation,
-        hasCloseAnimation,
         onClose,
         onClosePortalRequest,
         onOpenEnd,
         onCloseEnd,
+        hasOpenAnimation,
+        hasCloseAnimation,
     );
 
     React.useEffect(() => {

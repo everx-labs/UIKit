@@ -3,7 +3,7 @@ import { Portal } from '@tonlabs/uikit.layout';
 import type { DuplicateProps } from './types';
 import { DuplicateContent } from './DuplicateContent';
 
-export const Duplicate = (props: DuplicateProps) => {
+export function Duplicate(props: DuplicateProps) {
     const { isOpen } = props;
     if (!isOpen) {
         return null;
@@ -14,4 +14,4 @@ export const Duplicate = (props: DuplicateProps) => {
             <DuplicateContent {...props} />
         </Portal>
     );
-};
+}

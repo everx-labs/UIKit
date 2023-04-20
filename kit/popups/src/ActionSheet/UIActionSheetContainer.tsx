@@ -28,7 +28,7 @@ const getActionSheetActions = (children: React.ReactNode): ActionSheetActions =>
                 actions.concat(actionSheetActions.actionList);
             } else {
                 if (child.props.type === UIActionSheetActionType.Cancel) {
-                    cancelAction = child;
+                    cancelAction = child as React.ReactElement<UIActionSheetActionProps>;
                 }
                 actions.push(child);
             }
@@ -70,12 +70,12 @@ const renderHeader = (
     );
 };
 
-export const UIActionSheetContainer: React.FC<UIActionSheetContainerProps> = ({
+export function UIActionSheetContainer({
     note,
     visible,
     testID,
     children,
-}: UIActionSheetContainerProps) => {
+}: UIActionSheetContainerProps) {
     const actionSheetActions: ActionSheetActions = React.useMemo(
         () => getActionSheetActions(children),
         [children],
@@ -95,7 +95,7 @@ export const UIActionSheetContainer: React.FC<UIActionSheetContainerProps> = ({
             </View>
         </UICardSheet>
     );
-};
+}
 
 const useStyles = makeStyles(() => ({
     container: {

@@ -17,24 +17,22 @@ export function CountryPicker({ onLayout, ...message }: CountryMessage) {
 
     if (message.externalState != null) {
         return (
-            <>
-                <View onLayout={onLayout}>
+            <View onLayout={onLayout}>
+                <BubbleSimplePlainText
+                    type={ChatMessageType.PlainText}
+                    key="country-picker-box-bubble-prompt"
+                    text={message.prompt || uiLocalized.CountryPicker.Title}
+                    status={MessageStatus.Received}
+                />
+                {message.externalState.value != null && (
                     <BubbleSimplePlainText
                         type={ChatMessageType.PlainText}
-                        key="country-picker-box-bubble-prompt"
-                        text={message.prompt || uiLocalized.CountryPicker.Title}
-                        status={MessageStatus.Received}
+                        key="country-picker-value-bubble-chosen-time"
+                        text={message.externalState.value}
+                        status={MessageStatus.Sent}
                     />
-                    {message.externalState.value != null && (
-                        <BubbleSimplePlainText
-                            type={ChatMessageType.PlainText}
-                            key="country-picker-value-bubble-chosen-time"
-                            text={message.externalState.value}
-                            status={MessageStatus.Sent}
-                        />
-                    )}
-                </View>
-            </>
+                )}
+            </View>
         );
     }
 

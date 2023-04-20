@@ -23,7 +23,7 @@ export function useIsDarkColor(color: ColorVariants) {
             }
 
             // eslint-disable-next-line no-restricted-properties
-            return Math.pow((v + 0.055) / 1.055, 2.4);
+            return ((v + 0.055) / 1.055) ** 2.4;
         });
 
         const luminance = 0.2126 * colorArray[0] + 0.7152 * colorArray[1] + 0.0722 * colorArray[2];

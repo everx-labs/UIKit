@@ -1,1 +1,3 @@
-export const BubbleImage = () => null;
+export function BubbleImage() {
+    return null;
+}

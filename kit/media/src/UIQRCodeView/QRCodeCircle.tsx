@@ -46,14 +46,14 @@ const getQrDataLength = (diameterOfCircleQRCode: number, sizeOfSquare: number) =
     return qrDataLengthFloored;
 };
 
-export const getQRSvgCirlce = (
+export const getQRSvgCircle = (
     diameterOfCircleQRCode: number,
     sizeOfInnerQRCode: number,
     sizeOfSquare: number,
 ) => {
     const qrDataLength: number = getQrDataLength(diameterOfCircleQRCode, sizeOfSquare);
     /**
-     * The part of the square that did not fit into the QRSvgCirlce
+     * The part of the square that did not fit into the QRSvgCircle
      * due to the alignment in the center of the QR code
      */
     const offsetOfCoordinateGrid = (diameterOfCircleQRCode - qrDataLength * sizeOfSquare) / 2;
@@ -119,7 +119,7 @@ export const getQRSvgCirlce = (
     return qrSvg;
 };
 
-export const QRCodeCircle: React.FC<QRCodeProps> = ({ value, logo, size }: QRCodeProps) => {
+export function QRCodeCircle({ value, logo, size }: QRCodeProps) {
     const theme = useTheme();
     const qrCodeSize = useQRCodeSize(size);
     const qrCodeBorderWidth = useQRCodeBorderWidth(size);
@@ -140,7 +140,7 @@ export const QRCodeCircle: React.FC<QRCodeProps> = ({ value, logo, size }: QRCod
     );
 
     const qrSvgOuter = React.useMemo(
-        () => getQRSvgCirlce(diameterOfCircleQRCode, sizeOfInnerQRCode, sizeOfSquare),
+        () => getQRSvgCircle(diameterOfCircleQRCode, sizeOfInnerQRCode, sizeOfSquare),
         [diameterOfCircleQRCode, sizeOfInnerQRCode, sizeOfSquare],
     );
 
@@ -167,4 +167,4 @@ export const QRCodeCircle: React.FC<QRCodeProps> = ({ value, logo, size }: QRCod
             {logoRender}
         </View>
     );
-};
+}

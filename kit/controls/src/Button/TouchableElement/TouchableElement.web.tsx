@@ -7,7 +7,7 @@ import { BUTTON_WITH_SPRING_CONFIG } from '../../constants';
 
 import type { TouchableElementProps } from './types';
 
-export const TouchableElement = ({
+export function TouchableElement({
     animations,
     children,
     disabled,
@@ -18,7 +18,7 @@ export const TouchableElement = ({
     contentStyle,
     testID,
     ...props
-}: TouchableElementProps) => {
+}: TouchableElementProps) {
     const { hover, press, title, icon } = animations;
 
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
@@ -108,7 +108,7 @@ export const TouchableElement = ({
             </Animated.View>
         </TouchableWithoutFeedback>
     );
-};
+}
 
 const styles = StyleSheet.create({
     overlayContainer: {

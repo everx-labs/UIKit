@@ -152,7 +152,9 @@ export const getQRSvg = (
     const qrData: number[][] = new Array(qrDataLength)
         .fill(null)
         .map((_: null, index: number): number[] => {
-            return qr.modules.data.slice(index * qrDataLength, (index + 1) * qrDataLength);
+            return Array.from(
+                qr.modules.data.slice(index * qrDataLength, (index + 1) * qrDataLength),
+            );
         })
         .map((row: number[], y: number): number[] => {
             return row.map((value: number, x: number): number => {

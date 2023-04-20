@@ -60,11 +60,11 @@ const processScreenOptions = (
     return { ...screenOptions, ...commonOptions };
 };
 
-export const StackNavigator = ({
+export function StackNavigator({
     children,
     initialRouteName,
     screenOptions,
-}: SurfStackNavigatorProps) => {
+}: SurfStackNavigatorProps) {
     const doesSupportNative = Platform.OS !== 'web' && screensEnabled?.();
 
     const {
@@ -131,6 +131,6 @@ export const StackNavigator = ({
             descriptors={descriptors}
         />
     );
-};
+}
 
 export const createStackNavigator = createNavigatorFactory(StackNavigator);

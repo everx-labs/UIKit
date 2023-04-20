@@ -7,7 +7,7 @@ import { BUTTON_WITH_SPRING_CONFIG } from '../../constants';
 
 import type { TouchableElementProps } from './types';
 
-export const TouchableElement = ({
+export function TouchableElement({
     animations,
     children,
     disabled,
@@ -18,7 +18,7 @@ export const TouchableElement = ({
     contentStyle,
     testID,
     ...props
-}: TouchableElementProps) => {
+}: TouchableElementProps) {
     const { press, title, icon } = animations;
 
     const handlePressIn = () => {
@@ -70,7 +70,7 @@ export const TouchableElement = ({
             </Animated.View>
         </TouchableNativeFeedback>
     );
-};
+}
 
 const styles = StyleSheet.create({
     overlayContainer: {

@@ -58,7 +58,7 @@ export function StickersList(props: Props) {
     // theme is passed as a prop here in order to have its actual values,
     // because context is missed for the native keyboard
     const theme = useTheme();
-    const { stickers, theme: themeProp } = props;
+    const { stickers, theme: themeProp, onEvent } = props;
     const backgroundColor: ViewStyle = React.useMemo(
         () => ({
             backgroundColor: themeProp
@@ -80,7 +80,7 @@ export function StickersList(props: Props) {
                                 key={`pkg_${item.id}_sticker_${sticker.name}`}
                                 sticker={sticker}
                                 pkgID={item.id}
-                                onPress={props.onEvent}
+                                onPress={onEvent}
                             />
                         ))}
                     </ScrollView>

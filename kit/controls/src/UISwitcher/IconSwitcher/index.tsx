@@ -34,13 +34,7 @@ const getShape = (variant: UISwitcherVariant) => {
     }
 };
 
-export const IconSwitcher: React.FC<UISwitcherProps> = ({
-    active,
-    disabled,
-    onPress,
-    variant,
-    testID,
-}: UISwitcherProps) => {
+export function IconSwitcher({ active, disabled, onPress, variant, testID }: UISwitcherProps) {
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
     const theme = useTheme();
@@ -93,7 +87,7 @@ export const IconSwitcher: React.FC<UISwitcherProps> = ({
             </Animated.View>
         </RawButton>
     );
-};
+}
 
 const useStyles = makeStyles((theme: Theme, variant: UISwitcherVariant) => ({
     offSwitcher: {

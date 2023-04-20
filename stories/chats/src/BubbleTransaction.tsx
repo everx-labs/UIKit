@@ -106,31 +106,27 @@ function TransactionSublabel(props: TransactionMessage) {
     const { status, time } = props;
     if (status === MessageStatus.Aborted) {
         return (
-            <>
-                <UILabel
-                    testID={`transaction_message_${getValueForTestID(props)}_aborted`}
-                    role={UILabelRoles.ParagraphFootnote}
-                    color={getCommentColor(props)}
-                >
-                    {uiLocalized.formatString(
-                        uiLocalized.TransactionStatus.aborted,
-                        uiLocalized.formatDate(time),
-                    )}
-                </UILabel>
-            </>
+            <UILabel
+                testID={`transaction_message_${getValueForTestID(props)}_aborted`}
+                role={UILabelRoles.ParagraphFootnote}
+                color={getCommentColor(props)}
+            >
+                {uiLocalized.formatString(
+                    uiLocalized.TransactionStatus.aborted,
+                    uiLocalized.formatDate(time),
+                )}
+            </UILabel>
         );
     }
     if (status === MessageStatus.Pending) {
         return (
-            <>
-                <UILabel
-                    testID={`transaction_message_${getValueForTestID(props)}_time`}
-                    role={UILabelRoles.ParagraphFootnote}
-                    color={getCommentColor(props)}
-                >
-                    {uiLocalized.TransactionStatus.sending}
-                </UILabel>
-            </>
+            <UILabel
+                testID={`transaction_message_${getValueForTestID(props)}_time`}
+                role={UILabelRoles.ParagraphFootnote}
+                color={getCommentColor(props)}
+            >
+                {uiLocalized.TransactionStatus.sending}
+            </UILabel>
         );
     }
 

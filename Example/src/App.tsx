@@ -85,7 +85,7 @@ const ThemeSwitcher = React.createContext({
     toggleTheme: () => {},
 });
 
-const Main = ({ navigation }: { navigation: any }) => {
+function Main({ navigation }: { navigation: any }) {
     const [isSearchVisible, setIsSearchVisible] = React.useState(false);
     const tabBarBottomInset = useSplitTabBarHeight();
     return (
@@ -296,7 +296,7 @@ const Main = ({ navigation }: { navigation: any }) => {
             </PortalManager>
         </UIBackgroundView>
     );
-};
+}
 
 function useResetContent() {
     const [contentVisible, setContentVisible] = React.useState(true);
@@ -313,7 +313,7 @@ function useResetContent() {
     };
 }
 
-const App = () => {
+function App() {
     const navRef = React.useRef(null);
     useReduxDevToolsExtension(navRef);
 
@@ -609,11 +609,22 @@ const App = () => {
             </UIModalPortalManager>
         </StoreProvider>
     );
-};
+}
 
-const AppWrapper = () => {
+function AppWrapper() {
     const [isDarkTheme, setIsDarkTheme] = React.useState(false);
     const [isHidden, setIsHidden] = React.useState(false);
+
+    const themeSwitcherValue = React.useMemo(() => {
+        return {
+            isDarkTheme,
+            toggleTheme: () => {
+                setIsDarkTheme(!isDarkTheme);
+                setIsHidden(true);
+                setImmediate(() => setIsHidden(false));
+            },
+        };
+    }, [isDarkTheme]);
 
     if (isHidden) {
         return null;
@@ -622,16 +633,7 @@ const AppWrapper = () => {
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <ThemeContext.Provider value={isDarkTheme ? DarkTheme : LightTheme}>
-                <ThemeSwitcher.Provider
-                    value={{
-                        isDarkTheme,
-                        toggleTheme: () => {
-                            setIsDarkTheme(!isDarkTheme);
-                            setIsHidden(true);
-                            setImmediate(() => setIsHidden(false));
-                        },
-                    }}
-                >
+                <ThemeSwitcher.Provider value={themeSwitcherValue}>
                     <UIStatusBarManager>
                         <SafeAreaProvider>
                             <App />
@@ -641,7 +643,7 @@ const AppWrapper = () => {
             </ThemeContext.Provider>
         </GestureHandlerRootView>
     );
-};
+}
 
 const styles = StyleSheet.create({
     body: {

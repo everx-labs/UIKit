@@ -21,14 +21,7 @@ const convertQRCodeErrorToQRCodeDrawMessageStatus = (
     }
 };
 
-export const QRCodeDraw = ({
-    data,
-    status,
-    onLayout,
-    prompt,
-    onDraw,
-    onPress,
-}: QRCodeDrawMessage) => {
+export function QRCodeDraw({ data, status, onLayout, prompt, onDraw, onPress }: QRCodeDrawMessage) {
     const onError = React.useCallback(
         (error: QRCodeError) => {
             if (onDraw) {
@@ -66,4 +59,4 @@ export const QRCodeDraw = ({
             )}
         </View>
     );
-};
+}

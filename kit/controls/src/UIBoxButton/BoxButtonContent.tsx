@@ -16,14 +16,14 @@ import type { UIBoxButtonProps } from './types';
 import { usePressableContentColor } from '../Pressable';
 import { UIIndicator } from '../UIIndicator';
 
-export const BoxButtonContent = ({
+export function BoxButtonContent({
     icon,
     iconPosition = UIBoxButtonIconPosition.Left,
     loading,
     title,
     type = UIBoxButtonType.Primary,
     variant = UIBoxButtonVariant.Neutral,
-}: UIBoxButtonProps) => {
+}: UIBoxButtonProps) {
     const backgroundColor = usePressableContentColor(ContentColors[type][variant].background);
     const contentColor = usePressableContentColor(ContentColors[type][variant].content);
     const backgroundOverlayColor = usePressableContentColor(BackgroundOverlayColors);
@@ -112,7 +112,7 @@ export const BoxButtonContent = ({
             )}
         </Animated.View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {

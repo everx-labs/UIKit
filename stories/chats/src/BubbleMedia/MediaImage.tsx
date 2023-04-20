@@ -10,7 +10,7 @@ import type { MediaMessage } from '../types';
 import { useMaxImageSize } from './hooks';
 import { MediaMessageError } from '../constants';
 
-export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
+export function MediaImage(message: MediaMessage) {
     const { onError, onLoad, preview, data, onLayout, prompt } = message;
     const containerStyle = useBubbleContainerStyle(message);
     const bubbleBackgroundColor = useBubbleBackgroundColor(message);
@@ -44,7 +44,7 @@ export const MediaImage: React.FC<MediaMessage> = (message: MediaMessage) => {
             </View>
         </View>
     );
-};
+}
 
 const useStyles = makeStyles(() => ({
     container: {
