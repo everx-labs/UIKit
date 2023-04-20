@@ -10,7 +10,6 @@ import {
     UIAmountInputDecimalAspect,
     UIAmountInputRef,
     UISeedPhraseInput,
-    InputFont,
 } from '@tonlabs/uikit.inputs';
 import { ColorVariants } from '@tonlabs/uikit.themes';
 import { UISearchBar } from '@tonlabs/uicast.bars';
@@ -30,13 +29,12 @@ export const Inputs = () => {
         <ExampleScreen>
             <ExampleSection title="UISearchBar">
                 <View style={{ maxWidth: 400, alignSelf: 'stretch' }}>
-                    <UISearchBar font={InputFont.Surf} />
+                    <UISearchBar />
                 </View>
             </ExampleSection>
             <ExampleSection title="UISeedPhraseInput">
                 <View style={{ maxWidth: 400, padding: 20, alignSelf: 'stretch' }}>
                     <UISeedPhraseInput
-                        font={InputFont.Surf}
                         testID="uiNumberTextView_default"
                         totalWords={[3, 6]}
                         validatePhrase={async (_phrase, parts) => {
@@ -81,14 +79,9 @@ export const Inputs = () => {
                         testID="uiMaterialTextView_without_label"
                         placeholder="Placeholder without Label"
                         helperText="Caption"
-                        font={InputFont.Surf}
                     />
                     <View style={{ height: 20 }} />
-                    <UIMaterialTextView
-                        testID="uiMaterialTextView_default"
-                        label="Label"
-                        font={InputFont.Surf}
-                    />
+                    <UIMaterialTextView testID="uiMaterialTextView_default" label="Label" />
                     <View style={{ height: 20 }} />
                     <UIMaterialTextView
                         testID="uiMaterialTextView_disabled"
@@ -102,7 +95,6 @@ export const Inputs = () => {
                         label="Label with initial value"
                         helperText="Caption"
                         defaultValue="Initial value"
-                        font={InputFont.Surf}
                     >
                         <UIMaterialTextView.Action>
                             EVER
@@ -185,7 +177,6 @@ export const Inputs = () => {
             <ExampleSection title="UISeedPhraseTextView">
                 <View style={{ padding: 20, maxWidth: 400, alignSelf: 'stretch' }}>
                     <UISeedPhraseTextView
-                        font={InputFont.Surf}
                         testID="uiSeedPhraseTextView_5_or_10"
                         words={mnemonicWords}
                         totalWords={[5, 10]}
@@ -215,7 +206,6 @@ export const Inputs = () => {
             <ExampleSection title="UIAddressInput">
                 <View style={{ width: 300, paddingVertical: 20 }}>
                     <UIAddressTextView
-                        font={InputFont.Surf}
                         testID="uiAddressInput_default"
                         label="Type address"
                         validateAddress={() => Promise.resolve(null)}
@@ -237,7 +227,6 @@ export const Inputs = () => {
             <ExampleSection title="UIAmountInput">
                 <View style={{ maxWidth: 400, padding: 20, alignSelf: 'stretch' }}>
                     <UIAmountInput
-                        font={InputFont.Surf}
                         testID="uiMaterialTextView_amount"
                         placeholder="0.30"
                         label="Amount Currency"
@@ -272,7 +261,6 @@ export const Inputs = () => {
                     </UIAmountInput>
                     <View style={{ height: 20 }} />
                     <UIAmountInput
-                        font={InputFont.Surf}
                         ref={amountPrecisionRef}
                         testID="uiMaterialTextView_amount"
                         placeholder="0.000"
