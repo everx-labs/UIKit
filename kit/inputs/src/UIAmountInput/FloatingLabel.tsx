@@ -54,14 +54,16 @@ function useFoldedLabelScale(
     role: TypographyVariants,
     foldedLabelRole: TypographyVariants,
 ): Readonly<Animated.SharedValue<number>> {
-    const paragraphTextStyle: TextStyle = StyleSheet.flatten(Typography[role]);
-    const labelTextStyle: TextStyle = StyleSheet.flatten(Typography[foldedLabelRole]);
-    const expandedLabelLineHeight: number = paragraphTextStyle.lineHeight
-        ? paragraphTextStyle.lineHeight
-        : 24;
-    const foldedLabelLineHeight: number = labelTextStyle.lineHeight
-        ? labelTextStyle.lineHeight
-        : 16;
+    const { expandedLabelLineHeight, foldedLabelLineHeight } = React.useMemo(() => {
+        const paragraphTextStyle: TextStyle = StyleSheet.flatten(Typography[role]);
+        const labelTextStyle: TextStyle = StyleSheet.flatten(Typography[foldedLabelRole]);
+        return {
+            expandedLabelLineHeight: paragraphTextStyle.lineHeight
+                ? paragraphTextStyle.lineHeight
+                : 24,
+            foldedLabelLineHeight: labelTextStyle.lineHeight ? labelTextStyle.lineHeight : 16,
+        };
+    }, [foldedLabelRole, role]);
     return useDerivedValue(
         () => foldedLabelLineHeight / expandedLabelLineHeight,
         [foldedLabelLineHeight, expandedLabelLineHeight],
