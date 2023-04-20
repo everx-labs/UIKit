@@ -13,6 +13,4 @@ export const UIConstant = {
     refreshControlPositioningDuration: 200,
 
     headerItemHorizontalInset: 13,
-
-    searchBarRightInnerActionWidth: 30,
 };

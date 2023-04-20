@@ -43,7 +43,7 @@ export const MaterialTextViewFloating = React.forwardRef<
         colorScheme = InputColorScheme.Default,
         ...rest
     } = props;
-    const { editable = true } = rest;
+    const { editable = true, font } = rest;
     const isExpanded = useDerivedValue(() => isFocused.value || hasValue.value);
 
     const { isPlaceholderVisible, showPlacehoder } = usePlaceholderVisibility(isExpanded);
@@ -104,6 +104,7 @@ export const MaterialTextViewFloating = React.forwardRef<
                         isHovered={isHovered}
                         editable={editable}
                         colorScheme={colorScheme}
+                        font={font}
                     >
                         {label}
                     </FloatingLabel>

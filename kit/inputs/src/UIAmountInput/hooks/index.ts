@@ -9,3 +9,4 @@ export * from './useSetText';
 export * from './useInputVerticalMovementStyle';
 export * from './usePlaceholderAttributes';
 export * from './useInputMessageType';
+export * from './useLabelRoles';

@@ -3,16 +3,20 @@ import { StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { UIImage } from '@tonlabs/uikit.media';
-import { ColorVariants, UILabel, UILabelRoles } from '@tonlabs/uikit.themes';
+import { ColorVariants, UILabel } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 
 import type { InputTextProps } from '../types';
 import { inputChildrenTextColor } from '../constants';
+import type { InputFont } from '../../constants';
+import { useInputChildrenLabelRole } from '../useInputChildrenLabelRole';
 
 function useProcessedChildren(
     children: React.ReactNode,
     tintColor: ColorVariants | undefined,
+    font: InputFont | undefined,
 ): React.ReactNode {
+    const labelRole = useInputChildrenLabelRole(font);
     return React.useMemo(() => {
         const length = React.Children.count(children);
         return React.Children.map(children, (child: React.ReactNode, index: number) => {
@@ -21,7 +25,7 @@ function useProcessedChildren(
 
             if (typeof child === 'string') {
                 return (
-                    <UILabel role={UILabelRoles.Action} color={tintColor} style={{ marginRight }}>
+                    <UILabel role={labelRole} color={tintColor} style={{ marginRight }}>
                         {child}
                     </UILabel>
                 );
@@ -39,11 +43,11 @@ function useProcessedChildren(
             }
             return child;
         });
-    }, [children, tintColor]);
+    }, [children, tintColor, labelRole]);
 }
 
-export function InputText({ children }: InputTextProps) {
-    const processedChildren = useProcessedChildren(children, inputChildrenTextColor);
+export function InputText({ children, font }: InputTextProps) {
+    const processedChildren = useProcessedChildren(children, inputChildrenTextColor, font);
 
     return (
         <Animated.View style={styles.textContainer}>

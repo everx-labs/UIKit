@@ -19,3 +19,8 @@ export const inputBackgroundColorsScheme: Record<InputColorScheme, BackgroundCol
         disabled: ColorVariants.BackgroundTertiary,
     },
 };
+
+export enum InputFont {
+    Default = 'Default',
+    Surf = 'Surf',
+}

@@ -23,6 +23,7 @@ import {
     useInputVerticalMovementStyle,
     usePlaceholderAttributes,
     useInputMessageType,
+    useLabelRoles,
 } from './hooks';
 import { UITextView, UITextViewRef } from '../UITextView';
 import { TapHandler } from './TapHandler';
@@ -64,6 +65,7 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
             message,
             messageType = UIAmountInputMessageType.Info,
             label,
+            font,
         } = props;
         // @ts-ignore
         const ref = useAnimatedRef<UITextViewRef>();
@@ -137,7 +139,7 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
             colorScheme,
         );
 
-        const childrenProcessed = useInputChildren(children, colorScheme);
+        const childrenProcessed = useInputChildren(children, colorScheme, font);
 
         /**
          * Setup the AmountInput ref.
@@ -164,6 +166,8 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
         const backgroundColor = useInputBackgroundColor(colorScheme, editable);
         const styles = useStyles(editable, hasChildren, backgroundColor);
 
+        const { placeholderRole, inputMessageRole } = useLabelRoles(font);
+
         return (
             <>
                 <View
@@ -187,6 +191,7 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
                                 <UILabelAnimated
                                     animatedProps={animatedPlaceholderProps}
                                     style={styles.placeholder}
+                                    role={placeholderRole}
                                 >
                                     {placeholder}
                                 </UILabelAnimated>
@@ -196,6 +201,7 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
                                     isHovered={isHovered}
                                     editable={editable}
                                     colors={placeholderColors}
+                                    font={font}
                                 >
                                     {label}
                                 </FloatingLabel>
@@ -208,6 +214,7 @@ export const UIAmountInputContent = React.forwardRef<UIAmountInputRef, UIAmountI
                     type={inputMessageType}
                     onPress={onMessagePress}
                     colorScheme={colorScheme}
+                    role={inputMessageRole}
                 >
                     {message}
                 </InputMessage>

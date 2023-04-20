@@ -1,6 +1,6 @@
 import type { StyleProp, ViewStyle } from 'react-native';
 import type { UIImageProps } from '@tonlabs/uikit.media';
-import type { InputColorScheme } from '../constants';
+import type { InputColorScheme, InputFont } from '../constants';
 
 export type InputIconProps = UIImageProps & {
     /**
@@ -47,6 +47,11 @@ export type InputTextProps = {
      * This prop is not required. If not passed, the colorScheme of the parent component will be used.
      */
     colorScheme?: InputColorScheme;
+    /**
+     * Font of the text.
+     * This prop is not required. If not passed, the font of the parent component will be used.
+     */
+    font?: InputFont;
 };
 
 export type InputClearButtonProps = {

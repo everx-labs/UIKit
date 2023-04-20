@@ -1,4 +1,4 @@
-import type { UILabelProps } from '@tonlabs/uikit.themes';
+import type { TypographyVariants, UILabelProps } from '@tonlabs/uikit.themes';
 import type { PressableColors } from '../Pressable';
 
 export type UIPressableLabelProps = Omit<UILabelProps, 'color'> & {
@@ -25,6 +25,10 @@ export type UIPressableLabelProps = Omit<UILabelProps, 'color'> & {
      * ```
      */
     colors: PressableColors;
+    /**
+     * Typography variant of the label.
+     */
+    role?: TypographyVariants;
 };
 
 export type UIPressableLabelContentProps = Omit<UIPressableLabelProps, 'onPress'>;

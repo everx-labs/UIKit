@@ -1,3 +1,4 @@
+import type { TypographyVariants } from '@tonlabs/uikit.themes';
 import type { InputColorScheme } from '../constants';
 
 export enum InputMessageType {
@@ -27,6 +28,10 @@ export type InputMessageProps = {
      * @default InputColorScheme.Default
      */
     colorScheme?: InputColorScheme;
+    /**
+     * Typography variant of the message.
+     */
+    role?: TypographyVariants;
 };
 
 export type InputMessageContainerProps = {

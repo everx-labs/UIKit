@@ -23,6 +23,8 @@ import { Typography, TypographyVariants, UILabelAnimated } from '@tonlabs/uikit.
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import { withSpringConfig } from './constants';
 import type { UIAmountInputProps } from './types';
+import type { InputFont } from '../Common';
+import { useLabelRoles } from './hooks';
 
 export type FloatingLabelProps = Pick<UIAmountInputProps, 'editable'> & {
     /** Text content of the label */
@@ -45,19 +47,26 @@ export type FloatingLabelProps = Pick<UIAmountInputProps, 'editable'> & {
             default: string;
         }>
     >;
+    font?: InputFont;
 };
 
-const paragraphTextStyle: TextStyle = StyleSheet.flatten(
-    Typography[TypographyVariants.ParagraphText],
-);
-const labelTextStyle: TextStyle = StyleSheet.flatten(Typography[TypographyVariants.ParagraphLabel]);
-export const expandedLabelLineHeight: number = paragraphTextStyle.lineHeight
-    ? paragraphTextStyle.lineHeight
-    : 24;
-export const foldedLabelLineHeight: number = labelTextStyle.lineHeight
-    ? labelTextStyle.lineHeight
-    : 16;
-const FOLDED_LABEL_SCALE: number = foldedLabelLineHeight / expandedLabelLineHeight;
+function useFoldedLabelScale(
+    role: TypographyVariants,
+    foldedLabelRole: TypographyVariants,
+): Readonly<Animated.SharedValue<number>> {
+    const paragraphTextStyle: TextStyle = StyleSheet.flatten(Typography[role]);
+    const labelTextStyle: TextStyle = StyleSheet.flatten(Typography[foldedLabelRole]);
+    const expandedLabelLineHeight: number = paragraphTextStyle.lineHeight
+        ? paragraphTextStyle.lineHeight
+        : 24;
+    const foldedLabelLineHeight: number = labelTextStyle.lineHeight
+        ? labelTextStyle.lineHeight
+        : 16;
+    return useDerivedValue(
+        () => foldedLabelLineHeight / expandedLabelLineHeight,
+        [foldedLabelLineHeight, expandedLabelLineHeight],
+    );
+}
 
 // @inline
 const POSITION_FOLDED: number = 0;
@@ -79,8 +88,9 @@ function validateChildren(children: string): boolean {
 
 type LabelProps = Pick<FloatingLabelProps, 'children' | 'isHovered' | 'colors' | 'editable'> & {
     onLabelLayout: (layoutChangeEvent: LayoutChangeEvent) => void;
+    role?: TypographyVariants;
 };
-function Label({ children, onLabelLayout, isHovered, editable, colors }: LabelProps) {
+function Label({ children, onLabelLayout, isHovered, editable, colors, role }: LabelProps) {
     const toColor = useDerivedValue(() => {
         return isHovered.value && editable ? colors.value.hover : colors.value.default;
     }, [editable]);
@@ -93,7 +103,7 @@ function Label({ children, onLabelLayout, isHovered, editable, colors }: LabelPr
     return (
         <UILabelAnimated
             animatedProps={animatedProps}
-            role={TypographyVariants.ParagraphText}
+            role={role}
             onLayout={onLabelLayout}
             numberOfLines={1}
             lineBreakMode="tail"
@@ -103,10 +113,13 @@ function Label({ children, onLabelLayout, isHovered, editable, colors }: LabelPr
     );
 }
 
-function getFoldedX(width: number): number {
+function getFoldedX(
+    width: number,
+    foldedLabelScale: Readonly<Animated.SharedValue<number>>,
+): number {
     'worklet';
 
-    return (width * (1 - FOLDED_LABEL_SCALE)) / 2 - LEFT_OFFSET_OF_UI_LABEL_TEXT_FROM_EDGE / 2;
+    return (width * (1 - foldedLabelScale.value)) / 2 - LEFT_OFFSET_OF_UI_LABEL_TEXT_FROM_EDGE / 2;
 }
 
 function useOnLabelLayout(
@@ -141,6 +154,7 @@ export function FloatingLabel({
     isHovered,
     editable,
     colors,
+    font,
 }: FloatingLabelProps) {
     /** Dimensions of label in the expanded state */
     const expandedLabelWidth: Animated.SharedValue<number> = useSharedValue<number>(0);
@@ -152,10 +166,18 @@ export function FloatingLabel({
         return expandedLabelWidth.value && expandedLabelHeight.value ? 1 : 0;
     });
 
+    const { floatingLabelExpandedRole, floatingLabelFoldedRole } = useLabelRoles(font);
+
+    const foldedLabelScale = useFoldedLabelScale(
+        floatingLabelExpandedRole,
+        floatingLabelFoldedRole,
+    );
+
     const labelContainerStyle: StyleProp<ViewStyle> = useAnimatedStyle(() => {
-        const foldedX: number = getFoldedX(expandedLabelWidth.value);
+        const foldedX: number = getFoldedX(expandedLabelWidth.value, foldedLabelScale);
         const expandedYValue =
-            (expandedLabelHeight.value * (1 - FOLDED_LABEL_SCALE)) / 2 - expandedLabelHeight.value;
+            (expandedLabelHeight.value * (1 - foldedLabelScale.value)) / 2 -
+            expandedLabelHeight.value;
         return {
             transform: [
                 {
@@ -176,7 +198,7 @@ export function FloatingLabel({
                     scale: interpolate(
                         expandingValue.value,
                         [POSITION_FOLDED, POSITION_EXPANDED],
-                        [1, FOLDED_LABEL_SCALE],
+                        [1, foldedLabelScale.value],
                     ),
                 },
             ],
@@ -195,6 +217,7 @@ export function FloatingLabel({
                     isHovered={isHovered}
                     editable={editable}
                     colors={colors}
+                    role={floatingLabelExpandedRole}
                 >
                     {children}
                 </Label>

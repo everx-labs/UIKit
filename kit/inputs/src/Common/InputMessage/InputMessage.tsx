@@ -21,13 +21,7 @@ export function InputMessage({
 
     return (
         <AnimatedContainer>
-            <UIPressableLabel
-                onPress={onPress}
-                role={TypographyVariants.ParagraphLabel}
-                style={styles.comment}
-                colors={colors}
-                {...rest}
-            >
+            <UIPressableLabel onPress={onPress} style={styles.comment} colors={colors} {...rest}>
                 {children}
             </UIPressableLabel>
         </AnimatedContainer>

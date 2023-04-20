@@ -3,7 +3,7 @@ import type { ColorValue, StyleProp, TextStyle } from 'react-native';
 import { useAnimatedProps } from 'react-native-reanimated';
 
 import { PressableColors, usePressableContentColor } from '@tonlabs/uikit.controls';
-import { UILabelAnimated, UILabelRoles } from '@tonlabs/uikit.themes';
+import { TypographyVariants, UILabelAnimated } from '@tonlabs/uikit.themes';
 import { defaultInputColorScheme, inputChildrenPressableColors } from '../constants';
 import { InputColorScheme } from '../../constants';
 
@@ -11,10 +11,12 @@ export function StringPressableChild({
     children,
     colorScheme = InputColorScheme.Default,
     style,
+    role,
 }: {
     children: string;
     colorScheme?: InputColorScheme;
     style?: StyleProp<TextStyle>;
+    role?: TypographyVariants;
 }) {
     const colors = React.useMemo<PressableColors>(() => {
         return inputChildrenPressableColors[colorScheme ?? defaultInputColorScheme];
@@ -29,11 +31,7 @@ export function StringPressableChild({
     });
 
     return (
-        <UILabelAnimated
-            role={UILabelRoles.Action}
-            animatedProps={animatedLabelProps}
-            style={style}
-        >
+        <UILabelAnimated role={role} animatedProps={animatedLabelProps} style={style}>
             {children}
         </UILabelAnimated>
     );
