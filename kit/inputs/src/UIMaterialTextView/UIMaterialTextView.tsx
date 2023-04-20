@@ -26,6 +26,7 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
             hideClearButton = false,
             editable = true,
             colorScheme = InputColorScheme.Default,
+            font,
         } = props;
         const [isHovered, setIsHovered] = React.useState<boolean>(false);
         const { isFocused, onFocus, onBlur } = useFocused(onFocusProp, onBlurProp);
@@ -40,6 +41,7 @@ const UIMaterialTextViewForward = React.forwardRef<UIMaterialTextViewRef, UIMate
             isHovered,
             editable,
             ref.current?.clear,
+            font,
         );
 
         const onChangeText = React.useCallback(

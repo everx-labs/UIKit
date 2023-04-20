@@ -9,12 +9,15 @@ import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { InputActionProps } from '../types';
 import { StringPressableChild } from './StringPressableChild';
 import { ImagePressableChild } from './ImagePressableChild';
-import { InputColorScheme } from '../../constants';
+import { InputColorScheme, InputFont } from '../../constants';
+import { useInputChildrenLabelRole } from '../useInputChildrenLabelRole';
 
 function useProcessedChildren(
     children: InputActionProps['children'],
     colorScheme: InputColorScheme,
+    font: InputFont | undefined,
 ) {
+    const labelRole = useInputChildrenLabelRole(font);
     return React.useMemo(() => {
         const length = React.Children.count(children);
         return React.Children.map(children, (child: React.ReactNode, index: number) => {
@@ -23,7 +26,11 @@ function useProcessedChildren(
 
             if (typeof child === 'string') {
                 return (
-                    <StringPressableChild colorScheme={colorScheme} style={{ marginRight }}>
+                    <StringPressableChild
+                        colorScheme={colorScheme}
+                        style={{ marginRight }}
+                        role={labelRole}
+                    >
                         {child}
                     </StringPressableChild>
                 );
@@ -43,7 +50,7 @@ function useProcessedChildren(
             }
             return null;
         });
-    }, [children, colorScheme]);
+    }, [children, colorScheme, labelRole]);
 }
 
 export function InputAction({
@@ -51,8 +58,9 @@ export function InputAction({
     onPress,
     colorScheme = InputColorScheme.Default,
     disabled = false,
+    font,
 }: InputActionProps) {
-    const processedChildren = useProcessedChildren(children, colorScheme);
+    const processedChildren = useProcessedChildren(children, colorScheme, font);
 
     return (
         <Pressable onPress={onPress} style={styles.container} disabled={disabled}>

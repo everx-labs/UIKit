@@ -9,6 +9,7 @@ import type {
     ViewStyle,
 } from 'react-native';
 import type { ColorVariants } from '@tonlabs/uikit.themes';
+import type { InputFont } from '../Common';
 
 /**
  * Only those `behavioral` styles from Text are accepted!
@@ -62,6 +63,10 @@ export type UITextViewProps = Omit<
      * Only works with `multiline={true}`
      */
     onNumberOfLinesChange?: (numberOfLines: number) => void;
+    /**
+     * Font of the input
+     */
+    font?: InputFont;
 };
 
 export interface UITextViewRef

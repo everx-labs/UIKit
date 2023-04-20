@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
+import { UILabelRoles } from '@tonlabs/uikit.themes';
+
 import type { MaterialTextViewProps } from './types';
-import { InputColorScheme, InputMessage, InputMessageType } from '../Common';
+import { InputColorScheme, InputFont, InputMessage, InputMessageType } from '../Common';
 
 function useMessageType(
     success: boolean | undefined,
@@ -37,9 +39,20 @@ export function MaterialTextViewComment(
         error,
         onHelperTextPress,
         colorScheme = InputColorScheme.Default,
+        font,
     } = props;
 
     const inputMessageType = useMessageType(success, warning, error);
+
+    const role = React.useMemo(() => {
+        switch (font) {
+            case InputFont.Surf:
+                return UILabelRoles.SurfParagraphSmall;
+            case InputFont.Default:
+            default:
+                return UILabelRoles.ParagraphFootnote;
+        }
+    }, [font]);
 
     return (
         <View onLayout={onLayout}>
@@ -48,6 +61,7 @@ export function MaterialTextViewComment(
                 type={inputMessageType}
                 onPress={onHelperTextPress}
                 colorScheme={colorScheme}
+                role={role}
             >
                 {helperText}
             </InputMessage>

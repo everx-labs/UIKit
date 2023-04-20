@@ -7,9 +7,13 @@ import type {
     InputTextChild,
     InputChild,
 } from './types';
-import type { InputColorScheme } from '../constants';
+import type { InputColorScheme, InputFont } from '../constants';
 
-const getChildList = (children: InputChildren, colorScheme: InputColorScheme) => {
+const getChildList = (
+    children: InputChildren,
+    colorScheme: InputColorScheme,
+    font: InputFont | undefined,
+) => {
     return React.Children.toArray(children).reduce<InputChild[]>((acc, child) => {
         if (React.isValidElement(child)) {
             if (
@@ -19,6 +23,7 @@ const getChildList = (children: InputChildren, colorScheme: InputColorScheme) =>
             ) {
                 const newChild = React.cloneElement(child, {
                     colorScheme,
+                    font,
                     ...child.props,
                 }) as InputChild;
 
@@ -27,7 +32,7 @@ const getChildList = (children: InputChildren, colorScheme: InputColorScheme) =>
             }
 
             if (child.type === React.Fragment) {
-                acc.push(...getChildList(child.props.children, colorScheme));
+                acc.push(...getChildList(child.props.children, colorScheme, font));
 
                 return acc;
             }
@@ -76,8 +81,9 @@ function sortInputChildList(children: InputChild[]) {
 export function useInputChildren(
     children: InputChildren,
     colorScheme: InputColorScheme,
+    font: InputFont | undefined,
 ): InputChild[] {
-    const childList = getChildList(children, colorScheme);
+    const childList = getChildList(children, colorScheme, font);
     const { icons, action, text } = sortInputChildList(childList);
 
     const hasIcons = icons.length > 0;

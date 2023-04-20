@@ -11,8 +11,9 @@ export function useUIMaterialTextViewChildren(
     isHovered: boolean,
     editable: boolean,
     clear: (() => void) | undefined,
+    font: UIMaterialTextViewProps['font'],
 ): UIMaterialTextViewProps['children'] {
-    const materialTextViewChildren = useInputChildren(children, colorScheme);
+    const materialTextViewChildren = useInputChildren(children, colorScheme, font);
 
     if (hideClearButton) {
         /**

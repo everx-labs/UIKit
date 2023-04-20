@@ -1,3 +1,4 @@
+import type { InputFont } from '../Common';
 import type { UIMaterialTextViewProps } from '../UIMaterialTextView';
 import type { UISeedPhraseInputMessageType } from './consts';
 
@@ -46,6 +47,10 @@ export type UISeedPhraseInputProps = {
      * ID for usage in tests
      */
     testID?: string;
+    /**
+     * Font of the input
+     */
+    font?: InputFont;
 } & Pick<UIMaterialTextViewProps, 'onFocus' | 'onBlur' | 'colorScheme'>;
 
 export type HelperCredentials = {

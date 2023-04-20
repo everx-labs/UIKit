@@ -1,19 +1,14 @@
 import * as React from 'react';
 import { TextInput, Platform, StyleSheet, LayoutChangeEvent, TextStyle } from 'react-native';
-import { ColorVariants, useTheme, Typography, TypographyVariants } from '@tonlabs/uikit.themes';
-import { UILayoutConstant } from '@tonlabs/uikit.layout';
-import { useAutogrow, useAutoFocus, useHandleRef } from './hooks';
+import { ColorVariants, useTheme, makeStyles, Theme } from '@tonlabs/uikit.themes';
+import { useAutogrow, useAutoFocus, useHandleRef, useUITextViewTypography } from './hooks';
 import type { UITextViewProps, UITextViewRef } from './types';
-
-const textViewTypographyVariant = TypographyVariants.ParagraphText;
-const inputTypographyStyle = StyleSheet.flatten(Typography[textViewTypographyVariant]);
-const textViewLineHeight = inputTypographyStyle.lineHeight ?? UILayoutConstant.smallCellHeight;
 
 /**
  * Android TextInput does not respond to lineHeight changes,
  * so I decided just to align input text and height with regular UILabel text and height via marginVertical.
  */
-function fixAndroidTextInputHeight(): TextStyle {
+function fixAndroidTextInputHeight(inputTypographyStyle: TextStyle): TextStyle {
     const { fontSize, lineHeight } = inputTypographyStyle;
     if (fontSize == null || lineHeight == null) {
         return {};
@@ -43,6 +38,7 @@ export const UITextView = React.forwardRef<UITextViewRef, UITextViewProps>(
             onHeightChange,
             maxNumberOfLines,
             onNumberOfLinesChange,
+            font,
             ...textInputProps
         }: UITextViewProps,
         passedRef,
@@ -52,6 +48,8 @@ export const UITextView = React.forwardRef<UITextViewRef, UITextViewProps>(
         const textInputRef = React.useRef<TextInput>(null);
         const theme = useTheme();
         const autoFocusProp = useAutoFocus(textInputRef, autoFocus);
+
+        const { inputTypographyStyle, textViewLineHeight } = useUITextViewTypography(font);
 
         const { onChange, remeasureInputHeight, numberOfLines, autogrowStyle } = useAutogrow(
             textInputRef,
@@ -73,6 +71,8 @@ export const UITextView = React.forwardRef<UITextViewRef, UITextViewProps>(
             [remeasureInputHeight, textInputProps],
         );
 
+        const dynamicStyles = useDynamicStyles(inputTypographyStyle, textViewLineHeight, theme);
+
         return (
             <TextInput
                 ref={textInputRef}
@@ -87,12 +87,12 @@ export const UITextView = React.forwardRef<UITextViewRef, UITextViewProps>(
                 underlineColorAndroid="transparent"
                 style={[
                     styles.input,
+                    dynamicStyles.input,
                     style,
-                    {
-                        color: theme[ColorVariants.TextPrimary],
-                    },
                     inputTypographyStyle,
-                    multiline ? styles.inputMultiline : styles.inputSingleline,
+                    multiline
+                        ? styles.inputMultiline
+                        : [styles.inputSingleline, dynamicStyles.inputSingleline],
                     autogrowStyle,
                 ]}
                 onChange={onChange}
@@ -118,7 +118,6 @@ const styles = StyleSheet.create({
             },
             android: {
                 padding: 0,
-                ...fixAndroidTextInputHeight(),
             },
         }),
     },
@@ -140,9 +139,28 @@ const styles = StyleSheet.create({
              * This was made to align the text vertically.
              */
             lineHeight: undefined,
-            height: textViewLineHeight,
             top: 0.5,
         },
         default: {},
     }),
 });
+
+const useDynamicStyles = makeStyles(
+    (inputTypographyStyle: TextStyle, textViewLineHeight: number, theme: Theme) => ({
+        input: {
+            color: theme[ColorVariants.TextPrimary],
+            ...Platform.select({
+                android: {
+                    ...fixAndroidTextInputHeight(inputTypographyStyle),
+                },
+                default: {},
+            }),
+        },
+        inputSingleline: Platform.select({
+            ios: {
+                height: textViewLineHeight,
+            },
+            default: {},
+        }),
+    }),
+);

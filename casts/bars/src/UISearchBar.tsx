@@ -73,11 +73,7 @@ function renderRightAction({ label, onPress, accessibilityLabel }: UISearchBarRi
  * and make it to not affect the input height
  */
 function InnerRightActionContainer({ children }: { children: React.ReactNode }) {
-    return (
-        <View style={styles.rightInnerActionContainer}>
-            <View style={styles.rightInnerActionContent}>{children}</View>
-        </View>
-    );
+    return <View style={styles.rightInnerActionContainer}>{children}</View>;
 }
 
 function InnerRightAction({
@@ -233,7 +229,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: UILayoutConstant.input.borderRadius,
         paddingLeft: 10,
-        paddingRight: UILayoutConstant.smallContentOffset,
     },
     searchIcon: {
         width: UINavConstant.iconSearchSize,
@@ -249,12 +244,10 @@ const styles = StyleSheet.create({
     },
     rightInnerActionContainer: {
         alignSelf: 'stretch',
-        width: UINavConstant.searchBarRightInnerActionWidth,
+        width: UILayoutConstant.iconSize + UILayoutConstant.smallContentOffset * 2,
+        flexDirection: 'row',
         justifyContent: 'center',
+        alignItems: 'stretch',
         overflow: 'hidden',
-    },
-    rightInnerActionContent: {
-        position: 'absolute',
-        right: 0,
     },
 });

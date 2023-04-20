@@ -6,7 +6,7 @@ import {
     useHasSeveralLinesInInput,
     useChatInputValue,
 } from '@tonlabs/uistory.chats';
-import { UITextView, UITextViewRef } from '@tonlabs/uikit.inputs';
+import { InputFont, UITextView, UITextViewRef } from '@tonlabs/uikit.inputs';
 import { UIInputAccessoryView } from '@tonlabs/uicast.keyboard';
 import { UILabel, UILabelRoles, ColorVariants } from '@tonlabs/uikit.themes';
 import { uiLocalized } from '@tonlabs/localization';
@@ -80,6 +80,7 @@ type UIAddressInputInternalProps = {
     onSendText: OnSendText;
     onHeightChange?: OnHeightChange;
     onMaxLength?: (maxLength: number) => void;
+    font?: InputFont;
 
     validateAddress: ValidateAddress;
 };
@@ -91,6 +92,7 @@ export function UIAddressInputInternal({
     validateAddress,
     placeholder,
     onMaxLength: onMaxLengthProp,
+    font,
 }: UIAddressInputInternalProps) {
     const { onNumberOfLinesChange, hasSeveralLinesInInput } = useHasSeveralLinesInInput();
 
@@ -180,6 +182,7 @@ export function UIAddressInputInternal({
                 onKeyPress={onKeyPress}
                 maxNumberOfLines={MAX_INPUT_NUM_OF_LINES}
                 onNumberOfLinesChange={onNumberOfLinesChange}
+                font={font}
             />
             {renderNotice()}
         </ChatInputContainer>
@@ -188,6 +191,7 @@ export function UIAddressInputInternal({
 
 type UIAddressInputProps = {
     placeholder?: string;
+    font?: InputFont;
 
     onSendText: OnSendText;
     onMaxLength?: OnMaxLength;
@@ -200,6 +204,7 @@ export function UIAddressInput({
     onSendText,
     onMaxLength,
     validateAddress,
+    font,
 }: UIAddressInputProps) {
     const textInputRef = React.useRef<UITextViewRef>(null);
 
@@ -214,6 +219,7 @@ export function UIAddressInput({
                 onHeightChange={onHeightChange}
                 onMaxLength={onMaxLength}
                 validateAddress={validateAddress}
+                font={font}
             />
         </UIInputAccessoryView>
     );
