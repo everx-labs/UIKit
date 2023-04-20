@@ -228,7 +228,7 @@ export const Inputs = () => {
                 <View style={{ maxWidth: 400, padding: 20, alignSelf: 'stretch' }}>
                     <UIAmountInput
                         testID="uiMaterialTextView_amount"
-                        placeholder="0.30"
+                        placeholder="0.00"
                         label="Amount Currency"
                         message="Caption"
                         onChangeAmount={onChangeAmount}
@@ -243,7 +243,7 @@ export const Inputs = () => {
                     <View style={{ height: 20 }} />
                     <UIAmountInput
                         testID="uiMaterialTextView_amount"
-                        placeholder="003"
+                        placeholder="000"
                         label="Amount Integer"
                         message="Caption"
                         onChangeAmount={onChangeAmount}
