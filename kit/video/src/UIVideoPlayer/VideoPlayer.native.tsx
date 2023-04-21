@@ -1,8 +1,8 @@
 import * as React from 'react';
 import RNVideo from 'react-native-video';
-import type { VideoProps } from './types';
+import type { VideoPlayerProps } from './types';
 
-export function Video({
+export function VideoPlayer({
     uri,
     controls,
     paused,
@@ -13,7 +13,7 @@ export function Video({
     onError,
     width,
     height,
-}: VideoProps) {
+}: VideoPlayerProps) {
     const [muted, setMuted] = React.useState<boolean>(!!mutedProp);
 
     const onFullscreenOpen = React.useCallback(() => {
