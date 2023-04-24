@@ -36,7 +36,6 @@ pipeline {
        LC_ALL = "en_US.UTF-8"
        LANG = "en_US.UTF-8"
        userpass = credentials("TonJen-mac01pass")
-       token = credentials("FIREBASE_UIKIT_TOKEN")
        NODE_OPTIONS = "--max-old-space-size=4096"
        GITHUB_ACCESS_TOKEN = credentials("JenkinsPackagesRW")
     }
@@ -95,19 +94,21 @@ pipeline {
                             }
                         }
                         stage('Webapp deploy'){
-                            try {
-                                sh """
-                                    yarn config set prefix $G_global_npm_path
-                                    yarn global add firebase-tools
-                                    npm config set prefix $G_global_npm_path
-                                    alias firebase="`npm config get prefix`/bin/firebase"
-                                    cd Example
-                                    firebase deploy --token "$token"
-                                """
-                                G_webdeploy = "success"
-                            } catch(ex) {
-                                G_webdeploy = "failure"
-                                error "Webapp deploy failed"
+                            withCredentials([file(credentialsId: 'GOOGLE_APPLICATION_CREDENTIALS', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+                                try {
+                                    sh """
+                                        yarn config set prefix $G_global_npm_path
+                                        yarn global add firebase-tools
+                                        npm config set prefix $G_global_npm_path
+                                        alias firebase="`npm config get prefix`/bin/firebase"
+                                        cd Example
+                                        firebase deploy
+                                    """
+                                    G_webdeploy = "success"
+                                } catch(ex) {
+                                    G_webdeploy = "failure"
+                                    error "Webapp deploy failed"
+                                }
                             }
                         }
                     }
