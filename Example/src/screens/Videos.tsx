@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { UIVideo } from '@tonlabs/uikit.media';
+import { UIVideoPlayer } from '@tonlabs/uikit.video';
 import { ExampleSection } from '../components/ExampleSection';
 import { ExampleScreen } from '../components/ExampleScreen';
 
@@ -16,7 +16,7 @@ export function VideosScreen() {
                         paddingVertical: 20,
                     }}
                 >
-                    <UIVideo
+                    <UIVideoPlayer
                         uri="https://firebasestorage.googleapis.com/v0/b/ton-uikit-example-7e797.appspot.com/o/Happy-surf.mp4?alt=media&token=ecb72009-5913-4537-b553-37ec41a99782"
                         controls
                         repeat

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import ReactPlayer from 'react-player';
-import type { VideoProps } from './types';
+import type { VideoPlayerProps } from './types';
 
-export function Video({
+export function VideoPlayer({
     uri,
     controls,
     paused = false,
@@ -13,7 +13,7 @@ export function Video({
     onError,
     width,
     height,
-}: VideoProps) {
+}: VideoPlayerProps) {
     const config = React.useMemo(
         () => ({
             file: {

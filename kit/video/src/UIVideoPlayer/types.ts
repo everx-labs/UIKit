@@ -1,7 +1,7 @@
 /**
  * UIVideo properties
  */
-export type UIVideoProps = {
+export type UIVideoPlayerProps = {
     /**
      * uri link to the video
      */
@@ -30,7 +30,7 @@ export type UIVideoProps = {
      * By analogy with the Image#resizeMode
      * `contain` by default
      */
-    resizeMode?: UIVideoResizeMode;
+    resizeMode?: UIVideoPlayerResizeMode;
     /**
      * Callback function that is called when the media is loaded and ready to play
      */
@@ -46,6 +46,6 @@ export type Dimensions = {
     height: number;
 };
 
-export type VideoProps = UIVideoProps & Dimensions;
+export type VideoPlayerProps = UIVideoPlayerProps & Dimensions;
 
-export type UIVideoResizeMode = 'contain' | 'cover';
+export type UIVideoPlayerResizeMode = 'contain' | 'cover';

@@ -52,6 +52,7 @@
         "@tonlabs/uikit.popups": "*",
         "@tonlabs/uikit.scrolls": "*",
         "@tonlabs/uikit.themes": "*",
+        "@tonlabs/uikit.video": "*",
         "@tonlabs/uistory.browser": "*",
         "@tonlabs/uistory.chats": "*",
         "@tonlabs/uistory.ever-links": "*",

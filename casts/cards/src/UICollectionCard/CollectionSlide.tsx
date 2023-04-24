@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import type { ViewStyle, StyleProp } from 'react-native';
-import { UIImage, UIVideo } from '@tonlabs/uikit.media';
+import { UIImage } from '@tonlabs/uikit.media';
+import { UIVideoPlayer } from '@tonlabs/uikit.video';
 
 import type { CollectionSlideProps } from './types';
 
@@ -51,7 +52,7 @@ const VideoSlide = React.memo(function VideoSlide({
 
     return (
         <View style={StyleSheet.absoluteFill}>
-            <UIVideo
+            <UIVideoPlayer
                 uri={content.source.uri}
                 muted
                 repeat
