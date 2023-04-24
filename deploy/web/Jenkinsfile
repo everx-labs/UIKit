@@ -94,21 +94,25 @@ pipeline {
                             }
                         }
                         stage('Webapp deploy'){
-                            try {
-                                withCredentials([file(credentialsId: 'GOOGLE_APPLICATION_CREDENTIALS', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
-                                    sh """
-                                        yarn config set prefix $G_global_npm_path
-                                        yarn global add firebase-tools
-                                        npm config set prefix $G_global_npm_path
-                                        alias firebase="`npm config get prefix`/bin/firebase"
-                                        cd Example
-                                        firebase deploy
-                                    """
+                            steps {
+                                script {
+                                    try {
+                                        withCredentials([file(credentialsId: 'GOOGLE_APPLICATION_CREDENTIALS', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+                                            sh """
+                                                yarn config set prefix $G_global_npm_path
+                                                yarn global add firebase-tools
+                                                npm config set prefix $G_global_npm_path
+                                                alias firebase="`npm config get prefix`/bin/firebase"
+                                                cd Example
+                                                firebase deploy
+                                            """
+                                        }
+                                        G_webdeploy = "success"
+                                    } catch(ex) {
+                                        G_webdeploy = "failure"
+                                        error "Webapp deploy failed"
+                                    }
                                 }
-                                G_webdeploy = "success"
-                            } catch(ex) {
-                                G_webdeploy = "failure"
-                                error "Webapp deploy failed"
                             }
                         }
                     }
