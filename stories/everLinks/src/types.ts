@@ -29,6 +29,10 @@ export type UISendSheetParams = {
      * Currency sign of Send external action.
      */
     signChar: string;
+    /**
+     * Currency fee sign of Send external action.
+     */
+    feeSignChar?: string;
 };
 
 export type UIEverLinkSheetProps = {
