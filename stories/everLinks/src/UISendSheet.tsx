@@ -55,6 +55,7 @@ function SendSheetContent({
     fee,
     onConfirm,
     signChar,
+    feeSignChar,
 }: UISendSheetParams) {
     return (
         <View>
@@ -129,7 +130,7 @@ function SendSheetContent({
                                     >
                                         {uiLocalized.EverLinks.Send.NetworkFeeTilde}
                                     </UILabel>
-                                    <CurrencyElement amount={fee} signChar={signChar} />
+                                    <CurrencyElement amount={fee} signChar={feeSignChar ?? signChar} />
                                 </View>
                             </View>
                         </View>
@@ -145,7 +146,7 @@ function SendSheetContent({
 
 export function UISendSheet(props: UIEverLinkSheetProps) {
     const { onClose, params: sendParams, visible } = props;
-    const { actionTitle, address, amount, comment, fee, onConfirm, signChar } =
+    const { actionTitle, address, amount, comment, fee, onConfirm, signChar, feeSignChar } =
         sendParams as UISendSheetParams;
 
     const onConfirmPress = React.useCallback(() => {
@@ -167,6 +168,7 @@ export function UISendSheet(props: UIEverLinkSheetProps) {
                 fee={fee}
                 onConfirm={onConfirmPress}
                 signChar={signChar}
+                feeSignChar={feeSignChar}
             />
         </UICardSheet>
     );
