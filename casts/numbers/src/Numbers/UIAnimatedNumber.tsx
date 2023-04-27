@@ -36,10 +36,11 @@ export function UIAnimatedNumber({
     // sign customization
     sign,
     signBeforeNumber = false,
+    signBeforeNumberNeedsNBSP = true,
     showDebugGrid,
     showPositiveSign,
 }: UINumberGeneralProps &
-    UINumberAppearance & { sign?: React.ReactNode; signBeforeNumber?: boolean }) {
+    UINumberAppearance & { sign?: React.ReactNode; signBeforeNumber?: boolean; signBeforeNumberNeedsNBSP?: boolean }) {
     // Basically we need it only to not re-create `updateRefs`
     const valueHolder = React.useRef(value);
     valueHolder.current = value; // To have it always up to date
@@ -189,7 +190,7 @@ export function UIAnimatedNumber({
         >
             {signBeforeNumber ? sign : null}
             {/* eslint-disable-next-line no-irregular-whitespace */}
-            {signBeforeNumber ? <Text> </Text> : null}
+            {signBeforeNumber && signBeforeNumberNeedsNBSP ? <Text> </Text> : null}
             <AnimateableText
                 testID="number-integer"
                 style={[Typography[integerVariant], integerColorStyle, styles.integer]}

@@ -21,6 +21,7 @@ export const UICurrency = React.memo(function UICurrency({
     decimalColor = ColorVariants.TextSecondary,
     signChar,
     signCharBeforeNumber = false,
+    signBeforeNumberNeedsNBSP = true,
     signVariant,
     signIcon,
     signIconAspectRatio,
@@ -29,7 +30,7 @@ export const UICurrency = React.memo(function UICurrency({
     loading,
     showPositiveSign,
     showDebugGrid,
-}: UICurrencyProps & { signCharBeforeNumber?: boolean }) {
+}: UICurrencyProps & { signCharBeforeNumber?: boolean; signBeforeNumberNeedsNBSP?: boolean }) {
     if (animated) {
         return (
             <UIAnimatedNumber
@@ -53,6 +54,7 @@ export const UICurrency = React.memo(function UICurrency({
                     />
                 }
                 signBeforeNumber={signCharBeforeNumber}
+                signBeforeNumberNeedsNBSP={signBeforeNumberNeedsNBSP}
                 showPositiveSign={showPositiveSign}
                 showDebugGrid={showDebugGrid}
             >
