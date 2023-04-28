@@ -24,6 +24,7 @@ function StaticCurrencyIcon({
     signIconInlineHeight,
     signIconAlign,
     integerVariant,
+    signBeforeNumber,
 }: Required<Omit<UICurrencySignProps, 'signChar' | 'loading'>> & {
     integerVariant: TypographyVariants;
 }) {
@@ -42,7 +43,9 @@ function StaticCurrencyIcon({
      */
     return (
         <>
-            <Text style={[Typography[signVariant], styles.iconTextContainer]}>{'\u00A0'}</Text>
+            {signBeforeNumber
+                ? null
+                : <Text style={[Typography[signVariant], styles.iconTextContainer]}>{'\u00A0'}</Text>}
             <UIImage source={signIcon} resizeMode="contain" style={iconStyle} />
         </>
     );
@@ -63,6 +66,7 @@ function AnimatedCurrencyIcon({
     signIconInlineHeight,
     signIconAlign,
     integerVariant,
+    signBeforeNumber,
 }: Required<Omit<UICurrencySignProps, 'signChar'>> & {
     integerVariant: TypographyVariants;
 }) {
@@ -120,17 +124,19 @@ function AnimatedCurrencyIcon({
      */
     return (
         <>
-            <Text
-                style={[
-                    Typography[signVariant],
-                    styles.iconTextContainer,
-                    {
-                        height: 0,
-                    },
-                ]}
-            >
-                {'\u00A0'}
-            </Text>
+            {signBeforeNumber ? null : (
+                <Text
+                    style={[
+                        Typography[signVariant],
+                        styles.iconTextContainer,
+                        {
+                            height: 0,
+                        },
+                    ]}
+                >
+                    {'\u00A0'}
+                </Text>
+            )}
             <AnimatedUIImage
                 source={signIcon}
                 resizeMode="contain"
@@ -145,7 +151,8 @@ function TextSign({
     signVariant,
     integerColor,
     integerVariant,
-}: Required<Pick<UICurrencySignProps, 'signChar' | 'signVariant'>> & {
+    signBeforeNumber,
+}: Required<Pick<UICurrencySignProps, 'signChar' | 'signVariant' | 'signBeforeNumber'>> & {
     integerColor: ColorVariants;
     integerVariant: TypographyVariants;
 }) {
@@ -162,7 +169,7 @@ function TextSign({
                 },
             ]}
         >
-            {'\u00A0'}
+            {signBeforeNumber ? '' : '\u00A0'}
             {signChar}
         </Text>
     );
@@ -178,6 +185,7 @@ export const UICurrencySign = React.memo(function UICurrencySign({
     signIconAlign = UICurrencySignIconAlign.Middle,
     integerColor,
     integerVariant,
+    signBeforeNumber = false,
 }: UICurrencySignProps & {
     integerColor: ColorVariants;
     integerVariant: TypographyVariants;
@@ -191,6 +199,7 @@ export const UICurrencySign = React.memo(function UICurrencySign({
                 signVariant={signVariant}
                 integerColor={integerColor}
                 integerVariant={integerVariant}
+                signBeforeNumber={signBeforeNumber}
             />
         );
     }
@@ -209,6 +218,7 @@ export const UICurrencySign = React.memo(function UICurrencySign({
                 signIconInlineHeight={signIconInlineHeight}
                 signIconAlign={signIconAlign}
                 integerVariant={integerVariant}
+                signBeforeNumber={signBeforeNumber}
             />
         );
     }
@@ -231,6 +241,7 @@ export const UICurrencySign = React.memo(function UICurrencySign({
             signIconInlineHeight={signIconInlineHeight}
             signIconAlign={signIconAlign}
             integerVariant={integerVariant}
+            signBeforeNumber={signBeforeNumber}
         />
     );
 });
