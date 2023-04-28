@@ -50,6 +50,7 @@ export const UICurrency = React.memo(function UICurrency({
                         signIconAspectRatio={signIconAspectRatio}
                         signIconInlineHeight={signIconInlineHeight}
                         signIconAlign={signIconAlign}
+                        signBeforeNumber={signCharBeforeNumber}
                     />
                 }
                 signBeforeNumber={signCharBeforeNumber}
@@ -80,6 +81,7 @@ export const UICurrency = React.memo(function UICurrency({
                     signIconAspectRatio={signIconAspectRatio}
                     signIconInlineHeight={signIconInlineHeight}
                     signIconAlign={signIconAlign}
+                    signBeforeNumber={signCharBeforeNumber}
                 />
             }
             signBeforeNumber={signCharBeforeNumber}

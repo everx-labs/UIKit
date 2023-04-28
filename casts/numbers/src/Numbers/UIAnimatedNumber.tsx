@@ -188,8 +188,6 @@ export function UIAnimatedNumber({
             accessibilityLabel={`${formatted.value.integer}${formatted.value.decimal}`}
         >
             {signBeforeNumber ? sign : null}
-            {/* eslint-disable-next-line no-irregular-whitespace */}
-            {signBeforeNumber ? <Text> </Text> : null}
             <AnimateableText
                 testID="number-integer"
                 style={[Typography[integerVariant], integerColorStyle, styles.integer]}

@@ -115,6 +115,10 @@ export type UICurrencySignProps = {
      * Loading animation is only applied to icon, `signChar` can't be animated.
      */
     loading?: boolean;
+    /**
+     * How sign char should be placed relative to number - before or after it.
+     */
+    signBeforeNumber?: boolean;
 };
 
 export type UICurrencyProps = UINumberProps & Partial<UICurrencySignProps>;
