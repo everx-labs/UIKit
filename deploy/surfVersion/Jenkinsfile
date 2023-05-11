@@ -1,6 +1,8 @@
 pipeline {
     agent {label 'master'}
-    tools {nodejs "Node12.8.0"}
+    tools {
+        nodejs "Node14.20.0"
+    }
     parameters {
         string(name: 'NEW_UIKIT_BETA_BRANCH', defaultValue: '', description: '(E.g: 7.0.0) New UIKit branch for Surf closed beta version')
     }
