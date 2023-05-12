@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ColorValue, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedProps } from 'react-native-reanimated';
 
 import {
@@ -20,7 +20,7 @@ import {
 } from './constants';
 import { UIConstant } from '../constants';
 import type { UILinkButtonProps } from './types';
-import { usePressableContentColor } from '../Pressable';
+import { usePressableAnimatedImageTintColorProps, usePressableContentColor } from '../Pressable';
 import { UIIndicator } from '../UIIndicator';
 
 export function UILinkButtonContent({
@@ -37,15 +37,11 @@ export function UILinkButtonContent({
 
     const animatedLabelProps = useAnimatedProps(() => {
         return {
-            color: contentColor.value as ColorValue,
+            color: contentColor.value,
         };
     });
 
-    const animatedImageProps = useAnimatedProps(() => {
-        return {
-            tintColor: contentColor.value as ColorValue,
-        };
-    });
+    const animatedImageProps = usePressableAnimatedImageTintColorProps(contentColor);
 
     const image = React.useMemo(() => {
         if (icon == null) {
@@ -57,7 +53,7 @@ export function UILinkButtonContent({
             <UIAnimatedImage
                 source={icon}
                 style={[styles.icon, additionalStyle]}
-                animatedProps={animatedImageProps}
+                {...animatedImageProps}
             />
         );
     }, [animatedImageProps, icon, iconPosition]);

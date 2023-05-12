@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ColorValue, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
 import { ColorVariants, UILabelAnimated, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UIAnimatedImage } from '@tonlabs/uikit.media';
@@ -13,7 +13,7 @@ import {
     BackgroundOverlayColors,
 } from './constants';
 import type { UIBoxButtonProps } from './types';
-import { usePressableContentColor } from '../Pressable';
+import { usePressableAnimatedImageTintColorProps, usePressableContentColor } from '../Pressable';
 import { UIIndicator } from '../UIIndicator';
 
 export const BoxButtonContent = ({
@@ -36,15 +36,11 @@ export const BoxButtonContent = ({
 
     const animatedLabelProps = useAnimatedProps(() => {
         return {
-            color: contentColor.value as ColorValue,
+            color: contentColor.value,
         };
     });
 
-    const animatedImageProps = useAnimatedProps(() => {
-        return {
-            tintColor: contentColor.value as ColorValue,
-        };
-    });
+    const animatedImageProps = usePressableAnimatedImageTintColorProps(contentColor);
 
     const animatedBackgroundOverlayStyle = useAnimatedStyle(() => {
         if (type === UIBoxButtonType.Primary) {
@@ -74,7 +70,7 @@ export const BoxButtonContent = ({
             <UIAnimatedImage
                 source={icon}
                 style={[styles.icon, imageStyle]}
-                animatedProps={animatedImageProps}
+                {...animatedImageProps}
             />
         );
     }, [animatedImageProps, icon, imageStyle]);

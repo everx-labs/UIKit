@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { I18nManager, ImageSourcePropType, Platform, StyleSheet } from 'react-native';
-import Animated, { SharedValue } from 'react-native-reanimated';
+import type Animated from 'react-native-reanimated';
 
 import { ColorVariants, UIBackgroundView } from '@tonlabs/uikit.themes';
 import {
@@ -28,9 +28,7 @@ function ControlContent({ children }: { children: ImageSourcePropType }) {
 
     const animatedImageProps = usePressableAnimatedImageTintColorProps(color);
 
-    return (
-        <UIAnimatedImage source={children} style={styles.icon} animatedProps={animatedImageProps} />
-    );
+    return <UIAnimatedImage source={children} style={styles.icon} {...animatedImageProps} />;
 }
 
 export function WebPositionControl({
@@ -40,7 +38,7 @@ export function WebPositionControl({
     calculateClosestNextX,
 }: {
     scrollRef: React.RefObject<Animated.ScrollView>;
-    currentGravityPosition: SharedValue<number>;
+    currentGravityPosition: Animated.SharedValue<number>;
     calculateClosestPreviousX: (position: number) => number;
     calculateClosestNextX: (position: number) => number;
 }) {
