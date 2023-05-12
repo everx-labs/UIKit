@@ -1,9 +1,14 @@
 import * as React from 'react';
-import { ColorValue, I18nManager, ImageSourcePropType, Platform, StyleSheet } from 'react-native';
-import Animated, { SharedValue, useAnimatedProps } from 'react-native-reanimated';
+import { I18nManager, ImageSourcePropType, Platform, StyleSheet } from 'react-native';
+import Animated, { SharedValue } from 'react-native-reanimated';
 
 import { ColorVariants, UIBackgroundView } from '@tonlabs/uikit.themes';
-import { Pressable, PressableColors, usePressableContentColor } from '@tonlabs/uikit.controls';
+import {
+    Pressable,
+    PressableColors,
+    usePressableContentColor,
+    usePressableAnimatedImageTintColorProps,
+} from '@tonlabs/uikit.controls';
 import { UIAnimatedImage } from '@tonlabs/uikit.media';
 import { UIHighlightsConstants } from './constants';
 
@@ -21,11 +26,7 @@ const controlColors: PressableColors = {
 function ControlContent({ children }: { children: ImageSourcePropType }) {
     const color = usePressableContentColor(controlColors);
 
-    const animatedImageProps = useAnimatedProps(() => {
-        return {
-            tintColor: color.value as ColorValue,
-        };
-    });
+    const animatedImageProps = usePressableAnimatedImageTintColorProps(color);
 
     return (
         <UIAnimatedImage source={children} style={styles.icon} animatedProps={animatedImageProps} />
@@ -52,7 +53,7 @@ export function WebPositionControl({
     return (
         <UIBackgroundView color={ColorVariants.BackgroundBW} style={styles.container}>
             <Pressable
-                testID="web-position-control-previus-button"
+                testID="web-position-control-previous-button"
                 style={styles.control}
                 onPress={() => {
                     const closestX = calculateClosestPreviousX(currentGravityPosition.value);
