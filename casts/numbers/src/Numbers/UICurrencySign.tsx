@@ -43,9 +43,9 @@ function StaticCurrencyIcon({
      */
     return (
         <>
-            {signBeforeNumber
-                ? null
-                : <Text style={[Typography[signVariant], styles.iconTextContainer]}>{'\u00A0'}</Text>}
+            {signBeforeNumber ? null : (
+                <Text style={[Typography[signVariant], styles.iconTextContainer]}>{'\u00A0'}</Text>
+            )}
             <UIImage source={signIcon} resizeMode="contain" style={iconStyle} />
         </>
     );
