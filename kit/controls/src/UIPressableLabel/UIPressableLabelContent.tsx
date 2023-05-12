@@ -1,5 +1,4 @@
 import * as React from 'react';
-import type { ColorValue } from 'react-native';
 import { useAnimatedStyle } from 'react-native-reanimated';
 
 import { UILabelAnimated } from '@tonlabs/uikit.themes';
@@ -20,7 +19,7 @@ export function UIPressableLabelContent({
 
     const animatedLabelProps = useAnimatedStyle(() => {
         return {
-            color: contentColor.value as ColorValue,
+            color: contentColor.value,
         };
     });
 

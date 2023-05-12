@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ColorValue, StyleProp, TextStyle } from 'react-native';
+import type { StyleProp, TextStyle } from 'react-native';
 import { useAnimatedProps } from 'react-native-reanimated';
 
 import { PressableColors, usePressableContentColor } from '@tonlabs/uikit.controls';
@@ -26,7 +26,7 @@ export function StringPressableChild({
 
     const animatedLabelProps = useAnimatedProps(() => {
         return {
-            color: contentColor.value as ColorValue,
+            color: contentColor.value,
         };
     });
 

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import type { ColorValue } from 'react-native';
 import type { UICustomKeyboardView } from '@tonlabs/uicast.keyboard';
 import { ColorVariants, useTheme } from '@tonlabs/uikit.themes';
 
@@ -22,7 +21,7 @@ export function useStickers(
                 stickers,
                 theme,
             },
-            backgroundColor: theme[ColorVariants.BackgroundSecondary] as ColorValue,
+            backgroundColor: theme[ColorVariants.BackgroundSecondary],
             onEvent: onStickerSelected,
         };
     }, [stickers, onStickerSelected, theme]);

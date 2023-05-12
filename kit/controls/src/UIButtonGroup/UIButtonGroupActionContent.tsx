@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ColorValue, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
 
 import { UILabelRoles, UILabelAnimated } from '@tonlabs/uikit.themes';
@@ -38,7 +38,7 @@ function Content({
 
     const animatedLabelProps = useAnimatedProps(() => {
         return {
-            color: contentColor.value as ColorValue,
+            color: contentColor.value,
         };
     });
 

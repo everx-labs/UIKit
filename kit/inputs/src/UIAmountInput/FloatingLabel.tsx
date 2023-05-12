@@ -1,13 +1,5 @@
 import * as React from 'react';
-import {
-    LayoutChangeEvent,
-    StyleSheet,
-    View,
-    TextStyle,
-    ViewStyle,
-    StyleProp,
-    ColorValue,
-} from 'react-native';
+import { LayoutChangeEvent, StyleSheet, View, TextStyle, ViewStyle, StyleProp } from 'react-native';
 import Animated, {
     interpolate,
     SharedValue,
@@ -99,7 +91,7 @@ function Label({ children, onLabelLayout, isHovered, editable, colors, role }: L
 
     const animatedProps = useAnimatedProps(() => {
         return {
-            color: withSpring(toColor.value, withSpringConfig) as any as ColorValue,
+            color: withSpring(toColor.value, withSpringConfig),
         };
     });
     return (

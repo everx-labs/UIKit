@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, ColorValue } from 'react-native';
+import { Platform } from 'react-native';
 import { useTheme, ColorVariants, DarkTheme } from './Colors';
 
 function useShadowParameters(isDarkTheme: boolean) {
@@ -79,7 +79,7 @@ export function useShadow(level: 1 | 2 | 3 | 4 | 5 | 6) {
     const shadowParameters = useShadowParameters(isDarkTheme);
     return React.useMemo(
         () => ({
-            shadowColor: theme[ColorVariants.Shadow] as ColorValue,
+            shadowColor: theme[ColorVariants.Shadow],
             shadowOffset: shadowParameters[level].offset,
             shadowOpacity: shadowParameters[level].opacity,
             shadowRadius: shadowParameters[level].radius,
