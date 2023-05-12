@@ -1,8 +1,10 @@
 import * as React from 'react';
-import type { ColorValue } from 'react-native';
-import { useAnimatedProps } from 'react-native-reanimated';
 
-import { PressableColors, usePressableContentColor } from '@tonlabs/uikit.controls';
+import {
+    PressableColors,
+    usePressableAnimatedImageTintColorProps,
+    usePressableContentColor,
+} from '@tonlabs/uikit.controls';
 import { UIAnimatedImage, UIImageProps } from '@tonlabs/uikit.media';
 
 import { defaultInputColorScheme, inputChildrenPressableColors } from '../constants';
@@ -22,11 +24,7 @@ export function ImagePressableChild({
 
     const contentColor = usePressableContentColor(colors);
 
-    const animatedImageProps = useAnimatedProps(() => {
-        return {
-            tintColor: contentColor.value as ColorValue,
-        };
-    });
+    const animatedImageProps = usePressableAnimatedImageTintColorProps(contentColor);
 
-    return <UIAnimatedImage {...props} animatedProps={animatedImageProps} />;
+    return <UIAnimatedImage {...props} {...animatedImageProps} />;
 }

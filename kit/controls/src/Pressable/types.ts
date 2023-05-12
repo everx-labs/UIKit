@@ -67,3 +67,9 @@ export type PressableNumericParameters = {
     disabled?: number;
     loading?: number;
 };
+
+export type AnimatedImageTintColorProps =
+    | {
+          animatedProps: Partial<{ tintColor: string }>;
+      }
+    | { tintColor: string };

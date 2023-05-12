@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ColorValue, LayoutAnimation, Platform, StyleSheet, UIManager, View } from 'react-native';
+import { LayoutAnimation, Platform, StyleSheet, UIManager, View } from 'react-native';
 import Animated, { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
 import { ColorVariants, UILabelAnimated, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UIAnimatedImage } from '@tonlabs/uikit.media';
@@ -12,7 +12,7 @@ import {
     BackgroundOverlayColors,
 } from './constants';
 import type { UIPillButtonProps } from './types';
-import { usePressableContentColor } from '../Pressable';
+import { usePressableAnimatedImageTintColorProps, usePressableContentColor } from '../Pressable';
 import { UIIndicator } from '../UIIndicator';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -38,15 +38,11 @@ export const PillButtonContent = ({
 
     const animatedLabelProps = useAnimatedProps(() => {
         return {
-            color: contentColor.value as ColorValue,
+            color: contentColor.value,
         };
     });
 
-    const animatedImageProps = useAnimatedProps(() => {
-        return {
-            tintColor: contentColor.value as ColorValue,
-        };
-    });
+    const animatedImageProps = usePressableAnimatedImageTintColorProps(contentColor);
 
     const animatedBackgroundOverlayStyle = useAnimatedStyle(() => {
         return {
@@ -65,9 +61,7 @@ export const PillButtonContent = ({
         if (icon == null) {
             return null;
         }
-        return (
-            <UIAnimatedImage source={icon} style={styles.icon} animatedProps={animatedImageProps} />
-        );
+        return <UIAnimatedImage source={icon} style={styles.icon} {...animatedImageProps} />;
     }, [animatedImageProps, icon]);
 
     const iconPositionRelatedContainerStyle = React.useMemo(() => {

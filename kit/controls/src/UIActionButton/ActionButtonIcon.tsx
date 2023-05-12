@@ -1,18 +1,14 @@
 import * as React from 'react';
-import { ColorValue, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { UIAnimatedImage } from '@tonlabs/uikit.media';
-import { useAnimatedProps } from 'react-native-reanimated';
 import { UIConstant } from '../constants';
 import { UIIndicator } from '../UIIndicator';
 import type { ActionButtonIconProps } from './types';
+import { usePressableAnimatedImageTintColorProps } from '../Pressable';
 
 function ActionButtonIconImpl(props: ActionButtonIconProps) {
     const { icon, loading, color, indicatorColor } = props;
-    const animatedImageProps = useAnimatedProps(() => {
-        return {
-            tintColor: color?.value as ColorValue,
-        };
-    });
+    const animatedImageProps = usePressableAnimatedImageTintColorProps(color);
 
     if (loading) {
         return (
@@ -28,9 +24,7 @@ function ActionButtonIconImpl(props: ActionButtonIconProps) {
         return null;
     }
 
-    return (
-        <UIAnimatedImage source={icon} animatedProps={animatedImageProps} style={styles.iconSize} />
-    );
+    return <UIAnimatedImage source={icon} {...animatedImageProps} style={styles.iconSize} />;
 }
 
 const styles = StyleSheet.create({

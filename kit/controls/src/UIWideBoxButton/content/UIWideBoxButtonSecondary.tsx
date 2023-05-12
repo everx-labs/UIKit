@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { ColorValue, Platform, StyleSheet, ImageStyle } from 'react-native';
+import { Platform, StyleSheet, ImageStyle } from 'react-native';
 import Animated, { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
 import { ColorVariants, UILabelAnimated } from '@tonlabs/uikit.themes';
 import { UIAnimatedImage } from '@tonlabs/uikit.media';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UIWideBoxButtonProps } from '../types';
-import { usePressableContentColor } from '../../Pressable';
+import { usePressableAnimatedImageTintColorProps, usePressableContentColor } from '../../Pressable';
 import { contentColors } from '../constants';
 import { UIIndicator } from '../../UIIndicator';
 
@@ -14,13 +14,9 @@ function RightContent({
     loading,
     contentColor,
 }: Pick<UIWideBoxButtonProps, 'icon' | 'loading'> & {
-    contentColor: Readonly<Animated.SharedValue<string | number>>;
+    contentColor: Readonly<Animated.SharedValue<string>>;
 }) {
-    const animatedImageProps = useAnimatedProps(() => {
-        return {
-            tintColor: contentColor.value as ColorValue,
-        };
-    });
+    const animatedImageProps = usePressableAnimatedImageTintColorProps(contentColor);
 
     if (loading) {
         return <UIIndicator color={ColorVariants.TextOverlay} size={UILayoutConstant.iconSize} />;
@@ -30,7 +26,7 @@ function RightContent({
             <UIAnimatedImage
                 source={icon}
                 style={styles.image as ImageStyle}
-                animatedProps={animatedImageProps}
+                {...animatedImageProps}
             />
         );
     }
@@ -42,13 +38,13 @@ export function UIWideBoxButtonSecondary({ title, icon, loading }: UIWideBoxButt
 
     const animatedLabelProps = useAnimatedProps(() => {
         return {
-            color: contentColor.value as ColorValue,
+            color: contentColor.value,
         };
     });
 
     const animatedStyles = useAnimatedStyle(() => {
         return {
-            borderColor: contentColor.value as ColorValue,
+            borderColor: contentColor.value,
         };
     });
 

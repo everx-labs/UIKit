@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { ColorValue, Platform, StyleSheet, ImageStyle } from 'react-native';
+import { Platform, StyleSheet, ImageStyle } from 'react-native';
 import Animated, { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
 import { ColorVariants, UILabelAnimated, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UIAnimatedImage } from '@tonlabs/uikit.media';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
 import type { UIWideBoxButtonProps } from '../types';
-import { usePressableContentColor } from '../../Pressable';
+import { usePressableAnimatedImageTintColorProps, usePressableContentColor } from '../../Pressable';
 import { contentColors } from '../constants';
 import { UIIndicator } from '../../UIIndicator';
 
@@ -14,13 +14,9 @@ function RightContent({
     loading,
     contentColor,
 }: Pick<UIWideBoxButtonProps, 'icon' | 'loading'> & {
-    contentColor: Readonly<Animated.SharedValue<string | number>>;
+    contentColor: Readonly<Animated.SharedValue<string>>;
 }) {
-    const animatedImageProps = useAnimatedProps(() => {
-        return {
-            tintColor: contentColor.value as ColorValue,
-        };
-    });
+    const animatedImageProps = usePressableAnimatedImageTintColorProps(contentColor);
 
     if (loading) {
         return (
@@ -35,7 +31,7 @@ function RightContent({
             <UIAnimatedImage
                 source={icon}
                 style={styles.image as ImageStyle}
-                animatedProps={animatedImageProps}
+                {...animatedImageProps}
             />
         );
     }
@@ -48,12 +44,12 @@ export function UIWideBoxButtonPrimary({ title, icon, loading }: UIWideBoxButton
 
     const animatedStyles = useAnimatedStyle(() => {
         return {
-            backgroundColor: backgroundColor.value as ColorValue,
+            backgroundColor: backgroundColor.value,
         };
     });
     const animatedLabelProps = useAnimatedProps(() => {
         return {
-            color: contentColor.value as ColorValue,
+            color: contentColor.value,
         };
     });
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ColorValue, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
 import { UILabelAnimated, UILabelRoles } from '@tonlabs/uikit.themes';
 import { UIAnimatedImage } from '@tonlabs/uikit.media';
@@ -14,6 +14,7 @@ import {
 import type { UIMsgButtonProps } from './types';
 import { UIIndicator } from '../UIIndicator';
 import { useColorValues, useCornerStyle } from './hooks';
+import { usePressableAnimatedImageTintColorProps } from '../Pressable';
 
 export const MsgButtonContent = ({
     icon,
@@ -41,15 +42,11 @@ export const MsgButtonContent = ({
 
     const animatedLabelProps = useAnimatedProps(() => {
         return {
-            color: contentColor.value as ColorValue,
+            color: contentColor.value,
         };
     });
 
-    const animatedImageProps = useAnimatedProps(() => {
-        return {
-            tintColor: contentColor.value as ColorValue,
-        };
-    });
+    const animatedImageProps = usePressableAnimatedImageTintColorProps(contentColor);
 
     const animatedBackgroundOverlayStyle = useAnimatedStyle(() => {
         return {
@@ -67,7 +64,7 @@ export const MsgButtonContent = ({
             <UIAnimatedImage
                 source={icon}
                 style={[styles.icon, additionalStyles]}
-                animatedProps={animatedImageProps}
+                {...animatedImageProps}
             />
         );
     }, [animatedImageProps, icon, iconPosition, title]);

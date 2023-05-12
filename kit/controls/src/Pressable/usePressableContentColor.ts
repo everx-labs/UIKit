@@ -17,7 +17,7 @@ export function usePressableContentColor({
     hoveredColor,
     disabledColor,
     loadingColor,
-}: PressableColors): Readonly<Animated.SharedValue<string | number>> {
+}: PressableColors): Readonly<Animated.SharedValue<string>> {
     const pressableState = React.useContext(PressableStateContext);
     const colorScheme: PressableColorScheme = usePressableColorScheme(
         initialColor,

@@ -51,7 +51,7 @@ export type ActionButtonAnimations = {
 export type ActionButtonIconProps = {
     icon?: ImageSourcePropType;
     loading?: boolean;
-    color: Animated.SharedValue<string | number>;
+    color: Animated.SharedValue<string>;
     indicatorColor: ColorVariants;
 };
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ColorValue, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedProps, useAnimatedStyle } from 'react-native-reanimated';
 
 import { UILabelRoles, UILabelAnimated } from '@tonlabs/uikit.themes';
@@ -11,25 +11,21 @@ import {
     UIButtonGroupConstants,
 } from './constants';
 import type { UIButtonGroupActionProps } from './types';
-import { usePressableContentColor } from '../Pressable';
+import { usePressableAnimatedImageTintColorProps, usePressableContentColor } from '../Pressable';
 
 function AnimatedImage({
     icon,
     contentColor,
 }: {
     icon: UIButtonGroupActionProps['icon'];
-    contentColor: Readonly<Animated.SharedValue<string | number>>;
+    contentColor: Readonly<Animated.SharedValue<string>>;
 }) {
-    const animatedImageProps = useAnimatedProps(() => {
-        return {
-            tintColor: contentColor.value as ColorValue,
-        };
-    });
+    const animatedImageProps = usePressableAnimatedImageTintColorProps(contentColor);
 
     if (icon == null) {
         return null;
     }
-    return <UIAnimatedImage source={icon} style={styles.icon} animatedProps={animatedImageProps} />;
+    return <UIAnimatedImage source={icon} style={styles.icon} {...animatedImageProps} />;
 }
 
 function Content({
@@ -42,7 +38,7 @@ function Content({
 
     const animatedLabelProps = useAnimatedProps(() => {
         return {
-            color: contentColor.value as ColorValue,
+            color: contentColor.value,
         };
     });
 

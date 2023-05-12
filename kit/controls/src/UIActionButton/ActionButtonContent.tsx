@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ColorValue, ImageSourcePropType, Platform, StyleSheet, View } from 'react-native';
+import { ImageSourcePropType, Platform, StyleSheet, View } from 'react-native';
 
 import { TypographyVariants, makeStyles, UILabelAnimated } from '@tonlabs/uikit.themes';
 import { UILayoutConstant } from '@tonlabs/uikit.layout';
@@ -22,13 +22,13 @@ export function ActionButtonContent({
 
     const animatedStyles = useAnimatedStyle(() => {
         return {
-            backgroundColor: backgroundColor.value as ColorValue,
+            backgroundColor: backgroundColor.value,
         };
     });
 
     const animatedLabelProps = useAnimatedStyle(() => {
         return {
-            color: contentColor.value as ColorValue,
+            color: contentColor.value,
         };
     });
 

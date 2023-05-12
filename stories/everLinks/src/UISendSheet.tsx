@@ -130,7 +130,10 @@ function SendSheetContent({
                                     >
                                         {uiLocalized.EverLinks.Send.NetworkFeeTilde}
                                     </UILabel>
-                                    <CurrencyElement amount={fee} signChar={feeSignChar ?? signChar} />
+                                    <CurrencyElement
+                                        amount={fee}
+                                        signChar={feeSignChar ?? signChar}
+                                    />
                                 </View>
                             </View>
                         </View>
