@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TouchableOpacity as RNTouchableOpacity } from 'react-native';
+import { TouchableOpacity as RNTouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 import type { TouchableOpacityProps } from './types';
 
 export const TouchableOpacity = React.forwardRef<typeof RNTouchableOpacity, TouchableOpacityProps>(
@@ -18,7 +18,7 @@ export const TouchableOpacity = React.forwardRef<typeof RNTouchableOpacity, Touc
         // but TouchableOpacity from RN doesn't
         // so mixing them together
         const styleProp = React.useMemo(() => {
-            let s = null;
+            let s: StyleProp<ViewStyle> = null;
             if (containerStyle) {
                 if (s == null) {
                     s = [];

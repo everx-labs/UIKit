@@ -58,7 +58,7 @@
         "react-native-screens": "3.19.0",
         "react-native-simple-shadow-view": "1.6.3",
         "react-native-svg": "^12.3.0",
-        "typescript": "4.4.3"
+        "typescript": "^4.9.5"
     },
     "peerDependencies": {
         "@react-navigation/core": "^5.16.1",
