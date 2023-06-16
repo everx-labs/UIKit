@@ -36,7 +36,7 @@ const getAlertViewActions = (children: React.ReactNode): AlertViewActions => {
     React.Children.toArray(children).forEach((child: React.ReactNode): void => {
         if (React.isValidElement(child)) {
             if (child.type === UIAlertViewAction) {
-                sortAction(child);
+                sortAction(child as React.ReactElement<UIAlertViewActionProps>);
             }
             if (child.type === React.Fragment) {
                 const alertViewActions: AlertViewActions = getAlertViewActions(

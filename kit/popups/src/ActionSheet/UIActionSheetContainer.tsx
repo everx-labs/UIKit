@@ -28,7 +28,7 @@ const getActionSheetActions = (children: React.ReactNode): ActionSheetActions =>
                 actions.concat(actionSheetActions.actionList);
             } else {
                 if (child.props.type === UIActionSheetActionType.Cancel) {
-                    cancelAction = child;
+                    cancelAction = child as React.ReactElement<UIActionSheetActionProps>;
                 }
                 actions.push(child);
             }

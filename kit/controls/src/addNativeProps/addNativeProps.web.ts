@@ -31,7 +31,7 @@ const usePlatformMethods = (properties: { [key: string]: true }) => {
 // The following type is taken from @types/react@^17.0.0 which is not yet supported in UIKit
 type ForwardedRef<T> = ((instance: T | null) => void) | React.MutableRefObject<T | null> | null;
 
-export const addNativeProps = <P>(
+export const addNativeProps = <P extends Record<string, unknown>>(
     component: React.ComponentClass<P>,
     properties: {
         [key: string]: true;
