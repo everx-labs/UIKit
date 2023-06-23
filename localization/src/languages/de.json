@@ -465,7 +465,10 @@
                 "devnet": "Devnet",
                 "fldnet": "FLD network",
                 "mainnet": "Hauptnetz",
-                "rustnet": "Rustnet"
+                "rustnet": "Rustnet",
+                "tonnet": "Ton Coin",
+                "goshnet": "Gosh",
+                "venomnet": "Venom"
             }
         },
         "staking": {
