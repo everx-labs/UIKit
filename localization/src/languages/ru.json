@@ -465,7 +465,10 @@
                 "devnet": "Сеть для тестирования",
                 "fldnet": "Сеть FLD",
                 "mainnet": "Основная сеть",
-                "rustnet": "Rust-сеть"
+                "rustnet": "Rust-сеть",
+                "tonnet": "Ton Coin",
+                "goshnet": "Gosh",
+                "venomnet": "Venom"
             }
         },
         "staking": {
