@@ -465,7 +465,10 @@
                 "devnet": "开发网",
                 "fldnet": "FLD network",
                 "mainnet": "Mainnet",
-                "rustnet": "Rustnet"
+                "rustnet": "Rustnet",
+                "tonnet": "Ton Coin",
+                "goshnet": "Gosh",
+                "venomnet": "Venom"
             }
         },
         "staking": {
