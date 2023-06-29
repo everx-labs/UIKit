@@ -453,7 +453,7 @@
         },
         "networks": {
             "names": {
-                "devnet": "데브넷",
+                "devnet": "에버스케일 테스트 네트워크",
                 "fldnet": "FLD 테스트 네트워크",
                 "mainnet": "에버스케일",
                 "rustnet": "Rustnet",

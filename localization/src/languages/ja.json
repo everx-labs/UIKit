@@ -462,7 +462,7 @@
         },
         "networks": {
             "names": {
-                "devnet": "デブネット",
+                "devnet": "Everscale testnet",
                 "fldnet": "FLD network",
                 "mainnet": "Everscale",
                 "rustnet": "Rustnet",

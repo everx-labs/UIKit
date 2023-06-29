@@ -450,7 +450,7 @@
         },
         "networks": {
             "names": {
-                "devnet": "Devnet",
+                "devnet": "Everscale testnet",
                 "fldnet": "FLD network",
                 "mainnet": "Everscale",
                 "rustnet": "Rustnet",
