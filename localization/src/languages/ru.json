@@ -464,7 +464,7 @@
             "names": {
                 "devnet": "Сеть для тестирования",
                 "fldnet": "Сеть FLD",
-                "mainnet": "Основная сеть",
+                "mainnet": "Everscale",
                 "rustnet": "Rust-сеть",
                 "tonnet": "Ton Coin",
                 "goshnet": "Gosh",

@@ -464,7 +464,7 @@
             "names": {
                 "devnet": "开发网",
                 "fldnet": "FLD network",
-                "mainnet": "Mainnet",
+                "mainnet": "Everscale",
                 "rustnet": "Rustnet",
                 "tonnet": "Ton Coin",
                 "goshnet": "Gosh",

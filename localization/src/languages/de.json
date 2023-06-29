@@ -464,7 +464,7 @@
             "names": {
                 "devnet": "Devnet",
                 "fldnet": "FLD network",
-                "mainnet": "Hauptnetz",
+                "mainnet": "Everscale",
                 "rustnet": "Rustnet",
                 "tonnet": "Ton Coin",
                 "goshnet": "Gosh",

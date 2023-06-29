@@ -452,7 +452,7 @@
             "names": {
                 "devnet": "Devnet",
                 "fldnet": "FLD network",
-                "mainnet": "Mainnet",
+                "mainnet": "Everscale",
                 "rustnet": "Rustnet",
                 "tonnet": "Ton Coin",
                 "goshnet": "Gosh",

@@ -348,7 +348,7 @@
             "addressInput": {
                 "auto": "기본 주소 선택",
                 "enterAddress": "주소를 입력하세요",
-                "invalidAddress": "잘못된 에버스케일 주소입니다.",
+                "invalidAddress": "잘못된 주소입니다.",
                 "manual": "수동으로 입력"
             },
             "agreement": {
@@ -455,7 +455,7 @@
             "names": {
                 "devnet": "데브넷",
                 "fldnet": "FLD 테스트 네트워크",
-                "mainnet": "메인넷",
+                "mainnet": "에버스케일",
                 "rustnet": "Rustnet",
                 "tonnet": "Ton Coin",
                 "goshnet": "Gosh",
