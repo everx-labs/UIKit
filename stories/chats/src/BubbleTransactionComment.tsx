@@ -70,14 +70,13 @@ export function BubbleTransactionComment(props: Props) {
                 },
                 getBubbleCornerStyle(position, isRTL),
                 bubbleColor,
-                encrypted && styles.msgContainerEncrypted,
             ]}
         >
             <UILabel
                 testID={`transaction_comment_${text}`}
                 role={UILabelRoles.ParagraphText}
                 color={UILabelColors.StaticTextPrimaryLight}
-                style={styles.text}
+                style={[styles.text, encrypted && styles.textEncrypted]}
             >
                 {text}
             </UILabel>
@@ -99,7 +98,7 @@ const styles = StyleSheet.create({
         marginTop: UILayoutConstant.contentInsetVerticalX1,
         maxWidth: '100%',
     },
-    msgContainerEncrypted: {
+    textEncrypted: {
         paddingRight: KEY_THIN_WIDTH + UILayoutConstant.smallContentOffset, // take the place for the key icon
     },
     text: {
