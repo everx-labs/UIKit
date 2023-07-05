@@ -462,13 +462,13 @@
         },
         "networks": {
             "names": {
-                "devnet": "Сеть для тестирования",
+                "devnet": "Сеть для разработчиков Everscale",
                 "fldnet": "Сеть FLD",
                 "mainnet": "Everscale",
                 "rustnet": "Rust-сеть",
                 "tonnet": "Ton Coin",
                 "goshnet": "Gosh",
-                "venomnet": "Venom"
+                "venomnet": "Venom Testnet"
             }
         },
         "staking": {

@@ -453,13 +453,13 @@
         },
         "networks": {
             "names": {
-                "devnet": "에버스케일 테스트 네트워크",
+                "devnet": "에버스케일 데브넷",
                 "fldnet": "FLD 테스트 네트워크",
                 "mainnet": "에버스케일",
                 "rustnet": "Rustnet",
                 "tonnet": "Ton Coin",
                 "goshnet": "Gosh",
-                "venomnet": "Venom"
+                "venomnet": "Venom Testnet"
             }
         },
         "staking": {
