@@ -48,7 +48,6 @@ import iconButtonPlus from './resources/btn_plus/btn_plus.png';
 import iconButtonPlusDisabled from './resources/btn_plus_disabled/btn_plus_disabled.png';
 import iconButtonStickerEnabled from './resources/btn_sticker_enabled/stickerEnabled.png';
 import iconButtonStickerDisabled from './resources/btn_sticker_disabled/stickerDisabled.png';
-import iconAlertError from './resources/ico-error/alert-error.png';
 import iconArrowDownWhite from './resources/ico-arrow-down/ico-arrow-down-white.png';
 import iconArrowLeft from './resources/ico-arrow-left/ico-arrow-left.png';
 import iconArrowLeftBlack from './resources/ico-arrow-left/ico-arrow-left-black.png';
@@ -69,7 +68,6 @@ import iconCheckboxSquareActiveAction from './resources/ico-checkbox-square-acti
 import iconCheckboxSquareInactive from './resources/ico-checkbox-square-inactive/ico-checkbox-square-inactive.png';
 import iconCheckboxSquareInactiveAction from './resources/ico-checkbox-square-inactive/inactive-action.png';
 import iconClear from './resources/ico-clear/ico-clear.png';
-import iconCloseBlack8 from './resources/ico-close/close-black-8.png';
 import iconCloseBlack from './resources/ico-close/close-black.png';
 import iconCloseBlue from './resources/ico-close/close-blue.png';
 import iconCloseDarkThemeSecondary from './resources/ico-close/close-dark-theme-secondary.png';
@@ -183,7 +181,6 @@ export const UIAssets = {
             buttonPlusDisabled: iconButtonPlusDisabled,
             buttonStickerDisabled: iconButtonStickerDisabled,
             buttonStickerEnabled: iconButtonStickerEnabled,
-            alertError: iconAlertError,
             arrowDownWhite: iconArrowDownWhite,
             arrowLeft: iconArrowLeft,
             arrowLeftBlack: iconArrowLeftBlack,
@@ -205,7 +202,6 @@ export const UIAssets = {
             checkboxSquareInactiveAction: iconCheckboxSquareInactiveAction,
             chevron: iconChevron,
             clear: iconClear,
-            closeBlack8: iconCloseBlack8,
             closeBlack: iconCloseBlack,
             closeBlue: iconCloseBlue,
             closeDarkThemeSecondary: iconCloseDarkThemeSecondary,
