@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Platform, View, TextStyle, I18nManager } from 'react-native';
+import { StyleSheet, Platform, View, TextStyle, I18nManager, Text } from 'react-native';
 import ParsedText from 'react-native-parsed-text';
 import { runOnUI } from 'react-native-reanimated';
 
@@ -206,8 +206,18 @@ export function BubbleChatPlainText(props: ChatPlainTextMessage) {
                 >
                     {text}
                 </ParsedText>
+                <BubbleTime
+                    {...props}
+                    isHidden
+                    style={styles.timeHidden}
+                    formattedTime={formattedTime}
+                />
             </UILabel>
-            <BubbleTime {...props} formattedTime={formattedTime} />
+            {/* Make bubble layout work properly at least for LTR layout */}
+            {/* TODO: support RTL properly ... */}
+            <Text style={styles.timeFloating}>
+                <BubbleTime {...props} formattedTime={formattedTime} />
+            </Text>
         </PlainTextContainer>
     );
 }
@@ -263,5 +273,26 @@ const styles = StyleSheet.create({
     actionString: {
         textAlign: 'right',
         paddingTop: UILayoutConstant.contentInsetVerticalX1,
+    },
+    timeHidden: {
+        // Beside we set transparent color
+        // (that needed mostly for Android)
+        // we need opacity for web
+        opacity: 0,
+        ...Platform.select({
+            web: {
+                userSelect: 'none',
+            },
+        }),
+    },
+    timeFloating: {
+        position: 'absolute',
+        lineHeight: Platform.select({
+            web: 24,
+            // Less then ParagraphText by 2, for some reason it works better
+            default: 22,
+        }),
+        bottom: UILayoutConstant.smallContentOffset,
+        right: UILayoutConstant.normalContentOffset,
     },
 });
