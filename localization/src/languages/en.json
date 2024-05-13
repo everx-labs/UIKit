@@ -456,7 +456,7 @@
                 "rustnet": "Rustnet",
                 "tonnet": "Ton Coin",
                 "goshnet": "Gosh",
-                "venomnet": "Venom Testnet"
+                "venom": "Venom"
             }
         },
         "staking": {
