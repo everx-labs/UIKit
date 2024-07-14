@@ -11,6 +11,12 @@ def findNodeModulesWithRN(path = '..', level = 0) {
     }
     return findNodeModulesWithRN("${path}/..", level + 1)
 }
+
+def reactNativeArchitectures() {
+    def value = project.getProperties().get("reactNativeArchitectures")
+    return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
+}
+
 def NODE_MODULES_DIR = findNodeModulesWithRN();
 
 def reactProperties = new Properties()
@@ -61,13 +67,16 @@ android {
         externalNativeBuild {
             cmake {
                 cppFlags "-O2 -frtti -fexceptions -std=c++1y -Wall -Wno-unused-variable -fstack-protector-all"
-                abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
                 arguments "-DANDROID_STL=c++_shared",
                         "-DANDROID_TOOLCHAIN=clang",
                         "-DREACT_NATIVE_VERSION=${REACT_NATIVE_VERSION}",
                         "-DNODE_MODULES_DIR=${NODE_MODULES_DIR}",
                         "-DFOR_HERMES=${FOR_HERMES}"
             }
+        }       \
+        
+        ndk {
+            abiFilters (*reactNativeArchitectures())
         }
     }
 
@@ -173,12 +182,12 @@ dependencies {
     implementation 'com.facebook.react:react-native:+'
     implementation 'androidx.core:core:1.6.0'
     implementation project(':react-native-reanimated')
-
+    implementation 'com.facebook.fbjni:fbjni:0.3.0'
 
     //noinspection GradleDynamicVersion
-    extractHeaders "com.facebook.fbjni:fbjni:+:headers"
+    extractHeaders "com.facebook.fbjni:fbjni:0.3.0:headers"
     //noinspection GradleDynamicVersion
-    extractJNI "com.facebook.fbjni:fbjni:+"
+    extractJNI "com.facebook.fbjni:fbjni:0.3.0"
 
     // def rnAAR = fileTree("${NODE_MODULES_DIR}/react-native/android").matching({ it.include "**/**/*.aar" }).singleFile
 
@@ -233,7 +242,13 @@ extractJNIFiles.mustRunAfter extractAARHeaders
 // pre-native build pipeline
 
 tasks.whenTaskAdded { task ->
-    if (!task.name.contains('Clean') && (task.name.contains('externalNative') || task.name.contains('CMake'))) {
+    // See: https://github.com/software-mansion/react-native-reanimated/pull/3677
+    if (!task.name.contains('Clean')
+        && (task.name.contains('externalNative')
+            || task.name.contains('CMake') 
+            || task.name.contains("generateJsonModel")
+        )
+    ) {
         task.dependsOn(extractAARHeaders)
         task.dependsOn(extractJNIFiles)
     }
